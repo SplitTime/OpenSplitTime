@@ -1,0 +1,2 @@
+# OpenSplitTime
+Timed event data

@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :split_times
+  resources :efforts
+  resources :splits
+  resources :participants
   get 'welcome/index'
 
   resources :events

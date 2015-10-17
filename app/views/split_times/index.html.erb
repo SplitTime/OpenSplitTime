@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Split Times</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Splittime</th>
+      <th>Effort</th>
+      <th>Split</th>
+      <th>Time from start</th>
+      <th>Data status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @split_times.each do |split_time| %>
+      <tr>
+        <td><%= split_time.splittime_id %></td>
+        <td><%= split_time.effort %></td>
+        <td><%= split_time.split %></td>
+        <td><%= split_time.time_from_start %></td>
+        <td><%= split_time.data_status %></td>
+        <td><%= link_to 'Show', split_time %></td>
+        <td><%= link_to 'Edit', edit_split_time_path(split_time) %></td>
+        <td><%= link_to 'Destroy', split_time, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Split time', new_split_time_path %>

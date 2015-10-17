@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  split_id: 1
+  split_name: MyString
+  course_id: 
+  split_order: 1
+  vert_gain_from_start: 1
+  vert_loss_from_start: 1
+
+two:
+  split_id: 1
+  split_name: MyString
+  course_id: 
+  split_order: 1
+  vert_gain_from_start: 1
+  vert_loss_from_start: 1

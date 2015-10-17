@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Effort:</strong>
+  <%= @effort.effort_id %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @effort.event %>
+</p>
+
+<p>
+  <strong>Participant:</strong>
+  <%= @effort.participant %>
+</p>
+
+<p>
+  <strong>Wave:</strong>
+  <%= @effort.wave %>
+</p>
+
+<p>
+  <strong>Bib number:</strong>
+  <%= @effort.bib_number %>
+</p>
+
+<p>
+  <strong>Effort city:</strong>
+  <%= @effort.effort_city %>
+</p>
+
+<p>
+  <strong>Effort state:</strong>
+  <%= @effort.effort_state %>
+</p>
+
+<p>
+  <strong>Effort country:</strong>
+  <%= @effort.effort_country %>
+</p>
+
+<p>
+  <strong>Effort age:</strong>
+  <%= @effort.effort_age %>
+</p>
+
+<p>
+  <strong>Start time:</strong>
+  <%= @effort.start_time %>
+</p>
+
+<p>
+  <strong>Official finish:</strong>
+  <%= @effort.official_finish %>
+</p>
+
+<%= link_to 'Edit', edit_effort_path(@effort) %> |
+<%= link_to 'Back', efforts_path %>

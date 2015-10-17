@@ -1,0 +1,2 @@
+module EffortsHelper
+end

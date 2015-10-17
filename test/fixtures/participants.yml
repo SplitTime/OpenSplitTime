@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  participant_id: 1
+  first_name: MyString
+  last_name: MyString
+  gender: MyString
+  birthdate: 2015-10-17
+  home_city: MyString
+  home_state: MyString
+  home_country: MyString
+
+two:
+  participant_id: 1
+  first_name: MyString
+  last_name: MyString
+  gender: MyString
+  birthdate: 2015-10-17
+  home_city: MyString
+  home_state: MyString
+  home_country: MyString

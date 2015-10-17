@@ -1,0 +1,37 @@
+<%= form_for(@split_time) do |f| %>
+  <% if @split_time.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@split_time.errors.count, "error") %> prohibited this split_time from being saved:</h2>
+
+      <ul>
+      <% @split_time.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :splittime_id %><br>
+    <%= f.number_field :splittime_id %>
+  </div>
+  <div class="field">
+    <%= f.label :effort_id %><br>
+    <%= f.text_field :effort_id %>
+  </div>
+  <div class="field">
+    <%= f.label :split_id %><br>
+    <%= f.text_field :split_id %>
+  </div>
+  <div class="field">
+    <%= f.label :time_from_start %><br>
+    <%= f.time_select :time_from_start %>
+  </div>
+  <div class="field">
+    <%= f.label :data_status %><br>
+    <%= f.number_field :data_status %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event_id: 1
+  event_name: MyString
+  course_id: 
+  start_date: 2015-10-17
+
+two:
+  event_id: 1
+  event_name: MyString
+  course_id: 
+  start_date: 2015-10-17

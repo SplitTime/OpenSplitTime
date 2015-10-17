@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Course:</strong>
+  <%= @course.course_id %>
+</p>
+
+<p>
+  <strong>Course name:</strong>
+  <%= @course.course_name %>
+</p>
+
+<p>
+  <strong>Start elevation:</strong>
+  <%= @course.start_elevation %>
+</p>
+
+<p>
+  <strong>Start location name:</strong>
+  <%= @course.start_location_name %>
+</p>
+
+<p>
+  <strong>End location name:</strong>
+  <%= @course.end_location_name %>
+</p>
+
+<%= link_to 'Edit', edit_course_path(@course) %> |
+<%= link_to 'Back', courses_path %>

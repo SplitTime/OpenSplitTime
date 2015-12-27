@@ -21,11 +21,5 @@ test:
   database: db/test.sqlite3
 
 production:
-  adapter: mysql
-  database: ost_prod
-  host: <%= ENV['DATABASE_URL'] %>
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
-  socket: /tmp/mysql.sock
-  pool: 5
-  port: 3306
+  <<: *default
+  database: db/production.sqlite3

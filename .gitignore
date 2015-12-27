@@ -93,3 +93,5 @@ pickle-email-*.html
 *~
 Gemfile.lock
 bin/*
+.ruby-gemset
+.ruby-version

@@ -46,3 +46,23 @@ group :development do
   gem 'spring'
 end
 
+
+gem 'bootstrap-sass'
+gem 'high_voltage'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'therubyracer', :platform=>:ruby
+
+group :development do
+  gem 'better_errors'
+  gem 'foreman'
+  gem 'rails_apps_pages'
+  gem 'rails_layout'
+end
+
+group :development, :test do
+  gem 'pry-rails'
+  gem 'pry-rescue'
+  gem 'rubocop'
+end
+

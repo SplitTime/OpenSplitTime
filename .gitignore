@@ -17,6 +17,12 @@
 
 # minimal Rails specific artifacts
 db/*.sqlite3
+# Ignore all .idea files
+/.idea
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+>>>>>>> 940a324af3d8e1bc1077b36b94fc73689783057e
 /db/*.sqlite3-journal
 /log/*
 /tmp/*
@@ -82,3 +88,5 @@ pickle-email-*.html
 
 # tilde files are usually backup files from a text editor
 *~
+Gemfile.lock
+bin/*

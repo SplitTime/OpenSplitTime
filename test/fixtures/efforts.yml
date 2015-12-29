@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event_id: 
+  participant_id: 
+  wave: MyString
+  bib_number: 1
+  effort_city: MyString
+  effort_state: MyString
+  effort_country: MyString
+  effort_age: 1
+  start_time: 2015-12-28 18:36:16
+  finished: false
+
+two:
+  event_id: 
+  participant_id: 
+  wave: MyString
+  bib_number: 1
+  effort_city: MyString
+  effort_state: MyString
+  effort_country: MyString
+  effort_age: 1
+  start_time: 2015-12-28 18:36:16
+  finished: false

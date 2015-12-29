@@ -21,5 +21,11 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: mysql2
+  encoding: utf8
+  database: ost_production
+  pool: 5
+  username: "masterawsuser"
+  password: "ebberon0"
+  host: "rundbinstance.cifqazz5keop.us-west-2.rds.amazonaws.com"
+  port: 3306

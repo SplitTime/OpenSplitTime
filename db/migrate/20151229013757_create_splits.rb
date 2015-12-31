@@ -3,6 +3,7 @@ class CreateSplits < ActiveRecord::Migration
     create_table :splits do |t|
       t.references :course, index: true, foreign_key: true
       t.string :name
+      t.integer :distance
       t.integer :order
       t.integer :vert_gain
       t.integer :vert_loss

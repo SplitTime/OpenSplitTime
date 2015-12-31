@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout
   get '/auth/failure' => 'sessions#failure'
+
+  namespace :api do
+    resources :courses, :efforts, :events, :locations, :participants, :split_times, :splits
+  end
 end

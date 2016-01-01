@@ -4,7 +4,7 @@ module Api
     private
 
     def split_params
-      params.require(:split).permit(:name, :course_id, :order, :vert_gain, :vert_loss)
+      params.require(:split).permit(:name, :course_id, :distance, :order, :vert_gain, :vert_loss)
     end
 
     def query_params

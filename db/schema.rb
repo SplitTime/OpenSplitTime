@@ -84,16 +84,18 @@ ActiveRecord::Schema.define(version: 20151229230453) do
 
   create_table "splits", force: :cascade do |t|
     t.integer  "course_id"
+    t.integer  "location_id"
     t.string   "name"
     t.integer  "distance"
     t.integer  "order"
     t.integer  "vert_gain"
     t.integer  "vert_loss"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id"
+  add_index "splits", ["location_id"], name: "index_splits_on_location_id"
 
   create_table "users", force: :cascade do |t|
     t.integer  "participant_id"

@@ -1,5 +1,6 @@
 json.splits @splits do |split|
   json.id         split.id
+  json.location   split.location
   json.name       split.name
   json.distance   split.distance
   json.order      split.order

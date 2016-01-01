@@ -1,6 +1,7 @@
 json.split do
   json.id         @split.id
   json.course     @split.course
+  json.location   @split.location
   json.name       @split.name
   json.distance   @split.distance
   json.order      @split.order

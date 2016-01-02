@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20160101215808) do
   create_table "users", force: :cascade do |t|
     t.integer  "participant_id"
     t.string   "name"
-    t.string   "role"
+    t.integer  "role"
     t.string   "provider"
     t.string   "uid"
     t.string   "email",                  default: "", null: false

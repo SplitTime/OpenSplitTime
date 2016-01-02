@@ -8,6 +8,7 @@ class CreateSplits < ActiveRecord::Migration
       t.integer :order
       t.integer :vert_gain
       t.integer :vert_loss
+      t.integer :type
 
       t.timestamps null: false
     end

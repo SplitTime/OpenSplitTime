@@ -7,4 +7,5 @@ json.split do
   json.order      @split.order
   json.vert_gain  @split.vert_gain
   json.vert_loss  @split.vert_loss
+  json.type       @split.type
 end

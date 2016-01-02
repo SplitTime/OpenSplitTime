@@ -15,10 +15,8 @@ ActiveRecord::Schema.define(version: 20160101215808) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
-    t.integer  "start_location_id"
-    t.integer  "end_location_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "efforts", force: :cascade do |t|
@@ -98,6 +96,7 @@ ActiveRecord::Schema.define(version: 20160101215808) do
     t.integer  "order"
     t.integer  "vert_gain"
     t.integer  "vert_loss"
+    t.integer  "type"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

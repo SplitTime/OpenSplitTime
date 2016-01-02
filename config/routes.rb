@@ -8,6 +8,6 @@ Rails.application.routes.draw do
   get '/auth/failure' => 'sessions#failure'
 
   namespace :api do
-    resources :courses, :efforts, :events, :locations, :participants, :split_times, :splits
+    resources :courses, :efforts, :events, :locations, :participants, :split_times, :splits, :races
   end
 end

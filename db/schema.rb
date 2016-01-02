@@ -39,15 +39,15 @@ ActiveRecord::Schema.define(version: 20160101215808) do
 
   create_table "events", force: :cascade do |t|
     t.integer  "course_id"
-    t.integer  "event_series_id"
+    t.integer  "race_id"
     t.string   "name"
     t.date     "start_date"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id"
-  add_index "events", ["event_series_id"], name: "index_events_on_event_series_id"
+  add_index "events", ["race_id"], name: "index_events_on_race_id"
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"

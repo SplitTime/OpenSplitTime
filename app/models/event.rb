@@ -1,4 +1,4 @@
 class Event < ActiveRecord::Base
   belongs_to :course
-  belongs_to :event_series
+  belongs_to :race
 end

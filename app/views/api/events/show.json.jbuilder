@@ -3,4 +3,5 @@ json.event do
   json.name        @event.name
   json.course      @event.course
   json.start_date  @event.start_date
+  json.race        @event.race
 end

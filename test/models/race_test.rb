@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EventSeriesTest < ActiveSupport::TestCase
+class RaceTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

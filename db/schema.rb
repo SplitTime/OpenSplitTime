@@ -39,12 +39,6 @@ ActiveRecord::Schema.define(version: 20160101215808) do
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id"
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id"
 
-  create_table "event_series", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "events", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "event_series_id"
@@ -76,6 +70,12 @@ ActiveRecord::Schema.define(version: 20160101215808) do
     t.string   "home_country"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "races", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "split_times", force: :cascade do |t|

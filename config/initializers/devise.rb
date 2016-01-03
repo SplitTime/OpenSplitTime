@@ -8,13 +8,17 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '42358ebfc37d330b742b78948d14e7dd5bda8b87905ac73fc081c011b3a0b0d22bde366fa28fac5b7ff905af982bbcfc3921ac60244038c25a797ea1ba12cd9c'
 
+  config.secret_key = 'd9f49de0c3b2e761e19506deec42cc782a706d4be065e1714dbcb0fd532c5befc017aec5b3727b32060995a758d297afcc821ff8f174953008bc625b8e7d4dfa'
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'no-reply@' + Rails.application.secrets.domain_name
+  # TODO - make this not return null
+  #config.mailer_sender = 'no-reply@' + Rails.application.secrets.domain_name
+  config.mailer_sender = 'no-reply@opensplittime.org'
 
-  # Configure the class responsible to send e-mails.
+      # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
 
   # ==> ORM configuration

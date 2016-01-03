@@ -3,7 +3,7 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users do |t|
       t.references :participant, index: true, foreign_key: true
       t.string :name
-      t.string :role
+      t.integer :role
       t.string :provider
       t.string :uid
 

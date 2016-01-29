@@ -25,7 +25,7 @@ production:
   encoding: utf8
   database: ost_production
   pool: 5
-  username: "masterawsuser"
-  password: "ebberon0"
-  host: "rundbinstance.cifqazz5keop.us-west-2.rds.amazonaws.com"
+  username: <%= ENV["RDS_USERNAME"] %>
+  password: <%= ENV["RDS_PASSWORD"] %>
+  host: <%= ENV["RDS_HOST"] %>
   port: 3306

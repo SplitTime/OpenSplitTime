@@ -4,6 +4,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   enum role: [:user, :admin]
+
+  has_many :friendships
+  has_many :participants, :through => :friendships
+
   after_initialize :set_default_role, :if => :new_record?
 
   def set_default_role

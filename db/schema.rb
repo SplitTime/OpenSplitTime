@@ -57,6 +57,9 @@ ActiveRecord::Schema.define(version: 20160129060100) do
     t.datetime "updated_at",     null: false
   end
 
+  add_index "friendships", ["participant_id"], name: "index_friendships_on_participant_id"
+  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id"
+
   create_table "locations", force: :cascade do |t|
     t.string   "name"
     t.integer  "elevation"

@@ -7,4 +7,7 @@ RSpec.describe Race, type: :model do
     expect(Race.all.count).to(equal(1))
     expect(Race.first.name).to eq('Slow Mo 100')
   end
+
+  it "should not allow duplicate names"
+
 end

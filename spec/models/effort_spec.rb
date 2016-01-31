@@ -14,7 +14,7 @@ require "rails_helper"
 # t.datetime "updated_at",     null: false
 
 RSpec.describe Effort, type: :model do
-  it "should have an event" do
+  it "should have an event and a participant" do
     event = Event.create!(name: 'Hardrock 2015')
     participant = Participant.create!(first_name: 'Dave', last_name: 'Mitchell')
     Effort.create!(event: event, participant: participant)

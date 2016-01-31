@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   has_many :friendships
   has_many :participants, :through => :friendships
+  has_many :ownerships
+  has_many :races, :through => :ownerships
 
   after_initialize :set_default_role, :if => :new_record?
 

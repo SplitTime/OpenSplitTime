@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129060100) do
+ActiveRecord::Schema.define(version: 20160131195951) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
@@ -69,6 +69,16 @@ ActiveRecord::Schema.define(version: 20160129060100) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ownerships", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "race_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "ownerships", ["race_id"], name: "index_ownerships_on_race_id"
+  add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
+
   create_table "participants", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -103,13 +113,13 @@ ActiveRecord::Schema.define(version: 20160129060100) do
     t.integer  "course_id"
     t.integer  "location_id"
     t.string   "name"
-    t.integer  "distance"
-    t.integer  "order"
-    t.integer  "vert_gain"
-    t.integer  "vert_loss"
+    t.integer  "distance_from_start"
+    t.integer  "order_among_splits_of_same_distance"
+    t.integer  "vert_gain_from_start"
+    t.integer  "vert_loss_from_start"
     t.integer  "type"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id"

@@ -6,13 +6,27 @@ require 'rails_helper'
 #   t.datetime "updated_at", null: false
 
 RSpec.describe Ownership, type: :model do
-  it "should have a user and a race" do
+  it "should be valid when created with a user_id and a race_id" do
     user = User.create!(name: 'Test User', role: :user, email: 'user@example.com', password: 'password')
     race = Race.create!(name: 'Hardrock')
-    Ownership.create!(user: user, race: race)
+    ownership = Ownership.create!(user_id: user.id, race_id: race.id)
 
     expect(Ownership.all.count).to(equal(1))
-    expect(Ownership.first.user_id).to eq(user.id)
-    expect(Ownership.first.race_id).to eq(race.id)
+    expect(ownership.user_id).to eq(user.id)
+    expect(ownership.race_id).to eq(race.id)
+    expect(ownership).to be_valid
   end
+
+  it "should be invalid without a user_id" do
+    ownership = Ownership.new(user_id: nil, race_id: 1)
+    ownership.valid?
+    expect(ownership.errors[:user_id]).to include("can't be blank")
+  end
+
+  it "should be invalid without a race_id" do
+    ownership = Ownership.new(user_id: 1, race_id: nil)
+    ownership.valid?
+    expect(ownership.errors[:race_id]).not_to include("can't be blank")
+  end
+
 end

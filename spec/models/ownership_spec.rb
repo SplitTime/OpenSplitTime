@@ -26,7 +26,7 @@ RSpec.describe Ownership, type: :model do
   it "should be invalid without a race_id" do
     ownership = Ownership.new(user_id: 1, race_id: nil)
     ownership.valid?
-    expect(ownership.errors[:race_id]).not_to include("can't be blank")
+    expect(ownership.errors[:race_id]).to include("can't be blank")
   end
 
 end

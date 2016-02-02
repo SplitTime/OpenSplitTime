@@ -22,21 +22,21 @@ RSpec.describe Event, type: :model do
   it "should be invalid without a course_id" do
     event = Event.new(course_id: nil, name: 'Slo Mo 100 2015', start_date: "2015-07-01")
     event.valid?
-    expect(event.errors[:course_id].size).to eq(1)
+    expect(event.errors[:course_id]).to include("can't be blank")
   end
 
   it "should be invalid without a name" do
     course = Course.create!(name: 'Slo Mo 100 CCW')
     event = Event.new(course_id: course.id, name: nil, start_date: "2015-07-01")
     event.valid?
-    expect(event.errors[:name].size).to eq(1)
+    expect(event.errors[:name]).to include("can't be blank")
   end
 
   it "should be invalid without a start date" do
     course = Course.create!(name: 'Slo Mo 100 CCW')
     event = Event.new(course_id: course.id, name: 'Slo Mo 100 2015', start_date: nil)
     event.valid?
-    expect(event.errors[:start_date].size).to eq(1)
+    expect(event.errors[:start_date]).to include("can't be blank")
   end
 
   it "should not allow for duplicate names" do
@@ -45,7 +45,7 @@ RSpec.describe Event, type: :model do
     Event.create!(course_id: course1.id, name: 'Slo Mo 100 2015', start_date: "2015-07-01")
     event = Event.new(course_id: course2.id, name: 'Slo Mo 100 2015', start_date: "2016-07-01")
     event.valid?
-    expect(event.errors[:name].size).to eq(1)
+    expect(event.errors[:name]).to include("has already been taken")
   end
 
 end

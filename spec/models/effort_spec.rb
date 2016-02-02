@@ -27,26 +27,26 @@ RSpec.describe Effort, type: :model do
   it "should be invalid without an event_id" do
     effort = Effort.new(event_id: nil, participant_id: 1, start_time: "2015-07-01 06:00:00")
     effort.valid?
-    expect(effort.errors[:event_id].size).to eq(1)
+    expect(effort.errors[:event_id]).to include("can't be blank")
   end
 
   it "should be invalid without a participant_id" do
     effort = Effort.new(event_id: 1, participant_id: nil, start_time: "2015-07-01 06:00:00")
     effort.valid?
-    expect(effort.errors[:participant_id].size).to eq(1)
+    expect(effort.errors[:participant_id]).to include("can't be blank")
   end
 
   it "should be invalid without a start time" do
     effort = Effort.new(event_id: 1, participant_id: 1, start_time: nil)
     effort.valid?
-    expect(effort.errors[:start_time].size).to eq(1)
+    expect(effort.errors[:start_time]).to include("can't be blank")
   end
 
   it "should not permit more than one effort by a participant in a given event" do
     Effort.create!(event_id: 1, participant_id: 1, start_time: "2015-07-01 06:00:00")
     effort = Effort.new(event_id: 1, participant_id: 1, start_time: "2015-07-01 06:00:00")
     effort.valid?
-    expect(effort.errors[:participant_id].size).to eq(1)
+    expect(effort.errors[:participant_id]).to include("has already been taken")
   end
 
 end

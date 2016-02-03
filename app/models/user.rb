@@ -6,9 +6,11 @@ class User < ActiveRecord::Base
   enum role: [:user, :admin]
 
   has_many :friendships
-  has_many :participants, :through => :friendships
+  has_many :participants, through: :friendships
   has_many :ownerships
   has_many :races, :through => :ownerships
+
+  validates_presence_of :first_name, :last_name
 
   after_initialize :set_default_role, :if => :new_record?
 

@@ -7,7 +7,7 @@ require 'rails_helper'
 
 RSpec.describe Ownership, type: :model do
   it "should be valid when created with a user_id and a race_id" do
-    user = User.create!(name: 'Test User', role: :user, email: 'user@example.com', password: 'password')
+    user = User.create!(first_name: 'Test', last_name: 'User', role: :user, email: 'user@example.com', password: 'password')
     race = Race.create!(name: 'Hardrock')
     ownership = Ownership.create!(user_id: user.id, race_id: race.id)
 

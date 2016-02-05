@@ -1,5 +1,7 @@
 require "rails_helper"
 
+# t.string   "name"
+
 RSpec.describe Course, type: :model do
   it "should be valid with a name" do
     course = Course.create!(name: 'Slow Mo 100 CCW')

@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   enum role: [:user, :admin]
 
-  has_many :friendships
-  has_many :participants, :through => :friendships
+  has_many :interests
+  has_many :participants, :through => :interests
   has_many :ownerships
   has_many :races, :through => :ownerships
 

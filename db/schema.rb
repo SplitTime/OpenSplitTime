@@ -13,6 +13,13 @@
 
 ActiveRecord::Schema.define(version: 20160131195951) do
 
+  create_table "countries", force: :cascade do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -49,16 +56,17 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   add_index "events", ["course_id"], name: "index_events_on_course_id"
   add_index "events", ["race_id"], name: "index_events_on_race_id"
 
-  create_table "friendships", force: :cascade do |t|
+  create_table "interests", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "participant_id"
-    t.integer  "type"
+    t.integer  "kind"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
 
-  add_index "friendships", ["participant_id"], name: "index_friendships_on_participant_id"
-  add_index "friendships", ["user_id"], name: "index_friendships_on_user_id"
+  add_index "interests", ["participant_id"], name: "index_interests_on_participant_id"
+  add_index "interests", ["user_id", "participant_id"], name: "index_interests_on_user_id_and_participant_id", unique: true
+  add_index "interests", ["user_id"], name: "index_interests_on_user_id"
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
@@ -77,6 +85,7 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   end
 
   add_index "ownerships", ["race_id"], name: "index_ownerships_on_race_id"
+  add_index "ownerships", ["user_id", "race_id"], name: "index_ownerships_on_user_id_and_race_id", unique: true
   add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
 
   create_table "participants", force: :cascade do |t|
@@ -84,11 +93,13 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.string   "last_name"
     t.string   "gender"
     t.date     "birthdate"
-    t.string   "home_city"
-    t.string   "home_state"
-    t.string   "home_country"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "city"
+    t.string   "state"
+    t.integer  "country_id"
+    t.string   "email"
+    t.string   "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "races", force: :cascade do |t|
@@ -100,7 +111,7 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   create_table "split_times", force: :cascade do |t|
     t.integer  "effort_id"
     t.integer  "split_id"
-    t.time     "time_from_start"
+    t.float    "time_from_start"
     t.integer  "data_status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
@@ -114,12 +125,12 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.integer  "location_id"
     t.string   "name"
     t.integer  "distance_from_start"
-    t.integer  "order_among_splits_of_same_distance"
+    t.integer  "sub_order",            default: 0
     t.integer  "vert_gain_from_start"
     t.integer  "vert_loss_from_start"
-    t.integer  "type"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.integer  "kind"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id"

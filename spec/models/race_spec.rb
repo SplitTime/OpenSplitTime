@@ -1,5 +1,7 @@
 require "rails_helper"
 
+# t.string   "name"
+
 RSpec.describe Race, type: :model do
   it "should be valid with a name" do
     race = Race.create!(name: 'Slow Mo 100')

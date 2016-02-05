@@ -2,8 +2,6 @@ require 'rails_helper'
 
 #   t.integer  "user_id"
 #   t.integer  "race_id"
-#   t.datetime "created_at", null: false
-#   t.datetime "updated_at", null: false
 
 RSpec.describe Ownership, type: :model do
   it "should be valid when created with a user_id and a race_id" do

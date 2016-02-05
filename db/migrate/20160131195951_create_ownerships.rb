@@ -6,5 +6,7 @@ class CreateOwnerships < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    add_index :ownerships, ["user_id", "race_id"], :unique => true
   end
 end

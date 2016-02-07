@@ -4,11 +4,23 @@ class SplitTime < ActiveRecord::Base
   belongs_to :split
 
   validates_presence_of :effort_id, :split_id, :time_from_start
-  validates_uniqueness_of :split_id, scope: :effort_id, :message => "only one of any given split permitted within an effort"
-  validates_numericality_of :time_from_start, equal_to: 0, :if => 'split_is_start?', :message => "the starting split_time must have 0 time from start"
+  validates_uniqueness_of :split_id, scope: :effort_id,
+                          :message => "only one of any given split permitted within an effort"
+  validates_numericality_of :time_from_start, equal_to: 0, :if => 'split_is_start?',
+                            :message => "the starting split_time must have 0 time from start"
+  validates_numericality_of :time_from_start, greater_than: 0, :unless => 'split_is_start?',
+                            :message => "waypoint and finish split_times must have positive time from start"
+  validate :course_is_consistent, unless: 'effort.nil? | split.nil?'
 
   def split_is_start?
     split_id.nil? ? false : split.kind == "start"
+  end
+
+  def course_is_consistent
+    if effort.event.course_id != split.course_id
+      errors.add(:effort_id, "the effort.event.course_id does not resolve with the split.course_id")
+      errors.add(:split_id, "the effort.event.course_id does not resolve with the split.course_id")
+    end
   end
 
 end

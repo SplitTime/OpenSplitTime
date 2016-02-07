@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203024101) do
+ActiveRecord::Schema.define(version: 20160131195951) do
 
   create_table "countries", force: :cascade do |t|
     t.string   "code"
@@ -141,6 +141,8 @@ ActiveRecord::Schema.define(version: 20160203024101) do
 
   create_table "users", force: :cascade do |t|
     t.integer  "participant_id"
+    t.string   "first_name",             limit: 32
+    t.string   "last_name",              limit: 64
     t.integer  "role"
     t.string   "provider"
     t.string   "uid"
@@ -160,8 +162,6 @@ ActiveRecord::Schema.define(version: 20160203024101) do
     t.string   "unconfirmed_email"
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.string   "first_name",             limit: 32
-    t.string   "last_name",              limit: 64
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

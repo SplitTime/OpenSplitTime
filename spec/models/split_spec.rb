@@ -111,11 +111,20 @@ RSpec.describe Split, kind: :model do
   end
 
   it "should require start splits to have distance_from_start: 0, vert_gain_from_start: 0, and vert_loss_from_start: 0" do
-    split = Split.new(course_id: 1, location_id: 1, name: 'Aid1 In', distance_from_start: 100, vert_gain_from_start: 100, vert_loss_from_start: 100, sub_order: 0, kind: 0)
+    split = Split.new(course_id: 1, location_id: 1, name: 'Start Line', distance_from_start: 100, vert_gain_from_start: 100, vert_loss_from_start: 100, sub_order: 0, kind: 0)
     split.valid?
     expect(split.errors[:distance_from_start]).to include("the start split must have 0 distance from start")
     expect(split.errors[:vert_gain_from_start]).to include("the start split vert_gain must be 0")
     expect(split.errors[:vert_loss_from_start]).to include("the start split vert_loss must be 0")
+  end
+
+  it "should require waypoint splits and finish splits to have positive distance_from_start" do
+    split1 = Split.new(course_id: 1, location_id: 1, name: 'Aid1 In', distance_from_start: 0, sub_order: 0, kind: 2)
+    split2 = Split.new(course_id: 1, location_id: 1, name: 'Finish Line', distance_from_start: 0, sub_order: 0, kind: 1)
+    split1.valid?
+    expect(split1.errors[:distance_from_start]).to include("waypoint and finish splits must have positive distance from start")
+    split2.valid?
+    expect(split2.errors[:distance_from_start]).to include("waypoint and finish splits must have positive distance from start")
   end
 
 end

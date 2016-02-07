@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
       user.provider = auth['provider']
       user.uid = auth['uid']
       if auth['info']
-         user.name = auth['info']['name'] || ""
+         user.last_name = auth['info']['name'] || ""    # TODO: figure out how to use oath with first_name/last_name model
       end
     end
   end

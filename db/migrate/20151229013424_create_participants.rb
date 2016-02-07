@@ -7,7 +7,7 @@ class CreateParticipants < ActiveRecord::Migration
       t.date :birthdate
       t.string :city
       t.string :state
-      t.references :country, foreign_key: true
+      t.references :country, index: true, foreign_key: true
       t.string :email
       t.string :phone
 

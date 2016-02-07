@@ -31,16 +31,17 @@ ActiveRecord::Schema.define(version: 20160203024101) do
     t.integer  "participant_id"
     t.string   "wave"
     t.integer  "bib_number"
-    t.string   "effort_city"
-    t.string   "effort_state"
-    t.string   "effort_country"
-    t.integer  "effort_age"
+    t.string   "city"
+    t.string   "state"
+    t.integer  "country_id"
+    t.integer  "age"
     t.datetime "start_time"
     t.boolean  "finished"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
 
+  add_index "efforts", ["country_id"], name: "index_efforts_on_country_id"
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id"
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id"
 
@@ -59,9 +60,9 @@ ActiveRecord::Schema.define(version: 20160203024101) do
   create_table "interests", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "participant_id"
-    t.integer  "kind"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "kind",           default: 0
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "interests", ["participant_id"], name: "index_interests_on_participant_id"
@@ -101,6 +102,8 @@ ActiveRecord::Schema.define(version: 20160203024101) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "participants", ["country_id"], name: "index_participants_on_country_id"
 
   create_table "races", force: :cascade do |t|
     t.string   "name"

@@ -4,14 +4,12 @@ require "rails_helper"
 # t.integer  "participant_id"
 # t.string   "wave"
 # t.integer  "bib_number"
-# t.string   "effort_city"
-# t.string   "effort_state"
-# t.string   "effort_country"
-# t.integer  "effort_age"
+# t.string   "city"
+# t.string   "state"
+# t.integer  "country_id"
+# t.integer  "age"
 # t.datetime "start_time"
 # t.boolean  "finished"
-# t.datetime "created_at",     null: false
-# t.datetime "updated_at",     null: false
 
 RSpec.describe Effort, type: :model do
   it "should be valid when created with an event_id, a participant_id, and a start time" do
@@ -47,6 +45,19 @@ RSpec.describe Effort, type: :model do
     effort = Effort.new(event_id: 1, participant_id: 1, start_time: "2015-07-01 06:00:00")
     effort.valid?
     expect(effort.errors[:participant_id]).to include("has already been taken")
+  end
+
+  it "should not permit duplicate bib_numbers within a given event" do
+    Effort.create!(event_id: 1, participant_id: 1, bib_number: 20, start_time: "2015-07-01 06:00:00")
+    effort = Effort.new(event_id: 1, participant_id: 2, bib_number: 20, start_time: "2015-07-01 06:00:00")
+    effort.valid?
+    expect(effort.errors[:bib_number]).to include("has already been taken")
+  end
+
+  it "should reject invalid country_id" do
+    effort = Effort.new(event_id: 1, participant_id: 2, country_id: 1000, start_time: "2015-07-01 06:00:00")
+    effort.valid?
+    expect(effort.errors[:country]).to include("can't be blank")
   end
 
 end

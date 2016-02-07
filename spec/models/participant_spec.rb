@@ -39,7 +39,12 @@ RSpec.describe Participant, type: :model do
     expect(participant.errors[:gender]).to include("can't be blank")
   end
 
-  it "should reject invalid country_id"
+  it "should reject invalid country_id" do
+    participant = Participant.new(first_name: 'Johnny', last_name: 'Appleseed', gender: 'M', country_id: 1000)
+    participant.valid?
+    expect(participant.errors[:country]).to include("can't be blank")
+  end
+
   it "should reject invalid email"
   
 

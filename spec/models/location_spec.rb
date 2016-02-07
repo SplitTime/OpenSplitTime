@@ -9,7 +9,7 @@ RSpec.describe Location, type: :model do
   it "should be valid with only a name" do
     location = Location.create!(name: 'Putnam Basin')
 
-    expect(Location.all.count).to(equal(1))
+    expect(Location.all.count).to eq(1)
     expect(location).to be_valid
   end
 

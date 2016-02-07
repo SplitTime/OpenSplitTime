@@ -1,20 +1,20 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :correct_user?, :except => [:index]
+  # before_action :correct_user?, :except => [:index]
 
   def index
     @users = User.all
-    authorize User
+    # authorize User
   end
 
   def show
     @user = User.find(params[:id])
-    authorize @user
+    # authorize @user
   end
 
   def update
     @user = User.find(params[:id])
-    authorize @user
+    # authorize @user
     if @user.update_attributes(secure_params)
       redirect_to users_path, :notice => "User updated."
     else
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
   def destroy
     user = User.find(params[:id])
-    authorize user
+    # authorize user
     user.destroy
     redirect_to users_path, :notice => "User deleted."
   end

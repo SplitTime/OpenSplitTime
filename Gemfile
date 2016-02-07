@@ -34,5 +34,8 @@ end
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
-  gem 'rubocop'
+  gem 'rubocop', '~> 0.36'
+  gem 'rspec', '~> 3.4'
+  gem 'rspec-rails', '~> 3.0'
+
 end

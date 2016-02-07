@@ -11,39 +11,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160101215808) do
+ActiveRecord::Schema.define(version: 20160131195951) do
+
+  create_table "countries", force: :cascade do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "courses", force: :cascade do |t|
     t.string   "name"
-    t.integer  "start_location_id"
-    t.integer  "end_location_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
-
-  add_index "courses", ["end_location_id"], name: "index_courses_on_end_location_id"
-  add_index "courses", ["start_location_id"], name: "index_courses_on_start_location_id"
 
   create_table "efforts", force: :cascade do |t|
     t.integer  "event_id"
     t.integer  "participant_id"
     t.string   "wave"
     t.integer  "bib_number"
-    t.string   "effort_city"
-    t.string   "effort_state"
-    t.string   "effort_country"
-    t.integer  "effort_age"
+    t.string   "city"
+    t.string   "state"
+    t.integer  "country_id"
+    t.integer  "age"
     t.datetime "start_time"
     t.boolean  "finished"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
 
+  add_index "efforts", ["country_id"], name: "index_efforts_on_country_id"
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id"
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id"
 
   create_table "events", force: :cascade do |t|
     t.integer  "course_id"
+    t.integer  "race_id"
     t.string   "name"
     t.date     "start_date"
     t.datetime "created_at", null: false
@@ -51,6 +55,19 @@ ActiveRecord::Schema.define(version: 20160101215808) do
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id"
+  add_index "events", ["race_id"], name: "index_events_on_race_id"
+
+  create_table "interests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "participant_id"
+    t.integer  "kind",           default: 0
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "interests", ["participant_id"], name: "index_interests_on_participant_id"
+  add_index "interests", ["user_id", "participant_id"], name: "index_interests_on_user_id_and_participant_id", unique: true
+  add_index "interests", ["user_id"], name: "index_interests_on_user_id"
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
@@ -61,17 +78,32 @@ ActiveRecord::Schema.define(version: 20160101215808) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ownerships", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "race_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "ownerships", ["race_id"], name: "index_ownerships_on_race_id"
+  add_index "ownerships", ["user_id", "race_id"], name: "index_ownerships_on_user_id_and_race_id", unique: true
+  add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
+
   create_table "participants", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "gender"
     t.date     "birthdate"
-    t.string   "home_city"
-    t.string   "home_state"
-    t.string   "home_country"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "city"
+    t.string   "state"
+    t.integer  "country_id"
+    t.string   "email"
+    t.string   "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
+
+  add_index "participants", ["country_id"], name: "index_participants_on_country_id"
 
   create_table "races", force: :cascade do |t|
     t.string   "name"
@@ -82,7 +114,7 @@ ActiveRecord::Schema.define(version: 20160101215808) do
   create_table "split_times", force: :cascade do |t|
     t.integer  "effort_id"
     t.integer  "split_id"
-    t.time     "time_from_start"
+    t.float    "time_from_start"
     t.integer  "data_status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
@@ -93,27 +125,48 @@ ActiveRecord::Schema.define(version: 20160101215808) do
 
   create_table "splits", force: :cascade do |t|
     t.integer  "course_id"
+    t.integer  "location_id"
     t.string   "name"
-    t.integer  "order"
-    t.integer  "vert_gain"
-    t.integer  "vert_loss"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "distance_from_start"
+    t.integer  "sub_order",            default: 0
+    t.integer  "vert_gain_from_start"
+    t.integer  "vert_loss_from_start"
+    t.integer  "kind"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id"
+  add_index "splits", ["location_id"], name: "index_splits_on_location_id"
 
   create_table "users", force: :cascade do |t|
     t.integer  "participant_id"
-    t.string   "name"
-    t.string   "role"
+    t.string   "first_name",             limit: 32
+    t.string   "last_name",              limit: 64
+    t.integer  "role"
     t.string   "provider"
     t.string   "uid"
-    t.string   "email"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.string   "email",                             default: "", null: false
+    t.string   "encrypted_password",                default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                     default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
   end
 
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["participant_id"], name: "index_users_on_participant_id"
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

@@ -2,7 +2,8 @@ class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
       t.references :participant, index: true, foreign_key: true
-      t.string :name
+      t.string :first_name, limit: 32
+      t.string :last_name, limit: 64
       t.integer :role
       t.string :provider
       t.string :uid

@@ -5,9 +5,11 @@ class CreateParticipants < ActiveRecord::Migration
       t.string :last_name
       t.string :gender
       t.date :birthdate
-      t.string :home_city
-      t.string :home_state
-      t.string :home_country
+      t.string :city
+      t.string :state
+      t.references :country, index: true, foreign_key: true
+      t.string :email
+      t.string :phone
 
       t.timestamps null: false
     end

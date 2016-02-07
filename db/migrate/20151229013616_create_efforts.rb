@@ -5,10 +5,10 @@ class CreateEfforts < ActiveRecord::Migration
       t.references :participant, index: true, foreign_key: true
       t.string :wave
       t.integer :bib_number
-      t.string :effort_city
-      t.string :effort_state
-      t.string :effort_country
-      t.integer :effort_age
+      t.string :city
+      t.string :state
+      t.references :country, index: true, foreign_key: true
+      t.integer :age    # age of participant at time of effort
       t.datetime :start_time
       t.boolean :finished
 

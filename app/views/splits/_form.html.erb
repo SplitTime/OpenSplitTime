@@ -1,0 +1,26 @@
+<%= form_for @split do |f| %>
+
+    <% if @split.errors.any? %>
+        <div id="error_explanation">
+          <h2>
+            <%= pluralize(@split.errors.count, "error") %> prohibited
+            this split from being saved:
+          </h2>
+          <ul>
+            <% @split.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <p>
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
+    </p>
+
+    <p>
+      <%= f.submit %>
+    </p>
+
+<% end %>

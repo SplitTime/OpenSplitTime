@@ -1,0 +1,21 @@
+<h1>Listing Splits</h1>
+
+<%= link_to 'New Split', new_split_path %>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Text</th>
+  </tr>
+
+  <% @splits.each do |split| %>
+      <tr>
+        <td><%= split.name %></td>
+        <td><%= link_to 'Show', split_path(split) %></td>
+        <td><%= link_to 'Edit', edit_split_path(split) %></td>
+        <td><%= link_to 'Destroy', split_path(split),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+</table>

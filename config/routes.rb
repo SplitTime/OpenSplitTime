@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :locations
   resources :courses
+  resources :events
   resources :splits
 
   get '/auth/:provider/callback' => 'sessions#create'

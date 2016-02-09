@@ -17,7 +17,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = Course.new(location_params)
+    @course = Course.new(course_params)
 
     if @course.save
       redirect_to @course

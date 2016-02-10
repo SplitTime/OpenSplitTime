@@ -1,7 +1,7 @@
 class CreateLocations < ActiveRecord::Migration
   def change
     create_table :locations do |t|
-      t.string :name
+      t.string :name, :null => false, limit: 64
       t.integer :elevation    # stored in meters?
       t.decimal :latitude
       t.decimal :longitude

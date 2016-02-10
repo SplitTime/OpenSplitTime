@@ -17,13 +17,13 @@ RSpec.describe Ownership, type: :model do
 
   it "should be invalid without a user_id" do
     ownership = Ownership.new(user_id: nil, race_id: 1)
-    ownership.valid?
+    expect(ownership).not_to be_valid
     expect(ownership.errors[:user_id]).to include("can't be blank")
   end
 
   it "should be invalid without a race_id" do
     ownership = Ownership.new(user_id: 1, race_id: nil)
-    ownership.valid?
+    expect(ownership).not_to be_valid
     expect(ownership.errors[:race_id]).to include("can't be blank")
   end
 

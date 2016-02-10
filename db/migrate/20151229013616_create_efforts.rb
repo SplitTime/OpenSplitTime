@@ -1,15 +1,15 @@
 class CreateEfforts < ActiveRecord::Migration
   def change
     create_table :efforts do |t|
-      t.references :event, index: true, foreign_key: true
-      t.references :participant, index: true, foreign_key: true
+      t.references :event, index: true, foreign_key: true, :null => false
+      t.references :participant, index: true, foreign_key: true, :null => false
       t.string :wave
       t.integer :bib_number
-      t.string :city
-      t.string :state
+      t.string :city, limit: 64
+      t.string :state, limit: 64
       t.references :country, index: true, foreign_key: true
       t.integer :age    # age of participant at time of effort
-      t.datetime :start_time
+      t.datetime :start_time, :null => false
       t.boolean :finished
 
       t.timestamps null: false

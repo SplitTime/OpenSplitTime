@@ -23,25 +23,25 @@ RSpec.describe Participant, type: :model do
 
   it "should be invalid without a first_name" do
     participant = Participant.new(first_name: nil, last_name: 'Appleseed', gender: 'M')
-    participant.valid?
+    expect(participant).not_to be_valid
     expect(participant.errors[:first_name]).to include("can't be blank")
   end
 
   it "should be invalid without a last_name" do
     participant = Participant.new(first_name: 'Johnny', last_name: nil, gender: 'M')
-    participant.valid?
+    expect(participant).not_to be_valid
     expect(participant.errors[:last_name]).to include("can't be blank")
   end
 
   it "should be invalid without a gender" do
     participant = Participant.new(first_name: 'Johnny', last_name: 'Appleseed', gender: nil)
-    participant.valid?
+    expect(participant).not_to be_valid
     expect(participant.errors[:gender]).to include("can't be blank")
   end
 
   it "should reject invalid country_id" do
     participant = Participant.new(first_name: 'Johnny', last_name: 'Appleseed', gender: 'M', country_id: 1000)
-    participant.valid?
+    expect(participant).not_to be_valid
     expect(participant.errors[:country]).to include("can't be blank")
   end
 

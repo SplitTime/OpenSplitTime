@@ -14,31 +14,31 @@
 ActiveRecord::Schema.define(version: 20160131195951) do
 
   create_table "countries", force: :cascade do |t|
-    t.string   "code"
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "code",       limit: 2, null: false
+    t.string   "name",                 null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 64, null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "efforts", force: :cascade do |t|
-    t.integer  "event_id"
-    t.integer  "participant_id"
+    t.integer  "event_id",                  null: false
+    t.integer  "participant_id",            null: false
     t.string   "wave"
     t.integer  "bib_number"
-    t.string   "city"
-    t.string   "state"
+    t.string   "city",           limit: 64
+    t.string   "state",          limit: 64
     t.integer  "country_id"
     t.integer  "age"
-    t.datetime "start_time"
+    t.datetime "start_time",                null: false
     t.boolean  "finished"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "efforts", ["country_id"], name: "index_efforts_on_country_id"
@@ -46,21 +46,21 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id"
 
   create_table "events", force: :cascade do |t|
-    t.integer  "course_id"
+    t.integer  "course_id",             null: false
     t.integer  "race_id"
-    t.string   "name"
-    t.date     "start_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 64, null: false
+    t.date     "start_date",            null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id"
   add_index "events", ["race_id"], name: "index_events_on_race_id"
 
   create_table "interests", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "participant_id"
-    t.integer  "kind",           default: 0
+    t.integer  "user_id",                    null: false
+    t.integer  "participant_id",             null: false
+    t.integer  "kind",           default: 0, null: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
@@ -70,17 +70,17 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   add_index "interests", ["user_id"], name: "index_interests_on_user_id"
 
   create_table "locations", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       limit: 64, null: false
     t.integer  "elevation"
     t.decimal  "latitude"
     t.decimal  "longitude"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "ownerships", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "race_id"
+    t.integer  "user_id",    null: false
+    t.integer  "race_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -90,31 +90,31 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
 
   create_table "participants", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "gender"
+    t.string   "first_name", limit: 32, null: false
+    t.string   "last_name",  limit: 64, null: false
+    t.string   "gender",                null: false
     t.date     "birthdate"
     t.string   "city"
     t.string   "state"
     t.integer  "country_id"
     t.string   "email"
     t.string   "phone"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   add_index "participants", ["country_id"], name: "index_participants_on_country_id"
 
   create_table "races", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 64, null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "split_times", force: :cascade do |t|
-    t.integer  "effort_id"
-    t.integer  "split_id"
-    t.float    "time_from_start"
+    t.integer  "effort_id",       null: false
+    t.integer  "split_id",        null: false
+    t.float    "time_from_start", null: false
     t.integer  "data_status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
@@ -124,16 +124,16 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   add_index "split_times", ["split_id"], name: "index_split_times_on_split_id"
 
   create_table "splits", force: :cascade do |t|
-    t.integer  "course_id"
-    t.integer  "location_id"
-    t.string   "name"
-    t.integer  "distance_from_start"
-    t.integer  "sub_order",            default: 0
+    t.integer  "course_id",                                   null: false
+    t.integer  "location_id",                                 null: false
+    t.string   "name",                 limit: 64,             null: false
+    t.integer  "distance_from_start",                         null: false
+    t.integer  "sub_order",                       default: 0, null: false
     t.integer  "vert_gain_from_start"
     t.integer  "vert_loss_from_start"
-    t.integer  "kind"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.integer  "kind",                                        null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id"
@@ -141,8 +141,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
 
   create_table "users", force: :cascade do |t|
     t.integer  "participant_id"
-    t.string   "first_name",             limit: 32
-    t.string   "last_name",              limit: 64
+    t.string   "first_name",             limit: 32,              null: false
+    t.string   "last_name",              limit: 64,              null: false
     t.integer  "role"
     t.string   "provider"
     t.string   "uid"

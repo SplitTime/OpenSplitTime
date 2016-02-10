@@ -4,4 +4,5 @@ class Interest < ActiveRecord::Base
   belongs_to :participant
 
   validates_presence_of :user_id, :participant_id, :kind
+  validates :kind, inclusion: { in: Interest.kinds.keys }
 end

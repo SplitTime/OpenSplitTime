@@ -22,21 +22,21 @@ RSpec.describe SplitTime, kind: :model do
   it "should be invalid without an effort_id" do
     split = Split.create!(course_id: 1, location_id: 1, name: 'Race Start', distance_from_start: 0, kind: 0)
     split_time = SplitTime.new(effort_id: nil, split_id: split.id, time_from_start: 0)
-    split_time.valid?
+    expect(split_time).not_to be_valid
     expect(split_time.errors[:effort_id]).to include("can't be blank")
   end
 
   it "should be invalid without a split_id" do
     split = Split.new(course_id: 1, location_id: 1, name: 'Race Start', distance_from_start: 0, kind: 0)
     split_time = SplitTime.new(effort_id: 1, split_id: split.id, time_from_start: 0)
-    split_time.valid?
+    expect(split_time).not_to be_valid
     expect(split_time.errors[:split_id]).to include("can't be blank")
   end
 
   it "should be invalid without a time_from_start" do
     split = Split.create!(course_id: 1, location_id: 1, name: 'Race Start', distance_from_start: 0, kind: 0)
     split_time = SplitTime.new(effort_id: 1, split_id: split.id, time_from_start: nil)
-    split_time.valid?
+    expect(split_time).not_to be_valid
     expect(split_time.errors[:time_from_start]).to include("can't be blank")
   end
 
@@ -44,7 +44,7 @@ RSpec.describe SplitTime, kind: :model do
     split = Split.create!(course_id: 1, location_id: 1, name: 'Aid Station', distance_from_start: 10000, kind: 2)
     SplitTime.create!(effort_id: 1, split_id: split.id, time_from_start: 10000)
     split_time = SplitTime.new(effort_id: 1, split_id: split.id, time_from_start: 11000)
-    split_time.valid?
+    expect(split_time).not_to be_valid
     expect(split_time.errors[:split_id]).to include("only one of any given split permitted within an effort")
   end
 
@@ -62,7 +62,7 @@ RSpec.describe SplitTime, kind: :model do
   it "should ensure that time_from_start is 0 when split_id references a start split" do
     split = Split.create!(course_id: 1, location_id: 1, name: 'Race Start', distance_from_start: 0, kind: 0)
     split_time = SplitTime.new(effort_id: 1, split_id: split.id, time_from_start: 100)
-    split_time.valid?
+    expect(split_time).not_to be_valid
     expect(split_time.errors[:time_from_start]).to include("the starting split_time must have 0 time from start")
   end
 
@@ -71,9 +71,9 @@ RSpec.describe SplitTime, kind: :model do
     split2 = Split.create!(course_id: 1, location_id: 3, name: 'Race End', distance_from_start: 20000, kind: 1)
     split_time1 = SplitTime.new(effort_id: 1, split_id: split1.id, time_from_start: 0)
     split_time2 = SplitTime.new(effort_id: 1, split_id: split2.id, time_from_start: 0)
-    split_time1.valid?
+    expect(split_time1).not_to be_valid
     expect(split_time1.errors[:time_from_start]).to include("waypoint and finish split_times must have positive time from start")
-    split_time2.valid?
+    expect(split_time2).not_to be_valid
     expect(split_time2.errors[:time_from_start]).to include("waypoint and finish split_times must have positive time from start")
   end
 
@@ -84,7 +84,7 @@ RSpec.describe SplitTime, kind: :model do
     effort = Effort.create!(event_id: event.id, participant_id: 1, start_time: "2015-07-01 06:00:00")
     split = Split.create!(course_id: course2.id, location_id: 1, name: 'Hiking Aid 1', distance_from_start: 50000, kind: 2)
     split_time = SplitTime.new(effort_id: effort.id, split_id: split.id, time_from_start: 30000)
-    split_time.valid?
+    expect(split_time).not_to be_valid
     expect(split_time.errors[:effort_id]).to include("the effort.event.course_id does not resolve with the split.course_id")
     expect(split_time.errors[:split_id]).to include("the effort.event.course_id does not resolve with the split.course_id")
   end

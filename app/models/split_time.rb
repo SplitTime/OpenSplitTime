@@ -4,13 +4,14 @@ class SplitTime < ActiveRecord::Base
   belongs_to :split
 
   validates_presence_of :effort_id, :split_id, :time_from_start
+  validates :data_status, inclusion: { in: SplitTime.data_statuses.keys }, allow_nil: true
   validates_uniqueness_of :split_id, scope: :effort_id,
                           :message => "only one of any given split permitted within an effort"
   validates_numericality_of :time_from_start, equal_to: 0, :if => 'split_is_start?',
                             :message => "the starting split_time must have 0 time from start"
   validates_numericality_of :time_from_start, greater_than: 0, :unless => 'split_is_start?',
                             :message => "waypoint and finish split_times must have positive time from start"
-  validate :course_is_consistent, unless: 'effort.nil? | split.nil?'
+  validate :course_is_consistent, unless: 'effort.nil? | split.nil?'   # TODO fix tests so that .nil? checks are not necessary
 
   def split_is_start?
     split_id.nil? ? false : split.kind == "start"

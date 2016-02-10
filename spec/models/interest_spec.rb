@@ -19,13 +19,13 @@ RSpec.describe Interest, type: :model do
 
   it "should be invalid without a user_id" do
     interest = Interest.new(user_id: nil, participant_id: 1)
-    interest.valid?
+    expect(interest).not_to be_valid
     expect(interest.errors[:user_id]).to include("can't be blank")
   end
 
   it "should be invalid without a participant_id" do
     interest = Interest.new(user_id: 1, participant_id: nil)
-    interest.valid?
+    expect(interest).not_to be_valid
     expect(interest.errors[:participant_id]).to include("can't be blank")
   end
 

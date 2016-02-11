@@ -1,5 +1,42 @@
+<h1>Show Spilt</h1>
 <p>
   <strong>Name:</strong>
   <%= @split.name %>
 </p>
 
+<p>
+  <strong>Course:</strong>
+  <%= @split.course.name %>
+</p>
+
+<p>
+  <strong>Kind:</strong>
+  <%= @split.kind.titlecase %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @split.location.name %>
+</p>
+
+<p>
+  <strong>Distance From Start:</strong>
+  <%= @split.distance_from_start %>
+</p>
+
+<p>
+  <strong>Sub-Order (when distance is the same):</strong>
+  <%= @split.sub_order %>
+</p>
+
+<p>
+  <strong>Vertical Gain From Start:</strong>
+  <%= @split.vert_gain_from_start %>
+</p>
+
+<p>
+  <strong>Vertical Loss From Start:</strong>
+  <%= @split.vert_loss_from_start %>
+</p>
+
+<%= link_to 'Back', splits_path %>

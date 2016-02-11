@@ -53,7 +53,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:name)
+    params.require(:event).permit(:course_id, :race_id, :name, :start_date)
   end
 
   def query_params

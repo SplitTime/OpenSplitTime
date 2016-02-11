@@ -20,6 +20,41 @@
     </p>
 
     <p>
+      <%= f.label :course_id %><br>
+      <%= collection_select(:split, :course_id, Course.all, :id, :name, prompt: true ) %>
+    </p>
+
+    <p>
+      <%= f.label :kind %><br>
+      <%= f.select :kind, Split.kinds.keys.map {|kind| [kind.titleize,kind]} %>
+    </p>
+
+    <p>
+      <%= f.label :location_id %><br>
+      <%= collection_select(:split, :location_id, Location.all, :id, :name, prompt: true ) %>
+    </p>
+
+    <p>
+      <%= f.label :distance_from_start %><br>
+      <%= f.text_field :distance_from_start %>
+    </p>
+
+    <p>
+      <%= f.label :sub_order %><br>
+      <%= f.text_field :sub_order %>
+    </p>
+
+    <p>
+      <%= f.label :vert_gain_from_start %><br>
+      <%= f.text_field :vert_gain_from_start %>
+    </p>
+
+    <p>
+      <%= f.label :vert_loss_from_start %><br>
+      <%= f.text_field :vert_loss_from_start %>
+    </p>
+
+    <p>
       <%= f.submit %>
     </p>
 

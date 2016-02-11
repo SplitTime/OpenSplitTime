@@ -4,13 +4,14 @@
 
 <table>
   <tr>
-    <th>Title</th>
-    <th>Text</th>
+    <th>Name</th>
+    <th>Start Date</th>
   </tr>
 
   <% @events.each do |event| %>
       <tr>
         <td><%= event.name %></td>
+        <td><%= event.start_date %></td>
         <td><%= link_to 'Show', event_path(event) %></td>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Destroy', event_path(event),

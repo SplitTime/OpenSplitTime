@@ -1,19 +1,22 @@
+<h1>Show Location</h1>
 <p>
   <strong>Name:</strong>
   <%= @location.name %>
 </p>
 
 <p>
-  <strong>Elevation (feet):</strong>
+  <strong>Elevation (meters):</strong>
   <%= @location.elevation %>
 </p>
 
 <p>
-  <strong>Elevation (feet):</strong>
+  <strong>Latitude:</strong>
   <%= @location.latitude %>
 </p>
 
 <p>
-  <strong>Elevation (feet):</strong>
+  <strong>Longitude:</strong>
   <%= @location.longitude %>
 </p>
+
+<%= link_to 'Back', locations_path %>

@@ -1,5 +1,26 @@
+<h1>Show Event</h1>
 <p>
   <strong>Name:</strong>
   <%= @event.name %>
 </p>
 
+<p>
+  <strong>Course:</strong>
+  <%= @event.course.name %>
+</p>
+
+<p>
+  <strong>Race:</strong>
+  <% if @event.race.nil? %>
+      (None)
+  <% else %>
+      <%= @event.race.name %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Start Date:</strong>
+  <%= @event.start_date %>
+</p>
+
+<%= link_to 'Back', events_path %>

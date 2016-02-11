@@ -20,6 +20,21 @@
     </p>
 
     <p>
+      <%= f.label :course_id %><br>
+      <%= collection_select(:event, :course_id, Course.all, :id, :name, prompt: true ) %>
+    </p>
+
+    <p>
+      <%= f.label :race_id %><br>
+      <%= collection_select(:event, :race_id, Race.all, :id, :name, prompt: true ) %>
+    </p>
+
+    <p>
+      <%= f.label :start_date %><br>
+      <%= f.date_select :start_date %>
+    </p>
+
+    <p>
       <%= f.submit %>
     </p>
 

@@ -1,4 +1,6 @@
 class LocationsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show]
 
   def index
     @locations = Location.all
@@ -10,14 +12,17 @@ class LocationsController < ApplicationController
 
   def new
     @location = Location.new
+    authorize @location
   end
 
   def edit
     @location = Location.find(params[:id])
+    authorize @location
   end
 
   def create
     @location = Location.new(location_params)
+    authorize @location
 
     if @location.save
       redirect_to @location
@@ -28,6 +33,7 @@ class LocationsController < ApplicationController
 
   def update
     @location = Location.find(params[:id])
+    authorize @location
 
     if @location.update(location_params)
       redirect_to @location
@@ -37,8 +43,9 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    @location = Location.find(params[:id])
-    @location.destroy
+    location = Location.find(params[:id])
+    authorize location
+    location.destroy
 
     redirect_to locations_path
   end

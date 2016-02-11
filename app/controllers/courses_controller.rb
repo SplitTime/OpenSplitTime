@@ -1,4 +1,6 @@
 class CoursesController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show]
 
   def index
     @courses = Course.all
@@ -10,14 +12,17 @@ class CoursesController < ApplicationController
 
   def new
     @course = Course.new
+    authorize @course
   end
 
   def edit
     @course = Course.find(params[:id])
+    authorize @course
   end
 
   def create
     @course = Course.new(course_params)
+    authorize @course
 
     if @course.save
       redirect_to @course
@@ -28,6 +33,7 @@ class CoursesController < ApplicationController
 
   def update
     @course = Course.find(params[:id])
+    authorize @course
 
     if @course.update(course_params)
       redirect_to @course
@@ -37,8 +43,9 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    @course = Course.find(params[:id])
-    @course.destroy
+    course = Course.find(params[:id])
+    authorize course
+    course.destroy
 
     redirect_to courses_path
   end

@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show]
 
   def index
     @events = Event.all
@@ -10,14 +12,17 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+    authorize @event
   end
 
   def edit
     @event = Event.find(params[:id])
+    authorize @event
   end
 
   def create
     @event = Event.new(event_params)
+    authorize @event
 
     if @event.save
       redirect_to @event
@@ -28,6 +33,7 @@ class EventsController < ApplicationController
 
   def update
     @event = Event.find(params[:id])
+    authorize @event
 
     if @event.update(event_params)
       redirect_to @event
@@ -37,10 +43,11 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    @event = Event.find(params[:id])
-    @event.destroy
+    event = Event.find(params[:id])
+    authorize event
+    event.destroy
 
-    redirect_to courses_path
+    redirect_to events_path
   end
 
   private

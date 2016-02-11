@@ -1,4 +1,6 @@
 class SplitsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show]
 
   def index
     @splits = Split.all
@@ -10,14 +12,17 @@ class SplitsController < ApplicationController
 
   def new
     @split = Split.new
+    authorize @split
   end
 
   def edit
     @split = Split.find(params[:id])
+    authorize @split
   end
 
   def create
     @split = Split.new(split_params)
+    authorize @split
 
     if @split.save
       redirect_to @split
@@ -28,6 +33,7 @@ class SplitsController < ApplicationController
 
   def update
     @split = Split.find(params[:id])
+    authorize @split
 
     if @split.update(split_params)
       redirect_to @split
@@ -37,10 +43,11 @@ class SplitsController < ApplicationController
   end
 
   def destroy
-    @split = Split.find(params[:id])
-    @split.destroy
+    split = Split.find(params[:id])
+    authorize split
+    split.destroy
 
-    redirect_to courses_path
+    redirect_to splits_path
   end
 
   private

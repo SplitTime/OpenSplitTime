@@ -7,6 +7,10 @@ module PunditHelper
 
   included do
     include Pundit
+    # https://github.com/elabs/pundit#ensuring-policies-are-used
+    # after_filter :verify_authorized,  except: :index  # TODO: fix these verifications
+    # after_filter :verify_policy_scoped, only: :index
+
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   end
 
@@ -19,4 +23,4 @@ module PunditHelper
 
 end
 
-ApplicationController.send :include, PunditHelper
+ApplicationController.send :include, PunditHelper unless Rails.env.development?

@@ -1,0 +1,20 @@
+<h1>Listing Races</h1>
+
+<%= link_to 'New race', new_race_path %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+
+  <% @races.each do |race| %>
+      <tr>
+        <td><%= race.name %></td>
+        <td><%= link_to 'Show', race_path(race) %></td>
+        <td><%= link_to 'Edit', edit_race_path(race) %></td>
+        <td><%= link_to 'Destroy', race_path(race),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+</table>

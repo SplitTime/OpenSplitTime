@@ -2,11 +2,11 @@ Rails.application.routes.draw do
   root to: 'visitors#index'
   devise_for :users, :controllers => { registrations: 'registrations' }
   resources :users
-
   resources :locations
   resources :courses
   resources :events
   resources :splits
+  resources :races
 
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin

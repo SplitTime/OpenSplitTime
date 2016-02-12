@@ -19,6 +19,14 @@
       <%= f.text_field :name %>
     </p>
 
+      <%= f.label :name, "Name" %>
+      <%= f.label :kind, "Kind" %>
+      <%= f.label :distance_from_start, "Distance from start:" %>
+
+    <%= f.fields_for :splits do |builder| %>
+        <%= render 'split_fields', f: builder %>
+    <% end %>
+
     <p>
       <%= f.submit %>
     </p>

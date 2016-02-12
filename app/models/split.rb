@@ -4,6 +4,8 @@ class Split < ActiveRecord::Base
   belongs_to :course
   belongs_to :location
 
+  accepts_nested_attributes_for :location, allow_destroy: true
+
   validates_presence_of :course_id, :location_id, :name, :distance_from_start, :sub_order, :kind
   validates :kind, inclusion: { in: Split.kinds.keys }
   validates_uniqueness_of :name, scope: :course_id

@@ -33,10 +33,10 @@ Event.create(course_id: 2, race_id: 3, name: 'Hardly Rocker 2010', start_date: "
 Event.create(course_id: 2, race_id: 2, name: 'Frozen Lips 2015', start_date: "2015-05-31")
 Event.create(course_id: 1, race_id: nil, name: 'Test Event', start_date: "2012-08-08")
 
-Participant.create(first_name: 'Joe', last_name: 'Hardman', gender: 'M', birthdate: "1989-12-15", city: 'Boulder', state: 'Colorado', country_id: 1, email: 'hardman@gmail.com', phone: nil)
-Participant.create(first_name: 'Jane', last_name: 'Rockstar', gender: 'F', birthdate: "1985-09-20", city: 'Seattle', state: 'Washington', country_id: 1, email: nil, phone: '206-977-9777')
-Participant.create(first_name: 'Basil', last_name: 'Smith', gender: 'M', birthdate: "1995-04-31", city: 'London', state: nil, country_id: 2, email: 'basil@uk.gov', phone: '02-998-33-55')
-Participant.create(first_name: 'Jen', last_name: 'Huckster', gender: 'F', birthdate: nil, city: 'Vancouver', state: 'British Columbia', country_id: 3, email: 'jane@canuck.com', phone: '804-888-5555')
+Participant.create(first_name: 'Joe', last_name: 'Hardman', gender: 'male', birthdate: "1989-12-15", city: 'Boulder', state: 'Colorado', country_id: 1, email: 'hardman@gmail.com', phone: nil)
+Participant.create(first_name: 'Jane', last_name: 'Rockstar', gender: 'female', birthdate: "1985-09-20", city: 'Seattle', state: 'Washington', country_id: 1, email: nil, phone: '206-977-9777')
+Participant.create(first_name: 'Basil', last_name: 'Smith', gender: 'male', birthdate: "1995-04-31", city: 'London', state: nil, country_id: 2, email: 'basil@uk.gov', phone: '02-998-33-55')
+Participant.create(first_name: 'Jen', last_name: 'Huckster', gender: 'female', birthdate: nil, city: 'Vancouver', state: 'British Columbia', country_id: 3, email: 'jane@canuck.com', phone: '804-888-5555')
 
 Effort.create(event_id: 3, participant_id: 4, wave: nil, bib_number: 99, city: 'Vancouver', state: 'British Columbia', country_id: 3, age: 50, start_time: "2012-08-08 05:00:00", finished: true)
 Effort.create(event_id: 3, participant_id: 1, wave: nil, bib_number: 12, city: 'Boulder', state: 'Colorado', country_id: 1, age: 23, start_time: "2012-08-08 05:00:00", finished: true)

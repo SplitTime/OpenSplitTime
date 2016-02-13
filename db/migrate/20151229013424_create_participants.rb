@@ -3,7 +3,7 @@ class CreateParticipants < ActiveRecord::Migration
     create_table :participants do |t|
       t.string :first_name, :null => false, limit: 32
       t.string :last_name, :null => false, limit: 64
-      t.string :gender, :null => false
+      t.integer :gender, :null => false
       t.date :birthdate
       t.string :city
       t.string :state

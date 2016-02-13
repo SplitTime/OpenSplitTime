@@ -21,9 +21,10 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string   "name",       limit: 64, null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.string   "name",        limit: 64, null: false
+    t.text     "description"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "efforts", force: :cascade do |t|
@@ -70,12 +71,13 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   add_index "interests", ["user_id"], name: "index_interests_on_user_id"
 
   create_table "locations", force: :cascade do |t|
-    t.string   "name",       limit: 64, null: false
+    t.string   "name",        limit: 64,                         null: false
+    t.text     "description"
     t.integer  "elevation"
-    t.decimal  "latitude"
-    t.decimal  "longitude"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.decimal  "latitude",               precision: 9, scale: 6
+    t.decimal  "longitude",              precision: 9, scale: 6
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
   end
 
   create_table "ownerships", force: :cascade do |t|
@@ -92,7 +94,7 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   create_table "participants", force: :cascade do |t|
     t.string   "first_name", limit: 32, null: false
     t.string   "last_name",  limit: 64, null: false
-    t.string   "gender",                null: false
+    t.integer  "gender",                null: false
     t.date     "birthdate"
     t.string   "city"
     t.string   "state"

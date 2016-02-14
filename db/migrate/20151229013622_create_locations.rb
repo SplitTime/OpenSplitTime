@@ -8,6 +8,7 @@ class CreateLocations < ActiveRecord::Migration
       t.decimal :longitude, :precision => 9, :scale => 6
 
       t.timestamps null: false
+      t.authorstamps :integer
     end
   end
 end

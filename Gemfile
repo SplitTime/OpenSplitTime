@@ -26,6 +26,7 @@ gem 'devise'
 gem 'pundit'
 gem 'rails_apps_pages'
 gem 'therubyracer', :platform=>:ruby
+gem 'ar-audit-tracer'
 group :development do
   gem 'better_errors'
   gem 'foreman'

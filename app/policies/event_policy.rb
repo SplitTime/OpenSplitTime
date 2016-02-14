@@ -11,7 +11,7 @@ class EventPolicy
   end
 
   def edit?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@event)
   end
 
   def create?
@@ -19,11 +19,11 @@ class EventPolicy
   end
 
   def update?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@event)
   end
 
   def destroy?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@event)
   end
 
 end

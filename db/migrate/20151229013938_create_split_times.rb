@@ -7,6 +7,7 @@ class CreateSplitTimes < ActiveRecord::Migration
       t.integer :data_status
 
       t.timestamps null: false
+      t.authorstamps :integer
     end
   end
 end

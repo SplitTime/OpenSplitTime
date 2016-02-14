@@ -5,6 +5,7 @@ class CreateCourses < ActiveRecord::Migration
       t.text :description
 
       t.timestamps null: false
+      t.authorstamps :integer
     end
   end
 end

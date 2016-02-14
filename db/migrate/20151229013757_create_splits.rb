@@ -11,6 +11,7 @@ class CreateSplits < ActiveRecord::Migration
       t.integer :kind, :null => false
 
       t.timestamps null: false
+      t.authorstamps :integer
     end
   end
 end

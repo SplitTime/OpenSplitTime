@@ -12,6 +12,7 @@ class CreateParticipants < ActiveRecord::Migration
       t.string :phone
 
       t.timestamps null: false
+      t.authorstamps :integer
     end
   end
 end

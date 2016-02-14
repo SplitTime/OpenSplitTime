@@ -11,7 +11,7 @@ class CoursePolicy
   end
 
   def edit?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@course)
   end
 
   def create?
@@ -19,11 +19,11 @@ class CoursePolicy
   end
 
   def update?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@course)
   end
 
   def destroy?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@course)
   end
 
 end

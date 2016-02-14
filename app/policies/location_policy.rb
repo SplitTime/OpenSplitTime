@@ -11,7 +11,7 @@ class LocationPolicy
   end
 
   def edit?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@location)
   end
 
   def create?
@@ -19,11 +19,11 @@ class LocationPolicy
   end
 
   def update?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@location)
   end
 
   def destroy?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@location)
   end
 
 end

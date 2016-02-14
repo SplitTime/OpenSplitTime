@@ -1,5 +1,5 @@
 class Location < ActiveRecord::Base
-  belongs_to :split
+  has_many :splits
 
   validates_presence_of :name
   validates_uniqueness_of :name

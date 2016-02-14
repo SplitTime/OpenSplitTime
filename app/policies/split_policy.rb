@@ -11,7 +11,7 @@ class SplitPolicy
   end
 
   def edit?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@split)
   end
 
   def create?
@@ -19,11 +19,11 @@ class SplitPolicy
   end
 
   def update?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@split)
   end
 
   def destroy?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@split)
   end
 
 end

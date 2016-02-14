@@ -13,6 +13,7 @@ class CreateEfforts < ActiveRecord::Migration
       t.boolean :finished
 
       t.timestamps null: false
+      t.authorstamps :integer
     end
   end
 end

@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :participants, :through => :interests
   has_many :ownerships
   has_many :races, :through => :ownerships
+  belongs_to :participant
 
   validates_presence_of :first_name, :last_name
 
@@ -26,6 +27,10 @@ class User < ActiveRecord::Base
          user.last_name = auth['info']['name'] || ""    # TODO: figure out how to use oath with first_name/last_name model
       end
     end
+  end
+
+  def authorized_to_edit?(resource)
+    self.admin? | ( self.id == resource.created_by )
   end
 
 end

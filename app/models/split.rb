@@ -3,6 +3,7 @@ class Split < ActiveRecord::Base
   enum kind: [:start, :finish, :waypoint]
   belongs_to :course
   belongs_to :location
+  has_many :split_times
 
   accepts_nested_attributes_for :location, allow_destroy: true
 

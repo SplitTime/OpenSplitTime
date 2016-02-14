@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.string   "name",                 null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -25,6 +27,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.text     "description"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "efforts", force: :cascade do |t|
@@ -40,6 +44,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.boolean  "finished"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   add_index "efforts", ["country_id"], name: "index_efforts_on_country_id"
@@ -53,6 +59,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.date     "start_date",            null: false
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id"
@@ -78,6 +86,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.decimal  "longitude",              precision: 9, scale: 6
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "ownerships", force: :cascade do |t|
@@ -103,6 +113,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.string   "phone"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   add_index "participants", ["country_id"], name: "index_participants_on_country_id"
@@ -111,6 +123,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.string   "name",       limit: 64, null: false
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "split_times", force: :cascade do |t|
@@ -120,6 +134,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.integer  "data_status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id"
@@ -136,6 +152,8 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.integer  "kind",                                        null: false
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id"

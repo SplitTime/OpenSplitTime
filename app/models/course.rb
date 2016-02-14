@@ -1,4 +1,6 @@
 class Course < ActiveRecord::Base
+  has_many :splits
+
   validates_presence_of :name
   validates_uniqueness_of :name
   has_many :splits

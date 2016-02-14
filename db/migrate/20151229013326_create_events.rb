@@ -7,6 +7,7 @@ class CreateEvents < ActiveRecord::Migration
       t.date :start_date, :null => false
 
       t.timestamps null: false
+      t.authorstamps :integer
     end
   end
 end

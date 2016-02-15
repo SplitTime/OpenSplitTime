@@ -4,11 +4,11 @@ module Api
     private
 
     def participant_params
-      params.require(:participant).permit(:first_name, :last_name, :gender, :birthdate, :home_city, :home_state, :home_country)
+      params.require(:participant).permit(:first_name, :last_name, :gender, :birthdate, :city, :state, :country_id, :email, :phone)
     end
 
     def query_params
-      params.permit(:first_name, :last_name, :home_city, :home_country, :home_state, :gender)
+      params.permit(:first_name, :last_name, :gender, :birthdate, :city, :state, :country_id, :email, :phone)
     end
 
   end

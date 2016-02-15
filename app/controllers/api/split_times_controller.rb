@@ -8,7 +8,7 @@ module Api
     end
 
     def query_params
-      params.permit(:effort_id, :split_id)
+      params.permit(:effort_id, :split_id, :time_from_start, :data_status)
     end
 
   end

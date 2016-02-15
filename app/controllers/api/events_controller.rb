@@ -8,7 +8,7 @@ module Api
     end
 
     def query_params
-      params.permit(:name, :course_id, :race_id)
+      params.permit(:name, :course_id, :start_date, :race_id)
     end
 
   end

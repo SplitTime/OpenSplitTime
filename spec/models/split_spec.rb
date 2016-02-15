@@ -10,14 +10,12 @@ require "rails_helper"
 # t.integer  "kind"
 
 RSpec.describe Split, kind: :model do
-  it "should be valid when created with a course_id, a location_id, a name, a distance_from_start, and a kind" do
+  it "should be valid when created with a course_id, a name, a distance_from_start, and a kind" do
     course = Course.create!(name: 'Test Course')
-    location = Location.create!(name: 'Paddington Station')
-    Split.create!(course_id: course.id, location_id: location.id, name: 'Hopeless Outbound In', distance_from_start: 50000, kind: 2)
+    Split.create!(course_id: course.id, location_id: nil, name: 'Hopeless Outbound In', distance_from_start: 50000, kind: 2)
 
     expect(Split.all.count).to(equal(1))
     expect(Split.first.course_id).to eq(course.id)
-    expect(Split.first.location_id).to eq(location.id)
     expect(Split.first.name).to eq('Hopeless Outbound In')
     expect(Split.first.distance_from_start).to eq(50000)
     expect(Split.first.sub_order).to eq(0)    # default value
@@ -28,12 +26,6 @@ RSpec.describe Split, kind: :model do
     split = Split.new(course_id: nil, location_id: 1, name: 'Test Location', distance_from_start: 2000, kind: 2)
     expect(split).not_to be_valid
     expect(split.errors[:course_id]).to include("can't be blank")
-  end
-
-  it "should be invalid without a location_id" do
-    split = Split.new(course_id: 1, location_id: nil, name: 'Test Location', distance_from_start: 2000, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:location_id]).to include("can't be blank")
   end
 
   it "should be invalid without a name" do

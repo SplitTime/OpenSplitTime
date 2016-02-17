@@ -1,5 +1,12 @@
 <h1>Listing Splits</h1>
 
+<p>
+  Download:
+  <%= link_to "CSV", splits_path(format: "csv") %> |
+  <%= link_to "Excel", splits_path(format: "xls") %> |
+  <%= link_to "JSON", splits_path(format: "json") %>
+</p>
+
 <%= link_to 'New Split', new_split_path %>
 
 <table>
@@ -16,9 +23,9 @@
         <td><%= split.course.name %></td>
         <td><%= split.kind.titlecase %></td>
         <td><%= split.distance_from_start %></td>
-        <td><%= link_to 'Show', split_path(split) %></td>
-        <td><%= link_to 'Edit', edit_split_path(split) %></td>
-        <td><%= link_to 'Destroy', split_path(split),
+        <td><%= link_to 'Show', split_path(split) %> |
+        <%= link_to 'Edit', edit_split_path(split) %> |
+        <%= link_to 'Destroy', split_path(split),
                         method: :delete,
                         data: { confirm: 'Are you sure?' } %></td>
       </tr>

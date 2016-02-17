@@ -3,7 +3,13 @@ class SplitsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @splits = Split.all
+    @splits = Split.order(:course_id)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @splits.to_csv }
+      format.xls
+      format.json { send_data @splits.to_json }
+    end
   end
 
   def show

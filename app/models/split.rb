@@ -1,5 +1,4 @@
 class Split < ActiveRecord::Base
-
   enum kind: [:start, :finish, :waypoint]
   belongs_to :course
   belongs_to :location
@@ -34,6 +33,15 @@ class Split < ActiveRecord::Base
 
   def is_finish?
     kind == "finish"
+  end
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |split|
+        csv << split.attributes.values_at(*column_names)
+      end
+    end
   end
 
 end

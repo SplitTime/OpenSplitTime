@@ -14,7 +14,7 @@ class SplitTime < ActiveRecord::Base
   validate :course_is_consistent, unless: 'effort.nil? | split.nil?'   # TODO fix tests so that .nil? checks are not necessary
 
   def split_is_start?
-    split_id.nil? ? false : split.kind == "start"
+    split.try(:kind) == "start"
   end
 
   def course_is_consistent

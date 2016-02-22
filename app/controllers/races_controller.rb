@@ -53,7 +53,7 @@ class RacesController < ApplicationController
   private
 
   def race_params
-    params.require(:race).permit(:name)
+    params.require(:race).permit(:name, :description)
   end
 
   def query_params

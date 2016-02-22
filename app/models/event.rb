@@ -4,5 +4,5 @@ class Event < ActiveRecord::Base
   has_many :efforts
 
   validates_presence_of :course_id, :name, :start_date
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, case_sensitive: false
 end

@@ -120,9 +120,10 @@ ActiveRecord::Schema.define(version: 20160131195951) do
   add_index "participants", ["country_id"], name: "index_participants_on_country_id"
 
   create_table "races", force: :cascade do |t|
-    t.string   "name",       limit: 64, null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.string   "name",        limit: 64, null: false
+    t.text     "description"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "created_by"
     t.integer  "updated_by"
   end
@@ -143,7 +144,7 @@ ActiveRecord::Schema.define(version: 20160131195951) do
 
   create_table "splits", force: :cascade do |t|
     t.integer  "course_id",                                   null: false
-    t.integer  "location_id",                                 null: false
+    t.integer  "location_id"
     t.string   "name",                 limit: 64,             null: false
     t.integer  "distance_from_start",                         null: false
     t.integer  "sub_order",                       default: 0, null: false

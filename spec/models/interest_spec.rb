@@ -7,7 +7,7 @@ require 'rails_helper'
 RSpec.describe Interest, type: :model do
   it "should be valid when created with a user_id, a participant_id, and a kind" do
     user = User.create!(first_name: 'Test', last_name: 'User', role: :user, email: 'user@example.com', password: 'password')
-    participant = Participant.create!(first_name: 'Freddy', last_name: 'Fast', gender: 'M')
+    participant = Participant.create!(first_name: 'Freddy', last_name: 'Fast', gender: 'male')
     interest = Interest.create!(user_id: user.id, participant_id: participant.id, kind: 0)
 
     expect(Interest.all.count).to eq(1)

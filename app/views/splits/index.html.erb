@@ -7,6 +7,15 @@
   <%= link_to "JSON", splits_path(format: "json") %>
 </p>
 
+<p>
+  Import:
+</p>
+<%= form_tag splits_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %>
+<% end %>
+
+
 <%= link_to 'New Split', new_split_path %>
 
 <table>

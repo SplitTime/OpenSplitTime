@@ -52,7 +52,7 @@ class Importer
     end
   end
 
-  def create_effort (header, row, id)
+  def create_effort (header, row, event_id)
     row_hash = Hash[[header, row].transpose].symbolize_keys
     # Would love to figure out how not to hardcode these symbols lists
     # (An array of symbols does not work)
@@ -72,7 +72,7 @@ class Importer
             :bib_number,
         )
     )
-    @effort.event_id = id
+    @effort.event_id = event_id
     if @effort.save
       @effort
     else

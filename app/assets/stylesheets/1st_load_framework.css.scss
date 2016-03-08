@@ -103,6 +103,24 @@ section {
   padding-left: 0;
 }
 
+.center {
+  text-align: center;
+}
+
+.jumbotron {
+  background-image: asset-url('IMG_3513.jpg');
+  background-size:cover;
+  height: 800px;
+}
+
+.jumbotron h1 {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 30px;
+  letter-spacing: -4px;
+  font-weight: bold;
+}
+
 #error_explanation:not(:empty) {
   @extend .alert;
   @extend .alert-danger;

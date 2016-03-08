@@ -1,26 +1,32 @@
-<%= form_for @race do |f| %>
+<%= render 'shared/errors', obj: @race %>
 
-    <% if @race.errors.any? %>
-        <div id="error_explanation">
-          <h2>
-            <%= pluralize(@race.errors.count, "error") %> prohibited
-            this race from being saved:
-          </h2>
-          <ul>
-            <% @race.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-          </ul>
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@race, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :name %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :name, class: "form-control", placeholder: "Race name", autofocus: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :description %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Race description" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit(@race.new_record? ? "Create Race" : "Update Race", class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+        <div class="col-xs-4 col-xs-offset-2">
+          [ <%= link_to 'Cancel', races_path %> ]
         </div>
     <% end %>
-
-    <p>
-      <%= f.label :name %><br>
-      <%= f.text_field :name %>
-    </p>
-    
-    <p>
-      <%= f.submit %>
-    </p>
-
-<% end %>
+  </div>
+</div>

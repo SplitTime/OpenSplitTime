@@ -1,61 +1,97 @@
-<%= form_for @split do |f| %>
+<%= render 'shared/errors', obj: @split %>
 
-    <% if @split.errors.any? %>
-        <div id="error_explanation">
-          <h2>
-            <%= pluralize(@split.errors.count, "error") %> prohibited
-            this split from being saved:
-          </h2>
-          <ul>
-            <% @split.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-          </ul>
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@split, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+        <% if @course.nil? %>
+            <div class="form-group">
+              <div class="control-label col-sm-2">
+                <%= f.label :course_id %>
+              </div>
+              <div class="col-sm-8">
+                <%= collection_select(:split, :course_id, Course.all, :id, :name, prompt: true) %>
+              </div>
+            </div>
+        <% else %>
+            <div class="form-group">
+              <div class="col-sm-8 col-sm-offset-2">
+                <%= f.hidden_field :course_id, value: @course.id %>
+                <h4><%= @course.name %></h4>
+              </div>
+            </div>
+        <% end %>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :name %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.text_field :name, class: "form-control", placeholder: "Split name", autofocus: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :description %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Split description" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :kind %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.select :kind, Split.kinds.keys.map { |kind| [kind.titleize, kind] } %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :location_id %>
+          </div>
+          <div class="col-sm-8">
+            <%= collection_select(:split, :location_id, Location.all, :id, :name, prompt: true) %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :distance_from_start %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :distance_from_start, class: "form-control", placeholder: "Meters" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :sub_order %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :sub_order, class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :vert_gain_from_start %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :vert_gain_from_start, class: "form-control", placeholder: "Meters" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :vert_loss_from_start %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :vert_loss_from_start, class: "form-control", placeholder: "Meters" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+        <div class="col-xs-4 col-xs-offset-2">
+          [ <%= link_to 'Cancel', splits_path %> ]
         </div>
     <% end %>
-
-    <p>
-      <%= f.label :name %><br>
-      <%= f.text_field :name %>
-    </p>
-
-    <p>
-      <%= f.label :course_id %><br>
-      <%= collection_select(:split, :course_id, Course.all, :id, :name, prompt: true ) %>
-    </p>
-
-    <p>
-      <%= f.label :kind %><br>
-      <%= f.select :kind, Split.kinds.keys.map {|kind| [kind.titleize,kind]} %>
-    </p>
-
-    <p>
-      <%= f.label :location_id %><br>
-      <%= collection_select(:split, :location_id, Location.all, :id, :name, prompt: true ) %>
-    </p>
-
-    <p>
-      <%= f.label :distance_from_start %><br>
-      <%= f.text_field :distance_from_start %>
-    </p>
-
-    <p>
-      <%= f.label :sub_order %><br>
-      <%= f.text_field :sub_order %>
-    </p>
-
-    <p>
-      <%= f.label :vert_gain_from_start %><br>
-      <%= f.text_field :vert_gain_from_start %>
-    </p>
-
-    <p>
-      <%= f.label :vert_loss_from_start %><br>
-      <%= f.text_field :vert_loss_from_start %>
-    </p>
-
-    <p>
-      <%= f.submit %>
-    </p>
-
-<% end %>
+  </div>
+</div>

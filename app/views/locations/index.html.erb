@@ -1,26 +1,9 @@
-<h1>Listing Locations</h1>
+<h1 align="center">Listing All Locations</h1>
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <%= link_to 'Create New Location', new_location_path, class: "btn btn-sm btn-primary" %>
+  </div>
+</div>
+<hr>
 
-<%= link_to 'New location', new_location_path %>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Elevation</th>
-    <th>Longitude</th>
-    <th>Latitude</th>
-  </tr>
-
-  <% @locations.each do |location| %>
-      <tr>
-        <td><%= location.name %></td>
-        <td><%= location.elevation %></td>
-        <td><%= location.latitude %></td>
-        <td><%= location.longitude %></td>
-        <td><%= link_to 'Show', location_path(location) %></td>
-        <td><%= link_to 'Edit', edit_location_path(location) %></td>
-        <td><%= link_to 'Destroy', location_path(location),
-                        method: :delete,
-                        data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-  <% end %>
-</table>
+<%= render 'location', obj: @locations %>

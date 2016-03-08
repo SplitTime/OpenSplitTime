@@ -1,0 +1,18 @@
+<% obj.each do |event| %>
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="object-list-body">
+          <strong><%= link_to event.name, event_path(event) %></strong>
+          <small><%= "#{event.start_date}" %></small>
+          <div class="object-list-actions">
+            <% if @race.nil? %>
+                <%= link_to 'Edit Event', edit_event_path(event), class: "btn btn-xs btn-primary" %>
+            <% else %>
+                <%= link_to 'Edit Event', edit_event_path(event, race_id: @race.id), class: "btn btn-xs btn-primary" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+

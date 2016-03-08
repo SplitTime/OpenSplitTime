@@ -12,9 +12,10 @@ User.create!(first_name: 'Test', last_name: 'User', role: :user, email: 'tester@
 User.create!(first_name: 'Third', last_name: 'User', role: :user, email: 'thirduser@example.com', password: 'password')
 User.create!(first_name: 'Fourth', last_name: 'User', role: :user, email: 'fourthuser@example.com', password: 'password')
 
-Country.create(code: 'US', name: 'United States of America')
-Country.create(code: 'GB', name: 'United Kingdom')
-Country.create(code: 'CA', name: 'Canada')
+Country.create(code: 'USA', name: 'United States of America')
+Country.create(code: 'GBR', name: 'United Kingdom')
+Country.create(code: 'CAN', name: 'Canada')
+Country.create(code: 'DEU', name: 'Germany')
 
 Course.create(name: 'Test Course CCW')
 Course.create(name: 'Another Course')

@@ -8,6 +8,7 @@ class RacesController < ApplicationController
 
   def show
     @race = Race.find(params[:id])
+    @race_events = @race.events
   end
 
   def new
@@ -53,7 +54,7 @@ class RacesController < ApplicationController
   private
 
   def race_params
-    params.require(:race).permit(:name)
+    params.require(:race).permit(:name, :description)
   end
 
   def query_params

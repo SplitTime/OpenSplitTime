@@ -2,7 +2,7 @@ class CreateEfforts < ActiveRecord::Migration
   def change
     create_table :efforts do |t|
       t.references :event, index: true, foreign_key: true, :null => false
-      t.references :participant, index: true, foreign_key: true, :null => false
+      t.references :participant, index: true, foreign_key: true
       t.string :wave
       t.integer :bib_number
       t.string :city, limit: 64

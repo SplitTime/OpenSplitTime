@@ -6,6 +6,10 @@ class SplitPolicy
     @split = model
   end
 
+  def import?
+    @current_user.present?
+  end
+
   def new?
     @current_user.present?
   end

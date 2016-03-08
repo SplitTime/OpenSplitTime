@@ -8,6 +8,7 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
+    @course_splits = @course.splits
   end
 
   def new
@@ -53,7 +54,7 @@ class CoursesController < ApplicationController
   private
 
   def course_params
-    params.require(:course).permit(:name, splits_attributes: [:id, :name, :distance_from_start, :kind])
+    params.require(:course).permit(:name, :description, splits_attributes: [:id, :name, :distance_from_start, :kind])
   end
 
   def query_params

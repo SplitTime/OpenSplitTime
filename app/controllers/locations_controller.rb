@@ -17,6 +17,7 @@ class LocationsController < ApplicationController
 
   def edit
     @location = Location.find(params[:id])
+    session[:return_to] ||= request.referer
     authorize @location
   end
 
@@ -36,7 +37,7 @@ class LocationsController < ApplicationController
     authorize @location
 
     if @location.update(location_params)
-      redirect_to @location
+      redirect_to session.delete(:return_to)
     else
       render 'edit'
     end
@@ -53,7 +54,7 @@ class LocationsController < ApplicationController
   private
 
   def location_params
-    params.require(:location).permit(:name, :elevation, :latitude, :longitude)
+    params.require(:location).permit(:name, :description, :elevation, :latitude, :longitude)
   end
 
   def query_params

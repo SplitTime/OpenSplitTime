@@ -14,7 +14,7 @@ require "rails_helper"
 RSpec.describe Effort, type: :model do
   it "should be valid when created with an event_id, a participant_id, and a start time" do
     event = Event.create!(course_id: 1, name: 'Hardrock 2015', start_date: "2015-07-01")
-    participant = Participant.create!(first_name: 'Dave', last_name: 'Mitchell', gender: 'M')
+    participant = Participant.create!(first_name: 'Dave', last_name: 'Mitchell', gender: 'male')
     Effort.create!(event_id: event.id, participant_id: participant.id, start_time: "2015-07-01 06:00:00")
 
     expect(Effort.all.count).to(equal(1))

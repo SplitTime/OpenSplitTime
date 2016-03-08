@@ -7,6 +7,20 @@ img {
   @extend .img-responsive;
   margin: 0 auto;
   }
+
+#logo {
+  float: left;
+  font-size: 1.5em;
+  color: #fff;
+  letter-spacing: -1px;
+  font-weight: bold;
+}
+
+@logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
 // override for the 'Home' navigation link
 .navbar-brand {
   font-size: inherit;
@@ -80,7 +94,15 @@ section {
   border-top: 1px solid #eaeaea;
   padding-top: 15px;
   padding-bottom: 15px;
+  list-style: none;
+  padding-left: 0;
 }
+
+.listing {
+  list-style: none;
+  padding-left: 0;
+}
+
 #error_explanation:not(:empty) {
   @extend .alert;
   @extend .alert-danger;
@@ -92,4 +114,30 @@ section {
   @extend .btn;
   @extend .btn-primary;
   @extend .btn-xs;
+}
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #777;
+}
+
+footer a:hover {
+  color: #222;
+}
+
+footer small {
+  float: left;
+}
+
+footer ul {
+  float: right;
+  list-style: none;
+  font-size: 0.9em;
+}
+
+footer ul li {
+  float: left;
+  margin-left: 15px;
 }

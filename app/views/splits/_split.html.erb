@@ -1,0 +1,21 @@
+<% obj.each do |split| %>
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="object-list-body">
+          <strong><%= link_to split.name, split_path(split) %></strong>
+          <small><%= "#{split.kind.titlecase}: Mile #{split.distance_from_start.meters.to.miles.round(1)}" %></small>
+          <div class="object-list-actions">
+            <% if @course.nil? %>
+                <%= link_to 'Edit Split', edit_split_path(split), class: "btn btn-xs btn-primary" %>
+            <% else %>
+                <%= link_to 'Edit Split', edit_split_path(split, course_id: @course.id), class: "btn btn-xs btn-primary" %>
+            <% end %>
+            <%= link_to 'Delete Split', split_path(split), class: "btn btn-xs btn-danger",
+                        method: :delete,
+                        data: {confirm: 'Are you sure?'} %>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+

@@ -1,12 +1,20 @@
-<h1>Show Course</h1>
-<p>
-  <strong>Name:</strong>
-  <%= @course.name %>
-</p>
+<h1 align="center"><%= @course.name %></h1>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4 center">
+    <%= @course.description %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <%= link_to 'Create New Split', new_split_path(course_id: @course.id), class: "btn btn-sm btn-primary" %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <h4>Splits on this course:</h4>
+  </div>
+</div>
 
-<p>
-  <strong>Description:</strong>
-  <%= @course.description %>
-</p>
-
-<%= link_to 'Back', courses_path %>
+<%= render 'splits/split', obj: @course_splits %>

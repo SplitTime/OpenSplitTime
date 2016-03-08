@@ -1,20 +1,23 @@
-<h1>Listing Races</h1>
-
-<%= link_to 'New race', new_race_path %>
-
-<table>
-  <tr>
-    <th>Name</th>
-  </tr>
-
-  <% @races.each do |race| %>
-      <tr>
-        <td><%= race.name %></td>
-        <td><%= link_to 'Show', race_path(race) %></td>
-        <td><%= link_to 'Edit', edit_race_path(race) %></td>
-        <td><%= link_to 'Destroy', race_path(race),
+<h1 align="center">Listing Races</h1>
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <%= link_to 'Create New Race', new_race_path, class: "btn btn-sm btn-primary" %>
+  </div>
+</div>
+<hr>
+<% @races.each do |race| %>
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="object-list-body">
+          <strong><%= link_to race.name, race_path(race) %></strong>
+          <small><%= pluralize(race.events.count, "event") if race.events %></small>
+          <div class="object-list-actions">
+            <%= link_to 'Edit Race', edit_race_path(race), class: "btn btn-xs btn-primary" %>
+            <%= link_to 'Delete Race', race_path(race), class: "btn btn-xs btn-danger",
                         method: :delete,
-                        data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-  <% end %>
-</table>
+                        data: {confirm: 'Are you sure?'} %>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>

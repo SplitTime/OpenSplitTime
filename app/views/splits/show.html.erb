@@ -1,42 +1,36 @@
-<h1>Show Spilt</h1>
-<p>
-  <strong>Name:</strong>
-  <%= @split.name %>
-</p>
-
-<p>
-  <strong>Course:</strong>
-  <%= @split.course.name %>
-</p>
-
-<p>
-  <strong>Kind:</strong>
-  <%= @split.kind.titlecase %>
-</p>
-
-<p>
-  <strong>Location:</strong>
-  <%= @split.location.name %>
-</p>
-
-<p>
-  <strong>Distance From Start:</strong>
-  <%= @split.distance_from_start %>
-</p>
-
-<p>
-  <strong>Sub-Order (when distance is the same):</strong>
-  <%= @split.sub_order %>
-</p>
-
-<p>
-  <strong>Vertical Gain From Start:</strong>
-  <%= @split.vert_gain_from_start %>
-</p>
-
-<p>
-  <strong>Vertical Loss From Start:</strong>
-  <%= @split.vert_loss_from_start %>
-</p>
-
-<%= link_to 'Back', splits_path %>
+<h1 align="center"><%= @split.name %></h1>
+<h4 align="center"><%= "#{@split.kind.titlecase}: Mile #{@split.distance_from_start.meters.to.miles.round(1)}" %></h4>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4 center">
+    <%= @split.description %>
+  </div>
+</div>
+<div class="well col-xs-8 col-xs-offset-2">
+  <ul class="object-list-body">
+    <li>
+      <strong>Course:</strong>
+      <%= link_to @split.course.name, course_path(@split.course) %>
+    </li>
+    <li>
+      <strong>Vertical Gain From Start:</strong>
+      <%= @split.vert_gain_from_start %>
+    </li>
+    <li>
+      <strong>Vertical Loss From Start:</strong>
+      <%= @split.vert_loss_from_start %>
+    </li>
+    <% if @split.location_id? %>
+        <li>
+          <strong>Location:</strong>
+          <%= link_to @split.location.name, edit_location_path(@split.location) %>
+        </li>
+    <% end %>
+  </ul>
+  <hr>
+  <div class="article-actions">
+    <%= link_to 'Edit this split', edit_split_path(@split), class: "btn btn-xs btn-primary" %>
+    <%= link_to 'Delete this split', split_path(@split), method: :delete,
+                data: {confirm: "Are you sure?"}, class: "btn btn-xs btn-danger" %>
+    <%= link_to 'View all splits', splits_path, class: "btn btn-xs btn-primary" %>
+  </div>
+</div>

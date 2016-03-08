@@ -11,10 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131195951) do
+ActiveRecord::Schema.define(version: 20160307180122) do
 
   create_table "countries", force: :cascade do |t|
-    t.string   "code",       limit: 2, null: false
+    t.string   "code",       limit: 3, null: false
     t.string   "name",                 null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20160131195951) do
 
   create_table "efforts", force: :cascade do |t|
     t.integer  "event_id",                  null: false
-    t.integer  "participant_id",            null: false
+    t.integer  "participant_id"
     t.string   "wave"
     t.integer  "bib_number"
     t.string   "city",           limit: 64
@@ -46,6 +46,9 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.datetime "updated_at",                null: false
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "gender"
   end
 
   add_index "efforts", ["country_id"], name: "index_efforts_on_country_id"
@@ -155,6 +158,7 @@ ActiveRecord::Schema.define(version: 20160131195951) do
     t.datetime "updated_at",                                  null: false
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.string   "description"
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id"

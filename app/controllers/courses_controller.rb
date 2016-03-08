@@ -8,6 +8,7 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
+    @course_splits = @course.splits
   end
 
   def new

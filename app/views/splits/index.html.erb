@@ -1,4 +1,12 @@
-<h1>Listing Splits</h1>
+<h1 align="center">Listing All Splits</h1>
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <%= link_to 'Create New Split', new_split_path, class: "btn btn-sm btn-primary" %>
+  </div>
+</div>
+<hr>
+
+<%= render 'split', obj: @splits %>
 
 <p>
   Download:
@@ -7,36 +15,3 @@
   <%= link_to "JSON", splits_path(format: "json") %>
 </p>
 
-<p>
-  Import:
-</p>
-<%= form_tag splits_path, multipart: true do %>
-  <%= file_field_tag :file %>
-  <%= submit_tag "Import" %>
-<% end %>
-
-
-<%= link_to 'New Split', new_split_path %>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Course</th>
-    <th>S/F/W</th>
-    <th>Distance From Start</th>
-  </tr>
-
-  <% @splits.each do |split| %>
-      <tr>
-        <td><%= split.name %></td>
-        <td><%= split.course.name %></td>
-        <td><%= split.kind.titlecase %></td>
-        <td><%= split.distance_from_start %></td>
-        <td><%= link_to 'Show', split_path(split) %> |
-        <%= link_to 'Edit', edit_split_path(split) %> |
-        <%= link_to 'Destroy', split_path(split),
-                        method: :delete,
-                        data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-  <% end %>
-</table>

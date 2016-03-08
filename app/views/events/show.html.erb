@@ -1,26 +1,35 @@
-<h1>Show Event</h1>
-<p>
-  <strong>Name:</strong>
-  <%= @event.name %>
-</p>
 
-<p>
-  <strong>Course:</strong>
-  <%= @event.course.name %>
-</p>
-
-<p>
-  <strong>Race:</strong>
-  <% if @event.race.nil? %>
-      (None)
-  <% else %>
-      <%= @event.race.name %>
+<h1 align="center"><%= @event.name %></h1>
+<h4 align="center"><%= "#{@event.start_date}" %></h4>
+<div class="well col-xs-8 col-xs-offset-2">
+  <ul class="object-list-body">
+    <li>
+      <strong>Course:</strong>
+      <%= link_to @event.course.name, course_path(@event.course) %>
+    </li>
+    <% if @event.race_id? %>
+        <li>
+          <strong>Race:</strong>
+          <%= link_to @event.race.name, race_path(@event.race) %>
+        </li>
+    <% end %>
+    <li>
+      <strong>Start Date:</strong>
+      <%= @event.start_date %>
+    </li>
+  </ul>
+  <hr>
+  <div class="article-actions">
+    <%= link_to 'Edit this event', edit_event_path(@event), class: "btn btn-xs btn-primary" %>
+    <%= link_to 'Delete this event', event_path(@event), method: :delete,
+                data: {confirm: "Are you sure?"}, class: "btn btn-xs btn-danger" %>
+    <%= link_to 'View all events', events_path, class: "btn btn-xs btn-primary" %>
+  </div>
+  <hr>
+  <strong>Import Efforts for this Event</strong>
+  <%= form_tag({action: :import}, multipart: true) do %>
+      <%= file_field_tag :file %>
+      <%= submit_tag "Import", class: "btn btn-xs btn-success" %>
   <% end %>
-</p>
-
-<p>
-  <strong>Start Date:</strong>
-  <%= @event.start_date %>
-</p>
-
-<%= link_to 'Back', events_path %>
+  <hr>
+</div>

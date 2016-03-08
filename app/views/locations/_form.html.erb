@@ -1,46 +1,56 @@
-<%= form_for @location do |f| %>
+<%= render 'shared/errors', obj: @location %>
 
-    <% if @location.errors.any? %>
-        <div id="error_explanation">
-          <h2>
-            <%= pluralize(@location.errors.count, "error") %> prohibited
-            this location from being saved:
-          </h2>
-          <ul>
-            <% @location.errors.full_messages.each do |msg| %>
-                <li><%= msg %></li>
-            <% end %>
-          </ul>
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@location, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :name %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.text_field :name, class: "form-control", placeholder: "Location name", autofocus: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :description %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Location description" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :elevation %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :elevation, class: "form-control", placeholder: "Meters" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :latitude %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :latitude, class: "form-control", placeholder: "Degrees" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :longitude %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :longitude, class: "form-control", placeholder: "Degrees" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit(@location.new_record? ? "Create Location" : "Update Location", class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+        <div class="col-xs-4 col-xs-offset-2">
+          [ <%= link_to 'Cancel', locations_path %> ]
         </div>
     <% end %>
-
-    <p>
-      <%= f.label :name %><br>
-      <%= f.text_field :name %>
-    </p>
-
-    <p>
-      <%= f.label :description %><br>
-      <%= f.text_area :description %>
-    </p>
-
-    <p>
-      <%= f.label :elevation %><br>
-      <%= f.text_field :elevation %>
-    </p>
-
-    <p>
-      <%= f.label :latitude %><br>
-      <%= f.text_field :latitude %>
-    </p>
-
-    <p>
-      <%= f.label :longitude %><br>
-      <%= f.text_field :longitude %>
-    </p>
-
-    <p>
-      <%= f.submit %>
-    </p>
-
-<% end %>
+  </div>
+</div>

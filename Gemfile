@@ -29,6 +29,8 @@ gem 'therubyracer', :platform=>:ruby
 gem 'ar-audit-tracer'
 gem 'oj'
 gem 'alchemist'
+gem 'roo'
+gem 'roo-xls'
 group :development do
   gem 'better_errors'
   gem 'foreman'

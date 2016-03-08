@@ -18,11 +18,16 @@ class SplitsController < ApplicationController
 
   def new
     @split = Split.new
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    end
     authorize @split
   end
 
   def edit
     @split = Split.find(params[:id])
+    @course = Course.find(params[:course_id]) if params[:course_id]
+    session[:return_to] ||= request.referer
     authorize @split
   end
 
@@ -42,8 +47,9 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.update(split_params)
-      redirect_to @split
+      redirect_to session.delete(:return_to)
     else
+      @course = Course.find(@split.course_id) if @split.course_id
       render 'edit'
     end
   end
@@ -53,13 +59,14 @@ class SplitsController < ApplicationController
     authorize split
     split.destroy
 
-    redirect_to splits_path
+    redirect_url = (request.referer.include?("splits/#{split.id}") ? splits_url : :back)
+    redirect_to redirect_url
   end
 
   private
 
   def split_params
-    params.require(:split).permit(:course_id, :location_id, :name, :distance_from_start,
+    params.require(:split).permit(:course_id, :location_id, :name, :description, :distance_from_start,
                                   :sub_order, :vert_gain_from_start, :vert_loss_from_start, :kind)
   end
 

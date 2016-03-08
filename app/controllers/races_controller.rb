@@ -8,6 +8,7 @@ class RacesController < ApplicationController
 
   def show
     @race = Race.find(params[:id])
+    @race_events = @race.events
   end
 
   def new

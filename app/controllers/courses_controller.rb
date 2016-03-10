@@ -9,6 +9,7 @@ class CoursesController < ApplicationController
   def show
     @course = Course.find(params[:id])
     @course_splits = @course.splits
+    session[:return_to] = course_path
   end
 
   def new

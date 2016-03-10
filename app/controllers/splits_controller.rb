@@ -10,6 +10,7 @@ class SplitsController < ApplicationController
       format.xls
       format.json { send_data @splits.to_json }
     end
+    session[:return_to] = course_path(params[:course_id]) if params[:course_id].present?
   end
 
   def show
@@ -22,6 +23,7 @@ class SplitsController < ApplicationController
       @course = Course.find(params[:course_id])
     end
     authorize @split
+    session[:return_to] ||= request.referer
   end
 
   def edit
@@ -36,7 +38,7 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.save
-      redirect_to @split
+      redirect_to session.delete(:return_to)
     else
       render 'new'
     end
@@ -59,8 +61,7 @@ class SplitsController < ApplicationController
     authorize split
     split.destroy
 
-    redirect_url = (request.referer.include?("splits/#{split.id}") ? splits_url : :back)
-    redirect_to redirect_url
+    redirect_to session.delete(:return_to) || splits_url
   end
 
   private

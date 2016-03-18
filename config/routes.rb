@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { registrations: 'registrations' }
   resources :users
   resources :locations
-  resources :courses
+  resources :courses do
+    member { post :import }
+  end
   resources :events do
     member { post :import }
   end

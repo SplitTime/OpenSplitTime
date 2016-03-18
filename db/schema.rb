@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160307180122) do
+ActiveRecord::Schema.define(version: 20160308083653) do
 
   create_table "countries", force: :cascade do |t|
     t.string   "code",       limit: 3, null: false
@@ -54,6 +54,16 @@ ActiveRecord::Schema.define(version: 20160307180122) do
   add_index "efforts", ["country_id"], name: "index_efforts_on_country_id"
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id"
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id"
+
+  create_table "event_splits", force: :cascade do |t|
+    t.integer  "event_id"
+    t.integer  "split_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "event_splits", ["event_id"], name: "index_event_splits_on_event_id"
+  add_index "event_splits", ["split_id"], name: "index_event_splits_on_split_id"
 
   create_table "events", force: :cascade do |t|
     t.integer  "course_id",             null: false

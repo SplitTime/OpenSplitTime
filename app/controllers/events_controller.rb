@@ -6,6 +6,13 @@ class EventsController < ApplicationController
     @events = Event.all
   end
 
+  def import
+    @event = Event.find(params[:id])
+    Importer.effort_import(params[:file], @event)
+    flash[:success] = "Import successful."
+    redirect_to event_path(@event)
+  end
+
   def show
     @event = Event.find(params[:id])
   end
@@ -43,9 +50,9 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    event = Event.find(params[:id])
-    authorize event
-    event.destroy
+    @event = Event.find(params[:id])
+    authorize @event
+    @event.destroy
 
     redirect_to events_path
   end

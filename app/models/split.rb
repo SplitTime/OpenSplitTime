@@ -3,6 +3,8 @@ class Split < ActiveRecord::Base
   belongs_to :course
   belongs_to :location
   has_many :split_times
+  has_many :event_splits
+  has_many :events, through: :event_splits
 
   accepts_nested_attributes_for :location, allow_destroy: true
 

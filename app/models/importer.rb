@@ -1,13 +1,56 @@
 class Importer
   require 'roo'
 
-  def self.batch_import(file, event, split_id_array)
+  def self.split_import(file, course, event)
+    spreadsheet = open_spreadsheet(file)
+    split_offset, effort_offset = computed_offsets(spreadsheet)
+    if effort_offset != 3 # No split data detected
+      return false
+    end
+    header = spreadsheet.row(1)
+    distance_array = spreadsheet.row(2)
+    split_id_array = []
+    error_array = []
+    (split_offset..header.length).each do |k|
+      if k == split_offset # This is the first split
+        kind = 0
+        sub_order = 0
+      else # Otherwise we need to compute the sub_offset and determine the kind
+        if distance_array[k-2] == distance_array[k-1]
+          sub_order += 1
+        else
+          sub_order = 0
+        end
+        if k == header.length
+          kind = 1
+        else
+          kind = 2
+        end
+      end
+      name = header[k-1].titlecase
+
+      split = Split.new(course_id: course.id,
+                        name: name,
+                        distance_from_start: distance_array[k-1],
+                        sub_order: sub_order,
+                        kind: kind)
+      if split.save
+        split_id_array << split.id
+        event.splits << split
+      else
+        error_array << split.name
+      end
+    end
+    split_id_array
+  end
+
+  def self.effort_import(file, event)
+    split_id_array = create_split_id_array(event)
+    raise "Invalid header" if split_offset.nil?
     verify_split_id_array(split_id_array, event.course_id)
     spreadsheet = open_spreadsheet(file)
+    split_offset, effort_offset = computed_offsets(spreadsheet)
     header = spreadsheet.row(1)
-    split_offset = header.map(&:downcase).index("start") + 1   # The column in which the Start split appears
-    raise "Invalid header" if split_offset.nil?
-    effort_offset = (spreadsheet.cell(2,1).downcase.include?("distance") && spreadsheet.cell(2,2).blank?) ? 3 : 2
     split_name_array = header[split_offset - 1..header.size - 1]
     if split_name_array.size != split_array.size
       raise "Number of split columns in import spreadsheet does not match number of selected course splits."
@@ -17,25 +60,6 @@ class Importer
         create_split_times(spreadsheet.row(i), split_array, split_offset)
       end
     end
-  end
-
-  def self.verify_split_id_array(split_id_array, course_id)
-    splits = []
-    split_id_array.each do |id|
-      @split = Split.find_by(id: id)
-      raise "Split number #{split_id_array.index(id) + 1} was not found" if @split.nil?
-      raise "Split number #{split_id_array.index(id) + 1} does not match course" if @split.course_id != course_id
-      splits << @split
-    end
-    kind_array = splits.map(&:kind)
-    kind_count_hash = kind_array.inject(Hash.new(0)) { |total, e| total[e] += 1 ;total}
-    raise "Start split was not included in split id array" if kind_count_hash["start"] == 0
-    raise "Multiple start splits included in split id array" if kind_count_hash["start"] > 1
-    raise "Finish split was not included in split id array" if kind_count_hash["finish"] == 0
-    raise "Multiple finish splits included in split id array" if kind_count_hash["finish"] > 1
-    sorted_splits = splits.sort_by {|x| [x.distance_from_start, x.sub_order]}
-    sorted_id_array = sorted_splits.map(&:id)
-    raise "Incorrectly ordered split id array" if sorted_id_array != split_id_array
   end
 
   def self.open_spreadsheet(file)
@@ -50,6 +74,32 @@ class Importer
       else
         raise "Unknown file type: #{file.original_filename}"
     end
+  end
+
+  def computed_offsets(spreadsheet)
+    header = spreadsheet.row(1)
+    split_offset = header.map(&:downcase).index("start") + 1
+    effort_offset = (spreadsheet.cell(2, 1).downcase.include?("distance") && spreadsheet.cell(2, 2).blank?) ? 3 : 2
+    return split_offset, effort_offset
+  end
+
+  def self.verify_split_id_array(split_id_array, course_id)
+    splits = []
+    split_id_array.each do |id|
+      @split = Split.find_by(id: id)
+      raise "Split number #{split_id_array.index(id) + 1} was not found" if @split.nil?
+      raise "Split number #{split_id_array.index(id) + 1} does not match course" if @split.course_id != course_id
+      splits << @split
+    end
+    kind_array = splits.map(&:kind)
+    kind_count_hash = kind_array.inject(Hash.new(0)) { |total, e| total[e] += 1; total }
+    raise "Start split was not included in split id array" if kind_count_hash["start"] == 0
+    raise "Multiple start splits included in split id array" if kind_count_hash["start"] > 1
+    raise "Finish split was not included in split id array" if kind_count_hash["finish"] == 0
+    raise "Multiple finish splits included in split id array" if kind_count_hash["finish"] > 1
+    sorted_splits = splits.sort_by { |x| [x.distance_from_start, x.sub_order] }
+    sorted_id_array = sorted_splits.map(&:id)
+    raise "Incorrectly ordered split id array" if sorted_id_array != split_id_array
   end
 
   def create_effort (header, row, event_id)

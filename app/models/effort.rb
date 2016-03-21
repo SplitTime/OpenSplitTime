@@ -1,11 +1,21 @@
 class Effort < ActiveRecord::Base
+  enum gender: [:male, :female]
   belongs_to :event
   belongs_to :participant
   belongs_to :country
-  has_many :split_times
+  has_many :split_times, dependent: :destroy
 
-  validates_presence_of :event_id, :participant_id, :start_time
-  validates_uniqueness_of :participant_id, scope: :event_id
+  validates_presence_of :event_id
+  validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
   validates :country, presence: true, unless: 'country_id.nil?'
+
+  def self.columns_for_import
+    id = ["id"]
+    foreign_keys = Effort.column_names.find_all { |x| x.include?("_id") }
+    stamps = Effort.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
+    country_id =  ["country_id"]
+    (column_names - (id + foreign_keys + stamps) + country_id).map &:to_sym
+  end
+
 end

@@ -12,39 +12,43 @@ User.create!(first_name: 'Test', last_name: 'User', role: :user, email: 'tester@
 User.create!(first_name: 'Third', last_name: 'User', role: :user, email: 'thirduser@example.com', password: 'password')
 User.create!(first_name: 'Fourth', last_name: 'User', role: :user, email: 'fourthuser@example.com', password: 'password')
 
-Country.create(code: 'USA', name: 'United States of America')
-Country.create(code: 'GBR', name: 'United Kingdom')
-Country.create(code: 'CAN', name: 'Canada')
-Country.create(code: 'DEU', name: 'Germany')
+Country.create(code: 'USA', code2: 'US', name: 'United States of America')
+Country.create(code: 'GBR', code2: 'GB', name: 'United Kingdom')
+Country.create(code: 'CAN', code2: 'CA', name: 'Canada')
+Country.create(code: 'DEU', code2: 'DE', name: 'Germany')
+Country.create(code: 'ESP', code2: 'ES', name: 'Spain')
 
 Course.create(name: 'Test Course CCW')
 Course.create(name: 'Another Course')
 Course.create(name: 'Nolans 140')
+Course.create(name: 'Hardrock CCW', description: 'Counter-clockwise Hardrock 100 course, starting in Silverton, going to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton')
 
 Race.create(name: 'Slo Mo 100')
 Race.create(name: 'Frozen Lips 100')
 Race.create(name: 'Hardly Rocker 100')
+Race.create(name: 'Hardrock 100')
 
 Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
 Location.create(name: 'British Ghetto', elevation: 50, latitude: 55, longitude: 0)
 Location.create(name: 'Typical Outback', elevation: 200, latitude: -43, longitude: 146.3)
 Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
 
-Event.create(course_id: 2, race_id: 3, name: 'Hardly Rocker 2010', start_date: "2010-08-10")
-Event.create(course_id: 2, race_id: 2, name: 'Frozen Lips 2015', start_date: "2015-05-31")
-Event.create(course_id: 1, race_id: nil, name: 'Test Event', start_date: "2012-08-08")
+Event.create(course_id: 2, race_id: 3, name: 'Hardly Rocker 2010', start_date: "2010-08-10", first_start_time: "2010-08-10 06:00:00")
+Event.create(course_id: 2, race_id: 2, name: 'Frozen Lips 2015', start_date: "2015-05-31", first_start_time: "2015-05-31 07:00:00")
+Event.create(course_id: 1, race_id: nil, name: 'Test Event', start_date: "2012-08-08", first_start_time: "2012-08-08 05:00:00")
+Event.create(course_id: 4, race_id: 4, name: 'Hardrock 100 2015', start_date: "2015-07-10", first_start_time: "2015-07-10 06:00:00")
 
 Participant.create(first_name: 'Joe', last_name: 'Hardman', gender: 'male', birthdate: "1989-12-15", city: 'Boulder', state: 'Colorado', country_id: 1, email: 'hardman@gmail.com', phone: nil)
 Participant.create(first_name: 'Jane', last_name: 'Rockstar', gender: 'female', birthdate: "1985-09-20", city: 'Seattle', state: 'Washington', country_id: 1, email: nil, phone: '206-977-9777')
 Participant.create(first_name: 'Basil', last_name: 'Smith', gender: 'male', birthdate: "1995-04-31", city: 'London', state: nil, country_id: 2, email: 'basil@uk.gov', phone: '02-998-33-55')
 Participant.create(first_name: 'Jen', last_name: 'Huckster', gender: 'female', birthdate: nil, city: 'Vancouver', state: 'British Columbia', country_id: 3, email: 'jane@canuck.com', phone: '804-888-5555')
 
-Effort.create(event_id: 3, participant_id: 4, wave: nil, bib_number: 99, city: 'Vancouver', state: 'British Columbia', country_id: 3, age: 50, start_time: "2012-08-08 05:00:00", finished: true)
-Effort.create(event_id: 3, participant_id: 1, wave: nil, bib_number: 12, city: 'Boulder', state: 'Colorado', country_id: 1, age: 23, start_time: "2012-08-08 05:00:00", finished: true)
-Effort.create(event_id: 1, participant_id: 2, wave: nil, bib_number: 1775, city: 'Atlanta', state: 'Georgia', country_id: 1, age: 24, start_time: "2010-08-10 06:00:00", finished: true)
-Effort.create(event_id: 2, participant_id: 3, wave: nil, bib_number: 44, city: 'London', state: 'Surrey', country_id: 2, age: 20, start_time: "2015-05-31 07:00:00", finished: false)
-Effort.create(event_id: 1, participant_id: 3, wave: nil, bib_number: 66, city: 'London', state: 'Surrey', country_id: 2, age: 15, start_time: "2010-08-10 06:00:00", finished: true)
-Effort.create(event_id: 3, participant_id: 2, wave: nil, bib_number: 150, city: 'Nantucket', state: 'Massachusetts', country_id: 1, age: 26, start_time: "2012-08-08 05:00:00", finished: true)
+Effort.create(event_id: 3, participant_id: 4, wave: nil, bib_number: 99, city: 'Vancouver', state: 'British Columbia', country_id: 3, age: 50, start_time: "2012-08-08 05:00:00", finished: true, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+Effort.create(event_id: 3, participant_id: 1, wave: nil, bib_number: 12, city: 'Boulder', state: 'Colorado', country_id: 1, age: 23, start_time: "2012-08-08 05:00:00", finished: true, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+Effort.create(event_id: 1, participant_id: 2, wave: nil, bib_number: 1775, city: 'Atlanta', state: 'Georgia', country_id: 1, age: 24, start_time: "2010-08-10 06:00:00", finished: true, first_name: 'Jane', last_name: 'Rockstar', gender: 'female')
+Effort.create(event_id: 2, participant_id: 3, wave: nil, bib_number: 44, city: 'London', state: 'Surrey', country_id: 2, age: 20, start_time: "2015-05-31 07:00:00", finished: false, first_name: 'Basil', last_name: 'Smith', gender: 'male')
+Effort.create(event_id: 1, participant_id: 3, wave: nil, bib_number: 66, city: 'London', state: 'Surrey', country_id: 2, age: 15, start_time: "2010-08-10 06:00:00", finished: true, first_name: 'Basil', last_name: 'Smith', gender: 'male')
+Effort.create(event_id: 3, participant_id: 2, wave: nil, bib_number: 150, city: 'Nantucket', state: 'Massachusetts', country_id: 1, age: 26, start_time: "2012-08-08 05:00:00", finished: true, first_name: 'Jane', last_name: 'Rockstar', gender: 'female')
 
 Split.create(course_id: 1, location_id: 1, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
 Split.create(course_id: 1, location_id: 4, name: 'Test Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
@@ -75,3 +79,9 @@ Interest.create(user_id: 4, participant_id: 4, kind: 2)
 
 Ownership.create(user_id: 3, race_id: 2)
 Ownership.create(user_id: 4, race_id: 3)
+
+event = Event.find_by(course_id: 1)
+splits = Split.where(course_id: 1)
+splits.each do |split|
+  event.splits << split
+end

@@ -6,13 +6,6 @@ class CoursesController < ApplicationController
     @courses = Course.all
   end
 
-  def import
-    @course = Course.find(params[:id])
-    Importer.split_import(params[:file], @course)
-    flash[:success] = "Import successful."
-    redirect_to course_path(@course.id)
-  end
-
   def show
     @course = Course.find(params[:id])
     @course_splits = @course.splits

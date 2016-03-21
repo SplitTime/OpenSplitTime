@@ -1,18 +1,20 @@
 Rails.application.routes.draw do
   root to: 'visitors#index'
   get 'about', to: 'pages#about'
-  devise_for :users, :controllers => { registrations: 'registrations' }
+  devise_for :users, :controllers => {registrations: 'registrations'}
   resources :users
   resources :locations
-  resources :courses do
-    member { post :import }
-  end
+  resources :courses
   resources :events do
-    member { post :import }
+    member { post :import_splits }
+    member { post :import_efforts }
+    member { get :splits }
+    member { put :associate_split }
   end
   resources :splits
   resources :races
-
+  resources :event_splits, only: [:show, :destroy
+  ]
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

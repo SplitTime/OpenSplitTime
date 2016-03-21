@@ -8,16 +8,6 @@
 <div class="row">
   <div class="col-xs-6 col-xs-offset-2">
     <div class="object-list-actions">
-      <%= form_tag({action: :import}, multipart: true) do %>
-          <%= file_field_tag :file %>
-          <%= submit_tag "Import Splits", class: "btn btn-sm btn-success" %>
-      <% end %>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-6 col-xs-offset-2">
-    <div class="object-list-actions">
       <%= link_to 'Create New Split', new_split_path(course_id: @course.id), class: "btn btn-sm btn-primary" %>
     </div>
   </div>
@@ -30,4 +20,4 @@
   </div>
 </div>
 
-<%= render 'splits/split', obj: @course_splits %>
+<%= render 'splits/split', obj: @course_splits, page: "courses/show" %>

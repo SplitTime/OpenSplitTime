@@ -1,4 +1,3 @@
-
 <h1 align="center"><%= @event.name %></h1>
 <h4 align="center"><%= "#{@event.start_date}" %></h4>
 <div class="well col-xs-8 col-xs-offset-2">
@@ -14,20 +13,39 @@
         </li>
     <% end %>
     <li>
-      <strong>Start Date:</strong>
-      <%= @event.start_date %>
+      <strong>Associated Splits:</strong>
+      <%= @event.splits.count %>
+    </li>
+    <li>
+      <strong>Associated Efforts:</strong>
+      <%= @event.efforts.count %>
     </li>
   </ul>
-  <hr>
   <div class="article-actions">
     <%= link_to 'Edit this event', edit_event_path(@event), class: "btn btn-xs btn-primary" %>
     <%= link_to 'Delete this event', event_path(@event), method: :delete,
                 data: {confirm: "Are you sure?"}, class: "btn btn-xs btn-danger" %>
+    <%= link_to 'Associate or remove splits', splits_event_path, class: "btn btn-xs btn-success" %>
     <%= link_to 'View all events', events_path, class: "btn btn-xs btn-primary" %>
   </div>
   <hr>
+  <div class="row">
+    <div class="col-xs-8">
+      <h4>Splits associated with this event:</h4>
+    </div>
+    <%= render 'splits/split', obj: @associated_splits, page: "events/show" %>
+  </div>
+
+
+  <hr>
+  <strong>Import Splits for this Event</strong>
+  <%= form_tag({action: :import_splits}, multipart: true) do %>
+      <%= file_field_tag :file %>
+      <%= submit_tag "Import Splits", class: "btn btn-xs btn-success" %>
+  <% end %>
+  <hr>
   <strong>Import Efforts for this Event</strong>
-  <%= form_tag({action: :import}, multipart: true) do %>
+  <%= form_tag({action: :import_efforts}, multipart: true) do %>
       <%= file_field_tag :file %>
       <%= submit_tag "Import Efforts", class: "btn btn-xs btn-success" %>
   <% end %>

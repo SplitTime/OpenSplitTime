@@ -1,3 +1,5 @@
+# TODO: Consider replacing with Carmen gem
+
 class Country < ActiveRecord::Base
   has_many :participants
   has_many :efforts

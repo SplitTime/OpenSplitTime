@@ -10,6 +10,14 @@ class EventPolicy
     @current_user.present?
   end
 
+  def import_splits?
+    @current_user.authorized_to_edit?(@event)
+  end
+
+  def import_efforts?
+    @current_user.authorized_to_edit?(@event)
+  end
+
   def edit?
     @current_user.authorized_to_edit?(@event)
   end
@@ -23,6 +31,14 @@ class EventPolicy
   end
 
   def destroy?
+    @current_user.authorized_to_edit?(@event)
+  end
+
+  def splits?
+    @current_user.present?
+  end
+
+  def associate_split?
     @current_user.authorized_to_edit?(@event)
   end
 

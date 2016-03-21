@@ -1,65 +1,128 @@
 class Importer
   require 'roo'
 
-  def self.split_import(file, course, event)
+  def self.split_import(file, event)
     spreadsheet = open_spreadsheet(file)
-    split_offset, effort_offset = computed_offsets(spreadsheet)
-    if effort_offset != 3 # No split data detected
-      return false
-    end
-    header = spreadsheet.row(1)
-    distance_array = spreadsheet.row(2)
+    split_offset, effort_offset = compute_offsets(spreadsheet)
+    return false unless effort_offset == 3 # No split data detected
+    header1 = spreadsheet.row(1)
+    header2 = spreadsheet.row(2)
+    distance_units = header2[1]
+    return false unless header1.size == header2.size # Split names and distances don't match up
+    split_array = header1[split_offset - 1..header1.size - 1]
+    distance_array = header2[split_offset - 1..header2.size - 1]
     split_id_array = []
     error_array = []
-    (split_offset..header.length).each do |k|
-      if k == split_offset # This is the first split
-        kind = 0
+    (0..split_array.size - 1).each do |i|
+      if i == 0 # First split is always kind = start and sub_order = 0
+        kind = :start
         sub_order = 0
-      else # Otherwise we need to compute the sub_offset and determine the kind
-        if distance_array[k-2] == distance_array[k-1]
-          sub_order += 1
+      else # Otherwise determine kind and sub_order
+        kind = i == split_array.size - 1 ? :finish : :waypoint
+        if distance_array[i-1] == distance_array[i]
+          sub_order =+1
         else
           sub_order = 0
         end
-        if k == header.length
-          kind = 1
-        else
-          kind = 2
-        end
       end
-      name = header[k-1].titlecase
+      name = split_array[i]
+      distance = convert_to_meters(distance_array[i], distance_units)
 
-      split = Split.new(course_id: course.id,
+      split = Split.new(course_id: event.course_id,
                         name: name,
-                        distance_from_start: distance_array[k-1],
+                        distance_from_start: distance,
                         sub_order: sub_order,
                         kind: kind)
       if split.save
         split_id_array << split.id
         event.splits << split
       else
-        error_array << split.name
+        error_array << split
       end
     end
-    split_id_array
+    return split_id_array, error_array
   end
 
   def self.effort_import(file, event)
-    split_id_array = create_split_id_array(event)
-    raise "Invalid header" if split_offset.nil?
-    verify_split_id_array(split_id_array, event.course_id)
+    effort_symbols = Effort.columns_for_import
     spreadsheet = open_spreadsheet(file)
-    split_offset, effort_offset = computed_offsets(spreadsheet)
+    split_offset, effort_offset = compute_offsets(spreadsheet)
     header = spreadsheet.row(1)
+
+    effort_name_array = header[0..split_offset - 2]
+    effort_schema = build_effort_schema(effort_symbols, effort_name_array)
+
     split_name_array = header[split_offset - 1..header.size - 1]
-    if split_name_array.size != split_array.size
+    split_id_array = event.split_id_array
+    if split_name_array.size != split_id_array.size
       raise "Number of split columns in import spreadsheet does not match number of selected course splits."
-    else
-      (effort_offset..spreadsheet.last_row).each do |i|
-        create_effort(header, spreadsheet.row(i), event.id)
-        create_split_times(spreadsheet.row(i), split_array, split_offset)
+    end
+
+    effort_failure_array = []
+    (effort_offset..spreadsheet.last_row).each do |i|
+      row = spreadsheet.row(i)
+      row_effort_data = prepare_row_effort_data(row[0..split_offset - 2], effort_schema)
+      @effort = create_effort(row_effort_data, effort_schema, event)
+      if @effort
+        create_split_times(row, split_id_array, split_offset, @effort)
+      else
+        effort_failure_array << row
       end
     end
+    return effort_failure_array
+  end
+
+  private
+
+  def self.prepare_row_effort_data(row_effort_data, effort_schema)
+    i = effort_schema.index(:country_id)
+    row_effort_data[i] = prepare_country_data(row_effort_data[i]) unless i.nil?
+    i = effort_schema.index(:gender)
+    row_effort_data[i] = prepare_gender_data(row_effort_data[i]) unless i.nil?
+    row_effort_data
+  end
+
+  def self.prepare_country_data(country_data)
+    return Country.find(country_data).id if country_data.is_a?(Integer) && Country.find(country_data)
+    if country_data.is_a?(String)
+      return Country.find_by_code(country_data.upcase).id if country_data.length == 3 && Country.find_by_code(country_data)
+      return Country.find_by_code2(country_data.upcase).id if country_data.length == 2 && Country.find_by_code2(country_data)
+      return Country.find_by_code("USA").id if country_data.downcase == "united states"
+      return Country.find_by_name(country_data).id if Country.find_by_name(country_data)
+    else
+      return nil
+    end
+  end
+
+  def self.prepare_gender_data(gender_data)
+    gender_data.downcase!
+    return "male" if (gender_data == "m") | (gender_data == "male")
+    return "female" if (gender_data == "f") | (gender_data == "female")
+  end
+
+  # Returns an array of effort symbols in order of spreadsheet columns
+  # with nil placeholders for spreadsheet columns that don't match
+
+  def self.build_effort_schema(effort_symbols, effort_name_array)
+    schema = []
+    effort_name_array.each do |column_title|
+      schema << get_closest_effort_symbol(column_title, effort_symbols)
+    end
+    schema
+  end
+
+  def self.get_closest_effort_symbol(column_title, effort_symbols)
+    effort_symbols.each do |effort_symbol|
+      return effort_symbol if fuzzy_match(column_title, effort_symbol)
+    end
+    return nil
+  end
+
+  def self.fuzzy_match(column_title, effort_symbol)
+    effort_string = effort_symbol.to_s.downcase.gsub(/[\W_]+/, '')
+    effort_string.gsub!('countryid', 'country')
+    column_string = column_title.downcase.gsub(/[\W_]+/, '')
+    return (column_string == effort_string)
   end
 
   def self.open_spreadsheet(file)
@@ -76,83 +139,86 @@ class Importer
     end
   end
 
-  def computed_offsets(spreadsheet)
+  def self.compute_offsets(spreadsheet)
     header = spreadsheet.row(1)
     split_offset = header.map(&:downcase).index("start") + 1
-    effort_offset = (spreadsheet.cell(2, 1).downcase.include?("distance") && spreadsheet.cell(2, 2).blank?) ? 3 : 2
+    key_cell = spreadsheet.cell(2, 2)
+    unit_array = %w[miles meters km kilometers]
+    effort_offset = (spreadsheet.cell(2, 1).downcase.include?("distance") &&
+        (key_cell.blank? || unit_array.include?(key_cell))) ? 3 : 2
     return split_offset, effort_offset
   end
 
-  def self.verify_split_id_array(split_id_array, course_id)
-    splits = []
-    split_id_array.each do |id|
-      @split = Split.find_by(id: id)
-      raise "Split number #{split_id_array.index(id) + 1} was not found" if @split.nil?
-      raise "Split number #{split_id_array.index(id) + 1} does not match course" if @split.course_id != course_id
-      splits << @split
-    end
-    kind_array = splits.map(&:kind)
-    kind_count_hash = kind_array.inject(Hash.new(0)) { |total, e| total[e] += 1; total }
-    raise "Start split was not included in split id array" if kind_count_hash["start"] == 0
-    raise "Multiple start splits included in split id array" if kind_count_hash["start"] > 1
-    raise "Finish split was not included in split id array" if kind_count_hash["finish"] == 0
-    raise "Multiple finish splits included in split id array" if kind_count_hash["finish"] > 1
-    sorted_splits = splits.sort_by { |x| [x.distance_from_start, x.sub_order] }
-    sorted_id_array = sorted_splits.map(&:id)
-    raise "Incorrectly ordered split id array" if sorted_id_array != split_id_array
+  def self.convert_to_meters(value, units)
+    units ||= ""
+    x = case units.downcase
+          when "km"
+            value.kilimeters.to.meters
+          when "kilometers"
+            value.kilometers.to.meters
+          when "meters"
+            value
+          when "miles"
+            value.miles.to.meters
+          when "" # Assume miles
+            value.miles.to.meters
+          else
+            false
+        end
+    x ? x.to_i : false
   end
 
-  def create_effort (header, row, event_id)
-    row_hash = Hash[[header, row].transpose].symbolize_keys
-    # Would love to figure out how not to hardcode these symbols lists
-    # (An array of symbols does not work)
-    @effort = Effort.new(
-        row_hash.slice(
-            :first_name,
-            :last_name,
-            :gender,
-            :birthdate,
-            :email,
-            :phone,
-            :city,
-            :state,
-            :country,
-            :age,
-            :wave,
-            :bib_number,
-        )
-    )
-    @effort.event_id = event_id
+  def self.create_effort (row_effort_data, effort_schema, event)
+    @effort = event.efforts.new(start_time: event.first_start_time)
+    (0..effort_schema.size - 1).each do |i|
+      @effort.assign_attributes({effort_schema[i] => row_effort_data[i]}) unless effort_schema[i].nil?
+    end
     if @effort.save
       @effort
     else
-      raise "Problem saving effort data for #{@participant.last_name}. #{@effort.errors.full_messages}."
+      nil
     end
   end
 
-  def create_split_times(row, split_array, split_offset)
-    (split_offset..row.length).each do |k|
-      working_split_id = split_array[k-split_offset]
-      working_time = row[Split.find(working_split_id).name.to_sym]
-      break if working_time.nil?
-      if working_time.instance_of?(Date)
-        working_time = working_time.in_time_zone # Converts Date to Datetime
+  def self.create_split_times(row, split_array, split_offset, effort)
+    row_time_data = row[split_offset - 1..row.size - 1]
+    return nil if split_array.size != row_time_data.size
+    split_time_id_array = []
+    (0..split_array.size - 1).each do |i|
+      working_split_id = split_array[i]
+      working_time = row_time_data[i]
+      seconds = convert_time_to_standard(working_time)
+      if seconds.nil?
+        effort.update_attributes(finished: false) if i == split_array.size - 1
+        next
+      else
+        @split_time = effort.split_times.new(split_id: working_split_id,
+                                             time_from_start: seconds)
       end
-      if working_time.acts_like?(:time)
-        working_time = datetime_to_seconds(working_time)
-      end
-      unless working_time.try(:to_f)
-        raise "Invalid split time data for #{@participant.last_name} at #{Split.find_by_id(working_split_id).name}. #{@split_time.errors.full_messages}."
-      end
-      @split_time = @effort.split_times.new(
-          split_id: working_split_id,
-          time_from_start: working_time
-      )
       if @split_time.save
+        split_time_id_array << @split_time.id
+        effort.update_attributes(finished: true) if i == split_array.size - 1
       else
         raise "Problem saving split time data for #{@participant.last_name} at #{Split.find_by_id(working_split_id).name}. #{@split_time.errors.full_messages}."
       end
     end
+    split_time_id_array
+  end
+
+  def self.convert_time_to_standard(working_time)
+    return nil if working_time.nil?
+    if working_time.instance_of?(Date)
+      working_time = working_time.in_time_zone # Converts Date to Datetime
+    end
+    if working_time.acts_like?(:time)
+      working_time = datetime_to_seconds(working_time)
+    end
+    if working_time.try(:to_f)
+      working_time
+    else
+      nil # raise "Invalid split time data for #{effort.last_name}. #{errors.full_messages}."
+    end
+
   end
 
   # Corrects for Excel quirk; TODO: discover extent of this quirk

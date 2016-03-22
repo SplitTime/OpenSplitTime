@@ -1,9 +1,9 @@
 <%# Requires parameters obj(collection) and page(string) %>
 
-<% obj.each do |split| %>
-    <div class="row">
-      <div class="col-xs-8 col-xs-offset-2">
-        <div class="object-list-body">
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <div class="object-list-body">
+      <% obj.each do |split| %>
           <strong><%= link_to split.name, split_path(split) %></strong>
           <small><%= "#{split.kind.titlecase}: Mile #{split.distance_from_start.meters.to.miles.round(1)} on #{split.course.name}" %></small>
           <% unless page == "events/show" %>
@@ -18,8 +18,9 @@
                             data: {confirm: 'Are you sure?'} %>
               </div>
           <% end %>
-        </div>
-      </div>
+          <br/>
+      <% end %>
     </div>
-<% end %>
+  </div>
+</div>
 

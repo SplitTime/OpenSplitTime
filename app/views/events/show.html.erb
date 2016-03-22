@@ -14,7 +14,7 @@
     <% end %>
     <li>
       <strong>Associated Splits:</strong>
-      <%= @event.splits.count %>
+      <%= link_to @event.splits.count, splits_event_path(@event) %>
     </li>
     <li>
       <strong>Associated Efforts:</strong>
@@ -29,15 +29,6 @@
     <%= link_to 'View all events', events_path, class: "btn btn-xs btn-primary" %>
   </div>
   <hr>
-  <div class="row">
-    <div class="col-xs-8">
-      <h4>Splits associated with this event:</h4>
-    </div>
-    <%= render 'splits/split', obj: @associated_splits, page: "events/show" %>
-  </div>
-
-
-  <hr>
   <strong>Import Splits for this Event</strong>
   <%= form_tag({action: :import_splits}, multipart: true) do %>
       <%= file_field_tag :file %>
@@ -50,4 +41,11 @@
       <%= submit_tag "Import Efforts", class: "btn btn-xs btn-success" %>
   <% end %>
   <hr>
+  <div class="row">
+    <div class="col-xs-8">
+      <h4>Splits associated with this event:</h4>
+    </div>
+    <%= render 'splits/split', obj: @associated_splits, page: "events/show" %>
+  </div>
+
 </div>

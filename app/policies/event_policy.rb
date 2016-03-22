@@ -35,7 +35,7 @@ class EventPolicy
   end
 
   def splits?
-    @current_user.present?
+    @current_user.authorized_to_edit?(@event)
   end
 
   def associate_split?

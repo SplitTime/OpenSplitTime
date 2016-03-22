@@ -199,14 +199,14 @@ class Importer
         split_time_id_array << @split_time.id
         effort.update_attributes(finished: true) if i == split_array.size - 1
       else
-        raise "Problem saving split time data for #{@participant.last_name} at #{Split.find_by_id(working_split_id).name}. #{@split_time.errors.full_messages}."
+        raise "Problem saving split time data for #{@effort.last_name} at #{Split.find_by_id(working_split_id).name}. #{@split_time.errors.full_messages}."
       end
     end
     split_time_id_array
   end
 
   def self.convert_time_to_standard(working_time)
-    return nil if working_time.nil?
+    return nil if working_time.blank?
     if working_time.instance_of?(Date)
       working_time = working_time.in_time_zone # Converts Date to Datetime
     end

@@ -75,23 +75,48 @@ class Importer
   private
 
   def self.prepare_row_effort_data(row_effort_data, effort_schema)
-    i = effort_schema.index(:country_id)
+    i = effort_schema.index(:country_code)
     row_effort_data[i] = prepare_country_data(row_effort_data[i]) unless i.nil?
+    country_code = row_effort_data[i]
+    i = effort_schema.index(:state_code)
+    row_effort_data[i] = prepare_state_data(country_code, row_effort_data[i]) unless (i.nil? | country_code.nil?)
     i = effort_schema.index(:gender)
     row_effort_data[i] = prepare_gender_data(row_effort_data[i]) unless i.nil?
     row_effort_data
   end
 
   def self.prepare_country_data(country_data)
-    return Country.find(country_data).id if country_data.is_a?(Integer) && Country.find(country_data)
     if country_data.is_a?(String)
-      return Country.find_by_code(country_data.upcase).id if country_data.length == 3 && Country.find_by_code(country_data)
-      return Country.find_by_code2(country_data.upcase).id if country_data.length == 2 && Country.find_by_code2(country_data)
-      return Country.find_by_code("USA").id if country_data.downcase == "united states"
-      return Country.find_by_name(country_data).id if Country.find_by_name(country_data)
+      if country_data.length < 4
+        country = Carmen::Country.coded(country_data)
+        return country.code unless country.nil?
+      end
+      country = Carmen::Country.named(country_data)
+      return country.code unless country.nil?
+      return find_country_code_by_nickname(country_data)
     else
       return nil
     end
+  end
+
+  def self.find_country_code_by_nickname(country_data)
+    country_code = I18n.t("nicknames.#{country_data.downcase}")
+    country_code.include?('translation missing') ? nil : country_code
+  end
+
+  def self.prepare_state_data(country_code, state_data)
+    country = Carmen::Country.coded(country_code)
+    if state_data.is_a?(String)
+      return state_data if country.nil?
+      return state_data unless country.subregions?
+      if state_data.length < 4
+        subregion = country.subregions.coded(state_data)
+        return subregion.code unless subregion.nil?
+      end
+      subregion = country.subregions.named(state_data)
+      return subregion.code unless subregion.nil?
+    end
+    return nil
   end
 
   def self.prepare_gender_data(gender_data)
@@ -100,8 +125,8 @@ class Importer
     return "female" if (gender_data == "f") | (gender_data == "female")
   end
 
-  # Returns an array of effort symbols in order of spreadsheet columns
-  # with nil placeholders for spreadsheet columns that don't match
+# Returns an array of effort symbols in order of spreadsheet columns
+# with nil placeholders for spreadsheet columns that don't match
 
   def self.build_effort_schema(effort_symbols, effort_name_array)
     schema = []
@@ -120,8 +145,13 @@ class Importer
 
   def self.fuzzy_match(column_title, effort_symbol)
     effort_string = effort_symbol.to_s.downcase.gsub(/[\W_]+/, '')
-    effort_string.gsub!('countryid', 'country')
+    effort_string.gsub!('countrycode', 'country')
+    effort_string.gsub!('statecode', 'state')
     column_string = column_title.downcase.gsub(/[\W_]+/, '')
+    column_string.gsub!('nation', 'country')
+    column_string.gsub!('region', 'state')
+    column_string.gsub!('province', 'state')
+    column_string.gsub!('sex', 'gender')
     return (column_string == effort_string)
   end
 
@@ -221,8 +251,8 @@ class Importer
 
   end
 
-  # Corrects for Excel quirk; TODO: discover extent of this quirk
-  #TODO: This will not work for datetimes that were intended as such
+# Corrects for Excel quirk; TODO: discover extent of this quirk
+#TODO: This will not work for datetimes that were intended as such
   def self.datetime_to_seconds(value)
     if (value.year < 1901) && @spreadsheet_format.include?("xls")
       value.seconds_since_midnight.to_f + 1.day

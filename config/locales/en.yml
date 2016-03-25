@@ -20,4 +20,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  nicknames:
+    england: "GB"
+    scotland: "GB"
+    great britain: "GB"
+    wales: "GB"
+

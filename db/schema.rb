@@ -11,17 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160321135203) do
-
-  create_table "countries", force: :cascade do |t|
-    t.string   "code",       limit: 3, null: false
-    t.string   "name",                 null: false
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.string   "code2",      limit: 2
-  end
+ActiveRecord::Schema.define(version: 20160324190650) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
@@ -38,8 +28,7 @@ ActiveRecord::Schema.define(version: 20160321135203) do
     t.string   "wave"
     t.integer  "bib_number"
     t.string   "city",           limit: 64
-    t.string   "state",          limit: 64
-    t.integer  "country_id"
+    t.string   "state_code",     limit: 64
     t.integer  "age"
     t.datetime "start_time",                null: false
     t.boolean  "finished"
@@ -50,9 +39,9 @@ ActiveRecord::Schema.define(version: 20160321135203) do
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "gender"
+    t.string   "country_code",   limit: 2
   end
 
-  add_index "efforts", ["country_id"], name: "index_efforts_on_country_id"
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id"
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id"
 
@@ -117,22 +106,20 @@ ActiveRecord::Schema.define(version: 20160321135203) do
   add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
 
   create_table "participants", force: :cascade do |t|
-    t.string   "first_name", limit: 32, null: false
-    t.string   "last_name",  limit: 64, null: false
-    t.integer  "gender",                null: false
+    t.string   "first_name",   limit: 32, null: false
+    t.string   "last_name",    limit: 64, null: false
+    t.integer  "gender",                  null: false
     t.date     "birthdate"
     t.string   "city"
-    t.string   "state"
-    t.integer  "country_id"
+    t.string   "state_code"
     t.string   "email"
     t.string   "phone"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.string   "country_code", limit: 2
   end
-
-  add_index "participants", ["country_id"], name: "index_participants_on_country_id"
 
   create_table "races", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false

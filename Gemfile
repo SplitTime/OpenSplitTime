@@ -31,6 +31,7 @@ gem 'oj'
 gem 'alchemist'
 gem 'roo'
 gem 'roo-xls'
+gem 'carmen-rails'
 group :development do
   gem 'better_errors'
   gem 'foreman'

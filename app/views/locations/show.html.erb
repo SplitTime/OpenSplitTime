@@ -11,9 +11,15 @@
   </div>
 </div>
 <div class="well col-xs-8 col-xs-offset-2">
-  <div class="object-list-body">
-    <strong>MAP GOES HERE</strong>
-  </div>
+  <div id="map" style="width: 550px; height: 350px;"></div>
+
+  <script>
+    $(document).ready(function () {
+      var location=<%= @location.to_json.html_safe %>    // pass ruby variable to javascript
+          gmap_show(location);    // init show map for company card (only print marker)
+    });
+  </script>
+
   <hr>
   <div class="article-actions">
     <%= link_to 'Edit this location', edit_location_path(@location), class: "btn btn-xs btn-primary" %>

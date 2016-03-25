@@ -27,30 +27,34 @@
             <%= f.text_field :elevation, class: "form-control", placeholder: "Meters" %>
           </div>
         </div>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :latitude %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :latitude, class: "form-control", placeholder: "Degrees" %>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :longitude %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :longitude, class: "form-control", placeholder: "Degrees" %>
-          </div>
-        </div>
+        <div class="col-sm-8 col-sm-offset-2" id="map" style="width: 550px; height: 350px;"></div>
+        <%= f.hidden_field :latitude, id: 'map_lat' %>
+        <%= f.hidden_field :longitude, id: 'map_lng' %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@location.new_record? ? "Create Location" : "Update Location", class: 'btn btn-primary btn-large') %>
+            <%= f.submit(@location.new_record? ? "Create Location" : "Update Location",
+                         class: 'btn btn-primary btn-large btn-margin-top') %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
           [ <%= link_to 'Cancel', locations_path %> ]
         </div>
+
+        <% if @location.new_record? %>
+            <script>
+              $(document).ready(function () {
+                gmap_form(null);    // form map for new view (print nothing with possibility of put marker)
+              });
+            </script>
+        <% else %>
+            <script>
+              $(document).ready(function () {
+                var location=<%= @location.to_json.html_safe %>
+                    gmap_form(location);   // form map for edit view (print marker and possibility of put newer)
+              });
+            </script>
+        <% end %>
+
     <% end %>
   </div>
 </div>

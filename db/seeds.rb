@@ -27,10 +27,10 @@ Location.create(name: 'British Ghetto', elevation: 50, latitude: 55, longitude: 
 Location.create(name: 'Typical Outback', elevation: 200, latitude: -43, longitude: 146.3)
 Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
 
-Event.create(course_id: 2, race_id: 3, name: 'Hardly Rocker 2010', start_date: "2010-08-10", first_start_time: "2010-08-10 06:00:00")
-Event.create(course_id: 2, race_id: 2, name: 'Frozen Lips 2015', start_date: "2015-05-31", first_start_time: "2015-05-31 07:00:00")
-Event.create(course_id: 1, race_id: nil, name: 'Test Event', start_date: "2012-08-08", first_start_time: "2012-08-08 05:00:00")
-Event.create(course_id: 4, race_id: 4, name: 'Hardrock 100 2015', start_date: "2015-07-10", first_start_time: "2015-07-10 06:00:00")
+Event.create(course_id: 2, race_id: 3, name: 'Hardly Rocker 2010', first_start_time: "2010-08-10 06:00:00")
+Event.create(course_id: 2, race_id: 2, name: 'Frozen Lips 2015', first_start_time: "2015-05-31 07:00:00")
+Event.create(course_id: 1, race_id: nil, name: 'Test Event', first_start_time: "2012-08-08 05:00:00")
+Event.create(course_id: 4, race_id: 4, name: 'Hardrock 100 2015', first_start_time: "2015-07-10 06:00:00")
 
 Participant.create(first_name: 'Joe', last_name: 'Hardman', gender: 'male', birthdate: "1989-12-15", city: 'Boulder', state_code: 'CO', country_code: 'US', email: 'hardman@gmail.com', phone: nil)
 Participant.create(first_name: 'Jane', last_name: 'Rockstar', gender: 'female', birthdate: "1985-09-20", city: 'Seattle', state_code: 'WA', country_code: 'US', email: nil, phone: '206-977-9777')

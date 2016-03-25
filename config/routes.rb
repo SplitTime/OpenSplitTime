@@ -10,11 +10,13 @@ Rails.application.routes.draw do
     member { post :import_efforts }
     member { get :splits }
     member { put :associate_split }
+    member { put :bulk_associate_splits }
   end
   resources :splits
   resources :races
-  resources :event_splits, only: [:show, :destroy
-  ]
+  resources :event_splits, only: [:show, :destroy] do
+    delete 'bulk_destroy', on: :collection
+  end
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

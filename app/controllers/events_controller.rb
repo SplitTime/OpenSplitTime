@@ -1,7 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_event, only: [:import_splits, :import_efforts, :show, :edit,
-                                   :update, :destroy, :splits, :associate_split]
+  before_action :set_event, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
@@ -91,10 +90,23 @@ class EventsController < ApplicationController
     end
   end
 
+  def bulk_associate_splits
+    authorize @event
+    if params[:split_id_array].nil?
+      redirect_to :back
+    else
+      params[:split_id_array].each do |split_id|
+        @event_split = EventSplit.new(event_id: @event.id, split_id: split_id)
+        @event_split.save
+      end
+      redirect_to splits_event_url(id: @event.id)
+    end
+  end
+
   private
 
   def event_params
-    params.require(:event).permit(:course_id, :race_id, :name, :start_date, :first_start_time)
+    params.require(:event).permit(:course_id, :race_id, :name, :first_start_time)
   end
 
   def query_params

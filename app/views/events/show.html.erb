@@ -1,5 +1,5 @@
 <h1 align="center"><%= @event.name %></h1>
-<h4 align="center"><%= "#{@event.start_date}" %></h4>
+<h4 align="center"><%= "#{@event.first_start_time.to_formatted_s(:long)}" %></h4>
 <div class="well col-xs-8 col-xs-offset-2">
   <ul class="object-list-body">
     <li>

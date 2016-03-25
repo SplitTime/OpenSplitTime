@@ -26,3 +26,7 @@ en:
     great britain: "GB"
     wales: "GB"
 
+  date:
+    formats:
+      default: "%m/%d/%y"
+      short: "%m/%d"

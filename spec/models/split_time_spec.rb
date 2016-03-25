@@ -8,7 +8,7 @@ require "rails_helper"
 RSpec.describe SplitTime, kind: :model do
   it "should be valid when created with an effort_id, a split_id, and a time_from_start" do
     course = Course.create!(name: 'Test Course')
-    event = Event.create!(course_id: course.id, name: 'Test Event 2015', start_date: "2015-07-01")
+    event = Event.create!(course_id: course.id, name: 'Test Event 2015', first_start_time: "2015-07-01 06:00:00")
     effort = Effort.create!(event_id: event.id, participant_id: 1, start_time: "2015-07-01 06:00:00")
     split = Split.create!(course_id: course.id, location_id: 1, name: 'Hopeless Outbound In', distance_from_start: 50000, kind: 2)
     SplitTime.create!(effort_id: effort.id, split_id: split.id, time_from_start: 30000)
@@ -80,7 +80,7 @@ RSpec.describe SplitTime, kind: :model do
   it "should ensure that effort.event.course_id is the same as split.course_id" do
     course1 = Course.create!(name: 'Race Course CW')
     course2 = Course.create!(name: 'Hiking Course CCW')
-    event = Event.create!(course_id: course1.id, name: 'Fast Times 100 2015', start_date: "2015-07-01")
+    event = Event.create!(course_id: course1.id, name: 'Fast Times 100 2015', first_start_time: "2015-07-01 06:00:00")
     effort = Effort.create!(event_id: event.id, participant_id: 1, start_time: "2015-07-01 06:00:00")
     split = Split.create!(course_id: course2.id, location_id: 1, name: 'Hiking Aid 1', distance_from_start: 50000, kind: 2)
     split_time = SplitTime.new(effort_id: effort.id, split_id: split.id, time_from_start: 30000)

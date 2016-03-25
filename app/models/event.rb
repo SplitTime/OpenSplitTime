@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
   has_many :event_splits, dependent: :destroy
   has_many :splits, through: :event_splits
 
-  validates_presence_of :course_id, :name, :start_date
+  validates_presence_of :course_id, :name, :first_start_time
   validates_uniqueness_of :name, case_sensitive: false
 
   def all_splits_on_course?

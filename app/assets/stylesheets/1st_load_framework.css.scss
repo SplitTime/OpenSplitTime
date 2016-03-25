@@ -121,6 +121,10 @@ section {
   font-weight: bold;
 }
 
+.btn-margin-top {
+  margin-top: 20px;
+}
+
 #error_explanation:not(:empty) {
   @extend .alert;
   @extend .alert-danger;

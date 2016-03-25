@@ -15,16 +15,18 @@
 
   <script>
     $(document).ready(function () {
-      var location=<%= @location.to_json.html_safe %>    // pass ruby variable to javascript
+      var location = <%= @location.to_json.html_safe %>    // pass ruby variable to javascript
           gmap_show(location);    // init show map for company card (only print marker)
     });
   </script>
 
   <hr>
   <div class="article-actions">
-    <%= link_to 'Edit this location', edit_location_path(@location), class: "btn btn-xs btn-primary" %>
-    <%= link_to 'Delete this location', location_path(@location), method: :delete,
-                data: {confirm: "Are you sure?"}, class: "btn btn-xs btn-danger" %>
-    <%= link_to 'View all locations', locations_path, class: "btn btn-xs btn-primary" %>
+    <%= link_to '< View all locations', locations_path, class: "btn btn-sm btn-default" %>
+    <% if @current_user.authorized_to_edit?(@location) %>
+        <%= link_to 'Edit this location', edit_location_path(@location), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Delete this location', location_path(@location), method: :delete,
+                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+    <% end %>
   </div>
 </div>

@@ -1,26 +1,35 @@
-<%# Requires parameters obj(collection) and page(string) %>
+<%# Requires parameter obj(collection) %>
 
-<div class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-    <div class="object-list-body">
-      <% obj.each do |split| %>
-          <strong><%= link_to split.name, split_path(split) %></strong>
-          <small><%= "#{split.kind.titlecase}: Mile #{split.distance_from_start.meters.to.miles.round(1)} on #{split.course.name}" %></small>
-          <% unless page == "events/show" %>
-              <div class="object-list-actions">
-                <% if @course.nil? %>
-                    <%= link_to 'Edit Split', edit_split_path(split), class: "btn btn-xs btn-primary" %>
-                <% else %>
-                    <%= link_to 'Edit Split', edit_split_path(split, course_id: @course.id), class: "btn btn-xs btn-primary" %>
-                <% end %>
-                <%= link_to 'Delete Split', split_path(split), class: "btn btn-xs btn-danger",
-                            method: :delete,
-                            data: {confirm: 'Are you sure?'} %>
-              </div>
-          <% end %>
-          <br/>
-      <% end %>
-    </div>
-  </div>
-</div>
-
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Details</th>
+    <% unless controller.controller_name == "events" && controller.action_name == "show" %>
+        <th>Actions</th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+  <% obj.each do |split| %>
+      <tr>
+        <td><strong><%= link_to split.name, split_path(split) %></strong></td>
+        <td><%= "#{split.kind.titlecase}: Mile #{split.distance_from_start.meters.to.miles.round(1)} on #{split.course.name}" %></td>
+        <% unless controller.controller_name == "events" && controller.action_name == "show" %>
+            <% if @current_user.authorized_to_edit?(split) %>
+                <td>
+                  <% if @course.nil? %>
+                      <%= link_to 'Edit Split', edit_split_path(split), class: "btn btn-xs btn-primary" %>
+                  <% else %>
+                      <%= link_to 'Edit Split', edit_split_path(split, course_id: @course.id), class: "btn btn-xs btn-primary" %>
+                  <% end %>
+                  <%= link_to 'Delete Split', split_path(split), class: "btn btn-xs btn-danger",
+                              method: :delete,
+                              data: {confirm: 'Are you sure?'} %>
+                </td>
+            <% end %>
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

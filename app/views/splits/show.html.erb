@@ -19,18 +19,28 @@
       <strong>Vertical Loss From Start:</strong>
       <%= @split.vert_loss_from_start %>
     </li>
-    <% if @split.location_id? %>
-        <li>
-          <strong>Location:</strong>
-          <%= link_to @split.location.name, edit_location_path(@split.location) %>
-        </li>
-    <% end %>
   </ul>
-  <hr>
   <div class="article-actions">
-    <%= link_to 'Edit this split', edit_split_path(@split), class: "btn btn-xs btn-primary" %>
-    <%= link_to 'Delete this split', split_path(@split), method: :delete,
-                data: {confirm: "Are you sure?"}, class: "btn btn-xs btn-danger" %>
-    <%= link_to 'View all splits', splits_path, class: "btn btn-xs btn-primary" %>
+    <%= link_to '< View all splits', splits_path, class: "btn btn-sm btn-default" %>
+    <% if @current_user.authorized_to_edit?(@split) %>
+        <%= link_to 'Edit this split', edit_split_path(@split), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Delete this split', split_path(@split), method: :delete,
+                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+    <% end %>
   </div>
+  <hr>
+  <% if @split.location_id? %>
+      <strong>Location:</strong>
+      <%= link_to @split.location.name, location_path(@split.location) %>
+      <div id="map" style="width: 550px; height: 350px;"></div>
+
+      <script>
+        $(document).ready(function () {
+          var location = <%= @split.location.to_json.html_safe %>    // pass ruby variable to javascript
+              gmap_show(location);    // init show map for company card (only print marker)
+        });
+      </script>
+
+  <% end %>
+
 </div>

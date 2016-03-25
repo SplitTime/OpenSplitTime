@@ -6,15 +6,27 @@
 </div>
 <hr>
 <div class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-    <%= link_to 'Create New Event', new_event_path(race_id: @race.id), class: "btn btn-sm btn-primary" %>
+  <div class="col-xs-6">
+    <%= link_to '< Show All Races', races_path, class: "btn btn-sm btn-default" %>
+    <% if @current_user.authorized_to_edit?(@race) %>
+        <%= link_to 'Edit this race', edit_race_path(@race), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Delete this race', race_path(@race), method: :delete,
+                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+    <% end %>
   </div>
 </div>
 <hr>
-<div class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-    <h4>Events associated with this race:</h4>
-  </div>
-</div>
 
-<%= render 'events/event', obj: @race_events %>
+<div class="article-actions">
+  <%= link_to 'Create New Event', new_event_path(race_id: @race.id), class: "btn btn-sm btn-success" %>
+</div>
+<hr>
+
+<% if @race_events.count > 0 %>
+    <div class="row">
+      <div class="col-xs-8">
+        <h4>Events associated with this race:</h4>
+      </div>
+    </div>
+    <%= render 'events/event', obj: @race_events %>
+<% end %>

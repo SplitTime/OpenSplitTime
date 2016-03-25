@@ -1,22 +1,32 @@
-<% obj.each do |location| %>
-    <div class="row">
-      <div class="col-xs-8 col-xs-offset-2">
-        <div class="object-list-body">
-          <strong><%= link_to location.name, location_path(location) %></strong>
-          <small>
-            <%= "Elevation #{location.elevation}, Lat/Lon: #{location.latitude.abs}" %>
-            <%= location.latitude >= 0 ? "°N" : "°S" %>
-            <%= ", #{location.longitude.abs}" %>
-            <%= location.longitude >= 0 ? "°E" : "°W" %>
-          </small>
-          <div class="object-list-actions">
-            <%= link_to 'Edit Location', edit_location_path(location), class: "btn btn-xs btn-primary" %>
-            <%= link_to 'Delete Location', location_path(location), class: "btn btn-xs btn-danger",
-                        method: :delete,
-                        data: {confirm: 'Are you sure?'} %>
-          </div>
-        </div>
-      </div>
-    </div>
-<% end %>
+<%# Requires parameter obj(collection) %>
 
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Details</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% obj.each do |location| %>
+      <tr>
+        <td><strong><%= link_to location.name, location_path(location) %></strong></td>
+        <td>
+          <%= "Elevation #{location.elevation}, Lat/Lon: #{location.latitude.abs}" %>
+          <%= location.latitude >= 0 ? "°N" : "°S" %>
+          <%= ", #{location.longitude.abs}" %>
+          <%= location.longitude >= 0 ? "°E" : "°W" %>
+        </td>
+            <% if @current_user.authorized_to_edit?(location) %>
+                <td>
+                      <%= link_to 'Edit Location', edit_location_path(location), class: "btn btn-xs btn-primary" %>
+                  <%= link_to 'Delete Location', location_path(location), class: "btn btn-xs btn-danger",
+                              method: :delete,
+                              data: {confirm: 'Are you sure?'} %>
+                </td>
+            <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

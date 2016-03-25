@@ -1,12 +1,12 @@
 <h1 align="center">Listing All Splits</h1>
 <div class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-    <%= link_to 'Create New Split', new_split_path, class: "btn btn-sm btn-primary" %>
+  <div class="col-xs-8">
+    <%= link_to 'Create New Split', new_split_path, class: "btn btn-sm btn-success" %>
   </div>
 </div>
 <hr>
 
-<%= render 'split', obj: @splits, page: "splits/index" %>
+<%= render 'split', obj: @splits %>
 
 <p>
   Download:

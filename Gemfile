@@ -1,7 +1,6 @@
-source 'https://rubygems.org'
 ruby '2.2.4'
+source 'https://rubygems.org'
 gem 'rails', '4.2.5'
-gem 'sqlite3'
 gem 'responders', '~> 2.0'
 gem 'mysql2', '~> 0.3.18'
 gem 'bootstrap-sass'
@@ -36,6 +35,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rubocop', '~> 0.36'

@@ -91,7 +91,6 @@ pickle-email-*.html
 
 # tilde files are usually backup files from a text editor
 *~
-Gemfile.lock
 bin/*
 .ruby-gemset
 .ruby-version

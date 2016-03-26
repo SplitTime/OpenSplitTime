@@ -12,20 +12,13 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'kaminari'
 gem 'turbolinks'
-group :development, :test do
-  gem 'byebug'
-end
-group :development do
-  gem 'web-console', '~> 2.0'
-  gem 'spring'
-end
 gem 'high_voltage'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'devise'
 gem 'pundit'
 gem 'rails_apps_pages'
-gem 'therubyracer', :platform=>:ruby
+gem 'therubyracer', :platform => :ruby
 gem 'ar-audit-tracer'
 gem 'oj'
 gem 'alchemist'
@@ -33,16 +26,25 @@ gem 'roo'
 gem 'roo-xls'
 gem 'carmen-rails'
 gem 'gmaps4rails'
+gem 'better_errors'
+gem 'foreman'
+gem 'rails_layout'
+
 group :development do
-  gem 'better_errors'
-  gem 'foreman'
-  gem 'rails_layout'
+  gem 'web-console', '~> 2.0'
+  gem 'spring'
 end
+
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rubocop', '~> 0.36'
   gem 'rspec', '~> 3.4'
   gem 'rspec-rails', '~> 3.0'
+  gem 'byebug'
+end
 
+group :production do
+  gem 'pg'
+  gem 'rails_12factor'
 end

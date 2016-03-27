@@ -11,8 +11,7 @@ class SplitsController < ApplicationController
       format.xls
       format.json { send_data @splits.to_json }
     end
-    session[:return_to] = event_path(params[:event_id]) if params[:event_id].present?
-    session[:return_to] = course_path(params[:course_id]) if params[:course_id].present?
+    session[:return_to] = splits_path
   end
 
   def show
@@ -25,12 +24,10 @@ class SplitsController < ApplicationController
       @course = Course.find(params[:course_id])
     end
     authorize @split
-    session[:return_to] ||= request.referer
   end
 
   def edit
     @course = Course.find(params[:course_id]) if params[:course_id]
-    session[:return_to] ||= request.referer
     authorize @split
   end
 

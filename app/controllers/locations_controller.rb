@@ -17,7 +17,6 @@ class LocationsController < ApplicationController
   end
 
   def edit
-    session[:return_to] ||= request.referer
     authorize @location
   end
 

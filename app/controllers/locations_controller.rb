@@ -25,7 +25,10 @@ class LocationsController < ApplicationController
     authorize @location
 
     if @location.save
-      conform_split_locations_to(params[:split_id]) unless params[:split_id].nil?
+      unless params[:split_id].nil?
+        @split = Split.find(params[:split_id])
+        conform_split_locations_to(@split)
+      end
       redirect_to session.delete(:return_to) || @location
     else
       render 'new'

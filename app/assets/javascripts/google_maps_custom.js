@@ -9,12 +9,9 @@ function gmap_show(location) {
             {
                 "lat": location.latitude,    // coordinates from parameter location
                 "lng": location.longitude,
-                "picture": {    // setup marker icon
-                    "url": 'http://www.travelaustralia.com.au/graphics/map_icons/icons/orange-dot.png',
-                    "width":  32,
-                    "height": 32
-                },
-                "infowindow": "<b>" + location.name + "</b> " + location.elevation + ", " + location.description
+                "draggable": true,
+                "animation": DROP,
+                "infowindow": "<b>" + location.name + "</b> " + location.latitude + ", " + location.longitude
             }
         ]);
         handler.bounds.extendWith(markers);
@@ -31,12 +28,9 @@ function gmap_form(location) {
                 {
                     "lat": location.latitude,
                     "lng": location.longitude,
-                    "picture": {
-                        "url": 'http://www.travelaustralia.com.au/graphics/map_icons/icons/orange-dot.png',
-                        "width":  32,
-                        "height": 32
-                    },
-                    "infowindow": "<b>" + location.name + "</b> " + location.elevation
+                    "draggable": true,
+                    "animation": DROP,
+                    "infowindow": "<b>" + location.name + "</b> " + location.latitude + ", " + location.longitude
                 }
             ]);
             handler.bounds.extendWith(markers);

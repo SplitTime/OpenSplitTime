@@ -27,7 +27,7 @@ class ParticipantPolicy
   end
 
   def avatar_claim?
-    @current_user.reasonably_approximates?(@participant)
+    @current_user.authorized_to_claim?(@participant)
   end
 
 end

@@ -13,7 +13,8 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '< Show All Events', events_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Show All Events', events_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user.authorized_to_edit?(@event) %>
         <%= link_to 'Edit this event', edit_event_path(@event), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this event', event_path(@event), method: :delete,

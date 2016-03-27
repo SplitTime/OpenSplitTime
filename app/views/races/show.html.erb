@@ -7,7 +7,8 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '< Show All Races', races_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Show All Races', races_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user.authorized_to_edit?(@race) %>
         <%= link_to 'Edit this race', edit_race_path(@race), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this race', race_path(@race), method: :delete,

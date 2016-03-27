@@ -8,6 +8,14 @@ class ApplicationController < ActionController::Base
     Concern::Audit::Author.current = current_user.try(:id)
   end
 
+  def conform_split_locations_to(base_split)
+    location_id = base_split.location.id
+    @splits = Split.having_same_distance_as(base_split)
+    @splits.each do |split|
+      split.update_attributes(location_id: location_id)
+    end
+  end
+
   if Rails.env.development?
     # https://github.com/RailsApps/rails-devise-pundit/issues/10
     include Pundit

@@ -46,4 +46,8 @@ class Split < ActiveRecord::Base
     end
   end
 
+  def self.having_same_distance_as(split)
+    where(course_id: split.course_id, distance_from_start: split.distance_from_start).where.not(id: split.id)
+  end
+
 end

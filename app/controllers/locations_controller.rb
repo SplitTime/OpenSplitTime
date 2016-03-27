@@ -4,7 +4,7 @@ class LocationsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @locations = Location.all
+    @locations = Location.all.order(:longitude)
   end
 
   def show
@@ -12,6 +12,7 @@ class LocationsController < ApplicationController
 
   def new
     @location = Location.new
+    @split = Split.find(params[:split_id]) unless params[:split_id].nil?
     authorize @location
   end
 
@@ -25,7 +26,8 @@ class LocationsController < ApplicationController
     authorize @location
 
     if @location.save
-      redirect_to @location
+      conform_split_locations_to(params[:split_id]) unless params[:split_id].nil?
+      redirect_to session.delete(:return_to) || @location
     else
       render 'new'
     end
@@ -35,7 +37,7 @@ class LocationsController < ApplicationController
     authorize @location
 
     if @location.update(location_params)
-      redirect_to session.delete(:return_to)
+      redirect_to session.delete(:return_to) || @location
     else
       render 'edit'
     end
@@ -45,7 +47,7 @@ class LocationsController < ApplicationController
     authorize @location
     @location.destroy
 
-    redirect_to locations_path
+    redirect_to session.delete(:return_to) || locations_path
   end
 
   private

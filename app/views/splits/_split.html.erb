@@ -5,6 +5,7 @@
   <tr>
     <th>Name</th>
     <th>Details</th>
+    <th>Location</th>
     <% unless controller.controller_name == "events" && controller.action_name == "show" %>
         <th>Actions</th>
     <% end %>
@@ -15,6 +16,11 @@
       <tr>
         <td><strong><%= link_to split.name, split_path(split) %></strong></td>
         <td><%= "#{split.kind.titlecase}: Mile #{split.distance_from_start.meters.to.miles.round(1)} on #{split.course.name}" %></td>
+        <% if split.location %>
+            <td><%= link_to split.location.name, location_path(split.location) %></td>
+        <% else %>
+            <td><%= link_to "Create", new_location_path(split_id: split.id), class: "btn btn-xs btn-success" %></td>
+        <% end %>
         <% unless controller.controller_name == "events" && controller.action_name == "show" %>
             <% if @current_user.authorized_to_edit?(split) %>
                 <td>

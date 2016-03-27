@@ -13,19 +13,28 @@
       <tr>
         <td><strong><%= link_to location.name, location_path(location) %></strong></td>
         <td>
-          <%= "Elevation #{location.elevation}, Lat/Lon: #{location.latitude.abs}" %>
-          <%= location.latitude >= 0 ? "°N" : "°S" %>
-          <%= ", #{location.longitude.abs}" %>
-          <%= location.longitude >= 0 ? "°E" : "°W" %>
+          <%= "Elevation: #{location.elevation.nil? ? '[Unknown]' : location.elevation}, Lat/Lon: " %>
+          <% if location.latitude.nil? %>
+              [Unknown]
+          <% else %>
+              <%= location.latitude.abs %>
+              <%= location.latitude >= 0 ? "°N" : "°S" %>
+          <% end %>
+          <% if location.longitude.nil? %>
+              [Unknown]
+          <% else %>
+              <%= location.longitude.abs %>
+              <%= location.longitude >= 0 ? "°E" : "°W" %>
+          <% end %>
         </td>
-            <% if @current_user.authorized_to_edit?(location) %>
-                <td>
-                      <%= link_to 'Edit Location', edit_location_path(location), class: "btn btn-xs btn-primary" %>
-                  <%= link_to 'Delete Location', location_path(location), class: "btn btn-xs btn-danger",
-                              method: :delete,
-                              data: {confirm: 'Are you sure?'} %>
-                </td>
-            <% end %>
+        <% if @current_user.authorized_to_edit?(location) %>
+            <td>
+              <%= link_to 'Edit Location', edit_location_path(location), class: "btn btn-xs btn-primary" %>
+              <%= link_to 'Delete Location', location_path(location), class: "btn btn-xs btn-danger",
+                          method: :delete,
+                          data: {confirm: 'Are you sure?'} %>
+            </td>
+        <% end %>
       </tr>
   <% end %>
   </tbody>

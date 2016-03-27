@@ -4,7 +4,8 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @events = Event.all
+    @events = Event.all.order(:first_start_time)
+    session[:return_to] = events_path
   end
 
   def import_splits
@@ -30,7 +31,8 @@ class EventsController < ApplicationController
   end
 
   def show
-    @associated_splits = @event.splits
+    @associated_splits = @event.splits.order(:distance_from_start, :sub_order)
+    session[:return_to] = event_path(@event)
   end
 
   def new
@@ -47,7 +49,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      redirect_to @event
+      redirect_to session.delete(:return_to) || @event
     else
       render 'new'
     end
@@ -57,7 +59,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.update(event_params)
-      redirect_to @event
+      redirect_to session.delete(:return_to) || @event
     else
       render 'edit'
     end
@@ -67,7 +69,7 @@ class EventsController < ApplicationController
     authorize @event
     @event.destroy
 
-    redirect_to events_path
+    redirect_to session.delete(:return_to) || events_path
   end
 
   def splits

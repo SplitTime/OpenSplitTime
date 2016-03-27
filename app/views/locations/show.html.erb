@@ -1,9 +1,18 @@
 <h1 align="center"><%= @location.name %></h1>
 <h4 align="center">
-  <%= "Elevation #{@location.elevation}, Lat/Lon: #{@location.latitude.abs}" %>
-  <%= @location.latitude >= 0 ? "°N" : "°S" %>
-  <%= ", #{@location.longitude.abs}" %>
-  <%= @location.longitude >= 0 ? "°E" : "°W" %>
+  <%= "Elevation: #{@location.elevation.nil? ? '[Unknown]' : @location.elevation}, Lat/Lon: " %>
+  <% if @location.latitude.nil? %>
+      [Unknown]
+  <% else %>
+      <%= @location.latitude.abs %>
+      <%= @location.latitude >= 0 ? "°N" : "°S" %>
+  <% end %>
+  <% if @location.longitude.nil? %>
+      [Unknown]
+  <% else %>
+      <%= @location.longitude.abs %>
+      <%= @location.longitude >= 0 ? "°E" : "°W" %>
+  <% end %>
 </h4>
 <div class="row">
   <div class="col-md-4 col-md-offset-4 center">
@@ -22,7 +31,9 @@
 
   <hr>
   <div class="article-actions">
-    <%= link_to '< View all locations', locations_path, class: "btn btn-sm btn-default" %>
+
+    <%= link_to '<< View all locations', locations_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user.authorized_to_edit?(@location) %>
         <%= link_to 'Edit this location', edit_location_path(@location), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this location', location_path(@location), method: :delete,

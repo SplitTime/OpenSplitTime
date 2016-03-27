@@ -1,3 +1,6 @@
+<%= link_to '< Back to Event', event_path(id: @event.id),
+            :class => 'btn btn-sm btn-default' %>
+
 <% if @associated_splits.count > 0 %>
     <div class="page-header">
       <div class="row">
@@ -89,7 +92,4 @@
 
     </table>
 <% end %>
-
-<%= link_to 'Back to Event', event_path(id: @event.id),
-            :class => 'btn btn-sm btn-primary' %>
 

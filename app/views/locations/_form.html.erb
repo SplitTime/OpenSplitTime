@@ -32,8 +32,13 @@
         <%= f.hidden_field :longitude, id: 'map_lng' %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@location.new_record? ? "Create Location" : "Update Location",
-                         class: 'btn btn-primary btn-large btn-margin-top') %>
+            <% if @split.nil? %>
+                <%= f.submit @location.new_record? ? "Create Location" : "Update Location",
+                             class: 'btn btn-primary btn-large btn-margin-top' %>
+            <% else %>
+                <%= f.button @location.new_record? ? "Create Location" : "Update Location", name: "split_id", value: @split.id,
+                             class: 'btn btn-primary btn-large btn-margin-top' %>
+            <% end %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
@@ -49,7 +54,7 @@
         <% else %>
             <script>
               $(document).ready(function () {
-                var location=<%= @location.to_json.html_safe %>
+                var location = <%= @location.to_json.html_safe %>
                     gmap_form(location);   // form map for edit view (print marker and possibility of put newer)
               });
             </script>

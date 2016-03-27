@@ -21,7 +21,8 @@
     </li>
   </ul>
   <div class="article-actions">
-    <%= link_to '< View all splits', splits_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< View all splits', splits_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user.authorized_to_edit?(@split) %>
         <%= link_to 'Edit this split', edit_split_path(@split), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this split', split_path(@split), method: :delete,
@@ -40,7 +41,8 @@
               gmap_show(location);    // init show map for company card (only print marker)
         });
       </script>
-
+  <% else %>
+      <td><%= link_to "Create Location", new_location_path(split_id: @split.id), class: "btn btn-sm btn-success" %></td>
   <% end %>
 
 </div>

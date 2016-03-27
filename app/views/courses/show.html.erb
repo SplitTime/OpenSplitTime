@@ -7,7 +7,8 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '< Show All Courses', courses_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Show All Courses', courses_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user.authorized_to_edit?(@course) %>
         <%= link_to 'Edit this course', edit_course_path(@course), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this course', course_path(@course), method: :delete,

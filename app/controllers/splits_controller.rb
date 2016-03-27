@@ -1,9 +1,10 @@
 class SplitsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_split, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @splits = Split.order(:course_id)
+    @splits = Split.order(:course_id, :distance_from_start, :sub_order)
     respond_to do |format|
       format.html
       format.csv { send_data @splits.to_csv }
@@ -15,7 +16,7 @@ class SplitsController < ApplicationController
   end
 
   def show
-    @split = Split.find(params[:id])
+    session[:return_to] = split_path(@split)
   end
 
   def new
@@ -28,7 +29,6 @@ class SplitsController < ApplicationController
   end
 
   def edit
-    @split = Split.find(params[:id])
     @course = Course.find(params[:course_id]) if params[:course_id]
     session[:return_to] ||= request.referer
     authorize @split
@@ -39,18 +39,19 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.save
-      redirect_to session.delete(:return_to)
+      conform_split_locations_to(@split) unless @split.location_id.nil?
+      redirect_to session.delete(:return_to) || @split
     else
       render 'new'
     end
   end
 
   def update
-    @split = Split.find(params[:id])
     authorize @split
 
     if @split.update(split_params)
-      redirect_to session.delete(:return_to)
+      conform_split_locations_to(@split)
+      redirect_to session.delete(:return_to) || @split
     else
       @course = Course.find(@split.course_id) if @split.course_id
       render 'edit'
@@ -58,9 +59,8 @@ class SplitsController < ApplicationController
   end
 
   def destroy
-    split = Split.find(params[:id])
-    authorize split
-    split.destroy
+    authorize @split
+    @split.destroy
 
     redirect_to session.delete(:return_to) || splits_url
   end
@@ -74,6 +74,10 @@ class SplitsController < ApplicationController
 
   def query_params
     params.permit(:name)
+  end
+
+  def set_split
+    @split = Split.find(params[:id])
   end
 
 end

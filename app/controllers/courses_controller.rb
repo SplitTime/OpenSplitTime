@@ -1,15 +1,16 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_course, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @courses = Course.all
+    @courses = Course.all.order(:name)
+    session[:return_to] = courses_path
   end
 
   def show
-    @course = Course.find(params[:id])
-    @course_splits = @course.splits
-    session[:return_to] = course_path
+    @course_splits = @course.splits.order(:distance_from_start, :sub_order)
+    session[:return_to] = course_path(@course)
   end
 
   def new
@@ -18,7 +19,6 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    @course = Course.find(params[:id])
     authorize @course
   end
 
@@ -27,29 +27,27 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      redirect_to @course
+      redirect_to session.delete(:return_to) || @course
     else
       render 'new'
     end
   end
 
   def update
-    @course = Course.find(params[:id])
     authorize @course
 
     if @course.update(course_params)
-      redirect_to @course
+      redirect_to session.delete(:return_to) || @course
     else
       render 'edit'
     end
   end
 
   def destroy
-    course = Course.find(params[:id])
     authorize course
     course.destroy
 
-    redirect_to courses_path
+    redirect_to session.delete(:return_to) || courses_path
   end
 
   private
@@ -60,6 +58,10 @@ class CoursesController < ApplicationController
 
   def query_params
     params.permit(:name)
+  end
+
+  def set_course
+    @course = Course.find(params[:id])
   end
 
 end

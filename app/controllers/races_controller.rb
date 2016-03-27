@@ -1,14 +1,16 @@
 class RacesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_race, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @races = Race.all
+    @races = Race.all.order(:name)
+    session[:return_to] = races_path
   end
 
   def show
-    @race = Race.find(params[:id])
     @race_events = @race.events
+    session[:return_to] = race_path(@race)
   end
 
   def new
@@ -17,7 +19,6 @@ class RacesController < ApplicationController
   end
 
   def edit
-    @race = Race.find(params[:id])
     authorize @race
   end
 
@@ -26,29 +27,27 @@ class RacesController < ApplicationController
     authorize @race
 
     if @race.save
-      redirect_to @race
+      redirect_to session.delete(:return_to) || @race
     else
       render 'new'
     end
   end
 
   def update
-    @race = Race.find(params[:id])
     authorize @race
 
     if @race.update(race_params)
-      redirect_to @race
+      redirect_to session.delete(:return_to) || @race
     else
       render 'edit'
     end
   end
 
   def destroy
-    race = Race.find(params[:id])
-    authorize race
-    race.destroy
+    authorize @race
+    @race.destroy
 
-    redirect_to races_path
+    redirect_to session.delete(:return_to) || races_path
   end
 
   private
@@ -59,6 +58,10 @@ class RacesController < ApplicationController
 
   def query_params
     params.permit(:name)
+  end
+
+  def set_race
+    @race = Race.find(params[:id])
   end
 
 end

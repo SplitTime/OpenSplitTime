@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   end
   resources :participants do
     collection { get :subregion_options}
+    member { get :avatar_claim }
+    member { delete :avatar_disclaim }
   end
   resources :efforts, only: [:show, :edit]
   get '/auth/:provider/callback' => 'sessions#create'

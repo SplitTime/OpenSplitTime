@@ -1,4 +1,3 @@
-<h3>User</h3>
-<p>First Name: <%= @user.first_name if @user.first_name %></p>
-<p>Last Name: <%= @user.last_name if @user.last_name %></p>
+<h3><%= @user.full_name %></h3>
 <p>Email: <%= @user.email if @user.email %></p>
+<p>Avatar: <%= @user.avatar.full_name if @user.avatar %></p>

@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :participants, :through => :interests
   has_many :ownerships, dependent: :destroy
   has_many :races, :through => :ownerships
-  belongs_to :participant
+  has_one :avatar, class_name: 'Participant'
 
   validates_presence_of :first_name, :last_name
 
@@ -31,6 +31,24 @@ class User < ActiveRecord::Base
 
   def authorized_to_edit?(resource)
     self.admin? | ( self.id == resource.created_by )
+  end
+
+  def authorized_to_claim?(participant)
+    return true if self.admin?
+    return true if self.full_name == participant.full_name
+    return true # TODO future fuzzy match algorithm; also provide for admin contact and override
+  end
+
+  def full_name
+    first_name + " " + last_name
+  end
+  
+  def has_no_avatar?
+    avatar.nil?
+  end
+  
+  def has_avatar?
+    !has_no_avatar?
   end
 
 end

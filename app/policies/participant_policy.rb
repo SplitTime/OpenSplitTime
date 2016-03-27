@@ -26,4 +26,8 @@ class ParticipantPolicy
     @current_user.authorized_to_edit?(@participant)
   end
 
+  def avatar_claim?
+    @current_user.reasonably_approximates?(@participant)
+  end
+
 end

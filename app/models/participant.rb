@@ -3,6 +3,7 @@ class Participant < ActiveRecord::Base  #TODO: create class Person with subclass
   has_many :interests, dependent: :destroy
   has_many :users, :through => :interests
   has_many :efforts
+  belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
 
   validates_presence_of :first_name, :last_name, :gender
 
@@ -28,4 +29,13 @@ class Participant < ActiveRecord::Base  #TODO: create class Person with subclass
   def years_between_dates(date1, date2)
     (date2 - date1) / 365.25
   end
+
+  def unclaimed?
+    claimant.nil?
+  end
+
+  def claimed?
+    !unclaimed?
+  end
+
 end

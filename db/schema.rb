@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327094834) do
+ActiveRecord::Schema.define(version: 20160327114145) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
@@ -118,7 +118,10 @@ ActiveRecord::Schema.define(version: 20160327094834) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "country_code", limit: 2
+    t.integer  "user_id"
   end
+
+  add_index "participants", ["user_id"], name: "index_participants_on_user_id"
 
   create_table "races", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
@@ -163,7 +166,6 @@ ActiveRecord::Schema.define(version: 20160327094834) do
   add_index "splits", ["location_id"], name: "index_splits_on_location_id"
 
   create_table "users", force: :cascade do |t|
-    t.integer  "participant_id"
     t.string   "first_name",             limit: 32,              null: false
     t.string   "last_name",              limit: 64,              null: false
     t.integer  "role"
@@ -189,7 +191,6 @@ ActiveRecord::Schema.define(version: 20160327094834) do
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
   add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["participant_id"], name: "index_users_on_participant_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

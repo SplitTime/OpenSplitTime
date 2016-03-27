@@ -1,0 +1,94 @@
+<%= render 'shared/errors', obj: @participant %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@participant, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :first_name %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :first_name, class: "form-control", placeholder: "First name", autofocus: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :last_name %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :last_name, class: "form-control", placeholder: "Last name" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :gender %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.select :gender, Participant.genders.keys.map { |gender| [gender.titleize, gender] } %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :birthdate %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.date_select :birthdate,
+                              use_short_month: true,
+                              start_year: Date.today.year - 10,
+                              end_year: 1900,
+                              order: [:month, :day, :year],
+                              default: "1980-01-01".to_date,
+                              class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :country_code %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.country_select :country_code, priority: %w(US CA), prompt: 'Please select a country' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :state_code %><br/>
+          </div>
+          <div class="col-sm-8">
+            <%= render partial: 'subregion_select', locals: {parent_region: f.object.country_code} %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :city %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :city, class: "form-control", placeholder: "City" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :email %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.email_field :email, class: "form-control", placeholder: "Email" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :phone %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.phone_field :phone, class: "form-control", placeholder: "Phone" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit(@participant.new_record? ? "Create Participant" : "Update Participant", class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+        <div class="col-xs-4 col-xs-offset-2">
+          [ <%= link_to 'Cancel', participants_path %> ]
+        </div>
+    <% end %>
+  </div>
+</div>

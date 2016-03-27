@@ -5,12 +5,12 @@ class SplitsController < ApplicationController
 
   def index
     @splits = Split.order(:course_id, :distance_from_start, :sub_order)
-    respond_to do |format|
-      format.html
-      format.csv { send_data @splits.to_csv }
-      format.xls
-      format.json { send_data @splits.to_json }
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.csv { send_data @splits.to_csv }
+    #   format.xls
+    #   format.json { send_data @splits.to_json }
+    # end
     session[:return_to] = splits_path
   end
 

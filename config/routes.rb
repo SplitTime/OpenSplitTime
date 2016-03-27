@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   root to: 'visitors#index'
   get 'about', to: 'pages#about'
   devise_for :users, :controllers => {registrations: 'registrations'}
-  resources :users
+  resources :users do
+    member { get :participants }
+    member { put :associate_participant }
+  end
   resources :locations
   resources :courses
   resources :events do
@@ -17,6 +20,10 @@ Rails.application.routes.draw do
   resources :event_splits, only: [:show, :destroy] do
     delete 'bulk_destroy', on: :collection
   end
+  resources :participants do
+    collection { get :subregion_options}
+  end
+  resources :efforts, only: [:show, :edit]
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

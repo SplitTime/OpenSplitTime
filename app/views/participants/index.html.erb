@@ -1,0 +1,9 @@
+<h1 align="center">Listing All Participants</h1>
+<div class="row">
+  <div class="col-xs-8">
+    <%= link_to 'Create New Participant', new_participant_path, class: "btn btn-sm btn-success" %>
+  </div>
+</div>
+<hr>
+
+<%= render 'participant', obj: @participants %>

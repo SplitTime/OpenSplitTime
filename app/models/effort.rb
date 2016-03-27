@@ -19,4 +19,35 @@ class Effort < ActiveRecord::Base
     first_name + " " + last_name
   end
 
+  def finished?
+    return false if split_times.count < 1
+    split_times.each do |split_time|
+      return true if split_time.split.kind == "finish"
+    end
+    false
+  end
+
+  def finish_time
+    return nil if split_times.count < 1
+    split_times.each do |split_time|
+      return split_time.time_from_start if split_time.split.kind == "finish"
+    end
+    nil
+  end
+
+  def finish_time_formatted
+    total_seconds = finish_time
+    seconds = total_seconds % 60
+    minutes = (total_seconds / 60) % 60
+    hours = total_seconds / (60 * 60)
+
+    format("%02d:%02d:%02d", hours, minutes, seconds)
+  end
+
+  def status
+    return "DNF" if dropped?
+    return finish_time_formatted if finished?
+    "In progress"
+  end
+
 end

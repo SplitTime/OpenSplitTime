@@ -87,7 +87,7 @@ class EventsController < ApplicationController
     if @event_split.save
       redirect_to splits_event_url(id: @event.id)
     else
-      redirect_to splits_event_url(id: @project.id),
+      redirect_to splits_event_url(id: @event.id),
                   error: "Split was not associated with event"
     end
   end

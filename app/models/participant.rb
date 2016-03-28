@@ -1,4 +1,4 @@
-class Participant < ActiveRecord::Base  #TODO: create class Person with subclasses Participant and Effort
+class Participant < ActiveRecord::Base #TODO: create class Person with subclasses Participant and Effort
   enum gender: [:male, :female]
   has_many :interests, dependent: :destroy
   has_many :users, :through => :interests
@@ -23,7 +23,7 @@ class Participant < ActiveRecord::Base  #TODO: create class Person with subclass
     efforts.each do |effort|
       approximate_age_array << (years_between_dates(effort.event.first_start_time.to_date, now) + effort.age) unless effort.age.nil?
     end
-    (approximate_age_array.inject(0.0) { |sum,el| sum + el } / approximate_age_array.size).round(0)
+    (approximate_age_array.inject(0.0) { |sum, el| sum + el } / approximate_age_array.size).round(0)
   end
 
   def years_between_dates(date1, date2)
@@ -37,5 +37,25 @@ class Participant < ActiveRecord::Base  #TODO: create class Person with subclass
   def claimed?
     !unclaimed?
   end
+
+  def self.where_email_matches(email)
+    email.blank? ? nil : where(email: email.downcase)
+  end
+
+  def self.where_last_name_matches(last_name)
+    where("lower(last_name) = ?", last_name.downcase) # TODO change to ILIKE for PGSQL production environment
+  end
+
+  def self.where_first_name_matches(first_name)
+    where("lower(first_name) = ?", first_name.downcase) #TODO implement fuzzy matching and change to ILIKE for production
+  end
+
+  def self.where_name_matches(first_name, last_name)
+    where_last_name_matches(last_name).where_first_name_matches(first_name)
+  end
+
+  # def self.where_age_approximates(age)
+  #   map { |participant| participant.approximate_age == age ? participant : nil }.compact
+  # end
 
 end

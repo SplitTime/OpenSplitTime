@@ -45,6 +45,18 @@ class EffortsController < ApplicationController
     redirect_to session.delete(:return_to) || root_path
   end
 
+  def associate_participant
+    authorize @effort
+    @effort.participant_id = params[:participant_id]
+
+    if @effort.save
+      redirect_to reconcile_event_path(params[:event_id])
+    else
+      redirect_to reconcile_event_path(params[:event_id]),
+                  error: "Effort was not associated with participant"
+    end
+  end
+
   private
 
   def effort_params

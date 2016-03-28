@@ -106,6 +106,11 @@ class EventsController < ApplicationController
     end
   end
 
+  def reconcile
+    authorize @event
+    @unreconciled_efforts = @event.efforts.where(participant_id: nil).order(:last_name)
+  end
+
   private
 
   def event_params

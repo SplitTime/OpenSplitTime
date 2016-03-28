@@ -1,0 +1,57 @@
+<%= link_to '< Back to Event', event_path(id: @event.id),
+             :class => 'btn btn-sm btn-default' %>
+
+<% if @unreconciled_efforts.count > 0 %>
+    <div class="page-header">
+      <div class="row">
+        <div class="col-md-10">
+          <h3><%= "#{@unreconciled_efforts.count} Unreconciled efforts for #{@event.name}" %></h3>
+        </div>
+        <div class="col-md-2">
+          <%= link_to "Some universal action", "#", class: 'btn btn-sm btn-danger btn-margin-top' %>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-condensed table-striped">
+
+      <thead>
+      <tr>
+        <th>Effort Info</th>
+        <th>Suggested Match</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @unreconciled_efforts.each do |effort| %>
+          <tr>
+            <td><%= effort_description(effort) %></td>
+            <td><%= suggested_match_description(effort) %></td>
+            <td>
+              <%= link_to 'Create new participant', participants_path(effort_id: effort.id), method: :post,
+                          class: "btn btn-xs btn-success" %>
+              <% if suggested_match(effort) %>
+                  <%= link_to 'Same person',
+                              associate_participant_effort_path(effort,
+                                                                participant_id: suggested_match(effort).id,
+                                                                event_id: @event.id),
+                              method: :put,
+                              class: "btn btn-xs btn-primary" %>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+
+    </table>
+<% else %>
+    <div class="page-header">
+      <div class="row">
+        <div class="col-md-10">
+          <h3><%= "All efforts reconciled for #{@event.name}" %></h3>
+        </div>
+      </div>
+    </div>
+
+<% end %>

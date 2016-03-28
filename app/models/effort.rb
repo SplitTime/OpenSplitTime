@@ -19,6 +19,10 @@ class Effort < ActiveRecord::Base
     first_name + " " + last_name
   end
 
+  def bio
+    age.nil? ? gender.titlecase : "#{gender.titlecase}, #{age}"
+  end
+
   def finished?
     return false if split_times.count < 1
     split_times.each do |split_time|

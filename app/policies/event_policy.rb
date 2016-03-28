@@ -50,5 +50,13 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def create_participants?
+    @current_user.authorized_to_edit?(@event)
+  end
+
+  def reconcile?
+    @current_user.admin?  # Discuss whether this could be delegated to trusted non-admin users
+  end
+
 
 end

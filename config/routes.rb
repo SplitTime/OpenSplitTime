@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     member { get :splits }
     member { put :associate_split }
     member { put :bulk_associate_splits }
+    member { get :reconcile }
   end
   resources :splits
   resources :races
@@ -25,7 +26,9 @@ Rails.application.routes.draw do
     member { get :avatar_claim }
     member { delete :avatar_disclaim }
   end
-  resources :efforts, only: [:show, :edit]
+  resources :efforts, only: [:show, :edit] do
+    member { put :associate_participant }
+  end
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

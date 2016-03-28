@@ -125,6 +125,16 @@ section {
   margin-top: 20px;
 }
 
+.dropdown-select-field {
+  font-size: 120%;
+  margin-top: 7px;
+}
+
+.dropdown-select-field-carmen {
+  font-size: 120%;
+  margin-top: 4px;
+}
+
 #error_explanation:not(:empty) {
   @extend .alert;
   @extend .alert-danger;

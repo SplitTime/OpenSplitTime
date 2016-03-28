@@ -9,7 +9,8 @@
                 <%= f.label :course_id %>
               </div>
               <div class="col-sm-8">
-                <%= collection_select(:split, :course_id, Course.all, :id, :name, prompt: true) %>
+                <%= collection_select(:split, :course_id, Course.all, :id, :name,
+                                      {prompt: true}, {class: "dropdown-select-field"}) %>
               </div>
             </div>
         <% else %>
@@ -41,7 +42,8 @@
             <%= f.label :kind %>
           </div>
           <div class="col-sm-8">
-            <%= f.select :kind, Split.kinds.keys.map { |kind| [kind.titleize, kind] } %>
+            <%= f.select :kind, Split.kinds.keys.map { |kind| [kind.titleize, kind] },
+                         {prompt: true}, {class: "dropdown-select-field"} %>
           </div>
         </div>
         <div class="form-group">
@@ -49,7 +51,8 @@
             <%= f.label :location_id %>
           </div>
           <div class="col-sm-8">
-            <%= collection_select(:split, :location_id, Location.all, :id, :name, prompt: true) %>
+            <%= collection_select(:split, :location_id, Location.all, :id, :name,
+                                  {prompt: true}, {class: "dropdown-select-field"}) %>
           </div>
         </div>
         <div class="form-group">

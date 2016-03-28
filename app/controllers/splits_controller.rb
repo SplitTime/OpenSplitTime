@@ -59,7 +59,8 @@ class SplitsController < ApplicationController
     authorize @split
     @split.destroy
 
-    redirect_to session.delete(:return_to) || splits_url
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
+    redirect_to session.delete(:return_to) || splits_path
   end
 
   private

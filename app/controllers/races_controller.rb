@@ -47,6 +47,7 @@ class RacesController < ApplicationController
     authorize @race
     @race.destroy
 
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || races_path
   end
 

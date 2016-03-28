@@ -9,19 +9,21 @@
   <div class="col-xs-6">
     <%= link_to '<< Show All Courses', courses_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user.authorized_to_edit?(@course) %>
+    <% if @current_user && @current_user.authorized_to_edit?(@course) %>
         <%= link_to 'Edit this course', edit_course_path(@course), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this course', course_path(@course), method: :delete,
+        <%= link_to 'Delete this course', course_path(@course, referrer_path: URI(request.referrer).path), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
   </div>
 </div>
 <hr>
 
-<div class="article-actions">
-  <%= link_to 'Create New Split', new_split_path(course_id: @course.id), class: "btn btn-sm btn-success" %>
-</div>
-<hr>
+<% if @current_user && @current_user.authorized_to_edit?(@course) %>
+    <div class="article-actions">
+      <%= link_to 'Create New Split', new_split_path(course_id: @course.id), class: "btn btn-sm btn-success" %>
+    </div>
+    <hr>
+<% end %>
 
 <% if @course_splits.count > 0 %>
     <div class="row">

@@ -5,9 +5,11 @@ class LocationsController < ApplicationController
 
   def index
     @locations = Location.all.order(:longitude)
+    session[:return_to] = locations_path
   end
 
   def show
+    session[:return_to] = location_path(@location)
   end
 
   def new
@@ -49,6 +51,7 @@ class LocationsController < ApplicationController
     authorize @location
     @location.destroy
 
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || locations_path
   end
 

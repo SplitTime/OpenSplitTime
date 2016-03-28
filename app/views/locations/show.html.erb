@@ -35,7 +35,7 @@
 
     <%= link_to '<< View all locations', locations_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user.authorized_to_edit?(@location) %>
+    <% if @current_user && @current_user.authorized_to_edit?(@location) %>
         <%= link_to 'Edit this location', edit_location_path(@location), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this location', location_path(@location), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>

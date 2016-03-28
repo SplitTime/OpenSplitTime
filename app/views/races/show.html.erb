@@ -9,19 +9,21 @@
   <div class="col-xs-6">
     <%= link_to '<< Show All Races', races_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user.authorized_to_edit?(@race) %>
+    <% if @current_user && @current_user.authorized_to_edit?(@race) %>
         <%= link_to 'Edit this race', edit_race_path(@race), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this race', race_path(@race), method: :delete,
+        <%= link_to 'Delete this race', race_path(@race, referrer_path: URI(request.referrer).path), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
   </div>
 </div>
 <hr>
 
-<div class="article-actions">
-  <%= link_to 'Create New Event', new_event_path(race_id: @race.id), class: "btn btn-sm btn-success" %>
-</div>
-<hr>
+<% if @current_user && @current_user.authorized_to_edit?(@race) %>
+    <div class="article-actions">
+      <%= link_to 'Create New Event', new_event_path(race_id: @race.id), class: "btn btn-sm btn-success" %>
+    </div>
+    <hr>
+<% end %>
 
 <% if @race_events.count > 0 %>
     <div class="row">

@@ -41,7 +41,8 @@ class EffortsController < ApplicationController
     authorize @effort
     @effort.destroy
 
-    redirect_to session.delete(:return_to) || efforts_path
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
+    redirect_to session.delete(:return_to) || root_path
   end
 
   private

@@ -22,7 +22,7 @@
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user.authorized_to_edit?(@participant) %>
         <%= link_to 'Edit this participant', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this participant', participant_path(@participant), method: :delete,
+        <%= link_to 'Delete this participant', participant_path(@participant, referrer_path: URI(request.referrer).path), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
     <% if @participant.user_id == @current_user.id %>

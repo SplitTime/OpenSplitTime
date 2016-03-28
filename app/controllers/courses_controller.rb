@@ -44,9 +44,10 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    authorize course
-    course.destroy
+    authorize @course
+    @course.destroy
 
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || courses_path
   end
 

@@ -1,7 +1,7 @@
 class ParticipantsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :subregion_options, :avatar_disclaim]
+  before_action :authenticate_user!, except: [:subregion_options, :avatar_disclaim]
   before_action :set_participant, except: [:index, :new, :create, :subregion_options]
-  after_action :verify_authorized, except: [:index, :show, :subregion_options, :avatar_disclaim]
+  after_action :verify_authorized, except: [:subregion_options, :avatar_disclaim]
 
   before_filter do
     locale = params[:locale]
@@ -14,10 +14,12 @@ class ParticipantsController < ApplicationController
 
   def index
     @participants = Participant.all.order(:last_name, :first_name)
+    authorize @participants
     session[:return_to] = participants_path
   end
   
   def show
+    authorize @participant
     session[:return_to] = participant_path(@participant)
   end
 
@@ -55,6 +57,7 @@ class ParticipantsController < ApplicationController
     authorize @participant
     @participant.destroy
 
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || participants_path
   end
 

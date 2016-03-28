@@ -14,8 +14,10 @@
       <tr>
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
         <td><%= event.first_start_time.to_date.to_formatted_s(:long) %></td>
-        <td><%= "Uses #{pluralize(event.splits.count, 'split')} on #{event.course.name}" %></td>
-        <% if @current_user.authorized_to_edit?(event) %>
+        <td><%= "Uses #{pluralize(event.splits.count, 'split')}" %>
+              <%= " on #{event.course.name}" if event.course %>
+        </td>
+        <% if @current_user && @current_user.authorized_to_edit?(event) %>
             <td>
               <%= link_to 'Edit Event', edit_event_path(event), class: "btn btn-xs btn-primary" %>
               <%= link_to 'Delete Event', event_path(event), class: "btn btn-xs btn-danger",

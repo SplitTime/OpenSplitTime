@@ -22,7 +22,7 @@
             <td><%= link_to "Create", new_location_path(split_id: split.id), class: "btn btn-xs btn-success" %></td>
         <% end %>
         <% unless controller.controller_name == "events" && controller.action_name == "show" %>
-            <% if @current_user.authorized_to_edit?(split) %>
+            <% if @current_user && @current_user.authorized_to_edit?(split) %>
                 <td>
                   <% if @course.nil? %>
                       <%= link_to 'Edit Split', edit_split_path(split), class: "btn btn-xs btn-primary" %>

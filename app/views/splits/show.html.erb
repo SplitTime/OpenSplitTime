@@ -23,9 +23,9 @@
   <div class="article-actions">
     <%= link_to '<< View all splits', splits_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user.authorized_to_edit?(@split) %>
+    <% if @current_user && @current_user.authorized_to_edit?(@split) %>
         <%= link_to 'Edit this split', edit_split_path(@split), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this split', split_path(@split), method: :delete,
+        <%= link_to 'Delete this split', split_path(@split, referrer_path: URI(request.referrer).path), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
   </div>

@@ -3,7 +3,7 @@
   <% country = Carmen::Country.coded(parent_region) %>
 
   <% if country.nil? %>
-      <em>Please select a country above</em>
+      <small>[Select a country first]</small>
   <% elsif country.subregions? %>
       <%= subregion_select(:participant, :state_code, parent_region) %>
   <% else %>

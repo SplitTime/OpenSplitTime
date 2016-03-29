@@ -8,7 +8,10 @@
           <h3><%= "#{@unreconciled_efforts.count} Unreconciled efforts for #{@event.name}" %></h3>
         </div>
         <div class="col-md-4">
-          <%= link_to "Create all participants", "#", class: 'btn btn-sm btn-success btn-margin-top' %>
+          <%= link_to "Create all participants",
+                      create_from_efforts_participants_path(event_id: @event.id, effort_ids: 'all'),
+                      method: :post,
+                      class: 'btn btn-sm btn-success btn-margin-top' %>
           <%= link_to "Match all suggestions", "#", class: 'btn btn-sm btn-primary btn-margin-top' %>
         </div>
       </div>
@@ -32,7 +35,7 @@
             <td><%= suggested_match_description(effort) %></td>
             <td>
               <%= link_to 'Create new participant',
-                          create_from_effort_participants_path(effort_id: effort.id, event_id: @event.id),
+                          create_from_efforts_participants_path(effort_ids: effort.id, event_id: @event.id),
                           method: :post,
                           class: "btn btn-xs btn-success" %>
             </td>

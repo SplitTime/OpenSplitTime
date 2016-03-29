@@ -108,7 +108,7 @@ class EventsController < ApplicationController
 
   def reconcile
     authorize @event
-    @unreconciled_efforts = @event.efforts.where(participant_id: nil).order(:last_name)
+    @unreconciled_efforts = @event.unreconciled_efforts.order(:last_name)
   end
 
   private

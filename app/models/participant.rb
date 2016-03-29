@@ -58,7 +58,7 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
   #   map { |participant| participant.approximate_age == age ? participant : nil }.compact
   # end
 
-  def self.columns_for_create_from_effort
+  def self.columns_for_build_from_effort
     id = ["id"]
     birthdate = ["birthdate"]  # TODO add birthdate column to efforts and allow this field for creation
     foreign_keys = Participant.column_names.find_all { |x| x.include?("_id") }
@@ -66,5 +66,16 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     (column_names - (id + birthdate + foreign_keys + stamps)).map &:to_sym
   end
 
+  def build_from_effort(effort_id)
+    @effort = Effort.find(effort_id)
+    participant_attributes = Participant.columns_for_build_from_effort
+    participant_attributes.each do |attribute|
+      assign_attributes({attribute => @effort[attribute]})
+    end
+    if save
+      @effort.participant = self
+      @effort.save
+    end
+  end
 
 end

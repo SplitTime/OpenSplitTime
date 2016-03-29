@@ -29,5 +29,12 @@ class Event < ActiveRecord::Base
     id_array
   end
 
+  def unreconciled_efforts
+    efforts.where(participant_id: nil)
+  end
+
+  def unreconciled_efforts?
+    efforts.where(participant_id: nil).count > 0
+  end
 
 end

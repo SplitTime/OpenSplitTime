@@ -29,6 +29,8 @@ class LocationsController < ApplicationController
     if @location.save
       unless params[:split_id].nil?
         @split = Split.find(params[:split_id])
+        @split.location = @location
+        @split.save
         conform_split_locations_to(@split)
       end
       redirect_to session.delete(:return_to) || @location

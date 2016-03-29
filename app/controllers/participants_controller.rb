@@ -1,7 +1,7 @@
 class ParticipantsController < ApplicationController
   before_action :authenticate_user!, except: [:subregion_options, :avatar_disclaim]
-  before_action :set_participant, except: [:index, :new, :create, :create_from_effort, :subregion_options]
-  after_action :verify_authorized, except: [:subregion_options, :avatar_disclaim, :create_from_effort]
+  before_action :set_participant, except: [:index, :new, :create, :create_from_efforts, :subregion_options]
+  after_action :verify_authorized, except: [:subregion_options, :avatar_disclaim, :create_from_efforts]
 
   before_filter do
     locale = params[:locale]
@@ -17,7 +17,7 @@ class ParticipantsController < ApplicationController
     authorize @participants
     session[:return_to] = participants_path
   end
-  
+
   def show
     authorize @participant
     session[:return_to] = participant_path(@participant)
@@ -43,21 +43,12 @@ class ParticipantsController < ApplicationController
     end
   end
 
-  def create_from_effort
-    @effort = Effort.find(params[:effort_id])
-    @participant = Participant.new
-    participant_attributes = Participant.columns_for_create_from_effort
-    participant_attributes.each do |attribute|
-      @participant.assign_attributes({attribute => @effort[attribute]})
+  def create_from_efforts
+    unreconciled_effort_id_array(params[:effort_ids], params[:event_id]).each do |effort_id|
+      @participant = Participant.new
+      @participant.build_from_effort(effort_id)
     end
-    if @participant.save
-      @effort.participant = @participant
-      @effort.save
-      redirect_to reconcile_event_path(params[:event_id])
-    else
-      redirect_to reconcile_event_path(params[:event_id]),
-                  error: "Participant could not be created"
-    end
+    redirect_to reconcile_event_path(params[:event_id])
   end
 
   def update
@@ -105,6 +96,15 @@ class ParticipantsController < ApplicationController
 
   def set_participant
     @participant = Participant.find(params[:id])
+  end
+
+  def unreconciled_effort_id_array(effort_ids, event_id)
+    if effort_ids == "all"
+      @event = Event.find(event_id)
+      @event.unreconciled_efforts.order(:last_name).map &:id
+    else
+      effort_ids
+    end
   end
 
 end

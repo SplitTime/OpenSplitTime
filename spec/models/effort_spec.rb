@@ -9,7 +9,7 @@ require "rails_helper"
 # t.integer  "country_id"
 # t.integer  "age"
 # t.datetime "start_time"
-# t.boolean  "finished"
+# t.boolean  "dropped"
 
 RSpec.describe Effort, type: :model do
   it "should be valid when created with an event_id, a participant_id, and a start time" do

@@ -58,4 +58,13 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
   #   map { |participant| participant.approximate_age == age ? participant : nil }.compact
   # end
 
+  def self.columns_for_create_from_effort
+    id = ["id"]
+    birthdate = ["birthdate"]  # TODO add birthdate column to efforts and allow this field for creation
+    foreign_keys = Participant.column_names.find_all { |x| x.include?("_id") }
+    stamps = Participant.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
+    (column_names - (id + birthdate + foreign_keys + stamps)).map &:to_sym
+  end
+
+
 end

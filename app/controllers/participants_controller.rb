@@ -1,7 +1,7 @@
 class ParticipantsController < ApplicationController
   before_action :authenticate_user!, except: [:subregion_options, :avatar_disclaim]
-  before_action :set_participant, except: [:index, :new, :create, :subregion_options]
-  after_action :verify_authorized, except: [:subregion_options, :avatar_disclaim]
+  before_action :set_participant, except: [:index, :new, :create, :create_from_effort, :subregion_options]
+  after_action :verify_authorized, except: [:subregion_options, :avatar_disclaim, :create_from_effort]
 
   before_filter do
     locale = params[:locale]
@@ -40,6 +40,23 @@ class ParticipantsController < ApplicationController
       redirect_to session.delete(:return_to) || @participant
     else
       render 'new'
+    end
+  end
+
+  def create_from_effort
+    @effort = Effort.find(params[:effort_id])
+    @participant = Participant.new
+    participant_attributes = Participant.columns_for_create_from_effort
+    participant_attributes.each do |attribute|
+      @participant.assign_attributes({attribute => @effort[attribute]})
+    end
+    if @participant.save
+      @effort.participant = @participant
+      @effort.save
+      redirect_to reconcile_event_path(params[:event_id])
+    else
+      redirect_to reconcile_event_path(params[:event_id]),
+                  error: "Participant could not be created"
     end
   end
 

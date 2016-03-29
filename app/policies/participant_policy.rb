@@ -26,6 +26,10 @@ class ParticipantPolicy
     @current_user.present?
   end
 
+  def create_from_effort?
+    @current_user.present?
+  end
+
   def update?
     @current_user.authorized_to_edit?(@participant)
   end

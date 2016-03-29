@@ -26,13 +26,19 @@
 <% if @current_user && @current_user.authorized_to_edit?(@event) %>
     <hr>
     <div class="article-actions">
-      <%= link_to 'Associate or remove splits', splits_event_path, class: "btn btn-sm btn-success" %>
-      <%= link_to 'Reconcile with participants', reconcile_event_path, class: "btn btn-sm btn-success" %>
+      <div class="row">
+        <div class="col-xs-4">
+          <%= link_to 'Associate or remove splits', splits_event_path, class: "btn btn-sm btn-success" %>
+        </div>
+        <div class="col-xs-4">
+          <%= link_to 'Reconcile with participants', reconcile_event_path, class: "btn btn-sm btn-success" %>
+        </div>
+      </div>
     </div>
 <% end %>
 <hr>
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-xs-4">
     <strong>Associated Splits:</strong>
     <%= link_to @event.splits.count, splits_event_path(@event) %><br/>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>
@@ -43,7 +49,7 @@
         <% end %>
     <% end %>
   </div>
-  <div class="col-xs-6">
+  <div class="col-xs-4">
     <strong>Associated Efforts:</strong>
     <%= @event.efforts.count %><br/>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     collection { get :subregion_options}
     member { get :avatar_claim }
     member { delete :avatar_disclaim }
+    collection { post :create_from_effort }
   end
   resources :efforts, only: [:show, :edit] do
     member { put :associate_participant }

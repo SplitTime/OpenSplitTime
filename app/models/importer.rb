@@ -218,16 +218,14 @@ class Importer
       working_split_id = split_array[i]
       working_time = row_time_data[i]
       seconds = convert_time_to_standard(working_time)
-      if seconds.nil?
-        effort.update_attributes(finished: false) if i == split_array.size - 1
-        next
-      else
-        @split_time = effort.split_times.new(split_id: working_split_id,
-                                             time_from_start: seconds)
+      if i == split_array.size - 1
+        effort.update_attributes(dropped: seconds.nil? ? true : false)
       end
+      next if seconds.nil?
+      @split_time = effort.split_times.new(split_id: working_split_id,
+                                           time_from_start: seconds)
       if @split_time.save
         split_time_id_array << @split_time.id
-        effort.update_attributes(finished: true) if i == split_array.size - 1
       else
         raise "Problem saving split time data for #{@effort.last_name} at #{Split.find_by_id(working_split_id).name}. #{@split_time.errors.full_messages}."
       end

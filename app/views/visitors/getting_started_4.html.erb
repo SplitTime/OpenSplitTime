@@ -1,0 +1,40 @@
+<% content_for :title do %>Getting Started
+<% end %>
+<h3>Getting Started</h3>
+<hr>
+<h4>
+  Formatting your spreadsheet for import
+</h4><br/>
+<p>
+  OpenSplitTime makes it easy (ok, at least reasonably doable for mere mortals) to import your data into the system. To
+  start, you'll need to get your data into either Excel format (.xls or .xlsx) or comma-separated (.csv) format. Data is
+  imported in two
+  steps: Split import and Effort import.
+</p>
+<p><strong>Split import</strong></p>
+<p>
+  Make sure you have a single header row containing the names of your columns. Columns related to your
+  participants' personal information must be on the left starting in column A. Splits and time data must be to the
+  right. OST detects the separation point by looking for a column named "Start". All columns to the left of the "Start"
+  column are assumed to contain personal information field names in the header and data below. The "Start" column and
+  all columns to the right of it are assumed to contain Split names in the header and Split Time data below.
+</p>
+<p>
+  Every Split must have a distance from start before it can be saved to the database. To make automated import
+  possible, you will need to insert a second header row immediately below your first header row. This second row must
+  contain the word "distance" in the first cell (cell A2 for Excel users) and must contain split distances from start
+  immediately below the split names. If distances are in units other than miles, you will need to indicate the units in
+  the second cell of your second header row (cell B2 for Excel users). OST curretly understands "kilometers," "km," and
+  "meters."
+</p>
+<p>
+  If you have just start and finish Splits, it's easier to just enter them manually. If you have more than four or five
+  waypoints, you may want to import them.
+</p>
+<p>
+  After importing or manually entering your Splits, you will need to associate them with your Event by clicking the
+  "Associate splits" button in your Event view.
+</p>
+<hr>
+<p><strong><%= link_to "<< Races, courses, events, what the heck?", getting_started_3_path %>  |
+  <%= link_to "Formatting your spreadsheet for import (continued) >>", getting_started_5_path %></strong></p>

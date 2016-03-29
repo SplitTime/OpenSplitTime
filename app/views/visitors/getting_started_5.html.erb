@@ -1,0 +1,33 @@
+<% content_for :title do %>Getting Started
+<% end %>
+<h3>Getting Started</h3>
+<hr>
+<h4>
+  Formatting your spreadsheet for import (continued)
+</h4><br/>
+<p>
+  Once your Splits are in place, it's time to get the Effort and Split Time data in.
+</p>
+<p><strong>Effort import</strong></p>
+<p>
+  Remember that you have a header row containing the names of your data. OST can ingest the following personal
+  information fields during an Effort import: <strong>first name, last name, gender, age, bib number, wave, city, state,
+  country, phone, and email</strong>. OST will do its best to match up columns, and the order of the columns is not
+  important.
+  OST will ignore columns whose names it can't match to one of these fields.
+</p>
+<p>
+  To the right of your personal information columns you will need to have exactly as many Split columns as you have
+  Splits associated with your effort. OST will reject an import if it detects a mismatch.
+</p>
+<p>
+  If this seems confusing in concept, it's pretty simple in execution. <strong>Here is an example you can download for easy reference:
+  <%= link_to "Hardrock 2015", 'https://github.com/SplitTime/OpenSplitTime/blob/master/hardrock2015.xlsx' %></strong>
+</p>
+<p>
+  Sign in, click around, and play with the various screens and buttons. Add some things manually and import some data. If you get
+  hopelessly lost and make a mess, just delete your Event, and all Efforts and Split Times related to the Event will be
+  deleted with it. You cannot, accidentally or otherwise, delete any data that you did not create yourself.
+</p>
+<hr>
+<p><strong><%= link_to "<< Formatting your spreadsheet for import", getting_started_4_path %></strong></p>

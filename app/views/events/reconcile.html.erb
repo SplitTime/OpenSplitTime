@@ -11,6 +11,7 @@
           <%= link_to "Create all participants",
                       create_from_efforts_participants_path(event_id: @event.id, effort_ids: 'all'),
                       method: :post,
+                      data: {confirm: "Create #{@unreconciled_efforts.count} new participants?"},
                       class: 'btn btn-sm btn-success btn-margin-top' %>
           <%= link_to "Match all suggestions", "#", class: 'btn btn-sm btn-primary btn-margin-top' %>
         </div>

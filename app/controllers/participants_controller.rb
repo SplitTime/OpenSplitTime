@@ -103,7 +103,7 @@ class ParticipantsController < ApplicationController
       @event = Event.find(event_id)
       @event.unreconciled_efforts.order(:last_name).map &:id
     else
-      effort_ids
+      effort_ids.is_a?(String) ? Array(effort_ids.to_i) : effort_ids
     end
   end
 

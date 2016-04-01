@@ -1,4 +1,5 @@
 class Participant < ActiveRecord::Base #TODO: create class Person with subclasses Participant and Effort
+  include PersonalInfo
   enum gender: [:male, :female]
   has_many :interests, dependent: :destroy
   has_many :users, :through => :interests
@@ -7,27 +8,14 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
 
   validates_presence_of :first_name, :last_name, :gender
 
-  def full_name
-    first_name + " " + last_name
-  end
-
-  def bio
-    approximate_age.nil? ? gender.titlecase : "#{gender.titlecase}, #{approximate_age}"
-  end
-
-  def approximate_age
+  def approximate_age_today
     now = Time.now.utc.to_date
-    return years_between_dates(birthdate, now).round(0) unless birthdate.nil?
     return nil unless efforts.count > 0
-    approximate_age_array = []
+    age_array = []
     efforts.each do |effort|
-      approximate_age_array << (years_between_dates(effort.event.first_start_time.to_date, now) + effort.age) unless effort.age.nil?
+      age_array << (years_between_dates(effort.event.first_start_time.to_date, now) + effort.age) unless effort.age.nil?
     end
-    (approximate_age_array.inject(0.0) { |sum, el| sum + el } / approximate_age_array.size).round(0)
-  end
-
-  def years_between_dates(date1, date2)
-    (date2 - date1) / 365.25
+    (age_array.inject(0.0) { |sum, el| sum + el } / age_array.size).to_i # the inject statement avoids problems with integer division
   end
 
   def unclaimed?
@@ -38,42 +26,97 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     !unclaimed?
   end
 
-  def self.where_email_matches(email)
-    email.blank? ? nil : where(email: email.downcase)
+  def self.first_name_matches(param, rigor = 'soft')
+    return matches('first_name', param) || none if rigor == 'soft'
+    exact_matches('first_name', param) || none
   end
 
-  def self.where_last_name_matches(last_name)
-    where("lower(last_name) = ?", last_name.downcase) # TODO change to ILIKE for PGSQL production environment
+  def self.last_name_matches(param, rigor = 'soft')
+    return matches('last_name', param) || none if rigor == 'soft'
+    exact_matches('last_name', param) || none
   end
 
-  def self.where_first_name_matches(first_name)
-    where("lower(first_name) = ?", first_name.downcase) #TODO implement fuzzy matching and change to ILIKE for production
+  def self.full_name_matches(param, participants, rigor = 'soft')
+    matching_participants = []
+    if rigor == 'soft'
+      participants.each do |participant|
+        if "%#{participant.full_name.strip.downcase}%" == "%#{param.strip.downcase}%"
+          matching_participants << participant
+        end
+      end
+    else
+      participants.each do |participant|
+        if participant.full_name.strip.downcase == param.strip.downcase
+          matching_participants << participant
+        end
+      end
+    end
+    matching_participants
   end
 
-  def self.where_name_matches(first_name, last_name)
-    where_last_name_matches(last_name).where_first_name_matches(first_name)
+  def self.gender_matches(param)
+    gender_int = 1 if param == "female"
+    gender_int = 1 if param == 1
+    gender_int = 0 if param == "male"
+    gender_int = 0 if param == 0
+    where(gender: gender_int)
   end
 
-  # def self.where_age_approximates(age)
-  #   map { |participant| participant.approximate_age == age ? participant : nil }.compact
-  # end
+  def self.country_matches(param)
+    where(country_code: param) || none
+  end
 
-  def self.columns_for_build_from_effort
+  def self.state_matches(param, rigor = 'exact')
+    return matches('state_code', param) || none if rigor == 'soft'
+    exact_matches('state_code', param) || none
+  end
+
+  def self.email_matches(param, rigor = 'exact')
+    return matches('email', param) || none if rigor == 'soft'
+    exact_matches('email', param) || none
+  end
+
+  def self.age_matches(param, participants, rigor = 'soft')
+    matching_participants = []
+    threshold = rigor == 'exact' ? 1 : 2
+    participants.each do |participant|
+      if (participant.age_today - param).abs < threshold
+        matching_participants << participant
+      end
+    end
+    matching_participants
+  end
+
+  def self.matches(field_name, param)
+    where("lower(#{field_name}) like ?", "%#{param}%")
+  end
+
+  def self.exact_matches(field_name, param)
+    where("lower(#{field_name}) like ?", "#{param}")
+  end
+
+  def self.search(param)
+    return Participant.none if param.blank?
+
+    param.strip!.downcase!
+    (first_name_matches(param) + last_name_matches(param) + email_matches(param)).uniq
+  end
+
+  def self.columns_to_pull_from_effort
     id = ["id"]
-    birthdate = ["birthdate"]  # TODO add birthdate column to efforts and allow this field for creation
     foreign_keys = Participant.column_names.find_all { |x| x.include?("_id") }
     stamps = Participant.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
-    (column_names - (id + birthdate + foreign_keys + stamps)).map &:to_sym
+    (column_names - (id + foreign_keys + stamps)).map &:to_sym
   end
 
-  def build_from_effort(effort_id)
+  def pull_data_from_effort(effort_id)
     @effort = Effort.find(effort_id)
-    participant_attributes = Participant.columns_for_build_from_effort
+    participant_attributes = Participant.columns_to_pull_from_effort
     participant_attributes.each do |attribute|
-      assign_attributes({attribute => @effort[attribute]})
+      assign_attributes({attribute => @effort[attribute]}) if self[attribute].blank?
     end
     if save
-      @effort.participant = self
+      @effort.participant ||= self
       @effort.save
     end
   end

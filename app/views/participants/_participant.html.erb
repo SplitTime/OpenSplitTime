@@ -15,7 +15,7 @@
       <tr>
         <td><strong><%= link_to participant.full_name, participant_path(participant) %></strong></td>
         <td><%= participant.bio %></td>
-        <td><%= state_and_country_of(participant) %></td>
+        <td><%= participant.state_and_country %></td>
         <td><%= pluralize(participant.efforts.count, 'effort') %></td>
         <% if @current_user && @current_user.authorized_to_edit?(participant) %>
             <td>

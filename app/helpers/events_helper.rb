@@ -9,18 +9,13 @@ module EventsHelper
     event_split_id_array
   end
 
-  def suggested_match(effort)
-    Participant.where_name_matches(effort.first_name, effort.last_name).first
-  end
-
-  def suggested_match_description(effort)
-    return nil unless suggested_match(effort)
-    participant = suggested_match(effort)
-    "#{participant.full_name} - #{participant.bio} - #{state_and_country_of(participant)}"
-  end
-
-  def effort_description(effort)
-    "#{effort.full_name} - #{effort.bio} - #{state_and_country_of(effort)}"
+  def make_exact_match_id_hash(efforts)
+    id_hash = {}
+    efforts.each do |effort|
+      @participant = effort.exact_matching_participant
+      id_hash[effort.id] = @participant.id if @participant
+    end
+    id_hash
   end
 
 end

@@ -42,7 +42,7 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
-  def bulk_associate_splits?
+  def associate_splits?
     @current_user.authorized_to_edit?(@event)
   end
 

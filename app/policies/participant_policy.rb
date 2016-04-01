@@ -10,6 +10,10 @@ class ParticipantPolicy
     @current_user.present?
   end
 
+  def search?
+    @current_user.present?
+  end
+
   def show?
     @current_user.present?
   end

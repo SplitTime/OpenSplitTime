@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3 center">
     <%= @participant.bio %><br/>
-    <%= state_and_country_of(@participant) %><br/>
+    <%= @participant.state_and_country %><br/>
     <% if @participant.unclaimed? %>
         (Not yet claimed by a registered user)
     <% elsif @participant.claimant == @current_user %>
@@ -25,7 +25,7 @@
         <%= link_to 'Delete this participant', participant_path(@participant, referrer_path: URI(request.referrer).path), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
-    <% if @participant.user_id == @current_user.id %>
+    <% if @participant.claimant == @current_user %>
         <%= link_to 'Disclaim this participant', avatar_disclaim_participant_path(@participant), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% elsif @participant.unclaimed? && @current_user.has_no_avatar? %>

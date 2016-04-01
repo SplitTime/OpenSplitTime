@@ -1,4 +1,5 @@
 class Effort < ActiveRecord::Base
+  include PersonalInfo
   enum gender: [:male, :female]
   belongs_to :event
   belongs_to :participant
@@ -13,14 +14,6 @@ class Effort < ActiveRecord::Base
     foreign_keys = Effort.column_names.find_all { |x| x.include?("_id") }
     stamps = Effort.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
     (column_names - (id + foreign_keys + stamps)).map &:to_sym
-  end
-
-  def full_name
-    first_name + " " + last_name
-  end
-
-  def bio
-    age.nil? ? gender.titlecase : "#{gender.titlecase}, #{age}"
   end
 
   def finished?
@@ -52,6 +45,50 @@ class Effort < ActiveRecord::Base
     return "DNF" if dropped?
     return finish_time_formatted if finished?
     "In progress"
+  end
+
+  def exact_matching_participant # Suitable for automated matcher
+    participants = Participant.last_name_matches(last_name, rigor: 'exact')
+                       .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)
+    exact_match = Participant.age_matches(age_today, participants, 'exact')
+    exact_match.count == 1 ? exact_match.first : nil # Convert single match to object; don't pass if more than one match
+  end
+
+  def closest_matching_participant # Requires human review
+    participant_with_same_name ||
+        participant_with_nickname ||
+        participant_changed_last_name ||
+        participant_changed_first_name ||
+        participant_same_full_name
+    # return participant_with_nickname if participant_with_nickname
+  end
+
+  def participant_with_same_name
+    Participant.last_name_matches(last_name).first_name_matches(first_name).first
+  end
+
+  def participant_with_nickname # Need to find a good nickname gem
+    # Participant.last_name_matches(last_name).first_name_nickname(first_name).first
+  end
+
+  def participant_changed_last_name # To find women who may have changed their last names
+    participants = Participant.female.first_name_matches(first_name).state_matches(state_code).all
+    Participant.age_matches(age_today, participants).first
+  end
+
+  def participant_changed_first_name # To pick up discrepancies in first names #TODO use levensthein alagorithm
+    participants = Participant.last_name_matches(last_name).gender_matches(gender).all
+    Participant.age_matches(age_today, participants).first
+  end
+
+  def participant_same_full_name # For situations where middle names are sometimes included with first_name and sometimes with last_name
+    participants = Participant.gender_matches(gender) # To limit pool of search options
+    Participant.full_name_matches(full_name, participants).first
+  end
+
+  def approximate_age_today
+    now = Time.now.utc.to_date
+    age ? (years_between_dates(event.first_start_time.to_date, now) + age).to_i : nil
   end
 
 end

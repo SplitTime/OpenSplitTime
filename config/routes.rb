@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   resources :users do
     member { get :participants }
     member { put :associate_participant }
+    member { post :add_interest }
+    collection { get :my_interests }
   end
   resources :locations
   resources :courses
@@ -27,23 +29,26 @@ Rails.application.routes.draw do
     member { post :import_efforts }
     member { get :splits }
     member { put :associate_split }
-    member { put :bulk_associate_splits }
+    member { put :associate_splits }
     member { get :reconcile }
   end
   resources :splits
   resources :races
   resources :event_splits, only: [:show, :destroy] do
-    delete 'bulk_destroy', on: :collection
+    collection { delete :bulk_destroy }
   end
   resources :participants do
-    collection { get :subregion_options}
+    collection { get :subregion_options }
     member { get :avatar_claim }
     member { delete :avatar_disclaim }
     collection { post :create_from_efforts }
+    collection { get :search }
   end
   resources :efforts, only: [:show, :edit] do
     member { put :associate_participant }
+    collection { put :associate_participants}
   end
+  resources :interests
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

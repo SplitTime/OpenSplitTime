@@ -1,7 +1,11 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_effort, except: [:index, :new, :create]
+  before_action :set_effort, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized, except: [:index, :show]
+
+  def index
+
+  end
 
   def show
     session[:return_to] = effort_path(@effort)
@@ -50,10 +54,28 @@ class EffortsController < ApplicationController
     @effort.participant_id = params[:participant_id]
 
     if @effort.save
+      @participant = Participant.find(params[:participant_id])
+      @participant.pull_data_from_effort(@effort.id)
       redirect_to reconcile_event_path(params[:event_id])
     else
       redirect_to reconcile_event_path(params[:event_id]),
-                  error: "Effort was not associated with participant"
+                  error: 'Effort was not associated with participant'
+    end
+  end
+
+  def associate_participants
+    effort_ids = params[:id_hash].keys
+    participant_ids = params[:id_hash].values
+    if effort_ids.nil? | participant_ids.nil?
+      redirect_to :back
+    else
+      (0..effort_ids.size - 1).each do |i|
+        @effort = Effort.find(effort_ids[i])
+        authorize @effort
+        @participant = Participant.find(participant_ids[i])
+        @participant.pull_data_from_effort(@effort.id)
+      end
+      redirect_to reconcile_event_path(params[:event_id])
     end
   end
 

@@ -93,7 +93,7 @@ class EventsController < ApplicationController
     end
   end
 
-  def bulk_associate_splits
+  def associate_splits
     authorize @event
     if params[:split_id_array].nil?
       redirect_to :back

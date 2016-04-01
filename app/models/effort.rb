@@ -89,7 +89,7 @@ class Effort < ActiveRecord::Base
         return_array << split_time
       end
     end
-    return_array
+    return_array.sort_by { |x| x.split.distance_from_start }
   end
 
 end

@@ -50,7 +50,7 @@ class Effort < ActiveRecord::Base
   def exact_matching_participant # Suitable for automated matcher
     participants = Participant.last_name_matches(last_name, rigor: 'exact')
                        .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)
-    exact_match = Participant.age_matches(age_today, participants, 'exact')
+    exact_match = Participant.age_matches(age_today, participants, 'soft')
     exact_match.count == 1 ? exact_match.first : nil # Convert single match to object; don't pass if more than one match
   end
 

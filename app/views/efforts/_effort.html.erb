@@ -12,9 +12,9 @@
   <tbody>
   <% obj.each do |effort| %>
       <tr>
-        <td><strong><%= link_to effort.event.name, event_path(effort.event) %></strong></td>
+        <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
         <td><%= effort.event.first_start_time.to_date.to_formatted_s(:long) %></td>
-        <td><%= effort.status %></td>
+        <td><%= effort.finish_status %></td>
         <% if @current_user && @current_user.authorized_to_edit?(effort) %>
             <td>
               <%= link_to 'Edit Effort', edit_effort_path(effort), class: "btn btn-xs btn-primary" %>

@@ -67,18 +67,18 @@ class EffortsController < ApplicationController
   def associate_participants
     @event = Event.find(params[:event_id])
     authorize @event
-    effort_ids = params[:id_hash].keys
-    participant_ids = params[:id_hash].values
-    if effort_ids.nil? | participant_ids.nil?
-      redirect_to :back
+    if params[:ids].nil?
+      redirect_to reconcile_event_path(@event)
     else
+      effort_ids = params[:ids].keys
+      participant_ids = params[:ids].values
       (0..effort_ids.size - 1).each do |i|
         @effort = Effort.find(effort_ids[i])
         authorize @effort
         @participant = Participant.find(participant_ids[i])
         @participant.pull_data_from_effort(@effort.id)
       end
-      redirect_to reconcile_event_path(params[:event_id])
+      redirect_to reconcile_event_path(@event)
     end
   end
 

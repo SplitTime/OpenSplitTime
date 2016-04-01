@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-4">
           <%= link_to "Perform exact matches", associate_participants_efforts_path(event_id: @event.id,
-                                                                                   id_hash: make_exact_match_id_hash(@unreconciled_efforts)),
+                                                                                   ids: make_exact_match_id_hash(@unreconciled_efforts)),
                       method: :put,
                       class: 'btn btn-sm btn-primary btn-margin-top' %>
           <%= link_to 'Create all participants',

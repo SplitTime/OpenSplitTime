@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   def authorized_to_claim?(participant)
     return true if self.admin?
     return true if self.full_name == participant.full_name
-    return true # TODO future fuzzy match algorithm; also provide for admin contact and override
+    true # TODO future fuzzy match algorithm; also provide for admin contact and override
   end
 
   def full_name
@@ -49,6 +49,14 @@ class User < ActiveRecord::Base
   
   def has_avatar?
     !has_no_avatar?
+  end
+
+  def not_interested_in?(participant_id)
+    interests.where(participant_id: participant_id).count < 1
+  end
+
+  def except_current_user(participants)
+    participants.reject { |participant| participant.claimant == self }
   end
 
 end

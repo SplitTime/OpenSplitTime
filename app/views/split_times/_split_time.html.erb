@@ -1,0 +1,20 @@
+<%# Requires parameter split_times(collection) %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Split</th>
+    <th>Time</th>
+    <th>Data Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% split_times.each do |split_time| %>
+      <tr>
+        <td><%= composite_name(split_time) %></td>
+        <td><%= composite_time(split_time) %></td>
+        <td><%= split_time.data_status %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -5,7 +5,7 @@ class Effort < ActiveRecord::Base
   belongs_to :participant
   has_many :split_times, dependent: :destroy
 
-  validates_presence_of :event_id
+  validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
 
@@ -18,39 +18,30 @@ class Effort < ActiveRecord::Base
 
   def finished?
     return false if split_times.count < 1
-    split_times.each do |split_time|
+    split_times.reverse.each do |split_time|
       return true if split_time.split.kind == "finish"
     end
     false
   end
 
+  def finish_status
+    return "DNF" if dropped?
+    return finish_time.formatted_time if finished?
+    "In progress"
+  end
+
   def finish_time
     return nil if split_times.count < 1
-    split_times.each do |split_time|
-      return split_time.time_from_start if split_time.split.kind == "finish"
+    split_times.reverse.each do |split_time|
+      return split_time if split_time.split.kind == "finish"
     end
     nil
-  end
-
-  def finish_time_formatted
-    total_seconds = finish_time
-    seconds = total_seconds % 60
-    minutes = (total_seconds / 60) % 60
-    hours = total_seconds / (60 * 60)
-
-    format("%02d:%02d:%02d", hours, minutes, seconds)
-  end
-
-  def status
-    return "DNF" if dropped?
-    return finish_time_formatted if finished?
-    "In progress"
   end
 
   def exact_matching_participant # Suitable for automated matcher
     participants = Participant.last_name_matches(last_name, rigor: 'exact')
                        .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)
-    exact_match = Participant.age_matches(age_today, participants, 'exact')
+    exact_match = Participant.age_matches(age_today, participants, 'soft')
     exact_match.count == 1 ? exact_match.first : nil # Convert single match to object; don't pass if more than one match
   end
 
@@ -89,6 +80,16 @@ class Effort < ActiveRecord::Base
   def approximate_age_today
     now = Time.now.utc.to_date
     age ? (years_between_dates(event.first_start_time.to_date, now) + age).to_i : nil
+  end
+
+  def base_split_times
+    return_array = []
+    split_times.each do |split_time|
+      if split_time.split.sub_order == 0
+        return_array << split_time
+      end
+    end
+    return_array.sort_by { |x| x.split.distance_from_start }
   end
 
 end

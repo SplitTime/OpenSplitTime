@@ -1,6 +1,6 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_effort, only: [:show, :edit, :update, :destroy]
+  before_action :set_effort, only: [:show, :edit, :update, :destroy, :associate_participant]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
@@ -50,7 +50,8 @@ class EffortsController < ApplicationController
   end
 
   def associate_participant
-    authorize @effort
+    @event = Event.find(params[:event_id])
+    authorize @event
     @effort.participant_id = params[:participant_id]
 
     if @effort.save
@@ -64,18 +65,20 @@ class EffortsController < ApplicationController
   end
 
   def associate_participants
-    effort_ids = params[:id_hash].keys
-    participant_ids = params[:id_hash].values
-    if effort_ids.nil? | participant_ids.nil?
-      redirect_to :back
+    @event = Event.find(params[:event_id])
+    authorize @event
+    if params[:ids].nil?
+      redirect_to reconcile_event_path(@event)
     else
+      effort_ids = params[:ids].keys
+      participant_ids = params[:ids].values
       (0..effort_ids.size - 1).each do |i|
         @effort = Effort.find(effort_ids[i])
         authorize @effort
         @participant = Participant.find(participant_ids[i])
         @participant.pull_data_from_effort(@effort.id)
       end
-      redirect_to reconcile_event_path(params[:event_id])
+      redirect_to reconcile_event_path(@event)
     end
   end
 

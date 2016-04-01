@@ -46,7 +46,7 @@ class ParticipantsController < ApplicationController
   def create_from_efforts
     unreconciled_effort_id_array(params[:effort_ids], params[:event_id]).each do |effort_id|
       @participant = Participant.new
-      @participant.build_from_effort(effort_id)
+      @participant.pull_data_from_effort(effort_id)
     end
     redirect_to reconcile_event_path(params[:event_id])
   end

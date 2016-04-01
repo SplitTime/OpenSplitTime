@@ -1,7 +1,22 @@
 <h1 align="center"><%= "#{@effort.full_name} - #{@effort.event.name}" %></h1>
 <div class="row">
   <div class="col-md-4 col-md-offset-4 center">
-    <strong><%= "#{@effort.status}" %></strong><br/>
+    <h3><%= "#{@effort.finish_status}" %></h3><br/>
   </div>
 </div>
 <hr>
+<div class="row">
+  <div class="col-xs-6">
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
+    <% if @current_user && @current_user.authorized_to_edit?(@effort) %>
+        <%= link_to 'Edit this effort', edit_effort_path(@effort), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Delete this effort', effort_path(@effort, referrer_path: URI(request.referrer).path), method: :delete,
+                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+    <% end %>
+  </div>
+</div>
+<hr>
+
+<% if @effort.split_times.count > 0 %>
+    <%= render 'split_times/split_time', split_times: @effort.base_split_times %>
+<% end %>

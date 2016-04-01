@@ -3,6 +3,14 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_for(@event, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :name %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
+          </div>
+        </div>
         <% if @course.nil? %>
             <div class="form-group">
               <div class="control-label col-sm-2">
@@ -21,14 +29,6 @@
               </div>
             </div>
         <% end %>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :name %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
-          </div>
-        </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :race_id %>

@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     collection { post :create_from_efforts }
     collection { get :search }
   end
-  resources :efforts, only: [:show, :edit] do
+  resources :efforts, only: [:show, :edit, :destroy] do
     member { put :associate_participant }
     collection { put :associate_participants}
   end

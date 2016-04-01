@@ -9,7 +9,7 @@ class Split < ActiveRecord::Base
   accepts_nested_attributes_for :location, allow_destroy: true
 
   validates_presence_of :course_id, :name, :distance_from_start, :sub_order, :kind
-  validates :kind, inclusion: { in: Split.kinds.keys }
+  validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :name, scope: :course_id, case_sensitive: false
   validates_uniqueness_of :distance_from_start, scope: [:course_id, :sub_order]
   validates_uniqueness_of :kind, scope: :course_id, :if => 'is_start?',
@@ -46,8 +46,18 @@ class Split < ActiveRecord::Base
     end
   end
 
-  def self.having_same_distance_as(split)
+  def self.having_same_distance_as(split) # TODO Refactor to instance method
     where(course_id: split.course_id, distance_from_start: split.distance_from_start).where.not(id: split.id)
+  end
+
+  def event_waypoint_group(event)
+    waypoint_group.find_each do |waypoint|
+      waypoint.events.includes(event)
+    end
+  end
+
+  def waypoint_group
+    course.splits.where(distance_from_start: distance_from_start).all
   end
 
 end

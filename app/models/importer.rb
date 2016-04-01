@@ -3,6 +3,7 @@ class Importer
 
   def self.split_import(file, event)
     spreadsheet = open_spreadsheet(file)
+    return false unless spreadsheet
     split_offset, effort_offset = compute_offsets(spreadsheet)
     return false unless effort_offset == 3 # No split data detected
     header1 = spreadsheet.row(1)
@@ -46,6 +47,7 @@ class Importer
   def self.effort_import(file, event)
     effort_symbols = Effort.columns_for_import
     spreadsheet = open_spreadsheet(file)
+    return false unless spreadsheet
     split_offset, effort_offset = compute_offsets(spreadsheet)
     header = spreadsheet.row(1)
 
@@ -86,6 +88,7 @@ class Importer
   end
 
   def self.prepare_country_data(country_data)
+    return nil if country_data.blank?
     if country_data.is_a?(String)
       if country_data.length < 4
         country = Carmen::Country.coded(country_data)
@@ -100,11 +103,13 @@ class Importer
   end
 
   def self.find_country_code_by_nickname(country_data)
+    return nil if country_data.blank?
     country_code = I18n.t("nicknames.#{country_data.downcase}")
     country_code.include?('translation missing') ? nil : country_code
   end
 
   def self.prepare_state_data(country_code, state_data)
+    return nil if state_data.blank?
     country = Carmen::Country.coded(country_code)
     if state_data.is_a?(String)
       return state_data if country.nil?
@@ -120,6 +125,7 @@ class Importer
   end
 
   def self.prepare_gender_data(gender_data)
+    return nil if gender_data.blank?
     gender_data.downcase!
     return "male" if (gender_data == "m") | (gender_data == "male")
     return "female" if (gender_data == "f") | (gender_data == "female")
@@ -156,6 +162,7 @@ class Importer
   end
 
   def self.open_spreadsheet(file)
+    return nil unless file
     @spreadsheet_format = File.extname(file.original_filename)
     case @spreadsheet_format
       # when '.csv' then

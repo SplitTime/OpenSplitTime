@@ -1,19 +1,24 @@
 <h1 align="center">Participants</h1>
 <div class="row">
   <div class="col-xs-8">
-      <%= will_paginate %>
+      <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
   <div class="col-xs-3">
     <%= link_to 'Create New Participant', new_participant_path,
                 class: 'btn btn-sm btn-success btn-margin-lg pull-right' %>
   </div>
 </div>
+<div class="row">
+  <div class="col-xs-6">
 
-<%= render 'participant', obj: @participants %>
+  </div>
+</div>
+
+<%= render 'participants', obj: @participants %>
 
 <hr>
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate %>
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>

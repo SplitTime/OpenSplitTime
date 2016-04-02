@@ -1,7 +1,7 @@
 <h1 align="center">Splits</h1>
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate %>
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
   <div class="col-xs-3">
     <%= link_to 'Create New Split', new_split_path,
@@ -9,11 +9,11 @@
   </div>
 </div>
 
-<%= render 'split', obj: @splits %>
+<%= render 'splits', obj: @splits %>
 
 <hr>
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate %>
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>

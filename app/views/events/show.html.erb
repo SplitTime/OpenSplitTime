@@ -1,6 +1,6 @@
 <h1 align="center"><%= @event.name %></h1>
 <div class="row">
-  <div class="col-md-4 col-md-offset-4 center">
+  <div class="col-md-6 col-md-offset-3 center">
     <strong><%= "#{@event.first_start_time.to_formatted_s(:long)}" %></strong><br/>
     <strong>Course:</strong>
     <%= link_to @event.course.name, course_path(@event.course) %>
@@ -77,5 +77,5 @@
         <h4>Splits associated with this event:</h4>
       </div>
     </div>
-    <%= render 'splits/split', obj: @associated_splits %>
+    <%= render 'splits/splits', obj: @associated_splits %>
 <% end %>

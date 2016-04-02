@@ -1,7 +1,7 @@
 <h1 align="center">Courses</h1>
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate %>
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
   <div class="col-xs-3">
     <%= link_to 'Create New Course', new_course_path,
@@ -9,11 +9,11 @@
   </div>
 </div>
 
-<%= render 'course', obj: @courses %>
+<%= render 'courses', obj: @courses %>
 
 <hr>
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate %>
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>

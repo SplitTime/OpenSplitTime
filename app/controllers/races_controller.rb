@@ -4,7 +4,7 @@ class RacesController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @races = Race.all.order(:name)
+    @races = Race.paginate(page: params[:page], per_page: 25).order(:name)
     session[:return_to] = races_path
   end
 

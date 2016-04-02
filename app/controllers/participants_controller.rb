@@ -13,7 +13,7 @@ class ParticipantsController < ApplicationController
   end
 
   def index
-    @participants = Participant.all.order(:last_name, :first_name)
+    @participants = Participant.paginate(page: params[:page], per_page: 25).order(:last_name, :first_name)
     authorize @participants
     session[:return_to] = participants_path
   end

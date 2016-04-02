@@ -28,6 +28,8 @@ gem 'gmaps4rails'
 gem 'better_errors'
 gem 'foreman'
 gem 'rails_layout'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 
 group :development do
   gem 'web-console', '~> 2.0'

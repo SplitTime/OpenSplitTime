@@ -4,7 +4,7 @@ class LocationsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @locations = Location.all.order(:longitude)
+    @locations = Location.paginate(page: params[:page], per_page: 25).order(:longitude)
     session[:return_to] = locations_path
   end
 

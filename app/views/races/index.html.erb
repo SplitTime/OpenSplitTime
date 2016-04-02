@@ -1,9 +1,19 @@
-<h1 align="center">Listing All Races</h1>
+<h1 align="center">Races</h1>
 <div class="row">
   <div class="col-xs-8">
-    <%= link_to 'Create New Race', new_race_path, class: "btn btn-sm btn-success" %>
+    <%= will_paginate %>
+  </div>
+  <div class="col-xs-3">
+    <%= link_to 'Create New Race', new_race_path,
+                class: 'btn btn-sm btn-success btn-margin-lg pull-right' %>
   </div>
 </div>
-<hr>
 
 <%= render 'race', obj: @races %>
+
+<hr>
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate %>
+  </div>
+</div>

@@ -1,9 +1,19 @@
-<h1 align="center">Listing All Courses</h1>
+<h1 align="center">Courses</h1>
 <div class="row">
   <div class="col-xs-8">
-    <%= link_to 'Create New Course', new_course_path, class: "btn btn-sm btn-success" %>
+    <%= will_paginate %>
+  </div>
+  <div class="col-xs-3">
+    <%= link_to 'Create New Course', new_course_path,
+                class: 'btn btn-sm btn-success btn-margin-lg pull-right' %>
   </div>
 </div>
-<hr>
 
 <%= render 'course', obj: @courses %>
+
+<hr>
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate %>
+  </div>
+</div>

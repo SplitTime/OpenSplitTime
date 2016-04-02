@@ -53,6 +53,8 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    bootstrap-will_paginate (0.0.10)
+      will_paginate
     builder (3.2.2)
     byebug (8.2.2)
     carmen (1.0.2)
@@ -265,6 +267,7 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    will_paginate (3.0.7)
 
 PLATFORMS
   ruby
@@ -274,6 +277,7 @@ DEPENDENCIES
   ar-audit-tracer
   better_errors
   bootstrap-sass
+  bootstrap-will_paginate
   byebug
   carmen-rails
   coffee-rails (~> 4.1.0)
@@ -309,6 +313,7 @@ DEPENDENCIES
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+  will_paginate
 
 BUNDLED WITH
    1.11.2

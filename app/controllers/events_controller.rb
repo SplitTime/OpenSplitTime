@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @events = Event.all.order(:first_start_time)
+    @events = Event.paginate(page: params[:page], per_page: 25).order(first_start_time: :desc)
     session[:return_to] = events_path
   end
 

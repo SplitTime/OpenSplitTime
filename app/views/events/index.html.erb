@@ -1,9 +1,19 @@
 <h1 align="center">Listing All Events</h1>
 <div class="row">
   <div class="col-xs-8">
-    <%= link_to 'Create New Event', new_event_path, class: "btn btn-sm btn-success" %>
+    <%= will_paginate %>
+  </div>
+  <div class="col-xs-3">
+    <%= link_to 'Create New Event', new_event_path,
+                class: 'btn btn-sm btn-success btn-margin-lg pull-right' %>
   </div>
 </div>
-<hr>
 
 <%= render 'event', obj: @events %>
+
+<hr>
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate %>
+  </div>
+</div>

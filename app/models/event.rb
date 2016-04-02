@@ -51,8 +51,9 @@ class Event < ActiveRecord::Base
     hash = efforts.index_by &:id
     splits = efforts.first.event.splits.ordered
     splits.each do |split|
+      split_times = split.split_times
       hash.each_key do |key|
-        split_time = split.split_times.where(effort_id: key).first
+        split_time = split_times.where(effort_id: key).first
         hash[key] = split_time ? split_time.time_from_start : nil
       end
       hash = Hash[hash.sort_by{ |k, v| [v ? 0 : 1, v] }]

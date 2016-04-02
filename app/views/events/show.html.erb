@@ -36,7 +36,17 @@
         <h4><%= "#{@event.efforts.count} efforts for #{@event.name}" %></h4>
       </div>
     </div>
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
 
     <%= render 'efforts/event_efforts', efforts: @efforts %>
 
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
 <% end %>

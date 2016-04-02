@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @efforts = @event.race_sorted_efforts
+    @efforts = @event.race_sorted_efforts.paginate(page: params[:page], per_page: 25)
     session[:return_to] = event_path(@event)
   end
 

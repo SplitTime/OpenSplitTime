@@ -4,14 +4,22 @@
   <thead>
   <tr>
     <th>Split</th>
-    <th>Time</th>
+    <th class="text-right">Distance</th>
+    <th class="text-right">Time</th>
   </tr>
   </thead>
   <tbody>
   <% split_times.each do |split_time| %>
       <tr>
-        <td><%= composite_name(split_time) %></td>
-        <td><%= composite_time(split_time) %></td>
+        <% if split_time.split.kind == 'finish' %>
+            <td><strong><%= composite_name(split_time) %></strong></td>
+            <td class="text-right"><strong><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></strong></td>
+            <td class="text-right"><strong><%= composite_time(split_time) %></strong></td>
+        <% elsif split_time.split.kind == 'waypoint' %>
+            <td><%= composite_name(split_time) %></td>
+            <td class="text-right"><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></td>
+            <td class="text-right"><%= composite_time(split_time) %></td>
+        <% end %>
       </tr>
   <% end %>
   </tbody>

@@ -1,9 +1,14 @@
-<h1 align="center"><%= "#{@effort.full_name} - #{@effort.event.name}" %></h1>
 <div class="row">
-  <div class="col-md-6 col-md-offset-3 center">
-    <h3><%= "#{@effort.finish_status}" %></h3><br/>
+  <div class="col-xs-8">
+    <h2><%= "#{@effort.full_name} | #{@effort.event.name}" %></h2>
   </div>
 </div>
+<div class="row">
+  <div class="col-xs-6">
+    <h3><%= "#{@effort.finish_status} | #{@effort.place.ordinalize} place" %></h3>
+  </div>
+</div>
+
 <hr>
 <div class="row">
   <div class="col-xs-6">

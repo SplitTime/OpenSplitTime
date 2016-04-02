@@ -1,9 +1,14 @@
-<h1 align="center"><%= @race.name %></h1>
 <div class="row">
-  <div class="col-md-6 col-md-offset-3 center">
+  <div class="col-xs-6">
+    <h2><%= @race.name %></h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
     <%= @race.description %>
   </div>
 </div>
+
 <hr>
 <div class="row">
   <div class="col-xs-6">
@@ -31,5 +36,5 @@
         <h4>Events associated with this race:</h4>
       </div>
     </div>
-    <%= render 'events/events', obj: @race_events %>
+    <%= render 'events/events', events: @race_events %>
 <% end %>

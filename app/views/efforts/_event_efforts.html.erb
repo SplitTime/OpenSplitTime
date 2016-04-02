@@ -1,0 +1,22 @@
+<%# Requires parameter efforts %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Bio</th>
+    <th>From</th>
+    <th>Finish Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% efforts.each do |effort| %>
+      <tr>
+        <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+        <td><%= effort.bio %></td>
+        <td><%= effort.state_and_country %></td>
+        <td><%= effort.finish_status %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

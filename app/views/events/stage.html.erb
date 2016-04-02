@@ -1,0 +1,80 @@
+<h1 align="center"><%= @event.name %></h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3 center">
+    <strong><%= "#{@event.first_start_time.to_formatted_s(:long)}" %></strong><br/>
+    <strong>Course:</strong>
+    <%= link_to @event.course.name, course_path(@event.course) %>
+    <% if @event.race_id? %> |
+        <strong>Race:</strong>
+        <%= link_to @event.race.name, race_path(@event.race) %>
+    <% end %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <%= link_to '< Back to event', event_path(@event), class: "btn btn-sm btn-default" %>
+    <% if @current_user && @current_user.authorized_to_edit?(@event) %>
+        <%= link_to 'Edit this event', edit_event_path(@event), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Delete this event', event_path(@event, referrer_path: URI(request.referrer).path), method: :delete,
+                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+    <% end %>
+  </div>
+</div>
+
+<% if @current_user && @current_user.authorized_to_edit?(@event) %>
+    <hr>
+    <div class="article-actions">
+      <div class="row">
+        <div class="col-xs-4">
+          <%= link_to 'Associate or remove splits', splits_event_path, class: "btn btn-sm btn-success" %>
+        </div>
+        <% if @event.unreconciled_efforts? %>
+            <div class="col-xs-4">
+              <%= link_to 'Reconcile with participants', reconcile_event_path, class: "btn btn-sm btn-success" %>
+            </div>
+        <% end %>
+      </div>
+    </div>
+<% end %>
+<hr>
+<div class="row">
+  <div class="col-xs-4">
+    <strong>Associated Splits:</strong>
+    <%= link_to @event.splits.count, splits_event_path(@event) %><br/>
+    <% if @current_user && @current_user.authorized_to_edit?(@event) %>
+        <strong>Import Splits for this Event</strong>
+        <%= form_tag({action: :import_splits}, multipart: true) do %>
+            <%= file_field_tag :file %>
+            <%= submit_tag "Import Splits", class: "btn btn-xs btn-success" %>
+        <% end %>
+    <% end %>
+  </div>
+  <div class="col-xs-4">
+    <strong>Associated Efforts:</strong>
+    <%= @event.efforts.count %>
+    <% if @event.unreconciled_efforts? %>
+        <%= "(#{@event.unreconciled_efforts.count} unreconciled)" %>
+    <% elsif @event.efforts.count > 0 %>
+        (All reconciled)
+    <% end %>
+    <br/>
+    <% if @current_user && @current_user.authorized_to_edit?(@event) %>
+        <strong>Import Efforts for this Event</strong>
+        <%= form_tag({action: :import_efforts}, multipart: true) do %>
+            <%= file_field_tag :file %>
+            <%= submit_tag "Import Efforts", class: "btn btn-xs btn-success" %>
+        <% end %>
+    <% end %>
+  </div>
+</div>
+
+<% if @associated_splits.count > 0 %>
+    <hr>
+    <div class="row">
+      <div class="col-xs-8">
+        <h4>Splits associated with this event:</h4>
+      </div>
+    </div>
+    <%= render 'splits/splits', splits: @associated_splits %>
+<% end %>

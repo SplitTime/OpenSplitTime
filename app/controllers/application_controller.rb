@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   def conform_split_locations_to(base_split)
     location_id = base_split.location.id
-    @splits = Split.having_same_distance_as(base_split)
+    @splits = base_split.waypoint_group.where.not(id: base_split.id)
     @splits.each do |split|
       split.update_attributes(location_id: location_id)
     end

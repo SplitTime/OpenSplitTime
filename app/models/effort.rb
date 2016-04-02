@@ -38,6 +38,10 @@ class Effort < ActiveRecord::Base
     nil
   end
 
+  def place
+    event.race_sorted_ids.index(id) + 1
+  end
+
   def exact_matching_participant # Suitable for automated matcher
     participants = Participant.last_name_matches(last_name, rigor: 'exact')
                        .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)

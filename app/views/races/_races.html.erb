@@ -1,26 +1,17 @@
-<%# Requires parameter obj(collection) %>
+<%# Requires parameter races %>
 
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
     <th>Name</th>
     <th>Details</th>
-    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-  <% obj.each do |race| %>
+  <% races.each do |race| %>
       <tr>
         <td><strong><%= link_to race.name, race_path(race) %></strong></td>
         <td><%= pluralize(race.events.count, 'event') %></td>
-        <td>
-          <% if @current_user && @current_user.authorized_to_edit?(race) %>
-              <%= link_to 'Edit Race', edit_race_path(race), class: "btn btn-xs btn-primary" %>
-              <%= link_to 'Delete Race', race_path(race), class: "btn btn-xs btn-danger",
-                          method: :delete,
-                          data: {confirm: 'Are you sure?'} %>
-          <% end %>
-        </td>
       </tr>
   <% end %>
   </tbody>

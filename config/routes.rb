@@ -30,13 +30,13 @@ Rails.application.routes.draw do
     member { get :splits }
     member { put :associate_split }
     member { put :associate_splits }
+    member { delete :remove_split }
+    member { delete :remove_all_splits }
     member { get :reconcile }
+    member { get :stage}
   end
   resources :splits
   resources :races
-  resources :event_splits, only: [:show, :destroy] do
-    collection { delete :bulk_destroy }
-  end
   resources :participants do
     collection { get :subregion_options }
     member { get :avatar_claim }

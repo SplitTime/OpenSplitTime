@@ -8,30 +8,8 @@ class EventsController < ApplicationController
     session[:return_to] = events_path
   end
 
-  def import_splits
-    authorize @event
-    if Importer.split_import(params[:file], @event)
-      flash[:success] = "Import successful"
-    else
-      flash[:danger] = "No split data detected"
-    end
-
-    redirect_to event_path(@event)
-  end
-
-  def import_efforts
-    authorize @event
-    if Importer.effort_import(params[:file], @event)
-      flash[:success] = "Import successful"
-    else
-      flash[:danger] = "No effort data detected"
-    end
-
-    redirect_to event_path(@event)
-  end
-
   def show
-    @associated_splits = @event.splits.order(:distance_from_start, :sub_order)
+    @efforts = @event.race_sorted_efforts
     session[:return_to] = event_path(@event)
   end
 
@@ -49,7 +27,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      redirect_to session.delete(:return_to) || @event
+      redirect_to stage_event_path(@event)
     else
       render 'new'
     end
@@ -73,43 +51,81 @@ class EventsController < ApplicationController
     redirect_to session.delete(:return_to) || events_path
   end
 
-  def splits
+
+  # All actions below are related to event staging
+
+  def stage
     authorize @event
-    @associated_splits = @event.splits
-                             .sort_by { |x| [x.distance_from_start, x.sub_order] }
-    @other_splits = (@event.course.splits - @associated_splits)
-                        .sort_by { |x| [x.distance_from_start, x.sub_order] }
+    @associated_splits = @event.splits.ordered
+    session[:return_to] = stage_event_path(@event)
   end
 
-  def associate_split
-    authorize @event
-    @event_split = EventSplit.new(event_id: @event.id, split_id: params[:split_id])
 
-    if @event_split.save
-      redirect_to splits_event_url(id: @event.id)
+  # Import actions
+
+  def import_splits
+    authorize @event
+    if Importer.split_import(params[:file], @event)
+      flash[:success] = "Import successful"
     else
-      redirect_to splits_event_url(id: @event.id),
-                  error: "Split was not associated with event"
+      flash[:danger] = "No split data detected"
     end
+
+    redirect_to stage_event_path(@event)
+  end
+
+  def import_efforts
+    authorize @event
+    if Importer.effort_import(params[:file], @event)
+      flash[:success] = "Import successful"
+    else
+      flash[:danger] = "No effort data detected"
+    end
+
+    redirect_to stage_event_path(@event)
+  end
+
+
+  # Actions related to the event/split relationship
+
+  def splits
+    authorize @event
+    @other_splits = @event.course.splits.ordered - @event.splits
   end
 
   def associate_splits
     authorize @event
-    if params[:split_id_array].nil?
+    if params[:split_ids].nil?
       redirect_to :back
     else
-      params[:split_id_array].each do |split_id|
-        @event_split = EventSplit.new(event_id: @event.id, split_id: split_id)
-        @event_split.save
+      params[:split_ids].each do |split_id|
+        @event.splits << Split.find(split_id)
       end
       redirect_to splits_event_url(id: @event.id)
     end
   end
 
+  def remove_split
+    authorize @event
+    @event.splits.delete(params[:split_id])
+    redirect_to splits_event_path(@event)
+  end
+
+  def remove_all_splits
+    @event = Event.find(params[:id])
+    authorize @event
+    @event.splits.delete_all
+    redirect_to splits_event_path(@event)
+  end
+
+
+  # Action for reconciling event.efforts data with existing participants
+
   def reconcile
     authorize @event
     @unreconciled_efforts = @event.unreconciled_efforts.order(:last_name)
   end
+
 
   private
 

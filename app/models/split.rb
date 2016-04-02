@@ -46,8 +46,8 @@ class Split < ActiveRecord::Base
     end
   end
 
-  def self.having_same_distance_as(split) # TODO Refactor to instance method
-    where(course_id: split.course_id, distance_from_start: split.distance_from_start).where.not(id: split.id)
+  def self.ordered
+    order(:distance_from_start, :sub_order)
   end
 
   def event_waypoint_group(event)

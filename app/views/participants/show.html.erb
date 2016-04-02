@@ -1,20 +1,22 @@
-<h1 align="center"><%= @participant.full_name %></h1>
 <div class="row">
-  <div class="col-md-6 col-md-offset-3 center">
-    <%= @participant.bio %><br/>
+  <div class="col-xs-6">
+    <h2><%= @participant.full_name %></h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
+    <%= @participant.bio %> |
     <%= @participant.state_and_country %><br/>
-    <% if @participant.unclaimed? %>
-        (Not yet claimed by a registered user)
-    <% elsif @participant.claimant == @current_user %>
-        <strong>Hey, this is me!</strong><br/>
-        <%= "(If it's not really you, please " %>
-        <%= link_to "sign out ", destroy_user_session_path, method: :delete %> or
-        <%= link_to "renounce your claim", avatar_disclaim_participant_path(@participant), data: {confirm: "Are you sure?"}, method: :delete %>)
-    <% else %>
-        <%= "Identified as user #{@participant.claimant.full_name}" %>
+    <% if @participant.claimed? %>
+        <% if @participant.claimant == @current_user %>
+            <strong>Hey, this is me!</strong><br/>
+        <% else %>
+            <%= "Identified as user #{@participant.claimant.full_name}" %>
+        <% end %>
     <% end %>
   </div>
 </div>
+
 <hr>
 <div class="row">
   <div class="col-xs-10">
@@ -48,5 +50,5 @@
         <h4><%= "#{@participant.full_name}'s efforts:" %></h4>
       </div>
     </div>
-    <%= render 'efforts/efforts', obj: @participant.efforts.order(:start_time) %>
+    <%= render 'efforts/participant_efforts', efforts: @participant.efforts.order(start_time: :desc) %>
 <% end %>

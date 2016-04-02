@@ -1,15 +1,14 @@
-<%# Requires parameter obj(collection) %>
+<%# Requires parameter locations %>
 
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
     <th>Name</th>
     <th>Details</th>
-    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-  <% obj.each do |location| %>
+  <% locations.each do |location| %>
       <tr>
         <td><strong><%= link_to location.name, location_path(location) %></strong></td>
         <td>
@@ -25,15 +24,6 @@
           <% else %>
               <%= location.longitude.abs %>
               <%= location.longitude >= 0 ? "°E" : "°W" %>
-          <% end %>
-        </td>
-        <td>
-          <% if @current_user && @current_user.authorized_to_edit?(location) %>
-              <%= link_to 'Edit Location', edit_location_path(location), class: "btn btn-xs btn-primary" %>
-              <%= link_to 'Delete Location', location_path(location, referrer_path: URI(request.referrer).path),
-                          class: "btn btn-xs btn-danger",
-                          method: :delete,
-                          data: {confirm: 'Are you sure?'} %>
           <% end %>
         </td>
       </tr>

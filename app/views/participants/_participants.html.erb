@@ -1,4 +1,4 @@
-<%# Requires parameter obj(collection) %>
+<%# Requires parameter participants %>
 
 <table class="table table-condensed table-striped">
   <thead>
@@ -7,24 +7,15 @@
     <th>Bio</th>
     <th>From</th>
     <th>Efforts</th>
-    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-  <% obj.each do |participant| %>
+  <% participants.each do |participant| %>
       <tr>
         <td><strong><%= link_to participant.full_name, participant_path(participant) %></strong></td>
         <td><%= participant.bio %></td>
         <td><%= participant.state_and_country %></td>
         <td><%= pluralize(participant.efforts.count, 'effort') %></td>
-        <td>
-          <% if @current_user && @current_user.authorized_to_edit?(participant) %>
-              <%= link_to 'Edit', edit_participant_path(participant), class: "btn btn-xs btn-primary" %>
-              <%= link_to 'Delete', participant_path(participant), class: "btn btn-xs btn-danger",
-                          method: :delete,
-                          data: {confirm: 'Are you sure?'} %>
-          <% end %>
-        </td>
       </tr>
   <% end %>
   </tbody>

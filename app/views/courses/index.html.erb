@@ -1,15 +1,19 @@
-<h1 align="center">Courses</h1>
+<div class="row">
+  <div class="col col-xs-4">
+    <h1>Courses</h1>
+  </div>
+  <div class="col-xs-4">
+    <%= link_to 'Create New Course', new_course_path,
+                class: 'btn btn-sm btn-success btn-margin-lg' %>
+  </div>
+</div>
 <div class="row">
   <div class="col-xs-8">
     <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
-  <div class="col-xs-3">
-    <%= link_to 'Create New Course', new_course_path,
-                class: 'btn btn-sm btn-success btn-margin-lg pull-right' %>
-  </div>
 </div>
 
-<%= render 'courses', obj: @courses %>
+<%= render 'courses', courses: @courses %>
 
 <hr>
 <div class="row">

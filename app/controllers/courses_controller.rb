@@ -9,7 +9,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course_splits = @course.splits.order(:distance_from_start, :sub_order)
+    @course_splits = @course.splits.ordered
     session[:return_to] = course_path(@course)
   end
 
@@ -27,7 +27,8 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      redirect_to session.delete(:return_to) || @course
+      session[:return_to] = courses_path
+      redirect_to course_path(@course)
     else
       render 'new'
     end

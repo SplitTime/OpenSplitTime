@@ -1,7 +1,7 @@
-<%= link_to '< Back to Event', event_path(id: @event.id),
+<%= link_to '< Back to staging', stage_event_path(id: @event.id),
             :class => 'btn btn-sm btn-default' %>
 
-<% if @associated_splits.count > 0 %>
+<% if @event.splits.count > 0 %>
     <div class="page-header">
       <div class="row">
         <div class="col-md-10">
@@ -9,8 +9,7 @@
         </div>
         <div class="col-md-2">
           <%= link_to "Remove all",
-                      bulk_destroy_event_splits_path(event_id: @event.id,
-                                                     id_array: make_event_split_id_array(@event.id, @associated_splits)),
+                      remove_all_splits_event_path(@event),
                       :method => :delete,
                       :class => 'btn btn-sm btn-danger btn-margin-top' %>
         </div>
@@ -29,14 +28,14 @@
       </thead>
 
       <tbody>
-      <% @associated_splits.each do |split| %>
+      <% @event.splits.ordered.each do |split| %>
           <tr>
             <td><%= split.name %></td>
             <td><%= split.distance_from_start.meters.to.miles.round(1) %></td>
             <td><%= split.kind.titlecase %></td>
             <td>
               <%= link_to "Remove",
-                          event_split_path(split.event_splits.find_by(event_id: @event.id)),
+                          remove_split_event_path(split_id: split.id),
                           :method => :delete,
                           :class => 'btn btn-xs btn-danger' %>
             </td>
@@ -56,7 +55,7 @@
         <div class="col-md-2">
           <%= link_to "Add all",
                       associate_splits_event_path(id: @event.id,
-                                                       split_id_array: @other_splits.map(&:id)),
+                                                  split_ids: @other_splits.map(&:id)),
                       :method => :put,
                       :class => 'btn btn-sm btn-success btn-margin-top' %>
         </div>
@@ -82,7 +81,7 @@
             <td><%= split.kind.titlecase %></td>
             <td>
               <%= link_to "Add",
-                          associate_split_event_path(id: @event.id, split_id: split.id),
+                          associate_splits_event_path(id: @event.id, split_ids: Array(split.id)),
                           :method => :put,
                           :class => 'btn btn-xs btn-success' %>
             </td>

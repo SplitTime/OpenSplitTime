@@ -34,6 +34,10 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def stage?
+    @current_user.authorized_to_edit?(@event)
+  end
+
   def splits?
     @current_user.authorized_to_edit?(@event)
   end
@@ -46,7 +50,11 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
-  def bulk_destroy?
+  def remove_split?
+    @current_user.authorized_to_edit?(@event)
+  end
+
+  def remove_all_splits?
     @current_user.authorized_to_edit?(@event)
   end
 

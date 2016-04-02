@@ -37,4 +37,27 @@ class Event < ActiveRecord::Base
     efforts.where(participant_id: nil).count > 0
   end
 
+  def race_sorted_efforts
+    effort_array = []
+    race_sorted_ids.each do |id|
+      effort = Effort.find(id)
+      effort_array << effort
+    end
+    effort_array
+  end
+
+  def race_sorted_ids
+    return [] if efforts.none?
+    hash = efforts.index_by &:id
+    splits = efforts.first.event.splits.ordered
+    splits.each do |split|
+      hash.each_key do |key|
+        split_time = split.split_times.where(effort_id: key).first
+        hash[key] = split_time ? split_time.time_from_start : nil
+      end
+      hash = Hash[hash.sort_by{ |k, v| [v ? 0 : 1, v] }]
+    end
+    hash.keys
+  end
+
 end

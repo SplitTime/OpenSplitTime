@@ -1,0 +1,20 @@
+<%# Requires parameter efforts %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Finish Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% efforts.each do |effort| %>
+      <tr>
+        <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
+        <td><%= effort.event.first_start_time.to_date.to_formatted_s(:long) %></td>
+        <td><%= effort.finish_status %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

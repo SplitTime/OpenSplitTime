@@ -27,15 +27,15 @@
               <%= location.longitude >= 0 ? "°E" : "°W" %>
           <% end %>
         </td>
-        <% if @current_user && @current_user.authorized_to_edit?(location) %>
-            <td>
+        <td>
+          <% if @current_user && @current_user.authorized_to_edit?(location) %>
               <%= link_to 'Edit Location', edit_location_path(location), class: "btn btn-xs btn-primary" %>
               <%= link_to 'Delete Location', location_path(location, referrer_path: URI(request.referrer).path),
                           class: "btn btn-xs btn-danger",
                           method: :delete,
                           data: {confirm: 'Are you sure?'} %>
-            </td>
-        <% end %>
+          <% end %>
+        </td>
       </tr>
   <% end %>
   </tbody>

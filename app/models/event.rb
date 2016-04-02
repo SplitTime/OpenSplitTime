@@ -48,17 +48,17 @@ class Event < ActiveRecord::Base
 
   def race_sorted_ids
     return [] if efforts.none?
-    hash = efforts.index_by &:id
+    sort_hash = efforts.index_by &:id
     splits = efforts.first.event.splits.ordered
     splits.each do |split|
-      split_times = split.split_times
-      hash.each_key do |key|
-        split_time = split_times.where(effort_id: key).first
-        hash[key] = split_time ? split_time.time_from_start : nil
+      time_hash = split.split_times.index_by &:effort_id
+      sort_hash.each_key do |key|
+        time = time_hash[key] ? time_hash[key].time_from_start : nil
+        sort_hash[key] = time
       end
-      hash = Hash[hash.sort_by{ |k, v| [v ? 0 : 1, v] }]
+      sort_hash = Hash[sort_hash.sort_by{ |k, v| [v ? 0 : 1, v] }]
     end
-    hash.keys
+    sort_hash.keys
   end
 
 end

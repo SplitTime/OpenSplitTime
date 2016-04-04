@@ -7,8 +7,6 @@ class SplitTime < ActiveRecord::Base
   validates :data_status, inclusion: { in: SplitTime.data_statuses.keys }, allow_nil: true
   validates_uniqueness_of :split_id, scope: :effort_id,
                           :message => "only one of any given split permitted within an effort"
-  validates_numericality_of :time_from_start, equal_to: 0, :if => 'split_is_start?',
-                            :message => "for the starting split_time must be 0"
   validate :course_is_consistent, unless: 'effort.nil? | split.nil?'   # TODO fix tests so that .nil? checks are not necessary
 
   def split_is_start?

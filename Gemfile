@@ -30,6 +30,7 @@ gem 'foreman'
 gem 'rails_layout'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'bulk_insert'
 
 group :development do
   gem 'web-console', '~> 2.0'

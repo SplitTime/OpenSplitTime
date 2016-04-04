@@ -76,7 +76,7 @@ class EventsController < ApplicationController
 
   def import_efforts
     authorize @event
-    if Importer.effort_import(params[:file], @event)
+    if Importer.effort_import(params[:file], @event, current_user.id)
       flash[:success] = "Import successful"
     else
       flash[:danger] = "No effort data detected"

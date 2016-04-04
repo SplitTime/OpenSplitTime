@@ -16,7 +16,7 @@
     <%= link_to '< Back to event', event_path(@event), class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>
         <%= link_to 'Edit this event', edit_event_path(@event), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this event', event_path(@event, referrer_path: URI(request.referrer).path), method: :delete,
+        <%= link_to 'Delete this event', event_path(@event, referrer_path: events_path), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
   </div>

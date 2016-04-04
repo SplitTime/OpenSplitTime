@@ -16,6 +16,19 @@ class Effort < ActiveRecord::Base
     (column_names - (id + foreign_keys + stamps)).map &:to_sym
   end
 
+  def reset_time_from_start
+
+    # If the starting split_time contains nonzero data, assume it means
+    # this effort began that amount of time later than the event's normal start time
+
+    return nil unless start_split_time
+    if start_split_time.time_from_start != 0
+      update_attributes(start_time: start_time + start_split_time.time_from_start)
+      start_split_time.update_attributes(time_from_start: 0)
+    end
+
+  end
+
   def finished?
     return false if split_times.count < 1
     split_times.reverse.each do |split_time|
@@ -26,16 +39,23 @@ class Effort < ActiveRecord::Base
 
   def finish_status
     return "DNF" if dropped?
-    return finish_time.formatted_time if finished?
+    return finish_split_time.formatted_time if finished?
     "In progress"
   end
 
-  def finish_time
+  def finish_split_time
     return nil if split_times.count < 1
     split_times.reverse.each do |split_time|
-      return split_time if split_time.split.kind == "finish"
+      return split_time if split_time.split.kind == 'finish'
     end
     nil
+  end
+
+  def start_split_time
+    return nil if split_times.count < 1
+    split_times.each do |split_time|
+      return split_time if split_time.split.kind == 'start'
+    end
   end
 
   def place

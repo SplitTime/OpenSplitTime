@@ -20,13 +20,8 @@ class Event < ActiveRecord::Base
     kind_array.inject(Hash.new(0)) { |total, e| total[e] += 1; total }
   end
 
-  def split_id_array
-    id_array = []
-    @splits = splits.sort_by { |x| [x.distance_from_start, x.sub_order] }
-    @splits.each do |split|
-      id_array << split.id
-    end
-    id_array
+  def split_ids
+    splits.ordered.map &:id
   end
 
   def unreconciled_efforts

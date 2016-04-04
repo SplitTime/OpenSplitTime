@@ -8,8 +8,9 @@ class Importer
     return false unless effort_offset == 3 # No split data detected
     header1 = spreadsheet.row(1)
     header2 = spreadsheet.row(2)
-    distance_units = header2[1]
     return false unless header1.size == header2.size # Split names and distances don't match up
+    distance_conversion_factor = compute_conversion_factor(header2[1])
+    return false unless distance_conversion_factor
     split_array = header1[split_offset - 1..header1.size - 1]
     distance_array = header2[split_offset - 1..header2.size - 1]
     split_id_array = []
@@ -27,38 +28,41 @@ class Importer
         end
       end
       name = split_array[i]
-      distance = convert_to_meters(distance_array[i], distance_units)
+      distance = distance_array[i] * distance_conversion_factor
 
-      split = Split.new(course_id: event.course_id,
-                        name: name,
-                        distance_from_start: distance,
-                        sub_order: sub_order,
-                        kind: kind)
-      if split.save
-        split_id_array << split.id
-        event.splits << split
+      @split = Split.new(course_id: event.course_id,
+                         name: name,
+                         distance_from_start: distance,
+                         sub_order: sub_order,
+                         kind: kind)
+      if @split.save
+        split_id_array << @split.id
+        event.splits << @split
       else
-        error_array << split
+        error_array << @split
       end
     end
     return split_id_array, error_array
   end
 
-  def self.effort_import(file, event)
-    effort_symbols = Effort.columns_for_import
+  def self.effort_import(file, event, current_user_id)
     spreadsheet = open_spreadsheet(file)
     return false unless spreadsheet
-    split_offset, effort_offset = compute_offsets(spreadsheet)
-    header = spreadsheet.row(1)
+    header1 = spreadsheet.row(1).map(&:downcase)
+    header2 = spreadsheet.row(2)
 
-    effort_name_array = header[0..split_offset - 2]
-    effort_schema = build_effort_schema(effort_symbols, effort_name_array)
-
-    split_name_array = header[split_offset - 1..header.size - 1]
-    split_id_array = event.split_id_array
+    split_offset = compute_split_offset(header1)
+    split_name_array = header1[split_offset - 1..header1.size - 1]
+    split_name_array = ["start", "finish"] if finish_times_only?(header1)
+    split_id_array = event.split_ids
     if split_name_array.size != split_id_array.size
       raise "Number of split columns in import spreadsheet does not match number of selected course splits."
     end
+
+    effort_offset = compute_effort_offset(header2)
+    effort_name_array = header1[0..split_offset - 2]
+    effort_symbols = Effort.columns_for_import
+    effort_schema = build_effort_schema(effort_symbols, effort_name_array)
 
     effort_failure_array = []
     (effort_offset..spreadsheet.last_row).each do |i|
@@ -66,7 +70,8 @@ class Importer
       row_effort_data = prepare_row_effort_data(row[0..split_offset - 2], effort_schema)
       @effort = create_effort(row_effort_data, effort_schema, event)
       if @effort
-        create_split_times(row, split_id_array, split_offset, @effort)
+        create_split_times(row, header1, split_id_array, split_offset, @effort, current_user_id)
+        @effort.reset_time_from_start
       else
         effort_failure_array << row
       end
@@ -78,8 +83,10 @@ class Importer
 
   def self.prepare_row_effort_data(row_effort_data, effort_schema)
     i = effort_schema.index(:country_code)
-    row_effort_data[i] = prepare_country_data(row_effort_data[i]) unless i.nil?
-    country_code = row_effort_data[i]
+    if i
+      row_effort_data[i] = prepare_country_data(row_effort_data[i])
+      country_code = row_effort_data[i]
+    end
     i = effort_schema.index(:state_code)
     row_effort_data[i] = prepare_state_data(country_code, row_effort_data[i]) unless (i.nil? | country_code.nil?)
     i = effort_schema.index(:gender)
@@ -131,8 +138,8 @@ class Importer
     return "female" if (gender_data == "f") | (gender_data == "female")
   end
 
-# Returns an array of effort symbols in order of spreadsheet columns
-# with nil placeholders for spreadsheet columns that don't match
+  # Returns an array of effort symbols in order of spreadsheet columns
+  # with nil placeholders for spreadsheet columns that don't match
 
   def self.build_effort_schema(effort_symbols, effort_name_array)
     schema = []
@@ -176,33 +183,37 @@ class Importer
     end
   end
 
-  def self.compute_offsets(spreadsheet)
-    header = spreadsheet.row(1)
-    split_offset = header.map(&:downcase).index("start") + 1
-    key_cell = spreadsheet.cell(2, 2)
-    unit_array = %w[miles meters km kilometers]
-    effort_offset = (spreadsheet.cell(2, 1).downcase.include?("distance") &&
-        (key_cell.blank? || unit_array.include?(key_cell))) ? 3 : 2
-    return split_offset, effort_offset
+  def self.finish_times_only?(header1)
+    compute_split_offset(header1) == header1.size ? true : false
   end
 
-  def self.convert_to_meters(value, units)
+  def self.compute_split_offset(header1)
+    header1.index("start") ? header1.index("start") + 1 : header1.size
+  end
+
+  def self.compute_effort_offset(header2)
+    unit_array = %w[miles meters km kilometers]
+    header2[0].downcase.include?("distance") &&
+        (header2[1].blank? || unit_array.include?(header2[1])) ? 3 : 2
+  end
+
+  def self.compute_conversion_factor(units)
     units ||= ""
     x = case units.downcase
           when "km"
-            value.kilimeters.to.meters
+            1.kilometers.to.meters
           when "kilometers"
-            value.kilometers.to.meters
+            1.kilometers.to.meters
           when "meters"
-            value
+            1
           when "miles"
-            value.miles.to.meters
-          when "" # Assume miles
-            value.miles.to.meters
+            1.miles.to.meters
+          when "" # Assume miles if no unit is indicated
+            1.miles.to.meters
           else
             false
         end
-    x ? x.to_i : false
+    x ? x.to_f : false
   end
 
   def self.create_effort (row_effort_data, effort_schema, event)
@@ -217,27 +228,26 @@ class Importer
     end
   end
 
-  def self.create_split_times(row, split_array, split_offset, effort)
+  def self.create_split_times(row, header1, split_array, split_offset, effort, current_user_id)
     row_time_data = row[split_offset - 1..row.size - 1]
+    row_time_data = [0] + row_time_data if finish_times_only?(header1)
     return nil if split_array.size != row_time_data.size
-    split_time_id_array = []
-    (0..split_array.size - 1).each do |i|
-      working_split_id = split_array[i]
-      working_time = row_time_data[i]
-      seconds = convert_time_to_standard(working_time)
-      if i == split_array.size - 1
-        effort.update_attributes(dropped: seconds.nil? ? true : false)
-      end
-      next if seconds.nil?
-      @split_time = effort.split_times.new(split_id: working_split_id,
-                                           time_from_start: seconds)
-      if @split_time.save
-        split_time_id_array << @split_time.id
-      else
-        raise "Problem saving split time data for #{@effort.last_name} at #{Split.find_by_id(working_split_id).name}. #{@split_time.errors.full_messages}."
+    SplitTime.bulk_insert(:effort_id, :split_id, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
+      (0..split_array.size - 1).each do |i|
+        split_id = split_array[i]
+        working_time = row_time_data[i]
+        seconds = convert_time_to_standard(working_time)
+        if i == split_array.size - 1
+          effort.update_attributes(dropped: seconds.nil? ? true : false)
+        end
+        next if seconds.nil?
+        worker.add(effort_id: effort.id,
+                   split_id: split_id,
+                   time_from_start: seconds,
+                   created_by: current_user_id,
+                   updated_by: current_user_id)
       end
     end
-    split_time_id_array
   end
 
   def self.convert_time_to_standard(working_time)
@@ -256,8 +266,8 @@ class Importer
 
   end
 
-# Corrects for Excel quirk; TODO: discover extent of this quirk
-#TODO: This will not work for datetimes that were intended as such
+  # Corrects for Excel quirk; TODO: discover extent of this quirk
+  #TODO: This will not work for datetimes that were intended as such
   def self.datetime_to_seconds(value)
     if (value.year < 1901) && @spreadsheet_format.include?("xls")
       value.seconds_since_midnight.to_f + 1.day

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330181846) do
+ActiveRecord::Schema.define(version: 20160403220914) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
@@ -134,14 +134,14 @@ ActiveRecord::Schema.define(version: 20160330181846) do
   end
 
   create_table "split_times", force: :cascade do |t|
-    t.integer  "effort_id",       null: false
-    t.integer  "split_id",        null: false
-    t.float    "time_from_start", null: false
-    t.integer  "data_status"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer "effort_id",       null: false
+    t.integer "split_id",        null: false
+    t.float   "time_from_start", null: false
+    t.integer "data_status"
+    t.string  "created_at"
+    t.string  "updated_at"
+    t.integer "created_by"
+    t.integer "updated_by"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id"

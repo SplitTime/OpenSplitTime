@@ -1,7 +1,7 @@
 module PersonalInfo
 
   def personal_info
-    "#{full_name} - #{bio} - #{state_and_country}"
+    [full_name, bio, state_and_country].compact.split("").flatten.join(' – ')
   end
 
   def state_and_country
@@ -18,11 +18,12 @@ module PersonalInfo
   end
 
   def bio
+    return age_today if gender.nil?
     age_today.nil? ? gender.titlecase : "#{gender.titlecase}, #{age_today}"
   end
 
   def full_name
-    first_name + " " + last_name
+    [first_name,last_name].join(" ")
   end
 
   def age_today

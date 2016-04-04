@@ -29,7 +29,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def time_in_aid
-    waypoint_group.last.time_from_start - waypoint_group.first.time_from_start
+    waypoint_group.compact.last.time_from_start - waypoint_group.compact.first.time_from_start
   end
 
   def waypoint_group
@@ -38,7 +38,7 @@ class SplitTime < ActiveRecord::Base
       splits.each do |split|
         split_time_array << split.split_times.where(effort: effort).first
       end
-      split_time_array
+      split_time_array # Includes nil values when no split_time is associated with members of the split.waypoint_group
     end
 
 end

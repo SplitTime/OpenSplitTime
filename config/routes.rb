@@ -23,7 +23,9 @@ Rails.application.routes.draw do
     collection { get :my_interests }
   end
   resources :locations
-  resources :courses
+  resources :courses do
+    member { get :best_efforts }
+  end
   resources :events do
     member { post :import_splits }
     member { post :import_efforts }

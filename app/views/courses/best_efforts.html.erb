@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2><%= "All-time best efforts on #{@course.name}" %></h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
+    <strong><%= "#{@course.events.count} events from #{@course.earliest_event_date.to_date.to_formatted_s(:long)} to #{@course.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+  </div>
+</div>
+<hr>
+<div class="article-actions">
+  <%= link_to '<< Back to course splits', course_path(@course), class: "btn btn-sm btn-default" %>
+</div>
+
+<% if @efforts.count > 0 %>
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
+    <%= render 'efforts/event_efforts', efforts: @efforts %>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+<% end %>

@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :best_efforts]
   before_action :set_course, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show, :best_efforts]
 
   def index
     @courses = Course.paginate(page: params[:page], per_page: 25).order(:name)
@@ -50,6 +50,12 @@ class CoursesController < ApplicationController
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || courses_path
+  end
+
+  def best_efforts
+    sorted_finishes = @course.all_finishes_sorted
+    @efforts = sorted_finishes.paginate(page: params[:page], per_page: 25)
+    session[:return_to] = best_efforts_course_path(@course)
   end
 
   private

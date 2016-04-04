@@ -74,19 +74,23 @@ class Effort < ActiveRecord::Base
   end
 
   def exact_matching_participant # Suitable for automated matcher
-    participants = Participant.last_name_matches(last_name, rigor: 'exact')
-                       .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)
-    exact_match = Participant.age_matches(age_today, participants, 'soft')
-    exact_match.count == 1 ? exact_match.first : nil # Convert single match to object; don't pass if more than one match
+    Rails.cache.fetch("/effort/#{id}-#{updated_at}/exact_matching_participant", expires_in: 1.hour) do
+      participants = Participant.last_name_matches(last_name, rigor: 'exact')
+                         .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)
+      exact_match = Participant.age_matches(age_today, participants, 'soft')
+      exact_match.count == 1 ? exact_match.first : nil # Convert single match to object; don't pass if more than one match
+    end
   end
 
   def closest_matching_participant # Requires human review
-    participant_with_same_name ||
-        participant_with_nickname ||
-        participant_changed_last_name ||
-        participant_changed_first_name ||
-        participant_same_full_name
-    # return participant_with_nickname if participant_with_nickname
+    Rails.cache.fetch("/effort/#{id}-#{updated_at}/closest_matching_participant", expires_in: 1.hour) do
+      participant_with_same_name ||
+          participant_with_nickname ||
+          participant_changed_last_name ||
+          participant_changed_first_name ||
+          participant_same_full_name
+      # return participant_with_nickname if participant_with_nickname
+    end
   end
 
   def participant_with_same_name

@@ -23,12 +23,13 @@
 </div>
 <hr>
 
-<% if @current_user && @current_user.authorized_to_edit?(@course) %>
-    <div class="article-actions">
+<div class="article-actions">
+  <% if @current_user && @current_user.authorized_to_edit?(@course) %>
       <%= link_to 'Create new split', new_split_path(course_id: @course.id), class: "btn btn-sm btn-success" %>
-    </div>
-    <hr>
-<% end %>
+  <% end %>
+  <%= link_to 'All time best efforts >>', best_efforts_course_path(@course), class: "btn btn-sm btn-default" %>
+</div>
+<hr>
 
 <% if @course_splits.count > 0 %>
     <div class="row">

@@ -13,11 +13,12 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '<< Back to effort', edit_split_times_effort_path, method: :put, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Back to effort', effort_path(@effort), method: :put, class: "btn btn-sm btn-default" %>
   </div>
 </div>
 <hr>
 
 <% if @effort.split_times.count > 0 %>
-    <%= render 'split_times/edit_split_time', split_times: @effort.split_times %>
+    <%= render 'split_times/edit_split_time', split_times: @effort.split_times
+        .sort_by { |x| [x.split.distance_from_start, x.split.sub_order] } %>
 <% end %>

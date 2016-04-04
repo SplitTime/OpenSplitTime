@@ -27,6 +27,8 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
+      @effort.event.touch # Force cache update
+      @effort.event.course.touch
       redirect_to session.delete(:return_to) || @effort
     else
       render 'new'
@@ -37,6 +39,8 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.update(effort_params)
+      @effort.event.touch # Force cache update
+      @effort.event.course.touch
       redirect_to session.delete(:return_to) || @effort
     else
       render 'edit'
@@ -46,6 +50,8 @@ class EffortsController < ApplicationController
   def destroy
     authorize @effort
     @effort.destroy
+    @effort.event.touch # Force cache update
+    @effort.event.course.touch
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || root_path
@@ -86,8 +92,6 @@ class EffortsController < ApplicationController
 
   def edit_split_times
     authorize @effort
-    @split_times = @effort.split_times
-    @effort.event.touch # Force cache update
   end
 
   private

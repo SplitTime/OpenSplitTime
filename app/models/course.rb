@@ -14,15 +14,25 @@ class Course < ActiveRecord::Base
     events.order(:first_start_time).last.first_start_time
   end
 
-  def all_finishes_sorted
+  def sorted_efforts
+    effort_array = []
+    sorted_effort_ids.each do |id|
+      effort = Effort.find(id)
+      effort_array << effort
+    end
+    effort_array
+  end
+
+  def sorted_effort_ids
     Rails.cache.fetch("/course/#{id}-#{updated_at}/all_finishes_sorted", expires_in: 1.hour) do
-      effort_array = []
+      sort_hash = {}
       events.each do |event|
         event.efforts.each do |effort|
-          effort_array << effort if effort.finished?
+          sort_hash[effort.id] = effort.finish_split_time.time_from_start if effort.finished?
         end
       end
-      effort_array.sort_by { |x| x.finish_split_time.time_from_start }
+      effort_array = Hash[sort_hash.sort_by { |k, v| v }].keys
+      effort_array
     end
   end
 

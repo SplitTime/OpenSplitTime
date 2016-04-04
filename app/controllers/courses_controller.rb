@@ -53,8 +53,7 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
-    sorted_finishes = @course.all_finishes_sorted
-    @efforts = sorted_finishes.paginate(page: params[:page], per_page: 25)
+    @efforts = @course.sorted_efforts.paginate(page: params[:page], per_page: 25)
     session[:return_to] = best_efforts_course_path(@course)
   end
 

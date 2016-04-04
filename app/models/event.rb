@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  belongs_to :course
+  belongs_to :course, touch: true
   belongs_to :race
   has_many :efforts, dependent: :destroy
   has_many :event_splits, dependent: :destroy
@@ -43,7 +43,7 @@ class Event < ActiveRecord::Base
 
   def race_sorted_ids
     return [] if efforts.none?
-    Rails.cache.fetch("/event/#{id}-#{updated_at}/race_sorted_ids", expires_in: 1.hour) do
+    Rails.cache.fetch("/event/#{id}-#{updated_at}/race_sorted_ids", expires_in: 1.day) do
       sort_hash = efforts.index_by &:id
       splits = efforts.first.event.splits.ordered
       splits.each do |split|

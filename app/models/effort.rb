@@ -1,7 +1,7 @@
 class Effort < ActiveRecord::Base
   include PersonalInfo
   enum gender: [:male, :female]
-  belongs_to :event
+  belongs_to :event, touch: true
   belongs_to :participant
   has_many :split_times, dependent: :destroy
 

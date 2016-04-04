@@ -24,7 +24,7 @@ class Course < ActiveRecord::Base
   end
 
   def sorted_effort_ids
-    Rails.cache.fetch("/course/#{id}-#{updated_at}/all_finishes_sorted", expires_in: 1.hour) do
+    Rails.cache.fetch("/course/#{id}-#{updated_at}/all_finishes_sorted", expires_in: 30.days) do
       sort_hash = {}
       events.each do |event|
         event.efforts.each do |effort|

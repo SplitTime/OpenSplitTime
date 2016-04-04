@@ -30,6 +30,7 @@ gem 'foreman'
 gem 'rails_layout'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'twitter-bootstrap-rails'
 gem 'bulk_insert'
 
 group :development do

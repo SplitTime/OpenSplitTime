@@ -102,10 +102,18 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
   end
 
   def self.search(param)
-    return Participant.none if param.blank?
+    return Participant.all if param.blank?
 
-    param.strip!.downcase!
-    (first_name_matches(param) + last_name_matches(param) + email_matches(param)).uniq
+    param.downcase!
+    collection = []
+    terms = param.split(" ")
+    terms.each do |term|
+    collection = collection + first_name_matches(term, 'soft') +
+        last_name_matches(term, 'soft') +
+        email_matches(term, 'soft') +
+        state_matches(term, 'soft')
+    end
+    collection.uniq
   end
 
   def self.columns_to_pull_from_effort

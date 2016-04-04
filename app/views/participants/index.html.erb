@@ -7,13 +7,20 @@
                 class: 'btn btn-sm btn-success btn-margin-lg' %>
   </div>
 </div>
+
+<%= render 'lookup' %>
+
 <div class="row">
   <div class="col-xs-8">
     <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>
-
-<%= render 'participants', participants: @participants %>
+<% if @participants.count > 0 %>
+    <%= render 'participants', participants: @participants %>
+<% else %>
+    <br/>
+    <p><strong>No participants match this search</strong></p>
+<% end %>
 
 <hr>
 <div class="row">

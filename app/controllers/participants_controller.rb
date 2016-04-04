@@ -1,7 +1,7 @@
 class ParticipantsController < ApplicationController
   before_action :authenticate_user!, except: [:subregion_options, :avatar_disclaim]
   before_action :set_participant, except: [:index, :new, :create, :create_from_efforts, :subregion_options]
-  after_action :verify_authorized, except: [:subregion_options, :avatar_disclaim, :create_from_efforts]
+  after_action :verify_authorized, except: [:index, :subregion_options, :avatar_disclaim, :create_from_efforts]
 
   before_filter do
     locale = params[:locale]
@@ -13,8 +13,9 @@ class ParticipantsController < ApplicationController
   end
 
   def index
-    @participants = Participant.paginate(page: params[:page], per_page: 25).order(:last_name, :first_name)
-    authorize @participants
+    @participants = Participant.search(params[:search_param]).sort_by { |x| [x.last_name, x.first_name] }
+                        .paginate(page: params[:page], per_page: 25)
+    authorize @participants.first unless @participants.count < 1
     session[:return_to] = participants_path
   end
 
@@ -85,12 +86,12 @@ class ParticipantsController < ApplicationController
   private
 
   def participant_params
-    params.require(:participant).permit(:first_name, :last_name, :gender, :birthdate,
+    params.require(:participant).permit(:search_param, :first_name, :last_name, :gender, :birthdate,
                                         :city, :state_code, :country_code, :email, :phone)
   end
 
   def query_params
-    params.permit(:first_name, :last_name, :gender, :birthdate,
+    params.permit(:search_param, :first_name, :last_name, :gender, :birthdate,
                   :city, :state_code, :country_code, :email, :phone)
   end
 

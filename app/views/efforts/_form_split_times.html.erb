@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h1><%= "| #{@effort.full_name} • #{@effort.event.name} |" %></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h3><%= "| #{@effort.finish_status} • #{@effort.place.ordinalize} place •
+    #{@effort.gender_place.ordinalize} #{@effort.gender.titleize} |" %></h3>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <%= link_to '<< Back to effort', edit_split_times_effort_path, method: :put, class: "btn btn-sm btn-default" %>
+  </div>
+</div>
+<hr>
+
+<% if @effort.split_times.count > 0 %>
+    <%= render 'split_times/edit_split_time', split_times: @effort.split_times %>
+<% end %>

@@ -84,21 +84,18 @@ class EffortsController < ApplicationController
     end
   end
 
-  def fix_finish_time
+  def edit_split_times
     authorize @effort
-    @event = Event.find(params[:event_id])
-    @split_time = @effort.finish_split_time
-    wrong_time = @split_time.time_from_start
-    @split_time.update_attributes(time_from_start: wrong_time + 24.hours)
-    @event.touch # Force cache update
-    redirect_to event_path(@event)
+    @split_times = @effort.split_times
+    @effort.event.touch # Force cache update
   end
 
   private
 
   def effort_params
     params.require(:effort).permit(:first_name, :last_name, :gender, :wave, :bib_number, :age,
-                                   :city, :state_code, :country_code, :start_time, :finished)
+                                   :city, :state_code, :country_code, :start_time, :finished,
+                                   split_times: [:time_from_start, :data_status])
   end
 
   def query_params

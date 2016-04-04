@@ -14,8 +14,10 @@
       <tr>
         <% if split_time.split.kind == 'finish' %>
             <td><strong><%= composite_name(split_time) %></strong></td>
-            <td class="text-right"><strong><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></strong></td>
+            <td class="text-right"><strong><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></strong>
+            </td>
             <td class="text-right"><strong><%= composite_time(split_time) %></strong></td>
+            <td class="text-right"><strong></strong></td>
         <% elsif split_time.split.kind == 'waypoint' %>
             <td><%= composite_name(split_time) %></td>
             <td class="text-right"><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></td>

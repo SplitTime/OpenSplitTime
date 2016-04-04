@@ -29,6 +29,8 @@ class Effort < ActiveRecord::Base
 
   end
 
+  # Methods regarding split_times
+
   def finished?
     return false if split_times.count < 1
     split_times.reverse.each do |split_time|
@@ -56,6 +58,28 @@ class Effort < ActiveRecord::Base
     split_times.each do |split_time|
       return split_time if split_time.split.kind == 'start'
     end
+  end
+
+  def base_split_times
+    return_array = []
+    split_times.each do |split_time|
+      if split_time.split.sub_order == 0
+        return_array << split_time
+      end
+    end
+    return_array.sort_by { |x| x.split.distance_from_start }
+  end
+
+  def ordered_splits
+    event.splits.ordered
+  end
+
+  def ordered_split_times
+    split_times = []
+    ordered_splits.each do |split|
+      split_times << SplitTime.where(split_id: split.id, effort_id: id).first
+    end
+    split_times
   end
 
   def place
@@ -119,16 +143,6 @@ class Effort < ActiveRecord::Base
   def approximate_age_today
     now = Time.now.utc.to_date
     age ? (years_between_dates(event.first_start_time.to_date, now) + age).to_i : nil
-  end
-
-  def base_split_times
-    return_array = []
-    split_times.each do |split_time|
-      if split_time.split.sub_order == 0
-        return_array << split_time
-      end
-    end
-    return_array.sort_by { |x| x.split.distance_from_start }
   end
 
 end

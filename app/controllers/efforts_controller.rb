@@ -1,6 +1,6 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_effort, only: [:show, :edit, :update, :destroy, :associate_participant]
+  before_action :set_effort, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
@@ -82,6 +82,16 @@ class EffortsController < ApplicationController
       end
       redirect_to reconcile_event_path(@event)
     end
+  end
+
+  def fix_finish_time
+    authorize @effort
+    @event = Event.find(params[:event_id])
+    @split_time = @effort.finish_split_time
+    wrong_time = @split_time.time_from_start
+    @split_time.update_attributes(time_from_start: wrong_time + 24.hours)
+    @event.touch # Force cache update
+    redirect_to event_path(@event)
   end
 
   private

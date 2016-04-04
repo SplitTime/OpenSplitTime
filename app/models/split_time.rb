@@ -1,13 +1,13 @@
 class SplitTime < ActiveRecord::Base
-  enum data_status: [:bad, :questionable, :good]   # nil = unknown, 0 = bad, 1 = questionable, 2 = good
+  enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :effort
   belongs_to :split
 
   validates_presence_of :effort_id, :split_id, :time_from_start
-  validates :data_status, inclusion: { in: SplitTime.data_statuses.keys }, allow_nil: true
+  validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
   validates_uniqueness_of :split_id, scope: :effort_id,
                           :message => "only one of any given split permitted within an effort"
-  validate :course_is_consistent, unless: 'effort.nil? | split.nil?'   # TODO fix tests so that .nil? checks are not necessary
+  validate :course_is_consistent, unless: 'effort.nil? | split.nil?' # TODO fix tests so that .nil? checks are not necessary
 
   def split_is_start?
     split.try(:kind) == "start"
@@ -33,12 +33,12 @@ class SplitTime < ActiveRecord::Base
   end
 
   def waypoint_group
-      splits = split.waypoint_group
-      split_time_array = []
-      splits.each do |split|
-        split_time_array << split.split_times.where(effort: effort).first
-      end
-      split_time_array # Includes nil values when no split_time is associated with members of the split.waypoint_group
+    splits = split.waypoint_group
+    split_time_array = []
+    splits.each do |split|
+      split_time_array << split.split_times.where(effort: effort).first
     end
+    split_time_array # Includes nil values when no split_time is associated with members of the split.waypoint_group
+  end
 
 end

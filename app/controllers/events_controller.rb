@@ -9,8 +9,14 @@ class EventsController < ApplicationController
   end
 
   def show
-    @efforts = @event.race_sorted_efforts.paginate(page: params[:page], per_page: 25)
-    session[:return_to] = event_path(@event)
+    if @event.course
+      @efforts = @event.race_sorted_efforts.paginate(page: params[:page], per_page: 25)
+      session[:return_to] = event_path(@event)
+    else
+      flash[:danger] = "Event must have a course"
+      render 'edit'
+      session[:return_to] = event_path(@event)
+    end
   end
 
   def new

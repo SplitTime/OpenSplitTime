@@ -5,7 +5,7 @@ module SplitTimesHelper
   end
 
   def composite_time(base_split_time)
-    splits = base_split_time.split.waypoint_group.order(:sub_order)
+    splits = base_split_time.split.waypoint_group
     time_array = []
     splits.each do |split|
       split_time = split.split_times.where(effort: base_split_time.effort).first

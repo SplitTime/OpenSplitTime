@@ -23,7 +23,7 @@ class CoursePolicy
   end
 
   def destroy?
-    @current_user.authorized_to_edit?(@course)
+    @current_user.admin? # Course destruction could affect events that belong to users other than the course owner
   end
 
 end

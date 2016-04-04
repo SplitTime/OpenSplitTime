@@ -8,7 +8,7 @@
     <strong><%= "#{@event.first_start_time.to_formatted_s(:long)}" %></strong><br/>
     <strong>Course:</strong>
     <%= link_to @event.course.name, course_path(@event.course) %>
-    <% if @event.race_id? %> |
+    <% if @event.race %> |
         <strong>Race:</strong>
         <%= link_to @event.race.name, race_path(@event.race) %>
     <% end %>

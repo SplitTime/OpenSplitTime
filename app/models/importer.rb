@@ -4,11 +4,12 @@ class Importer
   def self.split_import(file, event)
     spreadsheet = open_spreadsheet(file)
     return false unless spreadsheet
-    split_offset, effort_offset = compute_offsets(spreadsheet)
-    return false unless effort_offset == 3 # No split data detected
     header1 = spreadsheet.row(1)
     header2 = spreadsheet.row(2)
     return false unless header1.size == header2.size # Split names and distances don't match up
+    split_offset = compute_split_offset(header1)
+    effort_offset = compute_effort_offset(header2)
+    return false unless effort_offset == 3 # No split data detected
     distance_conversion_factor = compute_conversion_factor(header2[1])
     return false unless distance_conversion_factor
     split_array = header1[split_offset - 1..header1.size - 1]
@@ -188,7 +189,8 @@ class Importer
   end
 
   def self.compute_split_offset(header1)
-    header1.index("start") ? header1.index("start") + 1 : header1.size
+    start_column_index = header1.map(&:downcase).index("start")
+    start_column_index ? start_column_index + 1 : header1.size
   end
 
   def self.compute_effort_offset(header2)

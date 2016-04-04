@@ -14,14 +14,12 @@ class SplitsController < ApplicationController
 
   def new
     @split = Split.new
-    if params[:course_id]
-      @course = Course.find(params[:course_id])
-    end
+    @course = Course.find(params[:course_id]) if params[:course_id]
     authorize @split
   end
 
   def edit
-    @course = Course.find(params[:course_id]) if params[:course_id]
+    @course = @split.course
     authorize @split
   end
 
@@ -31,7 +29,12 @@ class SplitsController < ApplicationController
 
     if @split.save
       conform_split_locations_to(@split) unless @split.location_id.nil?
-      redirect_to session.delete(:return_to) || @split
+      if params[:commit] == 'Create Location'
+        session[:return_to] = edit_split_path(@split)
+        redirect_to new_location_path(split_id: @split.id)
+      else
+        redirect_to session.delete(:return_to) || @split.course
+      end
     else
       render 'new'
     end
@@ -42,7 +45,7 @@ class SplitsController < ApplicationController
 
     if @split.update(split_params)
       conform_split_locations_to(@split)
-      redirect_to session.delete(:return_to) || @split
+      redirect_to session.delete(:return_to) || @split.course
     else
       @course = Course.find(@split.course_id) if @split.course_id
       render 'edit'

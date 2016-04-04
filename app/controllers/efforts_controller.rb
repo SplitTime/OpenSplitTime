@@ -13,10 +13,12 @@ class EffortsController < ApplicationController
 
   def new
     @effort = Effort.new
+    @event = Event.find(params[:event_id]) if params[:event_id]
     authorize @effort
   end
 
   def edit
+    @event = Event.find(@effort.event_id)
     authorize @effort
   end
 

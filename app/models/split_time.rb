@@ -28,4 +28,17 @@ class SplitTime < ActiveRecord::Base
     format("%02d:%02d:%02d", hours, minutes, seconds)
   end
 
+  def time_in_aid
+    waypoint_group.last.time_from_start - waypoint_group.first.time_from_start
+  end
+
+  def waypoint_group
+      splits = split.waypoint_group
+      split_time_array = []
+      splits.each do |split|
+        split_time_array << split.split_times.where(effort: effort).first
+      end
+      split_time_array
+    end
+
 end

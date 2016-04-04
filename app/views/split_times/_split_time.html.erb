@@ -6,6 +6,7 @@
     <th>Split</th>
     <th class="text-right">Distance</th>
     <th class="text-right">Time</th>
+    <th class="text-right">Time In Aid</th>
   </tr>
   </thead>
   <tbody>
@@ -19,6 +20,7 @@
             <td><%= composite_name(split_time) %></td>
             <td class="text-right"><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></td>
             <td class="text-right"><%= composite_time(split_time) %></td>
+            <td class="text-right"><%= (split_time.time_in_aid / 60).round(0) %></td>
         <% end %>
       </tr>
   <% end %>

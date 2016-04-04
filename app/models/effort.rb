@@ -62,6 +62,17 @@ class Effort < ActiveRecord::Base
     event.race_sorted_ids.index(id) + 1
   end
 
+  def gender_place
+    place_array = event.race_sorted_ids
+    my_index = place_array.index(id)
+    return 1 if my_index == 0
+    my_gender_place = 1
+    place_array[0, my_index - 1].each do |effort_id|
+      my_gender_place += 1 if Effort.find(effort_id).gender == gender
+    end
+    my_gender_place
+  end
+
   def exact_matching_participant # Suitable for automated matcher
     participants = Participant.last_name_matches(last_name, rigor: 'exact')
                        .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)

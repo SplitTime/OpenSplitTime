@@ -44,7 +44,7 @@
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :country_code %>
+            <%= f.label :country_code, 'Country' %>
           </div>
           <div class="col-sm-8 dropdown-select-field-carmen">
             <%= f.country_select :country_code, priority: %w(US CA),
@@ -53,7 +53,7 @@
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :state_code %><br/>
+            <%= f.label :state_code, 'State' %><br/>
           </div>
           <div class="col-sm-8 dropdown-select-field-carmen">
             <%= render partial: 'subregion_select', locals: {parent_region: f.object.country_code} %>

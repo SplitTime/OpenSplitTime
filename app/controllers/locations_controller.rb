@@ -14,12 +14,14 @@ class LocationsController < ApplicationController
 
   def new
     @location = Location.new
-    @split = Split.find(params[:split_id]) unless params[:split_id].nil?
+    @split = Split.find(params[:split_id]) if params[:split_id]
     authorize @location
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
   end
 
   def edit
     authorize @location
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
   end
 
   def create

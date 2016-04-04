@@ -1,0 +1,90 @@
+<%= render 'shared/errors', obj: @effort %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@effort, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+        <div class="form-group">
+          <% if @event %>
+              <div class="col-sm-8 col-sm-offset-2">
+                <%= f.hidden_field :event_id, value: @event.id %>
+                <h4><%= "Associated with #{@event.name}" %></h4>
+              </div>
+          <% else %>
+              <p>You must create new efforts from the event screen.</p>
+          <% end %>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :first_name %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :first_name, class: "form-control", placeholder: "First name", autofocus: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :last_name %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :last_name, class: "form-control", placeholder: "Last name" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :gender %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.select :gender, Effort.genders.keys.map { |gender| [gender.titleize, gender] },
+                         {prompt: true}, {class: "dropdown-select-field"} %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :birthdate %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.date_select :birthdate,
+                              {use_short_month: true,
+                               start_year: Date.today.year - 10,
+                               end_year: 1900,
+                               order: [:month, :day, :year],
+                               prompt: true},
+                              {class: "dropdown-select-field"} %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :country_code, 'Country' %>
+          </div>
+          <div class="col-sm-8 dropdown-select-field-carmen">
+            <%= f.country_select :country_code, priority: %w(US CA),
+                                 prompt: 'Please select a country' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :state_code, 'State' %><br/>
+          </div>
+          <div class="col-sm-8 dropdown-select-field-carmen">
+            <%= render partial: 'subregion_select', locals: {parent_region: f.object.country_code} %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :city %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :city, class: "form-control", placeholder: "City" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit(@effort.new_record? ? "Create Effort" : "Update Effort", class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+        <div class="col-xs-4 col-xs-offset-2">
+          [ <%= link_to 'Cancel', request.referrer %> ]
+        </div>
+    <% end %>
+  </div>
+</div>

@@ -57,7 +57,7 @@ class Split < ActiveRecord::Base
   end
 
   def waypoint_group
-    course.splits.where(distance_from_start: distance_from_start).all
+    course.splits.where(distance_from_start: distance_from_start).order(:sub_order)
   end
 
 end

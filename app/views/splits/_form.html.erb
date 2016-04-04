@@ -4,10 +4,20 @@
   <div class="col-md-12">
     <%= form_for(@split, :html => {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-group">
-          <div class="col-sm-8 col-sm-offset-2">
-            <%= f.hidden_field :course_id, value: @course.id %>
-            <h4><%= @course.name %></h4>
-          </div>
+          <% if @course %>
+              <div class="col-sm-8 col-sm-offset-2">
+                <%= f.hidden_field :course_id, value: @course.id %>
+                <h4><%= "Located on #{@course.name}" %></h4>
+              </div>
+          <% else %>
+              <div class="control-label col-sm-2">
+                <%= f.label :course_id %>
+              </div>
+              <div class="col-sm-8">
+                <%= collection_select(:split, :course_id, Course.all, :id, :name,
+                                      {prompt: true}, {class: "dropdown-select-field"}) %>
+              </div>
+          <% end %>
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
@@ -36,19 +46,26 @@
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :location_id %>
-          </div>
-          <div class="col-sm-8">
-            <%= collection_select(:split, :location_id, Location.all, :id, :name,
-                                  {prompt: true}, {class: "dropdown-select-field"}) %>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
             <%= f.label :distance_from_start %>
           </div>
           <div class="col-sm-2">
             <%= f.text_field :distance_from_start, class: "form-control", placeholder: "Meters" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :location_id %>
+          </div>
+          <div class="col-sm-3">
+            <%= collection_select(:split, :location_id, Location.all, :id, :name,
+                                  {prompt: true}, {class: "dropdown-select-field"}) %>
+          </div>
+          <div class="col-sm-2">
+            <% if @split.new_record? %>
+                <%= f.submit("Create Location", { create_location: true, class: "btn btn-xs btn-success btn-margin-top-sm" }) %>
+            <% else %>
+                <%= link_to "Create Location", new_location_path(split_id: @split.id, referrer_path: edit_split_path(@split)), class: "btn btn-xs btn-success btn-margin-top-sm" %>
+            <% end %>
           </div>
         </div>
         <div class="form-group">

@@ -43,17 +43,19 @@ class Event < ActiveRecord::Base
 
   def race_sorted_ids
     return [] if efforts.none?
-    sort_hash = efforts.index_by &:id
-    splits = efforts.first.event.splits.ordered
-    splits.each do |split|
-      time_hash = split.split_times.index_by &:effort_id
-      sort_hash.each_key do |key|
-        time = time_hash[key] ? time_hash[key].time_from_start : nil
-        sort_hash[key] = time
+    Rails.cache.fetch("/event/#{id}-#{updated_at}/race_sorted_ids", expires_in: 1.hour) do
+      sort_hash = efforts.index_by &:id
+      splits = efforts.first.event.splits.ordered
+      splits.each do |split|
+        time_hash = split.split_times.index_by &:effort_id
+        sort_hash.each_key do |key|
+          time = time_hash[key] ? time_hash[key].time_from_start : nil
+          sort_hash[key] = time
+        end
+        sort_hash = Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }]
       end
-      sort_hash = Hash[sort_hash.sort_by{ |k, v| [v ? 0 : 1, v] }]
+      sort_hash.keys
     end
-    sort_hash.keys
   end
 
 end

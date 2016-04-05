@@ -49,7 +49,9 @@ Rails.application.routes.draw do
   resources :efforts do
     member { put :associate_participant }
     collection { put :associate_participants}
+    member { put :edit_split_times }
   end
+  resources :split_times
   resources :interests
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin

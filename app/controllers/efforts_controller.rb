@@ -27,6 +27,8 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
+      @effort.event.touch # Force cache update
+      @effort.event.course.touch
       redirect_to session.delete(:return_to) || @effort
     else
       render 'new'
@@ -37,6 +39,8 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.update(effort_params)
+      @effort.event.touch # Force cache update
+      @effort.event.course.touch
       redirect_to session.delete(:return_to) || @effort
     else
       render 'edit'
@@ -46,6 +50,8 @@ class EffortsController < ApplicationController
   def destroy
     authorize @effort
     @effort.destroy
+    @effort.event.touch # Force cache update
+    @effort.event.course.touch
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || root_path
@@ -84,21 +90,16 @@ class EffortsController < ApplicationController
     end
   end
 
-  def fix_finish_time
+  def edit_split_times
     authorize @effort
-    @event = Event.find(params[:event_id])
-    @split_time = @effort.finish_split_time
-    wrong_time = @split_time.time_from_start
-    @split_time.update_attributes(time_from_start: wrong_time + 24.hours)
-    @event.touch # Force cache update
-    redirect_to event_path(@event)
   end
 
   private
 
   def effort_params
     params.require(:effort).permit(:first_name, :last_name, :gender, :wave, :bib_number, :age,
-                                   :city, :state_code, :country_code, :start_time, :finished)
+                                   :city, :state_code, :country_code, :start_time, :finished,
+                                   split_times: [:time_from_start, :data_status])
   end
 
   def query_params

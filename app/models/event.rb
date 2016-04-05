@@ -33,19 +33,15 @@ class Event < ActiveRecord::Base
   end
 
   def race_sorted_efforts
-    effort_array = []
-    race_sorted_ids.each do |id|
-      effort = Effort.find(id)
-      effort_array << effort
-    end
-    effort_array
+    Effort.where(id: race_sorted_ids)
   end
 
   def race_sorted_ids
     return [] if efforts.none?
-    Rails.cache.fetch("/event/#{id}-#{updated_at}/race_sorted_ids", expires_in: 1.day) do
-      sort_hash = efforts.index_by &:id
-      splits = efforts.first.event.splits.ordered
+    # Rails.cache.fetch("/event/#{id}-#{updated_at}/race_sorted_ids", expires_in: 1.day) do
+    r = Effort.where("efforts.event_id = ?", id)
+      sort_hash = r.index_by &:id
+      splits = self.splits.includes(:split_times).ordered
       splits.each do |split|
         time_hash = split.split_times.index_by &:effort_id
         sort_hash.each_key do |key|
@@ -55,7 +51,7 @@ class Event < ActiveRecord::Base
         sort_hash = Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }]
       end
       sort_hash.keys
-    end
+    # end
   end
 
 end

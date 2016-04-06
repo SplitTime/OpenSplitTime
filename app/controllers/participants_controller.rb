@@ -16,6 +16,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.search(params[:search_param]).sort_by { |x| [x.last_name, x.first_name] }
                         .paginate(page: params[:page], per_page: 25)
     authorize @participants.first unless @participants.count < 1
+    @participant_efforts_count = Effort.group("efforts.participant_id").count
     session[:return_to] = participants_path
   end
 

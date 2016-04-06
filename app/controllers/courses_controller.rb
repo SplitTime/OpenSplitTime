@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :best_efforts]
-  before_action :set_course, except: [:index, :new, :create]
+  before_action :set_course, except: [:index, :new, :create, :best_efforts]
   after_action :verify_authorized, except: [:index, :show, :best_efforts]
 
   def index
@@ -9,7 +9,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course_splits = @course.splits.ordered
+    @course_splits = @course.splits.includes(:course, :location).ordered
     session[:return_to] = course_path(@course)
   end
 
@@ -53,6 +53,7 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
+    @course = Course.where(id: params[:id]).first
     @efforts = @course.sorted_efforts.paginate(page: params[:page], per_page: 25)
     session[:return_to] = best_efforts_course_path(@course)
   end

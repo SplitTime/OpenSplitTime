@@ -58,6 +58,9 @@ GEM
     builder (3.2.2)
     bulk_insert (1.1.1)
       activerecord (>= 4.1.0)
+    bullet (5.0.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.9.0)
     byebug (8.2.2)
     carmen (1.0.2)
       activesupport (>= 3.0.0)
@@ -161,6 +164,8 @@ GEM
       pry
     pundit (1.1.0)
       activesupport (>= 3.0.0)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -275,6 +280,7 @@ GEM
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unicode-display_width (0.3.1)
+    uniform_notifier (1.9.0)
     warden (1.2.6)
       rack (>= 1.0)
     web-console (2.3.0)
@@ -294,6 +300,7 @@ DEPENDENCIES
   bootstrap-sass
   bootstrap-will_paginate
   bulk_insert
+  bullet
   byebug
   carmen-rails
   coffee-rails (~> 4.1.0)
@@ -312,6 +319,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   pundit
+  quiet_assets
   rails (= 4.2.5)
   rails_12factor
   rails_apps_pages

@@ -32,11 +32,8 @@ class Effort < ActiveRecord::Base
   # Methods regarding split_times
 
   def finished?
-    return false if split_times.count < 1
-    split_times.reverse.each do |split_time|
-      return true if split_time.split.kind == "finish"
-    end
-    false
+    split_time = split_times.joins(:split).where(splits: {kind: 1}).first
+    split_time.present?
   end
 
   def finish_status
@@ -46,28 +43,15 @@ class Effort < ActiveRecord::Base
   end
 
   def finish_split_time
-    return nil if split_times.count < 1
-    split_times.reverse.each do |split_time|
-      return split_time if split_time.split.kind == 'finish'
-    end
-    nil
+    split_times.joins(:split).where(splits: {kind: 1}).first
   end
 
   def start_split_time
-    return nil if split_times.count < 1
-    split_times.each do |split_time|
-      return split_time if split_time.split.kind == 'start'
-    end
+    split_times.joins(:split).where(splits: {kind: 0}).first
   end
 
   def base_split_times
-    return_array = []
-    split_times.each do |split_time|
-      if split_time.split.sub_order == 0
-        return_array << split_time
-      end
-    end
-    return_array.sort_by { |x| x.split.distance_from_start }
+    split_times.joins(:split).where(splits: {sub_order: 0})
   end
 
   def ordered_splits

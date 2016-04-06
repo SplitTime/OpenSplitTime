@@ -12,7 +12,7 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     now = Time.now.utc.to_date
     return nil unless efforts.count > 0
     age_array = []
-    efforts.each do |effort|
+    efforts.includes(:event).each do |effort|
       if effort.age
         age_array << (years_between_dates(effort.event.first_start_time.to_date, now) + effort.age)
       end

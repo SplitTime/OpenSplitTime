@@ -36,6 +36,9 @@ gem 'bulk_insert'
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  gem 'bullet'
+  gem 'quiet_assets'
+
 end
 
 group :development, :test do

@@ -5,7 +5,7 @@
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <strong><%= "#{@course.events.count} events from #{@course.earliest_event_date.to_date.to_formatted_s(:long)} to #{@course.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+    <strong><%= "#{pluralize(@course.events.count, 'event')} from #{@course.earliest_event_date.to_date.to_formatted_s(:long)} to #{@course.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
   </div>
 </div>
 <hr>
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <%= render 'efforts/event_efforts', efforts: @efforts %>
+    <%= render 'efforts/efforts', efforts: @efforts %>
 
     <div class="row">
       <div class="col-xs-8">

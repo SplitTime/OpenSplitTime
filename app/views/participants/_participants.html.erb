@@ -15,7 +15,7 @@
         <td><strong><%= link_to participant.full_name, participant_path(participant) %></strong></td>
         <td><%= participant.bio %></td>
         <td><%= participant.state_and_country %></td>
-        <td><%= pluralize(participant.efforts.count, 'effort') %></td>
+        <td><%= pluralize(@participant_efforts_count[participant.id] ||= 0, 'effort') %></td>
       </tr>
   <% end %>
   </tbody>

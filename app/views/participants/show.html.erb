@@ -50,5 +50,5 @@
         <h4><%= "#{@participant.full_name}'s efforts:" %></h4>
       </div>
     </div>
-    <%= render 'efforts/participant_efforts', efforts: @participant.efforts.order(start_time: :desc) %>
+    <%= render 'efforts/efforts', efforts: @participant.efforts.order(start_time: :desc) %>
 <% end %>

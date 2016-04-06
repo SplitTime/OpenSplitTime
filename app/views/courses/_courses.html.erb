@@ -4,7 +4,8 @@
   <thead>
   <tr>
     <th>Name</th>
-    <th>Details</th>
+    <th>Splits</th>
+    <th>Events</th>
   </tr>
   </thead>
   <tbody>
@@ -12,6 +13,7 @@
       <tr>
         <td><strong><%= link_to course.name, course_path(course) %></strong></td>
         <td><%= pluralize(course.splits.count, 'split') %></td>
+        <td><%= pluralize(course.events.count, 'event') %></td>
       </tr>
   <% end %>
   </tbody>

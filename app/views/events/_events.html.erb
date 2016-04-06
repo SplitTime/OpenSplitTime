@@ -13,8 +13,7 @@
       <tr>
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
         <td><%= event.first_start_time.to_date.to_formatted_s(:long) %></td>
-        <td><%= "Uses #{pluralize(event.splits.count, 'split')}" %>
-          <%= " on #{event.course.name}" if event.course %>
+        <td><%= "#{pluralize(event.efforts.count, 'effort')}" %>
         </td>
       </tr>
   <% end %>

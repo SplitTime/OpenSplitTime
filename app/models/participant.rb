@@ -94,11 +94,11 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
   end
 
   def self.matches(field_name, param)
-    where("lower(#{field_name}) LIKE ?", "%#{param ? param.downcase : param}%")
+    where(arel_table[field_name].matches("%#{param}%"))
   end
 
   def self.exact_matches(field_name, param)
-    where("lower(#{field_name}) LIKE ?", "#{param ? param.downcase : param}")
+    where(arel_table[field_name].matches("#{param}"))
   end
 
   def self.search(param)

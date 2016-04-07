@@ -52,7 +52,7 @@ class Effort < ActiveRecord::Base
   end
 
   def base_split_times
-    split_times.joins(:split).where(splits: {sub_order: 0}).order('split.distance_from_start')
+    split_times.joins(:split).where(splits: {sub_order: 0}).order('splits.distance_from_start')
   end
 
   def ordered_splits

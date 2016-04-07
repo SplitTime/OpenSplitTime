@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Merge Participants</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-5">
+    <%= @participant.name %> |
+    <%= @participant.bio %> |
+    <%= @participant.state_and_country %><br/>
+    <% if @participant.claimed? %>
+        <% if @participant.claimant == @current_user %>
+            <strong>Hey, this is me!</strong><br/>
+        <% else %>
+            <%= "Identified as user #{@participant.claimant.full_name}" %>
+        <% end %>
+    <% end %>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col-xs-10">
+    <%= link_to '<< Show All Participants', participants_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
+    <% if @current_user.authorized_to_edit?(@participant) %>
+        <%= link_to 'Edit this participant', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Delete this participant', participant_path(@participant, referrer_path: URI(request.referrer).path), method: :delete,
+                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+    <% end %>
+    <% if @participant.claimant == @current_user %>
+        <%= link_to 'Disclaim this participant', avatar_disclaim_participant_path(@participant), method: :delete,
+                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+    <% elsif @participant.unclaimed? && @current_user.has_no_avatar? %>
+        <%= link_to 'Claim this participant', avatar_claim_participant_path(@participant),
+                    data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
+                    class: "btn btn-sm btn-success" %>
+    <% end %>
+  </div>
+</div>
+<hr>

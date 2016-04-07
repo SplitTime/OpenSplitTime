@@ -1,5 +1,6 @@
 class Effort < ActiveRecord::Base
   include PersonalInfo
+  include Searchable
   enum gender: [:male, :female]
   belongs_to :event, touch: true
   belongs_to :participant
@@ -51,7 +52,7 @@ class Effort < ActiveRecord::Base
   end
 
   def base_split_times
-    split_times.joins(:split).where(splits: {sub_order: 0})
+    split_times.joins(:split).where(splits: {sub_order: 0}).order('split.distance_from_start')
   end
 
   def ordered_splits
@@ -127,6 +128,20 @@ class Effort < ActiveRecord::Base
   def approximate_age_today
     now = Time.now.utc.to_date
     age ? (years_between_dates(event.first_start_time.to_date, now) + age).to_i : nil
+  end
+
+  def self.age_matches(param, efforts, rigor = 'soft')
+    return none unless param
+    matches = []
+    threshold = rigor == 'exact' ? 1 : 2
+    efforts.each do |effort|
+      age = effort.age_today
+      return none unless age
+      if (age - param).abs < threshold
+        matches << effort
+      end
+    end
+    matches
   end
 
 end

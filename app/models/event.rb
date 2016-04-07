@@ -39,7 +39,7 @@ class Event < ActiveRecord::Base
   def race_sorted_ids
     return [] if efforts.none?
     # Rails.cache.fetch("/event/#{id}-#{updated_at}/race_sorted_ids", expires_in: 1.day) do
-    r = Effort.where("efforts.event_id = ?", id)
+    r = Effort.includes(:split_times).where(event_id: id)
       sort_hash = r.index_by &:id
       splits = self.splits.includes(:split_times).ordered
       splits.each do |split|

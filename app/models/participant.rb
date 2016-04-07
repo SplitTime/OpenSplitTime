@@ -1,5 +1,6 @@
 class Participant < ActiveRecord::Base #TODO: create class Person with subclasses Participant and Effort
   include PersonalInfo
+  include Searchable
   enum gender: [:male, :female]
   has_many :interests, dependent: :destroy
   has_many :users, :through => :interests
@@ -21,99 +22,26 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     # the inject statement avoids problems with integer division
   end
 
+  def self.age_matches(param, participants, rigor = 'soft')
+    return none unless param
+    matches = []
+    threshold = rigor == 'exact' ? 1 : 2
+    participants.each do |participant|
+      age = participant.age_today
+      return none unless age
+      if (age - param).abs < threshold
+        matches << participant
+      end
+    end
+    matches
+  end
+
   def unclaimed?
     claimant.nil?
   end
 
   def claimed?
     !unclaimed?
-  end
-
-  def self.first_name_matches(param, rigor = 'soft')
-    return matches('first_name', param) || none if rigor == 'soft'
-    exact_matches('first_name', param) || none
-  end
-
-  def self.last_name_matches(param, rigor = 'soft')
-    return matches('last_name', param) || none if rigor == 'soft'
-    exact_matches('last_name', param) || none
-  end
-
-  def self.full_name_matches(param, participants, rigor = 'soft')
-    matching_participants = []
-    if rigor == 'soft'
-      participants.each do |participant|
-        if "%#{participant.full_name.strip.downcase}%" == "%#{param.strip.downcase}%"
-          matching_participants << participant
-        end
-      end
-    else
-      participants.each do |participant|
-        if participant.full_name.strip.downcase == param.strip.downcase
-          matching_participants << participant
-        end
-      end
-    end
-    matching_participants
-  end
-
-  def self.gender_matches(param)
-    gender_int = 1 if param == "female"
-    gender_int = 1 if param == 1
-    gender_int = 0 if param == "male"
-    gender_int = 0 if param == 0
-    where(gender: gender_int)
-  end
-
-  def self.country_matches(param)
-    where(country_code: param) || none
-  end
-
-  def self.state_matches(param, rigor = 'exact')
-    return matches('state_code', param) || none if rigor == 'soft'
-    exact_matches('state_code', param) || none
-  end
-
-  def self.email_matches(param, rigor = 'exact')
-    return matches('email', param) || none if rigor == 'soft'
-    exact_matches('email', param) || none
-  end
-
-  def self.age_matches(param, participants, rigor = 'soft')
-    return none unless param
-    matching_participants = []
-    threshold = rigor == 'exact' ? 1 : 2
-    participants.each do |participant|
-      age = participant.age_today
-      return none unless age
-      if (age - param).abs < threshold
-        matching_participants << participant
-      end
-    end
-    matching_participants
-  end
-
-  def self.matches(field_name, param)
-    where(arel_table[field_name].matches("%#{param}%"))
-  end
-
-  def self.exact_matches(field_name, param)
-    where(arel_table[field_name].matches("#{param}"))
-  end
-
-  def self.search(param)
-    return Participant.all if param.blank?
-
-    param.downcase!
-    collection = []
-    terms = param.split(" ")
-    terms.each do |term|
-    collection = collection + first_name_matches(term, 'soft') +
-        last_name_matches(term, 'soft') +
-        email_matches(term, 'soft') +
-        state_matches(term, 'soft')
-    end
-    collection.uniq
   end
 
   def self.columns_to_pull_from_effort

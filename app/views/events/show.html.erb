@@ -29,6 +29,8 @@
   </div>
 </div>
 
+<%= render 'lookup' %>
+
 <% if @efforts.count > 0 %>
     <hr>
     <div class="row">
@@ -42,7 +44,7 @@
       </div>
     </div>
 
-    <%= render 'efforts/efforts', efforts: @efforts %>
+    <%= render 'efforts/effort_list', items: @efforts %>
 
     <div class="row">
       <div class="col-xs-8">

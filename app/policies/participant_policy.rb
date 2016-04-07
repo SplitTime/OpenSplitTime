@@ -46,4 +46,8 @@ class ParticipantPolicy
     @current_user.authorized_to_claim?(@participant)
   end
 
+  def merge?
+    @current_user.admin?
+  end
+
 end

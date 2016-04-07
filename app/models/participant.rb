@@ -1,6 +1,7 @@
 class Participant < ActiveRecord::Base #TODO: create class Person with subclasses Participant and Effort
   include PersonalInfo
   include Searchable
+  include Matchable
   enum gender: [:male, :female]
   has_many :interests, dependent: :destroy
   has_many :users, :through => :interests
@@ -44,7 +45,7 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     !unclaimed?
   end
 
-  def self.columns_to_pull_from_effort
+  def self.columns_to_pull_from_model
     id = ["id"]
     foreign_keys = Participant.column_names.find_all { |x| x.include?("_id") }
     stamps = Participant.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
@@ -53,13 +54,29 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
 
   def pull_data_from_effort(effort_id)
     @effort = Effort.find(effort_id)
-    participant_attributes = Participant.columns_to_pull_from_effort
+    participant_attributes = Participant.columns_to_pull_from_model
     participant_attributes.each do |attribute|
       assign_attributes({attribute => @effort[attribute]}) if self[attribute].blank?
     end
     if save
       @effort.participant ||= self
       @effort.save
+    end
+  end
+
+  def proposed_duplicates
+    [Participant.first]
+  end
+
+  def merge_with(participant)
+    @merging_participant = Participant.find(participant.id)
+    participant_attributes = Participant.columns_to_pull_from_model
+    participant_attributes.each do |attribute|
+      assign_attributes({attribute => @merging_participant[attribute]}) if self[attribute].blank?
+    end
+    if save
+      efforts.add(@merging_participant.efforts)
+      @merging_participant.destroy
     end
   end
 

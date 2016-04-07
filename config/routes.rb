@@ -45,6 +45,8 @@ Rails.application.routes.draw do
     member { delete :avatar_disclaim }
     collection { post :create_from_efforts }
     collection { get :search }
+    member { get :merge }
+    member { put :combine }
   end
   resources :efforts do
     member { put :associate_participant }

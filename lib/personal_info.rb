@@ -4,6 +4,10 @@ module PersonalInfo
     [full_name, bio, state_and_country].compact.split("").flatten.join(' – ')
   end
 
+  def city_state_and_country
+    [city, state_and_country].compact.split("").flatten.join(", ")
+  end
+
   def state_and_country
     country = Carmen::Country.coded(country_code)
     if country.nil?

@@ -84,6 +84,23 @@ class ParticipantsController < ApplicationController
     redirect_to @participant
   end
 
+  def merge
+    authorize @participant
+    @proposed_match = @participant.proposed_duplicates[params[:match_id] || 0]
+  end
+
+  def combine
+    authorize @participant
+    if params[:direction] == 'left'
+      @participant.merge_with(Participant.find(params[:merge_id]))
+    elsif params[:direction] == 'right'
+      @merge_into = Participant.find(params[:merge_id])
+      @merge_into.merge_with(@participant)
+    else
+      flash[:danger] = "No merge direction provided"
+    end
+  end
+
   private
 
   def participant_params

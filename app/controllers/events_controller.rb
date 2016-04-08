@@ -22,7 +22,12 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = Event.new
+    if params[:course_id]
+      @event = Event.new(course_id: params[:course_id])
+      @course = Course.find(params[:course_id])
+    else
+      @event = Event.new
+    end
     authorize @event
   end
 
@@ -35,6 +40,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
+      @event.set_start_and_finish
       redirect_to stage_event_path(@event)
     else
       render 'new'

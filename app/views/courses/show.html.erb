@@ -16,7 +16,7 @@
     <%= link_to '< Back', :back, class: 'btn btn-sm btn-default' %>
     <% if @current_user && @current_user.authorized_to_edit?(@course) %>
         <%= link_to 'Edit this course', edit_course_path(@course), class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Delete this course', course_path(@course, referrer_path: URI(request.referrer).path),
+        <%= link_to 'Delete this course', course_path(@course, referrer_path: courses_path),
                     method: :delete,
                     data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>

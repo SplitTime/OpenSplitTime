@@ -19,7 +19,6 @@ class Effort < ActiveRecord::Base
   end
 
   def reset_time_from_start
-
     # If the starting split_time contains nonzero data, assume it means
     # this effort began that amount of time later than the event's normal start time
 
@@ -28,7 +27,6 @@ class Effort < ActiveRecord::Base
       update_attributes(start_time: start_time + start_split_time.time_from_start)
       start_split_time.update_attributes(time_from_start: 0)
     end
-
   end
 
   # Methods regarding split_times

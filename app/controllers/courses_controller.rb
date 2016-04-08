@@ -9,7 +9,9 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course_splits = @course.splits.includes(:course, :location).ordered
+    if @course.splits.present?
+      @course_splits = @course.splits.includes(:course, :location).ordered
+    end
     session[:return_to] = course_path(@course)
   end
 
@@ -27,8 +29,8 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      session[:return_to] = courses_path
-      redirect_to course_path(@course)
+      @course.update_initial_splits
+      redirect_to new_event_path(course_id: @course.id)
     else
       render 'new'
     end
@@ -61,7 +63,10 @@ class CoursesController < ApplicationController
   private
 
   def course_params
-    params.require(:course).permit(:name, :description, splits_attributes: [:id, :name, :distance_from_start, :kind])
+    params.require(:course).permit(:name,
+                                   :description,
+                                   splits_attributes: [:id, :course_id, :name, :description, :distance_from_start,
+                                                       :sub_order, :kind, :vert_gain_from_start, :vert_loss_from_start])
   end
 
   def query_params

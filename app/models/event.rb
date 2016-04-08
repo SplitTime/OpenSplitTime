@@ -15,11 +15,6 @@ class Event < ActiveRecord::Base
     true
   end
 
-  def split_kind_count
-    kind_array = splits.map(&:kind)
-    kind_array.inject(Hash.new(0)) { |total, e| total[e] += 1; total }
-  end
-
   def split_ids
     splits.ordered.map &:id
   end
@@ -52,6 +47,11 @@ class Event < ActiveRecord::Base
       end
       sort_hash.keys
     # end
+  end
+
+  def set_start_and_finish
+    splits << course.splits.start if splits.start.empty?
+    splits << course.splits.finish if splits.finish.empty?
   end
 
 end

@@ -5,7 +5,8 @@
   <tr>
     <th>Split</th>
     <th class="text-right">Distance</th>
-    <th class="text-right">Time</th>
+    <th class="text-right">Elapsed Time</th>
+    <th class="text-right">Segment Time</th>
     <th class="text-right">Time In Aid</th>
   </tr>
   </thead>
@@ -17,11 +18,13 @@
             <td class="text-right"><strong><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></strong>
             </td>
             <td class="text-right"><strong><%= composite_time(split_time) %></strong></td>
+            <td class="text-right"><strong><%= time_format(split_time.segment_time) %></strong></td>
             <td class="text-right"><strong></strong></td>
         <% elsif split_time.split.kind == 'waypoint' %>
             <td><%= composite_name(split_time) %></td>
             <td class="text-right"><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></td>
             <td class="text-right"><%= composite_time(split_time) %></td>
+            <td class="text-right"><%= time_format(split_time.segment_time) %></td>
             <td class="text-right"><%= (split_time.time_in_aid / 60).round(0) %></td>
         <% end %>
       </tr>

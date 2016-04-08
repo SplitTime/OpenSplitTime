@@ -6,14 +6,13 @@
       <% else %>
           <%= @effort.full_name %>
       <% end %>
-      •
-      <%= link_to @effort.event.name, event_path(@effort.event) %>
+      • <%= link_to @effort.event.name, event_path(@effort.event) %>
     </h1>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <h3><%= "#{@effort.finish_status} • #{@effort.place.ordinalize} place • #{@effort.gender_place.ordinalize} #{@effort.gender.titleize}" %></h3>
+    <h3><%= "#{@effort.finish_status} • #{@effort.place.ordinalize} Place • #{@effort.gender_place.ordinalize} #{@effort.gender.titleize}" %></h3>
   </div>
 </div>
 

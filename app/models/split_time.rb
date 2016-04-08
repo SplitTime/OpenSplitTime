@@ -28,6 +28,12 @@ class SplitTime < ActiveRecord::Base
     format("%02d:%02d:%02d", hours, minutes, seconds)
   end
 
+  def segment_time
+    ordered_group = effort.ordered_split_times
+    position = ordered_group.map(&:id).index(id)
+    position == 0 ? 0 : ordered_group[position].time_from_start - ordered_group[position - 1].time_from_start
+  end
+
   def time_in_aid
     waypoint_group.compact.last.time_from_start - waypoint_group.compact.first.time_from_start
   end

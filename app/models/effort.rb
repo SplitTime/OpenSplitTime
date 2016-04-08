@@ -61,11 +61,7 @@ class Effort < ActiveRecord::Base
   end
 
   def ordered_split_times
-    split_times = []
-    ordered_splits.each do |split|
-      split_times << SplitTime.where(split_id: split.id, effort_id: id).first
-    end
-    split_times
+    split_times.includes(:split).order('splits.distance_from_start', 'splits.sub_order')
   end
 
   def place
@@ -73,14 +69,9 @@ class Effort < ActiveRecord::Base
   end
 
   def gender_place
-    place_array = event.race_sorted_ids
-    my_index = place_array.index(id)
-    return 1 if my_index == 0
-    my_gender_place = 1
-    place_array[0, my_index - 1].each do |effort_id|
-      my_gender_place += 1 if Effort.find(effort_id).gender == gender
-    end
-    my_gender_place
+    efforts = event.race_sorted_efforts
+    ids = efforts.pluck(:id)
+    efforts.pluck(:gender)[0..ids.index(id)].count(Effort.genders[gender])
   end
 
   def approximate_age_today

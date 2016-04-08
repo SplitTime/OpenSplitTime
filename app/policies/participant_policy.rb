@@ -50,4 +50,12 @@ class ParticipantPolicy
     @current_user.admin?
   end
 
+  def combine?
+    @current_user.admin?
+  end
+
+  def remove_effort?
+    @current_user.admin?
+  end
+
 end

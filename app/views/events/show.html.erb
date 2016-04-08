@@ -20,7 +20,7 @@
     <%= link_to '<< Show All Events', events_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>
-        <%= link_to 'Stage this event', stage_event_path(@event), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Stage/administer this event', stage_event_path(@event), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this event',
                     event_path(@event, referrer_path: events_path),
                     method: :delete,
@@ -28,6 +28,7 @@
     <% end %>
   </div>
 </div>
+<hr>
 
 <%= render 'lookup' %>
 

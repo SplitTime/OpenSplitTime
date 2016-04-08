@@ -1,4 +1,4 @@
-<%= link_to '< Back to staging', stage_event_path(id: @event.id),
+<%= link_to '< Back to admin page', stage_event_path(id: @event.id),
             :class => 'btn btn-sm btn-default' %>
 
 <% if @unreconciled_efforts.count > 0 %>
@@ -35,7 +35,9 @@
 
       <tbody>
       <% @unreconciled_efforts.each do |effort| %>
-          <%= render 'unreconciled_effort', effort: effort, exact_match: effort.exact_matching_participant, close_match: effort.closest_matching_participant %>
+          <%= render 'unreconciled_effort', effort: effort,
+                     exact_match: effort.exact_matching_participant,
+                     close_match: effort.possible_matching_participants.first %>
       <% end %>
       </tbody>
 

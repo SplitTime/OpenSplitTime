@@ -63,7 +63,6 @@ module Searchable
 
     def search(param)
       return all if param.blank?
-
       param.downcase!
       collection = []
       terms = param.split(" ")

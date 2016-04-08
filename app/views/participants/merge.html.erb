@@ -1,68 +1,38 @@
 <div class="row">
   <div class="col-xs-5">
-    <h2><%= @participant.full_name %></h2>
+    <h2><%= "#{@participant.last_name}, #{@participant.first_name}" %></h2>
   </div>
   <% if @proposed_match %>
       <div class="col-xs-2"><%= link_to '<< Merge into',
                                         combine_participant_path(@participant,
-                                                                 match_id: @proposed_match.id,
-                                                                 direction: 'left'),
+                                                                 target_id: @proposed_match.id),
                                         method: :put,
                                         class: 'btn btn-sm btn-success btn-margin-top' %>
       </div>
       <div class="col-xs-5">
-        <h2><%= @proposed_match.full_name %></h2>
+        <h2><%= "#{@proposed_match.last_name}, #{@proposed_match.first_name}" %></h2>
       </div>
-      <% else %>
-      <div class="col-xs-5 col-xs-offset-2">
-        <h2>[ No suggestions ]</h2>
+  <% else %>
+      <div class="col-xs-4">
+        <h2>[ No merge suggestions ]</h2>
       </div>
   <% end %>
 </div>
 <div class="row">
   <div class="col-xs-5">
-    <%= @participant.bio %> |
-    <%= @participant.city_state_and_country %><br/>
-    <% if @participant.email %>
-        <%= @participant.email %><br/>
-    <% end %>
-    <%= link_to pluralize(@participant.efforts.count, 'effort'), participant_path(@participant) %><br/>
-    <% if @participant.claimed? %>
-        <% if @participant.claimant == @current_user %>
-            <strong>Hey, this is me!</strong><br/>
-        <% else %>
-            <%= "Identified as user #{@participant.claimant.full_name}" %>
-        <% end %>
-    <% else %>
-        <strong>Not claimed</strong>
-    <% end %>
+    <%= render 'inspect', participant: @participant %>
   </div>
   <% if @proposed_match %>
       <div class="col-xs-2"><%= link_to 'Merge with >>',
                                         combine_participant_path(@proposed_match,
-                                                                 match_id: @participant.id,
-                                                                 direction: 'right'),
+                                                                 target_id: @participant.id),
                                         method: :put,
                                         class: 'btn btn-sm btn-success btn-margin-top' %>
       </div>
       <div class="col-xs-5">
-        <%= @proposed_match.bio %> |
-        <%= @proposed_match.city_state_and_country %><br/>
-        <% if @proposed_match.email %>
-            <%= @proposed_match.email %><br/>
-        <% end %>
-        <%= link_to pluralize(@proposed_match.efforts.count, 'effort'), participant_path(@participant) %><br/>
-        <% if @proposed_match.claimed? %>
-            <% if @proposed_match.claimant == @current_user %>
-                <strong>Hey, this is me!</strong><br/>
-            <% else %>
-                <%= "Identified as user #{@proposed_match.claimant.full_name}" %>
-            <% end %>
-        <% else %>
-            <strong>Not claimed</strong>
-        <% end %>
+        <%= render 'inspect', participant: @proposed_match %>
+      </div>
   <% end %>
-  </div>
 </div>
 
 <hr>
@@ -72,3 +42,7 @@
   </div>
 </div>
 <hr>
+
+<% if @proposed_matches.present? %>
+    <%= render 'participants/participants', participants: @proposed_matches %>
+<% end %>

@@ -1,6 +1,7 @@
 class ParticipantsController < ApplicationController
   before_action :authenticate_user!, except: [:subregion_options, :avatar_disclaim]
   before_action :set_participant, except: [:index, :new, :create, :create_from_efforts, :subregion_options]
+  before_action :set_effort_count, only: [:index, :merge]
   after_action :verify_authorized, except: [:index, :subregion_options, :avatar_disclaim, :create_from_efforts]
 
   before_filter do
@@ -16,7 +17,6 @@ class ParticipantsController < ApplicationController
     @participants = Participant.search(params[:search_param]).sort_by { |x| [x.last_name, x.first_name] }
                         .paginate(page: params[:page], per_page: 25)
     authorize @participants.first unless @participants.count < 1
-    @participant_efforts_count = Effort.group("efforts.participant_id").count
     session[:return_to] = participants_path
   end
 
@@ -86,19 +86,22 @@ class ParticipantsController < ApplicationController
 
   def merge
     authorize @participant
-    @proposed_match = @participant.proposed_duplicates[params[:match_id] || 0]
+    @proposed_match = params[:proposed_match] ? Participant.find(params[:proposed_match]) : @participant.possible_duplicates.first
+    @proposed_matches = @participant.possible_duplicates - [@proposed_match]
   end
 
   def combine
     authorize @participant
-    if params[:direction] == 'left'
-      @participant.merge_with(Participant.find(params[:merge_id]))
-    elsif params[:direction] == 'right'
-      @merge_into = Participant.find(params[:merge_id])
-      @merge_into.merge_with(@participant)
-    else
-      flash[:danger] = "No merge direction provided"
-    end
+    @participant.merge_with(Participant.find(params[:target_id]))
+    redirect_to merge_participant_path(@participant)
+  end
+
+  def remove_effort
+    authorize @participant
+    @effort = Effort.find(params[:effort_id])
+    @effort.participant = nil
+    @effort.save
+    redirect_to participant_path(@participant)
   end
 
   private
@@ -115,6 +118,10 @@ class ParticipantsController < ApplicationController
 
   def set_participant
     @participant = Participant.find(params[:id])
+  end
+
+  def set_effort_count
+    @participant_efforts_count = Effort.group("efforts.participant_id").count
   end
 
   def unreconciled_effort_id_array(effort_ids, event_id)

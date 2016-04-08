@@ -10,6 +10,8 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
 
   validates_presence_of :first_name, :last_name, :gender
 
+  # Search functions specific to Participant
+
   def approximate_age_today
     now = Time.now.utc.to_date
     return nil unless efforts.count > 0
@@ -29,7 +31,7 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     threshold = rigor == 'exact' ? 1 : 2
     participants.each do |participant|
       age = participant.age_today
-      return none unless age
+      next unless age
       if (age - param).abs < threshold
         matches << participant
       end
@@ -44,6 +46,7 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
   def claimed?
     !unclaimed?
   end
+
 
   def self.columns_to_pull_from_model
     id = ["id"]
@@ -64,19 +67,26 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     end
   end
 
-  def proposed_duplicates
-    [Participant.first]
+  def most_likely_duplicate
+    possible_duplicates.first
   end
 
-  def merge_with(participant)
-    @merging_participant = Participant.find(participant.id)
+  def possible_duplicates
+    possible_matching_participants.reject { |x| x.id == self.id }
+  end
+
+  def merge_with(target)
+    @target_participant = Participant.find(target.id)
     participant_attributes = Participant.columns_to_pull_from_model
     participant_attributes.each do |attribute|
-      assign_attributes({attribute => @merging_participant[attribute]}) if self[attribute].blank?
+      assign_attributes({attribute => @target_participant[attribute]}) if self[attribute].blank?
     end
     if save
-      efforts.add(@merging_participant.efforts)
-      @merging_participant.destroy
+      efforts << @target_participant.efforts
+      @target_participant.efforts = []
+      @target_participant.destroy
+    else
+      flash[:danger] = "Participants could not be merged"
     end
   end
 

@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     collection { get :search }
     member { get :merge }
     member { put :combine }
+    member { delete :remove_effort }
   end
   resources :efforts do
     member { put :associate_participant }

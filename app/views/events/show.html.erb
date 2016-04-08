@@ -16,7 +16,7 @@
 </div>
 <hr>
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-xs-8">
     <%= link_to '<< Show All Events', events_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>
@@ -24,7 +24,8 @@
         <%= link_to 'Delete this event',
                     event_path(@event, referrer_path: events_path),
                     method: :delete,
-                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+                    data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
+                    class: 'btn btn-sm btn-danger' %>
     <% end %>
   </div>
 </div>

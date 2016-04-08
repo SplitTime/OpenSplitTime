@@ -1,6 +1,14 @@
 <div class="row">
   <div class="col-xs-12">
-    <h1><%= "#{@effort.full_name} • #{@effort.event.name}" %></h1>
+    <h1>
+      <% if @effort.participant %>
+          <%= link_to @effort.full_name, participant_path(@effort.participant) %>
+      <% else %>
+          <%= @effort.full_name %>
+      <% end %>
+      •
+      <%= link_to @effort.event.name, event_path(@effort.event) %>
+    </h1>
   </div>
 </div>
 <div class="row">

@@ -12,12 +12,14 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '<< Show All Courses', courses_path, class: "btn btn-sm btn-default" %>
-    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Show All Courses', courses_path, class: 'btn btn-sm btn-default' %>
+    <%= link_to '< Back', :back, class: 'btn btn-sm btn-default' %>
     <% if @current_user && @current_user.authorized_to_edit?(@course) %>
-        <%= link_to 'Edit this course', edit_course_path(@course), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this course', course_path(@course, referrer_path: URI(request.referrer).path), method: :delete,
-                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+        <%= link_to 'Edit this course', edit_course_path(@course), class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Delete this course', course_path(@course, referrer_path: URI(request.referrer).path),
+                    method: :delete,
+                    data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
+                    class: 'btn btn-sm btn-danger' %>
     <% end %>
   </div>
 </div>
@@ -25,9 +27,9 @@
 
 <div class="article-actions">
   <% if @current_user && @current_user.authorized_to_edit?(@course) %>
-      <%= link_to 'Create new split', new_split_path(course_id: @course.id), class: "btn btn-sm btn-success" %>
+      <%= link_to 'Create new split', new_split_path(course_id: @course.id), class: 'btn btn-sm btn-success' %>
   <% end %>
-  <%= link_to 'All-time best efforts >>', best_efforts_course_path(@course), class: "btn btn-sm btn-default" %>
+  <%= link_to 'All-time best efforts >>', best_efforts_course_path(@course), class: 'btn btn-sm btn-default' %>
 </div>
 <hr>
 

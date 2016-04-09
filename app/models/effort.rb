@@ -8,7 +8,7 @@ class Effort < ActiveRecord::Base
   belongs_to :participant
   has_many :split_times, dependent: :destroy
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender
+  validates_presence_of :event_id, :first_name, :last_name, :gender, :start_time
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
 

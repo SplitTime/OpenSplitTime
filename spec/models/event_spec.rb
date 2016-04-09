@@ -4,18 +4,16 @@ require "rails_helper"
 # t.integer  "race_id"
 # t.string   "name"
 # t.datetime "first_start_time"
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
 
 RSpec.describe Event, type: :model do
-  it "should be valid when created with a course, a name, and a start date" do
+  it "should be valid when created with a course, a name, and a start time" do
     course = Course.create!(name: 'Slo Mo 100 CCW')
     event = Event.create!(course_id: course.id, name: 'Slo Mo 100 2015', first_start_time: "2015-07-01 06:00:00")
 
     expect(Event.all.count).to eq(1)
     expect(event.course_id).to eq(course.id)
     expect(event.name).to eq('Slo Mo 100 2015')
-    expect(event.first_start_time).to eq("2015-07-01 06:00:00".to_datetime)
+    expect(event.first_start_time).to eq("2015-07-01 06:00:00".in_time_zone)
     expect(event).to be_valid
   end
 

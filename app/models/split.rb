@@ -50,12 +50,6 @@ class Split < ActiveRecord::Base
     order(:distance_from_start, :sub_order)
   end
 
-  def event_waypoint_group(event)
-    waypoint_group.find_each do |waypoint|
-      waypoint.events.includes(event)
-    end
-  end
-
   def waypoint_group
     course.splits.where(distance_from_start: distance_from_start).order(:sub_order)
   end

@@ -52,4 +52,12 @@ class Event < ActiveRecord::Base
     splits << course.splits.finish if splits.finish.empty?
   end
 
+  def waypoint_groups
+    result = []
+    splits.find_each do |split|
+      result << split.waypoint_group.map(&:id)
+    end
+    result.uniq
+  end
+
 end

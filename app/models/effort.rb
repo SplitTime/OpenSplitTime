@@ -3,6 +3,7 @@ class Effort < ActiveRecord::Base
   include PersonalInfo
   include Searchable
   enum gender: [:male, :female]
+  enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event, touch: true
   belongs_to :participant
   has_many :split_times, dependent: :destroy
@@ -89,6 +90,14 @@ class Effort < ActiveRecord::Base
       end
     end
     matches
+  end
+
+  def unreconciled?
+    participant_id.nil?
+  end
+
+  def self.unreconciled
+    where(participant_id: nil)
   end
 
 end

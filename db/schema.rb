@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160403220914) do
+ActiveRecord::Schema.define(version: 20160408234107) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20160403220914) do
     t.integer  "gender"
     t.string   "country_code",   limit: 2
     t.date     "birthdate"
+    t.integer  "data_status"
   end
 
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id"

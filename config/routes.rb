@@ -61,6 +61,9 @@ Rails.application.routes.draw do
   get '/signout' => 'sessions#destroy', :as => :signout
   get '/auth/failure' => 'sessions#failure'
 
+  get 'cockpit_admin', to: 'admin#cockpit'
+  get 'check_split_times_admin', to: 'admin#check_split_times'
+
   namespace :api do
     resources :courses, :efforts, :events, :locations, :participants, :split_times, :splits, :races
   end

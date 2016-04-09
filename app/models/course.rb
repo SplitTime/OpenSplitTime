@@ -15,9 +15,7 @@ class Course < ActiveRecord::Base
   end
 
   def sorted_efforts
-    effort_ids = sorted_effort_ids
-    efforts_by_id = Effort.find(effort_ids).index_by(&:id)
-    effort_ids.collect { |id| efforts_by_id[id] }
+    Effort.where(id: sorted_effort_ids)
   end
 
   def sorted_effort_ids

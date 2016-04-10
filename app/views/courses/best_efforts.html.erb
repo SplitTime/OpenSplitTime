@@ -5,7 +5,11 @@
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <strong><%= "#{pluralize(@course.events.count, 'event')} from #{@course.earliest_event_date.to_date.to_formatted_s(:long)} to #{@course.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+    <% if @efforts.count > 0 %>
+        <strong><%= "#{pluralize(@course.events.count, 'event')} from #{@course.earliest_event_date.to_date.to_formatted_s(:long)} to #{@course.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+    <% else %>
+    <strong>No events have been run on this course.</strong>
+    <% end %>
   </div>
 </div>
 <hr>

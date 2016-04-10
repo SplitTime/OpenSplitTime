@@ -10,9 +10,11 @@ class EventsController < ApplicationController
 
   def show
     if @event.course
-      @efforts = @event.race_sorted_efforts
-                     .search(params[:search_param])
-                     .paginate(page: params[:page], per_page: 25)
+      if params[:search_param]
+        @efforts = @event.efforts.search(params[:search_param]).paginate(page: params[:page], per_page: 25)
+      else
+        @efforts = @event.efforts.sorted_ultra_style.paginate(page: params[:page], per_page: 25)
+      end
       session[:return_to] = event_path(@event)
     else
       flash[:danger] = "Event must have a course"

@@ -64,13 +64,13 @@ class Effort < ActiveRecord::Base
   end
 
   def place
-    event.race_sorted_ids.index(id) + 1
+    (event.efforts.ids_sorted_ultra_style.index(id)) + 1
   end
 
   def gender_place
-    efforts = event.race_sorted_efforts
-    ids = efforts.pluck(:id)
-    efforts.pluck(:gender)[0..ids.index(id)].count(Effort.genders[gender])
+    efforts = event.efforts.sorted_ultra_style
+    ids = efforts.map(&:id)
+    efforts.map(&:gender)[0..ids.index(id)].count(gender)
   end
 
   def approximate_age_today
@@ -99,5 +99,43 @@ class Effort < ActiveRecord::Base
   def self.unreconciled
     where(participant_id: nil)
   end
+
+  def self.sorted_by_finish_time # Excludes DNFs from result
+    efforts_from_ids(ids_sorted_by_finish_time)
+  end
+
+  def self.sorted_ultra_style # Sorts DNFs by distance covered before drop, with farther efforts getting higher placement
+    efforts_from_ids(ids_sorted_ultra_style)
+  end
+
+  private
+
+  def self.ids_sorted_by_finish_time
+    effort_ids = all.map(&:id)
+    SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {kind: 1}).order(:time_from_start).map(&:effort_id)
+  end
+
+  def self.ids_sorted_ultra_style
+    return [] if all.count == 0
+    raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
+    event = first.event
+    sort_hash = all.index_by &:id
+    splits = event.splits.includes(:split_times).ordered
+    splits.each do |split|
+      time_hash = split.split_times.where(effort_id: sort_hash.keys).index_by &:effort_id
+      sort_hash.each_key do |key|
+        time = time_hash[key] ? time_hash[key].time_from_start : nil
+        sort_hash[key] = time
+      end
+      sort_hash = Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }]
+    end
+    sort_hash.keys
+  end
+
+  def self.efforts_from_ids(effort_ids)
+    efforts_by_id = Effort.find(effort_ids).index_by(&:id)
+    effort_ids.collect { |id| efforts_by_id[id] }
+  end
+
 
 end

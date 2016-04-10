@@ -26,6 +26,11 @@ module PersonalInfo
     age_today.nil? ? gender.titlecase : "#{gender.titlecase}, #{age_today}"
   end
 
+  def bio_historic
+    return age if gender.nil?
+    age.nil? ? gender.titlecase : "#{gender.titlecase}, #{age}"
+  end
+
   def full_name
     [first_name,last_name].join(" ")
   end

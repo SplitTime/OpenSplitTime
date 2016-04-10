@@ -14,21 +14,22 @@ class Course < ActiveRecord::Base
     events.order(:first_start_time).last.first_start_time
   end
 
-  def sorted_efforts
-    Effort.where(id: sorted_effort_ids)
-  end
-
-  def sorted_effort_ids
-    course_effort_ids = Effort.includes(:event).where(events: {course_id: id}).map(&:id)
-    course_split_times = SplitTime.includes(:split, :effort).where(efforts: {id: course_effort_ids}, splits: {kind: 1}).order(:time_from_start)
-    course_split_times.map(&:effort_id)
-  end
-
   def update_initial_splits
     splits.start.first.update_attributes(name: "#{name} Start",
                                   description: "Starting point for the #{name} course.")
     splits.finish.first.update_attributes(name: "#{name} Finish",
                                   description: "Finish point for the #{name} course.")
+  end
+
+  def effort_gender_group(gender)
+    case gender
+      when 'male'
+        Effort.includes(:event).male.where(events: {course_id: id})
+      when 'female'
+        Effort.includes(:event).female.where(events: {course_id: id})
+      else
+        Effort.includes(:event).where(events: {course_id: id})
+    end
   end
 
 end

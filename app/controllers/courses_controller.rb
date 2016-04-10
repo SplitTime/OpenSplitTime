@@ -56,7 +56,8 @@ class CoursesController < ApplicationController
 
   def best_efforts
     @course = Course.where(id: params[:id]).first
-    @efforts = @course.sorted_efforts.paginate(page: params[:page], per_page: 25)
+    params[:gender] ||= 'combined'
+    @efforts = @course.effort_gender_group(params[:gender]).sorted_by_finish_time.paginate(page: params[:page], per_page: 25)
     session[:return_to] = best_efforts_course_path(@course)
   end
 

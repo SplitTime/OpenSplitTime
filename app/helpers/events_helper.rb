@@ -11,9 +11,14 @@ module EventsHelper
 
   def make_exact_match_id_hash(efforts)
     id_hash = {}
+    c = 0
     efforts.each do |effort|
+      break if c >= 50
       @participant = effort.exact_matching_participant
-      id_hash[effort.id] = @participant.id if @participant
+      if @participant
+        id_hash[effort.id] = @participant.id
+        c += 1
+      end
     end
     id_hash
   end

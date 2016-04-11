@@ -39,7 +39,7 @@ class Effort < ActiveRecord::Base
 
   def finish_status
     return "DNF" if dropped?
-    return finish_split_time.formatted_time if finished?
+    return finish_split_time.formatted_time_hhmmss if finished?
     "In progress"
   end
 

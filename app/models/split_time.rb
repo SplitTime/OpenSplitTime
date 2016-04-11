@@ -20,7 +20,7 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
-  def formatted_time
+  def formatted_time_hhmmss
     seconds = time_from_start % 60
     minutes = (time_from_start / 60) % 60
     hours = time_from_start / (60 * 60)

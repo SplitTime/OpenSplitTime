@@ -157,6 +157,14 @@ section {
   @extend .btn-xs;
 }
 
+.alert-alert {
+  @extend .alert-danger;
+}
+
+.alert-notice {
+  @extend .alert-warning;
+}
+
 footer {
   margin-top: 45px;
   padding-top: 5px;

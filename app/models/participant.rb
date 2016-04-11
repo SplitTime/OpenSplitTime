@@ -21,7 +21,7 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
         age_array << (years_between_dates(effort.event.first_start_time.to_date, now) + effort.age)
       end
     end
-    age_array.mean.round(0)
+    age_array.blank? ? nil : age_array.mean.round(0)
   end
 
   def self.age_matches(param, participants, rigor = 'soft')

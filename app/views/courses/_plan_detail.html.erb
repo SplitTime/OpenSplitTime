@@ -1,0 +1,37 @@
+<%# Requires parameters splits (collection) and time_data (hash with split_id => time from start %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Split</th>
+    <th class="text-right">Distance</th>
+    <th class="text-center">Time of Day</th>
+    <th class="text-center">Elapsed Time</th>
+    <th class="text-center">Segment</th>
+    <th class="text-right">In Aid</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% splits.each do |split| %>
+      <% next if time_data[split.id].nil? %>
+      <tr>
+        <% if split.finish? %>
+            <td><strong><%= split.composite_name %></strong></td>
+            <td class="text-right"><strong><%= split.distance_from_start.meters.to.miles.round(1) %></strong></td>
+            <td class="text-center"><strong><%= plan_combined_time_of_day(split, time_data) %></strong></td>
+            <td class="text-center"><strong><%= plan_combined_times(split, time_data) %></strong></td>
+            <td class="text-center"><strong><%= "#{time_format_hhmm(plan_segment_time(split, time_data))}" %></strong>
+            </td>
+            <td class="text-right"><strong></strong></td>
+        <% elsif split.waypoint? %>
+            <td><%= split.composite_name %></td>
+            <td class="text-right"><%= split.distance_from_start.meters.to.miles.round(1) %></td>
+            <td class="text-center"><%= plan_combined_time_of_day(split, time_data) %></td>
+            <td class="text-center"><%= plan_combined_times(split, time_data) %></td>
+            <td class="text-center"><%= "#{time_format_hhmm(plan_segment_time(split, time_data))}" %></td>
+            <td class="text-right"><%= (plan_time_in_aid(split, time_data) / 60).round(0) %></td>
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

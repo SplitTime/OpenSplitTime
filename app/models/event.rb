@@ -40,4 +40,8 @@ class Event < ActiveRecord::Base
     result.uniq
   end
 
+  def base_splits
+    splits.where(sub_order: 0).order(:distance_from_start)
+  end
+
 end

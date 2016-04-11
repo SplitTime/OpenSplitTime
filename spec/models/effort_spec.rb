@@ -65,4 +65,43 @@ RSpec.describe Effort, type: :model do
     expect(effort.errors[:bib_number]).to include("has already been taken")
   end
 
+  describe 'within_time_range' do
+    before do
+
+      DatabaseCleaner.clean
+      course = Course.create(name: 'Test Course 100')
+      event = Event.create(name: 'Test Event 2015', course_id: 1)
+
+      Effort.create(bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+      Effort.create(bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+      Effort.create(bib_number: 150, city: 'Nantucket', state_code: 'MA', country_code: 'US', age: 26, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Jane', last_name: 'Rockstar', gender: 'female')
+
+      Split.create(course_id: 1, location_id: 1, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      Split.create(course_id: 1, location_id: 4, name: 'Test Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      Split.create(course_id: 1, location_id: 4, name: 'Test Aid Station Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      Split.create(course_id: 1, location_id: 1, name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+
+      SplitTime.create(effort_id: 1, split_id: 1, time_from_start: 0)
+      SplitTime.create(effort_id: 1, split_id: 2, time_from_start: 4000)
+      SplitTime.create(effort_id: 1, split_id: 3, time_from_start: 4100)
+      SplitTime.create(effort_id: 1, split_id: 4, time_from_start: 8000)
+      SplitTime.create(effort_id: 2, split_id: 1, time_from_start: 0)
+      SplitTime.create(effort_id: 2, split_id: 2, time_from_start: 5000)
+      SplitTime.create(effort_id: 2, split_id: 3, time_from_start: 5100)
+      SplitTime.create(effort_id: 2, split_id: 4, time_from_start: 9000)
+      SplitTime.create(effort_id: 3, split_id: 1, time_from_start: 0)
+      SplitTime.create(effort_id: 3, split_id: 2, time_from_start: 3000)
+      SplitTime.create(effort_id: 3, split_id: 3, time_from_start: 3100)
+      SplitTime.create(effort_id: 3, split_id: 4, time_from_start: 7500)
+
+    end
+
+    it 'should return only those efforts for which the finish time is between the parameters provided' do
+      efforts = Effort.all
+      expect(efforts.within_time_range(7800,8200).count).to eq(1)
+      expect(efforts.within_time_range(5000,10000).count).to eq(3)
+      expect(efforts.within_time_range(10000,20000)).to be_nil
+    end
+  end
+
 end

@@ -100,7 +100,7 @@ RSpec.describe Split, kind: :model do
   it "should allow multiple waypoint splits within the same course" do
     Split.create!(course_id: 1, location_id: 1, name: 'Aid1 In', distance_from_start: 9000, sub_order: 0, kind: 2)
     split1 = Split.new(course_id: 1, location_id: 1, name: 'Aid1 Out', distance_from_start: 9000, sub_order: 1, kind: 2)
-    split2 = Split.new(course_id: 1, location_id: 2, name: 'Aid2 In', distance_from_start: 18000, sub_order: 0, kind: 2)
+    split2 =Split.new(course_id: 1, location_id: 2, name: 'Aid2 In', distance_from_start: 18000, sub_order: 0, kind: 2)
     split3 = Split.new(course_id: 1, location_id: 2, name: 'Aid2 Out', distance_from_start: 18000, sub_order: 1, kind: 2)
     expect(split1).to be_valid
     expect(split2).to be_valid
@@ -142,15 +142,15 @@ RSpec.describe Split, kind: :model do
     let(:event_same_course) { Event.create!(name: 'Waypoint Event on same course', course: course, first_start_time: Time.current) }
 
     before do
-      Split.create!(course: course, events: [event], location_id: 1, name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
-      Split.create!(course: course, events: [event], location_id: 2, name: 'Monarch Pass In', distance_from_start: 5000, sub_order: 0, kind: :waypoint)
-      Split.create!(course: course, events: [event], location_id: 2, name: 'Monarch Pass Out', distance_from_start: 5000, sub_order: 1, kind: :waypoint)
-      Split.create!(course: course, events: [event], location_id: 3, name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
+      event.splits.create!(course: course, location_id: 1, name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
+      event.splits.create!(course: course, location_id: 2, name: 'Monarch Pass In', distance_from_start: 5000, sub_order: 0, kind: :waypoint)
+      event.splits.create!(course: course, location_id: 2, name: 'Monarch Pass Out', distance_from_start: 5000, sub_order: 1, kind: :waypoint)
+      event.splits.create!(course: course, location_id: 3, name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
 
-      Split.create!(course: course, events: [event_same_course], location_id: 2, name: 'Monarch Pass pre 2000 In', distance_from_start: 4400, sub_order: 0, kind: :waypoint)
-      Split.create!(course: course, events: [event_same_course], location_id: 2, name: 'Monarch Pass pre 2000 Out', distance_from_start: 4400, sub_order: 1, kind: :waypoint)
-      Split.create!(course: course, events: [event_same_course], location_id: 2, name: 'Monarch Pass 2012 flood In', distance_from_start: 4400, sub_order: 3, kind: :waypoint)
-      Split.create!(course: course, events: [event_same_course], location_id: 2, name: 'Monarch Pass 2012 flood Out', distance_from_start: 4400, sub_order: 4, kind: :waypoint)
+      event_same_course.splits.create!(course: course, location_id: 2, name: 'Monarch Pass pre 2000 In', distance_from_start: 4400, sub_order: 0, kind: :waypoint)
+      event_same_course.splits.create!(course: course, location_id: 2, name: 'Monarch Pass pre 2000 Out', distance_from_start: 4400, sub_order: 1, kind: :waypoint)
+      event_same_course.splits.create!(course: course, location_id: 2, name: 'Monarch Pass 2012 flood In', distance_from_start: 4400, sub_order: 3, kind: :waypoint)
+      event_same_course.splits.create!(course: course, location_id: 2, name: 'Monarch Pass 2012 flood Out', distance_from_start: 4400, sub_order: 4, kind: :waypoint)
 
       other_course = Course.create!(name: 'some other course')
       Event.create!(name: 'Event on some other course', course: other_course, first_start_time: Time.current)

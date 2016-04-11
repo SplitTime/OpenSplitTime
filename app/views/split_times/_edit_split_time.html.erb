@@ -14,7 +14,7 @@
       <tr>
             <td><%= split_time.split.name %></td>
             <td class="text-right"><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></td>
-            <td class="text-right"><%= split_time.formatted_time %></td>
+            <td class="text-right"><%= split_time.time_format_hhmm %></td>
             <td class="text-right">
               <% if @current_user && @current_user.authorized_to_edit?(@effort) %>
                   <%= link_to 'Edit', edit_split_time_path(split_time), class: "btn btn-xs btn-primary" %>

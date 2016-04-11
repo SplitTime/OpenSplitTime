@@ -32,13 +32,21 @@ gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bulk_insert'
+gem 'descriptive_statistics'
 
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
   gem 'bullet'
   gem 'quiet_assets'
+end
 
+group :test do
+  gem 'capybara'
+  gem 'launchy'
+  gem 'guard-rspec'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
 end
 
 group :development, :test do
@@ -49,6 +57,8 @@ group :development, :test do
   gem 'rspec', '~> 3.4'
   gem 'rspec-rails', '~> 3.0'
   gem 'byebug'
+  gem 'rb-fsevent', require: false if RUBY_PLATFORM =~ /darwin/i
+  gem 'spring-commands-rspec'
 end
 
 group :production do

@@ -37,8 +37,11 @@
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@location) %>
         <%= link_to 'Edit this location', edit_location_path(@location), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this location', location_path(@location), method: :delete,
-                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+        <%= link_to 'Delete this location',
+                    location_path(@location, referrer_path: URI(request.referrer).path),
+                    method: :delete,
+                    data: {confirm: "Are you sure?"},
+                    class: "btn btn-sm btn-danger" %>
     <% end %>
   </div>
 </div>

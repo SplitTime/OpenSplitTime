@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :locations
   resources :courses do
     member { get :best_efforts }
+    member { get :plan_effort }
   end
   resources :events do
     member { post :import_splits }
@@ -61,7 +62,7 @@ Rails.application.routes.draw do
   get '/signout' => 'sessions#destroy', :as => :signout
   get '/auth/failure' => 'sessions#failure'
 
-  get 'cockpit_admin', to: 'admin#cockpit'
+  get 'dashboard_admin', to: 'admin#dashboard'
   get 'check_split_times_admin', to: 'admin#check_split_times'
 
   namespace :api do

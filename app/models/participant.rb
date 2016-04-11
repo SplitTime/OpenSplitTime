@@ -21,8 +21,7 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
         age_array << (years_between_dates(effort.event.first_start_time.to_date, now) + effort.age)
       end
     end
-    age_array.count > 0 ? (age_array.inject(0.0) { |sum, el| sum + el } / age_array.size).to_i : nil
-    # the inject statement avoids problems with integer division
+    age_array.mean
   end
 
   def self.age_matches(param, participants, rigor = 'soft')

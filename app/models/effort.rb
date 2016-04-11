@@ -108,11 +108,22 @@ class Effort < ActiveRecord::Base
     efforts_from_ids(ids_sorted_ultra_style)
   end
 
+  def self.within_time_range(low_time, high_time)
+    where(id: ids_within_time_range(low_time, high_time))
+  end
+
   private
+
+  def self.ids_within_time_range(low_time, high_time)
+    effort_ids = all.map(&:id)
+    SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {kind: 1})
+        .where(time_from_start: low_time..high_time).map(&:effort_id)
+  end
 
   def self.ids_sorted_by_finish_time
     effort_ids = all.map(&:id)
-    SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {kind: 1}).order(:time_from_start).map(&:effort_id)
+    SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {kind: 1})
+        .order(:time_from_start).map(&:effort_id)
   end
 
   def self.ids_sorted_ultra_style

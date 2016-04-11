@@ -61,6 +61,17 @@ class CoursesController < ApplicationController
     session[:return_to] = best_efforts_course_path(@course)
   end
 
+  def plan_effort
+    @course = Course.where(id: params[:id]).first
+    authorize @course
+    @event = @course.events.order(:first_start_time).last
+    unless @event
+      flash[:danger] = "No events yet held on this course"
+      redirect_to course_path(@course)
+    end
+    session[:return_to] = plan_effort_course_path(@course)
+  end
+
   private
 
   def course_params

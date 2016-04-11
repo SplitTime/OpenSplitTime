@@ -1,9 +1,9 @@
-class Admin::CockpitController < AdminController
+class Admin::DashboardController < AdminController
   before_action :authenticate_user!
   after_action :verify_authorized
 
-  def cockpit
-    authorize :cockpit, :show?
+  def dashboard
+    authorize :dashboard, :show?
   end
 
   def check_split_times

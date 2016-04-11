@@ -50,8 +50,25 @@ class Split < ActiveRecord::Base
     order(:distance_from_start, :sub_order)
   end
 
+  def self.average_times(target_finish_time) # Returns a hash with split ids => average times from start
+    efforts = first.course.relevant_efforts(target_finish_time)
+    return_hash = {}
+    all.each do |split|
+      return_hash[split.id] = split.average_time(efforts)
+    end
+    return_hash
+  end
+
+  def average_time(relevant_efforts)
+    split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
+  end
+
   def waypoint_group
     course.splits.where(distance_from_start: distance_from_start).order(:sub_order)
+  end
+
+  def composite_name #TODO limit this to event_waypoint_group when that function is working
+    (waypoint_group.order(:sub_order).map &:name).join(' / ')
   end
 
 end

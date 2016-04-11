@@ -1,0 +1,16 @@
+<div class="row">
+  <%= form_tag plan_effort_course_path, method: :get do %>
+      <div class="col-xs-2">
+        <%= text_field_tag :expected_time,
+                           params[:expected_time],
+                           placeholder: 'Goal time (hh:mm)',
+                           autofocus: true,
+                           class: 'form-control search-box input-sm' %>
+      </div>
+      <div class="col-xs-2">
+        <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
+            <i class='fa fa-search'></i> Create my plan
+        <% end %>
+      </div>
+  <% end %>
+</div>

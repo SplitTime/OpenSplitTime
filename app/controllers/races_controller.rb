@@ -27,7 +27,7 @@ class RacesController < ApplicationController
     authorize @race
 
     if @race.save
-      redirect_to session.delete(:return_to) || @race
+      redirect_to @race
     else
       render 'new'
     end
@@ -37,7 +37,7 @@ class RacesController < ApplicationController
     authorize @race
 
     if @race.update(race_params)
-      redirect_to session.delete(:return_to) || @race
+      redirect_to @race
     else
       render 'edit'
     end

@@ -30,4 +30,8 @@ class SplitPolicy
     @current_user.authorized_to_edit?(@split)
   end
 
+  def assign_location?
+    @current_user.authorized_to_edit?(@split)
+  end
+
 end

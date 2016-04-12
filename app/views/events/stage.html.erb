@@ -41,7 +41,7 @@
 <% end %>
 <hr>
 <div class="row">
-  <div class="col-xs-4">
+  <div class="col-xs-6">
     <strong>Associated Splits:</strong>
     <%= link_to @event.splits.count, splits_event_path(@event) %><br/>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>
@@ -52,7 +52,7 @@
         <% end %>
     <% end %>
   </div>
-  <div class="col-xs-4">
+  <div class="col-xs-6">
     <strong>Associated Efforts:</strong>
     <%= @event.efforts.count %>
     <% if @event.unreconciled_efforts? %>
@@ -78,5 +78,5 @@
         <h4>Splits associated with this event:</h4>
       </div>
     </div>
-    <%= render 'splits/splits', splits: @associated_splits %>
+    <%= render 'splits/splits', splits: @associated_splits, referred_by: stage_event_path(@event) %>
 <% end %>

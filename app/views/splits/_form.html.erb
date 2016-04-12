@@ -51,7 +51,7 @@
             <%= f.label :location_id %>
           </div>
           <div class="col-sm-3">
-            <%= collection_select(:split, :location_id, Location.all, :id, :name,
+            <%= collection_select(:split, :location_id, Location.all.order(:name), :id, :name,
                                   {prompt: true}, {class: "dropdown-select-field"}) %>
           </div>
           <div class="col-sm-2">

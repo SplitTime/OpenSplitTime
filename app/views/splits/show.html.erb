@@ -1,5 +1,5 @@
 <h1 align="center"><%= @split.name %></h1>
-<h4 align="center"><%= "#{@split.kind.titlecase}: Mile #{@split.distance_from_start.meters.to.miles.round(1)}" %></h4>
+<h4 align="center"><%= "Mile #{@split.distance_from_start.meters.to.miles.round(1)}" %></h4>
 <div class="row">
   <div class="col-md-6 col-md-offset-3 center">
     <%= @split.description %>
@@ -45,7 +45,12 @@
         });
       </script>
   <% else %>
-      <td><%= link_to "Create Location", new_location_path(split_id: @split.id), class: "btn btn-sm btn-success" %></td>
-  <% end %>
+      <%= link_to "Create Location", new_location_path(split_id: @split.id),
+                      class: "btn btn-sm btn-success" %>
+      <%= link_to "Select Location", assign_location_split_path(split: @split.id),
+                  class: "btn btn-sm btn-success",
+                  referrer_path: split_path(@split) %>
+
+<% end %>
 
 </div>

@@ -22,8 +22,6 @@
       <tr>
         <th>Name</th>
         <th>Distance from Start</th>
-        <th>Start/Finish/Waypoint</th>
-        <th>Actions</th>
       </tr>
       </thead>
 
@@ -32,7 +30,6 @@
           <tr>
             <td><%= split.name %></td>
             <td><%= split.distance_from_start.meters.to.miles.round(1) %></td>
-            <td><%= split.kind.titlecase %></td>
             <td>
               <% if split.waypoint? %>
                   <%= link_to "Remove",
@@ -70,8 +67,6 @@
       <tr>
         <th>Name</th>
         <th>Distance from Start</th>
-        <th>Start/Finish/Waypoint</th>
-        <th>Actions</th>
       </tr>
       </thead>
 
@@ -80,7 +75,6 @@
           <tr>
             <td><%= split.name %></td>
             <td><%= split.distance_from_start.meters.to.miles.round(1) %></td>
-            <td><%= split.kind.titlecase %></td>
             <td>
               <%= link_to "Add",
                           associate_splits_event_path(id: @event.id, split_ids: Array(split.id)),

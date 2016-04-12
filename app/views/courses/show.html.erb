@@ -40,5 +40,5 @@
         <h4><%= "Total of #{@course.splits.count} splits on #{@course.name}" %></h4>
       </div>
     </div>
-    <%= render 'splits/splits', splits: @course_splits %>
+    <%= render 'splits/splits', splits: @course_splits, referred_by: course_path(@course) %>
 <% end %>

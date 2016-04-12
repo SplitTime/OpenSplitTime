@@ -60,6 +60,10 @@ class SplitsController < ApplicationController
     redirect_to session.delete(:return_to) || splits_path
   end
 
+  def assign_location
+    authorize @split
+  end
+
   private
 
   def split_params

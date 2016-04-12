@@ -1,4 +1,4 @@
-<%# Requires parameter splits %>
+<%# Requires parameter splits, referred_by %>
 
 <table class="table table-condensed table-striped">
   <thead>
@@ -12,11 +12,15 @@
   <% splits.each do |split| %>
       <tr>
         <td><strong><%= link_to split.name, split_path(split) %></strong></td>
-        <td><%= "#{split.kind.titlecase}: Mile #{split.distance_from_start.meters.to.miles.round(1)} on #{split.course.name}" %></td>
+        <td><%= "Mile #{split.distance_from_start.meters.to.miles.round(1)} on #{split.course.name}" %></td>
         <% if split.location %>
             <td><%= link_to split.location.name, location_path(split.location) %></td>
         <% else %>
-            <td><%= link_to "Create", new_location_path(split_id: split.id), class: "btn btn-xs btn-success" %></td>
+            <td>
+              <%= link_to "Create", new_location_path(split_id: split.id), class: "btn btn-xs btn-success" %>
+              <%= link_to "Select", assign_location_split_path(id: split.id, referrer_path: referred_by),
+                          class: "btn btn-xs btn-success" %>
+            </td>
         <% end %>
       </tr>
   <% end %>

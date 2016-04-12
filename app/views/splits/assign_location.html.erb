@@ -1,0 +1,31 @@
+<%= render 'shared/errors', obj: @split %>
+
+<h2>
+  <%= @split.name %>
+  <% unless @split.start? %>
+      <%= "Mile #{@split.distance_from_start.meters.to.miles.round(1)}" %>
+  <% end %>
+</h2>
+<h4><%= @split.description %></h4>
+
+<%= form_for(@split, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+    <div class="row">
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :location_id %>
+        </div>
+        <div class="col-sm-3">
+          <%= collection_select(:split, :location_id, Location.all.order(:name), :id, :name,
+                                {prompt: true}, {class: "dropdown-select-field"}) %>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-3">
+        <%= f.submit("Set Location", class: 'btn btn-primary btn-large') %>
+      </div>
+    </div>
+    <div class="col-xs-4">
+      [ <%= link_to 'Cancel', request.referer %> ]
+    </div>
+<% end %>

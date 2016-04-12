@@ -31,9 +31,8 @@
 </div>
 <hr>
 
-<%= render 'lookup' %>
-
 <% if @efforts.count > 0 %>
+    <%= render 'lookup' %>
     <hr>
     <div class="row">
       <div class="col-xs-8">
@@ -53,4 +52,6 @@
         <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
       </div>
     </div>
+<% else %>
+  <strong>No efforts yet associated with this event.</strong>
 <% end %>

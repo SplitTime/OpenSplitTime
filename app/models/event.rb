@@ -27,9 +27,8 @@ class Event < ActiveRecord::Base
     efforts.where(participant_id: nil).count > 0
   end
 
-  def set_start_and_finish
-    splits << course.splits.start if splits.start.empty?
-    splits << course.splits.finish if splits.finish.empty?
+  def set_all_course_splits
+    splits << course.splits
   end
 
   def waypoint_groups

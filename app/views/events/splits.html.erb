@@ -34,10 +34,12 @@
             <td><%= split.distance_from_start.meters.to.miles.round(1) %></td>
             <td><%= split.kind.titlecase %></td>
             <td>
-              <%= link_to "Remove",
-                          remove_split_event_path(split_id: split.id),
-                          :method => :delete,
-                          :class => 'btn btn-xs btn-danger' %>
+              <% if split.waypoint? %>
+                  <%= link_to "Remove",
+                              remove_split_event_path(split_id: split.id),
+                              :method => :delete,
+                              :class => 'btn btn-xs btn-danger' %>
+              <% end %>
             </td>
           </tr>
       <% end %>

@@ -19,6 +19,9 @@
               </div>
           <% end %>
         </div>
+        <% if @split.new_record? %>
+            <%= f.hidden_field :kind, value: 'waypoint' %>
+        <% end %>
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :name %>
@@ -53,7 +56,7 @@
           </div>
           <div class="col-sm-2">
             <% if @split.new_record? %>
-                <%= f.submit("Create Location", { create_location: true, class: "btn btn-xs btn-success btn-margin-top-sm" }) %>
+                <%= f.submit("Create Location", {create_location: true, class: "btn btn-xs btn-success btn-margin-top-sm"}) %>
             <% else %>
                 <%= link_to "Create Location", new_location_path(split_id: @split.id, referrer_path: edit_split_path(@split)), class: "btn btn-xs btn-success btn-margin-top-sm" %>
             <% end %>

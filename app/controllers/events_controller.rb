@@ -42,7 +42,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      @event.set_start_and_finish
+      @event.set_all_course_splits
       redirect_to stage_event_path(@event)
     else
       render 'new'
@@ -130,7 +130,7 @@ class EventsController < ApplicationController
   def remove_all_splits
     @event = Event.find(params[:id])
     authorize @event
-    @event.splits.delete_all
+    @event.splits.delete(Split.waypoint)
     redirect_to splits_event_path(@event)
   end
 

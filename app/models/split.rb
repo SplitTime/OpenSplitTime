@@ -11,7 +11,6 @@ class Split < ActiveRecord::Base
   validates_presence_of :name, :distance_from_start, :sub_order, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :name, scope: :course_id, case_sensitive: false
-  validates_uniqueness_of :distance_from_start, scope: [:course_id, :sub_order]
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
                           message: "only one start split permitted on a course"
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_finish?',

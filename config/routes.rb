@@ -38,7 +38,9 @@ Rails.application.routes.draw do
     member { get :reconcile }
     member { get :stage}
   end
-  resources :splits
+  resources :splits do
+    member { get :assign_location }
+  end
   resources :races
   resources :participants do
     collection { get :subregion_options }

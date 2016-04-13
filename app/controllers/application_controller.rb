@@ -16,6 +16,27 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_sub_order(base_split)
+    group = base_split.waypoint_group
+    return if group.count == 1
+    if group.count == 2
+      first = group[0]
+      second = group[1]
+      if first.name.downcase.include?("out") && second.name.downcase.include?("in")
+        first.update_attributes(sub_order: 1)
+        second.update_attributes(sub_order: 0)
+        return
+      elsif first.name.downcase.include?("in") && second.name.downcase.include?("out")
+        first.update_attributes(sub_order: 0)
+        second.update_attributes(sub_order: 1)
+        return
+      end
+    end
+    existing = group.reject { |x| x.id == base_split.id }.map(&:sub_order)
+    new = existing.include?(0) ? existing.max + 1 : 0
+    base_split.update_attributes(sub_order: new)
+  end
+
   if Rails.env.development?
     # https://github.com/RailsApps/rails-devise-pundit/issues/10
     include Pundit

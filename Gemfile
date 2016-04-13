@@ -15,6 +15,7 @@ gem 'high_voltage'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'devise'
+gem 'devise-bootstrap-views'
 gem 'pundit'
 gem 'rails_apps_pages'
 gem 'therubyracer', :platform => :ruby

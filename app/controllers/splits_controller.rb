@@ -29,6 +29,7 @@ class SplitsController < ApplicationController
 
     if @split.save
       conform_split_locations_to(@split) unless @split.location_id.nil?
+      set_sub_order(@split)
       if params[:commit] == 'Create Location'
         session[:return_to] = edit_split_path(@split)
         redirect_to new_location_path(split_id: @split.id)
@@ -45,6 +46,7 @@ class SplitsController < ApplicationController
 
     if @split.update(split_params)
       conform_split_locations_to(@split)
+      set_sub_order(@split)
       redirect_to session.delete(:return_to) || @split.course
     else
       @course = Course.find(@split.course_id) if @split.course_id

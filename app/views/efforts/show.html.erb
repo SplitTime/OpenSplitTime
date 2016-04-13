@@ -23,7 +23,6 @@
     <% if @current_user && @current_user.authorized_to_edit?(@effort) %>
         <%= link_to 'Edit this effort', edit_effort_path(@effort), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Edit split times', edit_split_times_effort_path(@effort),
-                    method: :put,
                     class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this effort', effort_path(@effort, referrer_path: URI(request.referrer).path),
                     method: :delete,

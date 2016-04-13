@@ -135,14 +135,14 @@ ActiveRecord::Schema.define(version: 20160408234107) do
   end
 
   create_table "split_times", force: :cascade do |t|
-    t.integer "effort_id",       null: false
-    t.integer "split_id",        null: false
-    t.float   "time_from_start", null: false
-    t.integer "data_status"
-    t.string  "created_at"
-    t.string  "updated_at"
-    t.integer "created_by"
-    t.integer "updated_by"
+    t.integer  "effort_id",       null: false
+    t.integer  "split_id",        null: false
+    t.float    "time_from_start", null: false
+    t.integer  "data_status"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id"

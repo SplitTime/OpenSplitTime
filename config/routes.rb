@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   resources :efforts do
     member { put :associate_participant }
     collection { put :associate_participants}
-    member { put :edit_split_times }
+    member { get :edit_split_times }
   end
   resources :split_times
   resources :interests

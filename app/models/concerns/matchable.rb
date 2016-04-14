@@ -11,7 +11,7 @@ module Matchable
   end
 
   def participants_changed_last_name # To find women who may have changed their last names
-    participants = Participant.female.first_name_matches(first_name).state_matches(state_code).all
+    participants = Participant.female.first_name_matches(first_name).state_matches(state_code)
     Participant.age_matches(age_today, participants) || Participant.none
   end
 

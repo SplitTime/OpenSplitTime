@@ -37,7 +37,7 @@ module Matchable
     participants = Participant.last_name_matches(last_name, rigor: 'exact')
                        .first_name_matches(first_name, rigor: 'exact').gender_matches(gender)
     name_gender_age_match = Participant.age_matches(age_today, participants, 'soft')
-    exact_match = name_gender_age_match.present? ? name_gender_age_match : participants.state_matches(state_code, 'exact')
+    exact_match = name_gender_age_match.present? ? name_gender_age_match : participants.state_matches(state_code)
     exact_match.count == 1 ? exact_match.first : nil # Convert single match to object; don't pass if more than one match
   end
 

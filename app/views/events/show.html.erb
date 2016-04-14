@@ -30,28 +30,32 @@
   </div>
 </div>
 <hr>
-
-<% if @efforts.count > 0 %>
-    <%= render 'lookup' %>
-    <hr>
-    <div class="row">
-      <div class="col-xs-8">
-        <h4><%= "#{@event.efforts.count} efforts for #{@event.name}" %></h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-8">
-        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
-      </div>
-    </div>
-
-    <%= render 'efforts/effort_list', items: @efforts %>
-
-    <div class="row">
-      <div class="col-xs-8">
-        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
-      </div>
-    </div>
+<% if @event.efforts.count < 1 %>
+    <strong>No efforts yet associated with this event.</strong>
 <% else %>
-  <strong>No efforts yet associated with this event.</strong>
+    <%= render 'lookup' %>
+    <% if @efforts.count > 0 %>
+        <hr>
+        <div class="row">
+          <div class="col-xs-8">
+            <h4><%= "#{@event.efforts.count} efforts for #{@event.name}" %></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+
+        <%= render 'efforts/effort_list', items: @efforts %>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+        <% else %>
+        <hr>
+        <strong>No results match that search.</strong>
+    <% end %>
 <% end %>

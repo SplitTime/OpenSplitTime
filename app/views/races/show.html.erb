@@ -36,5 +36,5 @@
         <h4>Events associated with this race:</h4>
       </div>
     </div>
-    <%= render 'events/events', events: @race_events %>
+    <%= render 'events/events', events: @race_events.order(first_start_time: :desc) %>
 <% end %>

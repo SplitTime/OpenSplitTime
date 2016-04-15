@@ -29,6 +29,7 @@
     <div class="article-actions">
       <div class="row">
         <div class="col-xs-4">
+          <%= link_to 'Create split', new_split_path(event_id: @event.id), class: 'btn btn-sm btn-success' %>
           <%= link_to 'Associate or remove splits', splits_event_path, class: 'btn btn-sm btn-success' %>
         </div>
         <% if @event.unreconciled_efforts? %>
@@ -42,8 +43,8 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <strong>Associated Splits:</strong>
-    <%= link_to @event.splits.count, splits_event_path(@event) %><br/>
+    <strong>Splits associated with event / Splits on this course:</strong>
+    <%= link_to @event.splits.count, splits_event_path(@event) %> / <%= link_to @event.course.splits.count, course_path(@event.course) %><br/>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>
         <strong>Import Splits for this Event</strong>
         <%= form_tag({action: :import_splits}, multipart: true) do %>

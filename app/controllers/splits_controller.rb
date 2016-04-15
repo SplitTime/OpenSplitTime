@@ -14,7 +14,6 @@ class SplitsController < ApplicationController
 
   def new
     @split = Split.new
-    @course = Course.find(params[:course_id]) if params[:course_id]
     authorize @split
   end
 
@@ -31,13 +30,24 @@ class SplitsController < ApplicationController
       conform_split_locations_to(@split) unless @split.location_id.nil?
       set_sub_order(@split)
       if params[:commit] == 'Create Location'
-        session[:return_to] = edit_split_path(@split)
-        redirect_to new_location_path(split_id: @split.id)
+        session[:return_to] = edit_split_path(@split, event_id: params[:event_id])
+        redirect_to new_location_path(split_id: @split.id, event_id: params[:event_id])
+      elsif params[:event_id]
+        @event = Event.find(params[:event_id])
+        @event.splits << @split
+        @event.save
+        redirect_to stage_event_path(@event)
       else
         redirect_to session.delete(:return_to) || @split.course
       end
     else
-      render 'new'
+      if @event
+        render 'new', event_id: @event.id
+      elsif @course
+        render 'new', course_id: @course.id
+      else
+        render 'new'
+      end
     end
   end
 
@@ -47,6 +57,11 @@ class SplitsController < ApplicationController
     if @split.update(split_params)
       conform_split_locations_to(@split)
       set_sub_order(@split)
+      if params[:event_id]
+        @event = Event.find(params[:event_id])
+        @event.splits << @split
+        @event.save
+      end
       redirect_to session.delete(:return_to) || @split.course
     else
       @course = Course.find(@split.course_id) if @split.course_id

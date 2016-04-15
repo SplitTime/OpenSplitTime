@@ -1,7 +1,6 @@
 class ParticipantsController < ApplicationController
   before_action :authenticate_user!, except: [:subregion_options, :avatar_disclaim]
   before_action :set_participant, except: [:index, :new, :create, :create_from_efforts, :subregion_options]
-  before_action :set_effort_count, only: [:index, :merge]
   after_action :verify_authorized, except: [:index, :subregion_options, :avatar_disclaim, :create_from_efforts]
 
   before_filter do
@@ -118,10 +117,6 @@ class ParticipantsController < ApplicationController
 
   def set_participant
     @participant = Participant.find(params[:id])
-  end
-
-  def set_effort_count
-    @participant_efforts_count = Effort.group("efforts.participant_id").count
   end
 
   def unreconciled_effort_id_array(effort_ids, event_id)

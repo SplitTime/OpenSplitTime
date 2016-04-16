@@ -3,8 +3,10 @@
     <h1>Participants</h1>
   </div>
   <div class="col-xs-4">
-    <%= link_to 'Create New Participant', new_participant_path,
-                class: 'btn btn-sm btn-success btn-margin-lg' %>
+    <% if @current_user && @current_user.admin? %>
+        <%= link_to 'Create New Participant', new_participant_path,
+                    class: 'btn btn-sm btn-success btn-margin-lg' %>
+    <% end %>
   </div>
 </div>
 
@@ -16,7 +18,7 @@
   </div>
 </div>
 <% if @participants.count > 0 %>
-    <%= render 'participants', participants: @participants, efforts_count: Effort.group("efforts.participant_id").count%>
+    <%= render 'participants', participants: @participants, efforts_count: Effort.group("efforts.participant_id").count %>
 <% else %>
     <br/>
     <p><strong>No participants match this search</strong></p>

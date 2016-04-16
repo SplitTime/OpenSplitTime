@@ -380,7 +380,6 @@ DEPENDENCIES
   rails_12factor
   rails_apps_pages
   rails_layout
-  rb-fsevent
   responders (~> 2.0)
   roo
   roo-xls

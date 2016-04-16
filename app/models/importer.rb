@@ -254,29 +254,21 @@ class Importer
 
   def self.convert_time_to_standard(working_time)
     return nil if working_time.blank?
-    if working_time.instance_of?(Date)
-      working_time = working_time.in_time_zone # Converts Date to Datetime
-    end
-    if working_time.acts_like?(:time)
-      working_time = datetime_to_seconds(working_time)
-    end
+    working_time = working_time.in_time_zone if working_time.instance_of?(Date) # Converts date to datetime
+    working_time = datetime_to_seconds(working_time) if working_time.acts_like?(:time)
     if working_time.try(:to_f)
       working_time
     else
       nil # raise "Invalid split time data for #{effort.last_name}. #{errors.full_messages}."
     end
-
   end
 
-  # Corrects for Excel quirk; TODO: discover extent of this quirk
-  #TODO: This will not work for datetimes that were intended as such
   def self.datetime_to_seconds(value)
     if (value.year < 1901) && @spreadsheet_format.include?("xls")
-      value.seconds_since_midnight.to_f + 1.day
+      TimeDifference.between(value, "1899-12-30".to_datetime).in_seconds
     else
       value.seconds_since_midnight.to_f
     end
-
   end
 
 end

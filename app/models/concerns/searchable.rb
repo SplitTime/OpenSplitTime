@@ -40,12 +40,25 @@ module Searchable
     end
 
     def country_matches(param)
-      where(country_code: param) || none
+      param_country = Carmen::Country.named(param)
+      if param_country
+        param_country_code = param_country.code
+        where(country_code: param_country_code) || none
+      else
+        none
+      end
     end
 
-    def state_matches(param, rigor = 'exact')
-      return matches('state_code', param) || none if rigor == 'soft'
-      exact_matches('state_code', param) || none
+    def state_matches(param)
+      uncoded_matches = exact_matches('state_code', param)
+      param_state = Carmen::Country.coded("US").subregions.named(param) || Carmen::Country.coded("CA").subregions.named(param)
+      if param_state
+        param_state_code = param_state.code
+        coded_matches = where(state_code: param_state_code)
+      else
+        coded_matches = none
+      end
+      (uncoded_matches + coded_matches).uniq || none
     end
 
     def email_matches(param, rigor = 'exact')
@@ -64,13 +77,13 @@ module Searchable
     def search(param)
       return all if param.blank?
       param.downcase!
-      collection = []
+      collection = country_matches(param) + state_matches(param)
       terms = param.split(" ")
       terms.each do |term|
         collection = collection + first_name_matches(term, 'soft') +
             last_name_matches(term, 'soft') +
-            state_matches(term, 'soft')
-        collection = collection + email_matches(term, 'soft') if self.column_names.include?('email')
+            country_matches(term) +
+            state_matches(term)
       end
       collection.uniq
     end

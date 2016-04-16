@@ -6,7 +6,7 @@
 <% if participant.phone %>
     <%= participant.phone %><br/>
 <% end %>
-<%= link_to pluralize(participant.efforts.count, 'effort'), participant_path(participant) %><br/>
+<%= link_to pluralize(efforts_count, 'effort'), participant_path(participant) %><br/>
 <% if participant.claimed? %>
     <% if participant.claimant == @current_user %>
         <strong>Hey, this is me!</strong><br/>

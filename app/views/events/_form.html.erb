@@ -17,7 +17,7 @@
                 <%= f.label :course_id %>
               </div>
               <div class="col-sm-8">
-                <%= collection_select(:event, :course_id, Course.all, :id, :name,
+                <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
                                       {prompt: true}, {class: "dropdown-select-field"}) %>
               </div>
             </div>

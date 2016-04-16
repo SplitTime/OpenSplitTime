@@ -51,11 +51,14 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
     id = ["id"]
     foreign_keys = Participant.column_names.find_all { |x| x.include?("_id") }
     stamps = Participant.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
-    (column_names - (id + foreign_keys + stamps)).map &:to_sym
+    geographic = ["country_code", "state_code", "city"]
+    (column_names - (id + foreign_keys + stamps + geographic)).map &:to_sym
   end
 
   def pull_data_from_effort(effort_id)
     @effort = Effort.find(effort_id)
+    resolve_country(@effort)
+    resolve_state_and_city(@effort)
     participant_attributes = Participant.columns_to_pull_from_model
     participant_attributes.each do |attribute|
       assign_attributes({attribute => @effort[attribute]}) if self[attribute].blank?
@@ -76,8 +79,9 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
 
   def merge_with(target)
     @target_participant = Participant.find(target.id)
-    participant_attributes = Participant.columns_to_pull_from_model
-    participant_attributes.each do |attribute|
+    resolve_country(@target_participant)
+    resolve_state_and_city(@target_participant)
+    Participant.columns_to_pull_from_model.each do |attribute|
       assign_attributes({attribute => @target_participant[attribute]}) if self[attribute].blank?
     end
     if save
@@ -86,6 +90,28 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
       @target_participant.destroy
     else
       flash[:danger] = "Participants could not be merged"
+    end
+  end
+
+  def resolve_country(target)
+    return if target.country_code.blank?
+    if country_code.blank? &&
+        (state_code.blank? |
+            (state_code == target.state_code) |
+            (Carmen::Country.coded(target.country_code).subregions.coded(state_code)))
+      assign_attributes(country_code: target.country_code)
+    end
+  end
+
+  def resolve_state_and_city(target)
+    return if target.state_code.blank?
+    if state_code.blank? &&
+        (country_code.blank? |
+            (country_code == target.country_code) |
+            (Carmen::Country.coded(country_code).subregions.coded(target.state_code)))
+      assign_attributes(state_code: target.state_code, city: target.city)
+    elsif (state_code == target.state_code) && city.blank?
+      assign_attributes(city: target.city)
     end
   end
 

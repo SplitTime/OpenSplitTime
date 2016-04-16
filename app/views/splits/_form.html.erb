@@ -1,5 +1,6 @@
 <%= render 'shared/errors', obj: @split %>
-
+<% @event = Event.find(params[:event_id]) if params[:event_id] %>
+<% @course = @event.course if @event %>
 <div class="row">
   <div class="col-md-12">
     <%= form_for(@split, :html => {class: "form-horizontal", role: "form"}) do |f| %>
@@ -32,6 +33,14 @@
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
+            <%= f.label :distance_from_start %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :distance_from_start, class: "form-control", placeholder: "Meters" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
             <%= f.label :description %>
           </div>
           <div class="col-sm-8">
@@ -56,14 +65,6 @@
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :distance_from_start %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :distance_from_start, class: "form-control", placeholder: "Meters" %>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
             <%= f.label :vert_gain_from_start %>
           </div>
           <div class="col-sm-2">
@@ -80,7 +81,11 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
+            <% if @event.nil? %>
+                <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
+          <% else %>
+                <%= f.button(@split.new_record? ? "Create Split" : "Update Split", name: "event_id", value: @event.id, class: 'btn btn-primary btn-large') %>
+            <% end %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">

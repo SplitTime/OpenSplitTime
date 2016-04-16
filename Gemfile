@@ -34,6 +34,7 @@ gem 'bootstrap-will_paginate'
 gem 'twitter-bootstrap-rails'
 gem 'bulk_insert'
 gem 'descriptive_statistics'
+gem 'time_difference'
 
 group :development do
   gem 'web-console', '~> 2.0'

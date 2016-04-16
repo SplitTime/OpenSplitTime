@@ -18,9 +18,10 @@
       </div>
   <% end %>
 </div>
+<% participant_efforts_count = Effort.group("efforts.participant_id").count %>
 <div class="row">
   <div class="col-xs-5">
-    <%= render 'inspect', participant: @participant %>
+    <%= render 'inspect', participant: @participant, efforts_count: participant_efforts_count[@participant.id] %>
   </div>
   <% if @proposed_match %>
       <div class="col-xs-2"><%= link_to 'Merge with >>',
@@ -30,7 +31,7 @@
                                         class: 'btn btn-sm btn-success btn-margin-top' %>
       </div>
       <div class="col-xs-5">
-        <%= render 'inspect', participant: @proposed_match %>
+        <%= render 'inspect', participant: @proposed_match, efforts_count: participant_efforts_count[@proposed_match.id] %>
       </div>
   <% end %>
 </div>
@@ -44,5 +45,5 @@
 <hr>
 
 <% if @proposed_matches.present? %>
-    <%= render 'participants/participants', participants: @proposed_matches %>
+    <%= render 'participants/participants', participants: @proposed_matches, efforts_count: participant_efforts_count %>
 <% end %>

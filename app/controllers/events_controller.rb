@@ -10,10 +10,10 @@ class EventsController < ApplicationController
 
   def show
     if @event.course
-      if params[:search_param]
-        @efforts = @event.efforts.search(params[:search_param]).paginate(page: params[:page], per_page: 25)
-      else
+      if params[:search_param].blank?
         @efforts = @event.efforts.sorted_ultra_style.paginate(page: params[:page], per_page: 25)
+      else
+        @efforts = @event.efforts.search(params[:search_param]).paginate(page: params[:page], per_page: 25)
       end
       session[:return_to] = event_path(@event)
     else

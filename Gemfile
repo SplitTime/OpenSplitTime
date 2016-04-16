@@ -59,7 +59,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
   gem 'byebug'
   gem 'spring-commands-rspec'
-  gem 'rb-fsevent', require: false if RUBY_PLATFORM =~ /darwin/i
+  gem 'rb-fsevent'
 end
 
 group :production do

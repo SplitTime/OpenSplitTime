@@ -1,6 +1,7 @@
 require "rails_helper"
 
 # t.string   "name"
+# t.string   "description"
 
 RSpec.describe Course, type: :model do
   it "should be valid with a name" do

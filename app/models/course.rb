@@ -15,9 +15,9 @@ class Course < ActiveRecord::Base
   end
 
   def update_initial_splits
-    splits.start.first.update_attributes(name: "#{name} Start",
+    splits.start.first.update(name: "#{name} Start",
                                          description: "Starting point for the #{name} course.")
-    splits.finish.first.update_attributes(name: "#{name} Finish",
+    splits.finish.first.update(name: "#{name} Finish",
                                           description: "Finish point for the #{name} course.")
   end
 

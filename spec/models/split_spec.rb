@@ -14,23 +14,15 @@ RSpec.describe Split, kind: :model do
   it "should be valid when created with a course_id, a name, a distance_from_start, and a kind" do
     course = Course.create!(name: 'Test Course')
     Split.create!(course_id: course.id,
-                  location_id: nil,
                   name: 'Hopeless Outbound In',
                   distance_from_start: 50000,
                   kind: 2)
 
     expect(Split.all.count).to(equal(1))
-    expect(Split.first.course_id).to eq(course.id)
     expect(Split.first.name).to eq('Hopeless Outbound In')
     expect(Split.first.distance_from_start).to eq(50000)
     expect(Split.first.sub_order).to eq(0)    # default value
     expect(Split.first.waypoint?).to eq(true)
-  end
-
-  it "should be invalid without a course_id" do
-    split = Split.new(course_id: nil, location_id: 1, name: 'Test Location', distance_from_start: 2000, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:course_id]).to include("can't be blank")
   end
 
   it "should be invalid without a name" do
@@ -68,13 +60,6 @@ RSpec.describe Split, kind: :model do
     Split.create!(course_id: 1, location_id: 1, name: 'Wanderlust In', distance_from_start: 7000, kind: 2)
     split = Split.new(course_id: 2, location_id: 1, name: 'Wanderlust In', distance_from_start: 8000, kind: 2)
     expect(split).to be_valid
-  end
-
-  it "should not permit multiple splits of the same distance without different sub_orders" do
-    Split.create!(course_id: 1, location_id: 1, name: 'Aid Station In', distance_from_start: 7000, sub_order: 0, kind: 2)
-    split = Split.new(course_id: 1, location_id: 1, name: 'Aid Station Out', distance_from_start: 7000, sub_order: 0, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:distance_from_start]).to include ("has already been taken")
   end
 
   it "should permit multiple splits of the same distance with different sub_orders" do
@@ -181,7 +166,6 @@ RSpec.describe Split, kind: :model do
       first_split = event_same_course.splits.first
       expect(first_split.waypoint_group.count).to eq(4)
     end
-
   end
 
 end

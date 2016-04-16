@@ -1,4 +1,4 @@
-class Participant < ActiveRecord::Base #TODO: create class Person with subclasses Participant and Effort
+class Participant < ActiveRecord::Base
   include PersonalInfo
   include Searchable
   include Matchable
@@ -9,6 +9,10 @@ class Participant < ActiveRecord::Base #TODO: create class Person with subclasse
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
 
   validates_presence_of :first_name, :last_name, :gender
+  validates :email, allow_nil: true, length: { maximum: 105 },
+            uniqueness: { case_sensitive: false },
+            format: { with: Rails.application.config.valid_email_regex }
+
 
   # Search functions specific to Participant
 

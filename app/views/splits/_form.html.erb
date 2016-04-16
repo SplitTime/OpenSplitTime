@@ -1,6 +1,5 @@
 <%= render 'shared/errors', obj: @split %>
-<% @event = Event.find(params[:event_id]) if params[:event_id] %>
-<% @course = @event.course if @event %>
+<% set_course_and_event %>
 <div class="row">
   <div class="col-md-12">
     <%= form_for(@split, :html => {class: "form-horizontal", role: "form"}) do |f| %>

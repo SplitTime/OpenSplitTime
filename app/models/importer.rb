@@ -240,7 +240,7 @@ class Importer
         working_time = row_time_data[i]
         seconds = convert_time_to_standard(working_time)
         if i == split_array.size - 1
-          effort.update_attributes(dropped: seconds.nil? ? true : false)
+          effort.update(dropped: seconds.nil? ? true : false)
         end
         next if seconds.nil?
         worker.add(effort_id: effort.id,

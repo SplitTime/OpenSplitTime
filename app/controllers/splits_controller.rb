@@ -27,7 +27,7 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.save
-      conform_split_locations_to(@split) unless @split.location_id.nil?
+      conform_split_locations(@split)
       set_sub_order(@split)
       if params[:commit] == 'Create Location'
         session[:return_to] = edit_split_path(@split, event_id: params[:event_id])
@@ -55,7 +55,7 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.update(split_params)
-      conform_split_locations_to(@split)
+      conform_split_locations(@split)
       set_sub_order(@split)
       if params[:event_id]
         @event = Event.find(params[:event_id])

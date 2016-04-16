@@ -25,8 +25,8 @@ class Effort < ActiveRecord::Base
 
     return nil unless start_split_time
     if start_split_time.time_from_start != 0
-      update_attributes(start_time: start_time + start_split_time.time_from_start)
-      start_split_time.update_attributes(time_from_start: 0)
+      update(start_time: start_time + start_split_time.time_from_start)
+      start_split_time.update(time_from_start: 0)
     end
   end
 

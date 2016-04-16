@@ -8,11 +8,14 @@ class ApplicationController < ActionController::Base
     Concern::Audit::Author.current = current_user.try(:id)
   end
 
-  def conform_split_locations_to(base_split)
-    location_id = base_split.location.id
-    @splits = base_split.waypoint_group.where.not(id: base_split.id)
-    @splits.each do |split|
-      split.update_attributes(location_id: location_id)
+  def conform_split_locations(base_split)
+    if base_split.location.nil?
+      split = base_split.waypoint_group.where.not(location_id: nil).first
+      base_split.update(location_id: split.location_id) if split
+    else
+      location_id = base_split.location.id
+      splits = base_split.waypoint_group.where.not(id: base_split.id)
+      splits.update_all(location_id: location_id)
     end
   end
 
@@ -23,35 +26,31 @@ class ApplicationController < ActionController::Base
       first = group[0]
       second = group[1]
       if first.name.downcase.include?("out") && second.name.downcase.include?("in")
-        first.update_attributes(sub_order: 1)
-        second.update_attributes(sub_order: 0)
+        first.update(sub_order: 1)
+        second.update(sub_order: 0)
         return
       elsif first.name.downcase.include?("in") && second.name.downcase.include?("out")
-        first.update_attributes(sub_order: 0)
-        second.update_attributes(sub_order: 1)
+        first.update(sub_order: 0)
+        second.update(sub_order: 1)
         return
       end
     end
     existing = group.reject { |x| x.id == base_split.id }.map(&:sub_order)
     new = existing.include?(0) ? existing.max + 1 : 0
-    base_split.update_attributes(sub_order: new)
+    base_split.update(sub_order: new)
   end
 
   if Rails.env.development?
     # https://github.com/RailsApps/rails-devise-pundit/issues/10
     include Pundit
-    # https://github.com/elabs/pundit#ensuring-policies-are-used
-    # after_action :verify_authorized, except: :index, unless: :devise_controller?  # TODO: implement these verifications
-    # after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
-
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-    private
-
-    def user_not_authorized
-      flash[:alert] = "Access denied."
-      redirect_to (request.referrer || root_path)
-    end
-
   end
+
+  private
+
+  def user_not_authorized
+    flash[:alert] = "Access denied."
+    redirect_to (request.referrer || root_path)
+  end
+
 end

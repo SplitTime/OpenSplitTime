@@ -1,22 +1,20 @@
-  <% if user_signed_in? %>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.email %><%= " (admin)" if current_user.admin? %>
-          <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><%= link_to 'Edit Your Profile', edit_user_registration_path %></li>
-          <li><%= link_to 'View Your Profile', user_path(current_user) %></li>
-          <% if current_user.try(:admin?) %>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to 'List Users', users_path %></li>
-          <% end %>
-          <li role="separator" class="divider"></li>
-          <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
-        </ul>
-      </li>
-  <% else %>
-      <li><%= link_to 'Log In', new_user_session_path %></li>
-      <li><%= link_to 'Sign Up', new_user_registration_path %></li>
-  <% end %>
-  <% if user_signed_in? %>
-  <% end %>
-</ul>
+<% if user_signed_in? %>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <%= current_user.email %><%= " (admin)" if current_user.admin? %>
+        <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'Edit Your Profile', edit_user_registration_path %></li>
+        <li><%= link_to 'View Your Profile', user_path(current_user) %></li>
+        <% if current_user.try(:admin?) %>
+            <li role="separator" class="divider"></li>
+            <li><%= link_to 'List Users', users_path %></li>
+        <% end %>
+        <li role="separator" class="divider"></li>
+        <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
+      </ul>
+    </li>
+<% else %>
+    <li><%= link_to 'Log In', new_user_session_path %></li>
+    <li><%= link_to 'Sign Up', new_user_registration_path %></li>
+<% end %>

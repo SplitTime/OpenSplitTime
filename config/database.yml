@@ -7,8 +7,7 @@ default: &default
 development:
   <<: *default
   database: ost-development
-  username: mmo
-  password: <%= ENV["PSQL_DEV_PASSWORD"] %>
+  username: <%= ENV["PSQL_DEV_USERNAME"] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -16,6 +15,5 @@ development:
 test:
   <<: *default
   database: ost-test
-  username: mmo
-  password: <%= ENV["PSQL_TEST_PASSWORD"] %>
+  username: <%= ENV["PSQL_TEST_USERNAME"] %>
 

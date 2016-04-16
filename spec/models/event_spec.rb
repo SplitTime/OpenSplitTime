@@ -51,12 +51,12 @@ RSpec.describe Event, type: :model do
     let(:event) { Event.create!(name: 'Waypoint Event', course: course, first_start_time: Time.current) }
 
     before do
-      event.splits.create!(course: course, location_id: 1, name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
-      event.splits.create!(course: course, location_id: 2, name: 'Monarch Pass In', distance_from_start: 5000, sub_order: 0, kind: :waypoint)
-      event.splits.create!(course: course, location_id: 2, name: 'Monarch Pass Out', distance_from_start: 5000, sub_order: 1, kind: :waypoint)
-      event.splits.create!(course: course, location_id: 3, name: 'Halfway House In', distance_from_start: 25000, sub_order: 0, kind: :waypoint)
-      event.splits.create!(course: course, location_id: 3, name: 'Halfway House Out', distance_from_start: 25000, sub_order: 1, kind: :waypoint)
-      event.splits.create!(course: course, location_id: 7, name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
+      event.splits.create!(course: course, name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
+      event.splits.create!(course: course, name: 'Monarch Pass In', distance_from_start: 5000, sub_order: 0, kind: :waypoint)
+      event.splits.create!(course: course, name: 'Monarch Pass Out', distance_from_start: 5000, sub_order: 1, kind: :waypoint)
+      event.splits.create!(course: course, name: 'Halfway House In', distance_from_start: 25000, sub_order: 0, kind: :waypoint)
+      event.splits.create!(course: course, name: 'Halfway House Out', distance_from_start: 25000, sub_order: 1, kind: :waypoint)
+      event.splits.create!(course: course, name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
     end
 
     it 'should return a list of split ids for each of the waypoints grouped by distance' do

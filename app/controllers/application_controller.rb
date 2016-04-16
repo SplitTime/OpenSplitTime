@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     base_split.update(sub_order: new)
   end
 
-  if Rails.env.development?
+  if Rails.env.development? | Rails.env.test?
     # https://github.com/RailsApps/rails-devise-pundit/issues/10
     include Pundit
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized

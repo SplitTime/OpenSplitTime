@@ -55,6 +55,14 @@ class Effort < ActiveRecord::Base
     split_times.joins(:split).where(splits: {sub_order: 0}).order('splits.distance_from_start')
   end
 
+  def total_time_in_aid
+    total = 0
+    base_split_times.each do |unicorn|
+      total = total + unicorn.time_in_aid
+    end
+    total
+  end
+
   def ordered_splits
     event.splits.ordered
   end

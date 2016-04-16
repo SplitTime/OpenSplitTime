@@ -7,7 +7,7 @@
     <th>Bio</th>
     <th>From</th>
     <th>Efforts</th>
-    <% if @current_user.admin? && action_name == 'merge' %>
+    <% if @current_user && @current_user.admin? && action_name == 'merge' %>
         <th>Actions</th>
     <% end %>
   </tr>
@@ -19,7 +19,7 @@
         <td><%= participant.bio %></td>
         <td><%= participant.state_and_country %></td>
         <td><%= pluralize(efforts_count[participant.id] ||= 0, 'effort') %></td>
-        <% if @current_user.admin? && action_name == 'merge' %>
+        <% if @current_user && @current_user.admin? && action_name == 'merge' %>
             <td><%= link_to "^ Up to inspector ^", merge_participant_path(@participant,
                                                                       proposed_match: participant.id),
                             class: "btn btn-xs btn-success" %></td>

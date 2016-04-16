@@ -35,7 +35,7 @@
                     data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
                     class: "btn btn-sm btn-success" %>
     <% end %>
-    <% if @current_user.admin? %>
+    <% if @current_user && @current_user.admin? %>
         <%= link_to 'Merge with >>', merge_participant_path(@participant), class: "btn btn-sm btn-success" %>
     <% end %>
   </div>

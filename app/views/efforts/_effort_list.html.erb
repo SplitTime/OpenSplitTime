@@ -15,7 +15,7 @@
         <th>Year</th>
     <% end %>
     <th class="text-right">Finish Time</th>
-    <% if @current_user.admin? && controller_name == 'participants' %>
+    <% if @current_user && @current_user.admin? && controller_name == 'participants' %>
         <th class="text-right">Actions</th>
     <% end %>
   </tr>
@@ -39,7 +39,7 @@
             <td><%= effort.start_time.year %></td>
         <% end %>
         <td class="text-right"><%= effort.finish_status %></td>
-        <% if @current_user.admin? && controller_name == 'participants' %>
+        <% if @current_user && @current_user.admin? && controller_name == 'participants' %>
             <td class="text-right"><%= link_to 'Disassociate',
                                                remove_effort_participant_path(@participant, effort_id: effort.id),
                                                method: :delete,

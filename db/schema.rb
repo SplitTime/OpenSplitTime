@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160408234107) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "courses", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
     t.text     "description"
@@ -44,8 +47,8 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.integer  "data_status"
   end
 
-  add_index "efforts", ["event_id"], name: "index_efforts_on_event_id"
-  add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id"
+  add_index "efforts", ["event_id"], name: "index_efforts_on_event_id", using: :btree
+  add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id", using: :btree
 
   create_table "event_splits", force: :cascade do |t|
     t.integer  "event_id"
@@ -54,8 +57,8 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "event_splits", ["event_id"], name: "index_event_splits_on_event_id"
-  add_index "event_splits", ["split_id"], name: "index_event_splits_on_split_id"
+  add_index "event_splits", ["event_id"], name: "index_event_splits_on_event_id", using: :btree
+  add_index "event_splits", ["split_id"], name: "index_event_splits_on_split_id", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.integer  "course_id",                   null: false
@@ -68,8 +71,8 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.datetime "first_start_time"
   end
 
-  add_index "events", ["course_id"], name: "index_events_on_course_id"
-  add_index "events", ["race_id"], name: "index_events_on_race_id"
+  add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
+  add_index "events", ["race_id"], name: "index_events_on_race_id", using: :btree
 
   create_table "interests", force: :cascade do |t|
     t.integer  "user_id",                    null: false
@@ -79,9 +82,9 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.datetime "updated_at",                 null: false
   end
 
-  add_index "interests", ["participant_id"], name: "index_interests_on_participant_id"
-  add_index "interests", ["user_id", "participant_id"], name: "index_interests_on_user_id_and_participant_id", unique: true
-  add_index "interests", ["user_id"], name: "index_interests_on_user_id"
+  add_index "interests", ["participant_id"], name: "index_interests_on_participant_id", using: :btree
+  add_index "interests", ["user_id", "participant_id"], name: "index_interests_on_user_id_and_participant_id", unique: true, using: :btree
+  add_index "interests", ["user_id"], name: "index_interests_on_user_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",        limit: 64,                         null: false
@@ -102,9 +105,9 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "ownerships", ["race_id"], name: "index_ownerships_on_race_id"
-  add_index "ownerships", ["user_id", "race_id"], name: "index_ownerships_on_user_id_and_race_id", unique: true
-  add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
+  add_index "ownerships", ["race_id"], name: "index_ownerships_on_race_id", using: :btree
+  add_index "ownerships", ["user_id", "race_id"], name: "index_ownerships_on_user_id_and_race_id", unique: true, using: :btree
+  add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id", using: :btree
 
   create_table "participants", force: :cascade do |t|
     t.string   "first_name",   limit: 32, null: false
@@ -123,7 +126,7 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.integer  "user_id"
   end
 
-  add_index "participants", ["user_id"], name: "index_participants_on_user_id"
+  add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "races", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
@@ -145,8 +148,8 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.integer  "updated_by"
   end
 
-  add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id"
-  add_index "split_times", ["split_id"], name: "index_split_times_on_split_id"
+  add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree
+  add_index "split_times", ["split_id"], name: "index_split_times_on_split_id", using: :btree
 
   create_table "splits", force: :cascade do |t|
     t.integer  "course_id",                                   null: false
@@ -164,8 +167,8 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.string   "description"
   end
 
-  add_index "splits", ["course_id"], name: "index_splits_on_course_id"
-  add_index "splits", ["location_id"], name: "index_splits_on_location_id"
+  add_index "splits", ["course_id"], name: "index_splits_on_course_id", using: :btree
+  add_index "splits", ["location_id"], name: "index_splits_on_location_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             limit: 32,              null: false
@@ -191,8 +194,23 @@ ActiveRecord::Schema.define(version: 20160408234107) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "efforts", "events"
+  add_foreign_key "efforts", "participants"
+  add_foreign_key "event_splits", "events"
+  add_foreign_key "event_splits", "splits"
+  add_foreign_key "events", "courses"
+  add_foreign_key "events", "races"
+  add_foreign_key "interests", "participants"
+  add_foreign_key "interests", "users"
+  add_foreign_key "ownerships", "races"
+  add_foreign_key "ownerships", "users"
+  add_foreign_key "participants", "users"
+  add_foreign_key "split_times", "efforts"
+  add_foreign_key "split_times", "splits"
+  add_foreign_key "splits", "courses"
+  add_foreign_key "splits", "locations"
 end

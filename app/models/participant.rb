@@ -11,7 +11,7 @@ class Participant < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_nil: true, length: { maximum: 105 },
             uniqueness: { case_sensitive: false },
-            format: { with: Rails.application.config.valid_email_regex }
+            format: {with: OpenSplitTime::Application::VALID_EMAIL_REGEX}
 
 
   # Search functions specific to Participant

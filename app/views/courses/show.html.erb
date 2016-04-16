@@ -34,7 +34,7 @@
 </div>
 <hr>
 
-<% if @course_splits.count > 0 %>
+<% if @course_splits && @course_splits.count > 0 %>
     <div class="row">
       <div class="col-xs-8">
         <h4><%= "Total of #{@course.splits.count} splits on #{@course.name}" %></h4>

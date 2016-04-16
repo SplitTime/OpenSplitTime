@@ -2,7 +2,6 @@ ruby '2.2.4'
 source 'https://rubygems.org'
 gem 'rails', '4.2.5'
 gem 'responders', '~> 2.0'
-gem 'mysql2', '~> 0.3.18'
 gem 'bootstrap-sass'
 gem 'sass-rails', '~> 5.0.4'
 gem 'uglifier', '>= 1.3.0'
@@ -35,6 +34,7 @@ gem 'twitter-bootstrap-rails'
 gem 'bulk_insert'
 gem 'descriptive_statistics'
 gem 'time_difference'
+gem 'pg'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -52,7 +52,6 @@ group :test do
 end
 
 group :development, :test do
-  gem 'sqlite3'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'rubocop', '~> 0.36'
@@ -60,9 +59,9 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
   gem 'byebug'
   gem 'spring-commands-rspec'
+  gem 'rb-fsevent', require: false if RUBY_PLATFORM =~ /darwin/i
 end
 
 group :production do
-  gem 'pg'
   gem 'rails_12factor'
 end

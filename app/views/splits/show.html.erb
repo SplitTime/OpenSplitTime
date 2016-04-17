@@ -1,5 +1,5 @@
 <h1 align="center"><%= @split.name %></h1>
-<h4 align="center"><%= "Mile #{@split.distance_from_start.meters.to.miles.round(1)}" %></h4>
+<h4 align="center"><%= "#{pdu('singular').titleize} #{d(@split.distance_from_start).round(1)}" %></h4>
 <div class="row">
   <div class="col-md-6 col-md-offset-3 center">
     <%= @split.description %>
@@ -35,7 +35,9 @@
   <hr>
   <% if @split.location_id? %>
       <strong>Location:</strong>
-      <%= link_to @split.location.name, location_path(@split.location) %>
+      <%= link_to @split.location.name, location_path(@split.location) %> |
+      <%= "Elevation: #{elevation_format(@split.location.elevation)}" %>
+      <hr>
       <div id="map" style="width: 550px; height: 350px;"></div>
 
       <script>

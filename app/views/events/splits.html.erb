@@ -21,7 +21,7 @@
       <thead>
       <tr>
         <th>Name</th>
-        <th>Distance from Start</th>
+        <th><%= "#{pdu('plural').titleize} From Start" %></th>
       </tr>
       </thead>
 
@@ -29,7 +29,7 @@
       <% @event.splits.ordered.each do |split| %>
           <tr>
             <td><%= split.name %></td>
-            <td><%= split.distance_from_start.meters.to.miles.round(1) %></td>
+            <td><%= d(split.distance_from_start).round(1) %></td>
             <td>
               <% if split.waypoint? %>
                   <%= link_to "Remove",
@@ -66,7 +66,7 @@
       <thead>
       <tr>
         <th>Name</th>
-        <th>Distance from Start</th>
+        <th><%= "#{pdu('plural').titleize} From Start" %></th>
       </tr>
       </thead>
 
@@ -74,7 +74,7 @@
       <% @other_splits.each do |split| %>
           <tr>
             <td><%= split.name %></td>
-            <td><%= split.distance_from_start.meters.to.miles.round(1) %></td>
+            <td><%= d(split.distance_from_start).round(1) %></td>
             <td>
               <%= link_to "Add",
                           associate_splits_event_path(id: @event.id, split_ids: Array(split.id)),

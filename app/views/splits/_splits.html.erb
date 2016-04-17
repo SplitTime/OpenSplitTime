@@ -12,7 +12,7 @@
   <% splits.each do |split| %>
       <tr>
         <td><strong><%= link_to split.name, split_path(split) %></strong></td>
-        <td><%= "Mile #{split.distance_from_start.meters.to.miles.round(1)} on #{split.course.name}" %></td>
+        <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start).round(1)} on #{split.course.name}" %></td>
         <% if split.location %>
             <td><%= link_to split.location.name, location_path(split.location) %></td>
         <% else %>

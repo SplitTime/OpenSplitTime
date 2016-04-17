@@ -12,19 +12,7 @@
       <tr>
         <td><strong><%= link_to location.name, location_path(location) %></strong></td>
         <td>
-          <%= "Elevation: #{location.elevation.nil? ? '[Unknown]' : location.elevation}, Lat/Lon: " %>
-          <% if location.latitude.nil? %>
-              [Unknown]
-          <% else %>
-              <%= location.latitude.abs %>
-              <%= location.latitude >= 0 ? "°N" : "°S" %>
-          <% end %>
-          <% if location.longitude.nil? %>
-              [Unknown]
-          <% else %>
-              <%= location.longitude.abs %>
-              <%= location.longitude >= 0 ? "°E" : "°W" %>
-          <% end %>
+          <%= "Elevation: #{elevation_format(location.elevation)}, Lat/Lon: #{latlon_format(location.latitude, location.longitude)}" %>
         </td>
       </tr>
   <% end %>

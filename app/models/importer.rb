@@ -203,15 +203,15 @@ class Importer
     units ||= ""
     x = case units.downcase
           when "km"
-            1.kilometers.to.meters
+            1.kilometers.to.meters.value
           when "kilometers"
-            1.kilometers.to.meters
+            1.kilometers.to.meters.value
           when "meters"
             1
           when "miles"
-            1.miles.to.meters
+            1.miles.to.meters.value
           when "" # Assume miles if no unit is indicated
-            1.miles.to.meters
+            1.miles.to.meters.value
           else
             false
         end

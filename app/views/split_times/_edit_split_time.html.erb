@@ -4,7 +4,7 @@
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-right">Distance</th>
+    <th class="text-right"><%= pdu('singular').titleize %></th>
     <th class="text-right">Time</th>
     <th class="text-right">Actions</th>
   </tr>
@@ -13,7 +13,7 @@
   <% split_times.each do |split_time| %>
       <tr>
             <td><%= split_time.split.name %></td>
-            <td class="text-right"><%= split_time.split.distance_from_start.meters.to.miles.round(1) %></td>
+            <td class="text-right"><%= d(split_time.split.distance_from_start).round(1) %></td>
             <td class="text-right"><%= split_time.formatted_time_hhmmss %></td>
             <td class="text-right">
               <% if @current_user && @current_user.authorized_to_edit?(@effort) %>

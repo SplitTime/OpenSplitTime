@@ -192,8 +192,8 @@ ActiveRecord::Schema.define(version: 20160416141838) do
     t.string   "unconfirmed_email"
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.integer  "pref_distance_unit"
-    t.integer  "pref_elevation_unit"
+    t.integer  "pref_distance_unit",                default: 0,  null: false
+    t.integer  "pref_elevation_unit",               default: 0,  null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

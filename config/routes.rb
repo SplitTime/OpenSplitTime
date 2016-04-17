@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     member { put :associate_participant }
     member { post :add_interest }
     collection { get :my_interests }
+    member { get :edit_preferences }
+    member { put :update_preferences }
   end
   resources :locations
   resources :courses do

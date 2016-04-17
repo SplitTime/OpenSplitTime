@@ -1,3 +1,7 @@
 <h3><%= @user.full_name %></h3>
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Avatar: <%= @user.avatar.full_name if @user.avatar %></p>
+<p>Preferred distance units: <%= @user.pref_distance_unit %></p>
+<p>Preferred elevation units: <%= @user.pref_elevation_unit %></p>
+<hr>
+<%= link_to "Change Preferences", edit_preferences_user_path(@user), class: 'btn btn-sm btn-primary' %>

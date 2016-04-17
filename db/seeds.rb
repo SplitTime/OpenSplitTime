@@ -7,10 +7,10 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 # Environment variables (ENV['...']) can be set in the file .env file.
 
-User.create!(first_name: 'Admin', last_name: 'User', role: :admin, email: 'user@example.com', password: 'password')
-User.create!(first_name: 'Test', last_name: 'User', role: :user, email: 'tester@example.com', password: 'password')
-User.create!(first_name: 'Third', last_name: 'User', role: :user, email: 'thirduser@example.com', password: 'password')
-User.create!(first_name: 'Fourth', last_name: 'User', role: :user, email: 'fourthuser@example.com', password: 'password')
+User.create!(first_name: 'Admin', last_name: 'User', role: :admin, email: 'user@example.com', password: 'password', confirmed_at: Time.now)
+User.create!(first_name: 'Test', last_name: 'User', role: :user, email: 'tester@example.com', password: 'password', confirmed_at: Time.now)
+User.create!(first_name: 'Third', last_name: 'User', role: :user, email: 'thirduser@example.com', password: 'password', confirmed_at: Time.now)
+User.create!(first_name: 'Fourth', last_name: 'User', role: :user, email: 'fourthuser@example.com', password: 'password', confirmed_at: Time.now)
 
 Course.create(name: 'Test Course CCW')
 Course.create(name: 'Another Course')

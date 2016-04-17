@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
   enum role: [:user, :admin]
+  enum pref_distance_unit: [:miles, :kilometers]
+  enum pref_elevation_unit: [:feet, :meters]
 
   has_many :interests, dependent: :destroy
   has_many :participants, :through => :interests

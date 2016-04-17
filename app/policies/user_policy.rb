@@ -14,6 +14,14 @@ class UserPolicy
     @current_user.admin? or @current_user == @user
   end
 
+  def edit_preferences?
+    @current_user.admin? or @current_user == @user
+  end
+
+  def update_preferences?
+    @current_user.admin? or @current_user == @user
+  end
+
   def update?
     @current_user.admin?
   end

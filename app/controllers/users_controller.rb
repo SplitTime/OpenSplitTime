@@ -19,9 +19,9 @@ class UsersController < ApplicationController
   def update_preferences
     authorize @user
     if @user.update(prefs_secure_params)
-      redirect_to user_path(@user), :notice => "Preferencs updated."
+      redirect_to params[:referrer_path] || user_path(@user), :notice => "Preferencs updated."
     else
-      redirect_to user_path(@user), :alert => "Unable to update preferences."
+      redirect_to params[:referrer_path] || user_path(@user), :alert => "Unable to update preferences."
     end
   end
 

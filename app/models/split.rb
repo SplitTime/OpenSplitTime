@@ -1,4 +1,5 @@
 class Split < ActiveRecord::Base
+  include UnitConversions
   enum kind: [:start, :finish, :waypoint]
   belongs_to :course
   belongs_to :location
@@ -8,7 +9,7 @@ class Split < ActiveRecord::Base
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
-  validates_presence_of :name, :distance_from_start, :sub_order, :kind
+  validates_presence_of :name, :sub_order, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :name, scope: :course_id, case_sensitive: false
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
@@ -34,6 +35,30 @@ class Split < ActiveRecord::Base
 
   def is_finish?
     kind == "finish"
+  end
+
+  def distance_as_entered
+    Split.distance_in_preferred_units(distance_from_start, User.current).round(2) if distance_from_start
+  end
+
+  def distance_as_entered=(entered_distance)
+    self.distance_from_start = Split.distance_in_meters(entered_distance.to_f, User.current) if entered_distance.present?
+  end
+
+  def vert_gain_as_entered
+    Split.elevation_in_preferred_units(vert_gain_from_start, User.current).round(0) if vert_gain_from_start
+  end
+
+  def vert_gain_as_entered=(entered_vert_gain)
+    self.vert_gain_from_start = Split.elevation_in_meters(entered_vert_gain.to_f, User.current) if entered_vert_gain.present?
+  end
+
+  def vert_loss_as_entered
+    Split.elevation_in_preferred_units(vert_loss_from_start, User.current).round(0) if vert_loss_from_start
+  end
+
+  def vert_loss_as_entered=(entered_vert_loss)
+    self.vert_loss_from_start = Split.elevation_in_meters(entered_vert_loss.to_f, User.current) if entered_vert_loss.present?
   end
 
   def self.to_csv(options = {})

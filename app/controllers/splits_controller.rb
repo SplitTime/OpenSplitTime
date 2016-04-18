@@ -1,4 +1,5 @@
 class SplitsController < ApplicationController
+  include UnitConversions
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_split, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
@@ -84,8 +85,10 @@ class SplitsController < ApplicationController
   private
 
   def split_params
-    params.require(:split).permit(:course_id, :location_id, :name, :description, :distance_from_start,
-                                  :sub_order, :vert_gain_from_start, :vert_loss_from_start, :kind)
+    params.require(:split).permit(:course_id, :location_id, :name, :description, :sub_order, :kind,
+                                  :distance_from_start, :distance_as_entered,
+                                  :vert_gain_from_start, :vert_gain_as_entered,
+                                  :vert_loss_from_start, :vert_loss_as_entered)
   end
 
   def query_params

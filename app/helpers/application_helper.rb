@@ -22,50 +22,26 @@ module ApplicationHelper
   end
 
   def latlon_format(latitude, longitude)
-    if latitude.nil?
-      result = "[Unknown]"
-    else
-      result = latitude.abs.to_s + (latitude >= 0 ? "°N" : "°S")
-    end
-    result = result + " / "
-    if longitude.nil?
-      result = result + "[Unknown]"
-    else
-      result = result + longitude.abs.to_s + (longitude >= 0 ? "°E" : "°W")
-    end
+    lat = latitude.nil? ? "[Unknown]" : latitude.abs.to_s + (latitude >= 0 ? "°N" : "°S")
+    lon = longitude.nil? ? "[Unknown]" : longitude.abs.to_s + (longitude >= 0 ? "°E" : "°W")
+    [lat, lon].join(" / ")
   end
 
   def elevation_format(elevation_in_meters)
-    elevation_in_meters.nil? ? '[Unknown]' : (e(elevation_in_meters).round(0).to_s + ' ' + peu('plural'))
+    elevation_in_meters.nil? ? '[Unknown]' : (e(elevation_in_meters).round(0).to_s + ' ' + peu)
   end
 
-  def distance_in_preferred_units(distance_in_meters)
-    return distance_in_meters.meters.to.miles.value unless current_user
-    case
-      when current_user.pref_distance_unit == 'miles'
-        distance_in_meters.meters.to.miles.value
-      when current_user.pref_distance_unit == 'kilometers'
-        distance_in_meters.meters.to.kilometers.value
-      else
-        distance_in_meters
-    end
+  def distance_to_preferred(meters)
+    Split.distance_in_preferred_units(meters, current_user)
   end
 
-  alias_method :d, :distance_in_preferred_units
+  alias_method :d, :distance_to_preferred
 
-  def elevation_in_preferred_units(elevation_in_meters)
-    return elevation_in_meters.meters.to.feet.value unless current_user
-    case
-      when current_user.pref_elevation_unit == 'feet'
-        elevation_in_meters.meters.to.feet.value
-      when current_user.pref_elevation_unit == 'meters'
-        elevation_in_meters
-      else
-        elevation_in_meters
-    end
+  def elevation_to_preferred(meters)
+    Split.elevation_in_preferred_units(meters, current_user)
   end
 
-  alias_method :e, :elevation_in_preferred_units
+  alias_method :e, :elevation_to_preferred
 
   def preferred_distance_unit(param = 'plural')
     plural = (param == 'plural') | (param == 'pl') | (param == 'p') ? true : false

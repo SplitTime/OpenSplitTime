@@ -77,8 +77,10 @@ class CoursesController < ApplicationController
   def course_params
     params.require(:course).permit(:name,
                                    :description,
-                                   splits_attributes: [:id, :course_id, :name, :description, :distance_from_start,
-                                                       :sub_order, :kind, :vert_gain_from_start, :vert_loss_from_start])
+                                   splits_attributes: [:id, :course_id, :location_id, :name, :description, :sub_order, :kind,
+                                                       :distance_from_start, :distance_as_entered,
+                                                       :vert_gain_from_start, :vert_gain_as_entered,
+                                                       :vert_loss_from_start, :vert_loss_as_entered])
   end
 
   def query_params

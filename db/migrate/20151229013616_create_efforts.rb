@@ -13,7 +13,8 @@ class CreateEfforts < ActiveRecord::Migration
       t.boolean :finished
 
       t.timestamps null: false
-      t.authorstamps :integer
+      t.integer :created_by, null: false
+      t.integer :updated_by, null: false
     end
   end
 end

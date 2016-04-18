@@ -18,7 +18,6 @@ gem 'devise-bootstrap-views'
 gem 'pundit'
 gem 'rails_apps_pages'
 gem 'therubyracer', :platform => :ruby
-gem 'ar-audit-tracer'
 gem 'oj'
 gem 'alchemist'
 gem 'roo'

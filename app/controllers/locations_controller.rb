@@ -33,7 +33,7 @@ class LocationsController < ApplicationController
         @split = Split.find(params[:split_id])
         @split.location = @location
         @split.save
-        conform_split_locations_to(@split)
+        conform_split_locations(@split)
       end
       redirect_to session.delete(:return_to) || @location
     else

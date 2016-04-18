@@ -8,17 +8,25 @@ class User < ActiveRecord::Base
   enum pref_elevation_unit: [:feet, :meters]
 
   has_many :interests, dependent: :destroy
-  has_many :participants, :through => :interests
+  has_many :participants, through: :interests
   has_many :ownerships, dependent: :destroy
-  has_many :races, :through => :ownerships
+  has_many :races, through: :ownerships
   has_one :avatar, class_name: 'Participant'
 
   validates_presence_of :first_name, :last_name
 
-  after_initialize :set_default_role, :if => :new_record?
+  after_initialize :set_default_role, if: :new_record?
 
   def set_default_role
       self.role ||= :user
+  end
+
+  def self.current
+    Thread.current[:current_user]
+  end
+
+  def self.current=(user)
+    Thread.current[:current_user] = user
   end
 
   def self.create_with_omniauth(auth)

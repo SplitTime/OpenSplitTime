@@ -1,4 +1,5 @@
 class Location < ActiveRecord::Base
+  include Auditable
   include UnitConversions
   has_many :splits
 

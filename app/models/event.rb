@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  include Auditable
   belongs_to :course, touch: true
   belongs_to :race
   has_many :efforts, dependent: :destroy

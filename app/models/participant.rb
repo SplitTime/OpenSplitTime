@@ -1,4 +1,5 @@
 class Participant < ActiveRecord::Base
+  include Auditable
   include PersonalInfo
   include Searchable
   include Matchable

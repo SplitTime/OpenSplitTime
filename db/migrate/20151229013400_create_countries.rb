@@ -5,7 +5,8 @@ class CreateCountries < ActiveRecord::Migration
       t.string :name, :null => false
 
       t.timestamps null: false
-      t.authorstamps :integer
+      t.integer :created_by, null: false
+      t.integer :updated_by, null: false
     end
   end
 end

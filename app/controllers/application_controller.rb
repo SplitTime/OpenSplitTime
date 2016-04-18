@@ -2,11 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :set_current_author
-
-  def set_current_author
-    Concern::Audit::Author.current = current_user.try(:id)
-  end
+  before_action :set_current_user
 
   def conform_split_locations(base_split)
     if base_split.location.nil?
@@ -52,5 +48,10 @@ class ApplicationController < ActionController::Base
     flash[:alert] = "Access denied."
     redirect_to (request.referrer || root_path)
   end
+
+  def set_current_user
+    User.current = current_user
+  end
+
 
 end

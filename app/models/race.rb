@@ -1,4 +1,5 @@
 class Race < ActiveRecord::Base
+  include Auditable
   has_many :events
   has_many :ownerships, dependent: :destroy
   has_many :users, :through => :ownerships

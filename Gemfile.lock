@@ -38,8 +38,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.4.0)
     alchemist (0.1.7)
-    ar-audit-tracer (2.0.1)
-      activerecord (~> 4.0)
     arel (6.0.3)
     ast (2.2.0)
     autoprefixer-rails (6.3.3.1)
@@ -345,7 +343,6 @@ PLATFORMS
 
 DEPENDENCIES
   alchemist
-  ar-audit-tracer
   better_errors
   bootstrap-sass
   bootstrap-will_paginate

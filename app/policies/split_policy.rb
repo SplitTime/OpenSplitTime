@@ -27,7 +27,7 @@ class SplitPolicy
   end
 
   def destroy?
-    @current_user.authorized_to_edit?(@split)
+    @current_user.admin?
   end
 
   def assign_location?

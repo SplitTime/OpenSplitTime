@@ -39,7 +39,7 @@ class ParticipantPolicy
   end
 
   def destroy?
-    @current_user.authorized_to_edit?(@participant)
+    @current_user.admin?
   end
 
   def avatar_claim?

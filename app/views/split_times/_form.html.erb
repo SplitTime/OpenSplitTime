@@ -1,35 +1,27 @@
 <%= render 'shared/errors', obj: @split_time %>
-
+<hr>
+<% if @split_time.data_status %>
+    <strong class="text-danger"><%= "This time data is considered #{@split_time.data_status}" %></strong>
+<% end %>
 <div class="row">
   <div class="col-md-12">
     <%= form_for(@split_time, :html => {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-group">
-          <% if @effort %>
-              <div class="col-sm-8 col-sm-offset-2">
-                <%= f.hidden_field :effort_id, value: @effort.id %>
-                <h3><%= "#{@effort.full_name} / #{@effort.event.name}" %></h3>
-              </div>
-          <% end %>
-        </div>
-        <div class="form-group">
-          <% if @split %>
-              <div class="col-sm-8 col-sm-offset-2">
-                <%= f.hidden_field :split_id, value: @split.id %>
-                <h3><%= @split.name %></h3>
-              </div>
-          <% end %>
+          <div class="col-sm-12">
+            <h3><%= "#{@effort.full_name} / #{@effort.event.name} / #{@split_time.split.name}" %></h3>
+          </div>
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :time_from_start, 'Time from start' %>
+            <%= f.label :time_as_entered, 'Time from start' %>
           </div>
           <div class="col-sm-8">
-            <%= f.text_field :time_from_start, class: 'form-control', placeholder: 'Seconds', autofocus: true %>
+            <%= f.text_field :time_as_entered, class: 'form-control', placeholder: 'hh:mm:ss', autofocus: true %>
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@split_time.new_record? ? 'Create Split_time' : 'Update Split_time', class: 'btn btn-primary btn-large') %>
+            <%= f.submit(@split_time.new_record? ? 'Create Time' : 'Update Time', class: 'btn btn-primary btn-large') %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">

@@ -4,15 +4,13 @@ class SplitTime < ActiveRecord::Base
   belongs_to :effort
   belongs_to :split
 
+  after_update :data_status_full_reset
+
   validates_presence_of :effort_id, :split_id, :time_from_start
   validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
   validates_uniqueness_of :split_id, scope: :effort_id,
                           :message => "only one of any given split permitted within an effort"
   validate :course_is_consistent, unless: 'effort.nil? | split.nil?' # TODO fix tests so that .nil? checks are not necessary
-
-  def split_is_start?
-    split.try(:kind) == "start"
-  end
 
   def course_is_consistent
     if effort.event.course_id != split.course_id
@@ -21,12 +19,34 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
-  def formatted_time_hhmmss
+  def data_status_full_reset
+    effort.set_data_status_vertical
+    effort.set_data_status_horizontal
+  end
+
+  def set_status(high_permitted, high_questioned, low_permitted, low_questioned)
+    update(data_status: time_from_start == 0 ? 'good' : 'questionable') and return if split.start?
+    if (time_from_start < low_permitted) | (time_from_start > high_permitted)
+      update(data_status: 'bad')
+      effort.update(data_status: 'bad')
+    elsif (time_from_start < low_questioned) | (time_from_start > high_questioned)
+      update(data_status: 'questionable')
+      effort.update(data_status: 'questionable') unless effort.bad?
+    end
+  end
+
+  def time_as_entered
     seconds = time_from_start % 60
     minutes = (time_from_start / 60) % 60
     hours = time_from_start / (60 * 60)
-
     format("%02d:%02d:%02d", hours, minutes, seconds)
+  end
+
+  alias_method :formatted_time_hhmmss, :time_as_entered
+
+  def time_as_entered=(entered_time)
+    units = %w(hours minutes seconds)
+    self.time_from_start = entered_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i if entered_time.present?
   end
 
   def segment_time

@@ -1,4 +1,4 @@
-<%# Requires parameter split_times(collection) %>
+<%# Requires parameter splits(collection) %>
 
 <table class="table table-condensed table-striped">
   <thead>
@@ -11,21 +11,21 @@
   </tr>
   </thead>
   <tbody>
-  <% split_times.each do |split_time| %>
+  <% splits.each do |split| %>
       <tr>
-        <% if split_time.split.kind == 'finish' %>
-            <td><strong><%= split_time.split.composite_name %></strong></td>
-            <td class="text-right"><strong><%= d(split_time.split.distance_from_start).round(1) %></strong>
+        <% if split.kind == 'finish' %>
+            <td><strong><%= split.composite_name %></strong></td>
+            <td class="text-right"><strong><%= d(split.distance_from_start).round(1) %></strong>
             </td>
-            <td class="text-right"><strong><%= composite_time(split_time) %></strong></td>
-            <td class="text-right"><strong><%= time_format_hhmmss(split_time.segment_time) %></strong></td>
-            <td class="text-right"><strong><%= (@effort.total_time_in_aid / 60).round(0) %></strong></td>
-        <% elsif split_time.split.kind == 'waypoint' %>
-            <td><%= split_time.split.composite_name %></td>
-            <td class="text-right"><%= d(split_time.split.distance_from_start).round(1) %></td>
-            <td class="text-right"><%= composite_time(split_time) %></td>
-            <td class="text-right"><%= time_format_hhmmss(split_time.segment_time) %></td>
-            <td class="text-right"><%= (split_time.time_in_aid / 60).round(0) %></td>
+            <td class="text-right"><strong><%= composite_time(@effort, split) %></strong></td>
+            <td class="text-right"><strong><%= time_format_hhmmss(@effort.segment_time(split)) %></strong></td>
+            <td class="text-right"><strong><%= time_format_minutes(@effort.total_time_in_aid) %></strong></td>
+        <% elsif split.kind == 'waypoint' %>
+            <td><%= split.composite_name %></td>
+            <td class="text-right"><%= d(split.distance_from_start).round(1) %></td>
+            <td class="text-right"><%= composite_time(@effort, split) %></td>
+            <td class="text-right"><%= time_format_hhmmss(@effort.segment_time(split)) %></td>
+            <td class="text-right"><%= time_format_minutes(@effort.time_in_aid(split)) %></td>
         <% end %>
       </tr>
   <% end %>

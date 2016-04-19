@@ -56,6 +56,11 @@ class Effort < ActiveRecord::Base
     split_times.joins(:split).where(splits: {sub_order: 0}).order('splits.distance_from_start')
   end
 
+  def time_in_aid(split)
+    group = event.waypoint_group(split)
+    segment_time(group.first, group.last)
+  end
+
   def total_time_in_aid
     total = 0
     base_split_times.each do |unicorn|
@@ -141,9 +146,44 @@ class Effort < ActiveRecord::Base
   end
 
   def segment_time(split1, split2 = nil)
-    return split_times.where(split_id: split1.id).first.segment_time if split2.nil?
-    split_times.where(split_id: split2.id).first.time_from_start - split_times.where(split_id: split1.id).first.time_from_start
+    if split2.nil?
+      end_split_time = split_times.where(split_id: split1.id).first
+      end_split_time ? end_split_time.segment_time : nil
+    else
+      end_split_time = split_times.where(split_id: split2.id).first
+      start_split_time = split_times.where(split_id: split1.id).first
+      end_split_time && start_split_time ? end_split_time.time_from_start - start_split_time.time_from_start : nil
+    end
   end
+
+  # Admin function to set data status
+
+  def set_data_status_horizontal
+    return if split_times.count < 1
+    ordered_group = ordered_split_times.to_a
+    ordered_group[0].update(data_status: 'questionable') if ordered_group[0].time_from_start != 0
+    return if ordered_group.count < 2
+    (1..ordered_group.count - 1).each do |i|
+      split_time = ordered_group[i]
+      if split_time.time_from_start - ordered_group[i - 1].time_from_start < 0
+        split_time.update(data_status: 'bad')
+        self.update(data_status: 'bad')
+      end
+    end
+  end
+
+  def set_data_status_vertical
+    split_times.each do |split_time|
+      time_data_set = split_time.split.split_times.pluck(:time_from_start)
+      return if time_data_set.count < 10
+      low_permitted = time_data_set.mean - (5 * time_data_set.standard_deviation)
+      high_permitted = time_data_set.mean + (5 * time_data_set.standard_deviation)
+      low_questioned = time_data_set.mean - (3 * time_data_set.standard_deviation)
+      high_questioned = time_data_set.mean + (3 * time_data_set.standard_deviation)
+      split_time.set_status(high_permitted, high_questioned, low_permitted, low_questioned)
+    end
+  end
+
 
   private
 
@@ -169,7 +209,7 @@ class Effort < ActiveRecord::Base
     second_hash.each do |effort_id, time|
       sort_hash[effort_id] = time - first_hash[effort_id] if first_hash[effort_id]
     end
-    Hash[sort_hash.sort_by { |k,v| [v ? 0 : 1, v] }].keys
+    Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }].keys
   end
 
   def self.ids_sorted_ultra_style

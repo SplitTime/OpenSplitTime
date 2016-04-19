@@ -10,7 +10,7 @@ class Split < ActiveRecord::Base
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
-  validates_presence_of :name, :sub_order, :kind
+  validates_presence_of :name, :distance_from_start, :sub_order, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :name, scope: :course_id, case_sensitive: false
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
@@ -106,6 +106,18 @@ class Split < ActiveRecord::Base
 
   def latest_event_date
     events.order(first_start_time: :asc).last.first_start_time
+  end
+
+  def analyze_all_times
+    time_data_set = split_times.pluck(:time_from_start)
+    return if time_data_set.count < 10
+    low_permitted = time_data_set.mean - (5 * time_data_set.standard_deviation)
+    high_permitted = time_data_set.mean + (5 * time_data_set.standard_deviation)
+    low_questioned = time_data_set.mean - (3 * time_data_set.standard_deviation)
+    high_questioned = time_data_set.mean + (3 * time_data_set.standard_deviation)
+    split_times.each do |split_time|
+      split_time.set_status(high_permitted, high_questioned, low_permitted, low_questioned)
+    end
   end
 
 end

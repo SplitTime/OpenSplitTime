@@ -35,9 +35,13 @@ class Event < ActiveRecord::Base
   def waypoint_groups
     result = []
     splits.find_each do |split|
-      result << split.waypoint_group.map(&:id)
+      result << waypoint_group(split).map(&:id)
     end
     result.uniq
+  end
+
+  def waypoint_group(split)
+    splits.where(distance_from_start: split.distance_from_start).order(:sub_order)
   end
 
   def base_splits

@@ -33,5 +33,5 @@
 <hr>
 
 <% if @effort.split_times.count > 0 %>
-    <%= render 'split_times/split_time', split_times: @effort.base_split_times %>
+    <%= render 'split_times/split_time', splits: @effort.event.base_splits %>
 <% end %>

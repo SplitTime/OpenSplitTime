@@ -1,11 +1,22 @@
 module SplitTimesHelper
 
-  def composite_time(base_split_time)
-    splits = base_split_time.split.waypoint_group
+  def composite_time(effort, base_split)
+    splits = base_split.waypoint_group
     time_array = []
     splits.each do |split|
-      split_time = split.split_times.where(effort: base_split_time.effort).first
-      element = split_time ? split_time.formatted_time_hhmmss : '< none >'
+      split_time = effort.split_times.where(split_id: split.id).first
+      if split_time
+        case split_time.data_status
+          when 'bad'
+            element = '[*' + split_time.formatted_time_hhmmss + '*]'
+          when 'questionable'
+            element = '[' + split_time.formatted_time_hhmmss + ']'
+          else
+            element = split_time.formatted_time_hhmmss
+        end
+      else
+        element = '--:--:--'
+      end
       time_array << element
     end
     time_array.join(' / ')

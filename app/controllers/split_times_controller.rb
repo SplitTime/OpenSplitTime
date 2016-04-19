@@ -39,8 +39,6 @@ class SplitTimesController < ApplicationController
     authorize @split_time
 
     if @split_time.update(split_time_params)
-      @split_time.effort.event.touch # Force cache update
-      @split_time.effort.event.course.touch
       redirect_to session.delete(:return_to) || edit_split_times_effort_path(@split_time.effort)
     else
       @effort = Effort.find(@split_time.effort_id) if @split_time.effort_id
@@ -59,7 +57,7 @@ class SplitTimesController < ApplicationController
   private
 
   def split_time_params
-    params.require(:split_time).permit(:effort_id, :split_id, :time_from_start, :data_status)
+    params.require(:split_time).permit(:effort_id, :split_id, :time_from_start, :time_as_entered, :data_status)
   end
 
   def query_params

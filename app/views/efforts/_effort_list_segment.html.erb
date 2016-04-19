@@ -1,0 +1,26 @@
+<%# Requires parameters efforts, split %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>From</th>
+    <th>Year</th>
+    <th class="text-right">Segment Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% efforts.each do |effort| %>
+      <tr>
+        <td><%= efforts.offset + efforts.index(effort) + 1 %></td>
+        <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+        <td><%= effort.bio_historic %></td>
+        <td><%= effort.state_and_country %></td>
+        <td><%= effort.start_time.year %></td>
+        <td class="text-right"><%= time_format_hhmm(effort.segment_time(split1, split2)) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -48,4 +48,10 @@ class Course < ActiveRecord::Base
     events.order(first_start_time: :desc).limit(max_events) || Event.none
   end
 
+  def segment_name(split1, split2) # TODO make more flexible for time in aid etc.
+    split1.base_name == split2.base_name ?
+        [split1.name, split2.name].join(' to ') :
+        [split1.base_name, split2.base_name].join(' to ')
+  end
+
 end

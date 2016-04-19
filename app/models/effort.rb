@@ -82,6 +82,21 @@ class Effort < ActiveRecord::Base
     efforts.map(&:gender)[0..ids.index(id)].count(gender)
   end
 
+  def self.gender_group(split1, split2, gender) # TODO Intersect queries to select only those efforts that include both splits
+    # scope :includes_split1, -> { includes(:event => :splits).where(splits: {id: split1.id}) }
+    # scope :includes_split2, -> { includes(:event => :splits).where(splits: {id: split2.id}) }
+    # scope :includes_both_splits, -> { intersect_scope(includes_split1, includes_split2) }
+    case gender
+      when 'male'
+        includes(:event => :splits).male.where(splits: {id: split2.id})
+      when 'female'
+        includes(:event => :splits).female.where(splits: {id: split2.id})
+      else
+        includes(:event => :splits).where(splits: {id: split2.id})
+    end
+  end
+
+
   def approximate_age_today
     now = Time.now.utc.to_date
     age ? (years_between_dates(event.first_start_time.to_date, now) + age).to_i : nil
@@ -117,8 +132,17 @@ class Effort < ActiveRecord::Base
     efforts_from_ids(ids_sorted_ultra_style)
   end
 
+  def self.sorted_by_segment_time(first_split, second_split)
+    efforts_from_ids(ids_sorted_by_segment_time(first_split, second_split))
+  end
+
   def self.within_time_range(low_time, high_time)
     where(id: ids_within_time_range(low_time, high_time))
+  end
+
+  def segment_time(split1, split2 = nil)
+    return split_times.where(split_id: split1.id).first.segment_time if split2.nil?
+    split_times.where(split_id: split2.id).first.time_from_start - split_times.where(split_id: split1.id).first.time_from_start
   end
 
   private
@@ -133,6 +157,19 @@ class Effort < ActiveRecord::Base
     effort_ids = all.map(&:id)
     SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {kind: 1})
         .order(:time_from_start).map(&:effort_id)
+  end
+
+  def self.ids_sorted_by_segment_time(first_split, second_split)
+    effort_ids = all.map(&:id)
+    first_split_times = SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {id: first_split.id})
+    first_hash = Hash[first_split_times.pluck(:effort_id, :time_from_start)]
+    second_split_times = SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {id: second_split.id})
+    second_hash = Hash[second_split_times.pluck(:effort_id, :time_from_start)]
+    sort_hash = {}
+    second_hash.each do |effort_id, time|
+      sort_hash[effort_id] = time - first_hash[effort_id] if first_hash[effort_id]
+    end
+    Hash[sort_hash.sort_by { |k,v| [v ? 0 : 1, v] }].keys
   end
 
   def self.ids_sorted_ultra_style

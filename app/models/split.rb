@@ -96,4 +96,16 @@ class Split < ActiveRecord::Base
     (waypoint_group.order(:sub_order).map &:name).join(' / ')
   end
 
+  def base_name
+    name.split.reject { |x| (x.downcase == 'in') | (x.downcase == 'out') }.join(' ')
+  end
+
+  def earliest_event_date
+    events.order(first_start_time: :asc).first.first_start_time
+  end
+
+  def latest_event_date
+    events.order(first_start_time: :asc).last.first_start_time
+  end
+
 end

@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   end
   resources :splits do
     member { get :assign_location }
+    collection { get :best_efforts }
   end
   resources :races
   resources :participants do

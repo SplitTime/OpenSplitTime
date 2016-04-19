@@ -34,4 +34,8 @@ class SplitPolicy
     @current_user.authorized_to_edit?(@split)
   end
 
+  def best_efforts?
+    @current_user.present?
+  end
+
 end

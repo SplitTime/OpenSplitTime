@@ -24,7 +24,7 @@
         <%= link_to 'Edit this effort', edit_effort_path(@effort), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Edit split times', edit_split_times_effort_path(@effort),
                     class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this effort', effort_path(@effort, referrer_path: URI(request.referrer).path),
+        <%= link_to 'Delete this effort', effort_path(@effort, referrer_path: request.referrer ? URI(request.referrer).path : nil),
                     method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>

@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h3><%= "All-time best efforts on #{@first_split.course.name}:" %></h3>
+    <h2><%= "#{@first_split.course.segment_name(@first_split, @second_split)} (#{params[:gender]})" %></h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
+    <% if @second_split.events.count > 0 %>
+        <strong><%= "#{pluralize(@second_split.events.count, 'event')} from #{@second_split.earliest_event_date.to_date.to_formatted_s(:long)} to #{@second_split.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+    <% else %>
+        <strong>No efforts have been measured on this segment.</strong>
+    <% end %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <div class="article-actions">
+      <%= link_to '<< Course best efforts', best_efforts_course_path(@first_split.course), class: "btn btn-sm btn-default" %>
+    </div>
+  </div>
+  <div class="col-xs-6">
+    <div class="text-right">
+      <%= link_to 'Combined', best_efforts_splits_path(split1: @first_split.id, split2: @second_split.id, gender: 'combined'), class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Male', best_efforts_splits_path(split1: @first_split.id, split2: @second_split.id, gender: 'male'), class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Female', best_efforts_splits_path(split1: @first_split.id, split2: @second_split.id, gender: 'female'), class: 'btn btn-sm btn-default' %>
+    </div>
+  </div>
+</div>
+
+<% if @efforts.count > 0 %>
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
+    <%= render 'efforts/effort_list_segment', efforts: @efforts, split1: @first_split, split2: @second_split %>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+<% end %>

@@ -116,7 +116,9 @@ class Split < ActiveRecord::Base
     low_questioned = time_data_set.mean - (3 * time_data_set.standard_deviation)
     high_questioned = time_data_set.mean + (3 * time_data_set.standard_deviation)
     split_times.each do |split_time|
-      split_time.set_status(high_permitted, high_questioned, low_permitted, low_questioned)
+      if split_time.set_status(high_permitted, high_questioned, low_permitted, low_questioned)
+        split_time.effort.set_self_data_status
+      end
     end
   end
 

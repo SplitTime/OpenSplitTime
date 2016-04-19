@@ -54,4 +54,8 @@ class Course < ActiveRecord::Base
         [split1.base_name, split2.base_name].join(' to ')
   end
 
+  def segment_time_data_set(split1, split2 = nil)
+    # Returns an array of segment times: split2 - split1 if split2 or split1 - prior split if split2.nil
+  end
+
 end

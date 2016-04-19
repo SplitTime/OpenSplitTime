@@ -156,7 +156,7 @@ class Effort < ActiveRecord::Base
     end
   end
 
-  # Admin function to set data status
+  # Admin functions to set data status
 
   def set_data_status_horizontal
     return if split_times.count < 1
@@ -167,23 +167,56 @@ class Effort < ActiveRecord::Base
       split_time = ordered_group[i]
       if split_time.time_from_start - ordered_group[i - 1].time_from_start < 0
         split_time.update(data_status: 'bad')
-        self.update(data_status: 'bad')
       end
+      set_self_data_status
     end
   end
 
   def set_data_status_vertical
     split_times.each do |split_time|
-      time_data_set = split_time.split.split_times.pluck(:time_from_start)
-      return if time_data_set.count < 10
-      low_permitted = time_data_set.mean - (5 * time_data_set.standard_deviation)
-      high_permitted = time_data_set.mean + (5 * time_data_set.standard_deviation)
-      low_questioned = time_data_set.mean - (3 * time_data_set.standard_deviation)
-      high_questioned = time_data_set.mean + (3 * time_data_set.standard_deviation)
-      split_time.set_status(high_permitted, high_questioned, low_permitted, low_questioned)
+      current_status = split_time.data_status
+      tfs_data_set = split_time.split.split_times.pluck(:time_from_start)
+      tfs_data_status = if tfs_data_set.count >= 10
+                          low5std = tfs_data_set.mean - (5 * tfs_data_set.standard_deviation)
+                          high5std = tfs_data_set.mean + (5 * tfs_data_set.standard_deviation)
+                          low3std = tfs_data_set.mean - (3 * tfs_data_set.standard_deviation)
+                          high3std = tfs_data_set.mean + (3 * tfs_data_set.standard_deviation)
+                          split_time.time_from_start_data_status(high5std, high3std, low5std, low3std)
+                        else
+                          nil
+                        end
+      st_data_set = event.course.segment_time_data_set(split1, split2)
+      st_data_status = if st_data_set.count >= 10
+                         low5std = st_data_set.mean - (5 * st_data_set.standard_deviation)
+                         high5std = st_data_set.mean + (5 * st_data_set.standard_deviation)
+                         low3std = st_data_set.mean - (3 * st_data_set.standard_deviation)
+                         high3std = st_data_set.mean + (3 * st_data_set.standard_deviation)
+                         split_time.time_from_start_data_status(high5std, high3std, low5std, low3std)
+                       else
+                         nil
+                       end
+      actual_status = [tfs_data_status, st_data_status].compact.min
+      if actual_status != current_status
+        split_time.update(data_status: actual_status)
+        set_self_data_status
+      end
     end
   end
 
+  def set_self_data_status
+    time_status_data = split_times.pluck(:data_status)
+    status = case
+               when time_status_data.exclude?(nil) && (time_status_data.min == 2) # All times are good
+                 'good'
+               when time_status_data.compact.min == 1 # At least one questionable time but no bad times
+                 'questionable'
+               when time_status_data.compact.min == 0 # At least one bad time
+                 'bad'
+               else # Not all known good but no questionable or bad
+                 nil
+             end
+    self.update(data_status: status)
+  end
 
   private
 

@@ -4,7 +4,7 @@ class SplitTime < ActiveRecord::Base
   belongs_to :effort
   belongs_to :split
 
-  after_update :data_status_full_reset
+  after_update :effort_data_status_reset, if: :time_from_start_changed?
 
   validates_presence_of :effort_id, :split_id, :time_from_start
   validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
@@ -19,20 +19,50 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
-  def data_status_full_reset
+  def effort_data_status_reset
     effort.set_data_status_vertical
     effort.set_data_status_horizontal
   end
 
-  def set_status(high_permitted, high_questioned, low_permitted, low_questioned)
-    update(data_status: time_from_start == 0 ? 'good' : 'questionable') and return if split.start?
-    if (time_from_start < low_permitted) | (time_from_start > high_permitted)
-      update(data_status: 'bad')
-      effort.update(data_status: 'bad')
-    elsif (time_from_start < low_questioned) | (time_from_start > high_questioned)
-      update(data_status: 'questionable')
-      effort.update(data_status: 'questionable') unless effort.bad?
-    end
+  def time_from_start_data_status(high, probable_high, low, probable_low)
+    status = if split.start?
+               time_from_start == 0 ? 'good' : 'questionable'
+             else
+               if (time_from_start < low) | (time_from_start > high)
+                 'bad'
+               elsif (time_from_start < probable_low) | (time_from_start > probable_high)
+                 'questionable'
+               else
+                 'good'
+               end
+             end
+    SplitTime.data_statuses[status]
+  end
+
+  def segment_time_data_status(high, probable_high, low, probable_low)
+    test_time = segment_time
+    status = if split.start?
+               time_from_start == 0 ? 'good' : 'questionable'
+             elsif split.sub_order > 0 # This is a time in aid (within a waypoint group)
+               if test_time < 0
+                 'bad'
+               elsif test_time > high
+                 'questionable' # Statistically aberrant aid times are not necessarily wrong
+               else
+                 'good'
+               end
+             else # This is a 'real' segment between aid stations (waypoint groups)
+               if test_time < 0
+                 'bad'
+               elsif (test_time < low) | (test_time > high)
+                 'bad'
+               elsif (test_time < probable_low) | (test_time > probable_high)
+                 'questionable'
+               else
+                 'good'
+               end
+             end
+    SplitTime.data_statuses[status]
   end
 
   def time_as_entered
@@ -50,6 +80,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def segment_time
+    return 0 if time_from_start == 0
     ordered_group = effort.ordered_split_times
     position = ordered_group.map(&:id).index(id)
     position == 0 ? 0 : ordered_group[position].time_from_start - ordered_group[position - 1].time_from_start

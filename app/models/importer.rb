@@ -73,6 +73,7 @@ class Importer
       if @effort
         create_split_times(row, header1, split_id_array, split_offset, @effort, current_user_id)
         @effort.reset_time_from_start
+        @effort.set_time_data_status_best
       else
         effort_failure_array << row
       end
@@ -254,7 +255,7 @@ class Importer
 
   def self.convert_time_to_standard(working_time)
     return nil if working_time.blank?
-    working_time = working_time.in_time_zone if working_time.instance_of?(Date) # Converts date to datetime
+    working_time = working_time.to_datetime if working_time.instance_of?(Date) # Converts date to datetime
     working_time = datetime_to_seconds(working_time) if working_time.acts_like?(:time)
     if working_time.try(:to_f)
       working_time

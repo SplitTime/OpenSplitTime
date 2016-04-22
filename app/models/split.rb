@@ -1,5 +1,6 @@
 class Split < ActiveRecord::Base
   include Auditable
+  include StatisticalMethods
   include UnitConversions
   enum kind: [:start, :finish, :waypoint]
   belongs_to :course
@@ -84,6 +85,10 @@ class Split < ActiveRecord::Base
     return_hash
   end
 
+  def time_hash
+    Hash[SplitTime.where(split_id: id).pluck(:effort_id, :time_from_start)]
+  end
+
   def average_time(relevant_efforts)
     split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
   end
@@ -108,15 +113,24 @@ class Split < ActiveRecord::Base
     events.order(first_start_time: :asc).last.first_start_time
   end
 
-  def analyze_all_times
-    time_data_set = split_times.pluck(:time_from_start)
-    return if time_data_set.count < 10
-    low_permitted = time_data_set.mean - (5 * time_data_set.standard_deviation)
-    high_permitted = time_data_set.mean + (5 * time_data_set.standard_deviation)
-    low_questioned = time_data_set.mean - (3 * time_data_set.standard_deviation)
-    high_questioned = time_data_set.mean + (3 * time_data_set.standard_deviation)
+  def set_data_status_best # Sets data status on all split_times for the instance split
+    tfs_data_set = split_times.pluck(:time_from_start)
+    tfs_count = tfs_data_set.count
+    tfs_low, tfs_low_q, tfs_high_q, tfs_high = Split.low_and_high_params(tfs_data_set)
+    st_data_set = Course.segment_time_data_set(self).values
+    st_count = st_data_set.count
+    st_low, st_low_q, st_high_q, st_high = Split.low_and_high_params(st_data_set)
     split_times.each do |split_time|
-      if split_time.set_status(high_permitted, high_questioned, low_permitted, low_questioned)
+      current_status = split_time.data_status
+      tfs_data_status = (tfs_count >= 10) ?
+          split_time.tfs_statistical_data_status([tfs_low, tfs_low_q, tfs_high_q, tfs_high]) :
+          split_time.tfs_solo_data_status
+      st_data_status = (st_count >= 10) ?
+          split_time.st_statistical_data_status([st_low, st_low_q, st_high_q, st_high]) :
+          split_time.st_solo_data_status
+      actual_status = [tfs_data_status, st_data_status].compact.min
+      if actual_status != current_status
+        split_time.update(data_status: actual_status)
         split_time.effort.set_self_data_status
       end
     end

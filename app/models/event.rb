@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   include Auditable
+  include SplitMethods
   belongs_to :course, touch: true
   belongs_to :race
   has_many :efforts, dependent: :destroy
@@ -16,10 +17,6 @@ class Event < ActiveRecord::Base
     true
   end
 
-  def split_ids
-    splits.ordered.map &:id
-  end
-
   def unreconciled_efforts
     efforts.where(participant_id: nil)
   end
@@ -30,22 +27,6 @@ class Event < ActiveRecord::Base
 
   def set_all_course_splits
     splits << course.splits
-  end
-
-  def waypoint_groups
-    result = []
-    splits.find_each do |split|
-      result << waypoint_group(split).map(&:id)
-    end
-    result.uniq
-  end
-
-  def waypoint_group(split)
-    splits.where(distance_from_start: split.distance_from_start).order(:sub_order)
-  end
-
-  def base_splits
-    splits.where(sub_order: 0).order(:distance_from_start)
   end
 
 end

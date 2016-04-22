@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
   include Auditable
+  include SplitMethods
   has_many :splits, dependent: :destroy
   has_many :events
   accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_as_entered].blank? }
@@ -48,14 +49,5 @@ class Course < ActiveRecord::Base
     events.order(first_start_time: :desc).limit(max_events) || Event.none
   end
 
-  def segment_name(split1, split2) # TODO make more flexible for time in aid etc.
-    split1.base_name == split2.base_name ?
-        [split1.name, split2.name].join(' to ') :
-        [split1.base_name, split2.base_name].join(' to ')
-  end
-
-  def segment_time_data_set(split1, split2 = nil)
-    # Returns an array of segment times: split2 - split1 if split2 or split1 - prior split if split2.nil
-  end
 
 end

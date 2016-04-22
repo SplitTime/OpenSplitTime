@@ -4,7 +4,7 @@ class SplitTime < ActiveRecord::Base
   belongs_to :effort
   belongs_to :split
 
-  after_update :effort_data_status_reset, if: :time_from_start_changed?
+  after_update :set_effort_data_status, if: :time_from_start_changed?
 
   validates_presence_of :effort_id, :split_id, :time_from_start
   validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
@@ -19,18 +19,23 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
-  def effort_data_status_reset
-    effort.set_data_status_vertical
-    effort.set_data_status_horizontal
+  def set_effort_data_status
+    effort.set_time_data_status_best
   end
 
-  def time_from_start_data_status(high, probable_high, low, probable_low)
+  def solo_data_status
+    [tfs_solo_data_status, st_solo_data_status].min
+  end
+
+  def tfs_statistical_data_status(params) # params == [low, probably low, probably high, high]
     status = if split.start?
-               time_from_start == 0 ? 'good' : 'questionable'
+               time_from_start == 0 ? 'good' : 'bad'
              else
-               if (time_from_start < low) | (time_from_start > high)
+               if time_from_start < 0
                  'bad'
-               elsif (time_from_start < probable_low) | (time_from_start > probable_high)
+               elsif (time_from_start < params[0]) | (time_from_start > params[3])
+                 'bad'
+               elsif (time_from_start < params[1]) | (time_from_start > params[2])
                  'questionable'
                else
                  'good'
@@ -39,27 +44,71 @@ class SplitTime < ActiveRecord::Base
     SplitTime.data_statuses[status]
   end
 
-  def segment_time_data_status(high, probable_high, low, probable_low)
+  def tfs_solo_data_status
+    status = if split.start?
+               time_from_start == 0 ? 'good' : 'bad'
+             else
+               if (time_from_start < 0) | (time_from_start > 1.year) # To catch obviously wrong data
+                 'bad'
+               elsif tfs_velocity < 0.1 # About 0.2 mph or 5 hours/mile
+                 'bad'
+               elsif tfs_velocity < 0.5 # About 1 mph
+                 'questionable'
+               elsif tfs_velocity > 15
+                 'bad'
+               elsif tfs_velocity > 5 # 5 m/s or roughly 11 mph is a temporary flag for speed; TODO store activity type?
+                 'questionable'
+               end
+             end
+    SplitTime.data_statuses[status]
+  end
+
+  def st_statistical_data_status(params) # params == [low, probably low, probably high, high]
     test_time = segment_time
     status = if split.start?
-               time_from_start == 0 ? 'good' : 'questionable'
+               time_from_start == 0 ? 'good' : 'bad'
              elsif split.sub_order > 0 # This is a time in aid (within a waypoint group)
                if test_time < 0
                  'bad'
-               elsif test_time > high
-                 'questionable' # Statistically aberrant aid times are not necessarily wrong
+               elsif test_time > 1.day
+                 'questionable' # Statistically aberrant aid station times are not necessarily wrong
                else
                  'good'
                end
              else # This is a 'real' segment between aid stations (waypoint groups)
                if test_time < 0
                  'bad'
-               elsif (test_time < low) | (test_time > high)
+               elsif (test_time < params[0]) | (test_time > params[3])
                  'bad'
-               elsif (test_time < probable_low) | (test_time > probable_high)
+               elsif (test_time < params[1]) | (test_time > params[2])
                  'questionable'
                else
                  'good'
+               end
+             end
+    SplitTime.data_statuses[status]
+  end
+
+  def st_solo_data_status
+    test_time = segment_time
+    status = if split.start?
+               time_from_start == 0 ? 'good' : 'bad'
+             elsif split.sub_order > 0 # This is a time in aid (within a waypoint group)
+               if (test_time < 0) | (test_time > 1.week) # Catch excessively long periods
+                 'bad'
+               elsif segment_velocity
+               end
+             else # This is a 'real' segment between aid stations (waypoint groups)
+               if (test_time < 0) | (test_time > 1.month)
+                 'bad'
+               elsif segment_velocity < 0.1 # About 0.2 mph or 5 hours/mile
+                 'bad'
+               elsif segment_velocity < 0.5 # About 1 mph
+                 'questionable'
+               elsif segment_velocity > 15 # About 33 mph
+                 'bad'
+               elsif segment_velocity > 5 # 5 m/s or roughly 11 mph is a temporary flag for speed; TODO store activity type?
+                 'questionable'
                end
              end
     SplitTime.data_statuses[status]
@@ -81,9 +130,19 @@ class SplitTime < ActiveRecord::Base
 
   def segment_time
     return 0 if time_from_start == 0
-    ordered_group = effort.ordered_split_times
-    position = ordered_group.map(&:id).index(id)
-    position == 0 ? 0 : ordered_group[position].time_from_start - ordered_group[position - 1].time_from_start
+    effort.segment_time(split)
+  end
+
+  def segment_distance
+    effort.event.segment_distance(split)
+  end
+
+  def segment_velocity
+    segment_distance / segment_time
+  end
+
+  def tfs_velocity
+    split.distance_from_start / time_from_start
   end
 
   def time_in_aid

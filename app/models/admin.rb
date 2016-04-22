@@ -4,14 +4,14 @@ class Admin
     Event.all.each do |event|
       next if event.efforts.count < 1
       event.efforts.all.each do |effort|
-        effort.set_data_status_horizontal
+        effort.set_time_data_status_best
       end
     end
   end
 
   def self.analyze_times_by_split
     Split.all.each do |split|
-      split.analyze_all_times
+      split.set_data_status_best
     end
   end
 

@@ -59,6 +59,7 @@ group :development, :test do
   gem 'byebug'
   gem 'spring-commands-rspec'
   gem 'rb-fsevent'
+  gem 'pry-byebug'
 end
 
 group :production do

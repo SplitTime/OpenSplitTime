@@ -3,6 +3,7 @@ class Effort < ActiveRecord::Base
   include Matchable
   include PersonalInfo
   include Searchable
+  include StatisticalMethods
   enum gender: [:male, :female]
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event, touch: true
@@ -23,7 +24,6 @@ class Effort < ActiveRecord::Base
   def reset_time_from_start
     # If the starting split_time contains nonzero data, assume it means
     # this effort began that amount of time later than the event's normal start time
-
     return nil unless start_split_time
     if start_split_time.time_from_start != 0
       update(start_time: start_time + start_split_time.time_from_start)
@@ -77,7 +77,7 @@ class Effort < ActiveRecord::Base
     split_times.includes(:split).order('splits.distance_from_start', 'splits.sub_order')
   end
 
-  def place
+  def overall_place
     (event.efforts.ids_sorted_ultra_style.index(id)) + 1
   end
 
@@ -85,6 +85,33 @@ class Effort < ActiveRecord::Base
     efforts = event.efforts.sorted_ultra_style
     ids = efforts.map(&:id)
     efforts.map(&:gender)[0..ids.index(id)].count(gender)
+  end
+
+  def segment_time(split1, split2 = nil)
+    if split2.nil?
+      return nil if split1.nil?
+      return 0 if split1.start?
+      end_split_time = split_times.where(split_id: split1.id).first
+      return nil unless end_split_time
+      start_split_time = split_times.where(split_id: event.previous_split(split1).id).first
+      return nil unless start_split_time
+      (end_split_time.time_from_start - start_split_time.time_from_start)
+    else
+      end_split_time = split_times.where(split_id: split2.id).first
+      start_split_time = split_times.where(split_id: split1.id).first
+      end_split_time && start_split_time ? (end_split_time.time_from_start - start_split_time.time_from_start) : nil
+    end
+  end
+
+  def segment_velocity(split1, split2 = nil)
+    return nil if split1.nil?
+    if split2.nil?
+      return 0 if split1.start?
+      event.segment_distance(split1) / segment_time(split1)
+    else
+      return 0 if split1.distance_from_start == split2.distance_from_start
+      event.segment_distance(split1, split2) / segment_time(split1, split2)
+    end
   end
 
   def self.gender_group(split1, split2, gender) # TODO Intersect queries to select only those efforts that include both splits
@@ -101,6 +128,7 @@ class Effort < ActiveRecord::Base
     end
   end
 
+  # Age methods
 
   def approximate_age_today
     now = Time.now.utc.to_date
@@ -121,6 +149,8 @@ class Effort < ActiveRecord::Base
     matches
   end
 
+  # Methods for reconciliation with participants
+
   def unreconciled?
     participant_id.nil?
   end
@@ -128,6 +158,8 @@ class Effort < ActiveRecord::Base
   def self.unreconciled
     where(participant_id: nil)
   end
+
+  # Sorting class methods
 
   def self.sorted_by_finish_time # Excludes DNFs from result
     efforts_from_ids(ids_sorted_by_finish_time)
@@ -145,20 +177,9 @@ class Effort < ActiveRecord::Base
     where(id: ids_within_time_range(low_time, high_time))
   end
 
-  def segment_time(split1, split2 = nil)
-    if split2.nil?
-      end_split_time = split_times.where(split_id: split1.id).first
-      end_split_time ? end_split_time.segment_time : nil
-    else
-      end_split_time = split_times.where(split_id: split2.id).first
-      start_split_time = split_times.where(split_id: split1.id).first
-      end_split_time && start_split_time ? end_split_time.time_from_start - start_split_time.time_from_start : nil
-    end
-  end
-
   # Admin functions to set data status
 
-  def set_data_status_horizontal
+  def set_time_data_status_solo
     return if split_times.count < 1
     ordered_group = ordered_split_times.to_a
     ordered_group[0].update(data_status: 'questionable') if ordered_group[0].time_from_start != 0
@@ -167,40 +188,27 @@ class Effort < ActiveRecord::Base
       split_time = ordered_group[i]
       if split_time.time_from_start - ordered_group[i - 1].time_from_start < 0
         split_time.update(data_status: 'bad')
-      end
-      set_self_data_status
+      end # Otherwise leave nil; we don't want to set data status to 'good' based on solo review
     end
+    set_self_data_status
   end
 
-  def set_data_status_vertical
+  def set_time_data_status_best # Sets data status for all split_times belonging to the instance effort
     split_times.each do |split_time|
-      current_status = split_time.data_status
+      current_status = SplitTime.data_statuses[split_time.data_status]
       tfs_data_set = split_time.split.split_times.pluck(:time_from_start)
-      tfs_data_status = if tfs_data_set.count >= 10
-                          low5std = tfs_data_set.mean - (5 * tfs_data_set.standard_deviation)
-                          high5std = tfs_data_set.mean + (5 * tfs_data_set.standard_deviation)
-                          low3std = tfs_data_set.mean - (3 * tfs_data_set.standard_deviation)
-                          high3std = tfs_data_set.mean + (3 * tfs_data_set.standard_deviation)
-                          split_time.time_from_start_data_status(high5std, high3std, low5std, low3std)
-                        else
-                          nil
-                        end
-      st_data_set = event.course.segment_time_data_set(split1, split2)
-      st_data_status = if st_data_set.count >= 10
-                         low5std = st_data_set.mean - (5 * st_data_set.standard_deviation)
-                         high5std = st_data_set.mean + (5 * st_data_set.standard_deviation)
-                         low3std = st_data_set.mean - (3 * st_data_set.standard_deviation)
-                         high3std = st_data_set.mean + (3 * st_data_set.standard_deviation)
-                         split_time.time_from_start_data_status(high5std, high3std, low5std, low3std)
-                       else
-                         nil
-                       end
+      tfs_data_status =  (split_time.split.start?) | (tfs_data_set.count < 10) ?
+          split_time.tfs_solo_data_status :
+          split_time.tfs_statistical_data_status(Effort.low_and_high_params(tfs_data_set))
+      st_data_set = event.segment_time_data_set(split_time.split).values
+      st_data_status = (split_time.split.start?) | (st_data_set.count < 10) ?
+          split_time.st_solo_data_status :
+          split_time.st_statistical_data_status(Effort.low_and_high_params(st_data_set))
       actual_status = [tfs_data_status, st_data_status].compact.min
-      if actual_status != current_status
-        split_time.update(data_status: actual_status)
-        set_self_data_status
-      end
+      binding.pry
+      split_time.update(data_status: actual_status) if actual_status != current_status
     end
+    set_self_data_status
   end
 
   def set_self_data_status

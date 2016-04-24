@@ -182,6 +182,8 @@ RSpec.describe Effort, type: :model do
       @effort9 = Effort.create!(event_id: @event.id, bib_number: 19, city: 'Aspen', state_code: 'CO', country_code: 'US', age: 30, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Abe', last_name: 'Goer', gender: 'male')
       @effort10 = Effort.create!(event_id: @event.id, bib_number: 20, city: 'Vail', state_code: 'CO', country_code: 'US', age: 31, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Tanya', last_name: 'Doer', gender: 'female')
       @effort11 = Effort.create!(event_id: @event.id, bib_number: 21, city: 'Frisco', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Sally', last_name: 'Tracker', gender: 'female')
+      @effort12 = Effort.create!(event_id: @event.id, bib_number: 22, city: 'Glenwood Springs', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Linus', last_name: 'Peanut', gender: 'male')
+      @effort13 = Effort.create!(event_id: @event.id, bib_number: 23, city: 'Limon', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Lucy', last_name: 'Peanut', gender: 'female')
 
       @split1 = Split.create!(course_id: @course.id, name: 'Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
       @split2 = Split.create!(course_id: @course.id, name: 'Aid Station 1 In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
@@ -204,7 +206,7 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 120)
       SplitTime.create!(effort_id: @effort2.id, split_id: @split4.id, time_from_start: 13000)
       SplitTime.create!(effort_id: @effort2.id, split_id: @split5.id, time_from_start: 150000)
-      SplitTime.create!(effort_id: @effort2.id, split_id: @split6.id, time_from_start: 24000)
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split6.id, time_from_start: 35000)
 
       SplitTime.create!(effort_id: @effort3.id, split_id: @split1.id, time_from_start: 0)
       SplitTime.create!(effort_id: @effort3.id, split_id: @split2.id, time_from_start: 5000)
@@ -215,7 +217,7 @@ RSpec.describe Effort, type: :model do
 
       SplitTime.create!(effort_id: @effort4.id, split_id: @split1.id, time_from_start: 1000)
       SplitTime.create!(effort_id: @effort4.id, split_id: @split2.id, time_from_start: 4500)
-      SplitTime.create!(effort_id: @effort4.id, split_id: @split3.id, time_from_start: 4500)
+      SplitTime.create!(effort_id: @effort4.id, split_id: @split3.id, time_from_start: 4400)
       SplitTime.create!(effort_id: @effort4.id, split_id: @split4.id, time_from_start: 11000)
       SplitTime.create!(effort_id: @effort4.id, split_id: @split5.id, time_from_start: 11000)
       SplitTime.create!(effort_id: @effort4.id, split_id: @split6.id, time_from_start: 17500)
@@ -228,8 +230,6 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort_id: @effort5.id, split_id: @split6.id, time_from_start: 14550)
 
       SplitTime.create!(effort_id: @effort6.id, split_id: @split1.id, time_from_start: 0)
-      SplitTime.create!(effort_id: @effort6.id, split_id: @split2.id, time_from_start: 3800)
-      SplitTime.create!(effort_id: @effort6.id, split_id: @split3.id, time_from_start: 3900)
       SplitTime.create!(effort_id: @effort6.id, split_id: @split4.id, time_from_start: 9600)
       SplitTime.create!(effort_id: @effort6.id, split_id: @split5.id, time_from_start: 9660)
       SplitTime.create!(effort_id: @effort6.id, split_id: @split6.id, time_from_start: 14650)
@@ -239,13 +239,10 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort_id: @effort7.id, split_id: @split3.id, time_from_start: 6600)
       SplitTime.create!(effort_id: @effort7.id, split_id: @split4.id, time_from_start: 13000)
       SplitTime.create!(effort_id: @effort7.id, split_id: @split5.id, time_from_start: 13500)
-      SplitTime.create!(effort_id: @effort7.id, split_id: @split6.id, time_from_start: 22000)
 
       SplitTime.create!(effort_id: @effort8.id, split_id: @split1.id, time_from_start: 0)
       SplitTime.create!(effort_id: @effort8.id, split_id: @split2.id, time_from_start: 5500)
       SplitTime.create!(effort_id: @effort8.id, split_id: @split3.id, time_from_start: 5500)
-      SplitTime.create!(effort_id: @effort8.id, split_id: @split4.id, time_from_start: 12500)
-      SplitTime.create!(effort_id: @effort8.id, split_id: @split5.id, time_from_start: 12800)
       SplitTime.create!(effort_id: @effort8.id, split_id: @split6.id, time_from_start: 18700)
 
       SplitTime.create!(effort_id: @effort9.id, split_id: @split1.id, time_from_start: 0)
@@ -269,11 +266,29 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort_id: @effort11.id, split_id: @split5.id, time_from_start: 21200)
       SplitTime.create!(effort_id: @effort11.id, split_id: @split6.id, time_from_start: 32000)
 
+      SplitTime.create!(effort_id: @effort12.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort12.id, split_id: @split2.id, time_from_start: 5300)
+      SplitTime.create!(effort_id: @effort12.id, split_id: @split3.id, time_from_start: 5400)
+      SplitTime.create!(effort_id: @effort12.id, split_id: @split4.id, time_from_start: 12500)
+      SplitTime.create!(effort_id: @effort12.id, split_id: @split5.id, time_from_start: 12550)
+      SplitTime.create!(effort_id: @effort12.id, split_id: @split6.id, time_from_start: 23232)
+
+      SplitTime.create!(effort_id: @effort13.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort13.id, split_id: @split2.id, time_from_start: 4900)
+      SplitTime.create!(effort_id: @effort13.id, split_id: @split3.id, time_from_start: 4940)
+      SplitTime.create!(effort_id: @effort13.id, split_id: @split4.id, time_from_start: 13400)
+      SplitTime.create!(effort_id: @effort13.id, split_id: @split5.id, time_from_start: 14300)
+      SplitTime.create!(effort_id: @effort13.id, split_id: @split6.id, time_from_start: 19800)
+
       @effort1.set_time_data_status_best
       @effort2.set_time_data_status_best
       @effort3.set_time_data_status_best
       @effort4.set_time_data_status_best
+      @effort5.set_time_data_status_best
+      @effort6.set_time_data_status_best
+      @effort7.set_time_data_status_best
       @effort8.set_time_data_status_best
+      @effort9.set_time_data_status_best
       @effort10.set_time_data_status_best
       @effort11.set_time_data_status_best
 
@@ -289,17 +304,26 @@ RSpec.describe Effort, type: :model do
 
     it 'should set the data status of negative segment times to bad' do
       expect(@effort1.split_times.where(split_id: 5).first.bad?).to eq(true)
-      expect(@effort2.split_times.where(split_id: 6).first.bad?).to eq(true)
+      expect(@effort4.split_times.where(split_id: 3).first.bad?).to eq(true)
+    end
+
+    it 'should look past bad data points to the previous valid data point to calculate data status' do
+      expect(@effort2.split_times.where(split_id: 6).first.questionable?).to eq(true)
+      expect(@effort10.split_times.where(split_id: 3).first.good?).to eq(true)
+
     end
 
     it 'should set the data status of split_times properly' do
       expect(@effort1.split_times.good.count).to eq(5)
       expect(@effort1.split_times.bad.count).to eq(1)
-      expect(@effort2.split_times.good.count).to eq(1)
+      expect(@effort2.split_times.good.count).to eq(2)
       expect(@effort2.split_times.questionable.count).to eq(1)
-      expect(@effort2.split_times.bad.count).to eq(4)
-      expect(@effort4.split_times.good.count).to eq(5)
-      expect(@effort4.split_times.bad.count).to eq(1)
+      expect(@effort2.split_times.bad.count).to eq(3)
+      expect(@effort4.split_times.good.count).to eq(4)
+      expect(@effort4.split_times.bad.count).to eq(2)
+      expect(@effort11.split_times.good.count).to eq(5)
+      expect(@effort11.split_times.questionable.count).to eq(1)
+      expect(@effort11.split_times.bad.count).to eq(0)
     end
 
     it 'should set the data status of non-zero start splits to bad' do
@@ -314,6 +338,11 @@ RSpec.describe Effort, type: :model do
     it 'should set the data status of impossibly slow segments to bad' do
       expect(@effort2.split_times.where(split_id: 5).first.bad?).to eq(true)
       expect(@effort10.split_times.where(split_id: 2).first.bad?).to eq(true)
+    end
+
+    it 'should set the data status of splits correctly even if missing prior splits' do
+      expect(@effort6.split_times.where(split_id: 4).first.good?).to eq(true)
+      expect(@effort8.split_times.where(split_id: 6).first.good?).to eq(true)
     end
   end
 

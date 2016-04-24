@@ -199,16 +199,17 @@ class Effort < ActiveRecord::Base
   end
 
   def set_time_data_status_best # Sets data status for all split_times belonging to the instance effort
-    split_times.each do |split_time|
+    ordered_split_times.each do |split_time|
       current_status = SplitTime.data_statuses[split_time.data_status]
       tfs_solo = split_time.tfs_solo_data_status
       st_solo = split_time.st_solo_data_status
       tfs_data_set = split_time.split.split_times.pluck(:time_from_start)
       tfs_statistical = split_time.split.start? | (tfs_data_set.count < 10) ? nil :
           split_time.tfs_statistical_data_status(Effort.low_and_high_params(tfs_data_set))
-      st_data_set = event.segment_time_data_set(split_time.split).values
-      st_statistical = (split_time.split.start?) | (st_data_set.count < 10) ? nil :
-          split_time.st_statistical_data_status(Effort.low_and_high_params(st_data_set))
+      previous = split_time.previous_valid_split_time
+      st_data_set = previous ? event.segment_time_data_set(split_time.split, previous.split).values : []
+      st_statistical = (split_time.split.start?) | (split_time.split.sub_order > 0) | (st_data_set.count < 10) ?
+          nil : split_time.st_statistical_data_status(Effort.low_and_high_params(st_data_set))
       actual_status = [tfs_solo, tfs_statistical, st_solo, st_statistical].compact.min
       split_time.update(data_status: actual_status) if actual_status != current_status
     end

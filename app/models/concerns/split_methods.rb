@@ -11,7 +11,7 @@ module SplitMethods
     if split2.nil?
       split1.start? ? 0 : split1.distance_from_start - previous_split(split1).distance_from_start
     else
-      (split2.distance_from_start - split1.distance_from_start).abs
+      (split2.distance_from_start - split1.distance_from_start)
     end
   end
 

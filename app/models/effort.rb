@@ -78,8 +78,26 @@ class Effort < ActiveRecord::Base
   end
 
   def ordered_valid_split_times
-    valid = [nil, 2, 3]
-    split_times.includes(:split).where(data_status: valid).order('splits.distance_from_start', 'splits.sub_order')
+    valid_split_times.order('splits.distance_from_start', 'splits.sub_order')
+  end
+
+  def valid_split_times
+    valid = [nil, 2]
+    split_times.includes(:split).where(data_status: valid)
+  end
+
+  def previous_split_time(split_time)
+    ordered_times = ordered_split_times
+    position = ordered_times.index(split_time)
+    return nil if position.nil?
+    position == 0 ? nil : ordered_times[position - 1]
+  end
+
+  def previous_valid_split_time(split_time)
+    ordered_times = ordered_valid_split_times
+    position = ordered_times.index(split_time)
+    return nil if position.nil?
+    position == 0 ? nil : ordered_times[position - 1]
   end
 
   def overall_place
@@ -200,20 +218,28 @@ class Effort < ActiveRecord::Base
 
   def set_time_data_status_best # Sets data status for all split_times belonging to the instance effort
     ordered_split_times.each do |split_time|
-      current_status = SplitTime.data_statuses[split_time.data_status]
-      tfs_solo = split_time.tfs_solo_data_status
-      st_solo = split_time.st_solo_data_status
-      tfs_data_set = split_time.split.split_times.pluck(:time_from_start)
-      tfs_statistical = split_time.split.start? | (tfs_data_set.count < 10) ? nil :
-          split_time.tfs_statistical_data_status(Effort.low_and_high_params(tfs_data_set))
-      previous = split_time.previous_valid_split_time
-      st_data_set = previous ? event.segment_time_data_set(split_time.split, previous.split).values : []
-      st_statistical = (split_time.split.start?) | (split_time.split.sub_order > 0) | (st_data_set.count < 10) ?
-          nil : split_time.st_statistical_data_status(Effort.low_and_high_params(st_data_set))
-      actual_status = [tfs_solo, tfs_statistical, st_solo, st_statistical].compact.min
-      split_time.update(data_status: actual_status) if actual_status != current_status
+      split_time.update(data_status: get_actual_status(split_time))
     end
     set_self_data_status
+  end
+
+  def get_actual_status(split_time)
+    tfs_solo = split_time.tfs_solo_data_status
+    return tfs_solo if tfs_solo == 0
+    tfs_data_set = split_time.split.split_times.pluck(:time_from_start)
+    tfs_statistical = split_time.split.start? | (tfs_data_set.count < 10) ? nil :
+        split_time.tfs_statistical_data_status(Effort.low_and_high_params(tfs_data_set))
+    return tfs_statistical if tfs_statistical == 0
+    split_time.update(data_status: nil) if split_time.not_valid? # Allows split_time to be located among ordered valid splits
+    previous = previous_valid_split_time(split_time)
+    st_solo = split_time.st_solo_data_status(previous)
+    return st_solo if st_solo == 0
+    st_data_set = previous ? event.course.segment_time_data_set(previous.split, split_time.split).values : []
+    st_statistical = (split_time.split.start? == false &&
+        (st_data_set.count >= 10) &&
+        split_time.not_in_waypoint_group_with(previous)) ?
+        split_time.st_statistical_data_status(Effort.low_and_high_params(st_data_set), previous) : nil
+    [tfs_solo, tfs_statistical, st_solo, st_statistical].compact.min
   end
 
   def set_self_data_status

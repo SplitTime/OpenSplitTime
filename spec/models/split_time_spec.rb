@@ -156,7 +156,7 @@ RSpec.describe SplitTime, kind: :model do
       @split_time4 = SplitTime.create!(effort_id: @effort1.id, split_id: @split4.id, time_from_start: 16000000)
       @split_time5 = SplitTime.create!(effort_id: @effort2.id, split_id: @split1.id, time_from_start: 0)
       @split_time6 = SplitTime.create!(effort_id: @effort2.id, split_id: @split2.id, time_from_start: 5000)
-      @split_time7 = SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 5100)
+      @split_time7 = SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 4900)
       @split_time8 = SplitTime.create!(effort_id: @effort2.id, split_id: @split4.id, time_from_start: 9000)
       @split_time9 = SplitTime.create!(effort_id: @effort3.id, split_id: @split1.id, time_from_start: 100)
       @split_time10 = SplitTime.create!(effort_id: @effort3.id, split_id: @split2.id, time_from_start: 300)
@@ -166,7 +166,7 @@ RSpec.describe SplitTime, kind: :model do
     end
 
     it 'should return "bad" when segment time is negative' do
-      expect(@split_time3.st_solo_data_status).to eq(0)
+      expect(@split_time7.st_solo_data_status).to eq(0)
     end
 
     it 'should return "good" or "bad" for a start split depending on time from start' do

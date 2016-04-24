@@ -206,7 +206,7 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 120)
       SplitTime.create!(effort_id: @effort2.id, split_id: @split4.id, time_from_start: 13000)
       SplitTime.create!(effort_id: @effort2.id, split_id: @split5.id, time_from_start: 150000)
-      SplitTime.create!(effort_id: @effort2.id, split_id: @split6.id, time_from_start: 35000)
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split6.id, time_from_start: 26000)
 
       SplitTime.create!(effort_id: @effort3.id, split_id: @split1.id, time_from_start: 0)
       SplitTime.create!(effort_id: @effort3.id, split_id: @split2.id, time_from_start: 5000)
@@ -321,8 +321,8 @@ RSpec.describe Effort, type: :model do
       expect(@effort2.split_times.bad.count).to eq(3)
       expect(@effort4.split_times.good.count).to eq(4)
       expect(@effort4.split_times.bad.count).to eq(2)
-      expect(@effort11.split_times.good.count).to eq(5)
-      expect(@effort11.split_times.questionable.count).to eq(1)
+      expect(@effort11.split_times.good.count).to eq(3)
+      expect(@effort11.split_times.questionable.count).to eq(3)
       expect(@effort11.split_times.bad.count).to eq(0)
     end
 

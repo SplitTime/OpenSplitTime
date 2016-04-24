@@ -104,7 +104,7 @@ RSpec.describe Event, type: :model do
       event.splits.create!(course: course, name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
     end
 
-    it 'should return the distance between splits, regardless of order, when provided two parameters' do
+    it 'should return the distance between splits when provided two parameters' do
       split1 = event.splits.find(1)
       split2 = event.splits.find(2)
       split3 = event.splits.find(3)
@@ -112,7 +112,7 @@ RSpec.describe Event, type: :model do
       split5 = event.splits.find(5)
       expect(event.segment_distance(split3, split4)).to eq(20000)
       expect(event.segment_distance(split4, split5)).to eq(0)
-      expect(event.segment_distance(split2, split1)).to eq(5000)
+      expect(event.segment_distance(split2, split1)).to eq(-5000)
     end
 
     it 'should return the distance between the provided split and the previous split when provided one parameter' do

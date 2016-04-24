@@ -64,45 +64,50 @@ class SplitTime < ActiveRecord::Base
     SplitTime.data_statuses[status]
   end
 
-  def st_statistical_data_status(params) # params == [low, probably low, probably high, high]
-    test_time = segment_time
-    status = if split.start?
-               time_from_start == 0 ? 'good' : 'bad'
-             elsif split.sub_order > 0 # This is a time in aid (within a waypoint group)
-               if test_time < 0
-                 'bad'
-               elsif test_time > 1.day
-                 'questionable' # Statistically aberrant aid station times are not necessarily wrong
-               else
-                 'good'
-               end
-             else # This is a 'real' segment between aid stations (waypoint groups)
-               return nil unless params && params.count > 3
-               if test_time < 0
-                 'bad'
-               elsif (test_time < params[0]) | (test_time > params[3])
-                 'bad'
-               elsif (test_time < params[1]) | (test_time > params[2])
-                 'questionable'
-               else
-                 'good'
-               end
-             end
-    SplitTime.data_statuses[status]
-  end
-
-  def st_solo_data_status
+  def st_statistical_data_status(params, split_time = nil) # params == [low, probably low, probably high, high]
     if split.start?
       status = time_from_start == 0 ? 'good' : 'bad'
       SplitTime.data_statuses[status]
     else
-      previous = previous_valid_split_time
-      return nil unless previous
+      previous = split_time || previous_split_time
+      distance = split.course.segment_distance(previous.split, self.split)
       test_time = time_from_start - previous.time_from_start
-      status = if split.distance_from_start - previous.split.distance_from_start == 0 # This is a time in aid (within a waypoint group)
+      status = if distance == 0 # This is a time in aid (within a waypoint group)
+                 if test_time < 0
+                   'bad'
+                 elsif test_time > 1.day
+                   'questionable' # Statistically aberrant aid station times are not necessarily wrong
+                 else
+                   'good'
+                 end
+               else # This is a 'real' segment between aid stations (waypoint groups)
+                 return nil unless params && params.count > 3
+                 if test_time < 0
+                   'bad'
+                 elsif (test_time < params[0]) | (test_time > params[3])
+                   'bad'
+                 elsif (test_time < params[1]) | (test_time > params[2])
+                   'questionable'
+                 else
+                   'good'
+                 end
+               end
+    end
+    SplitTime.data_statuses[status]
+  end
+
+  def st_solo_data_status(split_time = nil)
+    if split.start?
+      status = time_from_start == 0 ? 'good' : 'bad'
+      SplitTime.data_statuses[status]
+    else
+      previous = split_time || previous_split_time
+      distance = split.course.segment_distance(previous.split, self.split)
+      test_time = time_from_start - previous.time_from_start
+      status = if distance == 0 # This is a time in aid (within a waypoint group)
                  (test_time < 0) | (test_time > 1.week) ? 'bad' : 'good'
                else # This is a 'real' segment between aid stations (waypoint groups)
-                 velocity = velocity_from_previous_valid
+                 velocity = distance / test_time
                  return nil if velocity.nil?
                  if test_time < 0
                    'bad'
@@ -118,6 +123,10 @@ class SplitTime < ActiveRecord::Base
                end
       SplitTime.data_statuses[status]
     end
+  end
+
+  def not_valid?
+    (data_status == 'bad') | (data_status == 'questionable')
   end
 
   def time_as_entered
@@ -166,18 +175,11 @@ class SplitTime < ActiveRecord::Base
   end
 
   def previous_split_time
-    ordered_split_times = effort.ordered_split_times
-    position = ordered_split_times.index(self)
-    return nil if position.nil?
-    position == 0 ? nil : ordered_split_times[position - 1]
-
+    effort.previous_split_time(self)
   end
 
   def previous_valid_split_time
-    ordered_split_times = effort.ordered_valid_split_times
-    position = ordered_split_times.index(self)
-    return nil if position.nil?
-    position == 0 ? nil : ordered_split_times[position - 1]
+    effort.previous_valid_split_time(self)
   end
 
   def self.ordered
@@ -191,6 +193,14 @@ class SplitTime < ActiveRecord::Base
       split_time_array << split.split_times.where(effort: effort).first
     end
     split_time_array # Includes nil values when no split_time is associated with members of the split.waypoint_group
+  end
+
+  def in_waypoint_group_with(other_split_time)
+    split.distance_from_start == other_split_time.split.distance_from_start
+  end
+
+  def not_in_waypoint_group_with(other_split_time)
+    split.distance_from_start != other_split_time.split.distance_from_start
   end
 
 end

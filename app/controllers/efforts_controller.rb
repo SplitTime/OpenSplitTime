@@ -9,6 +9,7 @@ class EffortsController < ApplicationController
 
   def show
     @effort = Effort.includes(:split_times => {:split => :course}).find(params[:id])
+    @effort.set_time_data_status_best if params[:set_data_status] == 'true'
     session[:return_to] = effort_path(@effort)
   end
 

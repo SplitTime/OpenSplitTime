@@ -77,6 +77,11 @@ class Effort < ActiveRecord::Base
     split_times.includes(:split).order('splits.distance_from_start', 'splits.sub_order')
   end
 
+  def ordered_valid_split_times
+    valid = [nil, 2, 3]
+    split_times.includes(:split).where(data_status: valid).order('splits.distance_from_start', 'splits.sub_order')
+  end
+
   def overall_place
     (event.efforts.ids_sorted_ultra_style.index(id)) + 1
   end
@@ -93,7 +98,7 @@ class Effort < ActiveRecord::Base
       return 0 if split1.start?
       end_split_time = split_times.where(split_id: split1.id).first
       return nil unless end_split_time
-      start_split_time = split_times.where(split_id: event.previous_split(split1).id).first
+      start_split_time = end_split_time.previous_split_time
       return nil unless start_split_time
       (end_split_time.time_from_start - start_split_time.time_from_start)
     else
@@ -196,16 +201,15 @@ class Effort < ActiveRecord::Base
   def set_time_data_status_best # Sets data status for all split_times belonging to the instance effort
     split_times.each do |split_time|
       current_status = SplitTime.data_statuses[split_time.data_status]
+      tfs_solo = split_time.tfs_solo_data_status
+      st_solo = split_time.st_solo_data_status
       tfs_data_set = split_time.split.split_times.pluck(:time_from_start)
-      tfs_data_status =  (split_time.split.start?) | (tfs_data_set.count < 10) ?
-          split_time.tfs_solo_data_status :
+      tfs_statistical = split_time.split.start? | (tfs_data_set.count < 10) ? nil :
           split_time.tfs_statistical_data_status(Effort.low_and_high_params(tfs_data_set))
       st_data_set = event.segment_time_data_set(split_time.split).values
-      st_data_status = (split_time.split.start?) | (st_data_set.count < 10) ?
-          split_time.st_solo_data_status :
+      st_statistical = (split_time.split.start?) | (st_data_set.count < 10) ? nil :
           split_time.st_statistical_data_status(Effort.low_and_high_params(st_data_set))
-      actual_status = [tfs_data_status, st_data_status].compact.min
-      binding.pry
+      actual_status = [tfs_solo, tfs_statistical, st_solo, st_statistical].compact.min
       split_time.update(data_status: actual_status) if actual_status != current_status
     end
     set_self_data_status

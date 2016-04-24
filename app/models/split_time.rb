@@ -94,20 +94,21 @@ class SplitTime < ActiveRecord::Base
     status = if split.start?
                time_from_start == 0 ? 'good' : 'bad'
              elsif split.sub_order > 0 # This is a time in aid (within a waypoint group)
+               velocity = velocity_from_previous_valid
                if (test_time < 0) | (test_time > 1.week) # Catch excessively long periods
                  'bad'
-               elsif segment_velocity
                end
              else # This is a 'real' segment between aid stations (waypoint groups)
+               return nil if velocity.nil?
                if (test_time < 0) | (test_time > 1.month)
                  'bad'
-               elsif segment_velocity < 0.1 # About 0.2 mph or 5 hours/mile
+               elsif velocity < 0.1 # About 0.2 mph or 5 hours/mile
                  'bad'
-               elsif segment_velocity < 0.5 # About 1 mph
+               elsif velocity < 0.5 # About 1 mph
                  'questionable'
-               elsif segment_velocity > 15 # About 33 mph
+               elsif velocity > 15 # About 33 mph
                  'bad'
-               elsif segment_velocity > 5 # 5 m/s or roughly 11 mph is a temporary flag for speed; TODO store activity type?
+               elsif velocity > 5 # 5 m/s or roughly 11 mph is a temporary flag for speed; TODO store activity type?
                  'questionable'
                end
              end
@@ -141,12 +142,35 @@ class SplitTime < ActiveRecord::Base
     segment_distance / segment_time
   end
 
+  def velocity_from_previous_valid
+    effort.segment_velocity(previous_valid_split_time.split, self.split)
+  end
+
   def tfs_velocity
     split.distance_from_start / time_from_start
   end
 
   def time_in_aid
     waypoint_group.compact.last.time_from_start - waypoint_group.compact.first.time_from_start
+  end
+
+  def previous_split_time
+    ordered_split_times = effort.ordered_split_times
+    position = ordered_split_times.index(self)
+    return nil if position.nil?
+    position == 0 ? nil : ordered_split_times[position - 1]
+
+  end
+
+  def previous_valid_split_time
+    ordered_split_times = effort.ordered_valid_split_times
+    position = ordered_split_times.index(self)
+    return nil if position.nil?
+    position == 0 ? nil : ordered_split_times[position - 1]
+  end
+
+  def self.ordered
+    effort.ordered_split_times
   end
 
   def waypoint_group

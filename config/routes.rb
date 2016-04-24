@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     member { put :associate_participant }
     collection { put :associate_participants}
     member { get :edit_split_times }
+    member { delete :delete_waypoint_group }
   end
   resources :split_times
   resources :interests

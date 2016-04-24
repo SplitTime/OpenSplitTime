@@ -89,6 +89,16 @@ class EffortsController < ApplicationController
 
   def edit_split_times
     authorize @effort
+    session[:return_to] = edit_split_times_effort_path(@effort)
+  end
+
+  def delete_waypoint_group
+    authorize @effort
+    @split = Split.find(params[:split_id])
+    @effort.split_times.where(split_id: @split.waypoint_group.pluck(:id)).destroy_all
+    @effort.set_self_data_status
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
+    redirect_to session.delete(:return_to) || effort_path(@effort)
   end
 
   private

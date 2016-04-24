@@ -22,9 +22,9 @@
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@effort) %>
         <%= link_to 'Edit this effort', edit_effort_path(@effort), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Set time data status', effort_path(@effort, set_data_status: true), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Edit split times', edit_split_times_effort_path(@effort),
                     class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Set time data status', effort_path(@effort, set_data_status: true), class: "btn btn-sm btn-success" %>
         <%= link_to 'Delete this effort', effort_path(@effort, referrer_path: event_path(@effort.event)),
                     method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>

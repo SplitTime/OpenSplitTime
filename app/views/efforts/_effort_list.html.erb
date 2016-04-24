@@ -22,29 +22,35 @@
   </thead>
   <tbody>
   <% items.each do |effort| %>
-      <tr>
-        <% if params[:controller] == 'courses' || params[:controller] == 'events' %>
-            <td><%= items.offset + items.index(effort) + 1 %></td>
-        <% end %>
-        <% if params[:controller] == 'participants' %>
-            <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
-        <% else %>
-            <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
-        <% end %>
-        <% if params[:controller] == 'courses' || params[:controller] == 'events' %>
-            <td><%= effort.bio_historic %></td>
-        <% end %>
-        <td><%= effort.state_and_country %></td>
-        <% if params[:controller] == 'courses' %>
-            <td><%= effort.start_time.year %></td>
-        <% end %>
-        <td class="text-right"><%= effort.finish_status %></td>
-        <% if @current_user && @current_user.admin? && controller_name == 'participants' %>
-            <td class="text-right"><%= link_to 'Disassociate',
-                                               remove_effort_participant_path(@participant, effort_id: effort.id),
-                                               method: :delete,
-                                               class: 'btn btn-xs btn-danger' %></td>
-        <% end %>
+      <% if effort.bad? %>
+          <tr class="text-danger">
+      <% elsif effort.questionable? %>
+          <tr class="text-warning">
+      <% else %>
+          <tr>
+      <% end %>
+      <% if params[:controller] == 'courses' || params[:controller] == 'events' %>
+          <td><%= items.offset + items.index(effort) + 1 %></td>
+      <% end %>
+      <% if params[:controller] == 'participants' %>
+          <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
+      <% else %>
+          <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+      <% end %>
+      <% if params[:controller] == 'courses' || params[:controller] == 'events' %>
+          <td><%= effort.bio_historic %></td>
+      <% end %>
+      <td><%= effort.state_and_country %></td>
+      <% if params[:controller] == 'courses' %>
+          <td><%= effort.start_time.year %></td>
+      <% end %>
+      <td class="text-right"><%= effort.finish_status %></td>
+      <% if @current_user && @current_user.admin? && controller_name == 'participants' %>
+          <td class="text-right"><%= link_to 'Disassociate',
+                                             remove_effort_participant_path(@participant, effort_id: effort.id),
+                                             method: :delete,
+                                             class: 'btn btn-xs btn-danger' %></td>
+      <% end %>
       </tr>
   <% end %>
   </tbody>

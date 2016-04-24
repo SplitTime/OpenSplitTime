@@ -38,4 +38,8 @@ class EffortPolicy
     @current_user.authorized_to_edit?(@effort)
   end
 
+  def delete_waypoint_group?
+    @current_user.admin?
+  end
+
 end

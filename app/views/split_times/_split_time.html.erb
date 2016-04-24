@@ -8,25 +8,42 @@
     <th class="text-right">Elapsed Time</th>
     <th class="text-right">Segment Time</th>
     <th class="text-right">Time In Aid</th>
+    <% if current_user.admin? %>
+        <th class="text-right">Actions</th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
   <% splits.each do |split| %>
-      <tr>
-        <% if split.kind == 'finish' %>
-            <td><strong><%= split.composite_name %></strong></td>
-            <td class="text-right"><strong><%= d(split.distance_from_start).round(1) %></strong>
-            </td>
-            <td class="text-right"><strong><%= composite_time(@effort, split) %></strong></td>
-            <td class="text-right"><strong><%= time_format_hhmmss(@effort.segment_time(split)) %></strong></td>
-            <td class="text-right"><strong><%= time_format_minutes(@effort.total_time_in_aid) %></strong></td>
-        <% elsif split.kind == 'waypoint' %>
-            <td><%= split.composite_name %></td>
-            <td class="text-right"><%= d(split.distance_from_start).round(1) %></td>
-            <td class="text-right"><%= composite_time(@effort, split) %></td>
-            <td class="text-right"><%= time_format_hhmmss(@effort.segment_time(split)) %></td>
-            <td class="text-right"><%= time_format_minutes(@effort.time_in_aid(split)) %></td>
-        <% end %>
+      <% data_status = status(@effort, split) %>
+      <% if data_status == 0 %>
+          <tr class="text-danger">
+      <% elsif data_status == 1 %>
+          <tr class="text-warning">
+      <% else %>
+          <tr>
+      <% end %>
+      <% if split.kind == 'finish' %>
+          <td><strong><%= split.composite_name %></strong></td>
+          <td class="text-right"><strong><%= d(split.distance_from_start).round(1) %></strong>
+          </td>
+          <td class="text-right"><strong><%= composite_time(@effort, split) %></strong></td>
+          <td class="text-right"><strong><%= time_format_hhmmss(@effort.segment_time(split)) %></strong></td>
+          <td class="text-right"><strong><%= time_format_minutes(@effort.total_time_in_aid) %></strong></td>
+      <% elsif split.kind == 'waypoint' %>
+          <td><%= split.composite_name %></td>
+          <td class="text-right"><%= d(split.distance_from_start).round(1) %></td>
+          <td class="text-right"><%= composite_time(@effort, split) %></td>
+          <td class="text-right"><%= time_format_hhmmss(@effort.segment_time(split)) %></td>
+          <td class="text-right"><%= time_format_minutes(@effort.time_in_aid(split)) %></td>
+          <% if current_user.admin? %>
+              <td class="text-right"><%= link_to 'Delete',
+                                                 delete_waypoint_group_effort_path(@effort, split_id: split.id),
+                                                 method: :delete,
+                                                 data: {confirm: "This will delete #{pluralize(split.waypoint_group.count, 'split time')}. OK to proceed?"},
+                                                 class: 'btn btn-xs btn-danger' %></td>
+          <% end %>
+      <% end %>
       </tr>
   <% end %>
   </tbody>

@@ -94,13 +94,13 @@ class SplitTime < ActiveRecord::Base
     status = if split.start?
                time_from_start == 0 ? 'good' : 'bad'
              elsif split.sub_order > 0 # This is a time in aid (within a waypoint group)
-               velocity = velocity_from_previous_valid
                if (test_time < 0) | (test_time > 1.week) # Catch excessively long periods
                  'bad'
                end
              else # This is a 'real' segment between aid stations (waypoint groups)
+               velocity = velocity_from_previous_valid
                return nil if velocity.nil?
-               if (test_time < 0) | (test_time > 1.month)
+               if test_time < 0
                  'bad'
                elsif velocity < 0.1 # About 0.2 mph or 5 hours/mile
                  'bad'
@@ -143,7 +143,8 @@ class SplitTime < ActiveRecord::Base
   end
 
   def velocity_from_previous_valid
-    effort.segment_velocity(previous_valid_split_time.split, self.split)
+    previous = previous_valid_split_time
+    previous ? effort.segment_velocity(previous.split, self.split) : nil
   end
 
   def tfs_velocity

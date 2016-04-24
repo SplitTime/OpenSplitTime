@@ -173,6 +173,15 @@ RSpec.describe Effort, type: :model do
 
       @effort1 = Effort.create!(event_id: @event.id, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event_id: @event.id, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+      @effort3 = Effort.create!(event_id: @event.id, bib_number: 13, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Mark', last_name: 'Runner', gender: 'male')
+      @effort4 = Effort.create!(event_id: @event.id, bib_number: 14, city: 'Louisville', state_code: 'CO', country_code: 'US', age: 25, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Pete', last_name: 'Trotter', gender: 'male')
+      @effort5 = Effort.create!(event_id: @event.id, bib_number: 15, city: 'Fort Collins', state_code: 'CO', country_code: 'US', age: 26, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'James', last_name: 'Walker', gender: 'male')
+      @effort6 = Effort.create!(event_id: @event.id, bib_number: 16, city: 'Colorado Springs', state_code: 'CO', country_code: 'US', age: 27, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Johnny', last_name: 'Hiker', gender: 'male')
+      @effort7 = Effort.create!(event_id: @event.id, bib_number: 17, city: 'Idaho Springs', state_code: 'CO', country_code: 'US', age: 28, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Melissa', last_name: 'Getter', gender: 'female')
+      @effort8 = Effort.create!(event_id: @event.id, bib_number: 18, city: 'Grand Junction', state_code: 'CO', country_code: 'US', age: 29, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'George', last_name: 'Ringer', gender: 'male')
+      @effort9 = Effort.create!(event_id: @event.id, bib_number: 19, city: 'Aspen', state_code: 'CO', country_code: 'US', age: 30, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Abe', last_name: 'Goer', gender: 'male')
+      @effort10 = Effort.create!(event_id: @event.id, bib_number: 20, city: 'Vail', state_code: 'CO', country_code: 'US', age: 31, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Tanya', last_name: 'Doer', gender: 'female')
+      @effort11 = Effort.create!(event_id: @event.id, bib_number: 21, city: 'Frisco', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Sally', last_name: 'Tracker', gender: 'female')
 
       @split1 = Split.create!(course_id: @course.id, name: 'Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
       @split2 = Split.create!(course_id: @course.id, name: 'Aid Station 1 In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
@@ -183,37 +192,128 @@ RSpec.describe Effort, type: :model do
 
       @event.splits << @course.splits
 
-      @split_time1 = SplitTime.create!(effort_id: @effort1.id, split_id: @split1.id, time_from_start: 0)
-      @split_time2 = SplitTime.create!(effort_id: @effort1.id, split_id: @split2.id, time_from_start: 4000)
-      @split_time3 = SplitTime.create!(effort_id: @effort1.id, split_id: @split3.id, time_from_start: 4100)
-      @split_time4 = SplitTime.create!(effort_id: @effort1.id, split_id: @split4.id, time_from_start: 15200)
-      @split_time5 = SplitTime.create!(effort_id: @effort1.id, split_id: @split5.id, time_from_start: 15100)
-      @split_time6 = SplitTime.create!(effort_id: @effort1.id, split_id: @split6.id, time_from_start: 21000)
-      @split_time7 = SplitTime.create!(effort_id: @effort2.id, split_id: @split1.id, time_from_start: 0)
-      @split_time8 = SplitTime.create!(effort_id: @effort2.id, split_id: @split2.id, time_from_start: 60)
-      @split_time9 = SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 120)
-      @split_time10 = SplitTime.create!(effort_id: @effort2.id, split_id: @split4.id, time_from_start: 13000)
-      @split_time11 = SplitTime.create!(effort_id: @effort2.id, split_id: @split5.id, time_from_start: 150000)
-      @split_time12 = SplitTime.create!(effort_id: @effort2.id, split_id: @split6.id, time_from_start: 24000)
+      SplitTime.create!(effort_id: @effort1.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort1.id, split_id: @split2.id, time_from_start: 4000)
+      SplitTime.create!(effort_id: @effort1.id, split_id: @split3.id, time_from_start: 4100)
+      SplitTime.create!(effort_id: @effort1.id, split_id: @split4.id, time_from_start: 15200)
+      SplitTime.create!(effort_id: @effort1.id, split_id: @split5.id, time_from_start: 15100)
+      SplitTime.create!(effort_id: @effort1.id, split_id: @split6.id, time_from_start: 21000)
+
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split2.id, time_from_start: 60)
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 120)
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split4.id, time_from_start: 13000)
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split5.id, time_from_start: 150000)
+      SplitTime.create!(effort_id: @effort2.id, split_id: @split6.id, time_from_start: 24000)
+
+      SplitTime.create!(effort_id: @effort3.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort3.id, split_id: @split2.id, time_from_start: 5000)
+      SplitTime.create!(effort_id: @effort3.id, split_id: @split3.id, time_from_start: 5000)
+      SplitTime.create!(effort_id: @effort3.id, split_id: @split4.id, time_from_start: 12200)
+      SplitTime.create!(effort_id: @effort3.id, split_id: @split5.id, time_from_start: 12300)
+      SplitTime.create!(effort_id: @effort3.id, split_id: @split6.id, time_from_start: 18000)
+
+      SplitTime.create!(effort_id: @effort4.id, split_id: @split1.id, time_from_start: 1000)
+      SplitTime.create!(effort_id: @effort4.id, split_id: @split2.id, time_from_start: 4500)
+      SplitTime.create!(effort_id: @effort4.id, split_id: @split3.id, time_from_start: 4500)
+      SplitTime.create!(effort_id: @effort4.id, split_id: @split4.id, time_from_start: 11000)
+      SplitTime.create!(effort_id: @effort4.id, split_id: @split5.id, time_from_start: 11000)
+      SplitTime.create!(effort_id: @effort4.id, split_id: @split6.id, time_from_start: 17500)
+
+      SplitTime.create!(effort_id: @effort5.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort5.id, split_id: @split2.id, time_from_start: 4600)
+      SplitTime.create!(effort_id: @effort5.id, split_id: @split3.id, time_from_start: 4800)
+      SplitTime.create!(effort_id: @effort5.id, split_id: @split4.id, time_from_start: 9800)
+      SplitTime.create!(effort_id: @effort5.id, split_id: @split5.id, time_from_start: 10000)
+      SplitTime.create!(effort_id: @effort5.id, split_id: @split6.id, time_from_start: 14550)
+
+      SplitTime.create!(effort_id: @effort6.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort6.id, split_id: @split2.id, time_from_start: 3800)
+      SplitTime.create!(effort_id: @effort6.id, split_id: @split3.id, time_from_start: 3900)
+      SplitTime.create!(effort_id: @effort6.id, split_id: @split4.id, time_from_start: 9600)
+      SplitTime.create!(effort_id: @effort6.id, split_id: @split5.id, time_from_start: 9660)
+      SplitTime.create!(effort_id: @effort6.id, split_id: @split6.id, time_from_start: 14650)
+
+      SplitTime.create!(effort_id: @effort7.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort7.id, split_id: @split2.id, time_from_start: 6300)
+      SplitTime.create!(effort_id: @effort7.id, split_id: @split3.id, time_from_start: 6600)
+      SplitTime.create!(effort_id: @effort7.id, split_id: @split4.id, time_from_start: 13000)
+      SplitTime.create!(effort_id: @effort7.id, split_id: @split5.id, time_from_start: 13500)
+      SplitTime.create!(effort_id: @effort7.id, split_id: @split6.id, time_from_start: 22000)
+
+      SplitTime.create!(effort_id: @effort8.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort8.id, split_id: @split2.id, time_from_start: 5500)
+      SplitTime.create!(effort_id: @effort8.id, split_id: @split3.id, time_from_start: 5500)
+      SplitTime.create!(effort_id: @effort8.id, split_id: @split4.id, time_from_start: 12500)
+      SplitTime.create!(effort_id: @effort8.id, split_id: @split5.id, time_from_start: 12800)
+      SplitTime.create!(effort_id: @effort8.id, split_id: @split6.id, time_from_start: 18700)
+
+      SplitTime.create!(effort_id: @effort9.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort9.id, split_id: @split2.id, time_from_start: 11000)
+      SplitTime.create!(effort_id: @effort9.id, split_id: @split3.id, time_from_start: 12000)
+      SplitTime.create!(effort_id: @effort9.id, split_id: @split4.id, time_from_start: 20000)
+      SplitTime.create!(effort_id: @effort9.id, split_id: @split6.id, time_from_start: 30000)
+      SplitTime.create!(effort_id: @effort9.id, split_id: @split5.id, time_from_start: 22000)
+
+      SplitTime.create!(effort_id: @effort10.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort10.id, split_id: @split2.id, time_from_start: 40240)
+      SplitTime.create!(effort_id: @effort10.id, split_id: @split3.id, time_from_start: 4300)
+      SplitTime.create!(effort_id: @effort10.id, split_id: @split4.id, time_from_start: 11000)
+      SplitTime.create!(effort_id: @effort10.id, split_id: @split5.id, time_from_start: 11100)
+      SplitTime.create!(effort_id: @effort10.id, split_id: @split6.id, time_from_start: 17600)
+
+      SplitTime.create!(effort_id: @effort11.id, split_id: @split1.id, time_from_start: 0)
+      SplitTime.create!(effort_id: @effort11.id, split_id: @split2.id, time_from_start: 6800)
+      SplitTime.create!(effort_id: @effort11.id, split_id: @split3.id, time_from_start: 6800)
+      SplitTime.create!(effort_id: @effort11.id, split_id: @split4.id, time_from_start: 21000)
+      SplitTime.create!(effort_id: @effort11.id, split_id: @split5.id, time_from_start: 21200)
+      SplitTime.create!(effort_id: @effort11.id, split_id: @split6.id, time_from_start: 32000)
 
       @effort1.set_time_data_status_best
       @effort2.set_time_data_status_best
+      @effort3.set_time_data_status_best
+      @effort4.set_time_data_status_best
+      @effort8.set_time_data_status_best
+      @effort10.set_time_data_status_best
+      @effort11.set_time_data_status_best
 
-    end
-
-    it 'should set the data status of negative segment times to bad' do
-      expect(@split_time5.data_status).to eq('bad')
-      expect(@split_time12.data_status).to eq('bad')
-    end
-
-    it 'should set the data status of impossibly fast segments to bad' do
-      expect(@split_time8.data_status).to eq('bad')
-      expect(@split_time12.data_status).to eq('bad')
     end
 
     it 'should set the data status of the instance effort to the lowest status of the split times' do
       expect(@effort1.data_status).to eq('bad')
       expect(@effort2.data_status).to eq('bad')
+      expect(@effort3.data_status).to eq('good')
+      expect(@effort8.data_status).to eq('good')
+      expect(@effort11.data_status).to eq('questionable')
+    end
+
+    it 'should set the data status of negative segment times to bad' do
+      expect(@effort1.split_times.where(split_id: 5).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split_id: 6).first.bad?).to eq(true)
+    end
+
+    it 'should set the data status of split_times properly' do
+      expect(@effort1.split_times.good.count).to eq(5)
+      expect(@effort1.split_times.bad.count).to eq(1)
+      expect(@effort2.split_times.good.count).to eq(1)
+      expect(@effort2.split_times.questionable.count).to eq(1)
+      expect(@effort2.split_times.bad.count).to eq(4)
+      expect(@effort4.split_times.good.count).to eq(5)
+      expect(@effort4.split_times.bad.count).to eq(1)
+    end
+
+    it 'should set the data status of non-zero start splits to bad' do
+      expect(@effort4.split_times.where(split_id: 1).first.bad?).to eq(true)
+    end
+
+    it 'should set the data status of impossibly fast segments to bad' do
+      expect(@effort2.split_times.where(split_id: 2).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split_id: 3).first.bad?).to eq(true)
+    end
+
+    it 'should set the data status of impossibly slow segments to bad' do
+      expect(@effort2.split_times.where(split_id: 5).first.bad?).to eq(true)
+      expect(@effort10.split_times.where(split_id: 2).first.bad?).to eq(true)
     end
   end
 

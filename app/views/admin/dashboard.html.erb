@@ -9,17 +9,17 @@
     <h4>Database Statistics</h4><br/>
     <%= "Participants: #{Participant.all.count}" %><br/>
     <%= "Events: #{Event.all.count} with #{Effort.unreconciled.count} unreconciled efforts" %><br/>
-    <%= "Efforts: #{Effort.all.count} with #{Effort.all.bad.count} problems" %><br/>
-    <%= "Split Times: #{SplitTime.all.count} with #{SplitTime.all.bad.count} problems" %><br/>
+    <%= "Efforts: #{Effort.all.count} with #{Effort.bad.count} bad and #{Effort.questionable.count} questionable" %><br/>
+    <%= "Split Times: #{SplitTime.all.count} with #{SplitTime.bad.count} bad and #{SplitTime.questionable.count} questionable" %><br/>
     <%= "Courses: #{Course.all.count}" %><br/>
     <%= "Splits: #{Split.all.count}" %><br/>
-    <%= "Locations: #{Split.all.count}" %><br/>
+    <%= "Locations: #{Location.all.count}" %><br/>
   </div>
 </div>
 <hr>
 <div class="row">
   <div class="col-xs-6">
     <h4>Actions</h4><br/>
-    <%= link_to "Check split times", check_split_times_admin_path, class: 'btn btn-sm btn-primary' %><br/>
+    <%= link_to "Flag bad time data", flag_split_times_admin_path, class: 'btn btn-sm btn-primary' %><br/>
   </div>
 </div>

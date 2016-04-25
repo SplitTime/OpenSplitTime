@@ -95,3 +95,7 @@ module ApplicationHelper
   alias_method :peu, :preferred_elevation_unit
 
 end
+
+def display_name(split_id)
+  @effort.event.splits.find(split_id).base_name
+end

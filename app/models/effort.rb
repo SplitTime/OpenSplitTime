@@ -9,6 +9,8 @@ class Effort < ActiveRecord::Base
   belongs_to :event, touch: true
   belongs_to :participant
   has_many :split_times, dependent: :destroy
+  accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:time_as_entered].blank? }
+
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_time
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
@@ -202,23 +204,9 @@ class Effort < ActiveRecord::Base
 
   # Admin functions to set data status
 
-  def set_time_data_status_solo
-    return if split_times.count < 1
-    ordered_group = ordered_split_times.to_a
-    ordered_group[0].update(data_status: 'questionable') if ordered_group[0].time_from_start != 0
-    return if ordered_group.count < 2
-    (1..ordered_group.count - 1).each do |i|
-      split_time = ordered_group[i]
-      if split_time.time_from_start - ordered_group[i - 1].time_from_start < 0
-        split_time.update(data_status: 'bad')
-      end # Otherwise leave nil; we don't want to set data status to 'good' based on solo review
-    end
-    set_self_data_status
-  end
-
   def set_time_data_status_best # Sets data status for all split_times belonging to the instance effort
     ordered_split_times.each do |split_time|
-      split_time.update(data_status: get_actual_status(split_time))
+      split_time.update(data_status: get_actual_status(split_time)) unless split_time.confirmed?
     end
     set_self_data_status
   end
@@ -245,7 +233,7 @@ class Effort < ActiveRecord::Base
   def set_self_data_status
     time_status_data = split_times.pluck(:data_status)
     status = case
-               when time_status_data.exclude?(nil) && (time_status_data.min == 2) # All times are good
+               when time_status_data.exclude?(nil) && (time_status_data.min >= 2) # All times are good
                  'good'
                when time_status_data.compact.min == 1 # At least one questionable time but no bad times
                  'questionable'

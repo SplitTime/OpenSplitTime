@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   resources :efforts do
     member { put :associate_participant }
     collection { put :associate_participants}
-    member { get :edit_split_times }
+    member { put :edit_split_times }
     member { delete :delete_waypoint_group }
   end
   resources :split_times
@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   get '/auth/failure' => 'sessions#failure'
 
   get 'dashboard_admin', to: 'admin#dashboard'
-  get 'check_split_times_admin', to: 'admin#check_split_times'
+  get 'flag_split_times_admin', to: 'admin#flag_split_times'
 
   namespace :api do
     resources :courses, :efforts, :events, :locations, :participants, :split_times, :splits, :races

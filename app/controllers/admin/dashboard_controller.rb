@@ -6,7 +6,7 @@ class Admin::DashboardController < AdminController
     authorize :dashboard, :show?
   end
 
-  def check_split_times
+  def flag_split_times
     SplitTime.all.each do |split_time|
       split_time.data_status = 'bad' if split_time.segment_time < 0
     end

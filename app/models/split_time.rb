@@ -1,6 +1,6 @@
 class SplitTime < ActiveRecord::Base
   include Auditable
-  enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
+  enum data_status: [:bad, :questionable, :good, :confirmed] # nil = unknown, 0 = bad, 1 = questionable, 2 = good, 3 = confirmed
   belongs_to :effort
   belongs_to :split
 
@@ -64,7 +64,7 @@ class SplitTime < ActiveRecord::Base
     SplitTime.data_statuses[status]
   end
 
-  def st_statistical_data_status(params, split_time = nil) # params == [low, probably low, probably high, high]
+  def st_statistical_data_status(params, split_time = nil) # params == [low, probably low, probably high, high], split_time
     if split.start?
       status = time_from_start == 0 ? 'good' : 'bad'
       SplitTime.data_statuses[status]
@@ -130,6 +130,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def time_as_entered
+    return nil if time_from_start.nil?
     seconds = time_from_start % 60
     minutes = (time_from_start / 60) % 60
     hours = time_from_start / (60 * 60)

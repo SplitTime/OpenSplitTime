@@ -15,7 +15,7 @@
   </thead>
   <tbody>
   <% splits.each do |split| %>
-      <% data_status = status(@effort, split) %>
+      <% data_status = split_waypoint_group_status(@effort, split) %>
       <% if data_status == 0 %>
           <tr class="text-danger">
       <% elsif data_status == 1 %>

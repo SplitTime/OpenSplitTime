@@ -89,7 +89,7 @@ class EffortsController < ApplicationController
 
   def edit_split_times
     authorize @effort
-    session[:return_to] = edit_split_times_effort_path(@effort)
+    session[:return_to] = effort_path(@effort)
   end
 
   def delete_waypoint_group
@@ -106,7 +106,8 @@ class EffortsController < ApplicationController
   def effort_params
     params.require(:effort).permit(:first_name, :last_name, :gender, :wave, :bib_number, :age,
                                    :city, :state_code, :country_code, :start_time, :finished,
-                                   split_times: [:time_from_start, :data_status])
+                                   split_times_attributes: [:id, :split_id, :effort_id, :time_from_start,
+                                                            :time_as_entered, :data_status])
   end
 
   def query_params

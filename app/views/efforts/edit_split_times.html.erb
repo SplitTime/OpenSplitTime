@@ -1,3 +1,66 @@
-<h1>Edit Split Times</h1>
+<h2>Update Split Times</h2>
 
-<%= render 'form_split_times' %>
+<div class="row">
+  <div class="col-xs-12">
+    <h2><%= "| #{@effort.full_name} • #{@effort.event.name} • #{@effort.finish_status} |" %></h2>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <%= link_to '<< Back to effort', effort_path(@effort), class: "btn btn-sm btn-default" %>
+  </div>
+</div>
+<hr>
+<%= form_for(@effort, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+    <div class="form-group">
+      <div class="control-label col-sm-2">
+        <%= f.label :bib_number %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.text_field :bib_number, class: "form-control", placeholder: "Course name", autofocus: true %>
+      </div>
+    </div>
+
+    <table class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th>Waypoint</th>
+        <th class="text-center">Time In</th>
+        <th class="text-center">Time Out</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @effort.event.waypoint_groups.each do |waypoint_group| %>
+          <% data_status = waypoint_group_status(@effort, waypoint_group) %>
+          <% if data_status == 0 %>
+              <tr class="text-danger">
+          <% elsif data_status == 1 %>
+              <tr class="text-warning">
+          <% else %>
+              <tr>
+          <% end %>
+          <td><%= "#{display_name(waypoint_group[0])}" %></td>
+          <% (0..waypoint_group.size - 1).each do |i| %>
+              <%= f.fields_for :split_times,
+                               @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],
+                                                                         effort_id: @effort.id) do |builder| %>
+                  <td><%= builder.text_field :time_as_entered, class: 'form-control', placeholder: 'hh:mm:ss' %></td>
+              <% end %>
+          <% end %>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit("Update Times", class: 'btn btn-primary btn-large') %>
+      </div>
+    </div>
+    <div class="col-xs-4 col-xs-offset-2">
+      [ <%= link_to 'Cancel', effort_path(@effort) %> ]
+    </div>
+<% end %>
+

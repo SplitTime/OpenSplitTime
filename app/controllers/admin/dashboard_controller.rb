@@ -1,4 +1,4 @@
-class Admin::DashboardController < AdminController
+class Admin::DashboardController < Admin::BaseController
   before_action :authenticate_user!
   after_action :verify_authorized
 
@@ -10,7 +10,7 @@ class Admin::DashboardController < AdminController
     SplitTime.all.each do |split_time|
       split_time.data_status = 'bad' if split_time.segment_time < 0
     end
-
+    redirect_to admin_root_path
   end
 
 end

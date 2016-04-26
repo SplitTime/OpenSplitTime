@@ -20,6 +20,11 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@unreconciled_efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
 
     <table class="table table-condensed table-striped">
 
@@ -42,6 +47,12 @@
       </tbody>
 
     </table>
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@unreconciled_efforts, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
 <% else %>
     <div class="page-header">
       <div class="row">

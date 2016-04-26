@@ -68,7 +68,7 @@ class EventsController < ApplicationController
   end
 
 
-  # All actions below are related to event staging
+  # Event staging actions
 
   def stage
     authorize @event
@@ -76,6 +76,10 @@ class EventsController < ApplicationController
     session[:return_to] = stage_event_path(@event)
   end
 
+  def reconcile
+    authorize @event
+    @unreconciled_efforts = @event.unreconciled_efforts.order(:last_name).paginate(page: params[:page], per_page: 25)
+  end
 
   # Import actions
 
@@ -94,6 +98,12 @@ class EventsController < ApplicationController
     authorize @event
     if Importer.effort_import(params[:file], @event, current_user.id)
       flash[:success] = "Import successful"
+      auto_matched_count = @event.reconciled_efforts.count
+      if auto_matched_count > 0
+        flash[:success] = "We found #{auto_matched_count} participants that matched our database. Please reconcile the others now."
+      else
+        flash[:success] = "No participants matched our database. Please reconcile your participants now."
+      end
     else
       flash[:danger] = "No effort data detected"
     end
@@ -132,14 +142,6 @@ class EventsController < ApplicationController
     authorize @event
     @event.splits.delete(Split.waypoint)
     redirect_to splits_event_path(@event)
-  end
-
-
-  # Action for reconciling event.efforts data with existing participants
-
-  def reconcile
-    authorize @event
-    @unreconciled_efforts = @event.unreconciled_efforts.order(:last_name)
   end
 
 

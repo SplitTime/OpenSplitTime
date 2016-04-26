@@ -68,10 +68,8 @@ Rails.application.routes.draw do
   get '/signout' => 'sessions#destroy', :as => :signout
   get '/auth/failure' => 'sessions#failure'
 
-  get 'dashboard_admin', to: 'admin#dashboard'
-  get 'flag_split_times_admin', to: 'admin#flag_split_times'
-
-  namespace :api do
-    resources :courses, :efforts, :events, :locations, :participants, :split_times, :splits, :races
+  namespace :admin do
+    root 'dashboard#dashboard'
+    get 'flag_split_times', to: 'dashboard#flag_split_times'
   end
 end

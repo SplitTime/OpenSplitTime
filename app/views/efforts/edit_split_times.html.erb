@@ -26,13 +26,13 @@
     <table class="table table-condensed table-striped">
       <thead>
       <tr>
-        <th>Waypoint</th>
+        <th></th>
         <th class="text-center">Time In</th>
         <th class="text-center">Time Out</th>
       </tr>
       </thead>
       <tbody>
-      <% @effort.event.waypoint_groups.each do |waypoint_group| %>
+      <% @effort.event.waypoint_groups_without_start.each do |waypoint_group| %>
           <% data_status = waypoint_group_status(@effort, waypoint_group) %>
           <% if data_status == 0 %>
               <tr class="text-danger">
@@ -41,7 +41,7 @@
           <% else %>
               <tr>
           <% end %>
-          <td><%= "#{display_name(waypoint_group[0])}" %></td>
+          <td><h4><strong><%= "#{display_name(waypoint_group[0])}" %></strong></h4></td>
           <% (0..waypoint_group.size - 1).each do |i| %>
               <%= f.fields_for :split_times,
                                @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],

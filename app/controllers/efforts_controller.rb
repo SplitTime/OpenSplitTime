@@ -75,14 +75,7 @@ class EffortsController < ApplicationController
     if params[:ids].nil?
       redirect_to reconcile_event_path(@event)
     else
-      effort_ids = params[:ids].keys
-      participant_ids = params[:ids].values
-      (0..effort_ids.size - 1).each do |i|
-        @effort = Effort.find(effort_ids[i])
-        authorize @effort
-        @participant = Participant.find(participant_ids[i])
-        @participant.pull_data_from_effort(@effort.id)
-      end
+      assign_participants_to_efforts(params[:ids])
       redirect_to reconcile_event_path(@event)
     end
   end

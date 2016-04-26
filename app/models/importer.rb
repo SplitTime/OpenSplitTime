@@ -73,11 +73,12 @@ class Importer
       if @effort
         create_split_times(row, header1, split_id_array, split_offset, @effort, current_user_id)
         @effort.reset_time_from_start
-        @effort.set_time_data_status_best
       else
         effort_failure_array << row
       end
     end
+    # TODO set data status of all efforts after import
+    event.reconcile_exact_matches
     return effort_failure_array
   end
 

@@ -116,11 +116,6 @@ RSpec.describe SplitTime, kind: :model do
       expect(@split_time2.tfs_solo_data_status).to eq(0)
     end
 
-    it 'should return "good" or "bad" for a start split depending on time from start' do
-      expect(@split_time1.tfs_solo_data_status).to eq(2)
-      expect(@split_time9.tfs_solo_data_status).to eq(0)
-    end
-
     it 'should return "bad" or "questionable" as appropriate based on velocity' do
       expect(@split_time3.tfs_solo_data_status).to eq(1)
       expect(@split_time4.tfs_solo_data_status).to eq(0)
@@ -132,7 +127,7 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
-  describe 'st_solo_data_status' do
+  describe 'st_data_status' do
     before do
 
       DatabaseCleaner.clean
@@ -166,25 +161,20 @@ RSpec.describe SplitTime, kind: :model do
     end
 
     it 'should return "bad" when segment time is negative' do
-      expect(@split_time7.st_solo_data_status).to eq(0)
-    end
-
-    it 'should return "good" or "bad" for a start split depending on time from start' do
-      expect(@split_time1.st_solo_data_status).to eq(2)
-      expect(@split_time9.st_solo_data_status).to eq(0)
+      expect(@split_time7.st_data_status).to eq(0)
     end
 
     it 'for segments within a waypoint group, should return "bad" for excessively long periods' do
-      expect(@split_time3.st_solo_data_status).to eq(0)
+      expect(@split_time3.st_data_status).to eq(0)
     end
 
     it 'for segments not in a waypoint group, should return "bad" or "questionable" as appropriate based on segment velocity' do
-      expect(@split_time2.st_solo_data_status).to eq(1)
-      expect(@split_time4.st_solo_data_status).to eq(0)
-      expect(@split_time6.st_solo_data_status).to eq(nil)
-      expect(@split_time8.st_solo_data_status).to eq(nil)
-      expect(@split_time10.st_solo_data_status).to eq(0)
-      expect(@split_time12.st_solo_data_status).to eq(1)
+      expect(@split_time2.st_data_status).to eq(1)
+      expect(@split_time4.st_data_status).to eq(0)
+      expect(@split_time6.st_data_status).to eq(nil)
+      expect(@split_time8.st_data_status).to eq(nil)
+      expect(@split_time10.st_data_status).to eq(0)
+      expect(@split_time12.st_data_status).to eq(1)
     end
   end
 

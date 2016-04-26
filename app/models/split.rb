@@ -113,13 +113,13 @@ class Split < ActiveRecord::Base
     events.order(first_start_time: :asc).last.first_start_time
   end
 
-  def set_data_status_best # Sets data status on all split_times for the instance split
-    tfs_data_set = split_times.pluck(:time_from_start)
-    tfs_count = tfs_data_set.count
-    tfs_low, tfs_low_q, tfs_high_q, tfs_high = Split.low_and_high_params(tfs_data_set)
-    st_data_set = Course.segment_time_data_set(self).values
-    st_count = st_data_set.count
-    st_low, st_low_q, st_high_q, st_high = Split.low_and_high_params(st_data_set)
+  def set_data_status # Sets data status on all split_times for the instance split
+    tfs_data_array = split_times.pluck(:time_from_start)
+    tfs_count = tfs_data_array.count
+    tfs_low, tfs_low_q, tfs_high_q, tfs_high = Split.low_and_high_params(tfs_data_array)
+    st_data_array = Course.segment_time_data_array(self).values
+    st_count = st_data_array.count
+    st_low, st_low_q, st_high_q, st_high = Split.low_and_high_params(st_data_array)
     split_times.each do |split_time|
       current_status = split_time.data_status
       tfs_data_status = (tfs_count >= 10) ?

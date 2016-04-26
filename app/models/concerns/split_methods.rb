@@ -21,7 +21,7 @@ module SplitMethods
     ordered_splits[ordered_splits.index(split) - 1]
   end
 
-  def segment_time_data_set(split1, split2 = nil)
+  def segment_time_data_array(split1, split2 = nil)
     # Returns a hash of effort_ids and segment times:
     # split2 - split1 if split2 or split1 - prior split if split2.nil
     return nil if split1.nil?
@@ -42,6 +42,12 @@ module SplitMethods
       result << waypoint_group(split).map(&:id)
     end
     result.uniq
+  end
+
+  def waypoint_groups_without_start
+    result = waypoint_groups
+    result.shift
+    result
   end
 
   def waypoint_group(split)

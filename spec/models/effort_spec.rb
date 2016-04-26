@@ -164,7 +164,7 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe 'set_time_data_status_best' do
+  describe 'set_time_data_status' do
     before do
 
       DatabaseCleaner.clean
@@ -280,17 +280,17 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort_id: @effort13.id, split_id: @split5.id, time_from_start: 14300)
       SplitTime.create!(effort_id: @effort13.id, split_id: @split6.id, time_from_start: 19800)
 
-      @effort1.set_time_data_status_best
-      @effort2.set_time_data_status_best
-      @effort3.set_time_data_status_best
-      @effort4.set_time_data_status_best
-      @effort5.set_time_data_status_best
-      @effort6.set_time_data_status_best
-      @effort7.set_time_data_status_best
-      @effort8.set_time_data_status_best
-      @effort9.set_time_data_status_best
-      @effort10.set_time_data_status_best
-      @effort11.set_time_data_status_best
+      @effort1.set_time_data_status
+      @effort2.set_time_data_status
+      @effort3.set_time_data_status
+      @effort4.set_time_data_status
+      @effort5.set_time_data_status
+      @effort6.set_time_data_status
+      @effort7.set_time_data_status
+      @effort8.set_time_data_status
+      @effort9.set_time_data_status
+      @effort10.set_time_data_status
+      @effort11.set_time_data_status
 
     end
 

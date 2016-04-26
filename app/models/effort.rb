@@ -268,9 +268,9 @@ class Effort < ActiveRecord::Base
     sort_hash = all.index_by &:id
     splits = event.splits.includes(:split_times).ordered
     splits.each do |split|
-      time_hash = split.split_times.where(effort_id: sort_hash.keys).index_by &:effort_id
+      time_hash = Hash[split.split_times.where(effort_id: sort_hash.keys).pluck(:effort_id, :time_from_start)]
       sort_hash.each_key do |key|
-        time = time_hash[key] ? time_hash[key].time_from_start : nil
+        time = time_hash[key] ? time_hash[key] : nil
         sort_hash[key] = time
       end
       sort_hash = Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }]

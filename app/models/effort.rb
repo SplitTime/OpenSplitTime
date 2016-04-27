@@ -278,6 +278,24 @@ class Effort < ActiveRecord::Base
     sort_hash.keys
   end
 
+  def self.ids_sorted_ultra_style_alt # Do sort in memory using a single 2D array
+    return [] if all.count == 0
+    raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
+    event = first.event
+    splits = event.ordered_splits.pluck(:id).unshift(0) # Create placeholder for effort_id
+    sort_hash = all.index_by &:id
+    splits = event.splits.includes(:split_times).ordered
+    splits.each do |split|
+      time_hash = Hash[split.split_times.where(effort_id: sort_hash.keys).pluck(:effort_id, :time_from_start)]
+      sort_hash.each_key do |key|
+        time = time_hash[key] ? time_hash[key] : nil
+        sort_hash[key] = time
+      end
+      sort_hash = Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }]
+    end
+    sort_hash.keys
+  end
+
   def self.efforts_from_ids(effort_ids)
     efforts_by_id = Effort.find(effort_ids).index_by(&:id)
     effort_ids.collect { |id| efforts_by_id[id] }

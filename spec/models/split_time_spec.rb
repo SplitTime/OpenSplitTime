@@ -9,13 +9,13 @@ RSpec.describe SplitTime, kind: :model do
   
   before :each do
     DatabaseCleaner.clean
-    @course = Course.create!(name: 'Test Course')
-    @event = Event.create!(course_id: @course.id, name: 'Test Event 2015', first_start_time: "2015-07-01 06:00:00")
-    @effort = Effort.create!(event_id: @event.id, first_name: 'David', last_name: 'Goliath', gender: 'male', start_time: "2015-07-01 06:00:00")
-    @location1 = Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
-    @location2 = Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
-    @location3 = Location.create(name: 'Mountain Getaway', elevation: 2950, latitude: 40.3, longitude: -105.15)
-    @split = Split.create!(course_id: @course.id, location_id: @location1.id, name: 'Hopeless Outbound In', distance_from_start: 50000, kind: 2)
+    @course = Course.create!(name: 'Test Course', created_by: 'foo', updated_by: 'bar')
+    @event = Event.create!(course_id: @course.id, name: 'Test Event 2015', first_start_time: "2015-07-01 06:00:00", created_by: 'foo', updated_by: 'bar')
+    @effort = Effort.create!(event_id: @event.id, first_name: 'David', last_name: 'Goliath', gender: 'male', start_time: "2015-07-01 06:00:00", created_by: 'foo', updated_by: 'bar')
+    @location1 = Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105, created_by: 'foo', updated_by: 'bar')
+    @location2 = Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05, created_by: 'foo', updated_by: 'bar')
+    @location3 = Location.create(name: 'Mountain Getaway', elevation: 2950, latitude: 40.3, longitude: -105.15, created_by: 'foo', updated_by: 'bar')
+    @split = Split.create!(course_id: @course.id, location_id: @location1.id, name: 'Hopeless Outbound In', distance_from_start: 50000, kind: 2, created_by: 'foo', updated_by: 'bar')
 
   end
   it "should be valid when created with an effort_id, a split_id, and a time_from_start" do
@@ -83,47 +83,54 @@ RSpec.describe SplitTime, kind: :model do
     before do
 
       DatabaseCleaner.clean
-      @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course_id: @course.id, first_start_time: "2015-07-01 06:00:00")
+      @course = Course.create!(name: 'Test Course 100', created_by: 'foo', updated_by: 'bar')
+      @event = Event.create!(name: 'Test Event 2015', course_id: @course.id, first_start_time: "2015-07-01 06:00:00", created_by: 'foo', updated_by: 'bar')
 
-      @effort1 = Effort.create!(event_id: @event.id, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      @effort2 = Effort.create!(event_id: @event.id, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
-      @effort3 = Effort.create!(event_id: @event.id, bib_number: 20, city: 'Louisville', state_code: 'CO', country_code: 'US', age: 43, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Bill', last_name: 'Williams', gender: 'male')
+      @effort1 = Effort.create!(event_id: @event.id, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Jen', last_name: 'Huckster', gender: 'female', created_by: 'foo', updated_by: 'bar')
+      @effort2 = Effort.create!(event_id: @event.id, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Joe', last_name: 'Hardman', gender: 'male', created_by: 'foo', updated_by: 'bar')
+      @effort3 = Effort.create!(event_id: @event.id, bib_number: 20, city: 'Louisville', state_code: 'CO', country_code: 'US', age: 43, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Bill', last_name: 'Williams', gender: 'male', created_by: 'foo', updated_by: 'bar')
 
-      @split1 = Split.create!(course_id: @course.id, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course_id: @course.id, name: 'Test Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split3 = Split.create!(course_id: @course.id, name: 'Test Aid Station Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course_id: @course.id, name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+      @split1 = Split.create!(course_id: @course.id, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0, created_by: 'foo', updated_by: 'bar')
+      @split2 = Split.create!(course_id: @course.id, name: 'Test Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2, created_by: 'foo', updated_by: 'bar')
+      @split3 = Split.create!(course_id: @course.id, name: 'Test Aid Station Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2, created_by: 'foo', updated_by: 'bar')
+      @split4 = Split.create!(course_id: @course.id, name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1, created_by: 'foo', updated_by: 'bar')
 
       @event.splits << @course.splits
 
-      @split_time1 = SplitTime.create!(effort_id: @effort1.id, split_id: @split1.id, time_from_start: 0)
-      @split_time2 = SplitTime.create!(effort_id: @effort1.id, split_id: @split2.id, time_from_start: -100)
-      @split_time3 = SplitTime.create!(effort_id: @effort1.id, split_id: @split3.id, time_from_start: 13000)
-      @split_time4 = SplitTime.create!(effort_id: @effort1.id, split_id: @split4.id, time_from_start: 150000)
-      @split_time5 = SplitTime.create!(effort_id: @effort2.id, split_id: @split1.id, time_from_start: 0)
-      @split_time6 = SplitTime.create!(effort_id: @effort2.id, split_id: @split2.id, time_from_start: 5000)
-      @split_time7 = SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 5100)
-      @split_time8 = SplitTime.create!(effort_id: @effort2.id, split_id: @split4.id, time_from_start: 9000)
-      @split_time9 = SplitTime.create!(effort_id: @effort3.id, split_id: @split1.id, time_from_start: 100)
-      @split_time10 = SplitTime.create!(effort_id: @effort3.id, split_id: @split2.id, time_from_start: 300)
-      @split_time11 = SplitTime.create!(effort_id: @effort3.id, split_id: @split3.id, time_from_start: 350)
-      @split_time12 = SplitTime.create!(effort_id: @effort3.id, split_id: @split4.id, time_from_start: 700)
+      @split_time1 = SplitTime.create!(effort_id: @effort1.id, split_id: @split1.id, time_from_start: 0, created_by: 'foo', updated_by: 'bar')
+      @split_time2 = SplitTime.create!(effort_id: @effort1.id, split_id: @split2.id, time_from_start: -100, created_by: 'foo', updated_by: 'bar')
+      @split_time3 = SplitTime.create!(effort_id: @effort1.id, split_id: @split3.id, time_from_start: 13000, created_by: 'foo', updated_by: 'bar')
+      @split_time4 = SplitTime.create!(effort_id: @effort1.id, split_id: @split4.id, time_from_start: 150000, created_by: 'foo', updated_by: 'bar')
+      @split_time5 = SplitTime.create!(effort_id: @effort2.id, split_id: @split1.id, time_from_start: 0, created_by: 'foo', updated_by: 'bar')
+      @split_time6 = SplitTime.create!(effort_id: @effort2.id, split_id: @split2.id, time_from_start: 5000, created_by: 'foo', updated_by: 'bar')
+      @split_time7 = SplitTime.create!(effort_id: @effort2.id, split_id: @split3.id, time_from_start: 5100, created_by: 'foo', updated_by: 'bar')
+      @split_time8 = SplitTime.create!(effort_id: @effort2.id, split_id: @split4.id, time_from_start: 9000, created_by: 'foo', updated_by: 'bar')
+      @split_time9 = SplitTime.create!(effort_id: @effort3.id, split_id: @split1.id, time_from_start: 100, created_by: 'foo', updated_by: 'bar')
+      @split_time10 = SplitTime.create!(effort_id: @effort3.id, split_id: @split2.id, time_from_start: 300, created_by: 'foo', updated_by: 'bar')
+      @split_time11 = SplitTime.create!(effort_id: @effort3.id, split_id: @split3.id, time_from_start: 350, created_by: 'foo', updated_by: 'bar')
+      @split_time12 = SplitTime.create!(effort_id: @effort3.id, split_id: @split4.id, time_from_start: 700, created_by: 'foo', updated_by: 'bar')
 
     end
 
     it 'should return "bad" when time_from_start is negative' do
-      expect(@split_time2.tfs_solo_data_status).to eq(0)
+      expect(@split_time2.tfs_solo_data_status).to eq(:bad)
+    end
+
+    it 'should return "good" or "bad" for a start split depending on time from start' do
+      expect(@split_time1.tfs_solo_data_status).to eq(:good)
+      expect(@split_time5.tfs_solo_data_status).to eq(:good)
+      expect(@split_time9.tfs_solo_data_status).to eq(:bad)
     end
 
     it 'should return "bad" or "questionable" as appropriate based on velocity' do
-      expect(@split_time3.tfs_solo_data_status).to eq(1)
-      expect(@split_time4.tfs_solo_data_status).to eq(0)
-      expect(@split_time6.tfs_solo_data_status).to eq(nil)
-      expect(@split_time7.tfs_solo_data_status).to eq(nil)
-      expect(@split_time10.tfs_solo_data_status).to eq(0)
-      expect(@split_time11.tfs_solo_data_status).to eq(0)
-      expect(@split_time12.tfs_solo_data_status).to eq(1)
+      expect(@split_time3.tfs_solo_data_status).to eq(:questionable)
+      expect(@split_time4.tfs_solo_data_status).to eq(:bad)
+      expect(@split_time6.tfs_solo_data_status).to eq(:good)
+      expect(@split_time7.tfs_solo_data_status).to eq(:good)
+      expect(@split_time8.tfs_solo_data_status).to eq(:good)
+      expect(@split_time10.tfs_solo_data_status).to eq(:bad)
+      expect(@split_time11.tfs_solo_data_status).to eq(:bad)
+      expect(@split_time12.tfs_solo_data_status).to eq(:questionable)
     end
   end
 

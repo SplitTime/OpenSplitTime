@@ -262,11 +262,11 @@ class Effort < ActiveRecord::Base
   end
 
   def self.ids_sorted_ultra_style
-    return [] if all.count == 0
+    return [] if all.count < 1
     raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
-    event = first.event
+    event = Event.includes(:efforts => :split_times).where(id: all.first.event_id).first
     sort_hash = all.index_by &:id
-    splits = event.splits.includes(:split_times).ordered
+    splits = event.ordered_splits
     splits.each do |split|
       time_hash = Hash[split.split_times.where(effort_id: sort_hash.keys).pluck(:effort_id, :time_from_start)]
       sort_hash.each_key do |key|

@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-xs-6">
+    <h2><%= @event.name %></h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
+    <strong><%= "#{@event.first_start_time.to_formatted_s(:long)}" %></strong><br/>
+    <strong>Course:</strong>
+    <%= link_to @event.course.name, course_path(@event.course) %>
+    <% if @event.race %> |
+        <strong>Race:</strong>
+        <%= link_to @event.race.name, race_path(@event.race) %>
+    <% end %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-8">
+    <%= link_to '<< Back to event', event_path(@event), class: 'btn btn-sm btn-default' %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>From</th>
+      <% ordered_splits = @event.ordered_splits_without_start %>
+      <% ordered_splits.each do |split| %>
+          <th><%= split.name %></th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% time_array = @event.efforts.sorted_ultra_time_array %>
+    <% efforts = Effort.efforts_from_ids(time_array.map { |x| x[0] }) %>
+    <% time_array.each do |row| %>
+    <% effort = efforts.find { |s| s.id == row[0] } %>
+        <tr>
+          <td><%= time_array.index(row) + 1 %></td>
+          <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+          <td><%= effort.bio_historic %></td>
+          <td><%= effort.state_and_country %></td>
+          <% (1...row.size).each do |i| %>
+              <td><%= time_format_hhmm(row[i]) %></td>
+          <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

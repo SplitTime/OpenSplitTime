@@ -9,7 +9,11 @@ class EffortsController < ApplicationController
 
   def show
     @effort = Effort.includes(:split_times => {:split => :course}).find(params[:id])
-    @effort.set_time_data_status if params[:set_data_status] == 'true'
+    if params[:set_data_status]
+      @effort.set_time_data_status
+      params.delete(:set_data_status)
+      redirect_to effort_path(@effort)
+    end
     session[:return_to] = effort_path(@effort)
   end
 
@@ -29,8 +33,6 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
-      @effort.event.touch # Force cache update
-      @effort.event.course.touch
       redirect_to session.delete(:return_to) || @effort
     else
       render 'new'

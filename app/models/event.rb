@@ -37,7 +37,7 @@ class Event < ActiveRecord::Base
   end
 
   def reconciled_efforts
-    efforts.where(participant_id: !nil)
+    efforts.where.not(participant_id: nil)
   end
 
   def unreconciled_efforts

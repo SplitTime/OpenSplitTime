@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :spread]
   before_action :set_event, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
     @events = Event.paginate(page: params[:page], per_page: 25).order(first_start_time: :desc)
@@ -109,6 +109,10 @@ class EventsController < ApplicationController
     end
 
     redirect_to stage_event_path(@event)
+  end
+
+  def spread
+    session[:return_to] = spread_event_path(@event)
   end
 
 

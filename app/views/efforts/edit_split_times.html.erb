@@ -9,17 +9,17 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '<< Back to effort', effort_path(@effort), class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Back to effort', effort_path(@effort), class: 'btn btn-sm btn-default' %>
   </div>
 </div>
 <hr>
-<%= form_for(@effort, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+<%= form_for(@effort, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
     <div class="form-group">
       <div class="control-label col-sm-2">
         <%= f.label :bib_number %>
       </div>
       <div class="col-sm-2">
-        <%= f.text_field :bib_number, class: "form-control", placeholder: "Course name", autofocus: true %>
+        <%= f.text_field :bib_number, class: 'form-control', placeholder: 'Course name', autofocus: true %>
       </div>
     </div>
 
@@ -42,7 +42,7 @@
               <tr>
           <% end %>
           <td><h4><strong><%= "#{display_name(waypoint_group[0])}" %></strong></h4></td>
-          <% (0..waypoint_group.size - 1).each do |i| %>
+          <% (0...waypoint_group.size).each do |i| %>
               <%= f.fields_for :split_times,
                                @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],
                                                                          effort_id: @effort.id) do |builder| %>
@@ -56,7 +56,7 @@
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit("Update Times", class: 'btn btn-primary btn-large') %>
+        <%= f.submit('Update Times', class: 'btn btn-primary btn-large') %>
       </div>
     </div>
     <div class="col-xs-4 col-xs-offset-2">

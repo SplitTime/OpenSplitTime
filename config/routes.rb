@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     member { delete :remove_all_splits }
     member { get :reconcile }
     member { get :stage}
+    member { get :spread}
   end
   resources :splits do
     member { get :assign_location }

@@ -16,7 +16,7 @@ class Importer
     distance_array = header2[split_offset - 1..header2.size - 1]
     split_id_array = []
     error_array = []
-    (0..split_array.size - 1).each do |i|
+    (0...split_array.size).each do |i|
       if i == 0 # First split is always kind = start and sub_order = 0
         kind = :start
         sub_order = 0
@@ -222,7 +222,7 @@ class Importer
 
   def self.create_effort (row_effort_data, effort_schema, event)
     @effort = event.efforts.new(start_time: event.first_start_time)
-    (0..effort_schema.size - 1).each do |i|
+    (0...effort_schema.size).each do |i|
       @effort.assign_attributes({effort_schema[i] => row_effort_data[i]}) unless effort_schema[i].nil?
     end
     if @effort.save
@@ -237,7 +237,7 @@ class Importer
     row_time_data = [0] + row_time_data if finish_times_only?(header1)
     return nil if split_array.size != row_time_data.size
     SplitTime.bulk_insert(:effort_id, :split_id, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
-      (0..split_array.size - 1).each do |i|
+      (0...split_array.size).each do |i|
         split_id = split_array[i]
         working_time = row_time_data[i]
         seconds = convert_time_to_standard(working_time)

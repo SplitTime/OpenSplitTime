@@ -200,8 +200,7 @@ class Effort < ActiveRecord::Base
   # Admin functions to set data status
 
   def set_time_data_status # Sets data status for all split_times belonging to the instance effort
-    Event.includes(:efforts => {:split_times => :split}).find(event_id)
-    ordered_split_times.each do |split_time|
+    ordered_split_times.includes(:effort).each do |split_time|
       next if split_time.confirmed?
       split_time.update(data_status: get_actual_data_status(split_time))
     end
@@ -235,6 +234,11 @@ class Effort < ActiveRecord::Base
     self.update(data_status: status)
   end
 
+  def self.efforts_from_ids(effort_ids)
+    efforts_by_id = Effort.find(effort_ids).index_by(&:id)
+    effort_ids.collect { |id| efforts_by_id[id] }
+  end
+
   private
 
   def self.ids_within_time_range(low_time, high_time)
@@ -262,47 +266,26 @@ class Effort < ActiveRecord::Base
     Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }].keys
   end
 
-  def self.ids_sorted_ultra_style # Do sort in memory using a single 2D array
-    return [] if all.count == 0
-    raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
-    sort_array = all.create_ultra_sort_array
-    (1..sort_array[0].size - 1).each do |i|
-      sort_array.sort_by! { |effort| [effort[i] ? 0 : 1, effort[i]] }
-    end
-    sort_array.map { |x| x[0] }
+  def self.ids_sorted_ultra_style
+    sorted_ultra_time_array.map { |x| x[0] }
   end
 
-  def self.create_ultra_sort_array
+  def self.sorted_ultra_time_array # Do sort in memory using a single 2D array
+    return [] if all.count == 0
+    raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
+    all.create_ultra_time_array.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
+  end
+
+  def self.create_ultra_time_array # Column 1 = effort_ids, columns 2..last = time data
     event = Event.includes(:efforts).where(id: all.first.event_id).first
     event_efforts = event.efforts.pluck(:id)
     result = event_efforts.map { |x| [x] }
     event.ordered_splits.each do |split|
+      next if split.start?
       tfs_hash = Hash[split.split_times.where(effort_id: event_efforts).pluck(:effort_id, :time_from_start)]
       result.collect! { |e| e << tfs_hash[e[0]] }
     end
     result
-  end
-
-  def self.ids_sorted_ultra_style_old # Keeping this around in case the new method doesn't work well in production
-    return [] if all.count < 1
-    raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
-    event = Event.includes(:efforts => :split_times).where(id: all.first.event_id).first
-    sort_hash = all.index_by &:id
-    splits = event.ordered_splits
-    splits.each do |split|
-      time_hash = Hash[split.split_times.where(effort_id: sort_hash.keys).pluck(:effort_id, :time_from_start)]
-      sort_hash.each_key do |key|
-        time = time_hash[key] ? time_hash[key] : nil
-        sort_hash[key] = time
-      end
-      sort_hash = Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }]
-    end
-    sort_hash.keys
-  end
-
-  def self.efforts_from_ids(effort_ids)
-    efforts_by_id = Effort.find(effort_ids).index_by(&:id)
-    effort_ids.collect { |id| efforts_by_id[id] }
   end
 
 end

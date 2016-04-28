@@ -14,7 +14,7 @@ module PersonalInfo
       country_name = nil
       state_name = state_code
     else
-      country_name = country.name
+      country_name = country.name == 'United States' ? 'US' : country.name
       state = country.subregions.coded(state_code)
       state_name = state.nil? ? state_code : state.name
     end

@@ -1,24 +1,18 @@
 <div class="row">
-  <div class="col-xs-6">
-    <h2><%= @event.name %></h2>
-  </div>
+  <h2><%= @event.name %></h2>
 </div>
 <div class="row">
-  <div class="col-xs-6">
-    <strong><%= "#{@event.first_start_time.to_formatted_s(:long)}" %></strong><br/>
-    <strong>Course:</strong>
-    <%= link_to @event.course.name, course_path(@event.course) %>
-    <% if @event.race %> |
-        <strong>Race:</strong>
-        <%= link_to @event.race.name, race_path(@event.race) %>
-    <% end %>
-  </div>
+  <strong><%= "#{@event.first_start_time.to_formatted_s(:long)}" %></strong><br/>
+  <strong>Course:</strong>
+  <%= link_to @event.course.name, course_path(@event.course) %>
+  <% if @event.race %> |
+      <strong>Race:</strong>
+      <%= link_to @event.race.name, race_path(@event.race) %>
+  <% end %>
 </div>
 <hr>
 <div class="row">
-  <div class="col-xs-8">
-    <%= link_to '<< Back to event', event_path(@event), class: 'btn btn-sm btn-default' %>
-  </div>
+  <%= link_to '<< Back to event', event_path(@event), class: 'btn btn-sm btn-default' %>
 </div>
 <hr>
 <div class="row">
@@ -39,8 +33,14 @@
     <% time_array = @event.efforts.sorted_ultra_time_array %>
     <% efforts = Effort.efforts_from_ids(time_array.map { |x| x[0] }) %>
     <% time_array.each do |row| %>
-    <% effort = efforts.find { |s| s.id == row[0] } %>
-        <tr>
+        <% effort = efforts.find { |s| s.id == row[0] } %>
+        <% if effort.bad? %>
+            <tr class="text-danger">
+        <% elsif effort.questionable? %>
+            <tr class="text-warning">
+        <% else %>
+            <tr>
+        <% end %>
           <td><%= time_array.index(row) + 1 %></td>
           <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
           <td><%= effort.bio_historic %></td>

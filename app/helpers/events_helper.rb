@@ -23,4 +23,8 @@ module EventsHelper
     id_hash
   end
 
+  def data_status(status_int)
+    Effort.data_statuses.key(status_int)
+  end
+
 end

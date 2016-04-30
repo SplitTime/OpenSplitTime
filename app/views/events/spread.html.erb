@@ -35,9 +35,9 @@
     <% time_array.each do |row| %>
         <% effort = efforts.find { |s| s.id == row[0] } %>
         <% if effort.bad? %>
-            <tr class="text-danger">
+            <tr class="text-success">
         <% elsif effort.questionable? %>
-            <tr class="text-warning">
+            <tr class="text-success">
         <% else %>
             <tr>
         <% end %>
@@ -45,8 +45,17 @@
           <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
           <td><%= effort.bio_historic %></td>
           <td><%= effort.state_and_country %></td>
-          <% (1...row.size).each do |i| %>
-              <td><%= time_format_hhmm(row[i]) %></td>
+          <% (1...row.size - 1).each do |i| %>
+              <% if data_status(row[-1][i]) == 'bad' %>
+                <td class="text-danger"><strong>
+            <% elsif data_status(row[-1][i]) == 'questionable' %>
+                <td class="text-warning"><strong>
+            <% else %>
+                <td>
+            <% end %>
+                <%= time_format_hhmm(row[i]) %>
+              </strong>
+            </td>
           <% end %>
         </tr>
     <% end %>

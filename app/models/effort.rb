@@ -270,22 +270,31 @@ class Effort < ActiveRecord::Base
     sorted_ultra_time_array.map { |x| x[0] }
   end
 
-  def self.sorted_ultra_time_array # Do sort in memory using a single 2D array
+  def self.sorted_ultra_time_array(with_start = false)
+    # Do sort in memory using an ultra_time_array
     return [] if all.count == 0
     raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
-    all.create_ultra_time_array.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
+    # First column (effort id keys) is ignored for the sort
+    # Last column (array of data_statuses) is ignored for the sort
+    all.create_ultra_time_array(with_start).sort_by { |a| a[1..-2].reverse.map { |e| e || Float::INFINITY } }
   end
 
-  def self.create_ultra_time_array # Column 1 = effort_ids, columns 2..last = time data
+  def self.create_ultra_time_array(with_start = false)
+    # Column 0 contains effort_ids, columns 1..-2 are time data, column -1 is an array of data statuses
     event = Event.includes(:efforts).where(id: all.first.event_id).first
     event_efforts = event.efforts.pluck(:id)
-    result = event_efforts.map { |x| [x] }
+    tfs_result = event_efforts.map { |x| [x] }
+    ds_result = event_efforts.map { |x| [x, nil] } # The nil is a placeholder for the row's collective data status
     event.ordered_splits.each do |split|
-      next if split.start?
+      next if split.start? unless with_start
       tfs_hash = Hash[split.split_times.where(effort_id: event_efforts).pluck(:effort_id, :time_from_start)]
-      result.collect! { |e| e << tfs_hash[e[0]] }
+      tfs_result.collect! { |e| e << tfs_hash[e[0]] }
+      ds_hash = Hash[split.split_times.where(effort_id: event_efforts).pluck(:effort_id, :data_status)]
+      ds_result.collect! { |e| e << ds_hash[e[0]] }
     end
-    result
+    ds_result.each { |x| x[1] = x[2..-1].compact.min }
+    ds_big_hash = Hash[ds_result.map {|r| [r[0],r[1..-1]]}]
+    tfs_result.collect! { |e| e << ds_big_hash[e[0]] }
   end
 
 end

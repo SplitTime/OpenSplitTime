@@ -51,18 +51,23 @@ class SplitTime < ActiveRecord::Base
 
   def tfs_solo_data_status
     velocity = tfs_velocity
-    status = if (time_from_start < 0) | (time_from_start > 1.year) # To catch obviously wrong data
-               'bad'
-             elsif velocity < 0.1 # About 0.2 mph or 5 hours/mile
-               'bad'
-             elsif velocity < 0.5 # About 1 mph
-               'questionable'
-             elsif velocity > 15
-               'bad'
-             elsif velocity > 5 # 5 m/s or roughly 11 mph is a temporary flag for speed; TODO store activity type?
-               'questionable'
-             end
-    SplitTime.data_statuses[status]
+    if split.start?
+      time_from_start == 0 ? :good : :bad
+    else
+      if (time_from_start < 0) | (time_from_start > 1.year) # To catch obviously wrong data
+        :bad
+      elsif velocity < 0.1 # About 0.2 mph or 5 hours/mile
+        :bad
+      elsif velocity < 0.5 # About 1 mph
+        :questionable
+      elsif velocity > 15
+        :bad
+      elsif velocity > 5 # 5 m/s or roughly 11 mph is a temporary flag for speed; TODO store activity type?
+        :questionable
+      else
+        :good
+      end
+    end
   end
 
   def st_data_status(split_time = nil)
@@ -92,6 +97,7 @@ class SplitTime < ActiveRecord::Base
       SplitTime.compare_and_get_status(time, params)
     end
   end
+
 
   def st_solo_data_status(distance, time)
     status = if distance == 0 # This is a time in aid (within a waypoint group)

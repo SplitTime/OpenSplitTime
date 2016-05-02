@@ -1,3 +1,0 @@
-class SegmentLimitsCache
-
-end

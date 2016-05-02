@@ -35,6 +35,8 @@ gem 'descriptive_statistics'
 gem 'time_difference'
 gem 'pg'
 gem 'active_record_union'
+gem 'upsert'
+gem 'activerecord-import'
 
 group :development do
   gem 'web-console', '~> 2.0'

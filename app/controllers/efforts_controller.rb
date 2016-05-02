@@ -8,12 +8,7 @@ class EffortsController < ApplicationController
   end
 
   def show
-    @effort = Effort.includes(:split_times => {:split => :course}).find(params[:id])
-    if params[:set_data_status]
-      @effort.set_time_data_status
-      params.delete(:set_data_status)
-      redirect_to effort_path(@effort)
-    end
+    @effort = Effort.find(params[:id])
     session[:return_to] = effort_path(@effort)
   end
 
@@ -91,9 +86,15 @@ class EffortsController < ApplicationController
     authorize @effort
     @split = Split.find(params[:split_id])
     @effort.split_times.where(split_id: @split.waypoint_group.pluck(:id)).destroy_all
-    @effort.set_self_data_status
+    @effort.set_data_status
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || effort_path(@effort)
+  end
+
+  def set_data_status
+    authorize @effort
+    @effort.set_data_status
+    redirect_to effort_path(@effort)
   end
 
   private

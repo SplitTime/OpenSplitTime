@@ -148,6 +148,11 @@ class EventsController < ApplicationController
     redirect_to splits_event_path(@event)
   end
 
+  def set_data_status
+    authorize @event
+    @event.set_data_status
+    redirect_to event_path(@event)
+  end
 
   private
 

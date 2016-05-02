@@ -164,7 +164,7 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe 'set_time_data_status' do
+  describe 'set_data_status' do
     before do
 
       DatabaseCleaner.clean
@@ -280,21 +280,11 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort_id: @effort13.id, split_id: @split5.id, time_from_start: 14300)
       SplitTime.create!(effort_id: @effort13.id, split_id: @split6.id, time_from_start: 19800)
 
-      @effort1.set_time_data_status
-      @effort2.set_time_data_status
-      @effort3.set_time_data_status
-      @effort4.set_time_data_status
-      @effort5.set_time_data_status
-      @effort6.set_time_data_status
-      @effort7.set_time_data_status
-      @effort8.set_time_data_status
-      @effort9.set_time_data_status
-      @effort10.set_time_data_status
-      @effort11.set_time_data_status
+      Effort.all.set_data_status
 
     end
 
-    it 'should set the data status of the instance effort to the lowest status of the split times' do
+    it 'should set the data status of the efforts to the lowest status of the split times' do
       expect(@effort1.data_status).to eq('bad')
       expect(@effort2.data_status).to eq('bad')
       expect(@effort3.data_status).to eq('good')

@@ -199,39 +199,53 @@ class Effort < ActiveRecord::Base
 
   # Admin functions to set data status
 
-  def set_time_data_status # Sets data status for all split_times belonging to the instance effort
-    ordered_split_times.includes(:effort).each do |split_time|
-      next if split_time.confirmed?
-      split_time.update(data_status: get_actual_data_status(split_time))
-    end
-    set_self_data_status
+  def set_data_status
+    Effort.where(id: id).set_data_status
   end
 
-  def get_actual_data_status(split_time)
-    if split_time.split.start?
-      SplitTime.data_statuses[split_time.time_from_start == 0 ? 'good' : 'bad']
-    else
-      tfs_overall = split_time.tfs_data_status
-      return 0 if tfs_overall == 0
-      previous = previous_valid_split_time(split_time)
-      st_overall = split_time.st_data_status(previous)
-      [tfs_overall, st_overall].compact.min
+  def self.set_data_status
+    efforts_for_update = []
+    # update_effort_hash = {}
+    event = Event.find(all.first.event_id)
+    split_ids = event.ordered_splits.pluck(:id)
+    cache = SegmentCalculationsCache.new
+    split_times = SplitTime.includes(:effort).where(effort_id: all.pluck(:id))
+    all.each do |effort|
+      status_array = []
+      split_times_for_update = []
+      # update_split_time_hash = {}
+      effort_split_times = split_times.where(effort_id: effort.id).index_by(&:split_id)
+      ordered_split_times = split_ids.collect { |id| effort_split_times[id] }
+      start_split_time = ordered_split_times.first
+      latest_valid_split_time = start_split_time
+      ordered_split_times.each do |split_time|
+        next if split_time.nil?
+        if split_time.confirmed?
+          latest_valid_split_time = split_time
+          next
+        end
+        segment = Segment.new(latest_valid_split_time.split, split_time.split)
+        segment_time = split_time.time_from_start - latest_valid_split_time.time_from_start
+        status = cache.get_data_status(segment, segment_time)
+        status_array << status
+        latest_valid_split_time = split_time if status == :good
+        if status != split_time.data_status.try(:to_sym)
+          split_time.assign_attributes(data_status: status)
+          split_times_for_update << split_time
+        end
+        # update_split_time_hash[split_time.id] = status if status != split_time.data_status.try(:to_sym)
+      end
+      split_times_for_update.each { |split_time| split_time.save }
+      # BulkUpdateService.bulk_update_split_time_status(split_times_for_update)
+      effort_status = DataStatus.get_lowest_data_status(status_array)
+      if effort_status != effort.data_status.try(:to_sym)
+        effort.assign_attributes(data_status: effort_status)
+        efforts_for_update << effort
+      end
+      # update_effort_hash[effort.id] = effort_status if effort_status != effort.data_status.try(:to_sym)
     end
-  end
-
-  def set_self_data_status
-    time_status_data = split_times.pluck(:data_status)
-    status = case
-               when time_status_data.exclude?(nil) && (time_status_data.min >= 2) # All times are good
-                 'good'
-               when time_status_data.compact.min == 1 # At least one questionable time but no bad times
-                 'questionable'
-               when time_status_data.compact.min == 0 # At least one bad time
-                 'bad'
-               else # Not all known good but no questionable or bad
-                 nil
-             end
-    self.update(data_status: status)
+    efforts_for_update.each { |effort| effort.save }
+    # BulkUpdateService.bulk_update_effort_status(efforts_for_update)
   end
 
   def self.efforts_from_ids(effort_ids)
@@ -243,7 +257,7 @@ class Effort < ActiveRecord::Base
 
   def self.ids_within_time_range(low_time, high_time)
     effort_ids = all.map(&:id)
-    SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {kind: 1})
+    SplitTime.includes(:split).where(effort_id: effort_ids, splits: {kind: 1})
         .where(time_from_start: low_time..high_time).map(&:effort_id)
   end
 
@@ -263,7 +277,7 @@ class Effort < ActiveRecord::Base
     second_hash.each do |effort_id, time|
       sort_hash[effort_id] = time - first_hash[effort_id] if first_hash[effort_id]
     end
-    Hash[sort_hash.sort_by { |k, v| [v ? 0 : 1, v] }].keys
+    Hash[sort_hash.sort_by { |_, v| [v ? 0 : 1, v] }].keys
   end
 
   def self.ids_sorted_ultra_style
@@ -293,7 +307,7 @@ class Effort < ActiveRecord::Base
       ds_result.collect! { |e| e << ds_hash[e[0]] }
     end
     ds_result.each { |x| x[1] = x[2..-1].compact.min }
-    ds_big_hash = Hash[ds_result.map {|r| [r[0],r[1..-1]]}]
+    ds_big_hash = Hash[ds_result.map { |r| [r[0], r[1..-1]] }]
     tfs_result.collect! { |e| e << ds_big_hash[e[0]] }
   end
 

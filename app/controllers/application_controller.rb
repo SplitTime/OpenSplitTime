@@ -15,6 +15,25 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def conform_vert(base_split)
+    if base_split.vert_gain_from_start.nil?
+      split = base_split.waypoint_group.where.not(vert_gain_from_start: nil).first
+      base_split.update(vert_gain_from_start: split.vert_gain_from_start) if split
+    else
+      vert_gain = base_split.vert_gain_from_start
+      splits = base_split.waypoint_group.where.not(id: base_split.id)
+      splits.update_all(vert_gain_from_start: vert_gain)
+    end
+    if base_split.vert_loss_from_start.nil?
+      split = base_split.waypoint_group.where.not(vert_loss_from_start: nil).first
+      base_split.update(vert_loss_from_start: split.vert_loss_from_start) if split
+    else
+      vert_loss = base_split.vert_loss_from_start
+      splits = base_split.waypoint_group.where.not(id: base_split.id)
+      splits.update_all(vert_loss_from_start: vert_loss)
+    end
+  end
+
   def set_sub_order(base_split)
     group = base_split.waypoint_group
     return if group.count == 1

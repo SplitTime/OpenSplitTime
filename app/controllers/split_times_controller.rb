@@ -27,8 +27,6 @@ class SplitTimesController < ApplicationController
     authorize @split_time
 
     if @split_time.save
-      @split_time.effort.event.touch # Force cache update
-      @split_time.effort.event.course.touch
       redirect_to session.delete(:return_to) || edit_split_times_effort_path(@split_time.effort)
     else
       redirect_to session.delete(:return_to) || edit_split_times_effort_path(@split_time.effort)
@@ -49,7 +47,7 @@ class SplitTimesController < ApplicationController
   def destroy
     authorize @split_time
     @split_time.destroy
-    @split_time.effort.set_time_data_status
+    @split_time.effort.set_data_status
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || split_times_path
   end

@@ -42,4 +42,8 @@ class EffortPolicy
     @current_user.admin?
   end
 
+  def set_data_status?
+    @current_user.authorized_to_edit?(@effort)
+  end
+
 end

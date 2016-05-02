@@ -32,11 +32,11 @@ class Split < ActiveRecord::Base
                             message: "may not be negative"
 
   def is_start?
-    kind == "start"
+    self.start?
   end
 
   def is_finish?
-    kind == "finish"
+    self.finish?
   end
 
   def distance_as_entered
@@ -61,15 +61,6 @@ class Split < ActiveRecord::Base
 
   def vert_loss_as_entered=(entered_vert_loss)
     self.vert_loss_from_start = Split.elevation_in_meters(entered_vert_loss.to_f, User.current) if entered_vert_loss.present?
-  end
-
-  def self.to_csv(options = {})
-    CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |split|
-        csv << split.attributes.values_at(*column_names)
-      end
-    end
   end
 
   def self.ordered
@@ -111,29 +102,6 @@ class Split < ActiveRecord::Base
 
   def latest_event_date
     events.order(first_start_time: :asc).last.first_start_time
-  end
-
-  def set_data_status # Sets data status on all split_times for the instance split
-    tfs_data_array = split_times.pluck(:time_from_start)
-    tfs_count = tfs_data_array.count
-    tfs_low, tfs_low_q, tfs_high_q, tfs_high = Split.low_and_high_params(tfs_data_array)
-    st_data_array = Course.segment_time_data_array(self).values
-    st_count = st_data_array.count
-    st_low, st_low_q, st_high_q, st_high = Split.low_and_high_params(st_data_array)
-    split_times.each do |split_time|
-      current_status = split_time.data_status
-      tfs_data_status = (tfs_count >= 10) ?
-          split_time.tfs_statistical_data_status([tfs_low, tfs_low_q, tfs_high_q, tfs_high]) :
-          split_time.tfs_solo_data_status
-      st_data_status = (st_count >= 10) ?
-          split_time.st_statistical_data_status([st_low, st_low_q, st_high_q, st_high]) :
-          split_time.st_solo_data_status
-      actual_status = [tfs_data_status, st_data_status].compact.min
-      if actual_status != current_status
-        split_time.update(data_status: actual_status)
-        split_time.effort.set_self_data_status
-      end
-    end
   end
 
 end

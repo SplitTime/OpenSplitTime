@@ -52,42 +52,9 @@ class Event < ActiveRecord::Base
     splits << course.splits
   end
 
-  def set_data_status_quick
-    data_status_hash = Hash[SplitTime.includes(:effort).where(:efforts => {event_id: id}).pluck(:id, data_status)]
-    tfs_stats_hash = get_tfs_stats_hash
-    st_stats_hash = get_st_stats_hash
-    splits.each do |split|
-      next if split.start?
-      tfs_time_hash = Hash[associated_split_times(split).pluck(:effort_id, :time_from_start)]
-      status_hash = tfs_time_hash.merge(tfs_stats_hash) { |_, v, params| Event.compare_and_get_status(v, params) }
-      st_time_hash = Hash[]
-
-    end
-    bulk_update_time_status(data_status_hash)
-  end
-
-  def bulk_update_time_status(data_status_hash)
-    # Use upsert gem from seamusabshere?
-  end
-
-  def get_tfs_stats_hash
-    splits.includes(:split_times).load
-    result = {}
-    splits.each do |split|
-      split_times = split.split_times
-      result[split.id] = Event.low_and_high_params(split_times.pluck(:time_from_start))
-    end
-    result.compact
-  end
-
-  def get_st_stats_hash
-    result = {}
-    splits.each do |split|
-      previous = previous_split(split)
-      st_data_array = previous ? split.course.segment_time_data_array(previous, split).values : []
-      result[split.id] = Event.low_and_high_params(st_data_array)
-    end
-    result.compact
+  def set_data_status(efforts_param = nil)
+    efforts = efforts_param || self.efforts
+    efforts.set_data_status
   end
 
   def associated_split_times(split)

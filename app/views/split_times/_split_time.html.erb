@@ -8,7 +8,7 @@
     <th class="text-right">Elapsed Time</th>
     <th class="text-right">Segment Time</th>
     <th class="text-right">Time In Aid</th>
-    <% if current_user.admin? %>
+    <% if current_user && current_user.admin? %>
         <th class="text-right">Actions</th>
     <% end %>
   </tr>

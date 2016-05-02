@@ -19,7 +19,7 @@
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
-      <th>#</th>
+      <th>Bib #</th>
       <th>Name</th>
       <th>Category</th>
       <th>From</th>
@@ -41,7 +41,7 @@
         <% else %>
             <tr>
         <% end %>
-          <td><%= time_array.index(row) + 1 %></td>
+          <td><%= effort.bib_number %></td>
           <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
           <td><%= effort.bio_historic %></td>
           <td><%= effort.state_and_country %></td>

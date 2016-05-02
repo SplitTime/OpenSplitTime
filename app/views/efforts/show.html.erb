@@ -6,6 +6,7 @@
       <% else %>
           <%= @effort.full_name %>
       <% end %>
+      <%= "(#{@effort.bib_number})" %>
       • <%= link_to @effort.event.name, event_path(@effort.event) %>
     </h1>
   </div>
@@ -25,7 +26,9 @@
         <%= link_to 'Edit split times', edit_split_times_effort_path(@effort),
                     method: :put,
                     class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Set time data status', effort_path(@effort, set_data_status: true), class: "btn btn-sm btn-success" %>
+        <%= link_to 'Set time data status', set_data_status_effort_path(@effort),
+                    method: :put,
+                    class: "btn btn-sm btn-success" %>
         <%= link_to 'Delete this effort', effort_path(@effort, referrer_path: event_path(@effort.event)),
                     method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>

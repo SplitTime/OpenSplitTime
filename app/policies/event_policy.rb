@@ -74,4 +74,8 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def set_data_status?
+    @current_user.authorized_to_edit?(@event)
+  end
+
 end

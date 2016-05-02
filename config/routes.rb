@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     member { get :splits }
     member { put :associate_split }
     member { put :associate_splits }
+    member { put :set_data_status }
     member { delete :remove_split }
     member { delete :remove_all_splits }
     member { get :reconcile }
@@ -61,6 +62,7 @@ Rails.application.routes.draw do
     collection { put :associate_participants}
     member { put :edit_split_times }
     member { delete :delete_waypoint_group }
+    member { put :set_data_status }
   end
   resources :split_times
   resources :interests

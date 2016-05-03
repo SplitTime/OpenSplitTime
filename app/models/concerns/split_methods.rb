@@ -38,10 +38,11 @@ module SplitMethods
 
   def waypoint_groups
     result = []
-    splits.find_each do |split|
-      result << waypoint_group(split).map(&:id)
+    array = splits.order(:distance_from_start, :sub_order).select(:id, :distance_from_start)
+    array.group_by { |e| e.distance_from_start }.each do |_,v|
+      result << v.map(&:id)
     end
-    result.uniq
+    result
   end
 
   def waypoint_groups_without_start

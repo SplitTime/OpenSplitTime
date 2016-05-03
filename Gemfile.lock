@@ -32,8 +32,6 @@ GEM
       activemodel (= 4.2.5)
       activesupport (= 4.2.5)
       arel (~> 6.0)
-    activerecord-import (0.13.0)
-      activerecord (>= 3.0)
     activesupport (4.2.5)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -351,7 +349,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_record_union
-  activerecord-import
   alchemist
   better_errors
   bootstrap-sass

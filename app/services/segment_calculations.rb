@@ -29,9 +29,11 @@ class SegmentCalculations
   private
 
   def calculate_times(begin_hash, end_hash)
-    begin_hash.keep_if { |k, _| end_hash.keys.include?(k) }
-    end_hash.keep_if { |k, _| begin_hash.keys.include?(k) }
-    end_hash.merge(begin_hash) { |_, x, y| x - y }
+    b = begin_hash.dup
+    e = end_hash.dup
+    b.keep_if { |k, _| e.keys.include?(k) }
+    e.keep_if { |k, _| b.keys.include?(k) }
+    e.merge(b) { |_, x, y| x - y }
   end
 
   def create_valid_data_array

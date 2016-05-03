@@ -171,19 +171,19 @@ RSpec.describe Effort, type: :model do
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course_id: @course.id, first_start_time: "2015-07-01 06:00:00")
 
-      @effort1 = Effort.create!(event_id: @event.id, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      @effort2 = Effort.create!(event_id: @event.id, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
-      @effort3 = Effort.create!(event_id: @event.id, bib_number: 13, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Mark', last_name: 'Runner', gender: 'male')
-      @effort4 = Effort.create!(event_id: @event.id, bib_number: 14, city: 'Louisville', state_code: 'CO', country_code: 'US', age: 25, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Pete', last_name: 'Trotter', gender: 'male')
-      @effort5 = Effort.create!(event_id: @event.id, bib_number: 15, city: 'Fort Collins', state_code: 'CO', country_code: 'US', age: 26, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'James', last_name: 'Walker', gender: 'male')
-      @effort6 = Effort.create!(event_id: @event.id, bib_number: 16, city: 'Colorado Springs', state_code: 'CO', country_code: 'US', age: 27, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Johnny', last_name: 'Hiker', gender: 'male')
-      @effort7 = Effort.create!(event_id: @event.id, bib_number: 17, city: 'Idaho Springs', state_code: 'CO', country_code: 'US', age: 28, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Melissa', last_name: 'Getter', gender: 'female')
-      @effort8 = Effort.create!(event_id: @event.id, bib_number: 18, city: 'Grand Junction', state_code: 'CO', country_code: 'US', age: 29, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'George', last_name: 'Ringer', gender: 'male')
-      @effort9 = Effort.create!(event_id: @event.id, bib_number: 19, city: 'Aspen', state_code: 'CO', country_code: 'US', age: 30, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Abe', last_name: 'Goer', gender: 'male')
-      @effort10 = Effort.create!(event_id: @event.id, bib_number: 20, city: 'Vail', state_code: 'CO', country_code: 'US', age: 31, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Tanya', last_name: 'Doer', gender: 'female')
-      @effort11 = Effort.create!(event_id: @event.id, bib_number: 21, city: 'Frisco', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Sally', last_name: 'Tracker', gender: 'female')
-      @effort12 = Effort.create!(event_id: @event.id, bib_number: 22, city: 'Glenwood Springs', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Linus', last_name: 'Peanut', gender: 'male')
-      @effort13 = Effort.create!(event_id: @event.id, bib_number: 23, city: 'Limon', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Lucy', last_name: 'Peanut', gender: 'female')
+      @effort1 = Effort.create!(event_id: @event.id, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+      @effort2 = Effort.create!(event_id: @event.id, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+      @effort3 = Effort.create!(event_id: @event.id, bib_number: 3, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Mark', last_name: 'Runner', gender: 'male')
+      @effort4 = Effort.create!(event_id: @event.id, bib_number: 4, city: 'Louisville', state_code: 'CO', country_code: 'US', age: 25, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Pete', last_name: 'Trotter', gender: 'male')
+      @effort5 = Effort.create!(event_id: @event.id, bib_number: 5, city: 'Fort Collins', state_code: 'CO', country_code: 'US', age: 26, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'James', last_name: 'Walker', gender: 'male')
+      @effort6 = Effort.create!(event_id: @event.id, bib_number: 6, city: 'Colorado Springs', state_code: 'CO', country_code: 'US', age: 27, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Johnny', last_name: 'Hiker', gender: 'male')
+      @effort7 = Effort.create!(event_id: @event.id, bib_number: 7, city: 'Idaho Springs', state_code: 'CO', country_code: 'US', age: 28, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Melissa', last_name: 'Getter', gender: 'female')
+      @effort8 = Effort.create!(event_id: @event.id, bib_number: 8, city: 'Grand Junction', state_code: 'CO', country_code: 'US', age: 29, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'George', last_name: 'Ringer', gender: 'male')
+      @effort9 = Effort.create!(event_id: @event.id, bib_number: 9, city: 'Aspen', state_code: 'CO', country_code: 'US', age: 30, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Abe', last_name: 'Goer', gender: 'male')
+      @effort10 = Effort.create!(event_id: @event.id, bib_number: 10, city: 'Vail', state_code: 'CO', country_code: 'US', age: 31, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Tanya', last_name: 'Doer', gender: 'female')
+      @effort11 = Effort.create!(event_id: @event.id, bib_number: 11, city: 'Frisco', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Sally', last_name: 'Tracker', gender: 'female')
+      @effort12 = Effort.create!(event_id: @event.id, bib_number: 12, city: 'Glenwood Springs', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Linus', last_name: 'Peanut', gender: 'male')
+      @effort13 = Effort.create!(event_id: @event.id, bib_number: 13, city: 'Limon', state_code: 'CO', country_code: 'US', age: 32, start_time: "2012-08-08 05:00:00", dropped: false, first_name: 'Lucy', last_name: 'Peanut', gender: 'female')
 
       @split1 = Split.create!(course_id: @course.id, name: 'Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
       @split2 = Split.create!(course_id: @course.id, name: 'Aid Station 1 In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
@@ -285,11 +285,11 @@ RSpec.describe Effort, type: :model do
     end
 
     it 'should set the data status of the efforts to the lowest status of the split times' do
-      expect(@effort1.data_status).to eq('bad')
-      expect(@effort2.data_status).to eq('bad')
-      expect(@effort3.data_status).to eq('good')
-      expect(@effort8.data_status).to eq('good')
-      expect(@effort11.data_status).to eq('bad')
+      expect(Effort.where(bib_number: 1).first.data_status).to eq('bad')
+      expect(Effort.where(bib_number: 2).first.data_status).to eq('bad')
+      expect(Effort.where(bib_number: 3).first.data_status).to eq('good')
+      expect(Effort.where(bib_number: 8).first.data_status).to eq('good')
+      expect(Effort.where(bib_number: 11).first.data_status).to eq('bad')
     end
 
     it 'should set the data status of negative segment times to bad' do
@@ -317,7 +317,7 @@ RSpec.describe Effort, type: :model do
     end
 
     it 'should set the data status of non-zero start splits to bad' do
-      expect(@effort4.split_times.where(split_id: 1).first.bad?).to eq(true)
+      expect(@effort4.split_times.where(split_id: 1).first.data_status).to eq('bad')
     end
 
     it 'should set the data status of impossibly fast segments to bad' do

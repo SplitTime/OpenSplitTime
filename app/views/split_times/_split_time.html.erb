@@ -36,7 +36,7 @@
           <td class="text-right"><%= composite_time(@effort, split) %></td>
           <td class="text-right"><%= time_format_hhmmss(@effort.segment_time(split)) %></td>
           <td class="text-right"><%= time_format_minutes(@effort.time_in_aid(split)) %></td>
-          <% if current_user.admin? %>
+          <% if current_user && current_user.admin? %>
               <td class="text-right"><%= link_to 'Delete',
                                                  delete_waypoint_group_effort_path(@effort, split_id: split.id),
                                                  method: :delete,

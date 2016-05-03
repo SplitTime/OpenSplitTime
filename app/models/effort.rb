@@ -204,16 +204,14 @@ class Effort < ActiveRecord::Base
   end
 
   def self.set_data_status
-    efforts_for_update = []
-    # update_effort_hash = {}
+    update_effort_hash = {}
     event = Event.find(all.first.event_id)
     split_ids = event.ordered_splits.pluck(:id)
     cache = SegmentCalculationsCache.new
     split_times = SplitTime.includes(:effort).where(effort_id: all.pluck(:id))
     all.each do |effort|
       status_array = []
-      split_times_for_update = []
-      # update_split_time_hash = {}
+      update_split_time_hash = {}
       effort_split_times = split_times.where(effort_id: effort.id).index_by(&:split_id)
       ordered_split_times = split_ids.collect { |id| effort_split_times[id] }
       start_split_time = ordered_split_times.first
@@ -225,27 +223,19 @@ class Effort < ActiveRecord::Base
           next
         end
         segment = Segment.new(latest_valid_split_time.split, split_time.split)
-        segment_time = split_time.time_from_start - latest_valid_split_time.time_from_start
+        segment_time = segment.end_split.start? ?
+            split_time.time_from_start :
+            split_time.time_from_start - latest_valid_split_time.time_from_start
         status = cache.get_data_status(segment, segment_time)
         status_array << status
         latest_valid_split_time = split_time if status == :good
-        if status != split_time.data_status.try(:to_sym)
-          split_time.assign_attributes(data_status: status)
-          split_times_for_update << split_time
-        end
-        # update_split_time_hash[split_time.id] = status if status != split_time.data_status.try(:to_sym)
+        update_split_time_hash[split_time.id] = status if status != split_time.data_status.try(:to_sym)
       end
-      split_times_for_update.each { |split_time| split_time.save }
-      # BulkUpdateService.bulk_update_split_time_status(split_times_for_update)
+      BulkUpdateService.bulk_update_split_time_status(update_split_time_hash)
       effort_status = DataStatus.get_lowest_data_status(status_array)
-      if effort_status != effort.data_status.try(:to_sym)
-        effort.assign_attributes(data_status: effort_status)
-        efforts_for_update << effort
-      end
-      # update_effort_hash[effort.id] = effort_status if effort_status != effort.data_status.try(:to_sym)
+      update_effort_hash[effort.id] = effort_status if effort_status != effort.data_status.try(:to_sym)
     end
-    efforts_for_update.each { |effort| effort.save }
-    # BulkUpdateService.bulk_update_effort_status(efforts_for_update)
+    BulkUpdateService.bulk_update_effort_status(update_effort_hash)
   end
 
   def self.efforts_from_ids(effort_ids)

@@ -152,16 +152,11 @@ RSpec.describe Effort, type: :model do
     end
 
     it 'should return velocity in m/s between any two provided splits' do
-      expect(@effort1.segment_velocity(@split1, @split2)).to eq(6000 / 4000.0)
-      expect(@effort2.segment_velocity(@split1, @split4)).to eq(10000 / 9000.0)
-      expect(@effort1.segment_velocity(@split2, @split3)).to eq(0)
+      expect(@effort1.segment_velocity(Segment.new(@split1, @split2))).to eq(6000 / 4000.0)
+      expect(@effort2.segment_velocity(Segment.new(@split1, @split4))).to eq(10000 / 9000.0)
+      expect(@effort1.segment_velocity(Segment.new(@split2, @split3))).to eq(0)
     end
 
-    it 'should return velocity in m/s between a provided split and the previous split when only one split is provided' do
-      expect(@effort1.segment_velocity(@split2)).to eq(6000 / 4000.0)
-      expect(@effort2.segment_velocity(@split4)).to eq(4000 / 3900.0)
-      expect(@effort1.segment_velocity(@split3)).to eq(0)
-    end
   end
 
   describe 'set_data_status' do

@@ -65,7 +65,7 @@ class SplitTime < ActiveRecord::Base
 
   def velocity_from_previous_valid
     previous = previous_valid_split_time
-    previous ? effort.segment_velocity(previous.split, self.split) : nil
+    previous ? effort.segment_velocity(Segment.new(previous.split, self.split)) : nil
   end
 
   def tfs_velocity

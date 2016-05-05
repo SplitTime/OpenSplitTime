@@ -97,6 +97,14 @@ class Effort < ActiveRecord::Base
     position == 0 ? nil : ordered_times[position - 1]
   end
 
+  def combined_places
+    efforts = event.efforts.sorted_ultra_style
+    ids = efforts.map(&:id)
+    gender_place = efforts.map(&:gender)[0..ids.index(id)].count(gender)
+    overall_place = ids.index(id) + 1
+    return overall_place, gender_place
+  end
+
   def overall_place
     (event.efforts.ids_sorted_ultra_style.index(id)) + 1
   end

@@ -209,6 +209,7 @@ class Effort < ActiveRecord::Base
     split_ids = event.ordered_splits.pluck(:id)
     cache = SegmentCalculationsCache.new
     split_times = SplitTime.includes(:effort).where(effort_id: all.pluck(:id))
+
     all.each do |effort|
       status_array = []
       update_split_time_hash = {}
@@ -216,6 +217,7 @@ class Effort < ActiveRecord::Base
       ordered_split_times = split_ids.collect { |id| effort_split_times[id] }
       start_split_time = ordered_split_times.first
       latest_valid_split_time = start_split_time
+
       ordered_split_times.each do |split_time|
         next if split_time.nil?
         if split_time.confirmed?
@@ -231,10 +233,12 @@ class Effort < ActiveRecord::Base
         latest_valid_split_time = split_time if status == :good
         update_split_time_hash[split_time.id] = status if status != split_time.data_status.try(:to_sym)
       end
+
       BulkUpdateService.bulk_update_split_time_status(update_split_time_hash)
       effort_status = DataStatus.get_lowest_data_status(status_array)
       update_effort_hash[effort.id] = effort_status if effort_status != effort.data_status.try(:to_sym)
     end
+
     BulkUpdateService.bulk_update_effort_status(update_effort_hash)
   end
 

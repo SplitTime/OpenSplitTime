@@ -1,15 +1,15 @@
 class SegmentCalculationsCache
 
   def initialize(hash = {})
-    @data = hash
+    @segment_calcs = hash
   end
 
   def []=(k, v)
-    @data[k] = v
+    @segment_calcs[k] = v
   end
 
   def [](k)
-    @data[k]
+    @segment_calcs[k]
   end
 
   def fetch_calculations(segment)

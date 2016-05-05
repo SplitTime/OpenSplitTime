@@ -36,6 +36,7 @@ gem 'time_difference'
 gem 'pg'
 gem 'active_record_union'
 gem 'upsert'
+gem 'pluck_to_hash'
 
 group :development do
   gem 'web-console', '~> 2.0'

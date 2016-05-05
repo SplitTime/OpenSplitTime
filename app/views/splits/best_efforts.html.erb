@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-xs-12">
-    <h3><%= "All-time best efforts on #{@first_split.course.name}:" %></h3>
-    <h2><%= "#{@first_split.course.segment_name(@first_split, @second_split)} (#{params[:gender]})" %></h2>
+    <h3><%= "All-time best efforts on #{@segment.course.name}:" %></h3>
+    <h2><%= "#{@segment.name} (#{params[:gender]})" %></h2>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <% if @second_split.events.count > 0 %>
-        <strong><%= "#{pluralize(@second_split.events.count, 'event')} from #{@second_split.earliest_event_date.to_date.to_formatted_s(:long)} to #{@second_split.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+    <% if @segment.end_split.events.count > 0 %>
+        <strong><%= "#{pluralize(@segment.end_split.events.count, 'event')} from #{@segment.end_split.earliest_event_date.to_date.to_formatted_s(:long)} to #{@segment.end_split.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
     <% else %>
         <strong>No efforts have been measured on this segment.</strong>
     <% end %>
@@ -17,14 +17,14 @@
 <div class="row">
   <div class="col-xs-6">
     <div class="article-actions">
-      <%= link_to '<< Course best efforts', best_efforts_course_path(@first_split.course), class: "btn btn-sm btn-default" %>
+      <%= link_to '<< Course best efforts', best_efforts_course_path(@segment.course), class: "btn btn-sm btn-default" %>
     </div>
   </div>
   <div class="col-xs-6">
     <div class="text-right">
-      <%= link_to 'Combined', best_efforts_splits_path(split1: @first_split.id, split2: @second_split.id, gender: 'combined'), class: 'btn btn-sm btn-default' %>
-      <%= link_to 'Male', best_efforts_splits_path(split1: @first_split.id, split2: @second_split.id, gender: 'male'), class: 'btn btn-sm btn-default' %>
-      <%= link_to 'Female', best_efforts_splits_path(split1: @first_split.id, split2: @second_split.id, gender: 'female'), class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Combined', best_efforts_splits_path(split1: @segment.begin_id, split2: @segment.end_id, gender: 'combined'), class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Male', best_efforts_splits_path(split1: @segment.begin_id, split2: @segment.end_id, gender: 'male'), class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Female', best_efforts_splits_path(split1: @segment.begin_id, split2: @segment.end_id, gender: 'female'), class: 'btn btn-sm btn-default' %>
     </div>
   </div>
 </div>
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <%= render 'efforts/effort_list_segment', efforts: @efforts, split1: @first_split, split2: @second_split %>
+    <%= render 'efforts/effort_list_segment', efforts: @efforts, segment: @segment %>
 
     <div class="row">
       <div class="col-xs-8">

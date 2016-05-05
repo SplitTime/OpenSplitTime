@@ -26,6 +26,5 @@ module OpenSplitTime
 
     config.autoload_paths += %W(#{config.root}/lib)
 
-    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   end
 end

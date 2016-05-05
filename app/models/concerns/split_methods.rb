@@ -1,12 +1,6 @@
 module SplitMethods
   extend ActiveSupport::Concern
 
-  def segment_name(split1, split2) # TODO make more flexible for time in aid etc.
-    split1.base_name == split2.base_name ?
-        [split1.name, split2.name].join(' to ') :
-        [split1.base_name, split2.base_name].join(' to ')
-  end
-
   def segment_distance(split1, split2 = nil)
     if split2.nil?
       split1.start? ? 0 : split1.distance_from_start - previous_split(split1).distance_from_start

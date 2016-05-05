@@ -85,12 +85,11 @@ class SplitsController < ApplicationController
   end
 
   def best_efforts
-    set_dual_splits(params[:split1], params[:split2])
-    authorize @first_split
+    @segment = Segment.new(params[:split1].to_i, params[:split2].to_i)
+    authorize @segment.begin_split
     params[:gender] ||= 'combined'
-    # @event = @split.events.order(first_start_time: :desc).first
-    @efforts = Effort.gender_group(@first_split, @second_split, params[:gender]).sorted_by_segment_time(@first_split, @second_split).paginate(page: params[:page], per_page: 25)
-    session[:return_to] = best_efforts_course_path(@first_split.course)
+    @efforts = Effort.gender_group(@segment, params[:gender]).sorted_by_segment_time(@segment).paginate(page: params[:page], per_page: 25)
+    session[:return_to] = best_efforts_course_path(@segment.course)
   end
 
   private
@@ -108,18 +107,6 @@ class SplitsController < ApplicationController
 
   def set_split
     @split = Split.find(params[:id])
-  end
-
-  def set_dual_splits(split_id_1, split_id_2)
-    return nil if split_id_1.blank? | split_id_2.blank? | (split_id_1 == split_id_2)
-    split1 = Split.find(split_id_1)
-    split2 = Split.find(split_id_2)
-    course = split1.course
-    return nil if course != split2.course
-    position1 = course.splits.ordered.index(split1)
-    position2 = course.splits.ordered.index(split2)
-    @first_split = position1 < position2 ? split1 : split2
-    @second_split = position1 < position2 ? split2 : split1
   end
 
 end

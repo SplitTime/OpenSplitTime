@@ -1,4 +1,4 @@
-<%# Requires parameters efforts, split %>
+<%# Requires parameters efforts, segment %>
 
 <table class="table table-condensed table-striped">
   <thead>
@@ -19,7 +19,7 @@
         <td><%= effort.bio_historic %></td>
         <td><%= effort.state_and_country %></td>
         <td><%= effort.start_time.year %></td>
-        <td class="text-right"><%= time_format_hhmm(effort.segment_time(split1, split2)) %></td>
+        <td class="text-right"><%= time_format_hhmm(segment.times[effort.id]) %></td>
       </tr>
   <% end %>
   </tbody>

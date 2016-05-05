@@ -1,4 +1,4 @@
-<%# Requires parameter splits(collection) %>
+<%# Requires parameter view_object (instance of EffortShowView) %>
 
 <table class="table table-condensed table-striped">
   <thead>
@@ -14,33 +14,32 @@
   </tr>
   </thead>
   <tbody>
-  <% splits.each do |split| %>
-      <% data_status = split_waypoint_group_status(@effort, split) %>
-      <% if data_status == 0 %>
+  <% view_object.waypoint_group_rows.values.each do |waypoint_group_row| %>
+      <% if waypoint_group_row.data_status == 0 %>
           <tr class="text-danger">
-      <% elsif data_status == 1 %>
+      <% elsif waypoint_group_row.data_status == 1 %>
           <tr class="text-warning">
       <% else %>
           <tr>
       <% end %>
-      <% if split.kind == 'finish' %>
-          <td><strong><%= split.composite_name %></strong></td>
-          <td class="text-right"><strong><%= d(split.distance_from_start).round(1) %></strong>
+      <% if waypoint_group_row.kind == 1 # Finish %>
+          <td><strong><%= waypoint_group_row.name %></strong></td>
+          <td class="text-right"><strong><%= d(waypoint_group_row.distance_from_start).round(1) %></strong>
           </td>
-          <td class="text-right"><strong><%= composite_time(@effort, split) %></strong></td>
-          <td class="text-right"><strong><%= time_format_hhmmss(@effort.segment_time(split)) %></strong></td>
-          <td class="text-right"><strong><%= time_format_minutes(@effort.total_time_in_aid) %></strong></td>
-      <% elsif split.kind == 'waypoint' %>
-          <td><%= split.composite_name %></td>
-          <td class="text-right"><%= d(split.distance_from_start).round(1) %></td>
-          <td class="text-right"><%= composite_time(@effort, split) %></td>
-          <td class="text-right"><%= time_format_hhmmss(@effort.segment_time(split)) %></td>
-          <td class="text-right"><%= time_format_minutes(@effort.time_in_aid(split)) %></td>
+          <td class="text-right"><strong><%= composite_time(waypoint_group_row) %></strong></td>
+          <td class="text-right"><strong><%= time_format_hhmmss(waypoint_group_row.segment_time) %></strong></td>
+          <td class="text-right"><strong><%= time_format_minutes(view_object.total_time_in_aid) %></strong></td>
+      <% else waypoint_group_row.kind == 2 # Waypoint %>
+          <td><%= waypoint_group_row.name %></td>
+          <td class="text-right"><%= d(waypoint_group_row.distance_from_start).round(1) %></td>
+          <td class="text-right"><%= composite_time(waypoint_group_row) %></td>
+          <td class="text-right"><%= time_format_hhmmss(waypoint_group_row.segment_time) %></td>
+          <td class="text-right"><%= time_format_minutes(waypoint_group_row.time_in_aid) %></td>
           <% if current_user && current_user.admin? %>
               <td class="text-right"><%= link_to 'Delete',
-                                                 delete_waypoint_group_effort_path(@effort, split_id: split.id),
+                                                 delete_waypoint_group_effort_path(@effort, split_id: waypoint_group_row.waypoint_group[0]),
                                                  method: :delete,
-                                                 data: {confirm: "This will delete #{pluralize(split.waypoint_group.count, 'split time')}. OK to proceed?"},
+                                                 data: {confirm: "This will delete #{pluralize(waypoint_group_row.waypoint_group.count, 'split time')}. OK to proceed?"},
                                                  class: 'btn btn-xs btn-danger' %></td>
           <% end %>
       <% end %>

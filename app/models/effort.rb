@@ -200,7 +200,7 @@ class Effort < ActiveRecord::Base
     update_effort_hash = {}
     event = Event.find(all.first.event_id)
     split_ids = event.ordered_splits.pluck(:id)
-    cache = SegmentCalculationsCache.new
+    cache = SegmentCalculationsCache.new(event)
     split_times = SplitTime.includes(:effort).where(effort_id: all.pluck(:id))
 
     all.each do |effort|
@@ -278,11 +278,12 @@ class Effort < ActiveRecord::Base
     event_efforts = event.efforts.pluck(:id)
     tfs_result = event_efforts.map { |x| [x] }
     ds_result = event_efforts.map { |x| [x, nil] } # The nil is a placeholder for the row's collective data status
+    time_hashes, status_hashes = event.time_hashes(true)
     event.ordered_splits.each do |split|
       next if split.start? unless with_start
-      tfs_hash = Hash[split.split_times.where(effort_id: event_efforts).pluck(:effort_id, :time_from_start)]
+      tfs_hash = time_hashes[split.id]
       tfs_result.collect! { |e| e << tfs_hash[e[0]] }
-      ds_hash = Hash[split.split_times.where(effort_id: event_efforts).pluck(:effort_id, :data_status)]
+      ds_hash = status_hashes[split.id]
       ds_result.collect! { |e| e << ds_hash[e[0]] }
     end
     ds_result.each { |x| x[1] = x[2..-1].compact.min }

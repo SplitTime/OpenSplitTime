@@ -1,7 +1,9 @@
 class SegmentCalculationsCache
+  attr_reader :time_hashes
 
-  def initialize(hash = {})
+  def initialize(event, hash = {})
     @segment_calcs = hash
+    @time_hashes = event.time_hashes
   end
 
   def []=(k, v)
@@ -13,11 +15,7 @@ class SegmentCalculationsCache
   end
 
   def fetch_calculations(segment)
-    self[segment] ||= SegmentCalculations.new(segment, self.fetch_time_hash(segment.begin_split), self.fetch_time_hash(segment.end_split))
-  end
-
-  def fetch_time_hash(split)
-    self[split] ||= split.time_hash
+    self[segment] ||= SegmentCalculations.new(segment, time_hashes[segment.begin_id], time_hashes[segment.end_id])
   end
 
   def get_data_status(segment, segment_time)

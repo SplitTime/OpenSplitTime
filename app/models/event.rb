@@ -61,4 +61,20 @@ class Event < ActiveRecord::Base
     split.split_times.where(effort_id: efforts.pluck(:id))
   end
 
+  def time_hashes(with_status = false)
+    result_hash = {}
+    status_hash = {} if with_status
+    split_ids = splits.pluck(:id)
+    split_time_hash = SplitTime.where(split_id: split_ids).pluck_to_hash(:split_id, :effort_id, :time_from_start, :data_status).group_by { |row| row[:split_id] }
+    split_ids.each do |split_id|
+      result_hash[split_id] = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]] }]
+      status_hash[split_id] = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:data_status]] }] if with_status
+    end
+    if with_status
+      return result_hash, status_hash
+    else
+      result_hash
+    end
+  end
+
 end

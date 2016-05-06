@@ -91,6 +91,20 @@ class EffortsController < ApplicationController
     redirect_to session.delete(:return_to) || effort_path(@effort)
   end
 
+  def confirm_waypoint_group
+    authorize @effort
+    @split = Split.find(params[:split_id])
+    split_times = @effort.split_times.where(split_id: @split.waypoint_group.pluck(:id))
+    if params[:status] == 'confirmed'
+      split_times.confirmed!
+    else
+      split_times.good!
+    end
+    @effort.set_data_status
+    session[:return_to] = params[:referrer_path] if params[:referrer_path]
+    redirect_to session.delete(:return_to) || effort_path(@effort)
+  end
+
   def set_data_status
     authorize @effort
     @effort.set_data_status

@@ -15,8 +15,20 @@ class WaypointGroupRow
     @time_in_aid = (end_split_row.time_from_start && begin_split_row.time_from_start) ?
         end_split_row.segment_time :
         nil
-    @data_status = DataStatus.get_lowest_data_status([begin_split_row.data_status, end_split_row.data_status])
+    @data_status = DataStatus.get_lowest_data_status(split_rows.map(&:data_status))
     @kind = begin_split_row.kind
+  end
+
+  def start?
+    kind == 0
+  end
+
+  def finish?
+    kind == 1
+  end
+
+  def waypoint?
+    kind == 2
   end
 
 end

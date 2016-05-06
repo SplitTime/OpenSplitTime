@@ -105,4 +105,12 @@ class SplitTime < ActiveRecord::Base
     split.distance_from_start != other_split_time.split.distance_from_start
   end
 
+  def self.confirmed!
+    all.each { |split_time| split_time.confirmed! }
+  end
+
+  def self.good!
+    all.each { |split_time| split_time.good! }
+  end
+
 end

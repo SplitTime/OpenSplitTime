@@ -22,25 +22,38 @@
       <% else %>
           <tr>
       <% end %>
-      <% if waypoint_group_row.kind == 1 # Finish %>
+      <% if waypoint_group_row.finish? %>
           <td><strong><%= waypoint_group_row.name %></strong></td>
           <td class="text-right"><strong><%= d(waypoint_group_row.distance_from_start).round(1) %></strong>
           </td>
           <td class="text-right"><strong><%= composite_time(waypoint_group_row) %></strong></td>
           <td class="text-right"><strong><%= time_format_hhmmss(waypoint_group_row.segment_time) %></strong></td>
           <td class="text-right"><strong><%= time_format_minutes(view_object.total_time_in_aid) %></strong></td>
-      <% else waypoint_group_row.kind == 2 # Waypoint %>
+      <% elsif waypoint_group_row.waypoint? %>
           <td><%= waypoint_group_row.name %></td>
           <td class="text-right"><%= d(waypoint_group_row.distance_from_start).round(1) %></td>
           <td class="text-right"><%= composite_time(waypoint_group_row) %></td>
           <td class="text-right"><%= time_format_hhmmss(waypoint_group_row.segment_time) %></td>
           <td class="text-right"><%= time_format_minutes(waypoint_group_row.time_in_aid) %></td>
-          <% if current_user && current_user.admin? %>
-              <td class="text-right"><%= link_to 'Delete',
-                                                 delete_waypoint_group_effort_path(@effort, split_id: waypoint_group_row.waypoint_group[0]),
-                                                 method: :delete,
-                                                 data: {confirm: "This will delete #{pluralize(waypoint_group_row.waypoint_group.count, 'split time')}. OK to proceed?"},
-                                                 class: 'btn btn-xs btn-danger' %></td>
+          <% if current_user && current_user.authorized_to_edit?(@effort) %>
+              <td class="text-right">
+                <% if waypoint_group_row.data_status == :confirmed %>
+                    <%= link_to 'Unconfirm',
+                                confirm_waypoint_group_effort_path(@effort, split_id: waypoint_group_row.waypoint_group[0], status: 'nil'),
+                                method: :put,
+                                class: 'btn btn-xs btn-success' %>
+                <% else %>
+                    <%= link_to 'Confirm',
+                                confirm_waypoint_group_effort_path(@effort, split_id: waypoint_group_row.waypoint_group[0], status: 'confirmed'),
+                                method: :put,
+                                class: 'btn btn-xs btn-success' %>
+                <% end %>
+                <%= link_to 'Delete',
+                            delete_waypoint_group_effort_path(@effort, split_id: waypoint_group_row.waypoint_group[0]),
+                            method: :delete,
+                            data: {confirm: "This will delete #{pluralize(waypoint_group_row.waypoint_group.count, 'split time')}. OK to proceed?"},
+                            class: 'btn btn-xs btn-danger' %>
+              </td>
           <% end %>
       <% end %>
       </tr>

@@ -39,7 +39,11 @@ class EffortPolicy
   end
 
   def delete_waypoint_group?
-    @current_user.admin?
+    @current_user.authorized_to_edit?(@effort)
+  end
+
+  def confirm_waypoint_group?
+    @current_user.authorized_to_edit?(@effort)
   end
 
   def set_data_status?

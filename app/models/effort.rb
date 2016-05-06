@@ -117,7 +117,7 @@ class Effort < ActiveRecord::Base
 
   def segment_time(segment)
     return 0 if segment.end_split.start?
-    times = split_times.where(split_id: segment.split_ids).index_by(:split_id)
+    times = split_times.where(split_id: segment.split_ids).index_by(&:split_id)
     end_split_time = times[segment.end_id]
     begin_split_time = times[segment.begin_id]
     end_split_time && begin_split_time ? (end_split_time.time_from_start - begin_split_time.time_from_start) : nil

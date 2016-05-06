@@ -32,9 +32,9 @@ module SplitMethods
 
   def waypoint_groups
     result = []
-    array = splits.order(:distance_from_start, :sub_order).select(:id, :distance_from_start)
-    array.group_by { |e| e.distance_from_start }.each do |_,v|
-      result << v.map(&:id)
+    array = splits.order(:distance_from_start, :sub_order).pluck_to_hash(:id, :distance_from_start)
+    array.group_by { |e| e[:distance_from_start] }.each do |_,v|
+      result << v.map { |row| row[:id] }
     end
     result
   end

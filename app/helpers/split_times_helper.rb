@@ -22,4 +22,9 @@ module SplitTimesHelper
     time_array.join(' / ')
   end
 
+  def waypoint_group_status(effort, waypoint_group)
+    split_times = effort.split_times.where(split_id: waypoint_group)
+    split_times.pluck(:data_status).compact.min
+  end
+
 end

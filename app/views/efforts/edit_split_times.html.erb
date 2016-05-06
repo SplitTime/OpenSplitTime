@@ -14,45 +14,49 @@
 </div>
 <hr>
 <%= form_for(@effort, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
-    <div class="form-group">
-      <div class="control-label col-sm-2">
-        <%= f.label :bib_number %>
+    <div class="row">
+      <div class="col-sm-2">
+        <h4><%= f.label :bib_number %></h4>
       </div>
       <div class="col-sm-2">
         <%= f.text_field :bib_number, class: 'form-control', placeholder: 'Course name', autofocus: true %>
       </div>
     </div>
 
-    <table class="table table-condensed table-striped">
-      <thead>
-      <tr>
-        <th></th>
-        <th class="text-center">Time In</th>
-        <th class="text-center">Time Out</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @effort.event.waypoint_groups_without_start.each do |waypoint_group| %>
-          <% data_status = waypoint_group_status(@effort, waypoint_group) %>
-          <% if data_status == 0 %>
-              <tr class="text-danger">
-          <% elsif data_status == 1 %>
-              <tr class="text-warning">
-          <% else %>
-              <tr>
-          <% end %>
-          <td><h4><strong><%= "#{display_name(waypoint_group[0])}" %></strong></h4></td>
-          <% (0...waypoint_group.size).each do |i| %>
-              <%= f.fields_for :split_times,
-                               @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],
-                                                                         effort_id: @effort.id) do |builder| %>
-                  <td><%= builder.text_field :time_as_entered, class: 'form-control', placeholder: 'hh:mm:ss' %></td>
-              <% end %>
-          <% end %>
+    <div class="row">
+      <div class="col-sm-6">
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th class="text-center">Time In</th>
+            <th class="text-center">Time Out</th>
           </tr>
-      <% end %>
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+          <% @effort.event.waypoint_groups_without_start.each do |waypoint_group| %>
+              <% data_status = waypoint_group_status(@effort, waypoint_group) %>
+              <% if data_status == 0 %>
+                  <tr class="text-danger">
+              <% elsif data_status == 1 %>
+                  <tr class="text-warning">
+              <% else %>
+                  <tr>
+              <% end %>
+              <td><h4><strong><%= "#{display_name(waypoint_group[0])}" %></strong></h4></td>
+              <% (0...waypoint_group.size).each do |i| %>
+                  <%= f.fields_for :split_times,
+                                   @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],
+                                                                             effort_id: @effort.id) do |builder| %>
+                      <td><%= builder.text_field :time_as_entered, class: 'form-control', placeholder: 'hh:mm:ss' %></td>
+                  <% end %>
+              <% end %>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">

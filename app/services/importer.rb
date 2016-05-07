@@ -94,6 +94,8 @@ class Importer
     row_effort_data[i] = prepare_state_data(country_code, row_effort_data[i]) unless (i.nil? | country_code.nil?)
     i = effort_schema.index(:gender)
     row_effort_data[i] = prepare_gender_data(row_effort_data[i]) unless i.nil?
+    i = effort_schema.index(:birthdate)
+    row_effort_data[i] = prepare_birthdate_data(row_effort_data[i]) unless i.nil?
     row_effort_data
   end
 
@@ -139,6 +141,17 @@ class Importer
     gender_data.downcase!
     return "male" if (gender_data == "m") | (gender_data == "male")
     return "female" if (gender_data == "f") | (gender_data == "female")
+  end
+
+  def self.prepare_birthdate_data(birthdate_data)
+    return nil if birthdate_data.blank?
+    return birthdate_data if birthdate_data.is_a?(Date)
+    begin
+      return Date.parse(birthdate_data) if birthdate_data.is_a?(String)
+    rescue ArgumentError
+      raise "Birthdate column includes invalid data"
+    end
+    return nil
   end
 
   # Returns an array of effort symbols in order of spreadsheet columns

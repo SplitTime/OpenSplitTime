@@ -41,8 +41,12 @@ class SplitTime < ActiveRecord::Base
   alias_method :formatted_time_hhmmss, :time_as_entered
 
   def time_as_entered=(entered_time)
-    units = %w(hours minutes seconds)
-    self.time_from_start = entered_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i if entered_time.present?
+    if entered_time.present?
+      units = %w(hours minutes seconds)
+      self.time_from_start = entered_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i
+    else
+      self.time_from_start = nil
+    end
   end
 
   def segment_time

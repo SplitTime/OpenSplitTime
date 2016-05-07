@@ -55,7 +55,7 @@ class Importer
     split_offset = compute_split_offset(header1)
     split_name_array = header1[split_offset - 1..header1.size - 1]
     split_name_array = ["start", "finish"] if finish_times_only?(header1)
-    split_id_array = event.split_ids
+    split_id_array = event.ordered_split_ids
     if split_name_array.size != split_id_array.size
       raise "Number of split columns in import spreadsheet does not match number of selected course splits."
     end

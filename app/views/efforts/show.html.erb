@@ -6,7 +6,7 @@
       <% else %>
           <%= @effort.full_name %>
       <% end %>
-      <%= "(#{@effort.bib_number})" %>
+      <%= "(#{@effort.bib_number})" if @effort.bib_number %>
       • <%= link_to @effort.event.name, event_path(@effort.event) %>
     </h1>
   </div>

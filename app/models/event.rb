@@ -57,53 +57,47 @@ class Event < ActiveRecord::Base
     efforts.set_data_status
   end
 
+  def time_hashes_all_similar_events
+    result_hash = {}
+    event_split_ids = ordered_split_ids
+    complete_hash = SplitTime.where(split_id: event_split_ids).pluck_to_hash(:split_id, :effort_id, :time_from_start).group_by { |row| row[:split_id] }
+    event_split_ids.each do |split_id|
+      result_hash[split_id] = Hash[complete_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]] }]
+    end
+    result_hash
+  end
+
   def split_time_hash
-    split_ids = splits.pluck(:id)
-    SplitTime.where(split_id: split_ids).pluck_to_hash(:split_id, :effort_id, :time_from_start, :data_status).group_by { |row| row[:split_id] }
-  end
-
-  def time_hashes(split_time_hash)
-    result_hash = {}
-    split_ids.each do |split_id|
-      result_hash[split_id] = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]] }]
-    end
-    result_hash
-  end
-
-  def status_hashes(split_time_hash)
-    result_hash = {}
-    split_ids.each do |split_id|
-      result_hash[split_id] = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:data_status]] }]
-    end
-    result_hash
+    effort_ids = efforts.pluck(:id)
+    SplitTime.where(effort_id: effort_ids)
+        .pluck_to_hash(:split_id, :effort_id, :time_from_start, :data_status)
+        .group_by { |row| row[:split_id] }
   end
 
   def sorted_ultra_time_array(split_time_hash = nil)
     # Column 0 contains effort_ids, columns 1..-1 are time data
     return [] if efforts.count == 0
     split_time_hash ||= self.split_time_hash
-    event_efforts = efforts.pluck(:id)
-    tfs_result = event_efforts.map { |x| [x] }
-    time_hashes = time_hashes(split_time_hash)
-    ordered_splits.each do |split|
-      tfs_hash = time_hashes[split.id]
-      tfs_result.collect! { |e| e << tfs_hash[e[0]] }
+    event_effort_ids = efforts.pluck(:id)
+    result = event_effort_ids.map { |effort_id| [effort_id] }
+    ordered_split_ids.each do |split_id|
+      hash = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]]}]
+      result.collect! { |row| row << hash[row[0]] }
     end
-    tfs_result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
+    result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
   end
 
   def data_status_hash(split_time_hash = nil)
-    # Column 0 contains effort status, columns 1..-1 are time status
+    # Keys are effort_ids; Value is an array with column 0 effort status, columns 1..-1 time status
     return [] if efforts.count == 0
     split_time_hash ||= self.split_time_hash
-    event_efforts = efforts.pluck(:id)
-    ds_result = event_efforts.map { |x| [x, nil] } # The nil is a placeholder for the row's collective data status
-    status_hashes = status_hashes(split_time_hash)
-    ordered_splits.each do |split|
-      ds_hash = status_hashes[split.id]
-      ds_result.collect! { |e| e << ds_hash[e[0]] }
+    event_effort_ids = efforts.pluck(:id)
+    result = event_effort_ids.map { |x| [x, nil] } # The nil is a placeholder for the row's collective data status
+    ordered_split_ids.each do |split_id|
+      hash = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:data_status]]}]
+      result.collect! { |row| row << hash[row[0]] }
     end
-    result = ds_result.each { |row| row[1] = row[2..-1].compact.min }
+    result = result.each { |row| row[1] = row[2..-1].compact.min } # Set row[1] to the minimum data status of the other rows
     Hash[result.map { |row| [row[0], row[1..-1]] }]
   end
 

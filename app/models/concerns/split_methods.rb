@@ -61,8 +61,8 @@ module SplitMethods
     splits.waypoint.union(splits.finish).ordered
   end
 
-  def split_ids
-    splits.ordered.map &:id
+  def ordered_split_ids
+    splits.ordered.map(&:id)
   end
 
   module ClassMethods

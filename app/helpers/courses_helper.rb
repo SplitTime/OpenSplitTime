@@ -23,7 +23,7 @@ module CoursesHelper
   end
 
   def plan_segment_time(split, time_data)
-    split_ids = @event.split_ids
+    split_ids = @event.ordered_split_ids
     position = split_ids.index(split.id)
     return 0 if position == 0
     time_data[split.id] - time_data[split_ids[position - 1]]
@@ -47,7 +47,7 @@ module CoursesHelper
   end
 
   def normalize_time_data(time_data, expected_time)
-    average_finish_time = time_data[@event.split_ids.last]
+    average_finish_time = time_data[@event.ordered_split_ids.last]
     return time_data if average_finish_time.nil?
     factor = expected_time / average_finish_time
     time_data.each { |k,v| time_data[k] = v * factor }

@@ -98,21 +98,15 @@ class Effort < ActiveRecord::Base
   end
 
   def combined_places
-    efforts = event.efforts.sorted_ultra_style
-    ids = efforts.map(&:id)
-    gender_place = efforts.map(&:gender)[0..ids.index(id)].count(gender)
-    overall_place = ids.index(id) + 1
-    return overall_place, gender_place
+    event.combined_places(self)
   end
 
   def overall_place
-    (event.efforts.ids_sorted_ultra_style.index(id)) + 1
+    event.overall_place(self)
   end
 
   def gender_place
-    efforts = event.efforts.sorted_ultra_style
-    ids = efforts.map(&:id)
-    efforts.map(&:gender)[0..ids.index(id)].count(gender)
+    event.gender_place(self)
   end
 
   def segment_time(segment)
@@ -176,10 +170,6 @@ class Effort < ActiveRecord::Base
 
   def self.sorted_by_finish_time # Excludes DNFs from result
     efforts_from_ids(ids_sorted_by_finish_time)
-  end
-
-  def self.sorted_ultra_style # Sorts DNFs by distance covered before drop, with farther efforts getting higher placement
-    efforts_from_ids(ids_sorted_ultra_style)
   end
 
   def self.sorted_by_segment_time(segment)
@@ -257,38 +247,6 @@ class Effort < ActiveRecord::Base
   def self.ids_sorted_by_segment_time(segment)
     effort_ids = self.pluck(:id)
     segment.times.keep_if { |k, _| effort_ids.include?(k) }.sort_by { |_, v| v }.map { |x| x[0] }
-  end
-
-  def self.ids_sorted_ultra_style
-    sorted_ultra_time_array.map { |x| x[0] }
-  end
-
-  def self.sorted_ultra_time_array(with_start = false)
-    # Do sort in memory using an ultra_time_array
-    return [] if all.count == 0
-    raise "Efforts don't belong to same event" if all.group(:event_id).count.size != 1
-    # First column (effort id keys) is ignored for the sort
-    # Last column (array of data_statuses) is ignored for the sort
-    all.create_ultra_time_array(with_start).sort_by { |a| a[1..-2].reverse.map { |e| e || Float::INFINITY } }
-  end
-
-  def self.create_ultra_time_array(with_start = false)
-    # Column 0 contains effort_ids, columns 1..-2 are time data, column -1 is an array of data statuses
-    event = Event.includes(:efforts).where(id: all.first.event_id).first
-    event_efforts = event.efforts.pluck(:id)
-    tfs_result = event_efforts.map { |x| [x] }
-    ds_result = event_efforts.map { |x| [x, nil] } # The nil is a placeholder for the row's collective data status
-    time_hashes, status_hashes = event.time_hashes(true)
-    event.ordered_splits.each do |split|
-      next if split.start? unless with_start
-      tfs_hash = time_hashes[split.id]
-      tfs_result.collect! { |e| e << tfs_hash[e[0]] }
-      ds_hash = status_hashes[split.id]
-      ds_result.collect! { |e| e << ds_hash[e[0]] }
-    end
-    ds_result.each { |x| x[1] = x[2..-1].compact.min }
-    ds_big_hash = Hash[ds_result.map { |r| [r[0], r[1..-1]] }]
-    tfs_result.collect! { |e| e << ds_big_hash[e[0]] }
   end
 
 end

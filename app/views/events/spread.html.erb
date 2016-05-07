@@ -30,32 +30,20 @@
     </tr>
     </thead>
     <tbody>
-    <% time_array = @event.efforts.sorted_ultra_time_array %>
+    <% time_array = @event.sorted_ultra_time_array %>
     <% efforts = Effort.efforts_from_ids(time_array.map { |x| x[0] }) %>
     <% time_array.each do |row| %>
-        <% effort = efforts.find { |s| s.id == row[0] } %>
-        <% if effort.bad? %>
-            <tr class="text-success">
-        <% elsif effort.questionable? %>
-            <tr class="text-success">
-        <% else %>
-            <tr>
-        <% end %>
+        <tr>
+          <% effort = efforts.find { |effort| effort.id == row[0] } %>
           <td><%= effort.bib_number %></td>
           <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
           <td><%= effort.bio_historic %></td>
           <td><%= effort.state_and_country %></td>
-          <% (1...row.size - 1).each do |i| %>
-              <% if data_status(row[-1][i]) == 'bad' %>
-                <td class="text-danger"><strong>
-            <% elsif data_status(row[-1][i]) == 'questionable' %>
-                <td class="text-warning"><strong>
-            <% else %>
-                <td>
-            <% end %>
+          <%# Column 0 is effort_ids, column 1 is start data, so start on column 2 %>
+          <% (2...row.size).each do |i| %>
+              <td>
                 <%= time_format_hhmm(row[i]) %>
-              </strong>
-            </td>
+              </td>
           <% end %>
         </tr>
     <% end %>

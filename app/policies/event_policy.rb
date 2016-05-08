@@ -66,6 +66,10 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def delete_all_efforts?
+    @current_user.authorized_to_edit?(@event)
+  end
+
   def associate_participant?
     @current_user.authorized_to_edit?(@event)
   end

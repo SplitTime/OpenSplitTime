@@ -79,6 +79,16 @@ class EventsController < ApplicationController
   def reconcile
     authorize @event
     @unreconciled_efforts = @event.unreconciled_efforts.order(:last_name).paginate(page: params[:page], per_page: 25)
+    if @unreconciled_efforts.count < 1
+      flash[:success] = "All efforts reconciled for #{@event.name}"
+      redirect_to stage_event_path(@event)
+    end
+  end
+
+  def delete_all_efforts
+    authorize @event
+    @event.efforts.destroy_all
+    redirect_to stage_event_path(@event)
   end
 
   # Import actions
@@ -99,7 +109,9 @@ class EventsController < ApplicationController
     if Importer.effort_import(params[:file], @event, current_user.id)
       flash[:success] = "Import successful"
       auto_matched_count = @event.reconciled_efforts.count
-      if auto_matched_count > 0
+      if auto_matched_count == @event.efforts.count
+        flash[:success] = "All #{auto_matched_count} participants matched our database and have been reconciled."
+      elsif auto_matched_count > 0
         flash[:success] = "We found #{auto_matched_count} participants that matched our database. Please reconcile the others now."
       else
         flash[:success] = "No participants matched our database. Please reconcile your participants now."
@@ -142,7 +154,6 @@ class EventsController < ApplicationController
   end
 
   def remove_all_splits
-    @event = Event.find(params[:id])
     authorize @event
     @event.splits.delete(Split.waypoint)
     redirect_to splits_event_path(@event)

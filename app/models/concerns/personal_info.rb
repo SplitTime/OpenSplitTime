@@ -45,7 +45,7 @@ module PersonalInfo
   end
 
   def years_between_dates(date1, date2)
-    (date2 - date1) / 365.25
+    TimeDifference.between(date1, date2).in_years
   end
 
 end

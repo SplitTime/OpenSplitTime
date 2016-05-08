@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160418032555) do
+ActiveRecord::Schema.define(version: 20160508024506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,17 +26,16 @@ ActiveRecord::Schema.define(version: 20160418032555) do
   end
 
   create_table "efforts", force: :cascade do |t|
-    t.integer  "event_id",                  null: false
+    t.integer  "event_id",                              null: false
     t.integer  "participant_id"
     t.string   "wave"
     t.integer  "bib_number"
     t.string   "city",           limit: 64
     t.string   "state_code",     limit: 64
     t.integer  "age"
-    t.datetime "start_time",                null: false
     t.boolean  "dropped"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "first_name"
@@ -45,6 +44,7 @@ ActiveRecord::Schema.define(version: 20160418032555) do
     t.string   "country_code",   limit: 2
     t.date     "birthdate"
     t.integer  "data_status"
+    t.integer  "start_offset",              default: 0
   end
 
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id", using: :btree

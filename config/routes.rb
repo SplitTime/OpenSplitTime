@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     member { put :set_data_status }
     member { delete :remove_split }
     member { delete :remove_all_splits }
+    member { delete :delete_all_efforts }
     member { get :reconcile }
     member { get :stage}
     member { get :spread}

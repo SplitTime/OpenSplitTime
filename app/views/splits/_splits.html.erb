@@ -12,20 +12,24 @@
   <% splits.each do |split| %>
       <tr>
         <td><strong><%= link_to split.name, split_path(split) %></strong></td>
-        <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start).round(1)}" %>
-          <% if split.vert_gain_from_start.present? %>
-              <%= "• #{split.vert_gain_as_entered}/#{split.vert_loss_as_entered} #{peu} gain/loss from start" %></td>
+        <td>
+          <% unless split.start? %>
+              <%= "#{pdu('singular').titleize} #{d(split.distance_from_start).round(1)}" %>
+              <% if split.vert_gain_from_start.present? %>
+                  <%= "• #{split.vert_gain_as_entered}/#{split.vert_loss_as_entered} #{peu} gain/loss from start" %>
+              <% end %>
           <% end %>
-          <% if split.location %>
-              <td><%= link_to split.location.name, location_path(split.location) %></td>
-          <% else %>
-              <td>
-                <%= link_to "Create", new_location_path(split_id: split.id), class: "btn btn-xs btn-success" %>
-                <%= link_to "Select", assign_location_split_path(id: split.id, referrer_path: referred_by),
-                            class: "btn btn-xs btn-success" %>
-              </td>
-          <% end %>
-          </tr>
+        </td>
+        <% if split.location %>
+            <td><%= link_to split.location.name, location_path(split.location) %></td>
+        <% else %>
+            <td>
+              <%= link_to "Create", new_location_path(split_id: split.id), class: "btn btn-xs btn-success" %>
+              <%= link_to "Select", assign_location_split_path(id: split.id, referrer_path: referred_by),
+                          class: "btn btn-xs btn-success" %>
+            </td>
+        <% end %>
+      </tr>
   <% end %>
   </tbody>
 </table>

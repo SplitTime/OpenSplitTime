@@ -221,7 +221,7 @@ class Importer
   end
 
   def self.create_effort (row_effort_data, effort_schema, event)
-    @effort = event.efforts.new(start_time: event.first_start_time)
+    @effort = event.efforts.new
     (0...effort_schema.size).each do |i|
       @effort.assign_attributes({effort_schema[i] => row_effort_data[i]}) unless effort_schema[i].nil?
     end

@@ -1,65 +1,53 @@
 <%= link_to '< Back to admin page', stage_event_path(id: @event.id),
             :class => 'btn btn-sm btn-default' %>
 
-<% if @unreconciled_efforts.count > 0 %>
-    <div class="page-header">
-      <div class="row">
-        <div class="col-md-8">
-          <h3><%= "#{@unreconciled_efforts.count} Unreconciled efforts for #{@event.name}" %></h3>
-        </div>
-        <div class="col-md-4">
-          <%= link_to "Perform exact matches", associate_participants_efforts_path(event_id: @event.id,
-                                                                                   ids: make_exact_match_id_hash(@unreconciled_efforts)),
-                      method: :put,
-                      class: 'btn btn-sm btn-primary btn-margin-top' %>
-          <%= link_to 'Create all participants',
-                      create_from_efforts_participants_path(event_id: @event.id, effort_ids: 'all'),
-                      method: :post,
-                      data: {confirm: "Create #{@unreconciled_efforts.count} new participants?"},
-                      class: 'btn btn-sm btn-success btn-margin-top' %>
-        </div>
-      </div>
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-8">
+      <h3><%= "#{@unreconciled_efforts.count} Unreconciled efforts for #{@event.name}" %></h3>
     </div>
-    <div class="row">
-      <div class="col-xs-8">
-        <%= will_paginate(@unreconciled_efforts, inner_window: 2, outer_window: 0) %>
-      </div>
+    <div class="col-md-4">
+      <%= link_to "Perform exact matches", associate_participants_efforts_path(event_id: @event.id,
+                                                                               ids: make_exact_match_id_hash(@unreconciled_efforts)),
+                  method: :put,
+                  class: 'btn btn-sm btn-primary btn-margin-top' %>
+      <%= link_to 'Create all participants',
+                  create_from_efforts_participants_path(event_id: @event.id, effort_ids: 'all'),
+                  method: :post,
+                  data: {confirm: "Create #{@unreconciled_efforts.count} new participants?"},
+                  class: 'btn btn-sm btn-success btn-margin-top' %>
     </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate(@unreconciled_efforts, inner_window: 2, outer_window: 0) %>
+  </div>
+</div>
 
-    <table class="table table-condensed table-striped">
+<table class="table table-condensed table-striped">
 
-      <thead>
-      <tr>
-        <th>Personal Effort Info</th>
-        <th></th>
-        <th>Suggested Match</th>
-        <th>Create</th>
-        <th></th>
-      </tr>
-      </thead>
+  <thead>
+  <tr>
+    <th>Personal Effort Info</th>
+    <th></th>
+    <th>Suggested Match</th>
+    <th>Create</th>
+    <th></th>
+  </tr>
+  </thead>
 
-      <tbody>
-      <% @unreconciled_efforts.each do |effort| %>
-          <%= render 'unreconciled_effort', effort: effort,
-                     exact_match: effort.exact_matching_participant,
-                     close_match: effort.possible_matching_participants.first %>
-      <% end %>
-      </tbody>
+  <tbody>
+  <% @unreconciled_efforts.each do |effort| %>
+      <%= render 'unreconciled_effort', effort: effort,
+                 exact_match: effort.exact_matching_participant,
+                 close_match: effort.possible_matching_participants.first %>
+  <% end %>
+  </tbody>
 
-    </table>
-    <div class="row">
-      <div class="col-xs-8">
-        <%= will_paginate(@unreconciled_efforts, inner_window: 2, outer_window: 0) %>
-      </div>
-    </div>
-
-<% else %>
-    <div class="page-header">
-      <div class="row">
-        <div class="col-md-10">
-          <h3><%= "All efforts reconciled for #{@event.name}" %></h3>
-        </div>
-      </div>
-    </div>
-
-<% end %>
+</table>
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate(@unreconciled_efforts, inner_window: 2, outer_window: 0) %>
+  </div>
+</div>

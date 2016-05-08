@@ -12,9 +12,11 @@ class Effort < ActiveRecord::Base
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:time_as_entered].blank? }
 
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender, :start_time
+  validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
+
+  before_save :reset_age_from_birthdate
 
   def self.columns_for_import
     id = ["id"]
@@ -28,9 +30,24 @@ class Effort < ActiveRecord::Base
     # this effort began that amount of time later than the event's normal start time
     return nil unless start_split_time
     if start_split_time.time_from_start != 0
-      update(start_time: start_time + start_split_time.time_from_start)
+      update(start_offset: start_split_time.time_from_start)
       start_split_time.update(time_from_start: 0)
     end
+  end
+
+  def reset_age_from_birthdate
+    self.assign_attributes(age: TimeDifference.between(birthdate, event.first_start_time).in_years.to_i) if birthdate.present?
+  end
+
+  def start_time
+    event.first_start_time + start_offset
+  end
+
+  def start_time=(datetime)
+    return unless datetime.present?
+    event_time = event.first_start_time
+    difference = TimeDifference.between(datetime, event_time).in_seconds
+    self.start_offset = (datetime > event_time) ? difference : (difference * -1)
   end
 
   # Methods regarding split_times

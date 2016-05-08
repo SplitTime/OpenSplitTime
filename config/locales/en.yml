@@ -30,3 +30,7 @@ en:
     formats:
       default: "%m/%d/%y"
       short: "%m/%d"
+
+  time:
+    formats:
+      full_with_weekday: "%A, %B %-d, %Y"

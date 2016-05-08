@@ -75,6 +75,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root 'dashboard#dashboard'
-    get 'flag_split_times', to: 'dashboard#flag_split_times'
+    put 'set_effort_ages', to: 'dashboard#set_effort_ages'
   end
 end

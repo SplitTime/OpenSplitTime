@@ -35,6 +35,8 @@
           <td class="text-right"><%= composite_time(waypoint_group_row) %></td>
           <td class="text-right"><%= time_format_hhmmss(waypoint_group_row.segment_time) %></td>
           <td class="text-right"><%= time_format_minutes(waypoint_group_row.time_in_aid) %></td>
+      <% end %>
+      <% unless waypoint_group_row.start? %>
           <% if current_user && current_user.authorized_to_edit?(@effort) %>
               <td class="text-right">
                 <% if waypoint_group_row.data_status == :confirmed %>

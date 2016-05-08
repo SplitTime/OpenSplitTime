@@ -16,7 +16,7 @@ class Effort < ActiveRecord::Base
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
 
-  before_save :reset_age_from_birthdate
+  # before_save :reset_age_from_birthdate
 
   def self.columns_for_import
     id = ["id"]
@@ -37,6 +37,17 @@ class Effort < ActiveRecord::Base
 
   def reset_age_from_birthdate
     self.assign_attributes(age: TimeDifference.between(birthdate, event.first_start_time).in_years.to_i) if birthdate.present?
+  end
+
+  def self.reset_effort_ages
+    counter = 0
+    all.each do |effort|
+      effort.reset_age_from_birthdate
+      if effort.save
+        counter += 1
+      end
+    end
+    counter
   end
 
   def start_time

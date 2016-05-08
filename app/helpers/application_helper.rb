@@ -7,12 +7,12 @@ module ApplicationHelper
       seconds = time_in_seconds % 60
       minutes = (time_in_seconds / 60) % 60
       hours = time_in_seconds / (60 * 60)
-      format("-%2d:%02d:%02d", hours, minutes, seconds)
+      format("-%02d:%02d:%02d", hours, minutes, seconds)
     else
       seconds = time_in_seconds % 60
       minutes = (time_in_seconds / 60) % 60
       hours = time_in_seconds / (60 * 60)
-      format("%2d:%02d:%02d", hours, minutes, seconds)
+      format("%02d:%02d:%02d", hours, minutes, seconds)
     end
   end
 

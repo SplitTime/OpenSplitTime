@@ -65,9 +65,9 @@ class SegmentCalculations
 
   def set_limits_by_terrain(segment)
     typical_time = segment.typical_time_by_terrain
-    self.low_bad = typical_time / 3
-    self.low_q = typical_time / 2
-    self.high_q = typical_time * 3
+    self.low_bad = typical_time / 5
+    self.low_q = typical_time / 3.5
+    self.high_q = typical_time * 3.5
     self.high_bad = typical_time * 5
   end
 

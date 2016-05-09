@@ -16,7 +16,7 @@ class Effort < ActiveRecord::Base
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
 
-  # before_save :reset_age_from_birthdate
+  before_save :reset_age_from_birthdate
 
   def self.columns_for_import
     id = ["id"]

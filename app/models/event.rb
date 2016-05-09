@@ -22,18 +22,17 @@ class Event < ActiveRecord::Base
     unreconciled_efforts.each do |effort|
       @exact_match = effort.exact_matching_participant
       if @exact_match
-        @exact_match.pull_data_from_effort(effort.id)
+        @exact_match.pull_data_from_effort(effort)
       end
     end
   end
 
   def assign_participants_to_efforts(id_hash)
-    id_hash.each { |effort_id, participant_id| assign_participant_to_effort(effort_id, participant_id) }
-  end
-
-  def assign_participant_to_effort(effort_id, participant_id)
-    @participant = Participant.find(participant_id)
-    @participant.pull_data_from_effort(effort_id)
+    efforts = Effort.find(id_hash.keys).index_by(&:id)
+    participants = Participant.find(id_hash.values).index_by(&:id)
+    id_hash.each do |effort_id, participant_id|
+      participants[participant_id].pull_data_from_effort(efforts[effort_id])
+    end
   end
 
   def reconciled_efforts

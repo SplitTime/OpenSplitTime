@@ -10,8 +10,8 @@ class Participant < ActiveRecord::Base
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
 
   validates_presence_of :first_name, :last_name, :gender
-  validates :email, allow_blank: true, length: { maximum: 105 },
-            uniqueness: { case_sensitive: false },
+  validates :email, allow_blank: true, length: {maximum: 105},
+            uniqueness: {case_sensitive: false},
             format: {with: VALID_EMAIL_REGEX}
 
 
@@ -43,34 +43,28 @@ class Participant < ActiveRecord::Base
     matches
   end
 
+  # Methods for determining if a user has claimed a participant
+
   def unclaimed?
     claimant.nil?
   end
 
   def claimed?
-    !unclaimed?
+    claimant.present?
   end
 
+  # Methods related to matching and merging efforts with participants
 
-  def self.columns_to_pull_from_model
-    id = ["id"]
-    foreign_keys = Participant.column_names.find_all { |x| x.include?("_id") }
-    stamps = Participant.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
-    geographic = ["country_code", "state_code", "city"]
-    (column_names - (id + foreign_keys + stamps + geographic)).map &:to_sym
-  end
-
-  def pull_data_from_effort(effort_id)
-    @effort = Effort.find(effort_id)
-    resolve_country(@effort)
-    resolve_state_and_city(@effort)
+  def pull_data_from_effort(effort)
+    resolve_country(effort)
+    resolve_state_and_city(effort)
     participant_attributes = Participant.columns_to_pull_from_model
     participant_attributes.each do |attribute|
-      assign_attributes({attribute => @effort[attribute]}) if self[attribute].blank?
+      assign_attributes({attribute => effort[attribute]}) if self[attribute].blank?
     end
     if save
-      @effort.participant ||= self
-      @effort.save
+      effort.participant ||= self
+      effort.save
     end
   end
 
@@ -118,6 +112,16 @@ class Participant < ActiveRecord::Base
     elsif (state_code == target.state_code) && city.blank?
       assign_attributes(city: target.city)
     end
+  end
+
+  private
+
+  def self.columns_to_pull_from_model
+    id = ["id"]
+    foreign_keys = Participant.column_names.find_all { |x| x.include?("_id") }
+    stamps = Participant.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
+    geographic = ["country_code", "state_code", "city"]
+    (column_names - (id + foreign_keys + stamps + geographic)).map &:to_sym
   end
 
 end

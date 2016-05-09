@@ -58,7 +58,7 @@ class EffortsController < ApplicationController
 
     if @effort.save
       @participant = Participant.find(params[:participant_id])
-      @participant.pull_data_from_effort(@effort.id)
+      @participant.pull_data_from_effort(@effort)
       redirect_to reconcile_event_path(params[:event_id])
     else
       redirect_to reconcile_event_path(params[:event_id]),

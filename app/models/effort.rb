@@ -64,26 +64,66 @@ class Effort < ActiveRecord::Base
   # Methods regarding split_times
 
   def finished?
-    split_time = split_times.joins(:split).where(splits: {kind: 1}).first
-    split_time.present?
+    finish_split_time.present?
+  end
+
+  def in_progress?
+    !dropped? && finish_split_time.nil?
   end
 
   def finish_status
     return "DNF" if dropped?
-    return finish_split_time.formatted_time_hhmmss if finished?
+    split_time = finish_split_time
+    return split_time.formatted_time_hhmmss if split_time
     "In progress"
   end
 
+  def due_next_where
+    return nil if dropped?
+    last_split = last_reported_split
+    return nil if last_split.finish?
+    event.next_split(last_split)
+  end
+
+  def due_next_when
+    event.first_start_time + start_offset + due_next_time_from_start
+  end
+
+  def overdue_by
+    Time.now - due_next_when
+  end
+
+  def due_next_time_from_start
+    return nil if dropped?
+    last_time = last_reported_split_time
+    last_split = last_time.split
+    return nil if last_split.finish?
+    current_segment = Segment.new(last_split, event.next_split(last_split))
+    completed_segment = Segment.new(event.start_split, last_split)
+    current_segment_calcs = SegmentCalculations.new(current_segment)
+    completed_segment_calcs = SegmentCalculations.new(completed_segment)
+    pace_factor = last_time.time_from_start / (completed_segment_calcs.mean || completed_segment.typical_time_by_terrain)
+    last_time.time_from_start + (current_segment_calcs.mean * pace_factor)
+  end
+
+  def last_reported_split
+    ordered_split_times.last.split
+  end
+
+  def last_reported_split_time
+    ordered_split_times.last
+  end
+
   def finish_split_time
-    split_times.joins(:split).where(splits: {kind: 1}).first
+    split_times.includes(:split).where(splits: {kind: 1}).first
   end
 
   def start_split_time
-    split_times.joins(:split).where(splits: {kind: 0}).first
+    split_times.includes(:split).where(splits: {kind: 0}).first
   end
 
   def base_split_times
-    split_times.joins(:split).where(splits: {sub_order: 0}).order('splits.distance_from_start')
+    split_times.includes(:split).where(splits: {sub_order: 0}).order('splits.distance_from_start')
   end
 
   def time_in_aid(split)
@@ -107,13 +147,9 @@ class Effort < ActiveRecord::Base
     split_times.includes(:split).order('splits.distance_from_start', 'splits.sub_order')
   end
 
-  def ordered_valid_split_times
-    split_times.valid_status.includes(:split).order('splits.distance_from_start', 'splits.sub_order')
-  end
-
   def previous_split_time(split_time)
     ordered_times = ordered_split_times
-    position = ordered_split_times.index(split_time)
+    position = ordered_times.index(split_time)
     return nil if position.nil?
     position == 0 ? nil : ordered_times[position - 1]
   end

@@ -65,6 +65,15 @@ module SplitMethods
     splits.ordered.map(&:id)
   end
 
+  def start_split
+    ordered_splits.first
+  end
+
+  def next_split(split)
+    splits = ordered_splits
+    splits[splits.index(split) + 1]
+  end
+
   module ClassMethods
 
   end

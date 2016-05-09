@@ -67,8 +67,7 @@ class Event < ActiveRecord::Base
   end
 
   def split_time_hash
-    effort_ids = efforts.pluck(:id)
-    SplitTime.where(effort_id: effort_ids)
+    SplitTime.where(effort_id: efforts.pluck(:id))
         .pluck_to_hash(:split_id, :effort_id, :time_from_start, :data_status)
         .group_by { |row| row[:split_id] }
   end
@@ -123,6 +122,29 @@ class Event < ActiveRecord::Base
 
   def gender_place(effort)
     combined_places(effort)[1]
+  end
+
+  # Methods for monitoring efforts while event is live
+
+  def efforts_dropped
+    efforts.where(dropped: true).pluck(:id)
+  end
+
+  def efforts_finished
+    efforts.ids_sorted_by_finish_time
+  end
+
+  def efforts_in_progress
+    unfinished_effort_ids = efforts.pluck(:id) - efforts_finished
+    efforts.where(id: unfinished_effort_ids, dropped: false)
+  end
+
+  def efforts_overdue(time = 0)
+    result = []
+    efforts_in_progress.each do |effort|
+      result << effort if effort.overdue_by > time
+    end
+    result
   end
 
 end

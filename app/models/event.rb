@@ -1,7 +1,6 @@
 class Event < ActiveRecord::Base
   include Auditable
   include SplitMethods
-  include StatisticalMethods
   belongs_to :course, touch: true
   belongs_to :race
   has_many :efforts, dependent: :destroy
@@ -139,10 +138,13 @@ class Event < ActiveRecord::Base
     efforts.where(id: unfinished_effort_ids, dropped: false)
   end
 
-  def efforts_overdue(time = 0)
+  def efforts_overdue # Returns an array of efforts with overdue_amount attribute
     result = []
+    current_tfs = Time.now - first_start_time
+    cache = SegmentCalculationsCache.new(self)
     efforts_in_progress.each do |effort|
-      result << effort if effort.overdue_by > time
+      effort.overdue_amount = effort.due_next_time_from_start(cache) - (current_tfs + effort.start_offset)
+      result << effort if effort.overdue_amount > 0
     end
     result
   end

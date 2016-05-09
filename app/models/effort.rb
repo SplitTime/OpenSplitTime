@@ -3,7 +3,6 @@ class Effort < ActiveRecord::Base
   include Matchable
   include PersonalInfo
   include Searchable
-  include StatisticalMethods
   enum gender: [:male, :female]
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event, touch: true
@@ -11,6 +10,7 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:time_as_entered].blank? }
 
+  attr_accessor :overdue_amount
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
@@ -85,23 +85,24 @@ class Effort < ActiveRecord::Base
     event.next_split(last_split)
   end
 
-  def due_next_when
-    event.first_start_time + start_offset + due_next_time_from_start
+  def overdue_by(cache = nil)
+    Time.now - due_next_when(cache)
   end
 
-  def overdue_by
-    Time.now - due_next_when
+  def due_next_when(cache = nil)
+    event.first_start_time + start_offset + due_next_time_from_start(cache)
   end
 
-  def due_next_time_from_start
+  def due_next_time_from_start(cache = nil)
     return nil if dropped?
     last_time = last_reported_split_time
     last_split = last_time.split
     return nil if last_split.finish?
+    cache ||= SegmentCalculationsCache.new(event)
     current_segment = Segment.new(last_split, event.next_split(last_split))
     completed_segment = Segment.new(event.start_split, last_split)
-    current_segment_calcs = SegmentCalculations.new(current_segment)
-    completed_segment_calcs = SegmentCalculations.new(completed_segment)
+    current_segment_calcs = cache.fetch_calculations(current_segment)
+    completed_segment_calcs = cache.fetch_calculations(completed_segment)
     pace_factor = last_time.time_from_start / (completed_segment_calcs.mean || completed_segment.typical_time_by_terrain)
     last_time.time_from_start + (current_segment_calcs.mean * pace_factor)
   end

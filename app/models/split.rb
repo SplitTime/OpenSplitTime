@@ -1,6 +1,5 @@
 class Split < ActiveRecord::Base
   include Auditable
-  include StatisticalMethods
   include UnitConversions
   enum kind: [:start, :finish, :waypoint]
   belongs_to :course

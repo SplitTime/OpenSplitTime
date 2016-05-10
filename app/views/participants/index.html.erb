@@ -18,7 +18,7 @@
   </div>
 </div>
 <% if @participants.count > 0 %>
-    <%= render 'participants', participants: @participants, efforts_count: Effort.group("efforts.participant_id").count %>
+    <%= render 'participants' %>
 <% else %>
     <br/>
     <p><strong>No participants match this search</strong></p>

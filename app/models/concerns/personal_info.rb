@@ -22,8 +22,9 @@ module PersonalInfo
   end
 
   def bio
-    return age_today if gender.nil?
-    age_today.nil? ? gender.titlecase : "#{gender.titlecase}, #{age_today}"
+    current_age = age_today
+    return current_age if gender.nil?
+    current_age.nil? ? gender.titlecase : "#{gender.titlecase}, #{current_age}"
   end
 
   def bio_historic

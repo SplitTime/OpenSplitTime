@@ -4,7 +4,11 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
-    @events = Event.paginate(page: params[:page], per_page: 25).order(first_start_time: :desc)
+    @events = Event.select("events.*, COUNT(efforts.id) as effort_count")
+                  .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
+                  .group("events.id")
+                  .paginate(page: params[:page], per_page: 25)
+                  .order(first_start_time: :desc)
     session[:return_to] = events_path
   end
 

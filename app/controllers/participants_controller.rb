@@ -13,7 +13,10 @@ class ParticipantsController < ApplicationController
   end
 
   def index
-    @participants = Participant.search(params[:search_param]).sort_by { |x| [x.last_name, x.first_name] }
+    @participants = Participant.select("participants.*, COUNT(efforts.id) as effort_count")
+                        .joins("LEFT OUTER JOIN efforts ON (efforts.participant_id = participants.id)")
+                        .group("participants.id")
+                        .search(params[:search_param]).sort_by { |x| [x.last_name, x.first_name] }
                         .paginate(page: params[:page], per_page: 25)
     authorize @participants.first unless @participants.count < 1
     session[:return_to] = participants_path

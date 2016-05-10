@@ -10,7 +10,7 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:time_as_entered].blank? }
 
-  attr_accessor :overdue_amount
+  attr_accessor :overdue_amount, :suggested_match
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'

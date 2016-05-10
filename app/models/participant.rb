@@ -9,6 +9,8 @@ class Participant < ActiveRecord::Base
   has_many :efforts
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
 
+  attr_accessor :suggested_match
+
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
             uniqueness: {case_sensitive: false},

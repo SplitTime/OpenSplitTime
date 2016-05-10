@@ -17,28 +17,38 @@ class Importer
     split_id_array = []
     error_array = []
     (0...split_array.size).each do |i|
-      if i == 0 # First split is always kind = start and sub_order = 0
-        kind = :start
-        sub_order = 0
-      else # Otherwise determine kind and sub_order
-        kind = i == split_array.size - 1 ? :finish : :waypoint
+
+      if i == 0 # First one, so find the existing start split or create a new one
+        @split = event.course.start_split || Split.new(course_id: event.course_id,
+                                                       name: 'Start',
+                                                       distance_from_start: 0,
+                                                       sub_order: 0,
+                                                       kind: :start)
+
+      elsif i == split_array.size - 1 # Last one, so find the existing finish split on the course
+        @split = event.course.finish_split || Split.new(course_id: event.course_id,
+                                                        name: split_array[i],
+                                                        distance_from_start: (distance_array[i] * distance_conversion_factor),
+                                                        sub_order: 0,
+                                                        kind: :finish)
+
+      else # This is not a start or finish, so set sub_order and create new split
         if distance_array[i-1] == distance_array[i]
-          sub_order =+1
+          sub_order =+ 1
         else
           sub_order = 0
         end
-      end
-      name = split_array[i]
-      distance = distance_array[i] * distance_conversion_factor
+        @split = Split.new(course_id: event.course_id,
+                           name: split_array[i],
+                           distance_from_start: (distance_array[i] * distance_conversion_factor),
+                           sub_order: sub_order,
+                           kind: :waypoint)
 
-      @split = Split.new(course_id: event.course_id,
-                         name: name,
-                         distance_from_start: distance,
-                         sub_order: sub_order,
-                         kind: kind)
+      end
+
       if @split.save
         split_id_array << @split.id
-        event.splits << @split
+        event.splits << @split unless event.splits.include?(@split)
       else
         error_array << @split
       end
@@ -49,7 +59,7 @@ class Importer
   def self.effort_import(file, event, current_user_id)
     spreadsheet = open_spreadsheet(file)
     return false unless spreadsheet
-    header1 = spreadsheet.row(1).map(&:downcase)
+    header1 = spreadsheet.row(1).map { |cell| cell ? cell.downcase : nil }
     header2 = spreadsheet.row(2)
 
     split_offset = compute_split_offset(header1)
@@ -86,6 +96,7 @@ class Importer
 
   def self.prepare_row_effort_data(row_effort_data, effort_schema)
     i = effort_schema.index(:country_code)
+    country_code = nil
     if i
       row_effort_data[i] = prepare_country_data(row_effort_data[i])
       country_code = row_effort_data[i]
@@ -102,6 +113,7 @@ class Importer
   def self.prepare_country_data(country_data)
     return nil if country_data.blank?
     if country_data.is_a?(String)
+      country_data = country_data.strip
       if country_data.length < 4
         country = Carmen::Country.coded(country_data)
         return country.code unless country.nil?
@@ -122,6 +134,7 @@ class Importer
 
   def self.prepare_state_data(country_code, state_data)
     return nil if state_data.blank?
+    state_data = state_data.strip
     country = Carmen::Country.coded(country_code)
     if state_data.is_a?(String)
       return state_data if country.nil?
@@ -139,6 +152,7 @@ class Importer
   def self.prepare_gender_data(gender_data)
     return nil if gender_data.blank?
     gender_data.downcase!
+    gender_data = gender_data.strip
     return "male" if (gender_data == "m") | (gender_data == "male")
     return "female" if (gender_data == "f") | (gender_data == "female")
   end
@@ -181,6 +195,7 @@ class Importer
     column_string.gsub!('region', 'state')
     column_string.gsub!('province', 'state')
     column_string.gsub!('sex', 'gender')
+    column_string.gsub!('bib', 'bibnumber')
     return (column_string == effort_string)
   end
 
@@ -204,7 +219,7 @@ class Importer
   end
 
   def self.compute_split_offset(header1)
-    start_column_index = header1.map(&:downcase).index("start")
+    start_column_index = header1.map { |cell| cell ? cell.downcase : nil }.index("start")
     start_column_index ? start_column_index + 1 : header1.size
   end
 
@@ -253,6 +268,7 @@ class Importer
       (0...split_array.size).each do |i|
         split_id = split_array[i]
         working_time = row_time_data[i]
+        working_time ||= 0 if i == 0 # Make sure start_splits are never nil
         seconds = convert_time_to_standard(working_time)
         if i == split_array.size - 1
           effort.update(dropped: seconds.nil? ? true : false)

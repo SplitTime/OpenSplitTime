@@ -45,8 +45,8 @@ class ParticipantsController < ApplicationController
   end
 
   def create_from_efforts
-    unreconciled_effort_id_array(params[:effort_ids], params[:event_id]).each do |effort_id|
-      effort = Effort.find(effort_id)
+    @efforts = Effort.find(params[:effort_ids])
+    @efforts.each do |effort|
       @participant = Participant.new
       @participant.pull_data_from_effort(effort)
     end
@@ -87,7 +87,12 @@ class ParticipantsController < ApplicationController
   def merge
     authorize @participant
     @proposed_match = params[:proposed_match] ? Participant.find(params[:proposed_match]) : @participant.possible_duplicates.first
-    @proposed_matches = @participant.possible_duplicates - [@proposed_match]
+    if @proposed_match
+      @proposed_matches = @participant.possible_duplicates - [@proposed_match]
+    else
+      flash[:success] = "No potential matches detected."
+      redirect_to participant_path(@participant)
+    end
   end
 
   def combine
@@ -118,15 +123,6 @@ class ParticipantsController < ApplicationController
 
   def set_participant
     @participant = Participant.find(params[:id])
-  end
-
-  def unreconciled_effort_id_array(effort_ids, event_id)
-    if effort_ids == "all"
-      @event = Event.find(event_id)
-      @event.unreconciled_efforts.order(:last_name).map &:id
-    else
-      effort_ids.is_a?(String) ? Array(effort_ids.to_i) : effort_ids
-    end
   end
 
 end

@@ -66,7 +66,11 @@ module SplitMethods
   end
 
   def start_split
-    ordered_splits.first
+    splits.start.first
+  end
+
+  def finish_split
+    splits.finish.first
   end
 
   def next_split(split)

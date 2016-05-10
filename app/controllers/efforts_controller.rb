@@ -72,7 +72,7 @@ class EffortsController < ApplicationController
     if params[:ids].nil?
       redirect_to reconcile_event_path(@event)
     else
-      assign_participants_to_efforts(params[:ids])
+      @event.assign_participants_to_efforts(params[:ids])
       redirect_to reconcile_event_path(@event)
     end
   end

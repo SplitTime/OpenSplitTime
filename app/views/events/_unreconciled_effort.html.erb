@@ -1,30 +1,20 @@
-<%# Requires parameters effort, matching_participant %>
+<%# Requires parameter effort %>
 
 <tr>
   <td><%= effort.personal_info %></td>
   <td>
-    <%# Blue button for exact matches, white button for close matches %>
-    <% if exact_match %>
+    <% if effort.suggested_match %>
         <%= link_to 'Same person >>',
                     associate_participant_effort_path(effort,
-                                                      participant_id: exact_match.id,
+                                                      participant_id: effort.suggested_match.id,
                                                       event_id: @event.id),
                     method: :put,
                     class: "btn btn-xs btn-primary" %>
-    <% elsif close_match %>
-        <%= link_to 'Same person >>',
-                    associate_participant_effort_path(effort,
-                                                      participant_id: close_match.id,
-                                                      event_id: @event.id),
-                    method: :put,
-                    class: "btn btn-xs btn-default" %>
     <% end %>
   </td>
   <td>
-    <% if exact_match %>
-        <%= exact_match.personal_info %>
-    <% elsif close_match %>
-        <%= close_match.personal_info %>
+    <% if effort.suggested_match %>
+        <%= effort.suggested_match.personal_info %>
     <% end %>
   </td>
   <td>

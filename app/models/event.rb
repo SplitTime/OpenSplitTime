@@ -26,7 +26,8 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def assign_participants_to_efforts(id_hash)
+  def assign_participants_to_efforts(ids)
+    id_hash = Hash[*ids.to_a.flatten.map(&:to_i)]
     efforts = Effort.find(id_hash.keys).index_by(&:id)
     participants = Participant.find(id_hash.values).index_by(&:id)
     id_hash.each do |effort_id, participant_id|
@@ -78,7 +79,9 @@ class Event < ActiveRecord::Base
     event_effort_ids = efforts.pluck(:id)
     result = event_effort_ids.map { |effort_id| [effort_id] }
     ordered_split_ids.each do |split_id|
-      hash = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]]}]
+      hash = split_time_hash[split_id] ?
+          Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]]}] :
+          {}
       result.collect! { |row| row << hash[row[0]] }
     end
     result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }

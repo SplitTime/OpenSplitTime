@@ -9,18 +9,16 @@ module EventsHelper
     event_split_id_array
   end
 
-  def make_exact_match_id_hash(efforts)
+  def make_suggested_match_id_hash(efforts)
     id_hash = {}
-    c = 0
     efforts.each do |effort|
-      break if c >= 50
-      @participant = effort.exact_matching_participant
-      if @participant
-        id_hash[effort.id] = @participant.id
-        c += 1
-      end
+      id_hash[effort.id] = effort.suggested_match.id if effort.suggested_match
     end
     id_hash
+  end
+
+  def suggested_match_count(efforts)
+    make_suggested_match_id_hash(efforts).count
   end
 
   def data_status(status_int)

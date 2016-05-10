@@ -45,7 +45,7 @@ class ParticipantsController < ApplicationController
   end
 
   def create_from_efforts
-    @efforts = Effort.find(params[:effort_ids])
+    @efforts = Effort.where(id: params[:effort_ids])
     @efforts.each do |effort|
       @participant = Participant.new
       @participant.pull_data_from_effort(effort)

@@ -21,7 +21,11 @@
     <%= render 'participants' %>
 <% else %>
     <br/>
-    <p><strong>No participants match this search</strong></p>
+    <% if params[:search_params].blank? %>
+        <p><strong>Find someone by typing a name, state, or country</strong></p>
+    <% else %>
+        <p><strong>No participants match this search</strong></p>
+    <% end %>
 <% end %>
 
 <hr>

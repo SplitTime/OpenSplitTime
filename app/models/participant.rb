@@ -21,7 +21,7 @@ class Participant < ActiveRecord::Base
 
   def approximate_age_today
     now = Time.now.utc.to_date
-    count = self.effort_count || efforts.count
+    count = self.try(:effort_count) || efforts.count
     return nil unless count > 0
     age_array = []
     efforts.includes(:event).each do |effort|

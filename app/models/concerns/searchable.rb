@@ -75,7 +75,7 @@ module Searchable
     end
 
     def search(param)
-      return all if param.blank?
+      return none if param.nil? || (param.length < 3)
       param.downcase!
       collection = country_matches(param) + state_matches(param)
       terms = param.split(" ")

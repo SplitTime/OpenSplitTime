@@ -61,6 +61,10 @@ class CoursesController < ApplicationController
     session[:return_to] = best_efforts_course_path(@course)
   end
 
+  def segment_picker
+    authorize @course
+  end
+
   def plan_effort
     @course = Course.where(id: params[:id]).first
     authorize @course

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :courses do
     member { get :best_efforts }
     member { get :plan_effort }
+    member { get :segment_picker }
   end
   resources :events do
     member { post :import_splits }

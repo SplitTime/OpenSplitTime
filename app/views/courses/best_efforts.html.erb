@@ -16,7 +16,8 @@
 <div class="row">
   <div class="col-xs-6">
     <div class="article-actions">
-      <%= link_to '<< Back to course splits', course_path(@course), class: "btn btn-sm btn-default" %>
+      <%= link_to '<< Back to course', course_path(@course), class: "btn btn-sm btn-default" %>
+      <%= link_to 'Best efforts by segment >>', segment_picker_course_path(@course), class: "btn btn-sm btn-default" %>
     </div>
   </div>
   <div class="col-xs-6">

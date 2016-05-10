@@ -1,6 +1,15 @@
 module SplitMethods
   extend ActiveSupport::Concern
 
+  module ClassMethods
+
+    def splits_from_ids(split_ids)
+      splits_by_id = Split.find(split_ids).index_by(&:id)
+      split_ids.collect { |id| splits_by_id[id] }
+    end
+
+  end
+
   def segment_distance(split1, split2 = nil)
     if split2.nil?
       split1.start? ? 0 : split1.distance_from_start - previous_split(split1).distance_from_start
@@ -53,6 +62,14 @@ module SplitMethods
     splits.where(sub_order: 0).order(:distance_from_start)
   end
 
+  def out_splits
+    Course.splits_from_ids(waypoint_groups[0..-2].map { |group| group[-1] }) # Excludes the finish split
+  end
+
+  def in_splits
+    Course.splits_from_ids(waypoint_groups_without_start.map { |group| group[0] }) # Excludes the start split
+  end
+
   def ordered_splits
     splits.ordered
   end
@@ -78,7 +95,4 @@ module SplitMethods
     splits[splits.index(split) + 1]
   end
 
-  module ClassMethods
-
-  end
 end

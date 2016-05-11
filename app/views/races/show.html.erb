@@ -30,11 +30,11 @@
     <hr>
 <% end %>
 
-<% if @race_events.count > 0 %>
+<% if @race_events.pluck(:id).count > 0 %>
     <div class="row">
       <div class="col-xs-8">
         <h4>Events associated with this race:</h4>
       </div>
     </div>
-    <%= render 'events/events', events: @race_events.order(first_start_time: :desc) %>
+    <%= render 'events/events', events: @race_events %>
 <% end %>

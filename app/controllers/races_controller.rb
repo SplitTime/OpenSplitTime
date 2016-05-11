@@ -9,7 +9,10 @@ class RacesController < ApplicationController
   end
 
   def show
-    @race_events = @race.events
+    @race_events = @race.events.select("events.*, COUNT(efforts.id) as effort_count")
+                       .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
+                       .group("events.id")
+                       .order(first_start_time: :desc)
     session[:return_to] = race_path(@race)
   end
 

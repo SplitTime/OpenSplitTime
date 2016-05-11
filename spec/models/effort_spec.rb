@@ -283,7 +283,7 @@ RSpec.describe Effort, type: :model do
       expect(Effort.where(bib_number: 2).first.data_status).to eq('bad')
       expect(Effort.where(bib_number: 3).first.data_status).to eq('good')
       expect(Effort.where(bib_number: 8).first.data_status).to eq('good')
-      expect(Effort.where(bib_number: 11).first.data_status).to eq('bad')
+      expect(Effort.where(bib_number: 11).first.data_status).to eq('questionable')
     end
 
     it 'should set the data status of negative segment times to bad' do
@@ -306,8 +306,8 @@ RSpec.describe Effort, type: :model do
       expect(@effort4.split_times.good.count).to eq(4)
       expect(@effort4.split_times.bad.count).to eq(2)
       expect(@effort11.split_times.good.count).to eq(4)
-      expect(@effort11.split_times.questionable.count).to eq(0)
-      expect(@effort11.split_times.bad.count).to eq(2)
+      expect(@effort11.split_times.questionable.count).to eq(2)
+      expect(@effort11.split_times.bad.count).to eq(0)
     end
 
     it 'should set the data status of non-zero start splits to bad' do

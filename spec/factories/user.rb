@@ -15,6 +15,7 @@ FactoryGirl.define do
     last_name 'Normal'
     password '12345678'
     password_confirmation '12345678'
+    confirmed_at Date.today
   end
 
   factory :admin, class: 'User' do
@@ -24,5 +25,6 @@ FactoryGirl.define do
     password '12345678'
     password_confirmation '12345678'
     role 'admin'
+    confirmed_at Date.today
   end
 end

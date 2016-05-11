@@ -1,7 +1,7 @@
 class ParticipantsController < ApplicationController
-  before_action :authenticate_user!, except: [:subregion_options, :avatar_disclaim]
+  before_action :authenticate_user!, except: [:index, :show, :subregion_options, :avatar_disclaim]
   before_action :set_participant, except: [:index, :new, :create, :create_from_efforts, :subregion_options]
-  after_action :verify_authorized, except: [:index, :subregion_options, :avatar_disclaim, :create_from_efforts]
+  after_action :verify_authorized, except: [:index, :show, :subregion_options, :avatar_disclaim, :create_from_efforts]
 
   before_filter do
     locale = params[:locale]
@@ -18,12 +18,10 @@ class ParticipantsController < ApplicationController
                         .group("participants.id")
                         .search(params[:search_param]).sort_by { |x| [x.last_name, x.first_name] }
                         .paginate(page: params[:page], per_page: 25)
-    authorize @participants.first unless @participants.count < 1
     session[:return_to] = participants_path
   end
 
   def show
-    authorize @participant
     session[:return_to] = participant_path(@participant)
   end
 

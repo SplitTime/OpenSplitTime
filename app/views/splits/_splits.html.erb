@@ -14,9 +14,9 @@
         <td><strong><%= link_to split.name, split_path(split) %></strong></td>
         <td>
           <% unless split.start? %>
-              <%= "#{pdu('singular').titleize} #{d(split.distance_from_start).round(1)}" %>
+              <%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %>
               <% if split.vert_gain_from_start.present? %>
-                  <%= "• #{split.vert_gain_as_entered}/#{split.vert_loss_as_entered} #{peu} gain/loss from start" %>
+                  <%= "• #{e(split.vert_gain_from_start)} #{peu} gain / #{e(split.vert_loss_from_start)} #{peu} loss from start" %>
               <% end %>
           <% end %>
         </td>

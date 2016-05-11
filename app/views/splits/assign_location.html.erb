@@ -3,7 +3,7 @@
 <h2>
   <%= @split.name %>
   <% unless @split.start? %>
-      <%= "#{pdu('singular').titleize} #{d(@split.distance_from_start).round(1)}" %>
+      <%= "#{pdu('singular').titleize} #{d(@split.distance_from_start)}" %>
   <% end %>
 </h2>
 <h4><%= @split.description %></h4>

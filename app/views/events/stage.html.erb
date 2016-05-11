@@ -30,17 +30,19 @@
       <div class="row">
         <div class="col-xs-4">
           <%= link_to 'Create split', new_split_path(event_id: @event.id), class: 'btn btn-sm btn-success' %>
-          <%= link_to 'Associate or remove splits', splits_event_path, class: 'btn btn-sm btn-success' %>
+          <% unless @event.course.simple? %>
+              <%= link_to 'Associate or remove splits', splits_event_path, class: 'btn btn-sm btn-success' %>
+          <% end %>
         </div>
         <div class="col-xs-4">
           <% if @event.unreconciled_efforts? %>
               <%= link_to 'Reconcile with participants', reconcile_event_path, class: 'btn btn-sm btn-success' %>
           <% end %>
           <% if @event.efforts.count > 0 %>
-          <%= link_to 'Delete all efforts', delete_all_efforts_event_path,
-                      method: :delete,
-                      data: {confirm: 'NOTE: This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to go ahead?'},
-                      class: 'btn btn-sm btn-danger' %>
+              <%= link_to 'Delete all efforts', delete_all_efforts_event_path,
+                          method: :delete,
+                          data: {confirm: 'NOTE: This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to go ahead?'},
+                          class: 'btn btn-sm btn-danger' %>
           <% end %>
         </div>
       </div>

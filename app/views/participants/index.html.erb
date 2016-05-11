@@ -17,7 +17,7 @@
     <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>
-<% if @participants.count > 0 %>
+<% if @participants.present? %>
     <%= render 'participants' %>
 <% else %>
     <br/>

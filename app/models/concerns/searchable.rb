@@ -1,91 +1,54 @@
 module Searchable
   extend ActiveSupport::Concern
 
+  included do
+    scope :gender_matches, -> (param) { where("gender = ?", gender_int(param)) }
+    scope :country_matches, -> (param) { where(arel_table['country_code'].matches("#{country_code_for(param)}")) }
+    scope :state_matches, -> (param) { where(arel_table['state_code'].matches("#{state_code_for(param)}")) }
+    scope :first_name_matches, -> (param) { where(arel_table['first_name'].matches("%#{param}%")) }
+    scope :first_name_matches_exact, -> (param) { where(arel_table['first_name'].matches("#{param}")) }
+    scope :last_name_matches, -> (param) { where(arel_table['last_name'].matches("#{param}%")) }
+    scope :last_name_matches_exact, -> (param) { where(arel_table['last_name'].matches("#{param}")) }
+    scope :full_name_matches, -> (param) { where("regexp_replace((first_name || last_name), '[^a-zA-Z0-9]+', '', 'g') ILIKE ?", "#{normalize(param)}") }
+    scope :search_term_scope, -> (term) { country_matches(term).union(state_matches(term)).union(first_name_matches(term)).union(last_name_matches(term)) }
+  end
+
   module ClassMethods
 
-    def first_name_matches(param, rigor = 'soft')
-      return matches('first_name', param) || none if rigor == 'soft'
-      exact_matches('first_name', param) || none
-    end
-
-    def last_name_matches(param, rigor = 'soft')
-      return matches('last_name', param) || none if rigor == 'soft'
-      exact_matches('last_name', param) || none
-    end
-
-    def full_name_matches(param, resources, rigor = 'soft')
-      matches = []
-      if rigor == 'soft'
-        resources.each do |resource|
-          if "%#{resource.full_name.strip.downcase}%" == "%#{param.strip.downcase}%"
-            matches << resource
-          end
-        end
-      else
-        resources.each do |resource|
-          if resource.full_name.strip.downcase == param.strip.downcase
-            matches << resource
-          end
-        end
-      end
-      matches
-    end
-
-    def gender_matches(param)
-      gender_int = 1 if param == "female"
-      gender_int = 1 if param == 1
-      gender_int = 0 if param == "male"
-      gender_int = 0 if param == 0
-      where(gender: gender_int)
-    end
-
-    def country_matches(param)
-      param_country = Carmen::Country.named(param)
-      if param_country
-        param_country_code = param_country.code
-        where(country_code: param_country_code) || none
-      else
-        none
-      end
-    end
-
-    def state_matches(param)
-      uncoded_matches = exact_matches('state_code', param)
-      param_state = Carmen::Country.coded("US").subregions.named(param) || Carmen::Country.coded("CA").subregions.named(param)
-      if param_state
-        param_state_code = param_state.code
-        coded_matches = where(state_code: param_state_code)
-      else
-        coded_matches = none
-      end
-      (uncoded_matches + coded_matches).uniq || none
-    end
-
-    def email_matches(param, rigor = 'exact')
-      return matches('email', param) || none if rigor == 'soft'
-      exact_matches('email', param) || none
-    end
-
-    def matches(field_name, param)
-      where(arel_table[field_name].matches("%#{param}%"))
-    end
-
-    def exact_matches(field_name, param)
-      where(arel_table[field_name].matches("#{param}"))
-    end
-
-    def search(param)
-      return none if param.nil? || (param.length < 3)
-      param.downcase!
-      collection = country_matches(param) + state_matches(param)
-      terms = param.split(" ")
+    def flexible_search(param)
+      @collection = all
+      terms = tokenize(param)
       terms.each do |term|
-        collection = collection + first_name_matches(term, 'soft') +
-            last_name_matches(term, 'soft') +
-            country_matches(term) +
-            state_matches(term)
+        @collection = @collection.search_term_scope(term)
       end
-      collection.uniq
+      @collection
+    end
+
+    private
+
+    def gender_int(param)
+      return 0 if (param == "male") || (param == 0) || (param == :male)
+      return 1 if (param == "female") || (param == 1) || (param == :female)
+    end
+
+    def country_code_for(param)
+      param_country = Carmen::Country.named(param)
+      param_country ? param_country.code : nil
+    end
+
+    def state_code_for(param)
+      param_state = Carmen::Country.coded("US").subregions.named(param) || Carmen::Country.coded("CA").subregions.named(param)
+      param_state ? param_state.code : nil
+    end
+
+    def normalize(param)
+      param.gsub(/[\W_]+/, '')
+    end
+
+    def tokenize(str)
+      str.split(/\s(?=(?:[^'"]|'[^']*'|"[^"]*")*$)/)
+          .select { |s| not s.empty? }
+          .map { |s| s.gsub(/(^ +)|( +$)|(^["']+)|(["']+$)/, '') }
     end
 
   end

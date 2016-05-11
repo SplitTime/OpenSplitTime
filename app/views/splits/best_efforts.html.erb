@@ -6,8 +6,13 @@
 </div>
 <div class="row">
   <div class="col-xs-6">
+    <strong><%= "#{d(@segment.distance)} #{pdu} with #{e(@segment.vert_gain)} #{peu} of elevation gain and #{e(@segment.vert_loss)} #{peu} of elevation loss" %></strong><br/>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
     <% if @segment.end_split.events.count > 0 %>
-        <strong><%= "#{pluralize(@segment.end_split.events.count, 'event')} from #{@segment.end_split.earliest_event_date.to_date.to_formatted_s(:long)} to #{@segment.end_split.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+        <strong><%= "Searched #{pluralize(@segment.end_split.events.count, 'event')} from #{@segment.end_split.earliest_event_date.to_date.to_formatted_s(:long)} to #{@segment.end_split.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
     <% else %>
         <strong>No efforts have been measured on this segment.</strong>
     <% end %>

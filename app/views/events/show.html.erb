@@ -20,7 +20,9 @@
     <%= link_to '<< Show All Events', events_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <%= link_to 'All-time best efforts >', best_efforts_course_path(@event.course), class: "btn btn-sm btn-default" %>
-    <%= link_to 'Full spread >>', spread_event_path(@event), class: "btn btn-sm btn-default" %>
+    <% unless @event.simple? %>
+        <%= link_to 'Full spread >>', spread_event_path(@event), class: "btn btn-sm btn-default" %>
+    <% end %>
     <% if @current_user && @current_user.authorized_to_edit?(@event) %>
         <%= link_to 'Stage/administer this event', stage_event_path(@event), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Set time data status', set_data_status_event_path(@event),
@@ -43,7 +45,7 @@
         <hr>
         <div class="row">
           <div class="col-xs-8">
-            <h4><%= "#{@event.efforts.count} efforts for #{@event.name}" %></h4>
+            <h4><%= "Returned #{@efforts.total_entries} of #{@event.efforts.count} efforts for #{@event.name}" %></h4>
           </div>
         </div>
         <div class="row">
@@ -59,7 +61,7 @@
             <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
           </div>
         </div>
-        <% else %>
+    <% else %>
         <hr>
         <strong>No results match that search.</strong>
     <% end %>

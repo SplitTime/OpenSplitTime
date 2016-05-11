@@ -95,4 +95,8 @@ module SplitMethods
     splits[splits.index(split) + 1]
   end
 
+  def simple?
+    splits.count < 3
+  end
+
 end

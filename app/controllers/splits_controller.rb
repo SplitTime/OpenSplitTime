@@ -84,14 +84,6 @@ class SplitsController < ApplicationController
     authorize @split
   end
 
-  def best_efforts
-    @segment = Segment.new(params[:split1].to_i, params[:split2].to_i)
-    authorize @segment.begin_split
-    params[:gender] ||= 'combined'
-    @efforts = Effort.gender_group(@segment, params[:gender]).sorted_by_segment_time(@segment).paginate(page: params[:page], per_page: 25)
-    session[:return_to] = best_efforts_course_path(@segment.course)
-  end
-
   private
 
   def split_params

@@ -22,14 +22,12 @@ module PersonalInfo
   end
 
   def bio
-    current_age = age_today
-    return current_age if gender.nil?
-    current_age.nil? ? gender.titlecase : "#{gender.titlecase}, #{current_age}"
+    current_age = try(:participant_age) || age_today
+    [gender.try(:titlecase), current_age.try(:to_i)].compact.join(", ")
   end
 
   def bio_historic
-    return age if gender.nil?
-    age.nil? ? gender.titlecase : "#{gender.titlecase}, #{age}"
+    [gender.try(:titlecase), age.try(:to_i)].compact.join(", ")
   end
 
   def full_name

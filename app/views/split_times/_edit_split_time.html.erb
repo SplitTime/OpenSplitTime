@@ -19,7 +19,7 @@
           <tr>
       <% end %>
       <td><%= split_time.split.name %></td>
-      <td class="text-right"><%= d(split_time.split.distance_from_start).round(1) %></td>
+      <td class="text-right"><%= d(split_time.split.distance_from_start) %></td>
       <td class="text-right"><%= split_time.formatted_time_hhmmss %></td>
       <td class="text-right">
         <% if @current_user && @current_user.authorized_to_edit?(@effort) %>

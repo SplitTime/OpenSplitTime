@@ -29,7 +29,7 @@
       <% @event.splits.ordered.each do |split| %>
           <tr>
             <td><%= split.name %></td>
-            <td><%= d(split.distance_from_start).round(1) %></td>
+            <td><%= d(split.distance_from_start) %></td>
             <td>
               <% if split.waypoint? %>
                   <%= link_to "Remove",
@@ -74,7 +74,7 @@
       <% @other_splits.each do |split| %>
           <tr>
             <td><%= split.name %></td>
-            <td><%= d(split.distance_from_start).round(1) %></td>
+            <td><%= d(split.distance_from_start) %></td>
             <td>
               <%= link_to "Add",
                           associate_splits_event_path(id: @event.id, split_ids: Array(split.id)),

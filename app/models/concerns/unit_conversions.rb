@@ -39,8 +39,6 @@ module UnitConversions
       end
     end
 
-    alias_method :d, :distance_in_preferred_units
-
     def elevation_in_preferred_units(elevation_in_meters, user)
       return elevation_in_meters.meters.to.feet.value unless user
       case user.pref_elevation_unit
@@ -52,8 +50,6 @@ module UnitConversions
           elevation_in_meters
       end
     end
-
-    alias_method :e, :elevation_in_preferred_units
 
   end
 end

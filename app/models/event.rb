@@ -73,18 +73,8 @@ class Event < ActiveRecord::Base
   end
 
   def sorted_ultra_time_array(split_time_hash = nil)
-    # Column 0 contains effort_ids, columns 1..-1 are time data
     return [] if efforts.count == 0
-    split_time_hash ||= self.split_time_hash
-    event_effort_ids = efforts.pluck(:id)
-    result = event_effort_ids.map { |effort_id| [effort_id] }
-    ordered_split_ids.each do |split_id|
-      hash = split_time_hash[split_id] ?
-          Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]]}] :
-          {}
-      result.collect! { |row| row << hash[row[0]] }
-    end
-    result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
+    efforts.sorted_ultra_time_array(split_time_hash)
   end
 
   def data_status_hash(split_time_hash = nil)
@@ -101,16 +91,20 @@ class Event < ActiveRecord::Base
     Hash[result.map { |row| [row[0], row[1..-1]] }]
   end
 
-  def efforts_sorted_ultra_style
-    Effort.efforts_from_ids(ids_sorted_ultra_style)
+  def efforts_sorted
+    simple? ?
+        efforts.sorted_by_finish_time :
+        Effort.efforts_from_ids(sorted_ultra_time_array.map { |x| x[0] })
   end
 
-  def ids_sorted_ultra_style
-    sorted_ultra_time_array.map { |x| x[0] }
+  def ids_sorted
+    simple? ?
+        efforts.sorted_by_finish_time.pluck(:id) :
+        sorted_ultra_time_array.map { |x| x[0] }
   end
 
   def combined_places(effort)
-    ids = ids_sorted_ultra_style
+    ids = ids_sorted
     overall_place = ids.index(effort.id) + 1
     genders = Hash[efforts.pluck(:id, :gender)]
     genders_sorted = ids.map { |id| genders[id] }
@@ -119,7 +113,7 @@ class Event < ActiveRecord::Base
   end
 
   def overall_place(effort)
-    ids_sorted_ultra_style.index(effort.id) + 1
+    ids_sorted.index(effort.id) + 1
   end
 
   def gender_place(effort)
@@ -133,7 +127,7 @@ class Event < ActiveRecord::Base
   end
 
   def efforts_finished
-    efforts.ids_sorted_by_finish_time
+    efforts.sorted_by_finish_time.pluck(:id)
   end
 
   def efforts_in_progress

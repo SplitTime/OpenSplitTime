@@ -11,6 +11,12 @@ class Participant < ActiveRecord::Base
 
   attr_accessor :suggested_match
 
+  scope :with_age_and_effort_count, -> { select("participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.first_start_time))/60/60/24/365.25) + efforts.age)) as participant_age")
+                                             .joins("LEFT OUTER JOIN efforts ON (efforts.participant_id = participants.id)")
+                                             .joins("INNER JOIN events ON (events.id = efforts.event_id)")
+                                             .group("participants.id") }
+
+
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
             uniqueness: {case_sensitive: false},
@@ -19,17 +25,13 @@ class Participant < ActiveRecord::Base
 
   # Search functions specific to Participant
 
+  def self.search(param)
+    return none if param.blank? || (param.length < 3)
+    flexible_search(param)
+  end
+
   def approximate_age_today
-    now = Time.now.utc.to_date
-    count = self.try(:effort_count) || efforts.count
-    return nil unless count > 0
-    age_array = []
-    efforts.includes(:event).each do |effort|
-      if effort.age
-        age_array << (years_between_dates(effort.event.first_start_time.to_date, now) + effort.age)
-      end
-    end
-    age_array.blank? ? nil : age_array.mean.round(0)
+    efforts.joins(:event).average("((extract(epoch from(current_date - events.first_start_time))/60/60/24/365.25) + efforts.age)").to_f
   end
 
   def self.age_matches(param, participants, rigor = 'soft')

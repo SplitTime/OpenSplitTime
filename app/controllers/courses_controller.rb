@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :best_efforts]
-  before_action :set_course, except: [:index, :new, :create, :best_efforts]
+  before_action :set_course, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show, :best_efforts]
 
   def index
@@ -55,9 +55,11 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
-    @course = Course.where(id: params[:id]).first
+    start_split = params[:split1].present? ? params[:split1].to_i : @course.start_split.id
+    finish_split = params[:split2].present? ? params[:split2].to_i : @course.finish_split.id
+    @segment = Segment.new(start_split, finish_split)
     params[:gender] ||= 'combined'
-    @efforts = @course.effort_gender_group(params[:gender]).sorted_by_finish_time.paginate(page: params[:page], per_page: 25)
+    @efforts = Effort.gender_group(@segment, params[:gender]).sorted_by_segment_time(@segment).paginate(page: params[:page], per_page: 25)
     session[:return_to] = best_efforts_course_path(@course)
   end
 

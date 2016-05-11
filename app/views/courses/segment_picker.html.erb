@@ -18,17 +18,17 @@
 </div>
 <hr>
 
-<%= form_tag(best_efforts_splits_path, method: :get) do %>
+<%= form_tag(best_efforts_course_path(@course), method: :get) do %>
     <div class="row">
       <div class="col-sm-3">
         <strong>From </strong>
         <%= select_tag(:split1,
-                       options_from_collection_for_select(@course.out_splits[0..-2], :id, :base_name), {class: "dropdown-select-field"}) %>
+                       options_from_collection_for_select(@course.out_splits, :id, :base_name), {class: "dropdown-select-field"}) %>
       </div>
       <div class="col-sm-3">
         <strong>To </strong>
         <%= select_tag(:split2,
-                       options_from_collection_for_select(@course.base_splits[1..-1], :id, :base_name), {class: "dropdown-select-field"}) %>
+                       options_from_collection_for_select(@course.in_splits, :id, :base_name), {class: "dropdown-select-field"}) %>
       </div>
     </div>
 

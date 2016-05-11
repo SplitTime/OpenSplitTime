@@ -46,7 +46,6 @@ Rails.application.routes.draw do
   end
   resources :splits do
     member { get :assign_location }
-    collection { get :best_efforts }
   end
   resources :races
   resources :participants do
@@ -54,7 +53,6 @@ Rails.application.routes.draw do
     member { get :avatar_claim }
     member { delete :avatar_disclaim }
     collection { post :create_from_efforts }
-    collection { get :search }
     member { get :merge }
     member { put :combine }
     member { delete :remove_effort }

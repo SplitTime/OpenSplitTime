@@ -45,17 +45,17 @@ module ApplicationHelper
   end
 
   def elevation_format(elevation_in_meters)
-    elevation_in_meters.nil? ? '[Unknown]' : (e(elevation_in_meters).round(0).to_s + ' ' + peu)
+    elevation_in_meters.nil? ? '[Unknown]' : (e(elevation_in_meters).to_s + ' ' + peu)
   end
 
   def distance_to_preferred(meters)
-    Split.distance_in_preferred_units(meters, current_user)
+    number_with_delimiter(Split.distance_in_preferred_units(meters, current_user).round(1))
   end
 
   alias_method :d, :distance_to_preferred
 
   def elevation_to_preferred(meters)
-    Split.elevation_in_preferred_units(meters, current_user)
+    number_with_delimiter(Split.elevation_in_preferred_units(meters, current_user).round(0))
   end
 
   alias_method :e, :elevation_to_preferred

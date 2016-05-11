@@ -10,7 +10,7 @@ class Location < ActiveRecord::Base
   validates_numericality_of :longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true
 
   def elevation_as_entered
-    Location.elevation_in_preferred_units(elevation, User.current).round(0) if elevation
+    Location.elevation_in_preferred_units(elevation, User.current) if elevation
   end
 
   def elevation_as_entered=(entered_elevation)

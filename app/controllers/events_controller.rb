@@ -7,18 +7,17 @@ class EventsController < ApplicationController
     @events = Event.select("events.*, COUNT(efforts.id) as effort_count")
                   .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
                   .group("events.id")
-                  .paginate(page: params[:page], per_page: 25)
                   .order(first_start_time: :desc)
+                  .paginate(page: params[:page], per_page: 25)
     session[:return_to] = events_path
   end
 
   def show
     if @event.course
-      if params[:search_param].blank?
-        @efforts = @event.efforts_sorted_ultra_style.paginate(page: params[:page], per_page: 25)
-      else
-        @efforts = @event.efforts.search(params[:search_param]).paginate(page: params[:page], per_page: 25)
-      end
+      @efforts = @event.efforts
+                     .search(params[:search_param])
+                     .sorted
+                     .paginate(page: params[:page], per_page: 25)
       session[:return_to] = event_path(@event)
     else
       flash[:danger] = "Event must have a course"

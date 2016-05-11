@@ -18,6 +18,10 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
+  scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
+                                         .joins(:split_times => :split).where(splits: {kind: 1})
+                                         .order('split_times.time_from_start') }
+
   def self.columns_for_import
     id = ["id"]
     foreign_keys = Effort.column_names.find_all { |x| x.include?("_id") }
@@ -48,6 +52,11 @@ class Effort < ActiveRecord::Base
       end
     end
     counter
+  end
+
+  def self.search(param)
+    return all if param.blank?
+    flexible_search(param)
   end
 
   def start_time
@@ -233,8 +242,27 @@ class Effort < ActiveRecord::Base
 
   # Sorting class methods
 
-  def self.sorted_by_finish_time # Excludes DNFs from result
-    efforts_from_ids(ids_sorted_by_finish_time)
+  def self.sorted
+    return [] if self.count == 0
+    first.event.simple? ?
+        sorted_by_finish_time :
+        efforts_from_ids(sorted_ultra_time_array.map { |x| x[0] })
+  end
+
+  def self.sorted_ultra_time_array(split_time_hash = nil)
+    # Column 0 contains effort_ids, columns 1..-1 are time data
+    return [] if self.count == 0
+    event = first.event
+    split_time_hash ||= event.split_time_hash
+    effort_ids = self.pluck(:id)
+    result = effort_ids.map { |effort_id| [effort_id] }
+    event.ordered_split_ids.each do |split_id|
+      hash = split_time_hash[split_id] ?
+          Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]]}] :
+          {}
+      result.collect! { |row| row << hash[row[0]] }
+    end
+    result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
   end
 
   def self.sorted_by_segment_time(segment)
@@ -301,12 +329,6 @@ class Effort < ActiveRecord::Base
     effort_ids = self.pluck(:id)
     SplitTime.includes(:split).where(effort_id: effort_ids, splits: {kind: 1})
         .where(time_from_start: low_time..high_time).pluck(:effort_id)
-  end
-
-  def self.ids_sorted_by_finish_time
-    effort_ids = self.pluck(:id)
-    SplitTime.includes(:split, :effort).where(efforts: {id: effort_ids}, splits: {kind: 1})
-        .order(:time_from_start).pluck(:effort_id)
   end
 
   def self.ids_sorted_by_segment_time(segment)

@@ -1,6 +1,8 @@
 module Searchable
   extend ActiveSupport::Concern
 
+  include SetOperations
+
   included do
     scope :gender_matches, -> (param) { where("gender = ?", gender_int(param)) }
     scope :country_matches, -> (param) { where(arel_table['country_code'].matches("#{country_code_for(param)}")) }
@@ -10,18 +12,18 @@ module Searchable
     scope :last_name_matches, -> (param) { where(arel_table['last_name'].matches("#{param}%")) }
     scope :last_name_matches_exact, -> (param) { where(arel_table['last_name'].matches("#{param}")) }
     scope :full_name_matches, -> (param) { where("regexp_replace((first_name || last_name), '[^a-zA-Z0-9]+', '', 'g') ILIKE ?", "#{normalize(param)}") }
-    scope :search_term_scope, -> (term) { country_matches(term).union(state_matches(term)).union(first_name_matches(term)).union(last_name_matches(term)) }
+    scope :search_term_scope, -> (term) { union_scope(country_matches(term), state_matches(term), first_name_matches(term), last_name_matches(term)) }
   end
 
   module ClassMethods
 
     def flexible_search(param)
-      @collection = all
+      collection = all
       terms = tokenize(param)
       terms.each do |term|
-        @collection = @collection.search_term_scope(term)
+        collection = collection.search_term_scope(term)
       end
-      @collection
+      collection
     end
 
     private

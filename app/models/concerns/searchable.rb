@@ -18,12 +18,13 @@ module Searchable
   module ClassMethods
 
     def flexible_search(param)
-      collection = all
-      terms = tokenize(param)
+      term_scopes = []
+      terms = tokenize(param)[0..2] # More than three terms becomes problematic for the query
       terms.each do |term|
-        collection = collection.search_term_scope(term)
+        scope = all
+        term_scopes << scope.search_term_scope(term)
       end
-      collection
+      intersect_scope(*term_scopes)
     end
 
     private
@@ -35,12 +36,12 @@ module Searchable
 
     def country_code_for(param)
       param_country = Carmen::Country.named(param)
-      param_country ? param_country.code : nil
+      param_country ? param_country.code : param
     end
 
     def state_code_for(param)
       param_state = Carmen::Country.coded("US").subregions.named(param) || Carmen::Country.coded("CA").subregions.named(param)
-      param_state ? param_state.code : nil
+      param_state ? param_state.code : param
     end
 
     def normalize(param)

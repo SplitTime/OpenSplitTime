@@ -1,3 +1,9 @@
+$gray: #777;
+
+.row {
+	margin: 0 auto 25px;
+}
+
 .no-gutter > [class*='col-'] {
     padding-right: 0;
     padding-left: 0;
@@ -10,7 +16,7 @@
 .header {
 	@extend .no-gutter;
 	position: relative;
-	border-bottom: 1px solid #777;
+	border-bottom: 1px solid $gray;
 
 	.page-title {
 
@@ -46,8 +52,25 @@
 }
 
 .form-split-wrapper {
+	@extend .no-gutter;
+	border-bottom: 1px solid $gray;
 
-	.live-entry {}
+	.live-entry {
+		margin: 0 auto 25px;
+
+		label {
+			text-align: right;
+		}
+
+		.message {
+			font-weight: bold;
+			font-style: italic;
+		}
+
+		button {
+			width: 100%;
+		}
+	}
 
 	.splits-slider {}
 }

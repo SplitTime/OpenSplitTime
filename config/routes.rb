@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     member { get :reconcile }
     member { get :stage}
     member { get :spread}
+    member { get :live_entry}
   end
   resources :splits do
     member { get :assign_location }

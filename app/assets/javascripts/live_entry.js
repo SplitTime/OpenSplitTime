@@ -133,8 +133,9 @@
 				}
 			]
 		}
+		
 		$( document ).ready( function() {
-			
+			liveEntry.init();
 		} );
 	}
 } )( jQuery );

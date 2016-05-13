@@ -1,4 +1,16 @@
+.no-gutter > [class*='col-'] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.no-gutter-right > [class*='col-'] {
+    padding-right: 0;
+}
+
 .header {
+	@extend .no-gutter;
+	position: relative;
+	border-bottom: 1px solid #777;
 
 	.page-title {
 
@@ -12,10 +24,24 @@
 	}
 
 	.aid-station {
+		@extend .no-gutter-right;
+		position: absolute;
+		top: 50%;
+		right: 0;
+		transform: translateY( -50% );
+
+		&-label,
+		&-select {
+		}
 
 		&-label {}
 
-		&-select {}
+		&-select {
+
+			select {
+				width: 100%;
+			}
+		}
 	}
 }
 

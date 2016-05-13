@@ -82,4 +82,8 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def live_entry?
+    @current_user.admin?
+  end
+
 end

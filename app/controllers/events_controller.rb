@@ -170,6 +170,10 @@ class EventsController < ApplicationController
     redirect_to event_path(@event)
   end
 
+  def live_entry
+    authorize @event
+  end
+
   private
 
   def event_params

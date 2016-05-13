@@ -1,9 +1,11 @@
+/********
+Variables
+*********/
 $gray: #777;
 
-.row {
-	margin: 0 auto 25px;
-}
-
+/***********
+Placeholders
+************/
 .no-gutter > [class*='col-'] {
     padding-right: 0;
     padding-left: 0;
@@ -13,6 +15,14 @@ $gray: #777;
     padding-right: 0;
 }
 
+/******
+Globals
+*******/
+.row {
+	margin: 0 auto 25px;
+}
+
+/******* Header ********/
 .header {
 	@extend .no-gutter;
 	position: relative;
@@ -51,6 +61,7 @@ $gray: #777;
 	}
 }
 
+/******* Live Entry Form ********/
 .form-split-wrapper {
 	@extend .no-gutter;
 	border-bottom: 1px solid $gray;
@@ -75,4 +86,5 @@ $gray: #777;
 	.splits-slider {}
 }
 
+/******* Provisional Data Table ********/
 .provisional-data {}

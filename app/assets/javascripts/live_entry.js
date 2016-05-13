@@ -133,9 +133,9 @@
 				}
 			]
 		}
-		
-		$( document ).ready( function() {
+	};
+
+	$( document ).ready( function() {
 			liveEntry.init();
-		} );
-	}
+	} );
 } )( jQuery );

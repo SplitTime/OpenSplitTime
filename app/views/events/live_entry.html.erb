@@ -3,11 +3,11 @@
 		<h1>Real-Time Data Entry Entry</h1>
 		<h2>Hardrock 100 2016</h2>
 	</div>
-	<div class="col-xs-2 aid-station text-right">
-		<div class="col-xs-8 aid-station-label">
+	<div class="col-xs-4 aid-station text-right">
+		<div class="col-xs-6 aid-station-label">
 			Aid Station
 		</div>
-		<div class="col-xs-4 aid-station-select">
+		<div class="col-xs-6 aid-station-select">
 			<select name="" id="">
 				<option value="" selected="">-- Select --</option>
 				<option value="pole-creek">Pole Creek</option>s
@@ -17,10 +17,44 @@
 </div>
 
 <div class="row form-split-wrapper">
-	<div class="live-entry">
-
+	<div class="col-xs-4 live-entry">
+		<form>
+			<div class="form-group clearfix">
+				<label class="col-xs-4" for="bib-number">Bib #</label>
+				<div class="col-xs-8">
+					<input type="text" id="bib-number" class="form-control" placeholder="Bib #">
+				</div>
+			</div>
+			<div class="form-group clearfix">
+				<label class="col-xs-4" for="time-in">Time In</label>
+				<div class="col-xs-8">
+					<input type="text" id="time-in" class="form-control"" placeholder="Time In">
+				</div>
+			</div>
+			<div class="form-group clearfix">
+				<label class="col-xs-4" for="time-out">Time Out</label>
+				<div class="col-xs-8">
+					<input type="text" id="time-out" class="form-control" placeholder="Time Out">
+				</div>
+			</div>
+			<div class="form-group clearfix">
+				<label class="col-xs-4" for="pacer">Pacer</label>
+				<div class="col-xs-8">
+					<label class="radio-inline">
+						<input type="radio" name="pacer" id="in" value="In"> In
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="pacer" id="out" value="Out"> Out
+					</label>
+				</div>
+				<p class="col-xs-8 message">Enter * if date is not clear</p>
+			</div>
+			<div class="col-xs-8 col-xs-offset-4">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
 	</div>
-	<div class="splits-slider">
+	<div class="col-xs-8 splits-slider">
 
 	</div>
 </div>

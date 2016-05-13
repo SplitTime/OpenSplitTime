@@ -86,5 +86,18 @@ Globals
 	.splits-slider {}
 }
 
+
 /******* Provisional Data Table ********/
-.provisional-data {}
+.provisional-data {
+
+	.table-submit-wrapper {
+		text-align: right;
+		margin-bottom: 4em;
+
+		.delete-all-efforts,
+		.submit-all-efforts {
+			margin: 0 1.5em 1em 0;
+			padding: 0.5em 2.5em;
+		}
+	}
+}

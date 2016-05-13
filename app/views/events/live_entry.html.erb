@@ -63,31 +63,41 @@
 	<div class="col-xs-12">
 		<h3>Provisional Data Cache</h3>
 		<div class="provisional-table-wrapper">
-			<table class="table table-striped">
+			<table class="table table-striped provisional-data-table js-provisional-data-table">
 				<thead>
 					<tr>
 						<th>Aid Station</th>
 						<th>Bib&num;</th>
 						<th>Time In</th>
 						<th>Time Out</th>
-						<th colspan="2" >Name</th>
+						<th>Pacer In?</th>
+						<th>Pacer Out?</th>
+						<th>Name</th>
+						<th>&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="data-row">
-						<td>Pole Creek</td>
-						<td>125</td>
-						<td>4:38</td>
-						<td>4:40</td>
-						<td>Brandon Stapanowich</td>
-						<td>
-							<button class="btn btn-edit-row"></button>
-							<button class="btn btn-delete-row"></button>
-							<button class="btn btn-submit-row"></button>
+					<tr class="effort-station-row js-effort-station-row" data-bib-number="" data-effort-name="" data-split-name="" data-time-in="" data-time-out="" data-pacer-in="boolean" data-pacer-out="boolean" >
+						<td class="split-name js-split-name">Pole Creek</td>
+						<td class="bib-number js-bib-number">125</td>
+						<td class="time-in js-time-in">4:38</td>
+						<td class="time-out js-time-out">4:40</td>
+						<td class="pacer-in js-pacer-in">Yes</td>
+						<td class="pacer-out js-pacer-out">Yes</td>
+						<td class="effort-name js-effort-name">Brandon Stapanowich</td>
+						<td class="row-edit-btns">
+							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>
+							<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>
+							<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>
 						</td>
 					</tr>
+
 				</tbody>
 			</table>
 		</div>
+	</div>
+	<div class="col-sm-12 col-md-4 col-md-offset-8 table-submit-wrapper">
+		<button class="delete-all-efforts btn btn-danger">Delete All</button>
+		<button class="submit-all-efforts btn btn-success">Submit All</button>
 	</div>
 </div>

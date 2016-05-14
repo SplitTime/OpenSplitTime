@@ -18,39 +18,42 @@
 
 <div class="row form-split-wrapper">
 	<div class="col-xs-4 live-entry">
-		<form>
+		<form id="js-update-effort-form">
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="bib-number">Bib #</label>
 				<div class="col-xs-8">
-					<input type="text" id="bib-number" class="form-control" placeholder="Bib #">
+					<input type="text" id="bib-number" name="bibNumber" class="form-control" placeholder="Bib #">
 				</div>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-in">Time In</label>
 				<div class="col-xs-8">
-					<input type="text" id="time-in" class="form-control" placeholder="Time In">
+					<input type="text" id="time-in" name="timeIn" class="form-control" placeholder="Time In">
 				</div>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-out">Time Out</label>
 				<div class="col-xs-8">
-					<input type="text" id="time-out" class="form-control" placeholder="Time Out">
+					<input type="text" id="time-out" name="timeOut" class="form-control" placeholder="Time Out">
 				</div>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="pacer">Pacer</label>
 				<div class="col-xs-8">
 					<label class="checkbox-inline">
-						<input type="checkbox" name="pacer" id="in" value="In"> In
+						<input type="checkbox" id="pacer-in" name="pacerIn" value="true"> In
 					</label>
 					<label class="checkbox-inline">
-						<input type="checkbox" name="pacer" id="out" value="Out"> Out
+						<input type="checkbox" id="pacer-out" name="pacerOut" value="true"> Out
 					</label>
 				</div>
-				<p class="col-xs-8 message">Enter * if date is not clear</p>
+				<p class="col-xs-8 message">Enter * if data is not clear</p>
 			</div>
+
 			<div class="col-xs-8 col-xs-offset-4">
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<input type="hidden" name="effort-id" id="js-effort-id" value="put_effort_id_here">
+				<input type="hidden" name="split-id" id="js-split-id" value="put_split_id_here">
+				<button type="submit" class="btn btn-primary js-add-to-cache">Add</button>
 			</div>
 		</form>
 	</div>

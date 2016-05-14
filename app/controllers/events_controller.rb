@@ -172,6 +172,11 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def live_entry_ajax_getEffort
+    authorize @event
+    render :json => {xfngr:"xfngr"}
+  end
+
   private
 
   def event_params

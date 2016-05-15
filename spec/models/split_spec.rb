@@ -13,7 +13,6 @@ require "rails_helper"
 RSpec.describe Split, kind: :model do
 
   before :each do
-    DatabaseCleaner.clean
     @course1 = Course.create!(name: 'Test Course')
     @course2 = Course.create!(name: 'Test Course 2')
     @location1 = Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)

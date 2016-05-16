@@ -103,7 +103,16 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="effort-station-row js-effort-station-row" data-bib-number="" data-effort-name="" data-split-name="" data-time-in="" data-time-out="" data-pacer-in="boolean" data-pacer-out="boolean" >
+					<tr
+						class="effort-station-row js-effort-station-row"
+						data-effort-id="54321"
+						data-bib-number="125"
+						data-effort-name="Brandon Stapanowich"
+						data-split-name="Pole Creek"
+						data-time-in="4:38"
+						data-time-out="4:40"
+						data-pacer-in="true"
+						data-pacer-out="false" >
 						<td class="split-name js-split-name">Pole Creek</td>
 						<td class="bib-number js-bib-number">125</td>
 						<td class="time-in js-time-in">4:38</td>
@@ -126,12 +135,12 @@
 					<div class="modal-content">
 				 		<div class="modal-header">
 				 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				 			<h4 class="modal-title">Edit <span class="bib-number">#bibNumber</span>'s Info for <span class="slit-name">#splitName</span></h4>
+				 			<h4 class="modal-title">Edit <span class="bib-number">#bibNumber</span>'s Info for <span class="split-name">#splitName</span></h4>
 				 		</div>
 				 		<div class="modal-body">
-							<form id="edit-effort-row">
+							<form class="edit-effort-row">
 
-								<input type="hidden" name="effort-id" value="#effortId" />
+								<input type="hidden" name="effort-id" class="js-effort-id" value="#effortId" />
 
 								<div class="form-group row">
 									<div class="col-xs-12">
@@ -163,13 +172,13 @@
 									<div class="col-xs-12">
 										<div class="checkbox-inline">
 											<label for="pacer-in">
-												<input type="checkbox" id="pacer-in" value="yes">
+												<input type="checkbox" id="pacer-in" class="js-pacer-in" value="yes">
 												Pacer in?
 											</label>
 										</div>
 										<div class="checkbox-inline">
 											<label for="pacer-out">
-												<input type="checkbox" id="pacer-out" value="yes">
+												<input type="checkbox" id="pacer-out" class="js-pacer-out" value="yes">
 												Pacer out?
 											</label>
 										</div>

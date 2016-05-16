@@ -1,4 +1,5 @@
 module PersonalInfo
+  extend ActiveSupport::Concern
 
   def personal_info
     [full_name, bio, state_and_country].compact.split("").flatten.join(' – ')
@@ -31,7 +32,7 @@ module PersonalInfo
   end
 
   def full_name
-    [first_name,last_name].join(" ")
+    [first_name, last_name].join(" ")
   end
 
   def age_today
@@ -40,11 +41,17 @@ module PersonalInfo
 
   def exact_age_today
     now = Time.now.utc.to_date
-    birthdate ? years_between_dates(birthdate, now).round(0) : nil?
+    birthdate ? TimeDifference.between(birthdate, now).in_years.round(0) : nil
   end
 
-  def years_between_dates(date1, date2)
-    TimeDifference.between(date1, date2).in_years
+  module ClassMethods
+
+    def exact_ages_today # Returns a hash of {resource.id => age today} ignoring any resource without a birthdate
+      now = Time.now.utc.to_date
+      birthdate_hash = Hash[all.where.not(birthdate: nil).pluck(:id, :birthdate)]
+      Hash[birthdate_hash.map { |id, birthdate| [id, TimeDifference.between(birthdate, now).in_years.round(0)] }]
+    end
+
   end
 
 end

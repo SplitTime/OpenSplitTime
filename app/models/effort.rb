@@ -31,7 +31,7 @@ class Effort < ActiveRecord::Base
 
   def reset_time_from_start
     # If the starting split_time contains nonzero data, assume it means
-    # this effort began that amount of time later than the event's normal start time
+    # this effort began that amount of time earlier or later than the event's normal start time
     return nil unless start_split_time
     if start_split_time.time_from_start != 0
       update(start_offset: start_split_time.time_from_start)
@@ -77,18 +77,18 @@ class Effort < ActiveRecord::Base
   end
 
   def in_progress?
-    !dropped? && finish_split_time.nil?
+    dropped_split_id.nil? && finish_split_time.nil?
   end
 
   def finish_status
-    return "DNF" if dropped?
+    return "DNF" if dropped_split_id
     split_time = finish_split_time
     return split_time.formatted_time_hhmmss if split_time
     "In progress"
   end
 
   def due_next_where
-    return nil if dropped?
+    return nil if dropped_split_id
     last_split = last_reported_split
     return nil if last_split.finish?
     event.next_split(last_split)
@@ -103,7 +103,7 @@ class Effort < ActiveRecord::Base
   end
 
   def due_next_time_from_start(cache = nil)
-    return nil if dropped?
+    return nil if dropped_split_id
     last_time = last_reported_split_time
     last_split = last_time.split
     return nil if last_split.finish?
@@ -213,7 +213,7 @@ class Effort < ActiveRecord::Base
 
   def approximate_age_today
     now = Time.now.utc.to_date
-    age ? (years_between_dates(event.first_start_time.to_date, now) + age).to_i : nil
+    age ? (TimeDifference.between(event.first_start_time.to_date, now).in_years + age).to_i : nil
   end
 
   def self.age_matches(param, efforts, rigor = 'soft')
@@ -244,9 +244,9 @@ class Effort < ActiveRecord::Base
 
   def self.sorted
     return [] if self.count == 0
-    first.event.simple? ?
-        sorted_by_finish_time :
-        efforts_from_ids(sorted_ultra_time_array.map { |x| x[0] })
+    return sorted_by_finish_time if first.event.simple?
+    time_array = sorted_ultra_time_array
+    efforts_from_ids(time_array.map { |x| x[0] })
   end
 
   def self.sorted_ultra_time_array(split_time_hash = nil)
@@ -258,7 +258,7 @@ class Effort < ActiveRecord::Base
     result = effort_ids.map { |effort_id| [effort_id] }
     event.ordered_split_ids.each do |split_id|
       hash = split_time_hash[split_id] ?
-          Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]]}] :
+          Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]] }] :
           {}
       result.collect! { |row| row << hash[row[0]] }
     end

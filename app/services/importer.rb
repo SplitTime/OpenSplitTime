@@ -76,18 +76,23 @@ class Importer
     effort_schema = build_effort_schema(effort_symbols, effort_name_array)
 
     effort_failure_array = []
+    start_offset_hash = {}
+    dropped_hash = {}
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0..split_offset - 2], effort_schema)
       @effort = create_effort(row_effort_data, effort_schema, event)
       if @effort
-        create_split_times(row, header1, split_id_array, split_offset, @effort, current_user_id)
-        @effort.reset_time_from_start
+        start_offset, dropped_split = create_split_times(row, header1, split_id_array, split_offset, @effort, current_user_id)
+        start_offset_hash[@effort.id] = start_offset if start_offset
+        dropped_hash[@effort.id] = dropped_split if dropped_split
       else
         effort_failure_array << row
       end
     end
     # TODO set data status of all efforts after import
+    BulkUpdateService.bulk_update_start_offset(start_offset_hash)
+    BulkUpdateService.bulk_update_dropped(dropped_hash)
     event.reconcile_exact_matches
     return effort_failure_array
   end
@@ -264,23 +269,26 @@ class Importer
     row_time_data = row[split_offset - 1..row.size - 1]
     row_time_data = [0] + row_time_data if finish_times_only?(header1)
     return nil if split_array.size != row_time_data.size
+    dropped_pointer = nil
     SplitTime.bulk_insert(:effort_id, :split_id, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
       (0...split_array.size).each do |i|
         split_id = split_array[i]
         working_time = row_time_data[i]
         working_time ||= 0 if i == 0 # Make sure start_splits are never nil
         seconds = convert_time_to_standard(working_time)
-        if i == split_array.size - 1
-          effort.update(dropped: seconds.nil? ? true : false)
+        if seconds.nil?
+          dropped_pointer = split_id
+          next
         end
-        next if seconds.nil?
         worker.add(effort_id: effort.id,
                    split_id: split_id,
                    time_from_start: seconds,
                    created_by: current_user_id,
                    updated_by: current_user_id)
+        dropped_pointer = nil if i == split_array.size - 1
       end
     end
+    dropped_pointer
   end
 
   def self.convert_time_to_standard(working_time)

@@ -179,13 +179,27 @@ class EventsController < ApplicationController
   def live_entry_ajax_getEffort
     authorize @event
 
-    # Here look up the effort and populate the json array with efforId and name from the database
+    # Here look up the effort and populate the json array with data 
+    # needed for front end processing. The assumption is that this endpoint
+    # will take the splitId, bibNumber and eventId used to populate the following fields:
+    # Name, Last Reported, Split From, and Time Spent
+    #
+    # Split From and Time Spent fields are not populated until Time In and Time Out fields are entered
     # Get bib number like this: params[:bibNumber]
-    # If the lookup fails here (bib number is incorrect), return { success: false }
+    # Get splitId: params[:splitId]
+    # Event ID is within the url param
+    #
+    # If the lookup fails here (bibNumber or eventId is incorrect), return { success: false }
+    # lastReportedSplitTime comes from the splits table for this "effort"
+    # estimatedTime range
     render :json => {
       success: true,
       effortId: 1,
       name: "Brandon Trimboli",
+      lastReportedSplitTime: "Maggie Out at 3:48",
+      estimatedTime: "",
+      rangeOfAcceptedTimeLow: "1:00:00",
+      rangeOfAcceptedTimeHigh: "2:00:00" # this field is used to determine if the "Check Data" flag needs to display
     }
   end
 

@@ -15,8 +15,8 @@ RSpec.describe SplitsController, :type => :controller do
 
   describe "registered user" do
     before :each do
-      DatabaseCleaner.clean
       login_with create(:user)
+      allow(User).to receive(:current).and_return(controller.current_user)
       @course = Course.create!(name: 'Test Course')
       @location1 = Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
       @location2 = Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
@@ -28,7 +28,7 @@ RSpec.describe SplitsController, :type => :controller do
     end
 
     it "should let a user see a specific split" do
-      split1 = Split.create!(course_id: @course.id, location_id: 1, name: 'Aid Station In', distance_from_start: 7000, sub_order: 1, kind: 2)
+      split1 = Split.create!(course_id: @course.id, location_id: @location1, name: 'Aid Station In', distance_from_start: 7000, sub_order: 1, kind: 2)
       get :show, id: split1.id
       expect(response).to render_template(:show, id: split1.id)
     end
@@ -73,15 +73,15 @@ RSpec.describe SplitsController, :type => :controller do
     end
 
     it "when location is updated, should automatically update location of splits in waypoint group" do
-      Split.create!(course_id: @course.id, name: 'Aid Station In', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      Split.create!(course_id: @course.id, name: 'Aid Station Change', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      split3 = Split.create!(course_id: @course.id, name: 'Aid Station Out', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
+      Split.create!(course_id: @course.id, name: 'Aid Station InZ', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
+      Split.create!(course_id: @course.id, name: 'Aid Station ChangeZ', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
+      split3 = Split.create!(course_id: @course.id, name: 'Aid Station OutZ', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
       split3_attributes = {location_id: @location2.id}
       put :update, id: split3.id, split: split3_attributes
       expect(Split.count).to eq(3)
-      expect(Split.where(name: 'Aid Station In').first.location_id).to eq(@location2.id)
-      expect(Split.where(name: 'Aid Station Change').first.location_id).to eq(@location2.id)
-      expect(Split.where(name: 'Aid Station Out').first.location_id).to eq(@location2.id)
+      expect(Split.where(name: 'Aid Station InZ').first.location_id).to eq(@location2.id)
+      expect(Split.where(name: 'Aid Station ChangeZ').first.location_id).to eq(@location2.id)
+      expect(Split.where(name: 'Aid Station OutZ').first.location_id).to eq(@location2.id)
     end
   end
 end

@@ -55,7 +55,6 @@ RSpec.describe Participant, type: :model do
 
   describe 'merge_with' do
     before do
-      DatabaseCleaner.clean
       @participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CA')
       @participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: nil, state_code: 'CA', city: 'Los Angeles')
       @participant3 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Denver')

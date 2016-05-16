@@ -22,7 +22,15 @@ class Event < ActiveRecord::Base
       @exact_match = effort.exact_matching_participant
       if @exact_match
         @exact_match.pull_data_from_effort(effort)
+      elsif effort.suggest_close_match
+
       end
+    end
+  end
+
+  def find_unmatched_efforts
+    unreconciled_efforts.each do |effort|
+
     end
   end
 
@@ -123,7 +131,7 @@ class Event < ActiveRecord::Base
   # Methods for monitoring efforts while event is live
 
   def efforts_dropped
-    efforts.where(dropped: true).pluck(:id)
+    efforts.where.not(dropped_split_id: nil).pluck(:id)
   end
 
   def efforts_finished
@@ -132,7 +140,7 @@ class Event < ActiveRecord::Base
 
   def efforts_in_progress
     unfinished_effort_ids = efforts.pluck(:id) - efforts_finished
-    efforts.where(id: unfinished_effort_ids, dropped: false)
+    efforts.where(id: unfinished_effort_ids, dropped_split_id: nil)
   end
 
   def efforts_overdue # Returns an array of efforts with overdue_amount attribute

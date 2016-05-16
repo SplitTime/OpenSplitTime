@@ -35,14 +35,26 @@ class Participant < ActiveRecord::Base
     efforts.joins(:event).average("((extract(epoch from(current_date - events.first_start_time))/60/60/24/365.25) + efforts.age)").to_f
   end
 
-  def self.age_matches(param, participants, rigor = 'soft')
-    return none unless param
-    matches = []
-    threshold = rigor == 'exact' ? 1 : 2
+  def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}
+    raw_hash = joins(:efforts => :event)
+                   .group(:participants)
+                   .average("((extract(epoch from(current_date - events.first_start_time))/60/60/24/365.25) + efforts.age)")
+    return_hash = {}
+    raw_hash.each do |aggregate, value|
+      participant_id = aggregate.split(',')[0].gsub(/[^0-9]/, '').to_i
+      return_hash[participant_id] = value.to_f
+    end
+    return_hash
+  end
+
+  def self.age_matches(age_param, participants)
+    return none unless age_param.is_a?(Numeric)
+    exact_age_hash = participants.exact_ages_today
+    approximate_age_hash = participants.approximate_ages_today
     participants.each do |participant|
       age = participant.age_today
       next unless age
-      if (age - param).abs < threshold
+      if (age - age_param).abs < threshold
         matches << participant
       end
     end
@@ -75,11 +87,7 @@ class Participant < ActiveRecord::Base
   end
 
   def most_likely_duplicate
-    possible_duplicates.first
-  end
-
-  def possible_duplicates
-    possible_matching_participants.reject { |x| x.id == self.id }
+    possible_matching_participants.first
   end
 
   def merge_with(target)

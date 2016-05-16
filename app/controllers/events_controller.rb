@@ -14,13 +14,14 @@ class EventsController < ApplicationController
 
   def show
     if @event.course
+      @event_efforts_show = EventEffortsShow.new(@event)
       @efforts = @event.efforts
                      .search(params[:search_param])
                      .sorted
                      .paginate(page: params[:page], per_page: 25)
       session[:return_to] = event_path(@event)
     else
-      flash[:danger] = "Event must have a course"
+      flash[:danger] = "Event must have a course. Please create or choose one now."
       render 'edit'
       session[:return_to] = event_path(@event)
     end

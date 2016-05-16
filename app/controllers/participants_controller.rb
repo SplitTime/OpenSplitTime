@@ -86,9 +86,9 @@ class ParticipantsController < ApplicationController
 
   def merge
     authorize @participant
-    @proposed_match = params[:proposed_match] ? Participant.find(params[:proposed_match]) : @participant.possible_duplicates.first
+    @proposed_match = params[:proposed_match] ? Participant.find(params[:proposed_match]) : @participant.most_likely_duplicate
     if @proposed_match
-      @proposed_matches = @participant.possible_duplicates - [@proposed_match]
+      @proposed_matches = @participant.possible_matching_participants - [@proposed_match]
     else
       flash[:success] = "No potential matches detected."
       redirect_to participant_path(@participant)

@@ -11,6 +11,7 @@
 			liveEntry.updateEventName();
 			liveEntry.addSplitToSelect();
 			liveEntry.addEffortForm();
+			liveEntry.editEffortModal();
 		},
 
 		/**
@@ -51,7 +52,7 @@
 					name: "Governor",
 					distance: 36.0,
 					id: 5
-				},				
+				},
 				{
 					name: "Ouray",
 					distance: 43.9,
@@ -67,7 +68,7 @@
 					distance: 58.3,
 					id: 8
 				},
-				{ 
+				{
 					name: "Burrows",
 					distance: 67.9,
 					id: 9
@@ -119,7 +120,7 @@
 
 		/**
 		 * Disables or enables fields for the effort lookup form
-		 * 
+		 *
 		 * @param {bool} True to enable, false to disable
 		 */
 		toggleFields: function( enable ) {
@@ -135,7 +136,7 @@
 
 		/**
 		 * Clears out the splits slider data fields
-		 * 
+		 *
 		 */
 		 clearSplitsData: function() {
 		 	$( '#js-effort-name' ).html( '' );
@@ -146,7 +147,7 @@
 
 		/**
 		 * Contains functionality for the effort form
-		 * 
+		 *
 		 */
 		addEffortForm: function() {
 
@@ -154,7 +155,7 @@
 			$( '#js-bib-number' ).on( 'blur', function() {
 				if ( $( this ).val() == '' ) {
 					liveEntry.toggleFields( false );
-					liveEntry.clearSplitsData();	
+					liveEntry.clearSplitsData();
 				}
 			} );
 
@@ -196,7 +197,7 @@
 					}
 					return false;
 				}
-			
+
 				// switch ( $this.attr( 'id' ) ) {
 				// 	case 'js-bib-number':
 				// 		if ( $this.val() == '' ) {
@@ -237,7 +238,7 @@
 				// }
 			} );
 
-			// Listen for keydown in pacer-in and pacer-out. Enter checks the box, 
+			// Listen for keydown in pacer-in and pacer-out. Enter checks the box,
 			// tab moves to next field.
 			$( '#js-pacer-in, #js-pacer-out').on( 'keydown', function( event ) {
 				var $this = $( this );
@@ -329,10 +330,36 @@
 			$( document ).on( 'click', '.js-edit-effort', function( event ) {
 				event.preventDefault();
 
-				var thisRow = $( this ).closest( 'tr' );
+				var $thisRow = $( this ).closest( 'tr' );
+				var effortId = $thisRow.attr( 'data-effort-id' );
+				var bibNum = $thisRow.attr( 'data-bib-number' );
+				var effortName = $thisRow.attr( 'data-effort-name' );
+				var splitName = $thisRow.attr( 'data-split-name' );
+				var timeIn = $thisRow.attr( 'data-time-in' );
+				var timeOut = $thisRow.attr( 'data-time-out' );
+				var pacerIn = $thisRow.attr( 'data-pacer-in' );
+				var pacerOut = $thisRow.attr( 'data-pacer-out' );
 
-				console.log( thisRow );
+				$( '.edit-effort-modal .modal-title .bib-number' ).html( bibNum );
+				$( '.edit-effort-modal .modal-title .split-name' ).html( splitName );
+				$( '.edit-effort-modal .js-effort-id' ).val( effortId );
+				$( '.edit-effort-modal .js-split-name' ).val( splitName );
+				$( '.edit-effort-modal .js-bib-number' ).val( bibNum );
+				$( '.edit-effort-modal .js-effort-name' ).val( effortName );
+				$( '.edit-effort-modal .js-time-in' ).val( timeIn );
+				$( '.edit-effort-modal .js-time-out' ).val( timeOut );
 
+				if( pacerIn === 'true' ) {
+					$( '.edit-effort-modal .js-pacer-in' ).prop( 'checked', true );
+				} else {
+					$( '.edit-effort-modal .js-pacer-in' ).prop( 'checked', false );
+				}
+
+				if( pacerOut === 'true' ) {
+					$( '.edit-effort-modal .js-pacer-out' ).prop( 'checked', true );
+				} else {
+					$( '.edit-effort-modal .js-pacer-out' ).prop( 'checked', false );
+				}
 
 				return false;
 			} );

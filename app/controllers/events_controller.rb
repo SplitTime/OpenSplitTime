@@ -181,7 +181,9 @@ class EventsController < ApplicationController
 
     # Here look up the effort and populate the json array with efforId and name from the database
     # Get bib number like this: params[:bibNumber]
+    # If the lookup fails here (bib number is incorrect), return { success: false }
     render :json => {
+      success: true,
       effortId: 1,
       name: "Brandon Trimboli",
     }

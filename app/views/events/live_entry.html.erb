@@ -20,33 +20,36 @@
 </div>
 <div class="row form-split-wrapper">
 	<div class="col-xs-4 live-entry">
-		<form id="js-update-effort-form">
+		<form id="js-get-effort-form">
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="bib-number">Bib #</label>
 				<div class="col-xs-8">
-					<input type="text" id="bib-number" name="bibNumber" class="form-control" placeholder="Bib #">
+					<input type="text" id="bib-number" name="bibNumber" class="jform-control" placeholder="Bib #">
+					<button type="submit" class="btn btn-primary btn-xs js-add-to-cache">Lookup</button>
 				</div>
 			</div>
+		</form>
+		<form id="js-add-effort-form">
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-in">Time In</label>
 				<div class="col-xs-8">
-					<input type="text" id="time-in" name="timeIn" class="form-control" placeholder="Time In">
+					<input type="text" id="time-in" name="timeIn" class="form-control" placeholder="Time In" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-out">Time Out</label>
 				<div class="col-xs-8">
-					<input type="text" id="time-out" name="timeOut" class="form-control" placeholder="Time Out">
+					<input type="text" id="time-out" name="timeOut" class="form-control" placeholder="Time Out" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="pacer">Pacer</label>
 				<div class="col-xs-8">
 					<label class="checkbox-inline">
-						<input type="checkbox" id="pacer-in" name="pacerIn" value="true"> In
+						<input type="checkbox" id="pacer-in" name="pacerIn" value="true" disabled="disabled"> In
 					</label>
 					<label class="checkbox-inline">
-						<input type="checkbox" id="pacer-out" name="pacerOut" value="true"> Out
+						<input type="checkbox" id="pacer-out" name="pacerOut" value="true" disabled="disabled"> Out
 					</label>
 				</div>
 				<p class="col-xs-8 message">Enter * if data is not clear</p>
@@ -105,5 +108,4 @@
 		<button class="delete-all-efforts btn btn-danger">Delete All</button>
 		<button class="submit-all-efforts btn btn-success">Submit All</button>
 	</div>
-	<button id="js-xfngr" class="btn">Submit All</button>
 </div>

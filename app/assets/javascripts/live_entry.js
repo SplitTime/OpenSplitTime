@@ -317,7 +317,25 @@
 			}
 
 			$( '#split-select' ).html( splitItems );
+		},
 
+		/**
+		 * Open modal to edit the Effort data in the "cache" row
+		 *
+		 */
+		editEffortModal: function() {
+			var modalHtml = '';
+
+			$( document ).on( 'click', '.js-edit-effort', function( event ) {
+				event.preventDefault();
+
+				var thisRow = $( this ).closest( 'tr' );
+
+				console.log( thisRow );
+
+
+				return false;
+			} );
 		}
 
 	};

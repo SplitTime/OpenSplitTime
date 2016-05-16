@@ -1,0 +1,28 @@
+<%# Requires parameters efforts, segment %>
+<% display_group = SegmentEffortsDisplayGroup.new(@segment, params[:gender], efforts) %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>From</th>
+    <th>Year</th>
+    <th class="text-right">Segment Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% efforts.each do |effort| %>
+  <% effort_row = display_group.effort_row(effort.id) %>
+      <tr>
+        <td><%= effort_row.place %></td>
+        <td><strong><%= link_to effort_row.full_name, effort_path(effort) %></strong></td>
+        <td><%= effort_row.bio_historic %></td>
+        <td><%= effort_row.state_and_country %></td>
+        <td><%= effort_row.year %></td>
+        <td class="text-right"><%= time_format_hhmm(effort_row.finish_time) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -22,9 +22,9 @@ class Segment
     [begin_split, end_split].hash
   end
 
-  def name # TODO make more flexible for time in aid etc.
+  def name
     begin_split.base_name == end_split.base_name ?
-        [begin_split.name, end_split.name].join(' to ') :
+        "Time in #{begin_split.base_name}" :
         [begin_split.base_name, end_split.base_name].join(' to ')
   end
 

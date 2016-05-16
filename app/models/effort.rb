@@ -323,6 +323,17 @@ class Effort < ActiveRecord::Base
     effort_ids.collect { |id| efforts_by_id[id] }
   end
 
+  def set_dropped_split_id
+    dropped_split_id =
+        finish_split_time ?
+            nil :
+            split_times.joins(:split).joins(:effort)
+                .order('efforts.id').order('splits.distance_from_start DESC').order('splits.sub_order DESC')
+                .first.split_id
+    update(dropped_split_id: dropped_split_id)
+    dropped_split_id
+  end
+
   private
 
   def self.ids_within_time_range(low_time, high_time)

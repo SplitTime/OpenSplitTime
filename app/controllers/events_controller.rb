@@ -14,7 +14,6 @@ class EventsController < ApplicationController
 
   def show
     if @event.course
-      @event_efforts_show = EventEffortsShow.new(@event)
       @efforts = @event.efforts
                      .search(params[:search_param])
                      .sorted

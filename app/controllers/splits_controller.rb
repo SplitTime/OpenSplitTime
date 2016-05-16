@@ -1,7 +1,7 @@
 class SplitsController < ApplicationController
   include UnitConversions
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_split, except: [:index, :new, :create, :best_efforts]
+  before_action :set_split, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
 
   def index

@@ -18,7 +18,11 @@
 <div class="row">
   <div class="col-xs-6">
     <% if @segment.end_split.events.count > 0 %>
-        <strong><%= "Searched #{pluralize(@segment.end_split.events.count, 'event')} from #{@segment.end_split.earliest_event_date.to_date.to_formatted_s(:long)} to #{@segment.end_split.latest_event_date.to_date.to_formatted_s(:long)}" %></strong><br/>
+        <strong>
+          <%= "Searched #{pluralize(@segment.end_split.events.count, 'event')}
+        from #{@segment.end_split.earliest_event_date.to_date.to_formatted_s(:long)}
+        to #{@segment.end_split.latest_event_date.to_date.to_formatted_s(:long)}" %>
+        </strong><br/>
     <% else %>
         <strong>No efforts have been measured on this segment.</strong>
     <% end %>
@@ -36,9 +40,21 @@
   </div>
   <div class="col-xs-6">
     <div class="text-right">
-      <%= link_to 'Combined', best_efforts_course_path(@course, split1: @segment.begin_id, split2: @segment.end_id, gender: 'combined'), class: 'btn btn-sm btn-default' %>
-      <%= link_to 'Male', best_efforts_course_path(@course, split1: @segment.begin_id, split2: @segment.end_id, gender: 'male'), class: 'btn btn-sm btn-default' %>
-      <%= link_to 'Female', best_efforts_course_path(@course, split1: @segment.begin_id, split2: @segment.end_id, gender: 'female'), class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Combined', best_efforts_course_path(@course,
+                                                       split1: @segment.begin_id,
+                                                       split2: @segment.end_id,
+                                                       gender: 'combined'),
+                  class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Male', best_efforts_course_path(@course,
+                                                   split1: @segment.begin_id,
+                                                   split2: @segment.end_id,
+                                                   gender: 'male'),
+                  class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Female', best_efforts_course_path(@course,
+                                                     split1: @segment.begin_id,
+                                                     split2: @segment.end_id,
+                                                     gender: 'female'),
+                  class: 'btn btn-sm btn-default' %>
     </div>
   </div>
 </div>
@@ -50,7 +66,7 @@
       </div>
     </div>
 
-    <%= render 'efforts/effort_list_segment', efforts: @efforts, segment: @segment %>
+    <%= render 'efforts/efforts_list_segment', efforts: @efforts, segment: @segment %>
 
     <div class="row">
       <div class="col-xs-8">

@@ -75,13 +75,12 @@ class Event < ActiveRecord::Base
   end
 
   def split_time_hash
-    SplitTime.where(effort_id: efforts.pluck(:id))
+    SplitTime.where(effort: efforts)
         .pluck_to_hash(:split_id, :effort_id, :time_from_start, :data_status)
         .group_by { |row| row[:split_id] }
   end
 
   def sorted_ultra_time_array(split_time_hash = nil)
-    return [] if efforts.count == 0
     efforts.sorted_ultra_time_array(split_time_hash)
   end
 

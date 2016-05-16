@@ -48,5 +48,5 @@
         <h4><%= "#{@participant.full_name}'s efforts:" %></h4>
       </div>
     </div>
-    <%= render 'efforts/effort_list', items: @participant.efforts.includes(:event).order('events.first_start_time DESC') %>
+    <%= render 'efforts/efforts_list_participant', efforts: @participant.efforts.includes(:event).order('events.first_start_time DESC') %>
 <% end %>

@@ -1,0 +1,33 @@
+<%# Requires parameter efforts %>
+<% display_group = EffortsDisplayGroup.new(@event, efforts) %>
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>From</th>
+    <th class="text-right">Finish Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% efforts.each do |effort| %>
+      <% effort_row = display_group.effort_row(effort.id) %>
+      <% if effort_row.bad? %>
+          <tr class="text-danger">
+      <% elsif effort_row.questionable? %>
+          <tr class="text-warning">
+      <% else %>
+          <tr>
+      <% end %>
+      <td><%= effort_row.place %></td>
+      <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+      <td><%= effort_row.bio_historic %></td>
+      <td><%= effort_row.state_and_country %></td>
+      <td class="text-right"><%= effort_row.finish_status.is_a?(String) ?
+                                     effort_row.finish_status :
+                                     time_format_hhmmss(effort_row.finish_status) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

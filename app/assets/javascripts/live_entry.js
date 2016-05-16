@@ -10,6 +10,8 @@
 			console.log('doc ready!');
 
 			liveEntry.addEffortToCache();
+			liveEntry.updateEventName();
+			liveEntry.addSplitToSelect();
 		},
 
 		/**
@@ -149,10 +151,37 @@
 
 				console.log( effortUpdateData );
 
-
 				return false;
 			} );
+		},
+
+		/**
+		 * Populate the h2 with the eventName
+		 *
+		 */
+		updateEventName: function() {
+
+			$( '.page-title h2' ).text( liveEntry.eventLiveEntryStaticData.eventName );
+
+		},
+
+		/**
+		 * Add the Splits data to the select drop down table on the page
+		 *
+		 */
+		addSplitToSelect: function() {
+
+			// Populate select list with actual splits
+			var splitItems = '<option selected="selected" value="">- Select -</option>';
+
+			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
+				splitItems += '<option value="' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</option>';
+			}
+
+			$( '#split-select' ).html( splitItems );
+
 		}
+
 	};
 
 	$( document ).ready( function() {

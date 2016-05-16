@@ -185,6 +185,17 @@
 	};
 
 	$( document ).ready( function() {
-			liveEntry.init();
+		liveEntry.init();
+		$('#js-xfngr').on('click', function() {
+			
+			// Get the event ID from the hidden span element
+			var eventId = $( '#js-event-id' ).text();
+
+			// Get bibNumber from the input field
+			var data = { bibNumber: 1 };
+			$.get('/events/' + eventId + '/live_entry_ajax_getEffort', data, function(response) {
+				console.log(response);
+			});
+		});
 	} );
 } )( jQuery );

@@ -7,11 +7,10 @@
 	var liveEntry = {
 
 		init: function() {
-			console.log('doc ready!');
-
 			liveEntry.addEffortToCache();
 			liveEntry.updateEventName();
 			liveEntry.addSplitToSelect();
+			liveEntry.getEffort();
 		},
 
 		/**
@@ -25,110 +24,58 @@
 			splits: [
 				{
 					name: "Hardrock Clockwise Start",
-					distance: 0
+					distance: 0.0
 				},
 				{
-					name: "KT In",
+					name: "KT",
 					distance: 11.4
 				},
 				{
-					name: "KT Out",
-					distance: 11.4
-				},
-				{
-					name: "Chapman In",
+					name: "Chapman",
 					distance: 18.4
 				},
 				{
-					name: "Chapman Out",
-					distance: 18.4
-				},
-				{
-					name: "Telluride In",
+					name: "Telluride",
 					distance: 27.7
 				},
 				{
-					name: "Telluride Out",
-					distance: 27.7
-				},
-				{
-					name: "Kroger In",
+					name: "Kroger",
 					distance: 32.7
 				},
 				{
-					name: "Kroger Out",
-					distance: 32.7
-				},
-				{
-					name: "Governor In",
+					name: "Governor",
 					distance: 36.0
-				},
+				},				
 				{
-					name: "Governor Out",
-					distance: 36.0
-				},
-				{
-					name: "Ouray In",
+					name: "Ouray",
 					distance: 43.9
 				},
 				{
-					name: "Ouray Out",
-					distance: 43.9
-				},
-				{
-					name: "Engineer In",
+					name: "Engineer",
 					distance: 51.8
 				},
 				{
-					name: "Engineer Out",
-					distance: 51.8
-				},
-				{
-					name: "Grouse In",
+					name: "Grouse",
 					distance: 58.3
 				},
-				{
-					name: "Grouse Out",
-					distance: 58.3
-				},
-				{
-					name: "Burrows In",
+				{ 
+					name: "Burrows",
 					distance: 67.9
 				},
 				{
-					name: "Burrows Out",
-					distance: 67.9
-				},
-				{
-					name: "Sherman In",
+					name: "Sherman",
 					distance: 71.7
 				},
 				{
-					name: "Sherman Out",
+					name: "Pole Creek",
 					distance: 71.7
 				},
 				{
-					name: "Pole Creek In",
-					distance: 71.7
-				},
-				{
-					name: "Pole Creek Out",
-					distance: 80.8
-				},
-				{
-					name: "Maggie In",
+					name: "Maggie",
 					distance: 85.1
 				},
 				{
-					name: "Maggie Out",
-					distance: 85.1
-				},
-				{
-					name: "Cunningham In",
-					distance: 91.2
-				},
-				{
-					name: "Cunningham Out",
+					name: "Cunningham",
 					distance: 91.2
 				},
 				{
@@ -144,13 +91,58 @@
 		 */
 		addEffortToCache: function() {
 
-			$( document ).on( 'submit', '#js-update-effort-form', function( event ) {
+			$( document ).on( 'click', '#js-add-to-cache', function( event ) {
 				event.preventDefault();
 
 				var effortUpdateData = $( this ).serializeArray();
 
 				console.log( effortUpdateData );
 
+				return false;
+			} );
+		},
+
+		/**
+		 * Submit handler for getting an effort from the db
+		 * 
+		 */
+		getEffort: function() {
+
+			/**
+			 * Disables or enables fields for the effort lookup form
+			 *
+			 * @param {bool} True to enable, false to disable
+			 */
+			function toggleFields( enable ) {
+				if ( enable == true ) {
+					$( '#js-add-effort-form input' ).removeAttr( 'disabled' );
+				} else {
+					$( '#js-add-effort-form input' ).attr( 'disabled', 'disabled' );
+					$( '#js-get-effort-form #bib-number' ).html( '' );
+				}
+			};
+
+			$( '#js-get-effort-form' ).on( 'submit', function( event ) {
+				event.preventDefault();
+				var $this = $( this );
+				var bibNumber = $this.find( '#bib-number' ).val();
+				if ( bibNumber.length > 0 ) {
+
+					// Get the event ID from the hidden span element
+					var eventId = $( '#js-event-id' ).text();
+
+					// Get bibNumber from the input field
+					var data = { bibNumber: bibNumber };
+					$.get( '/events/' + eventId + '/live_entry_ajax_getEffort', data, function( response ) {
+						if ( response.success == true ) {
+							toggleFields( true );
+						} else {
+							toggleFields( false );
+						}
+					} );
+				} else {
+					toggleFields( false );
+				}
 				return false;
 			} );
 		},
@@ -185,6 +177,6 @@
 	};
 
 	$( document ).ready( function() {
-			liveEntry.init();
+		liveEntry.init();
 	} );
 } )( jQuery );

@@ -321,7 +321,7 @@
 		},
 
 		/**
-		 * Open modal to edit the Effort data in the "cache" row
+		 * Populate modal to edit the Effort data in the "cache" row
 		 *
 		 */
 		editEffortModal: function() {

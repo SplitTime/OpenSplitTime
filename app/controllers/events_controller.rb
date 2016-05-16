@@ -172,9 +172,19 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  # This is an ajax action currently returns static json data for a specific "effort"
+  # representing a participants specific effort for an event.
+  # This endpoint gets called when the admin enters a "bib" number in the live_entry UI. 
+  #
   def live_entry_ajax_getEffort
     authorize @event
-    render :json => {xfngr:"xfngr"}
+
+    # Here look up the effort and populate the json array with efforId and name from the database
+    # Get bib number like this: params[:bibNumber]
+    render :json => {
+      effortId: 1,
+      name: "Brandon Trimboli",
+    }
   end
 
   private

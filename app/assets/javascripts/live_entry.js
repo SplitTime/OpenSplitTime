@@ -2,12 +2,14 @@
 
 	/**
 	 * UI object for the live event view
-	 * 
+	 *
 	 */
 	var liveEntry = {
 
 		init: function() {
 			console.log('doc ready!');
+
+			liveEntry.addEffortToCache();
 		},
 
 		/**
@@ -132,6 +134,24 @@
 					distance: 100.5
 				}
 			]
+		},
+
+		/**
+		 * Add the Effort data to the "cache" table on the page
+		 *
+		 */
+		addEffortToCache: function() {
+
+			$( document ).on( 'submit', '#js-update-effort-form', function( event ) {
+				event.preventDefault();
+
+				var effortUpdateData = $( this ).serializeArray();
+
+				console.log( effortUpdateData );
+
+
+				return false;
+			} );
 		}
 	};
 

@@ -86,5 +86,37 @@ Globals
 	.splits-slider {}
 }
 
+
 /******* Provisional Data Table ********/
-.provisional-data {}
+.provisional-data {
+
+	.row-edit-btns {
+		text-align: right;
+
+		.effort-row-btn {
+			display: inline-block;
+			margin-left: 0.5em;
+			width: 28px;
+			height: 28px;
+			text-align: center;
+			padding: 0;
+			line-height: 1;
+			-webkit-border-radius: 14px;
+			-moz-border-radius: 14px;
+			border-radius: 14px;
+		}
+	}
+
+	.table-submit-wrapper {
+		text-align: right;
+		margin-bottom: 4em;
+
+		.delete-all-efforts,
+		.submit-all-efforts {
+			margin: 0 1.5em 1em 0;
+			padding: 0.5em 2.5em;
+		}
+
+
+	}
+}

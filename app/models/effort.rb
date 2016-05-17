@@ -1,8 +1,9 @@
 class Effort < ActiveRecord::Base
   include Auditable
-  include Matchable
   include PersonalInfo
   include Searchable
+  include SetOperations
+  include Matchable
   enum gender: [:male, :female]
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event, touch: true

@@ -197,9 +197,6 @@ class EventsController < ApplicationController
       effortId: 1,
       name: "Brandon Trimboli",
       lastReportedSplitTime: "Maggie Out at 3:48",
-      estimatedTime: "",
-      rangeOfAcceptedTimeLow: "1:00:00",
-      rangeOfAcceptedTimeHigh: "2:00:00" # this field is used to determine if the "Check Data" flag needs to display
     }
   end
 

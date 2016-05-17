@@ -331,7 +331,7 @@
 
 			// Listen for keydown in pacer-in and pacer-out. Enter checks the box,
 			// tab moves to next field.
-			$( '#js-pacer-in, #js-pacer-out').on( 'keydown', function( event ) {
+			$( '#js-pacer-in, #js-pacer-out' ).on( 'keydown', function( event ) {
 				var $this = $( this );
 				switch ( $this.attr( 'id' ) ) {
 					case '#js-pacer-in':

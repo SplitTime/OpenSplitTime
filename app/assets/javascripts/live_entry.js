@@ -151,9 +151,11 @@
 		addEffortForm: function() {
 
 			// When bib number field is focused, disabled fields
-			$( '#js-bib-number' ).on( 'focus', function() {
-				liveEntry.toggleFields( false );
-				liveEntry.clearSplitsData();
+			$( '#js-bib-number' ).on( 'blur', function() {
+				if ( $( this ).val() == '' ) {
+					liveEntry.toggleFields( false );
+					liveEntry.clearSplitsData();	
+				}
 			} );
 
 			// Listen for keydown on bibNumber
@@ -165,6 +167,7 @@
 					// If value is empty, disable fields
 					if ( $this.val() == '' ) {
 						liveEntry.toggleFields( false );
+						liveEntry.clearSplitsData();
 					} else {
 
 						// Ajax endpoint for the effort data

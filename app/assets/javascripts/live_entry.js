@@ -105,12 +105,13 @@
 		/**
 		 * Set the initial cache object in local storage
 		 *
+		 * @return null
 		 */
 		efforts: {},
 		setStoredEfforts: function() {
 			var effortsCache = localStorage.getItem( 'effortsCache' );
 
-			if( effortsCache === null ) {
+			if( effortsCache === null || effortsCache.length == 0 ) {
 				localStorage.setItem( 'effortsCache', JSON.stringify( liveEntry.efforts ) );
 			}
 		},
@@ -118,6 +119,7 @@
 		/**
 		 * Get local data Efforts Storage Object
 		 *
+		 * @return object Returns object from local storage
 		 */
 		getStoredEfforts: function() {
 			return JSON.parse( localStorage.getItem('effortsCache') )
@@ -126,36 +128,58 @@
 		/**
 		 * Stringify then Save/Push all efforts to local object
 		 *
-		 * @param {object} [effortsObject] [Pass in the object of the updated object with all added or removed objects.]
-		 * @return {null}
+		 * @param object effortsObject Pass in the object of the updated object with all added or removed objects.
+		 * @return null
 		 */
-		pushStoredEfforts: function( effortsObject ) {
+		saveStoredEfforts: function( effortsObject ) {
 			localStorage.setItem( 'effortsCache', JSON.stringify( effortsObject ) );
 			return null;
 		},
 
 		/**
-		 * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
-		 * @param  {object} effortToAdd [Pass in Object of the effort to check it against the stored objects]
-		 * @return {[null]}
+		 * Delete the matching effort
+		 *
+		 * @param object 	effort 	Pass in the object/effort we want to delete.
+		 * @return null
 		 */
-		compareAndAddEffort: function( effortToAdd ) {
+		deleteStoredEffort: function( effort ) {
 			var storedEfforts = liveEntry.getStoredEfforts();
+			var effortToDelete = JSON.stringify( effort );
+
+			$.each( storedEfforts, function( index ) {
+				var loopedEffort = JSON.stringify( $( this ) );
+				if ( loopedEffort == effortToDelete ) {
+					delete storedEfforts[index];
+					return false;
+				}
+			} );
+
+			localStorage.setItem( 'effortsCache', JSON.stringify( storedEfforts ) );
+			return null;
+		},
+
+		/**
+		 * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
+		 *
+		 * @param  object effort Pass in Object of the effort to check it against the stored objects		 *
+		 * @return boolean	True if match found, False if no match found
+		 */
+		isMatchedEffort: function( effort ) {
+			var storedEfforts = liveEntry.getStoredEfforts();
+			var tempEffort = JSON.stringify( effort );
 			var flag = false;
 
 			$.each( storedEfforts, function() {
 				var loopedEffort = JSON.stringify( $( this ) );
-				var tempEffort = JSON.stringify( effortToAdd );
-				if ( this === tempEffort ) {
+				if ( loopedEffort == tempEffort ) {
 					flag = true;
 				}
 			} );
 
-			if( flag === false ) {
-				storedEfforts.push( effortToAdd );
-				saveStoredEfforts( storedEfforts );
+			if( flag == false ) {
+				return false;
 			} else {
-				alert( 'Already an exact match for this entry' );
+				return true;
 			};
 		},
 
@@ -172,8 +196,14 @@
 
 				// @TODO build this variable 'thisEffort' from fields on page
 				var thisEffort = {"werd": "hello"};
+				var storedEfforts = liveEntry.getStoredEfforts();
 
-				liveEntry.compareAndAddEffort( thisEffort );
+				if( ! liveEntry.isMatchedEffort( thisEffort ) ) {
+					storedEfforts.push( thisEffort );
+					liveEntry.saveStoredEfforts( storedEfforts );
+				} else {
+
+				}
 
 				return false;
 			} );

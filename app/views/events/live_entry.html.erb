@@ -20,77 +20,66 @@
 </div>
 <div class="row form-split-wrapper">
 	<div class="col-xs-4 live-entry">
-		<form id="js-get-effort-form">
+		<form id="js-add-effort-form">
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="bib-number">Bib #</label>
 				<div class="col-xs-8">
-					<input type="text" id="bib-number" name="bibNumber" class="jform-control" placeholder="Bib #">
-					<button type="submit" class="btn btn-primary btn-xs js-add-to-cache">Lookup</button>
+					<input type="text" id="js-bib-number" name="bibNumber" class="form-control" placeholder="Bib #" autocomplete="off" value="">
 				</div>
 			</div>
-		</form>
-		<form id="js-add-effort-form">
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-in">Time In</label>
 				<div class="col-xs-8">
-					<input type="text" id="time-in" name="timeIn" class="form-control" placeholder="Time In" disabled="disabled">
+					<input type="text" id="js-time-in" name="timeIn" class="form-control" placeholder="Time In" disabled="disabled" value="">
 				</div>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-out">Time Out</label>
 				<div class="col-xs-8">
-					<input type="text" id="time-out" name="timeOut" class="form-control" placeholder="Time Out" disabled="disabled">
+					<input type="text" id="js-time-out" name="timeOut" class="form-control" placeholder="Time Out" disabled="disabled" value="">
 				</div>
 			</div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="pacer">Pacer</label>
 				<div class="col-xs-8">
 					<label class="checkbox-inline">
-						<input type="checkbox" id="pacer-in" name="pacerIn" value="true" disabled="disabled"> In
+						<input type="checkbox" id="js-pacer-in" name="pacerIn" value="true" disabled="disabled"> In
 					</label>
 					<label class="checkbox-inline">
-						<input type="checkbox" id="pacer-out" name="pacerOut" value="true" disabled="disabled"> Out
+						<input type="checkbox" id="js-pacer-out" name="pacerOut" value="true" disabled="disabled"> Out
 					</label>
 				</div>
-				<!-- <p class="col-xs-8 message">Enter * if data is not clear</p> -->
+				<p class="col-xs-8 message">Enter * if data is not clear</p>
 			</div>
 			<div class="col-xs-8 col-xs-offset-4">
-				<input type="hidden" name="effort-id" id="js-effort-id" value="put_effort_id_here">
-				<input type="hidden" name="split-id" id="js-split-id" value="put_split_id_here">
-				<button type="submit" class="btn btn-primary js-add-to-cache">Add</button>
+				<input type="hidden" name="effort-id" id="js-effort-id" value="">
+				<input type="hidden" name="live-bib" id="js-live-bib" value="">
+				<button type="submit" class="btn btn-primary" id="js-add-to-cache">Add</button>
 			</div>
 		</form>
 	</div>
 	<div class="col-xs-8 splits-slider">
 
-		<div class="splits-slider-range">
-			range slider
-		</div>
-		<div class="splits-slider-data">
-			<div class="splits-slider-data-label">
-				Name
-			</div>
-			<div class="splits-slider-data-info">
-				Winter King
-			</div>
-			<div class="splits-slider-data-label">
-				Last Reported
-			</div>
-			<div class="splits-slider-data-info">
-				Maggie
-			</div>
-			<div class="splits-slider-data-label">
-				Split From SPLITNAME
-			</div>
-			<div class="splits-slider-data-info">
-				1:00
-			</div>
-			<div class="splits-slider-data-label">
-				Time Spent SPLITNAME
-			</div>
-			<div class="splits-slider-data-info">
-				2
-			</div>
+		<div class="splits-slider-range col-xs-12">range slider</div>
+		<div class="splits-slider-data col-xs-12">
+			<table>
+				<tr>
+					<td align="right">Name: </td>
+					<td id="js-effort-name"></td>
+				</tr>
+				<tr>
+					<td align="right">Last Reported: </td>
+					<td id="js-effort-last-reported"></td>
+				</tr>
+				<tr>
+					<td align="right">Split From: </td>
+					<td id="js-effort-split-from"><span id="js-effort-data-check"></span></td>
+				</tr>
+				<tr>
+					<td align="right">Time Spent:</td>
+					<td id="js-effort-split-spent"></td>
+				</tr>
+			</table>
 		</div>
 
 	</div>

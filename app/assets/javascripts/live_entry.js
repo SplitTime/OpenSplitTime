@@ -7,11 +7,12 @@
 	var liveEntry = {
 
 		init: function() {
+			liveEntry.setStoredEfforts();
 			liveEntry.addEffortToCache();
 			liveEntry.updateEventName();
 			liveEntry.addSplitToSelect();
 			liveEntry.addEffortForm();
-			liveEntry.editEffortModal();
+			liveEntry.editEffort();
 		},
 
 		/**
@@ -102,17 +103,77 @@
 		},
 
 		/**
+		 * Set the initial cache object in local storage
+		 *
+		 */
+		efforts: {},
+		setStoredEfforts: function() {
+			var effortsCache = localStorage.getItem( 'effortsCache' );
+
+			if( effortsCache === null ) {
+				localStorage.setItem( 'effortsCache', JSON.stringify( liveEntry.efforts ) );
+			}
+		},
+
+		/**
+		 * Get local data Efforts Storage Object
+		 *
+		 */
+		getStoredEfforts: function() {
+			return JSON.parse( localStorage.getItem('effortsCache') )
+		},
+
+		/**
+		 * Stringify then Save/Push all efforts to local object
+		 *
+		 * @param {object} [effortsObject] [Pass in the object of the updated object with all added or removed objects.]
+		 * @return {null}
+		 */
+		pushStoredEfforts: function( effortsObject ) {
+			localStorage.setItem( 'effortsCache', JSON.stringify( effortsObject ) );
+			return null;
+		},
+
+		/**
+		 * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
+		 * @param  {object} effortToAdd [Pass in Object of the effort to check it against the stored objects]
+		 * @return {[null]}
+		 */
+		compareAndAddEffort: function( effortToAdd ) {
+			var storedEfforts = liveEntry.getStoredEfforts();
+			var flag = false;
+
+			$.each( storedEfforts, function() {
+				var loopedEffort = JSON.stringify( $( this ) );
+				var tempEffort = JSON.stringify( effortToAdd );
+				if ( this === tempEffort ) {
+					flag = true;
+				}
+			} );
+
+			if( flag === false ) {
+				storedEfforts.push( effortToAdd );
+				saveStoredEfforts( storedEfforts );
+			} else {
+				alert( 'Already an exact match for this entry' );
+			};
+		},
+
+		/**
 		 * Add the Effort data to the "cache" table on the page
 		 *
 		 */
 		addEffortToCache: function() {
+			// Initiate DataTable Plugin
+			$( '.js-provisional-data-table' ).DataTable();
 
-			$( document ).on( 'click', '#js-add-to-cache', function( event ) {
+			$( document ).on( 'click', '.js-add-to-cache', function( event ) {
 				event.preventDefault();
 
-				var effortUpdateData = $( this ).serializeArray();
+				// @TODO build this variable 'thisEffort' from fields on page
+				var thisEffort = {"werd": "hello"};
 
-				console.log( effortUpdateData );
+				liveEntry.compareAndAddEffort( thisEffort );
 
 				return false;
 			} );
@@ -321,50 +382,81 @@
 		},
 
 		/**
-		 * Populate modal to edit the Effort data in the "cache" row
+		 * Move a "cached" table row to "top form" section for editing.
 		 *
 		 */
-		editEffortModal: function() {
-			var modalHtml = '';
+		editEffort: function() {
 
-			$( document ).on( 'click', '.js-edit-effort', function( event ) {
-				event.preventDefault();
+			$( '.js-provisional-data-table .js-effort-station-row' ).each( function() {
 
-				var $thisRow = $( this ).closest( 'tr' );
-				var effortId = $thisRow.attr( 'data-effort-id' );
-				var bibNum = $thisRow.attr( 'data-bib-number' );
-				var effortName = $thisRow.attr( 'data-effort-name' );
-				var splitName = $thisRow.attr( 'data-split-name' );
-				var timeIn = $thisRow.attr( 'data-time-in' );
-				var timeOut = $thisRow.attr( 'data-time-out' );
-				var pacerIn = $thisRow.attr( 'data-pacer-in' );
-				var pacerOut = $thisRow.attr( 'data-pacer-out' );
+				var $thisRow = $( this );
+				var dataTable = $thisRow.closest( '.js-provisional-data-table' ).DataTable();
+				var effort = {};
+				effort.uniqueId = $thisRow.attr( 'data-unique-id' );
+				effort.eventId = $thisRow.attr( 'data-event-id' );
+				effort.splitId = $thisRow.attr( 'data-split-id' );
+				effort.effortId = $thisRow.attr( 'data-effort-id' );
+				effort.bibNum = $thisRow.attr( 'data-bib-number' );
+				effort.effortName = $thisRow.attr( 'data-effort-name' );
+				effort.splitName = $thisRow.attr( 'data-split-name' );
+				effort.timeIn = $thisRow.attr( 'data-time-in' );
+				effort.timeOut = $thisRow.attr( 'data-time-out' );
+				effort.pacerIn = $thisRow.attr( 'data-pacer-in' );
+				effort.pacerOut = $thisRow.attr( 'data-pacer-out' );
 
-				$( '.edit-effort-modal .modal-title .bib-number' ).html( bibNum );
-				$( '.edit-effort-modal .modal-title .split-name' ).html( splitName );
-				$( '.edit-effort-modal .js-effort-id' ).val( effortId );
-				$( '.edit-effort-modal .js-split-name' ).val( splitName );
-				$( '.edit-effort-modal .js-bib-number' ).val( bibNum );
-				$( '.edit-effort-modal .js-effort-name' ).val( effortName );
-				$( '.edit-effort-modal .js-time-in' ).val( timeIn );
-				$( '.edit-effort-modal .js-time-out' ).val( timeOut );
+				$thisRow.on( 'click', '.js-edit-effort', function( event ) {
+					event.preventDefault();
 
-				if( pacerIn === 'true' ) {
-					$( '.edit-effort-modal .js-pacer-in' ).prop( 'checked', true );
-				} else {
-					$( '.edit-effort-modal .js-pacer-in' ).prop( 'checked', false );
-				}
+					// remove table row
+					$thisRow.fadeOut( 'fast', function() {
+						dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
+					} );
 
-				if( pacerOut === 'true' ) {
-					$( '.edit-effort-modal .js-pacer-out' ).prop( 'checked', true );
-				} else {
-					$( '.edit-effort-modal .js-pacer-out' ).prop( 'checked', false );
-				}
 
-				return false;
+
+					console.log( effort );
+
+
+					var repopulateEffortForm = function( effortData ) {
+						var storedEfforts = getStoredEfforts();
+						console.log( storedEfforts );
+
+						$( document ).find( '#bib-number' ).val( effortData.bibNum );
+					}
+					repopulateEffortForm( effort );
+
+					// $( '.edit-effort-modal .modal-title .split-name' ).html( effortData.splitName );
+					// $( '.edit-effort-modal .js-effort-id-input' ).val( effortData.effortId );
+					// $( '.edit-effort-modal .js-split-name-input' ).val( effortData.splitName );
+					// $( '.edit-effort-modal .js-bib-number-input' ).val( effortData.bibNum );
+					// $( '.edit-effort-modal .js-effort-name-input' ).val( effortData.effortName );
+					// $( '.edit-effort-modal .js-time-in-input' ).val( effortData.timeIn );
+					// $( '.edit-effort-modal .js-time-out-input' ).val( effortData.timeOut );
+
+					// if( effortData.pacerIn === 'true' ) {
+					// 	$( '.edit-effort-modal .js-pacer-in-check' ).prop( 'checked', true );
+					// } else {
+					// 	$( '.edit-effort-modal .js-pacer-in-check' ).prop( 'checked', false );
+					// }
+
+					// if( effortData.pacerOut === 'true' ) {
+					// 	$( '.edit-effort-modal .js-pacer-out-check' ).prop( 'checked', true );
+					// } else {
+					// 	$( '.edit-effort-modal .js-pacer-out-check' ).prop( 'checked', false );
+					// }
+				} );
+
+				$thisRow.on( 'click', '.js-delete-effort', function( event ) {
+					event.preventDefault();
+					$thisRow.fadeOut( 'fast', function() {
+						dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
+					} );
+					console.log( 'row removed' );
+					return false;
+				} );
+
 			} );
 		}
-
 	};
 
 	$( document ).ready( function() {

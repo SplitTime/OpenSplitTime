@@ -2,6 +2,7 @@
 Variables
 *********/
 $gray: #777;
+$lightGray: #eee;
 
 /***********
 Placeholders
@@ -85,10 +86,16 @@ Globals
 			width: 100%;
 		}
 	}
-
-	.splits-slider {}
 }
 
+/******* Splits Slider ********/
+.splits-slider {
+	background: $lightGray;
+
+	.splits-slider-data table {
+		margin: 0 auto;
+	}
+}
 
 /******* Provisional Data Table ********/
 .provisional-data {

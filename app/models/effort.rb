@@ -1,8 +1,8 @@
 class Effort < ActiveRecord::Base
   include Auditable
-  include Matchable
   include PersonalInfo
   include Searchable
+  include Matchable
   enum gender: [:male, :female]
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event, touch: true
@@ -242,10 +242,12 @@ class Effort < ActiveRecord::Base
 
   # Sorting class methods
 
-  def self.sorted
-    return [] if self.count == 0
+  def self.sorted(time_array = nil)
+    return [] if self.count < 1
     return sorted_by_finish_time if first.event.simple?
-    time_array = sorted_ultra_time_array
+    ids = self.pluck(:id)
+    time_array ||= sorted_ultra_time_array
+    time_array.keep_if { |row| ids.include?(row[0]) }
     efforts_from_ids(time_array.map { |x| x[0] })
   end
 
@@ -254,8 +256,7 @@ class Effort < ActiveRecord::Base
     return [] if self.count == 0
     event = first.event
     split_time_hash ||= event.split_time_hash
-    effort_ids = self.pluck(:id)
-    result = effort_ids.map { |effort_id| [effort_id] }
+    result = self.pluck(:id).map { |effort_id| [effort_id] }
     event.ordered_split_ids.each do |split_id|
       hash = split_time_hash[split_id] ?
           Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]] }] :

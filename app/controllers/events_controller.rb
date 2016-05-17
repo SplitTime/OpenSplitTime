@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :spread]
-  before_action :set_event, except: [:index, :new, :create]
+  before_action :set_event, except: [:index, :show, :new, :create]
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
@@ -13,11 +13,9 @@ class EventsController < ApplicationController
   end
 
   def show
+    @event = Event.includes(:course, :race).find(params[:id])
     if @event.course
-      @efforts = @event.efforts
-                     .search(params[:search_param])
-                     .sorted
-                     .paginate(page: params[:page], per_page: 25)
+      @event_display = EventEffortsDisplay.new(@event, params)
       session[:return_to] = event_path(@event)
     else
       flash[:danger] = "Event must have a course. Please create or choose one now."

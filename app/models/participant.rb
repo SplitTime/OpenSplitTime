@@ -2,7 +2,6 @@ class Participant < ActiveRecord::Base
   include Auditable
   include PersonalInfo
   include Searchable
-  include SetOperations
   include Matchable
   enum gender: [:male, :female]
   has_many :interests, dependent: :destroy

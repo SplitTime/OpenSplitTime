@@ -1,7 +1,7 @@
 module SetOperations
   extend ActiveSupport::Concern
 
-  module ClassMethods
+  class_methods do
 
     def union_scope(*scopes)
       apply_operation 'UNION', scopes

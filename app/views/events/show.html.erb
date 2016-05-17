@@ -1,16 +1,16 @@
 <div class="row">
   <div class="col-xs-6">
-    <h2><%= @event.name %></h2>
+    <h2><%= @event_display.name %></h2>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <strong><%= "#{l@event.first_start_time, format: :full_with_weekday}" %></strong><br/>
+    <strong><%= "#{l@event_display.first_start_time, format: :full_with_weekday}" %></strong><br/>
     <strong>Course:</strong>
-    <%= link_to @event.course.name, course_path(@event.course) %>
-    <% if @event.race %> |
+    <%= link_to @event_display.course_name, course_path(@event_display.course) %>
+    <% if @event_display.race %> |
         <strong>Race:</strong>
-        <%= link_to @event.race.name, race_path(@event.race) %>
+        <%= link_to @event_display.race_name, race_path(@event_display.race) %>
     <% end %>
   </div>
 </div>
@@ -19,17 +19,17 @@
   <div class="col-xs-12">
     <%= link_to '<< Show All Events', events_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <%= link_to 'All-time best efforts >', best_efforts_course_path(@event.course), class: "btn btn-sm btn-default" %>
-    <% unless @event.simple? %>
-        <%= link_to 'Full spread >>', spread_event_path(@event), class: "btn btn-sm btn-default" %>
+    <%= link_to 'All-time best efforts >', best_efforts_course_path(@event_display.course), class: "btn btn-sm btn-default" %>
+    <% unless @event_display.simple? %>
+        <%= link_to 'Full spread >>', spread_event_path(@event_display.event), class: "btn btn-sm btn-default" %>
     <% end %>
-    <% if @current_user && @current_user.authorized_to_edit?(@event) %>
-        <%= link_to 'Stage/administer this event', stage_event_path(@event), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Set time data status', set_data_status_event_path(@event),
+    <% if @current_user && @current_user.authorized_to_edit?(@event_display.event) %>
+        <%= link_to 'Stage/administer this event', stage_event_path(@event_display.event), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Set time data status', set_data_status_event_path(@event_display.event),
                     method: :put,
                     class: "btn btn-sm btn-success" %>
         <%= link_to 'Delete this event',
-                    event_path(@event, referrer_path: events_path),
+                    event_path(@event_display.event, referrer_path: events_path),
                     method: :delete,
                     data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
@@ -37,28 +37,28 @@
   </div>
 </div>
 <hr>
-<% if @event.efforts.count < 1 %>
+<% if @event_display.event_efforts_count < 1 %>
     <strong>No efforts yet associated with this event.</strong>
 <% else %>
     <%= render 'lookup' %>
-    <% if @efforts.count > 0 %>
+    <% if @event_display.search_result_efforts_count > 0 %>
         <hr>
         <div class="row">
           <div class="col-xs-8">
-            <h4><%= "Returned #{@efforts.total_entries} of #{@event.efforts.count} efforts for #{@event.name}" %></h4>
+            <h4><%= "Returned #{@event_display.search_result_efforts_count} of #{@event_display.event_efforts_count} efforts for #{@event_display.name}" %></h4>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.efforts, inner_window: 2, outer_window: 0) %>
           </div>
         </div>
 
-        <%= render 'efforts/efforts_list', efforts: @efforts %>
+        <%= render 'efforts/efforts_list' %>
 
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.efforts, inner_window: 2, outer_window: 0) %>
           </div>
         </div>
     <% else %>

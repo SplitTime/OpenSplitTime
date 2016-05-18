@@ -13,6 +13,7 @@
 			liveEntry.addSplitToSelect();
 			liveEntry.addEffortForm();
 			liveEntry.editEffort();
+			liveEntry.buildSplitSlider();
 		},
 
 		/**
@@ -229,12 +230,12 @@
 		 * Clears out the splits slider data fields
 		 *
 		 */
-		 clearSplitsData: function() {
-		 	$( '#js-effort-name' ).html( '' );
+		clearSplitsData: function() {
+			$( '#js-effort-name' ).html( '' );
 			$( '#js-effort-last-reported' ).html( '' )
 			$( '#js-effort-split-from' ).html( '' );
 			$( '#js-effort-split-spent' ).html( '' );
-		 },
+		},
 
 		/**
 		 * Contains functionality for the effort form
@@ -288,50 +289,11 @@
 					}
 					return false;
 				}
-
-				// switch ( $this.attr( 'id' ) ) {
-				// 	case 'js-bib-number':
-				// 		if ( $this.val() == '' ) {
-				// 			$next = $( '#js-bib-number' );
-				// 		} else {
-				// 			toggleFields( true );
-				// 			$next = $( '#js-time-in' );
-				// 		}
-				// 		break;
-				// 	case 'js-time-in':
-				// 		$next = $( '#js-time-out' );
-				// 		break;
-				// 	case 'js-time-out':
-				// 		$next = $( '#js-pacer-in' );
-				// 		break;
-				// }
-
-				// if ( event.keyCode == 13 ) {
-				// 	event.preventDefault();
-				// 	switch ( $this.attr( 'id' ) ) {
-				// 		case 'js-bib-number':
-				// 			if ( $this.val() == '' ) {
-				// 				$next = $( '#js-bib-number' );
-				// 			} else {
-				// 				toggleFields( true );
-				// 				$next = $( '#js-time-in' );
-				// 			}
-				// 			break;
-				// 		case 'js-time-in':
-				// 			$next = $( '#js-time-out' );
-				// 			break;
-				// 		case 'js-time-out':
-				// 			$next = $( '#js-pacer-in' );
-				// 			break;
-				// 	}
-				// 	$next.focus();
-				// 	return false;
-				// }
 			} );
 
 			// Listen for keydown in pacer-in and pacer-out. Enter checks the box,
 			// tab moves to next field.
-			$( '#js-pacer-in, #js-pacer-out').on( 'keydown', function( event ) {
+			$( '#js-pacer-in, #js-pacer-out' ).on( 'keydown', function( event ) {
 				var $this = $( this );
 				switch ( $this.attr( 'id' ) ) {
 					case '#js-pacer-in':
@@ -359,30 +321,6 @@
 						break;
 				}
 			} );
-
-			// $( '#js-get-effort-form' ).on( 'submit', function( event ) {
-			// 	event.preventDefault();
-			// 	var $this = $( this );
-			// 	var bibNumber = $this.find( '#bib-number' ).val();
-			// 	if ( bibNumber.length > 0 ) {
-
-			// 		// Get the event ID from the hidden span element
-			// 		var eventId = $( '#js-event-id' ).text();
-
-			// 		// Get bibNumber from the input field
-			// 		var data = { bibNumber: bibNumber };
-			// 		$.get( '/events/' + eventId + '/live_entry_ajax_getEffort', data, function( response ) {
-			// 			if ( response.success == true ) {
-			// 				toggleFields( true );
-			// 			} else {
-			// 				toggleFields( false );
-			// 			}
-			// 		} );
-			// 	} else {
-			// 		toggleFields( false );
-			// 	}
-			// 	return false;
-			// } );
 		},
 
 		/**
@@ -402,13 +340,26 @@
 		addSplitToSelect: function() {
 
 			// Populate select list with actual splits
-			var splitItems = '<option selected="selected" value="">- Select -</option>';
-
+			var splitItems = '';
 			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
 				splitItems += '<option value="' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" >' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</option>';
 			}
-
 			$( '#split-select' ).html( splitItems );
+		},
+
+		/**
+		 * Builds the splits slider based on the splits data
+		 * 
+		 */
+		buildSplitSlider: function() {
+			var splitSliderItems = '';
+			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
+				splitSliderItems += '<div class="split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + '</span></div>';
+			}
+			console.log($( splitSliderItems ) );
+			console.log( splitSliderItems );
+			$( '#js-split-slider' ).html( splitSliderItems );
+			console.log( $( '#js-split-slider .split-slider-item' ).width() );
 		},
 
 		/**
@@ -441,8 +392,6 @@
 					$thisRow.fadeOut( 'fast', function() {
 						dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
 					} );
-
-
 
 					console.log( effort );
 

@@ -1,13 +1,13 @@
 class EventEffortsDisplay
-  extend ActiveSupport::Concern
+  # extend ActiveSupport::Concern
 
-  attr_reader :event, :efforts, :effort_data, :effort_ids, :search_result_efforts_count
+  attr_reader :event, :efforts, :effort_data, :effort_ids, :filtered_efforts_count
   delegate :name, :first_start_time, :course, :race, :simple?, to: :event
 
   def initialize(event, params)
     @event = event
     calculate_time_array(event)
-    set_effort_data(params)
+    get_efforts_and_raw_data(params)
     @effort_data = effort_data_raw.index_by { |block| block[:id] }
     @effort_ids = effort_data_raw.map { |block| block[:id] }
     calculate_finish_hash(time_array)
@@ -29,7 +29,7 @@ class EventEffortsDisplay
     race ? race.name : nil
   end
 
-  def place(effort_id)
+  def overall_place(effort_id)
     sorted_event_effort_ids.index(effort_id) + 1
   end
 
@@ -41,7 +41,7 @@ class EventEffortsDisplay
 
   attr_accessor :time_array, :finish_hash, :effort_data_raw, :sorted_event_effort_ids
 
-  def set_effort_data(params)
+  def get_efforts_and_raw_data(params)
     @efforts = event.efforts
                    .search(params[:search_param])
                    .sorted(time_array)
@@ -56,7 +56,7 @@ class EventEffortsDisplay
                                                    country_code: effort.country_code,
                                                    dropped_split_id: effort.dropped_split_id,
                                                    data_status: effort.data_status} }
-    @search_result_efforts_count = efforts.total_entries
+    @filtered_efforts_count = efforts.total_entries
   end
 
   def calculate_time_array(event)

@@ -1,27 +1,27 @@
 <div class="row">
   <div class="col-xs-12">
-    <% if segment_is_full_course? %>
-        <h2><%= "All-time best efforts on #{@course.name} (#{params[:gender]})" %></h2>
+    <% if @best_efforts_display.segment_is_full_course? %>
+        <h2><%= "All-time best efforts on #{@best_efforts_display.name} (#{@best_efforts_display.gender})" %></h2>
     <% else %>
-        <h3><%= "All-time best efforts on #{@course.name}" %></h3>
+        <h3><%= "All-time best efforts on #{@best_efforts_display.name}" %></h3>
         <hr>
-        <h2><%= "#{@segment.name} (#{params[:gender]})" %></h2>
+        <h2><%= "#{@best_efforts_display.segment_name} (#{@best_efforts_display.gender})" %></h2>
     <% end %>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <strong><%= "#{d(@segment.distance)} #{pdu} with #{e(@segment.vert_gain)} #{peu} of elevation gain" %><br>
-      <%= "and #{e(@segment.vert_loss)} #{peu} of elevation loss" %></strong><br/>
+    <strong><%= "#{d(@best_efforts_display.distance)} #{pdu} with #{e(@best_efforts_display.vert_gain)} #{peu} of elevation gain" %><br>
+      <%= "and #{e(@best_efforts_display.vert_loss)} #{peu} of elevation loss" %></strong><br/>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <% if @segment.end_split.events.count > 0 %>
+    <% if @best_efforts_display.events_count > 0 %>
         <strong>
-          <%= "Searched #{pluralize(@segment.end_split.events.count, 'event')}
-        from #{@segment.end_split.earliest_event_date.to_date.to_formatted_s(:long)}
-        to #{@segment.end_split.latest_event_date.to_date.to_formatted_s(:long)}" %>
+          <%= "Searched #{pluralize(@best_efforts_display.events_count, 'event')}
+        from #{@best_efforts_display.earliest_event_date.to_date.to_formatted_s(:long)}
+        to #{@best_efforts_display.latest_event_date.to_date.to_formatted_s(:long)}" %>
         </strong><br/>
     <% else %>
         <strong>No efforts have been measured on this segment.</strong>
@@ -41,36 +41,36 @@
   <div class="col-xs-6">
     <div class="text-right">
       <%= link_to 'Combined', best_efforts_course_path(@course,
-                                                       split1: @segment.begin_id,
-                                                       split2: @segment.end_id,
+                                                       split1: @best_efforts_display.begin_id,
+                                                       split2: @best_efforts_display.end_id,
                                                        gender: 'combined'),
                   class: 'btn btn-sm btn-default' %>
       <%= link_to 'Male', best_efforts_course_path(@course,
-                                                   split1: @segment.begin_id,
-                                                   split2: @segment.end_id,
+                                                   split1: @best_efforts_display.begin_id,
+                                                   split2: @best_efforts_display.end_id,
                                                    gender: 'male'),
                   class: 'btn btn-sm btn-default' %>
       <%= link_to 'Female', best_efforts_course_path(@course,
-                                                     split1: @segment.begin_id,
-                                                     split2: @segment.end_id,
+                                                     split1: @best_efforts_display.begin_id,
+                                                     split2: @best_efforts_display.end_id,
                                                      gender: 'female'),
                   class: 'btn btn-sm btn-default' %>
     </div>
   </div>
 </div>
 
-<% if @efforts.count > 0 %>
+<% if @best_efforts_display.segment_efforts_count > 0 %>
     <div class="row">
       <div class="col-xs-8">
-        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+        <%= will_paginate(@best_efforts_display.efforts, inner_window: 2, outer_window: 0) %>
       </div>
     </div>
 
-    <%= render 'efforts/efforts_list_segment', efforts: @efforts, segment: @segment %>
+    <%= render 'efforts/efforts_list_segment' %>
 
     <div class="row">
       <div class="col-xs-8">
-        <%= will_paginate(@efforts, inner_window: 2, outer_window: 0) %>
+        <%= will_paginate(@best_efforts_display.efforts, inner_window: 2, outer_window: 0) %>
       </div>
     </div>
 <% end %>

@@ -55,11 +55,8 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
-    start_split = params[:split1].present? ? params[:split1].to_i : @course.start_split.id
-    finish_split = params[:split2].present? ? params[:split2].to_i : @course.finish_split.id
-    @segment = Segment.new(start_split, finish_split)
-    params[:gender] ||= 'combined'
-    @efforts = Effort.gender_group(@segment, params[:gender]).sorted_by_segment_time(@segment).paginate(page: params[:page], per_page: 25)
+    @course = Course.includes(:splits).find(params[:id])
+    @best_efforts_display = BestEffortsDisplay.new(@course, params)
     session[:return_to] = best_efforts_course_path(@course)
   end
 

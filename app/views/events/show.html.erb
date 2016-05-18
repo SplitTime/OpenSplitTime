@@ -41,11 +41,11 @@
     <strong>No efforts yet associated with this event.</strong>
 <% else %>
     <%= render 'lookup' %>
-    <% if @event_display.search_result_efforts_count > 0 %>
+    <% if @event_display.filtered_efforts_count > 0 %>
         <hr>
         <div class="row">
           <div class="col-xs-8">
-            <h4><%= "Returned #{@event_display.search_result_efforts_count} of #{@event_display.event_efforts_count} efforts for #{@event_display.name}" %></h4>
+            <h4><%= "Returned #{@event_display.filtered_efforts_count} of #{@event_display.event_efforts_count} efforts for #{@event_display.name}" %></h4>
           </div>
         </div>
         <div class="row">

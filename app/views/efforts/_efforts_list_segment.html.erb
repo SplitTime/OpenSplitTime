@@ -1,10 +1,13 @@
-<%# Requires parameters efforts, segment %>
-<% display_group = SegmentEffortsDisplayGroup.new(@segment, params[:gender], efforts) %>
-
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th>#</th>
+    <th>
+      <% if @best_efforts_display.gender == 'combined' %>
+          #
+      <% else %>
+          Overall/<br>Gender
+      <% end %>
+    </th>
     <th>Name</th>
     <th>Category</th>
     <th>From</th>
@@ -13,11 +16,17 @@
   </tr>
   </thead>
   <tbody>
-  <% efforts.each do |effort| %>
-  <% effort_row = display_group.effort_row(effort.id) %>
+  <% @best_efforts_display.effort_ids.each do |effort_id| %>
+      <% effort_row = @best_efforts_display.effort_row(effort_id) %>
       <tr>
-        <td><%= effort_row.place %></td>
-        <td><strong><%= link_to effort_row.full_name, effort_path(effort) %></strong></td>
+        <td>
+          <% if @best_efforts_display.gender == 'combined' %>
+              <%= effort_row.overall_place %>
+          <% else %>
+              <%= "#{effort_row.overall_place}/#{effort_row.gender_place}" %>
+          <% end %>
+        </td>
+        <td><strong><%= link_to effort_row.full_name, effort_path(effort_id) %></strong></td>
         <td><%= effort_row.bio_historic %></td>
         <td><%= effort_row.state_and_country %></td>
         <td><%= effort_row.year %></td>

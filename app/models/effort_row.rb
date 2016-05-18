@@ -1,62 +1,66 @@
 class EffortRow
   include PersonalInfo
-  attr_reader :display_group, :id
+  attr_reader :parent_view_object, :id
 
-  def initialize(display_group, effort_id)
-    @display_group = display_group
+  def initialize(parent_view_object, effort_id)
+    @parent_view_object = parent_view_object
     @id = effort_id
   end
 
   def first_name
-    display_group.effort_data[id][:first_name]
+    parent_view_object.effort_data[id][:first_name]
   end
 
   def last_name
-    display_group.effort_data[id][:last_name]
+    parent_view_object.effort_data[id][:last_name]
   end
 
   def gender
-    display_group.effort_data[id][:gender]
+    parent_view_object.effort_data[id][:gender]
   end
 
   def bib_number
-    display_group.effort_data[id][:bib_number]
+    parent_view_object.effort_data[id][:bib_number]
   end
 
   def age
-    display_group.effort_data[id][:age]
+    parent_view_object.effort_data[id][:age]
   end
 
   def state_code
-    display_group.effort_data[id][:state_code]
+    parent_view_object.effort_data[id][:state_code]
   end
 
   def country_code
-    display_group.effort_data[id][:country_code]
+    parent_view_object.effort_data[id][:country_code]
   end
 
   def dropped_split_id
-    display_group.effort_data[id][:dropped_split_id]
+    parent_view_object.effort_data[id][:dropped_split_id]
   end
 
   def data_status
-    display_group.effort_data[id][:data_status]
+    parent_view_object.effort_data[id][:data_status]
   end
 
-  def place
-    display_group.place(id)
+  def overall_place
+    parent_view_object.overall_place(id)
+  end
+  
+  def gender_place
+    parent_view_object.gender_place(id)
   end
 
   def year
-    display_group.effort_data[id][:year]
+    parent_view_object.effort_data[id][:year]
   end
 
   def finish_status
-    display_group.finish_status(id)
+    parent_view_object.finish_status(id)
   end
 
   def finish_time
-    display_group.finish_time(id)
+    parent_view_object.finish_time(id)
   end
 
   def bad?

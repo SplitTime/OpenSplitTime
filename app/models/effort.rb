@@ -21,6 +21,7 @@ class Effort < ActiveRecord::Base
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
                                          .joins(:split_times => :split).where(splits: {kind: 1})
                                          .order('split_times.time_from_start') }
+  scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
 
   def self.columns_for_import
     id = ["id"]

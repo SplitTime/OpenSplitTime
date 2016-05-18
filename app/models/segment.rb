@@ -1,9 +1,11 @@
 class Segment
   attr_accessor :begin_split, :end_split
+  delegate :course, to: :begin_split
+  delegate :events, :earliest_event_date, :latest_event_date, to: :end_split
 
-  def initialize(first_param, second_param) # Takes two splits or two split_ids in any order
-    first_split = first_param.is_a?(Integer) ? Split.find(first_param) : first_param
-    second_split = second_param.is_a?(Integer) ? Split.find(second_param) : second_param
+  def initialize(split1, split2) # Takes two splits or two split_ids in any order
+    first_split = split1.is_a?(Integer) ? Split.find(split1) : split1
+    second_split = split2.is_a?(Integer) ? Split.find(split2) : split2
     raise 'Segment splits must be on same course' if first_split.course_id != second_split.course_id
     splits = [first_split, second_split].sort_by { |split| [split.distance_from_start, split.sub_order] }
     @begin_split = splits.first
@@ -58,12 +60,12 @@ class Segment
     [begin_split.id, end_split.id]
   end
 
-  def course
-    begin_split.course
-  end
-
   def times
     SegmentCalculations.new(self).times
+  end
+
+  def is_full_course?
+    begin_split.start? && end_split.finish?
   end
 
 end

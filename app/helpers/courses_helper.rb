@@ -64,8 +64,4 @@ module CoursesHelper
     result
   end
 
-  def segment_is_full_course?
-    (@segment.begin_split == @course.start_split) && (@segment.end_split == @course.finish_split)
-  end
-
 end

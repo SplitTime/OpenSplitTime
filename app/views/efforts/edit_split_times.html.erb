@@ -48,7 +48,11 @@
                   <%= f.fields_for :split_times,
                                    @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],
                                                                              effort_id: @effort.id) do |builder| %>
-                      <td><%= builder.text_field :time_as_entered, class: 'form-control', placeholder: 'hh:mm:ss' %></td>
+                      <td>
+                        <%= builder.text_field :time_as_entered, class: 'form-control', placeholder: 'hh:mm:ss' %>
+                        <%= builder.hidden_field :split_id, {value: waypoint_group[i]} %>
+                        <%= builder.hidden_field :effort_id, {value: @effort.id} %>
+                      </td>
                   <% end %>
               <% end %>
               </tr>

@@ -1,129 +1,9 @@
 require 'rails_helper'
 require 'pry-byebug'
 
-# t.integer  "event_id",                  null: false
-# t.integer  "participant_id"
-# t.string   "wave"
-# t.integer  "bib_number"
-# t.string   "city",           limit: 64
-# t.string   "state_code",     limit: 64
-# t.integer  "age"
-# t.boolean  "dropped_split_id"
-# t.string   "first_name"
-# t.string   "last_name"
-# t.integer  "gender"
-# t.string   "country_code",   limit: 2
-# t.date     "birthdate"
-# t.integer  "data_status"
-# t.integer  "start_offset"
+RSpec.describe Segment, type: :model do
 
-RSpec.describe Effort, type: :model do
-  describe "validations" do
-
-    before :each do
-      @course = Course.create!(name: 'Test Course')
-      @event = Event.create!(course: @course, race: nil, name: 'Test Event', first_start_time: "2012-08-08 05:00:00")
-      @location1 = Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
-      @location2 = Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
-      @participant = Participant.create!(first_name: 'Joe', last_name: 'Hardman',
-                                         gender: 'male', birthdate: "1989-12-15",
-                                         city: 'Boulder', state_code: 'CO', country_code: 'US')
-    end
-
-    it "should be valid when created with an event_id, first_name, last_name, and gender" do
-      @event = Event.create!(course: @course, name: 'Hardrock 2015', first_start_time: "2015-07-01 06:00:00")
-      Effort.create!(event: @event, first_name: 'David', last_name: 'Goliath', gender: 'male')
-
-      expect(Effort.all.count).to(equal(1))
-      expect(Effort.first.event).to eq(@event)
-      expect(Effort.first.last_name).to eq('Goliath')
-    end
-
-    it "should be invalid without an event_id" do
-      effort = Effort.new(event: nil, first_name: 'David', last_name: 'Goliath', gender: 'male')
-      expect(effort).not_to be_valid
-      expect(effort.errors[:event_id]).to include("can't be blank")
-    end
-
-    it "should be invalid without a first_name" do
-      effort = Effort.new(event: @event, first_name: nil, last_name: 'Appleseed', gender: 'male')
-      expect(effort).not_to be_valid
-      expect(effort.errors[:first_name]).to include("can't be blank")
-    end
-
-    it "should be invalid without a last_name" do
-      effort = Effort.new(first_name: 'Johnny', last_name: nil, gender: 'male')
-      expect(effort).not_to be_valid
-      expect(effort.errors[:last_name]).to include("can't be blank")
-    end
-
-    it "should be invalid without a gender" do
-      effort = Effort.new(first_name: 'Johnny', last_name: 'Appleseed', gender: nil)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:gender]).to include("can't be blank")
-    end
-
-    it "should not permit more than one effort by a participant in a given event" do
-      Effort.create!(event: @event, first_name: 'David', last_name: 'Goliath', gender: 'male',
-                     participant: @participant)
-      effort = Effort.new(event: @event, first_name: 'David', last_name: 'Goliath', gender: 'male',
-                          participant: @participant)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:participant_id]).to include("has already been taken")
-    end
-
-    it "should not permit duplicate bib_numbers within a given event" do
-      Effort.create!(event: @event, first_name: 'David', last_name: 'Goliath', gender: 'male', bib_number: 20)
-      effort = Effort.new(event: @event, participant_id: 2, bib_number: 20)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:bib_number]).to include("has already been taken")
-    end
-  end
-
-  describe 'within_time_range' do
-    before do
-
-      course = Course.create!(name: 'Test Course 100')
-      event = Event.create!(name: 'Test Event 2015', course: course, first_start_time: "2015-07-01 06:00:00")
-      location1 = Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
-      location2 = Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
-
-      effort1 = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      effort2 = Effort.create!(event: event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
-      effort3 = Effort.create!(event: event, bib_number: 150, city: 'Nantucket', state_code: 'MA', country_code: 'US', age: 26, first_name: 'Jane', last_name: 'Rockstar', gender: 'female')
-
-      split1 = Split.create!(course: course, location: location1, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      split2 = Split.create!(course: course, location: location2, name: 'Test Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      split3 = Split.create!(course: course, location: location2, name: 'Test Aid Station Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      split4 = Split.create!(course: course, location: location1, name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
-
-      event.splits << course.splits
-
-      SplitTime.create!(effort: effort1, split: split1, time_from_start: 0)
-      SplitTime.create!(effort: effort1, split: split2, time_from_start: 4000)
-      SplitTime.create!(effort: effort1, split: split3, time_from_start: 4100)
-      SplitTime.create!(effort: effort1, split: split4, time_from_start: 8000)
-      SplitTime.create!(effort: effort2, split: split1, time_from_start: 0)
-      SplitTime.create!(effort: effort2, split: split2, time_from_start: 5000)
-      SplitTime.create!(effort: effort2, split: split3, time_from_start: 5100)
-      SplitTime.create!(effort: effort2, split: split4, time_from_start: 9000)
-      SplitTime.create!(effort: effort3, split: split1, time_from_start: 0)
-      SplitTime.create!(effort: effort3, split: split2, time_from_start: 3000)
-      SplitTime.create!(effort: effort3, split: split3, time_from_start: 3100)
-      SplitTime.create!(effort: effort3, split: split4, time_from_start: 7500)
-
-    end
-
-    it 'should return only those efforts for which the finish time is between the parameters provided' do
-      efforts = Effort.all
-      expect(efforts.within_time_range(7800, 8200).count).to eq(1)
-      expect(efforts.within_time_range(5000, 10000).count).to eq(3)
-      expect(efforts.within_time_range(10000, 20000).count).to eq(0)
-    end
-
-  end
-
-  describe 'set_data_status' do
+  describe 'initialization' do
     before do
 
       @course = Course.create!(name: 'Test Course 100')
@@ -238,59 +118,171 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort: @effort13, split: @split5, time_from_start: 14300)
       SplitTime.create!(effort: @effort13, split: @split6, time_from_start: 19800)
 
-      Effort.all.set_data_status
+      @segment1 = Segment.new(@split1, @split6)
+      @segment2 = Segment.new(@split2, @split3)
+      @segment3 = Segment.new(@split3, @split4)
+      @segment4 = Segment.new(@split2, @split5)
 
     end
 
-    it 'should set the data status of the efforts to the lowest status of the split times' do
-      expect(Effort.where(bib_number: 1).first.data_status).to eq('bad')
-      expect(Effort.where(bib_number: 2).first.data_status).to eq('bad')
-      expect(Effort.where(bib_number: 3).first.data_status).to eq('good')
-      expect(Effort.where(bib_number: 8).first.data_status).to eq('good')
-      expect(Effort.where(bib_number: 11).first.data_status).to eq('questionable')
+    it 'should calculate distance properly based on provide splits' do
+      expect(@segment1.distance).to eq(25000)
+      expect(@segment2.distance).to eq(0)
+      expect(@segment3.distance).to eq(9000)
+      expect(@segment4.distance).to eq(9000)
     end
 
-    it 'should set the data status of negative segment times to bad' do
-      expect(@effort1.split_times.where(split: @split5).first.bad?).to eq(true)
-      expect(@effort4.split_times.where(split: @split3).first.bad?).to eq(true)
+    it 'should equate itself with other segments using the same splits' do
+      # This allows a segment to be used as a hash key and matched with another hash key
+      segment5 = Segment.new(@split6, @split1)
+      segment6 = Segment.new(@split3, @split4)
+      expect(segment5 == @segment1).to eq(true)
+      expect(segment6 == @segment3).to eq(true)
+      expect(segment6 == @segment2).to eq(false)
     end
 
-    it 'should look past bad data points to the previous valid data point to calculate data status' do
-      expect(@effort2.split_times.where(split: @split6).first.questionable?).to eq(true)
-      expect(@effort10.split_times.where(split: @split3).first.good?).to eq(true)
+    it 'should accurately report whether it represents an entire course' do
+      expect(@segment1.is_full_course?).to eq(true)
+      expect(@segment2.is_full_course?).to eq(false)
+      expect(@segment4.is_full_course?).to eq(false)
 
     end
 
-    it 'should set the data status of split_times properly' do
-      expect(@effort1.split_times.good.count).to eq(5)
-      expect(@effort1.split_times.bad.count).to eq(1)
-      expect(@effort2.split_times.good.count).to eq(2)
-      expect(@effort2.split_times.questionable.count).to eq(1)
-      expect(@effort2.split_times.bad.count).to eq(3)
-      expect(@effort4.split_times.good.count).to eq(4)
-      expect(@effort4.split_times.bad.count).to eq(2)
-      expect(@effort11.split_times.good.count).to eq(4)
-      expect(@effort11.split_times.questionable.count).to eq(2)
-      expect(@effort11.split_times.bad.count).to eq(0)
+  end
+
+
+  describe 'effort_velocity' do
+    before do
+
+      @course = Course.create!(name: 'Test Course 100')
+      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+
+      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+      @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
+
+      @split1 = Split.create!(course: @course, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, name: 'Test Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split3 = Split.create!(course: @course, name: 'Test Aid Station Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+
+      @event.splits << @course.splits
+
+      @segment1 = Segment.new(@split1, @split2)
+      @segment2 = Segment.new(@split2.id, @split3.id)
+      @segment3 = Segment.new(@split4, @split3, @split1)
+      @segment4 = Segment.new(@split3, @split4.id)
+
+      SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split3, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, time_from_start: 8000)
+      SplitTime.create!(effort: @effort2, split: @split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split3, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split4, time_from_start: 9000)
+      SplitTime.create!(effort: @effort3, split: @split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, time_from_start: 6000)
+      SplitTime.create!(effort: @effort3, split: @split3, time_from_start: 9200)
+      SplitTime.create!(effort: @effort3, split: @split4, time_from_start: 9000)
+
     end
 
-    it 'should set the data status of non-zero start splits to bad' do
-      expect(@effort4.split_times.where(split: @split1).first.data_status).to eq('bad')
+    it 'should return velocity in m/s for a given effort' do
+      expect(@segment1.effort_velocity(@effort1)).to eq(6000 / 4000.0)
+      expect(@segment3.effort_velocity(@effort2)).to eq(10000 / 9000.0)
     end
 
-    it 'should set the data status of impossibly fast segments to bad' do
-      expect(@effort2.split_times.where(split: @split2).first.bad?).to eq(true)
-      expect(@effort2.split_times.where(split: @split3).first.bad?).to eq(true)
+    it 'should return zero when the distance is zero' do
+      expect(@segment2.effort_velocity(@effort1)).to eq(0)
     end
 
-    it 'should set the data status of impossibly slow segments to bad' do
-      expect(@effort2.split_times.where(split: @split5).first.bad?).to eq(true)
-      expect(@effort10.split_times.where(split: @split2).first.bad?).to eq(true)
+    it 'should return zero when the elapsed time is zero' do
+      expect(@segment2.effort_velocity(@effort2)).to eq(0)
     end
 
-    it 'should set the data status of splits correctly even if missing prior splits' do
-      expect(@effort6.split_times.where(split: @split4).first.good?).to eq(true)
-      expect(@effort8.split_times.where(split: @split6).first.good?).to eq(true)
+    it 'should return a negative value when elapsed time is negative' do
+      expect(@segment4.effort_velocity(@effort3)).to eq(4000 / -200)
+    end
+
+  end
+
+  describe 'times' do
+    before do
+      @course = Course.create!(name: 'Test Course 100')
+      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+
+      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+      @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
+
+      @split1 = Split.create!(course: @course, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, name: 'Test Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split3 = Split.create!(course: @course, name: 'Test Aid Station Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+
+      @event.splits << @course.splits
+
+      @segment1 = Segment.new(@split1, @split2)
+      @segment2 = Segment.new(@split2.id, @split3.id)
+      @segment3 = Segment.new(@split4, @split3, @split1)
+      @segment4 = Segment.new(@split3, @split4.id)
+
+      SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split3, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, time_from_start: 8000)
+      SplitTime.create!(effort: @effort2, split: @split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split3, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split4, time_from_start: 9000)
+      SplitTime.create!(effort: @effort3, split: @split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, time_from_start: 6000)
+      SplitTime.create!(effort: @effort3, split: @split3, time_from_start: 9200)
+    end
+
+    it 'should return a hash containing effort => time for the segment' do
+      expect(@segment1.times.count).to eq(3)
+      expect(@segment2.times.count).to eq(3)
+      expect(@segment3.times.count).to eq(2)
+      expect(@segment1.times[@effort1.id]).to eq(4000)
+      expect(@segment3.times[@effort2.id]).to eq(9000)
+      expect(@segment4.times[@effort1.id]).to eq(3900)
+      expect(@segment3.times[@effort3.id]).to be_nil
+    end
+  end
+
+  describe 'name' do
+    before do
+      @course = Course.create!(name: 'Test Course 100')
+      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+
+      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+      @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
+
+      @split1 = Split.create!(course: @course, name: 'Start', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, name: 'Aid Station In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split3 = Split.create!(course: @course, name: 'Aid Station Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, name: 'Finish', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+
+      @event.splits << @course.splits
+
+      @segment1 = Segment.new(@split1, @split2)
+      @segment2 = Segment.new(@split2.id, @split3.id)
+      @segment3 = Segment.new(@split4, @split3, @split1)
+      @segment4 = Segment.new(@split3, @split4.id)
+
+
+    end
+
+    it 'should return a "Time in" name if it is within a waypoint group' do
+      expect(@segment2.name).to eq('Time in Aid Station')
+    end
+
+    it 'should return a compound name if it is between waypoint groups' do
+      expect(@segment1.name).to eq('Start to Aid Station')
+      expect(@segment4.name).to eq('Aid Station to Finish')
     end
   end
 

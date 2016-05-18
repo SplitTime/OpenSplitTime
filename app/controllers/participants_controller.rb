@@ -15,7 +15,7 @@ class ParticipantsController < ApplicationController
   def index
     @participants = Participant.search(params[:search_param])
                         .with_age_and_effort_count
-                        .order(:last_name, :first_name)
+                        .ordered_by_name
                         .paginate(page: params[:page], per_page: 25)
     session[:return_to] = participants_path
   end

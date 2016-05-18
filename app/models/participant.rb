@@ -15,6 +15,7 @@ class Participant < ActiveRecord::Base
                                              .joins("LEFT OUTER JOIN efforts ON (efforts.participant_id = participants.id)")
                                              .joins("INNER JOIN events ON (events.id = efforts.event_id)")
                                              .group("participants.id") }
+  scope :ordered_by_name, -> { order(:last_name, :first_name) }
 
 
   validates_presence_of :first_name, :last_name, :gender

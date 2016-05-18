@@ -58,7 +58,9 @@
             <% if @split.new_record? %>
                 <%= f.submit("Create Location", {create_location: true, class: "btn btn-xs btn-success btn-margin-top-sm"}) %>
             <% else %>
-                <%= link_to "Create Location", new_location_path(split_id: @split.id, referrer_path: edit_split_path(@split)), class: "btn btn-xs btn-success btn-margin-top-sm" %>
+                <%= link_to "Create Location", create_location_split_path(id: @split.id, referrer_path: edit_split_path(@split)),
+                            method: :post,
+                            class: "btn btn-xs btn-success btn-margin-top-sm" %>
             <% end %>
           </div>
         </div>
@@ -88,7 +90,7 @@
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', request.referer %> ]
+          [ <%= link_to 'Cancel', split_path(@split) %> ]
         </div>
     <% end %>
   </div>

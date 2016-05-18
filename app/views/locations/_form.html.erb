@@ -7,7 +7,7 @@
           <div class="control-label col-sm-2">
             <%= f.label :name %>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <%= f.text_field :name, class: "form-control", placeholder: "Location name", autofocus: true %>
           </div>
         </div>
@@ -32,20 +32,19 @@
         <%= f.hidden_field :longitude, id: 'map_lng' %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <% if @split.nil? %>
-                <%= f.submit @location.new_record? ? "Create Location" : "Update Location",
-                             class: 'btn btn-primary btn-large btn-margin-top' %>
-            <% else %>
-                <%= f.button @location.new_record? ? "Create Location" : "Update Location", name: "split_id", value: @split.id,
-                             class: 'btn btn-primary btn-large btn-margin-top' %>
-            <% end %>
+            <%= f.submit @location.new_record? ? "Create Location" : "Update Location",
+                         class: 'btn btn-primary btn-large btn-margin-top' %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', locations_path %> ]
+          <% if params[:created_by_split] %>
+          [ <%= link_to 'Cancel', location_path(@location), method: :delete %> ]
+              <% else %>
+          [ <%= link_to 'Cancel', session.delete(:return_to) || request.referrer %> ]
+          <% end %>
         </div>
 
-        <% if @location.new_record? %>
+        <% if @location.latitude.nil? | @location.longitude.nil? %>
             <script>
               $(document).ready(function () {
                 gmap_form(null);    // form map for new view (print nothing with possibility of put marker)

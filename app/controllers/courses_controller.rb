@@ -67,7 +67,7 @@ class CoursesController < ApplicationController
   def plan_effort
     @course = Course.where(id: params[:id]).first
     authorize @course
-    @event = @course.events.order(:first_start_time).last
+    @event = @course.events.most_recent
     unless @event
       flash[:danger] = "No events yet held on this course"
       redirect_to course_path(@course)

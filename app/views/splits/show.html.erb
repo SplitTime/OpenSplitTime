@@ -47,12 +47,13 @@
         });
       </script>
   <% else %>
-      <%= link_to "Create Location", new_location_path(split_id: @split.id),
-                      class: "btn btn-sm btn-success" %>
+      <%= link_to "Create Location", create_location_split_path(id: @split.id),
+                  method: :post,
+                  class: "btn btn-sm btn-success" %>
       <%= link_to "Select Location", assign_location_split_path(split: @split.id),
                   class: "btn btn-sm btn-success",
                   referrer_path: split_path(@split) %>
 
-<% end %>
+  <% end %>
 
 </div>

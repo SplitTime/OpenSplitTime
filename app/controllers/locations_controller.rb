@@ -21,7 +21,6 @@ class LocationsController < ApplicationController
 
   def edit
     authorize @location
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
   end
 
   def create
@@ -29,10 +28,9 @@ class LocationsController < ApplicationController
     authorize @location
 
     if @location.save
-      unless params[:split_id].nil?
+      if params[:split_id].present?
         @split = Split.find(params[:split_id])
-        @split.location = @location
-        @split.save
+        @split.update(location: @location)
         conform_split_locations(@split)
       end
       redirect_to session.delete(:return_to) || @location

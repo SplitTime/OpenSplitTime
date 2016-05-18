@@ -3,6 +3,8 @@ class Location < ActiveRecord::Base
   include UnitConversions
   has_many :splits
 
+  before_destroy :disassociate_locations
+
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
   validates_numericality_of :elevation, greater_than_or_equal_to: -413, less_than_or_equal_to: 8848, allow_nil: true
@@ -15,6 +17,12 @@ class Location < ActiveRecord::Base
 
   def elevation_as_entered=(entered_elevation)
     self.elevation = Location.elevation_in_meters(entered_elevation.to_f, User.current) if entered_elevation.present?
+  end
+
+  private
+
+  def disassociate_locations
+    Split.where(location: self).update_all(location_id: nil)
   end
 
 end

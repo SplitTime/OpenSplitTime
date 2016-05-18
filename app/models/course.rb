@@ -9,11 +9,11 @@ class Course < ActiveRecord::Base
   validates_uniqueness_of :name, case_sensitive: false
 
   def earliest_event_date
-    events.order(:first_start_time).first.first_start_time
+    events.earliest.first_start_time
   end
 
   def latest_event_date
-    events.order(:first_start_time).last.first_start_time
+    events.most_recent.first_start_time
   end
 
   def update_initial_splits
@@ -35,7 +35,7 @@ class Course < ActiveRecord::Base
   end
 
   def relevant_efforts(target_time, max_events = 5, min_efforts = 20)
-    relevant_events = most_recent_events(max_events).includes(:efforts => {:split_times => :split})
+    relevant_events = events.recent(max_events).includes(:efforts => {:split_times => :split})
     return Effort.none if relevant_events.count < 1
     event_efforts = Effort.where(event_id: relevant_events.pluck(:id).uniq)
     5.step(25, 5) do |i|
@@ -44,10 +44,5 @@ class Course < ActiveRecord::Base
     end
     event_efforts.within_time_range(target_time * 0.7, target_time * 1.3)
   end
-
-  def most_recent_events(max_events)
-    events.order(first_start_time: :desc).limit(max_events) || Event.none
-  end
-
 
 end

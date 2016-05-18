@@ -10,6 +10,10 @@ class Event < ActiveRecord::Base
   validates_presence_of :course_id, :name, :first_start_time
   validates_uniqueness_of :name, case_sensitive: false
 
+  scope :recent, -> (max) { order(first_start_time: :desc).limit(max) }
+  scope :most_recent, -> { order(first_start_time: :desc).first }
+  scope :earliest, -> { order(:first_start_time.first) }
+
   def all_splits_on_course?
     splits.each do |split|
       return false if split.course_id != course_id

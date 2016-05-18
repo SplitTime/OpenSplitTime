@@ -30,6 +30,10 @@ class Split < ActiveRecord::Base
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: "may not be negative"
 
+  scope :ordered, -> { order(:distance_from_start, :sub_order) }
+  scope :at_same_distance, -> (split) { where(distance_from_start: split.distance_from_start).order(:sub_order) }
+  scope :base, -> { where(sub_order: 0) }
+
   def is_start?
     self.start?
   end
@@ -62,10 +66,6 @@ class Split < ActiveRecord::Base
     self.vert_loss_from_start = Split.elevation_in_meters(entered_vert_loss.to_f, User.current) if entered_vert_loss.present?
   end
 
-  def self.ordered
-    order(:distance_from_start, :sub_order)
-  end
-
   def self.average_times(target_finish_time) # Returns a hash with split ids => average times from start
     efforts = first.course.relevant_efforts(target_finish_time)
     return_hash = {}
@@ -83,12 +83,12 @@ class Split < ActiveRecord::Base
     split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
   end
 
-  def waypoint_group
-    course.splits.where(distance_from_start: distance_from_start).order(:sub_order)
+  def waypoint_group(event = nil)
+    event ? event.waypoint_group(self) : course.waypoint_group(self)
   end
 
-  def composite_name #TODO limit this to event_waypoint_group when that function is working
-    (waypoint_group.order(:sub_order).map &:name).join(' / ')
+  def composite_name(event = nil)
+    (waypoint_group(event).order(:sub_order).pluck(:name)).join(' / ')
   end
 
   def base_name
@@ -96,11 +96,15 @@ class Split < ActiveRecord::Base
   end
 
   def earliest_event_date
-    events.order(first_start_time: :asc).first.first_start_time
+    events.earliest.first_start_time
   end
 
   def latest_event_date
-    events.order(first_start_time: :asc).last.first_start_time
+    events.most_recent.first_start_time
+  end
+
+  def random_location_name
+    "#{name} Location #{(rand * 1000).to_i} (please change me)"
   end
 
 end

@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   end
   resources :splits do
     member { get :assign_location }
+    member { post :create_location }
   end
   resources :races
   resources :participants do

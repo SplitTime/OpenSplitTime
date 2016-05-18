@@ -28,12 +28,11 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.save
-      conform_split_locations(@split)
-      conform_vert(@split)
+      conform_physical_data(@split)
       set_sub_order(@split)
       if params[:commit] == 'Create Location'
         session[:return_to] = edit_split_path(@split, event_id: params[:event_id])
-        redirect_to new_location_path(split_id: @split.id, event_id: params[:event_id])
+        redirect_to create_location_split_path(id: @split.id, event_id: params[:event_id]), method: :post
       elsif params[:event_id]
         @event = Event.find(params[:event_id])
         @event.splits << @split
@@ -57,8 +56,7 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.update(split_params)
-      conform_split_locations(@split)
-      conform_vert(@split)
+      conform_physical_data(@split)
       set_sub_order(@split)
       if params[:event_id]
         @event = Event.find(params[:event_id])
@@ -78,6 +76,18 @@ class SplitsController < ApplicationController
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || splits_path
+  end
+
+  def create_location
+    authorize @split
+    @split.location = Location.create(name: @split.random_location_name)
+      session[:return_to] = params[:referrer_path] || split_path(@split)
+    if @split.save
+      redirect_to edit_location_path(@split.location, created_by_split: true)
+    else
+      flash[:danger] = "Could not create location."
+      redirect_to session.delete(:return_to) || split_path(@split)
+    end
   end
 
   def assign_location

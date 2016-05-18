@@ -8,7 +8,7 @@ class Effort < ActiveRecord::Base
   belongs_to :event, touch: true
   belongs_to :participant
   has_many :split_times, dependent: :destroy
-  accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:time_as_entered].blank? }
+  accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
   attr_accessor :overdue_amount, :suggested_match
 
@@ -41,7 +41,7 @@ class Effort < ActiveRecord::Base
   end
 
   def reset_age_from_birthdate
-    self.assign_attributes(age: TimeDifference.between(birthdate, event.first_start_time).in_years.to_i) if birthdate.present?
+    self.assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
   end
 
   def self.reset_effort_ages
@@ -61,13 +61,14 @@ class Effort < ActiveRecord::Base
   end
 
   def start_time
-    event.first_start_time + start_offset
+    event_start_time + start_offset
   end
 
   def start_time=(datetime)
     return unless datetime.present?
-    event_time = event.first_start_time
+    event_time = event_start_time
     difference = TimeDifference.between(datetime, event_time).in_seconds
+    # TimeDifference returns only positive values so make negative if appropriate
     self.start_offset = (datetime > event_time) ? difference : (difference * -1)
   end
 
@@ -88,6 +89,8 @@ class Effort < ActiveRecord::Base
     "In progress"
   end
 
+  # Methods for checking status during live event
+
   def due_next_where
     return nil if dropped_split_id
     last_split = last_reported_split
@@ -100,7 +103,7 @@ class Effort < ActiveRecord::Base
   end
 
   def due_next_when(cache = nil)
-    event.first_start_time + start_offset + due_next_time_from_start(cache)
+    event_start_time + start_offset + due_next_time_from_start(cache)
   end
 
   def due_next_time_from_start(cache = nil)
@@ -125,27 +128,30 @@ class Effort < ActiveRecord::Base
     ordered_split_times.last
   end
 
+  def event_start_time
+    event.first_start_time
+  end
+
   def finish_split_time
-    split_times.includes(:split).where(splits: {kind: 1}).first
+    split_times.finish.first
   end
 
   def start_split_time
-    split_times.includes(:split).where(splits: {kind: 0}).first
+    split_times.start.first
   end
 
   def base_split_times
-    split_times.includes(:split).where(splits: {sub_order: 0}).order('splits.distance_from_start')
+    split_times.base.ordered
   end
 
   def time_in_aid(split)
-    group = event.waypoint_group(split)
-    segment_time(Segment.new(group.first, group.last))
+    Segment.new(event.waypoint_group(split)).effort_time(self)
   end
 
   def total_time_in_aid
     total = 0
     base_split_times.each do |unicorn|
-      total = total + unicorn.time_in_aid
+      total = total + time_in_aid(unicorn.split)
     end
     total
   end
@@ -155,7 +161,7 @@ class Effort < ActiveRecord::Base
   end
 
   def ordered_split_times
-    split_times.includes(:split).order('splits.distance_from_start', 'splits.sub_order')
+    split_times.ordered
   end
 
   def previous_split_time(split_time)
@@ -166,7 +172,7 @@ class Effort < ActiveRecord::Base
   end
 
   def previous_valid_split_time(split_time)
-    ordered_times = split_times.valid_status.union(id: split_time.id).includes(:split).order('splits.distance_from_start', 'splits.sub_order')
+    ordered_times = split_times.valid_status.union(id: split_time.id).ordered
     position = ordered_times.index(split_time)
     return nil if position.nil?
     position == 0 ? nil : ordered_times[position - 1]
@@ -182,18 +188,6 @@ class Effort < ActiveRecord::Base
 
   def gender_place
     event.gender_place(self)
-  end
-
-  def segment_time(segment)
-    return 0 if segment.end_split.start?
-    times = split_times.where(split_id: segment.split_ids).index_by(&:split_id)
-    end_split_time = times[segment.end_id]
-    begin_split_time = times[segment.begin_id]
-    end_split_time && begin_split_time ? (end_split_time.time_from_start - begin_split_time.time_from_start) : nil
-  end
-
-  def segment_velocity(segment)
-    segment.distance / segment_time(segment)
   end
 
   def self.gender_group(segment, gender) # TODO Intersect queries to select only those efforts that include both splits
@@ -214,7 +208,7 @@ class Effort < ActiveRecord::Base
 
   def approximate_age_today
     now = Time.now.utc.to_date
-    age ? (TimeDifference.between(event.first_start_time.to_date, now).in_years + age).to_i : nil
+    age ? (TimeDifference.between(event_start_time.to_date, now).in_years + age).to_i : nil
   end
 
   def self.age_matches(param, efforts, rigor = 'soft')

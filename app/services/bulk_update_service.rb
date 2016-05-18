@@ -83,7 +83,7 @@ class BulkUpdateService
       update_hash.each do |effort_id, start_offset|
         effort = Effort.find(effort_id)
         effort.update(start_offset: start_offset, updated_at: Time.now)
-        split_time = SplitTime.find(effort.start_split_time)
+        split_time = effort.start_split_time
         split_time.update(time_from_start: 0)
       end
     else

@@ -4,7 +4,11 @@ class SplitTime < ActiveRecord::Base
   belongs_to :effort
   belongs_to :split
 
-  scope :valid_status, -> { where(data_status: [nil, 2, 3]) }
+  scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
+  scope :ordered, -> { includes(:split).order('splits.distance_from_start, splits.sub_order') }
+  scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds(:finish)}) }
+  scope :start, -> { includes(:split).where(splits: {kind: Split.kinds(:start)}) }
+  scope :base, -> { includes(:split).where(splits: {sub_order: 0}) }
 
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
@@ -25,11 +29,7 @@ class SplitTime < ActiveRecord::Base
     effort.set_data_status
   end
 
-  def not_valid?
-    (data_status == 'bad') | (data_status == 'questionable')
-  end
-
-  def time_as_entered
+ def elapsed_time
     return nil if time_from_start.nil?
     seconds = time_from_start % 60
     minutes = (time_from_start / 60) % 60
@@ -37,58 +37,38 @@ class SplitTime < ActiveRecord::Base
     format("%02d:%02d:%02d", hours, minutes, seconds)
   end
 
-  alias_method :formatted_time_hhmmss, :time_as_entered
+  alias_method :formatted_time_hhmmss, :elapsed_time
 
-  def time_as_entered=(entered_time)
-    if entered_time.present?
+  def elapsed_time=(elapsed_time)
+    if elapsed_time.present?
       units = %w(hours minutes seconds)
-      self.time_from_start = entered_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i
+      self.time_from_start = elapsed_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i
     else
       self.time_from_start = nil
     end
   end
 
-  def segment_time
-    return 0 if time_from_start == 0
-    effort.segment_time(split)
+  def day_and_time
+    return nil if time_from_start.nil?
+    event_start_time + effort_start_offset + time_from_start
   end
 
-  def segment_distance
-    effort.event.segment_distance(split)
+  def day_and_time=(absolute_time)
+    if absolute_time.present?
+      self.time_from_start = absolute_time - event_start_time - effort_start_offset
+    else
+      self.time_from_start = nil
+    end
   end
 
-  def segment_velocity
-    segment_time == 0 ? 0 : (segment_distance / segment_time)
-  end
-
-  def time_from_previous_valid
-    previous = previous_valid_split_time
-    previous ? time_from_start - previous.time_from_start : nil
-  end
-
-  def velocity_from_previous_valid
-    previous = previous_valid_split_time
-    previous ? effort.segment_velocity(Segment.new(previous.split, self.split)) : nil
-  end
-
-  def tfs_velocity
-    time_from_start == 0 ? 0 : (split.distance_from_start / time_from_start)
-  end
-
-  def time_in_aid
-    waypoint_group.compact.last.time_from_start - waypoint_group.compact.first.time_from_start
-  end
-
-  def previous_split_time
-    effort.previous_split_time(self)
-  end
-
-  def previous_valid_split_time
-    effort.previous_valid_split_time(self)
-  end
-
-  def self.ordered
-    effort.ordered_split_times
+  def military_time=(military_time)
+    if military_time.present?
+      units = %w(hours minutes seconds)
+      seconds_in_day = military_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i
+      self.day_and_time = likely_intended_time(seconds_in_day)
+    else
+      self.day_and_time = nil
+    end
   end
 
   def waypoint_group
@@ -100,20 +80,29 @@ class SplitTime < ActiveRecord::Base
     split_time_array # Includes nil values when no split_time is associated with members of the split.waypoint_group
   end
 
-  def in_waypoint_group_with(other_split_time)
-    split.distance_from_start == other_split_time.split.distance_from_start
-  end
-
-  def not_in_waypoint_group_with(other_split_time)
-    split.distance_from_start != other_split_time.split.distance_from_start
-  end
-
   def self.confirmed!
     all.each { |split_time| split_time.confirmed! }
   end
 
   def self.good!
     all.each { |split_time| split_time.good! }
+  end
+
+  private
+
+  def event_start_time
+    effort.event_start_time
+  end
+
+  def effort_start_offset
+    effort.start_offset
+  end
+
+  def likely_intended_time(seconds_in_day)
+    expected_time = effort.due_next_when
+    working_datetime = event_start_time.beginning_of_day + seconds_in_day
+    working_datetime + ((((working_datetime - expected_time) * -1) / 1.day).round(0) * 1.day)
+
   end
 
 end

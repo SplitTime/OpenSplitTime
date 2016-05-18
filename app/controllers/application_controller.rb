@@ -4,6 +4,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_current_user
 
+  def conform_physical_data(base_split)
+    conform_split_locations(base_split)
+    conform_vert(base_split)
+  end
+
+
   def conform_split_locations(base_split)
     if base_split.location.nil?
       split = base_split.waypoint_group.where.not(location_id: nil).first

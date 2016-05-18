@@ -349,12 +349,12 @@
 
 		/**
 		 * Builds the splits slider based on the splits data
-		 * 
+		 *
 		 */
 		buildSplitSlider: function() {
 			var splitSliderItems = '';
 			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
-				splitSliderItems += '<div class="split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + '</span></div>';
+				splitSliderItems += '<div class="split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-slider-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + '</span></div>';
 			}
 			console.log($( splitSliderItems ) );
 			console.log( splitSliderItems );

@@ -92,8 +92,11 @@ Globals
 .splits-slider {
 	background: $lightGray;
 
-	.splits-slider-data table {
-		margin: 0 auto;
+	.splits-slider-data .data-label {
+		text-align: right;
+	}
+	.split-slider-item {
+		
 	}
 }
 

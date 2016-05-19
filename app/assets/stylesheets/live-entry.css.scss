@@ -97,16 +97,15 @@ Globals
 	&-plotter {
 		position: relative;
 
-		&:before {
-			content: '';
-			display: block;
-			width: 100%;
-			height: 3px;
-			background: red;
-		}
-
 		.split-slider-item {
-			// display: none;
+
+			&:before {
+				content: '';
+				display: block;
+				width: 100%;
+				height: 3px;
+				background: red;
+			}
 
 			&-name,
 			&-distance {

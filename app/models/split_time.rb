@@ -6,10 +6,11 @@ class SplitTime < ActiveRecord::Base
 
   scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
   scope :ordered, -> { includes(:split).order('splits.distance_from_start, splits.sub_order') }
-  scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds(:finish)}) }
-  scope :start, -> { includes(:split).where(splits: {kind: Split.kinds(:start)}) }
+  scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
+  scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :base, -> { includes(:split).where(splits: {sub_order: 0}) }
 
+  before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
   validates_presence_of :effort_id, :split_id, :time_from_start
@@ -102,7 +103,10 @@ class SplitTime < ActiveRecord::Base
     expected_time = effort.due_next_when
     working_datetime = event_start_time.beginning_of_day + seconds_in_day
     working_datetime + ((((working_datetime - expected_time) * -1) / 1.day).round(0) * 1.day)
+  end
 
+  def delete_if_blank
+    self.delete if elapsed_time == ""
   end
 
 end

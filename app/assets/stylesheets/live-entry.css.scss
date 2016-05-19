@@ -3,6 +3,7 @@ Variables
 *********/
 $gray: #777;
 $lightGray: #eee;
+$red: pink;
 
 /***********
 Placeholders
@@ -67,6 +68,7 @@ Globals
 
 /******* Live Entry Form ********/
 .form-split-wrapper {
+	display: table;
 	@extend .no-gutter;
 	border-bottom: 1px solid $gray;
 
@@ -90,43 +92,82 @@ Globals
 
 /******* Splits Slider ********/
 .splits-slider {
+	display: table-cell;
 	background: $lightGray;
 	padding-right: 75px;
 	padding-left: 75px;
+	height: 100%;
 
 	&-plotter {
 		position: relative;
+		top: 35px;
+		height: 75px;
+
+		&:before {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 3px;
+			background: $gray;
+		}
 
 		.split-slider-item {
+			position: absolute;
+			top: -8px;
+			display: none;
 
-			&:before {
-				content: '';
+			// &:first-child {
+			// 	display: inline;
+			// }
+
+			// &:nth-child( -n+3 ) {
+			// 	display: inline;
+			// }
+
+			&-dot {
+				position: relative;
 				display: block;
-				width: 100%;
-				height: 3px;
-				background: red;
+				background: $gray;
+				border-radius: 50%;
+				width: 20px;
+				height: 20px;
+
+				&:after {
+					display: block;
+					content: '\000A';
+					white-space: pre;
+				}
+			}
+
+			&.active {
+				display: block;
+
+				&.begin {
+					left: 0;
+				}
+
+				&.middle {
+					right: 50%;
+				}
+
+				&.end {
+					right: 0;
+				}
 			}
 
 			&-name,
 			&-distance {
-				display: block;
+				display: inline-block;
 				text-align: center;
 			}
 
 			&-name {
-				position: relative;
-
-				&:before {
-					display: block;
-					content: '';
-					background: $gray;
-					border-radius: 50%;
-					width: 20px;
-					height: 20px;
-				}
+				font-weight: bold;
+				padding-top: 15px;
 			}
 
 			&-distance {
+				display: block;
 
 				&:after {
 					content: ' m';
@@ -135,8 +176,12 @@ Globals
 		}
 	}
 
-	.splits-slider-data .data-label {
-		text-align: right;
+	.splits-slider-data {
+		margin-top: 75px;
+
+		.data-label {
+			text-align: right;
+		}
 	}
 	.split-slider-item {
 

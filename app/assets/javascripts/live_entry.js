@@ -352,63 +352,43 @@
 		 *
 		 */
 		buildSplitSlider: function() {
+
 			// Inject initial html
 			var splitSliderItems = '';
 			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
-				splitSliderItems += '<div class="split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + '</span></div>';
+				splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + ' m</span></div>';
 			}
 			$( '#js-split-slider' ).html( splitSliderItems );
 
 			// Set default states
-			$( '.split-slider-item' ).eq(0).addClass( 'active middle' );
-			$( '.split-slider-item' ).eq(1).addClass( 'active end' );
-
+			$( '.js-split-slider-item' ).eq(0).addClass( 'active middle' );
+			$( '.js-split-slider-item' ).eq(1).addClass( 'active end' );
+			$( '#js-split-slider' ).addClass( 'begin' );
 			$( '#split-select' ).on( 'change', function() {
-
+				
+				// remove all positioning classes
+				$( '#js-split-slider' ).removeClass( 'begin end' );
+				$( '.js-split-slider-item' ).removeClass( 'active middle begin end' );
 				var selectedItemId = $( 'option:selected' ).attr( 'data-split-id' );
-				var $selectedSliderItem = $( '.split-slider-item[data-split-id="' + selectedItemId + '"]' );
+				var $selectedSliderItem = $( '.js-split-slider-item[data-split-id="' + selectedItemId + '"]' );
 
-				//console.log( $( '.split-slider-item' ) );
+				// Add position classes to the current selected slider item
+				$selectedSliderItem.addClass( 'active middle' );
+				$selectedSliderItem.next( '.js-split-slider-item' ).addClass( 'active end' );
+				$selectedSliderItem.prev( '.js-split-slider-item' ).addClass( 'active begin' );
 
-				// console.log( 'testing', $( '.split-slider-item' ).attr( 'data-split-id' ) );
+				// Check if the slider is at the beginning
+				if ( $selectedSliderItem.prev('.js-split-slider-item').length == 0 ) {
 
-				console.log( 'Value ' + $( this ).val() + ' and id ' + $( 'option:selected' ).attr( 'data-split-id' ) );
-			});
+					// Add appropriate positioning classes
+					$( '#js-split-slider' ).addClass( 'begin' );
+				} 
 
-			// Add class to visible items
-			$( '.split-slider-item' ).each( function () {
-
-				// var $currentId = $( this ).attr( 'data-split-id' );
-				// var $currentWidth = $( this ).children( '.split-slider-item-name' ).width() - 20;
-
-				// $( this ).addClass( 'active' );
-
-				// // Determine how many items are shown
-				// if ( $currentId.length === 1 ) {
-				// 	$( this ).addClass( 'end' );
-				// }
-
-				// if ( $currentId.length === 2 ) {
-				// 	$( this ).first().addClass( 'begin' );
-				// 	$( this ).first().next().addClass( 'middle' );
-				// }
-
-				// if ( $currentId.length === 3 ) {
-				// 	$( this ).first().addClass( 'begin' );
-				// 	$( this ).first().next().addClass( 'middle' );
-				// 	$( this ).first().next().next().addClass( 'end' );
-				// }
-
-				// move the dot based on whether it's the middle or end
-				// if ( $( this ).is( '.middle' ) ) {
-				// 	$( this ).children( '.split-slider-item-dot' ).css( 'right', '-' + $currentWidth + 'px' )
-				// }
-				// if ( $( this ).is( '.end' ) ) {
-				// 	$( this ).children( '.split-slider-item-dot' ).css( 'right', '-' + $currentWidth + 'px' )
-				// }
-
-				// console.log( $currentId, $currentWidth );
-			});
+				// Check if the slider is at the end
+				if ( $selectedSliderItem.next( '.js-split-slider-item' ).length == 0 ) {
+					$( '#js-split-slider' ).addClass( 'end' );
+				}
+			} );
 		},
 
 		/**

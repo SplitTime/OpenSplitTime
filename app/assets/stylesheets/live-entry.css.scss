@@ -3,6 +3,7 @@ Variables
 *********/
 $gray: #777;
 $lightGray: #eee;
+$red: pink;
 
 /***********
 Placeholders
@@ -67,6 +68,7 @@ Globals
 
 /******* Live Entry Form ********/
 .form-split-wrapper {
+	display: table;
 	@extend .no-gutter;
 	border-bottom: 1px solid $gray;
 
@@ -90,13 +92,108 @@ Globals
 
 /******* Splits Slider ********/
 .splits-slider {
+	display: table-cell;
 	background: $lightGray;
+	padding-right: 75px;
+	padding-left: 75px;
+	height: 100%;
+	&-plotter {
+		position: relative;
+		top: 35px;
+		height: 75px;
 
-	.splits-slider-data .data-label {
-		text-align: right;
+		&:before {
+			content: "";
+			display: block;
+			width: 100%;
+			height: 3px;
+			background: $gray;
+			position: relative;
+			// transition: all 1s ease-in-out;
+		}
+
+		&.begin:before {
+			width: 50%;
+			left: 50%;
+		}
+
+		&.end:before {
+			width: 50%;
+		}
+
+		.split-slider-item {
+			position: absolute;
+			top: -8px;
+			display: none;
+			max-width: 120px;
+
+			&-dot {
+				position: relative;
+				display: block;
+				background: $gray;
+				border-radius: 50%;
+				width: 20px;
+				height: 20px;
+				margin: 0 auto;
+				&:after {
+					display: block;
+					content: "\000A";
+					white-space: pre;
+				}
+			}
+
+			&.active {
+				display: block;
+
+				&.begin {
+					left: 0;
+					transform: translateX(-50%);
+					text-align: left;
+					.split-slider-item-name,
+					.split-slider-item-distance {
+						transform: translateX(50%);
+					}
+				}
+
+				&.middle {
+					left: 50%;
+					transform: translateX(-50%);
+					text-align: center;
+				}
+
+				&.end {
+					left: 100%;
+					transform: translateX(-50%);
+					text-align: right;
+					.split-slider-item-name,
+					.split-slider-item-distance {
+						transform: translateX(-50%);
+					}
+				}
+			}
+
+			&-name,
+			&-distance {
+				display: inline-block;
+			}
+
+			&-name {
+				font-weight: bold;
+				padding-top: 15px;
+			}
+
+			&-distance {
+				display: block;
+			}
+		}
 	}
-	.split-slider-item {
-		
+
+	.splits-slider-data {
+		margin-top: 75px;
+
+		.data-label {
+			text-align: right;
+		}
 	}
 }
 

@@ -349,17 +349,46 @@
 
 		/**
 		 * Builds the splits slider based on the splits data
-		 * 
+		 *
 		 */
 		buildSplitSlider: function() {
+
+			// Inject initial html
 			var splitSliderItems = '';
 			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
-				splitSliderItems += '<div class="split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + '</span></div>';
+				splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + ' m</span></div>';
 			}
-			console.log($( splitSliderItems ) );
-			console.log( splitSliderItems );
 			$( '#js-split-slider' ).html( splitSliderItems );
-			console.log( $( '#js-split-slider .split-slider-item' ).width() );
+
+			// Set default states
+			$( '.js-split-slider-item' ).eq( 0 ).addClass( 'active middle' );
+			$( '.js-split-slider-item' ).eq( 1 ).addClass( 'active end' );
+			$( '#js-split-slider' ).addClass( 'begin' );
+			$( '#split-select' ).on( 'change', function() {
+				
+				// remove all positioning classes
+				$( '#js-split-slider' ).removeClass( 'begin end' );
+				$( '.js-split-slider-item' ).removeClass( 'active middle begin end' );
+				var selectedItemId = $( 'option:selected' ).attr( 'data-split-id' );
+				var $selectedSliderItem = $( '.js-split-slider-item[data-split-id="' + selectedItemId + '"]' );
+
+				// Add position classes to the current selected slider item
+				$selectedSliderItem.addClass( 'active middle' );
+				$selectedSliderItem.next( '.js-split-slider-item' ).addClass( 'active end' );
+				$selectedSliderItem.prev( '.js-split-slider-item' ).addClass( 'active begin' );
+
+				// Check if the slider is at the beginning
+				if ( $selectedSliderItem.prev('.js-split-slider-item').length === 0 ) {
+
+					// Add appropriate positioning classes
+					$( '#js-split-slider' ).addClass( 'begin' );
+				} 
+
+				// Check if the slider is at the end
+				if ( $selectedSliderItem.next( '.js-split-slider-item' ).length === 0 ) {
+					$( '#js-split-slider' ).addClass( 'end' );
+				}
+			} );
 		},
 
 		/**

@@ -361,8 +361,8 @@
 			$( '#js-split-slider' ).html( splitSliderItems );
 
 			// Set default states
-			$( '.js-split-slider-item' ).eq(0).addClass( 'active middle' );
-			$( '.js-split-slider-item' ).eq(1).addClass( 'active end' );
+			$( '.js-split-slider-item' ).eq( 0 ).addClass( 'active middle' );
+			$( '.js-split-slider-item' ).eq( 1 ).addClass( 'active end' );
 			$( '#js-split-slider' ).addClass( 'begin' );
 			$( '#split-select' ).on( 'change', function() {
 				
@@ -378,14 +378,14 @@
 				$selectedSliderItem.prev( '.js-split-slider-item' ).addClass( 'active begin' );
 
 				// Check if the slider is at the beginning
-				if ( $selectedSliderItem.prev('.js-split-slider-item').length == 0 ) {
+				if ( $selectedSliderItem.prev('.js-split-slider-item').length === 0 ) {
 
 					// Add appropriate positioning classes
 					$( '#js-split-slider' ).addClass( 'begin' );
 				} 
 
 				// Check if the slider is at the end
-				if ( $selectedSliderItem.next( '.js-split-slider-item' ).length == 0 ) {
+				if ( $selectedSliderItem.next( '.js-split-slider-item' ).length === 0 ) {
 					$( '#js-split-slider' ).addClass( 'end' );
 				}
 			} );

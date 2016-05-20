@@ -554,16 +554,47 @@
 				} );
 
 			} );
+
+			$( '.js-delete-all-efforts' ).on( 'click', function( event ) {
+					event.preventDefault();
+					liveEntry.deleteEffortsRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
+					console.log( 'rows removed' );
+					return false;
+			} );
+
+			$( '.js-submit-all-efforts' ).on( 'click', function( event ) {
+					event.preventDefault();
+					liveEntry.submitEffortRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
+					console.log( 'rows submitted' );
+					return false;
+			} );
 		},
 
 		deleteEffortsRows: function( $effortRows ) {
 			$effortRows.fadeOut( 'fast', function() {
+				var dataTable = $( this ).closest( '.js-provisional-data-table' ).DataTable();
 				dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
 			} );
 		},
 
 		submitEffortRows: function( $effortRows ) {
-			var data = [];
+			var data = { efforts: [] };
+			$effortRows.each( function() {
+				var $thisRow = $( this );
+				var effort = {};
+				effort.uniqueId = $thisRow.attr( 'data-unique-id' );
+				effort.eventId = $thisRow.attr( 'data-event-id' );
+				effort.splitId = $thisRow.attr( 'data-split-id' );
+				effort.effortId = $thisRow.attr( 'data-effort-id' );
+				effort.bibNum = $thisRow.attr( 'data-bib-number' );
+				effort.effortName = $thisRow.attr( 'data-effort-name' );
+				effort.splitName = $thisRow.attr( 'data-split-name' );
+				effort.timeIn = $thisRow.attr( 'data-time-in' );
+				effort.timeOut = $thisRow.attr( 'data-time-out' );
+				effort.pacerIn = $thisRow.attr( 'data-pacer-in' );
+				effort.pacerOut = $thisRow.attr( 'data-pacer-out' );
+				data.efforts.push( effort );
+			} );
 			$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function( response ) {
 				console.log( response );
 			} );

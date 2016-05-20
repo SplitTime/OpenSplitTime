@@ -176,7 +176,7 @@ class EventsController < ApplicationController
   # representing a participants specific effort for an event.
   # This endpoint gets called when the admin enters a "bib" number in the live_entry UI. 
   #
-  def live_entry_ajax_getEffort
+  def live_entry_ajax_get_effort
     authorize @event
 
     # Here look up the effort and populate the json array with data 
@@ -186,18 +186,37 @@ class EventsController < ApplicationController
     #
     # Split From and Time Spent fields are not populated until Time In and Time Out fields are entered
     # Get bib number like this: params[:bibNumber]
-    # Get splitId: params[:splitId]
     # Event ID is within the url param
     #
     # If the lookup fails here (bibNumber or eventId is incorrect), return { success: false }
     # lastReportedSplitTime comes from the splits table for this "effort"
     # estimatedTime range
+    @effort = Effort.where(bib_number: params[:bibNumber].to_i).first
+    @split = @effort.last_reported_split
+    @split_time = @effort.last_reported_split_time
     render :json => {
       success: true,
-      effortId: 1,
-      name: "Brandon Trimboli",
-      lastReportedSplitTime: "Maggie Out at 3:48",
+      effortId: @effort.id,
+      name: @effort.full_name,
+      lastReportedSplitTime: "#{@split.name} at #{@split_time.formatted_time_hhmmss}",
     }
+  end
+
+  def live_entry_ajax_get_time_from
+    authorize @event
+    params[:timeIn]
+    params[:effortId]
+    render :json => {
+
+    }
+  end
+
+  def live_entry_ajax_get_time_in_aid
+    authorize @event                              
+  end
+
+  def live_entry_ajax_set_split_times
+    authorize @event
   end
 
   private

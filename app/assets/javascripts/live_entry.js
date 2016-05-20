@@ -7,6 +7,7 @@
 	var liveEntry = {
 
 		init: function() {
+			liveEntry.currentEventId = $( '#js-event-id' ).text();
 			liveEntry.setStoredEfforts();
 			liveEntry.addEffortToCache();
 			liveEntry.updateEventName();
@@ -15,6 +16,8 @@
 			liveEntry.editEffort();
 			liveEntry.buildSplitSlider();
 		},
+		currentEventId: null,
+		currentEffortId: null,
 
 		/**
 		 * This is the static event array for the live_entry view.
@@ -269,9 +272,10 @@
 
 						// Get bibNumber from the input field
 						var data = { bibNumber: $this.val() };
-						$.get( '/events/' + eventId + '/live_entry_ajax_getEffort', data, function( response ) {
+						$.get( '/events/' + eventId + '/live_entry_ajax_get_effort', data, function( response ) {
 							if ( response.success == true ) {
-
+								console.log(response);
+								liveEntry.currentEffortId = response.effortId;
 								// If success == true, this means the bib number lookup found an "effort"
 								$( '#js-live-bib' ).val( 'true' );
 								$( '#js-effort-name' ).html( response.name );
@@ -291,6 +295,24 @@
 				}
 			} );
 
+			$( '#js-time-in' ).on( 'keydown', function() {
+				
+				var eventId = $( '#js-event-id' ).text();
+
+				if ( event.keyCode == 13 || event.keyCode == 9 ) {
+					var timeIn = $( this ).val();
+					var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
+					console.log(data);
+					$.get( '/events/' + eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+						console.log(response);
+					} );
+				}
+				console.log(timeIn);
+			} );
+
+			$( '#js-time-out' ).on( 'keydown', function() {
+
+			} )
 			// Listen for keydown in pacer-in and pacer-out. Enter checks the box,
 			// tab moves to next field.
 			$( '#js-pacer-in, #js-pacer-out' ).on( 'keydown', function( event ) {

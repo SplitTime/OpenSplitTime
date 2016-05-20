@@ -86,6 +86,10 @@ Globals
 
 		button {
 			width: 100%;
+			
+			&:last-child {
+				margin-top: 0.5em;
+			}
 		}
 	}
 }
@@ -157,7 +161,8 @@ Globals
 				}
 			}
 
-			&.active {
+			&.active,
+			&.inactive {
 				display: block;
 				opacity: 100%;
 
@@ -189,28 +194,7 @@ Globals
 			}
 
 			&.inactive {
-				display: block;
 				opacity: 0;
-
-				&.begin {
-					left: 0;
-					transform: translateX(-50%);
-					text-align: left;
-					.split-slider-item-name,
-					.split-slider-item-distance {
-						transform: translateX(50%);
-					}
-				}
-
-				&.end {
-					left: 100%;
-					transform: translateX(-50%);
-					text-align: right;
-					.split-slider-item-name,
-					.split-slider-item-distance {
-						transform: translateX(-50%);
-					}
-				}
 			}
 
 			&-name,

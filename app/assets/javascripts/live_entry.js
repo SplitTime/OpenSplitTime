@@ -409,7 +409,7 @@
 		},
 
 		/**
-		 * 
+		 * Switches the Split Slider to the specified Aid Station
 		 * @param  integer splitId The station id to switch to
 		 */
 		changeSplitSlider: function( splitId ) {
@@ -541,7 +541,7 @@
 
 				$thisRow.on( 'click', '.js-delete-effort', function( event ) {
 					event.preventDefault();
-					liveEntry.deleteEffortsRows( $thisRow );
+					liveEntry.deleteEffortRows( $thisRow );
 					console.log( 'row removed' );
 					return false;
 				} );
@@ -557,7 +557,7 @@
 
 			$( '.js-delete-all-efforts' ).on( 'click', function( event ) {
 					event.preventDefault();
-					liveEntry.deleteEffortsRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
+					liveEntry.deleteEffortRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
 					console.log( 'rows removed' );
 					return false;
 			} );
@@ -570,13 +570,21 @@
 			} );
 		},
 
-		deleteEffortsRows: function( $effortRows ) {
+		/**
+		 * Removes each of supplied efforts in one batch
+		 * @param  object $effortRows jQuery object containing each row to remove
+		 */
+		deleteEffortRows: function( $effortRows ) {
 			$effortRows.fadeOut( 'fast', function() {
 				var dataTable = $( this ).closest( '.js-provisional-data-table' ).DataTable();
 				dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
 			} );
 		},
 
+		/**
+		 * Submits each of supplied efforts in one batch
+		 * @param  object $effortRows jQuery object containing each row to submit
+		 */
 		submitEffortRows: function( $effortRows ) {
 			var data = { efforts: [] };
 			$effortRows.each( function() {

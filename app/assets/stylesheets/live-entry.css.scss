@@ -86,7 +86,7 @@ Globals
 
 		button {
 			width: 100%;
-			
+
 			&:last-child {
 				margin-top: 0.5em;
 			}
@@ -256,8 +256,7 @@ Globals
 		text-align: right;
 		margin-bottom: 4em;
 
-		.delete-all-efforts,
-		.submit-all-efforts {
+		button {
 			margin: 0 1.5em 1em 0;
 			padding: 0.5em 2.5em;
 		}

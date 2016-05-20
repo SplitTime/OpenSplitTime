@@ -408,6 +408,10 @@
 			$( '#split-select' ).html( splitItems );
 		},
 
+		/**
+		 * 
+		 * @param  integer splitId The station id to switch to
+		 */
 		changeSplitSlider: function( splitId ) {
 			console.log( 'Animating to: ' + splitId );
 			// remove all positioning classes
@@ -537,13 +541,31 @@
 
 				$thisRow.on( 'click', '.js-delete-effort', function( event ) {
 					event.preventDefault();
-					$thisRow.fadeOut( 'fast', function() {
-						dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
-					} );
+					liveEntry.deleteEffortsRows( $thisRow );
 					console.log( 'row removed' );
 					return false;
 				} );
 
+				$thisRow.on( 'click', '.js-submit-effort', function( event ) {
+					event.preventDefault();
+					liveEntry.submitEffortRows( $thisRow );
+					console.log( 'row submitted' );
+					return false;
+				} );
+
+			} );
+		},
+
+		deleteEffortsRows: function( $effortRows ) {
+			$effortRows.fadeOut( 'fast', function() {
+				dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
+			} );
+		},
+
+		submitEffortRows: function( $effortRows ) {
+			var data = [];
+			$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function( response ) {
+				console.log( response );
 			} );
 		}
 	};

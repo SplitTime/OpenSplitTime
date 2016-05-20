@@ -6,19 +6,6 @@
 	 */
 	var liveEntry = {
 
-		init: function() {
-			liveEntry.currentEventId = $( '#js-event-id' ).text();
-			liveEntry.setStoredEfforts();
-			liveEntry.addEffortToCache();
-			liveEntry.updateEventName();
-			liveEntry.addSplitToSelect();
-			liveEntry.addEffortForm();
-			liveEntry.editEffort();
-			liveEntry.buildSplitSlider();
-		},
-		currentEventId: null,
-		currentEffortId: null,
-
 		/**
 		 * This is the static event array for the live_entry view.
 		 * Once the live_entry UI has been wired up to the database
@@ -106,15 +93,189 @@
 			]
 		},
 
+		init: function() {
+
+			// Sets the currentEventId once
+			liveEntry.currentEventId = $( '#js-event-id' ).text();
+			liveEntry.liveEntryForm();
+			liveEntry.setStoredEfforts();
+			liveEntry.addEffortToCache();
+			liveEntry.updateEventName();
+			liveEntry.buildSplitSelect();
+			liveEntry.editEffort();
+			liveEntry.buildSplitSlider();
+		},
+
+		/**
+		 * Stores the ID for the current event
+		 * this is pulled from the url and dumped on the page
+		 * then stored in this variable
+		 * @type integer
+		 */
+		currentEventId: null,
+
+		/**
+		 * When you type in a bib number into the live entry form this is set
+		 * 
+		 * @type integer
+		 */
+		currentEffortId: null,
+
 		/**
 		 * Set the initial cache object in local storage
 		 *
 		 * @return null
 		 */
 		efforts: {},
+
+		/**
+		 * Contains functionality for the effort form
+		 *
+		 */
+		liveEntryForm: function() {
+
+			/**
+			 * Processes the time in data on blur or keydown tab / enter
+			 * 
+			 */
+			function processTimeIn( timeIn ) {
+				var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
+				$.get( '/events/' + eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+					console.log(response);
+				} );
+			}
+
+			/**
+			 * Disables or enables fields for the effort lookup form
+			 *
+			 * @param bool 	True to enable, false to disable
+			 */
+			function toggleFields( enable ) {
+				if ( enable == true ) {
+					$( '#js-add-effort-form input:not(#js-bib-number)' ).removeAttr( 'disabled' );
+				} else {
+					$( '#js-add-effort-form input:not(#js-bib-number)' ).attr( 'disabled', 'disabled' );
+					$( '#js-add-effort-form input:not(#js-bib-number)' ).val( '' );
+					$( '#js-bib-number' ).val( '' );
+				}
+			}
+
+			/**
+			 * Clears out the splits slider data fields
+			 *
+			 */
+			function clearSplitsData() {
+				$( '#js-effort-name' ).html( '' );
+				$( '#js-effort-last-reported' ).html( '' )
+				$( '#js-effort-split-from' ).html( '' );
+				$( '#js-effort-split-spent' ).html( '' );
+				$( '#js-time-in' ).val( '' );
+				$( '#js-time-out' ).val( '' );
+				$( '#js-pacer-in' ).attr( 'checked', false );
+				$( '#js-pacer-out' ).attr( 'checked', false );
+			}
+
+			$( '#js-clear-entry-form' ).on( 'click', function( event ) {
+				event.preventDefault();
+				clearSplitsData();
+				toggleFields( false );
+				return false;
+			} );
+
+			// Listen for keydown on bibNumber
+			$( '#js-bib-number' ).on( 'keydown', function( event ) {
+
+				// Check for tab or enter
+				if ( event.keyCode == 13 || event.keyCode == 9 ) {
+					event.preventDefault();
+					var bibNumber = $( this ).val();
+					if ( bibNumber == '' ) {
+						toggleFields( false );
+						clearSplitsData();
+					} else {
+
+						// Ajax endpoint for the effort data
+						var data = { bibNumber: bibNumber };
+						$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_effort', data, function( response ) {
+							if ( response.success == true ) {
+								liveEntry.currentEffortId = response.effortId;
+
+								// If success == true, this means the bib number lookup found an "effort"
+								$( '#js-live-bib' ).val( 'true' );
+								$( '#js-effort-name' ).html( response.name );
+								$( '#js-effort-last-reported' ).html( response.lastReportedSplitTime )
+							} else {
+
+								// If success == false, this means the bib number lookup failed, but we still need to capture the data
+								$( '#js-live-bib' ).val( 'false' );
+								$( '#js-effort-name' ).html( 'n/a' );
+								$( '#js-effort-last-reported' ).html( 'n/a' )
+							}
+						} );
+						toggleFields( true );
+						$( '#js-time-in' ).focus();
+					}
+					return false;
+				}
+			} );
+
+			$( '#js-time-in' ).on( 'blur', function() {
+				var timeIn = $( this );
+				console.log(timeIn);
+			} );
+
+			$( '#js-time-in' ).on( 'keydown', function() {
+				var eventId = $( '#js-event-id' ).text();
+				if ( event.keyCode == 13 || event.keyCode == 9 ) {
+					var timeIn = $( this ).val();
+					processTimeIn( timeIn );
+				}
+				console.log(timeIn);
+			} );
+
+			$( '#js-time-out' ).on( 'keydown', function() {
+
+			} );
+
+
+			// Listen for keydown in pacer-in and pacer-out. Enter checks the box,
+			// tab moves to next field.
+			$( '#js-pacer-in, #js-pacer-out' ).on( 'keydown', function( event ) {
+				var $this = $( this );
+				switch ( $this.attr( 'id' ) ) {
+					case '#js-pacer-in':
+						$next = $( '#js-pacer-out' );
+						break;
+					case '#js-pacer-out':
+						$next = $( '#js-add-to-cache' );
+						break;
+				}
+				if ( $this.attr( 'id' ) == 'js-pacer-in' ) {
+					$next = $( '#js-pacer-out' );
+				}
+
+				switch ( event.keyCode ) {
+					case 13: // Enter pressed
+						console.log($this.attr( 'checked' ));
+						if ( $this.attr( 'checked' ) == 'checked' ) {
+							$this.removeAttr( 'checked' );
+						} else {
+							$this.attr( 'checked', 'checked' );
+						}
+						break;
+					case 9: // Tab pressed
+						$next.focus();
+						break;
+				}
+			} );
+		},
+
+		/**
+		 * 
+		 * 
+		 */
 		setStoredEfforts: function() {
 			var effortsCache = localStorage.getItem( 'effortsCache' );
-
 			if( effortsCache === null || effortsCache.length == 0 ) {
 				localStorage.setItem( 'effortsCache', JSON.stringify( liveEntry.efforts ) );
 			}
@@ -214,138 +375,6 @@
 		},
 
 		/**
-		 * Disables or enables fields for the effort lookup form
-		 *
-		 * @param {bool} True to enable, false to disable
-		 */
-		toggleFields: function( enable ) {
-			if ( enable == true ) {
-				$( '#js-add-effort-form input:not(#js-bib-number)' ).removeAttr( 'disabled' );
-			} else {
-				$( '#js-add-effort-form input:not(#js-bib-number)' ).attr( 'disabled', 'disabled' );
-				$( '#js-add-effort-form input:not(#js-bib-number)' ).val( '' );
-				$( '#js-bib-number' ).val( '' );
-
-			}
-		},
-
-		/**
-		 * Clears out the splits slider data fields
-		 *
-		 */
-		clearSplitsData: function() {
-			$( '#js-effort-name' ).html( '' );
-			$( '#js-effort-last-reported' ).html( '' )
-			$( '#js-effort-split-from' ).html( '' );
-			$( '#js-effort-split-spent' ).html( '' );
-		},
-
-		/**
-		 * Contains functionality for the effort form
-		 *
-		 */
-		addEffortForm: function() {
-
-			// When bib number field is focused, disabled fields
-			$( '#js-bib-number' ).on( 'blur', function() {
-				if ( $( this ).val() == '' ) {
-					liveEntry.toggleFields( false );
-					liveEntry.clearSplitsData();
-				}
-			} );
-
-			// Listen for keydown on bibNumber
-			$( '#js-bib-number' ).on( 'keydown', function( event ) {
-				var $this = $( this );
-				if ( event.keyCode == 13 || event.keyCode == 9 ) {
-					event.preventDefault();
-
-					// If value is empty, disable fields
-					if ( $this.val() == '' ) {
-						liveEntry.toggleFields( false );
-						liveEntry.clearSplitsData();
-					} else {
-
-						// Ajax endpoint for the effort data
-						// Get the event ID from the hidden span element
-						var eventId = $( '#js-event-id' ).text();
-
-						// Get bibNumber from the input field
-						var data = { bibNumber: $this.val() };
-						$.get( '/events/' + eventId + '/live_entry_ajax_get_effort', data, function( response ) {
-							if ( response.success == true ) {
-								console.log(response);
-								liveEntry.currentEffortId = response.effortId;
-								// If success == true, this means the bib number lookup found an "effort"
-								$( '#js-live-bib' ).val( 'true' );
-								$( '#js-effort-name' ).html( response.name );
-								$( '#js-effort-last-reported' ).html( response.lastReportedSplitTime )
-							} else {
-
-								// If success == false, this means the bib number lookup failed, but we still need to capture the data
-								$( '#js-live-bib' ).val( 'false' );
-								$( '#js-effort-name' ).html( 'n/a' );
-								$( '#js-effort-last-reported' ).html( 'n/a' )
-							}
-						} );
-						liveEntry.toggleFields( true );
-						$( '#js-time-in' ).focus();
-					}
-					return false;
-				}
-			} );
-
-			$( '#js-time-in' ).on( 'keydown', function() {
-				
-				var eventId = $( '#js-event-id' ).text();
-
-				if ( event.keyCode == 13 || event.keyCode == 9 ) {
-					var timeIn = $( this ).val();
-					var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
-					console.log(data);
-					$.get( '/events/' + eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
-						console.log(response);
-					} );
-				}
-				console.log(timeIn);
-			} );
-
-			$( '#js-time-out' ).on( 'keydown', function() {
-
-			} )
-			// Listen for keydown in pacer-in and pacer-out. Enter checks the box,
-			// tab moves to next field.
-			$( '#js-pacer-in, #js-pacer-out' ).on( 'keydown', function( event ) {
-				var $this = $( this );
-				switch ( $this.attr( 'id' ) ) {
-					case '#js-pacer-in':
-						$next = $( '#js-pacer-out' );
-						break;
-					case '#js-pacer-out':
-						$next = $( '#js-add-to-cache' );
-						break;
-				}
-				if ( $this.attr( 'id' ) == 'js-pacer-in' ) {
-					$next = $( '#js-pacer-out' );
-				}
-
-				switch ( event.keyCode ) {
-					case 13: // Enter pressed
-						console.log($this.attr( 'checked' ));
-						if ( $this.attr( 'checked' ) == 'checked' ) {
-							$this.removeAttr( 'checked' );
-						} else {
-							$this.attr( 'checked', 'checked' );
-						}
-						break;
-					case 9: // Tab pressed
-						$next.focus();
-						break;
-				}
-			} );
-		},
-
-		/**
 		 * Populate the h2 with the eventName
 		 *
 		 */
@@ -359,7 +388,7 @@
 		 * Add the Splits data to the select drop down table on the page
 		 *
 		 */
-		addSplitToSelect: function() {
+		buildSplitSelect: function() {
 
 			// Populate select list with actual splits
 			var splitItems = '';

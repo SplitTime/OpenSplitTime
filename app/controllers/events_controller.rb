@@ -198,16 +198,20 @@ class EventsController < ApplicationController
       success: true,
       effortId: @effort.id,
       name: @effort.full_name,
+      lastReportedSplitId: @split.id,
       lastReportedSplitTime: "#{@split.name} at #{@split_time.formatted_time_hhmmss}",
     }
   end
 
   def live_entry_ajax_get_time_from
     authorize @event
-    params[:timeIn]
-    params[:effortId]
-    render :json => {
 
+    @effort = Effort.find(params[:effortId])
+    @split = Split.find(params[:lastReportedSplitId])
+
+    params[:timeIn]
+    render :json => {
+      timeFromLastReported: "03:00:00"
     }
   end
 

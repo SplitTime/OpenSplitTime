@@ -225,14 +225,23 @@
 			} );
 
 			$( '#js-time-in' ).on( 'keydown', function() {
-				// var eventId = $( '#js-event-id' ).text();
-				// if ( event.keyCode == 13 || event.keyCode == 9 ) {
-				// 	//var timeIn = $( this ).val();
-				// 	//var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
-				// }
-				// $.get( '/events/' + liveEntry.eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
-				// 	console.log(response);
-				// } );
+				if ( event.keyCode == 13 || event.keyCode == 9 ) {
+					var timeIn = $( this ).val();
+
+					// Validate the military time string
+					timeIn = timeIn.replace(/D/g, '');
+					timeIn = timeIn.replace(/:/g, '');
+					if ( timeIn.length == 6 ) {
+
+						// currentEffortId may be null here
+						var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
+						$.get( '/events/' + liveEntry.eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+							console.log(response);
+						} );
+					} else {
+						 $( this ).val( '' );
+					}
+				}
 			} );
 
 			$( '#js-time-out' ).on( 'keydown', function() {

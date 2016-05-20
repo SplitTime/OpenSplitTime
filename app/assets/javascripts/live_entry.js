@@ -97,6 +97,7 @@
 		 * Stores the ID for the current event
 		 * this is pulled from the url and dumped on the page
 		 * then stored in this variable
+		 * 
 		 * @type integer
 		 */
 		currentEventId: null,
@@ -109,29 +110,145 @@
 		currentEffortId: null,
 
 		/**
-		 * Set the initial cache object in local storage
-		 *
-		 * @return null
+		 * This kicks off the full UI
+		 * 
 		 */
-		efforts: {},
-
 		init: function() {
 
 			// Sets the currentEventId once
 			liveEntry.currentEventId = $( '#js-event-id' ).text();
+			liveEntry.effortsCache.init();
+			liveEntry.header.init();
 			liveEntry.liveEntryForm.init();
-			liveEntry.setStoredEfforts();
-			liveEntry.addEffortToCache();
-			liveEntry.updateEventName();
-			liveEntry.buildSplitSelect();
-			liveEntry.editEffort();
-			liveEntry.buildSplitSlider();
+			liveEntry.effortsDataTable.init();
+			liveEntry.splitSlider.init();
+			
 
-			// Set the initial cache object in local storage
-			var effortsCache = localStorage.getItem( 'effortsCache' );
-			if( effortsCache === null || effortsCache.length == 0 ) {
-				localStorage.setItem( 'effortsCache', JSON.stringify( liveEntry.efforts ) );
-			}
+			// liveEntry.setStoredEfforts();
+			// liveEntry.addEffortToCacheTable();
+			// liveEntry.updateEventName();
+			// liveEntry.buildSplitSelect();
+			// liveEntry.editEffort();
+			// liveEntry.buildSplitSlider();
+		},
+
+		/**
+		 * Contains functionality for the efforts cache
+		 * 
+		 */
+		effortsCache: {
+
+			/**
+			 * Inits the efforts cache
+			 * 
+			 */
+			init: function() {
+
+				// Set the initial cache object in local storage
+				var effortsCache = localStorage.getItem( 'effortsCache' );
+				if( effortsCache === null || effortsCache.length == 0 ) {
+					localStorage.setItem( 'effortsCache', JSON.stringify( liveEntry.efforts ) );
+				}
+			},
+
+			/**
+			 * Get local data Efforts Storage Object
+			 *
+			 * @return object Returns object from local storage
+			 */
+			getStoredEfforts: function() {
+				return JSON.parse( localStorage.getItem('effortsCache') )
+			},
+
+			/**
+			 * Stringify then Save/Push all efforts to local object
+			 *
+			 * @param object effortsObject Pass in the object of the updated object with all added or removed objects.
+			 * @return null
+			 */
+			setStoredEfforts: function( effortsObject ) {
+				localStorage.setItem( 'effortsCache', JSON.stringify( effortsObject ) );
+				return null;
+			},
+
+			/**
+			 * Delete the matching effort
+			 *
+			 * @param object 	effort 	Pass in the object/effort we want to delete.
+			 * @return null
+			 */
+			deleteStoredEffort: function( effort ) {
+				var storedEfforts = liveEntry.getStoredEfforts();
+				var effortToDelete = JSON.stringify( effort );
+
+				$.each( storedEfforts, function( index ) {
+					var loopedEffort = JSON.stringify( $( this ) );
+					if ( loopedEffort == effortToDelete ) {
+						delete storedEfforts[index];
+						return false;
+					}
+				} );
+
+				localStorage.setItem( 'effortsCache', JSON.stringify( storedEfforts ) );
+				return null;
+			},
+
+			/**
+			 * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
+			 *
+			 * @param  object effort Pass in Object of the effort to check it against the stored objects		 *
+			 * @return boolean	True if match found, False if no match found
+			 */
+			isMatchedEffort: function( effort ) {
+				var storedEfforts = liveEntry.getStoredEfforts();
+				var tempEffort = JSON.stringify( effort );
+				var flag = false;
+
+				$.each( storedEfforts, function() {
+					var loopedEffort = JSON.stringify( $( this ) );
+					if ( loopedEffort == tempEffort ) {
+						flag = true;
+					}
+				} );
+
+				if( flag == false ) {
+					return false;
+				} else {
+					return true;
+				};
+			},
+		},
+		/**
+		 * Functionality to build header lives here
+		 *
+		 */
+		header: {
+			init: function() {
+				liveEntry.header.updateEventName();
+				liveEntry.header.buildSplitSelect();
+			},
+
+			/**
+			 * Populate the h2 with the eventName
+			 *
+			 */
+			updateEventName: function() {
+				$( '.page-title h2' ).text( liveEntry.eventLiveEntryStaticData.eventName );
+			},
+
+			/**
+			 * Add the Splits data to the select drop down table on the page
+			 *
+			 */
+			buildSplitSelect: function() {
+
+				// Populate select list with actual splits
+				var splitItems = '';
+				for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
+					splitItems += '<option value="' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" >' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</option>';
+				}
+				$( '#split-select' ).html( splitItems );
+			},
 		},
 
 		/**
@@ -344,499 +461,316 @@
 					return false;
 				}
 			}
-		}, // END live entry form
+		}, // END liveEntryForm form
 
 		/**
-		 * Get local data Efforts Storage Object
-		 *
-		 * @return object Returns object from local storage
-		 */
-		getStoredEfforts: function() {
-			return JSON.parse( localStorage.getItem('effortsCache') )
-		},
-
-		/**
-		 * Stringify then Save/Push all efforts to local object
-		 *
-		 * @param object effortsObject Pass in the object of the updated object with all added or removed objects.
-		 * @return null
-		 */
-		saveStoredEfforts: function( effortsObject ) {
-			localStorage.setItem( 'effortsCache', JSON.stringify( effortsObject ) );
-			return null;
-		},
-
-		/**
-		 * Delete the matching effort
-		 *
-		 * @param object 	effort 	Pass in the object/effort we want to delete.
-		 * @return null
-		 */
-		deleteStoredEffort: function( effort ) {
-			var storedEfforts = liveEntry.getStoredEfforts();
-			var effortToDelete = JSON.stringify( effort );
-
-			$.each( storedEfforts, function( index ) {
-				var loopedEffort = JSON.stringify( $( this ) );
-				if ( loopedEffort == effortToDelete ) {
-					delete storedEfforts[index];
-					return false;
-				}
-			} );
-
-			localStorage.setItem( 'effortsCache', JSON.stringify( storedEfforts ) );
-			return null;
-		},
-
-		/**
-		 * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
-		 *
-		 * @param  object effort Pass in Object of the effort to check it against the stored objects		 *
-		 * @return boolean	True if match found, False if no match found
-		 */
-		isMatchedEffort: function( effort ) {
-			var storedEfforts = liveEntry.getStoredEfforts();
-			var tempEffort = JSON.stringify( effort );
-			var flag = false;
-
-			$.each( storedEfforts, function() {
-				var loopedEffort = JSON.stringify( $( this ) );
-				if ( loopedEffort == tempEffort ) {
-					flag = true;
-				}
-			} );
-
-			if( flag == false ) {
-				return false;
-			} else {
-				return true;
-			};
-		},
-
-		/**
-		 * Add a new row to the table (with js dataTables enabled)
-		 * @param object effort Pass in the object of the effort to add
-		 */
-		addEffortToTable: function( effort ) {
-
-			// initiate datatable plugin
-			var table = $( document ).find( '.provisional-data-table' ).DataTable();
-
-			var trHtml = '\
-				<tr class="effort-station-row js-effort-station-row" data-effort-object="' + JSON.stringify( effort ) + '" >\
-					<td class="split-name js-split-name">' + effort.splitName + '</td>\
-					<td class="bib-number js-bib-number">' + effort.bibNumber + '</td>\
-					<td class="time-in js-time-in">' + effort.timeIn + '</td>\
-					<td class="time-out js-time-out">' + effort.timeOut + '</td>\
-					<td class="pacer-in js-pacer-in">' + effort.pacerInHtml + '</td>\
-					<td class="pacer-out js-pacer-out">' + effort.pacerInHtml + '</td>\
-					<td class="effort-name js-effort-name">' + effort.effortName + '</td>\
-					<td class="row-edit-btns">\
-						<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
-						<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
-						<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
-					</td>\
-				</tr>';
-
-			//table.row().add( ).draw();
-		},
-
-		/**
-		 * Add the Effort data to the "cache" table on the page
-		 *
-		 */
-		addEffortToCache: function() {
-			// Initiate DataTable Plugin
-			$( '.js-provisional-data-table' ).DataTable();
-			var $formWrapper = $( '.js-form-wrapper' );
-
-			$( document ).on( 'click', '#js-add-to-cache', function( event ) {
-				event.preventDefault();
-
-
-				var thisEffort = {};
-
-				// Check table stored efforts for highest unique ID then create a new one.
-				var i = 0;
-				var storedEfforts = liveEntry.getStoredEfforts();
-				var storedUniqueIds = [];
-				if ( storedEfforts.length > 0 ) {
-					$.each( storedEfforts, function( index, value ) {
-						var thisEffort = $( this );
-						storedUniqueIds.push( thisEffort[index].uniqueId );
-					} );
-					var highestUniqueId = Math.max.apply( Math, storedUniqueIds );
-					thisEffort.uniqueId = highestUniqueId;
-				} else {
-					thisEffort.uniqueId = i++;
-				}
-
-
-				thisEffort.eventId = $( document ).find( '#js-event-id' ).html();;
-				thisEffort.splitId = $( document ).find( '#split-select option:selected' ).attr( 'data-split-id' );
-				thisEffort.effortId = $formWrapper.find( '#js-effort-id' ).val();
-				thisEffort.bibNumber = $formWrapper.find( '#js-bib-number' ).val();
-				thisEffort.liveBib = $formWrapper.find( '#js-live-bib' ).val();
-				thisEffort.effortName = $formWrapper.find( '#js-effort-name' ).val();
-				thisEffort.splitName = $( document ).find( '#split-select option:selected' ).html();
-				thisEffort.timeIn = $formWrapper.find( '#js-time-in' ).val();
-				thisEffort.timeOut = $formWrapper.find( '#js-time-out' ).val();
-
-				if ( $formWrapper.find( '#js-pacer-in' ).prop( 'checked' ) == true ) {
-					thisEffort.pacerIn = true;
-					thisEffort.pacerInHtml = 'Yes';
-				} else {
-					thisEffort.pacerIn = false;
-					thisEffort.pacerInHtml = 'No';
-				}
-
-				if ( $formWrapper.find( '#js-pacer-out' ).prop( 'checked' ) == true ) {
-					thisEffort.pacerOut = true;
-					thisEffort.pacerOutHtml = 'Yes';
-				} else {
-					thisEffort.pacerOut = false;
-					thisEffort.pacerOutHtml = 'No';
-				}
-
-
-				if( ! liveEntry.isMatchedEffort( thisEffort ) ) {
-					storedEfforts.push( thisEffort );
-					liveEntry.saveStoredEfforts( storedEfforts );
-					liveEntry.addEffortToTable( thisEffort );
-					console.log( 'no match - add to object' )
-				} else {
-					console.log( 'match found.' )
-				}
-
-				return false;
-			} );
-		},
-
-		/**
-		 * 
+		 * Contains functionality for efforts cache table
 		 * 
 		 */
-		setStoredEfforts: function() {
-			var effortsCache = localStorage.getItem( 'effortsCache' );
-			if( effortsCache === null || effortsCache.length == 0 ) {
-				localStorage.setItem( 'effortsCache', JSON.stringify( liveEntry.efforts ) );
-			}
-		},
+		effortsDataTable: {
+			init: function() {
 
-		/**
-		 * Get local data Efforts Storage Object
-		 *
-		 * @return object Returns object from local storage
-		 */
-		getStoredEfforts: function() {
-			return JSON.parse( localStorage.getItem('effortsCache') )
-		},
+				// Initiate DataTable Plugin
+				$( '.js-provisional-data-table' ).DataTable();	
 
-		/**
-		 * Stringify then Save/Push all efforts to local object
-		 *
-		 * @param object effortsObject Pass in the object of the updated object with all added or removed objects.
-		 * @return null
-		 */
-		saveStoredEfforts: function( effortsObject ) {
-			localStorage.setItem( 'effortsCache', JSON.stringify( effortsObject ) );
-			return null;
-		},
-
-		/**
-		 * Delete the matching effort
-		 *
-		 * @param object 	effort 	Pass in the object/effort we want to delete.
-		 * @return null
-		 */
-		deleteStoredEffort: function( effort ) {
-			var storedEfforts = liveEntry.getStoredEfforts();
-			var effortToDelete = JSON.stringify( effort );
-
-			$.each( storedEfforts, function( index ) {
-				var loopedEffort = JSON.stringify( $( this ) );
-				if ( loopedEffort == effortToDelete ) {
-					delete storedEfforts[index];
-					return false;
-				}
-			} );
-
-			localStorage.setItem( 'effortsCache', JSON.stringify( storedEfforts ) );
-			return null;
-		},
-
-		/**
-		 * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
-		 *
-		 * @param  object effort Pass in Object of the effort to check it against the stored objects		 *
-		 * @return boolean	True if match found, False if no match found
-		 */
-		isMatchedEffort: function( effort ) {
-			var storedEfforts = liveEntry.getStoredEfforts();
-			var tempEffort = JSON.stringify( effort );
-			var flag = false;
-
-			$.each( storedEfforts, function() {
-				var loopedEffort = JSON.stringify( $( this ) );
-				if ( loopedEffort == tempEffort ) {
-					flag = true;
-				}
-			} );
-
-			if( flag == false ) {
-				return false;
-			} else {
-				return true;
-			};
-		},
-
-		/**
-		 * Add the Effort data to the "cache" table on the page
-		 *
-		 */
-		addEffortToCache: function() {
-			// Initiate DataTable Plugin
-			$( '.js-provisional-data-table' ).DataTable();
-
-			$( document ).on( 'click', '.js-add-to-cache', function( event ) {
-				event.preventDefault();
-
-				// @TODO build this variable 'thisEffort' from fields on page
-				var thisEffort = {"werd": "hello"};
-				var storedEfforts = liveEntry.getStoredEfforts();
-
-				if( ! liveEntry.isMatchedEffort( thisEffort ) ) {
-					storedEfforts.push( thisEffort );
-					liveEntry.saveStoredEfforts( storedEfforts );
-				} else {
-
-				}
-
-				return false;
-			} );
-		},
-
-		/**
-		 * Populate the h2 with the eventName
-		 *
-		 */
-		updateEventName: function() {
-			$( '.page-title h2' ).text( liveEntry.eventLiveEntryStaticData.eventName );
-		},
-
-		/**
-		 * Add the Splits data to the select drop down table on the page
-		 *
-		 */
-		buildSplitSelect: function() {
-
-			// Populate select list with actual splits
-			var splitItems = '';
-			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
-				splitItems += '<option value="' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" >' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</option>';
-			}
-			$( '#split-select' ).html( splitItems );
-		},
-
-		/**
-		 * Switches the Split Slider to the specified Aid Station
-		 * @param  integer splitId The station id to switch to
-		 */
-		changeSplitSlider: function( splitId ) {
-			
-			// remove all positioning classes
-			$( '#js-split-slider' ).removeClass( 'begin end' );
-			$( '.js-split-slider-item' ).removeClass( 'active inactive middle begin end' );
-			var $selectedSliderItem = $( '.js-split-slider-item[data-split-id="' + splitId + '"]' );
-
-			// Add position classes to the current selected slider item
-			$selectedSliderItem.addClass( 'active middle' );
-			$selectedSliderItem
-				.next( '.js-split-slider-item' ).addClass( 'active end' )
-				.next( '.js-split-slider-item' ).addClass( 'inactive end' );
-			$selectedSliderItem
-				.prev( '.js-split-slider-item' ).addClass( 'active begin' )
-				.prev( '.js-split-slider-item' ).addClass( 'inactive begin' );;
-
-			// Check if the slider is at the beginning
-			if ( $selectedSliderItem.prev('.js-split-slider-item').length === 0 ) {
-
-				// Add appropriate positioning classes
-				$( '#js-split-slider' ).addClass( 'begin' );
-			}
-
-			// Check if the slider is at the end
-			if ( $selectedSliderItem.next( '.js-split-slider-item' ).length === 0 ) {
-				$( '#js-split-slider' ).addClass( 'end' );
-			}
-		},
-
-		/**
-		 * Builds the splits slider based on the splits data
-		 *
-		 */
-		buildSplitSlider: function() {
-
-			// Inject initial html
-			var splitSliderItems = '';
-			for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
-				splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + ' m</span></div>';
-			}
-			$( '#js-split-slider' ).html( splitSliderItems );
-
-			// Set default states
-			$( '.js-split-slider-item' ).eq( 0 ).addClass( 'active middle' );
-			$( '.js-split-slider-item' ).eq( 1 ).addClass( 'active end' );
-			$( '#js-split-slider' ).addClass( 'begin' );
-			$( '#split-select' ).on( 'change', function() {
-				var currentItemId = $( '.js-split-slider-item.active.middle' ).attr( 'data-split-id' );
-				var selectedItemId = $( 'option:selected' ).attr( 'data-split-id' );
-				if ( currentItemId - selectedItemId > 1 ) {
-					liveEntry.changeSplitSlider( selectedItemId - 0 + 1 );
-				} else if ( selectedItemId - currentItemId > 1 ) {
-					liveEntry.changeSplitSlider( selectedItemId - 1 );
-				}
-				setTimeout( function() {
-					$( '#js-split-slider' ).addClass( 'animate' );
-					liveEntry.changeSplitSlider( selectedItemId );
-					setTimeout( function () {
-						$( '#js-split-slider' ).removeClass( 'animate' );
-					}, 600 );
-				}, 1 );
-			} );
-		},
-
-		/**
-		 * Move a "cached" table row to "top form" section for editing.
-		 *
-		 */
-		editEffort: function() {
-
-			$( '.js-provisional-data-table .js-effort-station-row' ).each( function() {
-
-				var $thisRow = $( this );
-				var dataTable = $thisRow.closest( '.js-provisional-data-table' ).DataTable();
-				var effort = {};
-				effort.uniqueId = $thisRow.attr( 'data-unique-id' );
-				effort.eventId = $thisRow.attr( 'data-event-id' );
-				effort.splitId = $thisRow.attr( 'data-split-id' );
-				effort.effortId = $thisRow.attr( 'data-effort-id' );
-				effort.bibNum = $thisRow.attr( 'data-bib-number' );
-				effort.effortName = $thisRow.attr( 'data-effort-name' );
-				effort.splitName = $thisRow.attr( 'data-split-name' );
-				effort.timeIn = $thisRow.attr( 'data-time-in' );
-				effort.timeOut = $thisRow.attr( 'data-time-out' );
-				effort.pacerIn = $thisRow.attr( 'data-pacer-in' );
-				effort.pacerOut = $thisRow.attr( 'data-pacer-out' );
-
-				$thisRow.on( 'click', '.js-edit-effort', function( event ) {
+				// Attach add listener
+				$( '#js-add-to-cache' ).on( 'click', function( event ) {
 					event.preventDefault();
+					var thisEffort = {};
 
-					// remove table row
-					$thisRow.fadeOut( 'fast', function() {
-						dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
-					} );
-
-					console.log( effort );
-
-
-					var repopulateEffortForm = function( effortData ) {
-						var storedEfforts = getStoredEfforts();
-						console.log( storedEfforts );
-
-						$( document ).find( '#bib-number' ).val( effortData.bibNum );
+					// Check table stored efforts for highest unique ID then create a new one.
+					var i = 0;
+					var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+					var storedUniqueIds = [];
+					if ( storedEfforts.length > 0 ) {
+						$.each( storedEfforts, function( index, value ) {
+							var thisEffort = $( this );
+							storedUniqueIds.push( thisEffort[index].uniqueId );
+						} );
+						var highestUniqueId = Math.max.apply( Math, storedUniqueIds );
+						thisEffort.uniqueId = highestUniqueId;
+					} else {
+						thisEffort.uniqueId = i++;
 					}
-					repopulateEffortForm( effort );
 
-					// $( '.edit-effort-modal .modal-title .split-name' ).html( effortData.splitName );
-					// $( '.edit-effort-modal .js-effort-id-input' ).val( effortData.effortId );
-					// $( '.edit-effort-modal .js-split-name-input' ).val( effortData.splitName );
-					// $( '.edit-effort-modal .js-bib-number-input' ).val( effortData.bibNum );
-					// $( '.edit-effort-modal .js-effort-name-input' ).val( effortData.effortName );
-					// $( '.edit-effort-modal .js-time-in-input' ).val( effortData.timeIn );
-					// $( '.edit-effort-modal .js-time-out-input' ).val( effortData.timeOut );
+					// Build up the effort
+					thisEffort.eventId 		= liveEntry.currentEventId;
+					thisEffort.splitId 		= $( document ).find( '#split-select option:selected' ).attr( 'data-split-id' );
+					thisEffort.splitName 	= $( document ).find( '#split-select option:selected' ).html();
+					thisEffort.effortId 	= liveEntry.currentEffortId;
+					thisEffort.bibNumber 	= $( '#js-bib-number' ).val();
+					thisEffort.liveBib 		= $( '#js-live-bib' ).val();
+					thisEffort.effortName 	= $( '#js-effort-name' ).html();
+					thisEffort.timeIn 		= $( '#js-time-in' ).val();
+					thisEffort.timeOut 		= $( '#js-time-out' ).val();
+					if ( $( '#js-pacer-in' ).prop( 'checked' ) == true ) {
+						thisEffort.pacerIn = true;
+						thisEffort.pacerInHtml = 'Yes';
+					} else {
+						thisEffort.pacerIn = false;
+						thisEffort.pacerInHtml = 'No';
+					}
 
-					// if( effortData.pacerIn === 'true' ) {
-					// 	$( '.edit-effort-modal .js-pacer-in-check' ).prop( 'checked', true );
-					// } else {
-					// 	$( '.edit-effort-modal .js-pacer-in-check' ).prop( 'checked', false );
-					// }
-
-					// if( effortData.pacerOut === 'true' ) {
-					// 	$( '.edit-effort-modal .js-pacer-out-check' ).prop( 'checked', true );
-					// } else {
-					// 	$( '.edit-effort-modal .js-pacer-out-check' ).prop( 'checked', false );
-					// }
-				} );
-
-				$thisRow.on( 'click', '.js-delete-effort', function( event ) {
-					event.preventDefault();
-					liveEntry.deleteEffortRows( $thisRow );
-					console.log( 'row removed' );
+					if ( $( '#js-pacer-out' ).prop( 'checked' ) == true ) {
+						thisEffort.pacerOut = true;
+						thisEffort.pacerOutHtml = 'Yes';
+					} else {
+						thisEffort.pacerOut = false;
+						thisEffort.pacerOutHtml = 'No';
+					}
+					if( ! liveEntry.isMatchedEffort( thisEffort ) ) {
+						storedEfforts.push( thisEffort );
+						liveEntry.effortsCache.setStoredEfforts( storedEfforts );
+						liveEntry.effortsDataTable.addEffortToTable( thisEffort );
+					} else {
+						console.log( 'match found.' )
+					}
 					return false;
 				} );
+			},
 
-				$thisRow.on( 'click', '.js-submit-effort', function( event ) {
-					event.preventDefault();
-					liveEntry.submitEffortRows( $thisRow );
-					console.log( 'row submitted' );
-					return false;
+			/**
+			 * Add a new row to the table (with js dataTables enabled)
+			 * 
+			 * @param object effort Pass in the object of the effort to add
+			 */
+			addEffortToTable: function( effort ) {
+
+				// initiate datatable plugin
+				var table = $( document ).find( '.provisional-data-table' ).DataTable();
+
+				var trHtml = '\
+					<tr class="effort-station-row js-effort-station-row" data-effort-object="' + JSON.stringify( effort ) + '" >\
+						<td class="split-name js-split-name">' + effort.splitName + '</td>\
+						<td class="bib-number js-bib-number">' + effort.bibNumber + '</td>\
+						<td class="time-in js-time-in">' + effort.timeIn + '</td>\
+						<td class="time-out js-time-out">' + effort.timeOut + '</td>\
+						<td class="pacer-in js-pacer-in">' + effort.pacerInHtml + '</td>\
+						<td class="pacer-out js-pacer-out">' + effort.pacerInHtml + '</td>\
+						<td class="effort-name js-effort-name">' + effort.effortName + '</td>\
+						<td class="row-edit-btns">\
+							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
+							<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
+							<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
+						</td>\
+					</tr>';
+				//table.row().add( ).draw();
+			},
+
+			/**
+			 * Move a "cached" table row to "top form" section for editing.
+			 *
+			 */
+			editEffort: function() {
+
+				$( '.js-provisional-data-table .js-effort-station-row' ).each( function() {
+
+					var $thisRow = $( this );
+					var dataTable = $thisRow.closest( '.js-provisional-data-table' ).DataTable();
+					var effort = {};
+					effort.uniqueId = $thisRow.attr( 'data-unique-id' );
+					effort.eventId = $thisRow.attr( 'data-event-id' );
+					effort.splitId = $thisRow.attr( 'data-split-id' );
+					effort.effortId = $thisRow.attr( 'data-effort-id' );
+					effort.bibNum = $thisRow.attr( 'data-bib-number' );
+					effort.effortName = $thisRow.attr( 'data-effort-name' );
+					effort.splitName = $thisRow.attr( 'data-split-name' );
+					effort.timeIn = $thisRow.attr( 'data-time-in' );
+					effort.timeOut = $thisRow.attr( 'data-time-out' );
+					effort.pacerIn = $thisRow.attr( 'data-pacer-in' );
+					effort.pacerOut = $thisRow.attr( 'data-pacer-out' );
+
+					$thisRow.on( 'click', '.js-edit-effort', function( event ) {
+						event.preventDefault();
+
+						// remove table row
+						$thisRow.fadeOut( 'fast', function() {
+							dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
+						} );
+
+						console.log( effort );
+
+
+						var repopulateEffortForm = function( effortData ) {
+							var storedEfforts = getStoredEfforts();
+							console.log( storedEfforts );
+
+							$( document ).find( '#bib-number' ).val( effortData.bibNum );
+						}
+						repopulateEffortForm( effort );
+
+						// $( '.edit-effort-modal .modal-title .split-name' ).html( effortData.splitName );
+						// $( '.edit-effort-modal .js-effort-id-input' ).val( effortData.effortId );
+						// $( '.edit-effort-modal .js-split-name-input' ).val( effortData.splitName );
+						// $( '.edit-effort-modal .js-bib-number-input' ).val( effortData.bibNum );
+						// $( '.edit-effort-modal .js-effort-name-input' ).val( effortData.effortName );
+						// $( '.edit-effort-modal .js-time-in-input' ).val( effortData.timeIn );
+						// $( '.edit-effort-modal .js-time-out-input' ).val( effortData.timeOut );
+
+						// if( effortData.pacerIn === 'true' ) {
+						// 	$( '.edit-effort-modal .js-pacer-in-check' ).prop( 'checked', true );
+						// } else {
+						// 	$( '.edit-effort-modal .js-pacer-in-check' ).prop( 'checked', false );
+						// }
+
+						// if( effortData.pacerOut === 'true' ) {
+						// 	$( '.edit-effort-modal .js-pacer-out-check' ).prop( 'checked', true );
+						// } else {
+						// 	$( '.edit-effort-modal .js-pacer-out-check' ).prop( 'checked', false );
+						// }
+					} );
+
+					$thisRow.on( 'click', '.js-delete-effort', function( event ) {
+						event.preventDefault();
+						liveEntry.deleteEffortRows( $thisRow );
+						console.log( 'row removed' );
+						return false;
+					} );
+
+					$thisRow.on( 'click', '.js-submit-effort', function( event ) {
+						event.preventDefault();
+						liveEntry.submitEffortRows( $thisRow );
+						console.log( 'row submitted' );
+						return false;
+					} );
+
 				} );
 
-			} );
+				$( '.js-delete-all-efforts' ).on( 'click', function( event ) {
+						event.preventDefault();
+						liveEntry.deleteEffortRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
+						console.log( 'rows removed' );
+						return false;
+				} );
 
-			$( '.js-delete-all-efforts' ).on( 'click', function( event ) {
-					event.preventDefault();
-					liveEntry.deleteEffortRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
-					console.log( 'rows removed' );
-					return false;
-			} );
+				$( '.js-submit-all-efforts' ).on( 'click', function( event ) {
+						event.preventDefault();
+						liveEntry.submitEffortRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
+						console.log( 'rows submitted' );
+						return false;
+				} );
+			},
 
-			$( '.js-submit-all-efforts' ).on( 'click', function( event ) {
-					event.preventDefault();
-					liveEntry.submitEffortRows( $( '.js-provisional-data-table .js-effort-station-row' ) );
-					console.log( 'rows submitted' );
-					return false;
-			} );
-		},
+			/**
+			 * Removes each of supplied efforts in one batch
+			 * 
+			 * @param  object $effortRows jQuery object containing each row to remove
+			 */
+			deleteEffortRows: function( $effortRows ) {
+				$effortRows.fadeOut( 'fast', function() {
+					var dataTable = $( this ).closest( '.js-provisional-data-table' ).DataTable();
+					dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
+				} );
+			},
 
-		/**
-		 * Removes each of supplied efforts in one batch
-		 * @param  object $effortRows jQuery object containing each row to remove
-		 */
-		deleteEffortRows: function( $effortRows ) {
-			$effortRows.fadeOut( 'fast', function() {
-				var dataTable = $( this ).closest( '.js-provisional-data-table' ).DataTable();
-				dataTable.row( $( this ).closest( 'tr' ) ).remove().draw();
-			} );
-		},
+			/**
+			 * Submits each of supplied efforts in one batch
+			 * 
+			 * @param  object $effortRows jQuery object containing each row to submit
+			 */
+			submitEffortRows: function( $effortRows ) {
+				var data = { efforts: [] };
+				$effortRows.each( function() {
+					var $thisRow = $( this );
+					var effort = {};
+					effort.uniqueId = $thisRow.attr( 'data-unique-id' );
+					effort.eventId = $thisRow.attr( 'data-event-id' );
+					effort.splitId = $thisRow.attr( 'data-split-id' );
+					effort.effortId = $thisRow.attr( 'data-effort-id' );
+					effort.bibNum = $thisRow.attr( 'data-bib-number' );
+					effort.effortName = $thisRow.attr( 'data-effort-name' );
+					effort.splitName = $thisRow.attr( 'data-split-name' );
+					effort.timeIn = $thisRow.attr( 'data-time-in' );
+					effort.timeOut = $thisRow.attr( 'data-time-out' );
+					effort.pacerIn = $thisRow.attr( 'data-pacer-in' );
+					effort.pacerOut = $thisRow.attr( 'data-pacer-out' );
+					data.efforts.push( effort );
+				} );
+				$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function( response ) {
+					console.log( response );
+				} );
+			}
+		}, // END effortsDataTable
 
-		/**
-		 * Submits each of supplied efforts in one batch
-		 * @param  object $effortRows jQuery object containing each row to submit
-		 */
-		submitEffortRows: function( $effortRows ) {
-			var data = { efforts: [] };
-			$effortRows.each( function() {
-				var $thisRow = $( this );
-				var effort = {};
-				effort.uniqueId = $thisRow.attr( 'data-unique-id' );
-				effort.eventId = $thisRow.attr( 'data-event-id' );
-				effort.splitId = $thisRow.attr( 'data-split-id' );
-				effort.effortId = $thisRow.attr( 'data-effort-id' );
-				effort.bibNum = $thisRow.attr( 'data-bib-number' );
-				effort.effortName = $thisRow.attr( 'data-effort-name' );
-				effort.splitName = $thisRow.attr( 'data-split-name' );
-				effort.timeIn = $thisRow.attr( 'data-time-in' );
-				effort.timeOut = $thisRow.attr( 'data-time-out' );
-				effort.pacerIn = $thisRow.attr( 'data-pacer-in' );
-				effort.pacerOut = $thisRow.attr( 'data-pacer-out' );
-				data.efforts.push( effort );
-			} );
-			$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function( response ) {
-				console.log( response );
-			} );
-		}
+		splitSlider: {
+
+			/**
+			 * Init splits slider
+			 *
+			 */
+			init: function() {
+				liveEntry.splitSlider.buildSplitSlider();
+			},
+
+			/**
+			 * Builds the splits slider based on the splits data
+			 *
+			 */
+			buildSplitSlider: function() {
+
+				// Inject initial html
+				var splitSliderItems = '';
+				for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
+					splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + ' m</span></div>';
+				}
+				$( '#js-split-slider' ).html( splitSliderItems );
+
+				// Set default states
+				$( '.js-split-slider-item' ).eq( 0 ).addClass( 'active middle' );
+				$( '.js-split-slider-item' ).eq( 1 ).addClass( 'active end' );
+				$( '#js-split-slider' ).addClass( 'begin' );
+				$( '#split-select' ).on( 'change', function() {
+					var currentItemId = $( '.js-split-slider-item.active.middle' ).attr( 'data-split-id' );
+					var selectedItemId = $( 'option:selected' ).attr( 'data-split-id' );
+					if ( currentItemId - selectedItemId > 1 ) {
+						liveEntry.splitSlider.changeSplitSlider( selectedItemId - 0 + 1 );
+					} else if ( selectedItemId - currentItemId > 1 ) {
+						liveEntry.splitSlider.changeSplitSlider( selectedItemId - 1 );
+					}
+					setTimeout( function() {
+						$( '#js-split-slider' ).addClass( 'animate' );
+						liveEntry.splitSlider.changeSplitSlider( selectedItemId );
+						setTimeout( function () {
+							$( '#js-split-slider' ).removeClass( 'animate' );
+						}, 600 );
+					}, 1 );
+				} );
+			},
+
+			/**
+			 * Switches the Split Slider to the specified Aid Station
+			 * 
+			 * @param  integer splitId The station id to switch to
+			 */
+			changeSplitSlider: function( splitId ) {
+				
+				// remove all positioning classes
+				$( '#js-split-slider' ).removeClass( 'begin end' );
+				$( '.js-split-slider-item' ).removeClass( 'active inactive middle begin end' );
+				var $selectedSliderItem = $( '.js-split-slider-item[data-split-id="' + splitId + '"]' );
+
+				// Add position classes to the current selected slider item
+				$selectedSliderItem.addClass( 'active middle' );
+				$selectedSliderItem
+					.next( '.js-split-slider-item' ).addClass( 'active end' )
+					.next( '.js-split-slider-item' ).addClass( 'inactive end' );
+				$selectedSliderItem
+					.prev( '.js-split-slider-item' ).addClass( 'active begin' )
+					.prev( '.js-split-slider-item' ).addClass( 'inactive begin' );;
+
+				// Check if the slider is at the beginning
+				if ( $selectedSliderItem.prev('.js-split-slider-item').length === 0 ) {
+
+					// Add appropriate positioning classes
+					$( '#js-split-slider' ).addClass( 'begin' );
+				}
+
+				// Check if the slider is at the end
+				if ( $selectedSliderItem.next( '.js-split-slider-item' ).length === 0 ) {
+					$( '#js-split-slider' ).addClass( 'end' );
+				}
+			}
+		} // END splitSlider
 	};
 
 	$( document ).ready( function() {

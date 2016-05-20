@@ -216,7 +216,7 @@ class EventsController < ApplicationController
     }
   end
 
-  def live_entry_ajax_get_time_in_aid
+  def live_entry_ajax_get_time_spent
     authorize @event
 
     #@effort = Effort.find(params[:effortId])
@@ -233,7 +233,8 @@ class EventsController < ApplicationController
     authorize @event
 
     # TODO: MARK!
-
+    # Efforts come in as an array
+    # access efforts as params[:efforts]
     render :json => {
       success: true,
       message: "HEY! LISTEN!"

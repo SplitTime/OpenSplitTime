@@ -239,6 +239,7 @@
 
 			$( '#js-time-in' ).on( 'keydown', function( event ) {
 				if ( event.keyCode == 13 || event.keyCode == 9 ) {
+					event.preventDefault();
 					var timeIn = $( this ).val();
 
 					// Validate the military time string
@@ -250,10 +251,12 @@
 							if ( response.success == true ) {
 								$( '#js-last-reported' ).html( response.timeFromLastReported );
 							}
+							$( '#js-time-out' ).focus();
 						} );
 					} else {
 						 $( this ).val( '' );
 					}
+					return false;
 				}
 			} );
 
@@ -266,10 +269,11 @@
 
 						// currentEffortId may be null here
 						var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
-						$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+						$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_spent', data, function( response ) {
 							if ( response.success == true ) {
 								$( '#js-time-spent' ).html( response.timeSpent );
 							}
+							$( '#js-pacer-in' ).focus();
 						} );
 					} else {
 						 $( this ).val( '' );
@@ -278,25 +282,12 @@
 			} );
 
 
-			// Listen for keydown in pacer-in and pacer-out. Enter checks the box,
-			// tab moves to next field.
-			$( '#js-pacer-in, #js-pacer-out' ).on( 'keydown', function( event ) {
+			// Listen for keydown in pacer-in and pacer-out. 
+			// Enter checks the box, tab moves to next field.
+			$( '#js-pacer-in' ).on( 'keydown', function( event ) {
 				var $this = $( this );
-				switch ( $this.attr( 'id' ) ) {
-					case '#js-pacer-in':
-						$next = $( '#js-pacer-out' );
-						break;
-					case '#js-pacer-out':
-						$next = $( '#js-add-to-cache' );
-						break;
-				}
-				if ( $this.attr( 'id' ) == 'js-pacer-in' ) {
-					$next = $( '#js-pacer-out' );
-				}
-
 				switch ( event.keyCode ) {
 					case 13: // Enter pressed
-						console.log($this.attr( 'checked' ));
 						if ( $this.attr( 'checked' ) == 'checked' ) {
 							$this.removeAttr( 'checked' );
 						} else {
@@ -304,9 +295,27 @@
 						}
 						break;
 					case 9: // Tab pressed
-						$next.focus();
+						$( '#js-pacer-out' ).focus();
 						break;
 				}
+			} );
+
+			$( '#js-pacer-out' ).on( 'keydown', function( event ) {
+				event.preventDefault();
+				var $this = $( this );
+				switch ( event.keyCode ) {
+					case 13: // Enter pressed
+						if ( $this.attr( 'checked' ) == 'checked' ) {
+							$this.removeAttr( 'checked' );
+						} else {
+							$this.attr( 'checked', 'checked' );
+						}
+						break;
+					case 9: // Tab pressed
+						$( '#js-add-to-cache' ).focus();
+						break;
+				}
+				re
 			} );
 		},
 

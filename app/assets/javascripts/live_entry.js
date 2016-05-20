@@ -134,16 +134,15 @@
 		 */
 		liveEntryForm: function() {
 
-			/**
-			 * Processes the time in data on blur or keydown tab / enter
-			 * 
-			 */
-			function processTimeIn( timeIn ) {
-				var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
-				$.get( '/events/' + eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
-					console.log(response);
-				} );
-			}
+			// Apply input masks on time in / out
+			var maskOptions = {
+				placeholder: "HH:MM:SS",
+				insertMode: false,
+				showMaskOnHover: false,
+			};
+
+			$( '#js-time-in' ).inputmask( "hh:mm:ss", maskOptions );
+			$( '#js-time-out' ).inputmask( "hh:mm:ss", maskOptions );
 
 			/**
 			 * Disables or enables fields for the effort lookup form
@@ -165,16 +164,21 @@
 			 *
 			 */
 			function clearSplitsData() {
-				$( '#js-effort-name' ).html( '' );
-				$( '#js-effort-last-reported' ).html( '' )
-				$( '#js-effort-split-from' ).html( '' );
-				$( '#js-effort-split-spent' ).html( '' );
+				$( '#js-effort-name' ).html( '&nbsp;' );
+				$( '#js-effort-last-reported' ).html( '&nbsp;' )
+				$( '#js-effort-split-from' ).html( '&nbsp;' );
+				$( '#js-effort-split-spent' ).html( '&nbsp;' );
 				$( '#js-time-in' ).val( '' );
 				$( '#js-time-out' ).val( '' );
+				$( '#js-live-bib' ).val( '' );
 				$( '#js-pacer-in' ).attr( 'checked', false );
 				$( '#js-pacer-out' ).attr( 'checked', false );
 			}
 
+			/**
+			 * Clears the live entry form when the clear button is clicked
+			 * 
+			 */
 			$( '#js-clear-entry-form' ).on( 'click', function( event ) {
 				event.preventDefault();
 				clearSplitsData();
@@ -219,18 +223,24 @@
 				}
 			} );
 
-			$( '#js-time-in' ).on( 'blur', function() {
-				var timeIn = $( this );
-				console.log(timeIn);
-			} );
-
 			$( '#js-time-in' ).on( 'keydown', function() {
-				var eventId = $( '#js-event-id' ).text();
 				if ( event.keyCode == 13 || event.keyCode == 9 ) {
 					var timeIn = $( this ).val();
-					processTimeIn( timeIn );
+
+					// Validate the military time string
+					timeIn = timeIn.replace(/D/g, '');
+					timeIn = timeIn.replace(/:/g, '');
+					if ( timeIn.length == 6 ) {
+
+						// currentEffortId may be null here
+						var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
+						$.get( '/events/' + liveEntry.eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+							console.log(response);
+						} );
+					} else {
+						 $( this ).val( '' );
+					}
 				}
-				console.log(timeIn);
 			} );
 
 			$( '#js-time-out' ).on( 'keydown', function() {

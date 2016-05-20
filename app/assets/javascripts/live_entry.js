@@ -139,7 +139,6 @@
 				placeholder: "HH:MM:SS",
 				insertMode: false,
 				showMaskOnHover: false,
-				//hourFormat: 12,
 			};
 
 			$( '#js-time-in' ).inputmask( "hh:mm:ss", maskOptions );

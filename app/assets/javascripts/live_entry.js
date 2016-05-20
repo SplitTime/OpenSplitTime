@@ -136,12 +136,12 @@
 
 			// Apply input masks on time in / out
 			var maskOptions = {
-				placeholder: "hh:mm:ss", 
-				insertMode: false, 
+				placeholder: "HH:MM:SS",
+				insertMode: false,
 				showMaskOnHover: false,
 				//hourFormat: 12,
-				mask: "hh:mm:ss",
-			}
+			};
+
 			$( '#js-time-in' ).inputmask( "hh:mm:ss", maskOptions );
 			$( '#js-time-out' ).inputmask( "hh:mm:ss", maskOptions );
 
@@ -225,13 +225,13 @@
 
 			$( '#js-time-in' ).on( 'keydown', function() {
 				// var eventId = $( '#js-event-id' ).text();
-				if ( event.keyCode == 13 || event.keyCode == 9 ) {
-					//var timeIn = $( this ).val();
-					//var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
-				}
-				$.get( '/events/' + eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
-					console.log(response);
-				} );
+				// if ( event.keyCode == 13 || event.keyCode == 9 ) {
+				// 	//var timeIn = $( this ).val();
+				// 	//var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
+				// }
+				// $.get( '/events/' + liveEntry.eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+				// 	console.log(response);
+				// } );
 			} );
 
 			$( '#js-time-out' ).on( 'keydown', function() {

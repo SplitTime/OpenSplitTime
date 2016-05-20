@@ -143,7 +143,7 @@
 
 			$( '#js-time-in' ).inputmask( "hh:mm:ss", maskOptions );
 			$( '#js-time-out' ).inputmask( "hh:mm:ss", maskOptions );
-
+			$( '#js-bib-number' ).inputmask( "integer" );
 			/**
 			 * Disables or enables fields for the effort lookup form
 			 *
@@ -173,6 +173,20 @@
 				$( '#js-live-bib' ).val( '' );
 				$( '#js-pacer-in' ).attr( 'checked', false );
 				$( '#js-pacer-out' ).attr( 'checked', false );
+			}
+
+			/**
+			 * Valiates the time fields
+			 *
+			 * @param string time time format from the input mask
+			 */
+			function validateTimeFields( time ) {
+				time = time.replace(/\D/g, '');
+				if ( time.length == 6 ) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 
 			/**
@@ -223,19 +237,19 @@
 				}
 			} );
 
-			$( '#js-time-in' ).on( 'keydown', function() {
+			$( '#js-time-in' ).on( 'keydown', function( event ) {
 				if ( event.keyCode == 13 || event.keyCode == 9 ) {
 					var timeIn = $( this ).val();
 
 					// Validate the military time string
-					timeIn = timeIn.replace(/D/g, '');
-					timeIn = timeIn.replace(/:/g, '');
-					if ( timeIn.length == 6 ) {
+					if ( validateTimeFields( timeIn ) ) {
 
 						// currentEffortId may be null here
 						var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
-						$.get( '/events/' + liveEntry.eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
-							console.log(response);
+						$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+							if ( response.success == true ) {
+								$( '#js-last-reported' ).html( response.timeFromLastReported );
+							}
 						} );
 					} else {
 						 $( this ).val( '' );
@@ -243,8 +257,24 @@
 				}
 			} );
 
-			$( '#js-time-out' ).on( 'keydown', function() {
+			$( '#js-time-out' ).on( 'keydown', function( event ) {
+				if ( event.keyCode == 13 || event.keyCode == 9 ) {
+					var timeIn = $( this ).val();
 
+					// Validate the military time string
+					if ( validateTimeFields( timeIn ) ) {
+
+						// currentEffortId may be null here
+						var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
+						$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+							if ( response.success == true ) {
+								$( '#js-time-spent' ).html( response.timeSpent );
+							}
+						} );
+					} else {
+						 $( this ).val( '' );
+					}
+				}
 			} );
 
 

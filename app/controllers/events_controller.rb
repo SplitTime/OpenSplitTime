@@ -221,6 +221,13 @@ class EventsController < ApplicationController
 
   def live_entry_ajax_set_split_times
     authorize @event
+
+    # TODO: MARK!
+
+    render :json => {
+      success: true,
+      message: "HEY! LISTEN!"
+    }
   end
 
   private

@@ -134,16 +134,16 @@
 		 */
 		liveEntryForm: function() {
 
-			/**
-			 * Processes the time in data on blur or keydown tab / enter
-			 * 
-			 */
-			function processTimeIn( timeIn ) {
-				var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
-				$.get( '/events/' + eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
-					console.log(response);
-				} );
+			// Apply input masks on time in / out
+			var maskOptions = {
+				placeholder: "hh:mm:ss", 
+				insertMode: false, 
+				showMaskOnHover: false,
+				//hourFormat: 12,
+				mask: "hh:mm:ss",
 			}
+			$( '#js-time-in' ).inputmask( "hh:mm:ss", maskOptions );
+			$( '#js-time-out' ).inputmask( "hh:mm:ss", maskOptions );
 
 			/**
 			 * Disables or enables fields for the effort lookup form
@@ -175,6 +175,10 @@
 				$( '#js-pacer-out' ).attr( 'checked', false );
 			}
 
+			/**
+			 * Clears the live entry form when the clear button is clicked
+			 * 
+			 */
 			$( '#js-clear-entry-form' ).on( 'click', function( event ) {
 				event.preventDefault();
 				clearSplitsData();
@@ -219,18 +223,15 @@
 				}
 			} );
 
-			$( '#js-time-in' ).on( 'blur', function() {
-				var timeIn = $( this );
-				console.log(timeIn);
-			} );
-
 			$( '#js-time-in' ).on( 'keydown', function() {
-				var eventId = $( '#js-event-id' ).text();
+				// var eventId = $( '#js-event-id' ).text();
 				if ( event.keyCode == 13 || event.keyCode == 9 ) {
-					var timeIn = $( this ).val();
-					processTimeIn( timeIn );
+					//var timeIn = $( this ).val();
+					//var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
 				}
-				console.log(timeIn);
+				$.get( '/events/' + eventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+					console.log(response);
+				} );
 			} );
 
 			$( '#js-time-out' ).on( 'keydown', function() {

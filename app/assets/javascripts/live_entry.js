@@ -165,12 +165,13 @@
 			 *
 			 */
 			function clearSplitsData() {
-				$( '#js-effort-name' ).html( '' );
-				$( '#js-effort-last-reported' ).html( '' )
-				$( '#js-effort-split-from' ).html( '' );
-				$( '#js-effort-split-spent' ).html( '' );
+				$( '#js-effort-name' ).html( '&nbsp;' );
+				$( '#js-effort-last-reported' ).html( '&nbsp;' )
+				$( '#js-effort-split-from' ).html( '&nbsp;' );
+				$( '#js-effort-split-spent' ).html( '&nbsp;' );
 				$( '#js-time-in' ).val( '' );
 				$( '#js-time-out' ).val( '' );
+				$( '#js-live-bib' ).val( '' );
 				$( '#js-pacer-in' ).attr( 'checked', false );
 				$( '#js-pacer-out' ).attr( 'checked', false );
 			}

@@ -94,7 +94,7 @@ class EventPolicy
     @current_user.admin?
   end
 
-    def live_entry_ajax_get_time_in_aid?
+    def live_entry_ajax_get_time_spent?
     @current_user.admin?
   end
 

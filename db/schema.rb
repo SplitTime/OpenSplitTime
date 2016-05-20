@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.text     "description"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",             null: false
+    t.integer  "updated_by",             null: false
   end
 
   create_table "efforts", force: :cascade do |t|
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.integer  "age"
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",                              null: false
+    t.integer  "updated_by",                              null: false
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "gender"
@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.string   "name",             limit: 64, null: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",                  null: false
+    t.integer  "updated_by",                  null: false
     t.datetime "first_start_time"
   end
 
@@ -94,8 +94,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.decimal  "longitude",              precision: 9, scale: 6
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",                                     null: false
+    t.integer  "updated_by",                                     null: false
   end
 
   create_table "ownerships", force: :cascade do |t|
@@ -120,8 +120,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.string   "phone"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",              null: false
+    t.integer  "updated_by",              null: false
     t.string   "country_code", limit: 2
     t.integer  "user_id"
   end
@@ -133,8 +133,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.text     "description"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",             null: false
+    t.integer  "updated_by",             null: false
   end
 
   create_table "split_times", force: :cascade do |t|
@@ -144,8 +144,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.integer  "data_status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",      null: false
+    t.integer  "updated_by",      null: false
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree
@@ -162,8 +162,8 @@ ActiveRecord::Schema.define(version: 20160512171644) do
     t.integer  "kind",                                        null: false
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",                                  null: false
+    t.integer  "updated_by",                                  null: false
     t.string   "description"
   end
 

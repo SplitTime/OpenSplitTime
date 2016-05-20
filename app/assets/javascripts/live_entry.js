@@ -398,6 +398,35 @@
 			$( '#split-select' ).html( splitItems );
 		},
 
+		changeSplitSlider: function( splitId ) {
+			console.log( 'Animating to: ' + splitId );
+			// remove all positioning classes
+			$( '#js-split-slider' ).removeClass( 'begin end' );
+			$( '.js-split-slider-item' ).removeClass( 'active inactive middle begin end' );
+			var $selectedSliderItem = $( '.js-split-slider-item[data-split-id="' + splitId + '"]' );
+
+			// Add position classes to the current selected slider item
+			$selectedSliderItem.addClass( 'active middle' );
+			$selectedSliderItem
+				.next( '.js-split-slider-item' ).addClass( 'active end' )
+				.next( '.js-split-slider-item' ).addClass( 'inactive end' );
+			$selectedSliderItem
+				.prev( '.js-split-slider-item' ).addClass( 'active begin' )
+				.prev( '.js-split-slider-item' ).addClass( 'inactive begin' );;
+
+			// Check if the slider is at the beginning
+			if ( $selectedSliderItem.prev('.js-split-slider-item').length === 0 ) {
+
+				// Add appropriate positioning classes
+				$( '#js-split-slider' ).addClass( 'begin' );
+			}
+
+			// Check if the slider is at the end
+			if ( $selectedSliderItem.next( '.js-split-slider-item' ).length === 0 ) {
+				$( '#js-split-slider' ).addClass( 'end' );
+			}
+		},
+
 		/**
 		 * Builds the splits slider based on the splits data
 		 *
@@ -416,29 +445,20 @@
 			$( '.js-split-slider-item' ).eq( 1 ).addClass( 'active end' );
 			$( '#js-split-slider' ).addClass( 'begin' );
 			$( '#split-select' ).on( 'change', function() {
-				
-				// remove all positioning classes
-				$( '#js-split-slider' ).removeClass( 'begin end' );
-				$( '.js-split-slider-item' ).removeClass( 'active middle begin end' );
+				var currentItemId = $( '.js-split-slider-item.active.middle' ).attr( 'data-split-id' );
 				var selectedItemId = $( 'option:selected' ).attr( 'data-split-id' );
-				var $selectedSliderItem = $( '.js-split-slider-item[data-split-id="' + selectedItemId + '"]' );
-
-				// Add position classes to the current selected slider item
-				$selectedSliderItem.addClass( 'active middle' );
-				$selectedSliderItem.next( '.js-split-slider-item' ).addClass( 'active end' );
-				$selectedSliderItem.prev( '.js-split-slider-item' ).addClass( 'active begin' );
-
-				// Check if the slider is at the beginning
-				if ( $selectedSliderItem.prev('.js-split-slider-item').length === 0 ) {
-
-					// Add appropriate positioning classes
-					$( '#js-split-slider' ).addClass( 'begin' );
-				} 
-
-				// Check if the slider is at the end
-				if ( $selectedSliderItem.next( '.js-split-slider-item' ).length === 0 ) {
-					$( '#js-split-slider' ).addClass( 'end' );
+				if ( currentItemId - selectedItemId > 1 ) {
+					liveEntry.changeSplitSlider( selectedItemId - 0 + 1 );
+				} else if ( selectedItemId - currentItemId > 1 ) {
+					liveEntry.changeSplitSlider( selectedItemId - 1 );
 				}
+				setTimeout( function() {
+					$( '#js-split-slider' ).addClass( 'animate' );
+					liveEntry.changeSplitSlider( selectedItemId );
+					setTimeout( function () {
+						$( '#js-split-slider' ).removeClass( 'animate' );
+					}, 600 );
+				}, 1 );
 			} );
 		},
 

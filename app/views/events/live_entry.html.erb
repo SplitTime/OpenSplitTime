@@ -55,6 +55,8 @@
 				<input type="hidden" name="effort-id" id="js-effort-id" value="">
 				<input type="hidden" name="live-bib" id="js-live-bib" value="">
 				<button type="submit" class="btn btn-primary" id="js-add-to-cache">Add</button>
+				<br>
+				<button type="submit" class="btn btn-danger" id="js-clear-entry-form">Clear</button>
 			</div>
 		</form>
 	</div>
@@ -66,16 +68,16 @@
 		</div>
 		<div class="splits-slider-data col-xs-12">
 			<div class="col-xs-6 data-label active">Name:</div>
-			<div class="col-xs-6 js-effort-name">n/a</div>
+			<div id="js-effort-name" class="col-xs-6">n/a</div>
 
 			<div class="col-xs-6 data-label">Last Reported:</div>
-			<div class="col-xs-6 js-effort-last-reported">n/a</div>
+			<div id="js-effort-last-reported" class="col-xs-6 ">n/a</div>
 
-			<div class="col-xs-6 data-label">Split From:</div>
-			<div class="col-xs-6 js-effort-split-from">n/a</div>
+			<div class="col-xs-6 data-label">Time From Last Reported:</div>
+			<div id="js-last-reported" class="col-xs-6">n/a</div>
 
 			<div class="col-xs-6 data-label">Time Spent:</div>
-			<div class="col-xs-6 js-effort-split-spent">n/a</div>
+			<div id="js-time-spent" class="col-xs-6 js-effort-split-spent">n/a</div>
 		</div>
 
 	</div>

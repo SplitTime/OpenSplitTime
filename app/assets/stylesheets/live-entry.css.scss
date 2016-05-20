@@ -237,18 +237,24 @@ Globals
 
 	.row-edit-btns {
 		text-align: right;
+		min-width: 7.0em;
+		box-sizing: content-box;
 
 		.effort-row-btn {
 			display: inline-block;
-			margin-left: 0.5em;
-			width: 28px;
-			height: 28px;
+			margin-left: 0.20em;
+			width: 2em;
+			height: 2em;
 			text-align: center;
 			padding: 0;
 			line-height: 1;
 			-webkit-border-radius: 14px;
 			-moz-border-radius: 14px;
 			border-radius: 14px;
+
+			&:first-child {
+				margin-left: 0;
+			}
 		}
 	}
 

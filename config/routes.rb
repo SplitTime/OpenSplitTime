@@ -44,6 +44,10 @@ Rails.application.routes.draw do
     member { get :stage}
     member { get :spread}
     member { get :live_entry}
+    member { get :live_entry_ajax_get_effort}
+    member { get :live_entry_ajax_get_time_from}
+    member { get :live_entry_ajax_get_time_spent}
+    member { get :live_entry_ajax_set_split_times}
   end
   resources :splits do
     member { get :assign_location }

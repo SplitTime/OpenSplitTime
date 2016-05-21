@@ -86,4 +86,20 @@ class EventPolicy
     @current_user.admin?
   end
 
+  def live_entry_ajax_get_effort?
+    @current_user.admin?
+  end
+
+    def live_entry_ajax_get_time_from?
+    @current_user.admin?
+  end
+
+    def live_entry_ajax_get_time_spent?
+    @current_user.admin?
+  end
+
+    def live_entry_ajax_set_split_times?
+    @current_user.admin?
+  end
+
 end

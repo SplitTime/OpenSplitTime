@@ -64,9 +64,7 @@ class SplitTime < ActiveRecord::Base
 
   def military_time=(military_time)
     if military_time.present?
-      units = %w(hours minutes seconds)
-      seconds_in_day = military_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i
-      self.day_and_time = likely_intended_time(seconds_in_day)
+      self.day_and_time = effort.intended_datetime(military_time, split)
     else
       self.day_and_time = nil
     end
@@ -97,12 +95,6 @@ class SplitTime < ActiveRecord::Base
 
   def effort_start_offset
     effort.start_offset
-  end
-
-  def likely_intended_time(seconds_in_day)
-    expected_time = effort.due_next_when
-    working_datetime = event_start_time.beginning_of_day + seconds_in_day
-    working_datetime + ((((working_datetime - expected_time) * -1) / 1.day).round(0) * 1.day)
   end
 
   def delete_if_blank

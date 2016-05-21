@@ -82,8 +82,12 @@ class Effort < ActiveRecord::Base
     dropped_split_id.nil? && finish_split_time.nil?
   end
 
+  def dropped?
+    dropped_split_id.present?
+  end
+
   def finish_status
-    return "DNF" if dropped_split_id
+    return "DNF" if dropped?
     split_time = finish_split_time
     return split_time.formatted_time_hhmmss if split_time
     "In progress"
@@ -92,7 +96,7 @@ class Effort < ActiveRecord::Base
   # Methods for checking status during live event
 
   def due_next_where
-    return nil if dropped_split_id
+    return nil if dropped?
     last_split = last_reported_split
     return nil if last_split.finish?
     event.next_split(last_split)
@@ -106,8 +110,8 @@ class Effort < ActiveRecord::Base
     event_start_time + start_offset + due_next_time_from_start(cache)
   end
 
-  def due_next_time_from_start(cache = nil)
-    return nil if dropped_split_id
+  def expected_time_from_start(split, cache = nil)
+    return nil if dropped?
     last_time = last_reported_split_time
     last_split = last_time.split
     return nil if last_split.finish?
@@ -154,6 +158,15 @@ class Effort < ActiveRecord::Base
       total = total + time_in_aid(unicorn.split)
     end
     total
+  end
+
+  def likely_intended_time(military_time, split)
+    units = %w(hours minutes seconds)
+    seconds_into_day = military_time.split(':')
+                         .map.with_index { |x, i| x.to_i.send(units[i]) }
+                         .reduce(:+).to_i
+    working_datetime = event_start_time.beginning_of_day + seconds_into_day
+    working_datetime + ((((working_datetime - due_next_when) * -1) / 1.day).round(0) * 1.day)
   end
 
   def ordered_splits

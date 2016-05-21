@@ -225,6 +225,12 @@ Globals
 /******* Provisional Data Table ********/
 .provisional-data {
 
+	.provisional-data-table {
+		th {
+			cursor: pointer;
+		}
+	}
+
 	.dataTables_filter {
 		text-align: right;
 	}

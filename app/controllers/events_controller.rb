@@ -237,7 +237,7 @@ class EventsController < ApplicationController
     # access efforts as params[:efforts]
     render :json => {
       success: true,
-      message: "HEY! LISTEN!"
+      message: params[:efforts]
     }
   end
 

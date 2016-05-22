@@ -172,6 +172,16 @@ class EventsController < ApplicationController
     authorize @event
   end
 
+  def live_entry_ajax_get_event_data
+    authorize @event
+    render :json => {
+        eventId: @event.id,
+        eventName: @event.name,
+        splits: @event.split_live_data,
+    }
+
+  end
+
   # This is an ajax action currently returns static json data for a specific "effort"
   # representing a participants specific effort for an event.
   # This endpoint gets called when the admin enters a "bib" number in the live_entry UI. 

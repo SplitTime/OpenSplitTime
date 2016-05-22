@@ -33,6 +33,14 @@ module SplitMethods
     splits.base
   end
 
+  def base_split_names
+    result = []
+    base_splits.each do |split|
+      result << split.base_name
+    end
+    result
+  end
+
   def out_splits
     Course.splits_from_ids(waypoint_groups[0..-2].map { |group| group[-1] }) # Excludes the finish split
   end

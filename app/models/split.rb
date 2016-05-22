@@ -92,6 +92,10 @@ class Split < ActiveRecord::Base
   end
 
   def base_name
+    Split.base_name(self.name)
+  end
+
+  def self.base_name(name)
     name.split.reject { |x| (x.downcase == 'in') | (x.downcase == 'out') }.join(' ')
   end
 

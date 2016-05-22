@@ -86,6 +86,10 @@ class EventPolicy
     @current_user.admin?
   end
 
+  def live_entry_ajax_get_event_data?
+    @current_user.admin?
+  end
+
   def live_entry_ajax_get_effort?
     @current_user.admin?
   end

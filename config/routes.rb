@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     member { get :stage}
     member { get :spread}
     member { get :live_entry}
+    member { get :live_entry_ajax_get_event_data}
     member { get :live_entry_ajax_get_effort}
     member { get :live_entry_ajax_get_time_from}
     member { get :live_entry_ajax_get_time_spent}
@@ -82,4 +83,5 @@ Rails.application.routes.draw do
     root 'dashboard#dashboard'
     put 'set_effort_ages', to: 'dashboard#set_effort_ages'
   end
+
 end

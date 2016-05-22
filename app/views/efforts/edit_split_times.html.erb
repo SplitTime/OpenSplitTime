@@ -43,7 +43,7 @@
               <% else %>
                   <tr>
               <% end %>
-              <td><h4><strong><%= "#{display_name(waypoint_group[0])}" %></strong></h4></td>
+              <td><h4><strong><%= "#{base_name(waypoint_group[0])}" %></strong></h4></td>
               <% (0...waypoint_group.size).each do |i| %>
                   <%= f.fields_for :split_times,
                                    @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],

@@ -4,7 +4,7 @@ class EffortShowView
 
   def initialize(effort)
     @effort = effort
-    @split_data = effort.event.ordered_splits.pluck_to_hash(:id, :name, :distance_from_start, :sub_order, :kind)
+    @split_data = effort.event.ordered_splits.pluck_to_hash(:id, :base_name, :name_extension, :distance_from_start, :sub_order, :kind)
     @waypoint_group_table = create_waypoint_group_table
     @split_rows = {}
     @waypoint_group_rows = {}

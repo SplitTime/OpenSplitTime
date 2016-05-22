@@ -96,6 +96,6 @@ module ApplicationHelper
 
 end
 
-def display_name(split_id)
-  @effort.event.splits.find(split_id).base_name
+def base_name(split_id)
+  Splits.find(split_id).base_name
 end

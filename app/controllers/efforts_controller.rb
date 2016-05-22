@@ -1,6 +1,6 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_effort, except: [:index, :show, :new, :create, :associate_participants]
+  before_action :set_effort, except: [:index, :new, :create, :associate_participants]
   after_action :verify_authorized, except: [:index, :show]
 
   def index
@@ -8,7 +8,6 @@ class EffortsController < ApplicationController
   end
 
   def show
-    @effort = Effort.find(params[:id])
     session[:return_to] = effort_path(@effort)
   end
 

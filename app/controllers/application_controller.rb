@@ -46,11 +46,11 @@ class ApplicationController < ActionController::Base
     if group.count == 2
       first = group[0]
       second = group[1]
-      if first.name.downcase.include?("out") && second.name.downcase.include?("in")
+      if first.name_extension.downcase.include?("out") && second.name_extension.downcase.include?("in")
         first.update(sub_order: 1)
         second.update(sub_order: 0)
         return
-      elsif first.name.downcase.include?("in") && second.name.downcase.include?("out")
+      elsif first.name_extension.downcase.include?("in") && second.name_extension.downcase.include?("out")
         first.update(sub_order: 0)
         second.update(sub_order: 1)
         return

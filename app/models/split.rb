@@ -10,9 +10,10 @@ class Split < ActiveRecord::Base
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
-  validates_presence_of :name, :distance_from_start, :sub_order, :kind
+  validates_presence_of :base_name, :distance_from_start, :sub_order, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
-  validates_uniqueness_of :name, scope: :course_id, case_sensitive: false
+  validates_uniqueness_of :base_name, scope: [:course_id, :name_extension], case_sensitive: false,
+                          message: "must be unique unless a name_extension is added to distinguish"
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
                           message: "only one start split permitted on a course"
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_finish?',
@@ -83,20 +84,17 @@ class Split < ActiveRecord::Base
     split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
   end
 
+  def name
+    [base_name, name_extension].compact.join(' ')
+  end
+
   def waypoint_group(event = nil)
     event ? event.waypoint_group(self) : course.waypoint_group(self)
   end
 
   def composite_name(event = nil)
-    (waypoint_group(event).order(:sub_order).pluck(:name)).join(' / ')
-  end
-
-  def base_name
-    Split.base_name(self.name)
-  end
-
-  def self.base_name(name)
-    name.split.reject { |x| (x.downcase == 'in') | (x.downcase == 'out') }.join(' ')
+    group = waypoint_group(event).pluck_to_hash(:base_name, :name_extension)
+    "#{group[0][:base_name]} #{(group.map { |block| block[:name_extension] }.compact.join(' / '))}"
   end
 
   def earliest_event_date

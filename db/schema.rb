@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160512171644) do
+ActiveRecord::Schema.define(version: 20160522054839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,19 +152,20 @@ ActiveRecord::Schema.define(version: 20160512171644) do
   add_index "split_times", ["split_id"], name: "index_split_times_on_split_id", using: :btree
 
   create_table "splits", force: :cascade do |t|
-    t.integer  "course_id",                                   null: false
+    t.integer  "course_id",                        null: false
     t.integer  "location_id"
-    t.string   "name",                 limit: 64,             null: false
-    t.integer  "distance_from_start",                         null: false
-    t.integer  "sub_order",                       default: 0, null: false
+    t.integer  "distance_from_start",              null: false
+    t.integer  "sub_order",            default: 0, null: false
     t.float    "vert_gain_from_start"
     t.float    "vert_loss_from_start"
-    t.integer  "kind",                                        null: false
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.integer  "kind",                             null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "description"
+    t.string   "base_name"
+    t.string   "name_extension"
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id", using: :btree

@@ -158,10 +158,7 @@ class Event < ActiveRecord::Base
   end
 
   def split_live_data
-    result = base_splits.pluck_to_hash(:id, :name, :distance_from_start)
-    result.each do |block|
-      block[:base_name] = Split.base_name(block[:name])
-    end
+    base_splits.pluck_to_hash(:id, :base_name, :distance_from_start)
   end
 
 end

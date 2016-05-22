@@ -5,7 +5,7 @@ class WaypointGroupRow
     @waypoint_group = waypoint_group
     begin_split_row = split_rows.first
     end_split_row = split_rows.count > 1 ? split_rows.last : SplitRow.new({})
-    @name = (split_rows.map(&:name)).join(' / ')
+    @name = "#{begin_split_row.base_name} #{(split_rows.map(&:name_extension)).compact.join(' / ')}"
     @distance_from_start = begin_split_row.distance_from_start
     @begin_time = begin_split_row.time_from_start
     @end_time = end_split_row.time_from_start

@@ -58,7 +58,7 @@ module CoursesHelper
   end
 
   def event_years_analyzed
-    event_dates = @event.course.most_recent_events(5).pluck(:first_start_time)
+    event_dates = @event.course.events.recent(5).pluck(:first_start_time)
     result = []
     event_dates.sort.each { |date| result << date.year }
     result

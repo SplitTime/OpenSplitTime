@@ -15,4 +15,5 @@
 //= require twitter/bootstrap
 // require turbolinks
 //= require gmaps/google
+//= require jquery-readyselector
 //= require_tree .

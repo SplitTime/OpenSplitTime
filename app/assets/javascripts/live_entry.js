@@ -661,7 +661,7 @@
         } // END splitSlider
     }; // END liveEntry
 
-    $(document).ready(function () {
+    $('.events.live_entry').ready(function () {
         liveEntry.init();
     });
 })(jQuery);

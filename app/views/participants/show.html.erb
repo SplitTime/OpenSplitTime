@@ -20,7 +20,7 @@
 <hr>
 <div class="row">
   <div class="col-xs-10">
-    <%= link_to '<< Show All Participants', participants_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Participant search', participants_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@participant) %>
         <%= link_to 'Edit this participant', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>

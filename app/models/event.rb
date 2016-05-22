@@ -12,7 +12,7 @@ class Event < ActiveRecord::Base
 
   scope :recent, -> (max) { order(first_start_time: :desc).limit(max) }
   scope :most_recent, -> { order(first_start_time: :desc).first }
-  scope :earliest, -> { order(:first_start_time.first) }
+  scope :earliest, -> { order(:first_start_time).first }
 
   def all_splits_on_course?
     splits.each do |split|

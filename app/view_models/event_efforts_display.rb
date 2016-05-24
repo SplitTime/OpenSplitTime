@@ -2,7 +2,7 @@ class EventEffortsDisplay
   # extend ActiveSupport::Concern
 
   attr_reader :event, :efforts, :effort_data, :effort_ids, :filtered_efforts_count
-  delegate :name, :first_start_time, :course, :race, :simple?, to: :event
+  delegate :name, :start_time, :course, :race, :simple?, to: :event
 
   def initialize(event, params)
     @event = event

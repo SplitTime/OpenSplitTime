@@ -1,9 +1,10 @@
 class Location < ActiveRecord::Base
   include Auditable
   include UnitConversions
+  strip_attributes collapse_spaces: true
   has_many :splits
 
-  before_destroy :disassociate_locations
+  before_destroy :disassociate_splits
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
@@ -21,7 +22,7 @@ class Location < ActiveRecord::Base
 
   private
 
-  def disassociate_locations
+  def disassociate_splits
     Split.where(location: self).update_all(location_id: nil)
   end
 

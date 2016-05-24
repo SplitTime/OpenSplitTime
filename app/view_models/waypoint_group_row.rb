@@ -27,7 +27,7 @@ class WaypointGroupRow
     kind == 1
   end
 
-  def waypoint?
+  def intermediate?
     kind == 2
   end
 

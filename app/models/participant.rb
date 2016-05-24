@@ -2,7 +2,9 @@ class Participant < ActiveRecord::Base
   include Auditable
   include PersonalInfo
   include Searchable
+  include SetOperations
   include Matchable
+  strip_attributes collapse_spaces: true
   enum gender: [:male, :female]
   has_many :interests, dependent: :destroy
   has_many :users, :through => :interests
@@ -11,9 +13,9 @@ class Participant < ActiveRecord::Base
 
   attr_accessor :suggested_match
 
-  scope :with_age_and_effort_count, -> { select("participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.first_start_time))/60/60/24/365.25) + efforts.age)) as participant_age")
+  scope :with_age_and_effort_count, -> { select("participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as participant_age")
                                              .joins("LEFT OUTER JOIN efforts ON (efforts.participant_id = participants.id)")
-                                             .joins("INNER JOIN events ON (events.id = efforts.event_id)")
+                                             .joins("LEFT OUTER JOIN events ON (events.id = efforts.event_id)")
                                              .group("participants.id") }
   scope :ordered_by_name, -> { order(:last_name, :first_name) }
 
@@ -32,13 +34,14 @@ class Participant < ActiveRecord::Base
   end
 
   def approximate_age_today
-    efforts.joins(:event).average("((extract(epoch from(current_date - events.first_start_time))/60/60/24/365.25) + efforts.age)").to_f
+    average = efforts.joins(:event).average("((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)").to_f
+    average == 0 ? nil : average
   end
 
   def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}
     raw_hash = joins(:efforts => :event)
                    .group(:participants)
-                   .average("((extract(epoch from(current_date - events.first_start_time))/60/60/24/365.25) + efforts.age)")
+                   .average("((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)")
     return_hash = {}
     raw_hash.each do |aggregate, value|
       participant_id = aggregate.split(',')[0].gsub(/[^0-9]/, '').to_i
@@ -47,18 +50,14 @@ class Participant < ActiveRecord::Base
     return_hash
   end
 
-  def self.age_matches(age_param, participants)
+  def self.age_matches(age_param)
     return none unless age_param.is_a?(Numeric)
-    exact_age_hash = participants.exact_ages_today
-    approximate_age_hash = participants.approximate_ages_today
-    participants.each do |participant|
-      age = participant.age_today
-      next unless age
-      if (age - age_param).abs < threshold
-        matches << participant
-      end
-    end
-    matches
+    threshold = 2 # Allow for some inaccuracy in reporting, rounding errors, etc.
+    exact_age_hash = exact_ages_today
+    approximate_age_hash = approximate_ages_today
+    age_hash = approximate_age_hash.merge(exact_age_hash)
+    age_hash.reject! { |_, age| (age - age_param).abs > threshold }
+    self.where(id: age_hash.keys)
   end
 
   # Methods for determining if a user has claimed a participant
@@ -83,6 +82,9 @@ class Participant < ActiveRecord::Base
     if save
       effort.participant ||= self
       effort.save
+      effort.id
+    else
+      nil
     end
   end
 
@@ -101,8 +103,9 @@ class Participant < ActiveRecord::Base
       efforts << @target_participant.efforts
       @target_participant.efforts = []
       @target_participant.destroy
+      @target_participant.id
     else
-      flash[:danger] = "Participants could not be merged"
+      nil
     end
   end
 

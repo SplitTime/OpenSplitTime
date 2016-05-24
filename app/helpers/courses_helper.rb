@@ -16,7 +16,7 @@ module CoursesHelper
     time_array = []
     waypoint_group.each do |split_id|
       time = time_data[split_id]
-      element = time ? day_time_format(@event.first_start_time + time.seconds) : '< no data >'
+      element = time ? day_time_format(@event.start_time + time.seconds) : '< no data >'
       time_array << element
     end
     time_array.join(' / ')
@@ -58,7 +58,7 @@ module CoursesHelper
   end
 
   def event_years_analyzed
-    event_dates = @event.course.events.recent(5).pluck(:first_start_time)
+    event_dates = @event.course.events.recent(5).pluck(:start_time)
     result = []
     event_dates.sort.each { |date| result << date.year }
     result

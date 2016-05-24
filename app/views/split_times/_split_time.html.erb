@@ -29,7 +29,7 @@
           <td class="text-right"><strong><%= composite_time(waypoint_group_row) %></strong></td>
           <td class="text-right"><strong><%= time_format_hhmmss(waypoint_group_row.segment_time) %></strong></td>
           <td class="text-right"><strong><%= time_format_minutes(view_object.total_time_in_aid) %></strong></td>
-      <% elsif waypoint_group_row.waypoint? %>
+      <% elsif waypoint_group_row.intermediate? %>
           <td><%= waypoint_group_row.name %></td>
           <td class="text-right"><%= d(waypoint_group_row.distance_from_start) %></td>
           <td class="text-right"><%= composite_time(waypoint_group_row) %></td>

@@ -37,6 +37,7 @@ gem 'pg'
 gem 'active_record_union'
 gem 'upsert'
 gem 'pluck_to_hash'
+gem 'strip_attributes'
 
 group :development do
   gem 'web-console', '~> 2.0'

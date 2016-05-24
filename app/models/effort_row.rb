@@ -64,19 +64,19 @@ class EffortRow
   end
 
   def bad?
-    data_status == Effort.data_statuses[:bad]
+    data_status == 'bad'
   end
 
   def questionable?
-    data_status == Effort.data_statuses[:questionable]
+    data_status == 'questionable'
   end
 
   def good?
-    data_status == Effort.data_statuses[:good]
+    data_status == 'good'
   end
 
   def confirmed?
-    data_status == Effort.data_statuses[:confirmed]
+    data_status == 'confirmed'
   end
 
 end

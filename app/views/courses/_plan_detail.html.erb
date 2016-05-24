@@ -23,7 +23,7 @@
             <td class="text-center"><strong><%= "#{time_format_hhmm(plan_segment_time(split, time_data))}" %></strong>
             </td>
             <td class="text-right"><strong></strong></td>
-        <% elsif split.waypoint? %>
+        <% elsif split.intermediate? %>
             <td><%= split.composite_name %></td>
             <td class="text-right"><%= d(split.distance_from_start) %></td>
             <td class="text-center"><%= plan_combined_time_of_day(split, time_data) %></td>

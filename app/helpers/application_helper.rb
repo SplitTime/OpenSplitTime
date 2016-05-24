@@ -97,5 +97,5 @@ module ApplicationHelper
 end
 
 def base_name(split_id)
-  Splits.find(split_id).base_name
+  Split.find(split_id).base_name
 end

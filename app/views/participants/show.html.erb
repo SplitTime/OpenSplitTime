@@ -5,8 +5,7 @@
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <%= @participant.bio %> |
-    <%= @participant.city_state_and_country %><br/>
+    <%= @participant.full_bio %><br/>
     <% if @participant.claimed? %>
         <% if @participant.claimant == @current_user %>
             <strong>Hey, this is me!</strong><br/>
@@ -24,7 +23,7 @@
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@participant) %>
         <%= link_to 'Edit this participant', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this participant', participant_path(@participant, referrer_path: URI(request.referrer).path), method: :delete,
+        <%= link_to 'Delete this participant', participant_path(@participant), method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
     <% if @current_user && (@participant.claimant == @current_user) %>
@@ -48,5 +47,5 @@
         <h4><%= "#{@participant.full_name}'s efforts:" %></h4>
       </div>
     </div>
-    <%= render 'efforts/efforts_list_participant', efforts: @participant.efforts.includes(:event).order('events.first_start_time DESC') %>
+    <%= render 'efforts/efforts_list_participant', efforts: @participant.efforts.ordered_by_date %>
 <% end %>

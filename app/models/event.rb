@@ -1,50 +1,22 @@
 class Event < ActiveRecord::Base
   include Auditable
   include SplitMethods
+  strip_attributes collapse_spaces: true
   belongs_to :course, touch: true
   belongs_to :race
   has_many :efforts, dependent: :destroy
   has_many :event_splits, dependent: :destroy
   has_many :splits, through: :event_splits
 
-  validates_presence_of :course_id, :name, :first_start_time
+  validates_presence_of :course_id, :name, :start_time
   validates_uniqueness_of :name, case_sensitive: false
 
-  scope :recent, -> (max) { order(first_start_time: :desc).limit(max) }
-  scope :most_recent, -> { order(first_start_time: :desc).first }
-  scope :earliest, -> { order(:first_start_time).first }
+  scope :recent, -> (max) { order(start_time: :desc).limit(max) }
+  scope :most_recent, -> { order(start_time: :desc).first }
+  scope :earliest, -> { order(:start_time).first }
 
   def all_splits_on_course?
-    splits.each do |split|
-      return false if split.course_id != course_id
-    end
-    true
-  end
-
-  def reconcile_exact_matches
-    unreconciled_efforts.each do |effort|
-      @exact_match = effort.exact_matching_participant
-      if @exact_match
-        @exact_match.pull_data_from_effort(effort)
-      elsif effort.suggest_close_match
-
-      end
-    end
-  end
-
-  def find_unmatched_efforts
-    unreconciled_efforts.each do |effort|
-
-    end
-  end
-
-  def assign_participants_to_efforts(ids)
-    id_hash = Hash[*ids.to_a.flatten.map(&:to_i)]
-    efforts = Effort.find(id_hash.keys).index_by(&:id)
-    participants = Participant.find(id_hash.values).index_by(&:id)
-    id_hash.each do |effort_id, participant_id|
-      participants[participant_id].pull_data_from_effort(efforts[effort_id])
-    end
+    splits.joins(:course).group(:course_id).count.size == 1
   end
 
   def reconciled_efforts
@@ -61,11 +33,6 @@ class Event < ActiveRecord::Base
 
   def set_all_course_splits
     splits << course.splits
-  end
-
-  def set_data_status(efforts_param = nil)
-    efforts = efforts_param || self.efforts
-    efforts.set_data_status
   end
 
   def time_hashes_all_similar_events
@@ -95,7 +62,7 @@ class Event < ActiveRecord::Base
     event_effort_ids = efforts.pluck(:id)
     result = event_effort_ids.map { |x| [x, nil] } # The nil is a placeholder for the row's collective data status
     ordered_split_ids.each do |split_id|
-      hash = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:data_status]]}]
+      hash = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:data_status]] }]
       result.collect! { |row| row << hash[row[0]] }
     end
     result = result.each { |row| row[1] = row[2..-1].compact.min } # Set row[1] to the minimum data status of the other rows
@@ -148,7 +115,7 @@ class Event < ActiveRecord::Base
 
   def efforts_overdue # Returns an array of efforts with overdue_amount attribute
     result = []
-    current_tfs = Time.now - first_start_time
+    current_tfs = Time.now - start_time
     cache = SegmentCalculationsCache.new(self)
     efforts_in_progress.each do |effort|
       effort.overdue_amount = effort.due_next_time_from_start(cache) - (current_tfs + effort.start_offset)

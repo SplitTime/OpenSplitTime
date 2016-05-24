@@ -31,7 +31,7 @@
             <td><%= split.name %></td>
             <td><%= d(split.distance_from_start) %></td>
             <td>
-              <% if split.waypoint? %>
+              <% if split.intermediate? %>
                   <%= link_to "Remove",
                               remove_split_event_path(split_id: split.id),
                               :method => :delete,

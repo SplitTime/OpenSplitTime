@@ -4,7 +4,7 @@ module Searchable
   include SetOperations
 
   included do
-    scope :gender_matches, -> (param) { where("gender = ?", gender_int(param)) }
+    scope :gender_matches, -> (param) { where("#{table_name}.gender = ?", gender_int(param)) }
     scope :country_matches, -> (param) { where(arel_table['country_code'].matches("#{country_code_for(param)}")) }
     scope :state_matches, -> (param) { where(arel_table['state_code'].matches("#{state_code_for(param)}")) }
     scope :first_name_matches, -> (param) { where(arel_table['first_name'].matches("%#{param}%")) }

@@ -71,7 +71,8 @@ class EffortsController < ApplicationController
     if params[:ids].nil?
       redirect_to reconcile_event_path(@event)
     else
-      @event.assign_participants_to_efforts(params[:ids])
+      count = EventReconcileService.associate_participants(params[:ids])
+      flash[:success] = "#{count} efforts reconciled." if count > 1
       redirect_to reconcile_event_path(@event)
     end
   end
@@ -85,7 +86,7 @@ class EffortsController < ApplicationController
     authorize @effort
     @split = Split.find(params[:split_id])
     @effort.split_times.where(split_id: @split.waypoint_group.pluck(:id)).destroy_all
-    @effort.set_data_status
+    DataStatusService.set_data_status(@effort)
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || effort_path(@effort)
   end
@@ -99,14 +100,14 @@ class EffortsController < ApplicationController
     else
       split_times.good!
     end
-    @effort.set_data_status
+    DataStatusService.set_data_status(@effort)
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || effort_path(@effort)
   end
 
   def set_data_status
     authorize @effort
-    @effort.set_data_status
+    DataStatusService.set_data_status(@effort)
     redirect_to effort_path(@effort)
   end
 

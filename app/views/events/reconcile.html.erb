@@ -8,14 +8,14 @@
     </div>
     <div class="col-md-4">
       <% if suggested_match_count(@unreconciled_batch) > 0 %>
-          <%= link_to 'Perform matches on page',
+          <%= link_to "Match #{suggested_match_count(@unreconciled_batch)} participants",
                       associate_participants_efforts_path(event_id: @event.id,
                                                           ids: make_suggested_match_id_hash(@unreconciled_batch)),
                       method: :put,
                       class: 'btn btn-sm btn-primary btn-margin-top' %>
       <% end %>
-      <%= link_to 'Create participants',
-                  create_from_efforts_participants_path(event_id: @event.id, effort_ids: @unreconciled_batch.pluck(:id)),
+      <%= link_to "Create #{@unreconciled_batch.count} participants",
+                  create_participants_event_path(@event.id, effort_ids: @unreconciled_batch.pluck(:id)),
                   method: :post,
                   data: {confirm: "Create #{@unreconciled_batch.count} new participants?"},
                   class: 'btn btn-sm btn-success btn-margin-top pull-right' %>

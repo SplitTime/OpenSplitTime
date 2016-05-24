@@ -7,7 +7,7 @@ RSpec.describe Segment, type: :model do
     before do
 
       @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
       @effort1 = Effort.create!(event: @event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
@@ -125,7 +125,7 @@ RSpec.describe Segment, type: :model do
 
     end
 
-    it 'should calculate distance properly based on provide splits' do
+    it 'should calculate distance properly based on provided splits' do
       expect(@segment1.distance).to eq(25000)
       expect(@segment2.distance).to eq(0)
       expect(@segment3.distance).to eq(9000)
@@ -134,7 +134,7 @@ RSpec.describe Segment, type: :model do
 
     it 'should equate itself with other segments using the same splits' do
       # This allows a segment to be used as a hash key and matched with another hash key
-      segment5 = Segment.new(@split6, @split1)
+      segment5 = Segment.new(@split1, @split6)
       segment6 = Segment.new(@split3, @split4)
       expect(segment5 == @segment1).to eq(true)
       expect(segment6 == @segment3).to eq(true)
@@ -155,7 +155,7 @@ RSpec.describe Segment, type: :model do
     before do
 
       @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
       @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
@@ -170,7 +170,7 @@ RSpec.describe Segment, type: :model do
 
       @segment1 = Segment.new(@split1, @split2)
       @segment2 = Segment.new(@split2.id, @split3.id)
-      @segment3 = Segment.new(@split4, @split3, @split1)
+      @segment3 = Segment.new(@split1, @split3, @split4)
       @segment4 = Segment.new(@split3, @split4.id)
 
       SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
@@ -210,7 +210,7 @@ RSpec.describe Segment, type: :model do
   describe 'times' do
     before do
       @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
       @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
@@ -225,7 +225,7 @@ RSpec.describe Segment, type: :model do
 
       @segment1 = Segment.new(@split1, @split2)
       @segment2 = Segment.new(@split2.id, @split3.id)
-      @segment3 = Segment.new(@split4, @split3, @split1)
+      @segment3 = Segment.new(@split1, @split3, @split4)
       @segment4 = Segment.new(@split3, @split4.id)
 
       SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
@@ -255,7 +255,7 @@ RSpec.describe Segment, type: :model do
   describe 'name' do
     before do
       @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
       @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
@@ -270,7 +270,7 @@ RSpec.describe Segment, type: :model do
 
       @segment1 = Segment.new(@split1, @split2)
       @segment2 = Segment.new(@split2.id, @split3.id)
-      @segment3 = Segment.new(@split4, @split3, @split1)
+      @segment3 = Segment.new(@split1, @split3, @split4)
       @segment4 = Segment.new(@split3, @split4.id)
 
 

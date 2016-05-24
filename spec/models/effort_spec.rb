@@ -18,11 +18,16 @@ require 'pry-byebug'
 # t.integer  "start_offset"
 
 RSpec.describe Effort, type: :model do
+  it { is_expected.to strip_attribute(:first_name).collapse_spaces }
+  it { is_expected.to strip_attribute(:last_name).collapse_spaces }
+  it { is_expected.to strip_attribute(:state_code).collapse_spaces }
+  it { is_expected.to strip_attribute(:country_code).collapse_spaces }
+
   describe "validations" do
 
     before :each do
       @course = Course.create!(name: 'Test Course')
-      @event = Event.create!(course: @course, race: nil, name: 'Test Event', first_start_time: "2012-08-08 05:00:00")
+      @event = Event.create!(course: @course, race: nil, name: 'Test Event', start_time: "2012-08-08 05:00:00")
       @location1 = Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
       @location2 = Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
       @participant = Participant.create!(first_name: 'Joe', last_name: 'Hardman',
@@ -31,7 +36,7 @@ RSpec.describe Effort, type: :model do
     end
 
     it "should be valid when created with an event_id, first_name, last_name, and gender" do
-      @event = Event.create!(course: @course, name: 'Hardrock 2015', first_start_time: "2015-07-01 06:00:00")
+      @event = Event.create!(course: @course, name: 'Hardrock 2015', start_time: "2015-07-01 06:00:00")
       Effort.create!(event: @event, first_name: 'David', last_name: 'Goliath', gender: 'male')
 
       expect(Effort.all.count).to(equal(1))
@@ -84,7 +89,7 @@ RSpec.describe Effort, type: :model do
     before do
 
       course = Course.create!(name: 'Test Course 100')
-      event = Event.create!(name: 'Test Event 2015', course: course, first_start_time: "2015-07-01 06:00:00")
+      event = Event.create!(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00")
       location1 = Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
       location2 = Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
 
@@ -127,7 +132,7 @@ RSpec.describe Effort, type: :model do
     before do
 
       @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
       @effort1 = Effort.create!(event: @event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
@@ -268,7 +273,7 @@ RSpec.describe Effort, type: :model do
     before do
 
       @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, first_start_time: "2015-07-01 06:00:00")
+      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
       @effort1 = Effort.create!(event: @event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
@@ -379,7 +384,8 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort: @effort13, split: @split5, time_from_start: 14300)
       SplitTime.create!(effort: @effort13, split: @split6, time_from_start: 19800)
 
-      Effort.all.set_data_status
+      efforts = Effort.all
+      DataStatusService.set_data_status(efforts)
 
     end
 

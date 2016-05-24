@@ -19,7 +19,7 @@
   </td>
   <td>
     <%= link_to 'New participant',
-                create_from_efforts_participants_path(effort_ids: effort.id, event_id: @event.id),
+                create_participants_event_path(effort_ids: effort.id, event_id: @event.id),
                 method: :post,
                 class: "btn btn-xs btn-success" %>
   </td>

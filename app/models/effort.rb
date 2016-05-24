@@ -3,6 +3,7 @@ class Effort < ActiveRecord::Base
   include PersonalInfo
   include Searchable
   include Matchable
+  strip_attributes collapse_spaces: true
   enum gender: [:male, :female]
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event, touch: true
@@ -22,11 +23,12 @@ class Effort < ActiveRecord::Base
                                          .joins(:split_times => :split).where(splits: {kind: 1})
                                          .order('split_times.time_from_start') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
+  scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
 
-  def self.columns_for_import
-    id = ["id"]
-    foreign_keys = Effort.column_names.find_all { |x| x.include?("_id") }
-    stamps = Effort.column_names.find_all { |x| x.include?("_at") | x.include?("_by") }
+  def self.attributes_for_import
+    id = ['id']
+    foreign_keys = Effort.column_names.find_all { |x| x.include?('_id') }
+    stamps = Effort.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
     (column_names - (id + foreign_keys + stamps)).map &:to_sym
   end
 
@@ -133,7 +135,7 @@ class Effort < ActiveRecord::Base
   end
 
   def event_start_time
-    event.first_start_time
+    event.start_time
   end
 
   def finish_split_time
@@ -163,8 +165,8 @@ class Effort < ActiveRecord::Base
   def likely_intended_time(military_time, split)
     units = %w(hours minutes seconds)
     seconds_into_day = military_time.split(':')
-                         .map.with_index { |x, i| x.to_i.send(units[i]) }
-                         .reduce(:+).to_i
+                           .map.with_index { |x, i| x.to_i.send(units[i]) }
+                           .reduce(:+).to_i
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
     working_datetime + ((((working_datetime - due_next_when) * -1) / 1.day).round(0) * 1.day)
   end
@@ -280,51 +282,6 @@ class Effort < ActiveRecord::Base
 
   def self.within_time_range(low_time, high_time)
     where(id: ids_within_time_range(low_time, high_time))
-  end
-
-  # Admin functions to set data status
-
-  def set_data_status
-    Effort.where(id: id).set_data_status
-  end
-
-  def self.set_data_status
-    update_effort_hash = {}
-    event = Event.find(all.first.event_id)
-    split_ids = event.ordered_splits.pluck(:id)
-    cache = SegmentCalculationsCache.new(event)
-    split_times = SplitTime.includes(:effort).where(effort_id: all.pluck(:id))
-
-    all.each do |effort|
-      status_array = []
-      update_split_time_hash = {}
-      effort_split_times = split_times.where(effort_id: effort.id).index_by(&:split_id)
-      ordered_split_times = split_ids.collect { |id| effort_split_times[id] }
-      start_split_time = ordered_split_times.first
-      latest_valid_split_time = start_split_time
-
-      ordered_split_times.each do |split_time|
-        next if split_time.nil?
-        if split_time.confirmed?
-          latest_valid_split_time = split_time
-          next
-        end
-        segment = Segment.new(latest_valid_split_time.split, split_time.split)
-        segment_time = segment.end_split.start? ?
-            split_time.time_from_start :
-            split_time.time_from_start - latest_valid_split_time.time_from_start
-        status = cache.get_data_status(segment, segment_time)
-        status_array << status
-        latest_valid_split_time = split_time if status == :good
-        update_split_time_hash[split_time.id] = status if status != split_time.data_status.try(:to_sym)
-      end
-
-      BulkUpdateService.bulk_update_split_time_status(update_split_time_hash)
-      effort_status = DataStatus.get_lowest_data_status(status_array)
-      update_effort_hash[effort.id] = effort_status if effort_status != effort.data_status.try(:to_sym)
-    end
-
-    BulkUpdateService.bulk_update_effort_status(update_effort_hash)
   end
 
   def self.efforts_from_ids(effort_ids)

@@ -4,6 +4,9 @@ require "rails_helper"
 # t.string   "description"
 
 RSpec.describe Course, type: :model do
+  it { is_expected.to strip_attribute(:name).collapse_spaces }
+  it { is_expected.to strip_attribute(:description).collapse_spaces }
+
   it "should be valid with a name" do
     course = Course.create!(name: 'Slow Mo 100 CCW')
 

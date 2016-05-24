@@ -3,17 +3,15 @@ class Segment
   delegate :course, to: :begin_split
   delegate :events, :earliest_event_date, :latest_event_date, to: :end_split
 
-# Takes one or more splits or split_ids in any order, uses first and last element
+# Takes one or more splits or split_ids, uses first and last element if > 2 elements
 # Can take a waypoint group as a parameter
 
   def initialize(*splits)
     splits = splits.flatten
-    first_split = splits[0].is_a?(Integer) ? Split.find(splits[0]) : splits[0]
-    second_split = splits[-1].is_a?(Integer) ? Split.find(splits[-1]) : splits[-1]
-    raise 'Segment splits must be on same course' if first_split.course_id != second_split.course_id
-    splits = [first_split, second_split].sort_by { |split| [split.distance_from_start, split.sub_order] }
-    @begin_split = splits.first
-    @end_split = splits.second
+    @begin_split = splits[0].is_a?(Integer) ? Split.find(splits[0]) : splits[0]
+    @end_split = splits[-1].is_a?(Integer) ? Split.find(splits[-1]) : splits[-1]
+    raise 'Segment splits must be on same course' if @begin_split.course_id != @end_split.course_id
+    raise 'Segment splits are out of order' if @begin_split.course_index > @end_split.course_index
   end
 
   def ==(other)
@@ -72,7 +70,7 @@ class Segment
   def end_id
     end_split.id
   end
-
+  
   def split_ids
     [begin_split.id, end_split.id]
   end
@@ -84,5 +82,9 @@ class Segment
   def is_full_course?
     begin_split.start? && end_split.finish?
   end
+  
+  private
+  
+  attr_accessor :course_ordered_split_ids
 
 end

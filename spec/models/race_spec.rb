@@ -1,8 +1,12 @@
 require "rails_helper"
 
 # t.string   "name"
+# t.string   "description"
 
 RSpec.describe Race, type: :model do
+  it { is_expected.to strip_attribute(:name).collapse_spaces }
+  it { is_expected.to strip_attribute(:description).collapse_spaces }
+
   it "should be valid with a name" do
     race = Race.create!(name: 'Slow Mo 100')
 

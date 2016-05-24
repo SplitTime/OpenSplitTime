@@ -54,7 +54,7 @@ module SplitMethods
   end
 
   def ordered_splits_without_start
-    splits.waypoint.union(splits.finish).ordered
+    splits.intermediate.union(splits.finish).ordered
   end
 
   def ordered_split_ids

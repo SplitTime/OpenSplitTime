@@ -44,11 +44,15 @@ module PersonalInfo
     birthdate ? TimeDifference.between(birthdate, now).in_years.round(0) : nil
   end
 
+  def full_bio
+    [bio, city_state_and_country].compact.split("").flatten.join(' | ')
+  end
+
   module ClassMethods
 
     def exact_ages_today # Returns a hash of {resource.id => age today} ignoring any resource without a birthdate
       now = Time.now.utc.to_date
-      birthdate_hash = Hash[all.where.not(birthdate: nil).pluck(:id, :birthdate)]
+      birthdate_hash = Hash[self.where.not(birthdate: nil).pluck(:id, :birthdate)]
       Hash[birthdate_hash.map { |id, birthdate| [id, TimeDifference.between(birthdate, now).in_years.round(0)] }]
     end
 

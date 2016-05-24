@@ -34,8 +34,8 @@ RSpec.describe SplitsController, :type => :controller do
     end
 
     it "should automatically set sub_orders of splits having 'in' and 'out' name_extensions to '0' and '1' respectively" do
-      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', distance_from_start: 7000, sub_order: 1, kind: 'waypoint')
-      split2_attributes = {course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', distance_from_start: 7000, kind: 'waypoint'}
+      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', distance_from_start: 7000, sub_order: 1, kind: 'intermediate')
+      split2_attributes = {course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', distance_from_start: 7000, kind: 'intermediate'}
       post :create, split: split2_attributes
       expect(Split.count).to eq(2)
       expect(Split.where(base_name: 'Aid Station', name_extension: 'In').first.sub_order).to eq(0)
@@ -43,17 +43,17 @@ RSpec.describe SplitsController, :type => :controller do
     end
 
     it "should automatically increment sub_order of newly created split within waypoint group" do
-      Split.create!(course_id: @course.id, base_name: 'Transition', name_extension: 'Started', distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      split2_attributes = {course_id: @course.id, base_name: 'Transition', name_extension: 'Finished', distance_from_start: 7000, kind: 'waypoint'}
+      Split.create!(course_id: @course.id, base_name: 'Transition', name_extension: 'Started', distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
+      split2_attributes = {course_id: @course.id, base_name: 'Transition', name_extension: 'Finished', distance_from_start: 7000, kind: 'intermediate'}
       post :create, split: split2_attributes
       expect(Split.count).to eq(2)
       expect(Split.where(base_name: 'Transition', name_extension: 'Finished').first.sub_order).to eq(1)
     end
 
     it "when created with a location, should automatically reset locations of splits in waypoint group" do
-      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Change', location_id: nil, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      split3_attributes = {course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', location_id: @location2.id, distance_from_start: 7000, sub_order: 1, kind: 'waypoint'}
+      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
+      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Change', location_id: nil, distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
+      split3_attributes = {course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', location_id: @location2.id, distance_from_start: 7000, sub_order: 1, kind: 'intermediate'}
       post :create, split: split3_attributes
       expect(Split.count).to eq(3)
       expect(Split.where(base_name: 'Aid Station', name_extension: 'In').first.location_id).to eq(@location2.id)
@@ -62,9 +62,9 @@ RSpec.describe SplitsController, :type => :controller do
     end
 
     it "when created without a location, should automatically set to location of splits in waypoint group" do
-      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Change', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      split3_attributes = {course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', location_id: nil, distance_from_start: 7000, sub_order: 1, kind: 'waypoint'}
+      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
+      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Change', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
+      split3_attributes = {course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', location_id: nil, distance_from_start: 7000, sub_order: 1, kind: 'intermediate'}
       post :create, split: split3_attributes
       expect(Split.count).to eq(3)
       expect(Split.where(base_name: 'Aid Station', name_extension: 'In').first.location_id).to eq(@location1.id)
@@ -73,9 +73,9 @@ RSpec.describe SplitsController, :type => :controller do
     end
 
     it "when location is updated, should automatically update location of splits in waypoint group" do
-      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Change', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
-      split3 = Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'waypoint')
+      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'In', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
+      Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Change', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
+      split3 = Split.create!(course_id: @course.id, base_name: 'Aid Station', name_extension: 'Out', location_id: @location1.id, distance_from_start: 7000, sub_order: 0, kind: 'intermediate')
       split3_attributes = {location_id: @location2.id}
       put :update, id: split3.id, split: split3_attributes
       expect(Split.count).to eq(3)

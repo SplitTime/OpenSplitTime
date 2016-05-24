@@ -51,9 +51,10 @@ class BestEffortsDisplay
   attr_accessor :segment, :finish_hash, :segment_time_hash, :effort_data_raw, :overall_sorted_effort_ids, :gender_sorted_effort_ids
 
   def set_segment(params)
-    start_split = params[:split1].present? ? params[:split1].to_i : course.start_split.id
-    finish_split = params[:split2].present? ? params[:split2].to_i : course.finish_split.id
-    @segment = Segment.new(start_split, finish_split)
+    split1 = params[:split1].present? ? Split.find(params[:split1]) : course.start_split
+    split2 = params[:split2].present? ? Split.find(params[:split2]) : course.finish_split
+    splits = [split1, split2].sort_by { |x| x.course_index }
+    @segment = Segment.new(splits[0], splits[1])
   end
 
   def get_efforts_and_raw_data(params)
@@ -68,7 +69,7 @@ class BestEffortsDisplay
                                                    state_code: effort.state_code,
                                                    country_code: effort.country_code,
                                                    data_status: effort.data_status,
-                                                   year: effort.event.first_start_time.year} }
+                                                   year: effort.event.start_time.year} }
     @filtered_efforts_count = efforts.total_entries
     @effort_data = effort_data_raw.index_by { |block| block[:id] }
     @effort_ids = effort_data_raw.map { |block| block[:id] }

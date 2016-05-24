@@ -2,7 +2,7 @@ require "rails_helper"
 
 # t.integer  "course_id"
 # t.integer  "location_id"
-# t.string   "name"
+# t.string   "base_name"
 # t.integer  "distance_from_start"
 # t.integer  "sub_order"
 # t.integer  "vert_gain_from_start"
@@ -11,6 +11,8 @@ require "rails_helper"
 # t.string   "description"
 
 RSpec.describe Split, kind: :model do
+  it { is_expected.to strip_attribute(:base_name).collapse_spaces }
+  it { is_expected.to strip_attribute(:description).collapse_spaces }
 
   before :each do
     @course1 = Course.create!(name: 'Test Course')
@@ -31,7 +33,7 @@ RSpec.describe Split, kind: :model do
     expect(Split.first.name).to eq('Hopeless Outbound In')
     expect(Split.first.distance_from_start).to eq(50000)
     expect(Split.first.sub_order).to eq(0)    # default value
-    expect(Split.first.waypoint?).to eq(true)
+    expect(Split.first.intermediate?).to eq(true)
   end
 
   it "should be invalid without a base_name" do
@@ -91,7 +93,7 @@ RSpec.describe Split, kind: :model do
     expect(split.errors[:kind]).to include("only one finish split permitted on a course")
   end
 
-  it "should allow multiple waypoint splits within the same course" do
+  it "should allow multiple intermediate splits within the same course" do
     Split.create!(course_id: @course1.id, location_id: @location1.id, base_name: 'Aid1', name_extension: 'In', distance_from_start: 9000, sub_order: 0, kind: 2)
     split1 = Split.new(course_id: @course1.id, location_id: @location1.id, base_name: 'Aid1', name_extension: 'Out', distance_from_start: 9000, sub_order: 1, kind: 2)
     split2 =Split.new(course_id: @course1.id, location_id: @location2.id, base_name: 'Aid2', name_extension: 'In', distance_from_start: 18000, sub_order: 0, kind: 2)
@@ -109,13 +111,13 @@ RSpec.describe Split, kind: :model do
     expect(split.errors[:vert_loss_from_start]).to include("for the start split must be 0")
   end
 
-  it "should require waypoint splits and finish splits to have positive distance_from_start" do
+  it "should require intermediate splits and finish splits to have positive distance_from_start" do
     split1 = Split.new(course_id: @course1.id, location_id: @location1.id, base_name: 'Aid1', name_extension: 'In', distance_from_start: 0, sub_order: 0, kind: 2)
     split2 = Split.new(course_id: @course1.id, location_id: @location1.id, base_name: 'Finish Line', distance_from_start: 0, sub_order: 0, kind: 1)
     expect(split1).not_to be_valid
-    expect(split1.errors[:distance_from_start]).to include("must be positive for waypoint and finish splits")
+    expect(split1.errors[:distance_from_start]).to include("must be positive for intermediate and finish splits")
     expect(split2).not_to be_valid
-    expect(split2.errors[:distance_from_start]).to include("must be positive for waypoint and finish splits")
+    expect(split2.errors[:distance_from_start]).to include("must be positive for intermediate and finish splits")
   end
 
   it "should not have negative vert_gain_from_start" do
@@ -132,27 +134,27 @@ RSpec.describe Split, kind: :model do
 
   describe 'waypoint_group' do
     let(:course) { Course.create!(name: 'split test') }
-    let(:event) { Event.create!(name: 'Waypoint Event', course: course, first_start_time: Time.current) }
-    let(:event_same_course) { Event.create!(name: 'Waypoint Event on same course', course: course, first_start_time: Time.current) }
+    let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
+    let(:event_same_course) { Event.create!(name: 'Waypoint Event on same course', course: course, start_time: Time.current) }
 
     before do
       event.splits.create!(course: course, location_id: @location1.id, base_name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
-      event.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'In', distance_from_start: 5000, sub_order: 0, kind: :waypoint)
-      event.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'Out', distance_from_start: 5000, sub_order: 1, kind: :waypoint)
+      event.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'In', distance_from_start: 5000, sub_order: 0, kind: :intermediate)
+      event.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'Out', distance_from_start: 5000, sub_order: 1, kind: :intermediate)
       event.splits.create!(course: course, location_id: @location3.id, base_name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
 
-      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass pre 2000', name_extension: 'In', distance_from_start: 4400, sub_order: 0, kind: :waypoint)
-      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass pre 2000', name_extension: 'Out', distance_from_start: 4400, sub_order: 1, kind: :waypoint)
-      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass 2012 flood', name_extension: 'In', distance_from_start: 4400, sub_order: 3, kind: :waypoint)
-      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass 2012 flood', name_extension: 'Out', distance_from_start: 4400, sub_order: 4, kind: :waypoint)
+      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass pre 2000', name_extension: 'In', distance_from_start: 4400, sub_order: 0, kind: :intermediate)
+      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass pre 2000', name_extension: 'Out', distance_from_start: 4400, sub_order: 1, kind: :intermediate)
+      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass 2012 flood', name_extension: 'In', distance_from_start: 4400, sub_order: 3, kind: :intermediate)
+      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass 2012 flood', name_extension: 'Out', distance_from_start: 4400, sub_order: 4, kind: :intermediate)
 
       other_course = Course.create!(name: 'some other course')
-      Event.create!(name: 'Event on some other course', course: other_course, first_start_time: Time.current)
+      Event.create!(name: 'Event on some other course', course: other_course, start_time: Time.current)
       Split.create!(course: other_course, location_id: @location1.id, base_name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
-      Split.create!(course: other_course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'In', distance_from_start: 5000, sub_order: 0, kind: :waypoint)
-      Split.create!(course: other_course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'Out', distance_from_start: 5000, sub_order: 1, kind: :waypoint)
+      Split.create!(course: other_course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'In', distance_from_start: 5000, sub_order: 0, kind: :intermediate)
+      Split.create!(course: other_course, location_id: @location2.id, base_name: 'Monarch Pass', name_extension: 'Out', distance_from_start: 5000, sub_order: 1, kind: :intermediate)
       Split.create!(course: other_course, location_id: @location3.id, base_name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
-      Event.create!(name: 'Other Waypoint Event', course: other_course, first_start_time: Time.current)
+      Event.create!(name: 'Other Waypoint Event', course: other_course, start_time: Time.current)
     end
 
     it 'should setup the data correctly' do
@@ -166,7 +168,7 @@ RSpec.describe Split, kind: :model do
       expect(first_split.waypoint_group.count).to eq(1)
     end
 
-    it 'should return two splits for a waypoint' do
+    it 'should return two splits for an intermediate split' do
       first_split = course.splits.second
       expect(first_split.waypoint_group.count).to eq(2)
     end

@@ -1,6 +1,7 @@
 class Course < ActiveRecord::Base
   include Auditable
   include SplitMethods
+  strip_attributes collapse_spaces: true
   has_many :splits, dependent: :destroy
   has_many :events
   accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_as_entered].blank? }
@@ -9,17 +10,17 @@ class Course < ActiveRecord::Base
   validates_uniqueness_of :name, case_sensitive: false
 
   def earliest_event_date
-    events.earliest.first_start_time
+    events.earliest.start_time
   end
 
   def latest_event_date
-    events.most_recent.first_start_time
+    events.most_recent.start_time
   end
 
   def update_initial_splits
-    splits.start.first.update(name: "#{name} Start",
+    splits.start.first.update(base_name: "#{name} Start",
                                          description: "Starting point for the #{name} course.")
-    splits.finish.first.update(name: "#{name} Finish",
+    splits.finish.first.update(base_name: "#{name} Finish",
                                           description: "Finish point for the #{name} course.")
   end
 

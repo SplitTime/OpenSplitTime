@@ -5,7 +5,7 @@
 </div>
 <div class="row">
   <div class="col-xs-6">
-    <strong><%= "#{l@event_display.first_start_time, format: :full_with_weekday}" %></strong><br/>
+    <strong><%= "#{l@event_display.start_time, format: :full_with_weekday}" %></strong><br/>
     <strong>Course:</strong>
     <%= link_to @event_display.course_name, course_path(@event_display.course) %>
     <% if @event_display.race %> |

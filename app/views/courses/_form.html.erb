@@ -21,7 +21,7 @@
         </div>
         <% if @course.new_record? %>
             <%= f.fields_for :splits, @course.splits.new do |builder| %>
-                <%= builder.hidden_field :name, value: 'Start' %>
+                <%= builder.hidden_field :base_name, value: 'Start' %>
                 <%= builder.hidden_field :description, value: 'Starting point for the course.' %>
                 <%= builder.hidden_field :distance_from_start, value: 0 %>
                 <%= builder.hidden_field :sub_order, value: 0 %>
@@ -30,7 +30,7 @@
                 <%= builder.hidden_field :vert_loss_from_start, value: 0 %>
             <% end %>
             <%= f.fields_for :splits, @course.splits.new do |builder| %>
-                <%= builder.hidden_field :name, value: 'Finish' %>
+                <%= builder.hidden_field :base_name, value: 'Finish' %>
                 <%= builder.hidden_field :description, value: 'Finishing point for the course.' %>
                 <%= builder.hidden_field :sub_order, value: 0 %>
                 <%= builder.hidden_field :kind, value: :finish %>

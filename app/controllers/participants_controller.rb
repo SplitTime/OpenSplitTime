@@ -44,15 +44,6 @@ class ParticipantsController < ApplicationController
     end
   end
 
-  def create_from_efforts
-    @efforts = Effort.where(id: params[:effort_ids])
-    @efforts.each do |effort|
-      @participant = Participant.new
-      @participant.pull_data_from_effort(effort)
-    end
-    redirect_to reconcile_event_path(params[:event_id])
-  end
-
   def update
     authorize @participant
 
@@ -67,8 +58,7 @@ class ParticipantsController < ApplicationController
     authorize @participant
     @participant.destroy
 
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || participants_path
+    redirect_to participants_path
   end
 
   def avatar_claim
@@ -97,7 +87,11 @@ class ParticipantsController < ApplicationController
 
   def combine
     authorize @participant
-    @participant.merge_with(Participant.find(params[:target_id]))
+    if @participant.merge_with(Participant.find(params[:target_id]))
+      flash[:success] = "Merge was successful. "
+    else
+      flash[:danger] = "Merge could not be completed."
+    end
     redirect_to merge_participant_path(@participant)
   end
 

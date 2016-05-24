@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     member { delete :remove_all_splits }
     member { delete :delete_all_efforts }
     member { get :reconcile }
+    member { post :create_participants }
     member { get :stage}
     member { get :spread}
     member { get :live_entry}
@@ -59,7 +60,6 @@ Rails.application.routes.draw do
     collection { get :subregion_options }
     member { get :avatar_claim }
     member { delete :avatar_disclaim }
-    collection { post :create_from_efforts }
     member { get :merge }
     member { put :combine }
     member { delete :remove_effort }

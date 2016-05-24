@@ -7,21 +7,15 @@ class EventsController < ApplicationController
     @events = Event.select("events.*, COUNT(efforts.id) as effort_count")
                   .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
                   .group("events.id")
-                  .order(first_start_time: :desc)
+                  .order(start_time: :desc)
                   .paginate(page: params[:page], per_page: 25)
     session[:return_to] = events_path
   end
 
   def show
     @event = Event.includes(:course, :race).find(params[:id])
-    if @event.course
-      @event_display = EventEffortsDisplay.new(@event, params)
-      session[:return_to] = event_path(@event)
-    else
-      flash[:danger] = "Event must have a course. Please create or choose one now."
-      render 'edit'
-      session[:return_to] = event_path(@event)
-    end
+    @event_display = EventEffortsDisplay.new(@event, params)
+    session[:return_to] = event_path(@event)
   end
 
   def new
@@ -69,7 +63,7 @@ class EventsController < ApplicationController
   end
 
 
-  # Event staging actions
+# Event staging actions
 
   def stage
     authorize @event
@@ -88,17 +82,25 @@ class EventsController < ApplicationController
     end
   end
 
+  def create_participants
+    authorize @event
+    EventReconcileService.create_participants_from_efforts(params[:effort_ids])
+    redirect_to reconcile_event_path(@event)
+  end
+
   def delete_all_efforts
     authorize @event
     @event.efforts.destroy_all
+    flash[:warning] = "All efforts deleted for #{@event.name}"
     redirect_to stage_event_path(@event)
   end
 
-  # Import actions
+# Import actions
 
   def import_splits
     authorize @event
-    if Importer.split_import(params[:file], @event)
+    @importer = Importer.new(params[:file], @event, current_user.id)
+    if @importer.split_import
       flash[:success] = "Import successful"
     else
       flash[:danger] = "No split data detected"
@@ -109,21 +111,14 @@ class EventsController < ApplicationController
 
   def import_efforts
     authorize @event
-    if Importer.effort_import(params[:file], @event, current_user.id)
-      flash[:success] = "Import successful"
-      auto_matched_count = @event.reconciled_efforts.count
-      if auto_matched_count == @event.efforts.count
-        flash[:success] = "All #{auto_matched_count} participants matched our database and have been reconciled."
-      elsif auto_matched_count > 0
-        flash[:success] = "We found #{auto_matched_count} participants that matched our database. Please reconcile the others now."
-      else
-        flash[:success] = "No participants matched our database. Please reconcile your participants now."
-      end
+    @importer = Importer.new(params[:file], @event, current_user.id)
+    if @importer.effort_import
+      flash[:success] = "Import successful. #{@importer.effort_import_report}"
     else
-      flash[:danger] = "No effort data detected"
+      flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:importer].first}."
     end
 
-    redirect_to stage_event_path(@event)
+    redirect_to stage_event_path(@event, errors: @importer.errors)
   end
 
   def spread
@@ -131,7 +126,7 @@ class EventsController < ApplicationController
   end
 
 
-  # Actions related to the event/split relationship
+# Actions related to the event/split relationship
 
   def splits
     authorize @event
@@ -158,13 +153,13 @@ class EventsController < ApplicationController
 
   def remove_all_splits
     authorize @event
-    @event.splits.delete(Split.waypoint)
+    @event.splits.delete(Split.intermediate)
     redirect_to splits_event_path(@event)
   end
 
   def set_data_status
     authorize @event
-    @event.set_data_status
+    DataStatusService.set_data_status(@event.efforts)
     redirect_to event_path(@event)
   end
 
@@ -181,12 +176,12 @@ class EventsController < ApplicationController
     }
   end
 
-  # This endpoint gets called when the admin enters a "bib" number in the live_entry UI.
-  #
+# This endpoint gets called when the admin enters a "bib" number in the live_entry UI.
+#
   def live_entry_ajax_get_effort
     authorize @event
 
-    # Here look up the effort and populate the json array with data 
+    # Here look up the effort and populate the json array with data
     # needed for front end processing. The assumption is that this endpoint
     # will take the splitId, bibNumber and eventId used to populate the following fields:
     # Name, Last Reported, Split From, and Time Spent
@@ -198,15 +193,15 @@ class EventsController < ApplicationController
     # If the lookup fails here (bibNumber or eventId is incorrect), return { success: false }
     # lastReportedSplitTime comes from the splits table for this "effort"
     # estimatedTime range
-    @effort = Effort.where(bib_number: params[:bibNumber].to_i).first
+    @effort = @event.efforts.where(bib_number: params[:bibNumber].to_i).first
     @split = @effort.last_reported_split
     @split_time = @effort.last_reported_split_time
     render :json => {
-      success: true,
-      effortId: @effort.id,
-      name: @effort.full_name,
-      lastReportedSplitId: @split.id,
-      lastReportedSplitTime: "#{@split.name} at #{@split_time.formatted_time_hhmmss}"
+        success: true,
+        effortId: @effort.id,
+        name: @effort.full_name,
+        lastReportedSplitId: @split.id,
+        lastReportedSplitTime: "#{@split.name} at #{@split_time.formatted_time_hhmmss}"
     }
   end
 
@@ -218,8 +213,8 @@ class EventsController < ApplicationController
 
     #TODO: Mark
     render :json => {
-      success: true,
-      timeFromLastReported: "03:00:00"
+        success: true,
+        timeFromLastReported: "03:00:00"
     }
   end
 
@@ -231,9 +226,9 @@ class EventsController < ApplicationController
 
     #TODO: Mark
     render :json => {
-      success: true,
-      timeSpent: "03:00:00"
-    }                           
+        success: true,
+        timeSpent: "03:00:00"
+    }
   end
 
   def live_entry_ajax_set_split_times
@@ -243,15 +238,15 @@ class EventsController < ApplicationController
     # Efforts come in as an array
     # access efforts as params[:efforts]
     render :json => {
-      success: true,
-      message: params[:efforts]
+        success: true,
+        message: params[:efforts]
     }
   end
 
   private
 
   def event_params
-    params.require(:event).permit(:course_id, :race_id, :name, :first_start_time)
+    params.require(:event).permit(:course_id, :race_id, :name, :start_time)
   end
 
   def query_params

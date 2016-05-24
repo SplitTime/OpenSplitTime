@@ -19,7 +19,7 @@ require 'factory_girl_rails'
 require 'support/factory_girl'
 require 'capybara/rspec'
 require_relative 'support/controller_helpers'
-
+require 'strip_attributes/matchers'
 
 
 
@@ -90,5 +90,7 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers
 
   config.extend ControllerMacros, type: :controller
+
+  config.include StripAttributes::Matchers
 
 end

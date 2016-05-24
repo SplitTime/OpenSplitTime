@@ -6,6 +6,9 @@ require "rails_helper"
 # t.decimal  "longitude"
 
 RSpec.describe Location, type: :model do
+  it { is_expected.to strip_attribute(:name).collapse_spaces }
+  it { is_expected.to strip_attribute(:description).collapse_spaces }
+
   it "should be valid with only a name" do
     location = Location.create!(name: 'Putnam Basin')
     expect(Location.all.count).to eq(1)

@@ -20,8 +20,11 @@ module SetOperations
     def apply_operation(operation, scopes)
       id_column = "#{table_name}.#{primary_key}"
       sub_query = scopes
-                      .map { |s| s.select(id_column).to_sql }
+                      .map { |s| s.blank? ? nil : s.select(id_column).to_sql }
+                      .compact
                       .join(" #{operation} ")
+
+      return none if sub_query.blank?
 
       where "#{id_column} IN (#{sub_query})"
     end

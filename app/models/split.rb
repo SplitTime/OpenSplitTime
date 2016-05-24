@@ -1,7 +1,8 @@
 class Split < ActiveRecord::Base
   include Auditable
   include UnitConversions
-  enum kind: [:start, :finish, :waypoint]
+  strip_attributes collapse_spaces: true
+  enum kind: [:start, :finish, :intermediate]
   belongs_to :course
   belongs_to :location
   has_many :split_times, dependent: :destroy
@@ -25,7 +26,7 @@ class Split < ActiveRecord::Base
   validates_numericality_of :vert_loss_from_start, equal_to: 0, if: 'is_start?', allow_nil: true,
                             message: "for the start split must be 0"
   validates_numericality_of :distance_from_start, greater_than: 0, :unless => 'is_start?',
-                            message: "must be positive for waypoint and finish splits"
+                            message: "must be positive for intermediate and finish splits"
   validates_numericality_of :vert_gain_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: "may not be negative"
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
@@ -97,12 +98,16 @@ class Split < ActiveRecord::Base
     "#{group[0][:base_name]} #{(group.map { |block| block[:name_extension] }.compact.join(' / '))}"
   end
 
+  def course_index # Returns an integer representing the split's relative position on the course
+    course.ordered_split_ids.index(id)
+  end
+
   def earliest_event_date
-    events.earliest.first_start_time
+    events.earliest.start_time
   end
 
   def latest_event_date
-    events.most_recent.first_start_time
+    events.most_recent.start_time
   end
 
   def random_location_name

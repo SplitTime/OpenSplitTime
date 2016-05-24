@@ -13,6 +13,11 @@ require "rails_helper"
 
 
 RSpec.describe Participant, type: :model do
+  it { is_expected.to strip_attribute(:first_name).collapse_spaces }
+  it { is_expected.to strip_attribute(:last_name).collapse_spaces }
+  it { is_expected.to strip_attribute(:state_code).collapse_spaces }
+  it { is_expected.to strip_attribute(:country_code).collapse_spaces }
+
   it "should be valid when created with a first_name, a last_name, and a gender" do
     participant = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
 

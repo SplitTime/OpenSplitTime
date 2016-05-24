@@ -9,7 +9,7 @@ RSpec.describe SplitTime, kind: :model do
   
   before :each do
     @course = Course.create!(name: 'Test Course')
-    @event = Event.create!(course: @course, name: 'Test Event 2015', first_start_time: "2015-07-01 06:00:00")
+    @event = Event.create!(course: @course, name: 'Test Event 2015', start_time: "2015-07-01 06:00:00")
     @effort = Effort.create!(event: @event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0)
     @location1 = Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
     @location2 = Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
@@ -72,7 +72,7 @@ RSpec.describe SplitTime, kind: :model do
   it "should ensure that effort.event.course_id is the same as split.course_id" do
     course1 = Course.create!(name: 'Race Course CW')
     course2 = Course.create!(name: 'Hiking Course CCW')
-    event = Event.create!(course: course1, name: 'Fast Times 100 2015', first_start_time: "2015-07-01 06:00:00")
+    event = Event.create!(course: course1, name: 'Fast Times 100 2015', start_time: "2015-07-01 06:00:00")
     effort = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male')
     split = Split.create!(course: course2, location: @location1, base_name: 'Hiking Aid 1', distance_from_start: 50000, kind: 2)
     split_time = SplitTime.new(effort: effort, split: split, time_from_start: 30000)

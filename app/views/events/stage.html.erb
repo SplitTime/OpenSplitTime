@@ -1,7 +1,7 @@
 <h1 align="center"><%= @event.name %></h1>
 <div class="row">
   <div class="col-md-6 col-md-offset-3 center">
-    <strong><%= "#{l @event.first_start_time, format: :full_with_weekday}" %></strong><br/>
+    <strong><%= "#{l @event.start_time, format: :full_with_weekday}" %></strong><br/>
     <strong>Course:</strong>
     <%= link_to @event.course.name, course_path(@event.course) %>
     <% if @event.race_id? %> |

@@ -89,6 +89,13 @@ class Split < ActiveRecord::Base
     [base_name, name_extension].compact.join(' ')
   end
 
+  def name=(entered_name)
+    if entered_name.present?
+      self.base_name = entered_name.split.reject { |x| (x.downcase == 'in') | (x.downcase == 'out') }.join(' ')
+      self.name_extension = entered_name.gsub(base_name, '').strip
+    end
+  end
+
   def waypoint_group(event = nil)
     event ? event.waypoint_group(self) : course.waypoint_group(self)
   end

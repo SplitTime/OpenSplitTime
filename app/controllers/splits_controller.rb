@@ -97,7 +97,8 @@ class SplitsController < ApplicationController
   private
 
   def split_params
-    params.require(:split).permit(:course_id, :location_id, :base_name, :name_extension, :description, :sub_order, :kind,
+    params.require(:split).permit(:course_id, :location_id, :base_name, :name_extension, :name,
+                                  :description, :sub_order, :kind,
                                   :distance_from_start, :distance_as_entered,
                                   :vert_gain_from_start, :vert_gain_as_entered,
                                   :vert_loss_from_start, :vert_loss_as_entered)

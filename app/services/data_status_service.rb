@@ -1,9 +1,10 @@
 class DataStatusService
 
   def self.set_data_status(*efforts)
+    efforts = efforts.flatten
     update_effort_hash = {}
     update_split_time_hash = {}
-    event = efforts.first.event
+    event = efforts[0].event
     cache = SegmentCalculationsCache.new(event)
 
     efforts.each do |effort|

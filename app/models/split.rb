@@ -34,7 +34,7 @@ class Split < ActiveRecord::Base
 
   scope :ordered, -> { order(:distance_from_start, :sub_order) }
   scope :at_same_distance, -> (split) { where(distance_from_start: split.distance_from_start).order(:sub_order) }
-  scope :base, -> { where(sub_order: 0) }
+  scope :base, -> { where(sub_order: 0).order(:distance_from_start) }
 
   def is_start?
     self.start?

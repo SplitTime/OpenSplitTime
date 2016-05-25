@@ -42,7 +42,7 @@
 
       <script>
         $(document).ready(function () {
-          var locations = <%= Location.joins(:splits).where(splits: {course_id: @split.course_id}).first(2).to_json.html_safe %>;    // pass ruby variable to javascript
+          var locations = <%= Location.joins(:splits).where(splits: {course_id: @split.course_id}).uniq.to_json.html_safe %>;    // pass ruby variable to javascript
 
               gmap_show(locations, {latitude: locations[0].latitude, longitude: locations[0].longitude});    // init show map for company card (only print marker)
         });

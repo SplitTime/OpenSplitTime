@@ -12,6 +12,8 @@ class Location < ActiveRecord::Base
   validates_numericality_of :latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true
   validates_numericality_of :longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true
 
+  scope :on_course, -> (course) { includes(:splits).where(splits: {course_id: course.id}) }
+
   def elevation_as_entered
     Location.elevation_in_preferred_units(elevation, User.current) if elevation
   end

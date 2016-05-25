@@ -19,7 +19,7 @@ var gmap_show = function (locations, center) {
         });
 
         marker.infowindow = new google.maps.InfoWindow({
-            content: val.name + " : " + val.latitude //TODO: make actual title
+            content: val.name + " : " + val.latitude + " : " + val.longitude
         });
 
         marker.addListener('click', function () {

@@ -1,482 +1,555 @@
-(function ($) {
+( function( $ ) {
 
-    /**
-     * UI object for the live event view
-     *
-     */
-    var liveEntry = {
+	/**
+	 * UI object for the live event view
+	 *
+	 */
+	var liveEntry = {
 
+		/**
+		 * This is the static event array for the live_entry view.
+		 * Once the live_entry UI has been wired up to the database
+		 * remove this file.
+		 *
+		 */
+		eventLiveEntryStaticData: {
+			eventName: "Hardrock 100 2016",
+			splits: [
+				{
+					name: "Hardrock Clockwise Start",
+					distance: 0.0,
+					id: 0
+				},
+				{
+					name: "KT",
+					distance: 11.4,
+					id: 1
+				},
+				{
+					name: "Chapman",
+					distance: 18.4,
+					id: 2
+				},
+				{
+					name: "Telluride",
+					distance: 27.7,
+					id: 3
+				},
+				{
+					name: "Kroger",
+					distance: 32.7,
+					id: 4
+				},
+				{
+					name: "Governor",
+					distance: 36.0,
+					id: 5
+				},
+				{
+					name: "Ouray",
+					distance: 43.9,
+					id: 6
+				},
+				{
+					name: "Engineer",
+					distance: 51.8,
+					id: 7
+				},
+				{
+					name: "Grouse",
+					distance: 58.3,
+					id: 8
+				},
+				{
+					name: "Burrows",
+					distance: 67.9,
+					id: 9
+				},
+				{
+					name: "Sherman",
+					distance: 71.7,
+					id: 10
+				},
+				{
+					name: "Pole Creek",
+					distance: 71.7,
+					id: 11
+				},
+				{
+					name: "Maggie",
+					distance: 85.1,
+					id: 12
+				},
+				{
+					name: "Cunningham",
+					distance: 91.2,
+					id: 13
+				},
+				{
+					name: "Hardrock Clockwise Finish",
+					distance: 100.5,
+					id: 14
+				}
+			]
+		}, // END static data
 
-        /**
-         * Stores the ID for the current event
-         * this is pulled from the url and dumped on the page
-         * then stored in this variable
-         *
-         * @type integer
-         */
-        currentEventId: null,
+		/**
+		 * Stores the ID for the current event
+		 * this is pulled from the url and dumped on the page
+		 * then stored in this variable
+		 * 
+		 * @type integer
+		 */
+		currentEventId: null,
 
-        /**
-         * When you type in a bib number into the live entry form this is set
-         *
-         * @type integer
-         */
-        currentEffortId: null,
+		/**
+		 * When you type in a bib number into the live entry form this is set
+		 * 
+		 * @type integer
+		 */
+		currentEffortId: null,
 
-        eventLiveEntryData: null,
+		/**
+		 * This kicks off the full UI
+		 * 
+		 */
+		init: function() {
+			
+			// Sets the currentEventId once
+			liveEntry.currentEventId = $( '#js-event-id' ).text();
+			liveEntry.effortsCache.init();
+			liveEntry.header.init();
+			liveEntry.liveEntryForm.init();
+			liveEntry.effortsDataTable.init();
+			liveEntry.splitSlider.init();
+		},
 
-        getEventLiveEntryData: function () {
-            return $.get('/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_event_data', function (response) {
-                liveEntry.eventLiveEntryData = response
+		/**
+		 * Contains functionality for the efforts cache
+		 * 
+		 */
+		effortsCache: {
 
-            })
+			/**
+			 * Inits the efforts cache
+			 * 
+			 */
+			init: function() {
 
-        },
+				// Set the initial cache object in local storage
+				var effortsCache = localStorage.getItem( 'effortsCache' );
+				if( effortsCache === null || effortsCache.length == 0 ) {
+					localStorage.setItem( 'effortsCache', JSON.stringify( [] ) );
+				}
+			},
 
-        /**
-         * This kicks off the full UI
-         *
-         */
-        init: function () {
-            // localStorage.clear();
+			/**
+			 * Get local data Efforts Storage Object
+			 *
+			 * @return object Returns object from local storage
+			 */
+			getStoredEfforts: function() {
+				return JSON.parse( localStorage.getItem('effortsCache') );
+			},
 
-            // Sets the currentEventId once
-            liveEntry.currentEventId = $('#js-event-id').text();
-            liveEntry.getEventLiveEntryData().done(function () {
-                liveEntry.effortsCache.init();
-                liveEntry.header.init();
-                liveEntry.liveEntryForm.init();
-                liveEntry.effortsDataTable.init();
-                liveEntry.splitSlider.init();
-            });
-        },
+			/**
+			 * Stringify then Save/Push all efforts to local object
+			 *
+			 * @param object effortsObject Pass in the object of the updated object with all added or removed objects.
+			 * @return null
+			 */
+			setStoredEfforts: function( effortsObject ) {
+				localStorage.setItem( 'effortsCache', JSON.stringify( effortsObject ) );
+				return null;
+			},
 
-        /**
-         * Contains functionality for the efforts cache
-         *
-         */
-        effortsCache: {
+			/**
+			 * Delete the matching effort
+			 *
+			 * @param object 	effort 	Pass in the object/effort we want to delete.
+			 * @return null
+			 */
+			deleteStoredEffort: function( effort ) {
+				var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+				$.each( storedEfforts, function( index ) {
+					if ( this.uniqueId == effort.uniqueId ) {
+						storedEfforts = storedEfforts.slice( index + 1 );
+						return false;
+					}
+				} );
+				localStorage.setItem( 'effortsCache', JSON.stringify( storedEfforts ) );
+				return null;
+			},
 
-            /**
-             * Inits the efforts cache
-             *
-             */
-            init: function () {
+			/**
+			 * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
+			 *
+			 * @param  object effort Pass in Object of the effort to check it against the stored objects		 *
+			 * @return boolean	True if match found, False if no match found
+			 */
+			isMatchedEffort: function( effort ) {
+				var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+				var tempEffort = JSON.stringify( effort );
+				var flag = false;
 
-                // Set the initial cache object in local storage
-                var effortsCache = localStorage.getItem('effortsCache');
-                if (effortsCache === null || effortsCache.length == 0) {
-                    localStorage.setItem('effortsCache', JSON.stringify([]));
-                }
-            },
+				$.each( storedEfforts, function() {
+					var loopedEffort = JSON.stringify( $( this ) );
+					if ( loopedEffort == tempEffort ) {
+						flag = true;
+					}
+				} );
 
-            /**
-             * Get local data Efforts Storage Object
-             *
-             * @return object Returns object from local storage
-             */
-            getStoredEfforts: function () {
-                return JSON.parse(localStorage.getItem('effortsCache'))
-            },
+				if( flag == false ) {
+					return false;
+				} else {
+					return true;
+				};
+			},
+		},
+		/**
+		 * Functionality to build header lives here
+		 *
+		 */
+		header: {
+			init: function() {
+				liveEntry.header.updateEventName();
+				liveEntry.header.buildSplitSelect();
+			},
 
-            /**
-             * Stringify then Save/Push all efforts to local object
-             *
-             * @param object effortsObject Pass in the object of the updated object with all added or removed objects.
-             * @return null
-             */
-            setStoredEfforts: function (effortsObject) {
-                localStorage.setItem('effortsCache', JSON.stringify(effortsObject));
-                return null;
-            },
+			/**
+			 * Populate the h2 with the eventName
+			 *
+			 */
+			updateEventName: function() {
+				$( '.page-title h2' ).text( liveEntry.eventLiveEntryStaticData.eventName );
+			},
 
-            /**
-             * Delete the matching effort
-             *
-             * @param object    effort    Pass in the object/effort we want to delete.
-             * @return null
-             */
-            deleteStoredEffort: function (effort) {
-                var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                $.each(storedEfforts, function (index) {
-                    if (this.uniqueId == effort.uniqueId) {
-                        storedEfforts = storedEfforts.slice(index + 1);
-                        return false;
-                    }
-                });
-                localStorage.setItem('effortsCache', JSON.stringify(storedEfforts));
-                return null;
-            },
+			/**
+			 * Add the Splits data to the select drop down table on the page
+			 *
+			 */
+			buildSplitSelect: function() {
 
-            /**
-             * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
-             *
-             * @param  object effort Pass in Object of the effort to check it against the stored objects         *
-             * @return boolean    True if match found, False if no match found
-             */
-            isMatchedEffort: function (effort) {
-                var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                var tempEffort = JSON.stringify(effort);
-                var flag = false;
+				// Populate select list with actual splits
+				var splitItems = '';
+				for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
+					splitItems += '<option value="' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" >' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</option>';
+				}
+				$( '#split-select' ).html( splitItems );
+			},
+		},
 
-                $.each(storedEfforts, function () {
-                    var loopedEffort = JSON.stringify($(this));
-                    if (loopedEffort == tempEffort) {
-                        flag = true;
-                    }
-                });
+		/**
+		 * Contains functionality for the effort form
+		 *
+		 */
+		liveEntryForm: {
+			init: function() {
+				// Apply input masks on time in / out
+				var maskOptions = {
+					placeholder: "HH:MM:SS",
+					insertMode: false,
+					showMaskOnHover: false,
+				};
 
-                if (flag == false) {
-                    return false;
-                } else {
-                    return true;
-                }
-                ;
-            },
-        },
-        /**
-         * Functionality to build header lives here
-         *
-         */
-        header: {
-            init: function () {
-                liveEntry.header.updateEventName();
-                liveEntry.header.buildSplitSelect();
-            },
+				$( '#js-time-in' ).inputmask( "hh:mm:ss", maskOptions );
+				$( '#js-time-out' ).inputmask( "hh:mm:ss", maskOptions );
+				$( '#js-bib-number' ).inputmask( "9999999999999999999", {placeholder:""} );
 
-            /**
-             * Populate the h2 with the eventName
-             *
-             */
-            updateEventName: function () {
-                $('.page-title h2').text(liveEntry.eventLiveEntryData.eventName);
-            },
+				// Clears the live entry form when the clear button is clicked
+				$( '#js-clear-entry-form' ).on( 'click', function( event ) {
+					event.preventDefault();
+					liveEntry.liveEntryForm.clearSplitsData();
+					liveEntry.liveEntryForm.toggleFields( false );
+					return false;
+				} );
 
-            /**
-             * Add the Splits data to the select drop down table on the page
-             *
-             */
-            buildSplitSelect: function () {
+				// Listen for keydown on bibNumber
+				$( '#js-bib-number' ).on( 'keydown', function( event ) {
 
-                // Populate select list with actual splits
-                var splitItems = '';
-                for (var i = 0; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].base_name + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
-                }
-                $('#split-select').html(splitItems);
-            },
-        },
+					// Check for tab or enter
+					if ( event.keyCode == 13 || event.keyCode == 9 ) {
+						event.preventDefault();
+						var bibNumber = $( this ).val();
+						if ( bibNumber == '' ) {
+							liveEntry.liveEntryForm.toggleFields( false );
+							liveEntry.liveEntryForm.clearSplitsData();
+						} else {
 
-        /**
-         * Contains functionality for the effort form
-         *
-         */
-        liveEntryForm: {
-            init: function () {
-                // Apply input masks on time in / out
-                var maskOptions = {
-                    placeholder: "HH:MM:SS",
-                    insertMode: false,
-                    showMaskOnHover: false,
-                };
+							// Ajax endpoint for the effort data
+							var data = { bibNumber: bibNumber };
+							$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_effort', data, function( response ) {
+								if ( response.success == true ) {
+									liveEntry.currentEffortId = response.effortId;
 
-                $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
-                $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
-                $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
+									// If success == true, this means the bib number lookup found an "effort"
+									$( '#js-live-bib' ).val( 'true' );
+									$( '#js-effort-name' ).html( response.name );
+									$( '#js-effort-last-reported' ).html( response.lastReportedSplitTime )
+								} else {
 
-                // Clears the live entry form when the clear button is clicked
-                $('#js-clear-entry-form').on('click', function (event) {
-                    event.preventDefault();
-                    liveEntry.liveEntryForm.clearSplitsData();
-                    liveEntry.liveEntryForm.toggleFields(false);
-                    return false;
-                });
+									// If success == false, this means the bib number lookup failed, but we still need to capture the data
+									$( '#js-live-bib' ).val( 'false' );
+									$( '#js-effort-name' ).html( 'n/a' );
+									$( '#js-effort-last-reported' ).html( 'n/a' )
+								}
+							} );
+							liveEntry.liveEntryForm.toggleFields( true );
+							if ( ! event.shiftKey ) {
+								$( '#js-time-in' ).focus();	
+							}
+						}
+						return false;
+					}
+				} );
 
-                // Listen for keydown on bibNumber
-                $('#js-bib-number').on('keydown', function (event) {
+				$( '#js-time-in' ).on( 'keydown', function( event ) {
+					if ( event.keyCode == 13 || event.keyCode == 9 ) {
+						event.preventDefault();
+						var timeIn = $( this ).val();
 
-                    // Check for tab or enter
-                    if (event.keyCode == 13 || event.keyCode == 9) {
-                        event.preventDefault();
-                        var bibNumber = $(this).val();
-                        if (bibNumber == '') {
-                            liveEntry.liveEntryForm.toggleFields(false);
-                            liveEntry.liveEntryForm.clearSplitsData();
-                        } else {
+						// Validate the military time string
+						if ( liveEntry.liveEntryForm.validateTimeFields( timeIn ) ) {
 
-                            // Ajax endpoint for the effort data
-                            var data = {bibNumber: bibNumber};
-                            $.get('/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_effort', data, function (response) {
-                                if (response.success == true) {
-                                    liveEntry.currentEffortId = response.effortId;
+							// currentEffortId may be null here
+							var data = { timeIn:timeIn, effortId: liveEntry.currentEffortId };
+							$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_from', data, function( response ) {
+								if ( response.success == true ) {
+									$( '#js-last-reported' ).html( response.timeFromLastReported );
+								}
+								if ( event.shiftKey ) {
+									$( '#js-bib-number' ).focus();
+								} else {
+									$( '#js-time-out' ).focus();
+								}
+							} );
+						} else {
+							 $( this ).val( '' );
+						}
+						return false;
+					}
+				} );
 
-                                    // If success == true, this means the bib number lookup found an "effort"
-                                    $('#js-live-bib').val('true');
-                                    $('#js-effort-name').html(response.name);
-                                    $('#js-effort-last-reported').html(response.lastReportedSplitTime)
-                                } else {
+				$( '#js-time-out' ).on( 'keydown', function( event ) {
+					if ( event.keyCode == 13 || event.keyCode == 9 ) {
+						event.preventDefault();
+						var timeOut = $( this ).val();
 
-                                    // If success == false, this means the bib number lookup failed, but we still need to capture the data
-                                    $('#js-live-bib').val('false');
-                                    $('#js-effort-name').html('n/a');
-                                    $('#js-effort-last-reported').html('n/a')
-                                }
-                            });
-                            liveEntry.liveEntryForm.toggleFields(true);
-                            if (!event.shiftKey) {
-                                $('#js-time-in').focus();
-                            }
-                        }
-                        return false;
-                    }
-                });
+						// Validate the military time string
+						if ( liveEntry.liveEntryForm.validateTimeFields( timeOut ) ) {
 
-                $('#js-time-in').on('keydown', function (event) {
-                    if (event.keyCode == 13 || event.keyCode == 9) {
-                        event.preventDefault();
-                        var timeIn = $(this).val();
+							// currentEffortId may be null here
+							var data = { timeOut:timeOut, effortId: liveEntry.currentEffortId };
+							$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_spent', data, function( response ) {
+								if ( response.success == true ) {
+									$( '#js-time-spent' ).html( response.timeSpent );
+								}
+								if ( event.shiftKey ) {
+									$( '#js-time-in' ).focus();
+								} else {
+									$( '#js-pacer-in' ).focus();
+								}
+							} );
+						} else {
+							 $( this ).val( '' );
+						}
+						return false;
+					}
+				} );
 
-                        // Validate the military time string
-                        if (liveEntry.liveEntryForm.validateTimeFields(timeIn)) {
+				// Listen for keydown in pacer-in and pacer-out. 
+				// Enter checks the box, tab moves to next field.
+				$( '#js-pacer-in' ).on( 'keydown', function( event ) {
+					event.preventDefault();
+					var $this = $( this );
+					switch ( event.keyCode ) {
+						case 13: // Enter pressed
+							if ( $this.is(':checked') ) {
+								$this.prop( 'checked', false );
+							} else {
+								$this.prop( 'checked', true );
+							}
+							break;
+						case 9: // Tab pressed
+							if ( event.shiftKey ) {
+								$( '#js-time-out' ).focus();
+							} else {
+								$( '#js-pacer-out' ).focus();
+							}
+							break;
+					}
+					return false;
+				} );
 
-                            // currentEffortId may be null here
-                            var data = {timeIn: timeIn, effortId: liveEntry.currentEffortId};
-                            $.get('/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_from', data, function (response) {
-                                if (response.success == true) {
-                                    $('#js-last-reported').html(response.timeFromLastReported);
-                                }
-                                if (event.shiftKey) {
-                                    $('#js-bib-number').focus();
-                                } else {
-                                    $('#js-time-out').focus();
-                                }
-                            });
-                        } else {
-                            $(this).val('');
-                        }
-                        return false;
-                    }
-                });
+				$( '#js-pacer-out' ).on( 'keydown', function( event ) {
+					event.preventDefault();
+					var $this = $( this );
+					switch ( event.keyCode ) {
+						case 13: // Enter pressed
+							if ( $this.is(':checked') ) {
+								$this.prop( 'checked', false );
+							} else {
+								$this.prop( 'checked', true );
+							}
+							break;
+						case 9: // Tab pressed
+							if ( event.shiftKey ) {
+								$( '#js-pacer-in' ).focus();
+							} else {
+								$( '#js-add-to-cache' ).focus();
+							}
+							break;
+					}
+					return false;
+				} );
+			},
 
-                $('#js-time-out').on('keydown', function (event) {
-                    if (event.keyCode == 13 || event.keyCode == 9) {
-                        event.preventDefault();
-                        var timeOut = $(this).val();
+			/**
+			 * Disables or enables fields for the effort lookup form
+			 *
+			 * @param bool 	True to enable, false to disable
+			 */
+			toggleFields: function( enable ) {
+				if ( enable == true ) {
+					$( '#js-add-effort-form input:not(#js-bib-number)' ).removeAttr( 'disabled' );
+				} else {
+					$( '#js-add-effort-form input:not(#js-bib-number)' ).attr( 'disabled', 'disabled' );
+					$( '#js-add-effort-form input:not(#js-bib-number)' ).val( '' );
+					$( '#js-bib-number' ).val( '' );
+				}
+			},
 
-                        // Validate the military time string
-                        if (liveEntry.liveEntryForm.validateTimeFields(timeOut)) {
+			/**
+			 * Clears out the splits slider data fields
+			 *
+			 */
+			clearSplitsData: function() {
+				$( '#js-effort-name' ).html( '&nbsp;' );
+				$( '#js-effort-last-reported' ).html( '&nbsp;' )
+				$( '#js-effort-split-from' ).html( '&nbsp;' );
+				$( '#js-last-reported' ).html( '&nbsp;' );
+				$( '#js-time-spent' ).html( '&nbsp;' );
+				$( '#js-time-in' ).val( '' );
+				$( '#js-time-out' ).val( '' );
+				$( '#js-live-bib' ).val( '' );
+				$( '#js-pacer-in' ).attr( 'checked', false );
+				$( '#js-pacer-out' ).attr( 'checked', false );
+			},
 
-                            // currentEffortId may be null here
-                            var data = {timeOut: timeOut, effortId: liveEntry.currentEffortId};
-                            $.get('/events/' + liveEntry.currentEventId + '/live_entry_ajax_get_time_spent', data, function (response) {
-                                if (response.success == true) {
-                                    $('#js-time-spent').html(response.timeSpent);
-                                }
-                                if (event.shiftKey) {
-                                    $('#js-time-in').focus();
-                                } else {
-                                    $('#js-pacer-in').focus();
-                                }
-                            });
-                        } else {
-                            $(this).val('');
-                        }
-                        return false;
-                    }
-                });
+			/**
+			 * Valiates the time fields
+			 *
+			 * @param string time time format from the input mask
+			 */
+			validateTimeFields: function( time ) {
+				time = time.replace(/\D/g, '');
+				if ( time.length == 6 ) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}, // END liveEntryForm form
 
-                // Listen for keydown in pacer-in and pacer-out.
-                // Enter checks the box, tab moves to next field.
-                $('#js-pacer-in').on('keydown', function (event) {
-                    event.preventDefault();
-                    var $this = $(this);
-                    switch (event.keyCode) {
-                        case 13: // Enter pressed
-                            if ($this.is(':checked')) {
-                                $this.prop('checked', false);
-                            } else {
-                                $this.prop('checked', true);
-                            }
-                            break;
-                        case 9: // Tab pressed
-                            if (event.shiftKey) {
-                                $('#js-time-out').focus();
-                            } else {
-                                $('#js-pacer-out').focus();
-                            }
-                            break;
-                    }
-                    return false;
-                });
+		/**
+		 * Contains functionality for efforts cache table
+		 * 
+		 */
+		effortsDataTable: {
 
-                $('#js-pacer-out').on('keydown', function (event) {
-                    event.preventDefault();
-                    var $this = $(this);
-                    switch (event.keyCode) {
-                        case 13: // Enter pressed
-                            if ($this.is(':checked')) {
-                                $this.prop('checked', false);
-                            } else {
-                                $this.prop('checked', true);
-                            }
-                            break;
-                        case 9: // Tab pressed
-                            if (event.shiftKey) {
-                                $('#js-pacer-in').focus();
-                            } else {
-                                $('#js-add-to-cache').focus();
-                            }
-                            break;
-                    }
-                    return false;
-                });
-            },
+			/**
+			 * Stores the object from DataTable
+			 * 
+			 * @type object
+			 */
+			$dataTable: null,
 
-            /**
-             * Disables or enables fields for the effort lookup form
-             *
-             * @param bool    True to enable, false to disable
-             */
-            toggleFields: function (enable) {
-                if (enable == true) {
-                    $('#js-add-effort-form input:not(#js-bib-number)').removeAttr('disabled');
-                } else {
-                    $('#js-add-effort-form input:not(#js-bib-number)').attr('disabled', 'disabled');
-                    $('#js-add-effort-form input:not(#js-bib-number)').val('');
-                    $('#js-bib-number').val('');
-                }
-            },
+			/**
+			 * Inits the provisional data table
+			 * 
+			 */
+			init: function() {
 
-            /**
-             * Clears out the splits slider data fields
-             *
-             */
-            clearSplitsData: function () {
-                $('#js-effort-name').html('&nbsp;');
-                $('#js-effort-last-reported').html('&nbsp;')
-                $('#js-effort-split-from').html('&nbsp;');
-                $('#js-last-reported').html('&nbsp;');
-                $('#js-time-spent').html('&nbsp;');
-                $('#js-time-in').val('');
-                $('#js-time-out').val('');
-                $('#js-live-bib').val('');
-                $('#js-pacer-in').attr('checked', false);
-                $('#js-pacer-out').attr('checked', false);
-            },
+				// Initiate DataTable Plugin
+				liveEntry.effortsDataTable.$dataTable = $( '#js-provisional-data-table' ).DataTable();	
+				liveEntry.effortsDataTable.populateTableFromCache();
+				liveEntry.effortsDataTable.effortControls();
 
-            /**
-             * Valiates the time fields
-             *
-             * @param string time time format from the input mask
-             */
-            validateTimeFields: function (time) {
-                time = time.replace(/\D/g, '');
-                if (time.length == 6) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }, // END liveEntryForm form
+				// Attach add listener
+				$( '#js-add-to-cache' ).on( 'click', function( event ) {
+					event.preventDefault();
 
-        /**
-         * Contains functionality for efforts cache table
-         *
-         */
-        effortsDataTable: {
+					var thisEffort = {};
 
-            /**
-             * Stores the object from DataTable
-             *
-             * @type object
-             */
-            $dataTable: null,
+					// Check table stored efforts for highest unique ID then create a new one.
+					var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+					console.log(storedEfforts);
+					var storedUniqueIds = [];
+					if ( storedEfforts.length > 0 ) {
+						$.each( storedEfforts, function( index, value ) {
+							storedUniqueIds.push( this.uniqueId );
+						} );
+						var highestUniqueId = Math.max.apply( Math, storedUniqueIds );
+						thisEffort.uniqueId = highestUniqueId + 1;
+					} else {
+						thisEffort.uniqueId = 0;
+					}
 
-            /**
-             * Inits the provisional data table
-             *
-             */
-            init: function () {
+					// Build up the effort
+					thisEffort.eventId 		= liveEntry.currentEventId;
+					thisEffort.splitId 		= $( document ).find( '#split-select option:selected' ).attr( 'data-split-id' );
+					thisEffort.splitName 	= $( document ).find( '#split-select option:selected' ).html();
+					thisEffort.effortId 	= liveEntry.currentEffortId;
+					thisEffort.bibNumber 	= $( '#js-bib-number' ).val();
+					thisEffort.liveBib 		= $( '#js-live-bib' ).val();
+					thisEffort.effortName 	= $( '#js-effort-name' ).html();
+					thisEffort.timeIn 		= $( '#js-time-in' ).val();
+					thisEffort.timeOut 		= $( '#js-time-out' ).val();
+					if ( $( '#js-pacer-in' ).prop( 'checked' ) == true ) {
+						thisEffort.pacerIn = true;
+						thisEffort.pacerInHtml = 'Yes';
+					} else {
+						thisEffort.pacerIn = false;
+						thisEffort.pacerInHtml = 'No';
+					}
+					if ( $( '#js-pacer-out' ).prop( 'checked' ) == true ) {
+						thisEffort.pacerOut = true;
+						thisEffort.pacerOutHtml = 'Yes';
+					} else {
+						thisEffort.pacerOut = false;
+						thisEffort.pacerOutHtml = 'No';
+					}
+					if( ! liveEntry.effortsCache.isMatchedEffort( thisEffort ) ) {
+						storedEfforts.push( thisEffort );
+						liveEntry.effortsCache.setStoredEfforts( storedEfforts );
+						liveEntry.effortsDataTable.addEffortToTable( thisEffort );
+					}
 
-                // Initiate DataTable Plugin
-                liveEntry.effortsDataTable.$dataTable = $('#js-provisional-data-table').DataTable();
-                liveEntry.effortsDataTable.populateTableFromCache();
-                liveEntry.effortsDataTable.effortControls();
+					// Clear data and disable fields once we've collected all the data
+					liveEntry.liveEntryForm.clearSplitsData();
+					liveEntry.liveEntryForm.toggleFields( false );
+					return false;
+				} );
+			},
 
-                // Attach add listener
-                $('#js-add-to-cache').on('click', function (event) {
-                    event.preventDefault();
+			populateTableFromCache: function() {
+				var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+				$.each( storedEfforts, function( index ) {
+					liveEntry.effortsDataTable.addEffortToTable( this );
+				} );
+			},
 
-                    var thisEffort = {};
+			/**
+			 * Add a new row to the table (with js dataTables enabled)
+			 * 
+			 * @param object effort Pass in the object of the effort to add
+			 */
+			addEffortToTable: function( effort ) {
 
-                    // Check table stored efforts for highest unique ID then create a new one.
-                    var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                    var storedUniqueIds = [];
-                    if (storedEfforts.length > 0) {
-                        $.each(storedEfforts, function (index, value) {
-                            storedUniqueIds.push(this.uniqueId);
-                        });
-                        var highestUniqueId = Math.max.apply(Math, storedUniqueIds);
-                        thisEffort.uniqueId = highestUniqueId + 1;
-                    } else {
-                        thisEffort.uniqueId = 0;
-                    }
-
-                    // Build up the effort
-                    thisEffort.eventId = liveEntry.currentEventId;
-                    thisEffort.splitId = $(document).find('#split-select option:selected').attr('data-split-id');
-                    thisEffort.splitName = $(document).find('#split-select option:selected').html();
-                    thisEffort.effortId = liveEntry.currentEffortId;
-                    thisEffort.bibNumber = $('#js-bib-number').val();
-                    thisEffort.liveBib = $('#js-live-bib').val();
-                    thisEffort.effortName = $('#js-effort-name').html();
-                    thisEffort.timeIn = $('#js-time-in').val();
-                    thisEffort.timeOut = $('#js-time-out').val();
-                    if ($('#js-pacer-in').prop('checked') == true) {
-                        thisEffort.pacerIn = true;
-                        thisEffort.pacerInHtml = 'Yes';
-                    } else {
-                        thisEffort.pacerIn = false;
-                        thisEffort.pacerInHtml = 'No';
-                    }
-                    if ($('#js-pacer-out').prop('checked') == true) {
-                        thisEffort.pacerOut = true;
-                        thisEffort.pacerOutHtml = 'Yes';
-                    } else {
-                        thisEffort.pacerOut = false;
-                        thisEffort.pacerOutHtml = 'No';
-                    }
-                    if (!liveEntry.effortsCache.isMatchedEffort(thisEffort)) {
-                        storedEfforts.push(thisEffort);
-                        liveEntry.effortsCache.setStoredEfforts(storedEfforts);
-                        liveEntry.effortsDataTable.addEffortToTable(thisEffort);
-                    }
-
-                    // Clear data and disable fields once we've collected all the data
-                    liveEntry.liveEntryForm.clearSplitsData();
-                    liveEntry.liveEntryForm.toggleFields(false);
-                    return false;
-                });
-            },
-
-            populateTableFromCache: function () {
-                var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                $.each(storedEfforts, function (index) {
-                    liveEntry.effortsDataTable.addEffortToTable(this);
-                });
-            },
-
-            /**
-             * Add a new row to the table (with js dataTables enabled)
-             *
-             * @param object effort Pass in the object of the effort to add
-             */
-            addEffortToTable: function (effort) {
-
-                // Base64 encode the stringifyed effort to add to the effort row
-                // This is ie9 incompatible
-                var base64encodedEffort = btoa(JSON.stringify(effort));
-                var trHtml = '\
+				// Base64 encode the stringifyed effort to add to the effort row
+				// This is ie9 incompatible
+				var base64encodedEffort = btoa( JSON.stringify( effort ) );
+				var trHtml = '\
 					<tr class="effort-station-row js-effort-station-row" data-encoded-effort="' + base64encodedEffort + '" >\
 						<td class="split-name js-split-name">' + effort.splitName + '</td>\
 						<td class="bib-number js-bib-number">' + effort.bibNumber + '</td>\
@@ -491,177 +564,180 @@
 							<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
 						</td>\
 					</tr>';
-                liveEntry.effortsDataTable.$dataTable.row.add($(trHtml)).draw();
-            },
+				liveEntry.effortsDataTable.$dataTable.row.add( $(  trHtml ) ).draw();
+			},
 
-            /**
-             * Move a "cached" table row to "top form" section for editing.
-             *
-             */
-            effortControls: function () {
+			/**
+			 * Move a "cached" table row to "top form" section for editing.
+			 *
+			 */
+			effortControls: function() {
 
-                $(document).on('click', '.js-edit-effort', function (event) {
-                    event.preventDefault();
-                    var $row = $(this).closest('tr');
-                    var clickedEffort = JSON.parse(atob($row.attr('data-encoded-effort')));
+				$( document ).on( 'click', '.js-edit-effort', function( event ) {
+					event.preventDefault();
+					var $row = $( this ).closest( 'tr' );
+					var clickedEffort = JSON.parse( atob( $row.attr('data-encoded-effort') ) );
 
-                    // remove Effort from cache
-                    liveEntry.effortsCache.deleteStoredEffort(clickedEffort);
+					// remove Effort from cache
+					liveEntry.effortsCache.deleteStoredEffort( clickedEffort );
 
-                    // remove table row
-                    $row.fadeOut('fast', function () {
-                        liveEntry.effortsDataTable.$dataTable.row($row).remove().draw();
-                    });
+					// remove table row
+					$row.fadeOut( 'fast', function() {
+						liveEntry.effortsDataTable.$dataTable.row( $row ).remove().draw();
+					} );
 
-                    // Put bib number back into the bib number field
-                    var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                    $('#js-bib-number').val(clickedEffort.bibNumber).focus();
-                });
+					// Put bib number back into the bib number field
+					var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+					$( '#js-bib-number' ).val( clickedEffort.bibNumber ).focus();
+				} );
 
-                $(document).on('click', '.js-delete-effort', function (event) {
-                    var $row = $(this).closest('tr');
-                    var clickedEffort = JSON.parse(atob($row.attr('data-encoded-effort')));
+				$( document ).on( 'click', '.js-delete-effort', function( event ) {
+					var $row = $( this ).closest( 'tr' );
+					var clickedEffort = JSON.parse( atob( $row.attr('data-encoded-effort') ) );
 
-                    // remove Effort from cache
-                    liveEntry.effortsCache.deleteStoredEffort(clickedEffort);
+					// remove Effort from cache
+					liveEntry.effortsCache.deleteStoredEffort( clickedEffort );
 
-                    // remove table row
-                    $row.fadeOut('fast', function () {
-                        liveEntry.effortsDataTable.$dataTable.row($row).remove().draw();
-                    });
+					// remove table row
+					$row.fadeOut( 'fast', function() {
+						liveEntry.effortsDataTable.$dataTable.row( $row ).remove().draw();
+					} );
 
-                });
+				} );
 
-                $(document).on('click', '.js-submit-effort', function () {
-                    var $row = $(this).closest('tr');
-                    var clickedEffort = JSON.parse(atob($row.attr('data-encoded-effort')));
-                    var data = {efforts: [clickedEffort]};
-                    $.get('/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function (response) {
-                        if (response.success) {
-                            $row.find('.js-delete-effort').click();
-                        }
-                    });
-                });
+				$( document ).on( 'click', '.js-submit-effort', function() {
+					var $row = $( this ).closest( 'tr' );
+					var clickedEffort = JSON.parse( atob( $row.attr('data-encoded-effort') ) );
+					var data = { efforts: [ clickedEffort ] };
+					$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function( response ) {
+						if ( response.success ) {
+							$row.find( '.js-delete-effort' ).click();
+						}
+					} );
+				} );
 
-                $('#js-delete-all-efforts').on('click', function (event) {
-                    event.preventDefault();
-                    $('.js-effort-station-row').each(function () {
-                        var $row = $(this).closest('tr');
-                        var effortObject = JSON.parse(atob($row.attr('data-encoded-effort')));
+				$( '#js-delete-all-efforts' ).on( 'click', function( event ) {
+						event.preventDefault();
+						$( '.js-effort-station-row' ).each( function( ) {
+							var $row = $( this ).closest( 'tr' );
+							var effortObject = JSON.parse( atob( $row.attr('data-encoded-effort') ) );
 
-                        // remove Effort from cache
-                        liveEntry.effortsCache.deleteStoredEffort(effortObject);
+							// remove Effort from cache
+							liveEntry.effortsCache.deleteStoredEffort( effortObject );
 
-                        // remove table row
-                        $row.fadeOut('fast', function () {
-                            liveEntry.effortsDataTable.$dataTable.row($row).remove().draw();
-                        });
-                    });
-                    return false;
-                });
+							// remove table row
+							$row.fadeOut( 'fast', function() {
+								liveEntry.effortsDataTable.$dataTable.row( $row ).remove().draw();
+							} );
+						} );
+						return false;
+				} );
 
-                $('#js-submit-all-efforts').on('click', function (event) {
-                    event.preventDefault();
-                    var data = {efforts: []};
-                    $('.js-effort-station-row').each(function () {
-                        var $row = $(this).closest('tr');
-                        var effortObject = JSON.parse(atob($row.attr('data-encoded-effort')));
-                        data.efforts.push(effortObject);
-                    });
+				$( '#js-submit-all-efforts' ).on( 'click', function( event ) {
+					event.preventDefault();
+					var data = { efforts: [ ] };
+					$( '.js-effort-station-row' ).each( function( ) {
+						var $row = $( this ).closest( 'tr' );
+						var effortObject = JSON.parse( atob( $row.attr('data-encoded-effort') ) );
+						data.efforts.push( effortObject );
+					} );
 
-                    $.get('/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function (response) {
-                        if (response.success) {
-                            $('#js-delete-all-efforts').click();
-                        }
-                    });
-                    return false;
-                });
-            },
-        }, // END effortsDataTable
+					$.get( '/events/' + liveEntry.currentEventId + '/live_entry_ajax_set_split_times', data, function( response ) {
+						if ( response.success ) {
+							$( '#js-delete-all-efforts' ).click();
+						}
+					} );
+					return false;
+				} );
+			},
+		}, // END effortsDataTable
 
-        splitSlider: {
+		/**
+		 * Functionality for the split slider is contained in this sub-object
+		 * 
+		 */
+		splitSlider: {
 
-            /**
-             * Init splits slider
-             *
-             */
-            init: function () {
-                liveEntry.splitSlider.buildSplitSlider();
-            },
+			/**
+			 * Init splits slider
+			 *
+			 */
+			init: function() {
+				liveEntry.splitSlider.buildSplitSlider();
+			},
 
-            /**
-             * Builds the splits slider based on the splits data
-             *
-             */
-            buildSplitSlider: function () {
+			/**
+			 * Builds the splits slider based on the splits data
+			 *
+			 */
+			buildSplitSlider: function() {
 
-                // Inject initial html
-                var splitSliderItems = '';
-                for (var i = 0; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryData.splits[i].base_name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryData.splits[i].distance_from_start + ' m</span></div>';
-                }
-                $('#js-split-slider').html(splitSliderItems);
+				// Inject initial html
+				var splitSliderItems = '';
+				for ( var i = 0; i < liveEntry.eventLiveEntryStaticData.splits.length; i++ ) {
+					splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-split-id="' + liveEntry.eventLiveEntryStaticData.splits[ i ].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryStaticData.splits[ i ].name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryStaticData.splits[ i ].distance + ' m</span></div>';
+				}
+				$( '#js-split-slider' ).html( splitSliderItems );
 
-                // Set default states
-                $('.js-split-slider-item').eq(0).addClass('active middle');
-                $('.js-split-slider-item').eq(1).addClass('active end');
-                $('#js-split-slider').addClass('begin');
-                $('#split-select').on('change', function () {
-                    var currentItemId = $('.js-split-slider-item.active.middle').attr('data-split-id');
-                    var selectedItemId = $('option:selected').attr('data-split-id');
-                    if (currentItemId - selectedItemId > 1) {
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId - 0 + 1);
-                    } else if (selectedItemId - currentItemId > 1) {
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId - 1);
-                    }
-                    setTimeout(function () {
-                        $('#js-split-slider').addClass('animate');
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId);
-                        setTimeout(function () {
-                            $('#js-split-slider').removeClass('animate');
-                        }, 600);
-                    }, 1);
-                });
-            },
+				// Set default states
+				$( '.js-split-slider-item' ).eq( 0 ).addClass( 'active middle' );
+				$( '.js-split-slider-item' ).eq( 1 ).addClass( 'active end' );
+				$( '#js-split-slider' ).addClass( 'begin' );
+				$( '#split-select' ).on( 'change', function() {
+					var currentItemId = $( '.js-split-slider-item.active.middle' ).attr( 'data-split-id' );
+					var selectedItemId = $( 'option:selected' ).attr( 'data-split-id' );
+					if ( currentItemId - selectedItemId > 1 ) {
+						liveEntry.splitSlider.changeSplitSlider( selectedItemId - 0 + 1 );
+					} else if ( selectedItemId - currentItemId > 1 ) {
+						liveEntry.splitSlider.changeSplitSlider( selectedItemId - 1 );
+					}
+					setTimeout( function() {
+						$( '#js-split-slider' ).addClass( 'animate' );
+						liveEntry.splitSlider.changeSplitSlider( selectedItemId );
+						setTimeout( function () {
+							$( '#js-split-slider' ).removeClass( 'animate' );
+						}, 600 );
+					}, 1 );
+				} );
+			},
 
-            /**
-             * Switches the Split Slider to the specified Aid Station
-             *
-             * @param  integer splitId The station id to switch to
-             */
-            changeSplitSlider: function (splitId) {
+			/**
+			 * Switches the Split Slider to the specified Aid Station
+			 * 
+			 * @param  integer splitId The station id to switch to
+			 */
+			changeSplitSlider: function( splitId ) {
+				
+				// remove all positioning classes
+				$( '#js-split-slider' ).removeClass( 'begin end' );
+				$( '.js-split-slider-item' ).removeClass( 'active inactive middle begin end' );
+				var $selectedSliderItem = $( '.js-split-slider-item[data-split-id="' + splitId + '"]' );
 
-                // remove all positioning classes
-                $('#js-split-slider').removeClass('begin end');
-                $('.js-split-slider-item').removeClass('active inactive middle begin end');
-                var $selectedSliderItem = $('.js-split-slider-item[data-split-id="' + splitId + '"]');
+				// Add position classes to the current selected slider item
+				$selectedSliderItem.addClass( 'active middle' );
+				$selectedSliderItem
+					.next( '.js-split-slider-item' ).addClass( 'active end' )
+					.next( '.js-split-slider-item' ).addClass( 'inactive end' );
+				$selectedSliderItem
+					.prev( '.js-split-slider-item' ).addClass( 'active begin' )
+					.prev( '.js-split-slider-item' ).addClass( 'inactive begin' );;
 
-                // Add position classes to the current selected slider item
-                $selectedSliderItem.addClass('active middle');
-                $selectedSliderItem
-                    .next('.js-split-slider-item').addClass('active end')
-                    .next('.js-split-slider-item').addClass('inactive end');
-                $selectedSliderItem
-                    .prev('.js-split-slider-item').addClass('active begin')
-                    .prev('.js-split-slider-item').addClass('inactive begin');
-                ;
+				// Check if the slider is at the beginning
+				if ( $selectedSliderItem.prev('.js-split-slider-item').length === 0 ) {
 
-                // Check if the slider is at the beginning
-                if ($selectedSliderItem.prev('.js-split-slider-item').length === 0) {
+					// Add appropriate positioning classes
+					$( '#js-split-slider' ).addClass( 'begin' );
+				}
 
-                    // Add appropriate positioning classes
-                    $('#js-split-slider').addClass('begin');
-                }
+				// Check if the slider is at the end
+				if ( $selectedSliderItem.next( '.js-split-slider-item' ).length === 0 ) {
+					$( '#js-split-slider' ).addClass( 'end' );
+				}
+			}
+		} // END splitSlider
+	}; // END liveEntry
 
-                // Check if the slider is at the end
-                if ($selectedSliderItem.next('.js-split-slider-item').length === 0) {
-                    $('#js-split-slider').addClass('end');
-                }
-            }
-        } // END splitSlider
-    }; // END liveEntry
-
-    $('.events.live_entry').ready(function () {
-        liveEntry.init();
-    });
-})(jQuery);
+	$( document ).ready( function() {
+		liveEntry.init();
+	} );
+} )( jQuery );

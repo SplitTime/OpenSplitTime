@@ -13,8 +13,8 @@
 
   <script>
     $(document).ready(function () {
-      var location = <%= @location.to_json.html_safe %>    // pass ruby variable to javascript
-          gmap_show(location);    // init show map for company card (only print marker)
+      var location = <%= @location.to_json.html_safe %>;    // pass ruby variable to javascript
+          gmap_show(location, {latitude: location.latitude, longitude: location.longitude});    // init show map
     });
   </script>
 

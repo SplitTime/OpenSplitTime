@@ -53,12 +53,10 @@ RSpec.describe Event, type: :model do
     let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
 
     before do
-      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', name_extension: 'In', distance_from_start: 5000, sub_order: 0, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', name_extension: 'Out', distance_from_start: 5000, sub_order: 1, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', name_extension: 'In', distance_from_start: 25000, sub_order: 0, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', name_extension: 'Out', distance_from_start: 25000, sub_order: 1, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
+      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_split_mask: 1, kind: :start)
+      event.splits.create!(course: course, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_mask: 65, kind: :intermediate)
+      event.splits.create!(course: course, base_name: 'Halfway House', distance_from_start: 25000, sub_split_mask: 65, kind: :intermediate)
+      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_split_mask: 1, kind: :finish)
     end
 
     it 'should return a list of split ids for each of the waypoints grouped by distance' do
@@ -75,38 +73,18 @@ RSpec.describe Event, type: :model do
     let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
 
     before do
-      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', name_extension: 'In', distance_from_start: 5000, sub_order: 0, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', name_extension: 'Out', distance_from_start: 5000, sub_order: 1, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', name_extension: 'In', distance_from_start: 25000, sub_order: 0, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', name_extension: 'Out', distance_from_start: 25000, sub_order: 1, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
+      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_split_mask: 1, kind: :start)
+      event.splits.create!(course: course, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_mask: 65, kind: :intermediate)
+      event.splits.create!(course: course, base_name: 'Halfway House', distance_from_start: 25000, sub_split_mask: 65, kind: :intermediate)
+      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_split_mask: 1, kind: :finish)
     end
 
     it 'should return splits in the same distance group as the provided split' do
-      split2 = event.splits.where(base_name: 'Monarch Pass', name_extension: 'In').first
-      split3 = event.splits.where(base_name: 'Monarch Pass', name_extension: 'Out').first
+      split2 = event.splits.where(base_name: 'Monarch Pass').first
+      split3 = event.splits.where(base_name: 'Monarch Pass').first
       split6 = event.splits.where(base_name: 'Finish Point').first
       expect(event.waypoint_group(split2)).to eq([split2, split3])
       expect(event.waypoint_group(split6)).to eq([split6])
-    end
-  end
-
-  describe 'base_splits' do
-    let(:course) { Course.create!(name: 'split test') }
-    let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
-
-    before do
-      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_order: 0, kind: :start)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', name_extension: 'In', distance_from_start: 5000, sub_order: 0, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', name_extension: 'Out', distance_from_start: 5000, sub_order: 1, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', name_extension: 'In', distance_from_start: 25000, sub_order: 0, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', name_extension: 'Out', distance_from_start: 25000, sub_order: 1, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_order: 0, kind: :finish)
-    end
-
-    it 'should return all splits having sub_order == 0' do
-      expect(event.base_splits.pluck(:base_name)).to eq(['Start Point', 'Monarch Pass', 'Halfway House', 'Finish Point'])
     end
   end
 

@@ -116,7 +116,7 @@ class EffortsController < ApplicationController
   def effort_params
     params.require(:effort).permit(:first_name, :last_name, :gender, :wave, :bib_number, :age,
                                    :city, :state_code, :country_code, :start_time, :finished,
-                                   split_times_attributes: [:id, :split_id, :effort_id, :time_from_start,
+                                   split_times_attributes: [:id, :split_id, :sub_split_id, :effort_id, :time_from_start,
                                                             :elapsed_time, :time_of_day, :military_time,
                                                             :data_status])
   end

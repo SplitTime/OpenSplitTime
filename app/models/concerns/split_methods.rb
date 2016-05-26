@@ -10,7 +10,7 @@ module SplitMethods
 
   end
 
-  def waypoint_groups
+  def waypoint_groups # TODO delete waypoint_group methods
     result = []
     array = splits.ordered.pluck_to_hash(:id, :distance_from_start)
     array.group_by { |e| e[:distance_from_start] }.each do |_,v|
@@ -29,7 +29,7 @@ module SplitMethods
     splits.at_same_distance(split)
   end
 
-  def base_splits
+  def base_splits # TODO delete base_split methods
     splits.base
   end
 

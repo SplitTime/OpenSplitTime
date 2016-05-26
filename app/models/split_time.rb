@@ -3,26 +3,28 @@ class SplitTime < ActiveRecord::Base
   enum data_status: [:bad, :questionable, :good, :confirmed] # nil = unknown, 0 = bad, 1 = questionable, 2 = good, 3 = confirmed
   belongs_to :effort
   belongs_to :split
+  belongs_to :sub_split
 
   scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
-  scope :ordered, -> { includes(:split).order('splits.distance_from_start, splits.sub_order') }
+  scope :ordered, -> { includes(:split, :sub_split).order('splits.distance_from_start, sub_splits.bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
-  scope :base, -> { includes(:split).where(splits: {sub_order: 0}) }
+
+  # TODO remove 'base' methods
 
   before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
-  validates_presence_of :effort_id, :split_id, :time_from_start
+  validates_presence_of :effort_id, :split_id, :sub_split_id, :time_from_start
   validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
-  validates_uniqueness_of :split_id, scope: :effort_id,
-                          :message => "only one of any given split permitted within an effort"
-  validate :course_is_consistent, unless: 'effort.nil? | split.nil?' # TODO fix tests so that .nil? checks are not necessary
+  validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_id],
+                          message: 'only one of any given split/sub_split permitted within an effort'
+  validate :course_is_consistent, unless: 'effort.nil? | split.nil?'
 
   def course_is_consistent
     if effort.event.course_id != split.course_id
-      errors.add(:effort_id, "the effort.event.course_id does not resolve with the split.course_id")
-      errors.add(:split_id, "the effort.event.course_id does not resolve with the split.course_id")
+      errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
+      errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end
   end
 

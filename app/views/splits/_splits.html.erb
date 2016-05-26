@@ -11,7 +11,7 @@
   <tbody>
   <% splits.each do |split| %>
       <tr>
-        <td><strong><%= link_to split.name, split_path(split) %></strong></td>
+        <td><strong><%= link_to split.base_name, split_path(split) %></strong></td>
         <td>
           <% unless split.start? %>
               <%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %>

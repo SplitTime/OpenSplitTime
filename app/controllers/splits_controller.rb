@@ -5,7 +5,7 @@ class SplitsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @splits = Split.paginate(page: params[:page], per_page: 25).order(:course_id, :distance_from_start, :sub_order)
+    @splits = Split.paginate(page: params[:page], per_page: 25).order(:course_id, :distance_from_start)
     session[:return_to] = splits_path
   end
 
@@ -97,8 +97,8 @@ class SplitsController < ApplicationController
   private
 
   def split_params
-    params.require(:split).permit(:course_id, :location_id, :base_name, :name_extension, :name,
-                                  :description, :sub_order, :kind,
+    params.require(:split).permit(:course_id, :location_id, :base_name, :name,
+                                  :description, :kind, :sub_split_mask,
                                   :distance_from_start, :distance_as_entered,
                                   :vert_gain_from_start, :vert_gain_as_entered,
                                   :vert_loss_from_start, :vert_loss_as_entered)

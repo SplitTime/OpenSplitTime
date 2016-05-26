@@ -35,6 +35,16 @@ class Event < ActiveRecord::Base
     splits << course.splits
   end
 
+  def split_sub_pairs
+    result = []
+    split_data = ordered_splits.pluck_to_hash(:id, :sub_split_mask)
+    split_data.each do |block|
+      sub_split_ids = SubSplit.reveal_valid_keys(block[:sub_split_mask])
+      sub_split_ids.map { |ssid| [block[:id], ssid] }.each { |pair| result << pair }
+    end
+    result
+  end
+
   def time_hashes_all_similar_events
     result_hash = {}
     event_split_ids = ordered_split_ids
@@ -125,7 +135,7 @@ class Event < ActiveRecord::Base
   end
 
   def split_live_data
-    base_splits.pluck_to_hash(:id, :base_name, :distance_from_start)
+    ordered_splits.pluck_to_hash(:id, :base_name, :distance_from_start)
   end
 
 end

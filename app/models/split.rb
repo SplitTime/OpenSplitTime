@@ -11,14 +11,16 @@ class Split < ActiveRecord::Base
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
-  validates_presence_of :base_name, :distance_from_start, :sub_order, :kind
+  validates_presence_of :base_name, :distance_from_start, :sub_split_mask, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
-  validates_uniqueness_of :base_name, scope: [:course_id, :name_extension], case_sensitive: false,
-                          message: "must be unique unless a name_extension is added to distinguish"
+  validates_uniqueness_of :base_name, scope: :course_id, case_sensitive: false,
+                          message: "must be unique for a course"
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
                           message: "only one start split permitted on a course"
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_finish?',
                           message: "only one finish split permitted on a course"
+  validates_uniqueness_of :distance_from_start, scope: :course_id,
+                          message: "only one split of a given distance permitted on a course. Use sub_splits if needed."
   validates_numericality_of :distance_from_start, equal_to: 0, if: 'is_start?',
                             message: "for the start split must be 0"
   validates_numericality_of :vert_gain_from_start, equal_to: 0, if: 'is_start?', allow_nil: true,
@@ -32,9 +34,7 @@ class Split < ActiveRecord::Base
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: "may not be negative"
 
-  scope :ordered, -> { order(:distance_from_start, :sub_order) }
-  scope :at_same_distance, -> (split) { where(distance_from_start: split.distance_from_start).order(:sub_order) }
-  scope :base, -> { where(sub_order: 0) }
+  scope :ordered, -> { where(sub_order: 0).order(:distance_from_start) } # Remove sub_order constraint when migration is complete
 
   def is_start?
     self.start?
@@ -87,6 +87,18 @@ class Split < ActiveRecord::Base
 
   def name
     [base_name, name_extension].compact.join(' ')
+  end
+
+  def name_extensions
+    sub_splits.pluck(:kind)
+  end
+
+  def sub_split_masks
+    sub_splits.pluck(:bitkey)
+  end
+
+  def sub_splits
+    SubSplit.where('sub_splits.bitkey & ? > 0', sub_split_mask).order(:bitkey)
   end
 
   def name=(entered_name)

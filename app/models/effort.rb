@@ -294,7 +294,7 @@ class Effort < ActiveRecord::Base
         finish_split_time ?
             nil :
             split_times.joins(:split).joins(:effort)
-                .order('efforts.id').order('splits.distance_from_start DESC').order('splits.sub_order DESC')
+                .order('efforts.id, splits.distance_from_start DESC, splits.sub_order DESC')
                 .first.split_id
     update(dropped_split_id: dropped_split_id)
     dropped_split_id

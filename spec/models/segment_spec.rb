@@ -23,12 +23,10 @@ RSpec.describe Segment, type: :model do
       @effort12 = Effort.create!(event: @event, bib_number: 12, city: 'Glenwood Springs', state_code: 'CO', country_code: 'US', age: 32, first_name: 'Linus', last_name: 'Peanut', gender: 'male')
       @effort13 = Effort.create!(event: @event, bib_number: 13, city: 'Limon', state_code: 'CO', country_code: 'US', age: 32, first_name: 'Lucy', last_name: 'Peanut', gender: 'female')
 
-      @split1 = Split.create!(course: @course, base_name: 'Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', name_extension: 'In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split3 = Split.create!(course: @course, base_name: 'Aid Station 1', name_extension: 'Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', name_extension: 'In', distance_from_start: 15000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split5 = Split.create!(course: @course, base_name: 'Aid Station 2', name_extension: 'Out', distance_from_start: 15000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split6 = Split.create!(course: @course, base_name: 'Finish Line', distance_from_start: 25000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+      @split1 = Split.create!(course: @course, base_name: 'Starting Line', distance_from_start: 0, split_sub_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', distance_from_start: 6000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', distance_from_start: 15000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split6 = Split.create!(course: @course, base_name: 'Finish Line', distance_from_start: 25000, split_sub_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
       @event.splits << @course.splits
 
@@ -161,30 +159,28 @@ RSpec.describe Segment, type: :model do
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
       @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
 
-      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', name_extension: 'In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split3 = Split.create!(course: @course, base_name: 'Test Aid Station', name_extension: 'Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, sub_split_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, sub_split_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
       @event.splits << @course.splits
 
       @segment1 = Segment.new(@split1, @split2)
-      @segment2 = Segment.new(@split2.id, @split3.id)
-      @segment3 = Segment.new(@split1, @split3, @split4)
-      @segment4 = Segment.new(@split3, @split4.id)
+      @segment2 = Segment.new(@split2.id, @split2.id)
+      @segment3 = Segment.new(@split1, @split2, @split4)
 
-      SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split3, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, time_from_start: 8000)
-      SplitTime.create!(effort: @effort2, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split3, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split4, time_from_start: 9000)
-      SplitTime.create!(effort: @effort3, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, time_from_start: 6000)
-      SplitTime.create!(effort: @effort3, split: @split3, time_from_start: 9200)
-      SplitTime.create!(effort: @effort3, split: @split4, time_from_start: 9000)
+      SplitTime.create!(effort: @effort1, split: @split1, sub_split_id: 1, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split_id: 1, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split_id: 64, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, sub_split_id: 1, time_from_start: 8000)
+      SplitTime.create!(effort: @effort2, split: @split1, sub_split_id: 1, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split_id: 1, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split_id: 64, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split4, sub_split_id: 1, time_from_start: 9000)
+      SplitTime.create!(effort: @effort3, split: @split1, sub_split_id: 1, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split_id: 1, time_from_start: 6000)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split_id: 64, time_from_start: 9200)
+      SplitTime.create!(effort: @effort3, split: @split4, sub_split_id: 1, time_from_start: 9000)
 
     end
 
@@ -216,10 +212,9 @@ RSpec.describe Segment, type: :model do
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
       @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
 
-      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', name_extension: 'In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split3 = Split.create!(course: @course, base_name: 'Test Aid Station', name_extension: 'Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, sub_split_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, sub_split_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
       @event.splits << @course.splits
 
@@ -261,10 +256,9 @@ RSpec.describe Segment, type: :model do
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
       @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
 
-      @split1 = Split.create!(course: @course, base_name: 'Start', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Aid Station', name_extension: 'In', distance_from_start: 6000, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split3 = Split.create!(course: @course, base_name: 'Aid Station', name_extension: 'Out', distance_from_start: 6000, sub_order: 1, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Finish', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+      @split1 = Split.create!(course: @course, base_name: 'Start', distance_from_start: 0, split_sub_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, base_name: 'Aid Station', distance_from_start: 6000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Finish', distance_from_start: 10000, split_sub_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
       @event.splits << @course.splits
 

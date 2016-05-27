@@ -28,6 +28,10 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
+  def key_hash
+    {split_id => sub_split_id}
+  end
+
   def set_effort_data_status
     DataStatusService.set_data_status(effort)
   end

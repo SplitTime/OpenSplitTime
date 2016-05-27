@@ -1,30 +1,25 @@
 module SplitTimesHelper
 
-  def composite_time(waypoint_group_row)
+  def composite_time(split_row)
     time_array = []
-    (0...waypoint_group_row.times.count).each do |i|
-      time = waypoint_group_row.times[i]
-      data_status = waypoint_group_row.time_data_statuses[i]
+    (0...split_row.times_from_start.count).each do |i|
+      time = split_row.times_from_start[i]
+      data_status = split_row.time_data_statuses[i]
       if time
-        case data_status
-          when 'bad'
-            element = '[*' + time_format_hhmmss(time) + '*]'
-          when 'questionable'
-            element = '[' + time_format_hhmmss(time) + ']'
-          else
-            element = time_format_hhmmss(time)
-        end
+        element = case data_status
+                    when 'bad'
+                      '[*' + time_format_hhmmss(time) + '*]'
+                    when 'questionable'
+                      '[' + time_format_hhmmss(time) + ']'
+                    else
+                      time_format_hhmmss(time)
+                  end
       else
         element = '--:--:--'
       end
       time_array << element
     end
     time_array.join(' / ')
-  end
-
-  def waypoint_group_status(effort, waypoint_group)
-    split_times = effort.split_times.where(split_id: waypoint_group)
-    split_times.pluck(:data_status).compact.min
   end
 
 end

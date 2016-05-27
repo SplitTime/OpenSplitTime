@@ -1,19 +1,41 @@
 class SplitRow
-  attr_accessor :split_id, :base_name, :name_extension, :distance_from_start, :sub_split_mask,
-                :time_from_start, :data_status, :kind, :segment_time
 
-  def initialize(row_data, prior_time = nil)
-    @split_id = row_data[:id]
-    @base_name = row_data[:base_name]
-    @name_extension = row_data[:name_extension]
-    @distance_from_start = row_data[:distance_from_start]
-    @sub_split_mask = row_data[:sub_split_mask]
-    @kind = row_data[:kind]
-    if row_data[:time_from_start]
-      @time_from_start = row_data[:time_from_start]
-      @data_status = row_data[:data_status]
-      @segment_time = prior_time ? @time_from_start - prior_time : 0
-    end
+  delegate :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
+
+  def initialize(split, split_times, prior_time = nil)
+    @split = split
+    @split_times = split_times
+    @prior_time = prior_time
   end
+
+  def split_id
+    split.id
+  end
+
+  def segment_time
+    return nil unless (prior_time && (times_from_start.compact.count > 0))
+    times_from_start.first - prior_time
+  end
+
+  def time_in_aid
+    return nil unless times_from_start.compact.count > 1
+    times_from_start.last - times_from_start.first
+  end
+
+  def times_from_start
+    split_times.map { |st| st ? st.time_from_start : nil }
+  end
+
+  def time_data_statuses
+    split_times.map { |st| st ? st.data_status : nil }
+  end
+
+  def data_status
+    DataStatus.worst(time_data_statuses)
+  end
+
+  # private
+
+  attr_accessor :split, :split_times, :prior_time
 
 end

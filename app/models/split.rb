@@ -85,16 +85,21 @@ class Split < ActiveRecord::Base
     split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
   end
 
+  def sub_split_key_hashes
+    sub_split_keys.map { |key| {id => key} }
+  end
+
   def name
-    [base_name, name_extension].compact.join(' ')
+    extensions = name_extensions.count > 1 ? name_extensions.join(' / ') : nil
+    [base_name, extensions].compact.join(' ')
   end
 
   def name_extensions
     sub_splits.pluck(:kind)
   end
 
-  def sub_split_masks
-    sub_splits.pluck(:bitkey)
+  def sub_split_keys
+    SubSplit.reveal_keys(sub_split_mask)
   end
 
   def sub_splits
@@ -106,15 +111,6 @@ class Split < ActiveRecord::Base
       self.base_name = entered_name.split.reject { |x| (x.downcase == 'in') | (x.downcase == 'out') }.join(' ')
       self.name_extension = entered_name.gsub(base_name, '').strip
     end
-  end
-
-  def waypoint_group(event = nil)
-    event ? event.waypoint_group(self) : course.waypoint_group(self)
-  end
-
-  def composite_name(event = nil)
-    group = waypoint_group(event).pluck_to_hash(:base_name, :name_extension)
-    "#{group[0][:base_name]} #{(group.map { |block| block[:name_extension] }.compact.join(' / '))}"
   end
 
   def course_index # Returns an integer representing the split's relative position on the course

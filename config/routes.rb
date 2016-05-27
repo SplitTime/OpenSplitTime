@@ -68,8 +68,8 @@ Rails.application.routes.draw do
     member { put :associate_participant }
     collection { put :associate_participants}
     member { put :edit_split_times }
-    member { delete :delete_waypoint_group }
-    member { put :confirm_waypoint_group }
+    member { delete :delete_split }
+    member { put :confirm_split }
     member { put :set_data_status }
   end
   resources :split_times

@@ -26,7 +26,7 @@ class DataStatusService
         update_split_time_hash[split_time.id] = status if status != split_time.data_status.try(:to_sym)
       end
 
-      effort_status = DataStatus.get_lowest_data_status(status_array)
+      effort_status = DataStatus.worst(status_array)
       update_effort_hash[effort.id] = effort_status if effort_status != effort.data_status.try(:to_sym)
     end
 

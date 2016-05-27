@@ -1,59 +1,33 @@
 class EffortShowView
-  attr_accessor :effort, :waypoint_group_table, :split_data
-  attr_reader :split_rows, :waypoint_group_rows
+  attr_reader :effort, :split_rows
 
   def initialize(effort)
     @effort = effort
-    @split_data = effort.event.ordered_splits.pluck_to_hash(:id, :base_name, :distance_from_start, :sub_split_mask, :kind)
-    @waypoint_group_table = create_waypoint_group_table
-    @split_rows = {}
-    @waypoint_group_rows = {}
-    append_split_time_data
+    @splits = effort.event.ordered_splits.to_a
+    @split_times = effort.split_times.index_by(&:key_hash)
+    @split_rows = []
     create_split_rows
-    create_waypoint_group_rows
   end
 
   def total_time_in_aid
-    waypoint_group_rows.sum { |unicorn| unicorn.time_in_aid }
+    split_rows.sum { |unicorn| unicorn.time_in_aid }
   end
 
   private
 
-  def append_split_time_data
-    split_time_data_table = effort.split_times.index_by(&:split_id)
-    split_data.each do |split_data_set|
-      match = split_time_data_table[split_data_set[:id]]
-      if match
-        split_data_set[:time_from_start] = match.time_from_start
-        split_data_set[:data_status] = match.data_status
-      end
-    end
-  end
+  attr_reader :splits, :split_times
 
   def create_split_rows
     prior_time = 0
-    split_data.each do |split_data_set|
-      split_row = SplitRow.new(split_data_set, prior_time)
-      split_rows[split_row.split_id] = split_row
-      prior_time = split_data_set[:time_from_start] if split_data_set[:time_from_start]
+    splits.each do |split|
+      split_row = SplitRow.new(split, related_split_times(split), prior_time)
+      split_rows << split_row
+      prior_time = split_row.times_from_start.last
     end
   end
 
-  def create_waypoint_group_rows
-    waypoint_group_table.each do |group|
-      group_of_rows = []
-      group.each { |split_id| group_of_rows << split_rows[split_id] }
-      waypoint_group_row = WaypointGroupRow.new(group, group_of_rows)
-      @waypoint_group_rows[group.first] = waypoint_group_row
-    end
-  end
-
-  def create_waypoint_group_table
-    result = []
-    @split_data.group_by { |e| e[:distance_from_start] }.each do |_,v|
-      result << v.map { |x| x[:id] }
-    end
-    result
+  def related_split_times(split)
+    split.sub_split_key_hashes.collect { |key_hash| split_times[key_hash] }
   end
 
 end

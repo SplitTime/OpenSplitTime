@@ -27,30 +27,26 @@
       <div class="col-sm-6">
         <table class="table table-condensed table-striped">
           <thead>
-          <tr>
-            <th></th>
-            <th class="text-center">Time In</th>
-            <th class="text-center">Time Out</th>
-          </tr>
           </thead>
           <tbody>
-          <% @effort.event.waypoint_groups_without_start.each do |waypoint_group| %>
-              <% data_status = waypoint_group_status(@effort, waypoint_group) %>
-              <% if data_status == 0 %>
+          <% @effort.event.ordered_splits_without_start.each do |split| %>
+              <% data_status = DataStatus.worst(split.split_times.where(effort: @effort).map(&:data_status)) %>
+              <% if data_status == 'bad' %>
                   <tr class="text-danger">
-              <% elsif data_status == 1 %>
+              <% elsif data_status == 'questionable' %>
                   <tr class="text-warning">
               <% else %>
                   <tr>
               <% end %>
-              <td><h4><strong><%= "#{base_name(waypoint_group[0])}" %></strong></h4></td>
-              <% (0...waypoint_group.size).each do |i| %>
+              <td><h4><strong><%= "#{split.name}" %></strong></h4></td>
+              <% split.sub_split_keys.each do |key| %>
                   <%= f.fields_for :split_times,
-                                   @effort.split_times.find_or_initialize_by(split_id: waypoint_group[i],
+                                   @effort.split_times.find_or_initialize_by(split_id: split.id,
+                                                                             sub_split_id: key,
                                                                              effort_id: @effort.id) do |builder| %>
                       <td>
                         <%= builder.text_field :elapsed_time, class: 'form-control', placeholder: 'hh:mm:ss' %>
-                        <%= builder.hidden_field :split_id, {value: waypoint_group[i]} %>
+                        <%= builder.hidden_field :split_id, {value: split.id} %>
                         <%= builder.hidden_field :effort_id, {value: @effort.id} %>
                       </td>
                   <% end %>

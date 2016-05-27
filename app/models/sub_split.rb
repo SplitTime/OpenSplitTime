@@ -6,11 +6,38 @@ class SubSplit < ActiveRecord::Base
   validates_uniqueness_of :bitkey
   validates_uniqueness_of :kind, case_sensitive: false
   validate :bitkey_bits_are_unique
-  validate :bitkey_single_bit, unless: 'bitkey.nil?'
+  validate :bitkey_has_single_bit, unless: 'bitkey.nil?'
 
   self.primary_key = 'bitkey'
 
   # Methods for validations
+
+  def bitkey_bits_are_unique
+    if bitkey & SubSplit.aggregate_mask != 0
+      errors.add(:bitkey, "one or more bits overlap with the bitkey of an existing sub_split kind")
+    end
+  end
+
+  def bitkey_has_single_bit
+    if bitkey.to_s(2).count('1') > 1
+      errors.add(:bitkey, "uses more than one bit; please use the next available single-bit key (4, 8, 16, etc.)")
+    end
+    if bitkey < 1
+      errors.add(:bitkey, "cannot be zero or negative")
+    end
+  end
+
+  # Methods that return an instance of SubSplit; add a new method each time a new record is added
+
+  def self.in
+    SubSplit.find(1)
+  end
+
+  def self.out
+    SubSplit.find(64)
+  end
+
+  # Methods related to bitkeys
 
   def self.aggregate_mask
     combined_mask = 0
@@ -31,37 +58,17 @@ class SubSplit < ActiveRecord::Base
   end
 
   def self.reveal_valid_keys(mask)
-    mask = mask & self.aggregate_mask
+    reveal_keys(validate_mask(mask))
+  end
+
+  def self.validate_mask(mask)
+    mask & self.aggregate_mask
+  end
+
+  def self.reveal_keys(mask)
     result = []
-    (0...mask.to_s(2).size).each do |k|
-      result << (mask & (1 << k))
-    end
+    (0...mask.to_s(2).size).each { |k| result << (mask & (1 << k)) }
     result.reject { |x| x == 0 }
-  end
-
-  def bitkey_bits_are_unique
-    if bitkey & SubSplit.aggregate_mask != 0
-      errors.add(:bitkey, "one or more bits overlap with the bitkey of an existing sub_split kind")
-    end
-  end
-
-  def bitkey_single_bit
-    if bitkey.to_s(2).count('1') > 1
-      errors.add(:bitkey, "uses more than one bit; please use the next available single-bit key (4, 8, 16, etc.)")
-    end
-    if bitkey < 1
-      errors.add(:bitkey, "cannot be zero or negative")
-    end
-  end
-
-  # Methods that return an instance of SubSplit; add a new method each time a new record is added
-
-  def self.in
-    SubSplit.find(1)
-  end
-
-  def self.out
-    SubSplit.find(64)
   end
 
 end

@@ -138,4 +138,8 @@ class Event < ActiveRecord::Base
     ordered_splits.pluck_to_hash(:id, :base_name, :distance_from_start)
   end
 
+  def sub_split_key_hashes
+    ordered_splits.map(&:sub_split_key_hashes).flatten
+  end
+
 end

@@ -4,7 +4,6 @@ class Segment
   delegate :events, :earliest_event_date, :latest_event_date, to: :end_split
 
 # Takes one or more splits or split_ids, uses first and last element if > 2 elements
-# Can take a waypoint group as a parameter
 
   def initialize(*splits)
     splits = splits.flatten
@@ -27,17 +26,25 @@ class Segment
   end
 
   def name
-    begin_split.base_name == end_split.base_name ?
+    within_split? ?
         "Time in #{begin_split.base_name}" :
         [begin_split.base_name, end_split.base_name].join(' to ')
   end
 
+  def within_split?
+    begin_split == end_split
+  end
+
   def effort_time(effort)
+    within_split? ? effort.time_in_aid(begin_split) : time_between_splits(effort)
+  end
+
+  def time_between_splits(effort)
     return 0 if end_split.start?
-    times = effort.split_times.where(split_id: split_ids).index_by(&:split_id)
-    end_split_time = times[end_id]
-    begin_split_time = times[begin_id]
-    end_split_time && begin_split_time ? (end_split_time.time_from_start - begin_split_time.time_from_start) : nil
+    times = effort.split_times.where(split_id: split_ids).index_by(&:key_hash)
+    end_split_time = times[end_split.sub_split_key_hashes.first]
+    begin_split_time = times[begin_split.sub_split_key_hashes.last]
+    (end_split_time && begin_split_time) ? (end_split_time.time_from_start - begin_split_time.time_from_start) : nil
   end
 
   def effort_velocity(effort)
@@ -50,12 +57,12 @@ class Segment
   end
 
   def vert_gain
-    return 0 unless end_split.vert_gain_from_start && begin_split.vert_gain_from_start
+    return nil unless end_split.vert_gain_from_start && begin_split.vert_gain_from_start
     end_split.vert_gain_from_start - begin_split.vert_gain_from_start
   end
 
   def vert_loss
-    return 0 unless end_split.vert_loss_from_start && begin_split.vert_loss_from_start
+    return nil unless end_split.vert_loss_from_start && begin_split.vert_loss_from_start
     end_split.vert_loss_from_start - begin_split.vert_loss_from_start
   end
 
@@ -70,7 +77,7 @@ class Segment
   def end_id
     end_split.id
   end
-  
+
   def split_ids
     [begin_split.id, end_split.id]
   end
@@ -82,9 +89,9 @@ class Segment
   def is_full_course?
     begin_split.start? && end_split.finish?
   end
-  
+
   private
-  
+
   attr_accessor :course_ordered_split_ids
 
 end

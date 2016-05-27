@@ -151,12 +151,12 @@ class Effort < ActiveRecord::Base
   end
 
   def time_in_aid(split)
-    Segment.new(event.waypoint_group(split)).effort_time(self)
+    # TODO
   end
 
   def total_time_in_aid
     total = 0
-    base_split_times.each do |unicorn|
+    split_times.each do |unicorn|
       total = total + time_in_aid(unicorn.split)
     end
     total

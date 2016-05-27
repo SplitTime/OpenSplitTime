@@ -32,7 +32,7 @@
 <hr>
 <% if expected_time %>
     <% if efforts_analyzed > 0 %>
-    <%= render 'plan_detail', splits: @event.base_splits,
+    <%= render 'plan_detail', splits: @event.splits,
                time_data: normalize_time_data(@event.splits.average_times(expected_time), expected_time) %>
         <% else %>
           <h4>Found no efforts close to that time.</h4>

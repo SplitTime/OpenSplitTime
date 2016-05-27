@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525110852) do
+ActiveRecord::Schema.define(version: 20160527155906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.text     "description"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.integer  "created_by",             null: false
-    t.integer  "updated_by",             null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "efforts", force: :cascade do |t|
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.integer  "age"
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
-    t.integer  "created_by",                              null: false
-    t.integer  "updated_by",                              null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "gender"
@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.string   "name",       limit: 64, null: false
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
-    t.integer  "created_by",            null: false
-    t.integer  "updated_by",            null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
     t.datetime "start_time"
   end
 
@@ -94,8 +94,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.decimal  "longitude",              precision: 9, scale: 6
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.integer  "created_by",                                     null: false
-    t.integer  "updated_by",                                     null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "ownerships", force: :cascade do |t|
@@ -120,8 +120,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.string   "phone"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.integer  "created_by",              null: false
-    t.integer  "updated_by",              null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
     t.string   "country_code", limit: 2
     t.integer  "user_id"
   end
@@ -133,8 +133,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.text     "description"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.integer  "created_by",             null: false
-    t.integer  "updated_by",             null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "split_times", force: :cascade do |t|
@@ -144,8 +144,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.integer  "data_status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.integer  "created_by",      null: false
-    t.integer  "updated_by",      null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
     t.integer  "sub_split_id"
     t.integer  "legacy_split_id"
   end
@@ -164,8 +164,8 @@ ActiveRecord::Schema.define(version: 20160525110852) do
     t.integer  "kind",                             null: false
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
-    t.integer  "created_by",                       null: false
-    t.integer  "updated_by",                       null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
     t.string   "description"
     t.string   "base_name"
     t.string   "name_extension"

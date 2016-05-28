@@ -30,11 +30,19 @@ class SubSplit < ActiveRecord::Base
   # Methods that return an instance of SubSplit; add a new method each time a new record is added
 
   def self.in
-    SubSplit.find(1)
+    SubSplit.find(self.in_key)
   end
 
   def self.out
-    SubSplit.find(64)
+    SubSplit.find(self.out_key)
+  end
+
+  def self.in_key
+    1
+  end
+
+  def self.out_key
+    64
   end
 
   # Methods related to bitkeys

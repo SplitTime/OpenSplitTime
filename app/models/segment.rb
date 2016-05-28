@@ -67,7 +67,7 @@ class Segment
   end
 
   def typical_time_by_terrain
-    (distance * DISTANCE_FACTOR) + (vert_gain * VERT_GAIN_FACTOR)
+    (distance * DISTANCE_FACTOR) + (vert_gain ? (vert_gain * VERT_GAIN_FACTOR) : 0)
   end
 
   def begin_id

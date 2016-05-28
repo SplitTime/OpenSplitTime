@@ -9,6 +9,9 @@ RSpec.describe Segment, type: :model do
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
+      @sub_split1 = SubSplit.create!(bitkey: 1, kind: 'In')
+      @sub_split2 = SubSplit.create!(bitkey: 64, kind: 'Out')
+
       @effort1 = Effort.create!(event: @event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
       @effort3 = Effort.create!(event: @event, bib_number: 3, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male')
@@ -23,103 +26,103 @@ RSpec.describe Segment, type: :model do
       @effort12 = Effort.create!(event: @event, bib_number: 12, city: 'Glenwood Springs', state_code: 'CO', country_code: 'US', age: 32, first_name: 'Linus', last_name: 'Peanut', gender: 'male')
       @effort13 = Effort.create!(event: @event, bib_number: 13, city: 'Limon', state_code: 'CO', country_code: 'US', age: 32, first_name: 'Lucy', last_name: 'Peanut', gender: 'female')
 
-      @split1 = Split.create!(course: @course, base_name: 'Starting Line', distance_from_start: 0, split_sub_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', distance_from_start: 6000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', distance_from_start: 15000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split6 = Split.create!(course: @course, base_name: 'Finish Line', distance_from_start: 25000, split_sub_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+      @split1 = Split.create!(course: @course, base_name: 'Starting Line', distance_from_start: 0, sub_split_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', distance_from_start: 15000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split6 = Split.create!(course: @course, base_name: 'Finish Line', distance_from_start: 25000, sub_split_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
       @event.splits << @course.splits
 
-      SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split3, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, time_from_start: 15200)
-      SplitTime.create!(effort: @effort1, split: @split5, time_from_start: 15100)
-      SplitTime.create!(effort: @effort1, split: @split6, time_from_start: 21000)
+      SplitTime.create!(effort: @effort1, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split1, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split2, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split1, time_from_start: 15200)
+      SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split2, time_from_start: 15100)
+      SplitTime.create!(effort: @effort1, split: @split6, sub_split: @sub_split1, time_from_start: 21000)
 
-      SplitTime.create!(effort: @effort2, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, time_from_start: 60)
-      SplitTime.create!(effort: @effort2, split: @split3, time_from_start: 120)
-      SplitTime.create!(effort: @effort2, split: @split4, time_from_start: 24000)
-      SplitTime.create!(effort: @effort2, split: @split5, time_from_start: 150000)
-      SplitTime.create!(effort: @effort2, split: @split6, time_from_start: 40000)
+      SplitTime.create!(effort: @effort2, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split1, time_from_start: 60)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split2, time_from_start: 120)
+      SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split1, time_from_start: 24000)
+      SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split2, time_from_start: 150000)
+      SplitTime.create!(effort: @effort2, split: @split6, sub_split: @sub_split1, time_from_start: 40000)
 
-      SplitTime.create!(effort: @effort3, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, time_from_start: 5000)
-      SplitTime.create!(effort: @effort3, split: @split3, time_from_start: 5000)
-      SplitTime.create!(effort: @effort3, split: @split4, time_from_start: 12200)
-      SplitTime.create!(effort: @effort3, split: @split5, time_from_start: 12300)
-      SplitTime.create!(effort: @effort3, split: @split6, time_from_start: 18000)
+      SplitTime.create!(effort: @effort3, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split1, time_from_start: 5000)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split2, time_from_start: 5000)
+      SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split1, time_from_start: 12200)
+      SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split2, time_from_start: 12300)
+      SplitTime.create!(effort: @effort3, split: @split6, sub_split: @sub_split1, time_from_start: 18000)
 
-      SplitTime.create!(effort: @effort4, split: @split1, time_from_start: 1000)
-      SplitTime.create!(effort: @effort4, split: @split2, time_from_start: 4500)
-      SplitTime.create!(effort: @effort4, split: @split3, time_from_start: 4400)
-      SplitTime.create!(effort: @effort4, split: @split4, time_from_start: 11000)
-      SplitTime.create!(effort: @effort4, split: @split5, time_from_start: 11000)
-      SplitTime.create!(effort: @effort4, split: @split6, time_from_start: 17500)
+      SplitTime.create!(effort: @effort4, split: @split1, sub_split: @sub_split1, time_from_start: 1000)
+      SplitTime.create!(effort: @effort4, split: @split2, sub_split: @sub_split1, time_from_start: 4500)
+      SplitTime.create!(effort: @effort4, split: @split2, sub_split: @sub_split2, time_from_start: 4400)
+      SplitTime.create!(effort: @effort4, split: @split4, sub_split: @sub_split1, time_from_start: 11000)
+      SplitTime.create!(effort: @effort4, split: @split4, sub_split: @sub_split2, time_from_start: 11000)
+      SplitTime.create!(effort: @effort4, split: @split6, sub_split: @sub_split1, time_from_start: 17500)
 
-      SplitTime.create!(effort: @effort5, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort5, split: @split2, time_from_start: 4600)
-      SplitTime.create!(effort: @effort5, split: @split3, time_from_start: 4800)
-      SplitTime.create!(effort: @effort5, split: @split4, time_from_start: 9800)
-      SplitTime.create!(effort: @effort5, split: @split5, time_from_start: 10000)
-      SplitTime.create!(effort: @effort5, split: @split6, time_from_start: 14550)
+      SplitTime.create!(effort: @effort5, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort5, split: @split2, sub_split: @sub_split1, time_from_start: 4600)
+      SplitTime.create!(effort: @effort5, split: @split2, sub_split: @sub_split2, time_from_start: 4800)
+      SplitTime.create!(effort: @effort5, split: @split4, sub_split: @sub_split1, time_from_start: 9800)
+      SplitTime.create!(effort: @effort5, split: @split4, sub_split: @sub_split2, time_from_start: 10000)
+      SplitTime.create!(effort: @effort5, split: @split6, sub_split: @sub_split1, time_from_start: 14550)
 
-      SplitTime.create!(effort: @effort6, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort6, split: @split4, time_from_start: 9600)
-      SplitTime.create!(effort: @effort6, split: @split5, time_from_start: 9660)
-      SplitTime.create!(effort: @effort6, split: @split6, time_from_start: 14650)
+      SplitTime.create!(effort: @effort6, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort6, split: @split4, sub_split: @sub_split1, time_from_start: 9600)
+      SplitTime.create!(effort: @effort6, split: @split4, sub_split: @sub_split2, time_from_start: 9660)
+      SplitTime.create!(effort: @effort6, split: @split6, sub_split: @sub_split1, time_from_start: 14650)
 
-      SplitTime.create!(effort: @effort7, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort7, split: @split2, time_from_start: 6300)
-      SplitTime.create!(effort: @effort7, split: @split3, time_from_start: 6600)
-      SplitTime.create!(effort: @effort7, split: @split4, time_from_start: 13000)
-      SplitTime.create!(effort: @effort7, split: @split5, time_from_start: 13500)
+      SplitTime.create!(effort: @effort7, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort7, split: @split2, sub_split: @sub_split1, time_from_start: 6300)
+      SplitTime.create!(effort: @effort7, split: @split2, sub_split: @sub_split2, time_from_start: 6600)
+      SplitTime.create!(effort: @effort7, split: @split4, sub_split: @sub_split1, time_from_start: 13000)
+      SplitTime.create!(effort: @effort7, split: @split4, sub_split: @sub_split2, time_from_start: 13500)
 
-      SplitTime.create!(effort: @effort8, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort8, split: @split2, time_from_start: 5500)
-      SplitTime.create!(effort: @effort8, split: @split3, time_from_start: 5500)
-      SplitTime.create!(effort: @effort8, split: @split6, time_from_start: 18700)
+      SplitTime.create!(effort: @effort8, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort8, split: @split2, sub_split: @sub_split1, time_from_start: 5500)
+      SplitTime.create!(effort: @effort8, split: @split2, sub_split: @sub_split2, time_from_start: 5500)
+      SplitTime.create!(effort: @effort8, split: @split6, sub_split: @sub_split1, time_from_start: 18700)
 
-      SplitTime.create!(effort: @effort9, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort9, split: @split2, time_from_start: 11000)
-      SplitTime.create!(effort: @effort9, split: @split3, time_from_start: 12000)
-      SplitTime.create!(effort: @effort9, split: @split4, time_from_start: 20000)
-      SplitTime.create!(effort: @effort9, split: @split6, time_from_start: 30000)
-      SplitTime.create!(effort: @effort9, split: @split5, time_from_start: 22000)
+      SplitTime.create!(effort: @effort9, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort9, split: @split2, sub_split: @sub_split1, time_from_start: 11000)
+      SplitTime.create!(effort: @effort9, split: @split2, sub_split: @sub_split2, time_from_start: 12000)
+      SplitTime.create!(effort: @effort9, split: @split4, sub_split: @sub_split1, time_from_start: 20000)
+      SplitTime.create!(effort: @effort9, split: @split6, sub_split: @sub_split1, time_from_start: 30000)
+      SplitTime.create!(effort: @effort9, split: @split4, sub_split: @sub_split2, time_from_start: 22000)
 
-      SplitTime.create!(effort: @effort10, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort10, split: @split2, time_from_start: 40240)
-      SplitTime.create!(effort: @effort10, split: @split3, time_from_start: 4300)
-      SplitTime.create!(effort: @effort10, split: @split4, time_from_start: 11000)
-      SplitTime.create!(effort: @effort10, split: @split5, time_from_start: 11100)
-      SplitTime.create!(effort: @effort10, split: @split6, time_from_start: 17600)
+      SplitTime.create!(effort: @effort10, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort10, split: @split2, sub_split: @sub_split1, time_from_start: 40240)
+      SplitTime.create!(effort: @effort10, split: @split2, sub_split: @sub_split2, time_from_start: 4300)
+      SplitTime.create!(effort: @effort10, split: @split4, sub_split: @sub_split1, time_from_start: 11000)
+      SplitTime.create!(effort: @effort10, split: @split4, sub_split: @sub_split2, time_from_start: 11100)
+      SplitTime.create!(effort: @effort10, split: @split6, sub_split: @sub_split1, time_from_start: 17600)
 
-      SplitTime.create!(effort: @effort11, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort11, split: @split2, time_from_start: 6800)
-      SplitTime.create!(effort: @effort11, split: @split3, time_from_start: 6800)
-      SplitTime.create!(effort: @effort11, split: @split4, time_from_start: 24000)
-      SplitTime.create!(effort: @effort11, split: @split5, time_from_start: 24200)
-      SplitTime.create!(effort: @effort11, split: @split6, time_from_start: 33000)
+      SplitTime.create!(effort: @effort11, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort11, split: @split2, sub_split: @sub_split1, time_from_start: 6800)
+      SplitTime.create!(effort: @effort11, split: @split2, sub_split: @sub_split2, time_from_start: 6800)
+      SplitTime.create!(effort: @effort11, split: @split4, sub_split: @sub_split1, time_from_start: 24000)
+      SplitTime.create!(effort: @effort11, split: @split4, sub_split: @sub_split2, time_from_start: 24200)
+      SplitTime.create!(effort: @effort11, split: @split6, sub_split: @sub_split1, time_from_start: 33000)
 
-      SplitTime.create!(effort: @effort12, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort12, split: @split2, time_from_start: 5300)
-      SplitTime.create!(effort: @effort12, split: @split3, time_from_start: 5400)
-      SplitTime.create!(effort: @effort12, split: @split4, time_from_start: 12500)
-      SplitTime.create!(effort: @effort12, split: @split5, time_from_start: 12550)
-      SplitTime.create!(effort: @effort12, split: @split6, time_from_start: 23232)
+      SplitTime.create!(effort: @effort12, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort12, split: @split2, sub_split: @sub_split1, time_from_start: 5300)
+      SplitTime.create!(effort: @effort12, split: @split2, sub_split: @sub_split2, time_from_start: 5400)
+      SplitTime.create!(effort: @effort12, split: @split4, sub_split: @sub_split1, time_from_start: 12500)
+      SplitTime.create!(effort: @effort12, split: @split4, sub_split: @sub_split2, time_from_start: 12550)
+      SplitTime.create!(effort: @effort12, split: @split6, sub_split: @sub_split1, time_from_start: 23232)
 
-      SplitTime.create!(effort: @effort13, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort13, split: @split2, time_from_start: 4900)
-      SplitTime.create!(effort: @effort13, split: @split3, time_from_start: 4940)
-      SplitTime.create!(effort: @effort13, split: @split4, time_from_start: 13400)
-      SplitTime.create!(effort: @effort13, split: @split5, time_from_start: 14300)
-      SplitTime.create!(effort: @effort13, split: @split6, time_from_start: 19800)
+      SplitTime.create!(effort: @effort13, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort13, split: @split2, sub_split: @sub_split1, time_from_start: 4900)
+      SplitTime.create!(effort: @effort13, split: @split2, sub_split: @sub_split2, time_from_start: 4940)
+      SplitTime.create!(effort: @effort13, split: @split4, sub_split: @sub_split1, time_from_start: 13400)
+      SplitTime.create!(effort: @effort13, split: @split4, sub_split: @sub_split2, time_from_start: 14300)
+      SplitTime.create!(effort: @effort13, split: @split6, sub_split: @sub_split1, time_from_start: 19800)
 
       @segment1 = Segment.new(@split1, @split6)
-      @segment2 = Segment.new(@split2, @split3)
-      @segment3 = Segment.new(@split3, @split4)
-      @segment4 = Segment.new(@split2, @split5)
+      @segment2 = Segment.new(@split2, @split2)
+      @segment3 = Segment.new(@split2, @split4)
+      @segment4 = Segment.new(@split4, @split6)
 
     end
 
@@ -127,13 +130,13 @@ RSpec.describe Segment, type: :model do
       expect(@segment1.distance).to eq(25000)
       expect(@segment2.distance).to eq(0)
       expect(@segment3.distance).to eq(9000)
-      expect(@segment4.distance).to eq(9000)
+      expect(@segment4.distance).to eq(10000)
     end
 
     it 'should equate itself with other segments using the same splits' do
       # This allows a segment to be used as a hash key and matched with another hash key
       segment5 = Segment.new(@split1, @split6)
-      segment6 = Segment.new(@split3, @split4)
+      segment6 = Segment.new(@split2, @split4)
       expect(segment5 == @segment1).to eq(true)
       expect(segment6 == @segment3).to eq(true)
       expect(segment6 == @segment2).to eq(false)
@@ -155,6 +158,66 @@ RSpec.describe Segment, type: :model do
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
+      @sub_split1 = SubSplit.create!(bitkey: 1, kind: 'In')
+      @sub_split2 = SubSplit.create!(bitkey: 64, kind: 'Out')
+
+      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
+      @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
+
+      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, sub_split_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, sub_split_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+
+      @event.splits << @course.splits
+
+      @segment1 = Segment.new(@split1, @split2)
+      @segment2 = Segment.new(@split2.id, @split2.id)
+      @segment3 = Segment.new(@split2, @split4)
+      @segment4 = Segment.new(@split1, @split4)
+
+      SplitTime.create!(effort: @effort1, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split1, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split2, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split1, time_from_start: 8000)
+      SplitTime.create!(effort: @effort2, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split1, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split2, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split1, time_from_start: 9000)
+      SplitTime.create!(effort: @effort3, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split1, time_from_start: 6000)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split2, time_from_start: 9200)
+      SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split1, time_from_start: 9000)
+
+    end
+
+    it 'should return velocity in m/s for a given effort' do
+      expect(@segment1.effort_velocity(@effort1)).to eq(6000 / 4000.0)
+      expect(@segment4.effort_velocity(@effort2)).to eq(10000 / 9000.0)
+    end
+
+    it 'should return zero when the distance is zero' do
+      expect(@segment2.effort_velocity(@effort1)).to eq(0)
+    end
+
+    it 'should return zero when the elapsed time is zero' do
+      expect(@segment2.effort_velocity(@effort2)).to eq(0)
+    end
+
+    it 'should return a negative value when elapsed time is negative' do
+      expect(@segment3.effort_velocity(@effort3)).to eq(4000 / -200)
+    end
+
+  end
+
+  describe 'times' do
+    before do
+      @course = Course.create!(name: 'Test Course 100')
+      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
+
+      @sub_split1 = SubSplit.create!(bitkey: 1, kind: 'In')
+      @sub_split2 = SubSplit.create!(bitkey: 64, kind: 'Out')
+
       @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
       @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
@@ -168,72 +231,19 @@ RSpec.describe Segment, type: :model do
       @segment1 = Segment.new(@split1, @split2)
       @segment2 = Segment.new(@split2.id, @split2.id)
       @segment3 = Segment.new(@split1, @split2, @split4)
+      @segment4 = Segment.new(@split2, @split4.id)
 
-      SplitTime.create!(effort: @effort1, split: @split1, sub_split_id: 1, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, sub_split_id: 1, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split2, sub_split_id: 64, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, sub_split_id: 1, time_from_start: 8000)
-      SplitTime.create!(effort: @effort2, split: @split1, sub_split_id: 1, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, sub_split_id: 1, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split2, sub_split_id: 64, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split4, sub_split_id: 1, time_from_start: 9000)
-      SplitTime.create!(effort: @effort3, split: @split1, sub_split_id: 1, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, sub_split_id: 1, time_from_start: 6000)
-      SplitTime.create!(effort: @effort3, split: @split2, sub_split_id: 64, time_from_start: 9200)
-      SplitTime.create!(effort: @effort3, split: @split4, sub_split_id: 1, time_from_start: 9000)
-
-    end
-
-    it 'should return velocity in m/s for a given effort' do
-      expect(@segment1.effort_velocity(@effort1)).to eq(6000 / 4000.0)
-      expect(@segment3.effort_velocity(@effort2)).to eq(10000 / 9000.0)
-    end
-
-    it 'should return zero when the distance is zero' do
-      expect(@segment2.effort_velocity(@effort1)).to eq(0)
-    end
-
-    it 'should return zero when the elapsed time is zero' do
-      expect(@segment2.effort_velocity(@effort2)).to eq(0)
-    end
-
-    it 'should return a negative value when elapsed time is negative' do
-      expect(@segment4.effort_velocity(@effort3)).to eq(4000 / -200)
-    end
-
-  end
-
-  describe 'times' do
-    before do
-      @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
-
-      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
-      @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
-
-      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, sub_split_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, sub_split_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
-
-      @event.splits << @course.splits
-
-      @segment1 = Segment.new(@split1, @split2)
-      @segment2 = Segment.new(@split2.id, @split3.id)
-      @segment3 = Segment.new(@split1, @split3, @split4)
-      @segment4 = Segment.new(@split3, @split4.id)
-
-      SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split3, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, time_from_start: 8000)
-      SplitTime.create!(effort: @effort2, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split3, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split4, time_from_start: 9000)
-      SplitTime.create!(effort: @effort3, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, time_from_start: 6000)
-      SplitTime.create!(effort: @effort3, split: @split3, time_from_start: 9200)
+      SplitTime.create!(effort: @effort1, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split1, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split2, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split1, time_from_start: 8000)
+      SplitTime.create!(effort: @effort2, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split1, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split2, time_from_start: 5000)
+      SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split1, time_from_start: 9000)
+      SplitTime.create!(effort: @effort3, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split1, time_from_start: 6000)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split2, time_from_start: 9200)
     end
 
     it 'should return a hash containing effort => time for the segment' do
@@ -252,20 +262,23 @@ RSpec.describe Segment, type: :model do
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
+      @sub_split1 = SubSplit.create!(bitkey: 1, kind: 'In')
+      @sub_split2 = SubSplit.create!(bitkey: 64, kind: 'Out')
+
       @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
       @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
 
-      @split1 = Split.create!(course: @course, base_name: 'Start', distance_from_start: 0, split_sub_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Aid Station', distance_from_start: 6000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Finish', distance_from_start: 10000, split_sub_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+      @split1 = Split.create!(course: @course, base_name: 'Start', distance_from_start: 0, sub_split_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+      @split2 = Split.create!(course: @course, base_name: 'Aid Station', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Finish', distance_from_start: 10000, sub_split_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
       @event.splits << @course.splits
 
       @segment1 = Segment.new(@split1, @split2)
-      @segment2 = Segment.new(@split2.id, @split3.id)
-      @segment3 = Segment.new(@split1, @split3, @split4)
-      @segment4 = Segment.new(@split3, @split4.id)
+      @segment2 = Segment.new(@split2.id, @split2.id)
+      @segment3 = Segment.new(@split1, @split2, @split4)
+      @segment4 = Segment.new(@split2, @split4.id)
 
 
     end

@@ -8,6 +8,9 @@ RSpec.describe DataStatusService do
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
+      @sub_split1 = SubSplit.create!(bitkey: 1, kind: 'In')
+      @sub_split2 = SubSplit.create!(bitkey: 64, kind: 'Out')
+
       @effort1 = Effort.create!(event: @event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       @effort2 = Effort.create!(event: @event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
       @effort3 = Effort.create!(event: @event, bib_number: 3, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male')
@@ -23,97 +26,97 @@ RSpec.describe DataStatusService do
       @effort13 = Effort.create!(event: @event, bib_number: 13, city: 'Limon', state_code: 'CO', country_code: 'US', age: 32, first_name: 'Lucy', last_name: 'Peanut', gender: 'female')
 
       @split1 = Split.create!(course: @course, base_name: 'Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', distance_from_start: 6000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', distance_from_start: 15000, split_sub_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+      @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', distance_from_start: 15000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
       @split6 = Split.create!(course: @course, base_name: 'Finish Line', distance_from_start: 25000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
       @event.splits << @course.splits
 
-      SplitTime.create!(effort: @effort1, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split3, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, time_from_start: 15200)
-      SplitTime.create!(effort: @effort1, split: @split5, time_from_start: 15100)
-      SplitTime.create!(effort: @effort1, split: @split6, time_from_start: 21000)
+      SplitTime.create!(effort: @effort1, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split1, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split2, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split1, time_from_start: 15200)
+      SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split2, time_from_start: 15100)
+      SplitTime.create!(effort: @effort1, split: @split6, sub_split: @sub_split1, time_from_start: 21000)
 
-      SplitTime.create!(effort: @effort2, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, time_from_start: 60)
-      SplitTime.create!(effort: @effort2, split: @split3, time_from_start: 120)
-      SplitTime.create!(effort: @effort2, split: @split4, time_from_start: 24000)
-      SplitTime.create!(effort: @effort2, split: @split5, time_from_start: 150000)
-      SplitTime.create!(effort: @effort2, split: @split6, time_from_start: 40000)
+      SplitTime.create!(effort: @effort2, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split1, time_from_start: 60)
+      SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split2, time_from_start: 120)
+      SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split1, time_from_start: 24000)
+      SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split2, time_from_start: 150000)
+      SplitTime.create!(effort: @effort2, split: @split6, sub_split: @sub_split1, time_from_start: 40000)
 
-      SplitTime.create!(effort: @effort3, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, time_from_start: 5000)
-      SplitTime.create!(effort: @effort3, split: @split3, time_from_start: 5000)
-      SplitTime.create!(effort: @effort3, split: @split4, time_from_start: 12200)
-      SplitTime.create!(effort: @effort3, split: @split5, time_from_start: 12300)
-      SplitTime.create!(effort: @effort3, split: @split6, time_from_start: 18000)
+      SplitTime.create!(effort: @effort3, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split1, time_from_start: 5000)
+      SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split2, time_from_start: 5000)
+      SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split1, time_from_start: 12200)
+      SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split2, time_from_start: 12300)
+      SplitTime.create!(effort: @effort3, split: @split6, sub_split: @sub_split1, time_from_start: 18000)
 
-      SplitTime.create!(effort: @effort4, split: @split1, time_from_start: 1000)
-      SplitTime.create!(effort: @effort4, split: @split2, time_from_start: 4500)
-      SplitTime.create!(effort: @effort4, split: @split3, time_from_start: 4400)
-      SplitTime.create!(effort: @effort4, split: @split4, time_from_start: 11000)
-      SplitTime.create!(effort: @effort4, split: @split5, time_from_start: 11000)
-      SplitTime.create!(effort: @effort4, split: @split6, time_from_start: 17500)
+      SplitTime.create!(effort: @effort4, split: @split1, sub_split: @sub_split1, time_from_start: 1000)
+      SplitTime.create!(effort: @effort4, split: @split2, sub_split: @sub_split1, time_from_start: 4500)
+      SplitTime.create!(effort: @effort4, split: @split2, sub_split: @sub_split2, time_from_start: 4400)
+      SplitTime.create!(effort: @effort4, split: @split4, sub_split: @sub_split1, time_from_start: 11000)
+      SplitTime.create!(effort: @effort4, split: @split4, sub_split: @sub_split2, time_from_start: 11000)
+      SplitTime.create!(effort: @effort4, split: @split6, sub_split: @sub_split1, time_from_start: 17500)
 
-      SplitTime.create!(effort: @effort5, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort5, split: @split2, time_from_start: 4600)
-      SplitTime.create!(effort: @effort5, split: @split3, time_from_start: 4800)
-      SplitTime.create!(effort: @effort5, split: @split4, time_from_start: 9800)
-      SplitTime.create!(effort: @effort5, split: @split5, time_from_start: 10000)
-      SplitTime.create!(effort: @effort5, split: @split6, time_from_start: 14550)
+      SplitTime.create!(effort: @effort5, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort5, split: @split2, sub_split: @sub_split1, time_from_start: 4600)
+      SplitTime.create!(effort: @effort5, split: @split2, sub_split: @sub_split2, time_from_start: 4800)
+      SplitTime.create!(effort: @effort5, split: @split4, sub_split: @sub_split1, time_from_start: 9800)
+      SplitTime.create!(effort: @effort5, split: @split4, sub_split: @sub_split2, time_from_start: 10000)
+      SplitTime.create!(effort: @effort5, split: @split6, sub_split: @sub_split1, time_from_start: 14550)
 
-      SplitTime.create!(effort: @effort6, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort6, split: @split4, time_from_start: 9600)
-      SplitTime.create!(effort: @effort6, split: @split5, time_from_start: 9660)
-      SplitTime.create!(effort: @effort6, split: @split6, time_from_start: 14650)
+      SplitTime.create!(effort: @effort6, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort6, split: @split4, sub_split: @sub_split1, time_from_start: 9600)
+      SplitTime.create!(effort: @effort6, split: @split4, sub_split: @sub_split2, time_from_start: 9660)
+      SplitTime.create!(effort: @effort6, split: @split6, sub_split: @sub_split1, time_from_start: 14650)
 
-      SplitTime.create!(effort: @effort7, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort7, split: @split2, time_from_start: 6300)
-      SplitTime.create!(effort: @effort7, split: @split3, time_from_start: 6600)
-      SplitTime.create!(effort: @effort7, split: @split4, time_from_start: 13000)
-      SplitTime.create!(effort: @effort7, split: @split5, time_from_start: 13500)
+      SplitTime.create!(effort: @effort7, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort7, split: @split2, sub_split: @sub_split1, time_from_start: 6300)
+      SplitTime.create!(effort: @effort7, split: @split2, sub_split: @sub_split2, time_from_start: 6600)
+      SplitTime.create!(effort: @effort7, split: @split4, sub_split: @sub_split1, time_from_start: 13000)
+      SplitTime.create!(effort: @effort7, split: @split4, sub_split: @sub_split2, time_from_start: 13500)
 
-      SplitTime.create!(effort: @effort8, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort8, split: @split2, time_from_start: 5500)
-      SplitTime.create!(effort: @effort8, split: @split3, time_from_start: 5500)
-      SplitTime.create!(effort: @effort8, split: @split6, time_from_start: 18700)
+      SplitTime.create!(effort: @effort8, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort8, split: @split2, sub_split: @sub_split1, time_from_start: 5500)
+      SplitTime.create!(effort: @effort8, split: @split2, sub_split: @sub_split2, time_from_start: 5500)
+      SplitTime.create!(effort: @effort8, split: @split6, sub_split: @sub_split1, time_from_start: 18700)
 
-      SplitTime.create!(effort: @effort9, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort9, split: @split2, time_from_start: 11000)
-      SplitTime.create!(effort: @effort9, split: @split3, time_from_start: 12000)
-      SplitTime.create!(effort: @effort9, split: @split4, time_from_start: 20000)
-      SplitTime.create!(effort: @effort9, split: @split6, time_from_start: 30000)
-      SplitTime.create!(effort: @effort9, split: @split5, time_from_start: 22000)
+      SplitTime.create!(effort: @effort9, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort9, split: @split2, sub_split: @sub_split1, time_from_start: 11000)
+      SplitTime.create!(effort: @effort9, split: @split2, sub_split: @sub_split2, time_from_start: 12000)
+      SplitTime.create!(effort: @effort9, split: @split4, sub_split: @sub_split1, time_from_start: 20000)
+      SplitTime.create!(effort: @effort9, split: @split6, sub_split: @sub_split1, time_from_start: 30000)
+      SplitTime.create!(effort: @effort9, split: @split4, sub_split: @sub_split2, time_from_start: 22000)
 
-      SplitTime.create!(effort: @effort10, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort10, split: @split2, time_from_start: 40240)
-      SplitTime.create!(effort: @effort10, split: @split3, time_from_start: 4300)
-      SplitTime.create!(effort: @effort10, split: @split4, time_from_start: 11000)
-      SplitTime.create!(effort: @effort10, split: @split5, time_from_start: 11100)
-      SplitTime.create!(effort: @effort10, split: @split6, time_from_start: 17600)
+      SplitTime.create!(effort: @effort10, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort10, split: @split2, sub_split: @sub_split1, time_from_start: 40240)
+      SplitTime.create!(effort: @effort10, split: @split2, sub_split: @sub_split2, time_from_start: 4300)
+      SplitTime.create!(effort: @effort10, split: @split4, sub_split: @sub_split1, time_from_start: 11000)
+      SplitTime.create!(effort: @effort10, split: @split4, sub_split: @sub_split2, time_from_start: 11100)
+      SplitTime.create!(effort: @effort10, split: @split6, sub_split: @sub_split1, time_from_start: 17600)
 
-      SplitTime.create!(effort: @effort11, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort11, split: @split2, time_from_start: 6800)
-      SplitTime.create!(effort: @effort11, split: @split3, time_from_start: 6800)
-      SplitTime.create!(effort: @effort11, split: @split4, time_from_start: 24000)
-      SplitTime.create!(effort: @effort11, split: @split5, time_from_start: 24200)
-      SplitTime.create!(effort: @effort11, split: @split6, time_from_start: 33000)
+      SplitTime.create!(effort: @effort11, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort11, split: @split2, sub_split: @sub_split1, time_from_start: 6800)
+      SplitTime.create!(effort: @effort11, split: @split2, sub_split: @sub_split2, time_from_start: 6800)
+      SplitTime.create!(effort: @effort11, split: @split4, sub_split: @sub_split1, time_from_start: 24000)
+      SplitTime.create!(effort: @effort11, split: @split4, sub_split: @sub_split2, time_from_start: 24200)
+      SplitTime.create!(effort: @effort11, split: @split6, sub_split: @sub_split1, time_from_start: 33000)
 
-      SplitTime.create!(effort: @effort12, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort12, split: @split2, time_from_start: 5300)
-      SplitTime.create!(effort: @effort12, split: @split3, time_from_start: 5400)
-      SplitTime.create!(effort: @effort12, split: @split4, time_from_start: 12500)
-      SplitTime.create!(effort: @effort12, split: @split5, time_from_start: 12550)
-      SplitTime.create!(effort: @effort12, split: @split6, time_from_start: 23232)
+      SplitTime.create!(effort: @effort12, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort12, split: @split2, sub_split: @sub_split1, time_from_start: 5300)
+      SplitTime.create!(effort: @effort12, split: @split2, sub_split: @sub_split2, time_from_start: 5400)
+      SplitTime.create!(effort: @effort12, split: @split4, sub_split: @sub_split1, time_from_start: 12500)
+      SplitTime.create!(effort: @effort12, split: @split4, sub_split: @sub_split2, time_from_start: 12550)
+      SplitTime.create!(effort: @effort12, split: @split6, sub_split: @sub_split1, time_from_start: 23232)
 
-      SplitTime.create!(effort: @effort13, split: @split1, time_from_start: 0)
-      SplitTime.create!(effort: @effort13, split: @split2, time_from_start: 4900)
-      SplitTime.create!(effort: @effort13, split: @split3, time_from_start: 4940)
-      SplitTime.create!(effort: @effort13, split: @split4, time_from_start: 13400)
-      SplitTime.create!(effort: @effort13, split: @split5, time_from_start: 14300)
-      SplitTime.create!(effort: @effort13, split: @split6, time_from_start: 19800)
+      SplitTime.create!(effort: @effort13, split: @split1, sub_split: @sub_split1, time_from_start: 0)
+      SplitTime.create!(effort: @effort13, split: @split2, sub_split: @sub_split1, time_from_start: 4900)
+      SplitTime.create!(effort: @effort13, split: @split2, sub_split: @sub_split2, time_from_start: 4940)
+      SplitTime.create!(effort: @effort13, split: @split4, sub_split: @sub_split1, time_from_start: 13400)
+      SplitTime.create!(effort: @effort13, split: @split4, sub_split: @sub_split2, time_from_start: 14300)
+      SplitTime.create!(effort: @effort13, split: @split6, sub_split: @sub_split1, time_from_start: 19800)
 
       efforts = Effort.all
       DataStatusService.set_data_status(efforts)
@@ -142,13 +145,13 @@ RSpec.describe DataStatusService do
     end
 
     it 'should set the data status of negative segment times to bad' do
-      expect(@effort1.split_times.where(split: @split5).first.bad?).to eq(true)
-      expect(@effort4.split_times.where(split: @split3).first.bad?).to eq(true)
+      expect(@effort1.split_times.where(split: @split4, sub_split: @sub_split2).first.bad?).to eq(true)
+      expect(@effort4.split_times.where(split: @split2, sub_split: @sub_split2).first.bad?).to eq(true)
     end
 
     it 'should look past bad data points to the previous valid data point to calculate data status' do
-      expect(@effort2.split_times.where(split: @split6).first.questionable?).to eq(true)
-      expect(@effort10.split_times.where(split: @split3).first.good?).to eq(true)
+      expect(@effort2.split_times.where(split: @split6, sub_split: @sub_split1).first.questionable?).to eq(true)
+      expect(@effort10.split_times.where(split: @split2, sub_split: @sub_split2).first.good?).to eq(true)
 
     end
 
@@ -166,22 +169,22 @@ RSpec.describe DataStatusService do
     end
 
     it 'should set the data status of non-zero start splits to bad' do
-      expect(@effort4.split_times.where(split: @split1).first.data_status).to eq('bad')
+      expect(@effort4.split_times.where(split: @split1, sub_split: @sub_split1).first.data_status).to eq('bad')
     end
 
     it 'should set the data status of impossibly fast segments to bad' do
-      expect(@effort2.split_times.where(split: @split2).first.bad?).to eq(true)
-      expect(@effort2.split_times.where(split: @split3).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split: @split2, sub_split: @sub_split1).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split: @split2, sub_split: @sub_split2).first.bad?).to eq(true)
     end
 
     it 'should set the data status of impossibly slow segments to bad' do
-      expect(@effort2.split_times.where(split: @split5).first.bad?).to eq(true)
-      expect(@effort10.split_times.where(split: @split2).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split: @split4, sub_split: @sub_split2).first.bad?).to eq(true)
+      expect(@effort10.split_times.where(split: @split2, sub_split: @sub_split1).first.bad?).to eq(true)
     end
 
     it 'should set the data status of splits correctly even if missing prior splits' do
-      expect(@effort6.split_times.where(split: @split4).first.good?).to eq(true)
-      expect(@effort8.split_times.where(split: @split6).first.good?).to eq(true)
+      expect(@effort6.split_times.where(split: @split4, sub_split: @sub_split1).first.good?).to eq(true)
+      expect(@effort8.split_times.where(split: @split6, sub_split: @sub_split1).first.good?).to eq(true)
     end
   end
 

@@ -2,8 +2,8 @@ class SegmentCalculations
   attr_accessor :times, :valid_data_array, :low_bad, :low_q, :high_q, :high_bad, :mean, :std
 
   def initialize(segment, begin_times_hash = nil, end_times_hash = nil)
-    begin_times_hash ||= segment.begin_split.time_hash
-    end_times_hash ||= segment.end_split.time_hash
+    begin_times_hash ||= segment.begin_split.time_hash(segment.begin_split.sub_split_keys.last)
+    end_times_hash ||= segment.end_split.time_hash(segment.end_split.sub_split_keys.first)
     @times = calculate_times(begin_times_hash, end_times_hash)
     create_valid_data_array
     set_status_limits(segment)

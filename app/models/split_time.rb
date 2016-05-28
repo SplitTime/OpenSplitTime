@@ -9,6 +9,8 @@ class SplitTime < ActiveRecord::Base
   scope :ordered, -> { includes(:split, :sub_split).order('splits.distance_from_start, sub_splits.bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
+  scope :out, -> { where(sub_split_id: SubSplit.out_key) }
+  scope :in, -> { where(sub_split_id: SubSplit.in_key) }
 
   # TODO remove 'base' methods
 
@@ -74,15 +76,6 @@ class SplitTime < ActiveRecord::Base
     else
       self.day_and_time = nil
     end
-  end
-
-  def waypoint_group
-    splits = split.waypoint_group
-    split_time_array = []
-    splits.each do |split|
-      split_time_array << split.split_times.where(effort: effort).first
-    end
-    split_time_array # Includes nil values when no split_time is associated with members of the split.waypoint_group
   end
 
   def self.confirmed!

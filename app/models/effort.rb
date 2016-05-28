@@ -151,13 +151,16 @@ class Effort < ActiveRecord::Base
   end
 
   def time_in_aid(split)
-    # TODO
+    time_array = split_times.where(split: split).order(:sub_split_id).pluck(:time_from_start)
+    time_array.count > 1 ? time_array.last - time_array.first : nil
   end
 
-  def total_time_in_aid
+  def total_time_in_aid # TODO reduce number of database calls
     total = 0
-    split_times.each do |unicorn|
-      total = total + time_in_aid(unicorn.split)
+    split_times_out = split_times.out
+    split_times_out.each do |unicorn|
+      tia = time_in_aid(unicorn.split)
+      total = tia ? total + tia : total
     end
     total
   end
@@ -294,7 +297,7 @@ class Effort < ActiveRecord::Base
         finish_split_time ?
             nil :
             split_times.joins(:split).joins(:effort)
-                .order('efforts.id, splits.distance_from_start DESC, splits.sub_order DESC')
+                .order('efforts.id, splits.distance_from_start DESC')
                 .first.split_id
     update(dropped_split_id: dropped_split_id)
     dropped_split_id

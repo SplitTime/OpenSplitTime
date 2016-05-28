@@ -35,7 +35,7 @@ class Importer
         split_failure_array << split
       end
       if distance_array[i] == distance_array[i + 1]
-        self.running_bitkey = [SubSplit.next_bitkey(running_bitkey), SubSplit.where(kind: name_extension).first.try(:id)].compact.max
+        self.running_bitkey = SubSplit.next_bitkey(running_bitkey)
         self.running_sub_split_mask = running_sub_split_mask & running_bitkey
       else
         self.running_bitkey = self.running_sub_split_mask = 1
@@ -53,22 +53,22 @@ class Importer
     self.effort_failure_array = []
     self.effort_id_array = []
     start_offset_hash = {}
-    dropped_hash = {}
+    final_split_hash = {}
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0..split_offset - 2])
       @effort = create_effort(row_effort_data)
       if @effort
-        start_offset, dropped_split = create_split_times(row, @effort.id)
+        start_offset, final_split = create_split_times(row, @effort.id)
         start_offset_hash[@effort.id] = start_offset if start_offset
-        dropped_hash[@effort.id] = dropped_split if dropped_split
+        final_split_hash[@effort.id] = final_split
         effort_id_array << @effort.id
       else
         effort_failure_array << row
       end
     end
     BulkUpdateService.bulk_update_start_offset(start_offset_hash)
-    BulkUpdateService.bulk_update_dropped(dropped_hash)
+    BulkUpdateService.bulk_update_dropped(final_split_hash)
     # DataStatusService.set_data_status(event.efforts)
     self.auto_matched_count, self.participants_created_count =
         EventReconcileService.auto_reconcile_efforts(event)
@@ -147,7 +147,7 @@ class Importer
         sub_split = found ? [found, sequential].sort_by { |sub_split| sub_split.bitkey }.last :
             sequential
         self.running_bitkey = [sub_split.bitkey, running_bitkey].max
-        split.sub_split_mask = split.sub_split_mask & sub_split.bitkey
+        split.sub_split_mask = (split.sub_split_mask & sub_split.bitkey)
       end
 
     end
@@ -170,7 +170,7 @@ class Importer
     row_time_data = row[split_offset - 1..row.size - 1]
     row_time_data.unshift(0) if finish_times_only?
     return nil if split_sub_pairs.size != row_time_data.size
-    dropped_pointer = start_offset = nil
+    final_split_pointer = start_offset = nil
     SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_id, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
       (0...split_sub_pairs.size).each do |i|
         split_id = split_sub_pairs[i][0]
@@ -181,20 +181,17 @@ class Importer
           working_time = 0
         end
         seconds = convert_time_to_standard(working_time)
-        if seconds.nil?
-          dropped_pointer = split_id
-          next
-        end
+        next if seconds.nil?
+        final_split_pointer = split_id
         worker.add(effort_id: effort_id,
                    split_id: split_id,
                    sub_split_id: sub_split_id,
                    time_from_start: seconds,
                    created_by: current_user_id,
                    updated_by: current_user_id)
-        dropped_pointer = nil if i == split_sub_pairs.size - 1
       end
     end
-    [start_offset, dropped_pointer]
+    [start_offset, final_split_pointer]
   end
 
   def open_spreadsheet(file)

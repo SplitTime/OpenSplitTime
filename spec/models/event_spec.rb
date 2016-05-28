@@ -48,45 +48,5 @@ RSpec.describe Event, type: :model do
     expect(event.errors[:name]).to include("has already been taken")
   end
 
-  describe 'waypoint_groups' do
-    let(:course) { Course.create!(name: 'split test') }
-    let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
-
-    before do
-      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_split_mask: 1, kind: :start)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_mask: 65, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', distance_from_start: 25000, sub_split_mask: 65, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_split_mask: 1, kind: :finish)
-    end
-
-    it 'should return a list of split ids for each of the waypoints grouped by distance' do
-      expect(event.waypoint_groups.count).to eq(4)
-      expect(event.waypoint_groups[0].count).to eq(1)
-      expect(event.waypoint_groups[1].count).to eq(2)
-      expect(event.waypoint_groups[2].count).to eq(2)
-      expect(event.waypoint_groups[3].count).to eq(1)
-    end
-  end
-
-  describe 'waypoint_group' do
-    let(:course) { Course.create!(name: 'split test') }
-    let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
-
-    before do
-      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_split_mask: 1, kind: :start)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_mask: 65, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Halfway House', distance_from_start: 25000, sub_split_mask: 65, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_split_mask: 1, kind: :finish)
-    end
-
-    it 'should return splits in the same distance group as the provided split' do
-      split2 = event.splits.where(base_name: 'Monarch Pass').first
-      split3 = event.splits.where(base_name: 'Monarch Pass').first
-      split6 = event.splits.where(base_name: 'Finish Point').first
-      expect(event.waypoint_group(split2)).to eq([split2, split3])
-      expect(event.waypoint_group(split6)).to eq([split6])
-    end
-  end
-
 end
 

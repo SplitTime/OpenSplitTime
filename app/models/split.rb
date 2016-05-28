@@ -77,16 +77,12 @@ class Split < ActiveRecord::Base
     return_hash
   end
 
-  def time_hash
-    Hash[SplitTime.where(split_id: id).pluck(:effort_id, :time_from_start)]
+  def time_hash(sub_split_id)
+    Hash[SplitTime.where(split_id: id, sub_split_id: sub_split_id).pluck(:effort_id, :time_from_start)]
   end
 
   def average_time(relevant_efforts)
     split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
-  end
-
-  def sub_split_key_hashes
-    sub_split_keys.map { |key| {id => key} }
   end
 
   def name
@@ -96,6 +92,10 @@ class Split < ActiveRecord::Base
 
   def name_extensions
     sub_splits.pluck(:kind)
+  end
+
+  def sub_split_key_hashes
+    sub_split_keys.map { |key| {id => key} }
   end
 
   def sub_split_keys

@@ -2,6 +2,9 @@ class SplitRow
 
   delegate :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
 
+  # split_times should be an array having size == split.sub_split_key_hashes.size,
+  # with nil values where no corresponding split_time exists
+
   def initialize(split, split_times, prior_time = nil)
     @split = split
     @split_times = split_times
@@ -24,6 +27,10 @@ class SplitRow
 
   def times_from_start
     split_times.map { |st| st ? st.time_from_start : nil }
+  end
+
+  def days_and_times
+    split_times.map { |st| st ? st.day_and_time : nil }
   end
 
   def time_data_statuses

@@ -82,7 +82,7 @@ class Event < ActiveRecord::Base
   def efforts_sorted
     simple? ?
         efforts.sorted_by_finish_time :
-        Effort.efforts_from_ids(sorted_ultra_time_array.map { |x| x[0] })
+        efforts.sorted_including_dnf
   end
 
   def ids_sorted

@@ -255,6 +255,25 @@ class Effort < ActiveRecord::Base
 
   # Sorting class methods
 
+  def self.sorted_including_dnf
+    Effort.connection.execute("select t.effort_id, t.gender, t.split_id, t.time_from_start from
+(select distinct on(ef.id)
+ef.id as effort_id, ef.gender, s.id as split_id, s.distance_from_start, st.time_from_start
+from efforts ef
+left join split_times st on st.effort_id = ef.id
+left join splits s on s.id = st.split_id
+where ef.event_id = 4
+order by ef.id, s.distance_from_start desc) as t
+order by t.distance_from_start desc, t.time_from_start")
+  end
+
+  def self.distinct_join_table
+    select('DISTINCT ON(efforts.id) efforts.id as effort_id, efforts.gender, splits.id as split_id, splits.distance_from_start, split_times.time_from_start')
+        .joins(:split_times => :split)
+        .order('efforts.id, splits.distance_from_start DESC')
+  end
+
+
   def self.sorted(time_array = nil)
     return [] if self.count < 1
     return sorted_by_finish_time if first.event.simple?

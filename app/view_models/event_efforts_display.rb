@@ -34,20 +34,6 @@ class EventEffortsDisplay
     race ? race.name : nil
   end
 
-  def overall_place(effort)
-    sorted_effort_ids.index(effort.id) + 1
-  end
-
-  def gender_place(effort)
-    sorted_genders[0...overall_place(effort)].count(effort.gender)
-  end
-
-  def finish_status(effort)
-    return effort.time_from_start if effort.final_split_id == event_final_split_id
-    return "Dropped at #{effort.final_split_name}" if effort.final_split_id
-    "In progress"
-  end
-
   private
 
   attr_accessor :all_efforts, :event_final_split_id
@@ -67,6 +53,20 @@ class EventEffortsDisplay
                                  finish_status: finish_status(effort))
       effort_rows << effort_row
     end
+  end
+
+  def finish_status(effort)
+    return effort.time_from_start if effort.final_split_id == event_final_split_id
+    return "Dropped at #{effort.final_split_name}" if effort.final_split_id
+    "In progress"
+  end
+
+  def overall_place(effort)
+    sorted_effort_ids.index(effort.id) + 1
+  end
+
+  def gender_place(effort)
+    sorted_genders[0...overall_place(effort)].count(effort.gender)
   end
 
   def sorted_effort_ids

@@ -55,9 +55,9 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
-    @course = Course.includes(:splits).find(params[:id])
-    @best_efforts_display = BestEffortsDisplay.new(@course, params)
-    session[:return_to] = best_efforts_course_path(@course)
+    course = Course.find(params[:id])
+    @best_display = BestEffortsDisplay.new(course, params)
+    session[:return_to] = best_efforts_course_path(course)
   end
 
   def segment_picker

@@ -23,25 +23,25 @@ RSpec.describe SplitRow, type: :model do
 
     @event.splits << @course.splits
 
-    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, sub_split: @sub_split1, time_from_start: 0)
-    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split1, time_from_start: 4000)
-    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split2, time_from_start: 4100)
-    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split1, time_from_start: 15200)
-    @split_time5 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split3, time_from_start: 15300)
-    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split2, time_from_start: 15100)
-    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, sub_split: @sub_split1, time_from_start: 21000)
+    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, sub_split: @sub_split1, time_from_start: 0, data_status: 2)
+    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split1, time_from_start: 4000, data_status: 2)
+    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split2, time_from_start: 4100, data_status: 2)
+    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split1, time_from_start: 15200, data_status: 2)
+    @split_time5 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split3, time_from_start: 15300, data_status: 2)
+    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split2, time_from_start: 15100, data_status: 0)
+    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, sub_split: @sub_split1, time_from_start: 21000, data_status: 2)
 
-    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, sub_split: @sub_split1, time_from_start: 0)
-    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split2, time_from_start: 120)
-    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split1, time_from_start: 24000)
-    @split_time11 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split3, time_from_start: 24500)
-    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split2, time_from_start: 150000)
-    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, sub_split: @sub_split1, time_from_start: 40000)
+    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, sub_split: @sub_split1, time_from_start: 0, data_status: 2)
+    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split2, time_from_start: 120, data_status: 0)
+    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split1, time_from_start: 24000, data_status: 2)
+    @split_time11 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split3, time_from_start: 24500, data_status: 2)
+    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split2, time_from_start: 150000, data_status: 0)
+    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, sub_split: @sub_split1, time_from_start: 40000, data_status: 1)
 
-    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, sub_split: @sub_split1, time_from_start: 0)
-    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split1, time_from_start: 5000)
-    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split2, time_from_start: 5000)
-    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split1, time_from_start: 12200)
+    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, sub_split: @sub_split1, time_from_start: 0, data_status: 2)
+    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split1, time_from_start: 5000, data_status: 2)
+    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split2, time_from_start: 5000, data_status: 2)
+    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split1, time_from_start: 12200, data_status: 2)
 
     @split_row1 = SplitRow.new(@split1, [@split_time1], nil)
     @split_row2 = SplitRow.new(@split2, [@split_time2, @split_time3], 0)
@@ -102,6 +102,36 @@ RSpec.describe SplitRow, type: :model do
       expect(@split_row10.days_and_times).to eq([event_start_time + effort_start_offset + 5000, event_start_time + effort_start_offset + 5000])
       expect(@split_row11.days_and_times).to eq([event_start_time + effort_start_offset + 12200, nil, nil])
       expect(@split_row12.days_and_times).to eq([nil, nil])
+    end
+    
+  end
+
+  describe 'time_data_statuses' do
+
+    it 'should return an array of data statuses' do
+      expect(@split_row1.time_data_statuses).to eq(['good'])
+      expect(@split_row2.time_data_statuses).to eq(['good', 'good'])
+      expect(@split_row3.time_data_statuses).to eq(['good', 'good', 'bad'])
+      expect(@split_row4.time_data_statuses).to eq(['good'])
+      expect(@split_row6.time_data_statuses).to eq([nil, 'bad'])
+      expect(@split_row8.time_data_statuses).to eq(['questionable'])
+      expect(@split_row11.time_data_statuses).to eq(['good', nil, nil])
+      expect(@split_row12.time_data_statuses).to eq([nil, nil])
+    end
+    
+  end
+  
+  describe 'data_status' do
+    
+    it 'should return the worst of the time_data_statuses in the split_row' do
+      expect(@split_row1.data_status).to eq('good')
+      expect(@split_row2.data_status).to eq('good')
+      expect(@split_row3.data_status).to eq('bad')
+      expect(@split_row4.data_status).to eq('good')
+      expect(@split_row6.data_status).to eq('bad')
+      expect(@split_row8.data_status).to eq('questionable')
+      expect(@split_row11.data_status).to eq(nil)
+      expect(@split_row12.data_status).to eq(nil)
     end
     
   end

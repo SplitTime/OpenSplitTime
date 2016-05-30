@@ -68,21 +68,12 @@ class Split < ActiveRecord::Base
     self.vert_loss_from_start = Split.elevation_in_meters(entered_vert_loss.to_f, User.current) if entered_vert_loss.present?
   end
 
-  def self.average_times(target_finish_time) # Returns a hash with split ids => average times from start
-    efforts = first.course.relevant_efforts(target_finish_time)
-    return_hash = {}
-    all.each do |split|
-      return_hash[split.id] = split.average_time(efforts)
-    end
-    return_hash
-  end
-
   def time_hash(sub_split_id)
     Hash[SplitTime.where(split_id: id, sub_split_id: sub_split_id).pluck(:effort_id, :time_from_start)]
   end
 
-  def average_time(relevant_efforts)
-    split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
+  def average_time(sub_split_key, relevant_efforts)
+    split_times.where(sub_split_id: sub_split_key, effort: relevant_efforts).pluck(:time_from_start).mean
   end
 
   def name

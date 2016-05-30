@@ -2,18 +2,18 @@
   <div class="col-xs-12">
     <h3><%= "#{@current_user.full_name}" %></h3>
     <h1>
-      <%= "#{@course.name} pacing plan" %>
-      <% if expected_time %>
-      <%= "| #{time_format_hhmm(expected_time)} goal time" %>
+      <%= "#{@plan_display.course.name} pacing plan" %>
+      <% if @plan_display.expected_time %>
+      <%= "| #{time_format_hhmm(@plan_display.expected_time)} goal time" %>
       <% end %>
     </h1>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <% if expected_time %>
+    <% if @plan_display.expected_time %>
         <h3><%=  %></h3>
-            <h3><%= "Analyzed #{pluralize(efforts_analyzed, 'effort')} from #{'year'.pluralize(event_years_analyzed.count)} #{event_years_analyzed.to_sentence}" %></h3>
+            <h3><%= "Analyzed #{pluralize(@plan_display.relevant_efforts_count, 'effort')} from #{'year'.pluralize(@plan_display.event_years_analyzed.count)} #{@plan_display.event_years_analyzed.to_sentence}" %></h3>
     <% end %>
   </div>
 </div>
@@ -21,7 +21,7 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '<< Back to course splits', course_path(@course), class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Back to course splits', course_path(@plan_display.course), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
   </div>
 </div>
@@ -30,10 +30,9 @@
 <%= render 'time_input' %>
 
 <hr>
-<% if expected_time %>
-    <% if efforts_analyzed > 0 %>
-    <%= render 'plan_detail', splits: @event.splits,
-               time_data: normalize_time_data(@event.splits.average_times(expected_time), expected_time) %>
+<% if @plan_display.expected_time %>
+    <% if @plan_display.relevant_efforts_count > 0 %>
+    <%= render 'plan_detail'%>
         <% else %>
           <h4>Found no efforts close to that time.</h4>
         <% end %>

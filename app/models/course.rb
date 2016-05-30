@@ -36,9 +36,9 @@ class Course < ActiveRecord::Base
   end
 
   def relevant_efforts(target_time, max_events = 5, min_efforts = 20)
-    relevant_events = events.recent(max_events).includes(:efforts => {:split_times => :split})
+    relevant_events = events.recent(max_events)
     return Effort.none if relevant_events.count < 1
-    event_efforts = Effort.where(event_id: relevant_events.pluck(:id).uniq)
+    event_efforts = Effort.where(event: relevant_events)
     5.step(25, 5) do |i|
       scope_result = event_efforts.within_time_range(target_time * (1-(i/100.0)), target_time * (1+(i/100.0)))
       return scope_result if scope_result.count >= min_efforts

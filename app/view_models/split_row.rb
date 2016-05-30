@@ -5,10 +5,11 @@ class SplitRow
   # split_times should be an array having size == split.sub_split_key_hashes.size,
   # with nil values where no corresponding split_time exists
 
-  def initialize(split, split_times, prior_time = nil)
+  def initialize(split, split_times, prior_time = nil, start_time = nil)
     @split = split
     @split_times = split_times
     @prior_time = prior_time
+    @start_time = start_time
   end
 
   def split_id
@@ -30,7 +31,9 @@ class SplitRow
   end
 
   def days_and_times
-    split_times.map { |st| st ? st.day_and_time : nil }
+    start_time ?
+        times_from_start.map { |time| time ? start_time + time : nil } :
+        split_times.map { |st| st ? st.day_and_time : nil }
   end
 
   def time_data_statuses
@@ -43,6 +46,6 @@ class SplitRow
 
   # private
 
-  attr_accessor :split, :split_times, :prior_time
+  attr_accessor :split, :split_times, :prior_time, :start_time
 
 end

@@ -65,14 +65,14 @@ class CoursesController < ApplicationController
   end
 
   def plan_effort
-    @course = Course.where(id: params[:id]).first
-    authorize @course
-    @event = @course.events.most_recent
-    unless @event
+    course = Course.find(params[:id])
+    authorize course
+    unless course.events
       flash[:danger] = "No events yet held on this course"
-      redirect_to course_path(@course)
+      redirect_to course_path(course)
     end
-    session[:return_to] = plan_effort_course_path(@course)
+    @plan_display = PlanDisplay.new(course, params)
+    session[:return_to] = plan_effort_course_path(course)
   end
 
   private

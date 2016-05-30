@@ -88,7 +88,7 @@ class Event < ActiveRecord::Base
   def ids_sorted
     simple? ?
         efforts.sorted_by_finish_time.pluck(:id) :
-        sorted_ultra_time_array.map { |x| x[0] }
+        efforts.sorted_including_dnf.map { |x| x[0] }
   end
 
   def combined_places(effort)

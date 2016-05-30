@@ -24,6 +24,9 @@ class Effort < ActiveRecord::Base
                                          .order('split_times.time_from_start') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
+  scope :within_time_range, -> (low_time, high_time) { includes(:split_times => :split)
+                                                           .where(splits: {kind: 1},
+                                                                  split_times: {time_from_start: low_time..high_time}) }
 
   def self.attributes_for_import
     id = ['id']
@@ -256,15 +259,16 @@ class Effort < ActiveRecord::Base
   # Sorting class methods
 
   def self.sorted_including_dnf
-    Effort.connection.execute("select t.effort_id, t.gender, t.split_id, t.time_from_start from
+    raw_sort = Effort.connection.execute("select t.effort_id, t.gender, t.split_id, t.time_from_start from
 (select distinct on(ef.id)
 ef.id as effort_id, ef.gender, s.id as split_id, s.distance_from_start, st.time_from_start
 from efforts ef
 left join split_times st on st.effort_id = ef.id
 left join splits s on s.id = st.split_id
-where ef.event_id = 4
+where ef.id = ?
 order by ef.id, s.distance_from_start desc) as t
-order by t.distance_from_start desc, t.time_from_start")
+order by t.distance_from_start desc, t.time_from_start", self.pluck(:id))
+    raw_sort.values.each { |row| row.map { |field| field.to_i } }
   end
 
   def self.distinct_join_table
@@ -302,10 +306,6 @@ order by t.distance_from_start desc, t.time_from_start")
     efforts_from_ids(ids_sorted_by_segment_time(segment))
   end
 
-  def self.within_time_range(low_time, high_time)
-    where(id: ids_within_time_range(low_time, high_time))
-  end
-
   def self.efforts_from_ids(effort_ids)
     efforts_by_id = Effort.find(effort_ids).index_by(&:id)
     effort_ids.collect { |id| efforts_by_id[id] }
@@ -323,12 +323,6 @@ order by t.distance_from_start desc, t.time_from_start")
   end
 
   private
-
-  def self.ids_within_time_range(low_time, high_time)
-    effort_ids = self.pluck(:id)
-    SplitTime.includes(:split).where(effort_id: effort_ids, splits: {kind: 1})
-        .where(time_from_start: low_time..high_time).pluck(:effort_id)
-  end
 
   def self.ids_sorted_by_segment_time(segment)
     effort_ids = self.pluck(:id)

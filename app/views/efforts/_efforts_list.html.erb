@@ -9,8 +9,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @event_display.effort_ids.each do |effort_id| %>
-      <% effort_row = @event_display.effort_row(effort_id) %>
+  <% @event_display.effort_rows.each do |effort_row| %>
       <% if effort_row.bad? %>
           <tr class="text-danger">
       <% elsif effort_row.questionable? %>
@@ -19,7 +18,7 @@
           <tr>
       <% end %>
       <td><%= effort_row.overall_place %></td>
-      <td><strong><%= link_to effort_row.full_name, effort_path(effort_id) %></strong></td>
+      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
       <td class="text-right"><%= effort_row.finish_status.is_a?(String) ?

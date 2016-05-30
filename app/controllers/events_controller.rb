@@ -13,9 +13,9 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.includes(:course, :race).find(params[:id])
-    @event_display = EventEffortsDisplay.new(@event, params)
-    session[:return_to] = event_path(@event)
+    event = Event.find(params[:id])
+    @event_display = EventEffortsDisplay.new(event, params)
+    session[:return_to] = event_path(event)
   end
 
   def new

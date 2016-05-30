@@ -1,24 +1,29 @@
 class EventEffortsDisplay
-  # extend ActiveSupport::Concern
 
-  attr_reader :event, :efforts, :effort_data, :effort_ids, :filtered_efforts_count
+  attr_accessor :filtered_efforts
+  attr_reader :event, :effort_rows
   delegate :name, :start_time, :course, :race, :simple?, to: :event
 
-  def initialize(event, params)
+  # initialize(event, params = {})
+  # event is an ordinary event object
+  # params is passed from the controller and may include
+  # params[:search_param] (from user search input)
+  # and params[:page] (for will_paginate)
+
+  def initialize(event, params = {})
     @event = event
-    calculate_time_array(event)
-    get_efforts_and_raw_data(params)
-    @effort_data = effort_data_raw.index_by { |block| block[:id] }
-    @effort_ids = effort_data_raw.map { |block| block[:id] }
-    calculate_finish_hash(time_array)
+    @event_final_split_id = event.finish_split.id
+    get_efforts(params)
+    @effort_rows = []
+    create_effort_rows
   end
 
-  def effort_row(effort_id)
-    EffortRow.new(self, effort_id)
+  def all_efforts_count
+    all_efforts.count
   end
 
-  def event_efforts_count
-    sorted_event_effort_ids.count
+  def filtered_efforts_count
+    filtered_efforts.total_entries
   end
 
   def course_name
@@ -29,50 +34,47 @@ class EventEffortsDisplay
     race ? race.name : nil
   end
 
-  def overall_place(effort_id)
-    sorted_event_effort_ids.index(effort_id) + 1
+  def overall_place(effort)
+    sorted_effort_ids.index(effort.id) + 1
   end
 
-  def finish_status(effort_id)
-    finish_hash[effort_id]
+  def gender_place(effort)
+    sorted_genders[0...overall_place(effort)].count(effort.gender)
+  end
+
+  def finish_status(effort)
+    return effort.time_from_start if effort.final_split_id == event_final_split_id
+    return "Dropped at #{effort.final_split_name}" if effort.final_split_id
+    "In progress"
   end
 
   private
 
-  attr_accessor :time_array, :finish_hash, :effort_data_raw, :sorted_event_effort_ids
+  attr_accessor :all_efforts, :event_final_split_id
 
-  def get_efforts_and_raw_data(params)
-    @efforts = event.efforts
-                   .search(params[:search_param])
-                   .sorted(time_array)
-                   .paginate(page: params[:page], per_page: 25)
-    self.effort_data_raw = efforts.map { |effort| {id: effort.id,
-                                                   bib_number: effort.bib_number,
-                                                   first_name: effort.first_name,
-                                                   last_name: effort.last_name,
-                                                   gender: effort.gender,
-                                                   age: effort.age,
-                                                   state_code: effort.state_code,
-                                                   country_code: effort.country_code,
-                                                   dropped_split_id: effort.dropped_split_id,
-                                                   data_status: effort.data_status} }
-    @filtered_efforts_count = efforts.total_entries
+  def get_efforts(params)
+    self.all_efforts = event.efforts.sorted_with_finish_status
+    self.filtered_efforts = event.efforts
+                                .search(params[:search_param])
+                                .sorted_with_finish_status
+                                .paginate(page: params[:page], per_page: 25)
   end
 
-  def calculate_time_array(event)
-    self.time_array = event.sorted_ultra_time_array
-    self.sorted_event_effort_ids = time_array.map { |row| row[0] }
+  def create_effort_rows
+    filtered_efforts.each do |effort|
+      effort_row = EffortRow.new(effort, overall_place: overall_place(effort),
+                                 gender_place: gender_place(effort),
+                                 finish_status: finish_status(effort))
+      effort_rows << effort_row
+    end
   end
 
-  def calculate_finish_hash(time_array)
-    limited_time_array = time_array.keep_if { |row| effort_data.keys.include?(row[0]) }
-    build_hash = Hash[limited_time_array.map { |row| [row[0], row[-1]] }]
-    dropped_hash = Hash[effort_data.values.map { |block| [block[:id], block[:dropped_split_id]] }].delete_if { |_, v| v.nil? }
-    dropped_hash = dropped_hash.each_key { |key| dropped_hash[key] = "DNF" }
-    build_hash.merge!(dropped_hash)
-    result_hash = {}
-    build_hash.each { |k, v| result_hash[k] = v ? v : "In progress" }
-    self.finish_hash = result_hash
+  def sorted_effort_ids
+    all_efforts.map(&:id)
+  end
+
+  def sorted_genders
+    all_efforts.map(&:gender)
   end
 
 end

@@ -37,20 +37,20 @@
   </div>
 </div>
 <hr>
-<% if @event_display.event_efforts_count < 1 %>
+<% if @event_display.all_efforts_count < 1 %>
     <strong>No efforts yet associated with this event.</strong>
 <% else %>
-    <%= render 'lookup' %>
+    <%= render 'lookup', event: @event_display.event %>
     <% if @event_display.filtered_efforts_count > 0 %>
         <hr>
         <div class="row">
           <div class="col-xs-8">
-            <h4><%= "Returned #{@event_display.filtered_efforts_count} of #{@event_display.event_efforts_count} efforts for #{@event_display.name}" %></h4>
+            <h4><%= "Returned #{@event_display.filtered_efforts_count} of #{@event_display.all_efforts_count} efforts for #{@event_display.name}" %></h4>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@event_display.efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
           </div>
         </div>
 
@@ -58,7 +58,7 @@
 
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@event_display.efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
           </div>
         </div>
     <% else %>

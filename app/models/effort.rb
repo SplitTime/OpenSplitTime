@@ -258,33 +258,15 @@ class Effort < ActiveRecord::Base
 
   # Sorting class methods
 
-  def self.sorted_including_dnf
-    raw_sort = Effort.connection.execute("select t.effort_id, t.gender, t.split_id, t.time_from_start from
-(select distinct on(ef.id)
-ef.id as effort_id, ef.gender, s.id as split_id, s.distance_from_start, st.time_from_start
-from efforts ef
-left join split_times st on st.effort_id = ef.id
-left join splits s on s.id = st.split_id
-where ef.id = ?
-order by ef.id, s.distance_from_start desc) as t
-order by t.distance_from_start desc, t.time_from_start", self.pluck(:id))
-    raw_sort.values.each { |row| row.map { |field| field.to_i } }
+  def self.sorted_ids_with_gender
+    sorted_with_finish_status.map { |row| [row.effort_id, row.gender] }
   end
 
-  def self.distinct_join_table
-    select('DISTINCT ON(efforts.id) efforts.id as effort_id, efforts.gender, splits.id as split_id, splits.distance_from_start, split_times.time_from_start')
-        .joins(:split_times => :split)
-        .order('efforts.id, splits.distance_from_start DESC')
-  end
-
-
-  def self.sorted(time_array = nil)
-    return [] if self.count < 1
-    return sorted_by_finish_time if first.event.simple?
-    ids = self.pluck(:id)
-    time_array ||= sorted_ultra_time_array
-    time_array.keep_if { |row| ids.include?(row[0]) }
-    efforts_from_ids(time_array.map { |x| x[0] })
+  def self.sorted_with_finish_status
+    raw_sort = select('DISTINCT ON(efforts.id) efforts.id, efforts.first_name, efforts.last_name, efforts.gender, efforts.bib_number, efforts.age, efforts.state_code, efforts.country_code, efforts.data_status, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start')
+                   .joins(:split_times => :split)
+                   .order('efforts.id, splits.distance_from_start DESC')
+    raw_sort.sort_by { |row| [-row.distance_from_start, row.time_from_start] }
   end
 
   def self.sorted_ultra_time_array(split_time_hash = nil)

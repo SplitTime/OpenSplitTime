@@ -80,23 +80,17 @@ class Event < ActiveRecord::Base
   end
 
   def efforts_sorted
-    simple? ?
-        efforts.sorted_by_finish_time :
-        efforts.sorted_including_dnf
+    efforts.sorted_with_finish_status
   end
 
   def ids_sorted
-    simple? ?
-        efforts.sorted_by_finish_time.pluck(:id) :
-        efforts.sorted_including_dnf.map { |x| x[0] }
+    efforts.sorted_with_finish_status.map(&:id)
   end
 
   def combined_places(effort)
-    ids = ids_sorted
-    overall_place = ids.index(effort.id) + 1
-    genders = Hash[efforts.pluck(:id, :gender)]
-    genders_sorted = ids.map { |id| genders[id] }
-    gender_place = genders_sorted[0...overall_place].count(Effort.genders[effort.gender])
+    raw_sort = efforts_sorted
+    overall_place = raw_sort.map(&:id).index(effort.id) + 1
+    gender_place = raw_sort[0...overall_place].map(&:gender).count(effort.gender)
     return overall_place, gender_place
   end
 

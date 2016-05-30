@@ -1,7 +1,7 @@
 class EffortRow
   include PersonalInfo
 
-  attr_reader :overall_place, :gender_place, :finish_status, :start_time
+  attr_reader :overall_place, :gender_place, :finish_status, :start_time_from_params
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, to: :effort
 
@@ -10,11 +10,12 @@ class EffortRow
     @overall_place = options[:overall_place]
     @gender_place = options[:gender_place]
     @finish_status = options[:finish_status]
-    @start_time = options[:start_time]
+    @start_time_from_params = options[:start_time]
   end
 
   def year
-    start_time ? effort.start_time.year : nil
+    return start_time_from_params.try(:to_datetime).year if start_time_from_params
+    effort.start_time ? effort.start_time.year : nil
   end
 
   def finish_time

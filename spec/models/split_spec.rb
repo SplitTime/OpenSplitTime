@@ -8,7 +8,7 @@ require "rails_helper"
 # t.integer  "vert_loss_from_start"
 # t.integer  "kind"
 # t.string   "description"
-# t.integer  "sub_split_mask"
+# t.integer  "sub_split_bitmap"
 
 RSpec.describe Split, kind: :model do
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
@@ -31,7 +31,7 @@ RSpec.describe Split, kind: :model do
     expect(Split.all.count).to(equal(1))
     expect(Split.first.name).to eq('Hopeless Outbound')
     expect(Split.first.distance_from_start).to eq(50000)
-    expect(Split.first.sub_split_mask).to eq(1)    # default value
+    expect(Split.first.sub_split_bitmap).to eq(1)    # default value
     expect(Split.first.intermediate?).to eq(true)
   end
 
@@ -47,10 +47,10 @@ RSpec.describe Split, kind: :model do
     expect(split.errors[:distance_from_start]).to include("can't be blank")
   end
 
-  it "should be invalid without a sub_split_mask" do
-    split = Split.new(course_id: @course1.id, location_id: @location1.id, base_name: 'Test', distance_from_start: 3000, sub_split_mask: nil, kind: 2)
+  it "should be invalid without a sub_split_bitmap" do
+    split = Split.new(course_id: @course1.id, location_id: @location1.id, base_name: 'Test', distance_from_start: 3000, sub_split_bitmap: nil, kind: 2)
     expect(split).not_to be_valid
-    expect(split.errors[:sub_split_mask]).to include("can't be blank")
+    expect(split.errors[:sub_split_bitmap]).to include("can't be blank")
   end
 
   it "should be invalid without a kind" do
@@ -124,25 +124,25 @@ RSpec.describe Split, kind: :model do
     expect(split.errors[:vert_loss_from_start]).to include("may not be negative")
   end
 
-  describe 'sub_split_key_hashes' do
+  describe 'sub_split_bitkey_hashes' do
     let(:course) { Course.create!(name: 'split test') }
     let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
     let(:event_same_course) { Event.create!(name: 'Waypoint Event on same course', course: course, start_time: Time.current) }
     let(:event_same_course2) { Event.create!(name: 'Waypoint Event 2 on same course', course: course, start_time: Time.current) }
 
     before do
-      event.splits.create!(course: course, location_id: @location1.id, base_name: 'Start Point', distance_from_start: 0, sub_split_mask: 1, kind: :start)
-      event.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_mask: 65, kind: :intermediate)
-      event.splits.create!(course: course, location_id: @location3.id, base_name: 'Finish Point', distance_from_start: 50000, sub_split_mask: 1, kind: :finish)
+      event.splits.create!(course: course, location_id: @location1.id, base_name: 'Start Point', distance_from_start: 0, sub_split_bitmap: 1, kind: :start)
+      event.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_bitmap: 65, kind: :intermediate)
+      event.splits.create!(course: course, location_id: @location3.id, base_name: 'Finish Point', distance_from_start: 50000, sub_split_bitmap: 1, kind: :finish)
 
-      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass pre 2000', distance_from_start: 4400, sub_split_mask: 65, kind: :intermediate)
-      event_same_course2.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass 2012 flood', distance_from_start: 4500, sub_split_mask: 65, kind: :intermediate)
+      event_same_course.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass pre 2000', distance_from_start: 4400, sub_split_bitmap: 65, kind: :intermediate)
+      event_same_course2.splits.create!(course: course, location_id: @location2.id, base_name: 'Monarch Pass 2012 flood', distance_from_start: 4500, sub_split_bitmap: 65, kind: :intermediate)
 
       other_course = Course.create!(name: 'some other course')
       Event.create!(name: 'Event on some other course', course: other_course, start_time: Time.current)
-      Split.create!(course: other_course, location_id: @location1.id, base_name: 'Start Point', distance_from_start: 0, sub_split_mask: 1, kind: :start)
-      Split.create!(course: other_course, location_id: @location2.id, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_mask: 65, kind: :intermediate)
-      Split.create!(course: other_course, location_id: @location3.id, base_name: 'Finish Point', distance_from_start: 50000, sub_split_mask: 1, kind: :finish)
+      Split.create!(course: other_course, location_id: @location1.id, base_name: 'Start Point', distance_from_start: 0, sub_split_bitmap: 1, kind: :start)
+      Split.create!(course: other_course, location_id: @location2.id, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_bitmap: 65, kind: :intermediate)
+      Split.create!(course: other_course, location_id: @location3.id, base_name: 'Finish Point', distance_from_start: 50000, sub_split_bitmap: 1, kind: :finish)
       Event.create!(name: 'Other Waypoint Event', course: other_course, start_time: Time.current)
     end
 
@@ -155,17 +155,17 @@ RSpec.describe Split, kind: :model do
 
     it 'should return a single key_hash for a start' do
       first_split = course.splits.first
-      expect(first_split.sub_split_key_hashes.count).to eq(1)
+      expect(first_split.sub_split_bitkey_hashes.count).to eq(1)
     end
 
     it 'should return two key_hashes for an intermediate split' do
       first_split = course.splits.second
-      expect(first_split.sub_split_key_hashes.count).to eq(2)
+      expect(first_split.sub_split_bitkey_hashes.count).to eq(2)
     end
 
     it 'should return all of the key_hashes for a given split' do
       first_split = event_same_course.splits.first
-      expect(first_split.sub_split_key_hashes.count).to eq(2)
+      expect(first_split.sub_split_bitkey_hashes.count).to eq(2)
     end
   end
 

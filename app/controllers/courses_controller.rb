@@ -82,7 +82,7 @@ class CoursesController < ApplicationController
     params.require(:course).permit(:name,
                                    :description,
                                    splits_attributes: [:id, :course_id, :location_id, :base_name,
-                                                       :description, :kind, :sub_split_mask,
+                                                       :description, :kind, :sub_split_bitmap,
                                                        :distance_from_start, :distance_as_entered,
                                                        :vert_gain_from_start, :vert_gain_as_entered,
                                                        :vert_loss_from_start, :vert_loss_as_entered])

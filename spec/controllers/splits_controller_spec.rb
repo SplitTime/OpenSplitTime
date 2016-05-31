@@ -29,7 +29,7 @@ RSpec.describe SplitsController, :type => :controller do
 
     it "should let a user see a specific split" do
       split1 = Split.create!(course_id: @course.id, location_id: @location1, base_name: 'Aid Station',
-                             distance_from_start: 7000, sub_split_mask: 65, kind: 2)
+                             distance_from_start: 7000, sub_split_bitmap: 65, kind: 2)
       get :show, id: split1.id
       expect(response).to render_template(:show, id: split1.id)
     end

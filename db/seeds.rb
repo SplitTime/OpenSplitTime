@@ -45,7 +45,7 @@ Effort.create(event_id: 1, participant_id: 3, wave: nil, bib_number: 66, city: '
 Effort.create(event_id: 3, participant_id: 2, wave: nil, bib_number: 150, city: 'Nantucket', state_code: 'MA', country_code: 'US', age: 26, start_time: "2012-08-08 05:00:00", first_name: 'Jane', last_name: 'Rockstar', gender: 'female')
 
 Split.create(course_id: 1, location_id: 1, name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-Split.create(course_id: 1, location_id: 4, name: 'Test Aid Station', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+Split.create(course_id: 1, location_id: 4, name: 'Test Aid Station', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
 Split.create(course_id: 1, location_id: 1, name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
 SplitTime.create(effort_id: 1, split_id: 1, time_from_start: 0)

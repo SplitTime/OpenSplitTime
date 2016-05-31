@@ -4,7 +4,7 @@ class EffortShowView
   def initialize(effort)
     @effort = effort
     @splits = effort.event.ordered_splits.to_a
-    @split_times = effort.split_times.index_by(&:key_hash)
+    @split_times = effort.split_times.index_by(&:bitkey_hash)
     @split_rows = []
     create_split_rows
   end
@@ -27,7 +27,7 @@ class EffortShowView
   end
 
   def related_split_times(split)
-    split.sub_split_key_hashes.collect { |key_hash| split_times[key_hash] }
+    split.sub_split_bitkey_hashes.collect { |key_hash| split_times[key_hash] }
   end
 
 end

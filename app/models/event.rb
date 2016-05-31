@@ -37,10 +37,10 @@ class Event < ActiveRecord::Base
 
   def split_sub_pairs
     result = []
-    split_data = ordered_splits.pluck_to_hash(:id, :sub_split_mask)
+    split_data = ordered_splits.pluck_to_hash(:id, :sub_split_bitmap)
     split_data.each do |block|
-      sub_split_ids = SubSplit.reveal_valid_keys(block[:sub_split_mask])
-      sub_split_ids.map { |ssid| [block[:id], ssid] }.each { |pair| result << pair }
+      sub_split_bitkeys = SubSplit.reveal_valid_bitkeys(block[:sub_split_bitmap])
+      sub_split_bitkeys.map { |ssid| [block[:id], ssid] }.each { |pair| result << pair }
     end
     result
   end
@@ -55,10 +55,12 @@ class Event < ActiveRecord::Base
     result_hash
   end
 
+  def split_times
+    SplitTime.includes(:effort).where(efforts: {event_id: id})
+  end
+
   def split_time_hash
-    SplitTime.where(effort: efforts)
-        .pluck_to_hash(:split_id, :effort_id, :time_from_start, :data_status)
-        .group_by { |row| row[:split_id] }
+    split_times.group_by(&:bitkey_hash)
   end
 
   def sorted_ultra_time_array(split_time_hash = nil)
@@ -132,8 +134,8 @@ class Event < ActiveRecord::Base
     ordered_splits.pluck_to_hash(:id, :base_name, :distance_from_start)
   end
 
-  def sub_split_key_hashes
-    ordered_splits.map(&:sub_split_key_hashes).flatten
+  def sub_split_bitkey_hashes
+    ordered_splits.map(&:sub_split_bitkey_hashes).flatten
   end
 
 end

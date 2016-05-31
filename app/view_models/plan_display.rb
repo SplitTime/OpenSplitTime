@@ -45,18 +45,18 @@ class PlanDisplay
     plan_times = calculate_plan_times
     result = []
     splits.each do |split|
-      split.sub_split_keys.each do |key|
-        split_time = SplitTime.new(split: split, sub_split_id: key, time_from_start: plan_times[{split.id => key}])
+      split.sub_split_bitkeys.each do |key|
+        split_time = SplitTime.new(split: split, sub_split_bitkey: key, time_from_start: plan_times[{split.id => key}])
         result << split_time
       end
     end
-    result.index_by(&:key_hash)
+    result.index_by(&:bitkey_hash)
   end
 
   def calculate_plan_times # Hash of {{split.id => key} => plan_time_from_start}
     average_time_hash = {}
     splits.each do |split|
-      split.sub_split_keys.each do |key|
+      split.sub_split_bitkeys.each do |key|
         sub_split_average = split.average_time(key, relevant_efforts)
         average_time_hash[{split.id => key}] = sub_split_average
       end
@@ -83,7 +83,7 @@ class PlanDisplay
   end
 
   def related_split_times(split)
-    split.sub_split_key_hashes.collect { |key_hash| split_times[key_hash] }
+    split.sub_split_bitkey_hashes.collect { |key_hash| split_times[key_hash] }
   end
 
 end

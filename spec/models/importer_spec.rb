@@ -39,9 +39,9 @@ RSpec.describe Importer do
       expect(Split.where(name: 'Tunnel').count).to eq(1)
     end
 
-    it 'should correctly set up sub_split_masks for imported splits' do
-      expect(Split.where(name: 'Start').first.sub_split_mask).to eq(1)
-      expect(Split.where(name: 'Tunnel').first.sub_split_mask).to eq(65)
+    it 'should correctly set up sub_split_bitmaps for imported splits' do
+      expect(Split.where(name: 'Start').first.sub_split_bitmap).to eq(1)
+      expect(Split.where(name: 'Tunnel').first.sub_split_bitmap).to eq(65)
     end
 
     it 'should correctly determine start status' do
@@ -147,18 +147,18 @@ RSpec.describe Importer do
       effort2 = Effort.where(bib_number: 143).first
       effort3 = Effort.where(bib_number: 186).first
 
-      expect(SplitTime.where(effort: effort1, split: split1, sub_split_key: 64).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort1, split: split2, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort1, split: split3, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort1, split: split4, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort2, split: split1, sub_split_key: 64).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort2, split: split2, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort2, split: split3, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort2, split: split4, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort3, split: split1, sub_split_key: 64).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort3, split: split2, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort3, split: split3, sub_split_key: 1).first.time_from_start).to eq(0)
-      expect(SplitTime.where(effort: effort3, split: split4, sub_split_key: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort1, split: split1, sub_split_bitkey: 64).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort1, split: split2, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort1, split: split3, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort1, split: split4, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort2, split: split1, sub_split_bitkey: 64).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort2, split: split2, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort2, split: split3, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort2, split: split4, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort3, split: split1, sub_split_bitkey: 64).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort3, split: split2, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort3, split: split3, sub_split_bitkey: 1).first.time_from_start).to eq(0)
+      expect(SplitTime.where(effort: effort3, split: split4, sub_split_bitkey: 1).first.time_from_start).to eq(0)
     end
 
     it 'should not create a split_time where no time is provided' do
@@ -171,8 +171,8 @@ RSpec.describe Importer do
       effort4 = Effort.where(bib_number: 119).first
 
       expect(SplitTime.where(effort: effort1, split: split1).count).to eq(0)
-      expect(SplitTime.where(effort: effort2, split: split1, sub_split_key: 64).count).to eq(0)
-      expect(SplitTime.where(effort: effort2, split: split2, sub_split_key: 64).count).to eq(0)
+      expect(SplitTime.where(effort: effort2, split: split1, sub_split_bitkey: 64).count).to eq(0)
+      expect(SplitTime.where(effort: effort2, split: split2, sub_split_bitkey: 64).count).to eq(0)
       expect(SplitTime.where(effort: effort3, split: split3).count).to eq(0)
       expect(SplitTime.where(effort: effort4, split: split1).count).to eq(0)
     end

@@ -159,7 +159,7 @@ class Effort < ActiveRecord::Base
   end
 
   def time_in_aid(split)
-    time_array = split_times.where(split: split).order(:sub_split_id).pluck(:time_from_start)
+    time_array = split_times.where(split: split).order(:sub_split_bitkey).pluck(:time_from_start)
     time_array.count > 1 ? time_array.last - time_array.first : nil
   end
 

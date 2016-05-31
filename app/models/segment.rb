@@ -41,9 +41,9 @@ class Segment
 
   def time_between_splits(effort)
     return 0 if end_split.start?
-    times = effort.split_times.where(split_id: split_ids).index_by(&:key_hash)
-    end_split_time = times[end_split.sub_split_key_hashes.first]
-    begin_split_time = times[begin_split.sub_split_key_hashes.last]
+    times = effort.split_times.where(split_id: split_ids).index_by(&:bitkey_hash)
+    end_split_time = times[end_split.sub_split_bitkey_hashes.first]
+    begin_split_time = times[begin_split.sub_split_bitkey_hashes.last]
     (end_split_time && begin_split_time) ? (end_split_time.time_from_start - begin_split_time.time_from_start) : nil
   end
 

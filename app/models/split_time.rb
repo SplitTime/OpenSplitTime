@@ -5,18 +5,18 @@ class SplitTime < ActiveRecord::Base
   belongs_to :split
 
   scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
-  scope :ordered, -> { includes(:split).order('splits.distance_from_start, split_times.sub_split_key') }
+  scope :ordered, -> { includes(:split).order('splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
-  scope :out, -> { where(sub_split_key: SubSplit::OUT_KEY) }
-  scope :in, -> { where(sub_split_key: SubSplit::IN_KEY) }
+  scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
+  scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
 
   before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
-  validates_presence_of :effort_id, :split_id, :sub_split_key, :time_from_start
+  validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start
   validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
-  validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_key],
+  validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey],
                           message: 'only one of any given split/sub_split permitted within an effort'
   validate :course_is_consistent, unless: 'effort.nil? | split.nil?'
 
@@ -27,8 +27,8 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
-  def key_hash
-    {split_id => sub_split_key}
+  def bitkey_hash
+    {split_id => sub_split_bitkey}
   end
 
   def set_effort_data_status

@@ -11,7 +11,7 @@ class Split < ActiveRecord::Base
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
-  validates_presence_of :base_name, :distance_from_start, :sub_split_mask, :kind
+  validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :base_name, scope: :course_id, case_sensitive: false,
                           message: "must be unique for a course"
@@ -68,12 +68,12 @@ class Split < ActiveRecord::Base
     self.vert_loss_from_start = Split.elevation_in_meters(entered_vert_loss.to_f, User.current) if entered_vert_loss.present?
   end
 
-  def time_hash(sub_split_id)
-    Hash[SplitTime.where(split_id: id, sub_split_id: sub_split_id).pluck(:effort_id, :time_from_start)]
+  def time_hash(sub_split_bitkey)
+    Hash[SplitTime.where(split_id: id, sub_split_bitkey: sub_split_bitkey).pluck(:effort_id, :time_from_start)]
   end
 
-  def average_time(sub_split_key, relevant_efforts)
-    split_times.where(sub_split_id: sub_split_key, effort: relevant_efforts).pluck(:time_from_start).mean
+  def average_time(sub_split_bitkey, relevant_efforts)
+    split_times.where(sub_split_bitkey: sub_split_bitkey, effort: relevant_efforts).pluck(:time_from_start).mean
   end
 
   def name
@@ -82,15 +82,15 @@ class Split < ActiveRecord::Base
   end
 
   def name_extensions
-    sub_split_keys.map { |key| SubSplit.kind(key) }
+    sub_split_bitkeys.map { |bitkey| SubSplit.kind(bitkey) }
   end
 
-  def sub_split_key_hashes
-    sub_split_keys.map { |key| {id => key} }
+  def sub_split_bitkey_hashes
+    sub_split_bitkeys.map { |bitkey| {id => bitkey} }
   end
 
-  def sub_split_keys
-    SubSplit.reveal_keys(sub_split_mask)
+  def sub_split_bitkeys
+    SubSplit.reveal_bitkeys(sub_split_bitmap)
   end
 
   def name=(entered_name)

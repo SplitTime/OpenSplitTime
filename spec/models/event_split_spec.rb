@@ -10,7 +10,6 @@ RSpec.describe EventSplit, type: :model do
     @event = Event.create!(course_id: @course.id, race_id: nil, name: 'Test Event', start_time: "2012-08-08 05:00:00")
     @split = Split.create!(course_id: @course.id,
                            base_name: 'Hopeless Outbound',
-                           name_extension: 'In',
                            distance_from_start: 50000,
                            kind: 2)
   end

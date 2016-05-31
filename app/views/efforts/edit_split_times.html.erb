@@ -39,10 +39,10 @@
                   <tr>
               <% end %>
               <td><h4><strong><%= "#{split.name}" %></strong></h4></td>
-              <% split.sub_split_keys.each do |key| %>
+              <% split.sub_split_bitkeys.each do |bitkey| %>
                   <%= f.fields_for :split_times,
                                    @effort.split_times.find_or_initialize_by(split_id: split.id,
-                                                                             sub_split_id: key,
+                                                                             sub_split_bitkey: bitkey,
                                                                              effort_id: @effort.id) do |builder| %>
                       <td>
                         <%= builder.text_field :elapsed_time, class: 'form-control', placeholder: 'hh:mm:ss' %>

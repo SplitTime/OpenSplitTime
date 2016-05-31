@@ -2,7 +2,7 @@ class SplitRow
 
   delegate :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
 
-  # split_times should be an array having size == split.sub_split_key_hashes.size,
+  # split_times should be an array having size == split.sub_split_bitkey_hashes.size,
   # with nil values where no corresponding split_time exists
 
   def initialize(split, split_times, prior_time = nil, start_time = nil)

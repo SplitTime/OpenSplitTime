@@ -1,32 +1,32 @@
 # This class replaces the former ActiveRecord class of the same name. 
-# A 'key' is an integer representing a single bit. 
-# A 'mask' is an integer representing a combination of keys.
-# Each instance of SplitTime includes a key indicating the type of time record it represents.
-# Each instance of Split includes a mask indicating all valid split_times that may relate to the split.
-# For example, the sub_split_mask for a start or finish split would be 1, 
+# A 'bitkey' is an integer representing a single bit.
+# A 'bitmap' is an integer representing a combination of bitkeys.
+# Each instance of SplitTime includes a bitkey indicating the type of time record it represents.
+# Each instance of Split includes a bitmap indicating all valid split_times that may relate to the split.
+# For example, the sub_split_bitmap for a start or finish split would be 1,
 # representing a single time recorded at that point.
 
 class SubSplit
 
   # To add a new SubSplit kind, define its constant here
-  # For example, 'CHANGE_KEY = 8'
-  # Then add it to the aggregate mask
-  # For example, 'IN_KEY | CHANGE_KEY | OUT_KEY'
+  # For example, 'CHANGE_BITKEY = 8'
+  # Then add it to the aggregate bitmap
+  # For example, 'IN_BITKEY | CHANGE_BITKEY | OUT_BITKEY'
   # And add a new case to self.kind for its name
-  # For example, 'when CHANGE_KEY; "Change"'
+  # For example, 'when CHANGE_BITKEY; "Change"'
 
-  IN_KEY = 1
-  OUT_KEY = 64
+  IN_BITKEY = 1
+  OUT_BITKEY = 64
 
-  def self.aggregate_mask
-    IN_KEY | OUT_KEY
+  def self.aggregate_bitmap
+    IN_BITKEY | OUT_BITKEY
   end
 
-  def self.kind(key)
-    case key
-      when IN_KEY
+  def self.kind(bitkey)
+    case bitkey
+      when IN_BITKEY
         'In'
-      when OUT_KEY
+      when OUT_BITKEY
         'Out'
       else
         nil
@@ -34,45 +34,45 @@ class SubSplit
   end
 
   def self.kinds # Returns an array of all existing kinds
-    reveal_keys(aggregate_mask).map { |key| kind(key) }
+    reveal_bitkeys(aggregate_bitmap).map { |bitkey| kind(bitkey) }
   end
 
-  def self.key(kind)
+  def self.bitkey(kind)
     case kind.try(:downcase)
       when 'in'
-        IN_KEY
+        IN_BITKEY
       when 'out'
-        OUT_KEY
+        OUT_BITKEY
       else
         nil
     end
   end
 
-  def self.keys # Returns an array of all existing keys
-    reveal_keys(aggregate_mask)
+  def self.bitkeys # Returns an array of all existing bitkeys
+    reveal_bitkeys(aggregate_bitmap)
   end
 
-  def self.next_key(key)
-    agg = aggregate_mask
-    key = key << 1
-    return nil if (key > agg) || (key < 1)
-    while (key & agg) == 0 do
-      key = key << 1
+  def self.next_bitkey(bitkey)
+    agg = aggregate_bitmap
+    bitkey = bitkey << 1
+    return nil if (bitkey > agg) || (bitkey < 1)
+    while (bitkey & agg) == 0 do
+      bitkey = bitkey << 1
     end
-    key
+    bitkey
   end
 
-  def self.reveal_valid_keys(mask)
-    reveal_keys(validate_mask(mask))
+  def self.reveal_valid_bitkeys(bitmap)
+    reveal_bitkeys(validate_bitmap(bitmap))
   end
 
-  def self.validate_mask(mask)
-    mask & self.aggregate_mask
+  def self.validate_bitmap(bitmap)
+    bitmap & self.aggregate_bitmap
   end
 
-  def self.reveal_keys(mask)
+  def self.reveal_bitkeys(bitmap)
     result = []
-    (0...mask.to_s(2).size).each { |k| result << (mask & (1 << k)) }
+    (0...bitmap.to_s(2).size).each { |k| result << (bitmap & (1 << k)) }
     result.reject { |x| x == 0 }
   end
 

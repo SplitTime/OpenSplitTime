@@ -23,7 +23,7 @@ class Importer
     return false unless distance_conversion_factor
     self.split_id_array = []
     self.split_failure_array = []
-    self.running_sub_split_key = 1
+    self.running_sub_split_bitkey = 1
     (0...split_title_array.size).each do |i|
       split = create_split(i)
       if split.save
@@ -33,8 +33,8 @@ class Importer
       else
         split_failure_array << split
       end
-      self.running_sub_split_key = (distance_array[i] == distance_array[i + 1]) ?
-          SubSplit.next_key(running_sub_split_key) : 1
+      self.running_sub_split_bitkey = (distance_array[i] == distance_array[i + 1]) ?
+          SubSplit.next_key(running_sub_split_bitkey) : 1
     end
   end
 
@@ -88,7 +88,7 @@ class Importer
 
   attr_accessor :spreadsheet, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
                 :effort_schema, :header1, :header2, :distance_conversion_factor, :split_id_array,
-                :running_sub_split_key, :most_recent_saved_split, :split_sub_pairs
+                :running_sub_split_bitkey, :most_recent_saved_split, :split_sub_pairs
 
   def create_effort_import_report
     self.effort_import_report = ""
@@ -116,30 +116,30 @@ class Importer
       split = event.course.start_split || Split.new(course_id: event.course_id,
                                                     base_name: 'Start',
                                                     distance_from_start: 0,
-                                                    sub_split_mask: 1, # Start splits have 'in' only
+                                                    sub_split_bitmap: 1, # Start splits have 'in' only
                                                     kind: :start)
 
     elsif i == split_title_array.size - 1 # Last one, so find the existing finish split or create a new one
       split = event.course.finish_split || Split.new(course_id: event.course_id,
                                                      base_name: split_title_array[i],
                                                      distance_from_start: (distance_array[i] * distance_conversion_factor),
-                                                     sub_split_mask: 1, # Finish splits have 'in' only
+                                                     sub_split_bitmap: 1, # Finish splits have 'in' only
                                                      kind: :finish)
 
     else # This is not a start or finish, so check running sub_split. If == 1, make a new split.
-      # Otherwise update the sub_split_mask
+      # Otherwise update the sub_split_bitmap
       base_name, name_extension = base_name_and_extension(split_title_array[i])
-      if running_sub_split_key == 1
+      if running_sub_split_bitkey == 1
         split = Split.new(course_id: event.course_id,
                           base_name: base_name,
                           distance_from_start: (distance_array[i] * distance_conversion_factor),
-                          sub_split_mask: 1,
+                          sub_split_bitmap: 1,
                           kind: :intermediate)
       else
         split = most_recent_saved_split
-        sub_split_key = [SubSplit.key(name_extension), running_sub_split_key].compact.max
-        split.sub_split_mask = (split.sub_split_mask | sub_split_key)
-        self.running_sub_split_key = [sub_split_key, running_sub_split_key].max
+        sub_split_bitkey = [SubSplit.key(name_extension), running_sub_split_bitkey].compact.max
+        split.sub_split_bitmap = (split.sub_split_bitmap | sub_split_bitkey)
+        self.running_sub_split_bitkey = [sub_split_bitkey, running_sub_split_bitkey].max
       end
 
     end
@@ -163,10 +163,10 @@ class Importer
     row_time_data.unshift(0) if finish_times_only?
     return nil if split_sub_pairs.size != row_time_data.size
     final_split_pointer = start_offset = nil
-    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_key, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
+    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
       (0...split_sub_pairs.count).each do |i|
         split_id = split_sub_pairs[i][0]
-        sub_split_key = split_sub_pairs[i][1]
+        sub_split_bitkey = split_sub_pairs[i][1]
         working_time = row_time_data[i]
         if i == 0 # Set start_offset from non-zero start split time and reset start split time to zero
           start_offset = working_time || 0
@@ -177,7 +177,7 @@ class Importer
         final_split_pointer = split_id
         worker.add(effort_id: effort_id,
                    split_id: split_id,
-                   sub_split_key: sub_split_key,
+                   sub_split_bitkey: sub_split_bitkey,
                    time_from_start: seconds,
                    created_by: current_user_id,
                    updated_by: current_user_id)

@@ -12,30 +12,30 @@ RSpec.describe SplitRow, type: :model do
     @effort2 = Effort.create!(event: @event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
     @effort3 = Effort.create!(event: @event, bib_number: 3, start_offset: 3600, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male')
 
-    @split1 = Split.create!(course: @course, base_name: 'Starting Line', distance_from_start: 0, sub_split_mask: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-    @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', distance_from_start: 6000, sub_split_mask: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-    @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', distance_from_start: 15000, sub_split_mask: 73, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-    @split6 = Split.create!(course: @course, base_name: 'Finish Line', distance_from_start: 25000, sub_split_mask: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+    @split1 = Split.create!(course: @course, base_name: 'Starting Line', distance_from_start: 0, sub_split_bitmap: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
+    @split2 = Split.create!(course: @course, base_name: 'Aid Station 1', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+    @split4 = Split.create!(course: @course, base_name: 'Aid Station 2', distance_from_start: 15000, sub_split_bitmap: 73, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
+    @split6 = Split.create!(course: @course, base_name: 'Finish Line', distance_from_start: 25000, sub_split_bitmap: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
 
     @event.splits << @course.splits
 
-    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, sub_split_key: SubSplit::IN_KEY, time_from_start: 0, data_status: 2)
-    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_key: SubSplit::IN_KEY, time_from_start: 4000, data_status: 2)
-    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_key: SubSplit::OUT_KEY, time_from_start: 4100, data_status: 2)
-    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_key: SubSplit::IN_KEY, time_from_start: 15200, data_status: 2)
-    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_key: SubSplit::OUT_KEY, time_from_start: 15100, data_status: 0)
-    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, sub_split_key: SubSplit::IN_KEY, time_from_start: 21000, data_status: 2)
+    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
+    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4000, data_status: 2)
+    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100, data_status: 2)
+    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 15200, data_status: 2)
+    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 15100, data_status: 0)
+    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 21000, data_status: 2)
 
-    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, sub_split_key: SubSplit::IN_KEY, time_from_start: 0, data_status: 2)
-    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, sub_split_key: SubSplit::OUT_KEY, time_from_start: 120, data_status: 0)
-    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_key: SubSplit::IN_KEY, time_from_start: 24000, data_status: 2)
-    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_key: SubSplit::OUT_KEY, time_from_start: 150000, data_status: 0)
-    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, sub_split_key: SubSplit::IN_KEY, time_from_start: 40000, data_status: 1)
+    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
+    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 120, data_status: 0)
+    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 24000, data_status: 2)
+    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 150000, data_status: 0)
+    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 40000, data_status: 1)
 
-    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, sub_split_key: SubSplit::IN_KEY, time_from_start: 0, data_status: 2)
-    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_key: SubSplit::IN_KEY, time_from_start: 5000, data_status: 2)
-    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_key: SubSplit::OUT_KEY, time_from_start: 5000, data_status: 2)
-    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split_key: SubSplit::IN_KEY, time_from_start: 12200, data_status: 2)
+    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
+    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5000, data_status: 2)
+    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000, data_status: 2)
+    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 12200, data_status: 2)
 
     @split_row1 = SplitRow.new(@split1, [@split_time1], nil)
     @split_row2 = SplitRow.new(@split2, [@split_time2, @split_time3], 0)
@@ -49,7 +49,7 @@ RSpec.describe SplitRow, type: :model do
 
     @split_row9 = SplitRow.new(@split1, [@split_time14], nil)
     @split_row10 = SplitRow.new(@split2, [@split_time15, @split_time16], 0)
-    @split_row11 = SplitRow.new(@split4, [@split_time17, nil, nil], 5000)
+    @split_row11 = SplitRow.new(@split4, [@split_time17, nil], 5000)
     @split_row12 = SplitRow.new(@split6, [nil, nil], 12200)
 
   end
@@ -94,7 +94,7 @@ RSpec.describe SplitRow, type: :model do
       expect(@split_row6.days_and_times).to eq([nil, event_start_time + 120])
       expect(@split_row9.days_and_times).to eq([event_start_time + effort_start_offset])
       expect(@split_row10.days_and_times).to eq([event_start_time + effort_start_offset + 5000, event_start_time + effort_start_offset + 5000])
-      expect(@split_row11.days_and_times).to eq([event_start_time + effort_start_offset + 12200, nil, nil])
+      expect(@split_row11.days_and_times).to eq([event_start_time + effort_start_offset + 12200, nil])
       expect(@split_row12.days_and_times).to eq([nil, nil])
     end
     
@@ -105,11 +105,11 @@ RSpec.describe SplitRow, type: :model do
     it 'should return an array of data statuses' do
       expect(@split_row1.time_data_statuses).to eq(['good'])
       expect(@split_row2.time_data_statuses).to eq(['good', 'good'])
-      expect(@split_row3.time_data_statuses).to eq(['good', 'good', 'bad'])
+      expect(@split_row3.time_data_statuses).to eq(['good', 'bad'])
       expect(@split_row4.time_data_statuses).to eq(['good'])
       expect(@split_row6.time_data_statuses).to eq([nil, 'bad'])
       expect(@split_row8.time_data_statuses).to eq(['questionable'])
-      expect(@split_row11.time_data_statuses).to eq(['good', nil, nil])
+      expect(@split_row11.time_data_statuses).to eq(['good', nil])
       expect(@split_row12.time_data_statuses).to eq([nil, nil])
     end
     

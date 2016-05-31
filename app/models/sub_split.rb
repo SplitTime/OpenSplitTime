@@ -1,68 +1,65 @@
-class SubSplit < ActiveRecord::Base
+# This class replaces the former ActiveRecord class of the same name. 
+# A 'key' is an integer representing a single bit. 
+# A 'mask' is an integer representing a combination of keys.
+# Each instance of SplitTime includes a key indicating the type of time record it represents.
+# Each instance of Split includes a mask indicating all valid split_times that may relate to the split.
+# For example, the sub_split_mask for a start or finish split would be 1, 
+# representing a single time recorded at that point.
 
-  has_many :split_times
+class SubSplit
 
-  validates_presence_of :bitkey, :kind
-  validates_uniqueness_of :bitkey
-  validates_uniqueness_of :kind, case_sensitive: false
-  validate :bitkey_bits_are_unique
-  validate :bitkey_has_single_bit, unless: 'bitkey.nil?'
+  # To add a new SubSplit kind, define its constant here
+  # For example, 'CHANGE_KEY = 8'
+  # Then add it to the aggregate mask
+  # For example, 'IN_KEY | CHANGE_KEY | OUT_KEY'
+  # And add a new case to self.kind for its name
+  # For example, 'when CHANGE_KEY; "Change"'
 
-  self.primary_key = 'bitkey'
-
-  # Methods for validations
-
-  def bitkey_bits_are_unique
-    if bitkey & SubSplit.aggregate_mask != 0
-      errors.add(:bitkey, "one or more bits overlap with the bitkey of an existing sub_split kind")
-    end
-  end
-
-  def bitkey_has_single_bit
-    if bitkey.to_s(2).count('1') > 1
-      errors.add(:bitkey, "uses more than one bit; please use the next available single-bit key (4, 8, 16, etc.)")
-    end
-    if bitkey < 1
-      errors.add(:bitkey, "cannot be zero or negative")
-    end
-  end
-
-  # Methods that return an instance of SubSplit; add a new method each time a new record is added
-
-  def self.in
-    SubSplit.find(self.in_key)
-  end
-
-  def self.out
-    SubSplit.find(self.out_key)
-  end
-
-  def self.in_key
-    1
-  end
-
-  def self.out_key
-    64
-  end
-
-  # Methods related to bitkeys
+  IN_KEY = 1
+  OUT_KEY = 64
 
   def self.aggregate_mask
-    combined_mask = 0
-    SubSplit.all.pluck(:bitkey).each do |bitkey|
-      combined_mask |= bitkey
-    end
-    combined_mask
+    IN_KEY | OUT_KEY
   end
 
-  def self.next_bitkey(bitkey)
-    agg = aggregate_mask
-    bitkey = bitkey << 1
-    return nil if (bitkey > agg) || (bitkey < 1)
-    while (bitkey & agg) == 0 do
-      bitkey = bitkey << 1
+  def self.kind(key)
+    case key
+      when IN_KEY
+        'In'
+      when OUT_KEY
+        'Out'
+      else
+        nil
     end
-    bitkey
+  end
+
+  def self.kinds # Returns an array of all existing kinds
+    reveal_keys(aggregate_mask).map { |key| kind(key) }
+  end
+
+  def self.key(kind)
+    case kind.try(:downcase)
+      when 'in'
+        IN_KEY
+      when 'out'
+        OUT_KEY
+      else
+        nil
+    end
+  end
+
+  def self.keys # Returns an array of all existing keys
+    reveal_keys(aggregate_mask)
+  end
+
+  def self.next_key(key)
+    agg = aggregate_mask
+    key = key << 1
+    return nil if (key > agg) || (key < 1)
+    while (key & agg) == 0 do
+      key = key << 1
+    end
+    key
   end
 
   def self.reveal_valid_keys(mask)

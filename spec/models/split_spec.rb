@@ -20,8 +20,6 @@ RSpec.describe Split, kind: :model do
     @location1 = Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
     @location2 = Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
     @location3 = Location.create(name: 'Mountain Getaway', elevation: 2950, latitude: 40.3, longitude: -105.15)
-    @sub_split1 = SubSplit.create!(bitkey: 1, kind: 'In')
-    @sub_split2 = SubSplit.create!(bitkey: 2, kind: 'Out')
   end
 
   it "should be valid when created with a course_id, a name, a distance_from_start, and a kind" do

@@ -1,48 +1,89 @@
 require 'rails_helper'
 
-# t.integer "bitkey",       null: false
+# t.integer "key",       null: false
 # t.string  "kind",       null: false
 
 
 RSpec.describe SubSplit, type: :model do
-  it 'should be valid with a bitkey and a kind' do
-    sub_split = SubSplit.new(bitkey: 1, kind: 'In')
 
-    expect(SubSplit.all.count).to(equal(0))
-    expect(sub_split).to be_valid
+  describe 'kind' do
+
+    it 'should return "In" when passed 1 or IN_KEY' do
+      expect(SubSplit.kind(1)).to eq('In')
+      expect(SubSplit.kind(SubSplit::IN_KEY)).to eq('In')
+    end
+
+    it 'should return "Out" when passed 64 or OUT_KEY' do
+      expect(SubSplit.kind(64)).to eq('Out')
+      expect(SubSplit.kind(SubSplit::OUT_KEY)).to eq('Out')
+    end
+
+    it 'should return nil given any other parameter' do
+      expect(SubSplit.kind(8)).to eq(nil)
+      expect(SubSplit.kind(50)).to eq(nil)
+    end
+
   end
 
-  it 'should be invalid without a bitkey' do
-    sub_split = SubSplit.new(bitkey: nil, kind: 'In')
-    expect(sub_split).not_to be_valid
+  describe 'kinds' do
+
+    it 'should return an array of all existing kinds' do
+      expect(SubSplit.kinds).to eq(%w(In Out))
+    end
+
   end
 
-  it 'should be invalid without a kind' do
-    sub_split = SubSplit.new(bitkey: 1, kind: nil)
-    expect(sub_split).not_to be_valid
+  describe 'key' do
+
+    it 'should return IN_KEY when passed "In"' do
+      expect(SubSplit.key('In')).to eq(SubSplit::IN_KEY)
+    end
+
+    it 'should return OUT_KEY when passed "Out"' do
+      expect(SubSplit.key('Out')).to eq(SubSplit::OUT_KEY)
+    end
+
+    it 'should return nil given any other parameter' do
+      expect(SubSplit.key('Big')).to eq(nil)
+      expect(SubSplit.key(nil)).to eq(nil)
+    end
+
   end
 
-  it 'should be invalid with a duplicate bitkey' do
-    SubSplit.create!(bitkey: 1, kind: 'In')
-    sub_split = SubSplit.new(bitkey: 1, kind: 'Out')
-    expect(sub_split).not_to be_valid
+  describe 'keys' do
+
+    it 'should return an array of all existing keys' do
+      expect(SubSplit.keys).to eq([1, 64])
+    end
+
   end
 
-  it 'should be invalid if bitkey shares any bit with an existing bitkey' do
-    SubSplit.create!(bitkey: 1, kind: 'In')
-    SubSplit.create!(bitkey: 2, kind: 'Out')
-    sub_split1 = SubSplit.new(bitkey: 4, kind: 'Up')
-    sub_split2 = SubSplit.new(bitkey: 5, kind: 'Down')
-    sub_split3 = SubSplit.new(bitkey: 6, kind: 'Strange')
-    expect(sub_split1).to be_valid
-    expect(sub_split2).not_to be_valid
-    expect(sub_split3).not_to be_valid
+  describe 'next_key' do
+
+    it 'should return the next leftmost "on" bit with 1' do
+      expect(SubSplit.next_key(1)).to eq(SubSplit::OUT_KEY)
+    end
+
+    it 'should return the next leftmost "on" bit with 4' do
+      expect(SubSplit.next_key(4)).to eq(SubSplit::OUT_KEY)
+    end
+
+    it 'should return nil with 64' do
+      expect(SubSplit.next_key(64)).to eq(nil)
+    end
+
   end
 
-  it 'should be invalid if bitkey uses more than one bit' do
-    SubSplit.create!(bitkey: 1, kind: 'In')
-    sub_split1 = SubSplit.new(bitkey: 6, kind: 'Out')
-    expect(sub_split1).not_to be_valid
+  describe 'reveal_valid_keys' do
+
+    it 'should return an array of valid keys when passed a mask' do
+      expect(SubSplit.reveal_valid_keys(1)).to eq([1])
+      expect(SubSplit.reveal_valid_keys(65)).to eq([1, 64])
+      expect(SubSplit.reveal_valid_keys(127)).to eq([1, 64])
+      expect(SubSplit.reveal_valid_keys(8)).to eq([])
+      expect(SubSplit.reveal_valid_keys(0)).to eq([])
+    end
+
   end
 
 end

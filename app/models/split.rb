@@ -82,7 +82,7 @@ class Split < ActiveRecord::Base
   end
 
   def name_extensions
-    sub_splits.pluck(:kind)
+    sub_split_keys.map { |key| SubSplit.kind(key) }
   end
 
   def sub_split_key_hashes
@@ -91,10 +91,6 @@ class Split < ActiveRecord::Base
 
   def sub_split_keys
     SubSplit.reveal_keys(sub_split_mask)
-  end
-
-  def sub_splits
-    SubSplit.where('sub_splits.bitkey & ? > 0', sub_split_mask).order(:bitkey)
   end
 
   def name=(entered_name)

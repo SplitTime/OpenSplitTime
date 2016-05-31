@@ -8,10 +8,6 @@ RSpec.describe SplitRow, type: :model do
     @course = Course.create!(name: 'Test Course 100')
     @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
 
-    @sub_split1 = SubSplit.create!(bitkey: 1, kind: 'In')
-    @sub_split2 = SubSplit.create!(bitkey: 64, kind: 'Out')
-    @sub_split3 = SubSplit.create!(bitkey: 8, kind: 'Change')
-
     @effort1 = Effort.create!(event: @event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
     @effort2 = Effort.create!(event: @event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
     @effort3 = Effort.create!(event: @event, bib_number: 3, start_offset: 3600, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male')
@@ -23,34 +19,32 @@ RSpec.describe SplitRow, type: :model do
 
     @event.splits << @course.splits
 
-    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, sub_split: @sub_split1, time_from_start: 0, data_status: 2)
-    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split1, time_from_start: 4000, data_status: 2)
-    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, sub_split: @sub_split2, time_from_start: 4100, data_status: 2)
-    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split1, time_from_start: 15200, data_status: 2)
-    @split_time5 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split3, time_from_start: 15300, data_status: 2)
-    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, sub_split: @sub_split2, time_from_start: 15100, data_status: 0)
-    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, sub_split: @sub_split1, time_from_start: 21000, data_status: 2)
+    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, sub_split_key: SubSplit::IN_KEY, time_from_start: 0, data_status: 2)
+    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_key: SubSplit::IN_KEY, time_from_start: 4000, data_status: 2)
+    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_key: SubSplit::OUT_KEY, time_from_start: 4100, data_status: 2)
+    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_key: SubSplit::IN_KEY, time_from_start: 15200, data_status: 2)
+    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_key: SubSplit::OUT_KEY, time_from_start: 15100, data_status: 0)
+    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, sub_split_key: SubSplit::IN_KEY, time_from_start: 21000, data_status: 2)
 
-    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, sub_split: @sub_split1, time_from_start: 0, data_status: 2)
-    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, sub_split: @sub_split2, time_from_start: 120, data_status: 0)
-    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split1, time_from_start: 24000, data_status: 2)
-    @split_time11 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split3, time_from_start: 24500, data_status: 2)
-    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, sub_split: @sub_split2, time_from_start: 150000, data_status: 0)
-    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, sub_split: @sub_split1, time_from_start: 40000, data_status: 1)
+    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, sub_split_key: SubSplit::IN_KEY, time_from_start: 0, data_status: 2)
+    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, sub_split_key: SubSplit::OUT_KEY, time_from_start: 120, data_status: 0)
+    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_key: SubSplit::IN_KEY, time_from_start: 24000, data_status: 2)
+    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_key: SubSplit::OUT_KEY, time_from_start: 150000, data_status: 0)
+    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, sub_split_key: SubSplit::IN_KEY, time_from_start: 40000, data_status: 1)
 
-    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, sub_split: @sub_split1, time_from_start: 0, data_status: 2)
-    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split1, time_from_start: 5000, data_status: 2)
-    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split: @sub_split2, time_from_start: 5000, data_status: 2)
-    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split: @sub_split1, time_from_start: 12200, data_status: 2)
+    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, sub_split_key: SubSplit::IN_KEY, time_from_start: 0, data_status: 2)
+    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_key: SubSplit::IN_KEY, time_from_start: 5000, data_status: 2)
+    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_key: SubSplit::OUT_KEY, time_from_start: 5000, data_status: 2)
+    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split_key: SubSplit::IN_KEY, time_from_start: 12200, data_status: 2)
 
     @split_row1 = SplitRow.new(@split1, [@split_time1], nil)
     @split_row2 = SplitRow.new(@split2, [@split_time2, @split_time3], 0)
-    @split_row3 = SplitRow.new(@split4, [@split_time4, @split_time5, @split_time6], 4100)
+    @split_row3 = SplitRow.new(@split4, [@split_time4, @split_time6], 4100)
     @split_row4 = SplitRow.new(@split6, [@split_time7], 15100)
 
     @split_row5 = SplitRow.new(@split1, [@split_time8], nil)
     @split_row6 = SplitRow.new(@split2, [nil, @split_time9], 0)
-    @split_row7 = SplitRow.new(@split4, [@split_time10, @split_time11, @split_time12], nil)
+    @split_row7 = SplitRow.new(@split4, [@split_time10, @split_time12], nil)
     @split_row8 = SplitRow.new(@split6, [@split_time13], 150000)
 
     @split_row9 = SplitRow.new(@split1, [@split_time14], nil)
@@ -80,10 +74,10 @@ RSpec.describe SplitRow, type: :model do
     it 'should return an array of times_from_start' do
       expect(@split_row1.times_from_start).to eq([0])
       expect(@split_row2.times_from_start).to eq([4000, 4100])
-      expect(@split_row3.times_from_start).to eq([15200, 15300, 15100])
+      expect(@split_row3.times_from_start).to eq([15200, 15100])
       expect(@split_row4.times_from_start).to eq([21000])
       expect(@split_row6.times_from_start).to eq([nil, 120])
-      expect(@split_row11.times_from_start).to eq([12200, nil, nil])
+      expect(@split_row11.times_from_start).to eq([12200, nil])
       expect(@split_row12.times_from_start).to eq([nil, nil])
     end
 

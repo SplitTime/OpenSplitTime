@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160527155906) do
+ActiveRecord::Schema.define(version: 20160531042449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,13 +146,13 @@ ActiveRecord::Schema.define(version: 20160527155906) do
     t.datetime "updated_at",      null: false
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.integer  "sub_split_id"
+    t.integer  "sub_split_key"
     t.integer  "legacy_split_id"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree
   add_index "split_times", ["split_id"], name: "index_split_times_on_split_id", using: :btree
-  add_index "split_times", ["sub_split_id"], name: "index_split_times_on_sub_split_id", using: :btree
+  add_index "split_times", ["sub_split_key"], name: "index_split_times_on_sub_split_key", using: :btree
 
   create_table "splits", force: :cascade do |t|
     t.integer  "course_id",                        null: false
@@ -175,14 +175,6 @@ ActiveRecord::Schema.define(version: 20160527155906) do
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id", using: :btree
   add_index "splits", ["location_id"], name: "index_splits_on_location_id", using: :btree
-
-  create_table "sub_splits", id: false, force: :cascade do |t|
-    t.integer "bitkey", null: false
-    t.string  "kind",   null: false
-  end
-
-  add_index "sub_splits", ["bitkey"], name: "index_sub_splits_on_bitkey", unique: true, using: :btree
-  add_index "sub_splits", ["kind"], name: "index_sub_splits_on_kind", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             limit: 32,              null: false
@@ -227,7 +219,6 @@ ActiveRecord::Schema.define(version: 20160527155906) do
   add_foreign_key "participants", "users"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
-  add_foreign_key "split_times", "sub_splits", primary_key: "bitkey"
   add_foreign_key "splits", "courses"
   add_foreign_key "splits", "locations"
 end

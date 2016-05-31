@@ -24,7 +24,9 @@
       <th>Category</th>
       <th>From</th>
       <% @spread_display.splits.each do |split| %>
-          <th><%= split.name %></th>
+          <th class="text-nowrap text-center">
+            <%= split.base_name %><br><%= split.name_extensions.join(' / ') if split.intermediate? %>
+          </th>
       <% end %>
     </tr>
     </thead>
@@ -32,11 +34,11 @@
     <% @spread_display.effort_times_rows.each do |row| %>
         <tr>
           <td><%= row.bib_number %></td>
-          <td><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
-          <td><%= row.bio_historic %></td>
-          <td><%= row.state_and_country %></td>
+          <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
+          <td class="text-nowrap"><%= row.bio_historic %></td>
+          <td class="text-nowrap"><%= row.state_and_country %></td>
           <% row.time_clusters.each do |cluster| %>
-              <td>
+              <td class="text-nowrap text-center">
                 <%= cluster.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %>
               </td>
           <% end %>

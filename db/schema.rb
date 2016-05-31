@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531042449) do
+ActiveRecord::Schema.define(version: 20160531074302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,7 +147,6 @@ ActiveRecord::Schema.define(version: 20160531042449) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.integer  "sub_split_key"
-    t.integer  "legacy_split_id"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree
@@ -158,7 +157,6 @@ ActiveRecord::Schema.define(version: 20160531042449) do
     t.integer  "course_id",                        null: false
     t.integer  "location_id"
     t.integer  "distance_from_start",              null: false
-    t.integer  "sub_order",            default: 0, null: false
     t.float    "vert_gain_from_start"
     t.float    "vert_loss_from_start"
     t.integer  "kind",                             null: false
@@ -168,9 +166,7 @@ ActiveRecord::Schema.define(version: 20160531042449) do
     t.integer  "updated_by"
     t.string   "description"
     t.string   "base_name"
-    t.string   "name_extension"
     t.integer  "sub_split_mask",       default: 1
-    t.integer  "base_split_id"
   end
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id", using: :btree

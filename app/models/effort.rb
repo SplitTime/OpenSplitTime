@@ -115,22 +115,27 @@ class Effort < ActiveRecord::Base
     event_start_time + start_offset + due_next_time_from_start(cache)
   end
 
+  def due_next_time_from_start(cache = nil)
+    expected_time_from_start(due_next_where, cache)
+  end
+
   def expected_time_from_start(split, cache = nil)
     return nil if dropped?
+    start_split = event.start_split
+    return 0 if split == start_split
     last_time = last_reported_split_time
     last_split = last_time.split
-    return nil if last_split.finish?
     cache ||= SegmentCalculationsCache.new(event)
-    current_segment = Segment.new(last_split, event.next_split(last_split))
-    completed_segment = Segment.new(event.start_split, last_split)
+    current_segment = Segment.new(event.start_split, split)
+    completed_segment = Segment.new(start_split, last_split)
     current_segment_calcs = cache.fetch_calculations(current_segment)
     completed_segment_calcs = cache.fetch_calculations(completed_segment)
     pace_factor = last_time.time_from_start / (completed_segment_calcs.mean || completed_segment.typical_time_by_terrain)
-    last_time.time_from_start + (current_segment_calcs.mean * pace_factor)
+    current_segment_calcs.mean * pace_factor
   end
 
   def last_reported_split
-    ordered_split_times.last.split
+    last_reported_split_time.split
   end
 
   def last_reported_split_time
@@ -211,20 +216,6 @@ class Effort < ActiveRecord::Base
     event.gender_place(self)
   end
 
-  def self.gender_group(segment, gender) # TODO Intersect queries to select only those efforts that include both splits
-    # scope :includes_split1, -> { includes(:event => :splits).where(splits: {id: split1.id}) }
-    # scope :includes_split2, -> { includes(:event => :splits).where(splits: {id: split2.id}) }
-    # scope :includes_both_splits, -> { intersect_scope(includes_split1, includes_split2) }
-    case gender
-      when 'male'
-        includes(:event => :splits).male.where(splits: {id: segment.end_id})
-      when 'female'
-        includes(:event => :splits).female.where(splits: {id: segment.end_id})
-      else
-        includes(:event => :splits).where(splits: {id: segment.end_id})
-    end
-  end
-
   # Age methods
 
   def approximate_age_today
@@ -284,10 +275,6 @@ class Effort < ActiveRecord::Base
     result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
   end
 
-  def self.sorted_by_segment_time(segment)
-    efforts_from_ids(ids_sorted_by_segment_time(segment))
-  end
-
   def self.efforts_from_ids(effort_ids)
     efforts_by_id = Effort.find(effort_ids).index_by(&:id)
     effort_ids.collect { |id| efforts_by_id[id] }
@@ -302,13 +289,6 @@ class Effort < ActiveRecord::Base
                 .first.split_id
     update(dropped_split_id: dropped_split_id)
     dropped_split_id
-  end
-
-  private
-
-  def self.ids_sorted_by_segment_time(segment)
-    effort_ids = self.pluck(:id)
-    segment.times.keep_if { |k, _| effort_ids.include?(k) }.sort_by { |_, v| v }.map { |x| x[0] }
   end
 
 end

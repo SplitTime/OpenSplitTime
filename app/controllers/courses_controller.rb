@@ -56,6 +56,7 @@ class CoursesController < ApplicationController
 
   def best_efforts
     course = Course.find(params[:id])
+    params[:gender] ||= 'combined'
     @best_display = BestEffortsDisplay.new(course, params)
     session[:return_to] = best_efforts_course_path(course)
   end

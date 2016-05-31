@@ -24,17 +24,6 @@ class Course < ActiveRecord::Base
                                           description: "Finish point for the #{name} course.")
   end
 
-  def effort_gender_group(gender)
-    case gender
-      when 'male'
-        Effort.includes(:event).male.where(events: {course_id: id})
-      when 'female'
-        Effort.includes(:event).female.where(events: {course_id: id})
-      else
-        Effort.includes(:event).where(events: {course_id: id})
-    end
-  end
-
   def relevant_efforts(target_time, max_events = 5, min_efforts = 20)
     relevant_events = events.recent(max_events)
     return Effort.none if relevant_events.count < 1

@@ -13,9 +13,12 @@ class EffortRow
     @start_time_from_params = options[:start_time]
   end
 
+  def effective_start_time
+    start_time_from_params.try(:to_datetime) || effort.start_time
+  end
+
   def year
-    return start_time_from_params.try(:to_datetime).year if start_time_from_params
-    effort.start_time ? effort.start_time.year : nil
+    effective_start_time ? effective_start_time.year : nil
   end
 
   def finish_time

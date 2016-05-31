@@ -1,6 +1,7 @@
 class SplitRow
 
   delegate :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
+  delegate :time_in_aid, :times_from_start, :days_and_times, :time_data_statuses, to: :time_cluster
 
   # split_times should be an array having size == split.sub_split_bitkey_hashes.size,
   # with nil values where no corresponding split_time exists
@@ -10,6 +11,7 @@ class SplitRow
     @split_times = split_times
     @prior_time = prior_time
     @start_time = start_time
+    @time_cluster = TimeCluster.new(split, split_times, start_time)
   end
 
   def split_id
@@ -21,31 +23,12 @@ class SplitRow
     times_from_start.first - prior_time
   end
 
-  def time_in_aid
-    return nil unless times_from_start.compact.count > 1
-    times_from_start.last - times_from_start.first
-  end
-
-  def times_from_start
-    split_times.map { |st| st ? st.time_from_start : nil }
-  end
-
-  def days_and_times
-    start_time ?
-        times_from_start.map { |time| time ? start_time + time : nil } :
-        split_times.map { |st| st ? st.day_and_time : nil }
-  end
-
-  def time_data_statuses
-    split_times.map { |st| st ? st.data_status : nil }
-  end
-
   def data_status
     DataStatus.worst(time_data_statuses)
   end
 
   # private
 
-  attr_accessor :split, :split_times, :prior_time, :start_time
+  attr_reader :split, :split_times, :prior_time, :start_time, :time_cluster
 
 end

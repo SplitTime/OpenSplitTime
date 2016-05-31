@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :spread]
-  before_action :set_event, except: [:index, :show, :new, :create]
+  before_action :set_event, except: [:index, :show, :new, :create, :spread]
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
@@ -122,7 +122,9 @@ class EventsController < ApplicationController
   end
 
   def spread
-    session[:return_to] = spread_event_path(@event)
+    event = Event.find(params[:id])
+    @spread_display = EventSpreadDisplay.new(event, params)
+    session[:return_to] = spread_event_path(event)
   end
 
 

@@ -1,18 +1,18 @@
 <div class="row">
-  <h2><%= @event.name %></h2>
+  <h2><%= @spread_display.name %></h2>
 </div>
 <div class="row">
-  <strong><%= "#{@event.start_time.to_formatted_s(:long)}" %></strong><br/>
+  <strong><%= "#{@spread_display.start_time.to_formatted_s(:long)}" %></strong><br/>
   <strong>Course:</strong>
-  <%= link_to @event.course.name, course_path(@event.course) %>
-  <% if @event.race %> |
+  <%= link_to @spread_display.course_name, course_path(@spread_display.course) %>
+  <% if @spread_display.race %> |
       <strong>Race:</strong>
-      <%= link_to @event.race.name, race_path(@event.race) %>
+      <%= link_to @spread_display.race_name, race_path(@spread_display.race) %>
   <% end %>
 </div>
 <hr>
 <div class="row">
-  <%= link_to '<< Back to event', event_path(@event), class: 'btn btn-sm btn-default' %>
+  <%= link_to '<< Back to event', event_path(@spread_display.event), class: 'btn btn-sm btn-default' %>
 </div>
 <hr>
 <div class="row">
@@ -23,26 +23,21 @@
       <th>Name</th>
       <th>Category</th>
       <th>From</th>
-      <% ordered_splits = @event.ordered_splits_without_start %>
-      <% ordered_splits.each do |split| %>
+      <% @spread_display.splits.each do |split| %>
           <th><%= split.name %></th>
       <% end %>
     </tr>
     </thead>
     <tbody>
-    <% time_array = @event.sorted_ultra_time_array %>
-    <% efforts = Effort.efforts_from_ids(time_array.map { |x| x[0] }) %>
-    <% time_array.each do |row| %>
+    <% @spread_display.effort_times_rows.each do |row| %>
         <tr>
-          <% effort = efforts.find { |effort| effort.id == row[0] } %>
-          <td><%= effort.bib_number %></td>
-          <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
-          <td><%= effort.bio_historic %></td>
-          <td><%= effort.state_and_country %></td>
-          <%# Column 0 is effort_ids, column 1 is start data, so start on column 2 %>
-          <% (2...row.size).each do |i| %>
+          <td><%= row.bib_number %></td>
+          <td><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
+          <td><%= row.bio_historic %></td>
+          <td><%= row.state_and_country %></td>
+          <% row.time_clusters.each do |cluster| %>
               <td>
-                <%= time_format_hhmm(row[i]) %>
+                <%= cluster.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %>
               </td>
           <% end %>
         </tr>

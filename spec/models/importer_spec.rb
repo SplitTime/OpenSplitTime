@@ -7,7 +7,7 @@ RSpec.describe Importer do
     before do
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
-      @file = fixture_file_upload('files/baddata2015test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      @file = fixture_file_upload('spec/fixtures/files/baddata2015test.xlsx', extension: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
       @importer = Importer.new(@file, @event, 1)
     end
 

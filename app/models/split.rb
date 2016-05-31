@@ -34,7 +34,7 @@ class Split < ActiveRecord::Base
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: "may not be negative"
 
-  scope :ordered, -> { where(sub_order: 0).order(:distance_from_start) } # Remove sub_order constraint when migration is complete
+  scope :ordered, -> { order(:distance_from_start) }
 
   def is_start?
     self.start?

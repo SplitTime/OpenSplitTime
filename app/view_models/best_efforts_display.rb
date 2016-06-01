@@ -55,7 +55,7 @@ class BestEffortsDisplay
     split1 = params[:split1].present? ? Split.find(params[:split1]) : course.start_split
     split2 = params[:split2].present? ? Split.find(params[:split2]) : course.finish_split
     splits = [split1, split2].sort_by(&:course_index)
-    self.segment = Segment.new(splits[0], splits[1])
+    self.segment = Segment.new(splits[0].bitkey_hashes.last, splits[1].bitkey_hashes.first)
   end
 
   def get_efforts(params)

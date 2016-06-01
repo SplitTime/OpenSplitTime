@@ -119,8 +119,8 @@ class Effort < ActiveRecord::Base
     subject_split_time = split_times.find { |split_time| split_time.bitkey_hash == bitkey_hash }
     prior_split_time = split_times[split_times.index(subject_split_time) - 1]
     cache ||= SegmentCalculationsCache.new(event)
-    completed_segment = Segment.new([start_bitkey_hash, prior_split_time.bitkey_hash])
-    subject_segment = Segment.new([prior_split_time.bitkey_hash, bitkey_hash])
+    completed_segment = Segment.new(start_bitkey_hash, prior_split_time.bitkey_hash)
+    subject_segment = Segment.new(prior_split_time.bitkey_hash, bitkey_hash)
     completed_segment_calcs = cache.fetch_calculations(completed_segment)
     subject_segment_calcs = cache.fetch_calculations(subject_segment)
     pace_factor = prior_split_time.time_from_start / (completed_segment_calcs.mean || completed_segment.typical_time_by_terrain)

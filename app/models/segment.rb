@@ -6,11 +6,11 @@ class Segment
 # Requires two bitkey hashes as an array. Uses corresponding splits
 # if provided; otherwise finds corresponding splits in the database
 
-  def initialize(bitkey_hashes, splits = [])
-    @begin_bitkey_hash = bitkey_hashes.first
-    @end_bitkey_hash = bitkey_hashes.second
-    @begin_split = splits.first.present? ? splits.first : Split.find(@begin_bitkey_hash.keys.first)
-    @end_split = splits.second.present? ? splits.second : Split.find(@end_bitkey_hash.keys.first)
+  def initialize(begin_bitkey_hash, end_bitkey_hash, begin_split = nil, end_split = nil)
+    @begin_bitkey_hash = begin_bitkey_hash
+    @end_bitkey_hash = end_bitkey_hash
+    @begin_split = begin_split ? begin_split : Split.find(@begin_bitkey_hash.keys.first)
+    @end_split = end_split ? end_split : Split.find(@end_bitkey_hash.keys.first)
     raise 'Segment splits must be on same course' if @begin_split.course_id != @end_split.course_id
     raise 'Segment splits are out of order' if @begin_split.course_index > @end_split.course_index
   end

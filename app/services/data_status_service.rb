@@ -16,7 +16,7 @@ class DataStatusService
           latest_valid_split_time = split_time
           next
         end
-        segment = Segment.new(latest_valid_split_time.split, split_time.split)
+        segment = Segment.new(latest_valid_split_time.bitkey_hash, split_time.bitkey_hash)
         segment_time = segment.end_split.start? ?
             split_time.time_from_start :
             split_time.time_from_start - latest_valid_split_time.time_from_start

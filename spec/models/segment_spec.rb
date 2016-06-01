@@ -116,10 +116,10 @@ RSpec.describe Segment, type: :model do
       SplitTime.create!(effort: @effort13, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 14300)
       SplitTime.create!(effort: @effort13, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 19800)
 
-      @segment1 = Segment.new(@split1, @split6)
-      @segment2 = Segment.new(@split2, @split2)
-      @segment3 = Segment.new(@split2, @split4)
-      @segment4 = Segment.new(@split4, @split6)
+      @segment1 = Segment.new(@split1.bitkey_hash_in, @split6.bitkey_hash_in)
+      @segment2 = Segment.new(@split2.bitkey_hash_in, @split2.bitkey_hash_out)
+      @segment3 = Segment.new(@split2.bitkey_hash_out, @split4.bitkey_hash_in)
+      @segment4 = Segment.new(@split4.bitkey_hash_out, @split6.bitkey_hash_in)
 
     end
 
@@ -132,8 +132,8 @@ RSpec.describe Segment, type: :model do
 
     it 'should equate itself with other segments using the same splits' do
       # This allows a segment to be used as a hash key and matched with another hash key
-      segment5 = Segment.new(@split1, @split6)
-      segment6 = Segment.new(@split2, @split4)
+      segment5 = Segment.new(@split1.bitkey_hash_in, @split6.bitkey_hash_in)
+      segment6 = Segment.new(@split2.bitkey_hash_out, @split4.bitkey_hash_in)
       expect(segment5 == @segment1).to eq(true)
       expect(segment6 == @segment3).to eq(true)
       expect(segment6 == @segment2).to eq(false)
@@ -165,10 +165,10 @@ RSpec.describe Segment, type: :model do
 
       @event.splits << @course.splits
 
-      @segment1 = Segment.new(@split1, @split2)
-      @segment2 = Segment.new(@split2.id, @split2.id)
-      @segment3 = Segment.new(@split2, @split4)
-      @segment4 = Segment.new(@split1, @split4)
+      @segment1 = Segment.new(@split1.bitkey_hash_in, @split2.bitkey_hash_in)
+      @segment2 = Segment.new(@split2.bitkey_hash_in, @split2.bitkey_hash_out)
+      @segment3 = Segment.new(@split1.bitkey_hash_in, @split4.bitkey_hash_in)
+      @segment4 = Segment.new(@split2.bitkey_hash_out, @split4.bitkey_hash_in)
 
       SplitTime.create!(effort: @effort1, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
       SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)
@@ -187,7 +187,7 @@ RSpec.describe Segment, type: :model do
 
     it 'should return velocity in m/s for a given effort' do
       expect(@segment1.effort_velocity(@effort1)).to eq(6000 / 4000.0)
-      expect(@segment4.effort_velocity(@effort2)).to eq(10000 / 9000.0)
+      expect(@segment4.effort_velocity(@effort2)).to eq(4000 / 4000.0)
     end
 
     it 'should return zero when the distance is zero' do
@@ -199,7 +199,7 @@ RSpec.describe Segment, type: :model do
     end
 
     it 'should return a negative value when elapsed time is negative' do
-      expect(@segment3.effort_velocity(@effort3)).to eq(4000 / -200)
+      expect(@segment4.effort_velocity(@effort3)).to eq(4000 / -200)
     end
 
   end
@@ -219,10 +219,10 @@ RSpec.describe Segment, type: :model do
 
       @event.splits << @course.splits
 
-      @segment1 = Segment.new(@split1, @split2)
-      @segment2 = Segment.new(@split2.id, @split2.id)
-      @segment3 = Segment.new(@split1, @split2, @split4)
-      @segment4 = Segment.new(@split2, @split4.id)
+      @segment1 = Segment.new(@split1.bitkey_hash_in, @split2.bitkey_hash_in)
+      @segment2 = Segment.new(@split2.bitkey_hash_in, @split2.bitkey_hash_out)
+      @segment3 = Segment.new(@split1.bitkey_hash_in, @split4.bitkey_hash_in)
+      @segment4 = Segment.new(@split2.bitkey_hash_out, @split4.bitkey_hash_in)
 
       SplitTime.create!(effort: @effort1, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
       SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)
@@ -263,10 +263,10 @@ RSpec.describe Segment, type: :model do
 
       @event.splits << @course.splits
 
-      @segment1 = Segment.new(@split1, @split2)
-      @segment2 = Segment.new(@split2.id, @split2.id)
-      @segment3 = Segment.new(@split1, @split2, @split4)
-      @segment4 = Segment.new(@split2, @split4.id)
+      @segment1 = Segment.new(@split1.bitkey_hash_in, @split2.bitkey_hash_in)
+      @segment2 = Segment.new(@split2.bitkey_hash_in, @split2.bitkey_hash_out)
+      @segment3 = Segment.new(@split1.bitkey_hash_in, @split4.bitkey_hash_in)
+      @segment4 = Segment.new(@split2.bitkey_hash_out, @split4.bitkey_hash_in)
 
 
     end

@@ -157,14 +157,14 @@ RSpec.describe Effort, type: :model do
     end
 
     it 'should return zero if the split parameter is a start split' do
-      expect(@effort1.expected_time_from_start(@split1)).to eq(0)
+      expect(@effort1.expected_time_from_start(@split1.sub_split_bitkey_hashes.first)).to eq(0)
     end
 
     context 'insufficient historical data' do
 
       it 'should determine expected time based on most recent time from start and segment mileage/vertical' do
-        expect(@effort1.expected_time_from_start(@split2)).to eq(0 + (6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))
-        expect(@effort1.expected_time_from_start(@split4)).to eq(4100 + ((15000 - 6000) * DISTANCE_FACTOR) + ((500 - 500) * VERT_GAIN_FACTOR))
+        expect(@effort1.expected_time_from_start(@split2.sub_split_bitkey_hashes.first)).to eq((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))
+        expect(@effort1.expected_time_from_start(@split4.sub_split_bitkey_hashes.first)).to eq(((15000 - 6000) * DISTANCE_FACTOR) + ((500 - 500) * VERT_GAIN_FACTOR))
       end
 
     end
@@ -250,26 +250,28 @@ RSpec.describe Effort, type: :model do
         SplitTime.create!(effort: @effort13, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 14300)
         SplitTime.create!(effort: @effort13, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 19800)
 
-        @segment12 = Segment.new(@split1, @split2)
-        @segment14 = Segment.new(@split1, @split4)
-        @segment16 = Segment.new(@split1, @split6)
-        @segment24 = Segment.new(@split2, @split4)
-        @segment26 = Segment.new(@split2, @split6)
-        @segment46 = Segment.new(@split4, @split6)
+        @segment1 = Segment.new([@split1.bitkey_hash_in, @split2.bitkey_hash_in])
+        @segment2 = Segment.new([@split1.bitkey_hash_in, @split4.bitkey_hash_in])
+        @segment3 = Segment.new([@split1.bitkey_hash_in, @split6.bitkey_hash_in])
+        @segment4 = Segment.new([@split2.bitkey_hash_out, @split4.bitkey_hash_in])
+        @segment5 = Segment.new([@split4.bitkey_hash_out, @split6.bitkey_hash_in])
+        @segment6 = Segment.new([@split1.bitkey_hash_in, @split2.bitkey_hash_out])
+        @segment6 = Segment.new([@split1.bitkey_hash_in, @split4.bitkey_hash_out])
 
-        @calcs12 = SegmentCalculations.new(@segment12)
-        @calcs14 = SegmentCalculations.new(@segment14)
-        @calcs16 = SegmentCalculations.new(@segment16)
-        @calcs24 = SegmentCalculations.new(@segment24)
-        @calcs26 = SegmentCalculations.new(@segment26)
-        @calcs46 = SegmentCalculations.new(@segment46)
+        @calcs1 = SegmentCalculations.new(@segment1)
+        @calcs2 = SegmentCalculations.new(@segment2)
+        @calcs3 = SegmentCalculations.new(@segment3)
+        @calcs4 = SegmentCalculations.new(@segment4)
+        @calcs5 = SegmentCalculations.new(@segment5)
+        @calcs6 = SegmentCalculations.new(@segment6)
+        @calcs7 = SegmentCalculations.new(@segment7)
 
       end
 
       it 'should determine expected time based on prior split_time and mean segment time (normalized to effort)' do
-        expect(@effort1.expected_time_from_start(@split2)).to eq(@calcs16.mean)
-        expect(@effort2.expected_time_from_start(@split4)).to eq(6200 + ((6200/@calcs5.mean) * @calcs6.mean))
-        expect(@effort12.expected_time_from_start(@split6)).to eq(12550 + ((12550/@calcs4.mean) * @calcs3.mean))
+        expect(@effort1.expected_time_from_start(@split2.bitkey_hash_in)).to eq(@calcs1.mean)
+        expect(@effort2.expected_time_from_start(@split4.bitkey_hash_in)).to eq(6200 + ((6200 / @calcs6.mean) * @calcs4.mean))
+        expect(@effort12.expected_time_from_start(@split6.bitkey_hash_in)).to eq(12550 + ((12550 / @calcs7.mean) * @calcs5.mean))
       end
 
     end

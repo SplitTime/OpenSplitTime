@@ -2,8 +2,8 @@ class SegmentCalculations
   attr_accessor :times, :valid_data_array, :low_bad, :low_q, :high_q, :high_bad, :mean, :std
 
   def initialize(segment, begin_times_hash = nil, end_times_hash = nil)
-    begin_times_hash ||= segment.begin_split.time_hash(segment.begin_split.sub_split_bitkeys.last)
-    end_times_hash ||= segment.end_split.time_hash(segment.end_split.sub_split_bitkeys.first)
+    begin_times_hash ||= segment.begin_bitkey_hash
+    end_times_hash ||= segment.end_bitkey_hash
     @times = calculate_times(begin_times_hash, end_times_hash)
     create_valid_data_array
     set_status_limits(segment)
@@ -43,7 +43,7 @@ class SegmentCalculations
     return [] unless baseline_median
     data_array = times.values
     data_array.keep_if { |v| (v > (baseline_median / 2)) && (v < (baseline_median * 2)) }
-    @valid_data_array = data_array
+    self.valid_data_array = data_array
   end
 
   def set_status_limits(segment)

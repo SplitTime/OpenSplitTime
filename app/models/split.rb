@@ -89,15 +89,20 @@ class Split < ActiveRecord::Base
     sub_split_bitkeys.map { |bitkey| {id => bitkey} }
   end
 
+  alias_method :bitkey_hashes, :sub_split_bitkey_hashes
+
   def sub_split_bitkeys
-    SubSplit.reveal_bitkeys(sub_split_bitmap)
+    SubSplit.reveal_valid_bitkeys(sub_split_bitmap)
   end
 
-  def name=(entered_name)
-    if entered_name.present?
-      self.base_name = entered_name.split.reject { |x| (x.downcase == 'in') | (x.downcase == 'out') }.join(' ')
-      self.name_extension = entered_name.gsub(base_name, '').strip
-    end
+  alias_method :bitkeys, :sub_split_bitkeys
+
+  def bitkey_hash_in
+    bitkeys.include?(SubSplit::IN_BITKEY) ? {id => SubSplit::IN_BITKEY} : nil
+  end
+
+  def bitkey_hash_out
+    bitkeys.include?(SubSplit::OUT_BITKEY) ? {id => SubSplit::OUT_BITKEY} : nil
   end
 
   def course_index # Returns an integer representing the split's relative position on the course

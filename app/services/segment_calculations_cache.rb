@@ -15,7 +15,9 @@ class SegmentCalculationsCache
   end
 
   def fetch_calculations(segment)
-    self[segment] ||= SegmentCalculations.new(segment, time_hashes[segment.begin_id], time_hashes[segment.end_id])
+    self[segment] ||= SegmentCalculations.new(segment,
+                                              time_hashes[segment.begin_bitkey_hash],
+                                              time_hashes[segment.end_bitkey_hash])
   end
 
   def get_data_status(segment, segment_time)

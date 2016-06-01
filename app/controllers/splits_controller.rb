@@ -28,8 +28,6 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.save
-      conform_physical_data(@split)
-      set_sub_order(@split)
       if params[:commit] == 'Create Location'
         session[:return_to] = edit_split_path(@split, event_id: params[:event_id])
         redirect_to create_location_split_path(id: @split.id, event_id: params[:event_id]), method: :post
@@ -56,8 +54,6 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.update(split_params)
-      conform_physical_data(@split)
-      set_sub_order(@split)
       if params[:event_id]
         @event = Event.find(params[:event_id])
         @event.splits << @split
@@ -72,10 +68,10 @@ class SplitsController < ApplicationController
 
   def destroy
     authorize @split
+    course = Course.find(@split.course)
     @split.destroy
 
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || splits_path
+    redirect_to course_path(course)
   end
 
   def create_location
@@ -97,7 +93,7 @@ class SplitsController < ApplicationController
   private
 
   def split_params
-    params.require(:split).permit(:course_id, :location_id, :base_name, :name,
+    params.require(:split).permit(:course_id, :location_id, :base_name,
                                   :description, :kind, :sub_split_bitmap,
                                   :distance_from_start, :distance_as_entered,
                                   :vert_gain_from_start, :vert_gain_as_entered,

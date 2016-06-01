@@ -22,27 +22,18 @@ class Effort < ActiveRecord::Base
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
                                          .joins(:split_times => :split).where(splits: {kind: 1})
                                          .order('split_times.time_from_start') }
-  scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
+  scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :within_time_range, -> (low_time, high_time) { includes(:split_times => :split)
                                                            .where(splits: {kind: 1},
                                                                   split_times: {time_from_start: low_time..high_time}) }
+  scope :unreconciled, -> { where(participant_id: nil) }
 
   def self.attributes_for_import
     id = ['id']
     foreign_keys = Effort.column_names.find_all { |x| x.include?('_id') }
     stamps = Effort.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
     (column_names - (id + foreign_keys + stamps)).map &:to_sym
-  end
-
-  def reset_time_from_start
-    # If the starting split_time contains nonzero data, assume it means
-    # this effort began that amount of time earlier or later than the event's normal start time
-    return nil unless start_split_time
-    if start_split_time.time_from_start != 0
-      update(start_offset: start_split_time.time_from_start)
-      start_split_time.update(time_from_start: 0)
-    end
   end
 
   def reset_age_from_birthdate
@@ -119,19 +110,21 @@ class Effort < ActiveRecord::Base
     expected_time_from_start(due_next_where, cache)
   end
 
-  def expected_time_from_start(split, cache = nil)
+  def expected_time_from_start(bitkey_hash, cache = nil)
     return nil if dropped?
-    start_split = event.start_split
-    return 0 if split == start_split
-    last_time = last_reported_split_time
-    last_split = last_time.split
+    split_times = ordered_split_times.to_a
+    start_split_time = split_times.first
+    start_bitkey_hash = start_split_time.bitkey_hash
+    return 0 if bitkey_hash == start_bitkey_hash
+    subject_split_time = split_times.find { |split_time| split_time.bitkey_hash == bitkey_hash }
+    prior_split_time = split_times[split_times.index(subject_split_time) - 1]
     cache ||= SegmentCalculationsCache.new(event)
-    current_segment = Segment.new(event.start_split, split)
-    completed_segment = Segment.new(start_split, last_split)
-    current_segment_calcs = cache.fetch_calculations(current_segment)
+    completed_segment = Segment.new([start_bitkey_hash, prior_split_time.bitkey_hash])
+    subject_segment = Segment.new([prior_split_time.bitkey_hash, bitkey_hash])
     completed_segment_calcs = cache.fetch_calculations(completed_segment)
-    pace_factor = last_time.time_from_start / (completed_segment_calcs.mean || completed_segment.typical_time_by_terrain)
-    current_segment_calcs.mean * pace_factor
+    subject_segment_calcs = cache.fetch_calculations(subject_segment)
+    pace_factor = prior_split_time.time_from_start / (completed_segment_calcs.mean || completed_segment.typical_time_by_terrain)
+    prior_split_time.time_from_start + (subject_segment_calcs.mean * pace_factor)
   end
 
   def last_reported_split
@@ -243,10 +236,6 @@ class Effort < ActiveRecord::Base
     participant_id.nil?
   end
 
-  def self.unreconciled
-    where(participant_id: nil)
-  end
-
   # Sorting class methods
 
   def self.sorted_ids_with_gender
@@ -258,21 +247,6 @@ class Effort < ActiveRecord::Base
                    .joins(:split_times => :split)
                    .order('efforts.id, splits.distance_from_start DESC')
     raw_sort.sort_by { |row| [-row.distance_from_start, row.time_from_start] }
-  end
-
-  def self.sorted_ultra_time_array(split_time_hash = nil)
-    # Column 0 contains effort_ids, columns 1..-1 are time data
-    return [] if self.count == 0
-    event = first.event
-    split_time_hash ||= event.split_time_hash
-    result = self.pluck(:id).map { |effort_id| [effort_id] }
-    event.ordered_split_ids.each do |split_id|
-      hash = split_time_hash[split_id] ?
-          Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]] }] :
-          {}
-      result.collect! { |row| row << hash[row[0]] }
-    end
-    result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
   end
 
   def self.efforts_from_ids(effort_ids)

@@ -34,14 +34,14 @@ class Importer
         split_failure_array << split
       end
       self.running_sub_split_bitkey = (distance_array[i] == distance_array[i + 1]) ?
-          SubSplit.next_key(running_sub_split_bitkey) : 1
+          SubSplit.next_bitkey(running_sub_split_bitkey) : 1
     end
   end
 
   def effort_import
-    self.split_sub_pairs = event.split_sub_pairs
-    if split_name_array.size != split_sub_pairs.size
-      errors.add(:importer, "Your import file contains #{split_name_array.size} split time columns, but this event expects #{split_sub_pairs.size} columns. Please check your import file or create, remove, or associate splits as needed.")
+    self.sub_split_bitkey_hashes = event.sub_split_bitkey_hashes
+    if split_name_array.size != sub_split_bitkey_hashes.size
+      errors.add(:importer, "Your import file contains #{split_name_array.size} split time columns, but this event expects #{sub_split_bitkey_hashes.size} columns. Please check your import file or create, remove, or associate splits as needed.")
       return
     end
     build_effort_schema
@@ -88,7 +88,7 @@ class Importer
 
   attr_accessor :spreadsheet, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
                 :effort_schema, :header1, :header2, :distance_conversion_factor, :split_id_array,
-                :running_sub_split_bitkey, :most_recent_saved_split, :split_sub_pairs
+                :running_sub_split_bitkey, :most_recent_saved_split, :sub_split_bitkey_hashes
 
   def create_effort_import_report
     self.effort_import_report = ""
@@ -137,7 +137,7 @@ class Importer
                           kind: :intermediate)
       else
         split = most_recent_saved_split
-        sub_split_bitkey = [SubSplit.key(name_extension), running_sub_split_bitkey].compact.max
+        sub_split_bitkey = [SubSplit.bitkey(name_extension), running_sub_split_bitkey].compact.max
         split.sub_split_bitmap = (split.sub_split_bitmap | sub_split_bitkey)
         self.running_sub_split_bitkey = [sub_split_bitkey, running_sub_split_bitkey].max
       end
@@ -158,32 +158,48 @@ class Importer
     end
   end
 
+  # Creates split_times for each valid time entry in the provided row
+  # and returns the start_offset (if the first time entry is non-zero)
+  # and the dropped_split_id (if there is no valid finish time)
+
   def create_split_times(row, effort_id)
     row_time_data = row[split_offset - 1..row.size - 1]
     row_time_data.unshift(0) if finish_times_only?
-    return nil if split_sub_pairs.size != row_time_data.size
-    final_split_pointer = start_offset = nil
+    return nil if sub_split_bitkey_hashes.size != row_time_data.size
+    dropped_split_pointer = start_offset = nil
+    finish_bitkey_hash = sub_split_bitkey_hashes.last
+
     SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
-      (0...split_sub_pairs.count).each do |i|
-        split_id = split_sub_pairs[i][0]
-        sub_split_bitkey = split_sub_pairs[i][1]
+      (0...sub_split_bitkey_hashes.count).each do |i|
+        bitkey_hash = sub_split_bitkey_hashes[i]
+        split_id = bitkey_hash.keys
+        sub_split_bitkey = bitkey_hash.values
         working_time = row_time_data[i]
-        if i == 0 # Set start_offset from non-zero start split time and reset start split time to zero
+
+        # If this is the first (start) column, set start_offset
+        # from non-zero start split time and reset start split time to zero
+
+        if i == 0
           start_offset = working_time || 0
           working_time = 0
         end
+
         seconds = convert_time_to_standard(working_time)
+
+        # If no valid time is present, go to next without creating a split_time
+        # and without updating the dropped_split_pointer
+
         next if seconds.nil?
-        final_split_pointer = split_id
         worker.add(effort_id: effort_id,
                    split_id: split_id,
                    sub_split_bitkey: sub_split_bitkey,
                    time_from_start: seconds,
                    created_by: current_user_id,
                    updated_by: current_user_id)
+        dropped_split_pointer = (bitkey_hash == finish_bitkey_hash) ? nil : split_id
       end
     end
-    [start_offset, final_split_pointer]
+    [start_offset, dropped_split_pointer]
   end
 
   def open_spreadsheet(file)
@@ -200,6 +216,9 @@ class Importer
         raise "Unknown file type: #{file.original_filename}"
     end
   end
+
+  # This method and the several that follow analyze the import data
+  # and attempt to conform it to the database schema
 
   def prepare_row_effort_data(row_effort_data)
     i = effort_schema.index(:country_code)
@@ -275,8 +294,11 @@ class Importer
     nil
   end
 
-  # Returns an array of effort symbols in order of spreadsheet columns
+  # build_effort_schema and related methods return
+  # an array of symbols representing attributes of the effort model.
+  # Symbols are returned in order of the spreadsheet columns
   # with nil placeholders for spreadsheet columns that don't match
+  # any importable effort attribute
 
   def build_effort_schema
     header_column_titles = header1[0..split_offset - 2]
@@ -314,10 +336,6 @@ class Importer
     split_offset == header1.size
   end
 
-  def header1_downcase
-    header1.map { |cell| cell ? cell.downcase : nil }
-  end
-
   def split_offset
     start_column_index = header1_downcase.index("start")
     start_column_index ? start_column_index + 1 : header1.size
@@ -327,6 +345,10 @@ class Importer
     unit_array = %w[miles meters km kilometers]
     header2[0].downcase.include?("distance") &&
         (header2[1].blank? || unit_array.include?(header2[1])) ? 3 : 2
+  end
+
+  def header1_downcase
+    header1.map { |cell| cell ? cell.downcase : nil }
   end
 
   def split_title_array

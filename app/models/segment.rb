@@ -1,20 +1,22 @@
 class Segment
-  attr_accessor :begin_split, :end_split
+  attr_accessor :begin_split, :end_split, :begin_bitkey_hash, :end_bitkey_hash
   delegate :course, to: :begin_split
   delegate :events, :earliest_event_date, :latest_event_date, to: :end_split
 
-# Takes one or more splits or split_ids, uses first and last element if > 2 elements
+# Requires two bitkey hashes as an array. Uses corresponding splits
+# if provided; otherwise finds corresponding splits in the database
 
-  def initialize(*splits)
-    splits = splits.flatten
-    @begin_split = splits[0].is_a?(Integer) ? Split.find(splits[0]) : splits[0]
-    @end_split = splits[-1].is_a?(Integer) ? Split.find(splits[-1]) : splits[-1]
+  def initialize(bitkey_hashes, splits = [])
+    @begin_bitkey_hash = bitkey_hashes.first
+    @end_bitkey_hash = bitkey_hashes.second
+    @begin_split = splits.first.present? ? splits.first : Split.find(@begin_bitkey_hash.keys.first)
+    @end_split = splits.second.present? ? splits.second : Split.find(@end_bitkey_hash.keys.first)
     raise 'Segment splits must be on same course' if @begin_split.course_id != @end_split.course_id
     raise 'Segment splits are out of order' if @begin_split.course_index > @end_split.course_index
   end
 
   def ==(other)
-    (begin_split == other.begin_split) && (end_split == other.end_split)
+    (begin_bitkey_hash == other.begin_bitkey_hash) && (end_bitkey_hash == other.end_bitkey_hash)
   end
 
   def eql?(other)
@@ -22,7 +24,7 @@ class Segment
   end
 
   def hash
-    [begin_split, end_split].hash
+    [begin_bitkey_hash, end_bitkey_hash].hash
   end
 
   def name
@@ -36,14 +38,14 @@ class Segment
   end
 
   def effort_time(effort)
-    within_split? ? effort.time_in_aid(begin_split) : time_between_splits(effort)
+    within_split? ? effort.time_in_aid(begin_split) : time_between_sub_splits(effort)
   end
 
-  def time_between_splits(effort)
+  def time_between_sub_splits(effort)
     return 0 if end_split.start?
     times = effort.split_times.where(split_id: split_ids).index_by(&:bitkey_hash)
-    end_split_time = times[end_split.sub_split_bitkey_hashes.first]
-    begin_split_time = times[begin_split.sub_split_bitkey_hashes.last]
+    end_split_time = times[end_bitkey_hash]
+    begin_split_time = times[begin_bitkey_hash]
     (end_split_time && begin_split_time) ? (end_split_time.time_from_start - begin_split_time.time_from_start) : nil
   end
 

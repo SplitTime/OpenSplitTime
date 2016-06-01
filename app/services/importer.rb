@@ -172,8 +172,8 @@ class Importer
     SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
       (0...sub_split_bitkey_hashes.count).each do |i|
         bitkey_hash = sub_split_bitkey_hashes[i]
-        split_id = bitkey_hash.keys
-        sub_split_bitkey = bitkey_hash.values
+        split_id = bitkey_hash.keys.first
+        sub_split_bitkey = bitkey_hash.values.first
         working_time = row_time_data[i]
 
         # If this is the first (start) column, set start_offset

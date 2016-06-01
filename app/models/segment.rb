@@ -84,6 +84,14 @@ class Segment
     [begin_split.id, end_split.id]
   end
 
+  def begin_bitkey
+    begin_bitkey_hash.values.flatten
+  end
+
+  def end_bitkey
+    end_bitkey_hash.values.flatten
+  end
+
   def times
     SegmentCalculations.new(self).times
   end

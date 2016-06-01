@@ -48,7 +48,12 @@ class CoursesController < ApplicationController
 
   def destroy
     authorize @course
-    @course.destroy
+    if @course.events.present?
+      flash[:danger] = 'Course cannot be deleted if events are present on the course. Delete the related events individually and then delete the course.'
+    else
+      @course.destroy
+      flash[:success] = 'Course deleted.'
+    end
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || courses_path

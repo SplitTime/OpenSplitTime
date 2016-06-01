@@ -256,7 +256,7 @@ RSpec.describe Effort, type: :model do
         @segment4 = Segment.new(@split2.bitkey_hash_out, @split4.bitkey_hash_in)
         @segment5 = Segment.new(@split4.bitkey_hash_out, @split6.bitkey_hash_in)
         @segment6 = Segment.new(@split1.bitkey_hash_in, @split2.bitkey_hash_out)
-        @segment6 = Segment.new(@split1.bitkey_hash_in, @split4.bitkey_hash_out)
+        @segment7 = Segment.new(@split1.bitkey_hash_in, @split4.bitkey_hash_out)
 
         @calcs1 = SegmentCalculations.new(@segment1)
         @calcs2 = SegmentCalculations.new(@segment2)

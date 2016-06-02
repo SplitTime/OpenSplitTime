@@ -63,17 +63,44 @@ module ApplicationHelper
   alias_method :e, :elevation_to_preferred
 
   def preferred_distance_unit(param = 'plural')
-    plural = param == 'plural' ? true : false
     unless current_user
-      return plural ? 'miles' : 'mile'
+      return case param
+               when 'short'
+                 'mi'
+               when 'singular'
+                 'mile'
+               else
+                 'miles'
+             end
     end
     case current_user.pref_distance_unit
       when 'miles'
-        plural ? 'miles' : 'mile'
+        case param
+          when 'short'
+            'mi'
+          when 'singular'
+            'mile'
+          else
+            'miles'
+        end
       when 'kilometers'
-        plural ? 'kilometers' : 'kilometer'
+        case param
+          when 'short'
+            'km'
+          when 'singular'
+            'kilometer'
+          else
+            'kilometers'
+        end
       else
-        plural ? 'meters' : 'meter'
+        case param
+          when 'short'
+            'm'
+          when 'singular'
+            'meter'
+          else
+            'meters'
+        end
     end
   end
 

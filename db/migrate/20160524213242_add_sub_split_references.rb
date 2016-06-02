@@ -4,7 +4,6 @@ class AddSubSplitReferences < ActiveRecord::Migration
     add_column :splits, :base_split_id, :integer
     add_reference :split_times, :sub_split, index: true
     add_column :split_times, :legacy_split_id, :integer # For safety in migrating to new schema
-    add_foreign_key :split_times, :sub_splits, primary_key: :bitkey
 
     # For 'in' splits that have a corresponding 'out' split, set sub_split_mask to 65 (1000001)
 

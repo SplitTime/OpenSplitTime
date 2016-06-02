@@ -22,7 +22,7 @@ class EffortShowView
     splits.each do |split|
       split_row = SplitRow.new(split, related_split_times(split), prior_time)
       split_rows << split_row
-      prior_time = split_row.times_from_start.last if split_row.times_from_start.compact.present?
+      prior_time = split_row.times_from_start.compact.last if split_row.times_from_start.compact.present?
     end
   end
 

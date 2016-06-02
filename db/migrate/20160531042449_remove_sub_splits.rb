@@ -1,7 +1,6 @@
 class RemoveSubSplits < ActiveRecord::Migration
 
   def self.up
-    remove_foreign_key :split_times, :sub_split
     drop_table :sub_splits
     rename_column :split_times, :sub_split_id, :sub_split_key
   end

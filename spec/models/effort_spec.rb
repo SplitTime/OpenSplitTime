@@ -163,8 +163,8 @@ RSpec.describe Effort, type: :model do
     context 'insufficient historical data' do
 
       it 'should determine expected time based on most recent time from start and segment mileage/vertical' do
-        expect(@effort1.expected_time_from_start(@split2.sub_split_bitkey_hashes.first)).to eq((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))
-        expect(@effort1.expected_time_from_start(@split4.sub_split_bitkey_hashes.first)).to eq(((15000 - 6000) * DISTANCE_FACTOR) + ((500 - 500) * VERT_GAIN_FACTOR))
+        expect(@effort1.expected_time_from_start(@split2.bitkey_hash_in)).to eq((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))
+        expect(@effort1.expected_time_from_start(@split4.bitkey_hash_in)).to eq(4100 + (((15000 - 6000) * DISTANCE_FACTOR) + ((500 - 500) * VERT_GAIN_FACTOR)) * (4100 / ((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))))
       end
 
     end

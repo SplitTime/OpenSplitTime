@@ -25,7 +25,7 @@ class Course < ActiveRecord::Base
   def relevant_efforts(target_time, max_events = 5, min_efforts = 20)
     relevant_events = events.recent(max_events)
     return Effort.none if relevant_events.count < 1
-    event_efforts = Effort.where(event: relevant_events)
+    event_efforts = Effort.valid_status.where(event: relevant_events)
     5.step(25, 5) do |i|
       scope_result = event_efforts.within_time_range(target_time * (1-(i/100.0)), target_time * (1+(i/100.0)))
       return scope_result if scope_result.count >= min_efforts

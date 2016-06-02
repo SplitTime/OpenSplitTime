@@ -19,6 +19,7 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
+  scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
                                          .joins(:split_times => :split).where(splits: {kind: 1})
                                          .order('split_times.time_from_start') }

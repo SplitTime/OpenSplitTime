@@ -41,7 +41,7 @@ class PlanDisplay
     ((h * 60 * 60) + (m * 60))
   end
 
-  def create_plan_split_times
+  def create_plan_split_times # Temporary split_time objects to assist in constructing the view
     plan_times = calculate_plan_times
     result = []
     splits.each do |split|
@@ -53,12 +53,12 @@ class PlanDisplay
     result.index_by(&:bitkey_hash)
   end
 
-  def calculate_plan_times # Hash of {{split.id => key} => plan_time_from_start}
+  def calculate_plan_times # Hash of {{split.id => bitkey} => plan_time_from_start}
     average_time_hash = {}
     splits.each do |split|
-      split.sub_split_bitkeys.each do |key|
-        sub_split_average = split.average_time(key, relevant_efforts)
-        average_time_hash[{split.id => key}] = sub_split_average
+      split.sub_split_bitkeys.each do |bitkey|
+        sub_split_average = split.average_time(bitkey, relevant_efforts)
+        average_time_hash[{split.id => bitkey}] = sub_split_average
       end
     end
     normalize_time_data(average_time_hash, expected_time)

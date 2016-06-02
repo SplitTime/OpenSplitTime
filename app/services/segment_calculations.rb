@@ -24,10 +24,6 @@ class SegmentCalculations
     [low_bad, low_q, high_q, high_bad]
   end
 
-  def stats
-    "normalized mean: #{mean}, normalized std: #{std}"
-  end
-
   private
 
   def calculate_times(begin_hash, end_hash)

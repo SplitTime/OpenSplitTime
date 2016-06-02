@@ -40,8 +40,4 @@ class SegmentCalculationsCache
     fetch_calculations(segment).std
   end
 
-  def stats(segment)
-    fetch_calculations(segment).stats
-  end
-
 end

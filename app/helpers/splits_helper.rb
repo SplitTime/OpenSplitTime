@@ -5,6 +5,7 @@ module SplitsHelper
       @event = Event.find(params[:event_id])
       @course = @event.course
     else
+      @event = nil
       @course = Course.find(params[:course_id]) if params[:course_id]
     end
   end

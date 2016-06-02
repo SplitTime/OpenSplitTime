@@ -47,6 +47,7 @@
                       <td>
                         <%= builder.text_field :elapsed_time, class: 'form-control', placeholder: 'hh:mm:ss' %>
                         <%= builder.hidden_field :split_id, {value: split.id} %>
+                        <%= builder.hidden_field :sub_split_bitkey, {value: bitkey} %>
                         <%= builder.hidden_field :effort_id, {value: @effort.id} %>
                       </td>
                   <% end %>

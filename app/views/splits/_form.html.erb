@@ -84,13 +84,21 @@
           <div class="col-sm-offset-2 col-sm-10">
             <% if @event.nil? %>
                 <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
-          <% else %>
+            <% else %>
                 <%= f.button(@split.new_record? ? "Create Split" : "Update Split", name: "event_id", value: @event.id, class: 'btn btn-primary btn-large') %>
             <% end %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', split_path(@split) %> ]
+          <% if @split.id? %>
+              [ <%= link_to 'Cancel', split_path(@split) %> ]
+          <% elsif @event %>
+              [ <%= link_to 'Cancel', event_path(@event) %> ]
+          <% elsif @course %>
+              [ <%= link_to 'Cancel', course_path(@course) %> ]
+          <% else %>
+              [ <%= link_to 'Cancel', courses_path %> ]
+          <% end %>
         </div>
     <% end %>
   </div>

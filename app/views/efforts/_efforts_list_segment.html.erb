@@ -20,7 +20,7 @@
         <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
         <td><%= effort_row.bio_historic %></td>
         <td><%= effort_row.state_and_country %></td>
-        <td><%= effort_row.start_time.year %></td>
+        <td><%= effort_row.year %></td>
         <td class="text-right"><%= time_format_hhmm(effort_row.segment_time) %></td>
       </tr>
   <% end %>

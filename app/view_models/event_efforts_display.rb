@@ -12,7 +12,7 @@ class EventEffortsDisplay
 
   def initialize(event, params = {})
     @event = event
-    @event_final_split_id = event.finish_split.id
+    @event_final_split_id = event.finish_split.id if event.finish_split
     get_efforts(params)
     @effort_rows = []
     create_effort_rows

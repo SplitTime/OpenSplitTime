@@ -44,12 +44,6 @@ Rails.application.routes.draw do
     member { post :create_participants }
     member { get :stage}
     member { get :spread}
-    member { get :live_entry}
-    member { get :live_entry_ajax_get_event_data}
-    member { get :live_entry_ajax_get_effort}
-    member { get :live_entry_ajax_get_time_from}
-    member { get :live_entry_ajax_get_time_spent}
-    member { get :live_entry_ajax_set_split_times}
   end
   resources :splits do
     member { get :assign_location }
@@ -82,6 +76,16 @@ Rails.application.routes.draw do
   namespace :admin do
     root 'dashboard#dashboard'
     put 'set_effort_ages', to: 'dashboard#set_effort_ages'
+  end
+
+  namespace :live do
+    get 'live_entry/:id', to: 'live_entry#show'
+    get 'live_entry/:id/get_event_data', to: 'live_entry#get_event_data'
+    get 'live_entry/:id/get_effort', to: 'live_entry#get_effort'
+    get 'live_entry/:id/get_time_from_last', to: 'live_entry#get_time_from_last'
+    get 'live_entry/:id/get_time_spent', to: 'live_entry#get_time_spent'
+    get 'live_entry/:id/set_split_times', to: 'live_entry#set_split_times'
+    get 'control_panel/:id', to: 'control_panel#show'
   end
 
 end

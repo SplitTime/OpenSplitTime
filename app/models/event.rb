@@ -116,10 +116,6 @@ class Event < ActiveRecord::Base
     result
   end
 
-  def split_live_data
-    ordered_splits.pluck_to_hash(:id, :base_name, :distance_from_start)
-  end
-
   def sub_split_bitkey_hashes
     ordered_splits.map(&:sub_split_bitkey_hashes).flatten
   end

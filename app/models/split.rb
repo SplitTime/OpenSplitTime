@@ -76,9 +76,13 @@ class Split < ActiveRecord::Base
     split_times.where(sub_split_bitkey: sub_split_bitkey, effort: relevant_efforts).pluck(:time_from_start).mean
   end
 
-  def name
-    extensions = name_extensions.count > 1 ? name_extensions.join(' / ') : nil
-    [base_name, extensions].compact.join(' ')
+  def name(bitkey = nil)
+    if bitkey
+      name_extensions.count > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name
+    else
+      extensions = name_extensions.count > 1 ? name_extensions.join(' / ') : nil
+      [base_name, extensions].compact.join(' ')
+    end
   end
 
   def name_extensions

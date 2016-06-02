@@ -111,6 +111,10 @@ class Effort < ActiveRecord::Base
     expected_time_from_start(due_next_where, cache)
   end
 
+  def expected_day_and_time(bitkey_hash, cache = nil)
+    start_time + expected_time_from_start(bitkey_hash, cache)
+  end
+
   def expected_time_from_start(bitkey_hash, cache = nil)
     return nil if dropped?
     split_times = ordered_split_times.to_a
@@ -181,7 +185,7 @@ class Effort < ActiveRecord::Base
                            .map.with_index { |x, i| x.to_i.send(units[i]) }
                            .reduce(:+).to_i
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
-    working_datetime + ((((working_datetime - due_next_when) * -1) / 1.day).round(0) * 1.day)
+    working_datetime + ((((working_datetime - expected_day_and_time({split.id=>1})) * -1) / 1.day).round(0) * 1.day)
   end
 
   def ordered_splits

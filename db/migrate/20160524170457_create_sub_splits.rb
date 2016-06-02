@@ -9,10 +9,6 @@ class CreateSubSplits < ActiveRecord::Migration
     add_index :sub_splits, :bitkey, unique: true
     add_index :sub_splits, :kind, unique: true
 
-    SubSplit.create(bitkey: 1, kind: 'In')
-    # 64.to_s(2) = 1000000; this allows room for new sub_splits that would sort between 'in' and 'out'
-    SubSplit.create(bitkey: 64, kind: 'Out')
-
   end
 
   def self.down

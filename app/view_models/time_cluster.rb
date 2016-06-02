@@ -8,7 +8,7 @@ class TimeCluster
 
   def time_in_aid
     return nil unless times_from_start.compact.count > 1
-    times_from_start.last - times_from_start.first
+    times_from_start.compact.last - times_from_start.compact.first
   end
 
   def times_from_start

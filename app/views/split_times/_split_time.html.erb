@@ -37,7 +37,7 @@
           <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
       <% end %>
       <% unless split_row.start? %>
-          <% if current_user && current_user.authorized_to_edit?(@effort) %>
+          <% if current_user && current_user.authorized_to_edit?(@effort) && split_row.times_from_start.compact.count > 0 %>
               <td class="text-right">
                 <% if split_row.data_status == 'confirmed' %>
                     <%= link_to 'Unconfirm',
@@ -53,7 +53,7 @@
                 <%= link_to 'Delete',
                             delete_split_effort_path(@effort, split_id: split_row.split_id),
                             method: :delete,
-                            data: {confirm: "This will delete #{pluralize(split_row.times_from_start.count, 'split time')}. OK to proceed?"},
+                            data: {confirm: "This will delete #{pluralize(split_row.times_from_start.compact.count, 'split time')}. OK to proceed?"},
                             class: 'btn btn-xs btn-danger' %>
               </td>
           <% end %>

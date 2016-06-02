@@ -20,7 +20,7 @@ class SplitRow
 
   def segment_time
     return nil unless (prior_time && (times_from_start.compact.count > 0))
-    times_from_start.first - prior_time
+    times_from_start.compact.first - prior_time
   end
 
   def data_status

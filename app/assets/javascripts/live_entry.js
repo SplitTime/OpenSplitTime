@@ -165,10 +165,11 @@
              */
             buildSplitSelect: function () {
 
-                // Populate select list with actual splits
+                // Populate select list with event splits
+                // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
                 for (var i = 0; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].base_name + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
+                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].base_name + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
                 }
                 $('#split-select').html(splitItems);
             },
@@ -239,6 +240,8 @@
                         return false;
                     }
                 });
+
+                // TODO: Would like to have shift-tab functionality for moving to previous field
 
                 $('#js-time-in').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
@@ -633,7 +636,7 @@
                     }
                     setTimeout(function () {
                         $('#js-split-slider').addClass('animate');
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId);
+                        liveEntry.splitSlider.changeSplitSlider(selectedItemId); // TODO: set liveEntry.splitId here??
                         setTimeout(function () {
                             $('#js-split-slider').removeClass('animate');
                         }, 600);

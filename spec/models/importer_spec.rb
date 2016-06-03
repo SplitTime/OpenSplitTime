@@ -1,17 +1,17 @@
 require 'rails_helper'
 include ActionDispatch::TestProcess
 
-RSpec.describe Importer do
+RSpec.describe SplitImporter do
 
   describe 'initialization' do
     before do
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
       @file = fixture_file_upload('spec/fixtures/files/baddata2015test.xlsx', extension: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-      @importer = Importer.new(@file, @event, 1)
+      @importer = SplitImporter.new(@file, @event, 1)
     end
 
-    it 'should create an instance of Importer' do
+    it 'should create an instance of SplitImporter' do
       expect(@importer).to exist
     end
 

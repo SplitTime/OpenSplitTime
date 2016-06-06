@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-xs-6">
+    <h2>OST Live Control Panel</h2>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <h4>Overview</h4><br/>
+    <%= "Started: #{@control_panel.efforts_started_count}" %><br/>
+    <%= "Dropped: #{@control_panel.efforts_dropped_count}" %><br/>
+    <%= "Finished: #{@control_panel.efforts_finished_count}" %><br/>
+    <%= "On course: #{@control_panel.efforts_in_progress_count}" %><br/>
+    <%= "Overdue: #{@control_panel.efforts_overdue_count}" %><br/>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <h4>Overdue List</h4><br/>
+    <table class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th>Bib</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Overdue By</th>
+        <th>Due Next Where</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <% @control_panel.past_due_progress_rows.each do |row| %>
+          <tr>
+            <td><%= row.bib_number %></td>
+            <td><%= row.full_name %></td>
+            <td><%= row.bio_historic %></td>
+            <td><%= time_format_hhmm(row.over_under_due) %></td>
+            <td><%= row.due_next_split_name %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

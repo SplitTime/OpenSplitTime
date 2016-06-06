@@ -3,7 +3,8 @@ class Live::ControlPanelController < Live::BaseController
   before_action :set_event
 
   def show
-    authorize @event
+    authorize :control_panel, :show?
+    @control_panel = ControlPanelDisplay.new(@event)
   end
 
   private

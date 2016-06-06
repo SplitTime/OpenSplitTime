@@ -1,4 +1,4 @@
-class SegmentCalculationsCache
+class EventSegmentCalcs
   attr_reader :time_hashes
 
   def initialize(event, hash = {})

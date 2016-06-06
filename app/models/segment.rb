@@ -9,10 +9,9 @@ class Segment
   def initialize(begin_bitkey_hash, end_bitkey_hash, begin_split = nil, end_split = nil)
     @begin_bitkey_hash = begin_bitkey_hash
     @end_bitkey_hash = end_bitkey_hash
-    @begin_split = begin_split ? begin_split : Split.find(@begin_bitkey_hash.keys.first)
-    @end_split = end_split ? end_split : Split.find(@end_bitkey_hash.keys.first)
-    raise 'Segment splits must be on same course' if @begin_split.course_id != @end_split.course_id
-    raise 'Segment splits are out of order' if @begin_split.course_index > @end_split.course_index
+    @begin_split = begin_split || Split.find(@begin_bitkey_hash.keys.first)
+    @end_split = end_split || Split.find(@end_bitkey_hash.keys.first)
+    validate_segment
   end
 
   def ==(other)
@@ -85,11 +84,11 @@ class Segment
   end
 
   def begin_bitkey
-    begin_bitkey_hash.values.flatten
+    begin_bitkey_hash.values.first
   end
 
   def end_bitkey
-    end_bitkey_hash.values.flatten
+    end_bitkey_hash.values.first
   end
 
   def times
@@ -103,5 +102,16 @@ class Segment
   private
 
   attr_accessor :course_ordered_split_ids
+
+  def validate_segment
+    raise 'Segment splits must be on same course' if begin_split.course_id != end_split.course_id
+    if begin_split.distance_from_start == end_split.distance_from_start
+      raise 'Segment sub_splits are out of order' if begin_bitkey > end_bitkey
+    else
+      raise 'Segment splits are out of order' if begin_split.distance_from_start > end_split.distance_from_start
+    end
+    raise 'Segment begin bitkey_hash does not reconcile with begin split' if begin_bitkey_hash.keys.first != begin_id
+    raise 'Segment end bitkey_hash does not reconcile with end split' if end_bitkey_hash.keys.first != end_id
+  end
 
 end

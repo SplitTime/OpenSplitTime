@@ -3,9 +3,9 @@ class EffortProgressRow
 
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, to: :effort
 
-  def initialize(effort, cache, split_name_hash, bitkey_hashes, event_start_time)
+  def initialize(effort, event_segment_calcs, split_name_hash, bitkey_hashes, event_start_time)
     @effort = effort
-    @cache = cache
+    @event_segment_calcs = event_segment_calcs
     @split_name_hash = split_name_hash
     @bitkey_hashes = bitkey_hashes
     @bitkey_hash = {effort.final_split_id => effort.sub_split_bitkey}
@@ -27,7 +27,7 @@ class EffortProgressRow
   end
 
   def due_next_time_from_start
-    effort.expected_time_from_start(due_next_bitkey_hash, cache)
+    effort.expected_time_from_start(due_next_bitkey_hash, event_segment_calcs)
   end
 
   def due_next_split_id
@@ -38,6 +38,6 @@ class EffortProgressRow
     bitkey_hashes[bitkey_hashes.index(bitkey_hash) + 1]
   end
 
-  attr_reader :effort, :cache, :start_time, :bitkey_hashes, :bitkey_hash, :split_name_hash
+  attr_reader :effort, :event_segment_calcs, :start_time, :bitkey_hashes, :bitkey_hash, :split_name_hash
 
 end

@@ -12,7 +12,7 @@ class ControlPanelDisplay
     @ordered_splits = event.ordered_splits.to_a
     @split_name_hash = Hash[@ordered_splits.map { |split| [split.id, split.base_name] }]
     @bitkey_hashes = @ordered_splits.map(&:sub_split_bitkey_hashes).flatten
-    @cache = SegmentCalculationsCache.new(event)
+    @event_segment_calcs = EventSegmentCalcs.new(event)
     @efforts = event.efforts.sorted_with_finish_status
     @progress_rows = []
     create_progress_rows
@@ -66,13 +66,13 @@ class ControlPanelDisplay
     progress_rows.select { |row| row.over_under_due > 0 }.sort_by(&:over_under_due).reverse
   end
 
-  private
+  # private
 
-  attr_accessor :efforts, :ordered_splits, :split_name_hash, :bitkey_hashes, :cache
+  attr_accessor :efforts, :ordered_splits, :split_name_hash, :bitkey_hashes, :event_segment_calcs
 
   def create_progress_rows
     efforts_in_progress.each do |effort|
-      progress_row = EffortProgressRow.new(effort, cache, split_name_hash, bitkey_hashes, event_start_time)
+      progress_row = EffortProgressRow.new(effort, event_segment_calcs, split_name_hash, bitkey_hashes, event_start_time)
       progress_rows << progress_row
     end
   end

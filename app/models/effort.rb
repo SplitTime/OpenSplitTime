@@ -98,23 +98,23 @@ class Effort < ActiveRecord::Base
     event.next_bitkey_hash(last_bitkey_hash)
   end
 
-  def overdue_by(cache = nil)
-    Time.now - due_next_when(cache)
+  def overdue_by(event_segment_calcs = nil)
+    Time.now - due_next_when(event_segment_calcs)
   end
 
-  def due_next_when(cache = nil)
-    event_start_time + start_offset + due_next_time_from_start(cache)
+  def due_next_when(event_segment_calcs = nil)
+    event_start_time + start_offset + due_next_time_from_start(event_segment_calcs)
   end
 
-  def due_next_time_from_start(cache = nil)
-    expected_time_from_start(due_next_where, cache)
+  def due_next_time_from_start(event_segment_calcs = nil)
+    expected_time_from_start(due_next_where, event_segment_calcs)
   end
 
-  def expected_day_and_time(bitkey_hash, cache = nil)
-    start_time + expected_time_from_start(bitkey_hash, cache)
+  def expected_day_and_time(bitkey_hash, event_segment_calcs = nil)
+    start_time + expected_time_from_start(bitkey_hash, event_segment_calcs)
   end
 
-  def expected_time_from_start(bitkey_hash, cache = nil)
+  def expected_time_from_start(bitkey_hash, event_segment_calcs = nil)
     return nil if dropped?
     split_times = ordered_split_times.to_a
     start_split_time = split_times.first
@@ -124,11 +124,11 @@ class Effort < ActiveRecord::Base
     prior_split_time = subject_split_time ?
         split_times[split_times.index(subject_split_time) - 1] :
         split_times.last
-    cache ||= SegmentCalculationsCache.new(event)
+    event_segment_calcs ||= EventSegmentCalcs.new(event)
     completed_segment = Segment.new(start_bitkey_hash, prior_split_time.bitkey_hash)
     subject_segment = Segment.new(prior_split_time.bitkey_hash, bitkey_hash)
-    completed_segment_calcs = cache.fetch_calculations(completed_segment)
-    subject_segment_calcs = cache.fetch_calculations(subject_segment)
+    completed_segment_calcs = event_segment_calcs.fetch_calculations(completed_segment)
+    subject_segment_calcs = event_segment_calcs.fetch_calculations(subject_segment)
     pace_baseline = completed_segment_calcs.mean ?
         completed_segment_calcs.mean :
         completed_segment.typical_time_by_terrain

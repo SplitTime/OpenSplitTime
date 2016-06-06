@@ -108,9 +108,9 @@ class Event < ActiveRecord::Base
   def efforts_overdue # Returns an array of efforts with overdue_amount attribute
     result = []
     current_tfs = Time.now - start_time
-    cache = SegmentCalculationsCache.new(self)
+    event_segment_calcs = EventSegmentCalcs.new(self)
     efforts_in_progress.each do |effort|
-      effort.overdue_amount = (current_tfs + effort.start_offset) - effort.due_next_time_from_start(cache)
+      effort.overdue_amount = (current_tfs + effort.start_offset) - effort.due_next_time_from_start(event_segment_calcs)
       result << effort if effort.overdue_amount > 0
     end
     result

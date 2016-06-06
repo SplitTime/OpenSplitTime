@@ -34,7 +34,7 @@ class EffortImporter
     end
     BulkUpdateService.bulk_update_start_offset(start_offset_hash)
     BulkUpdateService.bulk_update_dropped(final_split_hash)
-    # DataStatusService.set_data_status(event.efforts)
+    DataStatusService.set_data_status(event.efforts)
     self.auto_matched_count, self.participants_created_count =
         EventReconcileService.auto_reconcile_efforts(event)
     create_effort_import_report

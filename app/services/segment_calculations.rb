@@ -12,11 +12,11 @@ class SegmentCalculations
   def status(value)
     return nil unless value
     if (value < low_bad) | (value > high_bad)
-      :bad
+      'bad'
     elsif (value < low_q) | (value > high_q)
-      :questionable
+      'questionable'
     else
-      :good
+      'good'
     end
   end
 

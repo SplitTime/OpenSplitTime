@@ -85,7 +85,7 @@ Rails.application.routes.draw do
     get 'live_entry/:id/get_time_from_last', to: 'live_entry#get_time_from_last'
     get 'live_entry/:id/get_time_spent', to: 'live_entry#get_time_spent'
     get 'live_entry/:id/set_split_times', to: 'live_entry#set_split_times'
-    get 'control_panel/:id', to: 'control_panel#show'
+    get 'progress_report/:id', to: 'progress_report#show'
   end
 
 end

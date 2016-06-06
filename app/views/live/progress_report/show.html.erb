@@ -1,23 +1,22 @@
 <div class="row">
   <div class="col-xs-6">
-    <h2>OST Live Control Panel</h2>
+    <h2><%= @progress_display.name %></h2>
+    <h3><%= "Progress report as of" %><br/><%= "#{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}" %></h3>
   </div>
 </div>
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <h4>Overview</h4><br/>
-    <%= "Started: #{@control_panel.efforts_started_count}" %><br/>
-    <%= "Dropped: #{@control_panel.efforts_dropped_count}" %><br/>
-    <%= "Finished: #{@control_panel.efforts_finished_count}" %><br/>
-    <%= "On course: #{@control_panel.efforts_in_progress_count}" %><br/>
-    <%= "Overdue: #{@control_panel.efforts_overdue_count}" %><br/>
+    <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>
+    <%= "Finished: #{@progress_display.efforts_finished_count}" %><br/>
+    <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
+    <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
   </div>
 </div>
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <h4>Overdue List</h4><br/>
+    <h4><%= "Of the #{@progress_display.efforts_in_progress_count} efforts in progress, #{@progress_display.efforts_past_due_count} are overdue by more than #{@progress_display.past_due_threshold} minutes" %></h4><br/>
     <table class="table table-condensed table-striped">
       <thead>
       <tr>
@@ -30,7 +29,7 @@
       </tr>
       </thead>
       <tbody>
-      <% @control_panel.past_due_progress_rows.each do |row| %>
+      <% @progress_display.past_due_progress_rows.each do |row| %>
           <tr>
             <td><%= row.bib_number %></td>
             <td><%= link_to row.full_name, effort_path(row.id) %></td>

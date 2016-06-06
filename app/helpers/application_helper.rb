@@ -35,7 +35,7 @@ module ApplicationHelper
   end
 
   def day_time_format(datetime)
-    datetime.strftime("%a %-l:%M%p")
+    datetime ? datetime.strftime("%a %-l:%M%p") : '--:--:--'
   end
 
   def latlon_format(latitude, longitude)

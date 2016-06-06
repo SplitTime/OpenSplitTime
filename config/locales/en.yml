@@ -34,3 +34,4 @@ en:
   time:
     formats:
       full_with_weekday: "%A, %B %-d, %Y"
+      military: "%H:%M"

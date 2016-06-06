@@ -5,9 +5,10 @@
   <tr>
     <th>Split</th>
     <th class="text-right"><%= pdu('singular').titleize %></th>
-    <th class="text-right">Elapsed Time</th>
-    <th class="text-right">Segment Time</th>
-    <th class="text-right">Time In Aid</th>
+    <th class="text-center">Time of Day</th>
+    <th class="text-center">Elapsed Time</th>
+    <th class="text-center">Segment Time</th>
+    <th class="text-right">In Aid</th>
     <% if current_user && current_user.admin? %>
         <th class="text-right">Actions</th>
     <% end %>
@@ -24,16 +25,17 @@
       <% end %>
       <% if split_row.finish? %>
           <td><strong><%= split_row.name %></strong></td>
-          <td class="text-right"><strong><%= d(split_row.distance_from_start) %></strong>
-          </td>
-          <td class="text-right"><strong><%= composite_time(split_row) %></strong></td>
-          <td class="text-right"><strong><%= time_format_hhmmss(split_row.segment_time) %></strong></td>
+          <td class="text-right"><strong><%= d(split_row.distance_from_start) %></strong></td>
+          <td class="text-center"><strong><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></strong></td>
+          <td class="text-center"><strong><%= composite_time(split_row) %></strong></td>
+          <td class="text-center"><strong><%= time_format_hhmmss(split_row.segment_time) %></strong></td>
           <td class="text-right"><strong><%= time_format_minutes(view_object.total_time_in_aid) %></strong></td>
       <% elsif split_row.intermediate? %>
           <td><%= split_row.name %></td>
           <td class="text-right"><%= d(split_row.distance_from_start) %></td>
-          <td class="text-right"><%= composite_time(split_row) %></td>
-          <td class="text-right"><%= time_format_hhmmss(split_row.segment_time) %></td>
+          <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>
+          <td class="text-center"><%= composite_time(split_row) %></td>
+          <td class="text-center"><%= time_format_hhmmss(split_row.segment_time) %></td>
           <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
       <% end %>
       <% unless split_row.start? %>

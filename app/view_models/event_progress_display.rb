@@ -1,7 +1,7 @@
-class ControlPanelDisplay
+class EventProgressDisplay
 
   attr_accessor
-  attr_reader :event, :progress_rows
+  attr_reader :event, :progress_rows, :past_due_threshold
   delegate :name, :start_time, :course, :race, :simple?, to: :event
 
   # initialize(event)
@@ -14,6 +14,7 @@ class ControlPanelDisplay
     @bitkey_hashes = @ordered_splits.map(&:sub_split_bitkey_hashes).flatten
     @event_segment_calcs = EventSegmentCalcs.new(event)
     @efforts = event.efforts.sorted_with_finish_status
+    @past_due_threshold = 60
     @progress_rows = []
     create_progress_rows
   end
@@ -50,7 +51,7 @@ class ControlPanelDisplay
     efforts_in_progress.count
   end
 
-  def efforts_overdue_count
+  def efforts_past_due_count
     past_due_progress_rows.count
   end
 
@@ -63,7 +64,7 @@ class ControlPanelDisplay
   end
 
   def past_due_progress_rows
-    progress_rows.select { |row| row.over_under_due > 0 }.sort_by(&:over_under_due).reverse
+    progress_rows.select { |row| row.over_under_due > past_due_threshold.minutes }.sort_by(&:over_under_due).reverse
   end
 
   # private

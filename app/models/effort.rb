@@ -185,7 +185,7 @@ class Effort < ActiveRecord::Base
                            .map.with_index { |x, i| x.to_i.send(units[i]) }
                            .reduce(:+).to_i
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
-    working_datetime + ((((working_datetime - expected_day_and_time({split.id=>1})) * -1) / 1.day).round(0) * 1.day)
+    working_datetime + ((((working_datetime - expected_day_and_time({split.id => 1})) * -1) / 1.day).round(0) * 1.day)
   end
 
   def ordered_splits
@@ -256,7 +256,7 @@ class Effort < ActiveRecord::Base
   end
 
   def self.sorted_with_finish_status
-    raw_sort = select('DISTINCT ON(efforts.id) efforts.id, efforts.first_name, efforts.last_name, efforts.gender, efforts.bib_number, efforts.age, efforts.state_code, efforts.country_code, efforts.data_status, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start')
+    raw_sort = select('DISTINCT ON(efforts.id) efforts.id, efforts.first_name, efforts.last_name, efforts.gender, efforts.bib_number, efforts.age, efforts.state_code, efforts.country_code, efforts.data_status, efforts.dropped_split_id, efforts.start_offset, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start, split_times.sub_split_bitkey')
                    .joins(:split_times => :split)
                    .order('efforts.id, splits.distance_from_start DESC')
     raw_sort.sort_by { |row| [-row.distance_from_start, row.time_from_start] }

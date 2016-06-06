@@ -3,7 +3,7 @@ class EventSegmentCalcs
 
   def initialize(event, hash = {})
     @segment_calcs = hash
-    @time_hashes = event.time_hashes_all_similar_events
+    @time_hashes = event.time_hashes_similar_events
   end
 
   def []=(k, v)

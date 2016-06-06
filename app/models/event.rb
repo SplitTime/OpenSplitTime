@@ -35,10 +35,14 @@ class Event < ActiveRecord::Base
     splits << course.splits
   end
 
-  def time_hashes_all_similar_events
+  def time_hashes_similar_events
     result_hash = {}
-    event_split_ids = ordered_split_ids
-    complete_hash = SplitTime.where(split_id: event_split_ids).group_by(&:bitkey_hash)
+    split_ids = ordered_split_ids
+    effort_ids = Effort.includes(:event).where(dropped_split_id: nil, events: {course_id: course_id}).order('events.start_time DESC').limit(200).pluck(:id)
+    complete_hash = SplitTime.valid_status
+                        .select(:split_id, :sub_split_bitkey, :effort_id, :time_from_start)
+                        .where(split_id: split_ids, effort_id: effort_ids)
+                        .group_by(&:bitkey_hash)
     complete_hash.keys.each do |bitkey_hash|
       result_hash[bitkey_hash] = Hash[complete_hash[bitkey_hash].map { |split_time| [split_time.effort_id, split_time.time_from_start] }]
     end

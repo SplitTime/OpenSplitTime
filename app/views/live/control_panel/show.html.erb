@@ -33,7 +33,7 @@
       <% @control_panel.past_due_progress_rows.each do |row| %>
           <tr>
             <td><%= row.bib_number %></td>
-            <td><%= row.full_name %></td>
+            <td><%= link_to row.full_name, effort_path(row.id) %></td>
             <td><%= row.bio_historic %></td>
             <td><%= time_format_hhmm(row.over_under_due) %></td>
             <td><%= row.due_next_split_name %></td>

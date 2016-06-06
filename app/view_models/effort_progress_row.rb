@@ -1,7 +1,7 @@
 class EffortProgressRow
   include PersonalInfo
 
-  delegate :first_name, :last_name, :gender, :bib_number, :age, to: :effort
+  delegate :id, :first_name, :last_name, :gender, :bib_number, :age, to: :effort
 
   def initialize(effort, cache, split_name_hash, bitkey_hashes, event_start_time)
     @effort = effort

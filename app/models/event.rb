@@ -110,7 +110,7 @@ class Event < ActiveRecord::Base
     current_tfs = Time.now - start_time
     cache = SegmentCalculationsCache.new(self)
     efforts_in_progress.each do |effort|
-      effort.overdue_amount = effort.due_next_time_from_start(cache) - (current_tfs + effort.start_offset)
+      effort.overdue_amount = (current_tfs + effort.start_offset) - effort.due_next_time_from_start(cache)
       result << effort if effort.overdue_amount > 0
     end
     result

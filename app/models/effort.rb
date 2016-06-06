@@ -94,9 +94,8 @@ class Effort < ActiveRecord::Base
 
   def due_next_where
     return nil if dropped?
-    last_split = last_reported_split
-    return nil if last_split.finish?
-    event.next_split(last_split)
+    last_bitkey_hash = last_reported_bitkey_hash
+    event.next_bitkey_hash(last_bitkey_hash)
   end
 
   def overdue_by(cache = nil)
@@ -142,6 +141,11 @@ class Effort < ActiveRecord::Base
 
   def last_reported_split
     last_reported_split_time.split
+  end
+
+  def last_reported_bitkey_hash
+    st = last_reported_split_time
+    {st.split_id => st.sub_split_bitkey}
   end
 
   def last_reported_split_time

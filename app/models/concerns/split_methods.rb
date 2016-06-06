@@ -41,4 +41,10 @@ module SplitMethods
     splits.count < 3
   end
 
+  def next_bitkey_hash(bitkey_hash)
+    bitkey_hashes = sub_split_bitkey_hashes
+    return nil if bitkey_hash == bitkey_hashes.last
+    bitkey_hashes[bitkey_hashes.index(bitkey_hash) + 1]
+  end
+
 end

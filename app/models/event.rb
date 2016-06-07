@@ -94,32 +94,6 @@ class Event < ActiveRecord::Base
     combined_places(effort)[1]
   end
 
-  # Methods for monitoring efforts while event is live
-
-  def efforts_dropped
-    efforts.where.not(dropped_split_id: nil).pluck(:id)
-  end
-
-  def efforts_finished
-    efforts.sorted_by_finish_time.pluck(:id)
-  end
-
-  def efforts_in_progress
-    unfinished_effort_ids = efforts.pluck(:id) - efforts_finished
-    efforts.where(id: unfinished_effort_ids, dropped_split_id: nil)
-  end
-
-  def efforts_overdue # Returns an array of efforts with overdue_amount attribute
-    result = []
-    current_tfs = Time.now - start_time
-    event_segment_calcs = EventSegmentCalcs.new(self)
-    efforts_in_progress.each do |effort|
-      effort.overdue_amount = (current_tfs + effort.start_offset) - effort.due_next_time_from_start(event_segment_calcs)
-      result << effort if effort.overdue_amount > 0
-    end
-    result
-  end
-
   def sub_split_bitkey_hashes
     ordered_splits.map(&:sub_split_bitkey_hashes).flatten
   end

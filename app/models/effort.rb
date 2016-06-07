@@ -11,7 +11,7 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
-  attr_accessor :overdue_amount, :suggested_match, :segment_time
+  attr_accessor :start_time_attr, :over_under_due, :last_reported_split_time, :next_expected_split_time, :suggested_match, :segment_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
@@ -58,6 +58,10 @@ class Effort < ActiveRecord::Base
   end
 
   def start_time
+    start_time_attr || start_time_calculated
+  end
+
+  def start_time_calculated
     event_start_time + start_offset
   end
 
@@ -88,68 +92,6 @@ class Effort < ActiveRecord::Base
     split_time = finish_split_time
     return split_time.formatted_time_hhmmss if split_time
     "In progress"
-  end
-
-  # Methods for checking status during live event
-
-  def due_next_where
-    return nil if dropped?
-    last_bitkey_hash = last_reported_bitkey_hash
-    event.next_bitkey_hash(last_bitkey_hash)
-  end
-
-  def overdue_by(event_segment_calcs = nil)
-    Time.now - due_next_when(event_segment_calcs)
-  end
-
-  def due_next_when(event_segment_calcs = nil)
-    event_start_time + start_offset + due_next_time_from_start(event_segment_calcs)
-  end
-
-  def due_next_time_from_start(event_segment_calcs = nil)
-    expected_time_from_start(due_next_where, event_segment_calcs)
-  end
-
-  def expected_day_and_time(bitkey_hash, event_segment_calcs = nil)
-    start_time + expected_time_from_start(bitkey_hash, event_segment_calcs)
-  end
-
-  def expected_time_from_start(bitkey_hash, event_segment_calcs = nil)
-    return nil if dropped?
-    split_times = ordered_split_times.to_a
-    start_split_time = split_times.first
-    start_bitkey_hash = start_split_time.bitkey_hash
-    return 0 if bitkey_hash == start_bitkey_hash
-    subject_split_time = split_times.find { |split_time| split_time.bitkey_hash == bitkey_hash }
-    prior_split_time = subject_split_time ?
-        split_times[split_times.index(subject_split_time) - 1] :
-        split_times.last
-    event_segment_calcs ||= EventSegmentCalcs.new(event)
-    completed_segment = Segment.new(start_bitkey_hash, prior_split_time.bitkey_hash)
-    subject_segment = Segment.new(prior_split_time.bitkey_hash, bitkey_hash)
-    completed_segment_calcs = event_segment_calcs.fetch_calculations(completed_segment)
-    subject_segment_calcs = event_segment_calcs.fetch_calculations(subject_segment)
-    pace_baseline = completed_segment_calcs.mean ?
-        completed_segment_calcs.mean :
-        completed_segment.typical_time_by_terrain
-    pace_factor = pace_baseline == 0 ? 1 :
-        prior_split_time.time_from_start / pace_baseline
-    subject_segment_calcs.mean ?
-        (prior_split_time.time_from_start + (subject_segment_calcs.mean * pace_factor)) :
-        (prior_split_time.time_from_start + (subject_segment.typical_time_by_terrain * pace_factor))
-  end
-
-  def last_reported_split
-    last_reported_split_time.split
-  end
-
-  def last_reported_bitkey_hash
-    st = last_reported_split_time
-    {st.split_id => st.sub_split_bitkey}
-  end
-
-  def last_reported_split_time
-    ordered_split_times.last
   end
 
   def event_start_time
@@ -255,20 +197,11 @@ class Effort < ActiveRecord::Base
 
   # Sorting class methods
 
-  def self.sorted_ids_with_gender
-    sorted_with_finish_status.map { |row| [row.effort_id, row.gender] }
-  end
-
   def self.sorted_with_finish_status
     raw_sort = select('DISTINCT ON(efforts.id) efforts.id, efforts.first_name, efforts.last_name, efforts.gender, efforts.bib_number, efforts.age, efforts.state_code, efforts.country_code, efforts.data_status, efforts.dropped_split_id, efforts.start_offset, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start, split_times.sub_split_bitkey')
                    .joins(:split_times => :split)
                    .order('efforts.id, splits.distance_from_start DESC')
     raw_sort.sort_by { |row| [-row.distance_from_start, row.time_from_start] }
-  end
-
-  def self.efforts_from_ids(effort_ids)
-    efforts_by_id = Effort.find(effort_ids).index_by(&:id)
-    effort_ids.collect { |id| efforts_by_id[id] }
   end
 
   def set_dropped_split_id

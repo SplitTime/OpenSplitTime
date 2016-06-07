@@ -23,8 +23,9 @@
         <th>Bib</th>
         <th>Name</th>
         <th>Category</th>
-        <th>Overdue By</th>
-        <th>Due Next Where</th>
+        <th class="text-right">Overdue By</th>
+        <th class="text-center">Due Next Where</th>
+        <th class="text-right">Due Next When</th>
 
       </tr>
       </thead>
@@ -33,9 +34,10 @@
           <tr>
             <td><%= row.bib_number %></td>
             <td><%= link_to row.full_name, effort_path(row.id) %></td>
-            <td><%= row.bio_historic %></td>
-            <td><%= time_format_hhmm(row.over_under_due) %></td>
-            <td><%= row.due_next_split_name %></td>
+            <td class="text-nowrap"><%= row.bio_historic %></td>
+            <td class="text-right"><%= time_format_hhmm(row.over_under_due) %></td>
+            <td class="text-center"><%= row.due_next_split_name %></td>
+            <td class="text-right"><%= l(row.due_next_when, format: :day_and_military) %></td>
           </tr>
       <% end %>
       </tbody>

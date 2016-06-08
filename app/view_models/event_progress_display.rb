@@ -1,6 +1,5 @@
 class EventProgressDisplay
 
-  attr_accessor
   attr_reader :event, :progress_rows, :past_due_threshold
   delegate :name, :course, :race, :simple?, to: :event
 
@@ -61,7 +60,7 @@ class EventProgressDisplay
   attr_accessor :efforts, :ordered_splits, :event_split_times, :split_name_hash, :bitkey_hashes, :event_segment_calcs
 
   def set_effort_time_attributes
-    self.event_split_times = SplitTime.select(:id, :sub_split_bitkey, :split_id, :time_from_start, :data_status)
+    self.event_split_times = SplitTime.select(:sub_split_bitkey, :split_id, :time_from_start)
                                  .where(effort_id: efforts.map(&:id))
                                  .ordered
                                  .group_by(&:effort_id)

@@ -11,7 +11,7 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
-  attr_accessor :overdue_amount, :suggested_match
+  attr_accessor :start_time_attr, :over_under_due, :last_reported_split_time_attr, :next_expected_split_time, :suggested_match, :segment_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
@@ -19,27 +19,22 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
+  scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
                                          .joins(:split_times => :split).where(splits: {kind: 1})
                                          .order('split_times.time_from_start') }
-  scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
+  scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
+  scope :within_time_range, -> (low_time, high_time) { includes(:split_times => :split)
+                                                           .where(splits: {kind: 1},
+                                                                  split_times: {time_from_start: low_time..high_time}) }
+  scope :unreconciled, -> { where(participant_id: nil) }
 
   def self.attributes_for_import
     id = ['id']
     foreign_keys = Effort.column_names.find_all { |x| x.include?('_id') }
     stamps = Effort.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
     (column_names - (id + foreign_keys + stamps)).map &:to_sym
-  end
-
-  def reset_time_from_start
-    # If the starting split_time contains nonzero data, assume it means
-    # this effort began that amount of time earlier or later than the event's normal start time
-    return nil unless start_split_time
-    if start_split_time.time_from_start != 0
-      update(start_offset: start_split_time.time_from_start)
-      start_split_time.update(time_from_start: 0)
-    end
   end
 
   def reset_age_from_birthdate
@@ -63,6 +58,10 @@ class Effort < ActiveRecord::Base
   end
 
   def start_time
+    start_time_attr || start_time_calculated
+  end
+
+  def start_time_calculated
     event_start_time + start_offset
   end
 
@@ -75,6 +74,14 @@ class Effort < ActiveRecord::Base
   end
 
   # Methods regarding split_times
+
+  def last_reported_split_time
+    last_reported_split_time_attr || last_reported_split_time_calc
+  end
+
+  def last_reported_split_time_calc
+    ordered_split_times.last
+  end
 
   def finished?
     finish_split_time.present?
@@ -95,45 +102,6 @@ class Effort < ActiveRecord::Base
     "In progress"
   end
 
-  # Methods for checking status during live event
-
-  def due_next_where
-    return nil if dropped?
-    last_split = last_reported_split
-    return nil if last_split.finish?
-    event.next_split(last_split)
-  end
-
-  def overdue_by(cache = nil)
-    Time.now - due_next_when(cache)
-  end
-
-  def due_next_when(cache = nil)
-    event_start_time + start_offset + due_next_time_from_start(cache)
-  end
-
-  def expected_time_from_start(split, cache = nil)
-    return nil if dropped?
-    last_time = last_reported_split_time
-    last_split = last_time.split
-    return nil if last_split.finish?
-    cache ||= SegmentCalculationsCache.new(event)
-    current_segment = Segment.new(last_split, event.next_split(last_split))
-    completed_segment = Segment.new(event.start_split, last_split)
-    current_segment_calcs = cache.fetch_calculations(current_segment)
-    completed_segment_calcs = cache.fetch_calculations(completed_segment)
-    pace_factor = last_time.time_from_start / (completed_segment_calcs.mean || completed_segment.typical_time_by_terrain)
-    last_time.time_from_start + (current_segment_calcs.mean * pace_factor)
-  end
-
-  def last_reported_split
-    ordered_split_times.last.split
-  end
-
-  def last_reported_split_time
-    ordered_split_times.last
-  end
-
   def event_start_time
     event.start_time
   end
@@ -151,13 +119,16 @@ class Effort < ActiveRecord::Base
   end
 
   def time_in_aid(split)
-    Segment.new(event.waypoint_group(split)).effort_time(self)
+    time_array = split_times.where(split: split).order(:sub_split_bitkey).pluck(:time_from_start)
+    time_array.count > 1 ? time_array.last - time_array.first : nil
   end
 
-  def total_time_in_aid
+  def total_time_in_aid # TODO reduce number of database calls
     total = 0
-    base_split_times.each do |unicorn|
-      total = total + time_in_aid(unicorn.split)
+    split_times_out = split_times.out
+    split_times_out.each do |unicorn|
+      tia = time_in_aid(unicorn.split)
+      total = tia ? total + tia : total
     end
     total
   end
@@ -168,7 +139,7 @@ class Effort < ActiveRecord::Base
                            .map.with_index { |x, i| x.to_i.send(units[i]) }
                            .reduce(:+).to_i
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
-    working_datetime + ((((working_datetime - due_next_when) * -1) / 1.day).round(0) * 1.day)
+    working_datetime + ((((working_datetime - expected_day_and_time({split.id => 1})) * -1) / 1.day).round(0) * 1.day)
   end
 
   def ordered_splits
@@ -177,20 +148,6 @@ class Effort < ActiveRecord::Base
 
   def ordered_split_times
     split_times.ordered
-  end
-
-  def previous_split_time(split_time)
-    ordered_times = ordered_split_times
-    position = ordered_times.index(split_time)
-    return nil if position.nil?
-    position == 0 ? nil : ordered_times[position - 1]
-  end
-
-  def previous_valid_split_time(split_time)
-    ordered_times = split_times.valid_status.union(id: split_time.id).ordered
-    position = ordered_times.index(split_time)
-    return nil if position.nil?
-    position == 0 ? nil : ordered_times[position - 1]
   end
 
   def combined_places
@@ -203,20 +160,6 @@ class Effort < ActiveRecord::Base
 
   def gender_place
     event.gender_place(self)
-  end
-
-  def self.gender_group(segment, gender) # TODO Intersect queries to select only those efforts that include both splits
-    # scope :includes_split1, -> { includes(:event => :splits).where(splits: {id: split1.id}) }
-    # scope :includes_split2, -> { includes(:event => :splits).where(splits: {id: split2.id}) }
-    # scope :includes_both_splits, -> { intersect_scope(includes_split1, includes_split2) }
-    case gender
-      when 'male'
-        includes(:event => :splits).male.where(splits: {id: segment.end_id})
-      when 'female'
-        includes(:event => :splits).female.where(splits: {id: segment.end_id})
-      else
-        includes(:event => :splits).where(splits: {id: segment.end_id})
-    end
   end
 
   # Age methods
@@ -246,47 +189,13 @@ class Effort < ActiveRecord::Base
     participant_id.nil?
   end
 
-  def self.unreconciled
-    where(participant_id: nil)
-  end
-
   # Sorting class methods
 
-  def self.sorted(time_array = nil)
-    return [] if self.count < 1
-    return sorted_by_finish_time if first.event.simple?
-    ids = self.pluck(:id)
-    time_array ||= sorted_ultra_time_array
-    time_array.keep_if { |row| ids.include?(row[0]) }
-    efforts_from_ids(time_array.map { |x| x[0] })
-  end
-
-  def self.sorted_ultra_time_array(split_time_hash = nil)
-    # Column 0 contains effort_ids, columns 1..-1 are time data
-    return [] if self.count == 0
-    event = first.event
-    split_time_hash ||= event.split_time_hash
-    result = self.pluck(:id).map { |effort_id| [effort_id] }
-    event.ordered_split_ids.each do |split_id|
-      hash = split_time_hash[split_id] ?
-          Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:time_from_start]] }] :
-          {}
-      result.collect! { |row| row << hash[row[0]] }
-    end
-    result.sort_by { |a| a[1..-1].reverse.map { |e| e || Float::INFINITY } }
-  end
-
-  def self.sorted_by_segment_time(segment)
-    efforts_from_ids(ids_sorted_by_segment_time(segment))
-  end
-
-  def self.within_time_range(low_time, high_time)
-    where(id: ids_within_time_range(low_time, high_time))
-  end
-
-  def self.efforts_from_ids(effort_ids)
-    efforts_by_id = Effort.find(effort_ids).index_by(&:id)
-    effort_ids.collect { |id| efforts_by_id[id] }
+  def self.sorted_with_finish_status
+    raw_sort = select('DISTINCT ON(efforts.id) efforts.id, efforts.first_name, efforts.last_name, efforts.gender, efforts.bib_number, efforts.age, efforts.state_code, efforts.country_code, efforts.data_status, efforts.dropped_split_id, efforts.start_offset, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start, split_times.sub_split_bitkey')
+                   .joins(:split_times => :split)
+                   .order('efforts.id, splits.distance_from_start DESC')
+    raw_sort.sort_by { |row| [-row.distance_from_start, row.time_from_start] }
   end
 
   def set_dropped_split_id
@@ -294,23 +203,10 @@ class Effort < ActiveRecord::Base
         finish_split_time ?
             nil :
             split_times.joins(:split).joins(:effort)
-                .order('efforts.id').order('splits.distance_from_start DESC').order('splits.sub_order DESC')
+                .order('efforts.id, splits.distance_from_start DESC')
                 .first.split_id
     update(dropped_split_id: dropped_split_id)
     dropped_split_id
-  end
-
-  private
-
-  def self.ids_within_time_range(low_time, high_time)
-    effort_ids = self.pluck(:id)
-    SplitTime.includes(:split).where(effort_id: effort_ids, splits: {kind: 1})
-        .where(time_from_start: low_time..high_time).pluck(:effort_id)
-  end
-
-  def self.ids_sorted_by_segment_time(segment)
-    effort_ids = self.pluck(:id)
-    segment.times.keep_if { |k, _| effort_ids.include?(k) }.sort_by { |_, v| v }.map { |x| x[0] }
   end
 
 end

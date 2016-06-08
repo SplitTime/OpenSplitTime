@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-xs-6">
+    <h2><%= @progress_display.name %></h2>
+    <h3><%= "Progress report as of" %>
+      <br/><%= "#{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %>
+    </h3>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>
+    <%= "Finished: #{@progress_display.efforts_finished_count}" %><br/>
+    <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
+    <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <% if @progress_display.efforts_in_progress_count > 0 %>
+        <h4><%= "Of the #{@progress_display.efforts_in_progress_count} efforts in progress, #{@progress_display.efforts_past_due_count} are overdue by more than #{@progress_display.past_due_threshold} minutes" %></h4>
+        <br/>
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th>Bib</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th class="text-center">Last Reported</th>
+            <th class="text-center">Due Next</th>
+            <th class="text-right">Overdue By</th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <% @progress_display.past_due_progress_rows.each do |row| %>
+              <tr>
+                <td><%= row.bib_number %></td>
+                <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.id) %></td>
+                <td class="text-nowrap"><%= row.bio_historic %></td>
+                <td class="text-center text-nowrap"><%= "#{row.last_reported_split_name}, #{l(row.last_reported_when, format: :day_and_military)}" %></td>
+                <td class="text-center text-nowrap"><%= "#{row.due_next_split_name}, #{l(row.due_next_when, format: :day_and_military)}" %></td>
+                <td class="text-right"><%= time_format_hhmm(row.over_under_due) %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% else %>
+        <h4>No efforts are in progress.</h4>
+    <% end %>
+  </div>
+</div>

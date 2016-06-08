@@ -44,12 +44,6 @@ Rails.application.routes.draw do
     member { post :create_participants }
     member { get :stage}
     member { get :spread}
-    member { get :live_entry}
-    member { get :live_entry_ajax_get_event_data}
-    member { get :live_entry_ajax_get_effort}
-    member { get :live_entry_ajax_get_time_from}
-    member { get :live_entry_ajax_get_time_spent}
-    member { get :live_entry_ajax_set_split_times}
   end
   resources :splits do
     member { get :assign_location }
@@ -68,12 +62,13 @@ Rails.application.routes.draw do
     member { put :associate_participant }
     collection { put :associate_participants}
     member { put :edit_split_times }
-    member { delete :delete_waypoint_group }
-    member { put :confirm_waypoint_group }
+    member { delete :delete_split }
+    member { put :confirm_split }
     member { put :set_data_status }
   end
   resources :split_times
   resources :interests
+  resources :aid_stations, except: [:index, :new, :create]
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout
@@ -82,6 +77,22 @@ Rails.application.routes.draw do
   namespace :admin do
     root 'dashboard#dashboard'
     put 'set_effort_ages', to: 'dashboard#set_effort_ages'
+  end
+
+  namespace :live do
+    resources :events, only: :show do
+      member { get :live_entry }
+      member { get :progress_report }
+      member { get :live_aid_stations }
+    end
+    get 'live_entry/:id', to: 'live_entry#show'
+    get 'live_entry/:id/get_event_data', to: 'live_entry#get_event_data'
+    get 'live_entry/:id/get_effort', to: 'live_entry#get_effort'
+    get 'live_entry/:id/get_time_from_last', to: 'live_entry#get_time_from_last'
+    get 'live_entry/:id/get_time_spent', to: 'live_entry#get_time_spent'
+    get 'live_entry/:id/set_split_times', to: 'live_entry#set_split_times'
+    get 'progress_report/:id', to: 'progress_report#show'
+    get 'live_aid_stations/:id', to: 'live_aid_stations#show'
   end
 
 end

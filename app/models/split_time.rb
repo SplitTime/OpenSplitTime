@@ -5,25 +5,30 @@ class SplitTime < ActiveRecord::Base
   belongs_to :split
 
   scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
-  scope :ordered, -> { includes(:split).order('splits.distance_from_start, splits.sub_order') }
+  scope :ordered, -> { includes(:split).order('splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
-  scope :base, -> { includes(:split).where(splits: {sub_order: 0}) }
+  scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
+  scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
 
   before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
-  validates_presence_of :effort_id, :split_id, :time_from_start
+  validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start
   validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
-  validates_uniqueness_of :split_id, scope: :effort_id,
-                          :message => "only one of any given split permitted within an effort"
-  validate :course_is_consistent, unless: 'effort.nil? | split.nil?' # TODO fix tests so that .nil? checks are not necessary
+  validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey],
+                          message: 'only one of any given split/sub_split permitted within an effort'
+  validate :course_is_consistent, unless: 'effort.nil? | split.nil?'
 
   def course_is_consistent
     if effort.event.course_id != split.course_id
-      errors.add(:effort_id, "the effort.event.course_id does not resolve with the split.course_id")
-      errors.add(:split_id, "the effort.event.course_id does not resolve with the split.course_id")
+      errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
+      errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end
+  end
+
+  def bitkey_hash
+    {split_id => sub_split_bitkey}
   end
 
   def set_effort_data_status
@@ -68,15 +73,6 @@ class SplitTime < ActiveRecord::Base
     else
       self.day_and_time = nil
     end
-  end
-
-  def waypoint_group
-    splits = split.waypoint_group
-    split_time_array = []
-    splits.each do |split|
-      split_time_array << split.split_times.where(effort: effort).first
-    end
-    split_time_array # Includes nil values when no split_time is associated with members of the split.waypoint_group
   end
 
   def self.confirmed!

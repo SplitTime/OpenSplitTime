@@ -3,7 +3,7 @@ module Auditable
 
   included do
     # Assigns created_by_id and updated_by_id upon included Class initialization
-    after_initialize :add_created_by_and_updated_by
+    before_validation :add_created_by_and_updated_by
 
     # Updates updated_by_id for the current instance
     after_save :update_updated_by

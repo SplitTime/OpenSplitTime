@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :spread]
-  before_action :set_event, except: [:index, :show, :new, :create]
+  before_action :set_event, except: [:index, :show, :new, :create, :spread]
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
@@ -13,9 +13,9 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.includes(:course, :race).find(params[:id])
-    @event_display = EventEffortsDisplay.new(@event, params)
-    session[:return_to] = event_path(@event)
+    event = Event.find(params[:id])
+    @event_display = EventEffortsDisplay.new(event, params)
+    session[:return_to] = event_path(event)
   end
 
   def new
@@ -99,7 +99,7 @@ class EventsController < ApplicationController
 
   def import_splits
     authorize @event
-    @importer = Importer.new(params[:file], @event, current_user.id)
+    @importer = SplitImporter.new(params[:file], @event, current_user.id)
     if @importer.split_import
       flash[:success] = "Import successful"
     else
@@ -111,18 +111,21 @@ class EventsController < ApplicationController
 
   def import_efforts
     authorize @event
-    @importer = Importer.new(params[:file], @event, current_user.id)
+    @importer = EffortImporter.new(params[:file], @event, current_user.id)
     if @importer.effort_import
       flash[:success] = "Import successful. #{@importer.effort_import_report}"
+      redirect_to reconcile_event_path(@event)
     else
-      flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:importer].first}."
+      flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:effort_importer].first}."
+      redirect_to stage_event_path(@event, errors: @importer.errors)
     end
 
-    redirect_to stage_event_path(@event, errors: @importer.errors)
   end
 
   def spread
-    session[:return_to] = spread_event_path(@event)
+    event = Event.find(params[:id])
+    @spread_display = EventSpreadDisplay.new(event, params)
+    session[:return_to] = spread_event_path(event)
   end
 
 
@@ -161,86 +164,6 @@ class EventsController < ApplicationController
     authorize @event
     DataStatusService.set_data_status(@event.efforts)
     redirect_to event_path(@event)
-  end
-
-  def live_entry
-    authorize @event
-  end
-
-  def live_entry_ajax_get_event_data
-    authorize @event
-    render :json => {
-        eventId: @event.id,
-        eventName: @event.name,
-        splits: @event.split_live_data,
-    }
-  end
-
-# This endpoint gets called when the admin enters a "bib" number in the live_entry UI.
-#
-  def live_entry_ajax_get_effort
-    authorize @event
-
-    # Here look up the effort and populate the json array with data
-    # needed for front end processing. The assumption is that this endpoint
-    # will take the splitId, bibNumber and eventId used to populate the following fields:
-    # Name, Last Reported, Split From, and Time Spent
-    #
-    # Split From and Time Spent fields are not populated until Time In and Time Out fields are entered
-    # Get bib number like this: params[:bibNumber]
-    # Event ID is within the url param
-    #
-    # If the lookup fails here (bibNumber or eventId is incorrect), return { success: false }
-    # lastReportedSplitTime comes from the splits table for this "effort"
-    # estimatedTime range
-    @effort = @event.efforts.where(bib_number: params[:bibNumber].to_i).first
-    @split = @effort.last_reported_split
-    @split_time = @effort.last_reported_split_time
-    render :json => {
-        success: true,
-        effortId: @effort.id,
-        name: @effort.full_name,
-        lastReportedSplitId: @split.id,
-        lastReportedSplitTime: "#{@split.name} at #{@split_time.formatted_time_hhmmss}"
-    }
-  end
-
-  def live_entry_ajax_get_time_from
-    authorize @event
-
-    #@effort = Effort.find(params[:effortId])
-    #@split = Split.find(params[:lastReportedSplitId])
-
-    #TODO: Mark
-    render :json => {
-        success: true,
-        timeFromLastReported: "03:00:00"
-    }
-  end
-
-  def live_entry_ajax_get_time_spent
-    authorize @event
-
-    #@effort = Effort.find(params[:effortId])
-    #@split = Split.find(params[:lastReportedSplitId])
-
-    #TODO: Mark
-    render :json => {
-        success: true,
-        timeSpent: "03:00:00"
-    }
-  end
-
-  def live_entry_ajax_set_split_times
-    authorize @event
-
-    # TODO: MARK!
-    # Efforts come in as an array
-    # access efforts as params[:efforts]
-    render :json => {
-        success: true,
-        message: params[:efforts]
-    }
   end
 
   private

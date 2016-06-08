@@ -2,11 +2,7 @@
   <thead>
   <tr>
     <th>
-      <% if @best_efforts_display.gender == 'combined' %>
-          #
-      <% else %>
-          Overall/<br>Gender
-      <% end %>
+      Overall/<br>Gender
     </th>
     <th>Name</th>
     <th>Category</th>
@@ -16,21 +12,16 @@
   </tr>
   </thead>
   <tbody>
-  <% @best_efforts_display.effort_ids.each do |effort_id| %>
-      <% effort_row = @best_efforts_display.effort_row(effort_id) %>
+  <% @best_display.effort_rows.each do |effort_row| %>
       <tr>
         <td>
-          <% if @best_efforts_display.gender == 'combined' %>
-              <%= effort_row.overall_place %>
-          <% else %>
-              <%= "#{effort_row.overall_place}/#{effort_row.gender_place}" %>
-          <% end %>
+          <%= "#{effort_row.overall_place}/#{effort_row.gender_place}" %>
         </td>
-        <td><strong><%= link_to effort_row.full_name, effort_path(effort_id) %></strong></td>
+        <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
         <td><%= effort_row.bio_historic %></td>
         <td><%= effort_row.state_and_country %></td>
         <td><%= effort_row.year %></td>
-        <td class="text-right"><%= time_format_hhmm(effort_row.finish_time) %></td>
+        <td class="text-right"><%= time_format_hhmm(effort_row.segment_time) %></td>
       </tr>
   <% end %>
   </tbody>

@@ -16,6 +16,7 @@ module UnitConversions
     end
 
     def elevation_in_meters(elevation_in_pref, user)
+      return nil unless elevation_in_pref
       return elevation_in_pref.feet.to.meters.value unless user
       case user.pref_elevation_unit
         when 'feet'
@@ -40,6 +41,7 @@ module UnitConversions
     end
 
     def elevation_in_preferred_units(elevation_in_meters, user)
+      return nil unless elevation_in_meters
       return elevation_in_meters.meters.to.feet.value unless user
       case user.pref_elevation_unit
         when 'feet'

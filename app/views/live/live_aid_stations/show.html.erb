@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-xs-6">
+    <h2><%= @aid_stations_display.event_name %></h2>
+    <h3><%= "Live Aid Stations Report - #{@aid_stations_display.efforts_started_count} entrants started" %></h3>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <h4><%= "Aid station summary as of #{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}" %></h4>
+    <table class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th class="text-right"><%= pdu('singular').titleize %></th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Recorded</th>
+        <th class="text-center">Passed w/o Record</th>
+        <th class="text-center">Dropped Here</th>
+        <th class="text-center">Expected</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <% @aid_stations_display.aid_stations.each do |aid_station| %>
+          <tr>
+            <td><%= link_to aid_station.split_name, aid_station_path(aid_station) %></td>
+            <td class="text-right"><%= d(aid_station.split.distance_from_start) %></td>
+            <td class="text-center"><%= aid_station.status.titleize if aid_station.status %></td>
+            <td class="text-center"><%= aid_station.efforts_recorded_out.count %></td>
+            <td class="text-center"><%= aid_station.efforts_passed_without_record.count %></td>
+            <td class="text-center"><%= aid_station.efforts_dropped_at_station.count %></td>
+            <td class="text-center"><%= aid_station.efforts_expected.count %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -23,12 +23,14 @@
       <div class="col-sm-3">
         <strong>From </strong>
         <%= select_tag(:split1,
-                       options_from_collection_for_select(@course.out_splits, :id, :base_name), {class: "dropdown-select-field"}) %>
+                       options_from_collection_for_select(@course.ordered_splits_without_finish, :id, :base_name),
+                       {class: "dropdown-select-field"}) %>
       </div>
       <div class="col-sm-3">
         <strong>To </strong>
         <%= select_tag(:split2,
-                       options_from_collection_for_select(@course.in_splits, :id, :base_name), {class: "dropdown-select-field"}) %>
+                       options_from_collection_for_select(@course.ordered_splits_without_start, :id, :base_name),
+                       {class: "dropdown-select-field"}) %>
       </div>
     </div>
 

@@ -1,66 +1,41 @@
-class Importer
-  require 'roo'
+class EffortImporter
   extend ActiveModel::Naming
 
-  attr_accessor :split_import_report, :effort_import_report, :split_id_array, :effort_id_array,
-                :split_failure_array, :effort_failure_array, :importer
-  attr_reader :errors, :event, :current_user_id
+  attr_accessor :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
+  attr_reader :errors
 
   def initialize(file, event, current_user_id)
     @errors = ActiveModel::Errors.new(self)
-    @spreadsheet = open_spreadsheet(file)
-    return false unless spreadsheet
-    @header1 = spreadsheet.row(1)
-    @header2 = spreadsheet.row(2)
+    @import_file = ImportFile.new(file)
     @event = event
     @current_user_id = current_user_id
-  end
-
-  def split_import
-    return false unless header1.size == header2.size # Split names and distances don't match up
-    return false unless effort_offset == 3 # No split data detected
-    self.distance_conversion_factor = conversion_factor(header2[1])
-    return false unless distance_conversion_factor
-    self.split_id_array = []
-    self.split_failure_array = []
-    (0...split_array.size).each do |i|
-      split = create_split(i)
-      if split.save
-        split_id_array << split.id
-        event.splits << split unless event.splits.include?(split)
-      else
-        split_failure_array << split
-      end
-    end
+    @sub_split_bitkey_hashes = event.sub_split_bitkey_hashes
+    @effort_failure_array = []
+    @effort_id_array = []
   end
 
   def effort_import
-    self.split_id_array = event.ordered_split_ids
-    if split_name_array.size != split_id_array.size
-      errors.add(:importer, "Your import file contains #{split_name_array.size} split time columns, but this event expects #{split_id_array.size} columns. Please check your import file or create, remove, or associate splits as needed.")
-      return
-    end
+    return unless column_count_matches
     build_effort_schema
-    self.effort_failure_array = []
-    self.effort_id_array = []
     start_offset_hash = {}
-    dropped_hash = {}
+    final_split_hash = {}
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0..split_offset - 2])
       @effort = create_effort(row_effort_data)
       if @effort
-        start_offset, dropped_split = create_split_times(row, @effort.id)
+        start_offset, final_split = create_split_times(row, @effort.id)
         start_offset_hash[@effort.id] = start_offset if start_offset
-        dropped_hash[@effort.id] = dropped_split if dropped_split
+        final_split_hash[@effort.id] = final_split
         effort_id_array << @effort.id
       else
         effort_failure_array << row
       end
     end
     BulkUpdateService.bulk_update_start_offset(start_offset_hash)
-    BulkUpdateService.bulk_update_dropped(dropped_hash)
-    # DataStatusService.set_data_status(event.efforts)
+    BulkUpdateService.bulk_update_dropped(final_split_hash)
+    # Set data status on only those efforts that were successfully created
+    DataStatusService.set_data_status(event.efforts.find(effort_id_array))
     self.auto_matched_count, self.participants_created_count =
         EventReconcileService.auto_reconcile_efforts(event)
     create_effort_import_report
@@ -72,24 +47,41 @@ class Importer
     send(attr)
   end
 
-  def Importer.human_attribute_name(attr)
+  def EffortImporter.human_attribute_name(attr)
     attr
   end
 
-  def Importer.lookup_ancestors
+  def EffortImporter.lookup_ancestors
     [self]
   end
 
   private
 
-  attr_accessor :spreadsheet, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
-                :effort_schema, :header1, :header2, :distance_conversion_factor, :split_id_array
+  attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
+                :effort_schema
+
+  attr_reader :event, :current_user_id, :sub_split_bitkey_hashes
+
+  delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
+           :header1_downcase, to: :import_file
+
+  def column_count_matches
+    if (event_sub_split_count == 2) && ((split_title_array.size < 1) | (split_title_array.size > 2))
+      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, but this event expects only a finish time column with an optional start time column. Please check your import file or create, remove, or associate splits as needed.")
+      false
+    elsif (event_sub_split_count > 2) && (split_title_array.size != event_sub_split_count)
+      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, but this event expects #{event_sub_split_count} columns. Please check your import file or create, remove, or associate splits as needed.")
+      false
+    else
+      true
+    end
+  end
 
   def create_effort_import_report
     self.effort_import_report = ""
     self.unreconciled_efforts_count = event.unreconciled_efforts.count
 
-    if auto_matched_count > 0 
+    if auto_matched_count > 0
       self.effort_import_report += "We found #{auto_matched_count} participants that matched our database. "
     else
       self.effort_import_report += "No participants matched our database exactly. "
@@ -106,36 +98,6 @@ class Importer
     end
   end
 
-  def create_split(i)
-    if i == 0 # First one, so find the existing start split or create a new one
-      split = event.course.start_split || Split.new(course_id: event.course_id,
-                                                    base_name: 'Start',
-                                                    distance_from_start: 0,
-                                                    sub_order: 0,
-                                                    kind: :start)
-
-    elsif i == split_array.size - 1 # Last one, so find the existing finish split or create a new one
-      split = event.course.finish_split || Split.new(course_id: event.course_id,
-                                                     base_name: split_array[i],
-                                                     distance_from_start: (distance_array[i] * distance_conversion_factor),
-                                                     sub_order: 0,
-                                                     kind: :finish)
-
-    else # This is not a start or finish, so set sub_order and create new split
-      if distance_array[i-1] == distance_array[i]
-        sub_order =+1
-      else
-        sub_order = 0
-      end
-      split = Split.new(course_id: event.course_id,
-                        base_name: split_array[i],
-                        distance_from_start: (distance_array[i] * distance_conversion_factor),
-                        sub_order: sub_order,
-                        kind: :intermediate)
-    end
-    split
-  end
-
   def create_effort(row_effort_data)
     @effort = event.efforts.new
     (0...effort_schema.size).each do |i|
@@ -148,49 +110,52 @@ class Importer
     end
   end
 
+  # Creates split_times for each valid time entry in the provided row
+  # and returns the start_offset (if the first time entry is non-zero)
+  # and the dropped_split_id (if there is no valid finish time)
+
   def create_split_times(row, effort_id)
     row_time_data = row[split_offset - 1..row.size - 1]
     row_time_data.unshift(0) if finish_times_only?
-    return nil if split_id_array.size != row_time_data.size
-    dropped_pointer = start_offset = nil
-    SplitTime.bulk_insert(:effort_id, :split_id, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
-      (0...split_id_array.size).each do |i|
-        split_id = split_id_array[i]
+    return nil if event_sub_split_count != row_time_data.size
+    dropped_split_pointer = start_offset = nil
+    finish_bitkey_hash = sub_split_bitkey_hashes.last
+
+    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
+      (0...sub_split_bitkey_hashes.count).each do |i|
+        bitkey_hash = sub_split_bitkey_hashes[i]
+        split_id = bitkey_hash.keys.first
+        sub_split_bitkey = bitkey_hash.values.first
         working_time = row_time_data[i]
-        if i == 0 # Set start_offset from non-zero start split time and reset start split time to zero
+
+        # If this is the first (start) column, set start_offset
+        # from non-zero start split time and reset start split time to zero
+
+        if i == 0
           start_offset = working_time || 0
           working_time = 0
         end
+
         seconds = convert_time_to_standard(working_time)
-        if seconds.nil?
-          dropped_pointer = split_id
-          next
-        end
+
+        # If no valid time is present, go to next without creating a split_time
+        # and without updating the dropped_split_pointer
+
+        next if seconds.nil?
         worker.add(effort_id: effort_id,
                    split_id: split_id,
+                   sub_split_bitkey: sub_split_bitkey,
                    time_from_start: seconds,
                    created_by: current_user_id,
                    updated_by: current_user_id)
-        dropped_pointer = nil if i == split_id_array.size - 1
+        dropped_split_pointer = (bitkey_hash == finish_bitkey_hash) ? nil : split_id
       end
     end
-    [start_offset, dropped_pointer]
+    [start_offset, dropped_split_pointer]
   end
 
-  def open_spreadsheet(file)
-    return nil unless file
-    @spreadsheet_format = File.extname(file.original_filename)
-    case @spreadsheet_format
-      # when '.csv' then
-      #   Roo::Spreadsheet.open(file.path, :csv)
-      when '.xls' then
-        Roo::Spreadsheet.open(file.path)
-      when '.xlsx' then
-        Roo::Spreadsheet.open(file.path)
-      else
-        raise "Unknown file type: #{file.original_filename}"
-    end
-  end
+  # This method and the several that follow analyze the import data
+  # and attempt to conform it to the database schema
 
   def prepare_row_effort_data(row_effort_data)
     i = effort_schema.index(:country_code)
@@ -266,8 +231,11 @@ class Importer
     nil
   end
 
-  # Returns an array of effort symbols in order of spreadsheet columns
+  # build_effort_schema and related methods return
+  # an array of symbols representing attributes of the effort model.
+  # Symbols are returned in order of the spreadsheet columns
   # with nil placeholders for spreadsheet columns that don't match
+  # any importable effort attribute
 
   def build_effort_schema
     header_column_titles = header1[0..split_offset - 2]
@@ -301,56 +269,6 @@ class Importer
     (column_string == attribute_string)
   end
 
-  def finish_times_only?
-    split_offset == header1.size
-  end
-
-  def header1_downcase
-    header1.map { |cell| cell ? cell.downcase : nil }
-  end
-
-  def split_offset
-    start_column_index = header1_downcase.index("start")
-    start_column_index ? start_column_index + 1 : header1.size
-  end
-
-  def effort_offset
-    unit_array = %w[miles meters km kilometers]
-    header2[0].downcase.include?("distance") &&
-        (header2[1].blank? || unit_array.include?(header2[1])) ? 3 : 2
-  end
-
-  def split_array
-    header1[split_offset - 1..header1.size - 1]
-  end
-
-  def distance_array
-    header2[split_offset - 1..header2.size - 1]
-  end
-
-  def split_name_array
-    finish_times_only? ? ["start", "finish"] : header1[split_offset - 1..header1.size - 1]
-  end
-
-  def conversion_factor(units)
-    units ||= ""
-    x = case units.downcase
-          when "km"
-            1.kilometers.to.meters.value
-          when "kilometers"
-            1.kilometers.to.meters.value
-          when "meters"
-            1
-          when "miles"
-            1.miles.to.meters.value
-          when "" # Assume miles if no unit is indicated
-            1.miles.to.meters.value
-          else
-            false
-        end
-    x ? x.to_f : false
-  end
-
   def convert_time_to_standard(working_time)
     return nil if working_time.blank?
     working_time = working_time.to_datetime if working_time.instance_of?(Date)
@@ -358,16 +276,20 @@ class Importer
     if working_time.try(:to_f)
       working_time
     else
-      errors.add(:importer, "Invalid split time data for #{effort.last_name}. #{errors.full_messages}.")
+      errors.add(:effort_importer, "Invalid split time data for #{effort.last_name}. #{errors.full_messages}.")
     end
   end
 
   def datetime_to_seconds(value)
-    if (value.year < 1910) && @spreadsheet_format.include?("xls")
+    if value.year < 1910
       TimeDifference.between(value, "1899-12-30".to_datetime).in_seconds
     else
       TimeDifference.between(value, event.start_time).in_seconds
     end
+  end
+
+  def event_sub_split_count
+    sub_split_bitkey_hashes.count
   end
 
 end

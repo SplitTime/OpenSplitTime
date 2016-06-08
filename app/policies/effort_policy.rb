@@ -38,11 +38,11 @@ class EffortPolicy
     @current_user.authorized_to_edit?(@effort)
   end
 
-  def delete_waypoint_group?
+  def delete_split?
     @current_user.authorized_to_edit?(@effort)
   end
 
-  def confirm_waypoint_group?
+  def confirm_split?
     @current_user.authorized_to_edit?(@effort)
   end
 

@@ -6,19 +6,21 @@ class Split < ActiveRecord::Base
   belongs_to :course
   belongs_to :location
   has_many :split_times, dependent: :destroy
-  has_many :event_splits, dependent: :destroy
-  has_many :events, through: :event_splits
+  has_many :aid_stations, dependent: :destroy
+  has_many :events, through: :aid_stations
 
   accepts_nested_attributes_for :location, allow_destroy: true
 
-  validates_presence_of :base_name, :distance_from_start, :sub_order, :kind
+  validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
-  validates_uniqueness_of :base_name, scope: [:course_id, :name_extension], case_sensitive: false,
-                          message: "must be unique unless a name_extension is added to distinguish"
+  validates_uniqueness_of :base_name, scope: :course_id, case_sensitive: false,
+                          message: "must be unique for a course"
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
                           message: "only one start split permitted on a course"
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_finish?',
                           message: "only one finish split permitted on a course"
+  validates_uniqueness_of :distance_from_start, scope: :course_id,
+                          message: "only one split of a given distance permitted on a course. Use sub_splits if needed."
   validates_numericality_of :distance_from_start, equal_to: 0, if: 'is_start?',
                             message: "for the start split must be 0"
   validates_numericality_of :vert_gain_from_start, equal_to: 0, if: 'is_start?', allow_nil: true,
@@ -32,9 +34,7 @@ class Split < ActiveRecord::Base
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: "may not be negative"
 
-  scope :ordered, -> { order(:distance_from_start, :sub_order) }
-  scope :at_same_distance, -> (split) { where(distance_from_start: split.distance_from_start).order(:sub_order) }
-  scope :base, -> { where(sub_order: 0).order(:distance_from_start) }
+  scope :ordered, -> { order(:distance_from_start) }
 
   def is_start?
     self.start?
@@ -68,41 +68,45 @@ class Split < ActiveRecord::Base
     self.vert_loss_from_start = Split.elevation_in_meters(entered_vert_loss.to_f, User.current) if entered_vert_loss.present?
   end
 
-  def self.average_times(target_finish_time) # Returns a hash with split ids => average times from start
-    efforts = first.course.relevant_efforts(target_finish_time)
-    return_hash = {}
-    all.each do |split|
-      return_hash[split.id] = split.average_time(efforts)
-    end
-    return_hash
+  def time_hash(sub_split_bitkey)
+    Hash[SplitTime.where(split_id: id, sub_split_bitkey: sub_split_bitkey).pluck(:effort_id, :time_from_start)]
   end
 
-  def time_hash
-    Hash[SplitTime.where(split_id: id).pluck(:effort_id, :time_from_start)]
+  def average_time(sub_split_bitkey, relevant_efforts)
+    split_times.where(sub_split_bitkey: sub_split_bitkey, effort: relevant_efforts).pluck(:time_from_start).mean
   end
 
-  def average_time(relevant_efforts)
-    split_times.where(effort_id: relevant_efforts.pluck(:id)).pluck(:time_from_start).mean
-  end
-
-  def name
-    [base_name, name_extension].compact.join(' ')
-  end
-
-  def name=(entered_name)
-    if entered_name.present?
-      self.base_name = entered_name.split.reject { |x| (x.downcase == 'in') | (x.downcase == 'out') }.join(' ')
-      self.name_extension = entered_name.gsub(base_name, '').strip
+  def name(bitkey = nil)
+    if bitkey
+      name_extensions.count > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name
+    else
+      extensions = name_extensions.count > 1 ? name_extensions.join(' / ') : nil
+      [base_name, extensions].compact.join(' ')
     end
   end
 
-  def waypoint_group(event = nil)
-    event ? event.waypoint_group(self) : course.waypoint_group(self)
+  def name_extensions
+    sub_split_bitkeys.map { |bitkey| SubSplit.kind(bitkey) }
   end
 
-  def composite_name(event = nil)
-    group = waypoint_group(event).pluck_to_hash(:base_name, :name_extension)
-    "#{group[0][:base_name]} #{(group.map { |block| block[:name_extension] }.compact.join(' / '))}"
+  def sub_split_bitkey_hashes
+    sub_split_bitkeys.map { |bitkey| {id => bitkey} }
+  end
+
+  alias_method :bitkey_hashes, :sub_split_bitkey_hashes
+
+  def sub_split_bitkeys
+    SubSplit.reveal_valid_bitkeys(sub_split_bitmap)
+  end
+
+  alias_method :bitkeys, :sub_split_bitkeys
+
+  def bitkey_hash_in
+    bitkeys.include?(SubSplit::IN_BITKEY) ? {id => SubSplit::IN_BITKEY} : nil
+  end
+
+  def bitkey_hash_out
+    bitkeys.include?(SubSplit::OUT_BITKEY) ? {id => SubSplit::OUT_BITKEY} : nil
   end
 
   def course_index # Returns an integer representing the split's relative position on the course

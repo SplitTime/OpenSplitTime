@@ -1,10 +1,8 @@
-<%# Requires parameters splits (collection) and time_data (hash with split_id => time from start %>
-
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-right"><%= pdu.titleize %></th>
+    <th class="text-right"><%= pdu('singular').titleize %></th>
     <th class="text-center">Time of Day</th>
     <th class="text-center">Elapsed Time</th>
     <th class="text-center">Segment</th>
@@ -12,24 +10,23 @@
   </tr>
   </thead>
   <tbody>
-  <% splits.each do |split| %>
-      <% next if time_data[split.id].nil? %>
+  <% @plan_display.split_rows.each do |split_row| %>
       <tr>
-        <% if split.finish? %>
-            <td><strong><%= split.composite_name %></strong></td>
-            <td class="text-right"><strong><%= d(split.distance_from_start) %></strong></td>
-            <td class="text-center"><strong><%= plan_combined_time_of_day(split, time_data) %></strong></td>
-            <td class="text-center"><strong><%= plan_combined_times(split, time_data) %></strong></td>
-            <td class="text-center"><strong><%= "#{time_format_hhmm(plan_segment_time(split, time_data))}" %></strong>
+        <% if split_row.finish? %>
+            <td><strong><%= split_row.name %></strong></td>
+            <td class="text-right"><strong><%= d(split_row.distance_from_start) %></strong></td>
+            <td class="text-center"><strong><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></strong></td>
+            <td class="text-center"><strong><%= split_row.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %></strong></td>
+            <td class="text-center"><strong><%= time_format_hhmm(split_row.segment_time) %></strong>
             </td>
-            <td class="text-right"><strong></strong></td>
-        <% elsif split.intermediate? %>
-            <td><%= split.composite_name %></td>
-            <td class="text-right"><%= d(split.distance_from_start) %></td>
-            <td class="text-center"><%= plan_combined_time_of_day(split, time_data) %></td>
-            <td class="text-center"><%= plan_combined_times(split, time_data) %></td>
-            <td class="text-center"><%= "#{time_format_hhmm(plan_segment_time(split, time_data))}" %></td>
-            <td class="text-right"><%= (plan_time_in_aid(split, time_data) / 60).round(0) %></td>
+            <td class="text-right"><strong><%= time_format_minutes(@plan_display.total_time_in_aid) %></strong></td>
+        <% elsif split_row.intermediate? %>
+            <td><%= split_row.name %></td>
+            <td class="text-right"><%= d(split_row.distance_from_start) %></td>
+            <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>
+            <td class="text-center"><%= split_row.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %></td>
+            <td class="text-center"><%= time_format_hhmm(split_row.segment_time) %></td>
+            <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
         <% end %>
       </tr>
   <% end %>

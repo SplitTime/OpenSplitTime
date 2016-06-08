@@ -1,21 +1,27 @@
 class BestEffortsDisplay
-  attr_reader :course, :efforts, :gender, :effort_data, :effort_ids, :filtered_efforts_count
+
+  attr_accessor :filtered_efforts
+  attr_reader :course, :effort_rows
   delegate :name, to: :course
   delegate :distance, :vert_gain, :vert_loss, :events, :earliest_event_date,
            :latest_event_date, :begin_id, :end_id, to: :segment
 
 
-  def initialize(course, params)
+  def initialize(course, params = {})
     @course = course
-    @gender = params[:gender] || 'combined'
+    @gender = Effort.genders.keys.include?(params[:gender]) ? [params[:gender]] : Effort.genders.keys
     set_segment(params)
-    get_efforts_and_raw_data(params)
-    set_overall_and_gender_sorts
-    calculate_finish_hash(segment_time_hash, params[:gender])
+    get_efforts(params)
+    @effort_rows = []
+    create_effort_rows
   end
 
-  def effort_row(effort_id)
-    EffortRow.new(self, effort_id)
+  def all_efforts_count
+    all_efforts.count
+  end
+
+  def filtered_efforts_count
+    filtered_efforts.total_entries
   end
 
   def segment_name
@@ -26,81 +32,69 @@ class BestEffortsDisplay
     events.count
   end
 
-  def segment_efforts_count
-    segment_time_hash.count
-  end
-
   def segment_is_full_course?
     segment.is_full_course?
   end
 
-  def overall_place(effort_id)
-    overall_sorted_effort_ids.index(effort_id) + 1
-  end
-
-  def gender_place(effort_id)
-    gender_sorted_effort_ids[effort_data[effort_id][:gender]].index(effort_id) + 1
-  end
-
-  def finish_time(effort_id)
-    finish_hash[effort_id]
+  def gender_human
+    case gender
+      when 0
+        'male'
+      when 1
+        'female'
+      else
+        'combined'
+    end
   end
 
   private
 
-  attr_accessor :segment, :finish_hash, :segment_time_hash, :effort_data_raw, :overall_sorted_effort_ids, :gender_sorted_effort_ids
+  attr_accessor :segment, :all_efforts, :gender
 
   def set_segment(params)
     split1 = params[:split1].present? ? Split.find(params[:split1]) : course.start_split
     split2 = params[:split2].present? ? Split.find(params[:split2]) : course.finish_split
-    splits = [split1, split2].sort_by { |x| x.course_index }
-    @segment = Segment.new(splits[0], splits[1])
+    splits = [split1, split2].sort_by(&:course_index)
+    self.segment = Segment.new(splits[0].bitkey_hashes.last, splits[1].bitkey_hashes.first)
   end
 
-  def get_efforts_and_raw_data(params)
-    @efforts = Effort.gender_group(segment, gender)
-                   .sorted_by_segment_time(segment)
-                   .paginate(page: params[:page], per_page: 25)
-    self.effort_data_raw = efforts.map { |effort| {id: effort.id,
-                                                   first_name: effort.first_name,
-                                                   last_name: effort.last_name,
-                                                   gender: effort.gender,
-                                                   age: effort.age,
-                                                   state_code: effort.state_code,
-                                                   country_code: effort.country_code,
-                                                   data_status: effort.data_status,
-                                                   year: effort.event.start_time.year} }
-    @filtered_efforts_count = efforts.total_entries
-    @effort_data = effort_data_raw.index_by { |block| block[:id] }
-    @effort_ids = effort_data_raw.map { |block| block[:id] }
+  def get_efforts(params)
+    segment_time_hash = segment.times
+    self.all_efforts = Effort.joins(:event)
+                           .select('efforts.*, events.start_time')
+                           .where(id: segment_time_hash.keys)
+                           .to_a
+                           .each { |effort| effort.segment_time = segment_time_hash[effort.id] }
+                           .sort_by!(&:segment_time)
+    self.filtered_efforts = all_efforts
+                                .select { |effort| gender.include?(effort.gender) }
+                                .paginate(page: params[:page], per_page: 25)
   end
 
-  def set_overall_and_gender_sorts
-    @segment_time_hash = segment.times
-    @overall_sorted_effort_ids = segment_time_hash.to_a.sort_by { |x| x[1] }.map { |x| x[0] }
-    male_course_effort_ids = Effort.on_course(course).male.pluck(:id)
-    female_course_effort_ids = Effort.on_course(course).female.pluck(:id)
-    @gender_sorted_effort_ids = {}
-    @gender_sorted_effort_ids['male'] = overall_sorted_effort_ids.dup
-                                            .keep_if { |effort_id| male_course_effort_ids.include?(effort_id) }
-    @gender_sorted_effort_ids['female'] = overall_sorted_effort_ids.dup
-                                            .keep_if { |effort_id| female_course_effort_ids.include?(effort_id) }
-  end
-
-  def calculate_finish_hash(finish_times, gender)
-    relevant_times = finish_times.keep_if { |key, _| sort_in_use(gender).include?(key) }
-    self.finish_hash = relevant_times
-  end
-
-  def sort_in_use(gender)
-    case gender
-      when 'male'
-        gender_sorted_effort_ids['male']
-      when 'female'
-        gender_sorted_effort_ids['female']
-      else
-        overall_sorted_effort_ids
+  def create_effort_rows
+    filtered_efforts.each do |effort|
+      effort_row = EffortRow.new(effort, overall_place: overall_place(effort),
+                                 gender_place: gender_place(effort),
+                                 start_time: effort.start_time)
+      effort_rows << effort_row
     end
   end
+
+  def overall_place(effort)
+    sorted_effort_ids.index(effort.id) + 1
+  end
+
+  def gender_place(effort)
+    sorted_genders[0...overall_place(effort)].count(effort.gender)
+  end
+
+  def sorted_effort_ids
+    all_efforts.map(&:id)
+  end
+
+  def sorted_genders
+    all_efforts.map(&:gender)
+  end
+
 
 end

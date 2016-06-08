@@ -2,8 +2,8 @@ class SegmentCalculations
   attr_accessor :times, :valid_data_array, :low_bad, :low_q, :high_q, :high_bad, :mean, :std
 
   def initialize(segment, begin_times_hash = nil, end_times_hash = nil)
-    begin_times_hash ||= segment.begin_split.time_hash
-    end_times_hash ||= segment.end_split.time_hash
+    begin_times_hash ||= segment.begin_split.time_hash(segment.begin_bitkey)
+    end_times_hash ||= segment.end_split.time_hash(segment.end_bitkey)
     @times = calculate_times(begin_times_hash, end_times_hash)
     create_valid_data_array
     set_status_limits(segment)
@@ -12,20 +12,16 @@ class SegmentCalculations
   def status(value)
     return nil unless value
     if (value < low_bad) | (value > high_bad)
-      :bad
+      'bad'
     elsif (value < low_q) | (value > high_q)
-      :questionable
+      'questionable'
     else
-      :good
+      'good'
     end
   end
 
   def limits
     [low_bad, low_q, high_q, high_bad]
-  end
-
-  def stats
-    "normalized mean: #{mean}, normalized std: #{std}"
   end
 
   private
@@ -43,7 +39,7 @@ class SegmentCalculations
     return [] unless baseline_median
     data_array = times.values
     data_array.keep_if { |v| (v > (baseline_median / 2)) && (v < (baseline_median * 2)) }
-    @valid_data_array = data_array
+    self.valid_data_array = data_array
   end
 
   def set_status_limits(segment)
@@ -72,7 +68,7 @@ class SegmentCalculations
   end
 
   def set_limits_by_stats(data_array)
-    return if data_array.count < 3
+    return unless data_array && data_array.count > 2
     self.mean = data_array.mean
     self.std = data_array.standard_deviation
     self.low_bad = [self.low_bad, mean - (4 * std), 0].max

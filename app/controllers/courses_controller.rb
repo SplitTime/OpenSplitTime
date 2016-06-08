@@ -48,16 +48,22 @@ class CoursesController < ApplicationController
 
   def destroy
     authorize @course
-    @course.destroy
+    if @course.events.present?
+      flash[:danger] = 'Course cannot be deleted if events are present on the course. Delete the related events individually and then delete the course.'
+    else
+      @course.destroy
+      flash[:success] = 'Course deleted.'
+    end
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || courses_path
   end
 
   def best_efforts
-    @course = Course.includes(:splits).find(params[:id])
-    @best_efforts_display = BestEffortsDisplay.new(@course, params)
-    session[:return_to] = best_efforts_course_path(@course)
+    course = Course.find(params[:id])
+    params[:gender] ||= 'combined'
+    @best_display = BestEffortsDisplay.new(course, params)
+    session[:return_to] = best_efforts_course_path(course)
   end
 
   def segment_picker
@@ -65,14 +71,14 @@ class CoursesController < ApplicationController
   end
 
   def plan_effort
-    @course = Course.where(id: params[:id]).first
-    authorize @course
-    @event = @course.events.most_recent
-    unless @event
+    course = Course.find(params[:id])
+    authorize course
+    unless course.events
       flash[:danger] = "No events yet held on this course"
-      redirect_to course_path(@course)
+      redirect_to course_path(course)
     end
-    session[:return_to] = plan_effort_course_path(@course)
+    @plan_display = PlanDisplay.new(course, params)
+    session[:return_to] = plan_effort_course_path(course)
   end
 
   private
@@ -80,8 +86,8 @@ class CoursesController < ApplicationController
   def course_params
     params.require(:course).permit(:name,
                                    :description,
-                                   splits_attributes: [:id, :course_id, :location_id, :base_name, :name_extension,
-                                                       :description, :sub_order, :kind,
+                                   splits_attributes: [:id, :course_id, :location_id, :base_name,
+                                                       :description, :kind, :sub_split_bitmap,
                                                        :distance_from_start, :distance_as_entered,
                                                        :vert_gain_from_start, :vert_gain_as_entered,
                                                        :vert_loss_from_start, :vert_loss_as_entered])

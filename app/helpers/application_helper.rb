@@ -35,7 +35,7 @@ module ApplicationHelper
   end
 
   def day_time_format(datetime)
-    datetime.strftime("%a %-l:%M%p")
+    datetime ? datetime.strftime("%a %-l:%M%p") : '--:--:--'
   end
 
   def latlon_format(latitude, longitude)
@@ -45,6 +45,7 @@ module ApplicationHelper
   end
 
   def elevation_format(elevation_in_meters)
+    return nil unless elevation_in_meters
     elevation_in_meters.nil? ? '[Unknown]' : (e(elevation_in_meters).to_s + ' ' + peu)
   end
 
@@ -55,30 +56,58 @@ module ApplicationHelper
   alias_method :d, :distance_to_preferred
 
   def elevation_to_preferred(meters)
+    return nil unless meters
     number_with_delimiter(Split.elevation_in_preferred_units(meters, current_user).round(0))
   end
 
   alias_method :e, :elevation_to_preferred
 
   def preferred_distance_unit(param = 'plural')
-    plural = (param == 'plural') | (param == 'pl') | (param == 'p') ? true : false
     unless current_user
-      return plural ? 'miles' : 'mile'
+      return case param
+               when 'short'
+                 'mi'
+               when 'singular'
+                 'mile'
+               else
+                 'miles'
+             end
     end
     case current_user.pref_distance_unit
       when 'miles'
-        plural ? 'miles' : 'mile'
+        case param
+          when 'short'
+            'mi'
+          when 'singular'
+            'mile'
+          else
+            'miles'
+        end
       when 'kilometers'
-        plural ? 'kilometers' : 'kilometer'
+        case param
+          when 'short'
+            'km'
+          when 'singular'
+            'kilometer'
+          else
+            'kilometers'
+        end
       else
-        plural ? 'meters' : 'meter'
+        case param
+          when 'short'
+            'm'
+          when 'singular'
+            'meter'
+          else
+            'meters'
+        end
     end
   end
 
   alias_method :pdu, :preferred_distance_unit
 
   def preferred_elevation_unit(param = 'plural')
-    plural = (param == 'plural') | (param == 'pl') | (param == 'p') ? true : false
+    plural = param == 'plural' ? true : false
     unless current_user
       return plural ? 'feet' : 'foot'
     end

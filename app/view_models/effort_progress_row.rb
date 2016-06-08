@@ -23,6 +23,14 @@ class EffortProgressRow
     effort.start_time + next_expected_split_time.time_from_start
   end
 
+  def last_reported_split_name
+    split_name_hash[last_reported_split_time.split_id]
+  end
+
+  def last_reported_when
+    effort.start_time + last_reported_split_time.time_from_start
+  end
+
   private
 
   attr_reader :effort, :split_name_hash, :bitkey_hashes

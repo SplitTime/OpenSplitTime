@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-xs-6">
     <h2><%= @progress_display.name %></h2>
-    <h3><%= "Progress report as of" %><br/><%= "#{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}" %></h3>
+    <h3><%= "Progress report as of" %><br/><%= "#{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h3>
   </div>
 </div>
 <hr>
@@ -23,9 +23,11 @@
         <th>Bib</th>
         <th>Name</th>
         <th>Category</th>
-        <th class="text-right">Overdue By</th>
+        <th class="text-center">Last Reported Where</th>
+        <th class="text-center">Last Reported When</th>
         <th class="text-center">Due Next Where</th>
         <th class="text-right">Due Next When</th>
+        <th class="text-right">Overdue By</th>
 
       </tr>
       </thead>
@@ -35,9 +37,11 @@
             <td><%= row.bib_number %></td>
             <td><%= link_to row.full_name, effort_path(row.id) %></td>
             <td class="text-nowrap"><%= row.bio_historic %></td>
-            <td class="text-right"><%= time_format_hhmm(row.over_under_due) %></td>
+            <td class="text-center"><%= row.last_reported_split_name %></td>
+            <td class="text-nowrap text-right"><%= l(row.last_reported_when, format: :day_and_military) %></td>
             <td class="text-center"><%= row.due_next_split_name %></td>
-            <td class="text-right"><%= l(row.due_next_when, format: :day_and_military) %></td>
+            <td class="text-nowrap text-right"><%= l(row.due_next_when, format: :day_and_military) %></td>
+            <td class="text-right"><%= time_format_hhmm(row.over_under_due) %></td>
           </tr>
       <% end %>
       </tbody>

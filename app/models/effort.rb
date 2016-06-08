@@ -11,7 +11,7 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
-  attr_accessor :start_time_attr, :over_under_due, :last_reported_split_time, :next_expected_split_time, :suggested_match, :segment_time
+  attr_accessor :start_time_attr, :over_under_due, :last_reported_split_time_attr, :next_expected_split_time, :suggested_match, :segment_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
@@ -74,6 +74,14 @@ class Effort < ActiveRecord::Base
   end
 
   # Methods regarding split_times
+
+  def last_reported_split_time
+    last_reported_split_time_attr || last_reported_split_time_calc
+  end
+
+  def last_reported_split_time_calc
+    ordered_split_times.last
+  end
 
   def finished?
     finish_split_time.present?
@@ -140,20 +148,6 @@ class Effort < ActiveRecord::Base
 
   def ordered_split_times
     split_times.ordered
-  end
-
-  def previous_split_time(split_time)
-    ordered_times = ordered_split_times
-    position = ordered_times.index(split_time)
-    return nil if position.nil?
-    position == 0 ? nil : ordered_times[position - 1]
-  end
-
-  def previous_valid_split_time(split_time)
-    ordered_times = split_times.valid_status.union(id: split_time.id).ordered
-    position = ordered_times.index(split_time)
-    return nil if position.nil?
-    position == 0 ? nil : ordered_times[position - 1]
   end
 
   def combined_places

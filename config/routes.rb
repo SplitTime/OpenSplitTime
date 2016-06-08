@@ -80,6 +80,11 @@ Rails.application.routes.draw do
   end
 
   namespace :live do
+    resources :events, only: :show do
+      member { get :live_entry }
+      member { get :progress_report }
+      member { get :live_aid_stations }
+    end
     get 'live_entry/:id', to: 'live_entry#show'
     get 'live_entry/:id/get_event_data', to: 'live_entry#get_event_data'
     get 'live_entry/:id/get_effort', to: 'live_entry#get_effort'

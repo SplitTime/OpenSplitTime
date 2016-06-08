@@ -3,11 +3,11 @@ last_split_time = effort ? effort.last_reported_split_time : nil
 last_split = last_split_time ? last_split_time.split : nil
 bitkey = last_split_time ? last_split_time.sub_split_bitkey : nil
 if effort.dropped?
-    report_text = last_split ? "Dropped at #{last_split.base_name} as of #{day_time_format(last_split_time.day_and_time)}" : nil
+    report_text = last_split ? "Dropped at #{last_split.base_name} as of #{l(last_split_time.day_and_time, format: :day_and_military)}" : nil
 elsif effort.finished?
-    report_text = last_split ? "Finished as of #{day_time_format(last_split_time.day_and_time)}" : nil
+    report_text = last_split ? "Finished as of #{l(last_split_time.day_and_time, format: :day_and_military)}" : nil
 else
-    report_text = last_split ? "#{last_split.name(bitkey)} • #{day_time_format(last_split_time.day_and_time)}" : nil
+    report_text = last_split ? "#{last_split.name(bitkey)} • #{l(last_split_time.day_and_time, format: :day_and_military)}" : nil
 end
 
 {

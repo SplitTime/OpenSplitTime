@@ -27,10 +27,8 @@
             <th>Bib</th>
             <th>Name</th>
             <th>Category</th>
-            <th class="text-center">Last Reported Where</th>
-            <th class="text-center">Last Reported When</th>
-            <th class="text-center">Due Next Where</th>
-            <th class="text-right">Due Next When</th>
+            <th class="text-center">Last Reported</th>
+            <th class="text-center">Due Next</th>
             <th class="text-right">Overdue By</th>
 
           </tr>
@@ -39,12 +37,10 @@
           <% @progress_display.past_due_progress_rows.each do |row| %>
               <tr>
                 <td><%= row.bib_number %></td>
-                <td><%= link_to row.full_name, effort_path(row.id) %></td>
+                <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.id) %></td>
                 <td class="text-nowrap"><%= row.bio_historic %></td>
-                <td class="text-center"><%= row.last_reported_split_name %></td>
-                <td class="text-nowrap text-right"><%= l(row.last_reported_when, format: :day_and_military) %></td>
-                <td class="text-center"><%= row.due_next_split_name %></td>
-                <td class="text-nowrap text-right"><%= l(row.due_next_when, format: :day_and_military) %></td>
+                <td class="text-center text-nowrap"><%= "#{row.last_reported_split_name}, #{l(row.last_reported_when, format: :day_and_military)}" %></td>
+                <td class="text-center text-nowrap"><%= "#{row.due_next_split_name}, #{l(row.due_next_when, format: :day_and_military)}" %></td>
                 <td class="text-right"><%= time_format_hhmm(row.over_under_due) %></td>
               </tr>
           <% end %>

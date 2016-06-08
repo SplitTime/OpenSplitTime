@@ -65,7 +65,7 @@ class EventProgressDisplay
                                  .ordered
                                  .group_by(&:effort_id)
     efforts_in_progress.each do |effort|
-      effort.last_reported_split_time = event_split_times[effort.id].last
+      effort.last_reported_split_time_attr = event_split_times[effort.id].last
       bitkey_hash = due_next_bitkey_hash(effort)
       effort.start_time_attr = event_start_time + effort.start_offset
       effort.next_expected_split_time = SplitTime.new(effort_id: effort.id,

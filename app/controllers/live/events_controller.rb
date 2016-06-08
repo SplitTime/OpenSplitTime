@@ -1,13 +1,23 @@
-class Live::LiveEntryController < Live::BaseController
+class Live::EventsController < Live::BaseController
 
   before_action :set_event
 
-  def show
-    authorize :live_entry, :show?
+  def live_entry
+    authorize @event
+  end
+
+  def aid_station_report
+    authorize @event
+    @aid_stations_display = AidStationsDisplay.new(@event)
+  end
+
+  def progress_report
+    authorize @event
+    @progress_display = EventProgressDisplay.new(@event)
   end
 
   def get_event_data
-    authorize :live_entry, :get_event_data?
+    authorize @event
     render partial: 'event_data.json.ruby'
   end
 
@@ -27,13 +37,13 @@ class Live::LiveEntryController < Live::BaseController
     # If the lookup fails here (bibNumber or eventId is incorrect), return { success: false }
     # lastReportedSplitTime comes from the splits table for this "effort"
     # estimatedTime range
-    authorize :live_entry, :get_effort?
+    authorize @event
     render partial: 'effort_data.json.ruby'
   end
 
   def get_time_from_last
 
-    authorize :live_entry, :get_time_from_last?
+    authorize @event
     render partial: 'time_from_last.json.ruby'
    end
 
@@ -42,7 +52,7 @@ class Live::LiveEntryController < Live::BaseController
     #@effort = Effort.find(params[:effortId])
     #@split = Split.find(params[:lastReportedSplitId])
 
-    authorize :live_entry, :get_time_spent?
+    authorize @event
     #TODO: Mark
     render :json => {
         success: true,
@@ -52,7 +62,7 @@ class Live::LiveEntryController < Live::BaseController
 
   def set_split_times
 
-    authorize :live_entry, :set_split_times?
+    authorize @event
     # TODO: MARK!
     # Efforts come in as an array
     # access efforts as params[:efforts]

@@ -1,7 +1,16 @@
-<div class="row">
-  <div class="col-xs-6">
-    <h2><%= @aid_stations_display.event_name %></h2>
-    <h3><%= "Live Aid Stations Report - #{@aid_stations_display.efforts_started_count} entrants started" %></h3>
+<div class="row header">
+
+  <div class="col-xs-8 page-title">
+    <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Progress report', progress_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Aid station report', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+      <h2><%= @aid_stations_display.event_name %></h2>
+      <h3><%= "Live Aid Stations Report - #{@aid_stations_display.efforts_started_count} entrants started" %></h3>
+    </div>
   </div>
 </div>
 <hr>

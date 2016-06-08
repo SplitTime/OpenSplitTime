@@ -33,7 +33,7 @@
 
 
         getEventLiveEntryData: function () {
-            return $.get('/live/live_entry/' + liveEntry.currentEventId + '/get_event_data', function (response) {
+            return $.get('/live/events/' + liveEntry.currentEventId + '/get_event_data', function (response) {
                 liveEntry.eventLiveEntryData = response
 
             })
@@ -214,9 +214,8 @@
 
                             // Ajax endpoint for the effort data
                             var data = {bibNumber: bibNumber};
-                            $.get('/live/live_entry/' + liveEntry.currentEventId + '/get_effort', data, function (response) {
+                            $.get('/live/events/' + liveEntry.currentEventId + '/get_effort', data, function (response) {
                                 if (response.success == true) {
-                                	console.log(response);
                                     liveEntry.currentEffortId = response.effortId;
                                     liveEntry.lastReportedSplitId = response.lastReportedSplitId;
                                     liveEntry.lastReportedBitkey = response.lastReportedBitkey;
@@ -262,7 +261,7 @@
                             };
 
                             // TODO: if response.finished = true, set timeFromLastReported and timeSpent to 'n/a'
-                            $.get('/live/live_entry/' + liveEntry.currentEventId + '/get_time_from_last', data, function (response) {
+                            $.get('/live/events/' + liveEntry.currentEventId + '/get_time_from_last', data, function (response) {
                                 if (response.success == true) {
                                     $('#js-last-reported').html(response.timeFromLastReported);
                                 }
@@ -289,7 +288,7 @@
 
                             // currentEffortId may be null here
                             var data = {timeOut: timeOut, effortId: liveEntry.currentEffortId};
-                            $.get('/live/live_entry/' + liveEntry.currentEventId + '/get_time_spent', data, function (response) {
+                            $.get('/live/events/' + liveEntry.currentEventId + '/get_time_spent', data, function (response) {
                                 if (response.success == true) {
                                     $('#js-time-spent').html(response.timeSpent);
                                 }
@@ -568,7 +567,7 @@
                     var $row = $(this).closest('tr');
                     var clickedEffort = JSON.parse(atob($row.attr('data-encoded-effort')));
                     var data = {efforts: [clickedEffort]};
-                    $.get('/live/live_entry/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
+                    $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
                         if (response.success) {
                             $row.find('.js-delete-effort').click();
                         }
@@ -601,7 +600,7 @@
                         data.efforts.push(effortObject);
                     });
 
-                    $.get('/live/live_entry/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
+                    $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
                         if (response.success) {
                             $('#js-delete-all-efforts').click();
                         }
@@ -693,7 +692,7 @@
         } // END splitSlider
     }; // END liveEntry
 
-    $('.live_entry.show').ready(function () {
+    $('.events.live_entry').ready(function () {
         liveEntry.init();
     });
 })(jQuery);

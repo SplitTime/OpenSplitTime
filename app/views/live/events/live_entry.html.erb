@@ -1,5 +1,11 @@
 <div class="row header">
 
+  <div class="col-xs-8 page-title">
+    <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Progress report', progress_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Aid station report', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+  </div>
+
 	<div class="col-xs-8 page-title">
 		<h1>Real-Time Data Entry</h1>
 		<h2></h2>

@@ -80,19 +80,16 @@ Rails.application.routes.draw do
   end
 
   namespace :live do
-    resources :events, only: :show do
+    resources :events, only: [] do
       member { get :live_entry }
       member { get :progress_report }
-      member { get :live_aid_stations }
+      member { get :aid_station_report }
+      member { get :get_event_data }
+      member { get :get_effort }
+      member { get :get_time_from_last }
+      member { get :get_time_spent }
+      member { post :set_split_times }
     end
-    get 'live_entry/:id', to: 'live_entry#show'
-    get 'live_entry/:id/get_event_data', to: 'live_entry#get_event_data'
-    get 'live_entry/:id/get_effort', to: 'live_entry#get_effort'
-    get 'live_entry/:id/get_time_from_last', to: 'live_entry#get_time_from_last'
-    get 'live_entry/:id/get_time_spent', to: 'live_entry#get_time_spent'
-    get 'live_entry/:id/set_split_times', to: 'live_entry#set_split_times'
-    get 'progress_report/:id', to: 'progress_report#show'
-    get 'live_aid_stations/:id', to: 'live_aid_stations#show'
   end
 
 end

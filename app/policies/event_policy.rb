@@ -82,4 +82,32 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def live_entry?
+    @current_user.admin?
+  end
+
+  def progress_report?
+    @current_user.admin?
+  end
+
+  def aid_station_report?
+    @current_user.admin?
+  end
+
+  def get_event_data?
+    @current_user.admin?
+  end
+
+  def get_effort?
+    @current_user.admin?
+  end
+
+  def get_time_from_last?
+    @current_user.admin?
+  end
+
+  def set_split_times?
+    @current_user.admin?
+  end
+
 end

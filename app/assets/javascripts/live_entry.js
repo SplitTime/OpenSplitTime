@@ -216,6 +216,7 @@
                             var data = {bibNumber: bibNumber};
                             $.get('/live/live_entry/' + liveEntry.currentEventId + '/get_effort', data, function (response) {
                                 if (response.success == true) {
+                                	console.log(response);
                                     liveEntry.currentEffortId = response.effortId;
                                     liveEntry.lastReportedSplitId = response.lastReportedSplitId;
                                     liveEntry.lastReportedBitkey = response.lastReportedBitkey;
@@ -388,6 +389,7 @@
              * Valiates the time fields
              *
              * @param string time time format from the input mask
+             * @todo 	Tack on 2 zeros if length = 4
              */
             validateTimeFields: function (time) {
                 time = time.replace(/\D/g, '');
@@ -402,6 +404,13 @@
         /**
          * Contains functionality for efforts cache table
          *
+         * TODO: Efforts need to send back the following fields:
+         * 		- EffortId
+         * 		- SplitId
+         * 		- timeFromStartIn: (int) seconds from start
+         * 		- timeFromStartOut: (int) seconds from start
+         *   	- PacerIn / PacerOut: (bool)
+         * TODO: Refactor this code with new namespace - 'timesDataTable'
          */
         effortsDataTable: {
 
@@ -452,6 +461,8 @@
                     thisEffort.effortName = $('#js-effort-name').html();
                     thisEffort.timeIn = $('#js-time-in').val();
                     thisEffort.timeOut = $('#js-time-out').val();
+
+                    // TODO: need to save TimeFromStartIn and TimeFromStartOut
                     if ($('#js-pacer-in').prop('checked') == true) {
                         thisEffort.pacerIn = true;
                         thisEffort.pacerInHtml = 'Yes';
@@ -489,6 +500,7 @@
             /**
              * Add a new row to the table (with js dataTables enabled)
              *
+             * @todo  when adding a 
              * @param object effort Pass in the object of the effort to add
              */
             addEffortToTable: function (effort) {

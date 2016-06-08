@@ -21,7 +21,7 @@ class EventProgressDisplay
   end
 
   def efforts_started_count
-    efforts.count
+    efforts_started.count
   end
 
   def efforts_finished_count
@@ -122,6 +122,10 @@ class EventProgressDisplay
     ordered_splits.map(&:id)
   end
 
+  def efforts_started
+    efforts.select { |effort| event_split_times[effort.id].count > 0 }
+  end
+
   def efforts_finished
     efforts.select { |effort| effort.final_split_id == ordered_split_ids.last }
   end
@@ -131,7 +135,7 @@ class EventProgressDisplay
   end
 
   def efforts_in_progress
-    efforts.select { |effort| effort.dropped_split_id.nil? && (effort.final_split_id != ordered_split_ids.last) }
+    efforts_started.select { |effort| effort.dropped_split_id.nil? && (effort.final_split_id != ordered_split_ids.last) }
   end
 
   def event_start_time

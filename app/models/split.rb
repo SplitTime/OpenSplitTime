@@ -6,8 +6,8 @@ class Split < ActiveRecord::Base
   belongs_to :course
   belongs_to :location
   has_many :split_times, dependent: :destroy
-  has_many :event_splits, dependent: :destroy
-  has_many :events, through: :event_splits
+  has_many :aid_stations, dependent: :destroy
+  has_many :events, through: :aid_stations
 
   accepts_nested_attributes_for :location, allow_destroy: true
 

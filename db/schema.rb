@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531080734) do
+ActiveRecord::Schema.define(version: 20160607165907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "aid_stations", force: :cascade do |t|
+    t.integer  "event_id"
+    t.integer  "split_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.datetime "open_time"
+    t.datetime "close_time"
+    t.integer  "status"
+    t.string   "captain_name"
+    t.string   "comms_chief_name"
+    t.string   "comms_frequencies"
+    t.string   "current_issues"
+  end
+
+  add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
+  add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",        limit: 64, null: false
@@ -49,16 +66,6 @@ ActiveRecord::Schema.define(version: 20160531080734) do
 
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id", using: :btree
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id", using: :btree
-
-  create_table "event_splits", force: :cascade do |t|
-    t.integer  "event_id"
-    t.integer  "split_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "event_splits", ["event_id"], name: "index_event_splits_on_event_id", using: :btree
-  add_index "event_splits", ["split_id"], name: "index_event_splits_on_split_id", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.integer  "course_id",             null: false
@@ -202,10 +209,10 @@ ActiveRecord::Schema.define(version: 20160531080734) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "aid_stations", "events"
+  add_foreign_key "aid_stations", "splits"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "participants"
-  add_foreign_key "event_splits", "events"
-  add_foreign_key "event_splits", "splits"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "races"
   add_foreign_key "interests", "participants"

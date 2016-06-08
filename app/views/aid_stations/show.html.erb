@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-xs-6">
+    <h2><%= "#{@aid_station.split_name} - #{@aid_station.event_name}" %></h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
+    <strong><%= "Opens: #{l @aid_station.open_time, format: :day_and_military}" if @aid_station.open_time %></strong><br/>
+    <strong><%= "Closes: #{l @aid_station.close_time, format: :day_and_military}" if @aid_station.close_time %></strong><br/>
+    <strong>Course:</strong>
+    <%= link_to @aid_station.course_name, course_path(@aid_station.course) %>
+    <% if @aid_station.race %> |
+        <strong>Race:</strong>
+        <%= link_to @aid_station.race_name, race_path(@aid_station.race) %>
+    <% end %><br/>
+    <strong><%= "Aid Captain: #{@aid_station.captain_name}" %></strong><br/>
+    <strong><%= "Communications Chief: #{@aid_station.comms_chief_name}" %></strong><br/>
+    <strong><%= "Radio Frequencies: #{@aid_station.comms_frequencies}" %></strong><br/>
+    <strong><%= "Issues: #{@aid_station.current_issues}" %></strong><br/>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12">
+    <%= link_to '<< Back to admin', event_path(@aid_station.event), class: "btn btn-sm btn-default" %>
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
+    <% if @current_user && @current_user.authorized_to_edit?(@aid_station.event) %>
+        <%= link_to 'Edit this aid_station', edit_aid_station_path(@aid_station), class: "btn btn-sm btn-primary" %>
+    <% end %>
+  </div>
+</div>
+<% if @aid_station.efforts_recorded_out %>
+    <hr>
+    <%= "Of #{@aid_station.event.efforts_started} efforts started:" %>
+    <%= "#{@aid_station.efforts_in_aid} have reported into but not out of this station" %>
+    <%= "#{@aid_station.efforts_dropped_at_station} have dropped at this station" %>
+    <%= "#{@aid_station.efforts_recorded_out} have reported times out of this station" %>
+    <%= "#{@aid_station.efforts_passed_without_record} were not recorded here but were recorded at a later station" %>
+<% end %>

@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   end
   resources :split_times
   resources :interests
+  resources :aid_stations, except: [:index, :new, :create]
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout
@@ -86,6 +87,7 @@ Rails.application.routes.draw do
     get 'live_entry/:id/get_time_spent', to: 'live_entry#get_time_spent'
     get 'live_entry/:id/set_split_times', to: 'live_entry#set_split_times'
     get 'progress_report/:id', to: 'progress_report#show'
+    get 'live_aid_stations/:id', to: 'live_aid_stations#show'
   end
 
 end

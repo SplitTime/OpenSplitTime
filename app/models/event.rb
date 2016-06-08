@@ -5,8 +5,8 @@ class Event < ActiveRecord::Base
   belongs_to :course, touch: true
   belongs_to :race
   has_many :efforts, dependent: :destroy
-  has_many :event_splits, dependent: :destroy
-  has_many :splits, through: :event_splits
+  has_many :aid_stations, dependent: :destroy
+  has_many :splits, through: :aid_stations
 
   validates_presence_of :course_id, :name, :start_time
   validates_uniqueness_of :name, case_sensitive: false
@@ -55,20 +55,6 @@ class Event < ActiveRecord::Base
 
   def split_time_hash
     split_times.group_by(&:bitkey_hash)
-  end
-
-  def data_status_hash(split_time_hash = nil)
-    # Keys are effort_ids; Value is an array with column 0 effort status, columns 1..-1 time status
-    return [] if efforts.count == 0
-    split_time_hash ||= self.split_time_hash
-    event_effort_ids = efforts.pluck(:id)
-    result = event_effort_ids.map { |x| [x, nil] } # The nil is a placeholder for the row's collective data status
-    ordered_split_ids.each do |split_id|
-      hash = Hash[split_time_hash[split_id].map { |row| [row[:effort_id], row[:data_status]] }]
-      result.collect! { |row| row << hash[row[0]] }
-    end
-    result = result.each { |row| row[1] = row[2..-1].compact.min } # Set row[1] to the minimum data status of the other rows
-    Hash[result.map { |row| [row[0], row[1..-1]] }]
   end
 
   def efforts_sorted

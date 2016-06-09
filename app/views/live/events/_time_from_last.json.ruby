@@ -9,6 +9,6 @@ time_from_last = last_split_time ? time_from_start - last_split_time.time_from_s
 
 {
     success: time_from_last ? true : false,
-    timeFromLastReported: time_from_last,
-    timeFromStart: time_from_start
+    timeFromLastReported: time_format_hhmm(time_from_last),
+    timeFromStartIn: time_from_start
 }.to_json

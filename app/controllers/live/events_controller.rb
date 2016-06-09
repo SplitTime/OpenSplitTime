@@ -41,6 +41,11 @@ class Live::EventsController < Live::BaseController
   end
 
   def get_time_from_last
+
+    # params must include effortId, splitId, lastReportedSplitId, lastReportedBitkey, and timeIn (military time)
+    # This endpoint returns a hash of three elements: {success (boolean),
+    # timeFromLastReported (formatted string "hh:mm"), and timeFromStartIn (seconds) }
+
     authorize @event
     render partial: 'time_from_last.json.ruby'
    end
@@ -59,7 +64,7 @@ class Live::EventsController < Live::BaseController
 
     # params must include effortId, splitId, timeFromStartIn, timeFromStartOut
     # This returns a hash of five elements: {success (boolean), timeInExists (boolean), timeOutExists (boolean),
-    # timeInStatus ('bad', 'questionable', or 'good'), and timeOutStatus (same)}
+    # timeInStatus ('bad', 'questionable', or 'good'), and timeOutStatus ('bad', 'questionable', or 'good')}
 
     authorize @event
     render partial: 'verify_times.json.ruby'

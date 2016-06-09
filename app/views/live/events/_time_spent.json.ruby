@@ -1,5 +1,5 @@
 effort = Effort.find(params[:effortId])
-time_from_start_in = params[:timeFromStartIn]
+time_from_start_in = params[:timeFromStartIn].to_f
 subject_split = Split.find(params[:splitId])
 day_and_time = (effort && subject_split) ? effort.likely_intended_time(params[:timeOut], subject_split) :nil
 time_from_start_out = day_and_time ? day_and_time - effort.start_time : nil

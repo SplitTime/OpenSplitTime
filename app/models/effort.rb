@@ -142,6 +142,36 @@ class Effort < ActiveRecord::Base
     working_datetime + ((((working_datetime - expected_day_and_time({split.id => 1})) * -1) / 1.day).round(0) * 1.day)
   end
 
+  def expected_day_and_time(bitkey_hash, event_segment_calcs = nil)
+    start_time + expected_time_from_start(bitkey_hash, event_segment_calcs)
+  end
+
+  def expected_time_from_start(bitkey_hash, event_segment_calcs = nil)
+    return nil if dropped?
+    split_times = ordered_split_times.to_a
+    start_split_time = split_times.first
+    start_bitkey_hash = start_split_time.bitkey_hash
+    return 0 if bitkey_hash == start_bitkey_hash
+    subject_split_time = split_times.find { |split_time| split_time.bitkey_hash == bitkey_hash }
+    prior_split_time = subject_split_time ?
+        split_times[split_times.index(subject_split_time) - 1] :
+        split_times.last
+    event_segment_calcs ||= EventSegmentCalcs.new(event)
+    completed_segment = Segment.new(start_bitkey_hash, prior_split_time.bitkey_hash)
+    subject_segment = Segment.new(prior_split_time.bitkey_hash, bitkey_hash)
+    completed_segment_calcs = event_segment_calcs.fetch_calculations(completed_segment)
+    subject_segment_calcs = event_segment_calcs.fetch_calculations(subject_segment)
+    pace_baseline = completed_segment_calcs.mean ?
+        completed_segment_calcs.mean :
+        completed_segment.typical_time_by_terrain
+    pace_factor = pace_baseline == 0 ? 1 :
+        prior_split_time.time_from_start / pace_baseline
+    subject_segment_calcs.mean ?
+        (prior_split_time.time_from_start + (subject_segment_calcs.mean * pace_factor)) :
+        (prior_split_time.time_from_start + (subject_segment.typical_time_by_terrain * pace_factor))
+  end
+
+
   def ordered_splits
     event.splits.ordered
   end

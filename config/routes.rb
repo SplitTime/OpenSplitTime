@@ -88,7 +88,10 @@ Rails.application.routes.draw do
       member { get :get_effort }
       member { get :get_time_from_last }
       member { get :get_time_spent }
-      member { post :set_split_times }
+      member { get :verify_times_data }
+      member { post :set_times_data }
+      member { put :aid_station_degrade }
+      member { put :aid_station_advance }
     end
   end
 

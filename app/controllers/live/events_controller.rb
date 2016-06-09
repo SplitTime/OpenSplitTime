@@ -24,7 +24,6 @@ class Live::EventsController < Live::BaseController
 # This endpoint gets called when the admin enters a "bib" number in the live_entry UI.
 #
   def get_effort
-
     # Here look up the effort and populate the json array with data
     # needed for front end processing. The assumption is that this endpoint
     # will take the splitId, bibNumber and eventId used to populate the following fields:
@@ -42,25 +41,31 @@ class Live::EventsController < Live::BaseController
   end
 
   def get_time_from_last
-
     authorize @event
     render partial: 'time_from_last.json.ruby'
    end
 
   def get_time_spent
 
-    #@effort = Effort.find(params[:effortId])
-    #@split = Split.find(params[:lastReportedSplitId])
+    # params must include effortId, splitId, timeFromStartIn (seconds from start), timeOut (military time)
+    # This returns a hash of three elements: {success (boolean), time_in_aid (number of minutes),
+    # and time_from_start_out (seconds from start)}
 
     authorize @event
-    #TODO: Mark
-    render :json => {
-        success: true,
-        timeSpent: "03:00:00"
-    }
+    render partial: 'time_spent.json.ruby'
   end
 
-  def set_split_times
+  def verify_times_data
+
+    # params must include effortId, splitId, timeFromStartIn, timeFromStartOut
+    # This returns a hash of five elements: {success (boolean), timeInExists (boolean), timeOutExists (boolean),
+    # timeInStatus ('bad', 'questionable', or 'good'), and timeOutStatus (same)}
+
+    authorize @event
+    render partial: 'verify_times.json.ruby'
+  end
+
+  def set_times_data
 
     authorize @event
     # TODO: MARK!
@@ -70,6 +75,20 @@ class Live::EventsController < Live::BaseController
         success: true,
         message: params[:efforts]
     }
+  end
+
+  def aid_station_degrade
+    authorize @event
+    aid_station = @event.aid_stations.find(params[:aid_station])
+    aid_station.degrade_status
+    redirect_to aid_station_report_live_event_path(@event)
+  end
+
+  def aid_station_advance
+    authorize @event
+    aid_station = @event.aid_stations.find(params[:aid_station])
+    aid_station.advance_status
+    redirect_to aid_station_report_live_event_path(@event)
   end
 
   private

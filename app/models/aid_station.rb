@@ -35,4 +35,16 @@ class AidStation < ActiveRecord::Base
     event.race
   end
 
+  def degrade_status
+    current_status = AidStation.statuses[status]
+    degraded_status = status ? [current_status - 1, 0].max : 0
+    update(status: degraded_status)
+  end
+
+  def advance_status
+    current_status = AidStation.statuses[status]
+    advanced_status = status ? [current_status + 1, 3].min : 0
+    update(status: advanced_status)
+  end
+
 end

@@ -84,4 +84,39 @@ class Event < ActiveRecord::Base
     ordered_splits.map(&:sub_split_bitkey_hashes).flatten
   end
 
+  def times_data_status(params) # Returns the status of live_entry data
+    effort = efforts.where(id: params[:effortId]).first
+    split_id = params[:splitId].to_i
+    time_in_exists = nil
+    time_out_exists = nil
+    bitkey_hash_in = nil
+    bitkey_hash_out = nil
+    status_hash = {}
+    if effort.present? && split_id.present?
+      split_times_hash = effort.split_times.index_by(&:bitkey_hash)
+      split_time_in = SplitTime.new(effort_id: effort.id,
+                                    split_id: split_id,
+                                    sub_split_bitkey: SubSplit::IN_BITKEY,
+                                    time_from_start: params[:timeFromStartIn])
+      split_time_out = SplitTime.new(effort_id: effort.id,
+                                     split_id: split_id,
+                                     sub_split_bitkey: SubSplit::OUT_BITKEY,
+                                     time_from_start: params[:timeFromStartOut])
+      bitkey_hash_in = split_time_in.bitkey_hash
+      bitkey_hash_out = split_time_out.bitkey_hash
+      time_in_exists = split_times_hash[bitkey_hash_in].present?
+      time_out_exists = split_times_hash[bitkey_hash_out].present?
+      split_times_hash[bitkey_hash_in] = split_time_in
+      split_times_hash[bitkey_hash_out] = split_time_out
+      ordered_bitkey_hashes = ordered_splits.to_a.map(&:sub_split_bitkey_hashes).flatten
+      ordered_split_times = ordered_bitkey_hashes.collect { |key_hash| split_times_hash[key_hash] }
+      status_hash = DataStatusService.live_entry_data_status(self, ordered_split_times)
+    end
+    {success: effort.present? && split_id.present?,
+     timeInExists: time_in_exists,
+     timeOutExists: time_out_exists,
+     timeInStatus: status_hash[bitkey_hash_in],
+     timeOutStatus: status_hash[bitkey_hash_out]}
+  end
+
 end

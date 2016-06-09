@@ -106,7 +106,23 @@ class EventPolicy
     @current_user.admin?
   end
 
-  def set_split_times?
+  def get_time_spent?
+    @current_user.admin?
+  end
+
+  def verify_times_data?
+    @current_user.admin?
+  end
+
+  def set_times_data?
+    @current_user.admin?
+  end
+
+  def aid_station_degrade?
+    @current_user.admin?
+  end
+
+  def aid_station_advance?
     @current_user.admin?
   end
 

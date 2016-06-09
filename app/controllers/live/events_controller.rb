@@ -83,6 +83,9 @@ class Live::EventsController < Live::BaseController
 
   def set_times_data
 
+    # Each time_data row should include effortId, splitId, timeFromStartIn (seconds), timeFromStartOut (seconds),
+    # pacerIn (boolean), pacerOut (boolean)
+
     authorize @event
     # TODO: MARK!
     # Efforts come in as an array

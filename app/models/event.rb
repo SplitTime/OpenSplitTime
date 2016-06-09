@@ -86,7 +86,7 @@ class Event < ActiveRecord::Base
 
   def times_data_status(params) # Returns the status of live_entry data
     effort = efforts.where(id: params[:effortId]).first
-    split_id = params[:splitId].to_i
+    split_id = params[:splitId].present? ? params[:splitId].to_i : nil
     time_in_exists = nil
     time_out_exists = nil
     bitkey_hash_in = nil

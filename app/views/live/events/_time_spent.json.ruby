@@ -8,5 +8,5 @@ time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out 
 {
     success: time_in_aid ? true : false,
     timeInAid: time_format_minutes(time_in_aid),
-    timeFromStartOut: time_from_start_out,
+    timeFromStartOut: time_from_start_out
 }.to_json

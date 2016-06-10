@@ -29,6 +29,10 @@
 
         lastReportedBitkey: null,
 
+        timeFromStartIn: null,
+
+        timeFromStartOut: null,
+
         splitId: null,
 
 
@@ -164,14 +168,17 @@
              *
              */
             buildSplitSelect: function () {
-
+                var $select = $( '#split-select' );
                 // Populate select list with event splits
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
                 for (var i = 1; i < liveEntry.eventLiveEntryData.splits.length; i++) {
                     splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].base_name + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
                 }
-                $('#split-select').html(splitItems);
+                $select.html( splitItems );
+                // Syncronize Select with splitId
+                $select.children().first().prop( 'selected', true );
+                liveEntry.splitId = $('option:selected').attr('data-split-id');
             },
         },
 
@@ -263,7 +270,8 @@
                             // TODO: if response.finished = true, set timeFromLastReported and timeSpent to 'n/a'
                             $.get('/live/events/' + liveEntry.currentEventId + '/get_time_from_last', data, function (response) {
                                 if (response.success == true) {
-                                    $('#js-last-reported').html(response.timeFromLastReported);
+                                    $('#js-last-reported').html( response.timeFromLastReported );
+                                    liveEntry.timeFromStartIn = response.timeFromStartIn;
                                 }
                                 if (event.shiftKey) {
                                     $('#js-bib-number').focus();
@@ -287,12 +295,19 @@
                         if (liveEntry.liveEntryForm.validateTimeFields(timeOut)) {
 
                             // currentEffortId may be null here
-                            var data = {timeOut: timeOut, effortId: liveEntry.currentEffortId};
+                            var data = {
+                                timeOut: timeOut,
+                                effortId: liveEntry.currentEffortId,
+                                splitId: liveEntry.splitId,
+                                timeFromStartIn: liveEntry.timeFromStartIn
+                            };
+
                             $.get('/live/events/' + liveEntry.currentEventId + '/get_time_spent', data, function (response) {
-                                if (response.success == true) {
-                                    $('#js-time-spent').html(response.timeSpent);
+                                if ( response.success == true ) {
+                                    $('#js-time-spent').html( response.timeInAid );
+                                    liveEntry.timeFromStartOut = response.timeFromStartOut;
                                 }
-                                if (event.shiftKey) {
+                                if ( event.shiftKey ) {
                                     $('#js-time-in').focus();
                                 } else {
                                     $('#js-pacer-in').focus();
@@ -435,56 +450,71 @@
                 $('#js-add-to-cache').on('click', function (event) {
                     event.preventDefault();
 
-                    var thisEffort = {};
+                    var data = {
+                        effortId: liveEntry.currentEffortId,
+                        splitId: liveEntry.splitId,
+                        timeFromStartIn: liveEntry.timeFromStartIn,
+                        timeFromStartOut: liveEntry.timeFromStartOut
+                    };
 
-                    // Check table stored efforts for highest unique ID then create a new one.
-                    var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                    var storedUniqueIds = [];
-                    if (storedEfforts.length > 0) {
-                        $.each(storedEfforts, function (index, value) {
-                            storedUniqueIds.push(this.uniqueId);
-                        });
-                        var highestUniqueId = Math.max.apply(Math, storedUniqueIds);
-                        thisEffort.uniqueId = highestUniqueId + 1;
-                    } else {
-                        thisEffort.uniqueId = 0;
-                    }
+                    $.get('/live/events/' + liveEntry.currentEventId + '/verify_times_data', data, function (response) {
+                        if ( response.success == true ) {
+                            var thisEffort = {};
 
-                    // Build up the effort
-                    thisEffort.eventId = liveEntry.currentEventId;
-                    thisEffort.splitId = $(document).find('#split-select option:selected').attr('data-split-id');
-                    thisEffort.splitName = $(document).find('#split-select option:selected').html();
-                    thisEffort.effortId = liveEntry.currentEffortId;
-                    thisEffort.bibNumber = $('#js-bib-number').val();
-                    thisEffort.liveBib = $('#js-live-bib').val();
-                    thisEffort.effortName = $('#js-effort-name').html();
-                    thisEffort.timeIn = $('#js-time-in').val();
-                    thisEffort.timeOut = $('#js-time-out').val();
+                            // Check table stored efforts for highest unique ID then create a new one.
+                            var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+                            var storedUniqueIds = [];
+                            if (storedEfforts.length > 0) {
+                                $.each(storedEfforts, function (index, value) {
+                                    storedUniqueIds.push(this.uniqueId);
+                                });
+                                var highestUniqueId = Math.max.apply(Math, storedUniqueIds);
+                                thisEffort.uniqueId = highestUniqueId + 1;
+                            } else {
+                                thisEffort.uniqueId = 0;
+                            }
 
-                    // TODO: need to save TimeFromStartIn and TimeFromStartOut
-                    if ($('#js-pacer-in').prop('checked') == true) {
-                        thisEffort.pacerIn = true;
-                        thisEffort.pacerInHtml = 'Yes';
-                    } else {
-                        thisEffort.pacerIn = false;
-                        thisEffort.pacerInHtml = 'No';
-                    }
-                    if ($('#js-pacer-out').prop('checked') == true) {
-                        thisEffort.pacerOut = true;
-                        thisEffort.pacerOutHtml = 'Yes';
-                    } else {
-                        thisEffort.pacerOut = false;
-                        thisEffort.pacerOutHtml = 'No';
-                    }
-                    if (!liveEntry.effortsCache.isMatchedEffort(thisEffort)) {
-                        storedEfforts.push(thisEffort);
-                        liveEntry.effortsCache.setStoredEfforts(storedEfforts);
-                        liveEntry.effortsDataTable.addEffortToTable(thisEffort);
-                    }
+                            // Build up the effort
+                            thisEffort.eventId = liveEntry.currentEventId;
+                            thisEffort.splitId = liveEntry.splitId;
+                            thisEffort.splitName = $(document).find('#split-select option:selected').html();
+                            thisEffort.effortId = liveEntry.currentEffortId;
+                            thisEffort.timeFromStartIn = liveEntry.timeFromStartIn;
+                            thisEffort.timeFromStartOut = liveEntry.timeFromStartOut;
+                            thisEffort.timeInStatus = response.timeInStatus;
+                            thisEffort.timeOutStatus = response.timeOutStatus;
+                            thisEffort.bibNumber = $('#js-bib-number').val();
+                            thisEffort.liveBib = $('#js-live-bib').val();
+                            thisEffort.effortName = $('#js-effort-name').html();
+                            thisEffort.timeIn = $('#js-time-in').val();
+                            thisEffort.timeOut = $('#js-time-out').val();
 
-                    // Clear data and disable fields once we've collected all the data
-                    liveEntry.liveEntryForm.clearSplitsData();
-                    liveEntry.liveEntryForm.toggleFields(false);
+                            // TODO: need to save TimeFromStartIn and TimeFromStartOut
+                            if ($('#js-pacer-in').prop('checked') == true) {
+                                thisEffort.pacerIn = true;
+                                thisEffort.pacerInHtml = 'Yes';
+                            } else {
+                                thisEffort.pacerIn = false;
+                                thisEffort.pacerInHtml = 'No';
+                            }
+                            if ($('#js-pacer-out').prop('checked') == true) {
+                                thisEffort.pacerOut = true;
+                                thisEffort.pacerOutHtml = 'Yes';
+                            } else {
+                                thisEffort.pacerOut = false;
+                                thisEffort.pacerOutHtml = 'No';
+                            }
+                            if (!liveEntry.effortsCache.isMatchedEffort(thisEffort)) {
+                                storedEfforts.push(thisEffort);
+                                liveEntry.effortsCache.setStoredEfforts(storedEfforts);
+                                liveEntry.effortsDataTable.addEffortToTable(thisEffort);
+                            }
+
+                            // Clear data and disable fields once we've collected all the data
+                            liveEntry.liveEntryForm.clearSplitsData();
+                            liveEntry.liveEntryForm.toggleFields(false);
+                        }
+                    });
                     return false;
                 });
             },
@@ -502,19 +532,26 @@
              * @todo  when adding a 
              * @param object effort Pass in the object of the effort to add
              */
-            addEffortToTable: function (effort) {
+            addEffortToTable: function ( effort ) {
+
+                var rowClass = '';
+                if ( effort.timeInStatus === 'bad' || effort.timeOutStatus === 'bad' ) {
+                    rowClass = 'bad';
+                } else if ( effort.timeInStatus === 'questionable' || effort.timeOutStatus === 'questionable' ) {
+                    rowClass = 'questionable';
+                }
 
                 // Base64 encode the stringifyed effort to add to the effort row
                 // This is ie9 incompatible
                 var base64encodedEffort = btoa(JSON.stringify(effort));
                 var trHtml = '\
-					<tr class="effort-station-row js-effort-station-row" data-encoded-effort="' + base64encodedEffort + '" >\
+					<tr class="effort-station-row js-effort-station-row ' + rowClass + '" data-encoded-effort="' + base64encodedEffort + '" >\
 						<td class="split-name js-split-name">' + effort.splitName + '</td>\
 						<td class="bib-number js-bib-number">' + effort.bibNumber + '</td>\
-						<td class="time-in js-time-in">' + effort.timeIn + '</td>\
-						<td class="time-out js-time-out">' + effort.timeOut + '</td>\
+						<td class="time-in js-time-in ' + effort.timeInStatus + '">' + effort.timeIn + '</td>\
+						<td class="time-out js-time-out ' + effort.timeOutStatus + '">' + effort.timeOut + '</td>\
 						<td class="pacer-in js-pacer-in">' + effort.pacerInHtml + '</td>\
-						<td class="pacer-out js-pacer-out">' + effort.pacerInHtml + '</td>\
+						<td class="pacer-out js-pacer-out">' + effort.pacerOutHtml + '</td>\
 						<td class="effort-name js-effort-name">' + effort.effortName + '</td>\
 						<td class="row-edit-btns">\
 							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
@@ -618,6 +655,7 @@
              */
             init: function () {
                 liveEntry.splitSlider.buildSplitSlider();
+                liveEntry.splitSlider.changeSplitSlider( liveEntry.splitId );
             },
 
             /**
@@ -648,6 +686,7 @@
                     setTimeout(function () {
                         $('#js-split-slider').addClass('animate');
                         liveEntry.splitSlider.changeSplitSlider(selectedItemId); // TODO: set liveEntry.splitId here??
+                        liveEntry.splitId = selectedItemId;
                         setTimeout(function () {
                             $('#js-split-slider').removeClass('animate');
                         }, 600);

@@ -18,8 +18,8 @@ class Course < ActiveRecord::Base
   end
 
   def update_initial_splits
-    splits.start.first.update(description: "Starting point for the #{name} course.")
-    splits.finish.first.update(description: "Finish point for the #{name} course.")
+    splits.start.first.update(description: "Starting point for the #{name} course.") if splits.start.present?
+    splits.finish.first.update(description: "Finish point for the #{name} course.") if splits.finish.present?
   end
 
   def relevant_efforts(target_time, max_events = 5, min_efforts = 20)

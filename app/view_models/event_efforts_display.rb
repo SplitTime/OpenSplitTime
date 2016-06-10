@@ -57,7 +57,7 @@ class EventEffortsDisplay
 
   def finish_status(effort)
     return effort.time_from_start if effort.final_split_id == event_final_split_id
-    return "Dropped at #{effort.final_split_name}" if effort.final_split_id
+    return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
     "In progress"
   end
 

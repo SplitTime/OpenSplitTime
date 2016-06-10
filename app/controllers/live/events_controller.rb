@@ -89,7 +89,8 @@ class Live::EventsController < Live::BaseController
     authorize @event
     # TODO: MARK!
     # Efforts come in as an array
-    # access efforts as params[:efforts]
+
+    ManualSplitTimeImporter.new(@event, params[:timeDataRows])
     render :json => {
         success: true,
         message: params[:efforts]

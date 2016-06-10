@@ -5,6 +5,7 @@ class EventProgressDisplay
 
   # initialize(event)
   # event is an ordinary event object
+  # past_due_threshold is number of minutes (int or string)
 
   def initialize(event, past_due_threshold = nil)
     @event = event

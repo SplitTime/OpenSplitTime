@@ -33,7 +33,7 @@
 
         timeFromStartOut: null,
 
-        splitId: null,
+        currentSplitId: null,
 
 
         getEventLiveEntryData: function () {
@@ -54,85 +54,85 @@
             // Sets the currentEventId once
             liveEntry.currentEventId = $('#js-event-id').text();
             liveEntry.getEventLiveEntryData().done(function () {
-                liveEntry.effortsCache.init();
+                liveEntry.timeRowsCache.init();
                 liveEntry.header.init();
                 liveEntry.liveEntryForm.init();
-                liveEntry.effortsDataTable.init();
+                liveEntry.timeRowsTable.init();
                 liveEntry.splitSlider.init();
             });
         },
 
         /**
-         * Contains functionality for the efforts cache
+         * Contains functionality for the times data cache
          *
          */
-        effortsCache: {
+        timeRowsCache: {
 
             /**
-             * Inits the efforts cache
+             * Inits the times data cache
              *
              */
             init: function () {
 
                 // Set the initial cache object in local storage
-                var effortsCache = localStorage.getItem('effortsCache');
-                if (effortsCache === null || effortsCache.length == 0) {
-                    localStorage.setItem('effortsCache', JSON.stringify([]));
+                var timeRowsCache = localStorage.getItem('timeRowsCache');
+                if (timeRowsCache === null || timeRowsCache.length == 0) {
+                    localStorage.setItem('timeRowsCache', JSON.stringify([]));
                 }
             },
 
             /**
-             * Get local data Efforts Storage Object
+             * Get local timeRows Storage Object
              *
              * @return object Returns object from local storage
              */
-            getStoredEfforts: function () {
-                return JSON.parse(localStorage.getItem('effortsCache'))
+            getStoredTimeRows: function () {
+                return JSON.parse(localStorage.getItem('timeRowsCache'))
             },
 
             /**
-             * Stringify then Save/Push all efforts to local object
+             * Stringify then Save/Push all timeRows to local object
              *
-             * @param object effortsObject Pass in the object of the updated object with all added or removed objects.
+             * @param object timeRowsObject Pass in the object of the updated object with all added or removed objects.
              * @return null
              */
-            setStoredEfforts: function (effortsObject) {
-                localStorage.setItem('effortsCache', JSON.stringify(effortsObject));
+            setStoredTimeRows: function (timeRowsObject) {
+                localStorage.setItem('timeRowsCache', JSON.stringify(timeRowsObject));
                 return null;
             },
 
             /**
-             * Delete the matching effort
+             * Delete the matching timeRow
              *
-             * @param object    effort    Pass in the object/effort we want to delete.
+             * @param object    timeRow    Pass in the object/timeRow we want to delete.
              * @return null
              */
-            deleteStoredEffort: function (effort) {
-                var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                $.each(storedEfforts, function (index) {
-                    if (this.uniqueId == effort.uniqueId) {
-                        storedEfforts = storedEfforts.slice(index + 1);
+            deleteStoredTimeRow: function (timeRow) {
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                $.each(storedTimeRows, function (index) {
+                    if (this.uniqueId == timeRow.uniqueId) {
+                        storedTimeRows = storedTimeRows.slice(index + 1);
                         return false;
                     }
                 });
-                localStorage.setItem('effortsCache', JSON.stringify(storedEfforts));
+                localStorage.setItem('timeRowsCache', JSON.stringify(storedTimeRows));
                 return null;
             },
 
             /**
-             * Compare effort to all efforts in local storage. Add if it doesn't already exist, or throw an error message.
+             * Compare timeRow to all timeRows in local storage. Add if it doesn't already exist, or throw an error message.
              *
-             * @param  object effort Pass in Object of the effort to check it against the stored objects         *
+             * @param  object timeRow Pass in Object of the timeRow to check it against the stored objects         *
              * @return boolean    True if match found, False if no match found
              */
-            isMatchedEffort: function (effort) {
-                var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                var tempEffort = JSON.stringify(effort);
+            isMatchedTimeRow: function (timeRow) {
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                var tempTimeRow = JSON.stringify(timeRow);
                 var flag = false;
 
-                $.each(storedEfforts, function () {
-                    var loopedEffort = JSON.stringify($(this));
-                    if (loopedEffort == tempEffort) {
+                $.each(storedTimeRows, function () {
+                    var loopedTimeRow = JSON.stringify($(this));
+                    if (loopedTimeRow == tempTimeRow) {
                         flag = true;
                     }
                 });
@@ -178,12 +178,12 @@
                 $select.html( splitItems );
                 // Syncronize Select with splitId
                 $select.children().first().prop( 'selected', true );
-                liveEntry.splitId = $('option:selected').attr('data-split-id');
+                liveEntry.currentSplitId = $('option:selected').attr('data-split-id');
             },
         },
 
         /**
-         * Contains functionality for the effort form
+         * Contains functionality for the timeRow form
          *
          */
         liveEntryForm: {
@@ -219,7 +219,7 @@
                             liveEntry.liveEntryForm.clearSplitsData();
                         } else {
 
-                            // Ajax endpoint for the effort data
+                            // Ajax endpoint for the timeRow data
                             var data = {bibNumber: bibNumber};
                             $.get('/live/events/' + liveEntry.currentEventId + '/get_effort', data, function (response) {
                                 if (response.success == true) {
@@ -227,7 +227,7 @@
                                     liveEntry.lastReportedSplitId = response.lastReportedSplitId;
                                     liveEntry.lastReportedBitkey = response.lastReportedBitkey;
 
-                                    // If success == true, this means the bib number lookup found an "effort"
+                                    // If success == true, this means the bib number lookup found an effort
                                     $('#js-live-bib').val('true');
                                     $('#js-effort-name').html(response.name);
                                     $('#js-effort-last-reported').html(response.reportText)
@@ -264,7 +264,7 @@
                                 effortId: liveEntry.currentEffortId,
                                 lastReportedSplitId: liveEntry.lastReportedSplitId,
                                 lastReportedBitkey: liveEntry.lastReportedBitkey,
-                                splitId: liveEntry.splitId  // TODO: Winter--can we put a listener on the splitSelect menu that will set this and keep it in sync?
+                                splitId: liveEntry.currentSplitId  // TODO: Winter--can we put a listener on the splitSelect menu that will set this and keep it in sync?
                             };
 
                             // TODO: if response.finished = true, set timeFromLastReported and timeSpent to 'n/a'
@@ -298,7 +298,7 @@
                             var data = {
                                 timeOut: timeOut,
                                 effortId: liveEntry.currentEffortId,
-                                splitId: liveEntry.splitId,
+                                splitId: liveEntry.currentSplitId,
                                 timeFromStartIn: liveEntry.timeFromStartIn
                             };
 
@@ -403,11 +403,13 @@
              * Valiates the time fields
              *
              * @param string time time format from the input mask
-             * @todo 	Tack on 2 zeros if length = 4
              */
             validateTimeFields: function (time) {
                 time = time.replace(/\D/g, '');
-                if (time.length == 4 || time.length == 6) {
+                if (time.length == 4) {
+                    time = time.concat('00');
+                }
+                if ((time.length == 0) || (time.length == 6)) {
                     return true;
                 } else {
                     return false;
@@ -416,17 +418,21 @@
         }, // END liveEntryForm form
 
         /**
-         * Contains functionality for efforts cache table
+         * Contains functionality for times data cache table
          *
-         * TODO: Efforts need to send back the following fields:
+         * TODO: timeRows need to send back the following fields:
          * 		- EffortId
          * 		- SplitId
          * 		- timeFromStartIn: (int) seconds from start
          * 		- timeFromStartOut: (int) seconds from start
-         *   	- PacerIn / PacerOut: (bool)
-         * TODO: Refactor this code with new namespace - 'timesDataTable'
+         *   	- PacerIn: (bool)
+         *      - PacerOut: (bool)
+         *      - timeExistsIn (bool)
+         *      - timeExistsOut (bool)
+         *      - timeStatusIn ('good', 'questionable', 'bad')
+         *      - timeStatusOut ('good', 'questionable', 'bad')
          */
-        effortsDataTable: {
+        timeRowsTable: {
 
             /**
              * Stores the object from DataTable
@@ -442,9 +448,9 @@
             init: function () {
 
                 // Initiate DataTable Plugin
-                liveEntry.effortsDataTable.$dataTable = $('#js-provisional-data-table').DataTable();
-                liveEntry.effortsDataTable.populateTableFromCache();
-                liveEntry.effortsDataTable.effortControls();
+                liveEntry.timeRowsTable.$dataTable = $('#js-provisional-data-table').DataTable();
+                liveEntry.timeRowsTable.populateTableFromCache();
+                liveEntry.timeRowsTable.timeRowControls();
 
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
@@ -452,62 +458,62 @@
 
                     var data = {
                         effortId: liveEntry.currentEffortId,
-                        splitId: liveEntry.splitId,
+                        splitId: liveEntry.currentSplitId,
                         timeFromStartIn: liveEntry.timeFromStartIn,
                         timeFromStartOut: liveEntry.timeFromStartOut
                     };
 
                     $.get('/live/events/' + liveEntry.currentEventId + '/verify_times_data', data, function (response) {
                         if ( response.success == true ) {
-                            var thisEffort = {};
+                            var thisTimeRow = {};
 
-                            // Check table stored efforts for highest unique ID then create a new one.
-                            var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
+                            // Check table stored timeRows for highest unique ID then create a new one.
+                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                             var storedUniqueIds = [];
-                            if (storedEfforts.length > 0) {
-                                $.each(storedEfforts, function (index, value) {
+                            if (storedTimeRows.length > 0) {
+                                $.each(storedTimeRows, function (index, value) {
                                     storedUniqueIds.push(this.uniqueId);
                                 });
                                 var highestUniqueId = Math.max.apply(Math, storedUniqueIds);
-                                thisEffort.uniqueId = highestUniqueId + 1;
+                                thisTimeRow.uniqueId = highestUniqueId + 1;
                             } else {
-                                thisEffort.uniqueId = 0;
+                                thisTimeRow.uniqueId = 0;
                             }
 
-                            // Build up the effort
-                            thisEffort.eventId = liveEntry.currentEventId;
-                            thisEffort.splitId = liveEntry.splitId;
-                            thisEffort.splitName = $(document).find('#split-select option:selected').html();
-                            thisEffort.effortId = liveEntry.currentEffortId;
-                            thisEffort.timeFromStartIn = liveEntry.timeFromStartIn;
-                            thisEffort.timeFromStartOut = liveEntry.timeFromStartOut;
-                            thisEffort.timeInStatus = response.timeInStatus;
-                            thisEffort.timeOutStatus = response.timeOutStatus;
-                            thisEffort.bibNumber = $('#js-bib-number').val();
-                            thisEffort.liveBib = $('#js-live-bib').val();
-                            thisEffort.effortName = $('#js-effort-name').html();
-                            thisEffort.timeIn = $('#js-time-in').val();
-                            thisEffort.timeOut = $('#js-time-out').val();
+                            // Build up the timeRow
+                            thisTimeRow.eventId = liveEntry.currentEventId;
+                            thisTimeRow.splitId = $(document).find('#split-select option:selected').attr('data-split-id');
+                            thisTimeRow.splitName = $(document).find('#split-select option:selected').html();
+                            thisTimeRow.effortId = liveEntry.currentEffortId;
+                            thisTimeRow.timeFromStartIn = liveEntry.timeFromStartIn;
+                            thisTimeRow.timeFromStartOut = liveEntry.timeFromStartOut;
+                            thisTimeRow.timeInStatus = response.timeInStatus;
+                            thisTimeRow.timeOutStatus = response.timeOutStatus;
+                            thisTimeRow.bibNumber = $('#js-bib-number').val();
+                            thisTimeRow.liveBib = $('#js-live-bib').val();
+                            thisTimeRow.effortName = $('#js-effort-name').html();
+                            thisTimeRow.timeIn = $('#js-time-in').val();
+                            thisTimeRow.timeOut = $('#js-time-out').val();
 
                             // TODO: need to save TimeFromStartIn and TimeFromStartOut
                             if ($('#js-pacer-in').prop('checked') == true) {
-                                thisEffort.pacerIn = true;
-                                thisEffort.pacerInHtml = 'Yes';
+                                thisTimeRow.pacerIn = true;
+                                thisTimeRow.pacerInHtml = 'Yes';
                             } else {
-                                thisEffort.pacerIn = false;
-                                thisEffort.pacerInHtml = 'No';
+                                thisTimeRow.pacerIn = false;
+                                thisTimeRow.pacerInHtml = 'No';
                             }
                             if ($('#js-pacer-out').prop('checked') == true) {
-                                thisEffort.pacerOut = true;
-                                thisEffort.pacerOutHtml = 'Yes';
+                                thisTimeRow.pacerOut = true;
+                                thisTimeRow.pacerOutHtml = 'Yes';
                             } else {
-                                thisEffort.pacerOut = false;
-                                thisEffort.pacerOutHtml = 'No';
+                                thisTimeRow.pacerOut = false;
+                                thisTimeRow.pacerOutHtml = 'No';
                             }
-                            if (!liveEntry.effortsCache.isMatchedEffort(thisEffort)) {
-                                storedEfforts.push(thisEffort);
-                                liveEntry.effortsCache.setStoredEfforts(storedEfforts);
-                                liveEntry.effortsDataTable.addEffortToTable(thisEffort);
+                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
+                                storedTimeRows.push(thisTimeRow);
+                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                                liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
                             }
 
                             // Clear data and disable fields once we've collected all the data
@@ -520,9 +526,9 @@
             },
 
             populateTableFromCache: function () {
-                var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                $.each(storedEfforts, function (index) {
-                    liveEntry.effortsDataTable.addEffortToTable(this);
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                $.each(storedTimeRows, function (index) {
+                    liveEntry.timeRowsTable.addTimeRowToTable(this);
                 });
             },
 
@@ -530,80 +536,80 @@
              * Add a new row to the table (with js dataTables enabled)
              *
              * @todo  when adding a 
-             * @param object effort Pass in the object of the effort to add
+             * @param object timeRow Pass in the object of the timeRow to add
              */
-            addEffortToTable: function ( effort ) {
+            addTimeRowToTable: function (timeRow) {
 
                 var rowClass = '';
-                if ( effort.timeInStatus === 'bad' || effort.timeOutStatus === 'bad' ) {
+                if ( timeRow.timeInStatus === 'bad' || timeRow.timeOutStatus === 'bad' ) {
                     rowClass = 'bad';
-                } else if ( effort.timeInStatus === 'questionable' || effort.timeOutStatus === 'questionable' ) {
+                } else if ( timeRow.timeInStatus === 'questionable' || timeRow.timeOutStatus === 'questionable' ) {
                     rowClass = 'questionable';
                 }
 
-                // Base64 encode the stringifyed effort to add to the effort row
+                // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible
-                var base64encodedEffort = btoa(JSON.stringify(effort));
+                var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
-					<tr class="effort-station-row js-effort-station-row ' + rowClass + '" data-encoded-effort="' + base64encodedEffort + '" >\
-						<td class="split-name js-split-name">' + effort.splitName + '</td>\
-						<td class="bib-number js-bib-number">' + effort.bibNumber + '</td>\
-						<td class="time-in js-time-in ' + effort.timeInStatus + '">' + effort.timeIn + '</td>\
-						<td class="time-out js-time-out ' + effort.timeOutStatus + '">' + effort.timeOut + '</td>\
-						<td class="pacer-in js-pacer-in">' + effort.pacerInHtml + '</td>\
-						<td class="pacer-out js-pacer-out">' + effort.pacerOutHtml + '</td>\
-						<td class="effort-name js-effort-name">' + effort.effortName + '</td>\
+					<tr class="effort-station-row js-effort-station-row ' + rowClass + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
+						<td class="split-name js-split-name">' + timeRow.splitName + '</td>\
+						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
+                        <td class="time-in js-time-in ' + timeRow.timeInStatus + '">' + timeRow.timeIn + '</td>\
+                        <td class="time-out js-time-out ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + '</td>\
+						<td class="pacer-in js-pacer-in">' + timeRow.pacerInHtml + '</td>\
+						<td class="pacer-out js-pacer-out">' + timeRow.pacerInHtml + '</td>\
+						<td class="effort-name js-effort-name">' + timeRow.effortName + '</td>\
 						<td class="row-edit-btns">\
 							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
 							<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
 							<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
 						</td>\
 					</tr>';
-                liveEntry.effortsDataTable.$dataTable.row.add($(trHtml)).draw();
+                liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw();
             },
 
             /**
              * Move a "cached" table row to "top form" section for editing.
              *
              */
-            effortControls: function () {
+            timeRowControls: function () {
 
                 $(document).on('click', '.js-edit-effort', function (event) {
                     event.preventDefault();
                     var $row = $(this).closest('tr');
-                    var clickedEffort = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
 
-                    // remove Effort from cache
-                    liveEntry.effortsCache.deleteStoredEffort(clickedEffort);
+                    // remove timeRow from cache
+                    liveEntry.timeRowsCache.deleteStoredTimeRow(clickedTimeRow);
 
                     // remove table row
                     $row.fadeOut('fast', function () {
-                        liveEntry.effortsDataTable.$dataTable.row($row).remove().draw();
+                        liveEntry.timeRowsTable.$dataTable.row($row).remove().draw();
                     });
 
                     // Put bib number back into the bib number field
-                    var storedEfforts = liveEntry.effortsCache.getStoredEfforts();
-                    $('#js-bib-number').val(clickedEffort.bibNumber).focus();
+                    var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                    $('#js-bib-number').val(clickedTimeRow.bibNumber).focus();
                 });
 
                 $(document).on('click', '.js-delete-effort', function (event) {
                     var $row = $(this).closest('tr');
-                    var clickedEffort = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
 
-                    // remove Effort from cache
-                    liveEntry.effortsCache.deleteStoredEffort(clickedEffort);
+                    // remove timeRow from cache
+                    liveEntry.timeRowsCache.deleteStoredTimeRow(clickedTimeRow);
 
                     // remove table row
                     $row.fadeOut('fast', function () {
-                        liveEntry.effortsDataTable.$dataTable.row($row).remove().draw();
+                        liveEntry.timeRowsTable.$dataTable.row($row).remove().draw();
                     });
 
                 });
 
                 $(document).on('click', '.js-submit-effort', function () {
                     var $row = $(this).closest('tr');
-                    var clickedEffort = JSON.parse(atob($row.attr('data-encoded-effort')));
-                    var data = {efforts: [clickedEffort]};
+                    var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    var data = {timeRows: [clickedTimeRow]};
                     $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
                         if (response.success) {
                             $row.find('.js-delete-effort').click();
@@ -615,14 +621,14 @@
                     event.preventDefault();
                     $('.js-effort-station-row').each(function () {
                         var $row = $(this).closest('tr');
-                        var effortObject = JSON.parse(atob($row.attr('data-encoded-effort')));
+                        var timeRowObject = JSON.parse(atob($row.attr('data-encoded-effort')));
 
-                        // remove Effort from cache
-                        liveEntry.effortsCache.deleteStoredEffort(effortObject);
+                        // remove timeRow from cache
+                        liveEntry.timeRowsCache.deleteStoredTimeRow(timeRowObject);
 
                         // remove table row
                         $row.fadeOut('fast', function () {
-                            liveEntry.effortsDataTable.$dataTable.row($row).remove().draw();
+                            liveEntry.timeRowsTable.$dataTable.row($row).remove().draw();
                         });
                     });
                     return false;
@@ -630,11 +636,11 @@
 
                 $('#js-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    var data = {efforts: []};
+                    var data = {timeRows: []};
                     $('.js-effort-station-row').each(function () {
                         var $row = $(this).closest('tr');
-                        var effortObject = JSON.parse(atob($row.attr('data-encoded-effort')));
-                        data.efforts.push(effortObject);
+                        var timeRowObject = JSON.parse(atob($row.attr('data-encoded-effort')));
+                        data.timeRows.push(timeRowObject);
                     });
 
                     $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
@@ -645,7 +651,7 @@
                     return false;
                 });
             },
-        }, // END effortsDataTable
+        }, // END timeRowsTable
 
         splitSlider: {
 
@@ -655,7 +661,7 @@
              */
             init: function () {
                 liveEntry.splitSlider.buildSplitSlider();
-                liveEntry.splitSlider.changeSplitSlider( liveEntry.splitId );
+                liveEntry.splitSlider.changeSplitSlider( liveEntry.currentSplitId );
             },
 
             /**
@@ -685,8 +691,8 @@
                     }
                     setTimeout(function () {
                         $('#js-split-slider').addClass('animate');
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId); // TODO: set liveEntry.splitId here??
-                        liveEntry.splitId = selectedItemId;
+                        liveEntry.splitSlider.changeSplitSlider(selectedItemId);
+                        liveEntry.currentSplitId = selectedItemId;
                         setTimeout(function () {
                             $('#js-split-slider').removeClass('animate');
                         }, 600);

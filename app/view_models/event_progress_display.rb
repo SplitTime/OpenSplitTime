@@ -14,7 +14,7 @@ class EventProgressDisplay
     @event_segment_calcs = EventSegmentCalcs.new(event)
     @efforts = event.efforts.sorted_with_finish_status
     set_effort_time_attributes
-    @past_due_threshold = past_due_threshold || 60
+    @past_due_threshold = past_due_threshold.to_i || 60
     @progress_rows = []
     create_progress_rows
   end

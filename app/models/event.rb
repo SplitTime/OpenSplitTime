@@ -110,7 +110,7 @@ class Event < ActiveRecord::Base
       split_times_hash[bitkey_hash_out] = split_time_out
       ordered_bitkey_hashes = ordered_splits.to_a.map(&:sub_split_bitkey_hashes).flatten
       ordered_split_times = ordered_bitkey_hashes.collect { |key_hash| split_times_hash[key_hash] }
-      status_hash = DataStatusService.live_entry_data_status(self, ordered_split_times)
+      status_hash = DataStatusService.live_entry_data_status(self, ordered_split_times.compact)
     end
     {success: effort.present? && split_id.present?,
      timeInExists: time_in_exists,

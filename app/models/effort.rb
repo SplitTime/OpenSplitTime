@@ -123,11 +123,12 @@ class Effort < ActiveRecord::Base
     time_array.count > 1 ? time_array.last - time_array.first : nil
   end
 
-  def total_time_in_aid # TODO reduce number of database calls
+  def total_time_in_aid
     total = 0
-    split_times_out = split_times.out
-    split_times_out.each do |unicorn|
-      tia = time_in_aid(unicorn.split)
+    split_times_hash = ordered_split_times.group_by(&:split_id)
+    split_times_hash.each_key do |unicorn|
+      time_array = split_times_hash[unicorn].map(&:time_from_start)
+      tia = time_array.last - time_array.first
       total = tia ? total + tia : total
     end
     total
@@ -139,7 +140,7 @@ class Effort < ActiveRecord::Base
                            .map.with_index { |x, i| x.to_i.send(units[i]) }
                            .reduce(:+).to_i
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
-    expected = expected_day_and_time({split.id => 1}, event_segment_calcs)
+    expected = expected_day_and_time({split.id => SubSplit::IN_BITKEY}, event_segment_calcs)
     working_datetime + ((((working_datetime - expected) * -1) / 1.day).round(0) * 1.day)
   end
 
@@ -149,17 +150,23 @@ class Effort < ActiveRecord::Base
 
   def expected_time_from_start(bitkey_hash, event_segment_calcs = nil)
     return nil if dropped?
-    split_times = ordered_split_times.to_a
-    start_split_time = split_times.first
-    start_bitkey_hash = start_split_time.bitkey_hash
+    split_times_hash = split_times.index_by(&:bitkey_hash)
+    ordered_splits = event.ordered_splits.to_a
+    ordered_bitkey_hashes = ordered_splits.map(&:sub_split_bitkey_hashes).flatten
+    start_bitkey_hash = ordered_bitkey_hashes.first
     return 0 if bitkey_hash == start_bitkey_hash
-    subject_split_time = split_times.find { |split_time| split_time.bitkey_hash == bitkey_hash }
-    prior_split_time = subject_split_time ?
-        split_times[split_times.index(subject_split_time) - 1] :
-        split_times.last # TODO: This causes Segment to raise if the split_time is missing but there are later split_times
+    relevant_bitkey_hashes = ordered_bitkey_hashes[0..(ordered_bitkey_hashes.index(bitkey_hash) - 1)]
+    prior_split_time = relevant_bitkey_hashes.collect { |bh| split_times_hash[bh] }.compact.last
+    prior_bitkey_hash = prior_split_time.bitkey_hash
     event_segment_calcs ||= EventSegmentCalcs.new(event)
-    completed_segment = Segment.new(start_bitkey_hash, prior_split_time.bitkey_hash)
-    subject_segment = Segment.new(prior_split_time.bitkey_hash, bitkey_hash)
+    completed_segment = Segment.new(start_bitkey_hash,
+                                    prior_bitkey_hash,
+                                    ordered_splits.find { |split| split.id == start_bitkey_hash.keys.first },
+                                    ordered_splits.find { |split| split.id == prior_bitkey_hash.keys.first })
+    subject_segment = Segment.new(prior_bitkey_hash,
+                                  bitkey_hash,
+                                  ordered_splits.find { |split| split.id == prior_bitkey_hash.keys.first },
+                                  ordered_splits.find { |split| split.id == bitkey_hash.keys.first })
     completed_segment_calcs = event_segment_calcs.fetch_calculations(completed_segment)
     subject_segment_calcs = event_segment_calcs.fetch_calculations(subject_segment)
     pace_baseline = completed_segment_calcs.mean ?

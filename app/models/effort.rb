@@ -133,13 +133,14 @@ class Effort < ActiveRecord::Base
     total
   end
 
-  def likely_intended_time(military_time, split)
+  def likely_intended_time(military_time, split, event_segment_calcs = nil)
     units = %w(hours minutes seconds)
     seconds_into_day = military_time.split(':')
                            .map.with_index { |x, i| x.to_i.send(units[i]) }
                            .reduce(:+).to_i
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
-    working_datetime + ((((working_datetime - expected_day_and_time({split.id => 1})) * -1) / 1.day).round(0) * 1.day)
+    expected = expected_day_and_time({split.id => 1}, event_segment_calcs)
+    working_datetime + ((((working_datetime - expected) * -1) / 1.day).round(0) * 1.day)
   end
 
   def expected_day_and_time(bitkey_hash, event_segment_calcs = nil)
@@ -155,7 +156,7 @@ class Effort < ActiveRecord::Base
     subject_split_time = split_times.find { |split_time| split_time.bitkey_hash == bitkey_hash }
     prior_split_time = subject_split_time ?
         split_times[split_times.index(subject_split_time) - 1] :
-        split_times.last
+        split_times.last # TODO: This causes Segment to raise if the split_time is missing but there are later split_times
     event_segment_calcs ||= EventSegmentCalcs.new(event)
     completed_segment = Segment.new(start_bitkey_hash, prior_split_time.bitkey_hash)
     subject_segment = Segment.new(prior_split_time.bitkey_hash, bitkey_hash)

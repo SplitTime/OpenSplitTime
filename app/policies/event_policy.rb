@@ -98,19 +98,7 @@ class EventPolicy
     @current_user.admin?
   end
 
-  def get_effort?
-    @current_user.admin?
-  end
-
-  def get_time_from_last?
-    @current_user.admin?
-  end
-
-  def get_time_spent?
-    @current_user.admin?
-  end
-
-  def verify_times_data?
+  def get_live_effort_data?
     @current_user.admin?
   end
 

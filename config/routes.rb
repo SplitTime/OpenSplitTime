@@ -85,10 +85,7 @@ Rails.application.routes.draw do
       member { get :progress_report }
       member { get :aid_station_report }
       member { get :get_event_data }
-      member { get :get_effort }
-      member { get :get_time_from_last }
-      member { get :get_time_spent }
-      member { get :verify_times_data }
+      member { get :get_live_effort_data }
       member { post :set_times_data }
       member { put :aid_station_degrade }
       member { put :aid_station_advance }

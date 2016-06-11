@@ -39,9 +39,9 @@ class DataStatusService
     BulkUpdateService.bulk_update_effort_status(update_effort_hash)
   end
 
-  def self.live_entry_data_status(event, split_times, event_segment_calcs = nil, splits = nil)
+  def self.live_entry_data_status(event, split_times, event_segment_calcs = nil, ordered_splits = nil)
     event_segment_calcs ||= EventSegmentCalcs.new(event)
-    splits ||= event.ordered_splits.index_by(&:id)
+    indexed_splits = ordered_splits.index_by(&:id) || event.ordered_splits.index_by(&:id)
     status_hash = {}
     latest_valid_split_time = split_times.first
 
@@ -53,8 +53,8 @@ class DataStatusService
       else
         segment = Segment.new(latest_valid_split_time.bitkey_hash,
                               split_time.bitkey_hash,
-                              splits[latest_valid_split_time.split_id],
-                              splits[split_time.split_id])
+                              indexed_splits[latest_valid_split_time.split_id],
+                              indexed_splits[split_time.split_id])
         segment_time = split_time.time_from_start - latest_valid_split_time.time_from_start
         status = event_segment_calcs.get_data_status(segment, segment_time)
         latest_valid_split_time = split_time if status == 'good'

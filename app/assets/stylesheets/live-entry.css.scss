@@ -24,6 +24,15 @@ Globals
 	margin: 0 auto 25px;
 }
 
+/***********
+Mixins
+************/
+@mixin transform( $transforms ) {
+	transform: $transforms;
+	-webkit-transform: $transforms;
+	-ms-transform: $transforms;
+}
+
 /******* Header ********/
 .header {
 	@extend .no-gutter;
@@ -168,27 +177,27 @@ Globals
 
 				&.begin {
 					left: 0;
-					transform: translateX(-50%);
+					@include transform( translateX(-50%) );
 					text-align: left;
 					.split-slider-item-name,
 					.split-slider-item-distance {
-						transform: translateX(50%);
+						@include transform( translateX(50%) );
 					}
 				}
 
 				&.middle {
 					left: 50%;
-					transform: translateX(-50%);
+					@include transform( translateX(-50%) );
 					text-align: center;
 				}
 
 				&.end {
 					left: 100%;
-					transform: translateX(-50%);
+					@include transform( translateX(-50%) );
 					text-align: right;
 					.split-slider-item-name,
 					.split-slider-item-distance {
-						transform: translateX(-50%);
+						@include transform( translateX(-50%) );
 					}
 				}
 			}

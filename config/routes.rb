@@ -42,8 +42,8 @@ Rails.application.routes.draw do
     member { delete :delete_all_efforts }
     member { get :reconcile }
     member { post :create_participants }
-    member { get :stage}
-    member { get :spread}
+    member { get :stage }
+    member { get :spread }
   end
   resources :splits do
     member { get :assign_location }
@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   end
   resources :efforts do
     member { put :associate_participant }
-    collection { put :associate_participants}
+    collection { put :associate_participants }
     member { put :edit_split_times }
     member { delete :delete_split }
     member { put :confirm_split }
@@ -92,6 +92,7 @@ Rails.application.routes.draw do
       member { post :set_times_data }
       member { put :aid_station_degrade }
       member { put :aid_station_advance }
+      member { get :aid_station_detail }
     end
   end
 

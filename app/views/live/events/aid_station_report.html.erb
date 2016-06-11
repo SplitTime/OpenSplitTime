@@ -30,18 +30,18 @@
       </tr>
       </thead>
       <tbody>
-      <% @aid_stations_display.aid_stations.each do |aid_station| %>
+      <% @aid_stations_display.aid_station_rows.each do |row| %>
           <tr>
-            <td><%= link_to aid_station.split_name, aid_station_path(aid_station) %></td>
-            <td class="text-right"><%= d(aid_station.split.distance_from_start) %></td>
-            <td class="text-center"><%= aid_station.efforts_recorded_out.count %></td>
-            <td class="text-center"><%= aid_station.efforts_passed_without_record.count %></td>
-            <td class="text-center"><%= aid_station.efforts_dropped_at_station.count %></td>
-            <td class="text-center"><%= aid_station.efforts_expected.count %></td>
+            <td><%= link_to row.split_name, aid_station_detail_live_event_path(@event, aid_station: row.aid_station) %></td>
+            <td class="text-right"><%= d(row.split.distance_from_start) %></td>
+            <td class="text-center"><%= row.efforts_recorded_out.count %></td>
+            <td class="text-center"><%= row.efforts_passed_without_record.count %></td>
+            <td class="text-center"><%= row.efforts_dropped_at_station.count %></td>
+            <td class="text-center"><%= row.efforts_expected.count %></td>
             <td class="text-center text-nowrap">
-              <%= link_to '<<', aid_station_degrade_live_event_path(@event, aid_station: aid_station), method: :put %>
-              <%= aid_station.status.titleize if aid_station.status %>
-              <%= link_to '>>', aid_station_advance_live_event_path(@event, aid_station: aid_station), method: :put %>
+              <%= link_to '<<', aid_station_degrade_live_event_path(@event, aid_station: row.aid_station), method: :put %>
+              <%= row.aid_station.status.titleize if row.aid_station.status %>
+              <%= link_to '>>', aid_station_advance_live_event_path(@event, aid_station: row.aid_station), method: :put %>
             </td>
           </tr>
       <% end %>

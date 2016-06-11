@@ -111,6 +111,12 @@ class Live::EventsController < Live::BaseController
     redirect_to aid_station_report_live_event_path(@event)
   end
 
+  def aid_station_detail
+    authorize @event
+    aid_station = @event.aid_stations.find(params[:aid_station])
+    @aid_station_detail = AidStationDetail.new(aid_station)
+  end
+
   private
 
   def set_event

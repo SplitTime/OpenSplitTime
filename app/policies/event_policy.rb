@@ -126,4 +126,8 @@ class EventPolicy
     @current_user.admin?
   end
 
+  def aid_station_detail?
+    @current_user.admin?
+  end
+
 end

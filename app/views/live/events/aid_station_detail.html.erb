@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-xs-6">
+    <h2><%= "#{@aid_station_detail.split_name} - #{@aid_station_detail.event_name}" %></h2>
+    <h3>Live Aid Station Detail Report</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-4">
+    <strong><%= "Aid station open time: #{l @aid_station_detail.open_time, format: :day_and_military}" if @aid_station_detail.open_time %></strong><br/>
+    <strong><%= "Aid station close time: #{l @aid_station_detail.close_time, format: :day_and_military}" if @aid_station_detail.close_time %></strong><br/>
+    <strong><%= "Aid Captain: #{@aid_station_detail.captain_name}" %></strong><br/>
+    <strong><%= "Communications Chief: #{@aid_station_detail.comms_chief_name}" %></strong><br/>
+    <strong><%= "Radio Frequencies: #{@aid_station_detail.comms_frequencies}" %></strong><br/>
+    <strong><%= "Issues: #{@aid_station_detail.current_issues || '[None]'}" %></strong><br/>
+  </div>
+  <div class="col-xs-8">
+    <% if @aid_station_detail.efforts_recorded_out %>
+        <hr>
+        <%= "Of #{@aid_station_detail.efforts_started_count} efforts started:" %><br/>
+        <% if @aid_station_detail.efforts_in_aid.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_in_aid.count} have reported into but not out of this station" %>
+            <br/>
+        <% end %>
+        <% if @aid_station_detail.efforts_dropped_at_station.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_dropped_at_station.count} have dropped at this station" if @aid_station_detail.efforts_dropped_at_station.count > 0 %>
+            <br/>
+        <% end %>
+        <% if @aid_station_detail.efforts_recorded_out.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_recorded_out.count} have reported times through this station" if @aid_station_detail.efforts_recorded_out.count > 0 %>
+            <br/>
+        <% end %>
+        <% if @aid_station_detail.efforts_passed_without_record.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_passed_without_record.count} were not recorded here but were recorded at a later station" if @aid_station_detail.efforts_passed_without_record.count > 0 %>
+            <br/>
+        <% end %>
+        <% if @aid_station_detail.efforts_expected.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_expected.count} have not come through" if @aid_station_detail.efforts_expected.count > 0 %>
+        <% end %>
+    <% end %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12">
+    <%= link_to '<< Back to aid station report', aid_station_report_live_event_path(@aid_station_detail.event), class: "btn btn-sm btn-default" %>
+    <%= link_to 'Expected',
+                aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                   aid_station: @aid_station_detail.aid_station,
+                                                   efforts: 'expected'),
+                class: "btn btn-sm btn-primary" %>
+    <%= link_to 'Recorded through',
+                aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                   aid_station: @aid_station_detail.aid_station,
+                                                   efforts: 'recorded'),
+                class: "btn btn-sm btn-primary" %>
+    <%= link_to 'In aid',
+                aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                   aid_station: @aid_station_detail.aid_station,
+                                                   efforts: 'in_aid'),
+                class: "btn btn-sm btn-primary" %>
+    <%= link_to 'Dropped here',
+                aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                   aid_station: @aid_station_detail.aid_station,
+                                                   efforts: 'dropped'),
+                class: "btn btn-sm btn-primary" %>
+    <%= link_to 'Missed here',
+                aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                   aid_station: @aid_station_detail.aid_station,
+                                                   efforts: 'missed'),
+                class: "btn btn-sm btn-primary" %>
+  </div>
+</div>
+<hr>
+<div>
+  <% case params[:efforts] %>
+  <% when 'expected' %>
+      <%= render 'efforts_expected' %>
+  <% when 'recorded' %>
+      <%= render 'efforts_recorded' %>
+  <% when 'in_aid' %>
+      <%= render 'efforts_in_aid' %>
+  <% when 'dropped' %>
+      <%= render 'efforts_dropped' %>
+  <% when 'missed' %>
+      <%= render 'efforts_missed' %>
+  <% else %>
+      <strong>Nothing to show.</strong>
+  <% end %>
+</div>

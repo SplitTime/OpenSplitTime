@@ -35,7 +35,6 @@
 
         currentSplitId: null,
 
-
         getEventLiveEntryData: function () {
             return $.get('/live/events/' + liveEntry.currentEventId + '/get_event_data', function (response) {
                 liveEntry.eventLiveEntryData = response
@@ -218,27 +217,7 @@
                             liveEntry.liveEntryForm.toggleFields(false);
                             liveEntry.liveEntryForm.clearSplitsData();
                         } else {
-
-                            // Ajax endpoint for the timeRow data
-                            var data = {bibNumber: bibNumber};
-                            $.get('/live/events/' + liveEntry.currentEventId + '/get_effort', data, function (response) {
-                                if (response.success == true) {
-                                    liveEntry.currentEffortId = response.effortId;
-                                    liveEntry.lastReportedSplitId = response.lastReportedSplitId;
-                                    liveEntry.lastReportedBitkey = response.lastReportedBitkey;
-
-                                    // If success == true, this means the bib number lookup found an effort
-                                    $('#js-live-bib').val('true');
-                                    $('#js-effort-name').html(response.name);
-                                    $('#js-effort-last-reported').html(response.reportText)
-                                } else {
-
-                                    // If success == false, this means the bib number lookup failed, but we still need to capture the data
-                                    $('#js-live-bib').val('false');
-                                    $('#js-effort-name').html('n/a');
-                                    $('#js-effort-last-reported').html('n/a')
-                                }
-                            });
+                            liveEntry.liveEntryForm.fetchEffortData();
                             liveEntry.liveEntryForm.toggleFields(true);
                             if (!event.shiftKey) {
                                 $('#js-time-in').focus();
@@ -368,6 +347,66 @@
             },
 
             /**
+             * Fetches any available information for the data entered.
+             */
+            fetchEffortData: function() {
+
+                var bibNumber = $( '#js-bib-number' ).val();
+                if ( bibNumber === '' ) {
+                    // Erase Effort Information
+                    liveEntry.liveEntryForm.toggleFields(false);
+                    liveEntry.liveEntryForm.clearSplitsData();
+                    return;
+                }
+
+                var timeIn = $( '#js-time-in' ).val();
+                timeIn = liveEntry.liveEntryForm.validateTimeFields( timeIn );
+                if ( timeIn === false ) {
+                    $( '#js-time-in' ).val( '' );
+                    timeIn = '';
+                } else {
+                    $( '#js-time-in' ).val( timeIn );
+                }
+
+                var timeOut = $( '#js-time-out').val();
+                timeOut = liveEntry.liveEntryForm.validateTimeFields( timeOut );
+                if ( timeOut === false ) {
+                    $( '#js-time-out' ).val( '' );
+                    timeOut = '';
+                } else {
+                    $( '#js-time-out' ).val( timeOut );
+                }
+
+                var data = {
+                    splitId: liveEntry.currentSplitId,
+                    bibNumber: bibNumber,
+                    timeIn: timeIn,
+                    timeOut: timeOut
+                };
+
+                $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
+                    if ( response.success == true ) {
+                        // If success == true, this means the bib number lookup found an effort
+                        // 
+                        $('#js-live-bib').val('true');
+                        $('#js-effort-name').html( response.name );
+                        $('#js-effort-last-reported').html( response.reportText );
+                        $('#js-last-reported').html( response.timeFromLastReported );
+                        $('#js-time-spent').html( response.timeInAid );
+                    } else {
+                        // If success == false, this means the bib number lookup failed, but we still need to capture the data
+                        
+                        $( '#js-live-bib' ).val( 'false' );
+                        $( '#js-effort-name' ).html( 'n/a' );
+                        $( '#js-effort-last-reported' ).html( 'n/a' );
+                        $('#js-last-reported').html( 'n/a' );
+                        $('#js-time-spent').html( 'n/a' );
+                    }
+                });
+            },
+            
+
+            /**
              * Disables or enables fields for the effort lookup form
              *
              * @param bool    True to enable, false to disable
@@ -392,8 +431,8 @@
                 $('#js-effort-split-from').html('&nbsp;');
                 $('#js-last-reported').html('&nbsp;');
                 $('#js-time-spent').html('&nbsp;');
-                $('#js-time-in').val('');
-                $('#js-time-out').val('');
+                $('#js-time-in').val('').removeClass( 'bad questionable' );
+                $('#js-time-out').val('').removeClass( 'bad questionable' );
                 $('#js-live-bib').val('');
                 $('#js-pacer-in').attr('checked', false);
                 $('#js-pacer-out').attr('checked', false);
@@ -410,7 +449,7 @@
                     time = time.concat('00');
                 }
                 if ((time.length == 0) || (time.length == 6)) {
-                    return true;
+                    return time;
                 } else {
                     return false;
                 }

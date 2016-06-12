@@ -533,8 +533,8 @@
                         <td class="time-in js-time-in ' + timeRow.timeInStatus + '">' + timeRow.timeIn + '</td>\
                         <td class="time-out js-time-out ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + '</td>\
 						<td class="pacer-in js-pacer-in">' + timeRow.pacerInHtml + '</td>\
-						<td class="pacer-out js-pacer-out">' + timeRow.pacerInHtml + '</td>\
-						<td class="effort-name js-effort-name">' + timeRow.effortName + '</td>\
+						<td class="pacer-out js-pacer-out">' + timeRow.pacerOutHtml + '</td>\
+						<td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
 						<td class="row-edit-btns">\
 							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
 							<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\

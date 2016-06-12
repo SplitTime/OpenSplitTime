@@ -51,8 +51,8 @@ class Live::EventsController < Live::BaseController
     # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
     authorize @event
-    live_importer = LiveTimeDataImporter.new(@event, params[:timeDataRows])
-    render partial: 'set_times_data_report.json.ruby', returned_records: live_importer.returned_records
+    @live_importer = LiveTimeDataImporter.new(@event, params[:timeRows])
+    render partial: 'set_times_data_report.json.ruby'
   end
 
   def aid_station_degrade

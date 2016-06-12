@@ -592,7 +592,7 @@
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
                     var data = {timeRows: [clickedTimeRow]};
-                    $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
+                    $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                         if (response.success) {
                             $row.find('.js-delete-effort').click();
                         }
@@ -625,7 +625,7 @@
                         data.timeRows.push(timeRowObject);
                     });
 
-                    $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
+                    $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                         if (response.success) {
                             $('#js-delete-all-efforts').click();
                         }

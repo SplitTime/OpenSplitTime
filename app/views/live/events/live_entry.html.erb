@@ -40,13 +40,35 @@
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-in">Time In</label>
 				<div class="col-xs-8">
-					<input type="text" id="js-time-in" name="timeIn" class="form-control" disabled="disabled" value="">
+          <div class="input-group">
+					  <input type="text" id="js-time-in" name="timeIn" class="form-control" disabled="disabled" value="">
+            <span class="input-group-addon time-exists">
+              <span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+            <span class="input-group-addon time-status">
+              <span class="glyphicon glyphicon-circle-arrow-left null" title="Enter Time Data" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-question-sign questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-remove-sign bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+          </div>
 				</div>
-			</div>
+      </div>
 			<div class="form-group clearfix">
 				<label class="col-xs-4" for="time-out">Time Out</label>
 				<div class="col-xs-8">
-					<input type="text" id="js-time-out" name="timeOut" class="form-control" disabled="disabled" value="">
+          <div class="input-group">
+					  <input type="text" id="js-time-out" name="timeOut" class="form-control" disabled="disabled" value="">
+            <span class="input-group-addon time-exists">
+              <span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+            <span class="input-group-addon time-status">
+              <span class="glyphicon glyphicon-circle-arrow-left null" title="Enter Time Data" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-question-sign questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-remove-sign bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+          </div>
 				</div>
 			</div>
 			<div class="form-group clearfix">

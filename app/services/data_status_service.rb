@@ -52,7 +52,7 @@ class DataStatusService
         status = 'confirmed'
         latest_valid_split_time = split_time
       else
-        if ordered_split_ids.index(split_time.split_id) > dropped_index
+        if dropped_index && (ordered_split_ids.index(split_time.split_id) > dropped_index)
           status = 'bad'
         else
           segment = Segment.new(latest_valid_split_time.bitkey_hash,

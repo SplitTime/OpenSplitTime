@@ -46,18 +46,13 @@ class Live::EventsController < Live::BaseController
 
   def set_times_data
 
-    # Each time_data row should include effortId, splitId, timeFromStartIn (seconds), timeFromStartOut (seconds),
-    # pacerIn (boolean), pacerOut (boolean)
+    # Each time_row should include splitId, bibNumber, timeIn (military), timeOut (military),
+    # pacerIn (boolean), and pacerOut (boolean). This action ingests time_rows, converts and
+    # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
     authorize @event
-    # TODO: MARK!
-    # Efforts come in as an array
-
-    ManualSplitTimeImporter.new(@event, params[:timeDataRows])
-    render :json => {
-        success: true,
-        message: params[:efforts]
-    }
+    live_importer = LiveTimeDataImporter.new(@event, params[:timeDataRows])
+    render partial: 'set_times_data_report.json.ruby', returned_records: live_importer.returned_records
   end
 
   def aid_station_degrade

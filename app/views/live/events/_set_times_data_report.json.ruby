@@ -1,0 +1,1 @@
+returned_records.to_json

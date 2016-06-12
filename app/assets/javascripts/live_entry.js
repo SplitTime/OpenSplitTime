@@ -35,7 +35,6 @@
 
         currentSplitId: null,
 
-
         getEventLiveEntryData: function () {
             return $.get('/live/events/' + liveEntry.currentEventId + '/get_event_data', function (response) {
                 liveEntry.eventLiveEntryData = response
@@ -195,6 +194,8 @@
                     showMaskOnHover: false,
                 };
 
+                $('#js-add-effort-form [data-toggle="tooltip"]').tooltip( {container: 'body'});
+
                 $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
                 $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
@@ -218,32 +219,12 @@
                             liveEntry.liveEntryForm.toggleFields(false);
                             liveEntry.liveEntryForm.clearSplitsData();
                         } else {
-
-                            // Ajax endpoint for the timeRow data
-                            var data = {bibNumber: bibNumber};
-                            $.get('/live/events/' + liveEntry.currentEventId + '/get_effort', data, function (response) {
-                                if (response.success == true) {
-                                    liveEntry.currentEffortId = response.effortId;
-                                    liveEntry.lastReportedSplitId = response.lastReportedSplitId;
-                                    liveEntry.lastReportedBitkey = response.lastReportedBitkey;
-
-                                    // If success == true, this means the bib number lookup found an effort
-                                    $('#js-live-bib').val('true');
-                                    $('#js-effort-name').html(response.name);
-                                    $('#js-effort-last-reported').html(response.reportText)
-                                } else {
-
-                                    // If success == false, this means the bib number lookup failed, but we still need to capture the data
-                                    $('#js-live-bib').val('false');
-                                    $('#js-effort-name').html('n/a');
-                                    $('#js-effort-last-reported').html('n/a')
-                                }
-                            });
                             liveEntry.liveEntryForm.toggleFields(true);
                             if (!event.shiftKey) {
                                 $('#js-time-in').focus();
                             }
                         }
+                        liveEntry.liveEntryForm.fetchEffortData();
                         return false;
                     }
                 });
@@ -253,35 +234,22 @@
                 $('#js-time-in').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
-                        var timeIn = $(this).val();
 
-                        // Validate the military time string
-                        if (liveEntry.liveEntryForm.validateTimeFields(timeIn)) {
-
-                            // currentEffortId may be null here
-                            var data = {
-                                timeIn: timeIn,
-                                effortId: liveEntry.currentEffortId,
-                                lastReportedSplitId: liveEntry.lastReportedSplitId,
-                                lastReportedBitkey: liveEntry.lastReportedBitkey,
-                                splitId: liveEntry.currentSplitId  // TODO: Winter--can we put a listener on the splitSelect menu that will set this and keep it in sync?
-                            };
-
-                            // TODO: if response.finished = true, set timeFromLastReported and timeSpent to 'n/a'
-                            $.get('/live/events/' + liveEntry.currentEventId + '/get_time_from_last', data, function (response) {
-                                if (response.success == true) {
-                                    $('#js-last-reported').html( response.timeFromLastReported );
-                                    liveEntry.timeFromStartIn = response.timeFromStartIn;
-                                }
-                                if (event.shiftKey) {
-                                    $('#js-bib-number').focus();
-                                } else {
-                                    $('#js-time-out').focus();
-                                }
-                            });
+                        var timeIn = $( this ).val();
+                        timeIn = liveEntry.liveEntryForm.validateTimeFields( timeIn );
+                        if ( timeIn === false ) {
+                            $( this ).val( '' );
                         } else {
-                            $(this).val('');
+                            $( this ).val( timeIn );
+                            liveEntry.liveEntryForm.fetchEffortData();
                         }
+
+                        if ( event.shiftKey ) {
+                            $( '#js-bib-number' ).focus();
+                        } else if ( timeIn !== false ) {
+                            $( '#js-time-out' ).focus();
+                        }
+
                         return false;
                     }
                 });
@@ -289,33 +257,22 @@
                 $('#js-time-out').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
-                        var timeOut = $(this).val();
 
-                        // Validate the military time string
-                        if (liveEntry.liveEntryForm.validateTimeFields(timeOut)) {
-
-                            // currentEffortId may be null here
-                            var data = {
-                                timeOut: timeOut,
-                                effortId: liveEntry.currentEffortId,
-                                splitId: liveEntry.currentSplitId,
-                                timeFromStartIn: liveEntry.timeFromStartIn
-                            };
-
-                            $.get('/live/events/' + liveEntry.currentEventId + '/get_time_spent', data, function (response) {
-                                if ( response.success == true ) {
-                                    $('#js-time-spent').html( response.timeInAid );
-                                    liveEntry.timeFromStartOut = response.timeFromStartOut;
-                                }
-                                if ( event.shiftKey ) {
-                                    $('#js-time-in').focus();
-                                } else {
-                                    $('#js-pacer-in').focus();
-                                }
-                            });
+                        var timeIn = $( this ).val();
+                        timeIn = liveEntry.liveEntryForm.validateTimeFields( timeIn );
+                        if ( timeIn === false ) {
+                            $( this ).val( '' );
                         } else {
-                            $(this).val('');
+                            $( this ).val( timeIn );
+                            liveEntry.liveEntryForm.fetchEffortData();
                         }
+
+                        if ( event.shiftKey ) {
+                            $( '#js-time-in' ).focus();
+                        } else if ( timeIn !== false ) {
+                            $( '#js-pacer-in' ).focus();
+                        }
+
                         return false;
                     }
                 });
@@ -325,7 +282,8 @@
                 $('#js-pacer-in').on('keydown', function (event) {
                     event.preventDefault();
                     var $this = $(this);
-                    switch (event.keyCode) {
+                    switch ( event.keyCode)  {
+                        case 32: // Space pressed
                         case 13: // Enter pressed
                             if ($this.is(':checked')) {
                                 $this.prop('checked', false);
@@ -334,7 +292,7 @@
                             }
                             break;
                         case 9: // Tab pressed
-                            if (event.shiftKey) {
+                            if ( event.shiftKey ) {
                                 $('#js-time-out').focus();
                             } else {
                                 $('#js-pacer-out').focus();
@@ -348,6 +306,7 @@
                     event.preventDefault();
                     var $this = $(this);
                     switch (event.keyCode) {
+                        case 32: // Space pressed
                         case 13: // Enter pressed
                             if ($this.is(':checked')) {
                                 $this.prop('checked', false);
@@ -364,6 +323,56 @@
                             break;
                     }
                     return false;
+                });
+            },
+
+            /**
+             * Fetches any available information for the data entered.
+             */
+            fetchEffortData: function() {
+
+                var bibNumber = $( '#js-bib-number' ).val();
+                if ( bibNumber === '' ) {
+                    // Erase Effort Information
+                    liveEntry.liveEntryForm.toggleFields(false);
+                    liveEntry.liveEntryForm.clearSplitsData();
+                    return;
+                }
+
+                var data = {
+                    splitId: liveEntry.currentSplitId,
+                    bibNumber: bibNumber,
+                    timeIn: $( '#js-time-in' ).val(),
+                    timeOut: $( '#js-time-out' ).val()
+                };
+
+                $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
+                    if ( response.success == true ) {
+                        // If success == true, this means the bib number lookup found an effort
+                        // 
+                        $('#js-live-bib').val('true');
+                        $('#js-effort-name').html( response.name );
+                        $('#js-effort-last-reported').html( response.reportText );
+                        $('#js-last-reported').html( response.timeFromLastReported );
+                        $('#js-time-spent').html( response.timeInAid );
+                    } else {
+                        // If success == false, this means the bib number lookup failed, but we still need to capture the data
+                        
+                        $( '#js-live-bib' ).val( 'false' );
+                        $( '#js-effort-name' ).html( 'n/a' );
+                        $( '#js-effort-last-reported' ).html( 'n/a' );
+                        $('#js-last-reported').html( 'n/a' );
+                        $('#js-time-spent').html( 'n/a' );
+                    }
+
+                    $( '#js-time-in' )
+                        .removeClass( 'exists null bad good questionable' )
+                        .addClass( response.timeInExists ? 'exists' : '' )
+                        .addClass( response.timeInStatus );
+                    $( '#js-time-out' )
+                        .removeClass( 'exists null bad good questionable' )
+                        .addClass( response.timeOutExists ? 'exists' : '' )
+                        .addClass( response.timeOutStatus );
                 });
             },
 
@@ -392,8 +401,8 @@
                 $('#js-effort-split-from').html('&nbsp;');
                 $('#js-last-reported').html('&nbsp;');
                 $('#js-time-spent').html('&nbsp;');
-                $('#js-time-in').val('');
-                $('#js-time-out').val('');
+                $('#js-time-in').val('').removeClass( 'exists null bad good questionable' );
+                $('#js-time-out').val('').removeClass( 'exists null bad good questionable' )
                 $('#js-live-bib').val('');
                 $('#js-pacer-in').attr('checked', false);
                 $('#js-pacer-out').attr('checked', false);
@@ -405,12 +414,15 @@
              * @param string time time format from the input mask
              */
             validateTimeFields: function (time) {
-                time = time.replace(/\D/g, '');
-                if (time.length == 4) {
-                    time = time.concat('00');
+                time = time.replace( /\D/g, '' );
+                if ( time.length == 4 ) {
+                    time = time.concat( '00' );
+                }
+                if ( time.length === 5 ) {
+                    time = time.concat( '0' );
                 }
                 if ((time.length == 0) || (time.length == 6)) {
-                    return true;
+                    return time;
                 } else {
                     return false;
                 }
@@ -456,71 +468,61 @@
                 $('#js-add-to-cache').on('click', function (event) {
                     event.preventDefault();
 
-                    var data = {
-                        effortId: liveEntry.currentEffortId,
-                        splitId: liveEntry.currentSplitId,
-                        timeFromStartIn: liveEntry.timeFromStartIn,
-                        timeFromStartOut: liveEntry.timeFromStartOut
-                    };
+                    var thisTimeRow = {};
 
-                    $.get('/live/events/' + liveEntry.currentEventId + '/verify_times_data', data, function (response) {
-                        if ( response.success == true ) {
-                            var thisTimeRow = {};
+                    // Check table stored timeRows for highest unique ID then create a new one.
+                    var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                    var storedUniqueIds = [];
+                    if (storedTimeRows.length > 0) {
+                        $.each(storedTimeRows, function (index, value) {
+                            storedUniqueIds.push(this.uniqueId);
+                        });
+                        var highestUniqueId = Math.max.apply(Math, storedUniqueIds);
+                        thisTimeRow.uniqueId = highestUniqueId + 1;
+                    } else {
+                        thisTimeRow.uniqueId = 0;
+                    }
 
-                            // Check table stored timeRows for highest unique ID then create a new one.
-                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                            var storedUniqueIds = [];
-                            if (storedTimeRows.length > 0) {
-                                $.each(storedTimeRows, function (index, value) {
-                                    storedUniqueIds.push(this.uniqueId);
-                                });
-                                var highestUniqueId = Math.max.apply(Math, storedUniqueIds);
-                                thisTimeRow.uniqueId = highestUniqueId + 1;
-                            } else {
-                                thisTimeRow.uniqueId = 0;
-                            }
+                    // Build up the timeRow
+                    thisTimeRow.eventId = liveEntry.currentEventId;
+                    thisTimeRow.splitId = $(document).find('#split-select option:selected').attr('data-split-id');
+                    thisTimeRow.splitName = $(document).find('#split-select option:selected').html();
+                    thisTimeRow.effortId = liveEntry.currentEffortId;
+                    thisTimeRow.timeFromStartIn = liveEntry.timeFromStartIn;
+                    thisTimeRow.timeFromStartOut = liveEntry.timeFromStartOut;
+                    thisTimeRow.timeInStatus = response.timeInStatus;
+                    thisTimeRow.timeOutStatus = response.timeOutStatus;
+                    thisTimeRow.bibNumber = $('#js-bib-number').val();
+                    thisTimeRow.liveBib = $('#js-live-bib').val();
+                    thisTimeRow.effortName = $('#js-effort-name').html();
+                    thisTimeRow.timeIn = $('#js-time-in').val();
+                    thisTimeRow.timeOut = $('#js-time-out').val();
 
-                            // Build up the timeRow
-                            thisTimeRow.eventId = liveEntry.currentEventId;
-                            thisTimeRow.splitId = $(document).find('#split-select option:selected').attr('data-split-id');
-                            thisTimeRow.splitName = $(document).find('#split-select option:selected').html();
-                            thisTimeRow.effortId = liveEntry.currentEffortId;
-                            thisTimeRow.timeFromStartIn = liveEntry.timeFromStartIn;
-                            thisTimeRow.timeFromStartOut = liveEntry.timeFromStartOut;
-                            thisTimeRow.timeInStatus = response.timeInStatus;
-                            thisTimeRow.timeOutStatus = response.timeOutStatus;
-                            thisTimeRow.bibNumber = $('#js-bib-number').val();
-                            thisTimeRow.liveBib = $('#js-live-bib').val();
-                            thisTimeRow.effortName = $('#js-effort-name').html();
-                            thisTimeRow.timeIn = $('#js-time-in').val();
-                            thisTimeRow.timeOut = $('#js-time-out').val();
+                    // TODO: need to save TimeFromStartIn and TimeFromStartOut
+                    if ($('#js-pacer-in').prop('checked') == true) {
+                        thisTimeRow.pacerIn = true;
+                        thisTimeRow.pacerInHtml = 'Yes';
+                    } else {
+                        thisTimeRow.pacerIn = false;
+                        thisTimeRow.pacerInHtml = 'No';
+                    }
+                    if ($('#js-pacer-out').prop('checked') == true) {
+                        thisTimeRow.pacerOut = true;
+                        thisTimeRow.pacerOutHtml = 'Yes';
+                    } else {
+                        thisTimeRow.pacerOut = false;
+                        thisTimeRow.pacerOutHtml = 'No';
+                    }
+                    if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
+                        storedTimeRows.push(thisTimeRow);
+                        liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                        liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
+                    }
 
-                            // TODO: need to save TimeFromStartIn and TimeFromStartOut
-                            if ($('#js-pacer-in').prop('checked') == true) {
-                                thisTimeRow.pacerIn = true;
-                                thisTimeRow.pacerInHtml = 'Yes';
-                            } else {
-                                thisTimeRow.pacerIn = false;
-                                thisTimeRow.pacerInHtml = 'No';
-                            }
-                            if ($('#js-pacer-out').prop('checked') == true) {
-                                thisTimeRow.pacerOut = true;
-                                thisTimeRow.pacerOutHtml = 'Yes';
-                            } else {
-                                thisTimeRow.pacerOut = false;
-                                thisTimeRow.pacerOutHtml = 'No';
-                            }
-                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
-                                storedTimeRows.push(thisTimeRow);
-                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                                liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
-                            }
+                    // Clear data and disable fields once we've collected all the data
+                    liveEntry.liveEntryForm.clearSplitsData();
+                    liveEntry.liveEntryForm.toggleFields(false);
 
-                            // Clear data and disable fields once we've collected all the data
-                            liveEntry.liveEntryForm.clearSplitsData();
-                            liveEntry.liveEntryForm.toggleFields(false);
-                        }
-                    });
                     return false;
                 });
             },
@@ -673,7 +675,7 @@
                 // Inject initial html
                 var splitSliderItems = '';
                 for (var i = 0; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryData.splits[i].base_name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryData.splits[i].distance_from_start + '</span></div>';
+                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-index="' + i + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryData.splits[i].base_name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryData.splits[i].distance_from_start + '</span></div>';
                 }
                 $('#js-split-slider').html(splitSliderItems);
 
@@ -682,35 +684,47 @@
                 $('.js-split-slider-item').eq(1).addClass('active end');
                 $('#js-split-slider').addClass('begin');
                 $('#split-select').on('change', function () {
-                    var currentItemId = $('.js-split-slider-item.active.middle').attr('data-split-id');
-                    var selectedItemId = $('option:selected').attr('data-split-id');
-                    if (currentItemId - selectedItemId > 1) {
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId - 0 + 1);
-                    } else if (selectedItemId - currentItemId > 1) {
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId - 1);
-                    }
-                    setTimeout(function () {
-                        $('#js-split-slider').addClass('animate');
-                        liveEntry.splitSlider.changeSplitSlider(selectedItemId);
-                        liveEntry.currentSplitId = selectedItemId;
-                        setTimeout(function () {
-                            $('#js-split-slider').removeClass('animate');
-                        }, 600);
-                    }, 1);
+                    var targetId = $('option:selected').attr('data-split-id');
+                    liveEntry.splitSlider.changeSplitSlider( targetId );
                 });
             },
 
             /**
              * Switches the Split Slider to the specified Aid Station
              *
-             * @param  integer splitId The station id to switch to
+             * @param  integer splitIndex The station id to switch to
              */
-            changeSplitSlider: function (splitId) {
+            changeSplitSlider: function ( splitId ) {
+                var $selectedItem = $( '.js-split-slider-item[data-split-id="' + splitId + '"]');
+                var currentItemId = $( '.js-split-slider-item.active.middle').attr('data-index');
+                var selectedItemId = $selectedItem.attr('data-index');
+                if (currentItemId - selectedItemId > 1) {
+                    liveEntry.splitSlider.setSplitSlider(selectedItemId - 0 + 1);
+                } else if (selectedItemId - currentItemId > 1) {
+                    liveEntry.splitSlider.setSplitSlider(selectedItemId - 1);
+                }
+                setTimeout(function () {
+                    $('#js-split-slider').addClass('animate');
+                    liveEntry.splitSlider.setSplitSlider(selectedItemId);
+                    liveEntry.currentSplitId = splitId;
+                    liveEntry.liveEntryForm.fetchEffortData();
+                    setTimeout(function () {
+                        $('#js-split-slider').removeClass('animate');
+                    }, 600);
+                }, 1);
+            },
+
+            /**
+             * Sets the Split Slider to the specified Split index
+             *
+             * @param  integer splitIndex The split index to switch to
+             */
+            setSplitSlider: function ( splitIndex ) {
 
                 // remove all positioning classes
                 $('#js-split-slider').removeClass('begin end');
                 $('.js-split-slider-item').removeClass('active inactive middle begin end');
-                var $selectedSliderItem = $('.js-split-slider-item[data-split-id="' + splitId + '"]');
+                var $selectedSliderItem = $('.js-split-slider-item[data-index="' + splitIndex + '"]');
 
                 // Add position classes to the current selected slider item
                 $selectedSliderItem.addClass('active middle');

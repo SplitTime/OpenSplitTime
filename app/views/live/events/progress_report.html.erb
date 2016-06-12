@@ -7,11 +7,9 @@
   </div>
 
   <div class="row">
-    <div class="col-xs-6">
-      <h2><%= @progress_display.name %></h2>
-      <h3><%= "Progress report as of" %>
-        <br/><%= "#{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %>
-      </h3>
+    <div class="col-xs-8">
+      <h2><%= "#{@progress_display.name}: Progress Report" %></h2>
+      <h4><%= "as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
     </div>
   </div>
 </div>

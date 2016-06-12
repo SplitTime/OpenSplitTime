@@ -160,7 +160,7 @@
              *
              */
             updateEventName: function () {
-                $('.page-title h2').text(liveEntry.eventLiveEntryData.eventName);
+                $('.page-title h2').text(liveEntry.eventLiveEntryData.eventName.concat(': Live Data Entry'));
             },
 
             /**

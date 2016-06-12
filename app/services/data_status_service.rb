@@ -49,7 +49,7 @@ class DataStatusService
     ordered_split_times.each do |split_time|
       subject_bitkey_hash = split_time.bitkey_hash
       if split_time.confirmed?
-        status = split_time.status
+        status = 'confirmed'
         latest_valid_split_time = split_time
       else
         if ordered_split_ids.index(split_time.split_id) > dropped_index

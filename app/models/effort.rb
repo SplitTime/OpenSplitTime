@@ -141,15 +141,15 @@ class Effort < ActiveRecord::Base
                            .reduce(:+).to_i
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
     expected = expected_day_and_time({split.id => SubSplit::IN_BITKEY}, event_segment_calcs)
-    working_datetime + ((((working_datetime - expected) * -1) / 1.day).round(0) * 1.day)
+    expected ? working_datetime + ((((working_datetime - expected) * -1) / 1.day).round(0) * 1.day) : nil
   end
 
   def expected_day_and_time(bitkey_hash, event_segment_calcs = nil)
-    start_time + expected_time_from_start(bitkey_hash, event_segment_calcs)
+    expected_tfs = expected_time_from_start(bitkey_hash, event_segment_calcs)
+    expected_tfs ? start_time + expected_tfs : nil
   end
 
   def expected_time_from_start(bitkey_hash, event_segment_calcs = nil)
-    return nil if dropped?
     split_times_hash = split_times.index_by(&:bitkey_hash)
     ordered_splits = event.ordered_splits.to_a
     ordered_bitkey_hashes = ordered_splits.map(&:sub_split_bitkey_hashes).flatten

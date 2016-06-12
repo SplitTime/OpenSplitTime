@@ -11,11 +11,11 @@ class LiveEffortData
     @ordered_splits = ordered_split_array || event.ordered_splits.to_a
     @effort = event.efforts.find_by_bib_number(params[:bibNumber])
     @split = @ordered_splits.select { |split| split.id == params[:splitId].to_i }.first
-    @day_and_time_in = (@effort && @split && params[:timeIn].present?) ? @effort.likely_intended_time(params[:timeIn], split, calcs) : nil
-    @day_and_time_out = (@effort && @split && params[:timeOut].present?) ? @effort.likely_intended_time(params[:timeOut], split, calcs) : nil
+    @day_and_time_in = (@effort && @split && params[:timeIn].present?) ? @effort.likely_intended_time(params[:timeIn], @split, @calcs) : nil
+    @day_and_time_out = (@effort && @split && params[:timeOut].present?) ? @effort.likely_intended_time(params[:timeOut], @split, @calcs) : nil
     set_response_attributes
-    verify_time_existence if (effort && split)
-    verify_time_status if (effort && split && (day_and_time_in || day_and_time_out))
+    verify_time_existence if (@effort && @split)
+    verify_time_status if (@effort && @split && (@day_and_time_in || @day_and_time_out))
   end
 
   def success?
@@ -114,7 +114,7 @@ class LiveEffortData
     # Now determine data status of each object in the ordered split_time group,
     # including our new in and/or out SplitTime instances
 
-    status_hash = DataStatusService.live_entry_data_status(self, ordered_split_times.compact, calcs, ordered_splits)
+    status_hash = DataStatusService.live_entry_data_status(effort, ordered_splits, ordered_split_times.compact, calcs)
 
     # And save the data status of the new SplitTime instances
 

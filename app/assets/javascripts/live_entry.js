@@ -51,7 +51,8 @@
             // localStorage.clear();
 
             // Sets the currentEventId once
-            liveEntry.currentEventId = $('#js-event-id').text();
+            var eventDiv = document.getElementById("js-event-id");
+            liveEntry.currentEventId = eventDiv.attributes.eventId.value;
             liveEntry.getEventLiveEntryData().done(function () {
                 liveEntry.timeRowsCache.init();
                 liveEntry.header.init();
@@ -167,16 +168,16 @@
              *
              */
             buildSplitSelect: function () {
-                var $select = $( '#split-select' );
+                var $select = $('#split-select');
                 // Populate select list with event splits
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
                 for (var i = 1; i < liveEntry.eventLiveEntryData.splits.length; i++) {
                     splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].base_name + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
                 }
-                $select.html( splitItems );
+                $select.html(splitItems);
                 // Syncronize Select with splitId
-                $select.children().first().prop( 'selected', true );
+                $select.children().first().prop('selected', true);
                 liveEntry.currentSplitId = $('option:selected').attr('data-split-id');
             },
         },
@@ -194,7 +195,7 @@
                     showMaskOnHover: false,
                 };
 
-                $('#js-add-effort-form [data-toggle="tooltip"]').tooltip( {container: 'body'});
+                $('#js-add-effort-form [data-toggle="tooltip"]').tooltip({container: 'body'});
 
                 $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
@@ -204,7 +205,6 @@
                 $('#js-clear-entry-form').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.liveEntryForm.clearSplitsData();
-                    liveEntry.liveEntryForm.toggleFields(false);
                     return false;
                 });
 
@@ -216,20 +216,18 @@
                         event.preventDefault();
                         var bibNumber = $(this).val();
                         if (bibNumber == '') {
-                            liveEntry.liveEntryForm.toggleFields(false);
                             liveEntry.liveEntryForm.clearSplitsData();
+                        }
+
+                        if (!event.shiftKey) {
+                            $('#js-time-in').focus();
                         } else {
-                            liveEntry.liveEntryForm.toggleFields(true);
-                            if (!event.shiftKey) {
-                                $('#js-time-in').focus();
-                            }
+                            $('#split-select').focus();
                         }
                         liveEntry.liveEntryForm.fetchEffortData();
                         return false;
                     }
                 });
-
-                // TODO: Would like to have shift-tab functionality for moving to previous field
 
                 $('#js-time-in').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
@@ -284,7 +282,6 @@
                     var $this = $(this);
                     switch ( event.keyCode)  {
                         case 32: // Space pressed
-                        case 13: // Enter pressed
                             if ($this.is(':checked')) {
                                 $this.prop('checked', false);
                             } else {
@@ -307,7 +304,6 @@
                     var $this = $(this);
                     switch (event.keyCode) {
                         case 32: // Space pressed
-                        case 13: // Enter pressed
                             if ($this.is(':checked')) {
                                 $this.prop('checked', false);
                             } else {
@@ -334,7 +330,6 @@
                 var bibNumber = $( '#js-bib-number' ).val();
                 if ( bibNumber === '' ) {
                     // Erase Effort Information
-                    liveEntry.liveEntryForm.toggleFields(false);
                     liveEntry.liveEntryForm.clearSplitsData();
                     return;
                 }
@@ -357,38 +352,23 @@
                         $('#js-time-spent').html( response.timeInAid );
                     } else {
                         // If success == false, this means the bib number lookup failed, but we still need to capture the data
-                        
-                        $( '#js-live-bib' ).val( 'false' );
-                        $( '#js-effort-name' ).html( 'n/a' );
-                        $( '#js-effort-last-reported' ).html( 'n/a' );
-                        $('#js-last-reported').html( 'n/a' );
-                        $('#js-time-spent').html( 'n/a' );
+
+                        $('#js-live-bib').val('false');
+                        $('#js-effort-name').html('n/a');
+                        $('#js-effort-last-reported').html('n/a');
+                        $('#js-last-reported').html('n/a');
+                        $('#js-time-spent').html('n/a');
                     }
 
-                    $( '#js-time-in' )
-                        .removeClass( 'exists null bad good questionable' )
-                        .addClass( response.timeInExists ? 'exists' : '' )
-                        .addClass( response.timeInStatus );
-                    $( '#js-time-out' )
-                        .removeClass( 'exists null bad good questionable' )
-                        .addClass( response.timeOutExists ? 'exists' : '' )
-                        .addClass( response.timeOutStatus );
+                    $('#js-time-in')
+                        .removeClass('exists null bad good questionable')
+                        .addClass(response.timeInExists ? 'exists' : '')
+                        .addClass(response.timeInStatus);
+                    $('#js-time-out')
+                        .removeClass('exists null bad good questionable')
+                        .addClass(response.timeOutExists ? 'exists' : '')
+                        .addClass(response.timeOutStatus);
                 });
-            },
-
-            /**
-             * Disables or enables fields for the effort lookup form
-             *
-             * @param bool    True to enable, false to disable
-             */
-            toggleFields: function (enable) {
-                if (enable == true) {
-                    $('#js-add-effort-form input:not(#js-bib-number)').removeAttr('disabled');
-                } else {
-                    $('#js-add-effort-form input:not(#js-bib-number)').attr('disabled', 'disabled');
-                    $('#js-add-effort-form input:not(#js-bib-number)').val('');
-                    $('#js-bib-number').val('');
-                }
             },
 
             /**
@@ -402,8 +382,9 @@
                 $('#js-last-reported').html('&nbsp;');
                 $('#js-time-spent').html('&nbsp;');
                 $('#js-time-in').val('').removeClass( 'exists null bad good questionable' );
-                $('#js-time-out').val('').removeClass( 'exists null bad good questionable' )
+                $('#js-time-out').val('').removeClass( 'exists null bad good questionable' );
                 $('#js-live-bib').val('');
+                $('#js-bib-number').val('');
                 $('#js-pacer-in').attr('checked', false);
                 $('#js-pacer-out').attr('checked', false);
             },
@@ -414,12 +395,12 @@
              * @param string time time format from the input mask
              */
             validateTimeFields: function (time) {
-                time = time.replace( /\D/g, '' );
-                if ( time.length == 4 ) {
-                    time = time.concat( '00' );
+                time = time.replace(/\D/g, '');
+                if (time.length == 4) {
+                    time = time.concat('00');
                 }
-                if ( time.length === 5 ) {
-                    time = time.concat( '0' );
+                if (time.length == 5) {
+                    time = time.concat('0');
                 }
                 if ((time.length == 0) || (time.length == 6)) {
                     return time;
@@ -432,17 +413,13 @@
         /**
          * Contains functionality for times data cache table
          *
-         * TODO: timeRows need to send back the following fields:
-         * 		- EffortId
-         * 		- SplitId
-         * 		- timeFromStartIn: (int) seconds from start
-         * 		- timeFromStartOut: (int) seconds from start
-         *   	- PacerIn: (bool)
+         * timeRows need to send back the following fields:
+         *      - effortId
+         *      - splitId
+         *      - timeIn (military)
+         *      - timeOut (military)
+         *      - PacerIn: (bool)
          *      - PacerOut: (bool)
-         *      - timeExistsIn (bool)
-         *      - timeExistsOut (bool)
-         *      - timeStatusIn ('good', 'questionable', 'bad')
-         *      - timeStatusOut ('good', 'questionable', 'bad')
          */
         timeRowsTable: {
 
@@ -490,15 +467,14 @@
                     thisTimeRow.effortId = liveEntry.currentEffortId;
                     thisTimeRow.timeFromStartIn = liveEntry.timeFromStartIn;
                     thisTimeRow.timeFromStartOut = liveEntry.timeFromStartOut;
-                    thisTimeRow.timeInStatus = response.timeInStatus;
-                    thisTimeRow.timeOutStatus = response.timeOutStatus;
+                    thisTimeRow.timeInStatus = liveEntry.timeInStatus;
+                    thisTimeRow.timeOutStatus = liveEntry.timeOutStatus;
                     thisTimeRow.bibNumber = $('#js-bib-number').val();
                     thisTimeRow.liveBib = $('#js-live-bib').val();
                     thisTimeRow.effortName = $('#js-effort-name').html();
                     thisTimeRow.timeIn = $('#js-time-in').val();
                     thisTimeRow.timeOut = $('#js-time-out').val();
 
-                    // TODO: need to save TimeFromStartIn and TimeFromStartOut
                     if ($('#js-pacer-in').prop('checked') == true) {
                         thisTimeRow.pacerIn = true;
                         thisTimeRow.pacerInHtml = 'Yes';
@@ -519,10 +495,9 @@
                         liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
                     }
 
-                    // Clear data and disable fields once we've collected all the data
+                    // Clear data and put focus on bibNumber field once we've collected all the data
                     liveEntry.liveEntryForm.clearSplitsData();
-                    liveEntry.liveEntryForm.toggleFields(false);
-
+                    $('#js-bib-number').focus();
                     return false;
                 });
             },
@@ -537,15 +512,14 @@
             /**
              * Add a new row to the table (with js dataTables enabled)
              *
-             * @todo  when adding a 
              * @param object timeRow Pass in the object of the timeRow to add
              */
             addTimeRowToTable: function (timeRow) {
 
                 var rowClass = '';
-                if ( timeRow.timeInStatus === 'bad' || timeRow.timeOutStatus === 'bad' ) {
+                if (timeRow.timeInStatus === 'bad' || timeRow.timeOutStatus === 'bad') {
                     rowClass = 'bad';
-                } else if ( timeRow.timeInStatus === 'questionable' || timeRow.timeOutStatus === 'questionable' ) {
+                } else if (timeRow.timeInStatus === 'questionable' || timeRow.timeOutStatus === 'questionable') {
                     rowClass = 'questionable';
                 }
 
@@ -589,9 +563,15 @@
                         liveEntry.timeRowsTable.$dataTable.row($row).remove().draw();
                     });
 
-                    // Put bib number back into the bib number field
+                    // Put bib number, time data, and pacer info back into the applicable fields
+                    // TODO: Switch split-select to appropriate splitId
                     var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                     $('#js-bib-number').val(clickedTimeRow.bibNumber).focus();
+                    $('#js-time-in').val(clickedTimeRow.timeIn);
+                    $('#js-time-out').val(clickedTimeRow.timeOut);
+                    $('#js-pacer-in').val(clickedTimeRow.pacerIn);
+                    $('#js-pacer-out').val(clickedTimeRow.pacerOut);
+                    $('#split-select').val(clickedTimeRow.splitId);
                 });
 
                 $(document).on('click', '.js-delete-effort', function (event) {

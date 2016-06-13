@@ -4,13 +4,13 @@ class LiveEffortData
                 :time_in_aid, :dropped, :finished, :last_split, :last_bitkey,
                 :time_in_exists, :time_out_exists, :time_in_status, :time_out_status,
                 :split_time_in, :split_time_out
-  attr_reader :effort, :time_row
+  attr_reader :effort, :response_row
 
   def initialize(event, params, calcs = nil, ordered_split_array = nil)
     @calcs = calcs || EventSegmentCalcs.new(event)
     @ordered_splits = ordered_split_array || event.ordered_splits.to_a
     @effort = event.efforts.find_by_bib_number(params[:bibNumber])
-    @time_row = params.slice(:splitId, :bibNumber, :timeIn, :timeOut, :pacerIn, :pacerOut)
+    @response_row = params.slice(:splitId, :bibNumber, :timeIn, :timeOut, :pacerIn, :pacerOut)
     set_response_attributes if @effort
     verify_time_existence if (@effort && @split)
     verify_time_status if (@effort && @split && (@day_and_time_in || @day_and_time_out))
@@ -42,11 +42,11 @@ class LiveEffortData
   attr_reader :calcs, :ordered_splits
 
   def set_response_attributes
-    self.split = ordered_splits.find { |split| split.id == time_row[:splitId].to_i }
-    self.day_and_time_in = (effort && split && time_row[:timeIn].present?) ? effort.likely_intended_time(time_row[:timeIn], split, calcs) : nil
-    self.day_and_time_out = (effort && split && time_row[:timeOut].present?) ? effort.likely_intended_time(time_row[:timeOut], split, calcs) : nil
-    self.pacer_in = time_row[:pacerIn] == 'true'
-    self.pacer_out = time_row[:pacerOut] == 'true'
+    self.split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
+    self.day_and_time_in = (effort && split && response_row[:timeIn].present?) ? effort.likely_intended_time(response_row[:timeIn], split, calcs) : nil
+    self.day_and_time_out = (effort && split && response_row[:timeOut].present?) ? effort.likely_intended_time(response_row[:timeOut], split, calcs) : nil
+    self.pacer_in = response_row[:pacerIn] == 'true'
+    self.pacer_out = response_row[:pacerOut] == 'true'
     last_split_time = effort.last_reported_split_time
     self.last_day_and_time = last_split_time ? effort.start_time + last_split_time.time_from_start : nil
     self.last_split = last_split_time ? last_split_time.split : nil
@@ -71,8 +71,8 @@ class LiveEffortData
     # Set 'exists' booleans based on whether times for this effort + split
     # already exist in the database
 
-    self.time_in_exists = split_times_hash[bitkey_hash_in].present?
-    self.time_out_exists = split_times_hash[bitkey_hash_out].present?
+    self.time_in_exists = self.response_row[:timeInExists] = split_times_hash[bitkey_hash_in].present?
+    self.time_out_exists = self.response_row[:timeOutExists] = split_times_hash[bitkey_hash_out].present?
   end
 
   def verify_time_status
@@ -114,9 +114,9 @@ class LiveEffortData
 
     # And save the data status of the new SplitTime instances
 
-    self.time_in_status = status_hash[bitkey_hash_in]
+    self.time_in_status = self.response_row[:timeInStatus] = status_hash[bitkey_hash_in]
     self.split_time_in.data_status = time_in_status if split_time_in
-    self.time_out_status = status_hash[bitkey_hash_out]
+    self.time_out_status = self.response_row[:timeOutStatus] = status_hash[bitkey_hash_out]
     self.split_time_out.data_status = time_out_status if split_time_out
   end
 

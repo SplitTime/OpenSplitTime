@@ -48,9 +48,9 @@ class LiveTimeRowImporter
       if effort_data_object.clean? || (option == 'force')
         created_or_updated = create_or_update_times(effort_data_object)
       else
-        unsaved_rows << effort_data_object.time_row
+        unsaved_rows << effort_data_object.response_row
       end
-      unsaved_rows << effort_data_object.time_row unless created_or_updated
+      unsaved_rows << effort_data_object.response_row unless created_or_updated
     end
   end
 

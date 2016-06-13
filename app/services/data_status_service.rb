@@ -39,25 +39,30 @@ class DataStatusService
     BulkUpdateService.bulk_update_effort_status(update_effort_hash)
   end
 
-  def self.live_entry_data_status(event, split_times, event_segment_calcs = nil, ordered_splits = nil)
-    event_segment_calcs ||= EventSegmentCalcs.new(event)
-    indexed_splits = ordered_splits.index_by(&:id) || event.ordered_splits.index_by(&:id)
+  def self.live_entry_data_status(effort, ordered_splits, ordered_split_times, event_segment_calcs)
+    indexed_splits = ordered_splits.index_by(&:id)
+    ordered_split_ids = ordered_splits.map(&:id)
+    dropped_index = ordered_split_ids.index(effort.dropped_split_id)
     status_hash = {}
-    latest_valid_split_time = split_times.first
+    latest_valid_split_time = ordered_split_times.first
 
-    split_times.each do |split_time|
+    ordered_split_times.each do |split_time|
       subject_bitkey_hash = split_time.bitkey_hash
       if split_time.confirmed?
-        status = split_time.status
+        status = 'confirmed'
         latest_valid_split_time = split_time
       else
-        segment = Segment.new(latest_valid_split_time.bitkey_hash,
-                              split_time.bitkey_hash,
-                              indexed_splits[latest_valid_split_time.split_id],
-                              indexed_splits[split_time.split_id])
-        segment_time = split_time.time_from_start - latest_valid_split_time.time_from_start
-        status = event_segment_calcs.get_data_status(segment, segment_time)
-        latest_valid_split_time = split_time if status == 'good'
+        if dropped_index && (ordered_split_ids.index(split_time.split_id) > dropped_index)
+          status = 'bad'
+        else
+          segment = Segment.new(latest_valid_split_time.bitkey_hash,
+                                split_time.bitkey_hash,
+                                indexed_splits[latest_valid_split_time.split_id],
+                                indexed_splits[split_time.split_id])
+          segment_time = split_time.time_from_start - latest_valid_split_time.time_from_start
+          status = event_segment_calcs.get_data_status(segment, segment_time)
+          latest_valid_split_time = split_time if status == 'good'
+        end
       end
       status_hash[subject_bitkey_hash] = status
     end

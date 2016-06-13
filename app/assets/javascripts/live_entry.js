@@ -51,7 +51,7 @@
             // localStorage.clear();
 
             // Sets the currentEventId once
-            liveEntry.currentEventId = $('#js-event-id').text();
+            liveEntry.currentEventId = $('#js-event-id').data('event-id');
             liveEntry.getEventLiveEntryData().done(function () {
                 liveEntry.timeRowsCache.init();
                 liveEntry.header.init();
@@ -159,7 +159,7 @@
              *
              */
             updateEventName: function () {
-                $('.page-title h2').text(liveEntry.eventLiveEntryData.eventName);
+                $('.page-title h2').text(liveEntry.eventLiveEntryData.eventName.concat(': Live Data Entry'));
             },
 
             /**
@@ -167,17 +167,17 @@
              *
              */
             buildSplitSelect: function () {
-                var $select = $( '#split-select' );
+                var $select = $('#split-select');
                 // Populate select list with event splits
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
                 for (var i = 1; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].base_name + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
+                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].id + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
                 }
-                $select.html( splitItems );
+                $select.html(splitItems);
                 // Syncronize Select with splitId
-                $select.children().first().prop( 'selected', true );
-                liveEntry.currentSplitId = $('option:selected').attr('data-split-id');
+                $select.children().first().prop('selected', true);
+                liveEntry.currentSplitId = $select.val();
             },
         },
 
@@ -194,7 +194,7 @@
                     showMaskOnHover: false,
                 };
 
-                $('#js-add-effort-form [data-toggle="tooltip"]').tooltip( {container: 'body'});
+                $('#js-add-effort-form [data-toggle="tooltip"]').tooltip({container: 'body'});
 
                 $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
@@ -204,7 +204,6 @@
                 $('#js-clear-entry-form').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.liveEntryForm.clearSplitsData();
-                    liveEntry.liveEntryForm.toggleFields(false);
                     return false;
                 });
 
@@ -216,38 +215,36 @@
                         event.preventDefault();
                         var bibNumber = $(this).val();
                         if (bibNumber == '') {
-                            liveEntry.liveEntryForm.toggleFields(false);
                             liveEntry.liveEntryForm.clearSplitsData();
+                        }
+
+                        if (!event.shiftKey) {
+                            $('#js-time-in').focus();
                         } else {
-                            liveEntry.liveEntryForm.toggleFields(true);
-                            if (!event.shiftKey) {
-                                $('#js-time-in').focus();
-                            }
+                            $('#split-select').focus();
                         }
                         liveEntry.liveEntryForm.fetchEffortData();
                         return false;
                     }
                 });
 
-                // TODO: Would like to have shift-tab functionality for moving to previous field
-
                 $('#js-time-in').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
 
-                        var timeIn = $( this ).val();
-                        timeIn = liveEntry.liveEntryForm.validateTimeFields( timeIn );
-                        if ( timeIn === false ) {
-                            $( this ).val( '' );
+                        var timeIn = $(this).val();
+                        timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
+                        if (timeIn === false ) {
+                            $(this).val( '');
                         } else {
-                            $( this ).val( timeIn );
+                            $(this).val(timeIn);
                             liveEntry.liveEntryForm.fetchEffortData();
                         }
 
-                        if ( event.shiftKey ) {
-                            $( '#js-bib-number' ).focus();
-                        } else if ( timeIn !== false ) {
-                            $( '#js-time-out' ).focus();
+                        if (event.shiftKey) {
+                            $('#js-bib-number').focus();
+                        } else if (timeIn !== false) {
+                            $('#js-time-out').focus();
                         }
 
                         return false;
@@ -258,19 +255,19 @@
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
 
-                        var timeIn = $( this ).val();
-                        timeIn = liveEntry.liveEntryForm.validateTimeFields( timeIn );
-                        if ( timeIn === false ) {
-                            $( this ).val( '' );
+                        var timeIn = $(this).val();
+                        timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
+                        if (timeIn === false) {
+                            $(this).val('');
                         } else {
-                            $( this ).val( timeIn );
+                            $(this).val(timeIn);
                             liveEntry.liveEntryForm.fetchEffortData();
                         }
 
-                        if ( event.shiftKey ) {
-                            $( '#js-time-in' ).focus();
-                        } else if ( timeIn !== false ) {
-                            $( '#js-pacer-in' ).focus();
+                        if (event.shiftKey) {
+                            $('#js-time-in').focus();
+                        } else if (timeIn !== false) {
+                            $('#js-pacer-in').focus();
                         }
 
                         return false;
@@ -282,9 +279,8 @@
                 $('#js-pacer-in').on('keydown', function (event) {
                     event.preventDefault();
                     var $this = $(this);
-                    switch ( event.keyCode)  {
+                    switch (event.keyCode)  {
                         case 32: // Space pressed
-                        case 13: // Enter pressed
                             if ($this.is(':checked')) {
                                 $this.prop('checked', false);
                             } else {
@@ -307,7 +303,6 @@
                     var $this = $(this);
                     switch (event.keyCode) {
                         case 32: // Space pressed
-                        case 13: // Enter pressed
                             if ($this.is(':checked')) {
                                 $this.prop('checked', false);
                             } else {
@@ -331,10 +326,9 @@
              */
             fetchEffortData: function() {
 
-                var bibNumber = $( '#js-bib-number' ).val();
-                if ( bibNumber === '' ) {
+                var bibNumber = $('#js-bib-number').val();
+                if (bibNumber === '') {
                     // Erase Effort Information
-                    liveEntry.liveEntryForm.toggleFields(false);
                     liveEntry.liveEntryForm.clearSplitsData();
                     return;
                 }
@@ -342,8 +336,8 @@
                 var data = {
                     splitId: liveEntry.currentSplitId,
                     bibNumber: bibNumber,
-                    timeIn: $( '#js-time-in' ).val(),
-                    timeOut: $( '#js-time-out' ).val()
+                    timeIn: $('#js-time-in').val(),
+                    timeOut: $('#js-time-out').val()
                 };
 
                 $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
@@ -357,38 +351,23 @@
                         $('#js-time-spent').html( response.timeInAid );
                     } else {
                         // If success == false, this means the bib number lookup failed, but we still need to capture the data
-                        
-                        $( '#js-live-bib' ).val( 'false' );
-                        $( '#js-effort-name' ).html( 'n/a' );
-                        $( '#js-effort-last-reported' ).html( 'n/a' );
-                        $('#js-last-reported').html( 'n/a' );
-                        $('#js-time-spent').html( 'n/a' );
+
+                        $('#js-live-bib').val('false');
+                        $('#js-effort-name').html('n/a');
+                        $('#js-effort-last-reported').html('n/a');
+                        $('#js-last-reported').html('n/a');
+                        $('#js-time-spent').html('n/a');
                     }
 
-                    $( '#js-time-in' )
-                        .removeClass( 'exists null bad good questionable' )
-                        .addClass( response.timeInExists ? 'exists' : '' )
-                        .addClass( response.timeInStatus );
-                    $( '#js-time-out' )
-                        .removeClass( 'exists null bad good questionable' )
-                        .addClass( response.timeOutExists ? 'exists' : '' )
-                        .addClass( response.timeOutStatus );
+                    $('#js-time-in')
+                        .removeClass('exists null bad good questionable')
+                        .addClass(response.timeInExists ? 'exists' : '')
+                        .addClass(response.timeInStatus);
+                    $('#js-time-out')
+                        .removeClass('exists null bad good questionable')
+                        .addClass(response.timeOutExists ? 'exists' : '')
+                        .addClass(response.timeOutStatus);
                 });
-            },
-
-            /**
-             * Disables or enables fields for the effort lookup form
-             *
-             * @param bool    True to enable, false to disable
-             */
-            toggleFields: function (enable) {
-                if (enable == true) {
-                    $('#js-add-effort-form input:not(#js-bib-number)').removeAttr('disabled');
-                } else {
-                    $('#js-add-effort-form input:not(#js-bib-number)').attr('disabled', 'disabled');
-                    $('#js-add-effort-form input:not(#js-bib-number)').val('');
-                    $('#js-bib-number').val('');
-                }
             },
 
             /**
@@ -402,8 +381,9 @@
                 $('#js-last-reported').html('&nbsp;');
                 $('#js-time-spent').html('&nbsp;');
                 $('#js-time-in').val('').removeClass( 'exists null bad good questionable' );
-                $('#js-time-out').val('').removeClass( 'exists null bad good questionable' )
+                $('#js-time-out').val('').removeClass( 'exists null bad good questionable' );
                 $('#js-live-bib').val('');
+                $('#js-bib-number').val('');
                 $('#js-pacer-in').attr('checked', false);
                 $('#js-pacer-out').attr('checked', false);
             },
@@ -414,12 +394,12 @@
              * @param string time time format from the input mask
              */
             validateTimeFields: function (time) {
-                time = time.replace( /\D/g, '' );
-                if ( time.length == 4 ) {
-                    time = time.concat( '00' );
+                time = time.replace(/\D/g, '');
+                if (time.length == 4) {
+                    time = time.concat('00');
                 }
-                if ( time.length === 5 ) {
-                    time = time.concat( '0' );
+                if (time.length == 5) {
+                    time = time.concat('0');
                 }
                 if ((time.length == 0) || (time.length == 6)) {
                     return time;
@@ -432,17 +412,13 @@
         /**
          * Contains functionality for times data cache table
          *
-         * TODO: timeRows need to send back the following fields:
-         * 		- EffortId
-         * 		- SplitId
-         * 		- timeFromStartIn: (int) seconds from start
-         * 		- timeFromStartOut: (int) seconds from start
-         *   	- PacerIn: (bool)
+         * timeRows need to send back the following fields:
+         *      - effortId
+         *      - splitId
+         *      - timeIn (military)
+         *      - timeOut (military)
+         *      - PacerIn: (bool)
          *      - PacerOut: (bool)
-         *      - timeExistsIn (bool)
-         *      - timeExistsOut (bool)
-         *      - timeStatusIn ('good', 'questionable', 'bad')
-         *      - timeStatusOut ('good', 'questionable', 'bad')
          */
         timeRowsTable: {
 
@@ -485,20 +461,19 @@
 
                     // Build up the timeRow
                     thisTimeRow.eventId = liveEntry.currentEventId;
-                    thisTimeRow.splitId = $(document).find('#split-select option:selected').attr('data-split-id');
-                    thisTimeRow.splitName = $(document).find('#split-select option:selected').html();
+                    thisTimeRow.splitId = $('#split-select').val();
+                    thisTimeRow.splitName = $('#split-select option:selected').html();
                     thisTimeRow.effortId = liveEntry.currentEffortId;
                     thisTimeRow.timeFromStartIn = liveEntry.timeFromStartIn;
                     thisTimeRow.timeFromStartOut = liveEntry.timeFromStartOut;
-                    thisTimeRow.timeInStatus = response.timeInStatus;
-                    thisTimeRow.timeOutStatus = response.timeOutStatus;
+                    thisTimeRow.timeInStatus = liveEntry.timeInStatus;
+                    thisTimeRow.timeOutStatus = liveEntry.timeOutStatus;
                     thisTimeRow.bibNumber = $('#js-bib-number').val();
                     thisTimeRow.liveBib = $('#js-live-bib').val();
                     thisTimeRow.effortName = $('#js-effort-name').html();
                     thisTimeRow.timeIn = $('#js-time-in').val();
                     thisTimeRow.timeOut = $('#js-time-out').val();
 
-                    // TODO: need to save TimeFromStartIn and TimeFromStartOut
                     if ($('#js-pacer-in').prop('checked') == true) {
                         thisTimeRow.pacerIn = true;
                         thisTimeRow.pacerInHtml = 'Yes';
@@ -519,10 +494,9 @@
                         liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
                     }
 
-                    // Clear data and disable fields once we've collected all the data
+                    // Clear data and put focus on bibNumber field once we've collected all the data
                     liveEntry.liveEntryForm.clearSplitsData();
-                    liveEntry.liveEntryForm.toggleFields(false);
-
+                    $('#js-bib-number').focus();
                     return false;
                 });
             },
@@ -537,15 +511,14 @@
             /**
              * Add a new row to the table (with js dataTables enabled)
              *
-             * @todo  when adding a 
              * @param object timeRow Pass in the object of the timeRow to add
              */
             addTimeRowToTable: function (timeRow) {
 
                 var rowClass = '';
-                if ( timeRow.timeInStatus === 'bad' || timeRow.timeOutStatus === 'bad' ) {
+                if (timeRow.timeInStatus === 'bad' || timeRow.timeOutStatus === 'bad') {
                     rowClass = 'bad';
-                } else if ( timeRow.timeInStatus === 'questionable' || timeRow.timeOutStatus === 'questionable' ) {
+                } else if (timeRow.timeInStatus === 'questionable' || timeRow.timeOutStatus === 'questionable') {
                     rowClass = 'questionable';
                 }
 
@@ -559,8 +532,8 @@
                         <td class="time-in js-time-in ' + timeRow.timeInStatus + '">' + timeRow.timeIn + '</td>\
                         <td class="time-out js-time-out ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + '</td>\
 						<td class="pacer-in js-pacer-in">' + timeRow.pacerInHtml + '</td>\
-						<td class="pacer-out js-pacer-out">' + timeRow.pacerInHtml + '</td>\
-						<td class="effort-name js-effort-name">' + timeRow.effortName + '</td>\
+						<td class="pacer-out js-pacer-out">' + timeRow.pacerOutHtml + '</td>\
+						<td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
 						<td class="row-edit-btns">\
 							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
 							<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
@@ -589,9 +562,16 @@
                         liveEntry.timeRowsTable.$dataTable.row($row).remove().draw();
                     });
 
-                    // Put bib number back into the bib number field
+                    // Put bib number, time data, and pacer info back into the applicable fields
+                    // TODO: Switch split-select to appropriate splitId
                     var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                    liveEntry.splitSlider.changeSplitSlider(clickedTimeRow.splitId);
                     $('#js-bib-number').val(clickedTimeRow.bibNumber).focus();
+                    $('#js-time-in').val(clickedTimeRow.timeIn);
+                    $('#js-time-out').val(clickedTimeRow.timeOut);
+                    $('#js-pacer-in').val(clickedTimeRow.pacerIn);
+                    $('#js-pacer-out').val(clickedTimeRow.pacerOut);
+                    $('#split-select').val(clickedTimeRow.splitId);
                 });
 
                 $(document).on('click', '.js-delete-effort', function (event) {
@@ -612,7 +592,7 @@
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
                     var data = {timeRows: [clickedTimeRow]};
-                    $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
+                    $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                         if (response.success) {
                             $row.find('.js-delete-effort').click();
                         }
@@ -645,7 +625,7 @@
                         data.timeRows.push(timeRowObject);
                     });
 
-                    $.get('/live/events/' + liveEntry.currentEventId + '/set_split_times', data, function (response) {
+                    $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                         if (response.success) {
                             $('#js-delete-all-efforts').click();
                         }
@@ -663,7 +643,7 @@
              */
             init: function () {
                 liveEntry.splitSlider.buildSplitSlider();
-                liveEntry.splitSlider.changeSplitSlider( liveEntry.currentSplitId );
+                liveEntry.splitSlider.changeSplitSlider(liveEntry.currentSplitId);
             },
 
             /**
@@ -684,8 +664,8 @@
                 $('.js-split-slider-item').eq(1).addClass('active end');
                 $('#js-split-slider').addClass('begin');
                 $('#split-select').on('change', function () {
-                    var targetId = $('option:selected').attr('data-split-id');
-                    liveEntry.splitSlider.changeSplitSlider( targetId );
+                    var targetId = $( this ).val();
+                    liveEntry.splitSlider.changeSplitSlider(targetId);
                 });
             },
 
@@ -694,10 +674,13 @@
              *
              * @param  integer splitIndex The station id to switch to
              */
-            changeSplitSlider: function ( splitId ) {
-                var $selectedItem = $( '.js-split-slider-item[data-split-id="' + splitId + '"]');
-                var currentItemId = $( '.js-split-slider-item.active.middle').attr('data-index');
+            changeSplitSlider: function (splitId) {
+                var $selectedItem = $('.js-split-slider-item[data-split-id="' + splitId + '"]');
+                var currentItemId = $('.js-split-slider-item.active.middle').attr('data-index');
                 var selectedItemId = $selectedItem.attr('data-index');
+                if (selectedItemId == currentItemId) {
+                    return;
+                }
                 if (currentItemId - selectedItemId > 1) {
                     liveEntry.splitSlider.setSplitSlider(selectedItemId - 0 + 1);
                 } else if (selectedItemId - currentItemId > 1) {
@@ -719,7 +702,7 @@
              *
              * @param  integer splitIndex The split index to switch to
              */
-            setSplitSlider: function ( splitIndex ) {
+            setSplitSlider: function (splitIndex) {
 
                 // remove all positioning classes
                 $('#js-split-slider').removeClass('begin end');

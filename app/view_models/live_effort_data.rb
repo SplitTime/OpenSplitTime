@@ -10,9 +10,6 @@ class LiveEffortData
     @calcs = calcs || EventSegmentCalcs.new(event)
     @ordered_splits = ordered_split_array || event.ordered_splits.to_a
     @effort = event.efforts.find_by_bib_number(params[:bibNumber])
-    @split = @ordered_splits.find { |split| split.id == params[:splitId].to_i }
-    @day_and_time_in = (@effort && @split && params[:timeIn].present?) ? @effort.likely_intended_time(params[:timeIn], @split, @calcs) : nil
-    @day_and_time_out = (@effort && @split && params[:timeOut].present?) ? @effort.likely_intended_time(params[:timeOut], @split, @calcs) : nil
     @time_row = params.slice(:splitId, :bibNumber, :timeIn, :timeOut, :pacerIn, :pacerOut)
     set_response_attributes if @effort
     verify_time_existence if (@effort && @split)
@@ -41,10 +38,15 @@ class LiveEffortData
 
   private
 
-  attr_accessor :split_times_hash
-  attr_reader :calcs, :ordered_splits, :split, :day_and_time_in, :day_and_time_out
+  attr_accessor :split_times_hash, :split, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out
+  attr_reader :calcs, :ordered_splits
 
   def set_response_attributes
+    self.split = ordered_splits.find { |split| split.id == time_row[:splitId].to_i }
+    self.day_and_time_in = (effort && split && time_row[:timeIn].present?) ? effort.likely_intended_time(time_row[:timeIn], split, calcs) : nil
+    self.day_and_time_out = (effort && split && time_row[:timeOut].present?) ? effort.likely_intended_time(time_row[:timeOut], split, calcs) : nil
+    self.pacer_in = time_row[:pacerIn] == 'true'
+    self.pacer_out = time_row[:pacerOut] == 'true'
     last_split_time = effort.last_reported_split_time
     self.last_day_and_time = last_split_time ? effort.start_time + last_split_time.time_from_start : nil
     self.last_split = last_split_time ? last_split_time.split : nil
@@ -56,7 +58,7 @@ class LiveEffortData
     self.time_from_start_out = day_and_time_out ? day_and_time_out - effort.start_time : nil
     self.time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out - time_from_start_in : nil
   end
-  
+
   def verify_time_existence
 
     # Get all the split_times for this effort, which may or may not include
@@ -82,13 +84,15 @@ class LiveEffortData
         SplitTime.new(effort_id: effort_id,
                       split_id: split_id,
                       sub_split_bitkey: SubSplit::IN_BITKEY,
-                      time_from_start: time_from_start_in) :
+                      time_from_start: time_from_start_in,
+                      pacer: pacer_in) :
         nil
     self.split_time_out = time_from_start_out ?
         SplitTime.new(effort_id: effort.id,
                       split_id: split_id,
                       sub_split_bitkey: SubSplit::OUT_BITKEY,
-                      time_from_start: time_from_start_out) :
+                      time_from_start: time_from_start_out,
+                      pacer: pacer_out) :
         nil
     bitkey_hash_in = split_time_in ? split_time_in.bitkey_hash : nil
     bitkey_hash_out = split_time_out ? split_time_out.bitkey_hash : nil

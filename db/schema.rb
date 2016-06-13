@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160607165907) do
+ActiveRecord::Schema.define(version: 20160613181424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 20160607165907) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.integer  "sub_split_bitkey"
+    t.boolean  "pacer"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree

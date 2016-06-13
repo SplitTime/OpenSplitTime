@@ -1,1 +1,3 @@
-@live_importer.returned_records.to_json
+{
+        returnedRows: @live_importer.returned_rows
+}.to_json

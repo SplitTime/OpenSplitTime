@@ -1,16 +1,12 @@
 <div class="row header">
-
-  <div class="col-xs-8 page-title">
+  <div class="col-xs-8">
+    <h2><%= "#{@progress_display.name}: Progress Report" %></h2>
+    <h4><%= "as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
+  </div>
+  <div class="col-xs-4 page-navigation">
     <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
     <%= link_to 'Progress report', progress_report_live_event_path(@event), disabled: true, class: 'btn btn-sm btn-primary' %>
     <%= link_to 'Aid station report', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <h2><%= "#{@progress_display.name}: Progress Report" %></h2>
-      <h4><%= "as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
-    </div>
   </div>
 </div>
 <div class="row">

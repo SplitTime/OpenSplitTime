@@ -39,37 +39,11 @@ Mixins
 	position: relative;
 	border-bottom: 1px solid $gray;
 
-	.page-title {
-
-		h1 {
-
-		}
-
-		h2 {
-
-		}
+	.page-navigation {
+		padding-top: 20px;
+		text-align: right;
 	}
 
-	.aid-station {
-		@extend .no-gutter-right;
-		position: absolute;
-		top: 50%;
-		right: 0;
-		transform: translateY( -50% );
-
-		&-label,
-		&-select {
-		}
-
-		&-label {}
-
-		&-select {
-
-			select {
-				width: 100%;
-			}
-		}
-	}
 	.event-id {
 		display: none;
 	}
@@ -94,10 +68,10 @@ Mixins
 		}
 
 		button {
-			width: 100%;
+			width: 46%;
 
 			&:last-child {
-				margin-top: 0.5em;
+				margin-left: 4%;
 			}
 		}
 	}
@@ -271,6 +245,10 @@ Mixins
 	.provisional-data-table {
 		th {
 			cursor: pointer;
+		}
+
+		td {
+			vertical-align: middle;
 		}
 	}
 

@@ -691,9 +691,15 @@
                     liveEntry.splitSlider.setSplitSlider(selectedItemId);
                     liveEntry.currentSplitId = splitId;
                     liveEntry.liveEntryForm.fetchEffortData();
-                    setTimeout(function () {
+                    var timeout = $('#js-split-slider').data( 'timeout' );
+                    if ( timeout !== null ) {
+                        cancelTimeout(timeout);
+                    }
+                    timeout = setTimeout(function () {
                         $('#js-split-slider').removeClass('animate');
+                        $('#js-split-slider').data( 'timeout', null );
                     }, 600);
+                    $('#js-split-slider').data( 'timeout', timeout );
                 }, 1);
             },
 

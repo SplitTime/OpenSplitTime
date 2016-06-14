@@ -21,7 +21,7 @@ prior_valid_report_text = response.effort.nil? ? '' : "#{response.prior_valid_sp
         priorValidReportText: prior_valid_report_text,
         dropped: response.dropped,
         finished: response.finished,
-        timeFromLastValid: time_format_hhmm(response.time_from_last_valid),
+        timeFromPriorValid: time_format_hhmm(response.time_from_last_valid),
         timeInAid: "#{time_format_minutes(response.time_in_aid)} minutes",
         timeFromStartIn: response.time_from_start_in,
         timeFromStartOut: response.time_from_start_out,

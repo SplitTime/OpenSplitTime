@@ -705,10 +705,14 @@
              * @param  integer splitIndex The station id to switch to
              */
             changeSplitSlider: function (splitId) {
+                // Update form state
                 $('#split-select').val( splitId );
-                var $selectedItem = $('.js-split-slider-item[data-split-id="' + splitId + '"]');
+                var $selectOption = $('#split-select option:selected');
+                $('#js-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
+                $('#js-time-out').prop('disabled', !$selectOption.data('sub-split-out'));
+                // Get slider indexes
                 var currentItemId = $('.js-split-slider-item.active.middle').attr('data-index');
-                var selectedItemId = $selectedItem.attr('data-index');
+                var selectedItemId = $('.js-split-slider-item[data-split-id="' + splitId + '"]').attr('data-index');
                 if (selectedItemId == currentItemId) {
                     liveEntry.liveEntryForm.fetchEffortData();
                     return;

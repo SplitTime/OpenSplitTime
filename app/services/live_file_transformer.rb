@@ -18,7 +18,7 @@ class LiveFileTransformer
 
   private
 
-  attr_reader :event, :file
+  attr_reader :event, :file, :split
   attr_accessor :file_rows, :transformed_rows
 
   def create_rows_from_file

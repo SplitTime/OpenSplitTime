@@ -187,7 +187,7 @@
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
                 for (var i = 1; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].id + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
+                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].id + '" data-index="' + i + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
                 }
                 $select.html(splitItems);
                 // Syncronize Select with splitId
@@ -500,6 +500,7 @@
 
                 // Initiate DataTable Plugin
                 liveEntry.timeRowsTable.$dataTable = $('#js-provisional-data-table').DataTable();
+                liveEntry.timeRowsTable.$dataTable.clear();
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
 
@@ -556,12 +557,14 @@
                 var timeOutIcon = icons[timeRow.timeOutStatus] || '';
                 timeOutIcon += timeRow.timeOutExists ? icons['exists'] : '';
 
+                var splitIndex = $('#split-select [value="'+timeRow.splitId+'"]').data('index');
+
                 // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
 					<tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
-						<td class="split-name js-split-name">' + timeRow.splitName + '</td>\
+						<td class="split-name js-split-name" data-order="' + splitIndex + '">' + timeRow.splitName + '</td>\
 						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\

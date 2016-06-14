@@ -510,6 +510,18 @@
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     return false;
                 });
+
+                // Wrap search field with clear button
+                $('#js-provisional-data-table_filter input').wrap('<div class="input-group input-group-sm"></div>');
+                $('#js-provisional-data-table_filter .input-group').append(
+                    '<span class="input-group-btn">\
+                        <button id="js-filter-clear" class="btn btn-default" type="button">\
+                            <span class="glyphicon glyphicon-remove"></span>\
+                        </button>\
+                    </span>');
+                $('#js-filter-clear').on('click', function() {
+                    liveEntry.timeRowsTable.$dataTable.search('').draw();
+                });
             },
 
             populateTableFromCache: function () {
@@ -545,7 +557,7 @@
              * @param object timeRow Pass in the object of the timeRow to add
              */
             addTimeRowToTable: function (timeRow) {
-                liveEntry.timeRowsTable.$dataTable.search('');
+                liveEntry.timeRowsTable.$dataTable.search('').draw();
                 var icons = {
                     'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists"></span>',
                     'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" title="Time Appears Good"></span>',

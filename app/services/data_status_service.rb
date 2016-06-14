@@ -7,7 +7,10 @@ class DataStatusService
     event = efforts.first.event
     event_segment_calcs = EventSegmentCalcs.new(event)
     splits = event.ordered_splits.index_by(&:id)
-    split_times = SplitTime.select(:id, :sub_split_bitkey, :split_id, :time_from_start, :data_status).where(effort_id: efforts.map(&:id)).ordered.group_by(&:effort_id)
+    split_times = SplitTime.select(:id, :sub_split_bitkey, :split_id, :time_from_start, :data_status)
+                      .where(effort_id: efforts.map(&:id))
+                      .ordered
+                      .group_by(&:effort_id)
 
     efforts.each do |effort|
       status_array = []

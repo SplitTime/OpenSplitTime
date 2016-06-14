@@ -415,6 +415,7 @@
                 thisTimeRow.timeOut = $('#js-time-out').val();
                 thisTimeRow.pacerIn = $('#js-pacer-in').prop('checked');
                 thisTimeRow.pacerOut = $('#js-pacer-out').prop('checked');
+                thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
@@ -424,6 +425,8 @@
             },
 
             loadTimeRow: function (timeRow) {
+                liveEntry.lastEffortRequest = {};
+                liveEntry.currentEffortData = timeRow;
                 $('#js-bib-number').val(timeRow.bibNumber).focus();
                 $('#js-time-in').val(timeRow.timeIn);
                 $('#js-time-out').val(timeRow.timeOut);
@@ -449,6 +452,7 @@
                 $('#js-bib-number').val('');
                 $('#js-pacer-in').attr('checked', false);
                 $('#js-pacer-out').attr('checked', false);
+                liveEntry.lastEffortRequest = {};
             },
 
             /**
@@ -569,14 +573,12 @@
                 var timeOutIcon = icons[timeRow.timeOutStatus] || '';
                 timeOutIcon += timeRow.timeOutExists ? icons['exists'] : '';
 
-                var splitIndex = $('#split-select [value="'+timeRow.splitId+'"]').data('index');
-
                 // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
 					<tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
-						<td class="split-name js-split-name" data-order="' + splitIndex + '">' + timeRow.splitName + '</td>\
+						<td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
 						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\

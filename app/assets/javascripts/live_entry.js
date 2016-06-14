@@ -37,16 +37,6 @@
             })
         },
 
-        getEventSplit: function (splitId) {
-            var splits = liveEntry.eventLiveEntryData.splits;
-            for (var i = splits.length - 1; i >= 0; i--) {
-                if (splits[i].id == splitId) {
-                    return splits[i];
-                }
-            }
-            return null;
-        },
-
         /**
          * This kicks off the full UI
          *
@@ -602,13 +592,10 @@
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
                     for (var i = 0; i < response.returnedRows.length; i++) {
                         var timeRow = response.returnedRows[i];
-                        timeRow.splitName = liveEntry.getEventSplit(timeRow.splitId).base_name;
-                        timeRow.pacerIn = (timeRow.pacerIn == 'true');
-                        timeRow.pacerOut = (timeRow.pacerOut == 'true');
                         timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
                         var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                        if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
+                        if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
                             storedTimeRows.push(timeRow);
                             liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
                             liveEntry.timeRowsTable.addTimeRowToTable(timeRow);

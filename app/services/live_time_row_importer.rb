@@ -44,13 +44,12 @@ class LiveTimeRowImporter
 
   def bulk_create_or_update_times(option = nil)
     effort_data_objects.each do |effort_data_object|
-      created_or_updated = nil
       if effort_data_object.clean? || (option == 'force')
         created_or_updated = create_or_update_times(effort_data_object)
+        unsaved_rows << effort_data_object.response_row unless created_or_updated
       else
         unsaved_rows << effort_data_object.response_row
       end
-      unsaved_rows << effort_data_object.response_row unless created_or_updated
     end
   end
 

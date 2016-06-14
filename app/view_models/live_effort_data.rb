@@ -28,6 +28,10 @@ class LiveEffortData
     split ? split.base_name : nil
   end
 
+  def split_distance
+    split ? split.distance_from_start : nil
+  end
+
   def effort_id
     effort ? effort.id : nil
   end
@@ -70,6 +74,7 @@ class LiveEffortData
     self.time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out - time_from_start_in : nil
     self.response_row[:splitName] = split_name
     self.response_row[:effortName] = effort_name
+    self.response_row[:splitDistance] = split_distance
   end
 
   def verify_time_existence

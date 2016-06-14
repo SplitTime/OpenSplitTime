@@ -2,6 +2,7 @@
 Variables
 *********/
 $gray: #777;
+$mediumGray: #aaa;
 $lightGray: #eee;
 $red: pink;
 
@@ -245,6 +246,39 @@ Mixins
 	.provisional-data-table {
 		th {
 			cursor: pointer;
+
+			&.sorting,
+			&.sorting_asc,
+			&.sorting_desc {
+				position: relative;
+
+				&:before,
+				&:after {
+					display: block;
+					position: absolute;
+					right: 10px;
+					font-size: 10px;
+					line-height: 12px;
+					color: $mediumGray;
+				}
+
+				&:before {
+					content: '\25B2';
+					bottom: 50%;
+				}
+				&:after {
+					content: '\25BC';
+					top: 50%;
+				}
+			}
+
+			&.sorting_asc:before {
+				color: inherit;
+			}
+
+			&.sorting_desc:after {
+				color: inherit;
+			}
 		}
 
 		td {
@@ -257,7 +291,7 @@ Mixins
 	}
 
 	.dataTables_length, .dataTables_filter {
-		select, input {
+		select, .input-group {
 			margin: 0 5px;
 		}
 	}
@@ -289,10 +323,12 @@ Mixins
 		text-align: right;
 		margin-bottom: 4em;
 
-		button {
+		> * {
 			margin: 0 1.5em 1em 0;
-			padding: 0.5em 2.5em;
 		}
 
+		button {
+			padding: 0.5em 1.9em;
+		}
 	}
 }

@@ -9,8 +9,8 @@ class LiveEffortData
   def initialize(event, params, calcs = nil, ordered_split_array = nil)
     @calcs = calcs || EventSegmentCalcs.new(event)
     @ordered_splits = ordered_split_array || event.ordered_splits.to_a
-    @effort = event.efforts.find_by_bib_number(params[:bibNumber])
-    @response_row = params.slice(:splitId, :bibNumber, :timeIn, :timeOut, :pacerIn, :pacerOut)
+    @response_row = params.symbolize_keys.slice(:splitId, :bibNumber, :timeIn, :timeOut, :pacerIn, :pacerOut)
+    @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
     set_response_attributes if @effort
     verify_time_existence if (@effort && @split)
     verify_time_status if (@effort && @split)
@@ -57,8 +57,8 @@ class LiveEffortData
     self.split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
     self.day_and_time_in = (effort && split && response_row[:timeIn].present?) ? effort.likely_intended_time(response_row[:timeIn], split, calcs) : nil
     self.day_and_time_out = (effort && split && response_row[:timeOut].present?) ? effort.likely_intended_time(response_row[:timeOut], split, calcs) : nil
-    self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn] == 'true')
-    self.pacer_out = response_row[:pacerOut] = (response_row[:pacerOut] == 'true')
+    self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn].downcase == 'true')
+    self.pacer_out = response_row[:pacerOut] = (response_row[:pacerOut].downcase == 'true')
     last_split_time = effort.last_reported_split_time
     self.last_day_and_time = last_split_time ? effort.start_time + last_split_time.time_from_start : nil
     self.last_split = last_split_time ? last_split_time.split : nil

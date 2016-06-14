@@ -44,6 +44,17 @@ class Live::EventsController < Live::BaseController
     render partial: 'live_effort_data.json.ruby'
   end
 
+  def get_file_effort_data
+
+    # Param should be an unaltered file. Assume CSV format for now.
+    # This endpoint interprets and verifies rows from the file and returns
+    # return_rows containing all data necessary to populate the provisional data cache.
+
+    authorize @event
+    @file_transformer = LiveFileTransformer.new(params[:file])
+    render partial: 'file_effort_data_report.json.ruby'
+  end
+
   def set_times_data
 
     # Each time_row should include splitId, bibNumber, timeIn (military), timeOut (military),

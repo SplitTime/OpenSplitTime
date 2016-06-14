@@ -102,6 +102,10 @@ class EventPolicy
     @current_user.admin?
   end
 
+  def get_file_effort_data?
+    @current_user.admin?
+  end
+
   def set_times_data?
     @current_user.admin?
   end

@@ -1,9 +1,9 @@
 class LiveEffortData
 
-  attr_accessor :time_from_start_in, :time_from_start_out, :time_from_last, :last_day_and_time,
+  attr_accessor :time_from_start_in, :time_from_start_out, :time_from_last_valid, :last_day_and_time,
                 :time_in_aid, :dropped, :finished, :last_split, :last_bitkey,
-                :time_in_exists, :time_out_exists, :time_in_status, :time_out_status,
-                :split_time_in, :split_time_out
+                :time_in_exists, :time_out_exists, :split_time_in, :split_time_out,
+                :prior_valid_day_and_time, :prior_valid_split, :prior_valid_bitkey
   attr_reader :effort, :response_row
 
   def initialize(event, params, calcs = nil, ordered_split_array = nil)
@@ -13,7 +13,7 @@ class LiveEffortData
     @response_row = params.slice(:splitId, :bibNumber, :timeIn, :timeOut, :pacerIn, :pacerOut)
     set_response_attributes if @effort
     verify_time_existence if (@effort && @split)
-    verify_time_status if (@effort && @split && (@day_and_time_in || @day_and_time_out))
+    verify_time_status if (@effort && @split)
   end
 
   def success?
@@ -22,6 +22,10 @@ class LiveEffortData
 
   def split_id
     split ? split.id : nil
+  end
+
+  def split_name
+    split ? split.base_name : nil
   end
 
   def effort_id
@@ -34,6 +38,14 @@ class LiveEffortData
 
   def clean?
     times_will_not_overwrite? && times_valid?
+  end
+
+  def time_in_status
+    split_time_in ? split_time_in.data_status : nil
+  end
+
+  def time_out_status
+    split_time_out ? split_time_out.data_status : nil
   end
 
   private
@@ -54,9 +66,10 @@ class LiveEffortData
     self.dropped = effort.dropped?
     self.finished = effort.finished?
     self.time_from_start_in = day_and_time_in ? day_and_time_in - effort.start_time : nil
-    self.time_from_last = (time_from_start_in && last_split_time) ? time_from_start_in - last_split_time.time_from_start : nil
     self.time_from_start_out = day_and_time_out ? day_and_time_out - effort.start_time : nil
     self.time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out - time_from_start_in : nil
+    self.response_row[:splitName] = split_name
+    self.response_row[:effortName] = effort_name
   end
 
   def verify_time_existence
@@ -97,7 +110,7 @@ class LiveEffortData
     bitkey_hash_in = split_time_in ? split_time_in.bitkey_hash : nil
     bitkey_hash_out = split_time_out ? split_time_out.bitkey_hash : nil
 
-    # Now insert new SplitTime instances into hash table (or change existing ones)
+    # Now insert new SplitTime instances (if any) into hash table (or change existing ones)
 
     split_times_hash[bitkey_hash_in] = split_time_in if split_time_in
     split_times_hash[bitkey_hash_out] = split_time_out if split_time_out
@@ -111,13 +124,22 @@ class LiveEffortData
     # including the new in and/or out SplitTime instances
 
     status_hash = DataStatusService.live_entry_data_status(effort, ordered_splits, ordered_split_times.compact, calcs)
+    valid_status_hash = status_hash.select { |_, status| status == 'good' }
+    prior_bitkey_hashes = ordered_splits[0..ordered_splits.index(split) - 1].map(&:sub_split_bitkey_hashes).flatten
+    prior_valid_bitkey_hash = prior_bitkey_hashes
+                                  .collect { |bitkey_hash| [bitkey_hash, valid_status_hash[bitkey_hash]] }
+                                  .select { |e| e[1].present? }
+                                  .last[0]
+    prior_valid_split_time = split_times_hash[prior_valid_bitkey_hash]
+    self.prior_valid_day_and_time = prior_valid_split_time ? effort.start_time + prior_valid_split_time.time_from_start : nil
+    self.prior_valid_split = prior_valid_split_time ? prior_valid_split_time.split : nil
+    self.prior_valid_bitkey = prior_valid_split_time ? prior_valid_split_time.sub_split_bitkey : nil
+    self.time_from_last_valid = (time_from_start_in && prior_valid_split_time) ? time_from_start_in - prior_valid_split_time.time_from_start : nil
 
-    # And save the data status of the new SplitTime instances
+    # And save the data status of the new SplitTime instances and response_rows
 
-    self.time_in_status = self.response_row[:timeInStatus] = status_hash[bitkey_hash_in]
-    self.split_time_in.data_status = time_in_status if split_time_in
-    self.time_out_status = self.response_row[:timeOutStatus] = status_hash[bitkey_hash_out]
-    self.split_time_out.data_status = time_out_status if split_time_out
+    self.split_time_in.data_status = self.response_row[:timeInStatus] = status_hash[bitkey_hash_in] if split_time_in
+    self.split_time_out.data_status = self.response_row[:timeOutStatus] = status_hash[bitkey_hash_out] if split_time_out
   end
 
   def times_will_not_overwrite?
@@ -125,10 +147,8 @@ class LiveEffortData
   end
 
   def times_valid?
-    (time_in_status != 'bad') &&
-        (time_in_status != 'questionable') &&
-        (time_out_status != 'bad') &&
-        (time_out_status != 'questionable')
+    ((time_in_status == 'good') || time_in_status.nil?) &&
+        ((time_out_status == 'good') || time_out_status.nil?)
   end
 
 end

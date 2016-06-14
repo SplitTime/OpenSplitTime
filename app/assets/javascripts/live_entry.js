@@ -602,10 +602,18 @@
                 $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
                     for (var i = 0; i < response.returnedRows.length; i++) {
-                        response.returnedRows[i].splitName = liveEntry.getEventSplit(response.returnedRows[i].splitId).base_name;
-                        response.returnedRows[i].pacerIn = (response.returnedRows[i].pacerIn == 'true');
-                        response.returnedRows[i].pacerOut = (response.returnedRows[i].pacerOut == 'true');
-                        liveEntry.timeRowsTable.addTimeRowToTable( response.returnedRows[i] );
+                        var timeRow = response.returnedRows[i];
+                        timeRow.splitName = liveEntry.getEventSplit(timeRow.splitId).base_name;
+                        timeRow.pacerIn = (timeRow.pacerIn == 'true');
+                        timeRow.pacerOut = (timeRow.pacerOut == 'true');
+                        timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+
+                        var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                        if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
+                            storedTimeRows.push(timeRow);
+                            liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                            liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                        }
                     }
                 });
             },

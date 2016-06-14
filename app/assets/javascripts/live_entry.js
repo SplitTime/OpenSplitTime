@@ -685,6 +685,28 @@
                     liveEntry.timeRowsTable.submitTimeRows( $('.js-effort-station-row') );
                     return false;
                 });
+
+                $('#js-file-upload').fileupload({
+                    dataType: 'json',
+                    url: '/live/events/' + liveEntry.currentEventId + '/post_file_effort_data',
+                    done: function(e, data) {
+                        var response = data.result;
+                        for (var i = 0; i < response.returnedRows.length; i++) {
+                            var timeRow = response.returnedRows[i];
+                            timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+
+                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
+                                storedTimeRows.push(timeRow);
+                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                                liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                            }
+                        }
+                    },
+                    fail: function(e, data) {
+                        console.log(data);
+                    }
+                });
             },
         }, // END timeRowsTable
 

@@ -37,16 +37,6 @@
             })
         },
 
-        getEventSplit: function (splitId) {
-            var splits = liveEntry.eventLiveEntryData.splits;
-            for (var i = splits.length - 1; i >= 0; i--) {
-                if (splits[i].id == splitId) {
-                    return splits[i];
-                }
-            }
-            return null;
-        },
-
         /**
          * This kicks off the full UI
          *
@@ -370,7 +360,8 @@
                         $('#js-live-bib').val('true');
                         $('#js-effort-name').html( response.name );
                         $('#js-effort-last-reported').html( response.reportText );
-                        $('#js-last-reported').html( response.timeFromLastReported );
+                        $('#js-prior-valid-reported').html( response.priorValidReportText );
+                        $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
                         $('#js-time-spent').html( response.timeInAid );
                     } else {
                         // If success == false, this means the bib number lookup failed, but we still need to capture the data
@@ -378,7 +369,8 @@
                         $('#js-live-bib').val('false');
                         $('#js-effort-name').html('n/a');
                         $('#js-effort-last-reported').html('n/a');
-                        $('#js-last-reported').html('n/a');
+                        $('#js-prior-valid-reported').html('n/a');
+                        $('#js-time-prior-valid-reported').html('n/a');
                         $('#js-time-spent').html('n/a');
                     }
 
@@ -440,8 +432,9 @@
             clearSplitsData: function () {
                 $('#js-effort-name').html('&nbsp;');
                 $('#js-effort-last-reported').html('&nbsp;')
+                $('#js-prior-valid-reported').html('&nbsp;')
+                $('#js-time-prior-valid-reported').html('&nbsp;');
                 $('#js-effort-split-from').html('&nbsp;');
-                $('#js-last-reported').html('&nbsp;');
                 $('#js-time-spent').html('&nbsp;');
                 $('#js-time-in').val('').removeClass( 'exists null bad good questionable' );
                 $('#js-time-out').val('').removeClass( 'exists null bad good questionable' );
@@ -562,8 +555,8 @@
 					<tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
 						<td class="split-name js-split-name">' + timeRow.splitName + '</td>\
 						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
-                        <td class="time-in js-time-in ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
-                        <td class="time-out js-time-out ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
+                        <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
+                        <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
 						<td class="pacer-in js-pacer-in">' + (timeRow.pacerIn ? 'Yes' : 'No') + '</td>\
 						<td class="pacer-out js-pacer-out">' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
 						<td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
@@ -602,13 +595,10 @@
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
                     for (var i = 0; i < response.returnedRows.length; i++) {
                         var timeRow = response.returnedRows[i];
-                        timeRow.splitName = liveEntry.getEventSplit(timeRow.splitId).base_name;
-                        timeRow.pacerIn = (timeRow.pacerIn == 'true');
-                        timeRow.pacerOut = (timeRow.pacerOut == 'true');
                         timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
                         var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                        if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
+                        if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
                             storedTimeRows.push(timeRow);
                             liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
                             liveEntry.timeRowsTable.addTimeRowToTable(timeRow);

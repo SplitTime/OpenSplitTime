@@ -1,8 +1,9 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th>#</th>
+    <th>&num;</th>
     <th>Name</th>
+    <th>Bib&num;</th>
     <th>Category</th>
     <th>From</th>
     <th class="text-right">Finish Time</th>
@@ -19,6 +20,7 @@
       <% end %>
       <td><%= effort_row.overall_place %></td>
       <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
+      <td><%= effort_row.bib_number %></td>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
       <td class="text-right"><%= effort_row.finish_status.is_a?(String) ?

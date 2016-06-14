@@ -18,6 +18,8 @@
 
         currentEffortData: {},
 
+        lastEffortRequest: {},
+
         eventLiveEntryData: null,
 
         lastReportedSplitId: null,
@@ -353,6 +355,10 @@
                     timeOut: $('#js-time-out').val()
                 };
 
+                if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
+                    return; // We already have the information for this data.
+                }
+
                 $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
                     if ( response.success == true ) {
                         // If success == true, this means the bib number lookup found an effort
@@ -384,6 +390,7 @@
                         .addClass(response.timeOutStatus);
 
                     liveEntry.currentEffortData = response;
+                    liveEntry.lastEffortRequest = data;
                 });
             },
 

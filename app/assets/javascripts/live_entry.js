@@ -234,7 +234,7 @@
                         }
 
                         if (!event.shiftKey) {
-                            $('#js-time-in').focus();
+                            $('#js-time-in').focus().select();
                         } else {
                             $('#split-select').focus();
                         }
@@ -257,9 +257,9 @@
                         }
 
                         if (event.shiftKey) {
-                            $('#js-bib-number').focus();
+                            $('#js-bib-number').focus().select();
                         } else if (timeIn !== false) {
-                            $('#js-time-out').focus();
+                            $('#js-time-out').focus().select();
                         }
 
                         return false;
@@ -280,7 +280,7 @@
                         }
 
                         if (event.shiftKey) {
-                            $('#js-time-in').focus();
+                            $('#js-time-in').focus().select();
                         } else if (timeIn !== false) {
                             $('#js-pacer-in').focus();
                         }
@@ -304,7 +304,7 @@
                             break;
                         case 9: // Tab pressed
                             if ( event.shiftKey ) {
-                                $('#js-time-out').focus();
+                                $('#js-time-out').focus().select();
                             } else {
                                 $('#js-pacer-out').focus();
                             }

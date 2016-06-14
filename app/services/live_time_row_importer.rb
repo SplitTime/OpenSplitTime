@@ -1,13 +1,10 @@
 class LiveTimeRowImporter
 
-  attr_accessor :effort_data_objects
-
   def initialize(event, time_rows)
     @event = event
     @time_rows = time_rows
     @unsaved_rows = []
-    create_effort_data_objects
-    handle_effort_data_objects
+    import_time_rows
   end
 
   def returned_rows
@@ -19,32 +16,17 @@ class LiveTimeRowImporter
   attr_reader :event, :time_rows
   attr_accessor :unsaved_rows
 
-  def create_effort_data_objects
-    calcs = EventSegmentCalcs.new(event)
-    ordered_split_array = event.ordered_splits.to_a
-    self.effort_data_objects = []
-    time_rows.each do |time_row|
-      effort_data_object = LiveEffortData.new(event, time_row[1], calcs, ordered_split_array)
-      effort_data_objects << effort_data_object
-    end
-  end
-
   # If just one row was submitted, assume the user has noticed if data status is bad or questionable,
   # or if times will be overwritten, so call bulk_create_or_update with force option. If more than one
   # row was submitted, call bulk_create_or_update without force option.
 
-  def handle_effort_data_objects
-    force_option = effort_data_objects.count == 1 ? 'force' : nil
-    bulk_create_or_update_times(force_option)
-  end
-
-  # Submit clean effort_data_objects for creation or updating,
-  # and insert non-clean effort_data_objects into unsaved array
-  # If option == 'force' then ignore 'clean?' status
-
-  def bulk_create_or_update_times(option = nil)
-    effort_data_objects.each do |effort_data_object|
-      if effort_data_object.clean? || (option == 'force')
+  def import_time_rows
+    calcs = EventSegmentCalcs.new(event)
+    ordered_split_array = event.ordered_splits.to_a
+    force_option = time_rows.count == 1 ? 'force' : nil
+    time_rows.each do |time_row|
+      effort_data_object = LiveEffortData.new(event, time_row[1], calcs, ordered_split_array)
+      if effort_data_object.clean? || (force_option == 'force')
         created_or_updated = create_or_update_times(effort_data_object)
         unsaved_rows << effort_data_object.response_row unless created_or_updated
       else

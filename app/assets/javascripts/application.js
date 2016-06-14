@@ -16,4 +16,5 @@
 // require turbolinks
 //= require gmaps/google
 //= require jquery-readyselector
+//= require jquery-fileupload/basic
 //= require_tree .

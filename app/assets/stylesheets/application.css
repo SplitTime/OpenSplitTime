@@ -13,4 +13,6 @@
  *= require devise_bootstrap_views
  *= require_tree .
  *= require_self
+ *= require jquery.fileupload
+ *= require jquery.fileupload-ui
  */

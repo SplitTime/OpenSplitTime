@@ -102,7 +102,7 @@ class EventPolicy
     @current_user.admin?
   end
 
-  def get_file_effort_data?
+  def post_file_effort_data?
     @current_user.admin?
   end
 

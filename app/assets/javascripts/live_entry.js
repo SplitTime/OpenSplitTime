@@ -554,7 +554,6 @@
                 timeInIcon += icons[timeRow.timeInStatus] || '';
                 var timeOutIcon = timeRow.timeOutExists ? icons['exists'] : '';
                 timeOutIcon += icons[timeRow.timeOutStatus] || '';
-                console.log( timeRow );
 
                 // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible

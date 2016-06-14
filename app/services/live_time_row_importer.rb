@@ -66,12 +66,12 @@ class LiveTimeRowImporter
                                            effort_id: effort_data_object.split_time_in.effort_id).to_a
     in_time_saved = out_time_saved = nil
     if effort_data_object.split_time_in.present?
-      split_time_in = existing_split_times.find { |st| st.sub_split_bitkey = SubSplit::IN_BITKEY }
+      split_time_in = existing_split_times.find { |st| st.sub_split_bitkey == SubSplit::IN_BITKEY }
       in_time_saved = create_or_update_split_time(effort_data_object.split_time_in, split_time_in)
     end
 
     if effort_data_object.split_time_out.present?
-      split_time_out = existing_split_times.find { |st| st.sub_split_bitkey = SubSplit::OUT_BITKEY }
+      split_time_out = existing_split_times.find { |st| st.sub_split_bitkey == SubSplit::OUT_BITKEY }
       out_time_saved = create_or_update_split_time(effort_data_object.split_time_out, split_time_out)
     end
     !((in_time_saved == false) || (out_time_saved == false)) # This formulation is needed for nil handling.

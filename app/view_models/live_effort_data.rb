@@ -1,6 +1,6 @@
 class LiveEffortData
 
-  attr_accessor :time_from_start_in, :time_from_start_out, :time_from_last_valid, :last_day_and_time,
+  attr_accessor :time_from_start_in, :time_from_start_out, :time_from_prior_valid, :last_day_and_time,
                 :time_in_aid, :dropped, :finished, :last_split, :last_bitkey,
                 :time_in_exists, :time_out_exists, :split_time_in, :split_time_out,
                 :prior_valid_day_and_time, :prior_valid_split, :prior_valid_bitkey
@@ -134,7 +134,7 @@ class LiveEffortData
     self.prior_valid_day_and_time = prior_valid_split_time ? effort.start_time + prior_valid_split_time.time_from_start : nil
     self.prior_valid_split = prior_valid_split_time ? prior_valid_split_time.split : nil
     self.prior_valid_bitkey = prior_valid_split_time ? prior_valid_split_time.sub_split_bitkey : nil
-    self.time_from_last_valid = (time_from_start_in && prior_valid_split_time) ? time_from_start_in - prior_valid_split_time.time_from_start : nil
+    self.time_from_prior_valid = (time_from_start_in && prior_valid_split_time) ? time_from_start_in - prior_valid_split_time.time_from_start : nil
 
     # And save the data status of the new SplitTime instances and response_rows
 

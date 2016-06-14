@@ -504,9 +504,11 @@
 
                 // Initiate DataTable Plugin
                 liveEntry.timeRowsTable.$dataTable = $('#js-provisional-data-table').DataTable();
-                liveEntry.timeRowsTable.$dataTable.clear();
+                liveEntry.timeRowsTable.$dataTable.clear().draw();
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
+
+                $('[data-toggle="popover"]').popover();
 
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
@@ -660,6 +662,7 @@
                 var $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
+                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     $(this).prop('disabled', true);
                     $deleteWarning.insertAfter(this).animate({
                         width: 'toggle',
@@ -671,7 +674,7 @@
                             var $deleteButton = $('#js-delete-all-efforts');
                             $deleteButton.prop('disabled', false)
                              if ($deleteButton.hasClass('confirm')) {
-                                liveEntry.timeRowsTable.removeTimeRows( $('.js-effort-station-row') );
+                                liveEntry.timeRowsTable.removeTimeRows( nodes );
                                 $deleteButton.removeClass('confirm');
                                 $deleteWarning = $('#js-delete-all-warning').hide().detach();
                             } else {
@@ -684,14 +687,18 @@
 
                 $('#js-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    liveEntry.timeRowsTable.submitTimeRows( $('.js-effort-station-row') );
+                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
+                    liveEntry.timeRowsTable.submitTimeRows( nodes );
                     return false;
                 });
 
                 $('#js-file-upload').fileupload({
                     dataType: 'json',
                     url: '/live/events/' + liveEntry.currentEventId + '/post_file_effort_data',
-                    done: function(e, data) {
+                    submit: function (e, data) {
+                        data.formData = {split: liveEntry.currentSplitId};
+                    },
+                    done: function (e, data) {
                         var response = data.result;
                         for (var i = 0; i < response.returnedRows.length; i++) {
                             var timeRow = response.returnedRows[i];
@@ -705,8 +712,8 @@
                             }
                         }
                     },
-                    fail: function(e, data) {
-                        console.log(data);
+                    fail: function (e, data) {
+                        $('#debug').empty().append( data.response().jqXHR.responseText );
                     }
                 });
             },
@@ -757,6 +764,7 @@
                 var $selectOption = $('#split-select option:selected');
                 $('#js-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
                 $('#js-time-out').prop('disabled', !$selectOption.data('sub-split-out'));
+                $('#js-file-split').text( $selectOption.text() );
                 // Get slider indexes
                 var currentItemId = $('.js-split-slider-item.active.middle').attr('data-index');
                 var selectedItemId = $('.js-split-slider-item[data-split-id="' + splitId + '"]').attr('data-index');

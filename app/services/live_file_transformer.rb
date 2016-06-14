@@ -2,9 +2,10 @@ class LiveFileTransformer
 
   require 'csv'
 
-  def initialize(event, file = nil)
+  def initialize(event, file, split_id)
     @event = event
-    @file = file || File.new("#{Rails.root}/public/packet_data_test.csv")
+    @file = file
+    @split = Split.find_by_id(split_id)
     @transformed_rows = []
     @file_rows = []
     create_rows_from_file
@@ -17,12 +18,13 @@ class LiveFileTransformer
 
   private
 
-  attr_reader :event, :file
+  attr_reader :event, :file, :split
   attr_accessor :file_rows, :transformed_rows
 
   def create_rows_from_file
     CSV.foreach(file.path, headers: true) do |row|
       file_row = row.to_hash
+      file_row[:splitId] = split_id
       file_rows << file_row
     end
   end
@@ -34,6 +36,10 @@ class LiveFileTransformer
       effort_data_object = LiveEffortData.new(event, file_row, calcs, ordered_split_array)
       transformed_rows << effort_data_object.response_row
     end
+  end
+
+  def split_id
+    split ? split.id : nil
   end
 
 end

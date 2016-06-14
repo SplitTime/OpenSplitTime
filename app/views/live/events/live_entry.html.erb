@@ -16,12 +16,12 @@
 
   <div class="col-xs-12 col-sm-4 live-entry">
     <form id="js-add-effort-form">
-	    <div class="form-group clearfix">
+      <div class="form-group clearfix">
         <label class="col-xs-4" for="split-select">Aid Station</label>
         <div class="col-xs-8">
-        	<select id="split-select" name="split-select" class="form-control" autofocus>Aid Station</select>
+          <select id="split-select" name="split-select" class="form-control" autofocus>Aid Station</select>
         </div>
-	    </div>
+      </div>
       <div class="form-group clearfix">
         <label class="col-xs-4" for="js-bib-number">Bib #</label>
         <div class="col-xs-8">
@@ -126,26 +126,30 @@
         </tr>
         </thead>
         <tbody>
-        	<tr style="display: none">
-						<td data-order="0"></td>
-						<td></td>
+          <tr style="display: none">
+            <td data-order="0"></td>
             <td></td>
             <td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="col-xs-12 col-md-8 col-md-offset-4 table-submit-wrapper">
+    <span class="btn btn-primary fileinput-button">
+      <span>Import File</span>
+      <input id="js-file-upload" type="file" name="files[]"/>
+    </span>
     <button id="js-import-from-file" class="btn btn-primary">Import File</button>
     <div class="btn-group" role="group">
-	    <button id="js-delete-all-efforts" class="btn btn-danger">Delete All</button>
-	    <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
+      <button id="js-delete-all-efforts" class="btn btn-danger">Delete All</button>
+      <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
     </div>
     <button id="js-submit-all-efforts" class="btn btn-success">Submit All</button>
   </div>

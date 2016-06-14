@@ -16,6 +16,7 @@ class AidStationDetail
     @efforts_started = efforts_started || set_efforts_started
     @split_times = split_times || set_split_times
     set_efforts
+    set_open_status if aid_station.status.nil?
   end
 
   def efforts_started_count
@@ -85,6 +86,17 @@ class AidStationDetail
     self.efforts_expected = efforts_expected
   end
 
+  def set_open_status
+    if efforts_started_count == 0
+      status = 'pre_open'
+    elsif efforts_expected_count == 0
+      status = 'closed'
+    else
+      status = 'open'
+    end
+    self.aid_station.update(status: status)
+  end
+
   def split_id
     aid_station.split_id
   end
@@ -95,6 +107,10 @@ class AidStationDetail
 
   def efforts_dropped
     efforts_started.select { |effort| effort.dropped_split_id.present? }
+  end
+
+  def efforts_expected_count
+    efforts_expected.count
   end
 
 end

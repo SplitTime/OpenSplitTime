@@ -544,6 +544,7 @@
              * @param object timeRow Pass in the object of the timeRow to add
              */
             addTimeRowToTable: function (timeRow) {
+                liveEntry.timeRowsTable.$dataTable.search('');
                 var icons = {
                     'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists"></span>',
                     'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" title="Time Appears Good"></span>',

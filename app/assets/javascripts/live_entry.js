@@ -632,9 +632,28 @@
                     liveEntry.timeRowsTable.submitTimeRows( $(this) );
                 });
 
+                var $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    liveEntry.timeRowsTable.removeTimeRows( $('.js-effort-station-row') );
+                    $(this).prop('disabled', true);
+                    $deleteWarning.insertAfter(this).animate({
+                        width: 'toggle',
+                        paddingLeft: 'toggle',
+                        paddingRight: 'toggle'
+                    }, {
+                        duration: 350,
+                        done: function() {
+                            var $deleteButton = $('#js-delete-all-efforts');
+                            $deleteButton.prop('disabled', false)
+                             if ($deleteButton.hasClass('confirm')) {
+                                liveEntry.timeRowsTable.removeTimeRows( $('.js-effort-station-row') );
+                                $deleteButton.removeClass('confirm');
+                                $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                            } else {
+                                $deleteButton.addClass('confirm')
+                            }
+                        }
+                    });
                     return false;
                 });
 

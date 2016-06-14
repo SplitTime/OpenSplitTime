@@ -289,10 +289,12 @@ Mixins
 		text-align: right;
 		margin-bottom: 4em;
 
-		button {
+		> * {
 			margin: 0 1.5em 1em 0;
-			padding: 0.5em 2.5em;
 		}
 
+		button {
+			padding: 0.5em 1.9em;
+		}
 	}
 }

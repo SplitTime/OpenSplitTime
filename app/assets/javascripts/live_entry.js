@@ -550,10 +550,10 @@
                     'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" title="Time Appears Questionable"></span>',
                     'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" title="Time Appears Bad"></span>'
                 };
-                var timeInIcon = timeRow.timeInExists ? icons['exists'] : '';
-                timeInIcon += icons[timeRow.timeInStatus] || '';
-                var timeOutIcon = timeRow.timeOutExists ? icons['exists'] : '';
-                timeOutIcon += icons[timeRow.timeOutStatus] || '';
+                var timeInIcon = icons[timeRow.timeInStatus] || '';
+                timeInIcon += timeRow.timeInExists ? icons['exists'] : '';
+                var timeOutIcon = icons[timeRow.timeOutStatus] || '';
+                timeOutIcon += timeRow.timeOutExists ? icons['exists'] : '';
 
                 // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible

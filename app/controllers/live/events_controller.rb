@@ -51,7 +51,7 @@ class Live::EventsController < Live::BaseController
     # return_rows containing all data necessary to populate the provisional data cache.
 
     authorize @event
-    @file_transformer = LiveFileTransformer.new(@event, params[:file])
+    @file_transformer = LiveFileTransformer.new(@event, params[:file], params[:splitId])
     render partial: 'file_effort_data_report.json.ruby'
   end
 

@@ -44,7 +44,7 @@ class Live::EventsController < Live::BaseController
     render partial: 'live_effort_data.json.ruby'
   end
 
-  def get_file_effort_data
+  def post_file_effort_data
 
     # Param should be an unaltered file. Assume CSV format for now.
     # This endpoint interprets and verifies rows from the file and returns

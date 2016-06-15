@@ -28,6 +28,7 @@ prior_valid_report_text = response.effort.nil? ? '' : "#{response.prior_valid_sp
         timeInExists: response.time_in_exists,
         timeOutExists: response.time_out_exists,
         timeInStatus: response.time_in_status,
-        timeOutStatus: response.time_out_status
+        timeOutStatus: response.time_out_status,
+        splitDistance: response. split_distance
 
 }.to_json

@@ -49,9 +49,10 @@ class Live::EventsController < Live::BaseController
     # Param should be an unaltered file. Assume CSV format for now.
     # This endpoint interprets and verifies rows from the file and returns
     # return_rows containing all data necessary to populate the provisional data cache.
+    # TODO: Figure out why the parameter needs to be split instead of splitId
 
     authorize @event
-    @file_transformer = LiveFileTransformer.new(@event, params[:file], params[:splitId])
+    @file_transformer = LiveFileTransformer.new(@event, params[:file], params[:split])
     render partial: 'file_effort_data_report.json.ruby'
   end
 

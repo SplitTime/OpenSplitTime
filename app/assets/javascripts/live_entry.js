@@ -415,6 +415,7 @@
                 thisTimeRow.timeOut = $('#js-time-out').val();
                 thisTimeRow.pacerIn = $('#js-pacer-in').prop('checked');
                 thisTimeRow.pacerOut = $('#js-pacer-out').prop('checked');
+                thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
@@ -424,6 +425,8 @@
             },
 
             loadTimeRow: function (timeRow) {
+                liveEntry.lastEffortRequest = {};
+                liveEntry.currentEffortData = timeRow;
                 $('#js-bib-number').val(timeRow.bibNumber).focus();
                 $('#js-time-in').val(timeRow.timeIn);
                 $('#js-time-out').val(timeRow.timeOut);
@@ -449,6 +452,7 @@
                 $('#js-bib-number').val('');
                 $('#js-pacer-in').attr('checked', false);
                 $('#js-pacer-out').attr('checked', false);
+                liveEntry.lastEffortRequest = {};
             },
 
             /**
@@ -500,9 +504,11 @@
 
                 // Initiate DataTable Plugin
                 liveEntry.timeRowsTable.$dataTable = $('#js-provisional-data-table').DataTable();
-                liveEntry.timeRowsTable.$dataTable.clear();
+                liveEntry.timeRowsTable.$dataTable.clear().draw();
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
+
+                $('[data-toggle="popover"]').popover();
 
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
@@ -569,14 +575,12 @@
                 var timeOutIcon = icons[timeRow.timeOutStatus] || '';
                 timeOutIcon += timeRow.timeOutExists ? icons['exists'] : '';
 
-                var splitIndex = $('#split-select [value="'+timeRow.splitId+'"]').data('index');
-
                 // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
 					<tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
-						<td class="split-name js-split-name" data-order="' + splitIndex + '">' + timeRow.splitName + '</td>\
+						<td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
 						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
@@ -658,6 +662,7 @@
                 var $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
+                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     $(this).prop('disabled', true);
                     $deleteWarning.insertAfter(this).animate({
                         width: 'toggle',
@@ -669,7 +674,7 @@
                             var $deleteButton = $('#js-delete-all-efforts');
                             $deleteButton.prop('disabled', false)
                              if ($deleteButton.hasClass('confirm')) {
-                                liveEntry.timeRowsTable.removeTimeRows( $('.js-effort-station-row') );
+                                liveEntry.timeRowsTable.removeTimeRows( nodes );
                                 $deleteButton.removeClass('confirm');
                                 $deleteWarning = $('#js-delete-all-warning').hide().detach();
                             } else {
@@ -682,14 +687,18 @@
 
                 $('#js-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    liveEntry.timeRowsTable.submitTimeRows( $('.js-effort-station-row') );
+                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
+                    liveEntry.timeRowsTable.submitTimeRows( nodes );
                     return false;
                 });
 
                 $('#js-file-upload').fileupload({
                     dataType: 'json',
                     url: '/live/events/' + liveEntry.currentEventId + '/post_file_effort_data',
-                    done: function(e, data) {
+                    submit: function (e, data) {
+                        data.formData = {split: liveEntry.currentSplitId};
+                    },
+                    done: function (e, data) {
                         var response = data.result;
                         for (var i = 0; i < response.returnedRows.length; i++) {
                             var timeRow = response.returnedRows[i];
@@ -703,8 +712,8 @@
                             }
                         }
                     },
-                    fail: function(e, data) {
-                        console.log(data);
+                    fail: function (e, data) {
+                        $('#debug').empty().append( data.response().jqXHR.responseText );
                     }
                 });
             },
@@ -755,6 +764,7 @@
                 var $selectOption = $('#split-select option:selected');
                 $('#js-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
                 $('#js-time-out').prop('disabled', !$selectOption.data('sub-split-out'));
+                $('#js-file-split').text( $selectOption.text() );
                 // Get slider indexes
                 var currentItemId = $('.js-split-slider-item.active.middle').attr('data-index');
                 var selectedItemId = $('.js-split-slider-item[data-split-id="' + splitId + '"]').attr('data-index');

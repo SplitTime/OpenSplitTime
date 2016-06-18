@@ -24,6 +24,8 @@ class LiveFileTransformer
   def create_rows_from_file
     CSV.foreach(file.path, headers: true) do |row|
       file_row = row.to_hash
+      file_row.symbolize_keys!
+      zeroize_times(file_row)
       file_row[:splitId] = split_id
       file_rows << file_row
     end
@@ -40,6 +42,18 @@ class LiveFileTransformer
 
   def split_id
     split ? split.id : nil
+  end
+
+  def zeroize_times(file_row)
+    file_row[:timeIn] = zeroize(file_row[:timeIn])
+    file_row[:timeOut] = zeroize(file_row[:timeOut])
+  end
+
+  def zeroize(time_string)
+    time_components = time_string.split(':')
+    time_components << "00" if time_components.count == 2
+    time_components[0] = "0" + time_components[0] if time_components[0].length == 1
+    time_components.join(":")
   end
 
 end

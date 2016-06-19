@@ -696,7 +696,7 @@
                     dataType: 'json',
                     url: '/live/events/' + liveEntry.currentEventId + '/post_file_effort_data',
                     submit: function (e, data) {
-                        data.formData = {split: liveEntry.currentSplitId};
+                        data.formData = {splitId: liveEntry.currentSplitId};
                     },
                     done: function (e, data) {
                         var response = data.result;

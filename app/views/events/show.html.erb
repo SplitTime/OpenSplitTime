@@ -17,7 +17,7 @@
 <hr>
 <div class="row">
   <div class="col-xs-12">
-    <%= link_to '<< Show All Events', events_path, class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Event search', events_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <%= link_to 'All-time best efforts >', best_efforts_course_path(@event_display.course), class: "btn btn-sm btn-default" %>
     <% unless @event_display.simple? %>
@@ -40,7 +40,7 @@
 <% if @event_display.all_efforts_count < 1 %>
     <strong>No efforts yet associated with this event.</strong>
 <% else %>
-    <%= render 'lookup', event: @event_display.event %>
+    <%= render 'effort_lookup', event: @event_display.event %>
     <% if @event_display.filtered_efforts_count > 0 %>
         <hr>
         <div class="row">

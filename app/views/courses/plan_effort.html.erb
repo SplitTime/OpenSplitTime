@@ -3,9 +3,7 @@
     <h3><%= "#{@current_user.full_name}" %></h3>
     <h1>
       <%= "#{@plan_display.course.name} pacing plan" %>
-      <% if @plan_display.expected_time %>
-      <%= "| #{time_format_hhmm(@plan_display.expected_time)} goal time" %>
-      <% end %>
+      <%= "for a #{time_format_hhmm(@plan_display.expected_time)} goal time" if @plan_display.expected_time %>
     </h1>
   </div>
 </div>
@@ -21,7 +19,7 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '<< Back to course splits', course_path(@plan_display.course), class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Back to course', course_path(@plan_display.course), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
   </div>
 </div>

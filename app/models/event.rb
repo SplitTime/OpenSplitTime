@@ -11,12 +11,19 @@ class Event < ActiveRecord::Base
   validates_presence_of :course_id, :name, :start_time
   validates_uniqueness_of :name, case_sensitive: false
 
-  scope :recent, -> (max) { order(start_time: :desc).limit(max) }
-  scope :most_recent, -> { order(start_time: :desc).first }
+  scope :recent, -> (max) { where('start_time < ?', Time.now).order(start_time: :desc).limit(max) }
+  scope :most_recent, -> { where('start_time < ?', Time.now).order(start_time: :desc).first }
+  scope :latest, -> { order(start_time: :desc).first }
   scope :earliest, -> { order(:start_time).first }
+  scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
 
   def all_splits_on_course?
     splits.joins(:course).group(:course_id).count.size == 1
+  end
+
+  def self.search(param)
+    return none if param.blank? || (param.length < 3)
+    name_search(param)
   end
 
   def reconciled_efforts

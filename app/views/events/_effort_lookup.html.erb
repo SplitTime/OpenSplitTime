@@ -1,15 +1,15 @@
 <div class="row">
-  <%= form_tag events_path, method: :get do %>
+  <%= form_tag event_path(event), method: :get do %>
       <div class="col-xs-8">
         <%= text_field_tag :search_param,
                            params[:search_param],
-                           placeholder: 'Event name',
+                           placeholder: 'First name, last name, state, or country',
                            autofocus: true,
                            class: 'form-control search-box input-sm' %>
       </div>
       <div class="col-xs-2">
         <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
-            <i class='fa fa-search'></i> Find an event
+            <i class='fa fa-search'></i> Find someone
         <% end %>
       </div>
   <% end %>

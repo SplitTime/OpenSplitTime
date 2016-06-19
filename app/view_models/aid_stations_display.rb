@@ -49,7 +49,7 @@ class AidStationsDisplay
     race ? race.name : nil
   end
 
-  # private
+  private
 
   attr_accessor :event_split_times, :efforts_started, :aid_station_rows
   attr_reader :event, :aid_stations, :splits, :efforts, :ordered_split_ids

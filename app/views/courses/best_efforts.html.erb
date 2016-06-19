@@ -21,7 +21,7 @@
         <strong>
           <%= "Searched #{pluralize(@best_display.events_count, 'event')}
         from #{@best_display.earliest_event_date.to_date.to_formatted_s(:long)}
-        to #{@best_display.latest_event_date.to_date.to_formatted_s(:long)}" %>
+        to #{@best_display.most_recent_event_date.to_date.to_formatted_s(:long)}" %>
         </strong><br/>
     <% else %>
         <strong>No efforts have been measured on this segment.</strong>

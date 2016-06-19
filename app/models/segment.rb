@@ -1,7 +1,7 @@
 class Segment
   attr_accessor :begin_split, :end_split, :begin_bitkey_hash, :end_bitkey_hash
   delegate :course, to: :begin_split
-  delegate :events, :earliest_event_date, :latest_event_date, to: :end_split
+  delegate :events, :earliest_event_date, :most_recent_event_date, to: :end_split
 
 # Requires two bitkey hashes as an array. Uses corresponding splits
 # if provided; otherwise finds corresponding splits in the database

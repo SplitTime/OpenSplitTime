@@ -6,7 +6,7 @@ class SplitRow
   # split_times should be an array having size == split.sub_split_bitkey_hashes.size,
   # with nil values where no corresponding split_time exists
 
-  def initialize(split, split_times, prior_time = nil, start_time = nil)
+  def initialize(split, split_times, prior_time, start_time)
     @split = split
     @split_times = split_times
     @prior_time = prior_time
@@ -27,7 +27,7 @@ class SplitRow
     DataStatus.worst(time_data_statuses)
   end
 
-  # private
+  private
 
   attr_reader :split, :split_times, :prior_time, :start_time, :time_cluster
 

@@ -1,9 +1,28 @@
-<div class="row">
-  <%= form_tag plan_effort_course_path, method: :get do %>
+<%= form_tag plan_effort_course_path, :html => {class: "form-horizontal", role: "form"}, method: :get do %>
+    <div class="row">
+      <div class="col-xs-2 plan-label">
+        <%= label :start_time, 'Event start time' %>
+      </div>
+      <div class="col-xs-6">
+        <%= datetime_select 'start_time',
+                            'date',
+                            {use_short_month: true,
+                             start_year: (Date.today + 5.years).year,
+                             end_year: (Date.today - 5.years).year,
+                             ampm: true,
+                             default: @plan_display.start_time,
+                             order: [:month, :day, :year]},
+                            {class: "dropdown-select-field"} %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-2 plan-label">
+        <%= label :expected_time, 'Expected time' %>
+      </div>
       <div class="col-xs-2">
         <%= text_field_tag :expected_time,
                            params[:expected_time],
-                           placeholder: 'Goal time (hh:mm)',
+                           placeholder: 'hh:mm',
                            autofocus: true,
                            class: 'form-control search-box input-sm' %>
       </div>
@@ -12,5 +31,5 @@
             Create my plan
         <% end %>
       </div>
-  <% end %>
-</div>
+    </div>
+<% end %>

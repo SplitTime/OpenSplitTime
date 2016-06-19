@@ -4,7 +4,8 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
-    @events = Event.select("events.*, COUNT(efforts.id) as effort_count")
+    @events = Event.search(params[:search_param])
+                  .select("events.*, COUNT(efforts.id) as effort_count")
                   .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
                   .group("events.id")
                   .order(start_time: :desc)

@@ -7,13 +7,25 @@
                 class: 'btn btn-sm btn-success btn-margin-lg' %>
   </div>
 </div>
+
+<%= render 'lookup' %>
+
 <div class="row">
   <div class="col-xs-8">
     <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>
 
-<%= render 'events', events: @events %>
+<% if @events.present? %>
+    <%= render 'events', events: @events %>
+<% else %>
+    <br/>
+    <% if params[:search_param].blank? %>
+        <p><strong>Find an event</strong></p>
+    <% else %>
+        <p><strong>No events match this search</strong></p>
+    <% end %>
+<% end %>
 
 <hr>
 <div class="row">

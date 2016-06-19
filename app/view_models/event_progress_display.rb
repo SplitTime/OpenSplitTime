@@ -56,7 +56,7 @@ class EventProgressDisplay
     progress_rows.select { |row| row.over_under_due > past_due_threshold.minutes }.sort_by(&:over_under_due).reverse
   end
 
-  # private
+  private
 
   attr_accessor :efforts, :ordered_splits, :event_split_times, :split_name_hash, :bitkey_hashes, :event_segment_calcs
 

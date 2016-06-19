@@ -39,7 +39,7 @@ class AidStationDetail
     race ? race.name : nil
   end
 
-  # private
+  private
 
   attr_accessor :efforts_dropped_at_station, :efforts_recorded_out,
                 :efforts_in_aid, :efforts_passed_without_record, :efforts_expected

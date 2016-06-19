@@ -26,7 +26,7 @@ module Matchable
     self.suggested_match = possible_matching_participants.first
   end
 
-  # private
+  private
 
   def participants_same_full_name # For situations where middle names are sometimes included with first_name and sometimes with last_name
     Participant.full_name_matches(full_name)

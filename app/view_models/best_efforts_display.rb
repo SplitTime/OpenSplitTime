@@ -4,7 +4,7 @@ class BestEffortsDisplay
   attr_reader :course, :effort_rows
   delegate :name, to: :course
   delegate :distance, :vert_gain, :vert_loss, :events, :earliest_event_date,
-           :latest_event_date, :begin_id, :end_id, to: :segment
+           :most_recent_event_date, :begin_id, :end_id, to: :segment
 
 
   def initialize(course, params = {})

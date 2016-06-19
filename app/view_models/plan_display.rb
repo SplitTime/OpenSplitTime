@@ -1,18 +1,20 @@
 class PlanDisplay
-  attr_reader :course, :expected_time, :relevant_events, :relevant_efforts, :split_rows
+  attr_reader :course, :expected_time, :start_time, :relevant_events, :relevant_efforts, :split_rows
 
   MAX_EVENTS = 5
 
   def initialize(course, params)
     @course = course
-    @event = course.events.most_recent
+    @event = course.events.latest
     @expected_time = expected_time_from_param(params[:expected_time])
+    if @event
+      @start_time = params[:start_time].present? ? convert_to_datetime(params[:start_time]) : default_start_time
+    end
     if @event && @expected_time
       @relevant_events = course.events.recent(MAX_EVENTS)
       @relevant_efforts = course.relevant_efforts(expected_time, MAX_EVENTS).to_a
       @splits = event.ordered_splits.to_a
       @split_times = create_plan_split_times
-      @start_time = params[:start_time] ? params[:start_time].to_datetime : @event.start_time
       @split_rows = create_split_rows
     end
   end
@@ -31,14 +33,17 @@ class PlanDisplay
 
   private
 
-  attr_reader :event, :splits, :split_times, :start_time
+  attr_reader :event, :splits, :split_times
 
-  def expected_time_from_param(expected_time_param)
-    return nil if expected_time_param.blank?
-    # TODO: do regex test here
-    h = expected_time_param.split(":")[0].to_i
-    m = expected_time_param.split(":")[1].to_i
-    ((h * 60 * 60) + (m * 60))
+  def expected_time_from_param(entered_time)
+    return nil unless entered_time.present?
+    clean_time = entered_time.gsub(/[^\d:]/, '')
+    clean_time.concat("00") if entered_time.last == ":"
+    return nil unless clean_time =~ /^\d{1,2}(:\d{2})?$/
+    time_components = clean_time.split(":")
+    hours = time_components[0].to_i
+    minutes = time_components[1].to_i
+    ((hours * 60 * 60) + (minutes * 60))
   end
 
   def create_plan_split_times # Temporary split_time objects to assist in constructing the view
@@ -84,6 +89,20 @@ class PlanDisplay
 
   def related_split_times(split)
     split.sub_split_bitkey_hashes.collect { |key_hash| split_times[key_hash] }
+  end
+
+  def default_start_time
+    years_prior = Time.now.year - event.start_time.year
+    shift_forward = (years_prior * 52.weeks) + ((years_prior / 6).weeks)
+    event.start_time + shift_forward
+  end
+
+  def convert_to_datetime(datetime_components)
+    DateTime.new(datetime_components["date(1i)"].to_i,
+                 datetime_components["date(2i)"].to_i,
+                 datetime_components["date(3i)"].to_i,
+                 datetime_components["date(4i)"].to_i,
+                 datetime_components["date(5i)"].to_i)
   end
 
 end

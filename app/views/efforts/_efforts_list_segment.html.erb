@@ -8,7 +8,7 @@
     <th>Category</th>
     <th>From</th>
     <th>Year</th>
-    <th class="text-right">Segment Time</th>
+    <th class="text-right"><%= @best_display.segment_is_full_course? ? 'Finish Time' : 'Segment Time' %></th>
   </tr>
   </thead>
   <tbody>

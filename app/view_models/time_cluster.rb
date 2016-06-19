@@ -16,16 +16,14 @@ class TimeCluster
   end
 
   def days_and_times
-    start_time ?
-        times_from_start.map { |time| time ? start_time + time : nil } :
-        split_times.map { |st| st ? st.day_and_time : nil }
+    times_from_start.map { |time| time ? start_time + time.seconds : nil }
   end
 
   def time_data_statuses
     split_times.map { |st| st ? st.data_status : nil }
   end
 
-  # private
+  private
 
   attr_reader :split, :split_times, :start_time
 

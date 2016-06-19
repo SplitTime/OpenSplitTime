@@ -118,6 +118,10 @@ class Split < ActiveRecord::Base
   end
 
   def latest_event_date
+    events.latest.start_time
+  end
+
+  def most_recent_event_date
     events.most_recent.start_time
   end
 

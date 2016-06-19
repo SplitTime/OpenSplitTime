@@ -37,20 +37,25 @@ RSpec.describe SplitRow, type: :model do
     @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000, data_status: 2)
     @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 12200, data_status: 2)
 
-    @split_row1 = SplitRow.new(@split1, [@split_time1], nil)
-    @split_row2 = SplitRow.new(@split2, [@split_time2, @split_time3], 0)
-    @split_row3 = SplitRow.new(@split4, [@split_time4, @split_time6], 4100)
-    @split_row4 = SplitRow.new(@split6, [@split_time7], 15100)
+    event_start_time = @event.start_time
+    effort1_start_time = event_start_time + @effort1.start_offset
+    effort2_start_time = event_start_time + @effort2.start_offset
+    effort3_start_time = event_start_time + @effort3.start_offset
 
-    @split_row5 = SplitRow.new(@split1, [@split_time8], nil)
-    @split_row6 = SplitRow.new(@split2, [nil, @split_time9], 0)
-    @split_row7 = SplitRow.new(@split4, [@split_time10, @split_time12], nil)
-    @split_row8 = SplitRow.new(@split6, [@split_time13], 150000)
+    @split_row1 = SplitRow.new(@split1, [@split_time1], nil, effort1_start_time)
+    @split_row2 = SplitRow.new(@split2, [@split_time2, @split_time3], 0, effort1_start_time)
+    @split_row3 = SplitRow.new(@split4, [@split_time4, @split_time6], 4100, effort1_start_time)
+    @split_row4 = SplitRow.new(@split6, [@split_time7], 15100, effort1_start_time)
 
-    @split_row9 = SplitRow.new(@split1, [@split_time14], nil)
-    @split_row10 = SplitRow.new(@split2, [@split_time15, @split_time16], 0)
-    @split_row11 = SplitRow.new(@split4, [@split_time17, nil], 5000)
-    @split_row12 = SplitRow.new(@split6, [nil, nil], 12200)
+    @split_row5 = SplitRow.new(@split1, [@split_time8], nil, effort2_start_time)
+    @split_row6 = SplitRow.new(@split2, [nil, @split_time9], 0, effort2_start_time)
+    @split_row7 = SplitRow.new(@split4, [@split_time10, @split_time12], nil, effort2_start_time)
+    @split_row8 = SplitRow.new(@split6, [@split_time13], 150000, effort2_start_time)
+
+    @split_row9 = SplitRow.new(@split1, [@split_time14], nil, effort3_start_time)
+    @split_row10 = SplitRow.new(@split2, [@split_time15, @split_time16], 0, effort3_start_time)
+    @split_row11 = SplitRow.new(@split4, [@split_time17, nil], 5000, effort3_start_time)
+    @split_row12 = SplitRow.new(@split6, [nil, nil], 12200, effort3_start_time)
 
   end
 

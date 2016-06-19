@@ -144,6 +144,10 @@ section {
   margin-top: 4px;
 }
 
+.plan-label {
+  margin-top: 4px;
+}
+
 #error_explanation:not(:empty) {
   @extend .alert;
   @extend .alert-danger;

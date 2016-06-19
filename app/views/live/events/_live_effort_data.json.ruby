@@ -11,7 +11,8 @@ report_text = case
                       last_split ? "#{last_split.name(response.last_bitkey)} • #{l(response.last_day_and_time, format: :day_and_military)}" : nil
               end
 
-prior_valid_report_text = response.effort.nil? ? '' : "#{response.prior_valid_split.name(response.prior_valid_bitkey)} • #{l(response.prior_valid_day_and_time, format: :day_and_military)}"
+prior_valid_report_text = (response.effort && response.prior_valid_split) ?
+    "#{response.prior_valid_split.name(response.prior_valid_bitkey)} • #{l(response.prior_valid_day_and_time, format: :day_and_military)}" : nil
 
 {
         success: response.success?,

@@ -1,5 +1,8 @@
 class AidStationDetail
 
+  attr_reader :aid_station
+  attr_accessor :efforts_dropped_at_station, :efforts_recorded_out,
+                :efforts_in_aid, :efforts_passed_without_record, :efforts_expected
   delegate :course, :race, to: :event
   delegate :event, :split, :open_time, :close_time, :captain_name, :comms_chief_name,
            :comms_frequencies, :current_issues, to: :aid_station
@@ -41,9 +44,7 @@ class AidStationDetail
 
   private
 
-  attr_accessor :efforts_dropped_at_station, :efforts_recorded_out,
-                :efforts_in_aid, :efforts_passed_without_record, :efforts_expected
-  attr_reader :efforts_started, :split_times, :ordered_split_ids, :aid_station
+  attr_reader :efforts_started, :split_times, :ordered_split_ids
 
   def set_ordered_split_ids
     event.ordered_split_ids

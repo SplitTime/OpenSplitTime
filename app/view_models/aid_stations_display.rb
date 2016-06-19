@@ -1,5 +1,6 @@
 class AidStationsDisplay
 
+  attr_accessor :aid_station_rows
   delegate :start_time, :course, :race, to: :event
   delegate :captain_name, :comms_chief_name, :comms_frequencies, to: :aid_station
 
@@ -51,7 +52,7 @@ class AidStationsDisplay
 
   private
 
-  attr_accessor :event_split_times, :efforts_started, :aid_station_rows
+  attr_accessor :event_split_times, :efforts_started
   attr_reader :event, :aid_stations, :splits, :efforts, :ordered_split_ids
 
   def get_split_times

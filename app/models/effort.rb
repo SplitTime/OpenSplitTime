@@ -106,6 +106,10 @@ class Effort < ActiveRecord::Base
     event.start_time
   end
 
+  def event_name
+    event.name
+  end
+
   def finish_split_time
     split_times.finish.first
   end

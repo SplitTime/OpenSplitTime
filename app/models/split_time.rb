@@ -83,6 +83,18 @@ class SplitTime < ActiveRecord::Base
     all.each { |split_time| split_time.good! }
   end
 
+  def split_name
+    split.name(sub_split_bitkey)
+  end
+
+  def effort_name
+    effort.full_name
+  end
+
+  def event_name
+    effort.event_name
+  end
+
   private
 
   def event_start_time

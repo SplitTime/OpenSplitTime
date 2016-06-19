@@ -2,7 +2,7 @@
     <% "OpenSplitTime: Full spread - #{@spread_display.name}" %>
 <% end %>
 <div class="row">
-  <h2><%= @spread_display.name %></h2>
+  <h2><%= "#{@spread_display.name} (#{@spread_display.display_style_text})" %></h2>
 </div>
 <div class="row">
   <strong><%= "Start Time: #{l(@spread_display.start_time, format: :full_with_weekday)} at #{l(@spread_display.start_time, format: :ampm)}" %></strong><br/>
@@ -15,7 +15,22 @@
 </div>
 <hr>
 <div class="row">
-  <%= link_to '<< Back to event', event_path(@spread_display.event), class: 'btn btn-sm btn-default' %>
+  <div class="col-xs-6">
+    <%= link_to '<< Back to event', event_path(@spread_display.event), class: 'btn btn-sm btn-default' %>
+  </div>
+  <div class="col-xs-6">
+    <div class="text-right">
+      <%= link_to 'Elapsed time', spread_event_path(@spread_display.event,
+                                                    style: 'elapsed'),
+                  class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Time of day', spread_event_path(@spread_display.event,
+                                                   style: 'time_of_day'),
+                  class: 'btn btn-sm btn-default' %>
+      <%= link_to 'Segment time', spread_event_path(@spread_display.event,
+                                                    style: 'segment'),
+                  class: 'btn btn-sm btn-default' %>
+    </div>
+  </div>
 </div>
 <hr>
 <div class="row">
@@ -26,9 +41,14 @@
       <th>Name</th>
       <th>Category</th>
       <th>From</th>
-      <% @spread_display.splits.each do |split| %>
+      <% @spread_display.relevant_splits.each do |split| %>
           <th class="text-nowrap text-center">
-            <%= split.base_name %><br><%= split.name_extensions.join(' / ') if split.intermediate? %>
+            <%= split.base_name %><br>
+            <% if @spread_display.display_style == 'segment' %>
+                <%= 'Segment / Aid' if split.intermediate? %>
+            <% else %>
+                <%= split.name_extensions.join(' / ') if split.intermediate? %>
+            <% end %>
           </th>
       <% end %>
     </tr>
@@ -42,7 +62,18 @@
           <td class="text-nowrap"><%= row.state_and_country %></td>
           <% row.time_clusters.each do |cluster| %>
               <td class="text-nowrap text-center">
-                <%= cluster.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %>
+                <% case @spread_display.display_style %>
+                <% when 'segment' %>
+                    <% if cluster.finish? %>
+                        <%= time_format_hhmm(cluster.segment_time) %>
+                    <% else %>
+                        <%= [time_format_hhmm(cluster.segment_time), time_format_minutes(cluster.time_in_aid)].join(' / ') %>
+                    <% end %>
+                <% when 'time_of_day' %>
+                    <%= cluster.days_and_times.map { |time| day_time_format(time) }.join(' / ') %>
+                <% else %>
+                    <%= cluster.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %>
+                <% end %>
               </td>
           <% end %>
         </tr>

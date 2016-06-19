@@ -24,11 +24,14 @@ class EffortTimesRow
   end
 
   def create_time_clusters
+    prior_time = 0
     splits.each do |split|
       time_cluster = TimeCluster.new(split,
                                      related_split_times(split),
+                                     prior_time,
                                      effective_start_time)
       time_clusters << time_cluster
+      prior_time = time_cluster.times_from_start.compact.last if time_cluster.times_from_start.compact.present?
     end
   end
 

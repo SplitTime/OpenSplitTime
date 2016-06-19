@@ -1,6 +1,6 @@
 class EventSpreadDisplay
 
-  attr_reader :event, :display_style, :splits, :effort_times_rows
+  attr_reader :event, :splits, :effort_times_rows, :display_style
   delegate :name, :start_time, :course, :race, to: :event
 
   # initialize(event, params = {})
@@ -30,6 +30,21 @@ class EventSpreadDisplay
     race ? race.name : nil
   end
 
+  def display_style_text
+    case display_style
+      when 'segment'
+        'Segment times'
+      when 'time_of_day'
+        'Time of Day'
+      else
+        'Elapsed times'
+    end
+  end
+
+  def relevant_splits
+    display_style == 'time_of_day' ? splits : splits_without_start
+  end
+
   private
 
   attr_reader :efforts, :split_times
@@ -37,11 +52,15 @@ class EventSpreadDisplay
   def create_effort_times_rows
     efforts.each do |effort|
       effort_times_row = EffortTimesRow.new(effort,
-                                            splits,
+                                            relevant_splits,
                                             split_times[effort.id],
                                             start_time: event.start_time)
       effort_times_rows << effort_times_row
     end
+  end
+
+  def splits_without_start
+    splits[1..-1]
   end
 
 end

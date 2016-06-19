@@ -1,9 +1,17 @@
 class TimeCluster
 
-  def initialize(split, split_times, start_time)
+  delegate :finish?, to: :split
+
+  def initialize(split, split_times, prior_time, start_time)
     @split = split
     @split_times = split_times
+    @prior_time = prior_time
     @start_time = start_time
+  end
+
+  def segment_time
+    return nil unless (prior_time && (times_from_start.compact.count > 0))
+    times_from_start.compact.first - prior_time
   end
 
   def time_in_aid
@@ -25,6 +33,6 @@ class TimeCluster
 
   private
 
-  attr_reader :split, :split_times, :start_time
+  attr_reader :split, :split_times, :start_time, :prior_time
 
 end

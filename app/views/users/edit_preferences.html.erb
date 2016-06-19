@@ -1,3 +1,6 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Edit user preferences" %>
+<% end %>
 <h2><%= "#{@user.full_name} Preferences" %></h2>
 
 <%= render 'shared/errors', obj: @user %>

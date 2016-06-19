@@ -1,4 +1,7 @@
-<h1 align="center"><%= @split.name %></h1>
+<% content_for :title do %>
+    <% "OpenSplitTime: Show split - #{@split.base_name}" %>
+<% end %>
+<h1 align="center"><%= @split.base_name %></h1>
 <h4 align="center"><%= "#{pdu('singular').titleize} #{d(@split.distance_from_start)}" %></h4>
 <div class="row">
   <div class="col-md-6 col-md-offset-3 center">

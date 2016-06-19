@@ -1,8 +1,11 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Edit split times - #{@effort.full_name}" %>
+<% end %>
 <h2>Update Split Times</h2>
 
 <div class="row">
   <div class="col-xs-12">
-    <h2><%= "| #{@effort.full_name} • #{@effort.event.name} • #{@effort.finish_status} |" %></h2>
+    <h2><%= "#{@effort.full_name} • #{@effort.event.name} • #{@effort.finish_status}" %></h2>
   </div>
 </div>
 
@@ -38,7 +41,7 @@
               <% else %>
                   <tr>
               <% end %>
-              <td><h4><strong><%= "#{split.name}" %></strong></h4></td>
+              <td class="text-nowrap"><h4><strong><%= "#{split.name}" %></strong></h4></td>
               <% split.sub_split_bitkeys.each do |bitkey| %>
                   <%= f.fields_for :split_times,
                                    @effort.split_times.find_or_initialize_by(split_id: split.id,

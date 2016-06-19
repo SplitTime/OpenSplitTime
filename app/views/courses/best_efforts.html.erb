@@ -1,3 +1,6 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Best efforts - #{@best_display.name} - #{@best_display.segment_name}" %>
+<% end %>
 <div class="row">
   <div class="col-xs-12">
     <% if @best_display.segment_is_full_course? %>

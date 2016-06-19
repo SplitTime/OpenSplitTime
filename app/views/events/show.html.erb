@@ -1,3 +1,10 @@
+<% content_for :title do %>
+    <% if params[:search_param].present? %>
+        <% "OpenSplitTime: #{@event_display.name} - #{params[:search_param]}" %>
+    <% else %>
+        <% "OpenSplitTime: #{@event_display.name}" %>
+    <% end %>
+<% end %>
 <div class="row">
   <div class="col-xs-6">
     <h2><%= @event_display.name %></h2>
@@ -25,9 +32,6 @@
     <% end %>
     <% if @current_user && @current_user.authorized_to_edit?(@event_display.event) %>
         <%= link_to 'Stage/administer this event', stage_event_path(@event_display.event), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Set time data status', set_data_status_event_path(@event_display.event),
-                    method: :put,
-                    class: "btn btn-sm btn-success" %>
         <%= link_to 'Delete this event',
                     event_path(@event_display.event, referrer_path: events_path),
                     method: :delete,

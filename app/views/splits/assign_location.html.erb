@@ -1,7 +1,10 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Assign location - #{@split.base_name}" %>
+<% end %>
 <%= render 'shared/errors', obj: @split %>
 
 <h2>
-  <%= @split.name %>
+  <%= @split.base_name %>
   <% unless @split.start? %>
       <%= "#{pdu('singular').titleize} #{d(@split.distance_from_start)}" %>
   <% end %>

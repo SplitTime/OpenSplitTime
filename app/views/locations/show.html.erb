@@ -1,3 +1,6 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Show location - #{@location.name}" %>
+<% end %>
 <h1 align="center"><%= @location.name %></h1>
 <h4 align="center">
   <%= "Elevation: #{elevation_format(@location.elevation)}, Lat/Lon: #{latlon_format(@location.latitude, @location.longitude)}" %>
@@ -26,7 +29,7 @@
     <% if @current_user && @current_user.authorized_to_edit?(@location) %>
         <%= link_to 'Edit this location', edit_location_path(@location), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this location',
-                    location_path(@location, referrer_path: URI(request.referrer).path),
+                    location_path(@location, referrer_path: request.referrer ? URI(request.referrer).path : locations_path),
                     method: :delete,
                     data: {confirm: "Are you sure?"},
                     class: "btn btn-sm btn-danger" %>

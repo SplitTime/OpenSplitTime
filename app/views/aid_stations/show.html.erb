@@ -1,3 +1,6 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Show aid station - #{@aid_station.split_name}" %>
+<% end %>
 <div class="row">
   <div class="col-xs-6">
     <h2><%= "#{@aid_station.split_name} - #{@aid_station.event_name}" %></h2>

@@ -1,3 +1,10 @@
+<% content_for :title do %>
+    <% if params[:search_param].present? %>
+        <% "OpenSplitTime: Search participants - #{params[:search_param]}" %>
+    <% else %>
+        <% "OpenSplitTime: Search participants" %>
+    <% end %>
+<% end %>
 <div class="row">
   <div class="col col-xs-6">
     <h1>Participants</h1>

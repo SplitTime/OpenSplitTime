@@ -1,3 +1,6 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Associate or remove splits - #{@event.name}" %>
+<% end %>
 <%= link_to '< Back to admin', stage_event_path(id: @event.id),
             :class => 'btn btn-sm btn-default' %>
 

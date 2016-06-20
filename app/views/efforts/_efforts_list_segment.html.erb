@@ -21,7 +21,7 @@
         <td><%= effort_row.bio_historic %></td>
         <td><%= effort_row.state_and_country %></td>
         <td><%= effort_row.year %></td>
-        <td class="text-right"><%= time_format_hhmm(effort_row.segment_time) %></td>
+        <td class="text-right"><%= time_format_hhmmss(effort_row.segment_time) %></td>
       </tr>
   <% end %>
   </tbody>

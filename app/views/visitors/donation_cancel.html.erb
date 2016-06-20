@@ -1,0 +1,12 @@
+<% content_for :title do %>Donation cancel
+<% end %>
+<h3>Are you sure?</h3>
+<hr>
+<p>
+  Did you mean to enter a different amount or use a different method of payment?<br/>
+  <strong><%= link_to "Return to the donations page", donations_path %></strong>.
+</p>
+<p>
+  Or would you like to <%= link_to "return to the home page", root_path %>? (Please consider giving at a later time
+  if you are able.)
+</p>

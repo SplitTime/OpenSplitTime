@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   root to: 'visitors#index'
   get 'about', to: 'visitors#about'
   get 'donations', to: 'visitors#donations'
+  get 'donation_cancel', to: 'visitors#donation_cancel'
+  get 'donation_thank_you', to: 'visitors#donation_thank_you'
   get 'getting_started', to: 'visitors#getting_started'
   get 'getting_started_2', to: 'visitors#getting_started_2'
   get 'getting_started_3', to: 'visitors#getting_started_3'
@@ -14,6 +16,7 @@ Rails.application.routes.draw do
   get 'participant_info', to: 'visitors#participant_info'
   get 'race_info', to: 'visitors#race_info'
   get 'split_info', to: 'visitors#split_info'
+  get 'split_time_info', to: 'visitors#split_time_info'
   get 'split_time_info', to: 'visitors#split_time_info'
   devise_for :users, :controllers => {registrations: 'registrations'}
   resources :users do

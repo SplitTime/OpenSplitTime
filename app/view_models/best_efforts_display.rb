@@ -9,7 +9,7 @@ class BestEffortsDisplay
 
   def initialize(course, params = {})
     @course = course
-    @gender = Effort.genders.keys.include?(params[:gender]) ? [params[:gender]] : Effort.genders.keys
+    @genders_numeric = Effort.genders.keys.include?(params[:gender]) ? [Effort.genders[params[:gender]]] : Effort.genders.values
     set_segment(params)
     get_efforts(params)
     @effort_rows = []
@@ -36,11 +36,11 @@ class BestEffortsDisplay
     segment.is_full_course?
   end
 
-  def gender_human
-    case gender
-      when 0
+  def gender_text
+    case genders_numeric
+      when [0]
         'male'
-      when 1
+      when [1]
         'female'
       else
         'combined'
@@ -49,13 +49,17 @@ class BestEffortsDisplay
 
   private
 
-  attr_accessor :segment, :all_efforts, :gender
+  attr_accessor :segment, :all_efforts, :sorted_effort_ids, :sorted_effort_genders, :unsorted_filtered_ids
+  attr_reader :genders_numeric
 
   def set_segment(params)
     split1 = params[:split1].present? ? Split.find(params[:split1]) : course.start_split
     split2 = params[:split2].present? ? Split.find(params[:split2]) : course.finish_split
     splits = [split1, split2].sort_by(&:course_index)
-    self.segment = Segment.new(splits[0].bitkey_hashes.last, splits[1].bitkey_hashes.first)
+    self.segment = Segment.new(splits[0].bitkey_hashes.last,
+                               splits[1].bitkey_hashes.first,
+                               splits[0],
+                               splits[1])
   end
 
   def get_efforts(params)
@@ -66,8 +70,14 @@ class BestEffortsDisplay
                            .to_a
                            .each { |effort| effort.segment_time = segment_time_hash[effort.id] }
                            .sort_by!(&:segment_time)
+    self.sorted_effort_ids = all_efforts.map(&:id)
+    self.sorted_effort_genders = all_efforts.map(&:gender)
+    self.unsorted_filtered_ids = Effort.where(id: sorted_effort_ids)
+                                     .where(gender: genders_numeric)
+                                     .search(params[:search_param])
+                                     .pluck(:id)
     self.filtered_efforts = all_efforts
-                                .select { |effort| gender.include?(effort.gender) }
+                                .select { |effort| unsorted_filtered_ids.include?(effort.id) }
                                 .paginate(page: params[:page], per_page: 25)
   end
 
@@ -85,16 +95,7 @@ class BestEffortsDisplay
   end
 
   def gender_place(effort)
-    sorted_genders[0...overall_place(effort)].count(effort.gender)
+    sorted_effort_genders[0...overall_place(effort)].count(effort.gender)
   end
-
-  def sorted_effort_ids
-    all_efforts.map(&:id)
-  end
-
-  def sorted_genders
-    all_efforts.map(&:gender)
-  end
-
 
 end

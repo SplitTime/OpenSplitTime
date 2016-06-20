@@ -1,0 +1,19 @@
+<div class="row">
+  <%= form_tag best_efforts_course_path(@best_display.course), method: :get do %>
+      <div class="col-xs-8">
+        <%= text_field_tag :search_param,
+                           params[:search_param],
+                           placeholder: 'First name, last name, state, or country',
+                           autofocus: true,
+                           class: 'form-control search-box input-sm' %>
+      </div>
+      <%= hidden_field_tag 'split1', @best_display.begin_id %>
+      <%= hidden_field_tag 'split2', @best_display.end_id %>
+      <%= hidden_field_tag 'gender', @best_display.gender_text %>
+      <div class="col-xs-2">
+        <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
+            <i class='fa fa-search'></i> Find someone
+        <% end %>
+      </div>
+  <% end %>
+</div>

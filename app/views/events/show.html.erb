@@ -26,6 +26,7 @@
   <div class="col-xs-12">
     <%= link_to '<< Event search', events_path, class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
+    <%= link_to 'Plan my effort', plan_effort_course_path(@event_display.course), method: :get, class: 'btn btn-sm btn-default' %>
     <%= link_to 'All-time best efforts >', best_efforts_course_path(@event_display.course), class: "btn btn-sm btn-default" %>
     <% unless @event_display.simple? %>
         <%= link_to 'Full spread >>', spread_event_path(@event_display.event), class: "btn btn-sm btn-default" %>

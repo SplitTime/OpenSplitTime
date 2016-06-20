@@ -4,11 +4,11 @@
 <div class="row">
   <div class="col-xs-12">
     <% if @best_display.segment_is_full_course? %>
-        <h2><%= "All-time best efforts on #{@best_display.name} (#{@best_display.gender_human})" %></h2>
+        <h2><%= "All-time best efforts on #{@best_display.name} (#{@best_display.gender_text})" %></h2>
     <% else %>
         <h3><%= "All-time best efforts on #{@best_display.name}" %></h3>
         <hr>
-        <h2><%= "#{@best_display.segment_name} (#{@best_display.gender_human})" %></h2>
+        <h2><%= "#{@best_display.segment_name} (#{@best_display.gender_text})" %></h2>
     <% end %>
   </div>
 </div>
@@ -46,21 +46,26 @@
       <%= link_to 'Combined', best_efforts_course_path(@best_display.course,
                                                        split1: @best_display.begin_id,
                                                        split2: @best_display.end_id,
-                                                       gender: 'combined'),
+                                                       gender: 'combined',
+                                                       search_param: params[:search_param]),
                   class: 'btn btn-sm btn-default' %>
       <%= link_to 'Male', best_efforts_course_path(@best_display.course,
                                                    split1: @best_display.begin_id,
                                                    split2: @best_display.end_id,
-                                                   gender: 'male'),
+                                                   gender: 'male',
+                                                   search_param: params[:search_param]),
                   class: 'btn btn-sm btn-default' %>
       <%= link_to 'Female', best_efforts_course_path(@best_display.course,
                                                      split1: @best_display.begin_id,
                                                      split2: @best_display.end_id,
-                                                     gender: 'female'),
+                                                     gender: 'female',
+                                                     search_param: params[:search_param]),
                   class: 'btn btn-sm btn-default' %>
     </div>
   </div>
 </div>
+
+<%= render 'best_efforts_lookup' %>
 
 <% if @best_display.filtered_efforts_count > 0 %>
     <div class="row">

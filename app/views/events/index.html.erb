@@ -27,7 +27,9 @@
     <%= render 'events', events: @events %>
 <% else %>
     <br/>
-    <% unless params[:search_param].blank? %>
+    <% if params[:search_param].blank? %>
+        <p><strong>Enter an event name to search</strong></p>
+        <% else %>
         <p><strong>No events match this search</strong></p>
     <% end %>
 <% end %>

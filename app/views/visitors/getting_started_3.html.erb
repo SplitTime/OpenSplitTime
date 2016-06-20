@@ -1,4 +1,4 @@
-<% content_for :title do %>Getting Started
+<% content_for :title do %>Getting Started 3
 <% end %>
 <h3>Getting Started</h3>
 <hr>
@@ -7,17 +7,24 @@
 </h4><br/>
 <p> Yes, we know, there is a fair amount of terminology here, and it can be a bit confusing at first. Here's a short
   description of the terms you need to know.</p>
-<p><strong><%= link_to "Course:", course_info_path %></strong> The physical course on which your event is run, ridden, swum (swam?), flown, or climbed.</p>
-<p><strong><%= link_to "Split:", split_info_path %></strong> A distance from the start of a Course at which a Split Time is recorded. Every split is either a start, a
-  finish, or an intermediate point.</p>
-<p><strong><%= link_to "Location:", location_info_path %></strong> The physical location of a Split.</p>
-<p><strong><%= link_to "Event:", event_info_path %></strong> A single running of a race, ride, stage, or other...you know, event.</p>
-<p><strong><%= link_to "Race:", race_info_path %></strong> An administrative term for grouping recurring Events.</p>
-<p><strong><%= link_to "Participant:", participant_info_path %></strong> Someone who has competed in at least one Event.</p>
+<p><strong><%= link_to "Course:", course_info_path %></strong> The physical course on which your event is run, ridden,
+  swum (swam?), flown, or climbed.</p>
+<p><strong><%= link_to "Split:", split_info_path %></strong> A distance from the start of a Course at which a Split Time
+  is recorded.</p>
+<p><strong><%= link_to "Location:", location_info_path %></strong> The geographical location of a Split.</p>
+<p><strong><%= link_to "Event:", event_info_path %></strong> A single running of a race, ride, stage, or other...you
+  know, event.</p>
+<p><strong><%= link_to "Race:", race_info_path %></strong> An administrative term for grouping recurring or related
+  Events.</p>
+<p><strong><%= link_to "Participant:", participant_info_path %></strong> A person who has competed in at least one
+  Event.</p>
 <p><strong><%= link_to "Effort:", effort_info_path %></strong> The performance by a Participant in a single Event.</p>
-<p><strong><%= link_to "Split Time:", split_time_info_path %></strong> A single time at which a Participant during an Effort passed through a given Split.</p>
+<p><strong><%= link_to "Split Time:", split_time_info_path %></strong> A single time at which a Participant during an
+  Effort passed through a given Split.</p>
 <p>All this data is stored in a logical way with proper relations, which makes it possible to do just about
-  anything you want with it. Some geeky people gave this a lot of thought. Trust us, it all works out.</p>
+  anything you want with it. If you've never seen endurance event data stored like this before, that's because
+  nobody has gone to the trouble of doing it right before. Some geeky people gave this a lot of thought.
+  Trust us, it all works out.</p>
 <hr>
 <p><strong><%= link_to "<< Creating or importing a recurring event", getting_started_2_path %>  |
   <%= link_to "Formatting your spreadsheet for import >>", getting_started_4_path %></strong></p>

@@ -1,5 +1,6 @@
 class SplitRow
 
+  attr_reader :split
   delegate :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, :days_and_times, :time_data_statuses, to: :time_cluster
 
@@ -24,6 +25,6 @@ class SplitRow
 
   private
 
-  attr_reader :split, :split_times, :prior_time, :start_time, :time_cluster
+  attr_reader :split_times, :prior_time, :start_time, :time_cluster
 
 end

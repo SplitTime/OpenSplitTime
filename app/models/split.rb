@@ -72,10 +72,6 @@ class Split < ActiveRecord::Base
     Hash[SplitTime.where(split_id: id, sub_split_bitkey: sub_split_bitkey).pluck(:effort_id, :time_from_start)]
   end
 
-  def average_time(sub_split_bitkey, relevant_efforts)
-    split_times.where(sub_split_bitkey: sub_split_bitkey, effort: relevant_efforts).pluck(:time_from_start).mean
-  end
-
   def name(bitkey = nil)
     if bitkey
       name_extensions.count > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name

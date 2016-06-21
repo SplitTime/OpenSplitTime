@@ -30,6 +30,11 @@
 </div>
 <hr>
 
+<strong><%= "Best segments: #{@effort_analysis.best_segments}" %></strong><br/>
+<strong><%= "Worst segments: #{@effort_analysis.worst_segments}" %></strong>
+
+<hr>
+
 <% if @effort_analysis.analysis_rows.count > 0 %>
     <%= render 'split_times/split_times_analysis' %>
 <% end %>

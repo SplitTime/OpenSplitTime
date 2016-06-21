@@ -19,6 +19,10 @@ class PlanDisplay
     end
   end
 
+  def total_segment_time
+    split_rows.sum { |row| row.segment_time }
+  end
+
   def total_time_in_aid
     split_rows.sum { |unicorn| unicorn.time_in_aid }
   end

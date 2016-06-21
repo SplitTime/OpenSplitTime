@@ -8,6 +8,7 @@ class EffortsController < ApplicationController
   end
 
   def show
+    @effort_show = EffortShowView.new(@effort)
     session[:return_to] = effort_path(@effort)
   end
 
@@ -48,6 +49,12 @@ class EffortsController < ApplicationController
     @effort.destroy
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || root_path
+  end
+
+  def analyze
+    authorize @effort
+    @effort_analysis = EffortAnalysisView.new(@effort)
+    session[:return_to] = analyze_effort_path(@effort)
   end
 
   def associate_participant

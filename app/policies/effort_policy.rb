@@ -26,6 +26,10 @@ class EffortPolicy
     @current_user.authorized_to_edit?(@effort)
   end
 
+  def analyze?
+    @current_user.present?
+  end
+
   def associate_participant?
     @current_user.authorized_to_edit?(@effort.event)
   end

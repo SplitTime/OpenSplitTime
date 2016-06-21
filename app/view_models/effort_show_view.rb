@@ -1,5 +1,8 @@
 class EffortShowView
+
   attr_reader :effort, :event, :split_rows
+  delegate :full_name, :event_name, :participant, :bib_number, :combined_places, :finish_status,
+           :gender, :split_times, to: :effort
 
   def initialize(effort)
     @effort = effort

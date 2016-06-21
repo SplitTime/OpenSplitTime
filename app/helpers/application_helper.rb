@@ -7,7 +7,7 @@ module ApplicationHelper
       seconds = time_in_seconds % 60
       minutes = (time_in_seconds / 60) % 60
       hours = time_in_seconds / (60 * 60)
-      format("-%02d:%02d:%02d", hours, minutes, seconds)
+      format("(%02d:%02d:%02d)", hours, minutes, seconds)
     else
       seconds = time_in_seconds % 60
       minutes = (time_in_seconds / 60) % 60
@@ -22,7 +22,7 @@ module ApplicationHelper
       time_in_seconds = time_in_seconds.abs
       minutes = (time_in_seconds / 60) % 60
       hours = time_in_seconds / (60 * 60)
-      format("-%2d:%02d", hours, minutes)
+      format("(%2d:%02d)", hours, minutes)
     else
       minutes = (time_in_seconds / 60) % 60
       hours = time_in_seconds / (60 * 60)
@@ -31,7 +31,12 @@ module ApplicationHelper
   end
 
   def time_format_minutes(time_in_seconds)
-    time_in_seconds ? (time_in_seconds / 60).round(0).to_s : '--'
+    return '--' if time_in_seconds.nil?
+    if (time_in_seconds / 60).round(0) < 0
+      "(#{(time_in_seconds.abs / 60).round(0).to_s})"
+    else
+      (time_in_seconds / 60).round(0).to_s
+    end
   end
 
   def day_time_format(datetime)

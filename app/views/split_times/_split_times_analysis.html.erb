@@ -1,0 +1,36 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Split</th>
+    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-center">Segment<br/>Time / Typical</th>
+    <th class="text-center">Segment<br/>Over (Under)</th>
+    <th class="text-center">In Aid<br/>Time / Typical</th>
+    <th class="text-center">In Aid<br/>Over (Under)</th>
+    <th class="text-center">Combined<br/>Time / Typical</th>
+    <th class="text-center">Combined<br/>Over (Under)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @effort_analysis.analysis_rows.each do |analysis_row| %>
+      <tr>
+        <td><%= analysis_row.name %></td>
+        <td class="text-right"><%= d(analysis_row.distance_from_start) %></td>
+        <td class="text-center"><%= [time_format_hhmm(analysis_row.segment_time), time_format_hhmm(analysis_row.segment_time_typical)].join(' / ') %></td>
+        <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under) %></td>
+        <td class="text-center"><%= [time_format_minutes(analysis_row.time_in_aid), time_format_minutes(analysis_row.time_in_aid_typical)].join(' / ') %></td>
+        <td class="text-center"><%= time_format_minutes(analysis_row.time_in_aid_over_under) %></td>
+        <td class="text-center"><%= [time_format_hhmm(analysis_row.combined_time), time_format_hhmm(analysis_row.combined_time_typical)].join(' / ') %></td>
+        <td class="text-center"><%= time_format_minutes(analysis_row.combined_time_over_under) %></td>
+      </tr>
+  <% end %>
+  <td><strong>Totals</strong></td>
+  <td></td>
+  <td class="text-center"><strong><%= [time_format_hhmm(@effort_analysis.total_segment_time), time_format_hhmm(@effort_analysis.total_segment_time_typical)].join(' / ') %></strong></td>
+  <td class="text-center"><strong><%= time_format_minutes(@effort_analysis.total_segment_time_over_under) %></strong></td>
+  <td class="text-center"><strong><%= [time_format_hhmm(@effort_analysis.total_time_in_aid), time_format_hhmm(@effort_analysis.total_time_in_aid_typical)].join(' / ') %></strong></td>
+  <td class="text-center"><strong><%= time_format_minutes(@effort_analysis.total_time_in_aid_over_under) %></strong></td>
+  <td class="text-center"><strong><%= [time_format_hhmm(@effort_analysis.effort_finish_tfs), time_format_hhmm(@effort_analysis.effort_finish_tfs)].join(' / ') %></strong></td>
+  <td class="text-center"><strong><%= time_format_minutes(@effort_analysis.total_combined_time_over_under) %></strong></td>
+  </tbody>
+</table>

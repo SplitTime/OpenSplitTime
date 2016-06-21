@@ -1,39 +1,40 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show effort - #{@effort.full_name} - #{@effort.event_name}" %>
+    <% "OpenSplitTime: Show effort - #{@effort_show.full_name} - #{@effort_show.event_name}" %>
 <% end %>
 <div class="row">
   <div class="col-xs-12">
     <h1>
-      <% if @effort.participant %>
-          <%= link_to @effort.full_name, participant_path(@effort.participant) %>
+      <% if @effort_show.participant %>
+          <%= link_to @effort_show.full_name, participant_path(@effort_show.participant) %>
       <% else %>
-          <%= @effort.full_name %>
+          <%= @effort_show.full_name %>
       <% end %>
-      <%= "(#{@effort.bib_number})" if @effort.bib_number %>
-      • <%= link_to @effort.event.name, event_path(@effort.event) %>
+      <%= "(#{@effort_show.bib_number})" if @effort_show.bib_number %>
+      • <%= link_to @effort_show.event_name, event_path(@effort_show.event) %>
     </h1>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <% overall_place, gender_place = @effort.combined_places %>
-    <h3><%= "#{@effort.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort.gender.titleize}" %></h3>
+    <% overall_place, gender_place = @effort_show.combined_places %>
+    <h3><%= "#{@effort_show.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_show.gender.titleize}" %></h3>
   </div>
 </div>
 
 <hr>
 <div class="row">
   <div class="col-xs-8">
-    <%= link_to "< #{@effort.event.name}", event_path(@effort.event), class: "btn btn-sm btn-default" %>
-    <% if @current_user && @current_user.authorized_to_edit?(@effort) %>
-        <%= link_to 'Edit this effort', edit_effort_path(@effort), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Edit split times', edit_split_times_effort_path(@effort),
+    <%= link_to "< #{@effort_show.event_name}", event_path(@effort_show.event), class: "btn btn-sm btn-default" %>
+    <%= link_to "Analyze effort", analyze_effort_path(@effort_show.effort), class: "btn btn-sm btn-default" %>
+    <% if @current_user && @current_user.authorized_to_edit?(@effort_show.effort) %>
+        <%= link_to 'Edit this effort', edit_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Edit split times', edit_split_times_effort_path(@effort_show.effort),
                     method: :put,
                     class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Set time data status', set_data_status_effort_path(@effort),
+        <%= link_to 'Set time data status', set_data_status_effort_path(@effort_show.effort),
                     method: :put,
                     class: "btn btn-sm btn-success" %>
-        <%= link_to 'Delete this effort', effort_path(@effort, referrer_path: event_path(@effort.event)),
+        <%= link_to 'Delete this effort', effort_path(@effort_show.effort, referrer_path: event_path(@effort_show.event)),
                     method: :delete,
                     data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
     <% end %>
@@ -41,6 +42,6 @@
 </div>
 <hr>
 
-<% if @effort.split_times.count > 0 %>
-    <%= render 'split_times/split_time', view_object: EffortShowView.new(@effort) %>
+<% if @effort_show.split_rows.count > 0 %>
+    <%= render 'split_times/split_times_list' %>
 <% end %>

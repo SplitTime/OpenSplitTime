@@ -68,6 +68,7 @@ Rails.application.routes.draw do
     member { delete :delete_split }
     member { put :confirm_split }
     member { put :set_data_status }
+    member { get :analyze }
   end
   resources :split_times
   resources :interests

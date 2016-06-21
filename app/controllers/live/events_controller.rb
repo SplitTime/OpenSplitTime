@@ -28,8 +28,8 @@ class Live::EventsController < Live::BaseController
 
   # This endpoint is called on any of the following conditions:
   # - split selector is changed
-  # - user tabs or clicks out of bib # field
-  # - user tabs or clicks out of time in or time out fields
+  # - bib # field is changed
+  # - time in or time out field is changed
 
   def get_live_effort_data
 
@@ -46,7 +46,7 @@ class Live::EventsController < Live::BaseController
 
   def post_file_effort_data
 
-    # Param should be an unaltered file. Assume CSV format for now.
+    # Param should be an unaltered CSV file.
     # This endpoint interprets and verifies rows from the file and returns
     # return_rows containing all data necessary to populate the provisional data cache.
 

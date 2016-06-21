@@ -48,8 +48,7 @@ class EffortAnalysisView
   attr_reader :splits, :split_times
 
   def create_typical_effort
-    params = {expected_time: effort_finish_hhmm}
-    self.typical_effort = PlanDisplay.new(event.course, params)
+    self.typical_effort = MockEffort.new(event, effort_finish_tfs, effort_start_time)
     self.indexed_typical_rows = typical_effort.split_rows.index_by(&:split_id)
   end
 
@@ -64,10 +63,6 @@ class EffortAnalysisView
     self.indexed_analysis_rows = analysis_rows.index_by(&:split_id)
   end
 
-  def stop_here
-
-  end
-
   def related_split_times(split)
     split.sub_split_bitkey_hashes.collect { |key_hash| split_times[key_hash] }
   end
@@ -79,16 +74,6 @@ class EffortAnalysisView
   def effort_finish_tfs
     finish_bitkey_hash = splits.last.bitkey_hash_in
     split_times[finish_bitkey_hash].time_from_start
-  end
-
-  def effort_finish_hhmm
-    time_format_hhmm(effort_finish_tfs)
-  end
-
-  def time_format_hhmm(time_in_seconds)
-    minutes = (time_in_seconds / 60) % 60
-    hours = time_in_seconds / (60 * 60)
-    format("%2d:%02d", hours, minutes)
   end
 
 end

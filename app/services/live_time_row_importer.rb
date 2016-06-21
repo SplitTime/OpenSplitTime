@@ -43,8 +43,8 @@ class LiveTimeRowImporter
 
     # Pull any existing split_times from the database so we have the latest info available
 
-    existing_split_times = SplitTime.where(split_id: effort_data_object.split_time_in.split_id,
-                                           effort_id: effort_data_object.split_time_in.effort_id).to_a
+    existing_split_times = SplitTime.where(split_id: effort_data_object.split_id,
+                                           effort_id: effort_data_object.effort_id).to_a
     in_time_saved = out_time_saved = nil
     if effort_data_object.split_time_in.present?
       split_time_in = existing_split_times.find { |st| st.sub_split_bitkey == SubSplit::IN_BITKEY }
@@ -64,7 +64,8 @@ class LiveTimeRowImporter
   def create_or_update_split_time(proposed_split_time, existing_split_time)
     if existing_split_time.present?
       existing_split_time.update(time_from_start: proposed_split_time.time_from_start,
-                                 data_status: proposed_split_time.data_status)
+                                 data_status: proposed_split_time.data_status,
+                                 pacer: proposed_split_time.pacer)
     else
       proposed_split_time.save
     end

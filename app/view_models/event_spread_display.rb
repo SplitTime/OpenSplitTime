@@ -15,6 +15,7 @@ class EventSpreadDisplay
     @split_times = @event.split_times.group_by(&:effort_id)
     @efforts = @event.efforts.sorted_with_finish_status
     @effort_times_rows = []
+    sort_efforts(params[:sort_by])
     create_effort_times_rows
   end
 
@@ -48,6 +49,13 @@ class EventSpreadDisplay
   private
 
   attr_reader :efforts, :split_times
+
+  def sort_efforts(sort_by)
+    efforts.sort_by!(&:place) if sort_by == 'place'
+    efforts.sort_by!(&:bib_number) if sort_by == 'bib'
+    efforts.sort_by!(&:last_name) if sort_by == 'last'
+    efforts.sort_by!(&:first_name) if sort_by == 'first'
+  end
 
   def create_effort_times_rows
     efforts.each do |effort|

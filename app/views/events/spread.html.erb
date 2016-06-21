@@ -21,13 +21,16 @@
   <div class="col-xs-6">
     <div class="text-right">
       <%= link_to 'Elapsed time', spread_event_path(@spread_display.event,
-                                                    style: 'elapsed'),
+                                                    style: 'elapsed',
+                                                    sort_by: params[:sort_by]),
                   class: 'btn btn-sm btn-default' %>
       <%= link_to 'Time of day', spread_event_path(@spread_display.event,
-                                                   style: 'time_of_day'),
+                                                   style: 'time_of_day',
+                                                   sort_by: params[:sort_by]),
                   class: 'btn btn-sm btn-default' %>
       <%= link_to 'Segment time', spread_event_path(@spread_display.event,
-                                                    style: 'segment'),
+                                                    style: 'segment',
+                                                    sort_by: params[:sort_by]),
                   class: 'btn btn-sm btn-default' %>
     </div>
   </div>
@@ -37,8 +40,21 @@
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
-      <th>Bib #</th>
-      <th>Name</th>
+      <th><%= link_to 'Place', spread_event_path(@spread_display.event,
+                                                 style: params[:style],
+                                                 sort_by: 'place') %></th>
+      <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
+                                               style: params[:style],
+                                               sort_by: 'bib') %></th>
+      <% if params[:sort_by] == 'last' %>
+          <th><%= link_to 'Name', spread_event_path(@spread_display.event,
+                                                    style: params[:style],
+                                                    sort_by: 'first') %></th>
+      <% else %>
+          <th><%= link_to 'Name', spread_event_path(@spread_display.event,
+                                                    style: params[:style],
+                                                    sort_by: 'last') %></th>
+      <% end %>
       <th>Category</th>
       <th>From</th>
       <% @spread_display.relevant_splits.each do |split| %>
@@ -56,6 +72,7 @@
     <tbody>
     <% @spread_display.effort_times_rows.each do |row| %>
         <tr>
+          <td><%= row.place %></td>
           <td><%= row.bib_number %></td>
           <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
           <td class="text-nowrap"><%= row.bio_historic %></td>

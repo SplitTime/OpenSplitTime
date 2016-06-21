@@ -4,7 +4,7 @@ class EffortTimesRow
 
   attr_reader :effort, :time_clusters
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, to: :effort
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :place, to: :effort
 
   def initialize(effort, splits, split_times, options = {})
     @effort = effort

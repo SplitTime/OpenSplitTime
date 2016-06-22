@@ -58,7 +58,7 @@ class Live::EventsController < Live::BaseController
   def set_times_data
 
     # Each time_row should include splitId, bibNumber, timeIn (military), timeOut (military),
-    # pacerIn (boolean), and pacerOut (boolean). This action ingests time_rows, converts and
+    # pacerIn (boolean), pacerOut (boolean), and droppedHere (boolean). This action ingests time_rows, converts and
     # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
     authorize @event

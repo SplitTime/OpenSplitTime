@@ -27,8 +27,11 @@ class LiveTimeRowImporter
     time_rows.each do |time_row|
       effort_data_object = LiveEffortData.new(event, time_row[1], calcs, ordered_split_array)
       if effort_data_object.clean? || (force_option == 'force')
-        created_or_updated = create_or_update_times(effort_data_object)
-        unsaved_rows << effort_data_object.response_row unless created_or_updated
+        if create_or_update_times(effort_data_object)
+          effort_data_object.effort.update(dropped_split_id: effort_data_object.split_id) if effort_data_object.dropped_here
+        else
+          unsaved_rows << effort_data_object.response_row
+        end
       else
         unsaved_rows << effort_data_object.response_row
       end

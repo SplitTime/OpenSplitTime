@@ -3,7 +3,8 @@ class LiveEffortData
   attr_accessor :time_from_start_in, :time_from_start_out, :time_from_prior_valid, :last_day_and_time,
                 :time_in_aid, :dropped, :finished, :last_split, :last_bitkey,
                 :time_in_exists, :time_out_exists, :split_time_in, :split_time_out,
-                :prior_valid_day_and_time, :prior_valid_split, :prior_valid_bitkey, :dropped_here
+                :prior_valid_day_and_time, :prior_valid_split, :prior_valid_bitkey, :dropped_here,
+                :dropped_split, :dropped_day_and_time
   attr_reader :effort, :response_row
 
   def initialize(event, params, calcs = nil, ordered_split_array = nil)
@@ -14,6 +15,7 @@ class LiveEffortData
     @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
     set_response_attributes if @effort
     verify_time_existence if (@effort && @split)
+    set_dropped_attributes if @effort
     verify_time_status if (@effort && @split)
   end
 
@@ -66,10 +68,11 @@ class LiveEffortData
     self.pacer_out = response_row[:pacerOut] = (response_row[:pacerOut].try(&:downcase) == 'true')
     self.dropped_here = response_row[:droppedHere] = (response_row[:droppedHere].try(&:downcase) == 'true')
     last_split_time = effort.last_reported_split_time
-    self.last_day_and_time = last_split_time ? effort.start_time + last_split_time.time_from_start : nil
-    self.last_split = last_split_time ? last_split_time.split : nil
-    self.last_bitkey = last_split_time ? last_split_time.sub_split_bitkey : nil
-    self.dropped = effort.dropped?
+    if last_split_time
+      self.last_day_and_time = effort.start_time + last_split_time.time_from_start
+      self.last_split = last_split_time.split
+      self.last_bitkey = last_split_time.sub_split_bitkey
+    end
     self.finished = effort.finished?
     self.time_from_start_in = day_and_time_in ? day_and_time_in - effort.start_time : nil
     self.time_from_start_out = day_and_time_out ? day_and_time_out - effort.start_time : nil
@@ -93,6 +96,18 @@ class LiveEffortData
 
     self.time_in_exists = self.response_row[:timeInExists] = split_times_hash[bitkey_hash_in].present?
     self.time_out_exists = self.response_row[:timeOutExists] = split_times_hash[bitkey_hash_out].present?
+
+  end
+
+  def set_dropped_attributes
+    self.dropped = effort.dropped?
+    if dropped
+      self.dropped_split = ordered_splits.find { |split| split.id == effort.dropped_split_id }
+      bitkey_hash_in = dropped_split ? {dropped_split.id => SubSplit::IN_BITKEY} : nil
+      bitkey_hash_out = dropped_split ? {dropped_split.id => SubSplit::OUT_BITKEY} : nil
+      dropped_split_time = split_times_hash[bitkey_hash_out] || split_times_hash[bitkey_hash_in]
+      self.dropped_day_and_time = dropped_split_time ? effort.start_time + dropped_split_time.time_from_start : nil
+    end
   end
 
   def verify_time_status

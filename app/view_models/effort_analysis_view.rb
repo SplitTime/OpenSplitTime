@@ -52,12 +52,12 @@ class EffortAnalysisView
   end
 
   def best_segments
-    segment_count = [((sortable_analysis_rows.count / 2) + 0.5).round(0), 3].min
+    segment_count = [((sortable_analysis_rows.count / 2.0)).round(0), 3].min
     sortable_analysis_rows.sort_by(&:segment_over_under_percent).first(segment_count).map(&:segment_name).join(', ')
   end
 
   def worst_segments
-    segment_count = [(sortable_analysis_rows.count / 2).round(0), 3].min
+    segment_count = [(sortable_analysis_rows.count / 2), 3].min
     sortable_analysis_rows.sort_by(&:segment_over_under_percent).reverse.first(segment_count).map(&:segment_name).join(', ')
   end
 

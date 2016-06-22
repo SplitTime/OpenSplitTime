@@ -47,7 +47,7 @@
         $(document).ready(function () {
           var locations = <%= Location.on_course(@split.course).unshift(@split.location).uniq.to_json.html_safe %>;    // pass ruby variable to javascript
 
-              gmap_show(locations, {latitude: locations[0].latitude, longitude: locations[0].longitude});    // init show map
+              gmap_show(locations, {latitude: locations[0].latitude, longitude: locations[0].longitude, zoom: 12});    // init show map
         });
       </script>
   <% else %>

@@ -9,9 +9,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    if @course.splits.present?
-      @course_splits = @course.splits.includes(:course, :location).ordered
-    end
+    @course_view = CourseShowView.new(@course)
     session[:return_to] = course_path(@course)
   end
 

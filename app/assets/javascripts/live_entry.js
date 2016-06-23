@@ -635,6 +635,41 @@
             },
 
             /**
+             * Toggles the current state of the discard all button
+             * @param  boolean forceClose The button is forced to close without discarding.
+             */
+            toggleDiscardAll: (function() {
+                var $deleteWarning = null;
+                $(document).ready( function() {
+                    $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                });
+                return function ( forceClose ) {
+                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
+                    var $deleteButton = $('#js-delete-all-efforts');
+                    $deleteButton.prop('disabled', true);
+                    $deleteButton.off('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                    $deleteWarning.insertAfter($deleteButton).animate({
+                        width: 'toggle',
+                        paddingLeft: 'toggle',
+                        paddingRight: 'toggle'
+                    }, {
+                        duration: 350,
+                        done: function() {
+                            $deleteButton.prop('disabled', false);
+                            if ($deleteButton.hasClass('confirm')) {
+                                liveEntry.timeRowsTable.removeTimeRows( nodes );
+                                $deleteButton.removeClass('confirm');
+                                $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                            } else {
+                                $deleteButton.addClass('confirm');
+                                $deleteButton.focus().one('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                            }
+                        }
+                    });
+                }
+            })(),
+
+            /**
              * Move a "cached" table row to "top form" section for editing.
              *
              */
@@ -659,29 +694,10 @@
                     liveEntry.timeRowsTable.submitTimeRows( $(this) );
                 });
 
-                var $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    $(this).prop('disabled', true);
-                    $deleteWarning.insertAfter(this).animate({
-                        width: 'toggle',
-                        paddingLeft: 'toggle',
-                        paddingRight: 'toggle'
-                    }, {
-                        duration: 350,
-                        done: function() {
-                            var $deleteButton = $('#js-delete-all-efforts');
-                            $deleteButton.prop('disabled', false)
-                             if ($deleteButton.hasClass('confirm')) {
-                                liveEntry.timeRowsTable.removeTimeRows( nodes );
-                                $deleteButton.removeClass('confirm');
-                                $deleteWarning = $('#js-delete-all-warning').hide().detach();
-                            } else {
-                                $deleteButton.addClass('confirm')
-                            }
-                        }
-                    });
+                    liveEntry.timeRowsTable.toggleDiscardAll();
                     return false;
                 });
 

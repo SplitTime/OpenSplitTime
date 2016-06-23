@@ -76,7 +76,17 @@
           </label>
         </div>
       </div>
-      <div class="col-xs-8 col-xs-offset-2 col-sm-offset-4">
+      <div class="form-group clearfix">
+        <label class="col-xs-4"></label>
+        <div class="col-xs-8">
+          <label id="js-dropped-button" class="btn btn-default col-xs-12">
+            <input id="js-dropped" type="checkbox" name="dropped" value="true">
+            <span class="glyphicon glyphicon-unchecked"></span>
+            &nbsp;Dropped Here
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-8 col-xs-offset-2 col-sm-offset-4 form-buttons">
         <input id="js-effort-id" type="hidden" name="effort-id" value="">
         <input id="js-live-bib" type="hidden" name="live-bib" value="">
         <button id="js-add-to-cache" type="submit" class="btn btn-primary">Add</button>
@@ -122,7 +132,8 @@
           <th>Bib&num;</th>
           <th>Time In</th>
           <th>Time Out</th>
-          <th>Pacer In / Out?</th>
+          <th>Pacer In/Out?</th>
+          <th>Dropped</th>
           <th>Name</th>
           <th data-orderable="false">&nbsp;</th>
         </tr>
@@ -130,6 +141,7 @@
         <tbody>
           <tr style="display: none">
             <td data-order="0"></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>

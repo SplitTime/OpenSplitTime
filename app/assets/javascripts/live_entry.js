@@ -215,6 +215,18 @@
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
                 $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
 
+                // Styles the Dropped Here button
+                $('#js-dropped').on('change', function (event) {
+                    var $root = $(this).parent();
+                    if ($(this).prop('checked')){
+                        $root.addClass('btn-warning').removeClass('btn-default');
+                        $('.glyphicon', $root).addClass('glyphicon-check').removeClass('glyphicon-unchecked');
+                    } else {
+                        $root.addClass('btn-default').removeClass('btn-warning');
+                        $('.glyphicon', $root).addClass('glyphicon-unchecked').removeClass('glyphicon-check');
+                    }
+                });
+
                 // Clears the live entry form when the clear button is clicked
                 $('#js-clear-entry-form').on('click', function (event) {
                     event.preventDefault();
@@ -415,6 +427,7 @@
                 thisTimeRow.timeOut = $('#js-time-out').val();
                 thisTimeRow.pacerIn = $('#js-pacer-in').prop('checked');
                 thisTimeRow.pacerOut = $('#js-pacer-out').prop('checked');
+                thisTimeRow.dropped = $('#js-dropped').prop('checked');
                 thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
@@ -432,6 +445,7 @@
                 $('#js-time-out').val(timeRow.timeOut);
                 $('#js-pacer-in').prop('checked', timeRow.pacerIn);
                 $('#js-pacer-out').prop('checked', timeRow.pacerOut);
+                $('#js-dropped').prop('checked', timeRow.dropped).change();
                 liveEntry.splitSlider.changeSplitSlider(timeRow.splitId);
             },
 
@@ -450,8 +464,9 @@
                 $('#js-time-out').val('').removeClass( 'exists null bad good questionable' );
                 $('#js-live-bib').val('');
                 $('#js-bib-number').val('');
-                $('#js-pacer-in').attr('checked', false);
-                $('#js-pacer-out').attr('checked', false);
+                $('#js-pacer-in').prop('checked', false);
+                $('#js-pacer-out').prop('checked', false);
+                $('#js-dropped').prop('checked', false).change();
                 liveEntry.lastEffortRequest = {};
             },
 
@@ -585,19 +600,20 @@
                 // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
-					<tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
-						<td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
-						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
+                    <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
+                        <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
+                        <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
-						<td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
-						<td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
-						<td class="row-edit-btns">\
-							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
-							<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
-							<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
-						</td>\
-					</tr>';
+                        <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
+                        <td class="dropped-here js-dropped-here">' + (timeRow.dropped ? 'Yes' : 'No') + '</td>\
+                        <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
+                        <td class="row-edit-btns">\
+                            <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
+                            <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
+                            <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
+                        </td>\
+                    </tr>';
                 var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml));
                 // Find page that the row was added to
                 var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();

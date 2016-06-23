@@ -69,7 +69,14 @@ Mixins
 			font-style: italic;
 		}
 
-		button {
+		label.btn {
+			text-align: center;
+			input[type="checkbox"] {
+				display: none;
+			}
+		}
+
+		.form-buttons button {
 			width: 46%;
 
 			&:last-child {

@@ -1,14 +1,29 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show course - #{@course.name}" %>
+    <% "OpenSplitTime: Show course - #{@course_view.name}" %>
 <% end %>
 <div class="row">
-  <div class="col-xs-8">
-    <h2><%= @course.name %></h2>
-  </div>
-</div>
-<div class="row">
   <div class="col-xs-6">
-    <%= @course.description %>
+    <div class="row">
+      <h2><%= @course_view.name %></h2>
+    </div>
+    <div class="row">
+      <%= @course_view.description %>
+    </div>
+  </div>
+  <div class="col-xs-6">
+    <div id="map" style="width: 550px; height: 350px;"></div>
+
+    <script>
+      $(document).ready(function () {
+        var locations = <%= @course_view.locations.to_json.html_safe %>; // pass ruby variables to javascript
+        var latitude_center = <%= @course_view.latitude_center %>;
+        var longitude_center = <%= @course_view.longitude_center %>;
+        var zoom = <%= @course_view.zoom %>;
+
+        gmap_show(locations, {latitude: latitude_center, longitude: longitude_center, zoom: zoom});    // init show map
+      });
+    </script>
+
   </div>
 </div>
 
@@ -17,9 +32,9 @@
   <div class="col-xs-6">
     <%= link_to '<< Show All Courses', courses_path, class: 'btn btn-sm btn-default' %>
     <%= link_to '< Back', :back, class: 'btn btn-sm btn-default' %>
-    <% if @current_user && @current_user.authorized_to_edit?(@course) %>
-        <%= link_to 'Edit this course', edit_course_path(@course), class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Delete this course', course_path(@course, referrer_path: courses_path),
+    <% if @current_user && @current_user.authorized_to_edit?(@course_view.course) %>
+        <%= link_to 'Edit this course', edit_course_path(@course_view.course), class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Delete this course', course_path(@course_view.course, referrer_path: courses_path),
                     method: :delete,
                     data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
@@ -29,19 +44,19 @@
 <hr>
 
 <div class="article-actions">
-  <% if @current_user && @current_user.authorized_to_edit?(@course) %>
-      <%= link_to 'Create new split', new_split_path(course_id: @course.id), class: 'btn btn-sm btn-success' %>
+  <% if @current_user && @current_user.authorized_to_edit?(@course_view.course) %>
+      <%= link_to 'Create new split', new_split_path(course_id: @course_view.course_id), class: 'btn btn-sm btn-success' %>
   <% end %>
-  <%= link_to 'Plan my effort', plan_effort_course_path(@course), method: :get, class: 'btn btn-sm btn-default' %>
-  <%= link_to 'All-time best efforts >>', best_efforts_course_path(@course), class: 'btn btn-sm btn-default' %>
+  <%= link_to 'Plan my effort', plan_effort_course_path(@course_view.course), method: :get, class: 'btn btn-sm btn-default' %>
+  <%= link_to 'All-time best efforts >>', best_efforts_course_path(@course_view.course), class: 'btn btn-sm btn-default' %>
 </div>
 <hr>
 
-<% if @course_splits && @course_splits.count > 0 %>
+<% if @course_view.split_count > 0 %>
     <div class="row">
       <div class="col-xs-8">
-        <h4><%= "Total of #{@course.splits.count} splits on #{@course.name}" %></h4>
+        <h4><%= "Total of #{@course_view.split_count} splits on #{@course_view.name}" %></h4>
       </div>
     </div>
-    <%= render 'splits/splits', splits: @course_splits, referred_by: course_path(@course) %>
+    <%= render 'splits/splits', splits: @course_view.ordered_splits, referred_by: course_path(@course_view) %>
 <% end %>

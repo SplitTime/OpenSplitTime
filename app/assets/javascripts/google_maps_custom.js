@@ -1,12 +1,12 @@
 var map;
 
-var gmap_show = function (locations, center) {
+var gmap_show = function (locations, viewParams) {
 
     locations = Array.isArray(locations) ? locations : [locations];
 
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: parseFloat(center.latitude), lng: parseFloat(center.longitude)},
-        zoom: 12
+        center: {lat: parseFloat(viewParams.latitude), lng: parseFloat(viewParams.longitude)},
+        zoom: viewParams.zoom
     });
 
 

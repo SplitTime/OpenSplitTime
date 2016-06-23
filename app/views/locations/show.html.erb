@@ -17,7 +17,7 @@
   <script>
     $(document).ready(function () {
       var location = <%= @location.to_json.html_safe %>;    // pass ruby variable to javascript
-          gmap_show(location, {latitude: location.latitude, longitude: location.longitude});    // init show map
+          gmap_show(location, {latitude: location.latitude, longitude: location.longitude, zoom: 12});    // init show map
     });
   </script>
 

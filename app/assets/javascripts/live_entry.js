@@ -462,17 +462,11 @@
              */
             validateTimeFields: function (time) {
                 time = time.replace(/\D/g, '');
-                if (time.length == 4) {
-                    time = time.concat('00');
-                }
-                if (time.length == 5) {
+                if (time.length < 2) return false;
+                while (time.length < 6) {
                     time = time.concat('0');
                 }
-                if ((time.length == 0) || (time.length == 6)) {
-                    return time;
-                } else {
-                    return false;
-                }
+                return time;
             }
         }, // END liveEntryForm form
 

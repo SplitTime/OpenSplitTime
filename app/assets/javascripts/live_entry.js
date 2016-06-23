@@ -512,15 +512,22 @@
                 });
 
                 // Wrap search field with clear button
-                $('#js-provisional-data-table_filter input').wrap('<div class="input-group input-group-sm"></div>');
-                $('#js-provisional-data-table_filter .input-group').append(
-                    '<span class="input-group-btn">\
-                        <button id="js-filter-clear" class="btn btn-default" type="button">\
-                            <span class="glyphicon glyphicon-remove"></span>\
-                        </button>\
-                    </span>');
+                $('#js-provisional-data-table_filter input')
+                    .wrap('<div class="form-group form-group-sm has-feedback"></div>')
+                    .on('change keyup', function() {
+                        var value = $(this).val() || '';
+                        if (value.length > 0) {
+                            $('#js-filter-clear').show();
+                        } else {
+                            $('#js-filter-clear').hide();
+                        }
+                    });
+                $('#js-provisional-data-table_filter .form-group').append(
+                    '<span id="js-filter-clear" class="glyphicon glyphicon-remove dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
+                );
                 $('#js-filter-clear').on('click', function() {
                     liveEntry.timeRowsTable.$dataTable.search('').draw();
+                    $(this).hide();
                 });
             },
 

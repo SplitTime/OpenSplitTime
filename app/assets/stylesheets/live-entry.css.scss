@@ -293,6 +293,12 @@ Mixins
 
 	.dataTables_filter {
 		text-align: right;
+
+		.dataTables_filter-clear {
+			display: none;
+			cursor: pointer;
+			pointer-events: all;
+		}
 	}
 
 	.dataTables_length, .dataTables_filter {

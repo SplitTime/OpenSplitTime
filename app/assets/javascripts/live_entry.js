@@ -503,6 +503,9 @@
                 liveEntry.timeRowsTable.timeRowControls();
 
                 $('[data-toggle="popover"]').popover();
+                liveEntry.timeRowsTable.$dataTable.on( 'mouseover', '[data-toggle="tooltip"]', function() {
+                    $(this).tooltip('show');
+                });
 
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
@@ -566,10 +569,10 @@
             addTimeRowToTable: function (timeRow) {
                 liveEntry.timeRowsTable.$dataTable.search('').draw();
                 var icons = {
-                    'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists"></span>',
-                    'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" title="Time Appears Good"></span>',
-                    'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" title="Time Appears Questionable"></span>',
-                    'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" title="Time Appears Bad"></span>'
+                    'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
+                    'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
+                    'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
+                    'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
                 var timeInIcon = icons[timeRow.timeInStatus] || '';
                 timeInIcon += timeRow.timeInExists ? icons['exists'] : '';

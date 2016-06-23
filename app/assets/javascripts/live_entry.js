@@ -584,8 +584,7 @@
 						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
-						<td class="pacer-in js-pacer-in">' + (timeRow.pacerIn ? 'Yes' : 'No') + '</td>\
-						<td class="pacer-out js-pacer-out">' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
+						<td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
 						<td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
 						<td class="row-edit-btns">\
 							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\

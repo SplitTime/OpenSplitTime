@@ -539,6 +539,7 @@
                 $.each(storedTimeRows, function (index) {
                     liveEntry.timeRowsTable.addTimeRowToTable(this);
                 });
+                liveEntry.timeRowsTable.$dataTable.draw();
             },
 
             addTimeRowFromForm: function () {
@@ -567,7 +568,8 @@
              * @param object timeRow Pass in the object of the timeRow to add
              */
             addTimeRowToTable: function (timeRow) {
-                liveEntry.timeRowsTable.$dataTable.search('').draw();
+                liveEntry.timeRowsTable.$dataTable.search('');
+                $('#js-filter-clear').hide();
                 var icons = {
                     'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
                     'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
@@ -596,7 +598,11 @@
 							<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
 						</td>\
 					</tr>';
-                liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw();
+                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml));
+                // Find page that the row was added to
+                var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
+                var pageIndex = Math.floor(node.index() / pageInfo.length);
+                liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
             },
 
             removeTimeRows: function(timeRows) {
@@ -609,7 +615,7 @@
 
                     // remove table row
                     $row.fadeOut('fast', function () {
-                        liveEntry.timeRowsTable.$dataTable.row($row).remove().draw();
+                        liveEntry.timeRowsTable.$dataTable.row($row).remove().draw('full-hold');
                     });
                 });
             },

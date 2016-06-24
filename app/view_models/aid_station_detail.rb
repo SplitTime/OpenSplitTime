@@ -1,8 +1,8 @@
 class AidStationDetail
 
   attr_reader :aid_station
-  attr_accessor :efforts_dropped_at_station, :efforts_recorded_out,
-                :efforts_in_aid, :efforts_passed_without_record, :efforts_expected
+  attr_accessor :efforts_dropped_here, :efforts_recorded_out,
+                :efforts_in_aid, :efforts_missed, :efforts_expected
   delegate :course, :race, to: :event
   delegate :event, :split, :open_time, :close_time, :captain_name, :comms_chief_name,
            :comms_frequencies, :current_issues, to: :aid_station
@@ -66,7 +66,7 @@ class AidStationDetail
 
   def set_efforts
     split_index = ordered_split_ids.index(split_id)
-    efforts_dropped_at_station = efforts_dropped.select { |effort| effort.dropped_split_id == split_id }
+    efforts_dropped_here = efforts_dropped.select { |effort| effort.dropped_split_id == split_id }
     efforts_recorded_out = efforts_started
                                .select { |effort| split_times[effort.id] ? split_times[effort.id]
                                                                                .map(&:sub_split_bitkey)
@@ -77,13 +77,13 @@ class AidStationDetail
                                                                               .include?(SubSplit::IN_BITKEY) : false }
     efforts_in_aid = efforts_recorded_in - efforts_recorded_out
     efforts_not_recorded = efforts_started - efforts_recorded_in - efforts_recorded_out
-    efforts_passed_without_record = efforts_not_recorded
+    efforts_missed = efforts_not_recorded
                                         .select { |effort| ordered_split_ids.index(effort.final_split_id) > split_index }
-    efforts_expected = efforts_not_recorded - efforts_passed_without_record - efforts_dropped
-    self.efforts_dropped_at_station = efforts_dropped_at_station
+    efforts_expected = efforts_not_recorded - efforts_missed - efforts_dropped
+    self.efforts_dropped_here = efforts_dropped_here
     self.efforts_recorded_out = efforts_recorded_out
     self.efforts_in_aid = efforts_in_aid
-    self.efforts_passed_without_record = efforts_passed_without_record
+    self.efforts_missed = efforts_missed
     self.efforts_expected = efforts_expected
   end
 

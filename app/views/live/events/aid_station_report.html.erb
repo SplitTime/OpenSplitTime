@@ -21,7 +21,7 @@
         <th>Name</th>
         <th class="text-right"><%= pdu('singular').titleize %></th>
         <th class="text-center">Recorded</th>
-        <th class="text-center">Passed w/o Record</th>
+        <th class="text-center">Missed</th>
         <th class="text-center">Dropped Here</th>
         <th class="text-center">Expected</th>
         <th class="text-center">Status</th>
@@ -34,8 +34,8 @@
             <td><%= link_to row.split_name, aid_station_detail_live_event_path(@event, aid_station: row.aid_station) %></td>
             <td class="text-right"><%= d(row.split.distance_from_start) %></td>
             <td class="text-center"><%= row.efforts_recorded_out.count %></td>
-            <td class="text-center"><%= row.efforts_passed_without_record.count %></td>
-            <td class="text-center"><%= row.efforts_dropped_at_station.count %></td>
+            <td class="text-center"><%= row.efforts_missed.count %></td>
+            <td class="text-center"><%= row.efforts_dropped_here.count %></td>
             <td class="text-center"><%= row.efforts_expected.count %></td>
             <td class="text-center text-nowrap">
               <%= link_to '<<', aid_station_degrade_live_event_path(@event, aid_station: row.aid_station), method: :put %>

@@ -24,16 +24,16 @@
             <%= "#{@aid_station_detail.efforts_in_aid.count} have reported into but not out of this station" %>
             <br/>
         <% end %>
-        <% if @aid_station_detail.efforts_dropped_at_station.count > 0 %>
-            <%= "#{@aid_station_detail.efforts_dropped_at_station.count} have dropped at this station" if @aid_station_detail.efforts_dropped_at_station.count > 0 %>
+        <% if @aid_station_detail.efforts_dropped_here.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_dropped_here.count} have dropped at this station" if @aid_station_detail.efforts_dropped_here.count > 0 %>
             <br/>
         <% end %>
         <% if @aid_station_detail.efforts_recorded_out.count > 0 %>
             <%= "#{@aid_station_detail.efforts_recorded_out.count} have reported times through this station" if @aid_station_detail.efforts_recorded_out.count > 0 %>
             <br/>
         <% end %>
-        <% if @aid_station_detail.efforts_passed_without_record.count > 0 %>
-            <%= "#{@aid_station_detail.efforts_passed_without_record.count} were not recorded here but were recorded at a later station" if @aid_station_detail.efforts_passed_without_record.count > 0 %>
+        <% if @aid_station_detail.efforts_missed.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_missed.count} were not recorded here but were recorded at a later station" if @aid_station_detail.efforts_missed.count > 0 %>
             <br/>
         <% end %>
         <% if @aid_station_detail.efforts_expected.count > 0 %>

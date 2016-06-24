@@ -4,12 +4,6 @@ class AidStationsDisplay
   delegate :start_time, :course, :race, to: :event
   delegate :captain_name, :comms_chief_name, :comms_frequencies, to: :aid_station
 
-  # initialize(event, params = {})
-  # event is an ordinary event object
-  # params is passed from the controller and may include
-  # params[:search_param] (from user search input)
-  # and params[:page] (for will_paginate)
-
   def initialize(event)
     @event = event
     @aid_stations = event.aid_stations.ordered.to_a[1..-1]

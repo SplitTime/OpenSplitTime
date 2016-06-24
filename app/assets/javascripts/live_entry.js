@@ -575,7 +575,7 @@
             populateTableFromCache: function () {
                 var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                 $.each(storedTimeRows, function (index) {
-                    liveEntry.timeRowsTable.addTimeRowToTable(this);
+                    liveEntry.timeRowsTable.addTimeRowToTable(this, false);
                 });
                 liveEntry.timeRowsTable.$dataTable.draw();
             },
@@ -604,8 +604,9 @@
              * Add a new row to the table (with js dataTables enabled)
              *
              * @param object timeRow Pass in the object of the timeRow to add
+             * @param boolean highlight If true, the new row will flash when it is added.
              */
-            addTimeRowToTable: function (timeRow) {
+            addTimeRowToTable: function (timeRow, highlight = true) {
                 liveEntry.timeRowsTable.$dataTable.search('');
                 $('#js-filter-clear').hide();
                 var icons = {
@@ -638,10 +639,15 @@
                         </td>\
                     </tr>';
                 var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml));
-                // Find page that the row was added to
-                var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
-                var pageIndex = Math.floor(node.index() / pageInfo.length);
-                liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
+                if (highlight) {
+                    // Find page that the row was added to
+                    var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
+                    var pageIndex = Math.floor(node.index() / pageInfo.length);
+                    liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
+                    $(node.node()).effect('highlight', 2000);
+                } else {
+                    liveEntry.timeRowsTable.$dataTable.draw('full-hold');
+                }
             },
 
             removeTimeRows: function(timeRows) {

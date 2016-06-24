@@ -241,16 +241,13 @@
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
                         var bibNumber = $(this).val();
-                        if (bibNumber == '') {
-                            liveEntry.liveEntryForm.clearSplitsData();
-                        }
+                        liveEntry.liveEntryForm.fetchEffortData();
 
                         if (!event.shiftKey) {
                             $('#js-time-in').focus().select();
                         } else {
                             $('#split-select').focus();
                         }
-                        liveEntry.liveEntryForm.fetchEffortData();
                         return false;
                     }
                 });
@@ -258,46 +255,42 @@
                 $('#js-time-in').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
-
-                        var timeIn = $(this).val();
-                        timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
-                        if (timeIn === false ) {
-                            $(this).val( '');
-                        } else {
-                            $(this).val(timeIn);
-                            liveEntry.liveEntryForm.fetchEffortData();
-                        }
-
                         if (event.shiftKey) {
                             $('#js-bib-number').focus().select();
-                        } else if (timeIn !== false) {
+                        } else {
                             $('#js-time-out').focus().select();
                         }
-
                         return false;
+                    }
+                }).on('blur', function (event) {
+                    var timeIn = $(this).val();
+                    timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
+                    if (timeIn === false) {
+                        $(this).val('');
+                    } else {
+                        $(this).val(timeIn);
+                        liveEntry.liveEntryForm.fetchEffortData();
                     }
                 });
 
                 $('#js-time-out').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
-
-                        var timeIn = $(this).val();
-                        timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
-                        if (timeIn === false) {
-                            $(this).val('');
-                        } else {
-                            $(this).val(timeIn);
-                            liveEntry.liveEntryForm.fetchEffortData();
-                        }
-
                         if (event.shiftKey) {
                             $('#js-time-in').focus().select();
-                        } else if (timeIn !== false) {
+                        } else {
                             $('#js-pacer-in').focus();
                         }
-
                         return false;
+                    }
+                }).on('blur', function (event) {
+                    var timeIn = $(this).val();
+                    timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
+                    if (timeIn === false) {
+                        $(this).val('');
+                    } else {
+                        $(this).val(timeIn);
+                        liveEntry.liveEntryForm.fetchEffortData();
                     }
                 });
 
@@ -340,6 +333,25 @@
                             if (event.shiftKey) {
                                 $('#js-pacer-in').focus();
                             } else {
+                                $('#js-dropped-button').focus();
+                            }
+                            break;
+                    }
+                    return false;
+                });
+
+                $('#js-dropped-button').on('click keydown', function (event) {
+                    event.preventDefault();
+                    var $this = $(this);
+                    switch (event.keyCode) {
+                        default: // Clicked
+                        case 32: // Space pressed
+                            $('#js-dropped').prop('checked', !$('#js-dropped').prop('checked')).change();
+                            break;
+                        case 9: // Tab pressed
+                            if (event.shiftKey) {
+                                $('#js-pacer-out').focus();
+                            } else {
                                 $('#js-add-to-cache').focus();
                             }
                             break;
@@ -356,7 +368,7 @@
                 var bibNumber = $('#js-bib-number').val();
                 if (bibNumber === '') {
                     // Erase Effort Information
-                    liveEntry.liveEntryForm.clearSplitsData();
+                    liveEntry.liveEntryForm.clearSplitsData(false)
                     return;
                 }
 
@@ -412,6 +424,12 @@
              */
             getTimeRow: function () {
                 if ($('#js-bib-number').val() == '') {
+                    // Notify user that bib number is empty.
+                    var $formgroup = $('#js-bib-number').closest('.form-group')
+                    $formgroup.addClass('has-error');
+                    setTimeout( function() {
+                        $formgroup.removeClass('has-error');
+                    }, 1000);
                     return null; // No Data To Save
                 }
 
@@ -451,23 +469,27 @@
 
             /**
              * Clears out the splits slider data fields
-             *
+             * @param  {Boolean} clearForm Determines if the form is cleared as well.
              */
-            clearSplitsData: function () {
+            clearSplitsData: function (clearForm = true) {
                 $('#js-effort-name').html('&nbsp;');
                 $('#js-effort-last-reported').html('&nbsp;')
                 $('#js-prior-valid-reported').html('&nbsp;')
                 $('#js-time-prior-valid-reported').html('&nbsp;');
                 $('#js-effort-split-from').html('&nbsp;');
                 $('#js-time-spent').html('&nbsp;');
-                $('#js-time-in').val('').removeClass( 'exists null bad good questionable' );
-                $('#js-time-out').val('').removeClass( 'exists null bad good questionable' );
-                $('#js-live-bib').val('');
-                $('#js-bib-number').val('');
-                $('#js-pacer-in').prop('checked', false);
-                $('#js-pacer-out').prop('checked', false);
-                $('#js-dropped').prop('checked', false).change();
+                $('#js-time-in').removeClass('exists null bad good questionable');
+                $('#js-time-out').removeClass('exists null bad good questionable');
                 liveEntry.lastEffortRequest = {};
+                if (clearForm) {
+                    $('#js-time-in').val('');
+                    $('#js-time-out').val('');
+                    $('#js-live-bib').val('');
+                    $('#js-bib-number').val('');
+                    $('#js-pacer-in').prop('checked', false);
+                    $('#js-pacer-out').prop('checked', false);
+                    $('#js-dropped').prop('checked', false).change();
+                }
             },
 
             /**
@@ -477,6 +499,7 @@
              */
             validateTimeFields: function (time) {
                 time = time.replace(/\D/g, '');
+                if (time.length == 0) return time;
                 if (time.length < 2) return false;
                 while (time.length < 6) {
                     time = time.concat('0');
@@ -552,7 +575,7 @@
             populateTableFromCache: function () {
                 var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                 $.each(storedTimeRows, function (index) {
-                    liveEntry.timeRowsTable.addTimeRowToTable(this);
+                    liveEntry.timeRowsTable.addTimeRowToTable(this, false);
                 });
                 liveEntry.timeRowsTable.$dataTable.draw();
             },
@@ -581,8 +604,9 @@
              * Add a new row to the table (with js dataTables enabled)
              *
              * @param object timeRow Pass in the object of the timeRow to add
+             * @param boolean highlight If true, the new row will flash when it is added.
              */
-            addTimeRowToTable: function (timeRow) {
+            addTimeRowToTable: function (timeRow, highlight = true) {
                 liveEntry.timeRowsTable.$dataTable.search('');
                 $('#js-filter-clear').hide();
                 var icons = {
@@ -615,10 +639,15 @@
                         </td>\
                     </tr>';
                 var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml));
-                // Find page that the row was added to
-                var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
-                var pageIndex = Math.floor(node.index() / pageInfo.length);
-                liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
+                if (highlight) {
+                    // Find page that the row was added to
+                    var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
+                    var pageIndex = Math.floor(node.index() / pageInfo.length);
+                    liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
+                    $(node.node()).effect('highlight', 2000);
+                } else {
+                    liveEntry.timeRowsTable.$dataTable.draw('full-hold');
+                }
             },
 
             removeTimeRows: function(timeRows) {
@@ -668,11 +697,11 @@
                 $(document).ready( function() {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
-                return function ( forceClose ) {
+                return function (canDelete = false) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     var $deleteButton = $('#js-delete-all-efforts');
                     $deleteButton.prop('disabled', true);
-                    $deleteButton.off('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                    $deleteButton.off('blur');
                     $deleteWarning.insertAfter($deleteButton).animate({
                         width: 'toggle',
                         paddingLeft: 'toggle',
@@ -682,12 +711,16 @@
                         done: function() {
                             $deleteButton.prop('disabled', false);
                             if ($deleteButton.hasClass('confirm')) {
-                                liveEntry.timeRowsTable.removeTimeRows( nodes );
+                                if (canDelete) {
+                                    liveEntry.timeRowsTable.removeTimeRows(nodes);
+                                }
                                 $deleteButton.removeClass('confirm');
                                 $deleteWarning = $('#js-delete-all-warning').hide().detach();
                             } else {
                                 $deleteButton.addClass('confirm');
-                                $deleteButton.focus().one('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                                $deleteButton.focus().one('blur', function() {
+                                    liveEntry.timeRowsTable.toggleDiscardAll(false);
+                                });
                             }
                         }
                     });
@@ -722,14 +755,14 @@
                 
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    liveEntry.timeRowsTable.toggleDiscardAll();
+                    liveEntry.timeRowsTable.toggleDiscardAll(true);
                     return false;
                 });
 
                 $('#js-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    liveEntry.timeRowsTable.submitTimeRows( nodes );
+                    liveEntry.timeRowsTable.submitTimeRows(nodes);
                     return false;
                 });
 

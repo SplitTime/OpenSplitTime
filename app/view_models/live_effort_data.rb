@@ -13,9 +13,11 @@ class LiveEffortData
     @response_row = params.symbolize_keys.slice(:splitId, :bibNumber, :timeIn, :timeOut,
                                                 :pacerIn, :pacerOut, :droppedHere)
     @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
-    set_response_attributes if @effort
+    @split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
+    set_boolean_attributes
+    set_split_related_attributes if @split
+    set_effort_related_attributes if @effort
     verify_time_existence if (@effort && @split)
-    set_dropped_attributes if @effort
     verify_time_status if (@effort && @split)
   end
 
@@ -57,16 +59,23 @@ class LiveEffortData
 
   private
 
-  attr_accessor :split_times_hash, :split, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out
-  attr_reader :calcs, :ordered_splits
+  attr_accessor :split_times_hash, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out
+  attr_reader :calcs, :ordered_splits, :split
 
-  def set_response_attributes
-    self.split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
-    self.day_and_time_in = (effort && split && response_row[:timeIn].present?) ? effort.likely_intended_time(response_row[:timeIn], split, calcs) : nil
-    self.day_and_time_out = (effort && split && response_row[:timeOut].present?) ? effort.likely_intended_time(response_row[:timeOut], split, calcs) : nil
+  def set_boolean_attributes
     self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn].try(&:downcase) == 'true')
     self.pacer_out = response_row[:pacerOut] = (response_row[:pacerOut].try(&:downcase) == 'true')
     self.dropped_here = response_row[:droppedHere] = (response_row[:droppedHere].try(&:downcase) == 'true')
+  end
+
+  def set_split_related_attributes
+    self.response_row[:splitName] = split_name
+    self.response_row[:splitDistance] = split_distance
+  end
+
+  def set_effort_related_attributes
+    self.day_and_time_in = (split && response_row[:timeIn].present?) ? effort.likely_intended_time(response_row[:timeIn], split, calcs) : nil
+    self.day_and_time_out = (split && response_row[:timeOut].present?) ? effort.likely_intended_time(response_row[:timeOut], split, calcs) : nil
     last_split_time = effort.last_reported_split_time
     if last_split_time
       self.last_day_and_time = effort.start_time + last_split_time.time_from_start
@@ -77,9 +86,15 @@ class LiveEffortData
     self.time_from_start_in = day_and_time_in ? day_and_time_in - effort.start_time : nil
     self.time_from_start_out = day_and_time_out ? day_and_time_out - effort.start_time : nil
     self.time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out - time_from_start_in : nil
-    self.response_row[:splitName] = split_name
     self.response_row[:effortName] = effort_name
-    self.response_row[:splitDistance] = split_distance
+    self.dropped = effort.dropped?
+    if dropped
+      self.dropped_split = ordered_splits.find { |split| split.id == effort.dropped_split_id }
+      bitkey_hash_in = dropped_split ? {dropped_split.id => SubSplit::IN_BITKEY} : nil
+      bitkey_hash_out = dropped_split ? {dropped_split.id => SubSplit::OUT_BITKEY} : nil
+      dropped_split_time = split_times_hash[bitkey_hash_out] || split_times_hash[bitkey_hash_in]
+      self.dropped_day_and_time = dropped_split_time ? effort.start_time + dropped_split_time.time_from_start : nil
+    end
   end
 
   def verify_time_existence
@@ -97,17 +112,6 @@ class LiveEffortData
     self.time_in_exists = self.response_row[:timeInExists] = split_times_hash[bitkey_hash_in].present?
     self.time_out_exists = self.response_row[:timeOutExists] = split_times_hash[bitkey_hash_out].present?
 
-  end
-
-  def set_dropped_attributes
-    self.dropped = effort.dropped?
-    if dropped
-      self.dropped_split = ordered_splits.find { |split| split.id == effort.dropped_split_id }
-      bitkey_hash_in = dropped_split ? {dropped_split.id => SubSplit::IN_BITKEY} : nil
-      bitkey_hash_out = dropped_split ? {dropped_split.id => SubSplit::OUT_BITKEY} : nil
-      dropped_split_time = split_times_hash[bitkey_hash_out] || split_times_hash[bitkey_hash_in]
-      self.dropped_day_and_time = dropped_split_time ? effort.start_time + dropped_split_time.time_from_start : nil
-    end
   end
 
   def verify_time_status

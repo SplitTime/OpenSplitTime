@@ -697,7 +697,7 @@
                 $(document).ready( function() {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
-                return function ( canDelete=false ) {
+                return function (canDelete = false) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     var $deleteButton = $('#js-delete-all-efforts');
                     $deleteButton.prop('disabled', true);
@@ -711,8 +711,8 @@
                         done: function() {
                             $deleteButton.prop('disabled', false);
                             if ($deleteButton.hasClass('confirm')) {
-                                if ( canDelete ) {
-                                    liveEntry.timeRowsTable.removeTimeRows( nodes );
+                                if (canDelete) {
+                                    liveEntry.timeRowsTable.removeTimeRows(nodes);
                                 }
                                 $deleteButton.removeClass('confirm');
                                 $deleteWarning = $('#js-delete-all-warning').hide().detach();
@@ -755,14 +755,14 @@
                 
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    liveEntry.timeRowsTable.toggleDiscardAll( true );
+                    liveEntry.timeRowsTable.toggleDiscardAll(true);
                     return false;
                 });
 
                 $('#js-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    liveEntry.timeRowsTable.submitTimeRows( nodes );
+                    liveEntry.timeRowsTable.submitTimeRows(nodes);
                     return false;
                 });
 

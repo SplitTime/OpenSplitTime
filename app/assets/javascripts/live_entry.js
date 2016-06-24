@@ -469,7 +469,7 @@
 
             /**
              * Clears out the splits slider data fields
-             * @param  {Boolean} splitOnly Determines if all splits data
+             * @param  {Boolean} clearForm Determines if the form is cleared as well.
              */
             clearSplitsData: function (clearForm = true) {
                 $('#js-effort-name').html('&nbsp;');
@@ -480,6 +480,7 @@
                 $('#js-time-spent').html('&nbsp;');
                 $('#js-time-in').removeClass('exists null bad good questionable');
                 $('#js-time-out').removeClass('exists null bad good questionable');
+                liveEntry.lastEffortRequest = {};
                 if (clearForm) {
                     $('#js-time-in').val('');
                     $('#js-time-out').val('');
@@ -488,7 +489,6 @@
                     $('#js-pacer-in').prop('checked', false);
                     $('#js-pacer-out').prop('checked', false);
                     $('#js-dropped').prop('checked', false).change();
-                    liveEntry.lastEffortRequest = {};
                 }
             },
 

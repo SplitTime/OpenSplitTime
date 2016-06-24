@@ -668,11 +668,11 @@
                 $(document).ready( function() {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
-                return function ( forceClose ) {
+                return function ( canDelete=false ) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     var $deleteButton = $('#js-delete-all-efforts');
                     $deleteButton.prop('disabled', true);
-                    $deleteButton.off('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                    $deleteButton.off('blur');
                     $deleteWarning.insertAfter($deleteButton).animate({
                         width: 'toggle',
                         paddingLeft: 'toggle',
@@ -682,12 +682,16 @@
                         done: function() {
                             $deleteButton.prop('disabled', false);
                             if ($deleteButton.hasClass('confirm')) {
-                                liveEntry.timeRowsTable.removeTimeRows( nodes );
+                                if ( canDelete ) {
+                                    liveEntry.timeRowsTable.removeTimeRows( nodes );
+                                }
                                 $deleteButton.removeClass('confirm');
                                 $deleteWarning = $('#js-delete-all-warning').hide().detach();
                             } else {
                                 $deleteButton.addClass('confirm');
-                                $deleteButton.focus().one('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                                $deleteButton.focus().one('blur', function() {
+                                    liveEntry.timeRowsTable.toggleDiscardAll(false);
+                                });
                             }
                         }
                     });
@@ -722,7 +726,7 @@
                 
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    liveEntry.timeRowsTable.toggleDiscardAll();
+                    liveEntry.timeRowsTable.toggleDiscardAll( true );
                     return false;
                 });
 

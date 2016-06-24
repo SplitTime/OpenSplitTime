@@ -215,6 +215,18 @@
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
                 $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
 
+                // Styles the Dropped Here button
+                $('#js-dropped').on('change', function (event) {
+                    var $root = $(this).parent();
+                    if ($(this).prop('checked')){
+                        $root.addClass('btn-warning').removeClass('btn-default');
+                        $('.glyphicon', $root).addClass('glyphicon-check').removeClass('glyphicon-unchecked');
+                    } else {
+                        $root.addClass('btn-default').removeClass('btn-warning');
+                        $('.glyphicon', $root).addClass('glyphicon-unchecked').removeClass('glyphicon-check');
+                    }
+                });
+
                 // Clears the live entry form when the clear button is clicked
                 $('#js-clear-entry-form').on('click', function (event) {
                     event.preventDefault();
@@ -415,6 +427,7 @@
                 thisTimeRow.timeOut = $('#js-time-out').val();
                 thisTimeRow.pacerIn = $('#js-pacer-in').prop('checked');
                 thisTimeRow.pacerOut = $('#js-pacer-out').prop('checked');
+                thisTimeRow.dropped = $('#js-dropped').prop('checked');
                 thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
@@ -432,6 +445,7 @@
                 $('#js-time-out').val(timeRow.timeOut);
                 $('#js-pacer-in').prop('checked', timeRow.pacerIn);
                 $('#js-pacer-out').prop('checked', timeRow.pacerOut);
+                $('#js-dropped').prop('checked', timeRow.dropped).change();
                 liveEntry.splitSlider.changeSplitSlider(timeRow.splitId);
             },
 
@@ -450,8 +464,9 @@
                 $('#js-time-out').val('').removeClass( 'exists null bad good questionable' );
                 $('#js-live-bib').val('');
                 $('#js-bib-number').val('');
-                $('#js-pacer-in').attr('checked', false);
-                $('#js-pacer-out').attr('checked', false);
+                $('#js-pacer-in').prop('checked', false);
+                $('#js-pacer-out').prop('checked', false);
+                $('#js-dropped').prop('checked', false).change();
                 liveEntry.lastEffortRequest = {};
             },
 
@@ -462,17 +477,11 @@
              */
             validateTimeFields: function (time) {
                 time = time.replace(/\D/g, '');
-                if (time.length == 4) {
-                    time = time.concat('00');
-                }
-                if (time.length == 5) {
+                if (time.length < 2) return false;
+                while (time.length < 6) {
                     time = time.concat('0');
                 }
-                if ((time.length == 0) || (time.length == 6)) {
-                    return time;
-                } else {
-                    return false;
-                }
+                return time;
             }
         }, // END liveEntryForm form
 
@@ -509,6 +518,9 @@
                 liveEntry.timeRowsTable.timeRowControls();
 
                 $('[data-toggle="popover"]').popover();
+                liveEntry.timeRowsTable.$dataTable.on( 'mouseover', '[data-toggle="tooltip"]', function() {
+                    $(this).tooltip('show');
+                });
 
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
@@ -518,15 +530,22 @@
                 });
 
                 // Wrap search field with clear button
-                $('#js-provisional-data-table_filter input').wrap('<div class="input-group input-group-sm"></div>');
-                $('#js-provisional-data-table_filter .input-group').append(
-                    '<span class="input-group-btn">\
-                        <button id="js-filter-clear" class="btn btn-default" type="button">\
-                            <span class="glyphicon glyphicon-remove"></span>\
-                        </button>\
-                    </span>');
+                $('#js-provisional-data-table_filter input')
+                    .wrap('<div class="form-group form-group-sm has-feedback"></div>')
+                    .on('change keyup', function() {
+                        var value = $(this).val() || '';
+                        if (value.length > 0) {
+                            $('#js-filter-clear').show();
+                        } else {
+                            $('#js-filter-clear').hide();
+                        }
+                    });
+                $('#js-provisional-data-table_filter .form-group').append(
+                    '<span id="js-filter-clear" class="glyphicon glyphicon-remove dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
+                );
                 $('#js-filter-clear').on('click', function() {
                     liveEntry.timeRowsTable.$dataTable.search('').draw();
+                    $(this).hide();
                 });
             },
 
@@ -535,6 +554,7 @@
                 $.each(storedTimeRows, function (index) {
                     liveEntry.timeRowsTable.addTimeRowToTable(this);
                 });
+                liveEntry.timeRowsTable.$dataTable.draw();
             },
 
             addTimeRowFromForm: function () {
@@ -563,12 +583,13 @@
              * @param object timeRow Pass in the object of the timeRow to add
              */
             addTimeRowToTable: function (timeRow) {
-                liveEntry.timeRowsTable.$dataTable.search('').draw();
+                liveEntry.timeRowsTable.$dataTable.search('');
+                $('#js-filter-clear').hide();
                 var icons = {
-                    'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists"></span>',
-                    'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" title="Time Appears Good"></span>',
-                    'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" title="Time Appears Questionable"></span>',
-                    'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" title="Time Appears Bad"></span>'
+                    'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
+                    'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
+                    'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
+                    'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
                 var timeInIcon = icons[timeRow.timeInStatus] || '';
                 timeInIcon += timeRow.timeInExists ? icons['exists'] : '';
@@ -579,21 +600,25 @@
                 // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
-					<tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
-						<td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
-						<td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
+                    <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
+                        <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
+                        <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
-						<td class="pacer-in js-pacer-in">' + (timeRow.pacerIn ? 'Yes' : 'No') + '</td>\
-						<td class="pacer-out js-pacer-out">' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
-						<td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
-						<td class="row-edit-btns">\
-							<button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
-							<button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
-							<button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
-						</td>\
-					</tr>';
-                liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw();
+                        <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
+                        <td class="dropped-here js-dropped-here">' + (timeRow.dropped ? 'Yes' : 'No') + '</td>\
+                        <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
+                        <td class="row-edit-btns">\
+                            <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
+                            <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
+                            <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
+                        </td>\
+                    </tr>';
+                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml));
+                // Find page that the row was added to
+                var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
+                var pageIndex = Math.floor(node.index() / pageInfo.length);
+                liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
             },
 
             removeTimeRows: function(timeRows) {
@@ -606,7 +631,7 @@
 
                     // remove table row
                     $row.fadeOut('fast', function () {
-                        liveEntry.timeRowsTable.$dataTable.row($row).remove().draw();
+                        liveEntry.timeRowsTable.$dataTable.row($row).remove().draw('full-hold');
                     });
                 });
             },
@@ -635,6 +660,41 @@
             },
 
             /**
+             * Toggles the current state of the discard all button
+             * @param  boolean forceClose The button is forced to close without discarding.
+             */
+            toggleDiscardAll: (function() {
+                var $deleteWarning = null;
+                $(document).ready( function() {
+                    $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                });
+                return function ( forceClose ) {
+                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
+                    var $deleteButton = $('#js-delete-all-efforts');
+                    $deleteButton.prop('disabled', true);
+                    $deleteButton.off('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                    $deleteWarning.insertAfter($deleteButton).animate({
+                        width: 'toggle',
+                        paddingLeft: 'toggle',
+                        paddingRight: 'toggle'
+                    }, {
+                        duration: 350,
+                        done: function() {
+                            $deleteButton.prop('disabled', false);
+                            if ($deleteButton.hasClass('confirm')) {
+                                liveEntry.timeRowsTable.removeTimeRows( nodes );
+                                $deleteButton.removeClass('confirm');
+                                $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                            } else {
+                                $deleteButton.addClass('confirm');
+                                $deleteButton.focus().one('blur', liveEntry.timeRowsTable.toggleDiscardAll );
+                            }
+                        }
+                    });
+                }
+            })(),
+
+            /**
              * Move a "cached" table row to "top form" section for editing.
              *
              */
@@ -659,29 +719,10 @@
                     liveEntry.timeRowsTable.submitTimeRows( $(this) );
                 });
 
-                var $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
-                    var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    $(this).prop('disabled', true);
-                    $deleteWarning.insertAfter(this).animate({
-                        width: 'toggle',
-                        paddingLeft: 'toggle',
-                        paddingRight: 'toggle'
-                    }, {
-                        duration: 350,
-                        done: function() {
-                            var $deleteButton = $('#js-delete-all-efforts');
-                            $deleteButton.prop('disabled', false)
-                             if ($deleteButton.hasClass('confirm')) {
-                                liveEntry.timeRowsTable.removeTimeRows( nodes );
-                                $deleteButton.removeClass('confirm');
-                                $deleteWarning = $('#js-delete-all-warning').hide().detach();
-                            } else {
-                                $deleteButton.addClass('confirm')
-                            }
-                        }
-                    });
+                    liveEntry.timeRowsTable.toggleDiscardAll();
                     return false;
                 });
 

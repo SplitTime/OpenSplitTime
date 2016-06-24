@@ -243,6 +243,8 @@
                         var bibNumber = $(this).val();
                         if (bibNumber == '') {
                             liveEntry.liveEntryForm.clearSplitsData();
+                        } else {
+                            liveEntry.liveEntryForm.fetchEffortData();
                         }
 
                         if (!event.shiftKey) {
@@ -250,7 +252,6 @@
                         } else {
                             $('#split-select').focus();
                         }
-                        liveEntry.liveEntryForm.fetchEffortData();
                         return false;
                     }
                 });
@@ -477,6 +478,7 @@
              */
             validateTimeFields: function (time) {
                 time = time.replace(/\D/g, '');
+                if (time.length == 0) return time;
                 if (time.length < 2) return false;
                 while (time.length < 6) {
                     time = time.concat('0');

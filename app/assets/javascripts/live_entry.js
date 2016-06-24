@@ -241,11 +241,7 @@
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
                         var bibNumber = $(this).val();
-                        if (bibNumber == '') {
-                            liveEntry.liveEntryForm.clearSplitsData();
-                        } else {
-                            liveEntry.liveEntryForm.fetchEffortData();
-                        }
+                        liveEntry.liveEntryForm.fetchEffortData();
 
                         if (!event.shiftKey) {
                             $('#js-time-in').focus().select();
@@ -259,46 +255,42 @@
                 $('#js-time-in').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
-
-                        var timeIn = $(this).val();
-                        timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
-                        if (timeIn === false ) {
-                            $(this).val( '');
-                        } else {
-                            $(this).val(timeIn);
-                            liveEntry.liveEntryForm.fetchEffortData();
-                        }
-
                         if (event.shiftKey) {
                             $('#js-bib-number').focus().select();
-                        } else if (timeIn !== false) {
+                        } else {
                             $('#js-time-out').focus().select();
                         }
-
                         return false;
+                    }
+                }).on('blur', function (event) {
+                    var timeIn = $(this).val();
+                    timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
+                    if (timeIn === false) {
+                        $(this).val('');
+                    } else {
+                        $(this).val(timeIn);
+                        liveEntry.liveEntryForm.fetchEffortData();
                     }
                 });
 
                 $('#js-time-out').on('keydown', function (event) {
                     if (event.keyCode == 13 || event.keyCode == 9) {
                         event.preventDefault();
-
-                        var timeIn = $(this).val();
-                        timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
-                        if (timeIn === false) {
-                            $(this).val('');
-                        } else {
-                            $(this).val(timeIn);
-                            liveEntry.liveEntryForm.fetchEffortData();
-                        }
-
                         if (event.shiftKey) {
                             $('#js-time-in').focus().select();
-                        } else if (timeIn !== false) {
+                        } else {
                             $('#js-pacer-in').focus();
                         }
-
                         return false;
+                    }
+                }).on('blur', function (event) {
+                    var timeIn = $(this).val();
+                    timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
+                    if (timeIn === false) {
+                        $(this).val('');
+                    } else {
+                        $(this).val(timeIn);
+                        liveEntry.liveEntryForm.fetchEffortData();
                     }
                 });
 
@@ -341,6 +333,25 @@
                             if (event.shiftKey) {
                                 $('#js-pacer-in').focus();
                             } else {
+                                $('#js-dropped-button').focus();
+                            }
+                            break;
+                    }
+                    return false;
+                });
+
+                $('#js-dropped-button').on('click keydown', function (event) {
+                    event.preventDefault();
+                    var $this = $(this);
+                    switch (event.keyCode) {
+                        default: // Clicked
+                        case 32: // Space pressed
+                            $('#js-dropped').prop('checked', !$('#js-dropped').prop('checked')).change();
+                            break;
+                        case 9: // Tab pressed
+                            if (event.shiftKey) {
+                                $('#js-pacer-out').focus();
+                            } else {
                                 $('#js-add-to-cache').focus();
                             }
                             break;
@@ -357,7 +368,7 @@
                 var bibNumber = $('#js-bib-number').val();
                 if (bibNumber === '') {
                     // Erase Effort Information
-                    liveEntry.liveEntryForm.clearSplitsData();
+                    liveEntry.liveEntryForm.clearSplitsData(false)
                     return;
                 }
 
@@ -413,6 +424,12 @@
              */
             getTimeRow: function () {
                 if ($('#js-bib-number').val() == '') {
+                    // Notify user that bib number is empty.
+                    var $formgroup = $('#js-bib-number').closest('.form-group')
+                    $formgroup.addClass('has-error');
+                    setTimeout( function() {
+                        $formgroup.removeClass('has-error');
+                    }, 1000);
                     return null; // No Data To Save
                 }
 
@@ -452,23 +469,27 @@
 
             /**
              * Clears out the splits slider data fields
-             *
+             * @param  {Boolean} splitOnly Determines if all splits data
              */
-            clearSplitsData: function () {
+            clearSplitsData: function (clearForm = true) {
                 $('#js-effort-name').html('&nbsp;');
                 $('#js-effort-last-reported').html('&nbsp;')
                 $('#js-prior-valid-reported').html('&nbsp;')
                 $('#js-time-prior-valid-reported').html('&nbsp;');
                 $('#js-effort-split-from').html('&nbsp;');
                 $('#js-time-spent').html('&nbsp;');
-                $('#js-time-in').val('').removeClass( 'exists null bad good questionable' );
-                $('#js-time-out').val('').removeClass( 'exists null bad good questionable' );
-                $('#js-live-bib').val('');
-                $('#js-bib-number').val('');
-                $('#js-pacer-in').prop('checked', false);
-                $('#js-pacer-out').prop('checked', false);
-                $('#js-dropped').prop('checked', false).change();
-                liveEntry.lastEffortRequest = {};
+                $('#js-time-in').removeClass('exists null bad good questionable');
+                $('#js-time-out').removeClass('exists null bad good questionable');
+                if (clearForm) {
+                    $('#js-time-in').val('');
+                    $('#js-time-out').val('');
+                    $('#js-live-bib').val('');
+                    $('#js-bib-number').val('');
+                    $('#js-pacer-in').prop('checked', false);
+                    $('#js-pacer-out').prop('checked', false);
+                    $('#js-dropped').prop('checked', false).change();
+                    liveEntry.lastEffortRequest = {};
+                }
             },
 
             /**

@@ -37,3 +37,5 @@ en:
       military: "%H:%M"
       day_and_military: "%a %H:%M"
       ampm: "%l:%M%p"
+      full_with_weekday_and_time: "%A, %B %-d, %Y %l:%M%p"
+      full_with_time: "%B %-d, %Y %l:%M%p"

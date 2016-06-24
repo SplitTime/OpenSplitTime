@@ -4,7 +4,7 @@
   <thead>
   <tr>
     <th>Name</th>
-    <th>Date</th>
+    <th>Date and Time</th>
     <th>Details</th>
   </tr>
   </thead>
@@ -12,7 +12,7 @@
   <% events.each do |event| %>
       <tr>
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
-        <td><%= event.start_time.to_date.to_formatted_s(:long) %></td>
+        <td><%= l(event.start_time, format: :full_with_time) %></td>
         <td><%= "#{pluralize(event.effort_count, 'effort')}" %>
         </td>
       </tr>

@@ -42,6 +42,10 @@ class AidStationDetail
     race ? race.name : nil
   end
 
+  def split_id
+    aid_station.split_id
+  end
+
   private
 
   attr_reader :efforts_started, :split_times, :ordered_split_ids
@@ -96,10 +100,6 @@ class AidStationDetail
       status = 'open'
     end
     self.aid_station.update(status: status)
-  end
-
-  def split_id
-    aid_station.split_id
   end
 
   def start_split_id

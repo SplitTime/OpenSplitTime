@@ -20,7 +20,7 @@
       <tr>
         <th>Name</th>
         <th class="text-right"><%= pdu('singular').titleize %></th>
-        <th class="text-center">Recorded</th>
+        <th class="text-center">Recorded<br/>In / Out</th>
         <th class="text-center">Missed</th>
         <th class="text-center">Dropped Here</th>
         <th class="text-center">Expected</th>
@@ -33,7 +33,7 @@
           <tr>
             <td><%= link_to row.split_name, aid_station_detail_live_event_path(@event, aid_station: row.aid_station) %></td>
             <td class="text-right"><%= d(row.split.distance_from_start) %></td>
-            <td class="text-center"><%= row.efforts_recorded_out.count %></td>
+            <td class="text-center"><%= [row.efforts_recorded_in.count, row.efforts_recorded_out.count].join(' / ') %></td>
             <td class="text-center"><%= row.efforts_missed.count %></td>
             <td class="text-center"><%= row.efforts_dropped_here.count %></td>
             <td class="text-center"><%= row.efforts_expected.count %></td>

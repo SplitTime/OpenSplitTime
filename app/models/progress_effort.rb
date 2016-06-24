@@ -2,7 +2,7 @@ class ProgressEffort
   include PersonalInfo
 
   attr_reader :over_under_due
-  delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :start_time, to: :effort
+  delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :country_code, :state_code, :start_time, to: :effort
 
   # This object requires an effort object that includes
   # a last_reported_split_time and a next_expected_split_time

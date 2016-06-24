@@ -1,6 +1,7 @@
 class ProgressEvent
 
-  attr_reader :event, :progress_efforts
+  attr_accessor :efforts_started, :efforts_finished, :efforts_dropped, :efforts_in_progress
+  attr_reader :event, :ordered_split_ids, :split_times, :progress_efforts
   delegate :course, :race, :simple?, to: :event
 
   # initialize(event)
@@ -10,12 +11,19 @@ class ProgressEvent
   def initialize(event)
     @event = event
     @ordered_splits = event.ordered_splits.to_a
+    @ordered_split_ids = ordered_splits.map(&:id)
     @split_name_hash = Hash[@ordered_splits.map { |split| [split.id, split.base_name] }]
     @bitkey_hashes = @ordered_splits.map(&:sub_split_bitkey_hashes).flatten
     @event_segment_calcs = EventSegmentCalcs.new(event)
     @efforts = event.efforts.sorted_with_finish_status
-    set_effort_time_attributes
+    @split_times = SplitTime.joins(:effort)
+                       .select(:sub_split_bitkey, :split_id, :time_from_start)
+                       .where(efforts: {event_id: event.id})
+                       .ordered.to_a
+    @split_times_by_effort = split_times.group_by(&:effort_id)
     @progress_efforts = []
+    set_effort_categories
+    set_effort_time_attributes
     create_progress_efforts
   end
 
@@ -35,24 +43,34 @@ class ProgressEvent
     efforts_in_progress.count
   end
 
+  def expected_day_and_time(effort, bitkey_hash)
+    effort.start_time + expected_time_from_start(effort, bitkey_hash)
+  end
+
   private
 
-  attr_accessor :efforts, :ordered_splits, :event_split_times, :split_name_hash, :bitkey_hashes, :event_segment_calcs
+  attr_reader :ordered_splits, :split_name_hash, :bitkey_hashes, :event_segment_calcs, :efforts, :split_times_by_effort
+
+  def set_effort_categories
+    self.efforts_started = efforts.select { |effort| split_times_by_effort[effort.id].count > 0 }
+    self.efforts_finished = efforts.select { |effort| effort.final_split_id == ordered_split_ids.last }
+    self.efforts_dropped = efforts.select { |effort| effort.dropped_split_id.present? }
+    self.efforts_in_progress = efforts_started - efforts_finished - efforts_dropped
+  end
 
   def set_effort_time_attributes
-    self.event_split_times = SplitTime.joins(:effort)
-                                 .select(:sub_split_bitkey, :split_id, :time_from_start)
-                                 .where(efforts: {event_id: event.id})
-                                 .ordered
-                                 .group_by(&:effort_id)
     efforts_in_progress.each do |effort|
-      effort.last_reported_split_time_attr = event_split_times[effort.id].last
+      effort.last_reported_split_time_attr = split_times_by_effort[effort.id].last
       effort.start_time_attr = event_start_time + effort.start_offset
       bitkey_hash = due_next_bitkey_hash(effort)
-      effort.next_expected_split_time = SplitTime.new(effort_id: effort.id,
-                                                      split_id: bitkey_hash.keys.first,
-                                                      sub_split_bitkey: bitkey_hash.values.first,
-                                                      time_from_start: expected_time_from_start(effort, bitkey_hash))
+      if bitkey_hash.nil?
+        raise "Due next bitkey hash was not found for effort in progress #{effort.id}."
+      else
+        effort.next_expected_split_time = SplitTime.new(effort_id: effort.id,
+                                                        split_id: bitkey_hash.keys.first,
+                                                        sub_split_bitkey: bitkey_hash.values.first,
+                                                        time_from_start: expected_time_from_start(effort, bitkey_hash))
+      end
     end
   end
 
@@ -65,7 +83,7 @@ class ProgressEvent
 
   def expected_time_from_start(effort, bitkey_hash)
     indexed_splits = ordered_splits.index_by(&:id)
-    split_times = event_split_times[effort.id]
+    split_times = split_times_by_effort[effort.id]
     start_split_time = split_times.first
     return 0 if bitkey_hash == start_split_time.bitkey_hash
     subject_split_time = split_times.find { |split_time| split_time.bitkey_hash == bitkey_hash }
@@ -95,26 +113,6 @@ class ProgressEvent
   def due_next_bitkey_hash(effort)
     last_reported_bitkey_hash = effort.last_reported_split_time.bitkey_hash
     bitkey_hashes[bitkey_hashes.index(last_reported_bitkey_hash) + 1]
-  end
-
-  def ordered_split_ids
-    ordered_splits.map(&:id)
-  end
-
-  def efforts_started
-    efforts.select { |effort| event_split_times[effort.id].count > 0 }
-  end
-
-  def efforts_finished
-    efforts.select { |effort| effort.final_split_id == ordered_split_ids.last }
-  end
-
-  def efforts_dropped
-    efforts.select { |effort| effort.dropped_split_id.present? }
-  end
-
-  def efforts_in_progress
-    efforts_started.select { |effort| effort.dropped_split_id.nil? && (effort.final_split_id != ordered_split_ids.last) }
   end
 
   def event_start_time

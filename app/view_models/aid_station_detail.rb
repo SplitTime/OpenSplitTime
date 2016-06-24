@@ -1,22 +1,16 @@
 class AidStationDetail
 
   attr_reader :aid_station
-  attr_accessor :efforts_dropped_here, :efforts_recorded_out,
+  attr_accessor :efforts_dropped_here, :efforts_recorded_in, :efforts_recorded_out,
                 :efforts_in_aid, :efforts_missed, :efforts_expected
   delegate :course, :race, to: :event
   delegate :event, :split, :open_time, :close_time, :captain_name, :comms_chief_name,
            :comms_frequencies, :current_issues, to: :aid_station
+  delegate :expected_day_and_time, to: :progress_event
 
-  # initialize(event, params = {})
-  # event is an ordinary event object
-  # params is passed from the controller and may include
-  # params[:search_param] (from user search input)
-  # and params[:page] (for will_paginate)
-
-  def initialize(aid_station, efforts_started = nil, split_times = nil, ordered_split_ids = nil)
+  def initialize(aid_station, progress_event = nil, split_times = nil)
     @aid_station = aid_station
-    @ordered_split_ids = ordered_split_ids || set_ordered_split_ids
-    @efforts_started = efforts_started || set_efforts_started
+    @progress_event = progress_event || ProgressEvent.new(event)
     @split_times = split_times || set_split_times
     set_efforts
     set_open_status if aid_station.status.nil?
@@ -42,45 +36,42 @@ class AidStationDetail
     race ? race.name : nil
   end
 
+  def bitkey_hash_in
+    {split_id => SubSplit::IN_BITKEY}
+  end
+
+  def expected_progress_efforts
+    efforts_expected_ids = efforts_expected.map(&:id)
+    progress_efforts.select { |progress_effort| efforts_expected_ids.include?(progress_effort.id) }
+  end
+
   private
 
-  attr_reader :efforts_started, :split_times, :ordered_split_ids
-
-  def set_ordered_split_ids
-    event.ordered_split_ids
-  end
-
-  def set_efforts_started
-    event_efforts = event.efforts.sorted_with_finish_status
-    event_split_times = SplitTime.select(:id, :sub_split_bitkey, :split_id, :time_from_start, :data_status)
-                            .where(effort_id: event_efforts.map(&:id))
-                            .ordered
-                            .group_by(&:split_id)
-    started_effort_ids = event_split_times[start_split_id].map(&:effort_id)
-    event_efforts.select { |effort| started_effort_ids.include?(effort.id) }
-  end
+  attr_reader :progress_event, :split_times
+  delegate :ordered_split_ids, :efforts_started, :efforts_dropped, :efforts_finished,
+           :efforts_in_progress, :progress_efforts, to: :progress_event
 
   def set_split_times
-    event.split_times.where(split_id: aid_station.split_id).group_by(&:effort_id)
+    progress_event.split_times.group_by(&:split_id)[aid_station.split_id].group_by(&:effort_id)
   end
 
   def set_efforts
-    split_index = ordered_split_ids.index(split_id)
     efforts_dropped_here = efforts_dropped.select { |effort| effort.dropped_split_id == split_id }
-    efforts_recorded_out = efforts_started
-                               .select { |effort| split_times[effort.id] ? split_times[effort.id]
-                                                                               .map(&:sub_split_bitkey)
-                                                                               .include?(SubSplit::OUT_BITKEY) : false }
     efforts_recorded_in = efforts_started
                               .select { |effort| split_times[effort.id] ? split_times[effort.id]
                                                                               .map(&:sub_split_bitkey)
                                                                               .include?(SubSplit::IN_BITKEY) : false }
+    efforts_recorded_out = efforts_started
+                               .select { |effort| split_times[effort.id] ? split_times[effort.id]
+                                                                               .map(&:sub_split_bitkey)
+                                                                               .include?(SubSplit::OUT_BITKEY) : false }
     efforts_in_aid = efforts_recorded_in - efforts_recorded_out
     efforts_not_recorded = efforts_started - efforts_recorded_in - efforts_recorded_out
     efforts_missed = efforts_not_recorded
-                                        .select { |effort| ordered_split_ids.index(effort.final_split_id) > split_index }
+                         .select { |effort| ordered_split_ids.index(effort.final_split_id) > ordered_split_ids.index(split_id) }
     efforts_expected = efforts_not_recorded - efforts_missed - efforts_dropped
     self.efforts_dropped_here = efforts_dropped_here
+    self.efforts_recorded_in = efforts_recorded_in
     self.efforts_recorded_out = efforts_recorded_out
     self.efforts_in_aid = efforts_in_aid
     self.efforts_missed = efforts_missed
@@ -104,10 +95,6 @@ class AidStationDetail
 
   def start_split_id
     ordered_split_ids.first
-  end
-
-  def efforts_dropped
-    efforts_started.select { |effort| effort.dropped_split_id.present? }
   end
 
   def efforts_expected_count

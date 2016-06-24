@@ -19,25 +19,29 @@
   <div class="col-xs-8">
     <% if @aid_station_detail.efforts_recorded_out %>
         <hr>
-        <%= "Of #{@aid_station_detail.efforts_started_count} efforts started:" %><br/>
+        <%= "Of #{pluralize(@aid_station_detail.efforts_started_count, 'effort')} started:" %><br/>
         <% if @aid_station_detail.efforts_in_aid.count > 0 %>
-            <%= "#{@aid_station_detail.efforts_in_aid.count} have reported into but not out of this station" %>
+            <%= "#{@aid_station_detail.efforts_in_aid.count} in aid (reported into but not out of this station)" %>
             <br/>
         <% end %>
         <% if @aid_station_detail.efforts_dropped_here.count > 0 %>
-            <%= "#{@aid_station_detail.efforts_dropped_here.count} have dropped at this station" if @aid_station_detail.efforts_dropped_here.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_dropped_here.count} dropped at this station" if @aid_station_detail.efforts_dropped_here.count > 0 %>
+            <br/>
+        <% end %>
+        <% if @aid_station_detail.efforts_recorded_in.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_recorded_in.count} reported times into this station" if @aid_station_detail.efforts_recorded_out.count > 0 %>
             <br/>
         <% end %>
         <% if @aid_station_detail.efforts_recorded_out.count > 0 %>
-            <%= "#{@aid_station_detail.efforts_recorded_out.count} have reported times through this station" if @aid_station_detail.efforts_recorded_out.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_recorded_out.count} reported times out of this station" if @aid_station_detail.efforts_recorded_out.count > 0 %>
             <br/>
         <% end %>
         <% if @aid_station_detail.efforts_missed.count > 0 %>
-            <%= "#{@aid_station_detail.efforts_missed.count} were not recorded here but were recorded at a later station" if @aid_station_detail.efforts_missed.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_missed.count} missed (not recorded here but recorded at a later station)" if @aid_station_detail.efforts_missed.count > 0 %>
             <br/>
         <% end %>
         <% if @aid_station_detail.efforts_expected.count > 0 %>
-            <%= "#{@aid_station_detail.efforts_expected.count} have not come through" if @aid_station_detail.efforts_expected.count > 0 %>
+            <%= "#{@aid_station_detail.efforts_expected.count} not yet through" if @aid_station_detail.efforts_expected.count > 0 %>
         <% end %>
     <% end %>
   </div>
@@ -51,10 +55,15 @@
                                                    aid_station: @aid_station_detail.aid_station,
                                                    efforts: 'expected'),
                 class: "btn btn-sm btn-primary" %>
-    <%= link_to 'Recorded through',
+    <%= link_to 'Recorded in',
                 aid_station_detail_live_event_path(@aid_station_detail.event,
                                                    aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'recorded'),
+                                                   efforts: 'recorded_in'),
+                class: "btn btn-sm btn-primary" %>
+    <%= link_to 'Recorded out',
+                aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                   aid_station: @aid_station_detail.aid_station,
+                                                   efforts: 'recorded_out'),
                 class: "btn btn-sm btn-primary" %>
     <%= link_to 'In aid',
                 aid_station_detail_live_event_path(@aid_station_detail.event,

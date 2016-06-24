@@ -1,24 +1,28 @@
 <div class="row">
-  <div class="col-xs-8">
+  <div class="col-xs-10">
     <h4><%= "Efforts expected at #{@aid_station_detail.split_name} as of #{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}" %></h4>
     <table class="table table-condensed table-striped">
       <thead>
       <tr>
-        <th>#</th>
+        <th>Bib</th>
         <th>Name</th>
         <th>Category</th>
         <th>From</th>
-        <th class="text-right">Expected Time</th>
+        <th class="text-center">Last Reported</th>
+        <th class="text-center">Due Next</th>
+        <th class="text-center">Expected Here</th>
       </tr>
       </thead>
       <tbody>
-      <% @aid_station_detail.efforts_expected.each do |effort| %>
+      <% @aid_station_detail.expected_progress_efforts.each do |effort| %>
           <tr>
             <td><%= effort.bib_number %></td>
-            <td><strong><%= link_to effort.full_name, effort_path(effort.id) %></strong></td>
-            <td><%= effort.bio_historic %></td>
-            <td><%= effort.state_and_country %></td>
-            <td class="text-right"><%= l(effort.expected_day_and_time({@aid_station_detail.split_id => SubSplit::IN_BITKEY}), format: :day_and_military) %></td>
+            <td class="text-nowrap"><strong><%= link_to effort.full_name, effort_path(effort.id) %></strong></td>
+            <td class="text-nowrap"><%= effort.bio_historic %></td>
+            <td class="text-nowrap"><%= effort.state_and_country %></td>
+            <td class="text-center text-nowrap"><%= "#{effort.last_reported_split_name}, #{l(effort.last_reported_when, format: :day_and_military)}" %></td>
+            <td class="text-center text-nowrap"><%= "#{effort.due_next_split_name}, #{l(effort.due_next_when, format: :day_and_military)}" %></td>
+            <td class="text-center text-nowrap"><%= l(@aid_station_detail.expected_day_and_time(effort, @aid_station_detail.bitkey_hash_in), format: :day_and_military) %></td>
           </tr>
       <% end %>
       </tbody>

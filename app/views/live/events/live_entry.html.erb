@@ -76,7 +76,17 @@
           </label>
         </div>
       </div>
-      <div class="col-xs-8 col-xs-offset-2 col-sm-offset-4">
+      <div class="form-group clearfix">
+        <label class="col-xs-4"></label>
+        <div class="col-xs-8">
+          <label id="js-dropped-button" class="btn btn-default col-xs-12">
+            <input id="js-dropped" type="checkbox" name="dropped" value="true">
+            <span class="glyphicon glyphicon-unchecked"></span>
+            &nbsp;Dropped Here
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-8 col-xs-offset-2 col-sm-offset-4 form-buttons">
         <input id="js-effort-id" type="hidden" name="effort-id" value="">
         <input id="js-live-bib" type="hidden" name="live-bib" value="">
         <button id="js-add-to-cache" type="submit" class="btn btn-primary">Add</button>
@@ -122,8 +132,8 @@
           <th>Bib&num;</th>
           <th>Time In</th>
           <th>Time Out</th>
-          <th>Pacer In?</th>
-          <th>Pacer Out?</th>
+          <th>Pacer In/Out?</th>
+          <th>Dropped</th>
           <th>Name</th>
           <th data-orderable="false">&nbsp;</th>
         </tr>
@@ -147,16 +157,16 @@
   <div class="col-xs-12 table-submit-wrapper">
     <div class="btn-group" role="group">
       <button id="js-file-split" class="btn btn-primary" disabled></button>
-      <button class="btn btn-primary fileinput-button" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Imported data will be associated with the currently selected Aid Station and will be staged for review.">
+      <button class="btn btn-primary fileinput-button">
         <span>Import File</span>
         <input id="js-file-upload" type="file" name="file"/>
       </button>
     </div>
     <div class="btn-group" role="group">
-      <button id="js-delete-all-efforts" class="btn btn-danger">Delete All</button>
+      <button id="js-delete-all-efforts" class="btn btn-danger">Discard All</button>
       <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
     </div>
-    <button id="js-submit-all-efforts" class="btn btn-success" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Data that is considered bad or questionable must be saved individually.">Submit All</button>
+    <button id="js-submit-all-efforts" class="btn btn-success">Submit All</button>
   </div>
 
   <div id="debug">

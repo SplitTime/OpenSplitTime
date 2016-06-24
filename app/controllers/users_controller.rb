@@ -35,8 +35,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    authorize user
-    user.destroy
+    authorize @user
+    @user.destroy
     redirect_to users_path, :notice => "User deleted."
   end
 

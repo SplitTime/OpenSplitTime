@@ -36,6 +36,10 @@ class AidStationDetail
     race ? race.name : nil
   end
 
+  def split_id
+    aid_station.split_id
+  end
+
   def bitkey_hash_in
     {split_id => SubSplit::IN_BITKEY}
   end
@@ -87,10 +91,6 @@ class AidStationDetail
       status = 'open'
     end
     self.aid_station.update(status: status)
-  end
-
-  def split_id
-    aid_station.split_id
   end
 
   def start_split_id

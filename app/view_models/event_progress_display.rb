@@ -1,8 +1,8 @@
 class EventProgressDisplay
 
-  attr_reader :event, :progress_event, :past_due_threshold
-  delegate :progress_efforts, :efforts_started_count, :efforts_finished_count, :efforts_dropped_count,
-           :efforts_in_progress_count, to: :progress_event
+  attr_reader :event, :live_event, :past_due_threshold
+  delegate :live_efforts, :efforts_started_count, :efforts_finished_count, :efforts_dropped_count,
+           :efforts_in_progress_count, to: :live_event
   delegate :name, :course, :race, :simple?, to: :event
 
   # initialize(event)
@@ -11,7 +11,7 @@ class EventProgressDisplay
 
   def initialize(event, past_due_threshold = nil)
     @event = event
-    @progress_event = ProgressEvent.new(event)
+    @live_event = LiveEvent.new(event)
     @past_due_threshold = past_due_threshold.present? ? past_due_threshold.to_i : 60
   end
 
@@ -32,7 +32,7 @@ class EventProgressDisplay
   end
 
   def past_due_progress_rows
-    progress_efforts.select { |pe| pe.over_under_due > past_due_threshold.minutes }.sort_by(&:over_under_due).reverse
+    live_efforts.select { |pe| pe.over_under_due > past_due_threshold.minutes }.sort_by(&:over_under_due).reverse
   end
 
 end

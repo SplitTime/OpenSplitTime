@@ -83,6 +83,7 @@ class Live::EventsController < Live::BaseController
   def aid_station_detail
     authorize @event
     aid_station = @event.aid_stations.find(params[:aid_station])
+    params[:efforts] ||= 'expected'
     @aid_station_detail = AidStationDetail.new(aid_station)
   end
 

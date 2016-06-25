@@ -31,7 +31,7 @@
       <tbody>
       <% @aid_stations_display.aid_station_rows.each do |row| %>
           <tr>
-            <td><%= link_to row.split_name, aid_station_detail_live_event_path(@event, aid_station: row.aid_station) %></td>
+            <td class="text-nowrap"><%= link_to row.split_name, aid_station_detail_live_event_path(@event, aid_station: row.aid_station) %></td>
             <td class="text-right"><%= d(row.split.distance_from_start) %></td>
             <td class="text-center"><%= [row.efforts_recorded_in.count, row.efforts_recorded_out.count].join(' / ') %></td>
             <td class="text-center"><%= row.efforts_missed.count %></td>

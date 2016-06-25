@@ -1,7 +1,7 @@
-class ProgressEvent
+class LiveEvent
 
-  attr_accessor :efforts_started, :efforts_finished, :efforts_dropped, :efforts_in_progress
-  attr_reader :event, :ordered_split_ids, :split_times, :progress_efforts
+  attr_accessor :efforts_started, :efforts_finished, :efforts_dropped, :efforts_in_progress, :efforts_unfinished
+  attr_reader :event, :ordered_split_ids, :split_times, :live_efforts
   delegate :course, :race, :simple?, to: :event
 
   # initialize(event)
@@ -21,10 +21,10 @@ class ProgressEvent
                        .where(efforts: {event_id: event.id})
                        .ordered.to_a
     @split_times_by_effort = split_times.group_by(&:effort_id)
-    @progress_efforts = []
+    @live_efforts = []
     set_effort_categories
     set_effort_time_attributes
-    create_progress_efforts
+    create_live_efforts
   end
 
   def efforts_started_count
@@ -49,7 +49,12 @@ class ProgressEvent
 
   def prior_valid_display_data(effort, bitkey_hash)
     split_time = prior_valid_split_time(effort, bitkey_hash)
-    {split_name: split_time.split_name, day_and_time: effort.start_time + split_time.time_from_start}
+    split_time ? {split_name: split_time.split_name, day_and_time: effort.start_time + split_time.time_from_start} : {}
+  end
+
+  def next_valid_display_data(effort, bitkey_hash)
+    split_time = next_valid_split_time(effort, bitkey_hash)
+    split_time ? {split_name: split_time.split_name, day_and_time: effort.start_time + split_time.time_from_start} : {}
   end
 
   private
@@ -61,10 +66,11 @@ class ProgressEvent
     self.efforts_finished = efforts.select { |effort| effort.final_split_id == ordered_split_ids.last }
     self.efforts_dropped = efforts.select { |effort| effort.dropped_split_id.present? }
     self.efforts_in_progress = efforts_started - efforts_finished - efforts_dropped
+    self.efforts_unfinished = efforts_started - efforts_finished
   end
 
   def set_effort_time_attributes
-    efforts_in_progress.each do |effort|
+    efforts_unfinished.each do |effort|
       effort.last_reported_split_time_attr = split_times_by_effort[effort.id].last
       effort.start_time_attr = event_start_time + effort.start_offset
       bitkey_hash = due_next_bitkey_hash(effort)
@@ -79,10 +85,10 @@ class ProgressEvent
     end
   end
 
-  def create_progress_efforts
-    efforts_in_progress.each do |effort|
-      progress_effort = ProgressEffort.new(effort, split_name_hash, bitkey_hashes)
-      progress_efforts << progress_effort
+  def create_live_efforts
+    efforts_unfinished.each do |effort|
+      live_effort = LiveEffort.new(effort, split_name_hash, bitkey_hashes)
+      live_efforts << live_effort
     end
   end
 
@@ -129,6 +135,17 @@ class ProgressEvent
         !split_time.questionable? &&
         relevant_bitkey_hashes.include?(split_time.bitkey_hash) }
         .last
+  end
+
+  def next_valid_split_time(effort, bitkey_hash)
+    subject_index = bitkey_hashes.index(bitkey_hash)
+    return nil if subject_index == bitkey_hashes.size
+    relevant_bitkey_hashes = bitkey_hashes[subject_index + 1..-1]
+    split_times_by_effort[effort.id]
+        .select { |split_time| !split_time.bad? &&
+        !split_time.questionable? &&
+        relevant_bitkey_hashes.include?(split_time.bitkey_hash) }
+        .first
   end
 
   def event_start_time

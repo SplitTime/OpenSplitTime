@@ -6,11 +6,11 @@ class AidStationDetail
   delegate :course, :race, to: :event
   delegate :event, :split, :open_time, :close_time, :captain_name, :comms_chief_name,
            :comms_frequencies, :current_issues, to: :aid_station
-  delegate :expected_day_and_time, to: :progress_event
+  delegate :expected_day_and_time, :prior_valid_display_data, :next_valid_display_data, to: :live_event
 
-  def initialize(aid_station, progress_event = nil, split_times = nil)
+  def initialize(aid_station, live_event = nil, split_times = nil)
     @aid_station = aid_station
-    @progress_event = progress_event || ProgressEvent.new(event)
+    @live_event = live_event || LiveEvent.new(event)
     @split_times = split_times || set_split_times
     set_efforts
     set_open_status if aid_station.status.nil?
@@ -48,34 +48,54 @@ class AidStationDetail
     {split_id => SubSplit::OUT_BITKEY}
   end
 
-  def recorded_out_tfs(progress_effort)
-    split_time_out = split_times[progress_effort.id].index_by(&:bitkey_hash)[bitkey_hash_out]
-    split_time_out ? split_time_out.time_from_start : nil
+  def recorded_in_day_and_time(live_effort)
+    split_time_in = split_times[live_effort.id].index_by(&:bitkey_hash)[bitkey_hash_in]
+    split_time_in ? live_effort.start_time + split_time_in.time_from_start : nil
   end
 
-  def expected_progress_efforts
+  def recorded_out_day_and_time(live_effort)
+    split_time_out = split_times[live_effort.id].index_by(&:bitkey_hash)[bitkey_hash_out]
+    split_time_out ? live_effort.start_time + split_time_out.time_from_start : nil
+  end
+
+  def expected_live_efforts
     expected_ids = efforts_expected.map(&:id)
-    progress_efforts.select { |progress_effort| expected_ids.include?(progress_effort.id) }
+    live_efforts.select { |live_effort| expected_ids.include?(live_effort.id) }
   end
 
-  def recorded_in_progress_efforts
+  def recorded_in_live_efforts
     recorded_in_ids = efforts_recorded_in.map(&:id)
-    progress_efforts.select { |progress_effort| recorded_in_ids.include?(progress_effort.id) }
+    live_efforts.select { |live_effort| recorded_in_ids.include?(live_effort.id) }
   end
 
-  def recorded_out_progress_efforts
+  def recorded_out_live_efforts
     recorded_out_ids = efforts_recorded_out.map(&:id)
-    progress_efforts.select { |progress_effort| recorded_out_ids.include?(progress_effort.id) }
+    live_efforts.select { |live_effort| recorded_out_ids.include?(live_effort.id) }
+  end
+
+  def in_aid_live_efforts
+    in_aid_ids = efforts_in_aid.map(&:id)
+    live_efforts.select { |live_effort| in_aid_ids.include?(live_effort.id) }
+  end
+
+  def missed_live_efforts
+    missed_ids = efforts_missed.map(&:id)
+    live_efforts.select { |live_effort| missed_ids.include?(live_effort.id) }
+  end
+
+  def dropped_here_live_efforts
+    dropped_ids = efforts_dropped_here.map(&:id)
+    live_efforts.select { |live_effort| dropped_ids.include?(live_effort.id) }
   end
 
   private
 
-  attr_reader :progress_event, :split_times
+  attr_reader :live_event, :split_times
   delegate :ordered_split_ids, :efforts_started, :efforts_dropped, :efforts_finished,
-           :efforts_in_progress, :progress_efforts, to: :progress_event
+           :efforts_in_progress, :live_efforts, to: :live_event
 
   def set_split_times
-    progress_event.split_times.group_by(&:split_id)[aid_station.split_id].group_by(&:effort_id)
+    live_event.split_times.group_by(&:split_id)[aid_station.split_id].group_by(&:effort_id)
   end
 
   def set_efforts
@@ -93,11 +113,11 @@ class AidStationDetail
     efforts_missed = efforts_not_recorded
                          .select { |effort| ordered_split_ids.index(effort.final_split_id) > ordered_split_ids.index(split_id) }
     efforts_expected = efforts_not_recorded - efforts_missed - efforts_dropped
-    self.efforts_dropped_here = efforts_dropped_here
     self.efforts_recorded_in = efforts_recorded_in
     self.efforts_recorded_out = efforts_recorded_out
     self.efforts_in_aid = efforts_in_aid
     self.efforts_missed = efforts_missed
+    self.efforts_dropped_here = efforts_dropped_here
     self.efforts_expected = efforts_expected
   end
 

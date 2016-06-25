@@ -1,31 +1,36 @@
 <div class="row">
   <div class="col-xs-10">
-    <h4><%= "Efforts expected at #{@aid_station_detail.split_name} as of #{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}" %></h4>
-    <table class="table table-condensed table-striped">
-      <thead>
-      <tr>
-        <th>Bib</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>From</th>
-        <th class="text-center">Last Reported</th>
-        <th class="text-center">Due Next</th>
-        <th class="text-center">Expected Here</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @aid_station_detail.expected_progress_efforts.each do |progress_effort| %>
+    <% if @aid_station_detail.expected_live_efforts.count == 0 %>
+        <h4><%= "No efforts expected at #{@aid_station_detail.split_name} as of #{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}" %></h4>
+    <% else %>
+        <h4><%= "Efforts expected at #{@aid_station_detail.split_name} as of #{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}" %></h4>
+        <table class="table table-condensed table-striped">
+          <thead>
           <tr>
-            <td><%= progress_effort.bib_number %></td>
-            <td class="text-nowrap"><strong><%= link_to progress_effort.full_name, effort_path(progress_effort.id) %></strong></td>
-            <td class="text-nowrap"><%= progress_effort.bio_historic %></td>
-            <td class="text-nowrap"><%= progress_effort.state_and_country %></td>
-            <td class="text-center text-nowrap"><%= "#{progress_effort.last_reported_split_name}, #{l(progress_effort.last_reported_when, format: :day_and_military)}" %></td>
-            <td class="text-center text-nowrap"><%= "#{progress_effort.due_next_split_name}, #{l(progress_effort.due_next_when, format: :day_and_military)}" %></td>
-            <td class="text-center text-nowrap"><%= l(@aid_station_detail.expected_day_and_time(progress_effort, @aid_station_detail.bitkey_hash_in), format: :day_and_military) %></td>
+            <th>Bib</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>From</th>
+            <th class="text-center">Last Reported</th>
+            <th class="text-center">Due Next</th>
+            <th class="text-center">Expected Here</th>
           </tr>
-      <% end %>
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+          <% @aid_station_detail.expected_live_efforts.each do |live_effort| %>
+              <tr>
+                <td><%= live_effort.bib_number %></td>
+                <td class="text-nowrap">
+                  <strong><%= link_to live_effort.full_name, effort_path(live_effort.id) %></strong></td>
+                <td class="text-nowrap"><%= live_effort.bio_historic %></td>
+                <td class="text-nowrap"><%= live_effort.state_and_country %></td>
+                <td class="text-center text-nowrap"><%= "#{live_effort.last_reported_split_name}, #{l(live_effort.last_reported_when, format: :day_and_military)}" %></td>
+                <td class="text-center text-nowrap"><%= "#{live_effort.due_next_split_name}, #{l(live_effort.due_next_when, format: :day_and_military)}" %></td>
+                <td class="text-center text-nowrap"><%= l(@aid_station_detail.expected_day_and_time(live_effort, @aid_station_detail.bitkey_hash_in), format: :day_and_military) %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% end %>
   </div>
 </div>

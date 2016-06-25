@@ -14,15 +14,15 @@
       </tr>
       </thead>
       <tbody>
-      <% @aid_station_detail.expected_progress_efforts.each do |effort| %>
+      <% @aid_station_detail.expected_progress_efforts.each do |progress_effort| %>
           <tr>
-            <td><%= effort.bib_number %></td>
-            <td class="text-nowrap"><strong><%= link_to effort.full_name, effort_path(effort.id) %></strong></td>
-            <td class="text-nowrap"><%= effort.bio_historic %></td>
-            <td class="text-nowrap"><%= effort.state_and_country %></td>
-            <td class="text-center text-nowrap"><%= "#{effort.last_reported_split_name}, #{l(effort.last_reported_when, format: :day_and_military)}" %></td>
-            <td class="text-center text-nowrap"><%= "#{effort.due_next_split_name}, #{l(effort.due_next_when, format: :day_and_military)}" %></td>
-            <td class="text-center text-nowrap"><%= l(@aid_station_detail.expected_day_and_time(effort, @aid_station_detail.bitkey_hash_in), format: :day_and_military) %></td>
+            <td><%= progress_effort.bib_number %></td>
+            <td class="text-nowrap"><strong><%= link_to progress_effort.full_name, effort_path(progress_effort.id) %></strong></td>
+            <td class="text-nowrap"><%= progress_effort.bio_historic %></td>
+            <td class="text-nowrap"><%= progress_effort.state_and_country %></td>
+            <td class="text-center text-nowrap"><%= "#{progress_effort.last_reported_split_name}, #{l(progress_effort.last_reported_when, format: :day_and_military)}" %></td>
+            <td class="text-center text-nowrap"><%= "#{progress_effort.due_next_split_name}, #{l(progress_effort.due_next_when, format: :day_and_military)}" %></td>
+            <td class="text-center text-nowrap"><%= l(@aid_station_detail.expected_day_and_time(progress_effort, @aid_station_detail.bitkey_hash_in), format: :day_and_military) %></td>
           </tr>
       <% end %>
       </tbody>

@@ -44,9 +44,28 @@ class AidStationDetail
     {split_id => SubSplit::IN_BITKEY}
   end
 
+  def bitkey_hash_out
+    {split_id => SubSplit::OUT_BITKEY}
+  end
+
+  def recorded_out_tfs(progress_effort)
+    split_time_out = split_times[progress_effort.id].index_by(&:bitkey_hash)[bitkey_hash_out]
+    split_time_out ? split_time_out.time_from_start : nil
+  end
+
   def expected_progress_efforts
-    efforts_expected_ids = efforts_expected.map(&:id)
-    progress_efforts.select { |progress_effort| efforts_expected_ids.include?(progress_effort.id) }
+    expected_ids = efforts_expected.map(&:id)
+    progress_efforts.select { |progress_effort| expected_ids.include?(progress_effort.id) }
+  end
+
+  def recorded_in_progress_efforts
+    recorded_in_ids = efforts_recorded_in.map(&:id)
+    progress_efforts.select { |progress_effort| recorded_in_ids.include?(progress_effort.id) }
+  end
+
+  def recorded_out_progress_efforts
+    recorded_out_ids = efforts_recorded_out.map(&:id)
+    progress_efforts.select { |progress_effort| recorded_out_ids.include?(progress_effort.id) }
   end
 
   private

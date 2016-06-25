@@ -47,6 +47,11 @@ class ProgressEvent
     effort.start_time + expected_time_from_start(effort, bitkey_hash)
   end
 
+  def prior_valid_display_data(effort, bitkey_hash)
+    split_time = prior_valid_split_time(effort, bitkey_hash)
+    {split_name: split_time.split_name, day_and_time: effort.start_time + split_time.time_from_start}
+  end
+
   private
 
   attr_reader :ordered_splits, :split_name_hash, :bitkey_hashes, :event_segment_calcs, :efforts, :split_times_by_effort
@@ -113,6 +118,17 @@ class ProgressEvent
   def due_next_bitkey_hash(effort)
     last_reported_bitkey_hash = effort.last_reported_split_time.bitkey_hash
     bitkey_hashes[bitkey_hashes.index(last_reported_bitkey_hash) + 1]
+  end
+
+  def prior_valid_split_time(effort, bitkey_hash)
+    subject_index = bitkey_hashes.index(bitkey_hash)
+    return nil if subject_index == 0
+    relevant_bitkey_hashes = bitkey_hashes[0..subject_index - 1]
+    split_times_by_effort[effort.id]
+        .select { |split_time| !split_time.bad? &&
+        !split_time.questionable? &&
+        relevant_bitkey_hashes.include?(split_time.bitkey_hash) }
+        .last
   end
 
   def event_start_time

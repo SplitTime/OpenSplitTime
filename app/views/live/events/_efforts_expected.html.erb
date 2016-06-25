@@ -10,7 +10,6 @@
             <th>Bib</th>
             <th>Name</th>
             <th>Category</th>
-            <th>From</th>
             <th class="text-center">Last Reported</th>
             <th class="text-center">Due Next</th>
             <th class="text-center">Expected Here</th>
@@ -23,7 +22,6 @@
                 <td class="text-nowrap">
                   <strong><%= link_to live_effort.full_name, effort_path(live_effort.id) %></strong></td>
                 <td class="text-nowrap"><%= live_effort.bio_historic %></td>
-                <td class="text-nowrap"><%= live_effort.state_and_country %></td>
                 <td class="text-center text-nowrap"><%= "#{live_effort.last_reported_split_name}, #{l(live_effort.last_reported_when, format: :day_and_military)}" %></td>
                 <td class="text-center text-nowrap"><%= "#{live_effort.due_next_split_name}, #{l(live_effort.due_next_when, format: :day_and_military)}" %></td>
                 <td class="text-center text-nowrap"><%= l(@aid_station_detail.expected_day_and_time(live_effort, @aid_station_detail.bitkey_hash_in), format: :day_and_military) %></td>

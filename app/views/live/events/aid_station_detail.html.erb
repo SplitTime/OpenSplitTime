@@ -43,15 +43,10 @@
 <div class="row">
   <div class="col-xs-12">
     <%= link_to '<< Back to aid station report', aid_station_report_live_event_path(@aid_station_detail.event), class: "btn btn-sm btn-default" %>
-    <%= link_to 'Recorded in',
+    <%= link_to 'Recorded here',
                 aid_station_detail_live_event_path(@aid_station_detail.event,
                                                    aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'recorded_in'),
-                class: "btn btn-sm btn-primary" %>
-    <%= link_to 'Recorded out',
-                aid_station_detail_live_event_path(@aid_station_detail.event,
-                                                   aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'recorded_out'),
+                                                   efforts: 'recorded'),
                 class: "btn btn-sm btn-primary" %>
     <%= link_to 'In aid',
                 aid_station_detail_live_event_path(@aid_station_detail.event,
@@ -80,10 +75,8 @@
   <% case params[:efforts] %>
   <% when 'expected' %>
       <%= render 'efforts_expected' %>
-  <% when 'recorded_in' %>
-      <%= render 'efforts_recorded_in' %>
-  <% when 'recorded_out' %>
-      <%= render 'efforts_recorded_out' %>
+  <% when 'recorded' %>
+      <%= render 'efforts_recorded' %>
   <% when 'in_aid' %>
       <%= render 'efforts_in_aid' %>
   <% when 'dropped' %>

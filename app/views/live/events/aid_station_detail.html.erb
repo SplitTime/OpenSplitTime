@@ -1,16 +1,26 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Aid station detail - #{@aid_station_detail.split_name} - #{@aid_station_detail.event_name}" %>
 <% end %>
-<div class="row">
-  <div class="col-xs-6">
-    <h2><%= "#{@aid_station_detail.split_name} - #{@aid_station_detail.event_name}" %></h2>
-    <h3>Live Aid Station Detailed Report</h3>
+<div class="row header">
+  <div class="col-xs-8">
+    <h2><%= "#{@aid_station_detail.split_name}: #{@aid_station_detail.event_name}" %></h2>
+    <h4><%= "Aid station detailed report as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
+  </div>
+  <div class="col-xs-4 page-navigation">
+    <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Progress report', progress_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <%= link_to 'Aid station report', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-4">
-    <strong><%= "Aid station open time: #{l @aid_station_detail.open_time, format: :day_and_military}" if @aid_station_detail.open_time %></strong><br/>
-    <strong><%= "Aid station close time: #{l @aid_station_detail.close_time, format: :day_and_military}" if @aid_station_detail.close_time %></strong><br/>
+    <% if @aid_station_detail.open_time %>
+        <strong><%= "Aid station open time: #{l @aid_station_detail.open_time, format: :day_and_military}" %></strong><br/>
+    <% end %>
+    <% if @aid_station_detail.close_time %>
+        <strong><%= "Aid station close time: #{l @aid_station_detail.close_time, format: :day_and_military}" %></strong><br/>
+    <% end %>
+    <strong><%= "Aid station status: #{@aid_station_detail.status.titleize}" if @aid_station_detail.status %></strong><br/>
     <strong><%= "Aid Captain: #{@aid_station_detail.captain_name}" %></strong><br/>
     <strong><%= "Communications Chief: #{@aid_station_detail.comms_chief_name}" %></strong><br/>
     <strong><%= "Radio Frequencies: #{@aid_station_detail.comms_frequencies}" %></strong><br/>
@@ -18,12 +28,12 @@
   </div>
   <div class="col-xs-8">
     <% if @aid_station_detail.efforts_recorded_out %>
-        <hr>
         <strong><%= "Of #{pluralize(@aid_station_detail.efforts_started_count, 'effort')} started:" %></strong><br/>
         <%= "#{@aid_station_detail.efforts_recorded_in.count} reported times into this station" %><br/>
         <%= "#{@aid_station_detail.efforts_recorded_out.count} reported times out of this station" %><br/>
         <%= "#{@aid_station_detail.efforts_in_aid.count} in aid (reported into but not out of this station)" %><br/>
-        <%= "#{@aid_station_detail.efforts_missed.count} missed (not recorded here but recorded at a later station)" %><br/>
+        <%= "#{@aid_station_detail.efforts_missed.count} missed (not recorded here but recorded at a later station)" %>
+        <br/>
         <%= "#{@aid_station_detail.efforts_dropped_here.count} dropped at this station" %><br/>
         <%= "#{@aid_station_detail.efforts_expected.count} expected (in progress but not yet here)" %>
     <% end %>

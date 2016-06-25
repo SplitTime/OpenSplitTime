@@ -12,7 +12,7 @@ class LiveEffort
     @effort = effort
     @split_name_hash = split_name_hash
     @bitkey_hashes = bitkey_hashes
-    @over_under_due = (Time.now - start_time) - next_expected_split_time.time_from_start
+    @over_under_due = (Time.now - start_time) - next_expected_split_time.time_from_start if next_expected_split_time
   end
 
   def due_next_split_name

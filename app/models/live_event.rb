@@ -70,13 +70,11 @@ class LiveEvent
   end
 
   def set_effort_time_attributes
-    efforts_unfinished.each do |effort|
+    efforts.each do |effort|
       effort.last_reported_split_time_attr = split_times_by_effort[effort.id].last
       effort.start_time_attr = event_start_time + effort.start_offset
       bitkey_hash = due_next_bitkey_hash(effort)
-      if bitkey_hash.nil?
-        raise "Due next bitkey hash was not found for effort in progress #{effort.id}."
-      else
+      unless bitkey_hash.nil?
         effort.next_expected_split_time = SplitTime.new(effort_id: effort.id,
                                                         split_id: bitkey_hash.keys.first,
                                                         sub_split_bitkey: bitkey_hash.values.first,
@@ -86,7 +84,7 @@ class LiveEvent
   end
 
   def create_live_efforts
-    efforts_unfinished.each do |effort|
+    efforts.each do |effort|
       live_effort = LiveEffort.new(effort, split_name_hash, bitkey_hashes)
       live_efforts << live_effort
     end

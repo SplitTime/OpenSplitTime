@@ -2,7 +2,7 @@ class EventProgressDisplay
 
   attr_reader :event, :live_event, :past_due_threshold
   delegate :live_efforts, :efforts_started_count, :efforts_finished_count, :efforts_dropped_count,
-           :efforts_in_progress_count, to: :live_event
+           :efforts_in_progress_count, :efforts_in_progress, to: :live_event
   delegate :name, :course, :race, :simple?, to: :event
 
   # initialize(event)
@@ -32,7 +32,11 @@ class EventProgressDisplay
   end
 
   def past_due_progress_rows
-    live_efforts.select { |pe| pe.over_under_due > past_due_threshold.minutes }.sort_by(&:over_under_due).reverse
+    live_efforts_in_progress.select { |le| le.over_under_due > past_due_threshold.minutes }.sort_by(&:over_under_due).reverse
+  end
+
+  def live_efforts_in_progress
+    live_efforts.select { |live_effort| efforts_in_progress.map(&:id).include?(live_effort.id)}
   end
 
 end

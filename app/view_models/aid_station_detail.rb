@@ -4,7 +4,7 @@ class AidStationDetail
   attr_accessor :efforts_dropped_here, :efforts_recorded_in, :efforts_recorded_out,
                 :efforts_in_aid, :efforts_missed, :efforts_expected
   delegate :course, :race, to: :event
-  delegate :event, :split, :open_time, :close_time, :captain_name, :comms_chief_name,
+  delegate :event, :split, :open_time, :close_time, :status, :captain_name, :comms_chief_name,
            :comms_frequencies, :current_issues, to: :aid_station
   delegate :expected_day_and_time, :prior_valid_display_data, :next_valid_display_data, to: :live_event
 
@@ -13,7 +13,7 @@ class AidStationDetail
     @live_event = live_event || LiveEvent.new(event)
     @split_times = split_times || set_split_times
     set_efforts
-    set_open_status if aid_station.status.nil?
+    set_status if aid_station.status.nil?
   end
 
   def efforts_started_count
@@ -121,7 +121,7 @@ class AidStationDetail
     self.efforts_expected = efforts_expected
   end
 
-  def set_open_status
+  def set_status
     if efforts_started_count == 0
       status = 'pre_open'
     elsif efforts_expected_count == 0

@@ -18,6 +18,7 @@ class LiveEffortData
     set_split_related_attributes if @split
     set_effort_related_attributes if @effort
     verify_time_existence if (@effort && @split)
+    set_dropped_attributes if @effort
     verify_time_status if (@effort && @split)
   end
 
@@ -87,14 +88,6 @@ class LiveEffortData
     self.time_from_start_out = day_and_time_out ? day_and_time_out - effort.start_time : nil
     self.time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out - time_from_start_in : nil
     self.response_row[:effortName] = effort_name
-    self.dropped = effort.dropped?
-    if dropped
-      self.dropped_split = ordered_splits.find { |split| split.id == effort.dropped_split_id }
-      bitkey_hash_in = dropped_split ? {dropped_split.id => SubSplit::IN_BITKEY} : nil
-      bitkey_hash_out = dropped_split ? {dropped_split.id => SubSplit::OUT_BITKEY} : nil
-      dropped_split_time = split_times_hash[bitkey_hash_out] || split_times_hash[bitkey_hash_in]
-      self.dropped_day_and_time = dropped_split_time ? effort.start_time + dropped_split_time.time_from_start : nil
-    end
   end
 
   def verify_time_existence
@@ -112,6 +105,17 @@ class LiveEffortData
     self.time_in_exists = self.response_row[:timeInExists] = split_times_hash[bitkey_hash_in].present?
     self.time_out_exists = self.response_row[:timeOutExists] = split_times_hash[bitkey_hash_out].present?
 
+  end
+
+  def set_dropped_attributes
+    self.dropped = effort.dropped?
+    if dropped
+      self.dropped_split = ordered_splits.find { |split| split.id == effort.dropped_split_id }
+      bitkey_hash_in = dropped_split ? {dropped_split.id => SubSplit::IN_BITKEY} : nil
+      bitkey_hash_out = dropped_split ? {dropped_split.id => SubSplit::OUT_BITKEY} : nil
+      dropped_split_time = split_times_hash[bitkey_hash_out] || split_times_hash[bitkey_hash_in]
+      self.dropped_day_and_time = dropped_split_time ? effort.start_time + dropped_split_time.time_from_start : nil
+    end
   end
 
   def verify_time_status

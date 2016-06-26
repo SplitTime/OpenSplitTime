@@ -471,7 +471,8 @@
              * Clears out the splits slider data fields
              * @param  {Boolean} clearForm Determines if the form is cleared as well.
              */
-            clearSplitsData: function (clearForm = true) {
+            clearSplitsData: function (clearForm) {
+                clearForm = (typeof clearForm == 'undefined') || clearForm;
                 $('#js-effort-name').html('&nbsp;');
                 $('#js-effort-last-reported').html('&nbsp;')
                 $('#js-prior-valid-reported').html('&nbsp;')
@@ -606,7 +607,8 @@
              * @param object timeRow Pass in the object of the timeRow to add
              * @param boolean highlight If true, the new row will flash when it is added.
              */
-            addTimeRowToTable: function (timeRow, highlight = true) {
+            addTimeRowToTable: function (timeRow, highlight) {
+                highlight = (typeof highlight == 'undefined') || highlight;
                 liveEntry.timeRowsTable.$dataTable.search('');
                 $('#js-filter-clear').hide();
                 var icons = {

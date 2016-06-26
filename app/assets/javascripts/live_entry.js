@@ -405,6 +405,12 @@
              * @return {[type]} [description]
              */
             getTimeRow: function () {
+                if ($('#js-bib-number').val() == '' &&
+                    $('#js-time-in').val() == '' &&
+                    $('#js-time-out').val() == '') {
+                    return null;
+                }
+
                 // Build up the timeRow
                 var thisTimeRow = {};
                 thisTimeRow.liveBib = $('#js-live-bib').val();
@@ -652,6 +658,7 @@
                 });
                 $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
+                    liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
                     for (var i = 0; i < response.returnedRows.length; i++) {
                         var timeRow = response.returnedRows[i];
                         timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();

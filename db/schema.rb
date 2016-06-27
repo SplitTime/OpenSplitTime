@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160613181424) do
+ActiveRecord::Schema.define(version: 20160627074901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,15 +43,15 @@ ActiveRecord::Schema.define(version: 20160613181424) do
   end
 
   create_table "efforts", force: :cascade do |t|
-    t.integer  "event_id",                                null: false
+    t.integer  "event_id",                                    null: false
     t.integer  "participant_id"
     t.string   "wave"
     t.integer  "bib_number"
     t.string   "city",             limit: 64
     t.string   "state_code",       limit: 64
     t.integer  "age"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "first_name"
@@ -62,20 +62,22 @@ ActiveRecord::Schema.define(version: 20160613181424) do
     t.integer  "data_status"
     t.integer  "start_offset",                default: 0
     t.integer  "dropped_split_id"
+    t.boolean  "demo",                        default: false
   end
 
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id", using: :btree
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.integer  "course_id",             null: false
+    t.integer  "course_id",                             null: false
     t.integer  "race_id"
-    t.string   "name",       limit: 64, null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.string   "name",       limit: 64,                 null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "start_time"
+    t.boolean  "demo",                  default: false
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
@@ -105,43 +107,34 @@ ActiveRecord::Schema.define(version: 20160613181424) do
     t.integer  "updated_by"
   end
 
-  create_table "ownerships", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "race_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "ownerships", ["race_id"], name: "index_ownerships_on_race_id", using: :btree
-  add_index "ownerships", ["user_id", "race_id"], name: "index_ownerships_on_user_id_and_race_id", unique: true, using: :btree
-  add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id", using: :btree
-
   create_table "participants", force: :cascade do |t|
-    t.string   "first_name",   limit: 32, null: false
-    t.string   "last_name",    limit: 64, null: false
-    t.integer  "gender",                  null: false
+    t.string   "first_name",   limit: 32,                 null: false
+    t.string   "last_name",    limit: 64,                 null: false
+    t.integer  "gender",                                  null: false
     t.date     "birthdate"
     t.string   "city"
     t.string   "state_code"
     t.string   "email"
     t.string   "phone"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "country_code", limit: 2
     t.integer  "user_id"
+    t.boolean  "demo",                    default: false
   end
 
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "races", force: :cascade do |t|
-    t.string   "name",        limit: 64, null: false
+    t.string   "name",        limit: 64,                 null: false
     t.text     "description"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.boolean  "demo",                   default: false
   end
 
   create_table "split_times", force: :cascade do |t|
@@ -179,6 +172,18 @@ ActiveRecord::Schema.define(version: 20160613181424) do
 
   add_index "splits", ["course_id"], name: "index_splits_on_course_id", using: :btree
   add_index "splits", ["location_id"], name: "index_splits_on_location_id", using: :btree
+
+  create_table "stewardships", force: :cascade do |t|
+    t.integer  "user_id",                null: false
+    t.integer  "race_id",                null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "level",      default: 0
+  end
+
+  add_index "stewardships", ["race_id"], name: "index_stewardships_on_race_id", using: :btree
+  add_index "stewardships", ["user_id", "race_id"], name: "index_stewardships_on_user_id_and_race_id", unique: true, using: :btree
+  add_index "stewardships", ["user_id"], name: "index_stewardships_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             limit: 32,              null: false
@@ -218,11 +223,11 @@ ActiveRecord::Schema.define(version: 20160613181424) do
   add_foreign_key "events", "races"
   add_foreign_key "interests", "participants"
   add_foreign_key "interests", "users"
-  add_foreign_key "ownerships", "races"
-  add_foreign_key "ownerships", "users"
   add_foreign_key "participants", "users"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
   add_foreign_key "splits", "courses"
   add_foreign_key "splits", "locations"
+  add_foreign_key "stewardships", "races"
+  add_foreign_key "stewardships", "users"
 end

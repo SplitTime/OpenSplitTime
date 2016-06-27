@@ -4,7 +4,8 @@ class RacesController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @races = Race.paginate(page: params[:page], per_page: 25).order(:name)
+    @races = Race.where(demo: false)
+                 .paginate(page: params[:page], per_page: 25).order(:name)
     session[:return_to] = races_path
   end
 
@@ -48,16 +49,21 @@ class RacesController < ApplicationController
 
   def destroy
     authorize @race
-    @race.destroy
-
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || races_path
+    if @race.events.present?
+      flash[:danger] = 'Race cannot be deleted if events are associated with it. Delete the related events individually and then delete the race.'
+      redirect_to race_path(@race)
+    else
+      @race.destroy
+      flash[:success] = 'Race deleted.'
+      session[:return_to] = params[:referrer_path] if params[:referrer_path]
+      redirect_to session.delete(:return_to) || races_path
+    end
   end
 
   private
 
   def race_params
-    params.require(:race).permit(:name, :description)
+    params.require(:race).permit(:name, :description, :demo)
   end
 
   def query_params

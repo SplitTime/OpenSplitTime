@@ -5,6 +5,7 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.search(params[:search_param])
+                  .where(demo: false)
                   .select("events.*, COUNT(efforts.id) as effort_count")
                   .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
                   .group("events.id")
@@ -170,7 +171,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:course_id, :race_id, :name, :start_time)
+    params.require(:event).permit(:course_id, :race_id, :name, :start_time, :demo)
   end
 
   def query_params

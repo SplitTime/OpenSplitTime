@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
 
   has_many :interests, dependent: :destroy
   has_many :participants, through: :interests
-  has_many :ownerships, dependent: :destroy
-  has_many :races, through: :ownerships
+  has_many :stewardships, dependent: :destroy
+  has_many :races, through: :stewardships
   has_one :avatar, class_name: 'Participant'
 
   validates_presence_of :first_name, :last_name
@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   after_initialize :set_default_role, if: :new_record?
 
   def set_default_role
-      self.role ||= :user
+    self.role ||= :user
   end
 
   def self.current
@@ -34,13 +34,13 @@ class User < ActiveRecord::Base
       user.provider = auth['provider']
       user.uid = auth['uid']
       if auth['info']
-         user.last_name = auth['info']['name'] || ""    # TODO: figure out how to use oath with first_name/last_name model
+        user.last_name = auth['info']['name'] || "" # TODO: figure out how to use oath with first_name/last_name model
       end
     end
   end
 
   def authorized_to_edit?(resource)
-    self.admin? | ( self.id == resource.created_by )
+    self.admin? | (self.id == resource.created_by)
   end
 
   def authorized_to_claim?(participant)
@@ -49,14 +49,18 @@ class User < ActiveRecord::Base
     true # TODO future fuzzy match algorithm; also provide for admin contact and override
   end
 
+  def authorized_for_live?(resource)
+    self.admin? | (self.id == resource.created_by) | resource.race.stewards.include?(self)
+  end
+
   def full_name
     first_name + " " + last_name
   end
-  
+
   def has_no_avatar?
     avatar.nil?
   end
-  
+
   def has_avatar?
     !has_no_avatar?
   end

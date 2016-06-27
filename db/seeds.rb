@@ -70,8 +70,8 @@ Interest.create(user_id: 4, participant_id: 2, kind: 1)
 Interest.create(user_id: 4, participant_id: 3, kind: 0)
 Interest.create(user_id: 4, participant_id: 4, kind: 2)
 
-Ownership.create(user_id: 3, race_id: 2)
-Ownership.create(user_id: 4, race_id: 3)
+Stewardship.create(user_id: 3, race_id: 2)
+Stewardship.create(user_id: 4, race_id: 3)
 
 event = Event.find_by(course_id: 1)
 splits = Split.where(course_id: 1)

@@ -53,6 +53,16 @@
                                   {class: "dropdown-select-field"} %>
           </div>
         </div>
+        <% if current_user && current_user.admin? %>
+            <div class="form-group">
+              <div class="control-label col-sm-2">
+                <%= f.label :demo, "Demo (unsearchable)?" %>
+              </div>
+              <div class="col-sm-8">
+                <%= f.check_box :demo %>
+              </div>
+            </div>
+        <% end %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>

@@ -622,15 +622,14 @@
                             <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
                         </td>\
                     </tr>';
-                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml));
+                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
                 if (highlight) {
                     // Find page that the row was added to
                     var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
-                    var pageIndex = Math.floor(node.index() / pageInfo.length);
+                    var index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
+                    var pageIndex = Math.floor(index / pageInfo.length);
                     liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
                     $(node.node()).effect('highlight', 2000);
-                } else {
-                    liveEntry.timeRowsTable.$dataTable.draw('full-hold');
                 }
             },
 

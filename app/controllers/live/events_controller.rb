@@ -24,8 +24,11 @@ class Live::EventsController < Live::BaseController
     # for all splits associated with the event.
 
     authorize @event
-    verify_available_live
-    render partial: 'event_data.json.ruby'
+    if @event.available_live
+      render partial: 'event_data.json.ruby'
+    else
+      render partial: 'live_entry_unavailable.json.ruby'
+    end
   end
 
   # This endpoint is called on any of the following conditions:
@@ -43,8 +46,11 @@ class Live::EventsController < Live::BaseController
     # timeInStatus ('good', 'questionable', 'bad'), timeOutStatus ('good', 'questionable', 'bad') }
 
     authorize @event
-    verify_available_live
-    render partial: 'live_effort_data.json.ruby'
+    if @event.available_live
+      render partial: 'live_effort_data.json.ruby'
+    else
+      render partial: 'live_entry_unavailable.json.ruby'
+    end
   end
 
   def post_file_effort_data
@@ -54,9 +60,12 @@ class Live::EventsController < Live::BaseController
     # return_rows containing all data necessary to populate the provisional data cache.
 
     authorize @event
-    verify_available_live
-    @file_transformer = LiveFileTransformer.new(@event, params[:file], params[:splitId])
-    render partial: 'file_effort_data_report.json.ruby'
+    if @event.available_live
+      @file_transformer = LiveFileTransformer.new(@event, params[:file], params[:splitId])
+      render partial: 'file_effort_data_report.json.ruby'
+    else
+      render partial: 'live_entry_unavailable.json.ruby'
+    end
   end
 
   def set_times_data
@@ -66,22 +75,27 @@ class Live::EventsController < Live::BaseController
     # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
     authorize @event
-    verify_available_live
-    @live_importer = LiveTimeRowImporter.new(@event, params[:timeRows])
-    render partial: 'set_times_data_report.json.ruby'
+    if @event.available_live
+      @live_importer = LiveTimeRowImporter.new(@event, params[:timeRows])
+      render partial: 'set_times_data_report.json.ruby'
+    else
+      render partial: 'live_entry_unavailable.json.ruby'
+    end
   end
 
   def aid_station_degrade
     authorize @event
     aid_station = @event.aid_stations.find(params[:aid_station])
-    aid_station.degrade_status
+    report = aid_station.degrade_status
+    flash[report[:status]] = report[:text]
     redirect_to aid_station_report_live_event_path(@event)
   end
 
   def aid_station_advance
     authorize @event
     aid_station = @event.aid_stations.find(params[:aid_station])
-    aid_station.advance_status
+    report = aid_station.advance_status
+    flash[report[:status]] = report[:text]
     redirect_to aid_station_report_live_event_path(@event)
   end
 

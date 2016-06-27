@@ -55,6 +55,7 @@ Mixins
 	display: table;
 	@extend .no-gutter;
 	border-bottom: 1px solid $gray;
+	width: 100%;
 
 	.live-entry {
 		margin: 0 auto 25px;

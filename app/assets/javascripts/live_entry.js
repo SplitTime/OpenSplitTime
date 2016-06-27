@@ -366,11 +366,6 @@
             fetchEffortData: function() {
 
                 var bibNumber = $('#js-bib-number').val();
-                if (bibNumber === '') {
-                    // Erase Effort Information
-                    liveEntry.liveEntryForm.clearSplitsData(false)
-                    return;
-                }
 
                 var data = {
                     splitId: liveEntry.currentSplitId,
@@ -384,25 +379,12 @@
                 }
 
                 $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
-                    if ( response.success == true ) {
-                        // If success == true, this means the bib number lookup found an effort
-                        // 
-                        $('#js-live-bib').val('true');
-                        $('#js-effort-name').html( response.name );
-                        $('#js-effort-last-reported').html( response.reportText );
-                        $('#js-prior-valid-reported').html( response.priorValidReportText );
-                        $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
-                        $('#js-time-spent').html( response.timeInAid );
-                    } else {
-                        // If success == false, this means the bib number lookup failed, but we still need to capture the data
-
-                        $('#js-live-bib').val('false');
-                        $('#js-effort-name').html('n/a');
-                        $('#js-effort-last-reported').html('n/a');
-                        $('#js-prior-valid-reported').html('n/a');
-                        $('#js-time-prior-valid-reported').html('n/a');
-                        $('#js-time-spent').html('n/a');
-                    }
+                    $('#js-live-bib').val('true');
+                    $('#js-effort-name').html( response.name ).attr('href', '/efforts/' + response.effortId );
+                    $('#js-effort-last-reported').html( response.reportText );
+                    $('#js-prior-valid-reported').html( response.priorValidReportText );
+                    $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
+                    $('#js-time-spent').html( response.timeInAid );
 
                     $('#js-time-in')
                         .removeClass('exists null bad good questionable')
@@ -423,14 +405,10 @@
              * @return {[type]} [description]
              */
             getTimeRow: function () {
-                if ($('#js-bib-number').val() == '') {
-                    // Notify user that bib number is empty.
-                    var $formgroup = $('#js-bib-number').closest('.form-group')
-                    $formgroup.addClass('has-error');
-                    setTimeout( function() {
-                        $formgroup.removeClass('has-error');
-                    }, 1000);
-                    return null; // No Data To Save
+                if ($('#js-bib-number').val() == '' &&
+                    $('#js-time-in').val() == '' &&
+                    $('#js-time-out').val() == '') {
+                    return null;
                 }
 
                 // Build up the timeRow
@@ -536,7 +514,11 @@
             init: function () {
 
                 // Initiate DataTable Plugin
-                liveEntry.timeRowsTable.$dataTable = $('#js-provisional-data-table').DataTable();
+                liveEntry.timeRowsTable.$dataTable = $('#js-provisional-data-table').DataTable({
+                    oLanguage: {
+                        'sSearch': 'Filter:&nbsp;'
+                    }
+                });
                 liveEntry.timeRowsTable.$dataTable.clear().draw();
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
@@ -632,7 +614,7 @@
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
-                        <td class="dropped-here js-dropped-here">' + (timeRow.dropped ? 'Yes' : 'No') + '</td>\
+                        <td class="dropped-here js-dropped-here">' + (timeRow.dropped ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
                         <td class="row-edit-btns">\
                             <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
@@ -640,15 +622,14 @@
                             <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
                         </td>\
                     </tr>';
-                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml));
+                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
                 if (highlight) {
                     // Find page that the row was added to
                     var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
-                    var pageIndex = Math.floor(node.index() / pageInfo.length);
+                    var index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
+                    var pageIndex = Math.floor(index / pageInfo.length);
                     liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
                     $(node.node()).effect('highlight', 2000);
-                } else {
-                    liveEntry.timeRowsTable.$dataTable.draw('full-hold');
                 }
             },
 
@@ -676,6 +657,7 @@
                 });
                 $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
+                    liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
                     for (var i = 0; i < response.returnedRows.length; i++) {
                         var timeRow = response.returnedRows[i];
                         timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
@@ -699,7 +681,7 @@
                 $(document).ready( function() {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
-                return function (canDelete = false) {
+                return function (canDelete) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     var $deleteButton = $('#js-delete-all-efforts');
                     $deleteButton.prop('disabled', true);

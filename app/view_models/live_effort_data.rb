@@ -43,7 +43,11 @@ class LiveEffortData
   end
 
   def effort_name
-    effort ? effort.full_name : nil
+    if effort
+      effort.full_name
+    else
+      response_row[:bibNumber].present? ? 'Bib number was not located' : 'n/a'
+    end
   end
 
   def clean?

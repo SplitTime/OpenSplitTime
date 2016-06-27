@@ -3,7 +3,7 @@ last_split = effort_data_object.last_split
 dropped_split = effort_data_object.dropped_split
 report_text = case
                   when effort_data_object.effort.nil?
-                      'Bib number was not located'
+                      'n/a'
                   when effort_data_object.finished
                       last_split ? "Finished as of #{l(effort_data_object.last_day_and_time, format: :day_and_military)}" : nil
                   else
@@ -17,20 +17,15 @@ if effort_data_object.dropped
 end
 
 prior_valid_report_text = (effort_data_object.effort && effort_data_object.prior_valid_split) ?
-        "#{effort_data_object.prior_valid_split.name(effort_data_object.prior_valid_bitkey)} • #{l(effort_data_object.prior_valid_day_and_time, format: :day_and_military)}" : nil
+        "#{effort_data_object.prior_valid_split.name(effort_data_object.prior_valid_bitkey)} • #{l(effort_data_object.prior_valid_day_and_time, format: :day_and_military)}" : 'n/a'
 
 {
-        success: effort_data_object.success?,
         effortId: effort_data_object.effort_id,
         name: effort_data_object.effort_name,
         reportText: report_text,
         priorValidReportText: prior_valid_report_text,
-        dropped: effort_data_object.dropped,
-        finished: effort_data_object.finished,
         timeFromPriorValid: time_format_hhmm(effort_data_object.time_from_prior_valid),
         timeInAid: "#{time_format_minutes(effort_data_object.time_in_aid)} minutes",
-        timeFromStartIn: effort_data_object.time_from_start_in,
-        timeFromStartOut: effort_data_object.time_from_start_out,
         timeInExists: effort_data_object.time_in_exists,
         timeOutExists: effort_data_object.time_out_exists,
         timeInStatus: effort_data_object.time_in_status,

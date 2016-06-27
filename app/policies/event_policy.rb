@@ -83,43 +83,43 @@ class EventPolicy
   end
 
   def live_entry?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def progress_report?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def aid_station_report?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def get_event_data?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def get_live_effort_data?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def post_file_effort_data?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def set_times_data?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def aid_station_degrade?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def aid_station_advance?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
   def aid_station_detail?
-    @current_user.admin?
+    @current_user.authorized_for_live?(@event)
   end
 
 end

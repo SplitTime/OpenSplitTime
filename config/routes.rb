@@ -47,8 +47,8 @@ Rails.application.routes.draw do
     member { post :create_participants }
     member { get :stage }
     member { get :spread }
-    member { get :live_enable }
-    member { get :live_disable }
+    member { put :live_enable }
+    member { put :live_disable }
   end
   resources :splits do
     member { get :assign_location }

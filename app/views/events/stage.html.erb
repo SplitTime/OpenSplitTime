@@ -24,10 +24,15 @@
                     class: "btn btn-sm btn-success" %>
         <% if @event.available_live %>
             <%= link_to 'Disable live',
-                        live_disable_event_path(@event), data: {confirm: "NOTE: This will disable all live entry actions for #{@event.name}, including any that may be in process. Are you sure you want to proceed?"},
+                        live_disable_event_path(@event),
+                        data: {confirm: "NOTE: This will disable all live entry actions for #{@event.name}, including any that may be in process. Are you sure you want to proceed?"},
+                        method: :put,
                         class: 'btn btn-sm btn-warning' %>
         <% else %>
-            <%= link_to 'Enable live', live_enable_event_path(@event), class: 'btn btn-sm btn-warning' %>
+            <%= link_to 'Enable live',
+                        live_enable_event_path(@event),
+                        method: :put,
+                        class: 'btn btn-sm btn-warning' %>
         <% end %>
         <%= link_to 'Delete this event', event_path(@event, referrer_path: events_path),
                     method: :delete,

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 #   t.integer  "user_id"
 #   t.integer  "race_id"
+#   t.integer  "level"
 
 RSpec.describe Stewardship, type: :model do
   it "should be valid when created with a user_id and a race_id" do

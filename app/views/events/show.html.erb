@@ -9,9 +9,9 @@
   <div class="col-xs-6">
     <h2><%= @event_display.name %></h2>
   </div>
-  <% if @current_user.authorized_for_live?(@event_display.event) %>
+  <% if @current_user && @current_user.authorized_for_live?(@event_display.event) && @event_display.event.available_live %>
       <div class="col-xs-6">
-        <%= link_to 'Go Live', live_entry_live_event_path(@event_display.event), method: :get, class: 'btn btn-margin-top btn-lg btn-warning' %>
+        <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_display.event), method: :get, class: 'btn btn-margin-top btn-lg btn-warning' %>
       </div>
   <% end %>
 </div>

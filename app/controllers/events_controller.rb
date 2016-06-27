@@ -168,6 +168,20 @@ class EventsController < ApplicationController
     redirect_to event_path(@event)
   end
 
+  # Enable/disable availability for live views
+
+  def live_enable
+    authorize @event
+    @event.update(available_live: true)
+    redirect_to stage_event_path(@event)
+  end
+
+  def live_disable
+    authorize @event
+    @event.update(available_live: false)
+    redirect_to stage_event_path(@event)
+  end
+
   private
 
   def event_params

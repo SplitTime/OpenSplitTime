@@ -82,6 +82,16 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def live_enable?
+    @current_user.authorized_to_edit?(@event)
+  end
+
+  def live_disable?
+    @current_user.authorized_to_edit?(@event)
+  end
+
+  # Policies for live namespace
+
   def live_entry?
     @current_user.authorized_for_live?(@event)
   end

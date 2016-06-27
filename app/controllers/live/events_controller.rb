@@ -4,6 +4,7 @@ class Live::EventsController < Live::BaseController
 
   def live_entry
     authorize @event
+    verify_available_live
   end
 
   def aid_station_report
@@ -23,6 +24,7 @@ class Live::EventsController < Live::BaseController
     # for all splits associated with the event.
 
     authorize @event
+    verify_available_live
     render partial: 'event_data.json.ruby'
   end
 
@@ -41,6 +43,7 @@ class Live::EventsController < Live::BaseController
     # timeInStatus ('good', 'questionable', 'bad'), timeOutStatus ('good', 'questionable', 'bad') }
 
     authorize @event
+    verify_available_live
     render partial: 'live_effort_data.json.ruby'
   end
 
@@ -51,6 +54,7 @@ class Live::EventsController < Live::BaseController
     # return_rows containing all data necessary to populate the provisional data cache.
 
     authorize @event
+    verify_available_live
     @file_transformer = LiveFileTransformer.new(@event, params[:file], params[:splitId])
     render partial: 'file_effort_data_report.json.ruby'
   end
@@ -62,6 +66,7 @@ class Live::EventsController < Live::BaseController
     # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
     authorize @event
+    verify_available_live
     @live_importer = LiveTimeRowImporter.new(@event, params[:timeRows])
     render partial: 'set_times_data_report.json.ruby'
   end
@@ -91,6 +96,13 @@ class Live::EventsController < Live::BaseController
 
   def set_event
     @event = Event.find(params[:id])
+  end
+
+  def verify_available_live
+    unless @event.available_live
+      flash[:danger] = "#{@event.name} is not available for live entry. Please enable live entry access through the event stage/admin page."
+      redirect_to event_path(@event)
+    end
   end
 
 end

@@ -20,6 +20,10 @@ class AidStationDetail
     efforts_started.count
   end
 
+  def efforts_expected_count
+    efforts_expected.count
+  end
+
   def split_name
     split.base_name
   end
@@ -134,10 +138,6 @@ class AidStationDetail
 
   def start_split_id
     ordered_split_ids.first
-  end
-
-  def efforts_expected_count
-    efforts_expected.count
   end
 
 end

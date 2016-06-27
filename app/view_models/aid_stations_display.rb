@@ -42,6 +42,22 @@ class AidStationsDisplay
     race ? race.name : nil
   end
 
+  def efforts_expected_count(aid_station)
+    aid_station_detail = aid_station_rows.find { |row| row.split == aid_station.split }
+    aid_station_detail.efforts_expected_count
+  end
+
+  def efforts_expected_count_next(aid_station)
+    next_aid_station = aid_stations[aid_stations.index(aid_station) + 1]
+    next_aid_station_detail = next_aid_station ? aid_station_rows.find { |row| row.split == next_aid_station.split } : nil
+    next_aid_station_detail ? next_aid_station_detail.efforts_expected_count : 0
+  end
+
+  def split_name_next(aid_station)
+    next_aid_station = aid_stations[aid_stations.index(aid_station) + 1]
+    next_aid_station ? next_aid_station.split_name : ''
+  end
+
   private
 
   attr_accessor :efforts_started

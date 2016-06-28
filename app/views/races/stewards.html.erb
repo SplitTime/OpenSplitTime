@@ -1,0 +1,29 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Add or remove stewards - #{@race.name}" %>
+<% end %>
+<div class="row">
+  <div class="col-xs-8">
+    <h2><%= "#{@race.name}: Add or remove stewards" %></h2>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-6">
+    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
+    <%= link_to 'Show race', race_path(@race), class: "btn btn-sm btn-default" %>
+  </div>
+</div>
+<hr>
+
+<%= render 'user_lookup' %>
+
+<% if @race.stewards.count > 0 %>
+    <div class="row">
+      <div class="col-xs-8">
+        <h4>Stewards already associated with this race:</h4>
+      </div>
+    </div>
+    <%= render 'stewards_list', events: @race_events %>
+    <% else %>
+    <h4>No stewards are associated with this race. Search to find a trusted user and add them.</h4>
+<% end %>

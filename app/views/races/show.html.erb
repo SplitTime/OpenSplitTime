@@ -19,6 +19,7 @@
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@race) %>
         <%= link_to 'Edit this race', edit_race_path(@race), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Add/remove stewards', stewards_race_path(@race), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this race',
                     race_path(@race, referrer_path: request.referrer ? URI(request.referrer).path : locations_path),
                     method: :delete,

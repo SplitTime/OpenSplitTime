@@ -60,6 +60,26 @@ class RacesController < ApplicationController
     end
   end
 
+  def stewards
+    authorize @race
+    @user = User.find_by_email(params[:search_param])
+    session[:return_to] = stewards_race_path
+  end
+
+  def add_steward
+    authorize @race
+    user = User.find(params[:user_id])
+    @race.add_stewardship(user)
+    redirect_to stewards_race_path
+  end
+
+  def remove_steward
+    authorize @race
+    user = User.find(params[:user_id])
+    @race.remove_stewardship(user)
+    redirect_to stewards_race_path
+  end
+
   private
 
   def race_params

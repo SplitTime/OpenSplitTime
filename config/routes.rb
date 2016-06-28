@@ -54,7 +54,11 @@ Rails.application.routes.draw do
     member { get :assign_location }
     member { post :create_location }
   end
-  resources :races
+  resources :races do
+    member { get :stewards }
+    member { put :add_steward }
+    member { put :remove_steward }
+  end
   resources :participants do
     collection { get :subregion_options }
     member { get :avatar_claim }

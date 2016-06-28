@@ -282,10 +282,10 @@
                 };
 
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
-                    return; // We already have the information for this data.
+                    return $.Deferred().resolve(); // We already have the information for this data.
                 }
 
-                $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
+                return $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.name ).attr('href', '/efforts/' + response.effortId );
                     if ( !response.effortId ) {
@@ -339,7 +339,6 @@
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
                 thisTimeRow.timeOutExists = liveEntry.currentEffortData.timeOutExists;
-
                 return thisTimeRow;
             },
 
@@ -473,22 +472,24 @@
 
             addTimeRowFromForm: function () {
                 // Retrieve form data
-                var thisTimeRow = liveEntry.liveEntryForm.getTimeRow();
-                if (thisTimeRow == null) {
-                    return;
-                }
-                thisTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+                liveEntry.liveEntryForm.fetchEffortData().always(function() {
+                    var thisTimeRow = liveEntry.liveEntryForm.getTimeRow();
+                    if (thisTimeRow == null) {
+                        return;
+                    }
+                    thisTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
-                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
-                    storedTimeRows.push(thisTimeRow);
-                    liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                    liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
-                }
+                    var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                    if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
+                        storedTimeRows.push(thisTimeRow);
+                        liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                        liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
+                    }
 
-                // Clear data and put focus on bibNumber field once we've collected all the data
-                liveEntry.liveEntryForm.clearSplitsData();
-                $('#js-bib-number').focus();
+                    // Clear data and put focus on bibNumber field once we've collected all the data
+                    liveEntry.liveEntryForm.clearSplitsData();
+                    $('#js-bib-number').focus();
+                });
             },
 
             /**

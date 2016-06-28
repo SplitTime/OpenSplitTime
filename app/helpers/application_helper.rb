@@ -43,6 +43,10 @@ module ApplicationHelper
     datetime ? datetime.strftime("%a %-l:%M%p") : '--:--:--'
   end
 
+  def day_time_military_format(datetime)
+    datetime ? datetime.strftime("%a %H:%M") : '--:--:--'
+  end
+
   def latlon_format(latitude, longitude)
     lat = latitude.nil? ? "[Unknown]" : latitude.abs.to_s + (latitude >= 0 ? "°N" : "°S")
     lon = longitude.nil? ? "[Unknown]" : longitude.abs.to_s + (longitude >= 0 ? "°E" : "°W")

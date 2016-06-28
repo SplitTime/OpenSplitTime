@@ -37,6 +37,8 @@ class EventSpreadDisplay
         'Segment times'
       when 'time_of_day'
         'Time of Day'
+      when 'military'
+        'Military'
       else
         'Elapsed times'
     end

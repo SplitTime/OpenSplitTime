@@ -265,6 +265,23 @@
                     $('#js-dropped').prop('checked', !$('#js-dropped').prop('checked')).change();
                     return false;
                 });
+
+                $('#js-html-modal').on('show.bs.modal', function(e) {
+                    $(this).find('modal-body').html('');
+                    var $source = $(e.relatedTarget);
+                    var $body = $(this).find('.modal-body');
+                    if ($source.attr('data-effort-id')) {
+                        var data = {
+                            'effortId': $source.attr('data-effort-id')
+                        }
+                        $.get('/live/events/' + liveEntry.currentEventId + '/get_effort_table', data)
+                            .done( function(a,b,c) {
+                                $body.html(a);
+                            });
+                    } else {
+                        e.preventDefault();
+                    }
+                });
             },
 
             /**
@@ -287,10 +304,10 @@
 
                 return $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
-                    $('#js-effort-name').html( response.name ).attr('href', '/efforts/' + response.effortId );
-                    if ( !response.effortId ) {
-                        $('#js-effort-name').removeAttr('href'); // Disabled when id is null
-                    }
+                    $('#js-effort-name').html( response.name ).attr('data-effort-id', response.effortId );
+                    // if ( !response.effortId ) {
+                    //     $('#js-effort-name').removeAttr('href'); // Disabled when id is null
+                    // }
                     $('#js-effort-last-reported').html( response.reportText );
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );

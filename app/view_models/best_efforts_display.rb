@@ -67,6 +67,7 @@ class BestEffortsDisplay
     self.all_efforts = Effort.joins(:event)
                            .select('efforts.*, events.start_time')
                            .where(id: segment_time_hash.keys)
+                           .where(demo: false)
                            .to_a
                            .each { |effort| effort.segment_time = segment_time_hash[effort.id] }
                            .sort_by!(&:segment_time)

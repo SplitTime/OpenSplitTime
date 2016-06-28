@@ -53,6 +53,13 @@ class Live::EventsController < Live::BaseController
     end
   end
 
+  def get_effort_table
+    authorize @event
+    effort = Effort.find(params[:effortId])
+    @effort_show = EffortShowView.new(effort)
+    render partial: 'effort_table'
+  end
+
   def post_file_effort_data
 
     # Param should be an unaltered CSV file.

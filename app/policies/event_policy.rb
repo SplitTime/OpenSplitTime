@@ -112,6 +112,10 @@ class EventPolicy
     @current_user.authorized_for_live?(@event)
   end
 
+  def get_effort_table?
+    @current_user.authorized_for_live?(@event)
+  end
+
   def post_file_effort_data?
     @current_user.authorized_for_live?(@event)
   end

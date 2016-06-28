@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h3>
+      <%= @effort_show.full_name %>
+      <%= "(#{@effort_show.bib_number})" if @effort_show.bib_number %>
+      • <%= link_to @effort_show.event_name, event_path(@effort_show.event) %>
+    </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <% overall_place, gender_place = @effort_show.combined_places %>
+    <h3><%= "#{@effort_show.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_show.gender.titleize}" %></h3>
+  </div>
+</div>
+<hr>
+
+<% if @effort_show.split_rows.count > 0 %>
+    <%= render 'split_times/split_times_list_compact' %>
+<% end %>

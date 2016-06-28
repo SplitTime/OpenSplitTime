@@ -96,6 +96,7 @@ Rails.application.routes.draw do
       member { get :aid_station_report }
       member { get :get_event_data }
       member { get :get_live_effort_data }
+      member { get :get_effort_table }
       member { post :post_file_effort_data }
       member { post :set_times_data }
       member { put :aid_station_degrade }

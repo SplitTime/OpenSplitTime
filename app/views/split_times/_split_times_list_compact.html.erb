@@ -1,0 +1,39 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Split</th>
+    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-center">Time of Day</th>
+    <th class="text-center">Elapsed Time</th>
+    <th class="text-center">Segment Time</th>
+    <th class="text-right">In Aid</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @effort_show.split_rows.each do |split_row| %>
+      <% if split_row.data_status == 'bad' %>
+          <tr class="text-danger">
+      <% elsif split_row.data_status == 'questionable' %>
+          <tr class="text-warning">
+      <% else %>
+          <tr>
+      <% end %>
+      <% if split_row.finish? %>
+          <td><strong><%= split_row.name %></strong></td>
+          <td class="text-right"><strong><%= d(split_row.distance_from_start) %></strong></td>
+          <td class="text-center"><strong><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></strong></td>
+          <td class="text-center"><strong><%= composite_time(split_row) %></strong></td>
+          <td class="text-center"><strong><%= time_format_hhmmss(split_row.segment_time) %></strong></td>
+          <td class="text-right"><strong><%= time_format_minutes(@effort_show.total_time_in_aid) %></strong></td>
+      <% elsif split_row.intermediate? %>
+          <td><%= split_row.name %></td>
+          <td class="text-right"><%= d(split_row.distance_from_start) %></td>
+          <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>
+          <td class="text-center"><%= composite_time(split_row) %></td>
+          <td class="text-center"><%= time_format_hhmmss(split_row.segment_time) %></td>
+          <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
+      <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

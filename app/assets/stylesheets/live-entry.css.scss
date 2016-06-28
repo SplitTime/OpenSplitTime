@@ -243,6 +243,10 @@ Mixins
 	.splits-slider-data {
 		margin-top: 75px;
 
+		[data-toggle="modal"] {
+			cursor: pointer;
+		}
+
 		.data-label {
 			text-align: right;
 			clear: left;

@@ -26,10 +26,6 @@
 
         lastReportedBitkey: null,
 
-        timeFromStartIn: null,
-
-        timeFromStartOut: null,
-
         currentSplitId: null,
 
         getEventLiveEntryData: function () {
@@ -423,7 +419,7 @@
                 thisTimeRow.timeOut = $('#js-time-out').val();
                 thisTimeRow.pacerIn = $('#js-pacer-in').prop('checked');
                 thisTimeRow.pacerOut = $('#js-pacer-out').prop('checked');
-                thisTimeRow.dropped = $('#js-dropped').prop('checked');
+                thisTimeRow.droppedHere = $('#js-dropped').prop('checked');
                 thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
@@ -441,7 +437,7 @@
                 $('#js-time-out').val(timeRow.timeOut);
                 $('#js-pacer-in').prop('checked', timeRow.pacerIn);
                 $('#js-pacer-out').prop('checked', timeRow.pacerOut);
-                $('#js-dropped').prop('checked', timeRow.dropped).change();
+                $('#js-dropped').prop('checked', timeRow.droppedHere).change();
                 liveEntry.splitSlider.changeSplitSlider(timeRow.splitId);
             },
 
@@ -614,7 +610,7 @@
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
-                        <td class="dropped-here js-dropped-here">' + (timeRow.dropped ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
+                        <td class="dropped-here js-dropped-here">' + (timeRow.droppedHere ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
                         <td class="row-edit-btns">\
                             <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
@@ -678,6 +674,9 @@
              */
             toggleDiscardAll: (function() {
                 var $deleteWarning = null;
+                var callback = function() {
+                    liveEntry.timeRowsTable.toggleDiscardAll(false);
+                };
                 $(document).ready( function() {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
@@ -685,7 +684,7 @@
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     var $deleteButton = $('#js-delete-all-efforts');
                     $deleteButton.prop('disabled', true);
-                    $deleteButton.off('blur');
+                    $(document).off('click', callback);
                     $deleteWarning.insertAfter($deleteButton).animate({
                         width: 'toggle',
                         paddingLeft: 'toggle',
@@ -702,9 +701,7 @@
                                 $deleteWarning = $('#js-delete-all-warning').hide().detach();
                             } else {
                                 $deleteButton.addClass('confirm');
-                                $deleteButton.focus().one('blur', function() {
-                                    liveEntry.timeRowsTable.toggleDiscardAll(false);
-                                });
+                                $(document).one('click', callback);
                             }
                         }
                     });

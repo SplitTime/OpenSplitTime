@@ -9,7 +9,7 @@ class PlanDisplay
 
   def initialize(course, params, event = nil)
     @course = course
-    @event = event || course.events.latest
+    @event = event || course.events.where(demo: false).latest
     @expected_time = expected_time_from_param(params[:expected_time])
     if @event
       @start_time = params[:start_time].present? ? convert_to_datetime(params[:start_time]) : default_start_time

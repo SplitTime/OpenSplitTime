@@ -231,34 +231,11 @@
                 });
 
                 // Listen for keydown on bibNumber
-                $('#js-bib-number').on('keydown', function (event) {
-
-                    // Check for tab or enter
-                    if (event.keyCode == 13 || event.keyCode == 9) {
-                        event.preventDefault();
-                        var bibNumber = $(this).val();
-                        liveEntry.liveEntryForm.fetchEffortData();
-
-                        if (!event.shiftKey) {
-                            $('#js-time-in').focus().select();
-                        } else {
-                            $('#split-select').focus();
-                        }
-                        return false;
-                    }
+                $('#js-bib-number').on('blur', function (event) {
+                    liveEntry.liveEntryForm.fetchEffortData();
                 });
 
-                $('#js-time-in').on('keydown', function (event) {
-                    if (event.keyCode == 13 || event.keyCode == 9) {
-                        event.preventDefault();
-                        if (event.shiftKey) {
-                            $('#js-bib-number').focus().select();
-                        } else {
-                            $('#js-time-out').focus().select();
-                        }
-                        return false;
-                    }
-                }).on('blur', function (event) {
+                $('#js-time-in').on('blur', function (event) {
                     var timeIn = $(this).val();
                     timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
                     if (timeIn === false) {
@@ -269,17 +246,7 @@
                     }
                 });
 
-                $('#js-time-out').on('keydown', function (event) {
-                    if (event.keyCode == 13 || event.keyCode == 9) {
-                        event.preventDefault();
-                        if (event.shiftKey) {
-                            $('#js-time-in').focus().select();
-                        } else {
-                            $('#js-pacer-in').focus();
-                        }
-                        return false;
-                    }
-                }).on('blur', function (event) {
+                $('#js-time-out').on('blur', function (event) {
                     var timeIn = $(this).val();
                     timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
                     if (timeIn === false) {
@@ -292,66 +259,10 @@
 
                 // Listen for keydown in pacer-in and pacer-out.
                 // Enter checks the box, tab moves to next field.
-                $('#js-pacer-in').on('keydown', function (event) {
-                    event.preventDefault();
-                    var $this = $(this);
-                    switch (event.keyCode)  {
-                        case 32: // Space pressed
-                            if ($this.is(':checked')) {
-                                $this.prop('checked', false);
-                            } else {
-                                $this.prop('checked', true);
-                            }
-                            break;
-                        case 9: // Tab pressed
-                            if ( event.shiftKey ) {
-                                $('#js-time-out').focus().select();
-                            } else {
-                                $('#js-pacer-out').focus();
-                            }
-                            break;
-                    }
-                    return false;
-                });
 
-                $('#js-pacer-out').on('keydown', function (event) {
+                $('#js-dropped-button').on('click', function (event) {
                     event.preventDefault();
-                    var $this = $(this);
-                    switch (event.keyCode) {
-                        case 32: // Space pressed
-                            if ($this.is(':checked')) {
-                                $this.prop('checked', false);
-                            } else {
-                                $this.prop('checked', true);
-                            }
-                            break;
-                        case 9: // Tab pressed
-                            if (event.shiftKey) {
-                                $('#js-pacer-in').focus();
-                            } else {
-                                $('#js-dropped-button').focus();
-                            }
-                            break;
-                    }
-                    return false;
-                });
-
-                $('#js-dropped-button').on('click keydown', function (event) {
-                    event.preventDefault();
-                    var $this = $(this);
-                    switch (event.keyCode) {
-                        default: // Clicked
-                        case 32: // Space pressed
-                            $('#js-dropped').prop('checked', !$('#js-dropped').prop('checked')).change();
-                            break;
-                        case 9: // Tab pressed
-                            if (event.shiftKey) {
-                                $('#js-pacer-out').focus();
-                            } else {
-                                $('#js-add-to-cache').focus();
-                            }
-                            break;
-                    }
+                    $('#js-dropped').prop('checked', !$('#js-dropped').prop('checked')).change();
                     return false;
                 });
             },
@@ -377,6 +288,9 @@
                 $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.name ).attr('href', '/efforts/' + response.effortId );
+                    if ( !response.effortId ) {
+                        $('#js-effort-name').removeAttr('href'); // Disabled when id is null
+                    }
                     $('#js-effort-last-reported').html( response.reportText );
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
@@ -445,26 +359,24 @@
              * Clears out the splits slider data fields
              * @param  {Boolean} clearForm Determines if the form is cleared as well.
              */
-            clearSplitsData: function (clearForm) {
-                clearForm = (typeof clearForm == 'undefined') || clearForm;
-                $('#js-effort-name').html('&nbsp;');
-                $('#js-effort-last-reported').html('&nbsp;')
-                $('#js-prior-valid-reported').html('&nbsp;')
-                $('#js-time-prior-valid-reported').html('&nbsp;');
-                $('#js-effort-split-from').html('&nbsp;');
-                $('#js-time-spent').html('&nbsp;');
+            clearSplitsData: function () {
+                $('#js-effort-name').html('n/a').removeAttr('href');
+                $('#js-effort-last-reported').html('n/a')
+                $('#js-prior-valid-reported').html('n/a')
+                $('#js-time-prior-valid-reported').html('n/a');
+                $('#js-effort-split-from').html('--:--');
+                $('#js-time-spent').html('-- minutes');
                 $('#js-time-in').removeClass('exists null bad good questionable');
                 $('#js-time-out').removeClass('exists null bad good questionable');
                 liveEntry.lastEffortRequest = {};
-                if (clearForm) {
-                    $('#js-time-in').val('');
-                    $('#js-time-out').val('');
-                    $('#js-live-bib').val('');
-                    $('#js-bib-number').val('');
-                    $('#js-pacer-in').prop('checked', false);
-                    $('#js-pacer-out').prop('checked', false);
-                    $('#js-dropped').prop('checked', false).change();
-                }
+                $('#js-time-in').val('');
+                $('#js-time-out').val('');
+                $('#js-live-bib').val('');
+                $('#js-bib-number').val('');
+                $('#js-pacer-in').prop('checked', false);
+                $('#js-pacer-out').prop('checked', false);
+                $('#js-dropped').prop('checked', false).change();
+                liveEntry.liveEntryForm.fetchEffortData();
             },
 
             /**

@@ -14,8 +14,7 @@ class LiveEffortData
                                                 :pacerIn, :pacerOut, :droppedHere)
     @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
     @split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
-    set_boolean_attributes
-    set_split_related_attributes if @split
+    set_non_dependent_attributes
     set_effort_related_attributes if @effort
     verify_time_existence if (@effort && @split)
     set_dropped_attributes if @effort
@@ -46,7 +45,7 @@ class LiveEffortData
     if effort
       effort.full_name
     else
-      response_row[:bibNumber].present? ? 'Bib number was not located' : 'n/a'
+      response_row[:bibNumber].present? ? 'Bib number not located' : 'n/a'
     end
   end
 
@@ -67,13 +66,11 @@ class LiveEffortData
   attr_accessor :split_times_hash, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out
   attr_reader :calcs, :ordered_splits, :split
 
-  def set_boolean_attributes
+  def set_non_dependent_attributes
     self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn].try(&:downcase) == 'true')
     self.pacer_out = response_row[:pacerOut] = (response_row[:pacerOut].try(&:downcase) == 'true')
     self.dropped_here = response_row[:droppedHere] = (response_row[:droppedHere].try(&:downcase) == 'true')
-  end
-
-  def set_split_related_attributes
+    self.response_row[:effortName] = effort_name
     self.response_row[:splitName] = split_name
     self.response_row[:splitDistance] = split_distance
   end
@@ -91,7 +88,6 @@ class LiveEffortData
     self.time_from_start_in = day_and_time_in ? day_and_time_in - effort.start_time : nil
     self.time_from_start_out = day_and_time_out ? day_and_time_out - effort.start_time : nil
     self.time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out - time_from_start_in : nil
-    self.response_row[:effortName] = effort_name
   end
 
   def verify_time_existence

@@ -144,6 +144,7 @@ class Effort < ActiveRecord::Base
     seconds_into_day = military_time.split(':')
                            .map.with_index { |x, i| x.to_i.send(units[i]) }
                            .reduce(:+).to_i
+    return nil if seconds_into_day >= 1.day
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
     expected = expected_day_and_time({split.id => SubSplit::IN_BITKEY}, event_segment_calcs)
     expected ? working_datetime + ((((working_datetime - expected) * -1) / 1.day).round(0) * 1.day) : nil

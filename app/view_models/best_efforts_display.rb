@@ -29,7 +29,7 @@ class BestEffortsDisplay
   end
 
   def events_count
-    events.count
+    events.where(demo: false).count
   end
 
   def segment_is_full_course?

@@ -55,6 +55,7 @@ class Effort < ActiveRecord::Base
 
   def self.search(param)
     return all if param.blank?
+    return where(bib_number: param.to_i) if param.to_i > 0
     flexible_search(param)
   end
 

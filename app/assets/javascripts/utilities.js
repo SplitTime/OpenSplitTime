@@ -7,7 +7,8 @@
 				.attr('role', 'button')
 				.data('ajax', null)
 				.popover({
-					'html': 'append'
+					'html': 'append',
+					'trigger': 'focus'
 				}).on('show.bs.popover', effortsPopover.onShowPopover);
 		},
 		onShowPopover: function (e) {
@@ -21,6 +22,7 @@
 				$self.data('ajax', $.get('/efforts/mini_table/', data)
 					.done(function (response) {
 						$popover.options.content = $(response);
+						$popover.tip().addClass('.efforts-popover');
 						$popover.show();
 					}).always(function () {
 						$self.data('ajax', null);

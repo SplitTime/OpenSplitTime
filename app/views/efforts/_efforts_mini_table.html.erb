@@ -1,0 +1,18 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Bib</th>
+    <th>Name</th>
+    <th>Category</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @mini_table.effort_rows.each do |row| %>
+      <tr>
+        <td><%= row.bib_number %></td>
+        <td><%= row.full_name %></td>
+        <td><%= row.bio %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

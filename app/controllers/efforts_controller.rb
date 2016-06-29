@@ -1,7 +1,7 @@
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_effort, except: [:index, :new, :create, :associate_participants]
-  after_action :verify_authorized, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table]
+  before_action :set_effort, except: [:index, :new, :create, :associate_participants, :mini_table]
+  after_action :verify_authorized, except: [:index, :show, :mini_table]
 
   def index
 
@@ -122,6 +122,11 @@ class EffortsController < ApplicationController
     authorize @effort
     DataStatusService.set_data_status(@effort)
     redirect_to effort_path(@effort)
+  end
+
+  def mini_table
+    @mini_table = EffortsMiniTable.new(params[:effortIds])
+    render partial: 'efforts_mini_table'
   end
 
   private

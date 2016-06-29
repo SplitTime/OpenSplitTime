@@ -47,6 +47,26 @@ class PlaceDetailRow
     together_in_aid ? together_in_aid.count : nil
   end
 
+  def passed_segment_ids
+    passed_segment ? passed_segment.map(&:id) : nil
+  end
+
+  def passed_in_aid_ids
+    passed_in_aid ? passed_in_aid.map(&:id) : nil
+  end
+
+  def passed_by_segment_ids
+    passed_by_segment ? passed_by_segment.map(&:id) : nil
+  end
+
+  def passed_by_in_aid_ids
+    passed_by_in_aid ? passed_by_in_aid.map(&:id) : nil
+  end
+
+  def together_in_aid_ids
+    together_in_aid ? together_in_aid.map(&:id) : nil
+  end
+
   def split_id
     split.id
   end

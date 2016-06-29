@@ -75,6 +75,7 @@ Rails.application.routes.draw do
     member { put :confirm_split }
     member { put :set_data_status }
     member { get :analyze }
+    member { get :place }
   end
   resources :split_times
   resources :interests

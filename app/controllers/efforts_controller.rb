@@ -57,6 +57,12 @@ class EffortsController < ApplicationController
     session[:return_to] = analyze_effort_path(@effort)
   end
 
+  def place
+    authorize @effort
+    @effort_place = PlaceDetailView.new(@effort)
+    session[:return_to] = place_effort_path(@effort)
+  end
+
   def associate_participant
     @event = Event.find(params[:event_id])
     authorize @event

@@ -1,0 +1,35 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Place detail - #{@effort_place.full_name} - #{@effort_place.event_name}" %>
+<% end %>
+<div class="row">
+  <div class="col-xs-12">
+    <h1>
+      Place detail:
+      <% if @effort_place.participant %>
+          <%= link_to @effort_place.full_name, participant_path(@effort_place.participant) %>
+      <% else %>
+          <%= @effort_place.full_name %>
+      <% end %>
+      <%= "(#{@effort_place.bib_number})" if @effort_place.bib_number %>
+      • <%= link_to @effort_place.event_name, event_path(@effort_place.event) %>
+    </h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <% overall_place, gender_place = @effort_place.combined_places %>
+    <h3><%= "#{@effort_place.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_place.gender.titleize}" %></h3>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col-xs-8">
+    <%= link_to "< View effort", effort_path(@effort_place.effort), class: "btn btn-sm btn-default" %>
+  </div>
+</div>
+<hr>
+
+<% if @effort_place.place_detail_rows.count > 0 %>
+    <%= render 'place_detail_rows' %>
+<% end %>

@@ -11,6 +11,8 @@ class SplitTime < ActiveRecord::Base
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
 
+  attr_accessor :day_and_time_attr
+
   before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?
 

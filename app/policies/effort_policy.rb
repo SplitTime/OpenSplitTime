@@ -30,6 +30,10 @@ class EffortPolicy
     @current_user.present?
   end
 
+  def place?
+    @current_user.present?
+  end
+
   def associate_participant?
     @current_user.authorized_to_edit?(@effort.event)
   end

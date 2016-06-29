@@ -1,0 +1,25 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Split</th>
+    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-center">Time of Day<br/>In / Out</th>
+    <th class="text-center">Split Place<br/>In / Out</th>
+    <th class="text-center">Passed by<br/>Segment / Aid</th>
+    <th class="text-center">Passed<br/>Segment / Aid</th>
+    <th class="text-center">Together<br/>In Aid</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @effort_place.place_detail_rows.each do |place_detail_row| %>
+      <tr>
+        <td><%= place_detail_row.base_name %></td>
+        <td class="text-right"><%= d(place_detail_row.distance_from_start) %></td>
+        <td class="text-center"><%= place_detail_row.days_and_times.map { |datetime| day_time_format(datetime) }.join(' / ') %></td>
+        <td class="text-center"><%= [place_detail_row.split_place_in, place_detail_row.split_place_out].compact.join(' / ') %></td>
+        <td class="text-center"><%= [place_detail_row.passed_by_segment_count, place_detail_row.passed_by_in_aid_count].compact.join(' / ') %></td>
+        <td class="text-center"><%= [place_detail_row.passed_segment_count, place_detail_row.passed_in_aid_count].compact.join(' / ') %></td>
+        <td class="text-center"><%= place_detail_row.together_in_aid_count %></td>
+      </tr>
+  <% end %>
+</table>

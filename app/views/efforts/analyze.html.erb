@@ -25,7 +25,10 @@
 <hr>
 <div class="row">
   <div class="col-xs-8">
-    <%= link_to "< View effort", effort_path(@effort_analysis.effort), class: "btn btn-sm btn-default" %>
+    <%= link_to "< #{@effort_analysis.event_name}", event_path(@effort_analysis.event), class: "btn btn-sm btn-default" %>
+    <%= link_to "View times", effort_path(@effort_analysis.effort), class: "btn btn-sm btn-default" %>
+    <%= link_to "Analyze times", analyze_effort_path(@effort_analysis.effort), disabled: true, class: "btn btn-sm btn-default" %>
+    <%= link_to "Place and peers", place_effort_path(@effort_analysis.effort), class: "btn btn-sm btn-default" %>
   </div>
 </div>
 <hr>

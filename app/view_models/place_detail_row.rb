@@ -20,7 +20,7 @@ class PlaceDetailRow
   end
 
   def days_and_times
-    split_times.map(&:day_and_time_attr)
+    split_times.map { |split_time| split_time ? split_time.day_and_time_attr : nil }
   end
 
   def end_bitkey_hash

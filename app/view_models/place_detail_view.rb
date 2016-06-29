@@ -3,9 +3,7 @@ class PlaceDetailView
   attr_reader :effort, :event, :place_detail_rows
   delegate :full_name, :event_name, :participant, :bib_number, :combined_places, :finish_status,
            :gender, to: :effort
-
-  PEER_PROXIMITY = 0.02
-
+  
   def initialize(effort)
     @effort = effort
     @event = @effort.event
@@ -22,19 +20,19 @@ class PlaceDetailView
   end
 
   def efforts_passed(begin_bitkey_hash, end_bitkey_hash)
-    begin_efforts_ahead = efforts_ahead(begin_bitkey_hash)
-    end_efforts_ahead = efforts_ahead(end_bitkey_hash)
-    return nil if begin_efforts_ahead.nil? || end_efforts_ahead.nil?
-    ids = begin_efforts_ahead - end_efforts_ahead
-    event_efforts.select { |effort| ids.include?(effort.id) }
+    begin_ids_ahead = effort_ids_ahead(begin_bitkey_hash)
+    end_ids_ahead = effort_ids_ahead(end_bitkey_hash)
+    return nil if begin_ids_ahead.nil? || end_ids_ahead.nil?
+    ids_passed = begin_ids_ahead - end_ids_ahead
+    event_efforts.select { |effort| ids_passed.include?(effort.id) }
   end
 
   def efforts_passed_by(begin_bitkey_hash, end_bitkey_hash)
-    begin_efforts_ahead = efforts_ahead(begin_bitkey_hash)
-    end_efforts_ahead = efforts_ahead(end_bitkey_hash)
-    return nil if begin_efforts_ahead.nil? || end_efforts_ahead.nil?
-    ids = end_efforts_ahead - begin_efforts_ahead
-    event_efforts.select { |effort| ids.include?(effort.id) }
+    begin_ids_ahead = effort_ids_ahead_or_tied(begin_bitkey_hash)
+    end_ids_ahead = effort_ids_ahead(end_bitkey_hash)
+    return nil if begin_ids_ahead.nil? || end_ids_ahead.nil?
+    ids_passed_by = end_ids_ahead - begin_ids_ahead
+    event_efforts.select { |effort| ids_passed_by.include?(effort.id) }
   end
 
   def efforts_together_in_aid(split)
@@ -93,21 +91,39 @@ class PlaceDetailView
                                              passed_by_in_aid: efforts_passed_by(split.bitkey_hash_in, split.bitkey_hash_out),
                                              together_in_aid: efforts_together_in_aid(split)})
       place_detail_rows << place_detail_row
-      prior_bitkey_hash = place_detail_row.end_bitkey_hash
+      prior_bitkey_hash = place_detail_row.end_bitkey_hash if place_detail_row.end_bitkey_hash
     end
   end
 
   def split_place(bitkey_hash)
     return nil unless bitkey_hash
     ordered_effort_ids = split_place_columns[bitkey_hash].map { |row| row[:effort_id] }
-    ordered_effort_ids.index(effort.id) + 1
+    ordered_effort_ids.index(effort.id) ? ordered_effort_ids.index(effort.id) + 1 : nil
+  end
+  
+  def effort_ids_tied(bitkey_hash)
+    return nil unless bitkey_hash
+    split_place_column = split_place_columns[bitkey_hash]
+    subject_row = split_place_column.find { |row| row[:effort_id] == effort.id }
+    return nil unless subject_row.present?
+    subject_time = subject_row[:day_and_time]
+    tied_rows = split_place_column.select { |row| row[:day_and_time] == subject_time }
+    tied_rows.map { |row| row[:effort_id] } - [effort.id]
   end
 
-  def efforts_ahead(bitkey_hash)
+  def effort_ids_ahead(bitkey_hash)
     return nil unless bitkey_hash
     ordered_effort_ids = split_place_columns[bitkey_hash].map { |row| row[:effort_id] }
     return [] if split_place(bitkey_hash) == 1
-    ordered_effort_ids[0..(ordered_effort_ids.index(effort.id) - 1)]
+    return nil unless ordered_effort_ids.include?(effort.id)
+    ordered_effort_ids[0..(ordered_effort_ids.index(effort.id) - 1)] - effort_ids_tied(bitkey_hash)
+  end
+
+  def effort_ids_ahead_or_tied(bitkey_hash)
+    ids_ahead = effort_ids_ahead(bitkey_hash)
+    ids_tied = effort_ids_tied(bitkey_hash)
+    return nil if ids_ahead.nil? && ids_tied.nil?
+    ( ids_ahead || []) + ( ids_tied || [])
   end
 
   def indexed_segment_times(begin_bitkey_hash, end_bitkey_hash)
@@ -134,10 +150,6 @@ class PlaceDetailView
 
   def related_split_times(split)
     split.sub_split_bitkey_hashes.collect { |key_hash| indexed_split_times[key_hash].index_by(&:effort_id)[effort.id] }
-  end
-
-  def effort_start_time
-    event.start_time + effort.start_offset
   end
 
 end

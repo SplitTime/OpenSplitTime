@@ -81,7 +81,10 @@ class PlaceDetailView
     prior_bitkey_hash = ordered_splits.first.bitkey_hash_in
     ordered_splits.each do |split|
       next if split.start?
-      place_detail_row = PlaceDetailRow.new(split,
+      previous_split = ordered_splits.find { |s| s.id == prior_bitkey_hash.keys.first}
+      place_detail_row = PlaceDetailRow.new(effort,
+                                            split,
+                                            previous_split,
                                             related_split_times(split),
                                             {split_place_in: split_place(split.bitkey_hash_in),
                                             split_place_out: split_place(split.bitkey_hash_out)},

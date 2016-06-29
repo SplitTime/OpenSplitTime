@@ -35,5 +35,5 @@
 
 	$(document).ready(function () {
 		effortsPopover.init();
-    });
+	});
 })(jQuery);

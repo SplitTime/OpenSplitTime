@@ -10,7 +10,7 @@
   <% @mini_table.effort_rows.each do |row| %>
       <tr>
         <td><%= row.bib_number %></td>
-        <td><%= row.full_name %></td>
+        <td><%= link_to row.full_name, effort_path(row.id) %></td>
         <td><%= row.bio %></td>
       </tr>
   <% end %>

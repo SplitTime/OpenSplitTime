@@ -21,33 +21,33 @@
           <% if place_detail_row.passed_segment_count == 0 || place_detail_row.passed_segment_count.nil? %>
               --
           <% else %>
-              <a data-toggle="efforts-popover" title="Runner List" data-effort-ids="<%= place_detail_row.passed_segment_ids %>"><%= place_detail_row.passed_segment_count %></a>
+              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_segment_table_title %>" data-effort-ids="<%= place_detail_row.passed_segment_ids %>"><%= place_detail_row.passed_segment_count %></a>
           <% end %>
           /
           <% if place_detail_row.passed_in_aid_count == 0 || place_detail_row.passed_in_aid_count.nil? %>
               --
           <% else %>
-              <a data-toggle="efforts-popover" title="Runner List" data-effort-ids="<%= place_detail_row.passed_in_aid_ids %>"><%= place_detail_row.passed_in_aid_count %></a>
+              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.passed_in_aid_ids %>"><%= place_detail_row.passed_in_aid_count %></a>
           <% end %>
         </td>
         <td class="text-center">
           <% if place_detail_row.passed_by_segment_count == 0 || place_detail_row.passed_by_segment_count.nil? %>
               --
           <% else %>
-              <a data-toggle="efforts-popover" title="Runner List" data-effort-ids="<%= place_detail_row.passed_by_segment_ids %>"><%= place_detail_row.passed_by_segment_count %></a>
+              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_by_segment_table_title %>" data-effort-ids="<%= place_detail_row.passed_by_segment_ids %>"><%= place_detail_row.passed_by_segment_count %></a>
           <% end %>
           /
           <% if place_detail_row.passed_by_in_aid_count == 0 || place_detail_row.passed_by_in_aid_count.nil? %>
               --
           <% else %>
-              <a data-toggle="efforts-popover" title="Runner List" data-effort-ids="<%= place_detail_row.passed_by_in_aid_ids %>"><%= place_detail_row.passed_by_in_aid_count %></a>
+              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_by_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.passed_by_in_aid_ids %>"><%= place_detail_row.passed_by_in_aid_count %></a>
           <% end %>
         </td>
         <td class="text-center">
           <% if place_detail_row.together_in_aid_count == 0 || place_detail_row.together_in_aid_count.nil? %>
               --
           <% else %>
-              <a data-toggle="efforts-popover" title="Runner List" data-effort-ids="<%= place_detail_row.together_in_aid_ids %>"><%= place_detail_row.together_in_aid_count %></a>
+              <a data-toggle="efforts-popover" data-placement="left" title="<%= place_detail_row.together_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.together_in_aid_ids %>"><%= place_detail_row.together_in_aid_count %></a>
           <% end %>
         </td>
       </tr>

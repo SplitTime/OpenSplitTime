@@ -7,7 +7,7 @@
     <h4><%= "as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
   </div>
   <div class="col-xs-4 page-navigation">
-    <%= link_to '< Event', event_path(@event), class: 'btn btn-sm btn-warning' %>
+    <%= link_to 'Back to Event', event_path(@event), class: 'btn btn-sm btn-warning' %>
     <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
     <%= link_to 'Progress', progress_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
     <%= link_to 'Aid stations', aid_station_report_live_event_path(@event), disabled: true, class: 'btn btn-sm btn-primary' %>
@@ -34,10 +34,40 @@
           <tr>
             <td class="text-nowrap"><%= link_to row.split_name, aid_station_detail_live_event_path(@event, aid_station: row.aid_station) %></td>
             <td class="text-right"><%= d(row.split.distance_from_start) %></td>
-            <td class="text-center"><%= [row.efforts_recorded_in.count, row.efforts_recorded_out.count].join(' / ') %></td>
-            <td class="text-center"><%= row.efforts_missed.count %></td>
-            <td class="text-center"><%= row.efforts_dropped_here.count %></td>
-            <td class="text-center"><%= row.efforts_expected.count %></td>
+            <td class="text-center">
+              <% if row.efforts_recorded_in_count == 0 || row.efforts_recorded_in_count.nil? %>
+                  --
+              <% else %>
+                  <a data-toggle="efforts-popover" title="<%= row.efforts_recorded_in_table_title %>" data-effort-ids="<%= row.efforts_recorded_in_ids %>"><%= row.efforts_recorded_in_count %></a>
+              <% end %>
+              /
+              <% if row.efforts_recorded_out_count == 0 || row.efforts_recorded_out_count.nil? %>
+                  --
+              <% else %>
+                  <a data-toggle="efforts-popover" title="<%= row.efforts_recorded_out_table_title %>" data-effort-ids="<%= row.efforts_recorded_out_ids %>"><%= row.efforts_recorded_out_count %></a>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <% if row.efforts_missed_count == 0 || row.efforts_missed_count.nil? %>
+                  --
+              <% else %>
+                  <a data-toggle="efforts-popover" title="<%= row.efforts_missed_table_title %>" data-effort-ids="<%= row.efforts_missed_ids %>"><%= row.efforts_missed_count %></a>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <% if row.efforts_dropped_here_count == 0 || row.efforts_dropped_here_count.nil? %>
+                  --
+              <% else %>
+                  <a data-toggle="efforts-popover" title="<%= row.efforts_dropped_here_table_title %>" data-effort-ids="<%= row.efforts_dropped_here_ids %>"><%= row.efforts_dropped_here_count %></a>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <% if row.efforts_expected_count == 0 || row.efforts_expected_count.nil? %>
+                  --
+              <% else %>
+                  <a data-toggle="efforts-popover" title="<%= row.efforts_expected_table_title %>" data-effort-ids="<%= row.efforts_expected_ids %>"><%= row.efforts_expected_count %></a>
+              <% end %>
+            </td>
             <td class="text-center text-nowrap">
               <%= link_to '<<', aid_station_degrade_live_event_path(@event, aid_station: row.aid_station), method: :put %>
               <%= row.aid_station.status.titleize if row.aid_station.status %>

@@ -45,7 +45,14 @@ Mixins
 		text-align: right;
 	}
 
-	.event-id {
+  .page-navigation-text {
+    padding-top: 10px;
+    padding-bottom: 0px;
+    text-align: right;
+    vertical-align: bottom;
+  }
+
+  .event-id {
 		display: none;
 	}
 }

@@ -3,7 +3,7 @@ class PlaceDetailView
   attr_reader :effort, :event, :place_detail_rows
   delegate :full_name, :event_name, :participant, :bib_number, :combined_places, :finish_status,
            :gender, to: :effort
-  
+
   def initialize(effort)
     @effort = effort
     @event = @effort.event
@@ -53,6 +53,11 @@ class PlaceDetailView
     result - [effort]
   end
 
+  def peers
+    indexed_efforts = event_efforts.index_by(&:id)
+    frequent_encountered_ids.map { |effort_id| indexed_efforts[effort_id] }
+  end
+
   private
 
   attr_reader :ordered_splits, :event_efforts, :event_split_times, :indexed_split_times, :indexed_start_offsets, :split_place_columns
@@ -87,13 +92,13 @@ class PlaceDetailView
     prior_bitkey_hash = ordered_splits.first.bitkey_hash_in
     ordered_splits.each do |split|
       next if split.start?
-      previous_split = ordered_splits.find { |s| s.id == prior_bitkey_hash.keys.first}
+      previous_split = ordered_splits.find { |s| s.id == prior_bitkey_hash.keys.first }
       place_detail_row = PlaceDetailRow.new(effort,
                                             split,
                                             previous_split,
                                             related_split_times(split),
                                             {split_place_in: split_place(split.bitkey_hash_in),
-                                            split_place_out: split_place(split.bitkey_hash_out)},
+                                             split_place_out: split_place(split.bitkey_hash_out)},
                                             {passed_segment: efforts_passed(prior_bitkey_hash, split.bitkey_hash_in),
                                              passed_in_aid: efforts_passed(split.bitkey_hash_in, split.bitkey_hash_out),
                                              passed_by_segment: efforts_passed_by(prior_bitkey_hash, split.bitkey_hash_in),
@@ -109,7 +114,7 @@ class PlaceDetailView
     ordered_effort_ids = split_place_columns[bitkey_hash].map { |row| row[:effort_id] }
     ordered_effort_ids.index(effort.id) ? ordered_effort_ids.index(effort.id) + 1 : nil
   end
-  
+
   def effort_ids_tied(bitkey_hash)
     return nil unless bitkey_hash
     split_place_column = split_place_columns[bitkey_hash]
@@ -132,7 +137,7 @@ class PlaceDetailView
     ids_ahead = effort_ids_ahead(bitkey_hash)
     ids_tied = effort_ids_tied(bitkey_hash)
     return nil if ids_ahead.nil? && ids_tied.nil?
-    ( ids_ahead || []) + ( ids_tied || [])
+    (ids_ahead || []) + (ids_tied || [])
   end
 
   def indexed_segment_times(begin_bitkey_hash, end_bitkey_hash)
@@ -159,6 +164,19 @@ class PlaceDetailView
 
   def related_split_times(split)
     split.sub_split_bitkey_hashes.collect { |key_hash| indexed_split_times[key_hash].index_by(&:effort_id)[effort.id] }
+  end
+
+  def frequent_encountered_ids
+    encountered_ids = place_detail_rows.map(&:together_in_aid_ids).flatten +
+        place_detail_rows.map(&:passed_segment_ids).flatten +
+        place_detail_rows.map(&:passed_by_segment_ids).flatten
+    counts = Hash.new(0)
+    encountered_ids.each { |id| counts[id] += 1 }
+    counts.sort_by { |_, count| count }.reverse.first(5).map { |e| e[0] }
+  end
+
+  def top_passed
+
   end
 
 end

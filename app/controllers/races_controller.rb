@@ -62,15 +62,20 @@ class RacesController < ApplicationController
 
   def stewards
     authorize @race
-    @user = User.find_by_email(params[:search_param])
+    if params[:search_param].present?
+      user = User.find_by_email(params[:search_param])
+      if user
+        if @race.stewards.include?(user)
+          flash[:warning] = 'User is already a steward of this race.'
+        else
+          @race.add_stewardship(user)
+        end
+        params[:search_param] = nil
+      else
+        flash[:warning] = 'User was not located.'
+      end
+    end
     session[:return_to] = stewards_race_path
-  end
-
-  def add_steward
-    authorize @race
-    user = User.find(params[:user_id])
-    @race.add_stewardship(user)
-    redirect_to stewards_race_path
   end
 
   def remove_steward

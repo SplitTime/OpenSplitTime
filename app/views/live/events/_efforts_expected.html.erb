@@ -7,7 +7,7 @@
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th>Bib</th>
+            <th class="text-center">Bib</th>
             <th>Name</th>
             <th>Category</th>
             <th class="text-center">Last Reported</th>
@@ -18,7 +18,7 @@
           <tbody>
           <% @aid_station_detail.expected_live_efforts.each do |live_effort| %>
               <tr>
-                <td><%= live_effort.bib_number %></td>
+                <td class="text-center"><%= live_effort.bib_number %></td>
                 <td class="text-nowrap">
                   <strong><%= link_to live_effort.full_name, effort_path(live_effort.id) %></strong></td>
                 <td class="text-nowrap"><%= live_effort.bio_historic %></td>

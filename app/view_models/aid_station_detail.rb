@@ -80,6 +80,10 @@ class AidStationDetail
     "#{persons(efforts_recorded_out_count)} #{was_were(efforts_recorded_out_count)} recorded in at #{aid_station.split_name}"
   end
 
+  def efforts_in_aid_count
+    efforts_in_aid.count
+  end
+
   def split_name
     split.base_name
   end

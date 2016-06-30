@@ -7,7 +7,7 @@
 <% end %>
 <div class="row">
   <div class="col col-xs-6">
-    <h1>Participants</h1>
+    <h2>Participants</h2>
   </div>
   <div class="col-xs-4">
     <% if @current_user && @current_user.admin? %>
@@ -24,16 +24,20 @@
     <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>
-<% if @participants.present? %>
-    <%= render 'participants' %>
-<% else %>
-    <br/>
-    <% if params[:search_param].blank? %>
-        <p><strong>Find someone by typing a name, state, or country</strong></p>
+<div class="row">
+  <div class="col-xs-8">
+    <% if @participants.present? %>
+        <%= render 'participants' %>
     <% else %>
-        <p><strong>No participants match this search</strong></p>
+        <br/>
+        <% if params[:search_param].blank? %>
+            <p><strong>Find someone by typing a name, state, or country</strong></p>
+        <% else %>
+            <p><strong>No participants match this search</strong></p>
+        <% end %>
     <% end %>
-<% end %>
+  </div>
+</div>
 
 <hr>
 <div class="row">

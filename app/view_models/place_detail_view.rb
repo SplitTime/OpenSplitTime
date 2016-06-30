@@ -69,10 +69,16 @@ class PlaceDetailView
     # {effort_id: effort.id, day_and_time: datetime}, sorted by day_and_time
 
     bitkey_hashes = ordered_splits.map(&:sub_split_bitkey_hashes).flatten
+    indexed_bib_numbers = Hash[event_efforts.map { |effort| [effort.id, effort.bib_number] }]
     bitkey_hashes.each do |bitkey_hash|
       split_times = indexed_split_times[bitkey_hash]
-      split_place_column = split_times.map { |split_time| {effort_id: split_time.effort_id, day_and_time: split_time.day_and_time_attr} }
-      split_place_column.sort_by! { |row| row[:day_and_time] }
+      split_place_column = split_times.map { |split_time| {effort_id: split_time.effort_id,
+                                                           day_and_time: split_time.day_and_time_attr,
+                                                           bib_number: indexed_bib_numbers[split_time.effort_id]} }
+
+      # Use bib_number for secondary sort to improve consistency when day_and_time are the same between efforts
+
+      split_place_column.sort_by! { |row| [row[:day_and_time], row[:bib_number]] }
       split_place_columns[bitkey_hash] = split_place_column
     end
   end
@@ -81,7 +87,10 @@ class PlaceDetailView
     prior_bitkey_hash = ordered_splits.first.bitkey_hash_in
     ordered_splits.each do |split|
       next if split.start?
-      place_detail_row = PlaceDetailRow.new(split,
+      previous_split = ordered_splits.find { |s| s.id == prior_bitkey_hash.keys.first}
+      place_detail_row = PlaceDetailRow.new(effort,
+                                            split,
+                                            previous_split,
                                             related_split_times(split),
                                             {split_place_in: split_place(split.bitkey_hash_in),
                                             split_place_out: split_place(split.bitkey_hash_out)},

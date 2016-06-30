@@ -1,0 +1,18 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th class="text-center">Bib</th>
+    <th>Name</th>
+    <th>Category</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @mini_table.effort_rows.each do |row| %>
+      <tr>
+        <td class="text-center"><%= row.bib_number %></td>
+        <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.id) %></td>
+        <td class="text-nowrap"><%= row.bio_historic %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

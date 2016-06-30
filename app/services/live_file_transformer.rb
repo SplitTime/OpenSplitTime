@@ -8,8 +8,8 @@ class LiveFileTransformer
     @split = Split.find_by_id(split_id)
     @transformed_rows = []
     @file_rows = []
-    create_rows_from_file
-    transform_rows
+    create_rows_from_file if split
+    transform_rows if split
   end
 
   def returned_rows

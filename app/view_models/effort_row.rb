@@ -3,7 +3,7 @@ class EffortRow
 
   attr_reader :overall_place, :gender_place, :finish_status, :start_time_from_params
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, to: :effort
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :bio, to: :effort
 
   def initialize(effort, options = {})
     @effort = effort

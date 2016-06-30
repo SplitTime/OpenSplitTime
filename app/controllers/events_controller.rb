@@ -126,6 +126,7 @@ class EventsController < ApplicationController
 
   def spread
     event = Event.find(params[:id])
+    params[:style] ||= 'elapsed'
     @spread_display = EventSpreadDisplay.new(event, params)
     session[:return_to] = spread_event_path(event)
   end

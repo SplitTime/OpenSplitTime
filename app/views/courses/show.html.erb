@@ -34,21 +34,19 @@
     <%= link_to '< Back', :back, class: 'btn btn-sm btn-default' %>
     <% if @current_user && @current_user.authorized_to_edit?(@course_view.course) %>
         <%= link_to 'Edit this course', edit_course_path(@course_view.course), class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Create new split', new_split_path(course_id: @course_view.course_id), class: 'btn btn-sm btn-success' %>
         <%= link_to 'Delete this course', course_path(@course_view.course, referrer_path: courses_path),
                     method: :delete,
                     data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
     <% end %>
   </div>
-</div>
-<hr>
-
-<div class="article-actions">
-  <% if @current_user && @current_user.authorized_to_edit?(@course_view.course) %>
-      <%= link_to 'Create new split', new_split_path(course_id: @course_view.course_id), class: 'btn btn-sm btn-success' %>
-  <% end %>
-  <%= link_to 'Plan my effort', plan_effort_course_path(@course_view.course), method: :get, class: 'btn btn-sm btn-default' %>
-  <%= link_to 'All-time best efforts >>', best_efforts_course_path(@course_view.course), class: 'btn btn-sm btn-default' %>
+  <div class="col-xs-6">
+    <div class="text-right">
+        <%= link_to 'Plan my effort', plan_effort_course_path(@course_view.course), method: :get, class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'All-time best efforts', best_efforts_course_path(@course_view.course), class: 'btn btn-sm btn-primary' %>
+    </div>
+  </div>
 </div>
 <hr>
 

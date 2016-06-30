@@ -3,7 +3,7 @@ class EffortsMiniTable
   attr_reader :effort_rows
 
   def initialize(effort_ids_param)
-    effort_ids = effort_ids_param.split(',')
+    effort_ids = effort_ids_param.split(',').flatten
     @efforts = Effort.where(id: effort_ids)
     @effort_rows = []
     create_effort_rows

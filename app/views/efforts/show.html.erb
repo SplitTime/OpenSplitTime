@@ -27,7 +27,7 @@
     <%= link_to "< #{@effort_show.event_name}", event_path(@effort_show.event), class: "btn btn-sm btn-default" %>
     <%= link_to "View times", effort_path(@effort_show.effort), disabled: true, class: "btn btn-sm btn-default" %>
     <%= link_to "Analyze times", analyze_effort_path(@effort_show.effort), class: "btn btn-sm btn-default" %>
-    <%= link_to "Place and peers", place_effort_path(@effort_show.effort), class: "btn btn-sm btn-default" %>
+    <%= link_to "Places and peers", place_effort_path(@effort_show.effort), class: "btn btn-sm btn-default" %>
     <% if @current_user && @current_user.authorized_to_edit?(@effort_show.effort) %>
         <%= link_to 'Edit this effort', edit_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Edit split times', edit_split_times_effort_path(@effort_show.effort),

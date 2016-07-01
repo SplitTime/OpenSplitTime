@@ -1,48 +1,25 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Best efforts - #{@best_display.name} - #{@best_display.segment_name}" %>
 <% end %>
-<div class="row">
-  <div class="col-xs-12">
-    <% if @best_display.segment_is_full_course? %>
-        <h2><%= "All-time best efforts on #{@best_display.name} (#{@best_display.gender_text})" %></h2>
-    <% else %>
-        <h3><%= "All-time best efforts on #{@best_display.name}" %></h3>
-        <hr>
-        <h2><%= "#{@best_display.segment_name} (#{@best_display.gender_text})" %></h2>
-    <% end %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-6">
-    <strong><%= "#{d(@best_display.distance)} #{pdu} with #{e(@best_display.vert_gain)} #{peu} of elevation gain" %><br>
-      <%= "and #{e(@best_display.vert_loss)} #{peu} of elevation loss" %></strong><br/>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-6">
-    <% if @best_display.events_count > 0 %>
-        <strong>
-          <%= "Searched #{pluralize(@best_display.events_count, 'event')}
+<div class="row header">
+  <div class="col-xs-7">
+    <h2><strong><%= "All-time best efforts on #{@best_display.name}" %></strong></h2>
+    <h4>
+      <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %><br/>
+      <% if @best_display.events_count > 0 %>
+
+            <%= "Searched #{pluralize(@best_display.events_count, 'event')}
         from #{@best_display.earliest_event_date.to_date.to_formatted_s(:long)}
         to #{@best_display.most_recent_event_date.to_date.to_formatted_s(:long)}" %>
-        </strong><br/>
-    <% else %>
-        <strong>No efforts have been measured on this segment.</strong>
-    <% end %>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-6">
-    <div class="article-actions">
-      <%= link_to '<< Back to course', course_path(@best_display.course), class: "btn btn-sm btn-default" %>
-      <% unless @best_display.course.simple? %>
-          <%= link_to 'Choose a segment >', segment_picker_course_path(@best_display.course), class: "btn btn-sm btn-default" %>
+          <br/>
+      <% else %>
+          No efforts have been measured on this segment.
       <% end %>
-    </div>
+      </strong>
+    </h4>
   </div>
-  <div class="col-xs-6">
-    <div class="text-right">
+  <div class="col-xs-5 page-navigation">
+    <div class="row">
       <div class="btn-group">
         <%= link_to 'Combined', best_efforts_course_path(@best_display.course,
                                                          split1: @best_display.begin_id,
@@ -66,6 +43,27 @@
                     disabled: params[:gender] == 'female',
                     class: 'btn btn-sm btn-primary' %>
       </div>
+    </div>
+    <div class="page-navigation-text">
+      <% if @best_display.segment_is_full_course? %>
+          <h4> <%= "#{@best_display.gender_text.upcase} • FULL COURSE" %></h4>
+      <% else %>
+          <h4> <%= "#{@best_display.gender_text.upcase} • #{@best_display.segment_name.upcase}" %></h4>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-6">
+    <div class="article-actions">
+      <%= link_to '<< Back to course', course_path(@best_display.course), class: "btn btn-sm btn-default" %>
+      <% unless @best_display.course.simple? %>
+          <%= link_to 'Choose a segment >', segment_picker_course_path(@best_display.course), class: "btn btn-sm btn-default" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-xs-6">
+    <div class="text-right">
     </div>
   </div>
 </div>

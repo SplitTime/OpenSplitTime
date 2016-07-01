@@ -17,7 +17,7 @@
         <td><%= "#{pluralize(event.effort_count, 'effort')}" %></td>
         <td>
           <% if event.available_live && @current_user.authorized_for_live?(event) %>
-              <%= link_to 'Available Live', live_entry_live_event_path(event), class: "btn btn-xs btn-warning" %>
+              <%= link_to 'Live Entry', live_entry_live_event_path(event), class: "btn btn-xs btn-warning" %>
           <% end %>
         </td>
       </tr>

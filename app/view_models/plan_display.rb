@@ -19,6 +19,10 @@ class PlanDisplay
     end
   end
 
+  def course_name
+    course.name
+  end
+
   private
 
   attr_reader :event, :mock_effort

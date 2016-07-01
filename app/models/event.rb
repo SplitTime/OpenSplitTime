@@ -91,4 +91,12 @@ class Event < ActiveRecord::Base
     ordered_splits.map(&:sub_split_bitkey_hashes).flatten
   end
 
+  def course_name
+    course.name
+  end
+
+  def race_name
+    race ? race.name : nil
+  end
+
 end

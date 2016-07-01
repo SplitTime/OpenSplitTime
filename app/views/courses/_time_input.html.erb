@@ -17,19 +17,22 @@
     </div>
     <div class="row">
       <div class="col-xs-2 plan-label">
-        <%= label :expected_time, 'Expected time' %>
+        <strong>Expected time</strong>
       </div>
-      <div class="col-xs-2">
-        <%= text_field_tag :expected_time,
-                           params[:expected_time],
-                           placeholder: 'hh:mm',
-                           autofocus: true,
-                           class: 'form-control search-box input-sm' %>
-      </div>
-      <div class="col-xs-2">
-        <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
-            Create my plan
-        <% end %>
+      <div class="col-xs-2 plan-label">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <%= label :expected_time, 'Expected time' %>
+            <%= text_field_tag :expected_time,
+                               params[:expected_time],
+                               placeholder: 'hh:mm',
+                               autofocus: true,
+                               class: 'form-control search-box input-sm' %>
+            <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
+              Create my plan
+          <% end %>
+          </span>
+        </div>
       </div>
     </div>
 <% end %>

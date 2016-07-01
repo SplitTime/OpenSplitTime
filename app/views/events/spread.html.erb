@@ -1,68 +1,79 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Full spread - #{@spread_display.name}" %>
 <% end %>
-<div class="row">
-  <h2><%= "#{@spread_display.name} (#{@spread_display.display_style_text})" %></h2>
-</div>
-<div class="row">
-  <strong><%= "Start Time: #{l(@spread_display.start_time, format: :full_with_weekday)} at #{l(@spread_display.start_time, format: :ampm)}" %></strong><br/>
-  <strong>Course:</strong>
-  <%= link_to @spread_display.course_name, course_path(@spread_display.course) %>
-  <% if @spread_display.race %> |
-      <strong>Race:</strong>
-      <%= link_to @spread_display.race_name, race_path(@spread_display.race) %>
-  <% end %>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-6">
-    <%= link_to '<< Back to event', event_path(@spread_display.event), class: 'btn btn-sm btn-default' %>
+<div class="row header">
+  <div class="col-xs-5">
+    <h2><strong><%= @spread_display.name %></strong>
+    </h2>
+    <h4>
+      <%= "Start Time: #{l(@spread_display.start_time, format: :full_with_weekday)} at #{l(@spread_display.start_time, format: :ampm)}" %>
+      <br/>
+      Course: <%= link_to @spread_display.course_name, course_path(@spread_display.course) %>
+      <% if @spread_display.race %> •
+          Race: <%= link_to @spread_display.race_name, race_path(@spread_display.race) %>
+      <% end %>
+    </h4>
   </div>
-  <div class="col-xs-6">
-    <div class="text-right">
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <% if @current_user && @current_user.authorized_for_live?(@spread_display.event) && @spread_display.event.available_live %>
+          <%= link_to 'Live Data Entry', live_entry_live_event_path(@spread_display.event), method: :get, class: 'btn btn-sm btn-warning' %>
+      <% end %>
+      <div class="btn-group">
+        <%= link_to 'Search and explore', event_path(@spread_display.event), class: 'btn btn-sm btn-primary' %>
+        <% unless @spread_display.event.simple? %>
+            <%= link_to 'Full spread', spread_event_path(@spread_display.event), disabled: true, class: 'btn btn-sm btn-primary' %>
+        <% end %>
+        <% if @current_user && @current_user.authorized_to_edit?(@spread_display.event) %>
+            <%= link_to 'Admin', stage_event_path(@spread_display.event), class: 'btn btn-sm btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
       <div class="btn-group">
         <%= link_to 'Elapsed time', spread_event_path(@spread_display.event,
                                                       style: 'elapsed',
-                                                      sort_by: params[:sort_by]),
+                                                      sort: params[:sort]),
                     disabled: params[:style] == 'elapsed',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'AM / PM', spread_event_path(@spread_display.event,
-                                                 style: 'time_of_day',
-                                                 sort_by: params[:sort_by]),
-                    disabled: params[:style] == 'time_of_day',
+                                                 style: 'ampm',
+                                                 sort: params[:sort]),
+                    disabled: params[:style] == 'ampm',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Military', spread_event_path(@spread_display.event,
                                                   style: 'military',
-                                                  sort_by: params[:sort_by]),
+                                                  sort: params[:sort]),
                     disabled: params[:style] == 'military',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Segment time', spread_event_path(@spread_display.event,
                                                       style: 'segment',
-                                                      sort_by: params[:sort_by]),
+                                                      sort: params[:sort]),
                     disabled: params[:style] == 'segment',
                     class: 'btn btn-sm btn-primary' %>
       </div>
+
     </div>
   </div>
 </div>
-<hr>
+
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
     <th><%= link_to 'Place', spread_event_path(@spread_display.event,
                                                style: params[:style],
-                                               sort_by: 'place') %></th>
+                                               sort: 'place') %></th>
     <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
                                              style: params[:style],
-                                             sort_by: 'bib') %></th>
-    <% if params[:sort_by] == 'last' %>
+                                             sort: 'bib') %></th>
+    <% if params[:sort] == 'last' %>
         <th><%= link_to 'Name', spread_event_path(@spread_display.event,
                                                   style: params[:style],
-                                                  sort_by: 'first') %></th>
+                                                  sort: 'first') %></th>
     <% else %>
         <th><%= link_to 'Name', spread_event_path(@spread_display.event,
                                                   style: params[:style],
-                                                  sort_by: 'last') %></th>
+                                                  sort: 'last') %></th>
     <% end %>
     <th>Category</th>
     <th>From</th>
@@ -95,7 +106,7 @@
                   <% else %>
                       <%= [time_format_hhmm(cluster.segment_time), time_format_minutes(cluster.time_in_aid)].join(' / ') %>
                   <% end %>
-              <% when 'time_of_day' %>
+              <% when 'ampm' %>
                   <%= cluster.days_and_times.map { |time| day_time_format(time) }.join(' / ') %>
               <% when 'military' %>
                   <%= cluster.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %>

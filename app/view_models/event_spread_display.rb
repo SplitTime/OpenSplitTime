@@ -5,8 +5,9 @@ class EventSpreadDisplay
 
   # initialize(event, params = {})
   # event is an ordinary event object
-  # params is passed from the controller and may include
-  # params[:style] (elapsed / time-of-day / segment)
+  # params should include
+  # params[:style] (elapsed / ampm / military / segment) and
+  # params[:sort] (place / bib / first / last)
 
   def initialize(event, params = {})
     @event = event
@@ -15,7 +16,7 @@ class EventSpreadDisplay
     @split_times = @event.split_times.group_by(&:effort_id)
     @efforts = @event.efforts.sorted_with_finish_status
     @effort_times_rows = []
-    sort_efforts(params[:sort_by])
+    sort_efforts(params[:sort])
     create_effort_times_rows
   end
 
@@ -35,17 +36,17 @@ class EventSpreadDisplay
     case display_style
       when 'segment'
         'Segment times'
-      when 'time_of_day'
-        'Time of Day'
+      when 'ampm'
+        'Time of day'
       when 'military'
-        'Military'
+        'Military time'
       else
         'Elapsed times'
     end
   end
 
   def relevant_splits
-    display_style == 'time_of_day' ? splits : splits_without_start
+    (display_style == 'ampm') || (display_style == 'military') ? splits : splits_without_start
   end
 
   private

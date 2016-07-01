@@ -13,8 +13,8 @@
 				if (bgTopPosition < 0) {
 					bgTopPosition = 0;
 				}
-				$this.css('background-position', '0 ' + bgTopPosition + 'px')
-			} );
+				$this.css('background-position', '0 ' + bgTopPosition + 'px');
+			});
 		}
 	}
 	$(document).ready(function() {

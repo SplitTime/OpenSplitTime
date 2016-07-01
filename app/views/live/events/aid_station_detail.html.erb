@@ -2,15 +2,17 @@
     <% "OpenSplitTime: Aid station detail - #{@aid_station_detail.split_name} - #{@aid_station_detail.event_name}" %>
 <% end %>
 <div class="row header">
-  <div class="col-xs-8">
+  <div class="col-xs-7">
     <h2><%= "#{@aid_station_detail.split_name}: #{@aid_station_detail.event_name}" %></h2>
     <h4><%= "Aid station detailed report as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
   </div>
-  <div class="col-xs-4 page-navigation">
-    <%= link_to '< Event', event_path(@event), class: 'btn btn-sm btn-warning' %>
-    <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
-    <%= link_to 'Progress', progress_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
-    <%= link_to 'Aid stations', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+  <div class="col-xs-5 page-navigation">
+    <%= link_to 'View Event', event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <div class="btn-group">
+      <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-warning' %>
+      <%= link_to 'Progress', progress_report_live_event_path(@event), class: 'btn btn-sm btn-warning' %>
+      <%= link_to 'Aid stations', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-warning' %>
+    </div>
   </div>
 </div>
 <div class="row">
@@ -30,45 +32,56 @@
   <div class="col-xs-8">
     <% if @aid_station_detail.efforts_recorded_out %>
         <strong><%= "Of #{pluralize(@aid_station_detail.efforts_started_count, 'effort')} started:" %></strong><br/>
-        <%= "#{@aid_station_detail.efforts_recorded_in.count} reported times into this station" %><br/>
-        <%= "#{@aid_station_detail.efforts_recorded_out.count} reported times out of this station" %><br/>
-        <%= "#{@aid_station_detail.efforts_in_aid.count} in aid (reported into but not out of this station)" %><br/>
-        <%= "#{@aid_station_detail.efforts_missed.count} missed (not recorded here but recorded at a later station)" %>
+        <%= "#{@aid_station_detail.efforts_recorded_in_count} reported times into this station" %><br/>
+        <%= "#{@aid_station_detail.efforts_recorded_out_count} reported times out of this station" %><br/>
+        <%= "#{@aid_station_detail.efforts_in_aid_count} in aid (reported into but not out of this station)" %><br/>
+        <%= "#{@aid_station_detail.efforts_missed_count} missed (not recorded here but recorded at a later station)" %>
         <br/>
-        <%= "#{@aid_station_detail.efforts_dropped_here.count} dropped at this station" %><br/>
-        <%= "#{@aid_station_detail.efforts_expected.count} expected (in progress but not yet here)" %>
+        <%= "#{@aid_station_detail.efforts_dropped_here_count} dropped at this station" %><br/>
+        <%= "#{@aid_station_detail.efforts_expected_count} expected (in progress but not yet here)" %>
     <% end %>
   </div>
 </div>
 <hr>
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-xs-4">
     <%= link_to '<< Back to aid station report', aid_station_report_live_event_path(@aid_station_detail.event), class: "btn btn-sm btn-default" %>
-    <%= link_to 'Recorded here',
-                aid_station_detail_live_event_path(@aid_station_detail.event,
-                                                   aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'recorded'),
-                class: "btn btn-sm btn-primary" %>
-    <%= link_to 'In aid',
-                aid_station_detail_live_event_path(@aid_station_detail.event,
-                                                   aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'in_aid'),
-                class: "btn btn-sm btn-primary" %>
-    <%= link_to 'Missed here',
-                aid_station_detail_live_event_path(@aid_station_detail.event,
-                                                   aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'missed'),
-                class: "btn btn-sm btn-primary" %>
-    <%= link_to 'Dropped here',
-                aid_station_detail_live_event_path(@aid_station_detail.event,
-                                                   aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'dropped'),
-                class: "btn btn-sm btn-primary" %>
-    <%= link_to 'Expected',
-                aid_station_detail_live_event_path(@aid_station_detail.event,
-                                                   aid_station: @aid_station_detail.aid_station,
-                                                   efforts: 'expected'),
-                class: "btn btn-sm btn-primary" %>
+  </div>
+  <div class="col-xs-8">
+    <div class="text-right">
+      <div class="btn-group">
+        <%= link_to 'Recorded here',
+                    aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                       aid_station: @aid_station_detail.aid_station,
+                                                       efforts: 'recorded'),
+                    disabled: params[:efforts] == 'recorded',
+                    class: "btn btn-sm btn-primary" %>
+        <%= link_to 'In aid',
+                    aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                       aid_station: @aid_station_detail.aid_station,
+                                                       efforts: 'in_aid'),
+                    disabled: params[:efforts] == 'in_aid',
+                    class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Missed here',
+                    aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                       aid_station: @aid_station_detail.aid_station,
+                                                       efforts: 'missed'),
+                    disabled: params[:efforts] == 'missed',
+                    class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Dropped here',
+                    aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                       aid_station: @aid_station_detail.aid_station,
+                                                       efforts: 'dropped'),
+                    disabled: params[:efforts] == 'dropped',
+                    class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Expected',
+                    aid_station_detail_live_event_path(@aid_station_detail.event,
+                                                       aid_station: @aid_station_detail.aid_station,
+                                                       efforts: 'expected'),
+                    disabled: params[:efforts] == 'expected',
+                    class: "btn btn-sm btn-primary" %>
+      </div>
+    </div>
   </div>
 </div>
 <hr>

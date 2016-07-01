@@ -3,16 +3,19 @@
 <% end %>
 <div class="row header">
 
-  <div class="col-xs-8 page-title">
+  <div class="col-xs-7 page-title">
     <h2></h2>
-    <%= content_tag "div", id: "js-event-id", "data-event-id": params[:id] do %><% end %>
+    <%= content_tag "div", id: "js-event-id", "data-event-id": params[:id] do %>
+    <% end %>
   </div>
 
-  <div class="col-xs-4 page-navigation">
-    <%= link_to '< Event', event_path(@event), class: 'btn btn-sm btn-warning' %>
-    <%= link_to 'Live entry', live_entry_live_event_path(@event), disabled: true, class: 'btn btn-sm btn-primary' %>
-    <%= link_to 'Progress', progress_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
-    <%= link_to 'Aid stations', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-primary' %>
+  <div class="col-xs-5 page-navigation">
+    <%= link_to 'View Event', event_path(@event), class: 'btn btn-sm btn-primary' %>
+    <div class="btn-group">
+      <%= link_to 'Live entry', live_entry_live_event_path(@event), disabled: true, class: 'btn btn-sm btn-warning' %>
+      <%= link_to 'Progress', progress_report_live_event_path(@event), class: 'btn btn-sm btn-warning' %>
+      <%= link_to 'Aid stations', aid_station_report_live_event_path(@event), class: 'btn btn-sm btn-warning' %>
+    </div>
   </div>
 
 </div>
@@ -103,7 +106,8 @@
     </div>
     <div class="splits-slider-data col-xs-12">
       <div class="col-xs-6 data-label active">Name:</div>
-      <div class="col-xs-6"><a id="js-effort-name" data-toggle="modal" data-target="#js-html-modal" data-effort-id="">&nbsp;</a></div>
+      <div class="col-xs-6">
+        <a id="js-effort-name" data-toggle="modal" data-target="#js-html-modal" data-effort-id="">&nbsp;</a></div>
 
       <div class="col-xs-6 data-label">Last Reported:</div>
       <div id="js-effort-last-reported" class="col-xs-6 ">&nbsp;</div>
@@ -140,16 +144,16 @@
         </tr>
         </thead>
         <tbody>
-          <tr style="display: none">
-            <td data-order="0"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+        <tr style="display: none">
+          <td data-order="0"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
         </tbody>
       </table>
     </div>

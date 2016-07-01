@@ -6,6 +6,7 @@
     <th>Name</th>
     <th>Date and Time</th>
     <th>Details</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -13,7 +14,11 @@
       <tr>
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
         <td><%= l(event.start_time, format: :full_with_time) %></td>
-        <td><%= "#{pluralize(event.effort_count, 'effort')}" %>
+        <td><%= "#{pluralize(event.effort_count, 'effort')}" %></td>
+        <td>
+          <% if event.available_live && @current_user.authorized_for_live?(event) %>
+              <%= link_to 'Live Entry', live_entry_live_event_path(event), class: "btn btn-xs btn-warning" %>
+          <% end %>
         </td>
       </tr>
   <% end %>

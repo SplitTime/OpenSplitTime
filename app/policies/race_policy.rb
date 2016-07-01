@@ -30,10 +30,6 @@ class RacePolicy
     @current_user.authorized_to_edit?(@race)
   end
 
-  def add_steward?
-    @current_user.authorized_to_edit?(@race)
-  end
-
   def remove_steward?
     @current_user.authorized_to_edit?(@race)
   end

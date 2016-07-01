@@ -1,37 +1,35 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Analyze effort - #{@effort_analysis.full_name} - #{@effort_analysis.event_name}" %>
 <% end %>
-<div class="row">
-  <div class="col-xs-12">
-    <h1>
-      Analysis:
+<div class="row header">
+  <div class="col-xs-7">
+    <h2><strong>
       <% if @effort_analysis.participant %>
           <%= link_to @effort_analysis.full_name, participant_path(@effort_analysis.participant) %>
       <% else %>
           <%= @effort_analysis.full_name %>
       <% end %>
-      <%= "(#{@effort_analysis.bib_number})" if @effort_analysis.bib_number %>
-      • <%= link_to @effort_analysis.event_name, event_path(@effort_analysis.event) %>
-    </h1>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
+      <br/><%= link_to @effort_analysis.event_name, event_path(@effort_analysis.event) %></strong>
+    </h2>
     <% overall_place, gender_place = @effort_analysis.combined_places %>
-    <h3><%= "#{@effort_analysis.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_analysis.gender.titleize}" %></h3>
+    <h4>
+      <%= "#{@effort_analysis.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_analysis.gender.titleize}" %>
+      <%= "• Bib ##{@effort_analysis.bib_number}" if @effort_analysis.bib_number %>
+    </h4>
+  </div>
+  <div class="col-xs-5 page-navigation">
+    <div class="row">
+      <div class="btn-group">
+        <%= link_to "Split times", effort_path(@effort_analysis.effort), class: "btn btn-sm btn-primary" %>
+        <%= link_to "Analyze times", analyze_effort_path(@effort_analysis.effort), disabled: true, class: "btn btn-sm btn-primary" %>
+        <%= link_to "Places + peers", place_effort_path(@effort_analysis.effort), class: "btn btn-sm btn-primary" %>
+      </div>
+    </div>
+    <div class="page-navigation-text">
+      <h4>ANALYSIS</h4>
+    </div>
   </div>
 </div>
-
-<hr>
-<div class="row">
-  <div class="col-xs-8">
-    <%= link_to "< #{@effort_analysis.event_name}", event_path(@effort_analysis.event), class: "btn btn-sm btn-default" %>
-    <%= link_to "View times", effort_path(@effort_analysis.effort), class: "btn btn-sm btn-default" %>
-    <%= link_to "Analyze times", analyze_effort_path(@effort_analysis.effort), disabled: true, class: "btn btn-sm btn-default" %>
-    <%= link_to "Place and peers", place_effort_path(@effort_analysis.effort), class: "btn btn-sm btn-default" %>
-  </div>
-</div>
-<hr>
 
 <strong><%= "Best segments: #{@effort_analysis.best_segments}" %></strong><br/>
 <strong><%= "Worst segments: #{@effort_analysis.worst_segments}" %></strong>

@@ -7,7 +7,7 @@
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th>Bib</th>
+            <th class="text-center">Bib</th>
             <th>Name</th>
             <th>Category</th>
             <th>From</th>
@@ -20,7 +20,7 @@
               <% prior_valid_display_data = @aid_station_detail.prior_valid_display_data(live_effort.effort, @aid_station_detail.bitkey_hash_in) %>
               <% next_valid_display_data = @aid_station_detail.next_valid_display_data(live_effort.effort, @aid_station_detail.bitkey_hash_out) %>
               <tr>
-                <td><%= live_effort.bib_number %></td>
+                <td class="text-center"><%= live_effort.bib_number %></td>
                 <td class="text-nowrap">
                   <strong><%= link_to live_effort.full_name, effort_path(live_effort.id) %></strong></td>
                 <td class="text-nowrap"><%= live_effort.bio_historic %></td>

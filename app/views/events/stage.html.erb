@@ -1,56 +1,63 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Stage/administer event - #{@event.name}" %>
 <% end %>
-<div class="row">
-  <div class="col-md-8">
-    <h2><%= "#{@event.name}: Stage/administer" %></h2>
+<div class="row header">
+  <div class="col-xs-5">
+    <h2><strong><%= @event.name %></strong>
+    </h2>
+    <h4>
+      <%= "Start Time: #{l(@event.start_time, format: :full_with_weekday)} at #{l(@event.start_time, format: :ampm)}" %>
+      <br/>
+      Course: <%= link_to @event.course_name, course_path(@event.course) %>
+      <% if @event.race %> •
+          Race: <%= link_to @event.race_name, race_path(@event.race) %>
+      <% end %>
+    </h4>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <strong><%= "#{l @event.start_time, format: :full_with_weekday}" %></strong><br/>
-    <strong>Course:</strong>
-    <%= link_to @event.course.name, course_path(@event.course) %>
-    <% if @event.race_id? %> |
-        <strong>Race:</strong>
-        <%= link_to @event.race.name, race_path(@event.race) %>
-    <% end %>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-10">
-    <%= link_to '< Back to event', event_path(@event), class: 'btn btn-sm btn-default' %>
-    <% if @current_user && @current_user.authorized_to_edit?(@event) %>
-        <%= link_to 'Edit this event', edit_event_path(@event), class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Set time data status', set_data_status_event_path(@event),
-                    method: :put,
-                    class: "btn btn-sm btn-success" %>
-        <% if @event.available_live %>
-            <%= link_to 'Disable live',
-                        live_disable_event_path(@event),
-                        data: {confirm: "NOTE: This will disable all live entry actions for #{@event.name}, including any that may be in process. Are you sure you want to proceed?"},
-                        method: :put,
-                        class: 'btn btn-sm btn-warning' %>
-        <% else %>
-            <%= link_to 'Enable live',
-                        live_enable_event_path(@event),
-                        method: :put,
-                        class: 'btn btn-sm btn-warning' %>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <% if @current_user && @current_user.authorized_for_live?(@event) && @event.available_live %>
+          <%= link_to 'Live Data Entry', live_entry_live_event_path(@event), method: :get, class: 'btn btn-sm btn-warning' %>
+      <% end %>
+      <div class="btn-group">
+        <%= link_to 'Search and explore', event_path(@event), class: 'btn btn-sm btn-primary' %>
+        <% unless @event.simple? %>
+            <%= link_to 'Full spread', spread_event_path(@event), class: 'btn btn-sm btn-primary' %>
         <% end %>
-        <% if @event.race %>
-            <%= link_to 'Add/remove stewards', stewards_race_path(@event.race), class: "btn btn-sm btn-warning" %>
-        <% end %>
-        <%= link_to 'Delete this event', event_path(@event, referrer_path: events_path),
-                    method: :delete,
-                    data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
-                    class: 'btn btn-sm btn-danger' %>
-    <% end %>
+        <%= link_to 'Admin', stage_event_path(@event), disabled: true, class: 'btn btn-sm btn-primary' %>
+      </div>
+    </div>
+    <div class="row">
+      <% if @current_user && @current_user.authorized_to_edit?(@event) %>
+          <% if @event.available_live %>
+              <%= link_to 'Disable live',
+                          live_disable_event_path(@event),
+                          data: {confirm: "NOTE: This will disable all live entry actions for #{@event.name}, including any that may be in process. Are you sure you want to proceed?"},
+                          method: :put,
+                          class: 'btn btn-sm btn-warning' %>
+          <% else %>
+              <%= link_to 'Enable live',
+                          live_enable_event_path(@event),
+                          method: :put,
+                          class: 'btn btn-sm btn-warning' %>
+          <% end %>
+          <% if @event.race %>
+              <%= link_to 'Stewards', stewards_race_path(@event.race), class: 'btn btn-sm btn-warning' %>
+          <% end %>
+          <%= link_to 'Edit event', edit_event_path(@event), class: 'btn btn-sm btn-primary' %>
+          <%= link_to 'Set data status', set_data_status_event_path(@event),
+                      method: :put,
+                      class: 'btn btn-sm btn-success' %>
+          <%= link_to 'Delete event', event_path(@event, referrer_path: events_path),
+                      method: :delete,
+                      data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
+                      class: 'btn btn-sm btn-danger' %>
+      <% end %>
+    </div>
   </div>
 </div>
 
 <% if @current_user && @current_user.authorized_to_edit?(@event) %>
-    <hr>
     <div class="article-actions">
       <div class="row">
         <div class="col-xs-4">

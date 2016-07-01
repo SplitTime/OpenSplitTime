@@ -24,6 +24,66 @@ class AidStationDetail
     efforts_expected.count
   end
 
+  def efforts_expected_ids
+    efforts_expected.map(&:id)
+  end
+
+  def efforts_expected_table_title
+    "#{persons(efforts_expected_count)} #{is_are(efforts_expected_count)} expected at #{aid_station.split_name}"
+  end
+
+  def efforts_dropped_here_count
+    efforts_dropped_here.count
+  end
+
+  def efforts_dropped_here_ids
+    efforts_dropped_here.map(&:id)
+  end
+
+  def efforts_dropped_here_table_title
+    "#{persons(efforts_dropped_here_count)} #{has_have(efforts_dropped_here_count)} dropped at #{aid_station.split_name}"
+  end
+
+  def efforts_missed_count
+    efforts_missed.count
+  end
+
+  def efforts_missed_ids
+    efforts_missed.map(&:id)
+  end
+
+  def efforts_missed_table_title
+    "#{persons(efforts_missed_count)} #{was_were(efforts_missed_count)} missed at #{aid_station.split_name} (not recorded here but recorded at a later aid station)"
+  end
+
+  def efforts_recorded_in_count
+    efforts_recorded_in.count
+  end
+
+  def efforts_recorded_in_ids
+    efforts_recorded_in.map(&:id)
+  end
+
+  def efforts_recorded_in_table_title
+    "#{persons(efforts_recorded_in_count)} #{was_were(efforts_recorded_in_count)} recorded in at #{aid_station.split_name}"
+  end
+
+  def efforts_recorded_out_count
+    efforts_recorded_out.count
+  end
+
+  def efforts_recorded_out_ids
+    efforts_recorded_out.map(&:id)
+  end
+
+  def efforts_recorded_out_table_title
+    "#{persons(efforts_recorded_out_count)} #{was_were(efforts_recorded_out_count)} recorded in at #{aid_station.split_name}"
+  end
+
+  def efforts_in_aid_count
+    efforts_in_aid.count
+  end
+
   def split_name
     split.base_name
   end
@@ -138,6 +198,22 @@ class AidStationDetail
 
   def start_split_id
     ordered_split_ids.first
+  end
+
+  def persons(number)
+    number == 1 ? "#{number} person" : "#{number} people"
+  end
+  
+  def was_were(number)
+    number == 1 ? 'was' : 'were'
+  end
+
+  def is_are(number)
+    number == 1 ? 'is' : 'are'
+  end
+
+  def has_have(number)
+    number == 1 ? 'has' : 'have'
   end
 
 end

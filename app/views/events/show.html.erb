@@ -5,48 +5,41 @@
         <% "OpenSplitTime: #{@event_display.name}" %>
     <% end %>
 <% end %>
-<div class="row">
-  <div class="col-xs-6">
-    <h2><%= @event_display.name %></h2>
+<div class="row header">
+  <div class="col-xs-5">
+    <h2><strong><%= @event_display.name %></strong>
+    </h2>
+    <h4>
+      <%= "Start Time: #{l(@event_display.start_time, format: :full_with_weekday)} at #{l(@event_display.start_time, format: :ampm)}" %>
+      <br/>
+      Course: <%= link_to @event_display.course_name, course_path(@event_display.course) %>
+      <% if @event_display.race %> •
+          Race: <%= link_to @event_display.race_name, race_path(@event_display.race) %>
+      <% end %>
+    </h4>
   </div>
-  <% if @current_user && @current_user.authorized_for_live?(@event_display.event) && @event_display.event.available_live %>
-      <div class="col-xs-6">
-        <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_display.event), method: :get, class: 'btn btn-margin-top btn-lg btn-warning' %>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <% if @current_user && @current_user.authorized_for_live?(@event_display.event) && @event_display.event.available_live %>
+          <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_display.event), method: :get, class: 'btn btn-sm btn-warning' %>
+      <% end %>
+      <div class="btn-group">
+        <%= link_to 'Search and explore', event_path(@event_display.event), disabled: true, class: 'btn btn-sm btn-primary' %>
+        <% unless @event_display.event.simple? %>
+            <%= link_to 'Full spread', spread_event_path(@event_display.event), class: 'btn btn-sm btn-primary' %>
+        <% end %>
+        <% if @current_user && @current_user.authorized_to_edit?(@event_display.event) %>
+            <%= link_to 'Admin', stage_event_path(@event_display.event), class: 'btn btn-sm btn-primary' %>
+        <% end %>
       </div>
-  <% end %>
-</div>
-<div class="row">
-  <div class="col-xs-6">
-    <strong><%= "#{l @event_display.start_time, format: :full_with_weekday}" %></strong><br/>
-    <strong>Course:</strong>
-    <%= link_to @event_display.course_name, course_path(@event_display.course) %>
-    <% if @event_display.race %> |
-        <strong>Race:</strong>
-        <%= link_to @event_display.race_name, race_path(@event_display.race) %>
-    <% end %>
+    </div>
+    <div class="row">
+      <%= link_to 'Plan my effort', plan_effort_course_path(@event_display.course), method: :get, class: 'btn btn-sm btn-primary' %>
+      <%= link_to 'All-time best efforts', best_efforts_course_path(@event_display.course), class: 'btn btn-sm btn-primary' %>
+    </div>
   </div>
 </div>
-<hr>
-<div class="row">
-  <div class="col-xs-12">
-    <%= link_to '<< Event search', events_path, class: "btn btn-sm btn-default" %>
-    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <%= link_to 'Plan my effort', plan_effort_course_path(@event_display.course), method: :get, class: 'btn btn-sm btn-default' %>
-    <%= link_to 'All-time best efforts >', best_efforts_course_path(@event_display.course), class: "btn btn-sm btn-default" %>
-    <% unless @event_display.simple? %>
-        <%= link_to 'Full spread >>', spread_event_path(@event_display.event), class: "btn btn-sm btn-default" %>
-    <% end %>
-    <% if @current_user && @current_user.authorized_to_edit?(@event_display.event) %>
-        <%= link_to 'Stage/administer this event', stage_event_path(@event_display.event), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this event',
-                    event_path(@event_display.event, referrer_path: events_path),
-                    method: :delete,
-                    data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
-                    class: 'btn btn-sm btn-danger' %>
-    <% end %>
-  </div>
-</div>
-<hr>
+
 <% if @event_display.all_efforts_count < 1 %>
     <strong>No efforts yet associated with this event.</strong>
 <% else %>

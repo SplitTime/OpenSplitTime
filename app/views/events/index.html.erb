@@ -6,11 +6,11 @@
     <% end %>
 <% end %>
 <div class="row">
-  <div class="col col-xs-6">
-    <h1>Events</h1>
+  <div class="col col-xs-4">
+    <h2>Events</h2>
   </div>
-  <div class="col-xs-4">
-    <%= link_to 'Create New Event', new_event_path,
+  <div class="col-xs-3 text-right">
+    <%= link_to 'Create event on existing course', new_event_path,
                 class: 'btn btn-sm btn-success btn-margin-lg' %>
   </div>
 </div>
@@ -23,16 +23,20 @@
   </div>
 </div>
 
-<% if @events.present? %>
-    <%= render 'events', events: @events %>
-<% else %>
-    <br/>
-    <% if params[:search_param].blank? %>
-        <p><strong>Enter an event name to search</strong></p>
+<div class="row">
+  <div class="col-xs-8">
+    <% if @events.present? %>
+        <%= render 'events', events: @events %>
+    <% else %>
+        <br/>
+        <% if params[:search_param].blank? %>
+            <p><strong>Enter an event name to search</strong></p>
         <% else %>
-        <p><strong>No events match this search</strong></p>
+            <p><strong>No events match this search</strong></p>
+        <% end %>
     <% end %>
-<% end %>
+  </div>
+</div>
 
 <hr>
 <div class="row">

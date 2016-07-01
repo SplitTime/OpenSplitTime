@@ -56,7 +56,6 @@ Rails.application.routes.draw do
   end
   resources :races do
     member { get :stewards }
-    member { put :add_steward }
     member { put :remove_steward }
   end
   resources :participants do

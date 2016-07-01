@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627160322) do
+ActiveRecord::Schema.define(version: 20160701060543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,12 +34,13 @@ ActiveRecord::Schema.define(version: 20160627160322) do
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
-    t.string   "name",        limit: 64, null: false
+    t.string   "name",            limit: 64, null: false
     t.text     "description"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.datetime "next_start_time"
   end
 
   create_table "efforts", force: :cascade do |t|

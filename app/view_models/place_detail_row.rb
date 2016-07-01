@@ -89,10 +89,6 @@ class PlaceDetailRow
     "#{effort_name} was in #{split.base_name} with #{persons(together_in_aid_count)}"
   end
 
-  def persons(number)
-    number == 1 ? "#{number} person" : "#{number} people"
-  end
-
   def split_id
     split.id
   end
@@ -103,6 +99,10 @@ class PlaceDetailRow
 
   def effort_name
     effort.full_name
+  end
+
+  def persons(number)
+    number == 1 ? "#{number} person" : "#{number} people"
   end
 
 end

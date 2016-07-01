@@ -1,40 +1,36 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Plan my effort - #{@plan_display.course.name}" %>
+    <% "OpenSplitTime: Plan my effort - #{@plan_display.course_name}" %>
 <% end %>
-<div class="row">
-  <div class="col-xs-12">
-    <h3><%= "#{@current_user.full_name}" %></h3>
-    <h2>
-      <%= "#{@plan_display.course.name} pacing plan" %>
-      <%= "for a #{time_format_hhmm(@plan_display.expected_time)} goal time" if @plan_display.expected_time %>
-    </h2>
+<div class="row header">
+  <div class="col-xs-7">
+    <h2><strong>
+      <%= link_to @plan_display.course_name, course_path(@plan_display.course) %><br/>
+    </strong></h2>
+    <strong>
+      <% if @plan_display.expected_time %>
+          <%= "Analyzed #{pluralize(@plan_display.relevant_efforts_count, 'effort')} from #{'year'.pluralize(@plan_display.event_years_analyzed.count)} #{@plan_display.event_years_analyzed.to_sentence}" %>
+      <% end %>
+    </strong>
+  </div>
+  <div class="col-xs-5 page-navigation">
+    <div class="page-navigation-text">
+      <% if @plan_display.expected_time %>
+          <h4>
+            <%= "PACING PLAN FOR A #{time_format_hhmm(@plan_display.expected_time)} FINISH TIME" %><br/>
+            <%= "PREPARED FOR #{@current_user.full_name.upcase}" %>
+          </h4>
+      <% end %>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-xs-12">
-    <% if @plan_display.expected_time %>
-        <h3><%=  %></h3>
-            <h3><%= "Analyzed #{pluralize(@plan_display.relevant_efforts_count, 'effort')} from #{'year'.pluralize(@plan_display.event_years_analyzed.count)} #{@plan_display.event_years_analyzed.to_sentence}" %></h3>
-    <% end %>
-  </div>
-</div>
-
-<hr>
-<div class="row">
-  <div class="col-xs-6">
-    <%= link_to '<< Back to course', course_path(@plan_display.course), class: "btn btn-sm btn-default" %>
-    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-  </div>
-</div>
-<hr>
 
 <%= render 'time_input' %>
 
 <hr>
 <% if @plan_display.expected_time %>
     <% if @plan_display.relevant_efforts_count > 0 %>
-    <%= render 'plan_detail'%>
-        <% else %>
-          <h4>Found no efforts close to that time.</h4>
-        <% end %>
+        <%= render 'plan_detail' %>
+    <% else %>
+        <h4>Found no efforts close to that time.</h4>
+    <% end %>
 <% end %>

@@ -29,4 +29,8 @@ class CourseShowView
     10
   end
 
+  def course_has_locations?
+    locations.present?
+  end
+
 end

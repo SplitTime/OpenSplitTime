@@ -55,7 +55,7 @@ class PlaceDetailView
 
   def peers
     indexed_efforts = event_efforts.index_by(&:id)
-    frequent_encountered_ids.map { |effort_id| indexed_efforts[effort_id] }
+    frequent_encountered_ids.map { |effort_id| indexed_efforts[effort_id] }.compact
   end
 
   private

@@ -8,14 +8,11 @@
     </strong></h2>
     <strong>
       <% if @plan_display.expected_time %>
-          <br/>
           <%= "Analyzed #{pluralize(@plan_display.relevant_efforts_count, 'effort')} from #{'year'.pluralize(@plan_display.event_years_analyzed.count)} #{@plan_display.event_years_analyzed.to_sentence}" %>
       <% end %>
     </strong>
   </div>
   <div class="col-xs-5 page-navigation">
-    <div class="row">
-    </div>
     <div class="page-navigation-text">
       <% if @plan_display.expected_time %>
           <h4>

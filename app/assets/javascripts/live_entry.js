@@ -227,6 +227,7 @@
                 $('#js-clear-entry-form').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.liveEntryForm.clearSplitsData();
+                    $('#js-bib-number').focus();
                     return false;
                 });
 
@@ -269,7 +270,7 @@
                 $('#js-html-modal').on('show.bs.modal', function(e) {
                     $(this).find('modal-body').html('');
                     var $source = $(e.relatedTarget);
-                    var $body = $(this).find('.modal-body');
+                    var $body = $(this).find('.js-modal-content');
                     if ($source.attr('data-effort-id')) {
                         var data = {
                             'effortId': $source.attr('data-effort-id')
@@ -623,6 +624,7 @@
                             if ($deleteButton.hasClass('confirm')) {
                                 if (canDelete) {
                                     liveEntry.timeRowsTable.removeTimeRows(nodes);
+                                    $( '#split-select' ).focus();
                                 }
                                 $deleteButton.removeClass('confirm');
                                 $deleteWarning = $('#js-delete-all-warning').hide().detach();

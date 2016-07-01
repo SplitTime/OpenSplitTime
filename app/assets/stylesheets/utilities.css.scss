@@ -2,8 +2,8 @@
 Efforts Popover
 ************/
 
-.popover.efforts-popover {
-	max-height: 500px;
+.popover.efforts-popover .popover-content {
+	max-height: 400px;
 	overflow-x: visible;
 	overflow-y: scroll;
 }

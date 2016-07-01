@@ -55,7 +55,7 @@ class PlaceDetailView
 
   def peers
     indexed_efforts = event_efforts.index_by(&:id)
-    frequent_encountered_ids.map { |effort_id| indexed_efforts[effort_id] }.compact
+    frequent_encountered_ids.map { |effort_id| indexed_efforts[effort_id] }
   end
 
   private
@@ -167,16 +167,12 @@ class PlaceDetailView
   end
 
   def frequent_encountered_ids
-    encountered_ids = place_detail_rows.map(&:together_in_aid_ids).flatten +
+    encountered_ids = (place_detail_rows.map(&:together_in_aid_ids).flatten +
         place_detail_rows.map(&:passed_segment_ids).flatten +
-        place_detail_rows.map(&:passed_by_segment_ids).flatten
+        place_detail_rows.map(&:passed_by_segment_ids).flatten).compact
     counts = Hash.new(0)
     encountered_ids.each { |id| counts[id] += 1 }
     counts.sort_by { |_, count| count }.reverse.first(5).map { |e| e[0] }
-  end
-
-  def top_passed
-
   end
 
 end

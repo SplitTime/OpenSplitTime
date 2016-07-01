@@ -1,19 +1,53 @@
 <% content_for :title do %>Home
 <% end %>
-<div class="center jumbotron">
-  <h1></h1>
-  <br/>
-  <hr>
-  <h1>All Your Data.</h1><br>
-  <h1>All The Time.</h1><br>
-  <h1>Always Free.</h1><br>
-  <hr>
-  <br/>
-  <div class="row">
-  <div class="text-center">
-    <%= link_to 'Find someone', participants_path, class: 'btn btn-lg btn-primary' %>
-    <%= link_to 'Search events', events_path, class: 'btn btn-lg btn-primary' %>
-    <%= link_to 'Import data', getting_started_path, class: 'btn btn-lg btn-primary' %>
+<div class="homepage">
+  <div class="row first">
+    <%= image_tag("home-top.jpg", alt: 'Mountain Hike First', class: 'bg-img') %>
+    <div class="over-text">
+      <h2>Track your endurance data</h2>
+      <p>OpenSplitTime makes it easy to collect endurance event data. A free resource and community built by the endurance athletes that use it. Join the Community and Go git 'er done.</p>
+      <form name="homepage-signup">
+        <input type="text" name="email" />
+        <input type="submit" name="submit" />
+        <p>Already using OpenSplit Time? <span class="underline">Sign In</span> <span class="more">Learn More</span></p>
+      </form>
+    </div>
   </div>
+  <div class="row second">
+  <div class="over-text">
+    <%= image_tag("icons/icon-map.png", alt: 'Map Icon') %>
+    <h2>Plan your effort:</h2>
+    <p>Pacers, Runners and Crews can use the OpenSplitTime database to plan an Ulta effort.<br />Estimate your time and one simple screen will tell you where to be and when.</p>
+    <button class="btn">Prepare for HardRock</button>
+  </div>
+  </div>
+  <div class="row third">
+    <%= image_tag("home-middle.jpg", alt: 'Mountain Hike Second', class: 'bg-img') %>
+    <div class="over-text">
+      <h2>Search the Archives</h2>
+      <p>Look at data like you've never been able to before. Get more detail then just finish times, and find your peers. Analyze efforts.</p>
+      <button class="btn">Search Hard Rock</button>
+    </div>
+  </div>
+  <div class="row fourth">
+    <div class="over-text">
+      <%= image_tag("icons/icon-timer.png", alt: 'Timer Icon') %>
+      <h2>Open to Race Directors</h2>
+      <p>We love to compete, but many of us don't love to organize. And the tools for tracking and organizing endurance events have been sorely lacking. All that has now changed.</p>
+      <button class="btn">Search Hard Rock</button>
+    </div>
+  </div>
+  <div class="row fifth">
+    <%= image_tag("home-bottom.jpg", alt: 'Mountain Hike Third', class: 'bg-img') %>
+    <div class="over-text">
+
+    </div>
+  </div>
+  <div class="row sixth">
+    <div class="over-text">
+      <p>Endurance events change people. They create hard challenges in a soft world. They bring us together when our natural inclination might be to wander alone. They help us feel the simple joys of food, warmth, and rest by exposing us to cold, hunger and discomfort. They help us realize how much more is buried within when we seem empty and dry.</p>
+      <%= image_tag("icons/icon-s.png", alt: 'S Icon') %>
+      <h1>OpenSplitTime.org</h1>
+    </div>
   </div>
 </div>

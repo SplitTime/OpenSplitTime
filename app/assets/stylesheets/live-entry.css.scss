@@ -88,7 +88,7 @@ Mixins
 
   .time-status,
   .time-exists {
-    font-size: 18px;
+    font-size: 16px;
     padding: 6px 8px 4px 8px;
   }
 
@@ -125,9 +125,7 @@ Mixins
 .splits-slider {
 	background: $lightGray;
 	display: table-cell;
-	padding-bottom: 20px;
-	padding-left: 75px;
-	padding-right: 75px;
+	padding: 20px 75px 40px;
 	height: 100%;
 	&-plotter {
 		position: relative;

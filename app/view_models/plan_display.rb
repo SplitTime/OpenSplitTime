@@ -39,7 +39,7 @@ class PlanDisplay
   end
 
   def default_start_time
-    return course.next_start_time if course.next_start_time
+    return course.next_start_time.in_time_zone if course.next_start_time
     years_prior = Time.now.year - event.start_time.year
     shift_forward = (years_prior * 52.weeks) + ((years_prior / 6).weeks)
     event.start_time + shift_forward

@@ -10,7 +10,7 @@
                              start_year: (Date.today + 5.years).year,
                              end_year: (Date.today - 5.years).year,
                              ampm: true,
-                             default: @plan_display.start_time.in_time_zone,
+                             default: @plan_display.start_time,
                              order: [:month, :day, :year]},
                             {class: "dropdown-select-field"} %>
       </div>

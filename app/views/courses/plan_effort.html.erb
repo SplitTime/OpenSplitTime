@@ -3,22 +3,26 @@
 <% end %>
 <div class="row header">
   <div class="col-xs-7">
-    <h2><strong><%= link_to @plan_display.course_name, course_path(@plan_display.course) %></strong></h2>
-    <h4>
-      <%= "#{@current_user.full_name}" %>
+    <h2><strong>
+      <%= link_to @plan_display.course_name, course_path(@plan_display.course) %><br/>
+    </strong></h2>
+    <strong>
       <% if @plan_display.expected_time %>
           <br/>
           <%= "Analyzed #{pluralize(@plan_display.relevant_efforts_count, 'effort')} from #{'year'.pluralize(@plan_display.event_years_analyzed.count)} #{@plan_display.event_years_analyzed.to_sentence}" %>
       <% end %>
-    </h4>
+    </strong>
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="row">
-      <div class="btn-group">
-      </div>
     </div>
     <div class="page-navigation-text">
-      <h4><%= "PACING PLAN FOR A #{time_format_hhmm(@plan_display.expected_time)} EXPECTED TIME" if @plan_display.expected_time %></h4>
+      <% if @plan_display.expected_time %>
+          <h4>
+            <%= "PACING PLAN FOR A #{time_format_hhmm(@plan_display.expected_time)} FINISH TIME" %><br/>
+            <%= "PREPARED FOR #{@current_user.full_name.upcase}" %>
+          </h4>
+      <% end %>
     </div>
   </div>
 </div>
@@ -28,8 +32,8 @@
 <hr>
 <% if @plan_display.expected_time %>
     <% if @plan_display.relevant_efforts_count > 0 %>
-    <%= render 'plan_detail'%>
-        <% else %>
-          <h4>Found no efforts close to that time.</h4>
-        <% end %>
+        <%= render 'plan_detail' %>
+    <% else %>
+        <h4>Found no efforts close to that time.</h4>
+    <% end %>
 <% end %>

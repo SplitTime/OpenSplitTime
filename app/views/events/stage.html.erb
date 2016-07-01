@@ -9,7 +9,7 @@
       <%= "Start Time: #{l(@event.start_time, format: :full_with_weekday)} at #{l(@event.start_time, format: :ampm)}" %>
       <br/>
       Course: <%= link_to @event.course_name, course_path(@event.course) %>
-      <% if @event.race %> |
+      <% if @event.race %> •
           Race: <%= link_to @event.race_name, race_path(@event.race) %>
       <% end %>
     </h4>
@@ -42,13 +42,13 @@
                           class: 'btn btn-sm btn-warning' %>
           <% end %>
           <% if @event.race %>
-              <%= link_to 'Add/remove stewards', stewards_race_path(@event.race), class: 'btn btn-sm btn-warning' %>
+              <%= link_to 'Stewards', stewards_race_path(@event.race), class: 'btn btn-sm btn-warning' %>
           <% end %>
-          <%= link_to 'Edit this event', edit_event_path(@event), class: 'btn btn-sm btn-primary' %>
-          <%= link_to 'Set time data status', set_data_status_event_path(@event),
+          <%= link_to 'Edit event', edit_event_path(@event), class: 'btn btn-sm btn-primary' %>
+          <%= link_to 'Set data status', set_data_status_event_path(@event),
                       method: :put,
                       class: 'btn btn-sm btn-success' %>
-          <%= link_to 'Delete this event', event_path(@event, referrer_path: events_path),
+          <%= link_to 'Delete event', event_path(@event, referrer_path: events_path),
                       method: :delete,
                       data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
                       class: 'btn btn-sm btn-danger' %>

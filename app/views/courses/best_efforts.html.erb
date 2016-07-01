@@ -3,8 +3,7 @@
 <% end %>
 <div class="row header">
   <div class="col-xs-7">
-    <h2><strong><%= "All-time best efforts on #{@best_display.name}" %></strong></h2>
-    <h4>
+    <h2><strong><%= link_to @best_display.name, course_path(@best_display.course) -%>: All-time best</strong></h2>
       <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %><br/>
       <% if @best_display.events_count > 0 %>
 
@@ -16,7 +15,6 @@
           No efforts have been measured on this segment.
       <% end %>
       </strong>
-    </h4>
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="row">

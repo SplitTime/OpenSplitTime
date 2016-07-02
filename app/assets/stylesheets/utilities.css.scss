@@ -7,3 +7,21 @@ Efforts Popover
 	overflow-x: visible;
 	overflow-y: scroll;
 }
+
+.popover.static-popover .popover-content {
+  max-height: 150px;
+  overflow-x: visible;
+  overflow-y: scroll;
+}
+
+.popover.static-popover {
+  background: black;
+}
+
+.popover.static-popover .popover-title {
+  display: none;
+}
+
+.popover.static-popover .arrow:after {
+  border-bottom-color: black;
+}

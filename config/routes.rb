@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root to: 'visitors#index'
+  get 'hardrock', to: 'visitors#hardrock'
+  get 'photo_credits', to: 'visitors#photo_credits'
   get 'about', to: 'visitors#about'
   get 'donations', to: 'visitors#donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'

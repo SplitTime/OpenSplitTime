@@ -15,12 +15,12 @@
 
 <div class="row">
   <% if @course_view.description %>
-      <div class="col-lg-4">
+      <div class="col-md-4">
         <%= @course_view.description %>
       </div>
   <% end %>
   <% if @course_view.course_has_locations? %>
-      <div class="col-lg-8">
+      <div class="col-md-8">
         <div id="map" style="width: 550px; height: 350px;"></div>
 
         <script>

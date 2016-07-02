@@ -12,7 +12,7 @@
           <% if @participant.claimant == @current_user %>
               <strong>Hey, this is me!</strong><br/>
           <% else %>
-              <% if @current_user.admin? %>
+              <% if @current_user && @current_user.admin? %>
                   <%= "Identified as user #{@participant.claimant.full_name}" %>
               <% else %>
                   OST Member

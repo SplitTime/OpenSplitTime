@@ -4,32 +4,40 @@
   <div class="row first">
     <div class="over-text">
       <h2>Track your endurance data</h2>
-      <p>OpenSplitTime makes it easy to collect endurance event data. A free resource and community built by the endurance athletes that use it. Join the Community and Go git 'er done.</p>
+      <p>OpenSplitTime makes it easy to collect, store, and play with endurance event data.<br/>This is a free resource
+        and community built by the endurance athletes that use it. Join the community now.
+      <p/>
+      <p><strong>Go git 'er done.</strong></p>
       <form class="homepage-signup" name="homepage-signup">
-        <div class="form-fields clearfix"> 
-          <input type="text" name="email" placeholder="Email Address" />
-          <input class="btn btn-info" type="submit" name="submit" value="Join the Community" />
+        <div class="form-fields clearfix">
+          <input type="text" name="email" placeholder="Email Address"/>
+          <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
         </div>
-        <p>Already using OpenSplit Time? <a href="#" class="sign-in">Sign In</a> <a href="#" class="learn-more">Learn More</a></p>
+        <p>Already using OpenSplit Time? <a href="<%= new_user_session_path %>" class="sign-in">Sign In</a>
+          <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
       </form>
     </div>
     <div class="gradient"></div>
   </div>
   <div class="row second">
-  <div class="over-text">
-    <%= image_tag("icons/icon-map.png", alt: 'Map Icon') %>
-    <h2>Plan your effort:</h2>
-    <p>Pacers, Runners and Crews can use the OpenSplitTime database to plan an Ulta effort. Estimate your time and one simple screen will tell you where to be and when.</p>
-    <br />
-    <button class="btn btn-info cta">Prepare for HardRock</button>
-  </div>
+    <div class="over-text">
+      <%= image_tag("icons/icon-map.png", alt: 'Map Icon') %>
+      <h2>Plan your effort:</h2>
+      <p>Runners, pacers, families, and crews can use the OpenSplitTime database to plan an for an ultra. <br/>Estimate
+        your time and one simple screen will tell you where you need to be and when.<br/>
+      <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
+      <br/>
+      <%= link_to 'Plan Your 2016 Hardrock', plan_effort_course_path(4), class: 'btn btn-info cta' %>
+    </div>
   </div>
   <div class="row third">
     <div class="over-text">
       <h2>Search the Archives</h2>
-      <p>Look at data like you've never been able to before. Get more detail then just finish times, and find your peers. Analyze efforts.</p>
-      <br />
-      <button class="btn btn-info cta">Search Hard Rock</button>
+      <p>Browse and play with endurance event data like you've never done before. Analyze your efforts, discover
+        your best segments, and find your peers. OpenSplitTime is a home for all ultra event data. <br/>
+        <strong>For starters we've loaded all of Hardrock, because ... Hardrock.</strong></p>
+      <br/>
+      <%= link_to 'Search Hardrock Archives', race_path(1), class: 'btn btn-info cta' %>
     </div>
     <div class="gradient"></div>
   </div>
@@ -37,9 +45,11 @@
     <div class="over-text">
       <%= image_tag("icons/icon-timer.png", alt: 'Timer Icon') %>
       <h2>Open to Race Directors</h2>
-      <p>We love to compete, but many of us don't love to organize. And the tools for tracking and organizing endurance events have been sorely lacking. All that has now changed.</p>
-      <br />
-      <button class="btn btn-info cta">Search Hard Rock</button>
+      <p>We love to compete, but many of us don't love to organize. And the tools for tracking and organizing endurance
+        events have been sorely lacking.<br/>
+        <strong>All that has now changed.</strong></p>
+      <br/>
+      <%= link_to 'Import Event Data', getting_started_path, class: 'btn btn-info cta' %>
     </div>
   </div>
   <div class="row fifth">
@@ -50,8 +60,10 @@
   </div>
   <div class="row sixth">
     <div class="over-text">
-    <h2>Endurance events change people.</h2>
-      <p>They create hard challenges in a soft world. They bring us together when our natural inclination might be to wander alone. They help us feel the simple joys of food, warmth, and rest by exposing us to cold, hunger and discomfort. They help us realize how much more is buried within when we seem empty and dry.</p>
+      <h2>Endurance events change people.</h2>
+      <p>They create hard challenges in a soft world. They bring us together when our natural inclination might be to
+        wander alone. They help us feel the simple joys of food, warmth, and rest by exposing us to cold, hunger and
+        discomfort. They help us realize how much more is buried within when we seem empty and dry.</p>
       <%= image_tag("icons/icon-s.png", alt: 'S Icon') %>
       <h1>OpenSplitTime.org</h1>
     </div>

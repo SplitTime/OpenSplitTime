@@ -13,7 +13,9 @@
     </h2>
     <% overall_place, gender_place = @effort_show.combined_places %>
     <h4>
-      <%= "#{@effort_show.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_show.gender.titleize}" %>
+      <%= @effort_show.finish_status %>
+      <%= "• #{overall_place.ordinalize} Place " if overall_place %>
+      <%= "• #{gender_place.ordinalize} #{@effort_show.gender.titleize}"  if gender_place %>
       <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
     </h4>
   </div>

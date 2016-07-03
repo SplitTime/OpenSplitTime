@@ -18,8 +18,16 @@ class EventEffortsDisplay
     create_effort_rows
   end
 
-  def all_efforts_count
-    all_efforts.count
+  def efforts_count
+    event_efforts ? event_efforts.count : 0
+  end
+
+  def started_efforts_count
+    started_efforts.count
+  end
+
+  def unstarted_efforts_count
+    efforts_count - started_efforts_count
   end
 
   def filtered_efforts_count
@@ -36,11 +44,12 @@ class EventEffortsDisplay
 
   private
 
-  attr_accessor :all_efforts, :event_final_split_id
+  attr_accessor :event_efforts, :started_efforts, :event_final_split_id
 
   def get_efforts(params)
-    self.all_efforts = event.efforts.sorted_with_finish_status
-    self.filtered_efforts = event.efforts
+    self.event_efforts = event.efforts
+    self.started_efforts = event_efforts.sorted_with_finish_status # This method ignores efforts having no split_times.
+    self.filtered_efforts = event_efforts
                                 .search(params[:search_param])
                                 .sorted_with_finish_status
                                 .paginate(page: params[:page], per_page: 25)
@@ -70,11 +79,11 @@ class EventEffortsDisplay
   end
 
   def sorted_effort_ids
-    all_efforts.map(&:id)
+    started_efforts.map(&:id)
   end
 
   def sorted_genders
-    all_efforts.map(&:gender)
+    started_efforts.map(&:gender)
   end
 
 end

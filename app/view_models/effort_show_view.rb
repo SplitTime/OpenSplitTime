@@ -1,8 +1,7 @@
 class EffortShowView
 
   attr_reader :effort, :event, :split_rows
-  delegate :full_name, :event_name, :participant, :bib_number, :combined_places, :finish_status,
-           :gender, :split_times, to: :effort
+  delegate :full_name, :event_name, :participant, :bib_number, :gender, :split_times, :finish_status, to: :effort
 
   def initialize(effort)
     @effort = effort
@@ -15,6 +14,14 @@ class EffortShowView
 
   def total_time_in_aid
     split_rows.sum { |unicorn| unicorn.time_in_aid }
+  end
+
+  def started?
+    split_times.present?
+  end
+
+  def combined_places
+    started? ? effort.combined_places : [nil, nil]
   end
 
   private

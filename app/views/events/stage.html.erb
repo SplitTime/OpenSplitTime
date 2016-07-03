@@ -1,54 +1,54 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Stage/administer event - #{@event.name}" %>
+    <% "OpenSplitTime: Stage/administer event - #{@event_stage.name}" %>
 <% end %>
 <div class="row header">
   <div class="col-xs-5">
-    <h2><strong><%= @event.name %></strong>
+    <h2><strong><%= @event_stage.name %></strong>
     </h2>
     <h4>
-      <%= "Start Time: #{l(@event.start_time, format: :full_with_weekday)} at #{l(@event.start_time, format: :ampm)}" %>
+      <%= "Start Time: #{l(@event_stage.start_time, format: :full_with_weekday)} at #{l(@event_stage.start_time, format: :ampm)}" %>
       <br/>
-      Course: <%= link_to @event.course_name, course_path(@event.course) %>
-      <% if @event.race %>
-          <br/>Race: <%= link_to @event.race_name, race_path(@event.race) %>
+      Course: <%= link_to @event_stage.course_name, course_path(@event_stage.course) %>
+      <% if @event_stage.race %>
+          <br/>Race: <%= link_to @event_stage.race_name, race_path(@event_stage.race) %>
       <% end %>
     </h4>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <% if @current_user && @current_user.authorized_for_live?(@event) && @event.available_live %>
-          <%= link_to 'Live Data Entry', live_entry_live_event_path(@event), method: :get, class: 'btn btn-sm btn-warning' %>
+      <% if @current_user && @current_user.authorized_for_live?(@event_stage.event) && @event_stage.available_live %>
+          <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_stage.event), method: :get, class: 'btn btn-sm btn-warning' %>
       <% end %>
       <div class="btn-group">
-        <%= link_to 'Search and explore', event_path(@event), class: 'btn btn-sm btn-primary' %>
-        <% unless @event.simple? %>
-            <%= link_to 'Full spread', spread_event_path(@event), class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Search and explore', event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
+        <% unless @event_stage.simple? %>
+            <%= link_to 'Full spread', spread_event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
         <% end %>
-        <%= link_to 'Admin', stage_event_path(@event), disabled: true, class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Admin', stage_event_path(@event_stage.event), disabled: true, class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
     <div class="row">
-      <% if @current_user && @current_user.authorized_to_edit?(@event) %>
-          <% if @event.available_live %>
+      <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
+          <% if @event_stage.available_live %>
               <%= link_to 'Disable live',
-                          live_disable_event_path(@event),
-                          data: {confirm: "NOTE: This will disable all live entry actions for #{@event.name}, including any that may be in process. Are you sure you want to proceed?"},
+                          live_disable_event_path(@event_stage.event),
+                          data: {confirm: "NOTE: This will suspend all live entry actions for #{@event_stage.name}, including any that may be in process. Are you sure you want to proceed?"},
                           method: :put,
                           class: 'btn btn-sm btn-warning' %>
           <% else %>
               <%= link_to 'Enable live',
-                          live_enable_event_path(@event),
+                          live_enable_event_path(@event_stage.event),
                           method: :put,
                           class: 'btn btn-sm btn-warning' %>
           <% end %>
-          <% if @event.race %>
-              <%= link_to 'Stewards', stewards_race_path(@event.race), class: 'btn btn-sm btn-warning' %>
+          <% if @event_stage.race %>
+              <%= link_to 'Stewards', stewards_race_path(@event_stage.race), class: 'btn btn-sm btn-warning' %>
           <% end %>
-          <%= link_to 'Edit event', edit_event_path(@event), class: 'btn btn-sm btn-primary' %>
-          <%= link_to 'Set data status', set_data_status_event_path(@event),
+          <%= link_to 'Edit event', edit_event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
+          <%= link_to 'Set data status', set_data_status_event_path(@event_stage.event),
                       method: :put,
                       class: 'btn btn-sm btn-success' %>
-          <%= link_to 'Delete event', event_path(@event, referrer_path: events_path),
+          <%= link_to 'Delete event', event_path(@event_stage.event, referrer_path: events_path),
                       method: :delete,
                       data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
                       class: 'btn btn-sm btn-danger' %>
@@ -57,20 +57,20 @@
   </div>
 </div>
 
-<% if @current_user && @current_user.authorized_to_edit?(@event) %>
+<% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
     <div class="article-actions">
       <div class="row">
         <div class="col-xs-4">
-          <%= link_to 'Create split', new_split_path(event_id: @event.id), class: 'btn btn-sm btn-success' %>
-          <% unless @event.course.simple? %>
+          <%= link_to 'Create split', new_split_path(event_id: @event_stage.id), class: 'btn btn-sm btn-success' %>
+          <% unless @event_stage.course.simple? %>
               <%= link_to 'Associate or remove splits', splits_event_path, class: 'btn btn-sm btn-success' %>
           <% end %>
         </div>
         <div class="col-xs-4">
-          <% if @event.unreconciled_efforts? %>
+          <% if @event_stage.unreconciled_efforts? %>
               <%= link_to 'Reconcile with participants', reconcile_event_path, class: 'btn btn-sm btn-success' %>
           <% end %>
-          <% if @event.efforts.count > 0 %>
+          <% if @event_stage.efforts_count > 0 %>
               <%= link_to 'Delete all efforts', delete_all_efforts_event_path,
                           method: :delete,
                           data: {confirm: 'NOTE: This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to go ahead?'},
@@ -82,11 +82,11 @@
 <% end %>
 <hr>
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-xs-4">
     <strong>Splits associated with event / on this course:</strong>
-    <%= link_to @event.splits.count, splits_event_path(@event) %>
-    / <%= link_to @event.course.splits.count, course_path(@event.course) %><br/>
-    <% if @current_user && @current_user.authorized_to_edit?(@event) %>
+    <%= link_to @event_stage.event_splits_count, splits_event_path(@event_stage.event) %>
+    / <%= link_to @event_stage.course_splits_count, course_path(@event_stage.course) %><br/>
+    <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
         <strong>Import Splits for this Event</strong>
         <%= form_tag({action: :import_splits}, multipart: true) do %>
             <%= file_field_tag :file %>
@@ -94,36 +94,70 @@
         <% end %>
     <% end %>
   </div>
-  <div class="col-xs-6">
+  <div class="col-xs-4">
     <strong>Associated Efforts:</strong>
-    <%= @event.efforts.count %>
-    <% if @event.unreconciled_efforts? %>
-        <%= "(#{@event.unreconciled_efforts.count} unreconciled)" %>
-    <% elsif @event.efforts.count > 0 %>
+    <%= @event_stage.efforts_count %>
+    <% if @event_stage.unreconciled_efforts? %>
+        <%= "(#{@event_stage.unreconciled_efforts.count} unreconciled)" %>
+    <% elsif @event_stage.efforts_count > 0 %>
         (All reconciled)
     <% end %>
     <br/>
-    <% if @current_user && @current_user.authorized_to_edit?(@event) %>
-        <strong>Import Efforts for this Event</strong>
+    <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
+        <strong>Import Efforts With Time Data</strong>
         <%= form_tag({action: :import_efforts}, multipart: true) do %>
             <%= file_field_tag :file %>
-            <%= submit_tag 'Import Efforts', class: 'btn btn-xs btn-success' %>
+            <%= submit_tag 'Import efforts and times', class: 'btn btn-xs btn-success' %>
         <% end %>
+    <% end %>
+  </div>
+  <div class="col-xs-4">
+    <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
         <strong>Import Efforts Without Time Data</strong>
         <%= form_tag({action: :import_efforts_without_times}, multipart: true) do %>
             <%= file_field_tag :file %>
-            <%= submit_tag 'Import Efforts', class: 'btn btn-xs btn-success' %>
+            <%= submit_tag 'Import efforts (no times)', class: 'btn btn-xs btn-success' %>
         <% end %>
     <% end %>
   </div>
 </div>
-
-<% if @associated_splits.count > 0 %>
-    <hr>
+<div class="row header">
+  <div class="col-xs-5">
+  </div>
+  <div class="col-xs-7 page-navigation">
     <div class="row">
-      <div class="col-xs-8">
-        <h4>Splits associated with this event:</h4>
+      <div class="btn-group">
+        <%= link_to 'Show splits',
+                    stage_event_path(@event_stage.event, view: 'splits'),
+                    disabled: params[:view] == 'splits',
+                    class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Show efforts',
+                    stage_event_path(@event_stage.event, view: 'efforts'),
+                    disabled: params[:view] == 'efforts',
+                    class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
-    <%= render 'splits/splits', splits: @associated_splits, referred_by: stage_event_path(@event) %>
+  </div>
+</div>
+
+<% if params[:view] == 'splits' %>
+    <% if @event_stage.event_splits_count > 0 %>
+        <div class="row">
+          <div class="col-xs-8">
+          </div>
+        </div>
+        <%= render 'splits/splits', splits: @event_stage.associated_splits, referred_by: stage_event_path(@event_stage.event) %>
+    <% else %>
+        <h4>No splits are associated with this event.</h4>
+    <% end %>
+<% else %>
+    <% if @event_stage.efforts_count > 0 %>
+        <div class="row">
+          <div class="col-xs-8">
+          </div>
+        </div>
+        <%= render 'efforts/efforts_list_stage', efforts: @event_stage.event_efforts %>
+    <% else %>
+        <h4>No efforts are associated with this event.</h4>
+    <% end %>
 <% end %>

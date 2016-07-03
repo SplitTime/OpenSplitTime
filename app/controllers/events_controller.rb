@@ -69,7 +69,8 @@ class EventsController < ApplicationController
 
   def stage
     authorize @event
-    @associated_splits = @event.splits.ordered
+    @event_stage = EventStageDisplay.new(@event, params)
+    params[:view] ||= 'efforts'
     session[:return_to] = stage_event_path(@event)
   end
 

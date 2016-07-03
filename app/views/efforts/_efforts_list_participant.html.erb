@@ -3,7 +3,7 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th>Name</th>
+    <th><%= "#{@participant.full_name}'s efforts:" %></th>
     <th>From</th>
     <th class="text-right">Finish Time</th>
     <% if @current_user && @current_user.admin? %>

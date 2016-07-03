@@ -18,6 +18,10 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def import_efforts_without_times?
+    @current_user.authorized_to_edit?(@event)
+  end
+
   def edit?
     @current_user.authorized_to_edit?(@event)
   end

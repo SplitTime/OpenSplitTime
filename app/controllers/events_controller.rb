@@ -121,7 +121,18 @@ class EventsController < ApplicationController
       flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:effort_importer].first}."
       redirect_to stage_event_path(@event, errors: @importer.errors)
     end
+  end
 
+  def import_efforts_without_times
+    authorize @event
+    @importer = EffortImporter.new(params[:file], @event, current_user.id)
+    if @importer.effort_import_without_times
+      flash[:success] = "Import successful. #{@importer.effort_import_report}"
+      redirect_to reconcile_event_path(@event)
+    else
+      flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:effort_importer].first}."
+      redirect_to stage_event_path(@event, errors: @importer.errors)
+    end
   end
 
   def spread

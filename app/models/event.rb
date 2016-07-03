@@ -22,7 +22,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.search(param)
-    return none if param.blank? || (param.length < 3)
+    return all if param.blank?
     name_search(param)
   end
 

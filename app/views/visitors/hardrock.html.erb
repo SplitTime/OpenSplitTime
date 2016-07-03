@@ -12,7 +12,7 @@
           <input type="text" name="email" placeholder="Email Address"/>
           <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
         </div>
-        <p>Already using OpenSplitTime? <a href="<%= %>" class="sign-in">Sign In</a>
+        <p>Already using OpenSplitTime? <a href="<%= new_user_session_path %>" class="sign-in">Sign In</a>
           <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
       </form>
       <p><br/>
@@ -29,7 +29,7 @@
         OpenSplitTime will tell you where you need to be and when.<br/>
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
-      <%= link_to 'Plan Your 2016 Hardrock', plan_effort_course_path(4), class: 'btn btn-info cta' %>
+      <%= link_to 'Plan Your 2016 Hardrock', plan_effort_course_path(2), class: 'btn btn-info cta' %>
     </div>
   </div>
   <div class="row third">

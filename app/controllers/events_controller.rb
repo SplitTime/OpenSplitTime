@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
-    @events = Event.select_with_params(params)
+    @events = Event.select_with_params(params[:search])
                   .paginate(page: params[:page], per_page: 25)
     session[:return_to] = events_path
   end

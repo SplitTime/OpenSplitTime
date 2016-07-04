@@ -75,7 +75,7 @@ class BestEffortsDisplay
     self.sorted_effort_genders = all_efforts.map(&:gender)
     self.unsorted_filtered_ids = Effort.where(id: sorted_effort_ids)
                                      .where(gender: genders_numeric)
-                                     .search(params[:search_param])
+                                     .search(params[:search])
                                      .pluck(:id)
     self.filtered_efforts = all_efforts
                                 .select { |effort| unsorted_filtered_ids.include?(effort.id) }

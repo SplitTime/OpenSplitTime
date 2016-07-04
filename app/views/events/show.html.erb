@@ -1,6 +1,6 @@
 <% content_for :title do %>
-    <% if params[:search_param].present? %>
-        <% "OpenSplitTime: #{@event_display.name} - #{params[:search_param]}" %>
+    <% if params[:search].present? %>
+        <% "OpenSplitTime: #{@event_display.name} - #{params[:search]}" %>
     <% else %>
         <% "OpenSplitTime: #{@event_display.name}" %>
     <% end %>

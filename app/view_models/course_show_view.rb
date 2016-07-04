@@ -1,11 +1,13 @@
 class CourseShowView
 
-  attr_reader :course, :locations, :ordered_splits
+  attr_reader :course, :locations, :events, :ordered_splits
   delegate :name, :description, to: :course
 
-  def initialize(course)
+  def initialize(course, params)
     @course = course
+    @params = params
     @locations = Location.on_course(course)
+    @events = course.events.select_with_params(@params[:search]).to_a
     @ordered_splits = @course.splits.includes(:course, :location).ordered if @course.splits
   end
 
@@ -13,8 +15,12 @@ class CourseShowView
     course.id
   end
 
-  def split_count
+  def splits_count
     ordered_splits ? ordered_splits.count : 0
+  end
+
+  def events_count
+    events ? events.count : 0
   end
 
   def latitude_center
@@ -32,5 +38,13 @@ class CourseShowView
   def course_has_locations?
     locations.present?
   end
+
+  def view_text
+    params[:view] == 'splits' ? 'splits' : 'events'
+  end
+
+  private
+
+  attr_reader :params
 
 end

@@ -9,7 +9,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course_view = CourseShowView.new(@course)
+    @course_view = CourseShowView.new(@course, params)
     session[:return_to] = course_path(@course)
   end
 

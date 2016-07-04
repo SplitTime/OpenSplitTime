@@ -2,7 +2,8 @@ class EventStageDisplay
 
   attr_accessor :event_efforts, :filtered_efforts
   attr_reader :event, :associated_splits
-  delegate :id, :name, :start_time, :course, :race, :available_live, :simple?, :unreconciled_efforts?, to: :event
+  delegate :id, :name, :start_time, :course, :race, :available_live, :simple?,
+           :unreconciled_efforts, :unreconciled_efforts?, to: :event
 
   # initialize(event)
   # event is an ordinary event object
@@ -42,6 +43,11 @@ class EventStageDisplay
     race ? race.name : nil
   end
 
+  def view_text
+    params[:view] == 'splits' ? 'splits' : 'efforts'
+  end
+
+
   private
 
   attr_accessor :params
@@ -49,7 +55,7 @@ class EventStageDisplay
   def get_efforts(params)
     self.event_efforts = event.efforts
     self.filtered_efforts = event_efforts
-                                .search(params[:search_param])
+                                .search(params[:search])
                                 .paginate(page: params[:page], per_page: 25)
   end
 

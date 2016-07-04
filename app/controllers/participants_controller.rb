@@ -13,7 +13,7 @@ class ParticipantsController < ApplicationController
   end
 
   def index
-    @participants = Participant.search(params[:search_param])
+    @participants = Participant.search(params[:search])
                         .where(demo: false)
                         .with_age_and_effort_count
                         .ordered_by_name
@@ -107,12 +107,12 @@ class ParticipantsController < ApplicationController
   private
 
   def participant_params
-    params.require(:participant).permit(:search_param, :first_name, :last_name, :gender, :birthdate,
+    params.require(:participant).permit(:search, :first_name, :last_name, :gender, :birthdate,
                                         :city, :state_code, :country_code, :email, :phone)
   end
 
   def query_params
-    params.permit(:search_param, :first_name, :last_name, :gender, :birthdate,
+    params.permit(:search, :first_name, :last_name, :gender, :birthdate,
                   :city, :state_code, :country_code, :email, :phone)
   end
 

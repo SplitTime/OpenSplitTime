@@ -4,12 +4,7 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
-    @events = Event.search(params[:search_param])
-                  .where(demo: false)
-                  .select("events.*, COUNT(efforts.id) as effort_count")
-                  .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
-                  .group("events.id")
-                  .order(start_time: :desc)
+    @events = Event.select_with_params(params)
                   .paginate(page: params[:page], per_page: 25)
     session[:return_to] = events_path
   end

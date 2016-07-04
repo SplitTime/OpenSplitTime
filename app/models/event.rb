@@ -16,6 +16,12 @@ class Event < ActiveRecord::Base
   scope :latest, -> { order(start_time: :desc).first }
   scope :earliest, -> { order(:start_time).first }
   scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
+  scope :select_with_params, -> (params) { search(params[:search_param])
+                                               .where(demo: false)
+                                               .select("events.*, COUNT(efforts.id) as effort_count")
+                                               .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
+                                               .group("events.id")
+                                               .order(start_time: :desc) }
 
   def all_splits_on_course?
     splits.joins(:course).group(:course_id).count.size == 1

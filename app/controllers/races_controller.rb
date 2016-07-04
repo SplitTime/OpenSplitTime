@@ -10,6 +10,8 @@ class RacesController < ApplicationController
   end
 
   def show
+    params[:view] ||= 'events'
+    @race_show = RaceShowView.new(@race, params)
     @race_events = @race.events.select("events.*, COUNT(efforts.id) as effort_count")
                        .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
                        .group("events.id")

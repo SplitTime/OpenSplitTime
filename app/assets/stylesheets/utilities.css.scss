@@ -9,7 +9,6 @@ Efforts Popover
 }
 
 .popover.static-popover {
-  background: #222;
 
   .popover-title {
     display: none;
@@ -21,8 +20,12 @@ Efforts Popover
     overflow-y: scroll;
   }
 
-  &.bottom .arrow:after { border-bottom-color: #222; }
-  &.left .arrow:after { border-left-color: #222; }
-  &.right .arrow:after { border-right-color: #222; }
-  &.top .arrow:after { border-top-color: #222; }
+  &.static-popover-dark {
+    background: #222;
+    color: #FFF;
+    &.bottom .arrow:after { border-bottom-color: #222; }
+    &.left .arrow:after { border-left-color: #222; }
+    &.right .arrow:after { border-right-color: #222; }
+    &.top .arrow:after { border-top-color: #222; }
+  }
 }

@@ -29,7 +29,7 @@
 				var data = {
 					effortIds: $self.data('effort-ids')
 				};
-				$self.data('ajax', $.get('/efforts/mini_table/', data)
+				$self.data('ajax', $.post('/efforts/mini_table/', data)
 					.done(function (response) {
 						$popover.options.content = $(response);
 						$popover.show();
@@ -49,28 +49,16 @@
                 .attr('role', 'button')
                 .popover({
                     'html': 'append',
-                    'trigger': 'focus'
+                    'trigger': 'focus',
+                    'container': 'body'
                 }).on('show.bs.popover', staticPopover.onShowPopover);
             if ( utilities.isMobileSafari() ) {
                 $( 'body' ).css( 'cursor', 'pointer' );
             }
         },
         onShowPopover: function (e) {
-            $self = $(this);
-            var ajax = $self.data('ajax');
-            if ( !ajax || typeof ajax.status == 'undefined' ) {
-                var $popover = $self.data('bs.popover');
-                $popover.tip().addClass('static-popover');
-                $self.data('ajax', $.get('/photo_credits/')
-                    .done(function (response) {
-                        $popover.options.content = $(response);
-                        $popover.show();
-                    }).always(function () {
-                        $self.data('ajax', null);
-                    })
-                );
-                e.preventDefault();
-            }
+            var $popover = $(this).data('bs.popover');
+            $popover.tip().addClass('static-popover');
         }
     };
 

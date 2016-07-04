@@ -8,20 +8,21 @@ Efforts Popover
 	overflow-y: scroll;
 }
 
-.popover.static-popover .popover-content {
-  max-height: 150px;
-  overflow-x: visible;
-  overflow-y: scroll;
-}
-
 .popover.static-popover {
-  background: black;
-}
+  background: #222;
 
-.popover.static-popover .popover-title {
-  display: none;
-}
+  .popover-title {
+    display: none;
+  }
 
-.popover.static-popover .arrow:after {
-  border-bottom-color: black;
+  .popover-content {
+    max-height: 150px;
+    overflow-x: visible;
+    overflow-y: scroll;
+  }
+
+  &.bottom .arrow:after { border-bottom-color: #222; }
+  &.left .arrow:after { border-left-color: #222; }
+  &.right .arrow:after { border-right-color: #222; }
+  &.top .arrow:after { border-top-color: #222; }
 }

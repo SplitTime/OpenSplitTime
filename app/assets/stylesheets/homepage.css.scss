@@ -26,7 +26,7 @@
 .visitors.hardrock {
   color: #fff;
   text-align: center;
-  min-width: 640px;
+
   h1,
   h2 {
     font-family: 'Gibson-SemiBold', Fallback, sans-serif;
@@ -47,12 +47,19 @@
   }
   .homepage-signup {
     background-color: #101010;
-    width: 530px;
-    height: 135px;
+    max-width: 530px;
+    height: 190px;
+    @media only screen and (min-width: 768px ) {
+      height: 135px;
+    }
+
     padding: 20px;
     margin: 0 auto;
     .form-fields {
-      margin-bottom: 25px;
+      margin-bottom: 10px;
+    }
+    .form-group {
+      padding: 0 5px;
     }
     input[name="email"],
     input[name="submit"] {
@@ -66,12 +73,11 @@
     input[name="email"] {
       color: #868480;
       border: solid 1px #868480;
-      width: 49%;
+      width: 100%;
       padding: 10px 15px;
-      margin-right: 2%;
     }
     input[name="submit"] {
-      width: 49%;
+      width: 100%;
     }
     .sign-in {
       margin-left: 10px;
@@ -105,6 +111,9 @@
     padding: 0;
     .over-text {
       position: absolute;
+      width: 100%;
+      max-width: 575px;
+      padding: 0 20px;
       top: 50%;
       left: 50%;
       -webkit-transform: translate(-50%, -50%);

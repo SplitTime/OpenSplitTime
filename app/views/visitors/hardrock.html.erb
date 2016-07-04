@@ -9,8 +9,12 @@
       <p/>
       <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
         <div class="form-fields clearfix">
-          <input type="text" name="email" placeholder="Email Address"/>
-          <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
+          <div class="form-group col-xs-12 col-sm-6">
+            <input type="text" name="email" placeholder="Email Address"/>
+          </div>
+          <div class="form-group col-xs-12 col-sm-6">
+            <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
+          </div>
         </div>
         <p>Already using OpenSplitTime? <a href="<%= new_user_session_path %>" class="sign-in">Sign In</a>
           <a href="<%= about_path %>" class="learn-more">Learn More</a></p>

@@ -45,6 +45,15 @@
     padding: 10px 15px;
     font-weight: 700;
   }
+
+  .photo-credit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    z-index: 10;
+  }
+
   .homepage-signup {
     background-color: #101010;
     max-width: 530px;

@@ -29,7 +29,7 @@
 				var data = {
 					effortIds: $self.data('effort-ids')
 				};
-				$self.data('ajax', $.get('/efforts/mini_table/', data)
+				$self.data('ajax', $.post('/efforts/mini_table/', data)
 					.done(function (response) {
 						$popover.options.content = $(response);
 						$popover.show();

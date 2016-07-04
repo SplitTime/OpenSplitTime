@@ -33,4 +33,8 @@ class RaceShowView
     end
   end
 
+  private
+
+  attr_reader :params
+
 end

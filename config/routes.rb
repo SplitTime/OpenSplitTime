@@ -78,7 +78,7 @@ Rails.application.routes.draw do
     member { put :set_data_status }
     member { get :analyze }
     member { get :place }
-    collection { get :mini_table }
+    collection { post :mini_table }
   end
   resources :split_times
   resources :interests

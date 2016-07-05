@@ -82,8 +82,7 @@ class CoursesController < ApplicationController
   private
 
   def course_params
-    params.require(:course).permit(:name,
-                                   :description,
+    params.require(:course).permit(:name, :description, :next_start_time,
                                    splits_attributes: [:id, :course_id, :location_id, :base_name,
                                                        :description, :kind, :sub_split_bitmap,
                                                        :distance_from_start, :distance_as_entered,

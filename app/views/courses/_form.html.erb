@@ -19,6 +19,21 @@
             <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Course description" %>
           </div>
         </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :next_start_time, 'Start time of next event (if known)' %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.datetime_select :next_start_time,
+                                  {use_short_month: true,
+                                   start_year: (Date.today + 1.year).year,
+                                   end_year: 1970,
+                                   ampm: true,
+                                   default: Date.today.in_time_zone + 6.hours,
+                                   order: [:month, :day, :year]},
+                                  {class: "dropdown-select-field"} %>
+          </div>
+        </div>
         <% if @course.new_record? %>
             <%= f.fields_for :splits, @course.splits.new do |builder| %>
                 <%= builder.hidden_field :base_name, value: 'Start' %>

@@ -79,6 +79,14 @@
           </div>
         </div>
         <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :bib_number %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.number_field :bib_number, class: "form-control", placeholder: "Bib #" %>
+          </div>
+        </div>
+        <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@effort.new_record? ? "Create Effort" : "Update Effort", class: 'btn btn-primary btn-large') %>
           </div>

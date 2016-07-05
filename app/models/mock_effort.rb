@@ -77,7 +77,7 @@ class MockEffort
         relevant_split_times[finish_bitkey_hash].map(&:time_from_start).mean : nil
     return time_data unless average_finish_time
     factor = expected_time / average_finish_time
-    time_data.each { |k, v| time_data[k] = v * factor }
+    time_data.each { |k, v| time_data[k] = v ? v * factor : nil }
   end
 
   def create_split_rows

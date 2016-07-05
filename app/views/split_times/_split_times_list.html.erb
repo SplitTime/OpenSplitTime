@@ -5,8 +5,10 @@
     <th class="text-right"><%= pdu('singular').titleize %></th>
     <th class="text-center">Time of Day</th>
     <th class="text-center">Elapsed Time</th>
-    <th class="text-center">Segment Time</th>
-    <th class="text-right">In Aid</th>
+    <% unless @effort_show.simple? %>
+        <th class="text-center">Segment Time</th>
+        <th class="text-right">In Aid</th>
+    <% end %>
     <% if current_user && current_user.admin? %>
         <th class="text-right">Actions</th>
     <% end %>
@@ -24,17 +26,22 @@
       <% if split_row.finish? %>
           <td><strong><%= split_row.name %></strong></td>
           <td class="text-right"><strong><%= d(split_row.distance_from_start) %></strong></td>
-          <td class="text-center"><strong><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></strong></td>
+          <td class="text-center">
+            <strong><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></strong></td>
           <td class="text-center"><strong><%= composite_time(split_row) %></strong></td>
-          <td class="text-center"><strong><%= time_format_xxhyym(split_row.segment_time) %></strong></td>
-          <td class="text-right"><strong><%= time_format_minutes(@effort_show.total_time_in_aid) %></strong></td>
+          <% unless @effort_show.simple? %>
+              <td class="text-center"><strong><%= time_format_xxhyym(split_row.segment_time) %></strong></td>
+              <td class="text-right"><strong><%= time_format_minutes(@effort_show.total_time_in_aid) %></strong></td>
+          <% end %>
       <% elsif split_row.intermediate? %>
           <td><%= split_row.name %></td>
           <td class="text-right"><%= d(split_row.distance_from_start) %></td>
           <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>
           <td class="text-center"><%= composite_time(split_row) %></td>
-          <td class="text-center"><%= time_format_xxhyym(split_row.segment_time) %></td>
-          <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
+          <% unless @effort_show.simple? %>
+              <td class="text-center"><%= time_format_xxhyym(split_row.segment_time) %></td>
+              <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
+          <% end %>
       <% end %>
       <% unless split_row.start? %>
           <% if current_user && current_user.authorized_to_edit?(@effort_show.effort) && split_row.times_from_start.compact.count > 0 %>

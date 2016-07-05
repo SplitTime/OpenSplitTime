@@ -70,5 +70,5 @@
     <% end %>
 <% end %>
 <% if @event_display.unstarted_efforts_count > 0 %>
-    <p><strong><%= @event_display.started_efforts_count > 0 ? "In addition, there are " : "There are " %><%= "#{@event_display.unstarted_efforts_count} efforts that have not yet started." %></strong></p>
+    <p><strong><%= @event_display.started_efforts_count > 0 ? "In addition, " : "" %><%= "#{@event_display.unstarted_efforts_count} efforts have been staged but have not yet started." %></strong></p>
 <% end %>

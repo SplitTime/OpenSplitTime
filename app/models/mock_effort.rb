@@ -65,14 +65,16 @@ class MockEffort
     splits.each do |split|
       split.sub_split_bitkeys.each do |bitkey|
         bitkey_hash = {split.id => bitkey}
-        average_time_hash[bitkey_hash] = relevant_split_times[bitkey_hash].map(&:time_from_start).mean
+        average_time_hash[bitkey_hash] = relevant_split_times[bitkey_hash] ?
+            relevant_split_times[bitkey_hash].map(&:time_from_start).mean : nil
       end
     end
     normalize_time_data(average_time_hash, expected_time)
   end
 
   def normalize_time_data(time_data, expected_time)
-    average_finish_time = relevant_split_times[finish_bitkey_hash].map(&:time_from_start).mean
+    average_finish_time = relevant_split_times[finish_bitkey_hash] ?
+        relevant_split_times[finish_bitkey_hash].map(&:time_from_start).mean : nil
     return time_data unless average_finish_time
     factor = expected_time / average_finish_time
     time_data.each { |k, v| time_data[k] = v * factor }

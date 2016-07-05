@@ -23,7 +23,7 @@
   }
 }
 
-.visitors.hardrock {
+.visitors.index {
   color: #fff;
   text-align: center;
 
@@ -157,7 +157,10 @@
       background: #000 asset-url('home-top.jpg') no-repeat top center;
       background-size: cover;
       background-attachment: fixed;
-      min-height: 800px;
+      min-height: 600px;
+      @media only screen and (min-width: 768px ) {
+        min-height: 800px;
+      }
     }
     &.third {
       background: #000 asset-url('home-middle.jpg') no-repeat top center;

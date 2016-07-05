@@ -43,6 +43,10 @@ class CourseShowView
     params[:view] == 'splits' ? 'splits' : 'events'
   end
 
+  def simple?
+    splits_count <= 2
+  end
+
   private
 
   attr_reader :params

@@ -15,7 +15,9 @@
                       data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
                       class: 'btn btn-sm btn-danger' %>
       <% end %>
-      <%= link_to 'Plan my effort', plan_effort_course_path(@course_view.course), method: :get, class: 'btn btn-sm btn-primary' %>
+      <% unless @course_view.simple? %>
+          <%= link_to 'Plan my effort', plan_effort_course_path(@course_view.course), method: :get, class: 'btn btn-sm btn-primary' %>
+      <% end %>
       <%= link_to 'All-time best', best_efforts_course_path(@course_view.course), class: 'btn btn-sm btn-primary' %>
     </div>
   </div>

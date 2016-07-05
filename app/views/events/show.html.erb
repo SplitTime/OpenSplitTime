@@ -24,8 +24,8 @@
           <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_display.event), method: :get, class: 'btn btn-sm btn-warning' %>
       <% end %>
       <div class="btn-group">
-        <%= link_to 'Search and explore', event_path(@event_display.event), disabled: true, class: 'btn btn-sm btn-primary' %>
-        <% unless @event_display.event.simple? %>
+        <% unless @event_display.simple? %>
+            <%= link_to 'Search and explore', event_path(@event_display.event), disabled: true, class: 'btn btn-sm btn-primary' %>
             <%= link_to 'Full spread', spread_event_path(@event_display.event), class: 'btn btn-sm btn-primary' %>
         <% end %>
         <% if @current_user && @current_user.authorized_to_edit?(@event_display.event) %>
@@ -34,7 +34,9 @@
       </div>
     </div>
     <div class="row">
-      <%= link_to 'Plan my effort', plan_effort_course_path(@event_display.course), method: :get, class: 'btn btn-sm btn-primary' %>
+      <% unless @event_display.simple? %>
+          <%= link_to 'Plan my effort', plan_effort_course_path(@event_display.course), method: :get, class: 'btn btn-sm btn-primary' %>
+      <% end %>
       <%= link_to 'All-time best efforts', best_efforts_course_path(@event_display.course), class: 'btn btn-sm btn-primary' %>
     </div>
   </div>
@@ -70,5 +72,7 @@
     <% end %>
 <% end %>
 <% if @event_display.unstarted_efforts_count > 0 %>
-    <p><strong><%= @event_display.started_efforts_count > 0 ? "In addition, " : "" %><%= "#{@event_display.unstarted_efforts_count} efforts have been staged but have not yet started." %></strong></p>
+    <p>
+      <strong><%= @event_display.started_efforts_count > 0 ? "In addition, " : "" %><%= "#{@event_display.unstarted_efforts_count} efforts have been staged but have not yet started." %></strong>
+    </p>
 <% end %>

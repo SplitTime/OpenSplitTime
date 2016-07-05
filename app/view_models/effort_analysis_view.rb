@@ -61,6 +61,19 @@ class EffortAnalysisView
     sortable_analysis_rows.sort_by(&:segment_over_under_percent).reverse.first(segment_count).map(&:segment_name).join(', ')
   end
 
+  def effort_finished?
+    indexed_split_times[finish_bitkey_hash].present?
+  end
+
+  def farthest_recorded_time
+    split_times.present? ? split_times.last.time_from_start : nil
+  end
+
+  def farthest_recorded_split_name
+    farthest_split = splits.find { |split| split.id == split_times.last.split_id }
+    farthest_split ? farthest_split.base_name : nil
+  end
+
   private
 
   attr_accessor :typical_effort, :indexed_typical_rows, :indexed_analysis_rows

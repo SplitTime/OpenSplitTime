@@ -30,12 +30,26 @@ module ApplicationHelper
     end
   end
 
+  def time_format_xxhyym(time_in_seconds)
+    return '--:--' if time_in_seconds.nil?
+    if time_in_seconds < 0
+      time_in_seconds = time_in_seconds.abs
+      minutes = (time_in_seconds / 60) % 60
+      hours = time_in_seconds / (60 * 60)
+      format("(%2dh%02dm)", hours, minutes)
+    else
+      minutes = (time_in_seconds / 60) % 60
+      hours = time_in_seconds / (60 * 60)
+      format("%2dh%02dm", hours, minutes)
+    end
+  end
+
   def time_format_minutes(time_in_seconds)
     return '--' if time_in_seconds.nil?
     if (time_in_seconds / 60).round(0) < 0
-      "(#{(time_in_seconds.abs / 60).round(0).to_s})"
+      "(#{(time_in_seconds.abs / 60).round(0).to_s}m)"
     else
-      (time_in_seconds / 60).round(0).to_s
+      "#{(time_in_seconds / 60).round(0).to_s}m"
     end
   end
 

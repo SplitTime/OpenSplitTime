@@ -5,7 +5,7 @@
   <%= link_to user.email, user %>
 </td>
 <td>
-  <%= l(user.confirmed_at, format: :full_with_time) if user.confirmed_at %>
+  <%= day_time_full_format(user.confirmed_at) %>
 </td>
 <td>
   <%= form_for(user) do |f| %>

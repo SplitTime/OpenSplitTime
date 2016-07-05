@@ -4,30 +4,40 @@
   <div class="row first">
     <div class="over-text">
       <h2><br/>A New Era for Endurance Event Data</h2>
-      <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it easy to
-        collect, store, and play with endurance event data.<br/><strong>Join the community now.</strong>
-      <p/>
-      <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
-        <div class="form-fields clearfix">
-          <div class="form-group col-xs-12 col-sm-6">
-            <input type="text" name="email" placeholder="Email Address"/>
-          </div>
-          <div class="form-group col-xs-12 col-sm-6">
-            <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
-          </div>
+      <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it
+        easy to
+        collect, store, and play with endurance event data.<br/>
+        <% if @current_user %>
+            <strong><br/>You are signed in. Scroll down to start exploring.</strong>
+        <% else %>
+            <strong>Join the community now.</strong>
+        <% end %>
+        <p/>
+        <% unless @current_user %>
+            <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
+              <div class="form-fields clearfix">
+                <div class="form-group col-xs-12 col-sm-6">
+                  <input type="text" name="email" placeholder="Email Address"/>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6">
+                  <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
+                </div>
+              </div>
+              <p>Already using OpenSplitTime? <a href="<%= new_user_session_path %>" class="sign-in">Sign In</a>
+                <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
+            </form>
+        <% end %>
         </div>
-        <p>Already using OpenSplitTime? <a href="<%= new_user_session_path %>" class="sign-in">Sign In</a>
-          <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
-      </form>
-    </div>
     <div class="gradient"></div>
-    <a data-toggle="static-popover-dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo Credit</a>
+    <a data-toggle="static-popover-dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
+      Credit</a>
   </div>
   <div class="row second">
     <div class="over-text">
       <%= image_tag("icons/icon-map.png", alt: 'Map Icon') %>
       <h2>Plan Your Efforts</h2>
-      <p>Runners, pacers, families, and crews can use OpenSplitTime to plan for ultras. Just estimate your finish time and
+      <p>Runners, pacers, families, and crews can use OpenSplitTime to plan for ultras. Just estimate your finish time
+        and
         OpenSplitTime will tell you where you need to be and when.<br/>
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
@@ -45,7 +55,8 @@
       <%= link_to 'Search Hardrock Archives', race_path(1), class: 'btn btn-info cta' %>
     </div>
     <div class="gradient"></div>
-    <a data-toggle="static-popover-dark" data-placement="left" data-content="Descending from Grant-Swamp Pass, photo by Bill Wright" class="photo-credit">Photo Credit</a>
+    <a data-toggle="static-popover-dark" data-placement="left" data-content="Descending from Grant-Swamp Pass, photo by Bill Wright" class="photo-credit">Photo
+      Credit</a>
   </div>
   <div class="row fourth">
     <div class="over-text">
@@ -68,7 +79,8 @@
         <strong>Omniscience is pretty cool.</strong></p>
     </div>
     <div class="gradient"></div>
-    <a data-toggle="static-popover-dark" data-placement="left" data-content="Running the North Inlet Trail in Rocky Mountain National Park, photo by Kari Fraser" class="photo-credit">Photo Credit</a>
+    <a data-toggle="static-popover-dark" data-placement="left" data-content="Running the North Inlet Trail in Rocky Mountain National Park, photo by Kari Fraser" class="photo-credit">Photo
+      Credit</a>
   </div>
   <div class="row sixth">
     <div class="over-text">

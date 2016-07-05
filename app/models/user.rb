@@ -87,10 +87,10 @@ class User < ActiveRecord::Base
         order(:last_name)
       when 'email'
         order(:email)
-      when 'date'
+      when 'date_asc'
         order(:confirmed_at)
       else
-        order(:id)
+        order('users.confirmed_at DESC')
     end
   end
 

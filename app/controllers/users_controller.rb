@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   after_action :verify_authorized
 
   def index
-    params[:sort] ||= 'id'
+    params[:sort] ||= 'date_desc'
     @users = User.search(params[:search])
                  .sort(params[:sort])
                  .paginate(page: params[:page], per_page: 25)

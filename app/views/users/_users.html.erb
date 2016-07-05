@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>
+            <%= link_to 'Name', users_path(search: params[:search],
+                          sort: params[:sort] == 'last' ? 'first' : 'last') %>
+          </th>
+          <th><%= link_to 'Email', users_path(search: params[:search], sort: 'email') %></th>
+          <th><%= link_to 'Confirmed at', users_path(search: params[:search], sort: 'date') %></th>
+          <th>Change role</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @users.each do |user| %>
+            <tr>
+              <td><%= user.full_name %></td>
+              <td><%= link_to user.email, user %></td>
+              <td><%= day_time_full_format(user.confirmed_at) %></td>
+              <td>
+                <%= form_for(user) do |f| %>
+                    <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
+                    <%= f.submit 'Change Role', :class => 'button-xs' %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to("Delete user",
+                            user_path(user),
+                            :data => { :confirm => "Are you sure?" },
+                            :method => :delete, :class => 'button-xs') unless user == current_user %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

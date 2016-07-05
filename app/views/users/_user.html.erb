@@ -5,6 +5,9 @@
   <%= link_to user.email, user %>
 </td>
 <td>
+  <%= l(user.confirmed_at, format: :full_with_time) %>
+</td>
+<td>
   <%= form_for(user) do |f| %>
       <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
       <%= f.submit 'Change Role', :class => 'button-xs' %>

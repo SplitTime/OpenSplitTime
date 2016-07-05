@@ -28,7 +28,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
-      redirect_to session.delete(:return_to) || @effort
+      redirect_to stage_event_path(@effort.event)
     else
       render 'new'
     end
@@ -38,7 +38,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.update(effort_params)
-      redirect_to session.delete(:return_to) || @effort
+      redirect_to stage_event_path(@effort.event)
     else
       render 'edit'
     end
@@ -132,8 +132,8 @@ class EffortsController < ApplicationController
   private
 
   def effort_params
-    params.require(:effort).permit(:first_name, :last_name, :gender, :wave, :bib_number, :age,
-                                   :city, :state_code, :country_code, :start_time, :finished,
+    params.require(:effort).permit(:event_id, :first_name, :last_name, :gender, :wave, :bib_number, :age,
+                                   :city, :state_code, :country_code, :start_time, :finished, :demo,
                                    split_times_attributes: [:id, :split_id, :sub_split_bitkey, :effort_id, :time_from_start,
                                                             :elapsed_time, :time_of_day, :military_time,
                                                             :data_status])

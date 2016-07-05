@@ -7,7 +7,7 @@ class ParticipantPolicy
   end
 
   def new?
-    @current_user.present?
+    @current_user.admin?
   end
 
   def edit?
@@ -15,7 +15,7 @@ class ParticipantPolicy
   end
 
   def create?
-    @current_user.present?
+    @current_user.admin?
   end
 
   def create_from_effort?

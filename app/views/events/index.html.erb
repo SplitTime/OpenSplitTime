@@ -5,13 +5,19 @@
         <% "OpenSplitTime: Search events" %>
     <% end %>
 <% end %>
-<div class="row">
-  <div class="col col-xs-4">
-    <h2>Events</h2>
+<div class="row header">
+  <div class="col-xs-5">
+    <h2>
+      <strong>Events</strong>
+    </h2>
   </div>
-  <div class="col-xs-3 text-right">
-    <%= link_to 'Create event on existing course', new_event_path,
-                class: 'btn btn-sm btn-success btn-margin-lg' %>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <% if @current_user %>
+          <%= link_to 'Create event on existing course', new_event_path,
+                      class: 'btn btn-sm btn-success' %>
+      <% end %>
+    </div>
   </div>
 </div>
 

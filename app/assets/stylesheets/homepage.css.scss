@@ -147,10 +147,31 @@
     &.third,
     &.fifth {
       min-height: 500px;
+      transition: background-position 0s linear;
+      transform: translateZ( -1 );
+      transform-style: flat;
       .cta {
         width: 250px;
         margin-bottom: 10px;
       }
+    }
+    &.first {
+       background: #000 asset-url('home-top.jpg') top center no-repeat;
+       background-size: cover;
+       //background-attachment: fixed;
+     }
+     &.third {
+       background: #000 asset-url('home-middle.jpg') top center no-repeat;
+       background-size: cover;
+       //background-attachment: fixed;
+       .over-text {
+         margin-top: -25px;
+       }
+     }
+     &.fifth {
+       background: #000 asset-url('home-bottom.jpg') top center no-repeat;
+       background-size: cover;
+       //background-attachment: fixed;
     }
     &.first {
       @media only screen and (min-width: 768px ) {

@@ -22,6 +22,7 @@
 		}
 	}
 }
+
 .visitors.index {
 	color: #fff;
 	text-align: center;
@@ -58,6 +59,8 @@
 			box-sizing: border-box;
 			float: left;
 			border-radius: none;
+			width: 100%;
+			margin-bottom: 10px;
 		}
 		input[name="email"]:focus{
 			border: solid 1px #868480;
@@ -65,12 +68,15 @@
 		input[name="email"] {
 			color: #868480;
 			border: solid 1px #868480;
-			width: 49%;
 			padding: 10px 15px;
 			margin-right: 2%;
 		}
-		input[name="submit"] {
-			width: 49%;
+		@media only screen and (min-width: 768px) {
+			input[name="submit"],
+			input[name="email"] {
+				width: 49%;
+				margin-bottom: 0;
+			}
 		}
 		.sign-in {
 			margin-left: 10px;
@@ -126,26 +132,23 @@
 		&.first,
 		&.third,
 		&.fifth {
-			background-color: #000;
-			min-height: 500px;
+			background: transparent;
+			min-height: 350px;
 			.cta {
 				width: 250px;
 			}
 		}
 		&.first {
-			background: #000 asset-url('home-top.jpg') top center no-repeat;
-			background-size: cover;
-			background-attachment: fixed;
+			.over-text {
+				margin-top: -25px;
+			}
 		}
-		&.third {
-			background: #000 asset-url('home-middle.jpg') top center no-repeat;
-			background-size: cover;
-			background-attachment: fixed;
-		}
-		&.fifth {
-			background: #000 asset-url('home-bottom.jpg') top center no-repeat;
-			background-size: cover;
-			background-attachment: fixed;
+		@media only screen and (min-width: 768px) {
+			&.first,
+			&.third,
+			&.fifth {
+				min-height: 500px;
+			}
 		}
 		&.second,
 		&.fourth {

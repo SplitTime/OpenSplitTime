@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root to: 'visitors#index'
+  get 'hardrock', to: 'visitors#hardrock'
+  get 'photo_credits', to: 'visitors#photo_credits'
   get 'about', to: 'visitors#about'
   get 'donations', to: 'visitors#donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
@@ -36,6 +38,7 @@ Rails.application.routes.draw do
   resources :events do
     member { post :import_splits }
     member { post :import_efforts }
+    member { post :import_efforts_without_times }
     member { get :splits }
     member { put :associate_split }
     member { put :associate_splits }
@@ -75,7 +78,7 @@ Rails.application.routes.draw do
     member { put :set_data_status }
     member { get :analyze }
     member { get :place }
-    collection { get :mini_table }
+    collection { post :mini_table }
   end
   resources :split_times
   resources :interests

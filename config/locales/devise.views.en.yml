@@ -64,7 +64,7 @@ en:
         back: "Back"
       new:
         sign_up: "Sign up"
-      destroyed: "Bye! Your account was cancelled. We hope to see you again soon."
+      destroyed: "Your account was cancelled. We hope to see you again soon."
       signed_up: "Welcome! You have signed up."
       signed_up_but_inactive: "You have signed up. However, we could not sign you in because your account is not yet activated."
       signed_up_but_locked: "You have signed up. However, we could not sign you in because your account is locked."
@@ -72,8 +72,8 @@ en:
       update_needs_confirmation: "You updated your account, but we need to verify your new email address. Please check your email and click on the confirm link to finalize confirming your new email address."
       updated: "You updated your account."
     sessions:
-      signed_in: "Signed in."
-      signed_out: "Signed out."
+      signed_in: ""
+      signed_out: ""
       new:
         sign_in: "Sign in"
     shared:

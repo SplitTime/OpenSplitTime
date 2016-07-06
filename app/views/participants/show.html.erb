@@ -1,54 +1,51 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Show participant - #{@participant.full_name}" %>
 <% end %>
-<div class="row">
+<div class="row header">
   <div class="col-xs-6">
-    <h2><%= @participant.full_name %></h2>
+    <h2>
+      <strong><%= @participant.full_name %></strong>
+    </h2>
+    <h4>
+      <%= @participant.full_bio %><br/>
+      <% if @participant.claimed? %>
+          <% if @participant.claimant == @current_user %>
+              <strong>Hey, this is me!</strong><br/>
+          <% else %>
+              <% if @current_user && @current_user.admin? %>
+                  <%= "Identified as user #{@participant.claimant.full_name}" %>
+              <% else %>
+                  OST Member
+              <% end %>
+          <% end %>
+      <% end %>
+    </h4>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-6">
-    <%= @participant.full_bio %><br/>
-    <% if @participant.claimed? %>
-        <% if @participant.claimant == @current_user %>
-            <strong>Hey, this is me!</strong><br/>
-        <% else %>
-            <%= "Identified as user #{@participant.claimant.full_name}" %>
-        <% end %>
-    <% end %>
+  <div class="col-xs-6 page-navigation">
+    <div class="row">
+      <% if @current_user && (@participant.claimant == @current_user) %>
+          <%= link_to 'This is not me', avatar_disclaim_participant_path(@participant), method: :delete,
+                      data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+      <% elsif @current_user && @participant.unclaimed? && @current_user.has_no_avatar? %>
+          <%= link_to 'This is me', avatar_claim_participant_path(@participant),
+                      data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
+                      class: "btn btn-sm btn-success" %>
+      <% end %>
+      <% if @current_user && @current_user.admin? %>
+          <%= link_to 'Merge with', merge_participant_path(@participant), class: "btn btn-sm btn-success" %>
+      <% end %>
+      <% if @current_user && @current_user.authorized_to_edit?(@participant) %>
+          <%= link_to 'Edit', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>
+          <%= link_to 'Delete', participant_path(@participant), method: :delete,
+                      data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+      <% end %>
+    </div>
+    <div class="page-navigation-text">
+      <h4></h4>
+    </div>
   </div>
 </div>
 
-<hr>
-<div class="row">
-  <div class="col-xs-10">
-    <%= link_to '<< Participant search', participants_path, class: "btn btn-sm btn-default" %>
-    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user && @current_user.authorized_to_edit?(@participant) %>
-        <%= link_to 'Edit this participant', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this participant', participant_path(@participant), method: :delete,
-                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
-    <% end %>
-    <% if @current_user && (@participant.claimant == @current_user) %>
-        <%= link_to 'Disclaim this participant', avatar_disclaim_participant_path(@participant), method: :delete,
-                    data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
-    <% elsif @current_user && @participant.unclaimed? && @current_user.has_no_avatar? %>
-        <%= link_to 'Claim this participant', avatar_claim_participant_path(@participant),
-                    data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
-                    class: "btn btn-sm btn-success" %>
-    <% end %>
-    <% if @current_user && @current_user.admin? %>
-        <%= link_to 'Merge with >>', merge_participant_path(@participant), class: "btn btn-sm btn-success" %>
-    <% end %>
-  </div>
-</div>
-<hr>
 <% if @participant.efforts.count > 0 %>
-    <hr>
-    <div class="row">
-      <div class="col-xs-8">
-        <h4><%= "#{@participant.full_name}'s efforts:" %></h4>
-      </div>
-    </div>
     <%= render 'efforts/efforts_list_participant', efforts: @participant.efforts.where(demo: false).ordered_by_date %>
 <% end %>

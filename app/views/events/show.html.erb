@@ -13,8 +13,8 @@
       <%= "Start Time: #{l(@event_display.start_time, format: :full_with_weekday)} at #{l(@event_display.start_time, format: :ampm)}" %>
       <br/>
       Course: <%= link_to @event_display.course_name, course_path(@event_display.course) %>
-      <% if @event_display.race %> •
-          Race: <%= link_to @event_display.race_name, race_path(@event_display.race) %>
+      <% if @event_display.race %>
+          <br/>Race: <%= link_to @event_display.race_name, race_path(@event_display.race) %>
       <% end %>
     </h4>
   </div>
@@ -40,15 +40,15 @@
   </div>
 </div>
 
-<% if @event_display.all_efforts_count < 1 %>
-    <strong>No efforts yet associated with this event.</strong>
+<% if @event_display.started_efforts_count < 1 %>
+    <strong>No efforts have started yet.</strong>
 <% else %>
     <%= render 'effort_lookup', event: @event_display.event %>
     <% if @event_display.filtered_efforts_count > 0 %>
         <hr>
         <div class="row">
           <div class="col-xs-8">
-            <h4><%= "Returned #{@event_display.filtered_efforts_count} of #{@event_display.all_efforts_count} efforts for #{@event_display.name}" %></h4>
+            <strong><%= "Returned #{@event_display.filtered_efforts_count} of #{@event_display.started_efforts_count} efforts for #{@event_display.name}" %></strong>
           </div>
         </div>
         <div class="row">
@@ -68,4 +68,7 @@
         <hr>
         <strong>No results match that search.</strong>
     <% end %>
+<% end %>
+<% if @event_display.unstarted_efforts_count > 0 %>
+    <p><strong><%= @event_display.started_efforts_count > 0 ? "In addition, there are " : "There are " %><%= "#{@event_display.unstarted_efforts_count} efforts that have not yet started." %></strong></p>
 <% end %>

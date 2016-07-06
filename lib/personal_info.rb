@@ -45,7 +45,7 @@ module PersonalInfo
   end
 
   def full_bio
-    [bio, city_state_and_country].compact.split("").flatten.join(' | ')
+    [bio, city_state_and_country].compact.split("").flatten.join(' • ')
   end
 
   module ClassMethods

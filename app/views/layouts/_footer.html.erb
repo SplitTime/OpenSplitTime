@@ -1,15 +1,20 @@
-<div class ="container">
-  <footer class ="footer">
-    <small>
-      Copyright &copy; OpenSplitTime Company</a>
-    </small>
-    <nav>
-      <ul>
-        <li><%= link_to "Get Started", getting_started_path %></li>
-        <li><%= link_to "Donate", donations_path %></li>
-        <li><%= link_to "About", about_path %></li>
-        <li><%= link_to "Home", root_path %></li>
-      </ul>
-    </nav>
+<div class="container">
+  <footer class="footer">
+    <div class="col-xs-5">
+      <small>Copyright &copy; OpenSplitTime Company</small>
+    </div>
+    <div class="col-xs-2">
+      <%= image_tag("icons/icon-s.png", alt: 'S Icon', size: '30') %>
+    </div>
+    <div class="col-xs-5">
+      <nav>
+        <ul>
+          <li><%= link_to "Get Started", getting_started_path %></li>
+          <li><%= link_to "Donate", donations_path %></li>
+          <li><%= link_to "About", about_path %></li>
+          <li><%= link_to "Home", root_path %></li>
+        </ul>
+      </nav>
+    </div>
   </footer>
 </div>

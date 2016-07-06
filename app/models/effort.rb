@@ -97,8 +97,13 @@ class Effort < ActiveRecord::Base
     dropped_split_id.present?
   end
 
+  def started?
+    split_times.present?
+  end
+
   def finish_status
     return "DNF" if dropped?
+    return "Not yet started" unless started?
     split_time = finish_split_time
     return split_time.formatted_time_hhmmss if split_time
     "In progress"

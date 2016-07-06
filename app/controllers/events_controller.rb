@@ -4,12 +4,7 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :spread]
 
   def index
-    @events = Event.search(params[:search_param])
-                  .where(demo: false)
-                  .select("events.*, COUNT(efforts.id) as effort_count")
-                  .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
-                  .group("events.id")
-                  .order(start_time: :desc)
+    @events = Event.select_with_params(params)
                   .paginate(page: params[:page], per_page: 25)
     session[:return_to] = events_path
   end
@@ -69,7 +64,8 @@ class EventsController < ApplicationController
 
   def stage
     authorize @event
-    @associated_splits = @event.splits.ordered
+    @event_stage = EventStageDisplay.new(@event, params)
+    params[:view] ||= 'efforts'
     session[:return_to] = stage_event_path(@event)
   end
 
@@ -121,7 +117,18 @@ class EventsController < ApplicationController
       flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:effort_importer].first}."
       redirect_to stage_event_path(@event, errors: @importer.errors)
     end
+  end
 
+  def import_efforts_without_times
+    authorize @event
+    @importer = EffortImporter.new(params[:file], @event, current_user.id)
+    if @importer.effort_import_without_times
+      flash[:success] = "Import successful. #{@importer.effort_import_report}"
+      redirect_to reconcile_event_path(@event)
+    else
+      flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:effort_importer].first}."
+      redirect_to stage_event_path(@event, errors: @importer.errors)
+    end
   end
 
   def spread

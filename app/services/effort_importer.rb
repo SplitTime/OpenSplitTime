@@ -41,6 +41,22 @@ class EffortImporter
     create_effort_import_report
   end
 
+  def effort_import_without_times
+    build_effort_schema
+    (effort_offset..spreadsheet.last_row).each do |i|
+      row = spreadsheet.row(i)
+      row_effort_data = prepare_row_effort_data(row)
+      effort = create_effort(row_effort_data)
+      if effort
+        effort_id_array << effort.id
+      else
+        effort_failure_array << row
+      end
+    end
+    self.auto_matched_count, self.participants_created_count = EventReconcileService.auto_reconcile_efforts(event)
+    create_effort_import_report
+  end
+
   # The following three methods are required for ActiveModel error reporting
 
   def read_attribute_for_validation(attr)

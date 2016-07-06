@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   end
 
   def authorized_for_live?(resource)
-    self.admin? | (self.id == resource.created_by) | resource.race.stewards.include?(self)
+    self.admin? | (self.id == resource.created_by) | (resource.race && resource.race.stewards.include?(self))
   end
 
   def full_name

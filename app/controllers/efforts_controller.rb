@@ -129,6 +129,16 @@ class EffortsController < ApplicationController
     render partial: 'efforts_mini_table'
   end
 
+  def add_beacon_url
+    authorize(@effort)
+    redirect_to effort_path(@effort)
+  end
+
+  def add_report_url
+    authorize(@effort)
+    redirect_to effort_path(@effort)
+  end
+
   private
 
   def effort_params

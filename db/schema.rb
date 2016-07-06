@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160701060543) do
+ActiveRecord::Schema.define(version: 20160706135351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(version: 20160701060543) do
     t.integer  "start_offset",                default: 0
     t.integer  "dropped_split_id"
     t.boolean  "demo",                        default: false
+    t.string   "beacon_url"
+    t.string   "report_url"
   end
 
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id", using: :btree

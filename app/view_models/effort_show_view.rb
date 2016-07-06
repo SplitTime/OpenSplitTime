@@ -1,7 +1,8 @@
 class EffortShowView
 
   attr_reader :effort, :event, :split_rows
-  delegate :full_name, :event_name, :participant, :bib_number, :gender, :split_times, :finish_status, to: :effort
+  delegate :full_name, :event_name, :participant, :bib_number, :gender, :split_times,
+           :finish_status, :report_url, :beacon_url, to: :effort
   delegate :simple?, to: :event
 
   def initialize(effort)
@@ -19,6 +20,10 @@ class EffortShowView
 
   def started?
     split_times.present?
+  end
+
+  def in_progress?
+    !dropped? && !finished?
   end
 
   def combined_places
@@ -41,6 +46,18 @@ class EffortShowView
 
   def related_split_times(split)
     split.sub_split_bitkey_hashes.collect { |key_hash| split_times[key_hash] }
+  end
+
+  def dropped?
+    effort.dropped_split_id.present?
+  end
+
+  def finished?
+    split_times[finish_bitkey_hash].present?
+  end
+
+  def finish_bitkey_hash
+    {splits.last.id => SubSplit::IN_BITKEY}
   end
 
 end

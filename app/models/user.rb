@@ -53,6 +53,10 @@ class User < ActiveRecord::Base
     self.admin? | (self.id == resource.created_by) | (resource.race && resource.race.stewards.include?(self))
   end
 
+  def authorized_to_edit_personal?(resource)
+    self.admin? | self.avatar == resource
+  end
+
   def full_name
     first_name + " " + last_name
   end

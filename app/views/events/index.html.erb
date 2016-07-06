@@ -1,17 +1,23 @@
 <% content_for :title do %>
-    <% if params[:search_param].present? %>
-        <% "OpenSplitTime: Search events - #{params[:search_param]}" %>
+    <% if params[:search].present? %>
+        <% "OpenSplitTime: Search events - #{params[:search]}" %>
     <% else %>
         <% "OpenSplitTime: Search events" %>
     <% end %>
 <% end %>
-<div class="row">
-  <div class="col col-xs-4">
-    <h2>Events</h2>
+<div class="row header">
+  <div class="col-xs-5">
+    <h2>
+      <strong>Events</strong>
+    </h2>
   </div>
-  <div class="col-xs-3 text-right">
-    <%= link_to 'Create event on existing course', new_event_path,
-                class: 'btn btn-sm btn-success btn-margin-lg' %>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <% if @current_user %>
+          <%= link_to 'Create event on existing course', new_event_path,
+                      class: 'btn btn-sm btn-success' %>
+      <% end %>
+    </div>
   </div>
 </div>
 
@@ -29,7 +35,7 @@
         <%= render 'events', events: @events %>
     <% else %>
         <br/>
-        <% if params[:search_param].blank? %>
+        <% if params[:search].blank? %>
             <p><strong>Enter an event name to search</strong></p>
         <% else %>
             <p><strong>No events match this search</strong></p>

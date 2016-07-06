@@ -79,6 +79,8 @@ Rails.application.routes.draw do
     member { get :analyze }
     member { get :place }
     collection { post :mini_table }
+    member { put :add_beacon_url }
+    member { put :add_report_url }
   end
   resources :split_times
   resources :interests

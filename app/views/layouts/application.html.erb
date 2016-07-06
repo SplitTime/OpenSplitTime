@@ -8,7 +8,8 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGMCB8fvvGJzp_aR0Hp_YUyopUiAgGoCE"></script>
   <%= csrf_meta_tags %>
-  <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI" />
+  <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>
+  <%= render 'layouts/google_analytics' if Rails.env == 'production' %>
 </head>
 <body class="<%= controller_name %> <%= action_name %>">
 <%= render 'layouts/navigation' %>
@@ -16,6 +17,6 @@
 <div class="container">
   <%= yield %>
 </div>
-<%= render 'layouts/footer' %>
+<%= render 'layouts/footer' unless @skip_footer %>
 </body>
 </html>

@@ -12,10 +12,6 @@ class RacesController < ApplicationController
   def show
     params[:view] ||= 'events'
     @race_show = RaceShowView.new(@race, params)
-    @race_events = @race.events.select("events.*, COUNT(efforts.id) as effort_count")
-                       .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
-                       .group("events.id")
-                       .order(start_time: :desc)
     session[:return_to] = race_path(@race)
   end
 
@@ -64,15 +60,15 @@ class RacesController < ApplicationController
 
   def stewards
     authorize @race
-    if params[:search_param].present?
-      user = User.find_by_email(params[:search_param])
+    if params[:search].present?
+      user = User.find_by_email(params[:search])
       if user
         if @race.stewards.include?(user)
-          flash[:warning] = 'User is already a steward of this race.'
+          flash[:warning] = 'That user is already a steward of this race.'
         else
           @race.add_stewardship(user)
         end
-        params[:search_param] = nil
+        params[:search] = nil
       else
         flash[:warning] = 'User was not located.'
       end

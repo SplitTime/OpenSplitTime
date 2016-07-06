@@ -19,7 +19,7 @@ en:
     mailer:
       confirmation_instructions:
         action: "Confirm my account"
-        greeting: "Welcome %{recipient}!"
+        greeting: "Welcome to OpenSplitTime!"
         instruction: "You can confirm your account email through the link below:"
         subject: "Confirmation instructions"
       reset_password_instructions:

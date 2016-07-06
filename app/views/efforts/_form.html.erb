@@ -6,6 +6,7 @@
         <div class="form-group">
           <% if @event %>
               <div class="col-sm-8 col-sm-offset-2">
+                <%= f.hidden_field :demo, value: @event.demo %>
                 <%= f.hidden_field :event_id, value: @event.id %>
                 <h4><%= "Associated with #{@event.name}" %></h4>
               </div>
@@ -75,6 +76,14 @@
           </div>
           <div class="col-sm-8">
             <%= f.text_field :city, class: "form-control", placeholder: "City" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :bib_number %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.number_field :bib_number, class: "form-control", placeholder: "Bib #" %>
           </div>
         </div>
         <div class="form-group">

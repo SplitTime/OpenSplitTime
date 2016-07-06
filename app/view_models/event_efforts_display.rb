@@ -7,7 +7,7 @@ class EventEffortsDisplay
   # initialize(event, params = {})
   # event is an ordinary event object
   # params is passed from the controller and may include
-  # params[:search_param] (from user search input)
+  # params[:search] (from user search input)
   # and params[:page] (for will_paginate)
 
   def initialize(event, params = {})
@@ -50,7 +50,7 @@ class EventEffortsDisplay
     self.event_efforts = event.efforts
     self.started_efforts = event_efforts.sorted_with_finish_status # This method ignores efforts having no split_times.
     self.filtered_efforts = event_efforts
-                                .search(params[:search_param])
+                                .search(params[:search])
                                 .sorted_with_finish_status
                                 .paginate(page: params[:page], per_page: 25)
   end

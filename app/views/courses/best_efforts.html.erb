@@ -23,24 +23,27 @@
                                                          split1: @best_display.begin_id,
                                                          split2: @best_display.end_id,
                                                          gender: 'combined',
-                                                         search_param: params[:search_param]),
+                                                         search: params[:search]),
                     disabled: params[:gender] == 'combined',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Male', best_efforts_course_path(@best_display.course,
                                                      split1: @best_display.begin_id,
                                                      split2: @best_display.end_id,
                                                      gender: 'male',
-                                                     search_param: params[:search_param]),
+                                                     search: params[:search]),
                     disabled: params[:gender] == 'male',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Female', best_efforts_course_path(@best_display.course,
                                                        split1: @best_display.begin_id,
                                                        split2: @best_display.end_id,
                                                        gender: 'female',
-                                                       search_param: params[:search_param]),
+                                                       search: params[:search]),
                     disabled: params[:gender] == 'female',
                     class: 'btn btn-sm btn-primary' %>
       </div>
+      <% unless @best_display.course.simple? %>
+          <%= link_to 'Choose a segment', segment_picker_course_path(@best_display.course), class: "btn btn-sm btn-primary" %>
+      <% end %>
     </div>
     <div class="page-navigation-text">
       <% if @best_display.segment_is_full_course? %>
@@ -48,20 +51,6 @@
       <% else %>
           <h4> <%= "#{@best_display.gender_text.upcase} • #{@best_display.segment_name.upcase}" %></h4>
       <% end %>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-6">
-    <div class="article-actions">
-      <%= link_to '<< Back to course', course_path(@best_display.course), class: "btn btn-sm btn-default" %>
-      <% unless @best_display.course.simple? %>
-          <%= link_to 'Choose a segment >', segment_picker_course_path(@best_display.course), class: "btn btn-sm btn-default" %>
-      <% end %>
-    </div>
-  </div>
-  <div class="col-xs-6">
-    <div class="text-right">
     </div>
   </div>
 </div>

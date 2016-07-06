@@ -21,15 +21,31 @@
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
+            <%= f.label :latitude, 'Latitude' %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :latitude, class: "form-control", placeholder: 'deg.decimal' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :longitude, 'Longitude' %>
+          </div>
+          <div class="col-sm-2">
+            <%= f.text_field :longitude, class: "form-control", placeholder: 'deg.decimal' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
             <%= f.label :elevation_as_entered, 'Elevation' %>
           </div>
           <div class="col-sm-2">
             <%= f.text_field :elevation_as_entered, class: "form-control", placeholder: peu %>
           </div>
         </div>
-        <div class="col-sm-8 col-sm-offset-1" id="map" style="width: 750px; height: 550px;"></div>
-        <%= f.hidden_field :latitude, id: 'map_lat' %>
-        <%= f.hidden_field :longitude, id: 'map_lng' %>
+        <!--<div class="col-sm-8 col-sm-offset-1" id="map" style="width: 750px; height: 550px;"></div>-->
+        <%# f.hidden_field :latitude, id: 'map_lat' %>
+        <%# f.hidden_field :longitude, id: 'map_lng' %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit @location.new_record? ? "Create Location" : "Update Location",

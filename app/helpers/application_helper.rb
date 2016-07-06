@@ -30,12 +30,42 @@ module ApplicationHelper
     end
   end
 
+  def time_format_xxhyym(time_in_seconds)
+    return '--:--' if time_in_seconds.nil?
+    if time_in_seconds < 0
+      time_in_seconds = time_in_seconds.abs
+      minutes = (time_in_seconds / 60) % 60
+      hours = time_in_seconds / (60 * 60)
+      format("(%2dh%02dm)", hours, minutes)
+    else
+      minutes = (time_in_seconds / 60) % 60
+      hours = time_in_seconds / (60 * 60)
+      format("%2dh%02dm", hours, minutes)
+    end
+  end
+
+  def time_format_xxhyymzzs(time_in_seconds)
+    return '--:--:--' if time_in_seconds.nil?
+    if time_in_seconds < 0
+      time_in_seconds = time_in_seconds.abs
+      seconds = time_in_seconds % 60
+      minutes = (time_in_seconds / 60) % 60
+      hours = time_in_seconds / (60 * 60)
+      format("(%2dh%02dm%02ds)", hours, minutes, seconds)
+    else
+      seconds = time_in_seconds % 60
+      minutes = (time_in_seconds / 60) % 60
+      hours = time_in_seconds / (60 * 60)
+      format("%2dh%02dm%02ds", hours, minutes, seconds)
+    end
+  end
+
   def time_format_minutes(time_in_seconds)
     return '--' if time_in_seconds.nil?
     if (time_in_seconds / 60).round(0) < 0
-      "(#{(time_in_seconds.abs / 60).round(0).to_s})"
+      "(#{(time_in_seconds.abs / 60).round(0).to_s}m)"
     else
-      (time_in_seconds / 60).round(0).to_s
+      "#{(time_in_seconds / 60).round(0).to_s}m"
     end
   end
 
@@ -45,6 +75,10 @@ module ApplicationHelper
 
   def day_time_military_format(datetime)
     datetime ? datetime.strftime("%a %H:%M") : '--:--:--'
+  end
+
+  def day_time_full_format(datetime)
+    datetime ? datetime.strftime("%B %-d, %Y %l:%M%p") : '--:--:--'
   end
 
   def latlon_format(latitude, longitude)

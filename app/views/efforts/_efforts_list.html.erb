@@ -25,7 +25,7 @@
       <td><%= effort_row.state_and_country %></td>
       <td class="text-right"><%= effort_row.finish_status.is_a?(String) ?
                                      effort_row.finish_status :
-                                     time_format_hhmmss(effort_row.finish_status) %></td>
+                                     time_format_xxhyymzzs(effort_row.finish_status) %></td>
       </tr>
   <% end %>
   </tbody>

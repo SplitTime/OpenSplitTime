@@ -1,19 +1,24 @@
 <% content_for :title do %>
-    <% if params[:search_param].present? %>
-        <% "OpenSplitTime: Search participants - #{params[:search_param]}" %>
+    <% if params[:search].present? %>
+        <% "OpenSplitTime: Search participants - #{params[:search]}" %>
     <% else %>
         <% "OpenSplitTime: Search participants" %>
     <% end %>
 <% end %>
-<div class="row">
-  <div class="col col-xs-4">
-    <h2>Participants</h2>
+
+<div class="row header">
+  <div class="col-xs-5">
+    <h2>
+      <strong>Participants</strong>
+    </h2>
   </div>
-  <div class="col-xs-3 text-right">
-    <% if @current_user && @current_user.admin? %>
-        <%= link_to 'Create New Participant', new_participant_path,
-                    class: 'btn btn-sm btn-success btn-margin-lg' %>
-    <% end %>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <% if @current_user && @current_user.admin? %>
+          <%= link_to 'Create a new participant', new_participant_path,
+                      class: 'btn btn-sm btn-success' %>
+      <% end %>
+    </div>
   </div>
 </div>
 
@@ -30,7 +35,7 @@
         <%= render 'participants' %>
     <% else %>
         <br/>
-        <% if params[:search_param].blank? %>
+        <% if params[:search].blank? %>
             <p><strong>Find someone by entering a name, state, or country</strong></p>
         <% else %>
             <p><strong>No participants match this search</strong></p>

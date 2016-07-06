@@ -1,58 +1,94 @@
 <% content_for :title do %>Home
 <% end %>
 <div class="homepage">
-  <div class="row first" data-parallax="scroll" data-image-src="<%= asset_path('home-top.jpg') %>" data-position-y="0px">
+  <div class="row first">
     <div class="over-text">
-      <h2>Track your endurance data</h2>
-      <p>OpenSplitTime makes it easy to collect endurance event data. A free resource and community built by the endurance athletes that use it. Join the Community and Go git 'er done.</p>
-      <form class="homepage-signup" name="homepage-signup">
-        <div class="form-fields clearfix"> 
-          <input type="text" name="email" placeholder="Email Address" />
-          <input class="btn btn-info" type="submit" name="submit" value="Join the Community" />
+      <h2><br/>A New Era for Endurance Event Data</h2>
+      <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it
+        easy to collect, store, and play with endurance event data.<br/>
+        <% if @current_user %>
+            <br/>You are signed in. <strong>Scroll down to start exploring.</strong>
+        <% else %>
+            <strong>Join the community now.</strong>
+        <% end %>
+        <p/>
+        <% unless @current_user %>
+            <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
+              <div class="form-fields clearfix">
+                <div class="form-group col-xs-12 col-sm-6">
+                  <input type="text" name="email" placeholder="Email Address"/>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6">
+                  <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
+                </div>
+              </div>
+              <p>Already using OpenSplitTime? <a href="<%= new_user_session_path %>" class="sign-in">Sign In</a>
+                <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
+            </form>
+        <% end %>
         </div>
-        <p>Already using OpenSplit Time? <a href="#" class="sign-in">Sign In</a> <a href="#" class="learn-more">Learn More</a></p>
-      </form>
-    </div>
     <div class="gradient"></div>
+    <a data-toggle="static-popover-dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
+      Credit</a>
   </div>
-  <div class="row second" >
-  <div class="over-text">
-    <%= image_tag("icons/icon-map.png", alt: "Map Icon") %>
-    <h2>Plan your effort:</h2>
-    <p>Pacers, Runners and Crews can use the OpenSplitTime database to plan an Ulta effort. Estimate your time and one simple screen will tell you where to be and when.</p>
-    <br />
-    <button class="btn btn-info cta">Prepare for HardRock</button>
+  <div class="row second">
+    <div class="over-text">
+      <%= image_tag("icons/icon-map.png", alt: 'Map Icon') %>
+      <h2>Plan Your Efforts</h2>
+      <p>Runners, pacers, families, and crews can use OpenSplitTime to plan for ultras. Just estimate your finish time
+        and
+        OpenSplitTime will tell you where you need to be and when.<br/>
+        <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
+      <br/>
+      <%= link_to 'Plan Your 2016 Hardrock', plan_effort_course_path(2), class: 'btn btn-info cta' %>
+    </div>
   </div>
-  </div>
-  <div class="row third" data-parallax="scroll" data-image-src="<%= asset_path('home-middle.jpg') %>" data-position-y="0px">
+  <div class="row third">
     <div class="over-text">
       <h2>Search the Archives</h2>
-      <p>Look at data like you've never been able to before. Get more detail then just finish times, and find your peers. Analyze efforts.</p>
-      <br />
-      <button class="btn btn-info cta">Search Hard Rock</button>
+      <p>Browse and play with endurance event data like you've never done before. Analyze your efforts, discover
+        your best segments, and find your peers. Much more is yet to come as the community gathers its data here.<br/>
+        <strong>For starters we've loaded 16 years of Hardrock, because...Hardrock.</strong></p>
+      <br/>
+      <%= link_to 'Find Someone', participants_path, class: 'btn btn-info cta' %>
+      <%= link_to 'Search Hardrock Archives', race_path(1), class: 'btn btn-info cta' %>
     </div>
     <div class="gradient"></div>
+    <a data-toggle="static-popover-dark" data-placement="left" data-content="Descending from Grant-Swamp Pass, photo by Bill Wright" class="photo-credit">Photo
+      Credit</a>
   </div>
   <div class="row fourth">
     <div class="over-text">
-      <%= image_tag("icons/icon-timer.png", alt: "Timer Icon") %>
+      <%= image_tag("icons/icon-timer.png", alt: 'Timer Icon') %>
       <h2>Open to Race Directors</h2>
-      <p>We love to compete, but many of us don't love to organize. And the tools for tracking and organizing endurance events have been sorely lacking. All that has now changed.</p>
-      <br />
-      <button class="btn btn-info cta">Search Hard Rock</button>
+      <p>We love to compete, but many of us don't love to organize. And the tools for tracking and organizing endurance
+        events have been sorely lacking.<br/>
+        <strong>All that has now changed.</strong></p>
+      <br/>
+      <%= link_to 'Import Event Data', getting_started_path, class: 'btn btn-info cta' %>
+      <p><br/>(beta)</p>
     </div>
   </div>
-  <div class="row fifth" data-parallax="scroll" data-image-src="<%= asset_path('home-bottom.jpg') %>" data-position-y="0px">
+  <div class="row fifth">
     <div class="over-text">
-
+      <h2>Unprecedented Live Tracking Tools</h2>
+      <p>OST Live is revolutionary. It learns from your time data. It gives you race progress for each aid station. It
+        tells you instantly where your runners last reported, where they are due next, and who you ought to look
+        for.<br/>
+        <strong>Omniscience is pretty cool.</strong></p>
     </div>
     <div class="gradient"></div>
+    <a data-toggle="static-popover-dark" data-placement="left" data-content="Running the North Inlet Trail in Rocky Mountain National Park, photo by Kari Fraser" class="photo-credit">Photo
+      Credit</a>
   </div>
   <div class="row sixth">
     <div class="over-text">
-    <h2>Endurance events change people.</h2>
-      <p>They create hard challenges in a soft world. They bring us together when our natural inclination might be to wander alone. They help us feel the simple joys of food, warmth, and rest by exposing us to cold, hunger and discomfort. They help us realize how much more is buried within when we seem empty and dry.</p>
-      <%= image_tag("icons/icon-s.png", alt: "S Icon") %>
+      <h2>Endurance events change people.</h2>
+      <p>They create hard challenges in a soft world. They bring us together when our natural inclination might be to
+        wander alone. They help us feel the simple joys of food, warmth, and rest by exposing us to cold, hunger and
+        discomfort. They help us realize how much more is buried within when we seem empty and dry.</p>
+      <p><strong>Go git 'er done.</strong></p>
+      <%= image_tag("icons/icon-s.png", alt: 'S Icon') %>
       <h1>OpenSplitTime.org</h1>
     </div>
   </div>

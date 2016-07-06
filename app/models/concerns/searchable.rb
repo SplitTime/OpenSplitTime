@@ -7,12 +7,14 @@ module Searchable
     scope :gender_matches, -> (param) { where("#{table_name}.gender = ?", gender_int(param)) }
     scope :country_matches, -> (param) { where(arel_table['country_code'].matches("#{country_code_for(param)}")) }
     scope :state_matches, -> (param) { where(arel_table['state_code'].matches("#{state_code_for(param)}")) }
+    scope :email_matches, -> (param) { where(arel_table['email'].matches("%#{param}%")) }
     scope :first_name_matches, -> (param) { where(arel_table['first_name'].matches("%#{param}%")) }
     scope :first_name_matches_exact, -> (param) { where(arel_table['first_name'].matches("#{param}")) }
     scope :last_name_matches, -> (param) { where(arel_table['last_name'].matches("#{param}%")) }
     scope :last_name_matches_exact, -> (param) { where(arel_table['last_name'].matches("#{param}")) }
     scope :full_name_matches, -> (param) { where("regexp_replace((first_name || last_name), '[^a-zA-Z0-9]+', '', 'g') ILIKE ?", "#{normalize(param)}") }
     scope :search_term_scope, -> (term) { union_scope(country_matches(term), state_matches(term), first_name_matches(term), last_name_matches(term)) }
+    scope :name_email_term_scope, -> (term) { union_scope(first_name_matches(term), last_name_matches(term), email_matches(term)) }
   end
 
   module ClassMethods
@@ -23,6 +25,16 @@ module Searchable
       terms.each do |term|
         scope = all
         term_scopes << scope.search_term_scope(term)
+      end
+      intersect_scope(*term_scopes)
+    end
+
+    def name_email_search(param)
+      term_scopes = []
+      terms = tokenize(param)[0..2] # More than three terms becomes problematic for the query
+      terms.each do |term|
+        scope = all
+        term_scopes << scope.name_email_term_scope(term)
       end
       intersect_scope(*term_scopes)
     end

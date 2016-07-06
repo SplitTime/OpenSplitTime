@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   enum role: [:user, :admin]
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
+  include Searchable
 
   has_many :interests, dependent: :destroy
   has_many :participants, through: :interests
@@ -75,6 +76,26 @@ class User < ActiveRecord::Base
 
   def except_current_user(participants)
     participants.reject { |participant| participant.claimant == self }
+  end
+
+  def self.search(search_param)
+    return all if search_param.blank?
+    name_email_search(search_param)
+  end
+
+  def self.sort(sort_param)
+    case sort_param
+      when 'first'
+        order(:first_name)
+      when 'last'
+        order(:last_name)
+      when 'email'
+        order(:email)
+      when 'date_asc'
+        order(:confirmed_at)
+      else
+        order('users.confirmed_at DESC')
+    end
   end
 
 end

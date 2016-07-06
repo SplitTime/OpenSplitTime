@@ -11,27 +11,30 @@
   </div>
 </div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Confirmed at</th>
-          <th>Change role</th>
-          <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @users.each do |user| %>
-            <tr>
-              <%= render user %>
-            </tr>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
+<%= render 'lookup' %>
+
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
   </div>
 </div>
+<div class="row">
+  <div class="col-xs-8">
+    <% if @users.present? %>
+        <%= render 'users' %>
+    <% else %>
+        <br/>
+        <p><strong>
+          <% "No users match this search" unless params[:search].blank? %>
+        </strong></p>
+    <% end %>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
+  </div>
+</div>
+

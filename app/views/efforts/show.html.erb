@@ -64,11 +64,11 @@
         <div class="text-right">
           <% if @effort_show.in_progress? && @current_user.authorized_to_edit?(@effort_show.effort) %>
               <strong><%= @effort_show.beacon_url ? 'Modify locator beacon link: ' : 'Add link to locator beacon:' %></strong>
-              <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="bottom" data-title="Paste a link to your SPOT or other personal locator site here:"><%= "#{@effort_show.beacon_url}" %></a>
+              <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your SPOT or other personal locator site here:"><%= "#{@effort_show.beacon_url}" %></a>
           <% end %>
           <% if !@effort_show.in_progress? && @current_user.authorized_to_edit_personal?(@effort_show.effort) %>
               <strong><%= @effort_show.report_url ? 'Modify trip report link: ' : 'Add link to trip report:' %></strong>
-              <a href="#" id="report-link" data-type="text" data-pk="1" data-placement="bottom" data-title="Paste a link to your Strava page or personal trip report here:"><%= "#{@effort_show.report_url}" %></a>
+              <a href="#" id="report-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your Strava page or personal trip report here:"><%= "#{@effort_show.report_url}" %></a>
           <% end %>
         </div>
       </div>

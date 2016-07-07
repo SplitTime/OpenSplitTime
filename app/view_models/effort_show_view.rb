@@ -33,14 +33,14 @@ class EffortShowView
   def beacon_button_text
     return nil unless beacon_url.present?
     return 'SPOT Page' if beacon_url.include?('findmespot.com')
-    return 'FasterTracks Page' if beacon_url.include?('fastertracks.com')
+    return 'FasterTracks' if beacon_url.include?('fastertracks.com')
     'Locator Beacon'
   end
 
   def report_button_text
     return nil unless report_url.present?
     return 'Strava Page' if report_url.include?('strava.com')
-    return 'FasterTracks Page' if report_url.include?('fastertracks.com')
+    return 'FasterTracks' if report_url.include?('fastertracks.com')
     return 'FKT Page' if report_url.include?('fastestknowntime.proboards.com')
     'External Report'
   end

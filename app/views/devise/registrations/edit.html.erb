@@ -9,8 +9,16 @@
   <div class="panel-body">
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
         <div class="form-group">
+          <%= f.label :first_name %>
+          <%= f.text_field :first_name, autofocus: true, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :last_name %>
+          <%= f.text_field :last_name, class: "form-control" %>
+        </div>
+        <div class="form-group">
           <%= f.label :email %>
-          <%= f.email_field :email, autofocus: true, class: "form-control" %>
+          <%= f.email_field :email, class: "form-control" %>
         </div>
         <div class="form-group">
           <%= f.label :password %> <i>(<%= t('.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>)</i><br />
@@ -29,6 +37,6 @@
   </div>
 </div>
 
-<p><%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure?") }, :method => :delete %>.</p>
-
-<%= link_to t('.back', :default => 'Back'), :back %>
+[ <%= link_to t('.back', :default => 'Back'), :back %> ]
+<br/>
+<p><%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure? We would be sad to see you go.") }, :method => :delete %>.</p>

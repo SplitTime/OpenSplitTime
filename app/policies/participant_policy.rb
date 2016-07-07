@@ -18,10 +18,6 @@ class ParticipantPolicy
     @current_user.admin?
   end
 
-  def create_from_effort?
-    @current_user.present?
-  end
-
   def update?
     @current_user.authorized_to_edit?(@participant)
   end
@@ -32,6 +28,10 @@ class ParticipantPolicy
 
   def avatar_claim?
     @current_user.authorized_to_claim?(@participant)
+  end
+
+  def avatar_disclaim?
+    @current_user.admin?
   end
 
   def merge?

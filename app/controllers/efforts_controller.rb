@@ -129,14 +129,22 @@ class EffortsController < ApplicationController
     render partial: 'efforts_mini_table'
   end
 
-  def add_beacon_url
+  def add_beacon
     authorize(@effort)
-    redirect_to effort_path(@effort)
+    update_beacon_url(params[:value])
+    respond_to do |format|
+      format.html { redirect_to effort_path(@effort) }
+      format.js { render inline: "location.reload();" }
+    end
   end
 
-  def add_report_url
+  def add_report
     authorize(@effort)
-    redirect_to effort_path(@effort)
+    update_report_url(params[:value])
+    respond_to do |format|
+      format.html { redirect_to effort_path(@effort) }
+      format.js { render inline: "location.reload();" }
+    end
   end
 
   private
@@ -155,6 +163,14 @@ class EffortsController < ApplicationController
 
   def set_effort
     @effort = Effort.find(params[:id])
+  end
+
+  def update_beacon_url(url)
+    @effort.update(beacon_url: url)
+  end
+
+  def update_report_url(url)
+    @effort.update(report_url: url)
   end
 
 end

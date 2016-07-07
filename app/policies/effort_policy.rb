@@ -58,14 +58,12 @@ class EffortPolicy
     @current_user.authorized_to_edit?(@effort)
   end
 
-  def add_beacon_url?
+  def add_beacon?
     @current_user.authorized_to_edit?(@effort)
   end
 
-  def add_report_url?
-    @effort.participant ?
-        @current_user.authorized_to_edit_personal?(@effort.participant) :
-        @current_user.authorized_to_edit?(@effort)
+  def add_report?
+    @current_user.authorized_to_edit_personal?(@effort)
   end
 
 end

@@ -45,17 +45,16 @@ class User < ActiveRecord::Base
   end
 
   def authorized_to_claim?(participant)
-    return true if self.admin?
-    return true if self.full_name == participant.full_name
-    true # TODO future fuzzy match algorithm; also provide for admin contact and override
+    return false if self.has_avatar?
+    self.admin? | (self.last_name == participant.last_name) | (self.first_name == participant.first_name)
   end
 
   def authorized_for_live?(resource)
     self.admin? | (self.id == resource.created_by) | (resource.race && resource.race.stewards.include?(self))
   end
 
-  def authorized_to_edit_personal?(resource)
-    self.admin? | self.avatar == resource
+  def authorized_to_edit_personal?(effort)
+    self.admin? | (effort.participant ? (self.avatar == effort.participant) : self.authorized_to_edit?(effort))
   end
 
   def full_name
@@ -67,7 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def has_avatar?
-    !has_no_avatar?
+    avatar.present?
   end
 
   def not_interested_in?(participant_id)

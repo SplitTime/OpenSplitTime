@@ -23,21 +23,20 @@
   </div>
   <div class="col-xs-6 page-navigation">
     <div class="row">
-      <% if @current_user && (@participant.claimant == @current_user) %>
-          <%= link_to 'This is not me', avatar_disclaim_participant_path(@participant), method: :delete,
-                      data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
-      <% elsif @current_user && @participant.unclaimed? && @current_user.has_no_avatar? %>
-          <%= link_to 'This is me', avatar_claim_participant_path(@participant),
-                      data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
-                      class: "btn btn-sm btn-success" %>
-      <% end %>
-      <% if @current_user && @current_user.admin? %>
-          <%= link_to 'Merge with', merge_participant_path(@participant), class: "btn btn-sm btn-success" %>
-      <% end %>
-      <% if @current_user && @current_user.authorized_to_edit?(@participant) %>
-          <%= link_to 'Edit', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>
-          <%= link_to 'Delete', participant_path(@participant), method: :delete,
-                      data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+      <% if @current_user %>
+          <% if @participant.unclaimed? && @current_user.authorized_to_claim?(@participant) %>
+              <%= link_to 'This is me', avatar_claim_participant_path(@participant),
+                          data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
+                          class: "btn btn-sm btn-success" %>
+          <% end %>
+          <% if @current_user.admin? %>
+              <%= link_to 'Merge with', merge_participant_path(@participant), class: "btn btn-sm btn-success" %>
+          <% end %>
+          <% if @current_user.authorized_to_edit?(@participant) %>
+              <%= link_to 'Edit', edit_participant_path(@participant), class: "btn btn-sm btn-primary" %>
+              <%= link_to 'Delete', participant_path(@participant), method: :delete,
+                          data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+          <% end %>
       <% end %>
     </div>
     <div class="page-navigation-text">

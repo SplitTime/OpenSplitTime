@@ -4,11 +4,19 @@ class UsersController < ApplicationController
   after_action :verify_authorized
 
   def index
-    params[:sort] ||= 'date_desc'
-    @users = User.search(params[:search])
-                 .sort(params[:sort])
-                 .paginate(page: params[:page], per_page: 25)
     authorize User
+    params[:sort] ||= 'date_desc'
+    respond_to do |format|
+      format.html do
+        @users = User.search(params[:search])
+                     .sort(params[:sort])
+                     .paginate(page: params[:page], per_page: 25)
+      end
+      format.csv do
+        @users = User.all
+        send_data @users.to_csv, filename: "users-#{Date.today}.csv"
+      end
+    end
   end
 
   def show

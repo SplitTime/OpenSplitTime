@@ -9,6 +9,9 @@
       <strong>Users</strong>
     </h2>
   </div>
+  <div class="col-xs-7 text-right">
+    <%= link_to 'Export email list', users_path(format: :csv), class: 'btn btn-sm btn-primary btn-margin-top' %>
+  </div>
 </div>
 
 <%= render 'lookup' %>

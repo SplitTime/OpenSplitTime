@@ -13,7 +13,9 @@
           <th><%= link_to 'Confirmed at',
                           users_path(search: params[:search],
                                      sort: params[:sort] == 'date_desc' ? 'date_asc' : 'date_desc') %></th>
-          <th>Avatar</th>
+          <th><%= link_to 'Avatar',
+                          users_path(search: params[:search],
+                                     sort: params[:sort] == 'avatar_desc' ? 'avatar_asc' : 'avatar_desc') %></th>
           <th>Change role</th>
           <th>Delete</th>
         </tr>

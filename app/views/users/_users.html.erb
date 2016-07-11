@@ -13,6 +13,9 @@
           <th><%= link_to 'Confirmed at',
                           users_path(search: params[:search],
                                      sort: params[:sort] == 'date_desc' ? 'date_asc' : 'date_desc') %></th>
+          <th><%= link_to 'Avatar',
+                          users_path(search: params[:search],
+                                     sort: params[:sort] == 'avatar_desc' ? 'avatar_asc' : 'avatar_desc') %></th>
           <th>Change role</th>
           <th>Delete</th>
         </tr>
@@ -20,9 +23,16 @@
         <tbody>
         <% @users.each do |user| %>
             <tr>
-              <td><%= user.full_name %></td>
-              <td><%= link_to user.email, user %></td>
+              <td><%= link_to user.full_name, user %></td>
+              <td><%= user.email %></td>
               <td><%= day_time_full_format(user.confirmed_at) %></td>
+              <td>
+                <% if user.avatar %>
+                    <%= link_to user.avatar.full_name, participant_path(user.avatar) %>
+                <% else %>
+                    [None]
+                <% end %>
+              </td>
               <td>
                 <%= form_for(user) do |f| %>
                     <%= f.select(:role, User.roles.keys.map { |role| [role.titleize, role] }) %>

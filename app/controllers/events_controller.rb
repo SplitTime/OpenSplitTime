@@ -173,8 +173,9 @@ class EventsController < ApplicationController
 
   def set_data_status
     authorize @event
-    DataStatusService.set_data_status(@event.efforts)
-    redirect_to event_path(@event)
+    report = DataStatusService.set_data_status(@event.efforts)
+    flash[:warning] = report if report
+    redirect_to stage_event_path(@event)
   end
 
   # Enable/disable availability for live views

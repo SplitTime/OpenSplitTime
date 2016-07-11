@@ -2,6 +2,7 @@ class DataStatusService
 
   def self.set_data_status(*efforts)
     efforts = efforts.flatten
+    return "This event has no efforts whose times can be verified." if efforts.count < 1
     update_effort_hash = {}
     update_split_time_hash = {}
     event = efforts.first.event
@@ -11,6 +12,7 @@ class DataStatusService
                       .where(effort_id: efforts.map(&:id))
                       .ordered
                       .group_by(&:effort_id)
+    return "This event's efforts have no split times to be verified." if split_times.count < 1
 
     efforts.each do |effort|
       status_array = []
@@ -40,6 +42,7 @@ class DataStatusService
 
     BulkUpdateService.bulk_update_split_time_status(update_split_time_hash)
     BulkUpdateService.bulk_update_effort_status(update_effort_hash)
+    return "Bad and questionable times have been flagged."
   end
 
   def self.live_entry_data_status(effort, ordered_splits, ordered_split_times, event_segment_calcs)

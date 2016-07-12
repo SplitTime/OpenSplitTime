@@ -30,7 +30,14 @@ class LiveTimeRowImporter
         if create_or_update_times(effort_data_object)
           effort = effort_data_object.effort
           dropped_split_id = effort_data_object.dropped_here ? effort_data_object.split_id : nil
-          effort.update(dropped_split_id: dropped_split_id) if effort.dropped_split_id != dropped_split_id
+          if dropped_split_id && (effort.dropped_split_id != dropped_split_id)
+            effort.update(dropped_split_id: dropped_split_id)
+            DataStatusService.set_data_status(effort)
+          end
+          if !dropped_split_id && (effort.dropped_split_id == effort_data_object.split_id)
+            effort.update(dropped_split_id: nil)
+            DataStatusService.set_data_status(effort)
+          end
         else
           unsaved_rows << effort_data_object.response_row
         end

@@ -747,7 +747,9 @@
                 $('#split-select').val( splitId );
                 var $selectOption = $('#split-select option:selected');
                 $('#js-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
+                $('#js-pacer-in').prop('disabled', !$selectOption.data('sub-split-in'));
                 $('#js-time-out').prop('disabled', !$selectOption.data('sub-split-out'));
+                $('#js-pacer-out').prop('disabled', !$selectOption.data('sub-split-out'));
                 $('#js-file-split').text( $selectOption.text() );
                 // Get slider indexes
                 var currentItemId = $('.js-split-slider-item.active.middle').attr('data-index');

@@ -1,7 +1,7 @@
 class SplitRow
 
   attr_reader :split
-  delegate :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
+  delegate :id, :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, :days_and_times, :time_data_statuses, to: :time_cluster
 
   # split_times should be an array having size == split.sub_split_bitkey_hashes.size,
@@ -23,8 +23,16 @@ class SplitRow
     DataStatus.worst(time_data_statuses)
   end
 
+  def pacer_in_out
+    split_times.map { |st| st ? pacer_text(st.pacer) : nil }
+  end
+
   private
 
   attr_reader :split_times, :prior_time, :start_time, :time_cluster
+
+  def pacer_text(boolean)
+    boolean ? 'Yes' : 'No'
+  end
 
 end

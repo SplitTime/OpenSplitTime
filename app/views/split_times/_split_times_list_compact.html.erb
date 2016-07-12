@@ -5,8 +5,8 @@
     <th class="text-right"><%= pdu('singular').titleize %></th>
     <th class="text-center">Time of Day</th>
     <th class="text-center">Elapsed Time</th>
-    <th class="text-center">Segment Time</th>
-    <th class="text-right">In Aid</th>
+    <th class="text-center">Pacer In/Out</th>
+    <th class="text-center">Dropped</th>
   </tr>
   </thead>
   <tbody>
@@ -21,17 +21,27 @@
       <% if split_row.finish? %>
           <td><strong><%= split_row.name %></strong></td>
           <td class="text-right"><strong><%= d(split_row.distance_from_start) %></strong></td>
-          <td class="text-center"><strong><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></strong></td>
+          <td class="text-center">
+            <strong><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></strong>
+          </td>
           <td class="text-center"><strong><%= composite_time_zzs(split_row) %></strong></td>
-          <td class="text-center"><strong><%= time_format_xxhyymzzs(split_row.segment_time) %></strong></td>
-          <td class="text-right"><strong><%= time_format_minutes(@effort_show.total_time_in_aid) %></strong></td>
+          <td class="text-center"><strong><%= split_row.pacer_in_out.compact.join(' / ') %></strong></td>
+          <% if @effort_show.dropped_split_id == split_row.id %>
+              <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
+          <% else %>
+              <td></td>
+          <% end %>
       <% elsif split_row.intermediate? %>
           <td><%= split_row.name %></td>
           <td class="text-right"><%= d(split_row.distance_from_start) %></td>
           <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></td>
           <td class="text-center"><%= composite_time(split_row) %></td>
-          <td class="text-center"><%= time_format_xxhyym(split_row.segment_time) %></td>
-          <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
+          <td class="text-center"><%= split_row.pacer_in_out.compact.join(' / ') %></td>
+          <% if @effort_show.dropped_split_id == split_row.id %>
+              <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
+          <% else %>
+              <td></td>
+          <% end %>
       <% end %>
       </tr>
   <% end %>

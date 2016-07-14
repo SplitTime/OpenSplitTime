@@ -86,6 +86,10 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def start_all_efforts?
+    @current_user.authorized_to_edit?(@event)
+  end
+
   def live_enable?
     @current_user.authorized_to_edit?(@event)
   end

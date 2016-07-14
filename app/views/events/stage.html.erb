@@ -45,9 +45,15 @@
               <%= link_to 'Stewards', stewards_race_path(@event_stage.race), class: 'btn btn-sm btn-warning' %>
           <% end %>
           <%= link_to 'Edit event', edit_event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
+          <% if @event_stage.started? %>
           <%= link_to 'Set data status', set_data_status_event_path(@event_stage.event),
                       method: :put,
                       class: 'btn btn-sm btn-success' %>
+              <% else %>
+          <%= link_to 'Start all efforts', start_all_efforts_event_path(@event_stage.event),
+                      method: :put,
+                      class: 'btn btn-sm btn-success' %>
+              <% end %>
           <%= link_to 'Delete event', event_path(@event_stage.event, referrer_path: events_path),
                       method: :delete,
                       data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},

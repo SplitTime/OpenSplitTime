@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     member { put :associate_split }
     member { put :associate_splits }
     member { put :set_data_status }
+    member { put :start_all_efforts }
     member { delete :remove_split }
     member { delete :remove_all_splits }
     member { delete :delete_all_efforts }

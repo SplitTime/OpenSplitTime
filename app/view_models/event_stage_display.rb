@@ -3,7 +3,7 @@ class EventStageDisplay
   attr_accessor :event_efforts, :filtered_efforts
   attr_reader :event, :associated_splits
   delegate :id, :name, :start_time, :course, :race, :available_live, :simple?,
-           :unreconciled_efforts, :unreconciled_efforts?, to: :event
+           :unreconciled_efforts, :unreconciled_efforts?, :started?, to: :event
 
   # initialize(event)
   # event is an ordinary event object

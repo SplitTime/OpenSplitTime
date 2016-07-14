@@ -111,4 +111,19 @@ class BulkUpdateService
     end
   end
 
+  def self.start_all_efforts(event, current_user_id)
+    efforts = event.efforts
+    start_split_id = event.start_split.id
+    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
+      efforts.each do |effort|
+        worker.add(effort_id: effort.id,
+                   split_id: start_split_id,
+                   sub_split_bitkey: SubSplit::IN_BITKEY,
+                   time_from_start: 0,
+                   created_by: current_user_id,
+                   updated_by: current_user_id)
+      end
+    end
+  end
+
 end

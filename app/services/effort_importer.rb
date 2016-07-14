@@ -42,6 +42,7 @@ class EffortImporter
   end
 
   def effort_import_without_times
+    self.import_without_times = true
     build_effort_schema
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
@@ -71,10 +72,10 @@ class EffortImporter
     [self]
   end
 
-  private
+  # private
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
-                :effort_schema
+                :effort_schema, :import_without_times
 
   attr_reader :event, :current_user_id, :sub_split_bitkey_hashes
 
@@ -255,7 +256,7 @@ class EffortImporter
   # any importable effort attribute
 
   def build_effort_schema
-    header_column_titles = header1[0..split_offset - 2]
+    header_column_titles = import_without_times ? header1 : header1[0..split_offset - 2]
     effort_attributes = Effort.attributes_for_import
     self.effort_schema = []
     header_column_titles.each do |column_title|
@@ -276,6 +277,8 @@ class EffortImporter
     attribute_string.gsub!('countrycode', 'country')
     attribute_string.gsub!('statecode', 'state')
     attribute_string.gsub!('bibnumber', 'bib')
+    attribute_string.gsub!('firstname', 'first')
+    attribute_string.gsub!('lastname', 'last')
     column_string = column_title.downcase.gsub(/[\W_]+/, '')
     column_string.gsub!('nation', 'country')
     column_string.gsub!('region', 'state')
@@ -283,6 +286,8 @@ class EffortImporter
     column_string.gsub!('sex', 'gender')
     column_string.gsub!('bibnumber', 'bib')
     column_string.gsub!('bibno', 'bib')
+    column_string.gsub!('firstname', 'first')
+    column_string.gsub!('lastname', 'last')
     (column_string == attribute_string)
   end
 

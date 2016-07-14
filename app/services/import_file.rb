@@ -18,6 +18,7 @@ class ImportFile
 
   def effort_offset
     unit_array = %w[miles meters km kilometers]
+    return 2 unless header2[0].try(:downcase)
     header2[0].downcase.include?("distance") &&
         (header2[1].blank? || unit_array.include?(header2[1])) ? 3 : 2
   end

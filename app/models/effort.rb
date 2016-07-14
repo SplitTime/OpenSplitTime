@@ -166,6 +166,7 @@ class Effort < ActiveRecord::Base
     ordered_splits = event.ordered_splits.to_a
     ordered_bitkey_hashes = ordered_splits.map(&:sub_split_bitkey_hashes).flatten
     start_bitkey_hash = ordered_bitkey_hashes.first
+    return nil unless split_times_hash[start_bitkey_hash].present?
     return 0 if bitkey_hash == start_bitkey_hash
     relevant_bitkey_hashes = ordered_bitkey_hashes[0..(ordered_bitkey_hashes.index(bitkey_hash) - 1)]
     prior_split_time = relevant_bitkey_hashes.collect { |bh| split_times_hash[bh] }.compact.last

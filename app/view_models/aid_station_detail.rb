@@ -159,6 +159,8 @@ class AidStationDetail
            :efforts_in_progress, :live_efforts, to: :live_event
 
   def set_split_times
+    return nil unless live_event.split_times
+    return nil unless live_event.split_times.group_by(&:split_id)[aid_station.split_id]
     live_event.split_times.group_by(&:split_id)[aid_station.split_id].group_by(&:effort_id)
   end
 

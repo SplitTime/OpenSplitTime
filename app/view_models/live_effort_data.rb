@@ -4,7 +4,7 @@ class LiveEffortData
                 :time_in_aid, :dropped, :finished, :last_split, :last_bitkey,
                 :time_in_exists, :time_out_exists, :split_time_in, :split_time_out,
                 :prior_valid_day_and_time, :prior_valid_split, :prior_valid_bitkey, :dropped_here,
-                :dropped_split, :dropped_day_and_time
+                :dropped_split, :dropped_day_and_time, :started
   attr_reader :effort, :response_row
 
   def initialize(event, params, calcs = nil, ordered_split_array = nil)
@@ -18,7 +18,7 @@ class LiveEffortData
     set_effort_related_attributes if @effort
     verify_time_existence if (@effort && @split)
     set_dropped_attributes if @effort
-    verify_time_status if (@effort && @split)
+    verify_time_status if (@effort && @split && started)
   end
 
   def success?
@@ -105,6 +105,10 @@ class LiveEffortData
     self.time_in_exists = self.response_row[:timeInExists] = split_times_hash[bitkey_hash_in].present?
     self.time_out_exists = self.response_row[:timeOutExists] = split_times_hash[bitkey_hash_out].present?
 
+    # Set 'started' flag based on existence of start split_time
+
+    self.started = split_times_hash[start_bitkey_hash].present?
+
   end
 
   def set_dropped_attributes
@@ -179,6 +183,11 @@ class LiveEffortData
   def times_valid?
     ((time_in_status == 'good') || time_in_status.nil?) &&
         ((time_out_status == 'good') || time_out_status.nil?)
+  end
+
+  def start_bitkey_hash
+    return nil unless ordered_splits.present?
+    {ordered_splits.first.id => SubSplit::IN_BITKEY}
   end
 
 end

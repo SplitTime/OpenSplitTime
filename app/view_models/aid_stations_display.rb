@@ -67,7 +67,9 @@ class AidStationsDisplay
 
   def create_aid_station_details
     aid_stations.each do |aid_station|
-      split_times = split_times_by_split[aid_station.split_id].group_by(&:effort_id)
+      split_times = split_times_by_split[aid_station.split_id] ?
+          split_times_by_split[aid_station.split_id].group_by(&:effort_id) :
+          nil
       aid_station_row = AidStationDetail.new(aid_station, live_event, split_times)
       self.aid_station_rows << aid_station_row
     end

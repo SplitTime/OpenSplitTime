@@ -1,16 +1,21 @@
 <div class="row">
-  <div class="col-xs-10">
+  <div class="col-xs-9">
     <h3>
       <%= @effort_show.full_name %>
       <%= "(#{@effort_show.bib_number})" if @effort_show.bib_number %>
       • <%= @effort_show.event_name %>
     </h3>
     <% overall_place, gender_place = @effort_show.combined_places %>
-    <h4><%= "#{@effort_show.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_show.gender.titleize}" %></h4>
+    <h4>
+      <%= @effort_show.finish_status %>
+      <%= "• #{overall_place.ordinalize} Place " if overall_place %>
+      <%= "• #{gender_place.ordinalize} #{@effort_show.gender.titleize}" if gender_place %>
+      <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
+    </h4>
   </div>
   <div class="col-xs-2">
     <% if @effort_show.beacon_url %>
-        <%= link_to @effort_show.beacon_button_text, url_with_protocol(@effort_show.beacon_url), class: "btn btn-sm btn-default", target: "_blank" %>
+        <%= link_to @effort_show.beacon_button_text, url_with_protocol(@effort_show.beacon_url), class: "btn btn-sm btn-default btn-margin-top", target: "_blank" %>
     <% end %>
   </div>
 </div>

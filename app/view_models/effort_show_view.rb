@@ -34,6 +34,7 @@ class EffortShowView
     return nil unless beacon_url.present?
     return 'SPOT Page' if beacon_url.include?('findmespot.com')
     return 'FasterTracks' if beacon_url.include?('fastertracks.com')
+    return 'SPOT via TrackLeaders' if beacon_url.include?('trackleaders.com')
     'Locator Beacon'
   end
 

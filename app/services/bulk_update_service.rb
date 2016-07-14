@@ -124,6 +124,7 @@ class BulkUpdateService
                    updated_by: current_user_id)
       end
     end
+    "Added start times for #{efforts.count} efforts." # TODO determine if split_times were actually added
   end
 
 end

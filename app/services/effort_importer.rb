@@ -72,7 +72,7 @@ class EffortImporter
     [self]
   end
 
-  # private
+  private
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
                 :effort_schema, :import_without_times

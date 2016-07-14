@@ -45,6 +45,10 @@ class EffortShowView
     'External Report'
   end
 
+  def not_analyzable?
+    split_times.count < 2
+  end
+
   private
 
   attr_reader :splits, :split_times

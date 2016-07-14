@@ -52,6 +52,7 @@
               <% else %>
           <%= link_to 'Start all efforts', start_all_efforts_event_path(@event_stage.event),
                       method: :put,
+                      data: {confirm: "NOTE: This will create a starting split time for all efforts associated with #{@event_stage.name}, without any offset from the event start time. Are you sure you want to proceed?"},
                       class: 'btn btn-sm btn-success' %>
               <% end %>
           <%= link_to 'Delete event', event_path(@event_stage.event, referrer_path: events_path),

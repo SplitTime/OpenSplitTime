@@ -105,4 +105,9 @@ class Event < ActiveRecord::Base
     race ? race.name : nil
   end
 
+  def started?
+    effort_ids = efforts.pluck(:id)
+    SplitTime.where(effort_id: effort_ids).present?
+  end
+
 end

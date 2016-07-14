@@ -1,0 +1,19 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Bib&num;</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>From</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @event_preview.effort_preview_rows.each do |effort_preview_row| %>
+      <td><%= effort_preview_row.bib_number %></td>
+      <td><strong><%= link_to effort_preview_row.full_name, effort_path(effort_preview_row.id) %></strong></td>
+      <td><%= effort_preview_row.bio_historic %></td>
+      <td><%= effort_preview_row.state_and_country %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

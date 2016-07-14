@@ -11,8 +11,15 @@ class EventsController < ApplicationController
 
   def show
     event = Event.find(params[:id])
-    @event_display = EventEffortsDisplay.new(event, params)
-    session[:return_to] = event_path(event)
+    if event.started?
+      @event_display = EventEffortsDisplay.new(event, params)
+      session[:return_to] = event_path(event)
+      render 'show'
+    else
+      @event_preview = EventPreviewDisplay.new(event, params)
+      session[:return_to] = event_path(event)
+      render 'preview'
+    end
   end
 
   def new
@@ -178,7 +185,7 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-  # Enable/disable availability for live views
+# Enable/disable availability for live views
 
   def live_enable
     authorize @event

@@ -12,20 +12,20 @@ class AidStationDetail
     @aid_station = aid_station
     @live_event = live_event || LiveEvent.new(event)
     @split_times = split_times || set_split_times
-    set_efforts
+    set_efforts if split_times
     set_status if aid_station.status.nil?
   end
 
   def efforts_started_count
-    efforts_started.count
+    efforts_started ? efforts_started.count : 0
   end
 
   def efforts_expected_count
-    efforts_expected.count
+    efforts_expected ? efforts_expected.count : 0
   end
 
   def efforts_expected_ids
-    efforts_expected.map(&:id)
+    efforts_expected ? efforts_expected.map(&:id) : []
   end
 
   def efforts_expected_table_title
@@ -33,11 +33,11 @@ class AidStationDetail
   end
 
   def efforts_dropped_here_count
-    efforts_dropped_here.count
+    efforts_dropped_here ? efforts_dropped_here.count : 0
   end
 
   def efforts_dropped_here_ids
-    efforts_dropped_here.map(&:id)
+    efforts_dropped_here ? efforts_dropped_here.map(&:id) : []
   end
 
   def efforts_dropped_here_table_title
@@ -45,11 +45,11 @@ class AidStationDetail
   end
 
   def efforts_missed_count
-    efforts_missed.count
+    efforts_missed ? efforts_missed.count : 0
   end
 
   def efforts_missed_ids
-    efforts_missed.map(&:id)
+    efforts_missed ? efforts_missed.map(&:id) : []
   end
 
   def efforts_missed_table_title
@@ -57,11 +57,11 @@ class AidStationDetail
   end
 
   def efforts_recorded_in_count
-    efforts_recorded_in.count
+    efforts_recorded_in ? efforts_recorded_in.count : 0
   end
 
   def efforts_recorded_in_ids
-    efforts_recorded_in.map(&:id)
+    efforts_recorded_in ? efforts_recorded_in.map(&:id) : []
   end
 
   def efforts_recorded_in_table_title
@@ -69,11 +69,11 @@ class AidStationDetail
   end
 
   def efforts_recorded_out_count
-    efforts_recorded_out.count
+    efforts_recorded_out ? efforts_recorded_out.count : 0
   end
 
   def efforts_recorded_out_ids
-    efforts_recorded_out.map(&:id)
+    efforts_recorded_out ? efforts_recorded_out.map(&:id) : []
   end
 
   def efforts_recorded_out_table_title
@@ -81,7 +81,7 @@ class AidStationDetail
   end
 
   def efforts_in_aid_count
-    efforts_in_aid.count
+    efforts_in_aid ? efforts_in_aid.count : 0
   end
 
   def split_name

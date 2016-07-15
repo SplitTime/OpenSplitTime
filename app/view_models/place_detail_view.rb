@@ -77,6 +77,7 @@ class PlaceDetailView
     indexed_bib_numbers = Hash[event_efforts.map { |effort| [effort.id, effort.bib_number] }]
     bitkey_hashes.each do |bitkey_hash|
       split_times = indexed_split_times[bitkey_hash]
+      next unless split_times
       split_place_column = split_times.map { |split_time| {effort_id: split_time.effort_id,
                                                            day_and_time: split_time.day_and_time_attr,
                                                            bib_number: indexed_bib_numbers[split_time.effort_id]} }
@@ -110,13 +111,13 @@ class PlaceDetailView
   end
 
   def split_place(bitkey_hash)
-    return nil unless bitkey_hash
+    return nil unless split_place_columns[bitkey_hash]
     ordered_effort_ids = split_place_columns[bitkey_hash].map { |row| row[:effort_id] }
     ordered_effort_ids.index(effort.id) ? ordered_effort_ids.index(effort.id) + 1 : nil
   end
 
   def effort_ids_tied(bitkey_hash)
-    return nil unless bitkey_hash
+    return nil unless split_place_columns[bitkey_hash]
     split_place_column = split_place_columns[bitkey_hash]
     subject_row = split_place_column.find { |row| row[:effort_id] == effort.id }
     return nil unless subject_row.present?
@@ -126,7 +127,7 @@ class PlaceDetailView
   end
 
   def effort_ids_ahead(bitkey_hash)
-    return nil unless bitkey_hash
+    return nil unless split_place_columns[bitkey_hash]
     ordered_effort_ids = split_place_columns[bitkey_hash].map { |row| row[:effort_id] }
     return [] if split_place(bitkey_hash) == 1
     return nil unless ordered_effort_ids.include?(effort.id)
@@ -142,6 +143,7 @@ class PlaceDetailView
 
   def indexed_segment_times(begin_bitkey_hash, end_bitkey_hash)
     result = {}
+    return {} unless indexed_split_times[begin_bitkey_hash]
     begin_split_times = indexed_split_times[begin_bitkey_hash].index_by(&:effort_id)
     end_split_times = indexed_split_times[end_bitkey_hash].index_by(&:effort_id)
     event_efforts.each do |effort|
@@ -163,7 +165,8 @@ class PlaceDetailView
   end
 
   def related_split_times(split)
-    split.sub_split_bitkey_hashes.collect { |key_hash| indexed_split_times[key_hash].index_by(&:effort_id)[effort.id] }
+    split.sub_split_bitkey_hashes.collect { |key_hash| indexed_split_times[key_hash] ?
+        indexed_split_times[key_hash].index_by(&:effort_id)[effort.id] : [] }
   end
 
   def frequent_encountered_ids

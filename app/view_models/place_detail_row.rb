@@ -22,10 +22,12 @@ class PlaceDetailRow
   end
 
   def days_and_times
-    split_times.map { |split_time| split_time ? split_time.day_and_time_attr : nil }
+    return [] unless split_times
+    split_times.map { |split_time| split_time.present? ? split_time.day_and_time_attr : nil }
   end
 
   def end_bitkey_hash
+    return [] unless split_times
     split_times.last.present? ? split_times.last.bitkey_hash : nil
   end
 

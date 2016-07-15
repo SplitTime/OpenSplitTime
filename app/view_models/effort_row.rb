@@ -1,7 +1,7 @@
 class EffortRow
   include PersonalInfo
 
-  attr_reader :overall_place, :gender_place, :finish_status, :start_time_from_params
+  attr_reader :overall_place, :gender_place, :finish_status, :run_status, :day_and_time, :start_time_from_params
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :bio, to: :effort
 
@@ -10,6 +10,8 @@ class EffortRow
     @overall_place = options[:overall_place]
     @gender_place = options[:gender_place]
     @finish_status = options[:finish_status]
+    @run_status = options[:run_status]
+    @day_and_time = options[:day_and_time]
     @start_time_from_params = options[:start_time]
   end
 

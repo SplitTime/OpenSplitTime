@@ -59,7 +59,9 @@ class EventEffortsDisplay
     filtered_efforts.each do |effort|
       effort_row = EffortRow.new(effort, overall_place: overall_place(effort),
                                  gender_place: gender_place(effort),
-                                 finish_status: finish_status(effort))
+                                 finish_status: finish_status(effort),
+                                 run_status: run_status(effort),
+                                 day_and_time: start_time + effort.start_offset + effort.time_from_start)
       effort_rows << effort_row
     end
   end
@@ -68,6 +70,12 @@ class EventEffortsDisplay
     return effort.time_from_start if effort.final_split_id == event_final_split_id
     return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
     "In progress"
+  end
+
+  def run_status(effort)
+    return "Finished" if effort.final_split_id == event_final_split_id
+    return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
+    "Reported through #{effort.final_split_name}"
   end
 
   def overall_place(effort)

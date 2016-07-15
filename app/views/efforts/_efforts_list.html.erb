@@ -6,7 +6,7 @@
     <th>Bib&num;</th>
     <th>Category</th>
     <th>From</th>
-    <th class="text-right">Finish Time</th>
+    <th class="text-right">Status</th>
   </tr>
   </thead>
   <tbody>
@@ -23,9 +23,7 @@
       <td><%= effort_row.bib_number %></td>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
-      <td class="text-right"><%= effort_row.finish_status.is_a?(String) ?
-                                     effort_row.finish_status :
-                                     time_format_xxhyymzzs(effort_row.finish_status) %></td>
+      <td class="text-right"><%= "#{effort_row.run_status} at #{day_time_format(effort_row.day_and_time)}" %></td>
       </tr>
   <% end %>
   </tbody>

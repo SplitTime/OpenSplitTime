@@ -12,7 +12,7 @@ class AidStationDetail
     @aid_station = aid_station
     @live_event = live_event || LiveEvent.new(event)
     @split_times = split_times || set_split_times
-    set_efforts if split_times
+    set_efforts
     set_status if aid_station.status.nil?
   end
 
@@ -166,14 +166,18 @@ class AidStationDetail
 
   def set_efforts
     efforts_dropped_here = efforts_dropped.select { |effort| effort.dropped_split_id == split_id }
-    efforts_recorded_in = efforts_started
-                              .select { |effort| split_times[effort.id] ? split_times[effort.id]
-                                                                              .map(&:sub_split_bitkey)
-                                                                              .include?(SubSplit::IN_BITKEY) : false }
-    efforts_recorded_out = efforts_started
-                               .select { |effort| split_times[effort.id] ? split_times[effort.id]
-                                                                               .map(&:sub_split_bitkey)
-                                                                               .include?(SubSplit::OUT_BITKEY) : false }
+    if split_times
+      efforts_recorded_in = efforts_started
+                                .select { |effort| split_times[effort.id] ? split_times[effort.id]
+                                                                                .map(&:sub_split_bitkey)
+                                                                                .include?(SubSplit::IN_BITKEY) : false }
+      efforts_recorded_out = efforts_started
+                                 .select { |effort| split_times[effort.id] ? split_times[effort.id]
+                                                                                 .map(&:sub_split_bitkey)
+                                                                                 .include?(SubSplit::OUT_BITKEY) : false }
+    else
+      efforts_recorded_in = efforts_recorded_out = []
+    end
     efforts_in_aid = efforts_recorded_in - efforts_recorded_out
     efforts_not_recorded = efforts_started - efforts_recorded_in - efforts_recorded_out
     efforts_missed = efforts_not_recorded
@@ -205,7 +209,7 @@ class AidStationDetail
   def persons(number)
     number == 1 ? "#{number} person" : "#{number} people"
   end
-  
+
   def was_were(number)
     number == 1 ? 'was' : 'were'
   end

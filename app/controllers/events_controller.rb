@@ -141,7 +141,7 @@ class EventsController < ApplicationController
   def spread
     event = Event.find(params[:id])
     params[:style] ||= event.available_live ? 'ampm' : 'elapsed'
-    params[:sort] ||= event.available_live ? 'bib' : 'place'
+    params[:sort] ||= 'place'
     @spread_display = EventSpreadDisplay.new(event, params)
     session[:return_to] = spread_event_path(event)
   end

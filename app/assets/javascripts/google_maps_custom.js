@@ -14,8 +14,7 @@ var gmap_show = function (locations, viewParams) {
         var marker = new google.maps.Marker({
             position: {lat: parseFloat(val.latitude) , lng: parseFloat(val.longitude) },
             map: map,
-            title: val.name,
-            icon: 'http://www.travelaustralia.com.au/graphics/map_icons/icons/orange-dot.png'
+            title: val.name
         });
 
         marker.infowindow = new google.maps.InfoWindow({

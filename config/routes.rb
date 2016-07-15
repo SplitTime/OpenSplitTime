@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     member { get :spread }
     member { put :live_enable }
     member { put :live_disable }
+    member { get :add_beacon }
   end
   resources :splits do
     member { get :assign_location }

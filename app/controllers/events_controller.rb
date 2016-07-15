@@ -206,6 +206,16 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
+  def add_beacon
+    authorize @event
+    update_beacon_url(params[:value])
+    respond_to do |format|
+      format.html { redirect_to stage_event_path(@event) }
+      format.js { render inline: "location.reload();" }
+    end
+  end
+
+
   private
 
   def event_params
@@ -218,6 +228,10 @@ class EventsController < ApplicationController
 
   def set_event
     @event = Event.find(params[:id])
+  end
+
+  def update_beacon_url(url)
+    @event.update(beacon_url: url)
   end
 
 end

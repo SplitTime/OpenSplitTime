@@ -20,6 +20,9 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
+      <% if @event_display.available_live && @event_display.beacon_url %>
+          <%= link_to @event_display.beacon_button_text, url_with_protocol(@event_display.beacon_url), class: "btn btn-sm btn-default", target: "_blank" %>
+      <% end %>
       <% if @current_user && @current_user.authorized_for_live?(@event_display.event) && @event_display.event.available_live %>
           <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_display.event), method: :get, class: 'btn btn-sm btn-warning' %>
       <% end %>

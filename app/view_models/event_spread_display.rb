@@ -1,7 +1,7 @@
 class EventSpreadDisplay
 
   attr_reader :event, :splits, :effort_times_rows, :display_style
-  delegate :name, :start_time, :course, :race, to: :event
+  delegate :name, :start_time, :course, :race, :available_live, :beacon_url, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object
@@ -47,6 +47,14 @@ class EventSpreadDisplay
 
   def relevant_splits
     (display_style == 'ampm') || (display_style == 'military') ? splits : splits_without_start
+  end
+
+  def beacon_button_text
+    return nil unless beacon_url.present?
+    return 'SPOT Page' if beacon_url.include?('findmespot.com')
+    return 'FasterTracks' if beacon_url.include?('fastertracks.com')
+    return 'SPOT via TrackLeaders' if beacon_url.include?('trackleaders.com')
+    'Event Locator Beacon'
   end
 
   private

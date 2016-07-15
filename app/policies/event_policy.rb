@@ -144,4 +144,8 @@ class EventPolicy
     @current_user.authorized_for_live?(@event)
   end
 
+  def add_beacon?
+    @current_user.authorized_to_edit?(@event)
+  end
+
 end

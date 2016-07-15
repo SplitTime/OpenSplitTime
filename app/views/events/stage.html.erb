@@ -73,7 +73,7 @@
               <%= link_to 'Associate or remove splits', splits_event_path, class: 'btn btn-sm btn-success' %>
           <% end %>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-4">
           <%= link_to 'Create effort', new_effort_path(event_id: @event_stage.id), class: 'btn btn-sm btn-success' %>
           <% if @event_stage.unreconciled_efforts? %>
               <%= link_to 'Reconcile with participants', reconcile_event_path, class: 'btn btn-sm btn-success' %>
@@ -84,6 +84,14 @@
                           data: {confirm: 'NOTE: This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to go ahead?'},
                           class: 'btn btn-sm btn-danger' %>
           <% end %>
+        </div>
+        <div class="col-xs-4">
+          <div class="text-right">
+            <% if @event_stage.available_live %>
+                <strong><%= @event_stage.beacon_url ? 'Modify event locator beacon link: ' : 'Add link to event locator beacon:' %></strong>
+                <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to TrackLeaders or other event locator site here:"><%= "#{@event_stage.beacon_url}" %></a>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
@@ -162,3 +170,17 @@
         <h4>No efforts are associated with this event.</h4>
     <% end %>
 <% end %>
+
+<script>
+  $('#beacon-link').editable({
+    type: 'text',
+    emptytext: 'Click here',
+    url: '<%= add_beacon_event_path(@event_stage.event) %>',
+    pk: 1,
+    title: 'Paste link:',
+    ajaxOptions: {
+      type: 'get',
+      dataType: 'script'
+    }
+  });
+</script>

@@ -2,7 +2,7 @@ class EventEffortsDisplay
 
   attr_accessor :filtered_efforts
   attr_reader :event, :effort_rows
-  delegate :name, :start_time, :course, :race, :simple?, to: :event
+  delegate :name, :start_time, :course, :race, :simple?, :beacon_url, :available_live, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object
@@ -40,6 +40,14 @@ class EventEffortsDisplay
 
   def race_name
     race ? race.name : nil
+  end
+
+  def beacon_button_text
+    return nil unless beacon_url.present?
+    return 'SPOT Page' if beacon_url.include?('findmespot.com')
+    return 'FasterTracks' if beacon_url.include?('fastertracks.com')
+    return 'SPOT via TrackLeaders' if beacon_url.include?('trackleaders.com')
+    'Event Locator Beacon'
   end
 
   private

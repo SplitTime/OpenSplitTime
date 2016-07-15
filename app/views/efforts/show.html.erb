@@ -33,7 +33,9 @@
       <div class="btn-group">
         <% unless @effort_show.simple? || @effort_show.not_analyzable? %>
             <%= link_to "Split times", effort_path(@effort_show.effort), disabled: true, class: "btn btn-sm btn-primary" %>
-            <%= link_to "Analyze times", analyze_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
+            <% unless @effort_show.in_progress? %>
+                <%= link_to "Analyze times", analyze_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
+            <% end %>
             <%= link_to "Places + peers", place_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
         <% end %>
       </div>

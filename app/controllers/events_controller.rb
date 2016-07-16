@@ -216,7 +216,7 @@ class EventsController < ApplicationController
   end
 
   def drop_list
-    @event_dropped_display = EventDroppedDisplay.new(@event)
+    @event_dropped_display = EventDroppedDisplay.new(@event, params)
     session[:return_to] = event_path(@event)
   end
 

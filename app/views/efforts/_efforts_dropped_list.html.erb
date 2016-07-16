@@ -1,11 +1,21 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th>Name</th>
-    <th>Bib&num;</th>
+    <% if params[:sort] == 'last' %>
+        <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event,
+                                                     sort: 'first') %></th>
+    <% else %>
+        <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event,
+                                                     sort: 'last') %></th>
+    <% end %>
+    <th><%= link_to 'Bib', drop_list_event_path(@event_dropped_display.event,
+                                                sort: 'bib') %></th>
     <th>Category</th>
     <th>From</th>
-    <th class="text-right">Dropped where and when</th>
+    <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event,
+                                                          sort: 'distance') %></th>
+    <th class="text-right"><%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event,
+                                                                             sort: 'time') %></th>
   </tr>
   </thead>
   <tbody>
@@ -14,7 +24,8 @@
       <td><%= effort_row.bib_number %></td>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
-      <td class="text-right"><%= "#{effort_row.run_status} at #{day_time_format(effort_row.day_and_time)}" %></td>
+      <td><%= effort_row.dropped_split_name %></td>
+      <td class="text-right"><%= day_time_format(effort_row.day_and_time) %></td>
       </tr>
   <% end %>
   </tbody>

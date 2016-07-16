@@ -10,9 +10,10 @@ class EventDroppedDisplay
   # params[:search] (from user search input)
   # and params[:page] (for will_paginate)
 
-  def initialize(event)
+  def initialize(event, params)
     @event = event
     get_efforts
+    sort_efforts(params[:sort])
     @effort_rows = []
     create_effort_rows
   end
@@ -35,18 +36,25 @@ class EventDroppedDisplay
     self.dropped_efforts = started_efforts.select { |effort| effort.dropped_split_id.present? }
   end
 
+  def sort_efforts(sort_by)
+    dropped_efforts.sort_by!(&:bib_number) if sort_by == 'bib'
+    dropped_efforts.sort_by!(&:last_name) if sort_by == 'last'
+    dropped_efforts.sort_by!(&:first_name) if sort_by == 'first'
+    dropped_efforts.sort_by!(&:distance_from_start) if sort_by == 'distance'
+    dropped_efforts.sort_by!(&:time_from_start) if sort_by == 'time'
+  end
+
   def create_effort_rows
     dropped_efforts.each do |effort|
       effort_row = EffortRow.new(effort,
-                                 run_status: run_status(effort),
+                                 dropped_split_name: dropped_split_name(effort),
                                  day_and_time: start_time + effort.start_offset + effort.time_from_start)
       effort_rows << effort_row
     end
   end
 
-  def run_status(effort)
-    return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
-    "Reported through #{effort.final_split_name}"
+  def dropped_split_name(effort)
+     effort.final_split_name
   end
 
 end

@@ -29,6 +29,10 @@ class LiveEffortData
     split ? split.id : nil
   end
 
+  def sub_split_bitkey_out?
+    split ? split.sub_split_bitkeys.include?(SubSplit::OUT_BITKEY) : false
+  end
+
   def split_name
     split ? split.base_name : nil
   end

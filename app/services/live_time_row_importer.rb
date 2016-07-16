@@ -63,7 +63,7 @@ class LiveTimeRowImporter
       in_time_saved = create_or_update_split_time(effort_data_object.split_time_in, split_time_in)
     end
 
-    if effort_data_object.split_time_out.present?
+    if (effort_data_object.split_time_out.present?) && (effort_data_object.sub_split_bitkey_out?)
       split_time_out = existing_split_times.find { |st| st.sub_split_bitkey == SubSplit::OUT_BITKEY }
       out_time_saved = create_or_update_split_time(effort_data_object.split_time_out, split_time_out)
     end

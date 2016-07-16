@@ -22,6 +22,11 @@
     <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
     <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
   </div>
+  <div class="col-xs-6">
+    <div class="text-right">
+      <%= link_to 'Drop list', drop_list_event_path(@event), class: 'btn btn-sm btn-primary' %>
+    </div>
+  </div>
 </div>
 <hr>
 <div class="row">

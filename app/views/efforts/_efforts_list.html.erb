@@ -23,7 +23,7 @@
       <td><%= effort_row.bib_number %></td>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
-      <td class="text-right"><%= "#{effort_row.run_status} at #{day_time_format(effort_row.day_and_time)}" %></td>
+      <td class="text-right"><%= "#{effort_row.run_status} #{day_time_format(effort_row.day_and_time)}" %></td>
       </tr>
   <% end %>
   </tbody>

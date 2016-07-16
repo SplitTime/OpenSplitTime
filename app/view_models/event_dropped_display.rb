@@ -37,11 +37,14 @@ class EventDroppedDisplay
   end
 
   def sort_efforts(sort_by)
-    dropped_efforts.sort_by!(&:bib_number) if sort_by == 'bib'
+    dropped_efforts.sort_by!(&:bib_number) if sort_by == 'bib_asc'
+    dropped_efforts.sort_by!(&:bib_number).reverse! if sort_by == 'bib_desc'
     dropped_efforts.sort_by!(&:last_name) if sort_by == 'last'
     dropped_efforts.sort_by!(&:first_name) if sort_by == 'first'
-    dropped_efforts.sort_by!(&:distance_from_start) if sort_by == 'distance'
-    dropped_efforts.sort_by!(&:time_from_start) if sort_by == 'time'
+    dropped_efforts.sort_by!(&:distance_from_start) if sort_by == 'distance_asc'
+    dropped_efforts.sort_by!(&:distance_from_start).reverse! if sort_by == 'distance_desc'
+    dropped_efforts.sort_by!(&:time_from_start) if sort_by == 'time_asc'
+    dropped_efforts.sort_by!(&:time_from_start).reverse! if sort_by == 'time_desc'
   end
 
   def create_effort_rows

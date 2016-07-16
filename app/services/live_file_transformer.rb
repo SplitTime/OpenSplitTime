@@ -25,6 +25,7 @@ class LiveFileTransformer
     CSV.foreach(file.path, headers: true) do |row|
       file_row = row.to_hash
       file_row.symbolize_keys!
+      strip_white_space(file_row)
       colonize_times(file_row)
       zeroize_times(file_row)
       file_row[:splitId] = split_id
@@ -43,6 +44,10 @@ class LiveFileTransformer
 
   def split_id
     split ? split.id : nil
+  end
+
+  def strip_white_space(file_row)
+    file_row.each { |k, v| file_row[k] = v ? v.gsub(/\s+/, '') : v }
   end
 
   def colonize_times(file_row)

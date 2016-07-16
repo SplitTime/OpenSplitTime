@@ -1,0 +1,21 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Bib&num;</th>
+    <th>Category</th>
+    <th>From</th>
+    <th class="text-right">Dropped where and when</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @event_dropped_display.effort_rows.each do |effort_row| %>
+      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
+      <td><%= effort_row.bib_number %></td>
+      <td><%= effort_row.bio_historic %></td>
+      <td><%= effort_row.state_and_country %></td>
+      <td class="text-right"><%= "#{effort_row.run_status} at #{day_time_format(effort_row.day_and_time)}" %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,12 +1,14 @@
 class TimeCluster
 
+  attr_reader :drop_display
   delegate :finish?, to: :split
 
-  def initialize(split, split_times, prior_time, start_time)
+  def initialize(split, split_times, prior_time, start_time, drop_display = nil)
     @split = split
     @split_times = split_times
     @prior_time = prior_time
     @start_time = start_time
+    @drop_display = drop_display
   end
 
   def segment_time

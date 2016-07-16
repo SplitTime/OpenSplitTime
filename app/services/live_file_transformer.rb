@@ -25,6 +25,7 @@ class LiveFileTransformer
     CSV.foreach(file.path, headers: true) do |row|
       file_row = row.to_hash
       file_row.symbolize_keys!
+      colonize_times(file_row)
       zeroize_times(file_row)
       file_row[:splitId] = split_id
       file_rows << file_row
@@ -42,6 +43,18 @@ class LiveFileTransformer
 
   def split_id
     split ? split.id : nil
+  end
+
+  def colonize_times(file_row)
+    file_row[:timeIn] = colonize(file_row[:timeIn])
+    file_row[:timeOut] = colonize(file_row[:timeOut])
+  end
+
+  def colonize(time_string)
+    return time_string if time_string.include?(':')
+    return time_string unless time_string.try(:to_i)
+    time_string = '0'.concat(time_string) if time_string.length == 3
+    time_string[0..1] + ':' + time_string[2..3]
   end
 
   def zeroize_times(file_row)

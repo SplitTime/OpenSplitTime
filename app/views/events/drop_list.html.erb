@@ -17,11 +17,11 @@
 </div>
 
 <% if @event_dropped_display.dropped_efforts_count < 1 %>
-    <strong><%= "No runners have dropped as of #{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}." %></strong>
+    <strong><%= "No runners have dropped as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}." %></strong>
 <% else %>
     <div class="row">
       <div class="col-xs-8">
-        <strong><%= "#{@event_dropped_display.dropped_efforts_count} #{@event_dropped_display.dropped_efforts_count == 1 ? 'runner has' : 'runners have'} dropped as of #{l(Time.now, format: :full_with_weekday)} at #{l(Time.now, format: :military)}." %></strong>
+        <strong><%= "#{@event_dropped_display.dropped_efforts_count} #{@event_dropped_display.dropped_efforts_count == 1 ? 'runner has' : 'runners have'} dropped as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}." %></strong>
       </div>
     </div>
 

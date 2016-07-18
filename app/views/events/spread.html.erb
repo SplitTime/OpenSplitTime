@@ -44,7 +44,7 @@
                                                  sort: params[:sort]),
                     disabled: params[:style] == 'ampm',
                     class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Military', spread_event_path(@spread_display.event,
+        <%= link_to '24-hour time', spread_event_path(@spread_display.event,
                                                   style: 'military',
                                                   sort: params[:sort]),
                     disabled: params[:style] == 'military',

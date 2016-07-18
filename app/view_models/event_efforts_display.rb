@@ -60,7 +60,7 @@ class EventEffortsDisplay
     self.filtered_efforts = event_efforts
                                 .search(params[:search])
                                 .sorted_with_finish_status
-                                .paginate(page: params[:page], per_page: 25)
+                                .paginate(page: params[:page], per_page: params[:per_page] || 25)
   end
 
   def create_effort_rows

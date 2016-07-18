@@ -32,7 +32,7 @@ class CourseShowView
   end
 
   def zoom
-    7
+    9
   end
 
   def course_has_locations?

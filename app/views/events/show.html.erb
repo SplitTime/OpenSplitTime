@@ -1,8 +1,8 @@
 <% content_for :title do %>
     <% if params[:search].present? %>
-        <% "OpenSplitTime: #{@event_display.name} - #{params[:search]}" %>
+        <% "OpenSplitTime: #{@event_display.name} - Results - #{params[:search]}" %>
     <% else %>
-        <% "OpenSplitTime: #{@event_display.name}" %>
+        <% "OpenSplitTime: #{@event_display.name} - Results" %>
     <% end %>
 <% end %>
 <div class="row header">

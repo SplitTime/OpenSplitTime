@@ -1,9 +1,9 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Full spread - #{@spread_display.name}" %>
+    <% "OpenSplitTime: Full results - #{@spread_display.name}" %>
 <% end %>
 <div class="row header">
   <div class="col-xs-5">
-    <h2><strong><%= @spread_display.name %></strong>
+    <h2><strong><%= "#{@spread_display.name}: Full results" %></strong>
     </h2>
     <h4>
       <%= "Start Time: #{l(@spread_display.start_time, format: :full_with_weekday)} at #{l(@spread_display.start_time, format: :ampm)}" %>

@@ -110,4 +110,8 @@ class Event < ActiveRecord::Base
     SplitTime.where(effort_id: effort_ids).present?
   end
 
+  def set_dropped_split_ids
+    efforts.each { |effort| effort.set_dropped_split_id }
+  end
+
 end

@@ -111,11 +111,14 @@ class Event < ActiveRecord::Base
   end
 
   def set_dropped_split_ids
-    finish_split_id = ordered_splits.last
+    finish_split_id = ordered_splits.last.id
     efforts = efforts_sorted # Includes final_split_id for each effort
     update_hash = {}
     efforts.each do |effort|
-      if (effort.final_split_id != effort.dropped_split_id) && (effort.final_split_id != finish_split_id)
+      if (effort.final_split_id == finish_split_id) && effort.dropped_split_id.present?
+        update_hash[effort.id] = nil
+      end
+      if (effort.final_split_id != finish_split_id) && (effort.final_split_id != effort.dropped_split_id)
         update_hash[effort.id] = effort.final_split_id
       end
     end

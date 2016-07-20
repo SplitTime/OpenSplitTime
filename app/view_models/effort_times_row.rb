@@ -29,7 +29,7 @@ class EffortTimesRow
     if effort.dropped_split_id
       ordered_split_ids = splits.map(&:id)
       drop_split_index = ordered_split_ids.index(effort.dropped_split_id)
-      drop_display_split_id = ordered_split_ids[drop_split_index + 1]
+      drop_display_split_id = ordered_split_ids[drop_split_index + 1] if drop_split_index
     end
     splits.each do |split|
       time_cluster = TimeCluster.new(split,

@@ -232,6 +232,9 @@ GEM
       interception (>= 0.5)
       pry
     puma (3.5.0)
+    puma_worker_killer (0.0.6)
+      get_process_mem (~> 0.2)
+      puma (>= 2.7, < 4)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     quiet_assets (1.1.0)
@@ -412,6 +415,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   puma
+  puma_worker_killer
   pundit
   quiet_assets
   rails (= 4.2.5)

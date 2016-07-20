@@ -41,6 +41,7 @@ gem 'upsert'
 gem 'pluck_to_hash'
 gem 'strip_attributes'
 gem 'puma'
+gem 'puma_worker_killer'
 
 group :development do
   gem 'web-console', '~> 2.0'

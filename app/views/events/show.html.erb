@@ -7,7 +7,7 @@
 <% end %>
 <div class="row header">
   <div class="col-xs-5">
-    <h2><strong><%= @event_display.name %></strong>
+    <h2><strong><%= "#{@event_display.name}: Results" %></strong>
     </h2>
     <h4>
       <%= "Start Time: #{l(@event_display.start_time, format: :full_with_weekday)} #{l(@event_display.start_time, format: :ampm)}" %>

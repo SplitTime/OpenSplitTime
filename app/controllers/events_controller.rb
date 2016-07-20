@@ -185,6 +185,13 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
+  def set_dropped_split_ids
+    authorize @event
+    report = @event.set_dropped_split_ids
+    flash[:warning] = report if report
+    redirect_to stage_event_path(@event)
+  end
+
   def start_all_efforts
     authorize @event
     report = BulkUpdateService.start_all_efforts(@event, @current_user.id)

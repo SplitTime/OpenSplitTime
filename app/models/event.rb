@@ -17,11 +17,11 @@ class Event < ActiveRecord::Base
   scope :earliest, -> { order(:start_time).first }
   scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) { search(search_param)
-                                               .where(demo: false)
-                                               .select("events.*, COUNT(efforts.id) as effort_count")
-                                               .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
-                                               .group("events.id")
-                                               .order(start_time: :desc) }
+                                                     .where(demo: false)
+                                                     .select("events.*, COUNT(efforts.id) as effort_count")
+                                                     .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
+                                                     .group("events.id")
+                                                     .order(start_time: :desc) }
 
   def all_splits_on_course?
     splits.joins(:course).group(:course_id).count.size == 1
@@ -111,7 +111,15 @@ class Event < ActiveRecord::Base
   end
 
   def set_dropped_split_ids
-    efforts.each { |effort| effort.set_dropped_split_id }
+    finish_split_id = ordered_splits.last
+    efforts = efforts_sorted # Includes final_split_id for each effort
+    update_hash = {}
+    efforts.each do |effort|
+      if (effort.final_split_id != effort.dropped_split_id) && (effort.final_split_id != finish_split_id)
+        update_hash[effort.id] = effort.final_split_id
+      end
+    end
+    BulkUpdateService.set_dropped_split_ids(update_hash)
   end
 
 end

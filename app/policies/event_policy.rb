@@ -86,6 +86,10 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
+  def set_dropped_split_ids?
+    @current_user.authorized_to_edit?(@event)
+  end
+
   def start_all_efforts?
     @current_user.authorized_to_edit?(@event)
   end

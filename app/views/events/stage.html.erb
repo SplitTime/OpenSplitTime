@@ -46,15 +46,21 @@
           <% end %>
           <%= link_to 'Edit event', edit_event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
           <% if @event_stage.started? %>
-          <%= link_to 'Set data status', set_data_status_event_path(@event_stage.event),
-                      method: :put,
-                      class: 'btn btn-sm btn-success' %>
-              <% else %>
-          <%= link_to 'Start all efforts', start_all_efforts_event_path(@event_stage.event),
-                      method: :put,
-                      data: {confirm: "NOTE: This will create a starting split time for all efforts associated with #{@event_stage.name}, without any offset from the event start time. Are you sure you want to proceed?"},
+              <%= link_to 'Set data status', set_data_status_event_path(@event_stage.event),
+                          method: :put,
+                          class: 'btn btn-sm btn-success' %>
+              <% unless @event_stage.available_live %>
+                  <%= link_to 'Set dropped split ids', set_dropped_split_ids_event_path(@event_stage.event),
+                              method: :put,
+                              data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having dropped at the last aid station for which times are available. Are you sure you want to proceed?'},
                       class: 'btn btn-sm btn-success' %>
               <% end %>
+          <% else %>
+              <%= link_to 'Start all efforts', start_all_efforts_event_path(@event_stage.event),
+                          method: :put,
+                          data: {confirm: "NOTE: This will create a starting split time for all efforts associated with #{@event_stage.name}, without any offset from the event start time. Are you sure you want to proceed?"},
+                          class: 'btn btn-sm btn-success' %>
+          <% end %>
           <%= link_to 'Delete event', event_path(@event_stage.event, referrer_path: events_path),
                       method: :delete,
                       data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},

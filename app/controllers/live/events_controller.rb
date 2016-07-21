@@ -39,8 +39,7 @@ class Live::EventsController < Live::BaseController
   def get_live_effort_data
 
     # Params should include at least splitId and bibNumber. Params may also include timeIn and timeOut.
-    # This endpoint returns { success: true } if a split and effort are found.
-    # It also returns as many of the following as it can determine:
+    # This endpoint returns as many of the following as it can determine:
     # { effortId (integer), name (string), reportedText (string), dropped (bool), finished (bool),
     # timeFromLastReported ("hh:mm"), timeInAid ("mm minutes"), timeInExists (bool), timeOutExists (bool),
     # timeInStatus ('good', 'questionable', 'bad'), timeOutStatus ('good', 'questionable', 'bad') }

@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     member { put :live_disable }
     member { get :add_beacon }
     member { get :drop_list }
+    member { get :export_to_ultrasignup }
   end
   resources :splits do
     member { get :assign_location }

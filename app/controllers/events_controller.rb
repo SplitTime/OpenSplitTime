@@ -227,6 +227,16 @@ class EventsController < ApplicationController
     session[:return_to] = event_path(@event)
   end
 
+  def export_to_ultrasignup
+    authorize @event
+    params[:per_page] = @event.efforts.count # Get all efforts without pagination
+    @event_display = EventEffortsDisplay.new(@event, params)
+    respond_to do |format|
+      format.html { redirect_to stage_event_path(@event) }
+      format.csv { render partial: 'export_to_ultrasignup.csv.ruby' }
+    end
+  end
+
   private
 
   def event_params

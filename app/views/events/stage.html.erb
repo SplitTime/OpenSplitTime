@@ -54,6 +54,8 @@
                               method: :put,
                               data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having dropped at the last aid station for which times are available. Are you sure you want to proceed?'},
                       class: 'btn btn-sm btn-success' %>
+                  <%= link_to 'Export to ultrasignup', export_to_ultrasignup_event_path(@event_stage.event, format: :csv),
+                              class: 'btn btn-sm btn-success' %>
               <% end %>
           <% else %>
               <%= link_to 'Start all efforts', start_all_efforts_event_path(@event_stage.event),

@@ -86,7 +86,7 @@
           <% if @spread_display.display_style == 'segment' %>
               <%= 'Segment / Aid' if split.intermediate? %>
           <% else %>
-              <%= split.name_extensions.join(' / ') if split.intermediate? %>
+              <%= split.name_extensions.join(' / ') if split.name_extensions.count > 1 %>
           <% end %>
         </th>
     <% end %>

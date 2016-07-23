@@ -33,7 +33,7 @@ class MockEffort
   end
 
   def event_years_analyzed
-    relevant_events.pluck(:start_time).sort.map(&:year)
+    relevant_events.pluck(:start_time).sort.map(&:year).uniq
   end
 
   private

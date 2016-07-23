@@ -6,8 +6,8 @@ class Participant < ActiveRecord::Base
   include Matchable
   strip_attributes collapse_spaces: true
   enum gender: [:male, :female]
-  has_many :interests, dependent: :destroy
-  has_many :users, :through => :interests
+  has_many :connections, dependent: :destroy
+  has_many :followers, through: :connections, source: :user
   has_many :efforts
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
 

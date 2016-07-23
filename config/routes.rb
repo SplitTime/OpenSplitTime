@@ -25,7 +25,6 @@ Rails.application.routes.draw do
     member { get :participants }
     member { put :associate_participant }
     member { post :add_interest }
-    collection { get :my_interests }
     member { get :edit_preferences }
     member { put :update_preferences }
   end
@@ -88,7 +87,7 @@ Rails.application.routes.draw do
     member { get :add_report }
   end
   resources :split_times
-  resources :interests
+  resources :connections
   resources :aid_stations, except: [:index, :new, :create]
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin

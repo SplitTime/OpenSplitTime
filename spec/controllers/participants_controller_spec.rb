@@ -55,9 +55,9 @@ RSpec.describe ParticipantsController, :type => :controller do
       expect(response).to render_template(:show)
     end
 
-    it "on call to new should direct the user to the new participant page" do
+    it "on call to new should deny access and redirect to root" do
       get :new
-      expect(response).to render_template(:new)
+      expect(response).to redirect_to(root_path)
     end
 
     it "on call to edit for a participant created by the user, should direct the user to the edit participant page" do

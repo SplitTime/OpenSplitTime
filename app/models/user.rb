@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   enum pref_elevation_unit: [:feet, :meters]
   include Searchable
 
-  has_many :interests, dependent: :destroy
-  has_many :participants, through: :interests
+  has_many :connections, dependent: :destroy
+  has_many :interests, through: :connections, source: :participant
   has_many :stewardships, dependent: :destroy
   has_many :races, through: :stewardships
   has_one :avatar, class_name: 'Participant'
@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   end
 
   def not_interested_in?(participant_id)
-    interests.where(participant_id: participant_id).count < 1
+    connections.where(participant_id: participant_id).count < 1
   end
 
   def except_current_user(participants)

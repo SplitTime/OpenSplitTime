@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160715210020) do
+ActiveRecord::Schema.define(version: 20160722161434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,18 @@ ActiveRecord::Schema.define(version: 20160715210020) do
 
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
+
+  create_table "connections", force: :cascade do |t|
+    t.integer  "user_id",                    null: false
+    t.integer  "participant_id",             null: false
+    t.integer  "kind",           default: 0, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "connections", ["participant_id"], name: "index_connections_on_participant_id", using: :btree
+  add_index "connections", ["user_id", "participant_id"], name: "index_connections_on_user_id_and_participant_id", unique: true, using: :btree
+  add_index "connections", ["user_id"], name: "index_connections_on_user_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",            limit: 64, null: false
@@ -87,18 +99,6 @@ ActiveRecord::Schema.define(version: 20160715210020) do
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
   add_index "events", ["race_id"], name: "index_events_on_race_id", using: :btree
-
-  create_table "interests", force: :cascade do |t|
-    t.integer  "user_id",                    null: false
-    t.integer  "participant_id",             null: false
-    t.integer  "kind",           default: 0, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
-  add_index "interests", ["participant_id"], name: "index_interests_on_participant_id", using: :btree
-  add_index "interests", ["user_id", "participant_id"], name: "index_interests_on_user_id_and_participant_id", unique: true, using: :btree
-  add_index "interests", ["user_id"], name: "index_interests_on_user_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",        limit: 64,                         null: false
@@ -222,12 +222,12 @@ ActiveRecord::Schema.define(version: 20160715210020) do
 
   add_foreign_key "aid_stations", "events"
   add_foreign_key "aid_stations", "splits"
+  add_foreign_key "connections", "participants"
+  add_foreign_key "connections", "users"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "participants"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "races"
-  add_foreign_key "interests", "participants"
-  add_foreign_key "interests", "users"
   add_foreign_key "participants", "users"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"

@@ -7,6 +7,8 @@ module Auditable
 
     # Updates updated_by_id for the current instance
     after_save :update_updated_by
+
+    scope :created_by, -> (user_id) { where(created_by: user_id) }
   end
 
   private

@@ -1,5 +1,6 @@
 class Effort < ActiveRecord::Base
   include Auditable
+  include Concealable
   include PersonalInfo
   include Searchable
   include Matchable

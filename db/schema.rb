@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160722161434) do
+ActiveRecord::Schema.define(version: 20160725155244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20160722161434) do
     t.integer  "data_status"
     t.integer  "start_offset",                default: 0
     t.integer  "dropped_split_id"
-    t.boolean  "demo",                        default: false
+    t.boolean  "concealed",                   default: false
     t.string   "beacon_url"
     t.string   "report_url"
   end
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20160722161434) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "start_time"
-    t.boolean  "demo",                      default: false
+    t.boolean  "concealed",                 default: false
     t.boolean  "available_live",            default: false
     t.string   "beacon_url"
   end
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 20160722161434) do
     t.integer  "updated_by"
     t.string   "country_code", limit: 2
     t.integer  "user_id"
-    t.boolean  "demo",                    default: false
+    t.boolean  "concealed",               default: false
   end
 
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 20160722161434) do
     t.datetime "updated_at",                             null: false
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.boolean  "demo",                   default: false
+    t.boolean  "concealed",              default: false
   end
 
   create_table "split_times", force: :cascade do |t|

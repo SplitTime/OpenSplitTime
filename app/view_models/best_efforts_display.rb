@@ -29,7 +29,7 @@ class BestEffortsDisplay
   end
 
   def events_count
-    events.where(demo: false).count
+    events.where(concealed: false).count
   end
 
   def segment_is_full_course?
@@ -67,7 +67,7 @@ class BestEffortsDisplay
     self.all_efforts = Effort.joins(:event)
                            .select('efforts.*, events.start_time')
                            .where(id: segment_time_hash.keys)
-                           .where(demo: false)
+                           .where(concealed: false)
                            .to_a
                            .each { |effort| effort.segment_time = segment_time_hash[effort.id] }
                            .sort_by!(&:segment_time)

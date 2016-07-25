@@ -22,10 +22,10 @@
         <% if current_user && current_user.admin? %>
             <div class="form-group">
               <div class="control-label col-sm-2">
-                <%= f.label :demo, "Demo (unsearchable)?" %>
+                <%= f.label :concealed, "Concealed (unsearchable)?" %>
               </div>
               <div class="col-sm-8">
-                <%= f.check_box :demo %>
+                <%= f.check_box :concealed %>
               </div>
             </div>
         <% end %>

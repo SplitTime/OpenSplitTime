@@ -110,15 +110,15 @@ class Split < ActiveRecord::Base
   end
 
   def earliest_event_date
-    events.where(demo: false).earliest.start_time
+    events.where(concealed: false).earliest.start_time
   end
 
   def latest_event_date
-    events.where(demo: false).latest.start_time
+    events.where(concealed: false).latest.start_time
   end
 
   def most_recent_event_date
-    events.where(demo: false).most_recent.start_time
+    events.where(concealed: false).most_recent.start_time
   end
 
   def random_location_name

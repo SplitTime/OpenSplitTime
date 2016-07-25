@@ -1,5 +1,6 @@
 class Participant < ActiveRecord::Base
   include Auditable
+  include Concealable
   include PersonalInfo
   include Searchable
   include SetOperations

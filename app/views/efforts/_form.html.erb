@@ -6,7 +6,7 @@
         <div class="form-group">
           <% if @event %>
               <div class="col-sm-8 col-sm-offset-2">
-                <%= f.hidden_field :demo, value: @event.demo %>
+                <%= f.hidden_field :concealed, value: @event.concealed %>
                 <%= f.hidden_field :event_id, value: @event.id %>
                 <h4><%= "Associated with #{@event.name}" %></h4>
               </div>

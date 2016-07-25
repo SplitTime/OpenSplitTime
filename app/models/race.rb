@@ -1,5 +1,6 @@
 class Race < ActiveRecord::Base
   include Auditable
+  include Concealable
   strip_attributes collapse_spaces: true
   has_many :events
   has_many :stewardships, dependent: :destroy

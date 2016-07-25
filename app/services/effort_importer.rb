@@ -119,7 +119,7 @@ class EffortImporter
     @effort = event.efforts.new
     (0...effort_schema.size).each do |i|
       @effort.assign_attributes({effort_schema[i] => row_effort_data[i]}) unless effort_schema[i].nil?
-      @effort.assign_attributes(demo: true) if event.demo
+      @effort.assign_attributes(concealed: true) if event.concealed
     end
     if @effort.save
       @effort

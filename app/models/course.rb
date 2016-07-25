@@ -38,4 +38,8 @@ class Course < ActiveRecord::Base
     event_efforts.within_time_range(target_time * 0.7, target_time * 1.3)
   end
 
+  def visible_events
+    events.visible
+  end
+
 end

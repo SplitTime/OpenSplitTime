@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   include Auditable
+  include Concealable
   include SplitMethods
   strip_attributes collapse_spaces: true
   belongs_to :course, touch: true
@@ -17,7 +18,7 @@ class Event < ActiveRecord::Base
   scope :earliest, -> { order(:start_time).first }
   scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) { search(search_param)
-                                                     .where(demo: false)
+                                                     .where(concealed: false)
                                                      .select("events.*, COUNT(efforts.id) as effort_count")
                                                      .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
                                                      .group("events.id")

@@ -4,7 +4,7 @@ class RacesController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @races = Race.where(demo: false)
+    @races = Race.where(concealed: false)
                  .paginate(page: params[:page], per_page: 25).order(:name)
     session[:return_to] = races_path
   end
@@ -86,7 +86,7 @@ class RacesController < ApplicationController
   private
 
   def race_params
-    params.require(:race).permit(:name, :description, :demo)
+    params.require(:race).permit(:name, :description, :concealed)
   end
 
   def query_params

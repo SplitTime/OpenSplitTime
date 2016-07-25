@@ -14,7 +14,7 @@ class ParticipantsController < ApplicationController
 
   def index
     @participants = Participant.search(params[:search])
-                        .where(demo: false)
+                        .where(concealed: false)
                         .with_age_and_effort_count
                         .ordered_by_name
                         .paginate(page: params[:page], per_page: 25)

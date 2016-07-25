@@ -11,7 +11,7 @@ class MockEffort
     @expected_time = expected_time
     @start_time = start_time
     set_relevant_resources
-    @splits = splits || event.ordered_splits.to_a
+    @splits = splits || course.ordered_splits.to_a
     @indexed_split_times = create_plan_split_times
     @split_rows = create_split_rows
   end

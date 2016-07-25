@@ -59,6 +59,14 @@ class CoursesController < ApplicationController
 
   def best_efforts
     course = Course.find(params[:id])
+    unless course.events
+      flash[:danger] = "No events yet held on this course"
+      redirect_to course_path(course)
+    end
+    unless Effort.on_course(course).count > 0
+      flash[:danger] = "No efforts yet run on this course"
+      redirect_to course_path(course)
+    end
     params[:gender] ||= 'combined'
     @best_display = BestEffortsDisplay.new(course, params)
     session[:return_to] = best_efforts_course_path(course)

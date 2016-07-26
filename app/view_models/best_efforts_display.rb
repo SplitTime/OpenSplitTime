@@ -70,7 +70,7 @@ class BestEffortsDisplay
                            .where(concealed: false)
                            .to_a
                            .each { |effort| effort.segment_time = segment_time_hash[effort.id] }
-                           .sort_by!(&:segment_time)
+                           .sort_by! { |effort| [effort.segment_time, effort.gender, effort.age ? -effort.age : 0] }
     self.sorted_effort_ids = all_efforts.map(&:id)
     self.sorted_effort_genders = all_efforts.map(&:gender)
     self.unsorted_filtered_ids = Effort.where(id: sorted_effort_ids)

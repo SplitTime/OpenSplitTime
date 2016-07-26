@@ -25,8 +25,12 @@ class LiveTimeRowImporter
     ordered_split_array = event.ordered_splits.to_a
     force_option = time_rows.count == 1 ? 'force' : nil
     time_rows.each do |time_row|
+
+      # time_row[0] is an id number used by the live entry javascript but not needed by the importer,
+      # so just use time_row[1], which contains the needed data.
+
       effort_data_object = LiveEffortData.new(event, time_row[1], calcs, ordered_split_array)
-      if effort_data_object.clean? || (force_option == 'force')
+      if effort_data_object.success? && (effort_data_object.clean? || (force_option == 'force'))
         if create_or_update_times(effort_data_object)
           effort = effort_data_object.effort
           dropped_split_id = effort_data_object.dropped_here ? effort_data_object.split_id : nil

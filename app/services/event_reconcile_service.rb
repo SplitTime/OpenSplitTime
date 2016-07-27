@@ -11,8 +11,9 @@ class EventReconcileService
         unmatched_array << effort.id
       end
     end
-    return assign_participants_to_efforts(matched_hash),
-        create_participants_from_efforts(unmatched_array)
+    auto_matched_count = assign_participants_to_efforts(matched_hash)
+    participants_created_count = create_participants_from_efforts(unmatched_array)
+    create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
   end
 
   def self.assign_participants_to_efforts(id_hash)
@@ -39,6 +40,28 @@ class EventReconcileService
   def self.associate_participants(ids)
     id_hash = Hash[*ids.to_a.flatten.map(&:to_i)]
     assign_participants_to_efforts(id_hash)
+  end
+
+  def create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
+    effort_reconcile_report = ""
+    unreconciled_efforts_count = event.unreconciled_efforts.count
+
+    if auto_matched_count > 0
+      effort_reconcile_report += "We found #{auto_matched_count} participants that matched our database. "
+    else
+      effort_reconcile_report += "No participants matched our database exactly. "
+    end
+
+    if participants_created_count > 0
+      effort_reconcile_report += "We created #{participants_created_count} participants from efforts that had no close matches. "
+    end
+
+    if unreconciled_efforts_count > 0
+      effort_reconcile_report += "We found #{unreconciled_efforts_count} participants that may or may not match our database. Please reconcile them now. "
+    else
+      effort_reconcile_report += "All efforts for #{event.name} have been reconciled. "
+    end
+    effort_reconcile_report
   end
 
 end

@@ -36,9 +36,7 @@ class EffortImporter
     BulkUpdateService.bulk_update_dropped(final_split_hash)
     # Set data status on only those efforts that were successfully created
     DataStatusService.set_data_status(event.efforts.find(effort_id_array))
-    self.auto_matched_count, self.participants_created_count =
-        EventReconcileService.auto_reconcile_efforts(event)
-    create_effort_import_report
+    self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 
   def effort_import_without_times
@@ -54,8 +52,7 @@ class EffortImporter
         effort_failure_array << row
       end
     end
-    self.auto_matched_count, self.participants_created_count = EventReconcileService.auto_reconcile_efforts(event)
-    create_effort_import_report
+    self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 
   # The following three methods are required for ActiveModel error reporting
@@ -91,27 +88,6 @@ class EffortImporter
       false
     else
       true
-    end
-  end
-
-  def create_effort_import_report
-    self.effort_import_report = ""
-    self.unreconciled_efforts_count = event.unreconciled_efforts.count
-
-    if auto_matched_count > 0
-      self.effort_import_report += "We found #{auto_matched_count} participants that matched our database. "
-    else
-      self.effort_import_report += "No participants matched our database exactly. "
-    end
-
-    if participants_created_count > 0
-      self.effort_import_report += "We created #{participants_created_count} participants from efforts that had no close matches. "
-    end
-
-    if unreconciled_efforts_count > 0
-      self.effort_import_report += "We found #{unreconciled_efforts_count} participants that may or may not match our database. Please reconcile them now. "
-    else
-      self.effort_import_report += "All efforts for #{event.name} have been reconciled. "
     end
   end
 

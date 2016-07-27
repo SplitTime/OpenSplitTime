@@ -78,9 +78,10 @@ class EventsController < ApplicationController
 
   def reconcile
     authorize @event
+    effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
+    flash[:success] = effort_import_report
     @unreconciled_batch = @event.unreconciled_efforts.order(:last_name).limit(20)
     if @unreconciled_batch.count < 1
-      flash[:success] = "All efforts reconciled for #{@event.name}"
       redirect_to stage_event_path(@event)
     else
       @unreconciled_batch.each { |effort| effort.suggest_close_match }

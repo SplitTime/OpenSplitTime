@@ -125,7 +125,8 @@ class Participant < ActiveRecord::Base
     if state_code.blank? &&
         (country_code.blank? |
             (country_code == target.country_code) |
-            (Carmen::Country.coded(country_code).subregions.coded(target.state_code)))
+            (Carmen::Country.coded(country_code) &&
+                Carmen::Country.coded(country_code).subregions.coded(target.state_code)))
       assign_attributes(state_code: target.state_code, city: target.city)
     elsif (state_code == target.state_code) && city.blank?
       assign_attributes(city: target.city)

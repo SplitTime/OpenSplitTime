@@ -13,7 +13,8 @@ class EventReconcileService
     end
     auto_matched_count = assign_participants_to_efforts(matched_hash)
     participants_created_count = create_participants_from_efforts(unmatched_array)
-    create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
+    report = create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
+    report
   end
 
   def self.assign_participants_to_efforts(id_hash)
@@ -42,7 +43,7 @@ class EventReconcileService
     assign_participants_to_efforts(id_hash)
   end
 
-  def create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
+  def self.create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
     effort_reconcile_report = ""
     unreconciled_efforts_count = event.unreconciled_efforts.count
 

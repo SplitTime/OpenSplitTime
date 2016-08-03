@@ -73,8 +73,16 @@ module ApplicationHelper
     datetime ? datetime.strftime("%a %-l:%M%p") : '--:--:--'
   end
 
+  def day_time_format_hhmmss(datetime)
+    datetime ? datetime.strftime("%a %-l:%M:%S%p") : '--:--:--'
+  end
+
   def day_time_military_format(datetime)
     datetime ? datetime.strftime("%a %H:%M") : '--:--:--'
+  end
+
+  def day_time_military_format_hhmmss(datetime)
+    datetime ? datetime.strftime("%a %H:%M:%S") : '--:--:--'
   end
 
   def day_time_full_format(datetime)

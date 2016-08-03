@@ -56,6 +56,7 @@ class LiveFileTransformer
   end
 
   def colonize(time_string)
+    return nil unless time_string
     return time_string if time_string.include?(':')
     return time_string unless time_string.try(:to_i)
     time_string = '0'.concat(time_string) if time_string.length == 3
@@ -68,6 +69,7 @@ class LiveFileTransformer
   end
 
   def zeroize(time_string)
+    return nil unless time_string
     time_components = time_string.split(':')
     time_components << "00" if time_components.count == 2
     time_components[0] = "0" + time_components[0] if time_components[0].length == 1

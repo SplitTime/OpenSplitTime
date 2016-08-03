@@ -40,7 +40,7 @@ class AidStationsController < ApplicationController
 
   def aid_station_params
     params.require(:aid_station).permit(:event_id, :split_id, :status, :open_time, :close_time,
-                                        :captain_name, :comms_chief_name, :comms_frequencies)
+                                        :captain_name, :comms_crew_names, :comms_frequencies)
   end
   
   def set_aid_station

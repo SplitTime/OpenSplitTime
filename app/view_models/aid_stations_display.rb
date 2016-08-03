@@ -3,7 +3,7 @@ class AidStationsDisplay
   attr_accessor :aid_station_rows
   attr_reader :live_event
   delegate :start_time, :course, :race, to: :event
-  delegate :captain_name, :comms_chief_name, :comms_frequencies, to: :aid_station
+  delegate :captain_name, :comms_crew_names, :comms_frequencies, to: :aid_station
 
   def initialize(event)
     @event = event

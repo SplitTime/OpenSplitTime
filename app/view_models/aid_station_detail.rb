@@ -4,7 +4,7 @@ class AidStationDetail
   attr_accessor :efforts_dropped_here, :efforts_recorded_in, :efforts_recorded_out,
                 :efforts_in_aid, :efforts_missed, :efforts_expected
   delegate :course, :race, to: :event
-  delegate :event, :split, :open_time, :close_time, :status, :captain_name, :comms_chief_name,
+  delegate :event, :split, :open_time, :close_time, :status, :captain_name, :comms_crew_names,
            :comms_frequencies, :current_issues, to: :aid_station
   delegate :expected_day_and_time, :prior_valid_display_data, :next_valid_display_data, to: :live_event
 

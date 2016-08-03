@@ -17,7 +17,7 @@
         <%= link_to @aid_station.race_name, race_path(@aid_station.race) %>
     <% end %><br/>
     <strong><%= "Aid Captain: #{@aid_station.captain_name}" %></strong><br/>
-    <strong><%= "Communications Chief: #{@aid_station.comms_chief_name}" %></strong><br/>
+    <strong><%= "Communications Crew: #{@aid_station.comms_crew_names}" %></strong><br/>
     <strong><%= "Radio Frequencies: #{@aid_station.comms_frequencies}" %></strong><br/>
     <strong><%= "Issues: #{@aid_station.current_issues}" %></strong><br/>
   </div>

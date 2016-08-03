@@ -25,7 +25,7 @@
     <% end %>
     <strong><%= "Aid station status: #{@aid_station_detail.status.titleize}" if @aid_station_detail.status %></strong><br/>
     <strong><%= "Aid Captain: #{@aid_station_detail.captain_name}" %></strong><br/>
-    <strong><%= "Communications Chief: #{@aid_station_detail.comms_chief_name}" %></strong><br/>
+    <strong><%= "Communications Crew: #{@aid_station_detail.comms_crew_names}" %></strong><br/>
     <strong><%= "Radio Frequencies: #{@aid_station_detail.comms_frequencies}" %></strong><br/>
     <strong><%= "Issues: #{@aid_station_detail.current_issues || '[None]'}" %></strong><br/>
   </div>

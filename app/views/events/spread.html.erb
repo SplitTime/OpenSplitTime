@@ -85,6 +85,7 @@
           <%= split.base_name %><br>
           <% if @spread_display.display_style == 'segment' %>
               <%= 'Segment / Aid' if split.intermediate? %>
+              <%= 'Segment / Total Aid' if split.finish? %>
           <% else %>
               <%= split.name_extensions.join(' / ') if split.name_extensions.count > 1 %>
           <% end %>
@@ -108,7 +109,7 @@
                   <% case @spread_display.display_style %>
               <% when 'segment' %>
                       <% if cluster.finish? %>
-                          <%= time_format_hhmmss(cluster.segment_time) %>
+                          <%= [time_format_hhmmss(cluster.segment_time), time_format_minutes(row.total_time_in_aid)].join(' / ') %>
                       <% else %>
                           <%= [time_format_hhmm(cluster.segment_time), time_format_minutes(cluster.time_in_aid)].join(' / ') %>
                       <% end %>

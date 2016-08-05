@@ -19,6 +19,10 @@ class EffortTimesRow
     time_clusters.map(&:time_in_aid).sum
   end
 
+  def total_segment_time
+    time_clusters.map(&:segment_time).sum
+  end
+
   private
 
   attr_reader :splits, :split_times, :start_time_from_params

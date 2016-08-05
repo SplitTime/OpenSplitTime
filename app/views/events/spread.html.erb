@@ -84,12 +84,14 @@
         <th class="text-nowrap text-center">
           <%= split.base_name %><br>
           <% if @spread_display.display_style == 'segment' %>
-              <%= 'Segment / Aid' if split.intermediate? %>
-              <%= 'Segment / Total Aid' if split.finish? %>
+              <%= 'Segment / Aid' if split.name_extensions.count > 1 %>
           <% else %>
               <%= split.name_extensions.join(' / ') if split.name_extensions.count > 1 %>
           <% end %>
         </th>
+    <% end %>
+    <% if @spread_display.display_style == 'segment' %>
+        <th class="text-center text-nowrap">Totals<br/>Segment / Aid</th>
     <% end %>
   </tr>
   </thead>
@@ -109,7 +111,7 @@
                   <% case @spread_display.display_style %>
               <% when 'segment' %>
                       <% if cluster.finish? %>
-                          <%= [time_format_hhmmss(cluster.segment_time), time_format_minutes(row.total_time_in_aid)].join(' / ') %>
+                          <%= time_format_hhmmss(cluster.segment_time) %>
                       <% else %>
                           <%= [time_format_hhmm(cluster.segment_time), time_format_minutes(cluster.time_in_aid)].join(' / ') %>
                       <% end %>
@@ -134,6 +136,9 @@
                   <% end %>
               <% end %>
             </td>
+        <% end %>
+        <% if @spread_display.display_style == 'segment' %>
+            <td class="text-center text-nowrap"><%= [time_format_hhmmss(row.total_segment_time), time_format_hhmm(row.total_time_in_aid)].join(' / ') %></td>
         <% end %>
       </tr>
   <% end %>

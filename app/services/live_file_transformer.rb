@@ -2,15 +2,19 @@ class LiveFileTransformer
 
   require 'csv'
 
+  attr_accessor :prior_sequence_id, :last_row_sequence_id
+
   def initialize(event, file, split_id)
     @event = event
     @file = file
     @split = Split.find_by_id(split_id)
     @aid_station = (@split && @event) ? AidStation.where(event: @event, split: @split).first : nil
+    @prior_sequence_id = @aid_station ? @aid_station.import_sequence_id : nil
     @transformed_rows = []
     @file_rows = []
     create_rows_from_file if split
     transform_rows if split
+    set_aid_station_import_sequence if (@aid_station && last_row_sequence_id)
   end
 
   def returned_rows
@@ -23,20 +27,23 @@ class LiveFileTransformer
   attr_accessor :file_rows, :transformed_rows
 
   def create_rows_from_file
-    last_row_seen = aid_station ? aid_station.import_sequence_id : nil
     CSV.foreach(file.path, headers: true) do |row|
       file_row = row.to_hash
       file_row.symbolize_keys!
-      next if file_row[:sequenceId].present? &&
-          file_row[:sequenceId].numeric? &&
-          last_row_seen.present? &&
-          file_row[:sequenceId].to_i <= last_row_seen
+      file_row[:sequenceId] = (file_row[:sequenceId].present? &&
+          file_row[:sequenceId].numeric?) ?
+          file_row[:sequenceId].to_i :
+          nil
+      next if file_row[:sequenceId] &&
+          prior_sequence_id &&
+          (file_row[:sequenceId] <= prior_sequence_id)
       strip_white_space(file_row)
       colonize_times(file_row)
       zeroize_times(file_row)
       file_row[:splitId] = split_id
       file_rows << file_row
     end
+    self.last_row_sequence_id = file_rows.present? ? file_rows.last[:sequenceId] : nil
   end
 
   def transform_rows
@@ -48,12 +55,18 @@ class LiveFileTransformer
     end
   end
 
+  def set_aid_station_import_sequence
+    if last_row_sequence_id && (last_row_sequence_id > aid_station.import_sequence_id)
+      aid_station.update(import_sequence_id: last_row_sequence_id)
+    end
+  end
+
   def split_id
     split ? split.id : nil
   end
 
   def strip_white_space(file_row)
-    file_row.each { |k, v| file_row[k] = v ? v.gsub(/\s+/, '') : v }
+    file_row.each { |k, v| file_row[k] = (v && v.is_a?(String)) ? v.gsub(/\s+/, '') : v }
   end
 
   def colonize_times(file_row)

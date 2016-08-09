@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160729000711) do
+ActiveRecord::Schema.define(version: 20160809063101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 20160729000711) do
   create_table "aid_stations", force: :cascade do |t|
     t.integer  "event_id"
     t.integer  "split_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.datetime "open_time"
     t.datetime "close_time"
     t.integer  "status"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20160729000711) do
     t.string   "comms_crew_names"
     t.string   "comms_frequencies"
     t.string   "current_issues"
+    t.integer  "import_sequence_id", default: 0
   end
 
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree

@@ -6,6 +6,7 @@ class LiveFileTransformer
     @event = event
     @file = file
     @split = Split.find_by_id(split_id)
+    @aid_station = (@split && @event) ? AidStation.where(event: @event, split: @split) : nil
     @transformed_rows = []
     @file_rows = []
     create_rows_from_file if split
@@ -18,13 +19,18 @@ class LiveFileTransformer
 
   private
 
-  attr_reader :event, :file, :split
+  attr_reader :event, :file, :split, :aid_station
   attr_accessor :file_rows, :transformed_rows
 
   def create_rows_from_file
+    last_row_seen = aid_station ? aid_station.import_sequence_id : nil
     CSV.foreach(file.path, headers: true) do |row|
       file_row = row.to_hash
       file_row.symbolize_keys!
+      next if file_row[:sequenceId].present? &&
+          file_row[:sequenceId].numeric? &&
+          last_row_seen.present? &&
+          file_row[:sequenceId].to_i <= last_row_seen
       strip_white_space(file_row)
       colonize_times(file_row)
       zeroize_times(file_row)

@@ -63,7 +63,7 @@ class Live::EventsController < Live::BaseController
 
     # Param should be an unaltered CSV file.
     # This endpoint interprets and verifies rows from the file and returns
-    # return_rows containing all data necessary to populate the provisional data cache.
+    # return_rows containing all data necessary to populate the local data workspace.
 
     authorize @event
     if @event.available_live

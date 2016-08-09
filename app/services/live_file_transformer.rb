@@ -6,7 +6,7 @@ class LiveFileTransformer
     @event = event
     @file = file
     @split = Split.find_by_id(split_id)
-    @aid_station = (@split && @event) ? AidStation.where(event: @event, split: @split) : nil
+    @aid_station = (@split && @event) ? AidStation.where(event: @event, split: @split).first : nil
     @transformed_rows = []
     @file_rows = []
     create_rows_from_file if split

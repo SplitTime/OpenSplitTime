@@ -111,9 +111,9 @@
                   <% case @spread_display.display_style %>
               <% when 'segment' %>
                       <% if cluster.finish? %>
-                          <%= time_format_hhmmss(cluster.segment_time) %>
+                          <%= time_format_xxhyymzzs(cluster.segment_time) %>
                       <% else %>
-                          <%= [time_format_hhmm(cluster.segment_time), time_format_minutes(cluster.time_in_aid)].join(' / ') %>
+                          <%= [time_format_xxhyym(cluster.segment_time), time_format_minutes(cluster.time_in_aid)].join(' / ') %>
                       <% end %>
                   <% when 'ampm' %>
                       <% if cluster.finish? %>
@@ -138,7 +138,7 @@
             </td>
         <% end %>
         <% if @spread_display.display_style == 'segment' %>
-            <td class="text-center text-nowrap"><%= [time_format_hhmmss(row.total_segment_time), time_format_hhmm(row.total_time_in_aid)].join(' / ') %></td>
+            <td class="text-center text-nowrap"><%= [time_format_xxhyymzzs(row.total_segment_time), time_format_xxhyym(row.total_time_in_aid)].join(' / ') %></td>
         <% end %>
       </tr>
   <% end %>

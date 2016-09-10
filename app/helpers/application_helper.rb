@@ -21,7 +21,11 @@ module ApplicationHelper
   end
 
   def time_format_minutes(time_in_seconds)
-    time_formatter(time_in_seconds, '%2dm', 'm', '--')
+    if time_in_seconds && (hours(time_in_seconds) == 0)
+      time_formatter(time_in_seconds, '%2dm', 'm', '--')
+    else
+      time_formatter(time_in_seconds, '%2dh%02dm', 'hm', '--')
+    end
   end
 
   def time_formatter(time_in_seconds, format_string, time_initials, placeholder)

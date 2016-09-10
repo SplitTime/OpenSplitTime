@@ -1,72 +1,53 @@
 module ApplicationHelper
 
   def time_format_hhmmss(time_in_seconds)
-    return '--:--:--' if time_in_seconds.nil?
-    if time_in_seconds < 0
-      time_in_seconds = time_in_seconds.abs
-      seconds = time_in_seconds % 60
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("(%02d:%02d:%02d)", hours, minutes, seconds)
-    else
-      seconds = time_in_seconds % 60
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("%02d:%02d:%02d", hours, minutes, seconds)
-    end
+    time_formatter(time_in_seconds, '%02d:%02d:%02d', 'hms', '--:--:--')
   end
 
   def time_format_hhmm(time_in_seconds)
-    return '--:--' if time_in_seconds.nil?
-    if time_in_seconds < 0
-      time_in_seconds = time_in_seconds.abs
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("(%2d:%02d)", hours, minutes)
+    time_formatter(time_in_seconds, '%02d:%02d', 'hm', '--:--')
+  end
+
+  def time_format_xxhyymzzs(time_in_seconds)
+    if time_in_seconds && (hours(time_in_seconds) == 0)
+      time_formatter(time_in_seconds, '%02dm%02ds', 'ms', '--:--:--')
     else
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("%2d:%02d", hours, minutes)
+      time_formatter(time_in_seconds, '%2dh%02dm%02ds', 'hms', '--:--:--')
     end
   end
 
   def time_format_xxhyym(time_in_seconds)
-    return '--:--' if time_in_seconds.nil?
-    if time_in_seconds < 0
-      time_in_seconds = time_in_seconds.abs
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("(%2dh%02dm)", hours, minutes)
-    else
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("%2dh%02dm", hours, minutes)
-    end
-  end
-
-  def time_format_xxhyymzzs(time_in_seconds)
-    return '--:--:--' if time_in_seconds.nil?
-    if time_in_seconds < 0
-      time_in_seconds = time_in_seconds.abs
-      seconds = time_in_seconds % 60
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("(%2dh%02dm%02ds)", hours, minutes, seconds)
-    else
-      seconds = time_in_seconds % 60
-      minutes = (time_in_seconds / 60) % 60
-      hours = time_in_seconds / (60 * 60)
-      format("%2dh%02dm%02ds", hours, minutes, seconds)
-    end
+    time_formatter(time_in_seconds, '%2dh%02dm', 'hm', '--:--')
   end
 
   def time_format_minutes(time_in_seconds)
-    return '--' if time_in_seconds.nil?
-    if (time_in_seconds / 60).round(0) < 0
-      "(#{(time_in_seconds.abs / 60).round(0).to_s}m)"
-    else
-      "#{(time_in_seconds / 60).round(0).to_s}m"
-    end
+    time_formatter(time_in_seconds, '%2dm', 'm', '--')
+  end
+
+  def time_formatter(time_in_seconds, format_string, time_initials, placeholder)
+    return placeholder if time_in_seconds.nil?
+    format_string = "(#{format_string})" if time_in_seconds.to_i < 0
+    format(format_string, *time_components(time_in_seconds, time_initials))
+  end
+
+  def time_components(time_in_seconds, time_initials)
+    time_components = []
+    time_components << hours(time_in_seconds) if time_initials.include?('h')
+    time_components << minutes(time_in_seconds) if time_initials.include?('m')
+    time_components << seconds(time_in_seconds) if time_initials.include?('s')
+    time_components
+  end
+
+  def hours(time_in_seconds)
+    (time_in_seconds.abs / (60 * 60)).to_i
+  end
+
+  def minutes(time_in_seconds)
+    ((time_in_seconds.abs / 60) % 60).to_i
+  end
+
+  def seconds(time_in_seconds)
+    (time_in_seconds.abs % 60).to_i
   end
 
   def day_time_format(datetime)

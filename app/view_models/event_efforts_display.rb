@@ -2,7 +2,8 @@ class EventEffortsDisplay
 
   attr_accessor :filtered_efforts
   attr_reader :event, :effort_rows
-  delegate :name, :start_time, :course, :race, :simple?, :beacon_url, :available_live, to: :event
+  delegate :name, :start_time, :course, :race, :simple?, :beacon_url, :available_live,
+           :finish_split, :start_split, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object
@@ -12,7 +13,8 @@ class EventEffortsDisplay
 
   def initialize(event, params = {})
     @event = event
-    @event_final_split_id = event.finish_split.id if event.finish_split
+    @event_final_split_id = finish_split.id if finish_split
+    @event_start_split_id = start_split.id if start_split
     get_efforts(params)
     @effort_rows = []
     create_effort_rows
@@ -52,7 +54,7 @@ class EventEffortsDisplay
 
   private
 
-  attr_accessor :event_efforts, :started_efforts, :event_final_split_id
+  attr_accessor :event_efforts, :started_efforts, :event_final_split_id, :event_start_split_id
 
   def get_efforts(params)
     self.event_efforts = event.efforts
@@ -85,6 +87,7 @@ class EventEffortsDisplay
     return "Finished" if effort.final_split_id == event_final_split_id
     return "DNS" unless started_efforts.include?(effort)
     return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
+    return "Started" if effort.final_split_id == event_start_split_id
     "Reported through #{effort.final_split_name}"
   end
 

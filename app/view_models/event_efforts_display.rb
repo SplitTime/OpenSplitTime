@@ -84,10 +84,10 @@ class EventEffortsDisplay
   end
 
   def run_status(effort)
-    return "Finished" if effort.final_split_id == event_final_split_id
     return "DNS" unless started_efforts.include?(effort)
-    return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
     return "Started" if effort.final_split_id == event_start_split_id
+    return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
+    return "Finished" if effort.final_split_id == event_final_split_id
     "Reported through #{effort.final_split_name}"
   end
 

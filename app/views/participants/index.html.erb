@@ -32,7 +32,7 @@
 <div class="row">
   <div class="col-xs-8">
     <% if @participants.present? %>
-        <%= render 'participants' %>
+        <%= render 'participants_list' %>
     <% else %>
         <br/>
         <% if params[:search].blank? %>

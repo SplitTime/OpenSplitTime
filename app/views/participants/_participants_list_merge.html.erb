@@ -1,0 +1,24 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Bio</th>
+    <th>From</th>
+    <th>Efforts</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @participant_merge.possible_matches.each do |possible_match| %>
+      <tr>
+        <td><strong><%= link_to possible_match.full_name, participant_path(possible_match) %></strong></td>
+        <td><%= possible_match.bio %></td>
+        <td><%= possible_match.state_and_country %></td>
+        <td><%= pluralize(@participant_merge.effort_counts[possible_match.id], 'effort') %></td>
+        <td><%= link_to "^ Up to inspector ^", merge_participant_path(@participant_merge.id,
+                                                                      proposed_match: possible_match.id),
+                        class: "btn btn-xs btn-success" %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

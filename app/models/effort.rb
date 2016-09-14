@@ -32,6 +32,8 @@ class Effort < ActiveRecord::Base
                                                                   split_times: {time_from_start: low_time..high_time}) }
   scope :unreconciled, -> { where(participant_id: nil) }
 
+  delegate :race, to: :event
+
   def self.attributes_for_import
     id = ['id']
     foreign_keys = Effort.column_names.find_all { |x| x.include?('_id') }

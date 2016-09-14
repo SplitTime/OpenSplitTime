@@ -2,7 +2,7 @@ class EffortShowView
 
   attr_reader :effort, :event, :split_rows
   delegate :full_name, :event_name, :participant, :bib_number, :gender, :split_times,
-           :finish_status, :report_url, :beacon_url, :dropped_split_id, to: :effort
+           :finish_status, :report_url, :beacon_url, :dropped_split_id, :start_time, to: :effort
   delegate :simple?, to: :event
 
   def initialize(effort)

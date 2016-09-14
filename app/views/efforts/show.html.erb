@@ -13,6 +13,7 @@
     </h2>
     <% overall_place, gender_place = @effort_show.combined_places %>
     <h4>
+      <%= "#{l(@effort_show.start_time, format: :full_with_weekday)} #{l(@effort_show.start_time, format: :ampm)}" %><br/>
       <%= @effort_show.finish_status %>
       <%= "• #{overall_place.ordinalize} Place " if overall_place %>
       <%= "• #{gender_place.ordinalize} #{@effort_show.gender.titleize}" if gender_place %>

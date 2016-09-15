@@ -32,6 +32,10 @@ class EventSpreadDisplay
     race ? race.name : nil
   end
 
+  def event_start_time
+    event.start_time
+  end
+
   def display_style_text
     case display_style
       when 'segment'
@@ -73,7 +77,7 @@ class EventSpreadDisplay
       effort_times_row = EffortTimesRow.new(effort,
                                             relevant_splits,
                                             split_times[effort.id],
-                                            start_time: event.start_time)
+                                            event_start_time)
       effort_times_rows << effort_times_row
     end
   end

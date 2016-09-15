@@ -4,13 +4,13 @@ class EffortTimesRow
 
   attr_reader :effort, :time_clusters
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :place, to: :effort
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :place, :start_offset, to: :effort
 
-  def initialize(effort, splits, split_times, options = {})
+  def initialize(effort, splits, split_times, event_start_time)
     @effort = effort
     @splits = splits
     @split_times = split_times.index_by(&:bitkey_hash)
-    @start_time_from_params = options[:start_time]
+    @event_start_time = event_start_time
     @time_clusters = []
     create_time_clusters
   end
@@ -25,10 +25,10 @@ class EffortTimesRow
 
   private
 
-  attr_reader :splits, :split_times, :start_time_from_params
+  attr_reader :splits, :split_times, :event_start_time
 
   def effective_start_time
-    start_time_from_params.try(:to_datetime) || effort.start_time
+    event_start_time + start_offset
   end
 
   def create_time_clusters

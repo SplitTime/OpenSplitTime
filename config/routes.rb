@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     member { get :participants }
     member { put :associate_participant }
     member { post :add_interest }
+    member { post :remove_interest }
     member { get :edit_preferences }
     member { put :update_preferences }
   end

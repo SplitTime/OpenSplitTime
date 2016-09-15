@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show, :edit_preferences, :update_preferences, :destroy]
+  before_action :set_user, except: :index
   after_action :verify_authorized
 
   def index
@@ -49,6 +49,20 @@ class UsersController < ApplicationController
     authorize @user
     @user.destroy
     redirect_to users_path, :notice => "User deleted."
+  end
+
+  def add_interest
+    authorize @user
+    participant = Participant.find(params[:participant])
+    @user.add_interest(participant)
+    redirect_to participants_path(search: params[:search], page: params[:page])
+  end
+
+  def remove_interest
+    authorize @user
+    participant = Participant.find(params[:participant])
+    @user.remove_interest(participant)
+    redirect_to participants_path(search: params[:search], page: params[:page])
   end
 
   private

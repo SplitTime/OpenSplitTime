@@ -73,8 +73,16 @@ class User < ActiveRecord::Base
     avatar.present?
   end
 
-  def not_interested_in?(participant_id)
-    connections.where(participant_id: participant_id).count < 1
+  def interested_in?(participant)
+    interests.include?(participant)
+  end
+
+  def add_interest(participant)
+    interests << participant
+  end
+
+  def remove_interest(participant)
+    interests.delete(participant)
   end
 
   def except_current_user(participants)

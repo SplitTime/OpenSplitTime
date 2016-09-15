@@ -5,6 +5,7 @@
     <th>Bio</th>
     <th>From</th>
     <th>Efforts</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -14,6 +15,26 @@
         <td><%= participant.bio %></td>
         <td><%= participant.state_and_country %></td>
         <td><%= pluralize(participant.effort_count, 'effort') %></td>
+        <% if @current_user %>
+            <% if @current_user.interested_in?(participant) %>
+                <td><%= link_to "No longer interested",
+                                remove_interest_user_path(@current_user,
+                                                          participant: participant,
+                                                          page: params[:page],
+                                                          search: params[:search]),
+                                method: :post,
+                                class: "btn btn-xs btn-primary" %>
+            <% else %>
+                <td><%= link_to "I'm interested",
+                                add_interest_user_path(@current_user,
+                                                       participant: participant,
+                                                       page: params[:page],
+                                                       search: params[:search]),
+                                method: :post,
+                                class: "btn btn-xs btn-success" %>
+            <% end %>
+            </td>
+        <% end %>
       </tr>
   <% end %>
   </tbody>

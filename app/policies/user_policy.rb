@@ -31,4 +31,12 @@ class UserPolicy
     @current_user.admin?
   end
 
+  def add_interest?
+    @current_user.admin? or @current_user == @user
+  end
+
+  def remove_interest?
+    @current_user.admin? or @current_user == @user
+  end
+
 end

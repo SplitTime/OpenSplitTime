@@ -95,6 +95,20 @@
           </div>
         </div>
         <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :start_time %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.datetime_select :start_time,
+                                  {use_short_month: true,
+                                   start_year: (Date.today + 1.year).year,
+                                   end_year: 1970,
+                                   ampm: true,
+                                   order: [:month, :day, :year]},
+                                  {class: "dropdown-select-field"} %>
+          </div>
+        </div>
+        <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@effort.new_record? ? "Create Effort" : "Update Effort", class: 'btn btn-primary btn-large') %>
           </div>

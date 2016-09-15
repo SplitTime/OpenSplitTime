@@ -72,7 +72,7 @@ class Effort < ActiveRecord::Base
 
   def start_time=(datetime)
     return unless datetime.present?
-    new_datetime = datetime.is_a?(Hash) ? Time.new(*datetime.values) : datetime
+    new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
     event_time = event_start_time
     difference = TimeDifference.between(new_datetime, event_time).in_seconds
     # TimeDifference returns only positive values so make negative if appropriate

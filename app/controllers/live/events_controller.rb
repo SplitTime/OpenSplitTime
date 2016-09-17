@@ -61,7 +61,7 @@ class Live::EventsController < Live::BaseController
 
   def post_file_effort_data
 
-    # Param should be an unaltered CSV file.
+    # Params should be an unaltered CSV file and a splitId.
     # This endpoint interprets and verifies rows from the file and returns
     # return_rows containing all data necessary to populate the local data workspace.
 

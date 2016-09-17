@@ -42,6 +42,8 @@ gem 'pluck_to_hash'
 gem 'strip_attributes'
 gem 'puma'
 gem 'puma_worker_killer'
+gem 'sidekiq'
+gem 'aws-sdk'
 
 group :development do
   gem 'web-console', '~> 2.0'

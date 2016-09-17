@@ -103,38 +103,38 @@ class EventsController < ApplicationController
 
   def import_splits
     authorize @event
-    @importer = SplitImporter.new(params[:file], @event, current_user.id)
-    if @importer.split_import
-      flash[:success] = "Import successful"
+    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    if file_url
+      ImportSplitsJob.perform_later(file_url, @event, current_user.id)
+      flash[:success] = 'Import in progress. Reload page for results.'
     else
-      flash[:danger] = "No split data detected"
+      flash[:danger] = 'Import file too large.'
     end
-
     redirect_to stage_event_path(@event)
   end
 
   def import_efforts
     authorize @event
-    @importer = EffortImporter.new(params[:file], @event, current_user.id)
-    if @importer.effort_import
-      flash[:success] = "Import successful. #{@importer.effort_import_report}"
-      redirect_to reconcile_event_path(@event)
+    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    if file_url
+      ImportEffortsJob.perform_later(file_url, @event, current_user.id)
+      flash[:success] = 'Import in progress. Reload the page in a minute or two (depending on file size) and your import should be complete.'
     else
-      flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:effort_importer].first}."
-      redirect_to stage_event_path(@event, errors: @importer.errors)
+      flash[:danger] = 'Import file too large.'
     end
+    redirect_to stage_event_path(@event)
   end
 
   def import_efforts_without_times
     authorize @event
-    @importer = EffortImporter.new(params[:file], @event, current_user.id)
-    if @importer.effort_import_without_times
-      flash[:success] = "Import successful. #{@importer.effort_import_report}"
-      redirect_to reconcile_event_path(@event)
+    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    if file_url
+      ImportEffortsWithoutTimesJob.perform_later(file_url, @event, current_user.id)
+      flash[:success] = 'Import in progress. Reload the page in a minute or two (depending on file size) and your import should be complete.'
     else
-      flash[:danger] = "Could not complete the import. #{@importer.errors.messages[:effort_importer].first}."
-      redirect_to stage_event_path(@event, errors: @importer.errors)
+      flash[:danger] = 'Import file too large.'
     end
+    redirect_to stage_event_path(@event)
   end
 
   def spread
@@ -217,7 +217,7 @@ class EventsController < ApplicationController
     update_beacon_url(params[:value])
     respond_to do |format|
       format.html { redirect_to stage_event_path(@event) }
-      format.js { render inline: "location.reload();" }
+      format.js { render inline: 'location.reload();' }
     end
   end
 

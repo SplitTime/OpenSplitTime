@@ -4,8 +4,8 @@ class ImportFile
 
   attr_reader :spreadsheet, :header1, :header2
 
-  def initialize(file)
-    @spreadsheet = open_spreadsheet(file)
+  def initialize(file_url)
+    @spreadsheet = open_spreadsheet(file_url)
     return false unless spreadsheet
     @header1 = spreadsheet.row(1)
     @header2 = spreadsheet.row(2)
@@ -41,18 +41,19 @@ class ImportFile
 
   private
 
-  def open_spreadsheet(file)
-    return nil unless file
-    spreadsheet_format = File.extname(file.original_filename)
+  def open_spreadsheet(file_url)
+    return nil unless file_url
+    spreadsheet_format = file_url.split('.').last
+    filename = file_url.split('/').last
     case spreadsheet_format
-      # when '.csv' then
-      #   Roo::Spreadsheet.open(file.path, :csv)
-      when '.xls' then
-        Roo::Spreadsheet.open(file.path)
-      when '.xlsx' then
-        Roo::Spreadsheet.open(file.path)
+      # when 'csv' then
+      #   Roo::Spreadsheet.open(file_url, :csv)
+      when 'xls' then
+        Roo::Spreadsheet.open(file_url)
+      when 'xlsx' then
+        Roo::Spreadsheet.open(file_url)
       else
-        raise "Unknown file type: #{file.original_filename}"
+        raise "Unknown file type: #{filename}"
     end
   end
 

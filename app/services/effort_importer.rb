@@ -4,9 +4,9 @@ class EffortImporter
   attr_accessor :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
   attr_reader :errors
 
-  def initialize(file, event, current_user_id)
+  def initialize(file_url, event, current_user_id)
     @errors = ActiveModel::Errors.new(self)
-    @import_file = ImportFile.new(file)
+    @import_file = ImportFile.new(file_url)
     @event = event
     @current_user_id = current_user_id
     @sub_split_bitkey_hashes = event.sub_split_bitkey_hashes

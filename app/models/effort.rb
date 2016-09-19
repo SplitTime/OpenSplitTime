@@ -7,7 +7,7 @@ class Effort < ActiveRecord::Base
   strip_attributes collapse_spaces: true
   enum gender: [:male, :female]
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
-  belongs_to :event, touch: true
+  belongs_to :event
   belongs_to :participant
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }

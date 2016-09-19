@@ -3,7 +3,7 @@ class Event < ActiveRecord::Base
   include Concealable
   include SplitMethods
   strip_attributes collapse_spaces: true
-  belongs_to :course, touch: true
+  belongs_to :course
   belongs_to :race
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy

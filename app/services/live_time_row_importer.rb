@@ -74,7 +74,8 @@ class LiveTimeRowImporter
       out_time_saved = create_or_update_split_time(effort_data_object.split_time_out, split_time_out)
       split_time_ids << out_time_saved if out_time_saved
     end
-    FollowerMailerJob.perform_later(effort_data_object.participant_id, split_time_ids)
+    FollowerMailerService.send_mail(effort_data_object.participant_id, split_time_ids)
+    # FollowerMailerJob.perform_later(effort_data_object.participant_id, split_time_ids)
     !((in_time_saved == false) || (out_time_saved == false)) # This formulation is needed for nil handling.
   end
 

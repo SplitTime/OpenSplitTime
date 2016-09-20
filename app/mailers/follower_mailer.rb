@@ -2,7 +2,7 @@ class FollowerMailer < ApplicationMailer
 
   helper :application
 
-  def self.live_effort_email(follower, split_times)
+  def live_effort_email(follower, split_times)
     @follower = follower
     @split_times = split_times
     @effort = split_times.first.effort

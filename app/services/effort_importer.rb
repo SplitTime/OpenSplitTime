@@ -15,7 +15,10 @@ class EffortImporter
   end
 
   def effort_import
-    return unless column_count_matches
+    unless column_count_matches
+      self.effort_import_report = "Column count doesn't match"
+      return
+    end
     build_effort_schema
     start_offset_hash = {}
     final_split_hash = {}

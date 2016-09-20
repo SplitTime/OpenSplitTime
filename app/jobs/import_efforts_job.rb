@@ -5,7 +5,7 @@ class ImportEffortsJob < ActiveJob::Base
   def perform(file_url, event, user_id)
     importer = EffortImporter.new(file_url, event, user_id)
     importer.effort_import
-    importer.effort_import_report
+          importer.effort_import_report # TODO store this in redis using user_id key & timestamp?
   end
 
 end

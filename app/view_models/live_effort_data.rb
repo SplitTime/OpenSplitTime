@@ -7,6 +7,8 @@ class LiveEffortData
                 :dropped_split, :dropped_day_and_time, :started
   attr_reader :effort, :response_row
 
+  delegate :participant_id, to: :effort
+
   def initialize(event, params, calcs = nil, ordered_split_array = nil)
     @calcs = calcs || EventSegmentCalcs.new(event)
     @ordered_splits = ordered_split_array || event.ordered_splits.to_a

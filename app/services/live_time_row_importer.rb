@@ -62,15 +62,19 @@ class LiveTimeRowImporter
     existing_split_times = SplitTime.where(split_id: effort_data_object.split_id,
                                            effort_id: effort_data_object.effort_id).to_a
     in_time_saved = out_time_saved = nil
+    split_time_ids = []
     if effort_data_object.split_time_in.present?
       split_time_in = existing_split_times.find { |st| st.sub_split_bitkey == SubSplit::IN_BITKEY }
       in_time_saved = create_or_update_split_time(effort_data_object.split_time_in, split_time_in)
+      split_time_ids << in_time_saved if in_time_saved
     end
 
     if (effort_data_object.split_time_out.present?) && (effort_data_object.sub_split_bitkey_out?)
       split_time_out = existing_split_times.find { |st| st.sub_split_bitkey == SubSplit::OUT_BITKEY }
       out_time_saved = create_or_update_split_time(effort_data_object.split_time_out, split_time_out)
+      split_time_ids << out_time_saved if out_time_saved
     end
+    FollowerMailerJob.perform_later(effort_data_object.participant_id, split_time_ids)
     !((in_time_saved == false) || (out_time_saved == false)) # This formulation is needed for nil handling.
   end
 
@@ -79,11 +83,13 @@ class LiveTimeRowImporter
 
   def create_or_update_split_time(proposed_split_time, existing_split_time)
     if existing_split_time.present?
-      existing_split_time.update(time_from_start: proposed_split_time.time_from_start,
-                                 data_status: proposed_split_time.data_status,
-                                 pacer: proposed_split_time.pacer)
+      update = existing_split_time.update(time_from_start: proposed_split_time.time_from_start,
+                                          data_status: proposed_split_time.data_status,
+                                          pacer: proposed_split_time.pacer)
+      update ? existing_split_time.id : false
     else
-      proposed_split_time.save
+      create = proposed_split_time.save
+      create ? proposed_split_time.id : false
     end
   end
 

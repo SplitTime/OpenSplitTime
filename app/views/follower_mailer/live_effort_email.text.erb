@@ -1,0 +1,8 @@
+<%= "Hello #{@follower.first_name}," %>
+
+<%= "We thought you would like to know that the following new times were reported for #{@effort.full_name} at #{@effort.event_name}:" %>
+
+<% @split_times.each do |split_time| %>
+    <%= "#{split_time.split_name} at #{time_format_xxhyymzzs(split_time.time_from_start)}" %><%= " with a pacer" if split_time.pacer %><%= " and dropped there" if @effort.dropped_split_id == split_time.split_id %>
+
+<% end %>

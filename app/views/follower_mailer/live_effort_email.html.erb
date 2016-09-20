@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+</head>
+<body>
+<%= "Hello #{@follower.first_name}," %><br/>
+<%= "We thought you would like to know that the following new times were reported for #{@effort.full_name} at #{@effort.event_name}:" %>
+<% @split_times.each do |split_time| %>
+    <p>
+      <%= "#{split_time.split_name} at #{time_format_xxhyymzzs(split_time.time_from_start)}" %>
+      <%= " with a pacer" if split_time.pacer %>
+      <%= " and dropped there" if @effort.dropped_split_id == split_time.split_id %>
+    </p>
+<% end %>
+
+</body>
+</html>

@@ -4,13 +4,13 @@
   <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
 </head>
 <body>
-<%= "Hello #{@follower.first_name}," %><br/>
-<%= "The following new times were reported for #{@effort.full_name} at #{@effort.event_name}:" %>
-<% @split_times.each do |split_time| %>
+<%= "Hello #{@follower.first_name}," %><br/><br/>
+<%= "The following new times were reported for #{@effort_data[:full_name]} at #{@effort_data[:event_name]}:" %>
+<% @effort_data[:split_times_data].each do |split_time_data| %>
     <p>
-      <%= "#{split_time.split_name} at #{day_time_full_format(split_time.day_and_time)}" %>
-      <%= " with a pacer" if split_time.pacer %>
-      <%= " and dropped there" if @effort.dropped_split_id == split_time.split_id %>
+      <%= "#{split_time_data[:split_name]} at #{split_time_data[:day_and_time]}" %>
+      <%= " with a pacer" if split_time_data[:pacer] %>
+      <%= " and dropped there" if @effort_data[:dropped_split_id] == split_time_data[:split_id] %>
     </p>
 <% end %>
 

@@ -73,6 +73,8 @@ Rails.application.routes.draw do
     member { get :merge }
     member { put :combine }
     member { delete :remove_effort }
+    member { post :add_follower }
+    member { post :remove_follower }
   end
   resources :efforts do
     member { put :associate_participant }

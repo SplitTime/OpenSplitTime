@@ -101,6 +101,18 @@ class ParticipantsController < ApplicationController
     redirect_to participant_path(@participant)
   end
 
+  def add_follower
+    authorize @participant
+    @participant.add_follower(@current_user)
+    redirect_to participants_path(search: params[:search], page: params[:page])
+  end
+
+  def remove_follower
+    authorize @participant
+    @participant.remove_follower(@current_user)
+    redirect_to participants_path(search: params[:search], page: params[:page])
+  end
+
   private
 
   def participant_params

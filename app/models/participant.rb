@@ -133,6 +133,14 @@ class Participant < ActiveRecord::Base
     end
   end
 
+  def add_follower(user)
+    followers << user
+  end
+
+  def remove_follower(user)
+    followers.delete(user)
+  end
+
   private
 
   def self.columns_to_pull_from_model

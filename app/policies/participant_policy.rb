@@ -46,4 +46,12 @@ class ParticipantPolicy
     @current_user.admin?
   end
 
+  def add_follower?
+    @current_user.present?
+  end
+
+  def remove_follower?
+    @current_user.present?
+  end
+
 end

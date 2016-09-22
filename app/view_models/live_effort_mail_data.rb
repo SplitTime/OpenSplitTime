@@ -31,7 +31,7 @@ class LiveEffortMailData
     split_times.each do |split_time|
       result << {split_id: split_time.split_id,
                  split_name: split_time.split_name,
-                 day_and_time: split_time.day_and_time.strftime("%B %-d, %Y %l:%M%p"),
+                 day_and_time: split_time.day_and_time.strftime("%A, %B %-d, %Y %l:%M%p"),
                  pacer: split_time.pacer}
     end
     result

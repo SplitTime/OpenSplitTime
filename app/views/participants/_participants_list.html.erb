@@ -5,7 +5,7 @@
     <th>Bio</th>
     <th>From</th>
     <th>Efforts</th>
-    <th></th>
+    <th>Notifications</th>
   </tr>
   </thead>
   <tbody>
@@ -33,6 +33,11 @@
                                 method: :post,
                                 class: "btn btn-xs btn-success" %>
             <% end %>
+            </td>
+        <% else %>
+            <td><%= link_to "I'm interested",
+                            new_user_registration_path,
+                            class: "btn btn-xs btn-success" %>
             </td>
         <% end %>
       </tr>

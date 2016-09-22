@@ -43,7 +43,7 @@ class MockEffort
 
   def set_relevant_resources
     self.relevant_events = course.events.where(concealed: false).recent(MAX_EVENTS)
-    self.relevant_events[-1] = event unless relevant_events.include?(event)
+    self.relevant_events << event unless relevant_events.include?(event)
     self.relevant_efforts = course.relevant_efforts(expected_time, relevant_events).to_a
   end
 

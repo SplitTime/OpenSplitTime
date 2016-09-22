@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809063101) do
+ActiveRecord::Schema.define(version: 20160922143916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(version: 20160809063101) do
     t.string   "country_code", limit: 2
     t.integer  "user_id"
     t.boolean  "concealed",               default: false
+    t.string   "photo_url"
   end
 
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
@@ -154,6 +155,7 @@ ActiveRecord::Schema.define(version: 20160809063101) do
     t.integer  "updated_by"
     t.integer  "sub_split_bitkey"
     t.boolean  "pacer"
+    t.string   "remarks"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree

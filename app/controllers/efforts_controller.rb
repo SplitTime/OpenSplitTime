@@ -93,6 +93,12 @@ class EffortsController < ApplicationController
     end
   end
 
+  def start
+    authorize @effort
+    BulkUpdateService.start_efforts([@effort], @current_user.id)
+    redirect_to effort_path(@effort)
+  end
+
   def edit_split_times
     authorize @effort
     session[:return_to] = effort_path(@effort)

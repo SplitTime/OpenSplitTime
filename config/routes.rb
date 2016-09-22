@@ -78,6 +78,7 @@ Rails.application.routes.draw do
     member { put :associate_participant }
     collection { put :associate_participants }
     member { put :edit_split_times }
+    member { put :start }
     member { delete :delete_split }
     member { put :confirm_split }
     member { put :set_data_status }

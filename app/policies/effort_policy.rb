@@ -42,6 +42,10 @@ class EffortPolicy
     @current_user.authorized_to_edit?(@effort.event)
   end
 
+  def start?
+    @current_user.authorized_to_edit?(@effort)
+  end
+
   def edit_split_times?
     @current_user.authorized_to_edit?(@effort)
   end

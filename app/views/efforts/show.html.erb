@@ -13,7 +13,8 @@
     </h2>
     <% overall_place, gender_place = @effort_show.combined_places %>
     <h4>
-      <%= "#{l(@effort_show.start_time, format: :full_with_weekday)} #{l(@effort_show.start_time, format: :ampm)}" %><br/>
+      <%= "#{l(@effort_show.start_time, format: :full_with_weekday)} #{l(@effort_show.start_time, format: :ampm)}" %>
+      <br/>
       <%= @effort_show.finish_status %>
       <%= "• #{overall_place.ordinalize} Place " if overall_place %>
       <%= "• #{gender_place.ordinalize} #{@effort_show.gender.titleize}" if gender_place %>
@@ -58,6 +59,11 @@
             <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),
                         method: :put,
                         class: "btn btn-sm btn-success" %>
+            <% unless @effort_show.started? %>
+                <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
+                            method: :put,
+                            class: "btn btn-sm btn-success" %>
+            <% end %>
             <%= link_to 'Delete effort', effort_path(@effort_show.effort, referrer_path: event_path(@effort_show.event)),
                         method: :delete,
                         data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>

@@ -1,0 +1,18 @@
+<%= form_tag stage_event_path(event), method: :get do %>
+    <div class="row">
+      <div class="col-xs-8">
+        <div class="input-group">
+          <span class="input-group-btn">
+            <%= text_field_tag :search,
+                               params[:search],
+                               placeholder: 'Bib #, first name, last name, state, or country',
+                               autofocus: true,
+                               class: 'form-control search-box input-sm' %>
+            <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
+                <i class='fa fa-search'></i> Find someone
+            <% end %>
+          </span>
+        </div>
+      </div>
+    </div>
+<% end %>

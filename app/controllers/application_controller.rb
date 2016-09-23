@@ -21,8 +21,4 @@ class ApplicationController < ActionController::Base
     User.current = current_user
   end
 
-  def auth_user
-    redirect_to new_user_registration_path unless @current_user.present?
-  end
-
 end

@@ -15,12 +15,12 @@ $(function () {
             icon.attr('class', icon.data('old-class'));
             icon.data('old-class', null);
         }
-    })
+    });
 
-    // Don't fail silently
+    // Redirect if not authorized
     $(document).ajaxError(function (event, jqxhr) {
-        if (jqxhr.status) {
-            alert("We're sorry, but something went wrong (" + jqxhr.status + ')');
+        if (jqxhr.status == 401) {
+            window.location.replace('/users/sign_in');
         }
     });
 

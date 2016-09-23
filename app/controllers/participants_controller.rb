@@ -101,16 +101,10 @@ class ParticipantsController < ApplicationController
     redirect_to participant_path(@participant)
   end
 
-  def add_follower
+  def toggle_follower
     authorize @participant
-    @participant.add_follower(@current_user)
-    redirect_to participants_path(search: params[:search], page: params[:page])
-  end
-
-  def remove_follower
-    authorize @participant
-    @participant.remove_follower(@current_user)
-    redirect_to participants_path(search: params[:search], page: params[:page])
+    @participant.toggle_follower(@current_user)
+    sleep(0.5) if Rails.env.development?
   end
 
   private

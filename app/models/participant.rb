@@ -133,12 +133,12 @@ class Participant < ActiveRecord::Base
     end
   end
 
-  def add_follower(user)
-    followers << user
-  end
-
-  def remove_follower(user)
-    followers.delete(user)
+  def toggle_follower(user)
+    if followers.include?(user)
+      followers.delete(user)
+    else
+      followers << user
+    end
   end
 
   private

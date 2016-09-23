@@ -15,23 +15,10 @@
         <td><%= participant.bio %></td>
         <td><%= participant.state_and_country %></td>
         <td><%= pluralize(participant.effort_count, 'effort') %></td>
-        <% if @current_user && @current_user.interested_in?(participant) %>
-            <td><%= link_to "No longer interested",
-                            remove_follower_participant_path(participant,
-                                                             user: @current_user,
-                                                             page: params[:page],
-                                                             search: params[:search]),
-                            method: :post,
-                            class: "btn btn-xs btn-primary" %>
-        <% else %>
-            <td><%= link_to "I'm interested",
-                            add_follower_participant_path(participant,
-                                                          user: @current_user,
-                                                          page: params[:page],
-                                                          search: params[:search]),
-                            method: :post,
-                            class: "btn btn-xs btn-success" %>
-        <% end %>
+        <td>
+          <%= div_for(participant) do %>
+              <%= link_to_toggle_interest(participant) %>
+          <% end %>
         </td>
       </tr>
   <% end %>

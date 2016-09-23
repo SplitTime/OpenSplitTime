@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   get 'split_info', to: 'visitors#split_info'
   get 'split_time_info', to: 'visitors#split_time_info'
   get 'split_time_info', to: 'visitors#split_time_info'
+
+  get '/.well-known/acme-challenge/:id' => 'visitors#letsencrypt'
+
   devise_for :users, :controllers => {registrations: 'registrations'}
   resources :users do
     member { get :participants }

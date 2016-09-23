@@ -66,7 +66,7 @@ class LiveFileTransformer
   end
 
   def strip_white_space(file_row)
-    file_row.each { |k, v| file_row[k] = (v && v.is_a?(String)) ? v.gsub(/\s+/, '') : v }
+    file_row.each { |k, v| file_row[k] = v.try(:strip) || v }
   end
 
   def colonize_times(file_row)

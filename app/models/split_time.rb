@@ -1,6 +1,7 @@
 class SplitTime < ActiveRecord::Base
   include Auditable
-  enum data_status: [:bad, :questionable, :good, :confirmed] # nil = unknown, 0 = bad, 1 = questionable, 2 = good, 3 = confirmed
+  enum data_status: [:bad, :questionable, :good, :confirmed]
+  strip_attributes collapse_spaces: true
   belongs_to :effort
   belongs_to :split
 

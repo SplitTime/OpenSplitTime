@@ -13,7 +13,7 @@ class LiveEffortData
     @calcs = calcs || EventSegmentCalcs.new(event)
     @ordered_splits = ordered_split_array || event.ordered_splits.to_a
     @response_row = params.symbolize_keys.slice(:splitId, :bibNumber, :timeIn, :timeOut,
-                                                :pacerIn, :pacerOut, :droppedHere)
+                                                :pacerIn, :pacerOut, :droppedHere, :remarks)
     @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
     @split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
     set_non_dependent_attributes
@@ -69,13 +69,14 @@ class LiveEffortData
 
   private
 
-  attr_accessor :split_times_hash, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out
+  attr_accessor :split_times_hash, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out, :remarks
   attr_reader :calcs, :ordered_splits, :split
 
   def set_non_dependent_attributes
     self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn].try(&:downcase) == 'true')
     self.pacer_out = response_row[:pacerOut] = (response_row[:pacerOut].try(&:downcase) == 'true')
     self.dropped_here = response_row[:droppedHere] = (response_row[:droppedHere].try(&:downcase) == 'true')
+    self.remarks = response_row[:remarks]
     self.response_row[:effortName] = effort_name
     self.response_row[:splitName] = split_name
     self.response_row[:splitDistance] = split_distance
@@ -138,14 +139,16 @@ class LiveEffortData
                       split_id: split_id,
                       sub_split_bitkey: SubSplit::IN_BITKEY,
                       time_from_start: time_from_start_in,
-                      pacer: pacer_in) :
+                      pacer: pacer_in,
+                      remarks: remarks) :
         nil
     self.split_time_out = time_from_start_out ?
         SplitTime.new(effort_id: effort.id,
                       split_id: split_id,
                       sub_split_bitkey: SubSplit::OUT_BITKEY,
                       time_from_start: time_from_start_out,
-                      pacer: pacer_out) :
+                      pacer: pacer_out,
+                      remarks: remarks) :
         nil
     bitkey_hash_in = split_time_in ? split_time_in.bitkey_hash : nil
     bitkey_hash_out = split_time_out ? split_time_out.bitkey_hash : nil

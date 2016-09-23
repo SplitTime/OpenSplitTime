@@ -27,6 +27,10 @@ class SplitRow
     split_times.map { |st| st ? pacer_text(st.pacer) : nil }
   end
 
+  def remarks
+    split_times.compact.map { |st| st.remarks }.uniq.join(' / ')
+  end
+
   private
 
   attr_reader :split_times, :prior_time, :start_time, :time_cluster

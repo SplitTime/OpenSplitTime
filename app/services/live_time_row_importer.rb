@@ -86,7 +86,8 @@ class LiveTimeRowImporter
     if existing_split_time.present?
       update = existing_split_time.update(time_from_start: proposed_split_time.time_from_start,
                                           data_status: proposed_split_time.data_status,
-                                          pacer: proposed_split_time.pacer)
+                                          pacer: proposed_split_time.pacer,
+                                          remarks: proposed_split_time.remarks)
       update ? existing_split_time.id : false
     else
       create = proposed_split_time.save

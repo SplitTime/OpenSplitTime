@@ -7,6 +7,7 @@
     <th class="text-center">Elapsed Time</th>
     <th class="text-center">Pacer In/Out</th>
     <th class="text-center">Dropped</th>
+    <th class="text-center">Remarks</th>
   </tr>
   </thead>
   <tbody>
@@ -42,6 +43,7 @@
           <% else %>
               <td></td>
           <% end %>
+          <td class="text-center"><%= split_row.remarks %></td>
       <% end %>
       </tr>
   <% end %>

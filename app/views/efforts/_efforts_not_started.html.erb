@@ -5,6 +5,7 @@
     <th>Name</th>
     <th>Category</th>
     <th>From</th>
+    <th>Get Notifications</th>
   </tr>
   </thead>
   <tbody>
@@ -13,6 +14,12 @@
       <td><strong><%= link_to effort_preview_row.full_name, effort_path(effort_preview_row.id) %></strong></td>
       <td><%= effort_preview_row.bio_historic %></td>
       <td><%= effort_preview_row.state_and_country %></td>
+      <td>
+        <% # TODO: Optimize to avoid n + 1 search query for effort.participant %>
+        <%= div_for(effort_preview_row.participant) do %>
+            <%= link_to_toggle_interest(effort_preview_row.participant) %>
+        <% end %>
+      </td>
       </tr>
   <% end %>
   </tbody>

@@ -76,7 +76,8 @@ Rails.application.routes.draw do
     member { get :merge }
     member { put :combine }
     member { delete :remove_effort }
-    member { post :toggle_follower }
+    member { post :current_user_follow }
+    member { post :current_user_unfollow }
   end
   resources :efforts do
     member { put :associate_participant }
@@ -93,7 +94,6 @@ Rails.application.routes.draw do
     member { get :add_report }
   end
   resources :split_times
-  resources :connections
   resources :aid_stations, except: [:index, :new, :create]
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin

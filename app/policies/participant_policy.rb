@@ -46,7 +46,11 @@ class ParticipantPolicy
     @current_user.admin?
   end
 
-  def toggle_follower?
+  def current_user_follow?
+    @current_user.present?
+  end
+
+  def current_user_unfollow?
     @current_user.present?
   end
 

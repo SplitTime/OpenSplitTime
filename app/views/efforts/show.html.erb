@@ -74,7 +74,7 @@
                         data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
             <%= form_tag({action: :add_photo}, multipart: true, method: :put) do %>
                 <%= file_field_tag :file %>
-                <%= submit_tag 'Add photo', class: 'btn btn-sm btn-success' %>
+                <%= submit_tag @effort_show.photo_url ? 'Change photo' : 'Add photo', class: 'btn btn-sm btn-success' %>
             <% end %>
         <% end %>
       </div>

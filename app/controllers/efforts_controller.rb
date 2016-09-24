@@ -1,7 +1,7 @@
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo]
   before_action :set_effort, except: [:index, :new, :create, :associate_participants, :mini_table]
-  after_action :verify_authorized, except: [:index, :show, :mini_table]
+  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo]
 
   def index
 
@@ -136,6 +136,10 @@ class EffortsController < ApplicationController
   def mini_table
     @mini_table = EffortsMiniTable.new(params[:effortIds])
     render partial: 'efforts_mini_table'
+  end
+
+  def show_photo
+    render partial: 'show_photo'
   end
 
   def add_beacon

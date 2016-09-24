@@ -23,7 +23,7 @@
   </div>
   <div class="col-xs-3">
     <% if @effort_show.photo_url %>
-        <%= image_tag(@effort_show.photo_url, size: "200x130") %>
+        <%= link_to image_tag(@effort_show.photo_url, size: "200x130"), {action: :show_photo} %>
     <% end %>
   </div>
   <div class="col-xs-3 page-navigation">

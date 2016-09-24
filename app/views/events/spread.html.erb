@@ -87,7 +87,8 @@
               <%= 'Segment / Aid' if split.name_extensions.count > 1 %>
           <% else %>
               <%= split.name_extensions.join(' / ') if split.name_extensions.count > 1 %>
-          <% end %>
+          <% end %><br/>
+          <%= "(#{pdu('singular').titlecase} #{d(split.distance_from_start)})" %>
         </th>
     <% end %>
     <% if @spread_display.display_style == 'segment' %>

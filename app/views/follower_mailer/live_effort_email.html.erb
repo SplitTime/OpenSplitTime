@@ -14,9 +14,9 @@
     </p>
 <% end %>
 <br/>
-<%= link_to "To see full effort click here", show_effort_path(@effort_data.effort_id) %>
+<%= link_to "To see full effort click here", show_effort_path(@effort_data[:effort_id]) %>
 <br/>
-<%= link_to "To see all results click here", stage_event_path(@effort_data.event_id) %>
+<%= link_to "To see all results click here", stage_event_path(@effort_data[:event_id]) %>
 
 </body>
 </html>

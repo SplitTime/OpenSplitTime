@@ -13,14 +13,6 @@ class LiveEffortMailData
     @effort_data ||= get_effort_data
   end
 
-  def effort_id
-    effort.id
-  end
-
-  def event_id
-    effort.event.id
-  end
-
   private
 
   attr_reader :effort
@@ -31,7 +23,9 @@ class LiveEffortMailData
     {full_name: full_name,
      event_name: event_name,
      dropped_split_id: dropped_split_id,
-     split_times_data: split_times_data}
+     split_times_data: split_times_data,
+     effort_id: effort.id,
+     event_id: effort.event.id}
   end
 
   def split_times_data

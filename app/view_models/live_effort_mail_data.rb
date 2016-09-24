@@ -13,6 +13,14 @@ class LiveEffortMailData
     @effort_data ||= get_effort_data
   end
 
+  def effort_id
+    effort.id
+  end
+
+  def event_id
+    effort.event.id
+  end
+
   private
 
   attr_reader :effort

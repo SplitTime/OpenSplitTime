@@ -1,6 +1,8 @@
 class SegmentCalculations
   attr_accessor :times, :valid_data_array, :low_bad, :low_q, :high_q, :high_bad, :mean, :std
 
+  STAT_CALC_THRESHOLD = 20
+
   def initialize(segment, begin_times_hash = nil, end_times_hash = nil)
     begin_times_hash ||= segment.begin_split.time_hash(segment.begin_bitkey)
     end_times_hash ||= segment.end_split.time_hash(segment.end_bitkey)
@@ -68,7 +70,7 @@ class SegmentCalculations
   end
 
   def set_limits_by_stats(data_array)
-    return unless data_array && data_array.count > 2
+    return unless data_array && data_array.count > STAT_CALC_THRESHOLD
     self.mean = data_array.mean
     self.std = data_array.standard_deviation
     self.low_bad = [self.low_bad, mean - (4 * std), 0].max

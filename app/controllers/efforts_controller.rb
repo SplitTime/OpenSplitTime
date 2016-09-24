@@ -156,6 +156,13 @@ class EffortsController < ApplicationController
     end
   end
 
+  def add_photo
+    authorize @effort
+    file_url = BucketStoreService.upload_to_bucket("effort-photos/#{@effort.event_name}", params[:file], @effort.id)
+    @effort.update(photo_url: file_url) if file_url
+    redirect_to effort_path(@effort)
+  end
+
   private
 
   def effort_params

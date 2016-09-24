@@ -70,4 +70,8 @@ class EffortPolicy
     @current_user.authorized_to_edit_personal?(@effort)
   end
 
+  def add_photo?
+    @current_user.authorized_to_edit?(@effort)
+  end
+
 end

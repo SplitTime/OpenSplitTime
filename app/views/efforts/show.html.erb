@@ -21,7 +21,12 @@
       <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
     </h4>
   </div>
-  <div class="col-xs-6 page-navigation">
+  <div class="col-xs-3">
+    <% if @effort_show.photo_url %>
+        <%= image_tag(@effort_show.photo_url, size: "200x130") %>
+    <% end %>
+  </div>
+  <div class="col-xs-3 page-navigation">
     <div class="row">
       <% if @effort_show.in_progress? %>
           <% if @effort_show.beacon_url %>
@@ -67,6 +72,10 @@
             <%= link_to 'Delete effort', effort_path(@effort_show.effort, referrer_path: event_path(@effort_show.event)),
                         method: :delete,
                         data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+            <%= form_tag({action: :add_photo}, multipart: true, method: :put) do %>
+                <%= file_field_tag :file %>
+                <%= submit_tag 'Add photo', class: 'btn btn-sm btn-success' %>
+            <% end %>
         <% end %>
       </div>
       <div class="col-xs-6">

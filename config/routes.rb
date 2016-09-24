@@ -92,6 +92,7 @@ Rails.application.routes.draw do
     collection { post :mini_table }
     member { get :add_beacon }
     member { get :add_report }
+    member { put :add_photo }
   end
   resources :split_times
   resources :aid_stations, except: [:index, :new, :create]

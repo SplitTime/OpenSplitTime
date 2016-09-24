@@ -13,7 +13,7 @@ class LiveEffortData
     @calcs = calcs || EventSegmentCalcs.new(event)
     @ordered_splits = ordered_split_array || event.ordered_splits.to_a
     @response_row = params.symbolize_keys.slice(:splitId, :bibNumber, :timeIn, :timeOut,
-                                                :pacerIn, :pacerOut, :droppedHere, :remarks)
+                                                :pacerIn, :pacerOut, :droppedHere, :remarks, :remark)
     @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
     @split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
     set_non_dependent_attributes
@@ -76,7 +76,7 @@ class LiveEffortData
     self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn].try(&:downcase) == 'true')
     self.pacer_out = response_row[:pacerOut] = (response_row[:pacerOut].try(&:downcase) == 'true')
     self.dropped_here = response_row[:droppedHere] = (response_row[:droppedHere].try(&:downcase) == 'true')
-    self.remarks = response_row[:remarks]
+    self.remarks = response_row[:remarks] || response_row[:remark]
     self.response_row[:effortName] = effort_name
     self.response_row[:splitName] = split_name
     self.response_row[:splitDistance] = split_distance

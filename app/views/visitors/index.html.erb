@@ -28,7 +28,7 @@
         <% end %>
         <br/>
         <%= link_to 'Hardrock 2016 Results', spread_event_path(50), class: 'btn btn-info cta' %>
-        <%= link_to 'Silverton Double Dirty 30', event_path(77), class: 'btn btn-info cta' %>
+        <%= link_to 'Silverton Double Dirty 30', spread_event_path(77), class: 'btn btn-info cta' %>
         </div>
     <div class="gradient"></div>
     <a data-toggle="static-popover-dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
@@ -43,7 +43,9 @@
         OpenSplitTime will tell you where you need to be and when.<br/>
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
-      <%= link_to 'Plan Your 2017 Hardrock', plan_effort_course_path(1), class: 'btn btn-info cta' %>
+      <%= link_to '2017 Hardrock', plan_effort_course_path(1), class: 'btn btn-info cta' %>
+      <%= link_to '2017 Double Dirty 30', plan_effort_course_path(24), class: 'btn btn-info cta' %>
+      <%= link_to '2017 Never Summer 100K', plan_effort_course_path(25), class: 'btn btn-info cta' %>
     </div>
   </div>
   <div class="row third" >

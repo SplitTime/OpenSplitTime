@@ -1,4 +1,5 @@
 require "rails_helper"
+require Rails.root.join "spec/concerns/unit_conversions_spec.rb"
 
 # t.integer  "course_id"
 # t.integer  "location_id"
@@ -9,6 +10,10 @@ require "rails_helper"
 # t.integer  "kind"
 # t.string   "description"
 # t.integer  "sub_split_bitmap"
+
+describe Split do
+  it_behaves_like "unit_conversions"
+end
 
 RSpec.describe Split, kind: :model do
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
@@ -31,7 +36,7 @@ RSpec.describe Split, kind: :model do
     expect(Split.all.count).to(equal(1))
     expect(Split.first.name).to eq('Hopeless Outbound')
     expect(Split.first.distance_from_start).to eq(50000)
-    expect(Split.first.sub_split_bitmap).to eq(1)    # default value
+    expect(Split.first.sub_split_bitmap).to eq(1) # default value
     expect(Split.first.intermediate?).to eq(true)
   end
 
@@ -71,7 +76,7 @@ RSpec.describe Split, kind: :model do
     split = Split.new(course_id: @course2.id, location_id: @location1.id, base_name: 'Wanderlust', distance_from_start: 8000, kind: 2)
     expect(split).to be_valid
   end
-  
+
   it "should not allow more than one start split within the same course" do
     Split.create!(course_id: @course1.id, location_id: @location1.id, base_name: 'Starting Point', distance_from_start: 0, kind: 0)
     split = Split.new(course_id: @course1.id, location_id: @location1.id, base_name: 'Beginning Point', distance_from_start: 0, kind: 0)
@@ -166,6 +171,120 @@ RSpec.describe Split, kind: :model do
     it 'should return all of the key_hashes for a given split' do
       first_split = event_same_course.splits.first
       expect(first_split.sub_split_bitkey_hashes.count).to eq(2)
+    end
+  end
+
+  context 'when there is no current user (therefore no preferred distance or elevation units)' do
+
+    describe 'distance_as_entered' do
+
+      it 'should return nil if passed an empty string' do
+        split = Split.new(base_name: 'Test Split')
+        split.distance_as_entered = ''
+        expect(split.distance_from_start).to be_nil
+      end
+
+      it 'should return nil if passed nil' do
+        split = Split.new(base_name: 'Test Split')
+        split.distance_as_entered = nil
+        expect(split.distance_from_start).to be_nil
+      end
+
+      it 'should take a number in miles and store it as meters (rounded to 0) in the correct attribute' do
+        split = Split.new(base_name: 'Test Split')
+        split.distance_as_entered = 5.5
+        expect(split.distance_from_start).to eq(8851)
+      end
+
+      it 'should take a number string in miles and store it as meters in the correct attribute' do
+        split = Split.new(base_name: 'Test Split')
+        split.distance_as_entered = '5'
+        expect(split.distance_from_start).to eq(8047)
+      end
+
+      it 'should ignore commas' do
+        split = Split.new(base_name: 'Test Split')
+        split.distance_as_entered = '1,000'
+        expect(split.distance_from_start).to eq(1609344)
+      end
+
+      it 'should ignore non-numeric characters' do
+        split = Split.new(base_name: 'Test Split')
+        split.distance_as_entered = '5 meters'
+        expect(split.distance_from_start).to eq(8047)
+      end
+
+      it 'should not ignore decimals' do
+        split = Split.new(base_name: 'Test Split')
+        split.distance_as_entered = '5.5'
+        expect(split.distance_from_start).to eq(8851)
+      end
+
+      it 'should properly report values in miles when queried' do
+        split = Split.new(base_name: 'Test Split', distance_from_start: 8851)
+        expect(split.distance_as_entered).to eq(5.5)
+      end
+
+    end
+
+    describe 'vert_gain_as_entered and vert_loss_as_entered' do
+
+      it 'should return nil if passed an empty string' do
+        split = Split.new(base_name: 'Test Split')
+        split.vert_gain_as_entered = ''
+        split.vert_loss_as_entered = ''
+        expect(split.vert_gain_from_start).to be_nil
+        expect(split.vert_loss_from_start).to be_nil
+      end
+
+      it 'should return nil if passed nil' do
+        split = Split.new(base_name: 'Test Split')
+        split.vert_gain_as_entered = nil
+        split.vert_loss_as_entered = nil
+        expect(split.vert_gain_from_start).to be_nil
+        expect(split.vert_loss_from_start).to be_nil
+      end
+
+      it 'should take a number in feet and store it as meters in the correct attribute' do
+        split = Split.new(base_name: 'Test Split')
+        split.vert_gain_as_entered = 13500
+        split.vert_loss_as_entered = 12000
+        expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
+        expect(split.vert_loss_from_start.round(1)).to eq(3657.6)
+      end
+
+      it 'should take a number string in feet and store it as meters in the correct attribute' do
+        split = Split.new(base_name: 'Test Split')
+        split.vert_gain_as_entered = '13500'
+        split.vert_loss_as_entered = '12000'
+        expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
+        expect(split.vert_loss_from_start.round(1)).to eq(3657.6)
+      end
+
+      it 'should ignore commas' do
+        split = Split.new(base_name: 'Test Split')
+        split.vert_gain_as_entered = '13,500'
+        expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
+      end
+
+      it 'should ignore non-numeric characters' do
+        split = Split.new(base_name: 'Test Split')
+        split.vert_gain_as_entered = '13500 meters'
+        expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
+      end
+
+      it 'should not ignore decimals' do
+        split = Split.new(base_name: 'Test Split')
+        split.vert_gain_as_entered = '13,500.5'
+        expect(split.vert_gain_from_start.round(1)).to eq(4115.0)
+      end
+
+      it 'should properly report values in feet when queried' do
+        split = Split.new(base_name: 'Test Split', vert_gain_from_start: 4114.8, vert_loss_from_start: 3657.6)
+        expect(split.vert_gain_as_entered).to eq(13500)
+        expect(split.vert_loss_as_entered).to eq(12000)
+      end
+
     end
   end
 

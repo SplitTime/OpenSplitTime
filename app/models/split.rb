@@ -45,27 +45,27 @@ class Split < ActiveRecord::Base
   end
 
   def distance_as_entered
-    Split.distance_in_preferred_units(distance_from_start, User.current).round(2) if distance_from_start
+    Split.distance_in_preferred_units(distance_from_start).round(2) if distance_from_start
   end
 
-  def distance_as_entered=(entered_distance)
-    self.distance_from_start = Split.distance_in_meters(entered_distance.to_f, User.current) if entered_distance.present?
+  def distance_as_entered=(number_string)
+    self.distance_from_start = Split.entered_distance_to_meters(number_string) if number_string.present?
   end
 
   def vert_gain_as_entered
-    Split.elevation_in_preferred_units(vert_gain_from_start, User.current).round(0) if vert_gain_from_start
+    Split.elevation_in_preferred_units(vert_gain_from_start).round(0) if vert_gain_from_start
   end
 
-  def vert_gain_as_entered=(entered_vert_gain)
-    self.vert_gain_from_start = Split.elevation_in_meters(entered_vert_gain.to_f, User.current) if entered_vert_gain.present?
+  def vert_gain_as_entered=(number_string)
+    self.vert_gain_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
 
   def vert_loss_as_entered
-    Split.elevation_in_preferred_units(vert_loss_from_start, User.current).round(0) if vert_loss_from_start
+    Split.elevation_in_preferred_units(vert_loss_from_start).round(0) if vert_loss_from_start
   end
 
-  def vert_loss_as_entered=(entered_vert_loss)
-    self.vert_loss_from_start = Split.elevation_in_meters(entered_vert_loss.to_f, User.current) if entered_vert_loss.present?
+  def vert_loss_as_entered=(number_string)
+    self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
 
   def time_hash(sub_split_bitkey)

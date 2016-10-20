@@ -3,34 +3,37 @@ module UnitConversions
 
   module ClassMethods
 
-    def distance_in_meters(distance_in_pref, user)
-      return distance_in_pref.miles.to.meters.value unless user
-      case user.pref_distance_unit
+    def entered_distance_to_meters(distance)
+      preferred_distance_in_meters(numericize(distance))
+    end
+
+    def entered_elevation_to_meters(elevation)
+      preferred_elevation_in_meters(numericize(elevation))
+    end
+
+    def preferred_distance_in_meters(distance_in_pref)
+      case pref_distance_unit
         when 'miles'
-          distance_in_pref.miles.to.meters.value
+          distance_in_pref.miles.to.meters.value.round(0)
         when 'kilometers'
-          distance_in_pref.kilometers.to.meters.value
+          distance_in_pref.kilometers.to.meters.value.round(0)
         else
           distance_in_pref
       end
     end
 
-    def elevation_in_meters(elevation_in_pref, user)
+    def preferred_elevation_in_meters(elevation_in_pref)
       return nil unless elevation_in_pref
-      return elevation_in_pref.feet.to.meters.value unless user
-      case user.pref_elevation_unit
+      case pref_elevation_unit
         when 'feet'
           elevation_in_pref.feet.to.meters.value
-        when 'meters'
-          elevation_in_pref
         else
           elevation_in_pref
       end
     end
 
-    def distance_in_preferred_units(distance_in_meters, user)
-      return distance_in_meters.meters.to.miles.value unless user
-      case user.pref_distance_unit
+    def distance_in_preferred_units(distance_in_meters)
+      case pref_distance_unit
         when 'miles'
           distance_in_meters.meters.to.miles.value
         when 'kilometers'
@@ -40,18 +43,28 @@ module UnitConversions
       end
     end
 
-    def elevation_in_preferred_units(elevation_in_meters, user)
+    def elevation_in_preferred_units(elevation_in_meters)
       return nil unless elevation_in_meters
-      return elevation_in_meters.meters.to.feet.value unless user
-      case user.pref_elevation_unit
+      case pref_elevation_unit
         when 'feet'
           elevation_in_meters.meters.to.feet.value
-        when 'meters'
-          elevation_in_meters
         else
           elevation_in_meters
       end
     end
 
+    def pref_distance_unit
+      (User.current && User.current.pref_distance_unit) || 'miles'
+    end
+
+    def pref_elevation_unit
+      (User.current && User.current.pref_elevation_unit) || 'feet'
+    end
+
+    def numericize(fixnum_or_string)
+      fixnum_or_string.is_a?(String) ? fixnum_or_string.gsub(/[^\d\.]/, '').to_f : fixnum_or_string
+    end
+
   end
+
 end

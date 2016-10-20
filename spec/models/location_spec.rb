@@ -5,6 +5,10 @@ require "rails_helper"
 # t.decimal  "latitude"
 # t.decimal  "longitude"
 
+describe Location do
+  it_behaves_like "unit_conversions"
+end
+
 RSpec.describe Location, type: :model do
   it { is_expected.to strip_attribute(:name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }

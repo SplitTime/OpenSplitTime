@@ -35,11 +35,13 @@ module ApplicationHelper
   end
 
   def time_components(time_in_seconds, time_initials)
-    time_components = []
-    time_components << hours(time_in_seconds) if time_initials.include?('h')
-    time_components << minutes(time_in_seconds) if time_initials.include?('m')
-    time_components << seconds(time_in_seconds) if time_initials.include?('s')
-    time_components
+    time_initials.chars.map { |initial| time_component_map(time_in_seconds)[initial.to_sym] }
+  end
+
+  def time_component_map(time_in_seconds)
+    {h: hours(time_in_seconds),
+     m: minutes(time_in_seconds),
+     s: seconds(time_in_seconds)}
   end
 
   def hours(time_in_seconds)
@@ -86,14 +88,14 @@ module ApplicationHelper
   end
 
   def distance_to_preferred(meters)
-    number_with_delimiter(Split.distance_in_preferred_units(meters, current_user).round(1))
+    number_with_delimiter(Split.distance_in_preferred_units(meters).round(1))
   end
 
   alias_method :d, :distance_to_preferred
 
   def elevation_to_preferred(meters)
     return nil unless meters
-    number_with_delimiter(Split.elevation_in_preferred_units(meters, current_user).round(0))
+    number_with_delimiter(Split.elevation_in_preferred_units(meters).round(0))
   end
 
   alias_method :e, :elevation_to_preferred
@@ -101,42 +103,42 @@ module ApplicationHelper
   def preferred_distance_unit(param = 'plural')
     unless current_user
       return case param
-               when 'short'
-                 'mi'
-               when 'singular'
-                 'mile'
-               else
-                 'miles'
+             when 'short'
+               'mi'
+             when 'singular'
+               'mile'
+             else
+               'miles'
              end
     end
     case current_user.pref_distance_unit
-      when 'miles'
-        case param
-          when 'short'
-            'mi'
-          when 'singular'
-            'mile'
-          else
-            'miles'
-        end
-      when 'kilometers'
-        case param
-          when 'short'
-            'km'
-          when 'singular'
-            'kilometer'
-          else
-            'kilometers'
-        end
+    when 'miles'
+      case param
+      when 'short'
+        'mi'
+      when 'singular'
+        'mile'
       else
-        case param
-          when 'short'
-            'm'
-          when 'singular'
-            'meter'
-          else
-            'meters'
-        end
+        'miles'
+      end
+    when 'kilometers'
+      case param
+      when 'short'
+        'km'
+      when 'singular'
+        'kilometer'
+      else
+        'kilometers'
+      end
+    else
+      case param
+      when 'short'
+        'm'
+      when 'singular'
+        'meter'
+      else
+        'meters'
+      end
     end
   end
 
@@ -148,12 +150,12 @@ module ApplicationHelper
       return plural ? 'feet' : 'foot'
     end
     case current_user.pref_elevation_unit
-      when 'feet'
-        plural ? 'feet' : 'foot'
-      when 'meters'
-        plural ? 'meters' : 'meter'
-      else
-        plural ? 'meters' : 'meter'
+    when 'feet'
+      plural ? 'feet' : 'foot'
+    when 'meters'
+      plural ? 'meters' : 'meter'
+    else
+      plural ? 'meters' : 'meter'
     end
   end
 

@@ -28,6 +28,7 @@ class LiveFileTransformer
 
   def create_rows_from_file
     CSV.foreach(file.path, headers: true) do |row|
+      next unless row.present?
       file_row = row.to_hash
       file_row.symbolize_keys!
       file_row[:sequenceId] = (file_row[:sequenceId].present? &&

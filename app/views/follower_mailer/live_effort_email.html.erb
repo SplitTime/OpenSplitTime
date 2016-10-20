@@ -13,6 +13,11 @@
       <%= " and dropped there" if @effort_data[:dropped_split_id] == split_time_data[:split_id] %>
     </p>
 <% end %>
+<br/>
+<%= link_to "To see full effort click here", effort_url(@effort_data[:effort_id]) %>
+<br/>
+<br/>
+<%= link_to "To see all results click here", spread_event_url(@effort_data[:event_id]) %>
 
 </body>
 </html>

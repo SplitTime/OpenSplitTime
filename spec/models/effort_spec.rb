@@ -216,10 +216,12 @@ RSpec.describe Effort, type: :model do
         SplitTime.create!(effort: @effort7, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 6600)
         SplitTime.create!(effort: @effort7, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 13000)
         SplitTime.create!(effort: @effort7, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 13500)
+        SplitTime.create!(effort: @effort7, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 18700)
 
         SplitTime.create!(effort: @effort8, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
         SplitTime.create!(effort: @effort8, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5500)
         SplitTime.create!(effort: @effort8, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5500)
+        SplitTime.create!(effort: @effort8, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 13500)
         SplitTime.create!(effort: @effort8, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 18700)
 
         SplitTime.create!(effort: @effort9, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
@@ -236,12 +238,14 @@ RSpec.describe Effort, type: :model do
         SplitTime.create!(effort: @effort11, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
         SplitTime.create!(effort: @effort11, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 6800)
         SplitTime.create!(effort: @effort11, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 6800)
+        SplitTime.create!(effort: @effort11, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 12500)
 
         SplitTime.create!(effort: @effort12, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
         SplitTime.create!(effort: @effort12, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5300)
         SplitTime.create!(effort: @effort12, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5400)
         SplitTime.create!(effort: @effort12, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 12500)
         SplitTime.create!(effort: @effort12, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 12550)
+        SplitTime.create!(effort: @effort12, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 19800)
 
         SplitTime.create!(effort: @effort13, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
         SplitTime.create!(effort: @effort13, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4900)

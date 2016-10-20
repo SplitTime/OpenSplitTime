@@ -1,7 +1,7 @@
 class SegmentCalculations
   attr_accessor :times, :valid_data_array, :low_bad, :low_q, :high_q, :high_bad, :mean, :std
 
-  STAT_CALC_THRESHOLD = 20
+  STAT_CALC_THRESHOLD = 8
 
   def initialize(segment, begin_times_hash = nil, end_times_hash = nil)
     begin_times_hash ||= segment.begin_split.time_hash(segment.begin_bitkey)

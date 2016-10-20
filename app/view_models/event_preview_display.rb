@@ -19,7 +19,7 @@ class EventPreviewDisplay
   end
 
   def efforts_count
-    event_efforts ? event_efforts.count : 0
+    event_efforts.count
   end
 
   def filtered_efforts_count
@@ -36,7 +36,7 @@ class EventPreviewDisplay
 
   private
 
-  attr_accessor :event_efforts, :started_efforts, :event_final_split_id
+  attr_accessor :event_efforts, :started_efforts, :event_final_split_id, :indexed_participants
 
   def get_efforts(params)
     self.event_efforts = event.efforts
@@ -44,11 +44,13 @@ class EventPreviewDisplay
                                 .search(params[:search])
                                 .order(:bib_number)
                                 .paginate(page: params[:page], per_page: 25)
+    self.indexed_participants = Participant.find(filtered_efforts.map(&:participant_id)).index_by(&:id)
   end
 
   def create_effort_preview_rows
     filtered_efforts.each do |effort|
-      effort_preview_row = EffortPreviewRow.new(effort)
+      effort_preview_row = EffortPreviewRow.new(effort,
+                                                participant: indexed_participants[effort.participant_id])
       effort_preview_rows << effort_preview_row
     end
   end

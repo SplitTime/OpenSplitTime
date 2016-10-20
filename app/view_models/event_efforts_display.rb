@@ -21,7 +21,7 @@ class EventEffortsDisplay
   end
 
   def efforts_count
-    event_efforts ? event_efforts.count : 0
+    event_efforts.count
   end
 
   def started_efforts_count
@@ -54,7 +54,8 @@ class EventEffortsDisplay
 
   private
 
-  attr_accessor :event_efforts, :started_efforts, :event_final_split_id, :event_start_split_id
+  attr_accessor :event_efforts, :started_efforts, :event_final_split_id,
+                :event_start_split_id, :indexed_participants
 
   def get_efforts(params)
     self.event_efforts = event.efforts
@@ -63,15 +64,18 @@ class EventEffortsDisplay
                                 .search(params[:search])
                                 .sorted_with_finish_status
                                 .paginate(page: params[:page], per_page: params[:per_page] || 25)
+    self.indexed_participants = Participant.find(filtered_efforts.map(&:participant_id)).index_by(&:id)
   end
 
   def create_effort_rows
     filtered_efforts.each do |effort|
-      effort_row = EffortRow.new(effort, overall_place: overall_place(effort),
+      effort_row = EffortRow.new(effort,
+                                 overall_place: overall_place(effort),
                                  gender_place: gender_place(effort),
                                  finish_status: finish_status(effort),
                                  run_status: run_status(effort),
-                                 day_and_time: start_time + effort.start_offset + effort.time_from_start)
+                                 day_and_time: start_time + effort.start_offset + effort.time_from_start,
+                                 participant: indexed_participants[effort.participant_id])
       effort_rows << effort_row
     end
   end

@@ -36,7 +36,7 @@ Getting Started
 
 **Rails and Gems**
 
-1. `$ gem install bundler` You should not need to `sudo` this if it says "permission denied" rbenv is not setup correctly
+1. `$ gem install bundler` You should not need to `sudo` this if it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
 2. `$ gem install rails`
 3. `$ brew install postgres`
 3. `$ bundle install`

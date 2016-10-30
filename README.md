@@ -49,6 +49,7 @@ Getting Started
 2. `$ rake db:setup` to get local data
 3. `$ rails s` to start the server
 4. Type `localhost:3000` in a browser
+5. You can also locally import a sample race by downloading [Hardrock 2015](https://github.com/SplitTime/OpenSplitTime/raw/master/hardrock2015.xlsx)
 
 *Test Users*
 

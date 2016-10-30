@@ -74,7 +74,7 @@ Writing code for something is the fastest way to get feedback. It doesn't matter
 
 ### Issues
 
-Be detailed. They only person who knows the bug you are experiencing or feature that you want is you! So please be as detailed as possible. Include labels like `bug` or `enhancement` and you know the saying a picture is worth a thousand words. So if you can grab a screanshot or gif of the behavior even better!
+Be detailed. They only person who knows the bug you are experiencing or feature that you want is you! So please be as detailed as possible. Include labels like `bug` or `enhancement` and you know the saying a picture is worth a thousand words. So if you can grab a screenshot or gif of the behavior even better!
 
 
 Credits

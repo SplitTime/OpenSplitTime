@@ -167,6 +167,10 @@ class EffortsController < ApplicationController
     redirect_to effort_path(@effort)
   end
 
+  def subregion_options
+    render partial: 'subregion_select'
+  end
+
   private
 
   def effort_params

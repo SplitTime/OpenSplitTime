@@ -25,7 +25,7 @@ Getting Started
 **Ruby**
 
 1. Install Homebrew http://brew.sh/
-1. Clone the repository to your local machine `$ git clone https://github.com/SplitTime/OpenSplitTime.git`
+1. Clone the repository to your local machine by [forking the repo](https://help.github.com/articles/fork-a-repo/)
 2. `$ brew update`
 3. `$ brew install rbenv`
 4. `$ cd` into your local `OpenSplitTime` directory

@@ -48,6 +48,7 @@ Getting Started
 1. Start your local DB `$ brew services restart postgres`
 2. `$ rake db:setup` to get local data
 3. `$ rails s` to start the server
+4. Type `localhost:3000` in a browser
 
 *Test Users*
 

@@ -20,6 +20,12 @@
       margin: 9px 0;
       color: #fff;
     }
+    .navbar-nav > li > a.donate {
+      color: #bbbb00;
+    }
+    .navbar-nav > li > a.donate:hover {
+      color: #ffff00;
+    }
   }
 }
 

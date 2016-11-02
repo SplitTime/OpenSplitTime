@@ -1,5 +1,4 @@
 require "rails_helper"
-require Rails.root.join "spec/concerns/unit_conversions_spec.rb"
 
 # t.integer  "course_id"
 # t.integer  "location_id"

@@ -10,11 +10,8 @@ require "rails_helper"
 # t.string   "description"
 # t.integer  "sub_split_bitmap"
 
-describe Split do
-  it_behaves_like "unit_conversions"
-end
-
 RSpec.describe Split, kind: :model do
+  it_behaves_like 'unit_conversions'
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 

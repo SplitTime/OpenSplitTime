@@ -1,5 +1,5 @@
 class SegmentCalculations
-  attr_accessor :times, :valid_data_array, :low_bad, :low_q, :high_q, :high_bad, :mean, :std
+  attr_accessor :times, :valid_data_array, :low_bad, :low_questionable, :high_questionable, :high_bad, :mean, :std
 
   STAT_CALC_THRESHOLD = 8
 
@@ -15,7 +15,7 @@ class SegmentCalculations
     return nil unless value
     if (value < low_bad) | (value > high_bad)
       'bad'
-    elsif (value < low_q) | (value > high_q)
+    elsif (value < low_questionable) | (value > high_questionable)
       'questionable'
     else
       'good'
@@ -23,7 +23,7 @@ class SegmentCalculations
   end
 
   def limits
-    [low_bad, low_q, high_q, high_bad]
+    [low_bad, low_questionable, high_questionable, high_bad]
   end
 
   private
@@ -47,13 +47,13 @@ class SegmentCalculations
   def set_status_limits(segment)
     if segment.end_split.start?
       self.low_bad = 0
-      self.low_q = 0
-      self.high_q = 0
+      self.low_questionable = 0
+      self.high_questionable = 0
       self.high_bad = 0
     elsif segment.distance == 0 # Time within a waypoint group/aid station
       self.low_bad = 0
-      self.low_q = 0
-      self.high_q = 6.hours
+      self.low_questionable = 0
+      self.high_questionable = 6.hours
       self.high_bad = 1.day
     else # This is a "real" segment between waypoint groups
       set_limits_by_terrain(segment)
@@ -64,8 +64,8 @@ class SegmentCalculations
   def set_limits_by_terrain(segment)
     typical_time = segment.typical_time_by_terrain
     self.low_bad = typical_time / 5
-    self.low_q = typical_time / 3.5
-    self.high_q = typical_time * 3.5
+    self.low_questionable = typical_time / 3.5
+    self.high_questionable = typical_time * 3.5
     self.high_bad = typical_time * 5
   end
 
@@ -74,8 +74,8 @@ class SegmentCalculations
     self.mean = data_array.mean
     self.std = data_array.standard_deviation
     self.low_bad = [self.low_bad, mean - (4 * std), 0].max
-    self.low_q = [self.low_q, mean - (3 * std), 0].max
-    self.high_q = [self.high_q, mean + (4 * std)].min
+    self.low_questionable = [self.low_questionable, mean - (3 * std), 0].max
+    self.high_questionable = [self.high_questionable, mean + (4 * std)].min
     self.high_bad = [self.high_bad, mean + (10 * std)].min
 
   end

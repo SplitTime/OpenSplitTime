@@ -44,7 +44,7 @@ class EventPreviewDisplay
                                 .search(params[:search])
                                 .order(:bib_number)
                                 .paginate(page: params[:page], per_page: 25)
-    self.indexed_participants = Participant.find(filtered_efforts.map(&:participant_id)).index_by(&:id)
+    self.indexed_participants = Participant.find(filtered_efforts.map(&:participant_id).compact).index_by(&:id)
   end
 
   def create_effort_preview_rows

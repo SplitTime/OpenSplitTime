@@ -64,7 +64,7 @@ class EventEffortsDisplay
                                 .search(params[:search])
                                 .sorted_with_finish_status
                                 .paginate(page: params[:page], per_page: params[:per_page] || 25)
-    self.indexed_participants = Participant.find(filtered_efforts.map(&:participant_id)).index_by(&:id)
+    self.indexed_participants = Participant.find(filtered_efforts.map(&:participant_id).compact).index_by(&:id)
   end
 
   def create_effort_rows

@@ -153,65 +153,8 @@ class EffortImporter
     [start_offset, dropped_split_pointer]
   end
 
-  # This method and the several that follow analyze the import data
-  # and attempt to conform it to the database schema
-
   def prepare_row_effort_data(row_effort_data)
-    i = effort_schema.index(:country_code)
-    country_code = nil
-    if i
-      row_effort_data[i] = prepare_country_data(row_effort_data[i])
-      country_code = row_effort_data[i]
-    end
-    i = effort_schema.index(:state_code)
-    row_effort_data[i] = prepare_state_data(country_code, row_effort_data[i]) unless (i.nil? | country_code.nil?)
-    i = effort_schema.index(:gender)
-    row_effort_data[i] = prepare_gender_data(row_effort_data[i]) unless i.nil?
-    i = effort_schema.index(:birthdate)
-    row_effort_data[i] = prepare_birthdate_data(row_effort_data[i]) unless i.nil?
-    row_effort_data
-  end
-
-  def prepare_country_data(country_data)
-    country_data = country_data.to_s.strip
-    country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
-    country.nil? ? find_country_code_by_nickname(country_data) : country.code
-  end
-
-  def find_country_code_by_nickname(country_data)
-    country_code = I18n.t("nicknames.#{country_data.to_s.downcase}")
-    country_code.include?('translation missing') ? nil : country_code
-  end
-
-  def prepare_state_data(country_code, state_data)
-    state_data = state_data.to_s.strip
-    country = Carmen::Country.coded(country_code)
-    return state_data unless country && country.subregions?
-    subregion = country.subregions.coded(state_data) || country.subregions.named(state_data)
-    subregion ? subregion.code : state_data
-  end
-
-  def prepare_gender_data(gender_data)
-    gender_data = gender_data.to_s.strip.downcase
-    case
-    when gender_data.first == 'm'
-      'male'
-    when gender_data.first == 'f'
-      'female'
-    else
-      ''
-    end
-  end
-
-  def prepare_birthdate_data(birthdate_data)
-    return nil if birthdate_data.blank?
-    return birthdate_data if birthdate_data.is_a?(Date)
-    begin
-      return Date.parse(birthdate_data) if birthdate_data.is_a?(String)
-    rescue ArgumentError
-      raise "Birthdate column includes invalid data"
-    end
-    nil
+    EffortImportDataPreparer.new(row_effort_data, effort_schema.to_a).output_row
   end
 
   def convert_time_to_standard(working_time)

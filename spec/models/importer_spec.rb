@@ -56,7 +56,7 @@ RSpec.describe SplitImporter do
     end
 
     describe 'effort_import' do
-      let(:effort_importer) { EffortImporter.new(import_file, event, 1) }
+      let(:effort_importer) { EffortImporter.new(import_file, event, current_user_id) }
       before do
         importer.split_import
         effort_importer.effort_import

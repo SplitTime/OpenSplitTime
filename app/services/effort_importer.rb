@@ -1,8 +1,7 @@
 class EffortImporter
   extend ActiveModel::Naming
 
-  attr_accessor :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
-  attr_reader :errors
+  attr_reader :errors, :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
 
   def initialize(file_url, event, current_user_id)
     @errors = ActiveModel::Errors.new(self)
@@ -77,6 +76,8 @@ class EffortImporter
                 :effort_schema, :import_without_times
 
   attr_reader :event, :current_user_id, :sub_split_bitkey_hashes
+
+  attr_writer :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
 
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
            :header1_downcase, to: :import_file
@@ -169,7 +170,7 @@ class EffortImporter
   end
 
   def datetime_to_seconds(value)
-    start_time = value.year < 1910 ? "1899-12-30".to_datetime : event.start_time
+    start_time = value.year < 1910 ? '1899-12-30'.to_datetime : event.start_time
     TimeDifference.between(value, start_time).in_seconds
   end
 

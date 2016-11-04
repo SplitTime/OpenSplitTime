@@ -82,6 +82,17 @@ class EffortImporter
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
            :header1_downcase, to: :import_file
 
+  FUZZY_MATCH_MAP = {'countrycode' => 'country',
+                     'statecode' => 'state',
+                     'bibnumber' => 'bib',
+                     'bibno' => 'bib',
+                     'firstname' => 'first',
+                     'lastname' => 'last',
+                     'nation' => 'country',
+                     'region' => 'state',
+                     'province' => 'state',
+                     'sex' => 'gender'}
+
   def column_count_matches
     if (event_sub_split_count == 2) && ((split_title_array.size < 1) | (split_title_array.size > 2))
       errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, but this event expects only a finish time column with an optional start time column. Please check your import file or create, remove, or associate splits as needed.")
@@ -114,11 +125,14 @@ class EffortImporter
   def create_split_times(row, effort_id)
     row_time_data = row[split_offset - 1..row.size - 1]
     row_time_data.unshift(0) if finish_times_only?
-    return nil if event_sub_split_count != row_time_data.size
+    return [nil, nil] if event_sub_split_count != row_time_data.size
+    return [nil, nil] if row_time_data.compact.empty?
     dropped_split_pointer = start_offset = nil
     finish_bitkey_hash = sub_split_bitkey_hashes.last
 
-    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
+    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey,
+                          :time_from_start, :created_at, :updated_at,
+                          :created_by, :updated_by) do |worker|
       (0...sub_split_bitkey_hashes.count).each do |i|
         bitkey_hash = sub_split_bitkey_hashes[i]
         split_id = bitkey_hash.keys.first
@@ -171,50 +185,34 @@ class EffortImporter
   end
 
   def prepare_country_data(country_data)
-    return nil if country_data.blank?
-    if country_data.is_a?(String)
-      country_data = country_data.strip
-      if country_data.length < 4
-        country = Carmen::Country.coded(country_data)
-        return country.code unless country.nil?
-      end
-      country = Carmen::Country.named(country_data)
-      return country.code unless country.nil?
-      find_country_code_by_nickname(country_data)
-    else
-      nil
-    end
+    country_data = country_data.to_s.strip
+    country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
+    country.nil? ? find_country_code_by_nickname(country_data) : country.code
   end
 
   def find_country_code_by_nickname(country_data)
-    return nil if country_data.blank?
-    country_code = I18n.t("nicknames.#{country_data.downcase}")
+    country_code = I18n.t("nicknames.#{country_data.to_s.downcase}")
     country_code.include?('translation missing') ? nil : country_code
   end
 
   def prepare_state_data(country_code, state_data)
-    return nil if state_data.blank?
-    state_data = state_data.strip
+    state_data = state_data.to_s.strip
     country = Carmen::Country.coded(country_code)
-    if state_data.is_a?(String)
-      return state_data if country.nil?
-      return state_data unless country.subregions?
-      if state_data.length < 4
-        subregion = country.subregions.coded(state_data)
-        return subregion.code unless subregion.nil?
-      end
-      subregion = country.subregions.named(state_data)
-      return subregion.code unless subregion.nil?
-    end
-    nil
+    return state_data unless country && country.subregions?
+    subregion = country.subregions.coded(state_data) || country.subregions.named(state_data)
+    subregion ? subregion.code : state_data
   end
 
   def prepare_gender_data(gender_data)
-    return nil if gender_data.blank?
-    gender_data.downcase!
-    gender_data = gender_data.strip
-    return "male" if (gender_data == "m") | (gender_data == "male")
-    return "female" if (gender_data == "f") | (gender_data == "female")
+    gender_data = gender_data.to_s.strip.downcase
+    case
+    when gender_data.first == 'm'
+      'male'
+    when gender_data.first == 'f'
+      'female'
+    else
+      ''
+    end
   end
 
   def prepare_birthdate_data(birthdate_data)
@@ -245,29 +243,13 @@ class EffortImporter
   end
 
   def get_closest_effort_attribute(column_title, effort_attributes)
-    effort_attributes.each do |effort_attribute|
-      return effort_attribute if fuzzy_match(column_title, effort_attribute)
-    end
-    nil
+    effort_attributes.find { |effort_attribute| normalize(column_title) == normalize(effort_attribute) }
   end
 
-  def fuzzy_match(column_title, effort_attribute)
-    attribute_string = effort_attribute.to_s.downcase.gsub(/[\W_]+/, '')
-    attribute_string.gsub!('countrycode', 'country')
-    attribute_string.gsub!('statecode', 'state')
-    attribute_string.gsub!('bibnumber', 'bib')
-    attribute_string.gsub!('firstname', 'first')
-    attribute_string.gsub!('lastname', 'last')
-    column_string = column_title.downcase.gsub(/[\W_]+/, '')
-    column_string.gsub!('nation', 'country')
-    column_string.gsub!('region', 'state')
-    column_string.gsub!('province', 'state')
-    column_string.gsub!('sex', 'gender')
-    column_string.gsub!('bibnumber', 'bib')
-    column_string.gsub!('bibno', 'bib')
-    column_string.gsub!('firstname', 'first')
-    column_string.gsub!('lastname', 'last')
-    (column_string == attribute_string)
+  def normalize(title)
+    clean_title = title.to_s.downcase.gsub(/[\W_]+/, '')
+    FUZZY_MATCH_MAP.each { |long, short| clean_title.gsub!(long, short) }
+    clean_title
   end
 
   def convert_time_to_standard(working_time)

@@ -2,26 +2,27 @@ class DataStatusService
 
   def self.set_data_status(*efforts)
     efforts = efforts.flatten
-    return "This event has no efforts whose times can be verified." if efforts.count < 1
+    return 'This event has no efforts whose times can be verified.' if efforts.empty?
     update_effort_hash = {}
     update_split_time_hash = {}
     event = efforts.first.event
     event_segment_calcs = EventSegmentCalcs.new(event)
     ordered_splits = event.ordered_splits
     splits = ordered_splits.index_by(&:id)
-    split_times = SplitTime.select(:id, :sub_split_bitkey, :split_id, :time_from_start, :data_status)
+    split_time_groups = SplitTime.select(:id, :sub_split_bitkey, :split_id, :time_from_start, :data_status)
                       .where(effort_id: efforts.map(&:id))
                       .ordered
                       .group_by(&:effort_id)
-    return "This event's efforts have no split times to be verified." if split_times.count < 1
+    return "This event's efforts have no split times to be verified." if split_time_groups.empty?
 
-    efforts.each do |effort|
+    split_time_groups.each do |effort_id, split_times|
+      effort = efforts.find { |effort| effort.id == effort_id }
       status_array = []
-      latest_valid_split_time = split_times[effort.id].first
+      latest_valid_split_time = split_times.first
       ordered_split_ids = ordered_splits.map(&:id)
       dropped_index = ordered_split_ids.index(effort.dropped_split_id)
 
-      split_times[effort.id].each do |split_time|
+      split_times.each do |split_time|
         if split_time.confirmed?
           latest_valid_split_time = split_time
           next
@@ -44,12 +45,12 @@ class DataStatusService
       end
 
       effort_status = DataStatus.worst(status_array)
-      update_effort_hash[effort.id] = effort_status if effort_status != effort.data_status
+      update_effort_hash[effort_id] = effort_status if effort_status != effort.data_status
     end
 
     BulkUpdateService.bulk_update_split_time_status(update_split_time_hash)
     BulkUpdateService.bulk_update_effort_status(update_effort_hash)
-    return "Bad and questionable times have been flagged."
+    return 'Bad and questionable times have been flagged.'
   end
 
   def self.live_entry_data_status(effort, ordered_splits, ordered_split_times, event_segment_calcs)

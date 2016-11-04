@@ -86,7 +86,7 @@ RSpec.describe SplitImporter do
       end
 
       it 'should correctly assign states and state codes' do
-        expect(Effort.find_by_bib_number(1).state_code).to eq('Bavaria')
+        expect(Effort.find_by_bib_number(1).state_code).to eq('HH')
         expect(Effort.find_by_bib_number(2).state_code).to eq('TX')
         expect(Effort.find_by_bib_number(143).state_code).to eq('CO')
         expect(Effort.find_by_bib_number(135).state_code).to eq('CO')

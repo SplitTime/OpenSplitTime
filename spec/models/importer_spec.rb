@@ -7,7 +7,8 @@ RSpec.describe SplitImporter do
     let(:course) { Course.create!(name: 'Test Course 100') }
     let(:event) { Event.create!(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00") }
     let(:import_file) { 'spec/fixtures/files/baddata2015test.xlsx' }
-    let(:importer) { SplitImporter.new(import_file, event, 1) }
+    let(:current_user_id) { 1 }
+    let(:importer) { SplitImporter.new(import_file, event, current_user_id) }
 
     it 'should set up the headers correctly' do
       expect(importer.header1.size).to eq(15)

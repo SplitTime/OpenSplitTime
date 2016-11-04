@@ -12,6 +12,7 @@ class EffortImporter
     @sub_split_bitkey_hashes = event.sub_split_bitkey_hashes
     @effort_failure_array = []
     @effort_id_array = []
+    @effort_schema = EffortSchema.new(header_column_titles)
   end
 
   def effort_import
@@ -19,7 +20,6 @@ class EffortImporter
       self.effort_import_report = "Column count doesn't match"
       return
     end
-    build_effort_schema
     start_offset_hash = {}
     final_split_hash = {}
     (effort_offset..spreadsheet.last_row).each do |i|
@@ -44,7 +44,6 @@ class EffortImporter
 
   def effort_import_without_times
     self.import_without_times = true
-    build_effort_schema
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row)
@@ -81,17 +80,6 @@ class EffortImporter
 
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
            :header1_downcase, to: :import_file
-
-  FUZZY_MATCH_MAP = {'countrycode' => 'country',
-                     'statecode' => 'state',
-                     'bibnumber' => 'bib',
-                     'bibno' => 'bib',
-                     'firstname' => 'first',
-                     'lastname' => 'last',
-                     'nation' => 'country',
-                     'region' => 'state',
-                     'province' => 'state',
-                     'sex' => 'gender'}
 
   def column_count_matches
     if (event_sub_split_count == 2) && ((split_title_array.size < 1) | (split_title_array.size > 2))
@@ -226,32 +214,6 @@ class EffortImporter
     nil
   end
 
-  # build_effort_schema and related methods return
-  # an array of symbols representing attributes of the effort model.
-  # Symbols are returned in order of the spreadsheet columns
-  # with nil placeholders for spreadsheet columns that don't match
-  # any importable effort attribute
-
-  def build_effort_schema
-    header_column_titles = import_without_times ? header1 : header1[0..split_offset - 2]
-    effort_attributes = Effort.attributes_for_import
-    self.effort_schema = []
-    header_column_titles.each do |column_title|
-      matching_attribute = get_closest_effort_attribute(column_title, effort_attributes)
-      effort_schema << matching_attribute
-    end
-  end
-
-  def get_closest_effort_attribute(column_title, effort_attributes)
-    effort_attributes.find { |effort_attribute| normalize(column_title) == normalize(effort_attribute) }
-  end
-
-  def normalize(title)
-    clean_title = title.to_s.downcase.gsub(/[\W_]+/, '')
-    FUZZY_MATCH_MAP.each { |long, short| clean_title.gsub!(long, short) }
-    clean_title
-  end
-
   def convert_time_to_standard(working_time)
     return nil if working_time.blank?
     working_time = working_time.to_datetime if working_time.instance_of?(Date)
@@ -264,15 +226,16 @@ class EffortImporter
   end
 
   def datetime_to_seconds(value)
-    if value.year < 1910
-      TimeDifference.between(value, "1899-12-30".to_datetime).in_seconds
-    else
-      TimeDifference.between(value, event.start_time).in_seconds
-    end
+    start_time = value.year < 1910 ? "1899-12-30".to_datetime : event.start_time
+    TimeDifference.between(value, start_time).in_seconds
   end
 
   def event_sub_split_count
     sub_split_bitkey_hashes.count
+  end
+
+  def header_column_titles
+    import_without_times ? header1 : header1[0..split_offset - 2]
   end
 
 end

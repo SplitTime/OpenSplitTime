@@ -52,6 +52,13 @@ RSpec.describe EffortSchema, type: :model do
                                  :bib_number, :state_code, :country_code, :city])
     end
 
+    it 'should return nils representing fields that do not match' do
+      header_column_titles = %w(Last First Hair Age Shoes Bib FavoriteColor Country)
+      schema = EffortSchema.new(header_column_titles)
+      expect(schema.to_a).to eq([:last_name, :first_name, nil, :age, nil,
+                                 :bib_number, nil, :country_code])
+    end
+
   end
 
 end

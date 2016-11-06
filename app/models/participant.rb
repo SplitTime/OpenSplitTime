@@ -40,15 +40,10 @@ class Participant < ActiveRecord::Base
   end
 
   def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}
-    raw_hash = joins(:efforts => :event)
-                   .group(:participants)
-                   .average("((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)")
-    return_hash = {}
-    raw_hash.each do |aggregate, value|
-      participant_id = aggregate.split(',')[0].gsub(/[^0-9]/, '').to_i
-      return_hash[participant_id] = value.to_f
-    end
-    return_hash
+    joins(:efforts => :event)
+        .group("participants.id")
+        .average("((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)")
+        .transform_values(&:to_f)
   end
 
   def self.age_matches(age_param)

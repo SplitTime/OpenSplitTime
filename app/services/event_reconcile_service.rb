@@ -13,28 +13,18 @@ class EventReconcileService
     end
     auto_matched_count = assign_participants_to_efforts(matched_hash)
     participants_created_count = create_participants_from_efforts(unmatched_array)
-    report = create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
-    report
+    create_effort_reconcile_report(event, auto_matched_count, participants_created_count)
   end
 
   def self.assign_participants_to_efforts(id_hash)
     efforts = Effort.find(id_hash.keys).index_by(&:id)
     participants = Participant.find(id_hash.values).index_by(&:id)
-    counter = 0
-    id_hash.each do |effort_id, participant_id|
-      counter += 1 if participants[participant_id].pull_data_from_effort(efforts[effort_id])
-    end
-    counter
+    id_hash.map { |eid, pid| participants[pid].pull_data_from_effort(efforts[eid]) }.count
   end
 
   def self.create_participants_from_efforts(effort_ids)
-    counter = 0
-    efforts = Effort.where(id: effort_ids)
-    efforts.each do |effort|
-      @participant = Participant.new
-      counter += 1 if @participant.pull_data_from_effort(effort)
-    end
-    counter
+    efforts = Effort.find(effort_ids)
+    efforts.map { |effort| Participant.new.pull_data_from_effort(effort) }.count
   end
 
   # Converts params from reconcile screen to hash of {effort_id => participant_id}

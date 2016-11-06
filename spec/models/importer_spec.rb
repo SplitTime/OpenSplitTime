@@ -8,22 +8,11 @@ RSpec.describe SplitImporter do
     let(:event) { Event.create!(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00") }
     let(:import_file) { 'spec/fixtures/files/baddata2015test.xlsx' }
     let(:current_user_id) { 1 }
-    let(:importer) { SplitImporter.new(import_file, event, current_user_id) }
-
-    it 'should set up the headers correctly' do
-      expect(importer.header1.size).to eq(15)
-      expect(importer.header2.size).to eq(15)
-      expect(importer.header1[0]).to eq('first_name')
-      expect(importer.header1[7]).to eq('Start')
-      expect(importer.header1[13]).to eq('Tunnel Out')
-      expect(importer.header2[8]).to eq(6.5)
-      expect(importer.header2[11]).to eq(40)
-      expect(importer.header2[14]).to eq(51.3)
-    end
+    let(:split_importer) { SplitImporter.new(import_file, event, current_user_id) }
 
     describe 'split_import' do
       before do
-        importer.split_import
+        split_importer.split_import
       end
 
       it 'should import the splits correctly' do
@@ -58,7 +47,7 @@ RSpec.describe SplitImporter do
     describe 'effort_import' do
       let(:effort_importer) { EffortImporter.new(import_file, event, current_user_id) }
       before do
-        importer.split_import
+        split_importer.split_import
         effort_importer.effort_import
       end
 

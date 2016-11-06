@@ -94,3 +94,4 @@ pickle-email-*.html
 bin/*
 .ruby-gemset
 .ruby-version
+dump.rdb

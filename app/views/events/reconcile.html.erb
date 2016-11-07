@@ -13,7 +13,7 @@
       <% if suggested_match_count(@unreconciled_batch) > 0 %>
           <%= link_to "Match #{suggested_match_count(@unreconciled_batch)} participants",
                       associate_participants_efforts_path(event_id: @event.id,
-                                                          ids: make_suggested_match_id_hash(@unreconciled_batch)),
+                                                          ids: suggested_match_id_hash(@unreconciled_batch)),
                       method: :put,
                       class: 'btn btn-sm btn-primary btn-margin-top' %>
       <% end %>

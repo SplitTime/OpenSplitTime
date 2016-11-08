@@ -66,21 +66,6 @@ class EffortsController < ApplicationController
     session[:return_to] = place_effort_path(@effort)
   end
 
-  def associate_participant
-    @event = Event.find(params[:event_id])
-    authorize @event
-    @effort.participant_id = params[:participant_id]
-
-    if @effort.save
-      @participant = Participant.find(params[:participant_id])
-      @participant.pull_data_from_effort(@effort)
-      redirect_to reconcile_event_path(params[:event_id])
-    else
-      redirect_to reconcile_event_path(params[:event_id]),
-                  error: 'Effort was not associated with participant'
-    end
-  end
-
   def associate_participants
     @event = Event.find(params[:event_id])
     authorize @event
@@ -88,7 +73,7 @@ class EffortsController < ApplicationController
       redirect_to reconcile_event_path(@event)
     else
       count = EventReconcileService.associate_participants(params[:ids])
-      flash[:success] = "#{count} efforts reconciled." if count > 1
+      flash[:success] = "#{count.to_s + ' effort'.pluralize(count)} reconciled." if count > 0
       redirect_to reconcile_event_path(@event)
     end
   end

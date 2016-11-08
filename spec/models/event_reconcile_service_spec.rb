@@ -80,7 +80,23 @@ RSpec.describe EventReconcileService do
       end
     end
 
-    context 'when passed an ActionControllers::Parameters object with valid effort_ids and participant_ids' do
+    context 'when passed an ActionControllers::Parameters object with a single valid effort_id and participant_id' do
+      let(:participant1) { Participant.create!(first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
+      let(:id_hash) { {effort1.id => participant1.id} }
+      let(:params) { ActionController::Parameters.new(id_hash) }
+
+      it 'should assign the effort efforts to the indicated participant' do
+        EventReconcileService.associate_participants(params)
+        expect(Effort.find(effort1.id).participant).to eq(participant1)
+      end
+
+      it 'should return 1, representing the number of assigned pairs' do
+        count = EventReconcileService.associate_participants(params)
+        expect(count).to eq(1)
+      end
+    end
+
+    context 'when passed an ActionControllers::Parameters object with multiple valid effort_ids and participant_ids' do
       let(:participant1) { Participant.create!(first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
       let(:participant2) { Participant.create!(first_name: 'John', last_name: 'Hardster', gender: 'male') }
       let(:participant3) { Participant.create!(first_name: 'Jim', last_name: 'Hamster', gender: 'male') }

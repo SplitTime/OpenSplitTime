@@ -26,7 +26,6 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {registrations: 'registrations'}
   resources :users do
     member { get :participants }
-    member { put :associate_participant }
     member { post :add_interest }
     member { post :remove_interest }
     member { get :edit_preferences }
@@ -80,7 +79,6 @@ Rails.application.routes.draw do
     member { post :current_user_unfollow }
   end
   resources :efforts do
-    member { put :associate_participant }
     collection { put :associate_participants }
     member { put :edit_split_times }
     member { put :start }

@@ -74,10 +74,6 @@ class EventPolicy
     @current_user.authorized_to_edit?(@event)
   end
 
-  def associate_participant?
-    @current_user.authorized_to_edit?(@event)
-  end
-
   def associate_participants?
     @current_user.authorized_to_edit?(@event)
   end

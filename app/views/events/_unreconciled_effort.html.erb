@@ -5,9 +5,8 @@
   <td>
     <% if effort.suggested_match %>
         <%= link_to 'Same person >>',
-                    associate_participant_effort_path(effort,
-                                                      participant_id: effort.suggested_match.id,
-                                                      event_id: @event.id),
+                    associate_participants_efforts_path(event_id: @event.id,
+                                                      ids: {effort.id => effort.suggested_match.id}),
                     method: :put,
                     class: "btn btn-xs btn-primary" %>
     <% end %>

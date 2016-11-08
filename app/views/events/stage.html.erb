@@ -80,8 +80,8 @@
     <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
         <strong>Import Splits for this Event</strong>
         <%= form_tag({action: :import_splits}, multipart: true) do %>
-            <%= file_field_tag :file %>
-            <%= submit_tag 'Import Splits', class: 'btn btn-xs btn-success' %>
+            <%= file_field_tag :file, id: 'file-splits' %>
+            <%= submit_tag 'Import Splits', id: 'submit-splits', disabled: true, class: 'btn btn-xs btn-success' %>
         <% end %>
     <% end %>
   </div>
@@ -97,8 +97,8 @@
     <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
         <strong>Import Efforts With Time Data</strong>
         <%= form_tag({action: :import_efforts}, multipart: true) do %>
-            <%= file_field_tag :file %>
-            <%= submit_tag 'Import efforts and times', class: 'btn btn-xs btn-success' %>
+            <%= file_field_tag :file, id: 'file-efforts-with-times' %>
+            <%= submit_tag 'Import efforts and times', id: 'submit-efforts-with-times', disabled: true, class: 'btn btn-xs btn-success' %>
         <% end %>
     <% end %>
   </div>
@@ -106,8 +106,8 @@
     <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
         <strong>Import Efforts Without Time Data</strong>
         <%= form_tag({action: :import_efforts_without_times}, multipart: true) do %>
-            <%= file_field_tag :file %>
-            <%= submit_tag 'Import efforts (no times)', class: 'btn btn-xs btn-success' %>
+            <%= file_field_tag :file, id: 'file-efforts-without-times' %>
+            <%= submit_tag 'Import efforts (no times)', id: 'submit-efforts-without-times', disabled: true, class: 'btn btn-xs btn-success' %>
         <% end %>
     <% end %>
   </div>

@@ -14,18 +14,19 @@ class Participant < ActiveRecord::Base
 
   attr_accessor :suggested_match
 
-  scope :with_age_and_effort_count, -> { select('participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as participant_age')
+  scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count])
                                              .joins('LEFT OUTER JOIN efforts ON (efforts.participant_id = participants.id)')
                                              .joins('LEFT OUTER JOIN events ON (events.id = efforts.event_id)')
                                              .group('participants.id') }
   scope :ordered_by_name, -> { order(:last_name, :first_name) }
 
+  SQL = {age_and_effort_count: 'participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as participant_age',
+         ages_from_events: '((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)'}
 
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
             uniqueness: {case_sensitive: false},
             format: {with: VALID_EMAIL_REGEX}
-
 
   def self.search(param)
     return none if param.blank? || (param.length < 3)
@@ -45,10 +46,8 @@ class Participant < ActiveRecord::Base
     foreign_keys = Participant.column_names.find_all { |x| x.include?('_id') }
     stamps = Participant.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
     geographic = %w(country_code state_code city)
-    (column_names - (id + foreign_keys + stamps + geographic)).map &:to_sym
+    (column_names - (id + foreign_keys + stamps + geographic)).map(&:to_sym)
   end
-
-  SQL = {ages_from_events: '((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)'}
 
   def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}
     joins(:efforts => :event).group('participants.id').average(SQL[:ages_from_events]).transform_values(&:to_f)
@@ -133,5 +132,4 @@ class Participant < ActiveRecord::Base
       assign_attributes(city: target.city)
     end
   end
-
 end

@@ -31,22 +31,6 @@ class EffortShowView
     started? ? effort.combined_places : [nil, nil]
   end
 
-  def beacon_button_text
-    return nil unless beacon_url.present?
-    return 'SPOT Page' if beacon_url.include?('findmespot.com')
-    return 'FasterTracks' if beacon_url.include?('fastertracks.com')
-    return 'SPOT via TrackLeaders' if beacon_url.include?('trackleaders.com')
-    'Locator Beacon'
-  end
-
-  def report_button_text
-    return nil unless report_url.present?
-    return 'Strava Page' if report_url.include?('strava.com')
-    return 'FasterTracks' if report_url.include?('fastertracks.com')
-    return 'FKT Page' if report_url.include?('fastestknowntime.proboards.com')
-    'External Report'
-  end
-
   def not_analyzable?
     split_times.count < 2
   end

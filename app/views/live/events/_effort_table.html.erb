@@ -15,7 +15,10 @@
   </div>
   <div class="col-xs-2">
     <% if @effort_show.beacon_url %>
-        <%= link_to @effort_show.beacon_button_text, url_with_protocol(@effort_show.beacon_url), class: "btn btn-sm btn-default btn-margin-top", target: "_blank" %>
+        <%= link_to effort_beacon_button_text(@effort_show.beacon_url),
+                    url_with_protocol(@effort_show.beacon_url),
+                    class: "btn btn-sm btn-default btn-margin-top",
+                    target: "_blank" %>
     <% end %>
   </div>
 </div>

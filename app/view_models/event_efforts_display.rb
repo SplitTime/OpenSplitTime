@@ -44,14 +44,6 @@ class EventEffortsDisplay
     race ? race.name : nil
   end
 
-  def beacon_button_text
-    return nil unless beacon_url.present?
-    return 'SPOT Page' if beacon_url.include?('findmespot.com')
-    return 'FasterTracks' if beacon_url.include?('fastertracks.com')
-    return 'SPOT via TrackLeaders' if beacon_url.include?('trackleaders.com')
-    'Event Locator Beacon'
-  end
-
   private
 
   attr_accessor :event_efforts, :started_efforts, :event_final_split_id,

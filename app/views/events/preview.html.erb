@@ -20,6 +20,7 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
+      <%= link_to_beacon_button(@event_preview) %>
       <%= link_to_enter_live_entry(@event_preview, @current_user) %>
       <%= render 'view_buttons', view_object: @event_preview %>
     </div>

@@ -53,14 +53,6 @@ class EventSpreadDisplay
     (display_style == 'ampm') || (display_style == 'military') ? splits : splits_without_start
   end
 
-  def beacon_button_text
-    return nil unless beacon_url.present?
-    return 'SPOT Page' if beacon_url.include?('findmespot.com')
-    return 'FasterTracks' if beacon_url.include?('fastertracks.com')
-    return 'SPOT via TrackLeaders' if beacon_url.include?('trackleaders.com')
-    'Event Locator Beacon'
-  end
-
   private
 
   attr_reader :efforts, :split_times

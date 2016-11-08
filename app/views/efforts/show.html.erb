@@ -30,11 +30,17 @@
     <div class="row">
       <% if @effort_show.in_progress? %>
           <% if @effort_show.beacon_url %>
-              <%= link_to @effort_show.beacon_button_text, url_with_protocol(@effort_show.beacon_url), class: "btn btn-sm btn-default", target: "_blank" %>
+              <%= link_to effort_beacon_button_text(@effort_show.beacon_url),
+                          url_with_protocol(@effort_show.beacon_url),
+                          class: "btn btn-sm btn-default",
+                          target: "_blank" %>
           <% end %>
       <% else %>
           <% if @effort_show.report_url %>
-              <%= link_to @effort_show.report_button_text, url_with_protocol(@effort_show.report_url), class: "btn btn-sm btn-default", target: "_blank" %>
+              <%= link_to effort_report_button_text(@effort_show.report_url),
+                          url_with_protocol(@effort_show.report_url),
+                          class: "btn btn-sm btn-default",
+                          target: "_blank" %>
           <% end %>
       <% end %>
       <div class="btn-group">

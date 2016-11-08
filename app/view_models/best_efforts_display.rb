@@ -33,7 +33,7 @@ class BestEffortsDisplay
   end
 
   def segment_is_full_course?
-    segment.is_full_course?
+    segment.full_course?
   end
 
   def gender_text

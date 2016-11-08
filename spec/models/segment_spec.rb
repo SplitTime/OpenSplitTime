@@ -140,66 +140,10 @@ RSpec.describe Segment, type: :model do
     end
 
     it 'should accurately report whether it represents an entire course' do
-      expect(@segment1.is_full_course?).to eq(true)
-      expect(@segment2.is_full_course?).to eq(false)
-      expect(@segment4.is_full_course?).to eq(false)
+      expect(@segment1.full_course?).to eq(true)
+      expect(@segment2.full_course?).to eq(false)
+      expect(@segment4.full_course?).to eq(false)
 
-    end
-
-  end
-
-
-  describe 'effort_velocity' do
-    before do
-
-      @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
-      
-      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
-      @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
-
-      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, sub_split_bitmap: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, sub_split_bitmap: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
-
-      @event.splits << @course.splits
-
-      @segment1 = Segment.new(@split1.bitkey_hash_in, @split2.bitkey_hash_in)
-      @segment2 = Segment.new(@split2.bitkey_hash_in, @split2.bitkey_hash_out)
-      @segment3 = Segment.new(@split1.bitkey_hash_in, @split4.bitkey_hash_in)
-      @segment4 = Segment.new(@split2.bitkey_hash_out, @split4.bitkey_hash_in)
-
-      SplitTime.create!(effort: @effort1, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 8000)
-      SplitTime.create!(effort: @effort2, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 9000)
-      SplitTime.create!(effort: @effort3, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 6000)
-      SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 9200)
-      SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 9000)
-
-    end
-
-    it 'should return velocity in m/s for a given effort' do
-      expect(@segment1.effort_velocity(@effort1)).to eq(6000 / 4000.0)
-      expect(@segment4.effort_velocity(@effort2)).to eq(4000 / 4000.0)
-    end
-
-    it 'should return zero when the distance is zero' do
-      expect(@segment2.effort_velocity(@effort1)).to eq(0)
-    end
-
-    it 'should return zero when the elapsed time is zero' do
-      expect(@segment2.effort_velocity(@effort2)).to eq(0)
-    end
-
-    it 'should return a negative value when elapsed time is negative' do
-      expect(@segment4.effort_velocity(@effort3)).to eq(4000 / -200)
     end
 
   end

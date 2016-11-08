@@ -1,0 +1,4 @@
+<% unless view_object.simple? %>
+    <%= link_to 'Plan my effort', plan_effort_course_path(view_object.course), method: :get, class: 'btn btn-sm btn-primary' %>
+<% end %>
+<%= link_to 'All-time best efforts', best_efforts_course_path(view_object.course), class: 'btn btn-sm btn-primary' %>

@@ -20,24 +20,11 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <% if @current_user && @current_user.authorized_for_live?(@event_preview.event) && @event_preview.event.available_live %>
-          <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_preview.event), method: :get, class: 'btn btn-sm btn-warning' %>
-      <% end %>
-      <div class="btn-group">
-        <% unless @event_preview.simple? %>
-            <%= link_to 'Search and explore', event_path(@event_preview.event), disabled: true, class: 'btn btn-sm btn-primary' %>
-            <%= link_to 'Full spread', spread_event_path(@event_preview.event), class: 'btn btn-sm btn-primary' %>
-        <% end %>
-        <% if @current_user && @current_user.authorized_to_edit?(@event_preview.event) %>
-            <%= link_to 'Admin', stage_event_path(@event_preview.event), class: 'btn btn-sm btn-primary' %>
-        <% end %>
-      </div>
+      <%= link_to_enter_live_entry(@event_preview, @current_user) %>
+      <%= render 'view_buttons', view_object: @event_preview %>
     </div>
     <div class="row">
-      <% unless @event_preview.simple? %>
-          <%= link_to 'Plan my effort', plan_effort_course_path(@event_preview.course), method: :get, class: 'btn btn-sm btn-primary' %>
-      <% end %>
-      <%= link_to 'All-time best efforts', best_efforts_course_path(@event_preview.course), class: 'btn btn-sm btn-primary' %>
+      <%= render 'feature_buttons', view_object: @event_preview %>
     </div>
   </div>
 </div>

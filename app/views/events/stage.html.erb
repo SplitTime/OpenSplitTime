@@ -16,57 +16,24 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <% if @current_user && @current_user.authorized_for_live?(@event_stage.event) && @event_stage.available_live %>
-          <%= link_to 'Live Data Entry', live_entry_live_event_path(@event_stage.event), method: :get, class: 'btn btn-sm btn-warning' %>
-      <% end %>
-      <div class="btn-group">
-        <%= link_to 'Search and explore', event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
-        <% unless @event_stage.simple? %>
-            <%= link_to 'Full spread', spread_event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
-        <% end %>
-        <%= link_to 'Admin', stage_event_path(@event_stage.event), disabled: true, class: 'btn btn-sm btn-primary' %>
-      </div>
+      <%= link_to_enter_live_entry(@event_stage, @current_user) %>
+      <%= render 'view_buttons', view_object: @event_stage %>
     </div>
     <div class="row">
       <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
-          <% if @event_stage.available_live %>
-              <%= link_to 'Disable live',
-                          live_disable_event_path(@event_stage.event),
-                          data: {confirm: "NOTE: This will suspend all live entry actions for #{@event_stage.name}, including any that may be in process. Are you sure you want to proceed?"},
-                          method: :put,
-                          class: 'btn btn-sm btn-warning' %>
-          <% else %>
-              <%= link_to 'Enable live',
-                          live_enable_event_path(@event_stage.event),
-                          method: :put,
-                          class: 'btn btn-sm btn-warning' %>
-          <% end %>
-          <% if @event_stage.race %>
-              <%= link_to 'Stewards', stewards_race_path(@event_stage.race), class: 'btn btn-sm btn-warning' %>
-          <% end %>
-          <%= link_to 'Edit event', edit_event_path(@event_stage.event), class: 'btn btn-sm btn-primary' %>
+          <%= link_to_toggle_live_entry(@event_stage) %>
+          <%= link_to_stewards(@event_stage) %>
+          <%= link_to_edit_event(@event_stage) %>
           <% if @event_stage.started? %>
-              <%= link_to 'Set data status', set_data_status_event_path(@event_stage.event),
-                          method: :put,
-                          class: 'btn btn-sm btn-success' %>
+              <%= link_to_set_data_status(@event_stage) %>
               <% unless @event_stage.available_live %>
-                  <%= link_to 'Set dropped split ids', set_dropped_split_ids_event_path(@event_stage.event),
-                              method: :put,
-                              data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having dropped at the last aid station for which times are available. Are you sure you want to proceed?'},
-                              class: 'btn btn-sm btn-success' %>
-                  <%= link_to 'Export to ultrasignup', export_to_ultrasignup_event_path(@event_stage.event, format: :csv),
-                              class: 'btn btn-sm btn-success' %>
+                  <%= link_to_set_dropped_splits(@event_stage) %>
+                  <%= link_to_ultrasignup_export(@event_stage) %>
               <% end %>
           <% else %>
-              <%= link_to 'Start all efforts', start_all_efforts_event_path(@event_stage.event),
-                          method: :put,
-                          data: {confirm: "NOTE: This will create a starting split time for all efforts associated with #{@event_stage.name}, without any offset from the event start time. Are you sure you want to proceed?"},
-                          class: 'btn btn-sm btn-success' %>
+              <%= link_to_start_all_efforts(@event_stage) %>
           <% end %>
-          <%= link_to 'Delete event', event_path(@event_stage.event, referrer_path: events_path),
-                      method: :delete,
-                      data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
-                      class: 'btn btn-sm btn-danger' %>
+          <%= link_to_delete_event(@event_stage) %>
       <% end %>
     </div>
   </div>

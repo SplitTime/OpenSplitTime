@@ -1,7 +1,7 @@
 class EventSpreadDisplay
 
   attr_reader :event, :splits, :effort_times_rows, :display_style
-  delegate :name, :start_time, :course, :race, :available_live, :beacon_url, to: :event
+  delegate :name, :start_time, :course, :race, :available_live, :beacon_url, :simple?, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object

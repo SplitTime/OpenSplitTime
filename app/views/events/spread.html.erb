@@ -16,21 +16,9 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <% if @spread_display.available_live && @spread_display.beacon_url %>
-          <%= link_to @spread_display.beacon_button_text, url_with_protocol(@spread_display.beacon_url), class: "btn btn-sm btn-default", target: "_blank" %>
-      <% end %>
-      <% if @current_user && @current_user.authorized_for_live?(@spread_display.event) && @spread_display.event.available_live %>
-          <%= link_to 'Live Data Entry', live_entry_live_event_path(@spread_display.event), method: :get, class: 'btn btn-sm btn-warning' %>
-      <% end %>
-      <div class="btn-group">
-        <%= link_to 'Search and explore', event_path(@spread_display.event), class: 'btn btn-sm btn-primary' %>
-        <% unless @spread_display.event.simple? %>
-            <%= link_to 'Full spread', spread_event_path(@spread_display.event), disabled: true, class: 'btn btn-sm btn-primary' %>
-        <% end %>
-        <% if @current_user && @current_user.authorized_to_edit?(@spread_display.event) %>
-            <%= link_to 'Admin', stage_event_path(@spread_display.event), class: 'btn btn-sm btn-primary' %>
-        <% end %>
-      </div>
+      <%= link_to_beacon_button(@spread_display) %>
+      <%= link_to_enter_live_entry(@spread_display, @current_user) %>
+      <%= render 'view_buttons', view_object: @spread_display %>
     </div>
     <div class="row">
       <div class="btn-group">

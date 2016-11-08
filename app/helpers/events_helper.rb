@@ -66,7 +66,7 @@ module EventsHelper
   def link_to_start_all_efforts(view_object)
     link_to 'Start all efforts', start_all_efforts_event_path(view_object.event),
             method: :put,
-            data: {confirm: "NOTE: This will create a starting split time for all efforts associated with #{view_object.name}, without any offset from the event start time. Are you sure you want to proceed?"},
+            data: {confirm: "NOTE: This will create a starting split time for all efforts associated with #{view_object.name}. Are you sure you want to proceed?"},
             class: 'btn btn-sm btn-success'
   end
 

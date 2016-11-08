@@ -95,4 +95,6 @@ RSpec.configure do |config|
 
   config.include StripAttributes::Matchers
 
+  config.run_all_when_everything_filtered = true
+
 end

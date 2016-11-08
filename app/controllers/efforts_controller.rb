@@ -1,7 +1,12 @@
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo]
-  before_action :set_effort, except: [:index, :new, :create, :associate_participants, :mini_table]
-  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options]
+  before_action :set_effort, except: [:index, :new, :create, :associate_participants, :mini_table, :subregion_options]
+  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options]
+
+  before_filter do
+    locale = params[:locale]
+    Carmen.i18n_backend.locale = locale if locale
+  end
 
   def index
 
@@ -150,6 +155,10 @@ class EffortsController < ApplicationController
     file_url = BucketStoreService.upload_to_bucket("effort-photos/#{@effort.event_name}", params[:file], @effort.id)
     @effort.update(photo_url: file_url) if file_url
     redirect_to effort_path(@effort)
+  end
+
+  def subregion_options
+    render partial: 'subregion_select'
   end
 
   private

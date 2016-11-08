@@ -11,7 +11,7 @@ class EventReconcileService
   end
 
   def self.create_participants_from_efforts(effort_ids)
-    efforts = Effort.find(effort_ids)
+    efforts = Effort.find(Array.wrap(effort_ids))
     efforts.map { |effort| Participant.new.pull_data_from_effort(effort) }.count
   end
 

@@ -16,6 +16,13 @@ RSpec.describe EventReconcileService do
       expect(count).to eq(0)
     end
 
+    it 'should create a single new participant if given a single effort_id' do
+      effort_id = effort1.id
+      participant_count = Participant.count
+      EventReconcileService.create_participants_from_efforts(effort_id)
+      expect(Participant.count).to eq(participant_count + 1)
+    end
+
     it 'should create a new participant for each valid effort' do
       effort_ids = [effort1, effort2, effort3].map(&:id)
       participant_count = Participant.count

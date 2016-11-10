@@ -225,6 +225,4 @@ RSpec.describe Participant, type: :model do
     end
 
   end
-
-
 end

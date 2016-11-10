@@ -83,8 +83,7 @@ class Participant < ActiveRecord::Base
   end
 
   def pull_data_from_effort(effort)
-    pull_attributes(effort)
-    if save
+    if AttributePuller.pull_attributes!(self, effort)
       effort.participant ||= self
       effort.save
     end
@@ -92,8 +91,7 @@ class Participant < ActiveRecord::Base
 
   def merge_with(target)
     target_participant = Participant.find(target.id)
-    pull_attributes(target_participant)
-    if save
+    if AttributePuller.pull_attributes!(self, target_participant)
       efforts << target_participant.efforts
       target_participant.destroy
     end

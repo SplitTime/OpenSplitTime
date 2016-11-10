@@ -84,8 +84,7 @@ class Participant < ActiveRecord::Base
 
   def associate_effort(effort)
     if AttributePuller.pull_attributes!(self, effort)
-      effort.participant ||= self
-      effort.save
+      effort.update(participant: self)
     end
   end
 

@@ -109,6 +109,7 @@ RSpec.describe Participant, type: :model do
                               state_code: 'BC', country_code: 'CA', age: 50,
                               first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       participant.associate_effort(effort)
+      effort.reload
       expect(effort.participant).to eq(participant)
     end
 

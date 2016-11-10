@@ -5,11 +5,19 @@ class AidStation < ActiveRecord::Base
 
 
   validates_presence_of :event_id, :split_id
+  validate :course_is_consistent
 
   attr_accessor :efforts_dropped_at_station, :efforts_in_aid, :efforts_recorded_out,
                 :efforts_passed_without_record, :efforts_expected
 
   scope :ordered, -> { includes(:split).order('splits.distance_from_start') }
+
+  def course_is_consistent
+    if event && split && event.course_id != split.course_id
+      errors.add(:event_id, "event's course is not the same as split's course")
+      errors.add(:split_id, "event's course is not the same as split's course")
+    end
+  end
 
   def split_name
     split.base_name
@@ -28,7 +36,7 @@ class AidStation < ActiveRecord::Base
   end
 
   def race_name
-    race ? race.name : nil
+    race && race.name
   end
 
   def race
@@ -68,22 +76,22 @@ class AidStation < ActiveRecord::Base
     report = {}
 
     case status
-      when 'open'
-        if expected > 0
-          report[:status] = :warning
-          report[:text] = "Cannot change #{split_name} status to #{advanced_status.titleize} because #{expected} people are still expected there."
-          return report
-        end
-      when 'closed'
-        if expected_next > 0
-          report[:status] = :warning
-          report[:text] = "Cannot change #{split_name} status to #{advanced_status.titleize} because #{next_name} is still expecting #{expected_next} #{expected_next == 1 ? 'person' : 'people'}."
-          return report
-        end
-      when 'released'
+    when 'open'
+      if expected > 0
         report[:status] = :warning
-        report[:text] = "#{split_name} is already in #{status.titleize} status."
+        report[:text] = "Cannot change #{split_name} status to #{advanced_status.titleize} because #{expected} people are still expected there."
         return report
+      end
+    when 'closed'
+      if expected_next > 0
+        report[:status] = :warning
+        report[:text] = "Cannot change #{split_name} status to #{advanced_status.titleize} because #{next_name} is still expecting #{expected_next} #{expected_next == 1 ? 'person' : 'people'}."
+        return report
+      end
+    when 'released'
+      report[:status] = :warning
+      report[:text] = "#{split_name} is already in #{status.titleize} status."
+      return report
     end
 
     if update(status: advanced_status_int)

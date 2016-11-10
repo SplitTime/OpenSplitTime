@@ -24,10 +24,6 @@ class Event < ActiveRecord::Base
                                                      .group("events.id")
                                                      .order(start_time: :desc) }
 
-  def all_splits_on_course?
-    splits.joins(:course).group(:course_id).count.size == 1
-  end
-
   def self.search(search_param)
     return all if search_param.blank?
     name_search(search_param)
@@ -103,7 +99,7 @@ class Event < ActiveRecord::Base
   end
 
   def race_name
-    race ? race.name : nil
+    race && race.name
   end
 
   def started?

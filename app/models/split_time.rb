@@ -21,10 +21,10 @@ class SplitTime < ActiveRecord::Base
   validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey],
                           message: 'only one of any given split/sub_split permitted within an effort'
-  validate :course_is_consistent, unless: 'effort.nil? | split.nil?'
+  validate :course_is_consistent
 
   def course_is_consistent
-    if effort.event.course_id != split.course_id
+    if effort && effort.event && split && effort.event.course_id != split.course_id
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
       errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end

@@ -59,22 +59,104 @@ RSpec.describe Participant, type: :model do
   end
 
   describe 'merge_with' do
-    before do
-      @participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CA')
-      @participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: nil, state_code: 'CA', city: 'Los Angeles')
-      @participant3 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Denver')
-      @participant4 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: nil, city: 'Denver')
-      @participant5 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'MX', state_code: nil)
+    let(:course) { Course.create!(name: 'Test Course 100') }
+    let(:event1) { Event.create!(course: course, name: 'Test Event A', start_time: '2012-08-08 05:00:00') }
+    let(:event2) { Event.create!(course: course, name: 'Test Event B', start_time: '2013-08-08 05:00:00') }
+    let(:event3) { Event.create!(course: course, name: 'Test Event C', start_time: '2014-08-08 05:00:00') }
+    let(:participant1) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CA') }
+    let(:participant2) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: nil, state_code: 'CA', city: 'Los Angeles') }
+    let(:participant3) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Denver') }
+    let(:participant4) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: nil, city: 'Denver') }
+    let(:participant5) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'MX', state_code: nil) }
+    let(:participant6) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Grand Junction') }
+    let(:participant7) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO') }
+    let(:participant8) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01') }
+    let(:participant9) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'CA', state_code: 'BC') }
+
+    it 'should pull country data from target when states match and country is nil' do
+      participant2.merge_with(participant1)
+      expect(participant2.country_code).to eq('US')
     end
 
-    it 'should accept country data from target when states match' do
-      @participant2.merge_with(@participant1)
-      expect(@participant2.country_code).to eq('US')
+    it 'should not pull country data from target when participant state does not exist in country of target' do
+      participant2.merge_with(participant5)
+      expect(participant2.country_code).to be_nil
     end
 
-    it 'should not accept country data from target when state does not exist in country of target' do
-      @participant2.merge_with(@participant5)
-      expect(@participant2.country_code).to be_nil
+    it 'should not pull state data from target when target state does not exist in country of participant' do
+      participant4.merge_with(participant9)
+      expect(participant4.state_code).to be_nil
+    end
+
+    it 'should not pull country, state, or city data from target when a country conflict exists' do
+      participant5.merge_with(participant3)
+      expect(participant5.country_code).to eq('MX')
+      expect(participant5.state_code).to eq(nil)
+      expect(participant5.city).to eq(nil)
+    end
+
+    it 'should not pull state or city data from target when a state conflict exists' do
+      participant1.merge_with(participant3)
+      expect(participant1.state_code).to eq('CA')
+      expect(participant1.city).to be_nil
+    end
+
+    it 'should not pull city data from target when a city conflict exists' do
+      participant6.merge_with(participant3)
+      expect(participant6.city).to eq('Grand Junction')
+    end
+
+    it 'should pull city data when country is the same and target state is nil' do
+      participant1.merge_with(participant4)
+      expect(participant1.city).to eq('Denver')
+    end
+
+    it 'should pull city data when state is the same and target country is nil' do
+      participant1.merge_with(participant2)
+      expect(participant1.city).to eq('Los Angeles')
+    end
+
+    it 'should pull city data when state and country are the same and city is nil' do
+      participant7.merge_with(participant6)
+      expect(participant7.city).to eq('Grand Junction')
+    end
+
+    it 'should pull country, state, and city data when all three are nil' do
+      participant8.merge_with(participant6)
+      expect(participant8.country_code).to eq('US')
+      expect(participant8.state_code).to eq('CO')
+      expect(participant8.city).to eq('Grand Junction')
+    end
+
+    it 'should assign efforts associated with the target to the surviving participant' do
+      effort1 = Effort.create!(event: event1, participant: participant1, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      effort2 = Effort.create!(event: event2, participant: participant1, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      effort3 = Effort.create!(event: event3, participant: participant2, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      participant2.merge_with(participant1)
+      expect(participant2.efforts.count).to eq(3)
+      expect(participant2.efforts).to include(effort1)
+      expect(participant2.efforts).to include(effort2)
+      expect(participant2.efforts).to include(effort3)
+    end
+
+    it 'should work in either direction' do
+      effort1 = Effort.create!(event: event1, participant: participant1, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      effort2 = Effort.create!(event: event2, participant: participant1, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      effort3 = Effort.create!(event: event3, participant: participant2, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      participant1.merge_with(participant2)
+      expect(participant1.efforts.count).to eq(3)
+      expect(participant1.efforts).to include(effort1)
+      expect(participant1.efforts).to include(effort2)
+      expect(participant1.efforts).to include(effort3)
+    end
+
+    it 'should destroy the target participant' do
+      Effort.create!(event: event1, participant: participant1, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      Effort.create!(event: event2, participant: participant1, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      Effort.create!(event: event3, participant: participant2, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      participant1_id = participant1.id
+      participant2.merge_with(participant1)
+      expect(Participant.where(id: participant1_id)).to eq([])
     end
 
   end
@@ -86,8 +168,8 @@ RSpec.describe Participant, type: :model do
     it 'should pull all effort data into corresponding empty fields' do
       participant = Participant.new
       effort = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
-                                    state_code: 'BC', country_code: 'CA', age: 50,
-                                    first_name: 'Jen', last_name: 'Huckster', gender: 'female')
+                              state_code: 'BC', country_code: 'CA', age: 50,
+                              first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       participant.pull_data_from_effort(effort)
       expect(participant.first_name).to eq('Jen')
       expect(participant.last_name).to eq('Huckster')

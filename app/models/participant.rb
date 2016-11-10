@@ -95,7 +95,6 @@ class Participant < ActiveRecord::Base
     pull_attributes(target_participant)
     if save
       efforts << target_participant.efforts
-      target_participant.efforts.destroy_all
       target_participant.destroy
     end
   end

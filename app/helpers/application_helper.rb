@@ -114,63 +114,22 @@ module ApplicationHelper
 
   alias_method :e, :elevation_to_preferred
 
+  LENGTH_UNIT_MAP = {miles: {short: 'mi', singular: 'mile', plural: 'miles'},
+                     kilometers: {short: 'km', singular: 'kilometer', plural: 'kilometers'},
+                     meters: {short: 'm', singular: 'meter', plural: 'meters'},
+                     feet: {short: 'ft', singular: 'foot', plural: 'feet'}}
+                        .with_indifferent_access
+
   def preferred_distance_unit(param = 'plural')
-    unless current_user
-      return case param
-             when 'short'
-               'mi'
-             when 'singular'
-               'mile'
-             else
-               'miles'
-             end
-    end
-    case current_user.pref_distance_unit
-    when 'miles'
-      case param
-      when 'short'
-        'mi'
-      when 'singular'
-        'mile'
-      else
-        'miles'
-      end
-    when 'kilometers'
-      case param
-      when 'short'
-        'km'
-      when 'singular'
-        'kilometer'
-      else
-        'kilometers'
-      end
-    else
-      case param
-      when 'short'
-        'm'
-      when 'singular'
-        'meter'
-      else
-        'meters'
-      end
-    end
+    distance_unit = current_user.try(:pref_distance_unit) || 'miles'
+    LENGTH_UNIT_MAP[distance_unit][param]
   end
 
   alias_method :pdu, :preferred_distance_unit
 
   def preferred_elevation_unit(param = 'plural')
-    plural = param == 'plural' ? true : false
-    unless current_user
-      return plural ? 'feet' : 'foot'
-    end
-    case current_user.pref_elevation_unit
-    when 'feet'
-      plural ? 'feet' : 'foot'
-    when 'meters'
-      plural ? 'meters' : 'meter'
-    else
-      plural ? 'meters' : 'meter'
-    end
+    elevation_unit = current_user.try(:pref_elevation_unit) || 'feet'
+    LENGTH_UNIT_MAP[elevation_unit][param]
   end
 
   alias_method :peu, :preferred_elevation_unit

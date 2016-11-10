@@ -99,37 +99,9 @@ RSpec.describe Participant, type: :model do
 
   end
 
-  describe 'pull_data_from_effort' do
+  describe 'associate_effort' do
     let(:course) { Course.create!(name: 'Test Course 100') }
     let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
-
-    it 'should pull all effort data into corresponding empty fields' do
-      participant = Participant.new
-      effort = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
-                              state_code: 'BC', country_code: 'CA', age: 50,
-                              first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      participant.associate_effort(effort)
-      expect(participant.first_name).to eq('Jen')
-      expect(participant.last_name).to eq('Huckster')
-      expect(participant.gender).to eq('female')
-      expect(participant.birthdate).to eq(Date.new(1978, 8, 8))
-      expect(participant.country_code).to eq('CA')
-      expect(participant.state_code).to eq('BC')
-    end
-
-    it 'should not pull effort data into corresponding populated fields' do
-      participant = Participant.new(birthdate: '1978-01-01', country_code: 'US',
-                                    first_name: 'Jennifer', last_name: 'Huckster', gender: 'female')
-      effort = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
-                              state_code: 'BC', country_code: 'CA', age: 50,
-                              first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      participant.associate_effort(effort)
-      expect(participant.first_name).to eq('Jennifer')
-      expect(participant.last_name).to eq('Huckster')
-      expect(participant.gender).to eq('female')
-      expect(participant.birthdate).to eq(Date.new(1978, 1, 1))
-      expect(participant.country_code).to eq('US')
-    end
 
     it 'upon successful save should associate the participant with the pulled effort' do
       participant = Participant.new
@@ -138,16 +110,6 @@ RSpec.describe Participant, type: :model do
                               first_name: 'Jen', last_name: 'Huckster', gender: 'female')
       participant.associate_effort(effort)
       expect(effort.participant).to eq(participant)
-    end
-
-    it 'should not pull state_code if country_code is different' do
-      participant = Participant.new(birthdate: '1978-01-01', country_code: 'US',
-                                    first_name: 'Jennifer', last_name: 'Huckster', gender: 'female')
-      effort = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
-                              state_code: 'BC', country_code: 'CA', age: 50,
-                              first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      participant.associate_effort(effort)
-      expect(participant.state_code).to be_nil
     end
 
     it 'should return false if participant does not save' do

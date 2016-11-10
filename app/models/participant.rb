@@ -82,53 +82,18 @@ class Participant < ActiveRecord::Base
     possible_matching_participants.first
   end
 
-  def pull_data_from_effort(effort)
-    pull_attributes(effort)
-    if save
+  def associate_effort(effort)
+    if AttributePuller.pull_attributes!(self, effort)
       effort.participant ||= self
       effort.save
     end
   end
 
   def merge_with(target)
-    target_participant = Participant.find(target.id)
-    pull_attributes(target_participant)
-    if save
-      efforts << target_participant.efforts
-      target_participant.destroy
-    end
-  end
-
-  private
-
-  def pull_attributes(target)
-    resolve_country(target)
-    resolve_state_and_city(target)
-    Participant.columns_to_pull_from_model.each do |attribute|
-      assign_attributes({attribute => target[attribute]}) if self[attribute].blank?
-    end
-  end
-
-  def resolve_country(target)
-    return if target.country_code.blank?
-    if country_code.blank? &&
-        (state_code.blank? |
-            (state_code == target.state_code) |
-            (Carmen::Country.coded(target.country_code).subregions.coded(state_code)))
-      assign_attributes(country_code: target.country_code)
-    end
-  end
-
-  def resolve_state_and_city(target)
-    return if target.state_code.blank?
-    if state_code.blank? &&
-        (country_code.blank? |
-            (country_code == target.country_code) |
-            (Carmen::Country.coded(country_code) &&
-                Carmen::Country.coded(country_code).subregions.coded(target.state_code)))
-      assign_attributes(state_code: target.state_code, city: target.city)
-    elsif (state_code == target.state_code) && city.blank?
-      assign_attributes(city: target.city)
+    target.reload
+    if AttributePuller.pull_attributes!(self, target)
+      efforts << target.efforts
+      target.destroy
     end
   end
 end

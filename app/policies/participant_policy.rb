@@ -1,57 +1,57 @@
 class ParticipantPolicy
-  attr_reader :current_user, :model
+  attr_reader :current_user, :participant
 
-  def initialize(current_user, model)
+  def initialize(current_user, participant)
     @current_user = current_user
-    @participant = model
+    @participant = participant
   end
 
   def new?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def edit?
-    @current_user.authorized_to_edit?(@participant)
+    current_user.authorized_to_edit?(participant)
   end
 
   def create?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def update?
-    @current_user.authorized_to_edit?(@participant)
+    current_user.authorized_to_edit?(participant)
   end
 
   def destroy?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def avatar_claim?
-    @current_user.authorized_to_claim?(@participant)
+    current_user.authorized_to_claim?(participant)
   end
 
   def avatar_disclaim?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def merge?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def combine?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def remove_effort?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def current_user_follow?
-    @current_user.present?
+    current_user.present?
   end
 
   def current_user_unfollow?
-    @current_user.present?
+    current_user.present?
   end
 
 end

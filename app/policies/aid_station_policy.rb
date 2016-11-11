@@ -1,17 +1,17 @@
 class AidStationPolicy
-  attr_reader :current_user, :model
+  attr_reader :current_user, :aid_station
 
-  def initialize(current_user, model)
+  def initialize(current_user, aid_station)
     @current_user = current_user
-    @event_split = model
+    @aid_station = aid_station
   end
 
   def show?
-    @current_user.admin?
+    current_user.admin?
   end
 
   def destroy?
-    @current_user.authorized_to_edit?(@aid_station.event)
+    current_user.authorized_to_edit?(aid_station.event)
   end
 
 end

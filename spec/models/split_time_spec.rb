@@ -13,6 +13,7 @@ RSpec.describe SplitTime, kind: :model do
   let(:location1) { Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105) }
   let(:location2) { Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05) }
   let(:location3) { Location.create(name: 'Mountain Getaway', elevation: 2950, latitude: 40.3, longitude: -105.15) }
+  let(:start_split) { Split.create!(course: course, location: location1, base_name: 'Start', sub_split_bitmap: 1, distance_from_start: 0, kind: 0) }
   let(:split) { Split.create!(course: course, location: location1, base_name: 'Hopeless Outbound', sub_split_bitmap: 3, distance_from_start: 50000, kind: 2) }
 
   it 'should be valid when created with an effort, a split, a sub_split, and a time_from_start' do
@@ -53,7 +54,7 @@ RSpec.describe SplitTime, kind: :model do
     SplitTime.create!(effort: effort, split: split, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 10000)
     split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 11000)
     expect(split_time).not_to be_valid
-    expect(split_time.errors[:split_id]).to include("only one of any given split/sub_split permitted within an effort")
+    expect(split_time.errors[:split_id]).to include('only one of any given split/sub_split permitted within an effort')
   end
 
   it 'should allow within an effort one of a given split_id for each sub_split' do
@@ -279,6 +280,11 @@ RSpec.describe SplitTime, kind: :model do
       expect(split_time.military_time).to eq('23:59:00')
     end
 
+    it 'should return military time in hh:mm:ss format when result is in the hour after midnight' do
+      split_time = SplitTime.new(effort: effort, split: split, time_from_start: 64860)
+      expect(split_time.military_time).to eq('00:01:00')
+    end
+
     it 'should return military time in hh:mm:ss format when time_from_start rolls into following day' do
       split_time = SplitTime.new(effort: effort, split: split, time_from_start: 72000)
       expect(split_time.military_time).to eq('02:00:00')
@@ -302,4 +308,59 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
+  describe 'military_time=' do
+    it 'should set time_from_start to nil if passed a nil value' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1, time_from_start: 1000)
+      split_time.military_time = nil
+      expect(split_time.time_from_start).to be_nil
+    end
+
+    it 'should set time_from_start to nil if passed an empty string' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1, time_from_start: 1000)
+      split_time.military_time = ''
+      expect(split_time.time_from_start).to be_nil
+    end
+
+    it 'should detect the correct date and set time_from_start properly for a start split' do
+      split_time = SplitTime.new(effort: effort, split: start_split, sub_split_bitkey: 1)
+      split_time.military_time = '06:05:00'
+      expect(split_time.time_from_start).to eq(5.minutes)
+    end
+
+    it 'should detect the correct date and set time_from_start properly for an intermediate split' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1)
+      split_time.military_time = '12:25:00'
+      expect(split_time.time_from_start).to eq(6.hours + 25.minutes)
+    end
+
+    it 'should handle seconds properly' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1)
+      split_time.military_time = '12:25:33'
+      expect(split_time.time_from_start).to eq(6.hours + 25.minutes + 33.seconds)
+    end
+
+    it 'should handle hh:mm times properly' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1)
+      split_time.military_time = '20:20'
+      expect(split_time.time_from_start).to eq(14.hours + 20.minutes)
+    end
+
+    it 'should detect the correct date and set time_from_start properly when runner is ahead of schedule' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1)
+      split_time.military_time = '09:25:00'
+      expect(split_time.time_from_start).to eq(3.hours + 25.minutes)
+    end
+
+    it 'should detect the correct date and set time_from_start properly when runner is behind schedule' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1)
+      split_time.military_time = '18:25:00'
+      expect(split_time.time_from_start).to eq(12.hours + 25.minutes)
+    end
+
+    it 'should detect the correct date and set time_from_start properly when runner is into the following day' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1)
+      split_time.military_time = '00:05:00'
+      expect(split_time.time_from_start).to eq(18.hours + 5.minutes)
+    end
+  end
 end

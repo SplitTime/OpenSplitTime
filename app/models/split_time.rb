@@ -23,6 +23,14 @@ class SplitTime < ActiveRecord::Base
                           message: 'only one of any given split/sub_split permitted within an effort'
   validate :course_is_consistent
 
+  def self.confirmed!
+    all.each { |split_time| split_time.confirmed! }
+  end
+
+  def self.good!
+    all.each { |split_time| split_time.good! }
+  end
+
   def course_is_consistent
     if effort && effort.event && split && effort.event.course_id != split.course_id
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
@@ -78,14 +86,6 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
-  def self.confirmed!
-    all.each { |split_time| split_time.confirmed! }
-  end
-
-  def self.good!
-    all.each { |split_time| split_time.good! }
-  end
-
   def split_name
     split.name(sub_split_bitkey)
   end
@@ -109,7 +109,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def delete_if_blank
-    self.delete if elapsed_time == ""
+    self.delete if elapsed_time == ''
   end
 
 end

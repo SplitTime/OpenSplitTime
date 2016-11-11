@@ -126,6 +126,12 @@ RSpec.describe SplitTime, kind: :model do
       expect(split_time.time_from_start).to be_nil
     end
 
+    it 'should remove an existing time_from_start when passed an empty string' do
+      split_time = SplitTime.new(effort: effort, split: split, time_from_start: 100000)
+      split_time.elapsed_time = ''
+      expect(split_time.time_from_start).to be_nil
+    end
+
     it 'should set time_from_start properly when passed a string representing less than one minute' do
       split_time = SplitTime.new(effort: effort, split: split)
       split_time.elapsed_time = '00:00:25'
@@ -154,6 +160,145 @@ RSpec.describe SplitTime, kind: :model do
       split_time = SplitTime.new(effort: effort, split: split)
       split_time.elapsed_time = '138:53:25'
       expect(split_time.time_from_start).to eq(500005)
+    end
+  end
+
+  describe 'day_and_time' do
+    it 'should return nil when time_from_start is nil' do
+      split_time = SplitTime.new(effort: effort, split: split)
+      expect(split_time.day_and_time).to be_nil
+    end
+
+    it 'should return a day and time equal to event start_time if time_from_start and start_offset are zero' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1, time_from_start: 0)
+      expect(split_time.day_and_time).to eq(effort.start_time)
+    end
+
+    it 'should return a day and time equal to event start_time plus time_from_start when start_offset is zero' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1, time_from_start: 3600)
+      expect(split_time.day_and_time).to eq(effort.start_time + 1.hour)
+    end
+
+    it 'should return correct day and time when time_from_start is greater than 24 hours' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1, time_from_start: 100000)
+      expect(split_time.day_and_time).to eq(effort.start_time + 27.hours + 46.minutes + 40.seconds)
+    end
+
+    it 'should return correct day and time when time_from_start is greater than 100 hours' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1, time_from_start: 500000)
+      expect(split_time.day_and_time).to eq(effort.start_time + 138.hours + 53.minutes + 20.seconds)
+    end
+
+    it 'should return correct day and time when start_offset is greater than zero' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 3600)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1, time_from_start: 7200)
+      expect(split_time.day_and_time).to eq(effort.start_time + 3.hours)
+    end
+
+    it 'should return correct day and time when start_offset is less than zero' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: -3600)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1, time_from_start: 7200)
+      expect(split_time.day_and_time).to eq(effort.start_time + 1.hour)
+    end
+  end
+
+  describe 'day_and_time=' do
+    it 'should set time_from_start to nil if passed a nil value' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1, time_from_start: 1000)
+      split_time.day_and_time = nil
+      expect(split_time.time_from_start).to be_nil
+    end
+
+    it 'should set time_from_start to zero if passed the event start_time when start_offset is zero' do
+      split_time = SplitTime.new(effort: effort, split: split, sub_split_bitkey: 1)
+      split_time.day_and_time = event.start_time
+      expect(split_time.time_from_start).to eq(0)
+    end
+
+    it 'should set time_from_start to zero if passed the event start_time plus the effort start offset' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 3600)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1)
+      split_time.day_and_time = event.start_time + 3600
+      expect(split_time.time_from_start).to eq(0)
+    end
+
+    it 'should set time_from_start properly if passed a TimeInZone object' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1)
+      split_time.day_and_time = Time.new(2015, 7, 1, 15, 0, 0).in_time_zone
+      expect(split_time.time_from_start).to eq(9.hours)
+    end
+
+    it 'should set time_from_start properly if passed a TimeInZone object that is more than 24 hours ahead' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1)
+      split_time.day_and_time = Time.new(2015, 7, 2, 15, 0, 0).in_time_zone
+      expect(split_time.time_from_start).to eq(33.hours)
+    end
+
+    it 'should set time_from_start properly if passed a TimeInZone object that is more than 100 hours ahead' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1)
+      split_time.day_and_time = Time.new(2015, 7, 5, 15, 0, 0).in_time_zone
+      expect(split_time.time_from_start).to eq(105.hours)
+    end
+
+    it 'should set time_from_start properly if passed a TimeInZone object and adjust for positive start_offset' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 1800)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1)
+      split_time.day_and_time = Time.new(2015, 7, 1, 8, 0, 0).in_time_zone
+      expect(split_time.time_from_start).to eq(90.minutes)
+    end
+
+    it 'should set time_from_start properly if passed a TimeInZone object and adjust for negative start_offset' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: -1800)
+      split_time = SplitTime.new(effort: effort1, split: split, sub_split_bitkey: 1)
+      split_time.day_and_time = Time.new(2015, 7, 1, 8, 0, 0).in_time_zone
+      expect(split_time.time_from_start).to eq(150.minutes)
+    end
+  end
+
+  describe 'military time' do
+    it 'should return nil if time_from_start is nil' do
+      split_time = SplitTime.new(effort: effort, split: split)
+      expect(split_time.military_time).to be_nil
+    end
+
+    it 'should return military time in hh:mm:ss format when time_from_start is present' do
+      split_time = SplitTime.new(effort: effort, split: split, time_from_start: 0)
+      expect(split_time.military_time).to eq('06:00:00')
+    end
+
+    it 'should return military time in hh:mm:ss format when time_from_start does not roll into following day' do
+      split_time = SplitTime.new(effort: effort, split: split, time_from_start: 1800)
+      expect(split_time.military_time).to eq('06:30:00')
+    end
+
+    it 'should return military time in hh:mm:ss format when result is in the hour before midnight' do
+      split_time = SplitTime.new(effort: effort, split: split, time_from_start: 64740)
+      expect(split_time.military_time).to eq('23:59:00')
+    end
+
+    it 'should return military time in hh:mm:ss format when time_from_start rolls into following day' do
+      split_time = SplitTime.new(effort: effort, split: split, time_from_start: 72000)
+      expect(split_time.military_time).to eq('02:00:00')
+    end
+
+    it 'should return military time in hh:mm:ss format when time_from_start rolls over multiple days' do
+      split_time = SplitTime.new(effort: effort, split: split, time_from_start: 302400)
+      expect(split_time.military_time).to eq('18:00:00')
+    end
+
+    it 'should properly account for a positive effort offset' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 1800)
+      split_time = SplitTime.new(effort: effort1, split: split, time_from_start: 1800)
+      expect(split_time.military_time).to eq('07:00:00')
+    end
+
+    it 'should properly account for a negative effort offset' do
+      effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: -1800)
+      split_time = SplitTime.new(effort: effort1, split: split, time_from_start: 3600)
+      expect(split_time.military_time).to eq('06:30:00')
     end
   end
 

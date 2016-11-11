@@ -51,7 +51,7 @@ class SplitTime < ActiveRecord::Base
     seconds = time_from_start % 60
     minutes = (time_from_start / 60) % 60
     hours = time_from_start / (60 * 60)
-    format("%02d:%02d:%02d", hours, minutes, seconds)
+    format('%02d:%02d:%02d', hours, minutes, seconds)
   end
 
   alias_method :formatted_time_hhmmss, :elapsed_time
@@ -66,8 +66,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def day_and_time
-    return nil if time_from_start.nil?
-    event_start_time + effort_start_offset + time_from_start
+    time_from_start && (event_start_time + effort_start_offset + time_from_start)
   end
 
   def day_and_time=(absolute_time)
@@ -76,6 +75,10 @@ class SplitTime < ActiveRecord::Base
     else
       self.time_from_start = nil
     end
+  end
+
+  def military_time
+    day_and_time && format('%02d:%02d:%02d', day_and_time.hour, day_and_time.min, day_and_time.sec)
   end
 
   def military_time=(military_time)

@@ -8,7 +8,7 @@ class EffortImporter
     @import_file = ImportFile.new(file_url)
     @event = event
     @current_user_id = current_user_id
-    @sub_split_bitkey_hashes = event.sub_split_bitkey_hashes
+    @sub_splits = event.sub_split_bitkey_hashes
     @effort_failure_array = []
     @effort_id_array = []
     @effort_schema = EffortSchema.new(header_column_titles)
@@ -29,9 +29,9 @@ class EffortImporter
         row_time_data = row[split_offset - 1..row.size - 1]
         row_time_data.unshift(0) if finish_times_only?
         creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
-        start_offset, final_split = create_split_times(row, effort.id)
-        start_offset_hash[effort.id] = start_offset if start_offset
-        final_split_hash[effort.id] = final_split
+        creator.create_split_times
+        start_offset_hash[effort.id] = creator.start_offset if creator.start_offset
+        final_split_hash[effort.id] = creator.dropped_split_id
         effort_id_array << effort.id
       else
         effort_failure_array << row
@@ -78,7 +78,7 @@ class EffortImporter
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
                 :effort_schema, :import_without_times
 
-  attr_reader :event, :current_user_id, :sub_split_bitkey_hashes
+  attr_reader :event, :current_user_id, :sub_splits
 
   attr_writer :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
 
@@ -99,84 +99,21 @@ class EffortImporter
 
   def create_effort(row_effort_data)
     effort = event.efforts.new
-    row_hash(row_effort_data).each { |attribute, data| effort.assign_attributes({attribute => data}) }
+    row_effort_hash(row_effort_data).each { |attribute, data| effort.assign_attributes({attribute => data}) }
     effort.concealed = true if event.concealed?
     effort.save ? effort : nil
   end
 
-  def row_hash(row_effort_data)
+  def row_effort_hash(row_effort_data)
     effort_schema.zip(row_effort_data).select { |title, data| title && data }.to_h
-  end
-
-  # Creates split_times for each valid time entry in the provided row
-  # and returns the start_offset (if the first time entry is non-zero)
-  # and the dropped_split_id (if there is no valid finish time)
-
-  def create_split_times(row, effort_id)
-    row_time_data = row[split_offset - 1..row.size - 1]
-    row_time_data.unshift(0) if finish_times_only?
-    return [nil, nil] if event_sub_split_count != row_time_data.size
-    return [nil, nil] if row_time_data.compact.empty?
-    dropped_split_pointer = start_offset = nil
-    finish_bitkey_hash = sub_split_bitkey_hashes.last
-
-    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey,
-                          :time_from_start, :created_at, :updated_at,
-                          :created_by, :updated_by) do |worker|
-      (0...sub_split_bitkey_hashes.count).each do |i|
-        bitkey_hash = sub_split_bitkey_hashes[i]
-        split_id = bitkey_hash.keys.first
-        sub_split_bitkey = bitkey_hash.values.first
-        working_time = row_time_data[i]
-
-        # If this is the first (start) column, set start_offset
-        # from non-zero start split time and reset start split time to zero
-
-        if i == 0
-          start_offset = working_time || 0
-          working_time = 0
-        end
-
-        seconds = convert_time_to_standard(working_time)
-
-        # If no valid time is present, go to next without creating a split_time
-        # and without updating the dropped_split_pointer
-
-        next if seconds.nil?
-        worker.add(effort_id: effort_id,
-                   split_id: split_id,
-                   sub_split_bitkey: sub_split_bitkey,
-                   time_from_start: seconds,
-                   created_by: current_user_id,
-                   updated_by: current_user_id)
-        dropped_split_pointer = (bitkey_hash == finish_bitkey_hash) ? nil : split_id
-      end
-    end
-    [start_offset, dropped_split_pointer]
   end
 
   def prepare_row_effort_data(row_effort_data)
     EffortImportDataPreparer.new(row_effort_data, effort_schema.to_a).output_row
   end
 
-  def convert_time_to_standard(working_time)
-    return nil if working_time.blank?
-    working_time = working_time.to_datetime if working_time.instance_of?(Date)
-    working_time = datetime_to_seconds(working_time) if working_time.acts_like?(:time)
-    if working_time.try(:to_f)
-      working_time
-    else
-      errors.add(:effort_importer, "Invalid split time data for #{effort.last_name}. #{errors.full_messages}.")
-    end
-  end
-
-  def datetime_to_seconds(value)
-    start_time = value.year < 1910 ? '1899-12-30'.to_datetime : event.start_time
-    TimeDifference.between(value, start_time).in_seconds
-  end
-
   def event_sub_split_count
-    sub_split_bitkey_hashes.count
+    sub_splits.count
   end
 
   def header_column_titles

@@ -83,23 +83,14 @@ class BulkUpdateService
       update_hash.each do |effort_id, start_offset|
         effort = Effort.find(effort_id)
         effort.update(start_offset: start_offset, updated_at: Time.now)
-        split_time = effort.start_split_time
-        split_time.update(time_from_start: 0)
       end
     else
       begin
-        split_time_ids = SplitTime.includes(:split).where(effort_id: update_hash.keys, splits: {kind: 0}).pluck(:id)
         connection = ActiveRecord::Base.connection
         table_name = :efforts
         Upsert.batch(connection, table_name) do |upsert|
           update_hash.each do |effort_id, start_offset|
             upsert.row({id: effort_id}, start_offset: start_offset, updated_at: Time.now)
-          end
-        end
-        table_name = :split_times
-        Upsert.batch(connection, table_name) do |upsert|
-          split_time_ids.each do |split_time_id|
-            upsert.row({id: split_time_id}, time_from_start: 0, updated_at: Time.now)
           end
         end
       rescue Exception => e

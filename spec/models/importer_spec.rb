@@ -82,32 +82,21 @@ RSpec.describe SplitImporter do
         expect(effort_importer.effort_failure_array.last[1]).to eq('NoFirstName')
       end
 
-      it 'should correctly determine dropped_split_id' do
+      it 'correctly determines dropped_split_ids and sets start_offsets' do
         split1 = Split.find_by(base_name: 'Tunnel')
         expect(Effort.find_by_bib_number(49).dropped_split_id).to eq(split1.id)
         expect(Effort.find_by_bib_number(135).dropped_split_id).to eq(split1.id)
         expect(Effort.find_by_bib_number(32).dropped_split_id).to eq(split1.id)
         expect(Effort.find_by_bib_number(1).dropped_split_id).to be_nil
-      end
-
-      it 'should correctly set start offsets' do
         expect(Effort.find_by_bib_number(30).start_offset).to eq(30 * 60)
         expect(Effort.find_by_bib_number(135).start_offset).to eq(60 * 60)
         expect(Effort.find_by_bib_number(1).start_offset).to eq(0)
         expect(Effort.find_by_bib_number(32).start_offset).to eq(0)
       end
 
-      it 'should reset start split times to zero after updating split_offset' do
-        effort1 = Effort.find_by_bib_number(30)
-        effort2 = Effort.find_by_bib_number(135)
-        split = Split.start.first
-        expect(SplitTime.find_by(effort: effort1, split: split).time_from_start).to eq(0)
-        expect(SplitTime.find_by(effort: effort2, split: split).time_from_start).to eq(0)
-      end
-
       it 'should import all valid split_times and correctly set split_time times from start' do
         split1 = Split.find_by_base_name('Ridgeline')
-        split2 = Split.find_by_base_name('Mountain Town')
+        split2 = Split.find_by_base_name('Mountain Top')
         split3 = Split.find_by_base_name('Tunnel')
         split4 = Split.find_by_base_name('Finish')
         effort1 = Effort.find_by_bib_number(128)
@@ -119,7 +108,7 @@ RSpec.describe SplitImporter do
         expect(SplitTime.find_by(effort: effort1, split: split2, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((22.hours + 45.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split3, sub_split_bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((20.hours + 22.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split4, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((25.hours + 45.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort2, split: split1, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((2.hours + 1.minutes).to_i)
+        expect(SplitTime.find_by(effort: effort2, split: split1, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((2.hours + 10.minutes).to_i)
         expect(SplitTime.find_by(effort: effort2, split: split2, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((23.hours + 39.minutes).to_i)
         expect(SplitTime.find_by(effort: effort2, split: split3, sub_split_bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((25.hours + 51.minutes).to_i)
         expect(SplitTime.find_by(effort: effort2, split: split4, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((27.hours + 3.minutes).to_i)

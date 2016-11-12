@@ -3,7 +3,7 @@ FactoryGirl.define do
     first_name 'Joe'
     last_name 'Hardman'
     gender 'male'
-    start_offset
+    start_offset 0
     event
     participant
   end

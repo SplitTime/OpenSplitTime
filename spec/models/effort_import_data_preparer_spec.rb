@@ -11,7 +11,7 @@ RSpec.describe EffortImportDataPreparer, type: :model do
       expect(preparer.output_row).to eq(%w(Joe Hardman male))
     end
 
-    it 'should return data unchanged and in the same order when no prep is needed' do
+    it 'should return text data unchanged and in the same order when no prep is needed' do
       schema_array = [:first_name, :last_name, :state_code, :country_code, :gender]
       input_row = %w(Joe Hardman TX US male)
       preparer = EffortImportDataPreparer.new(input_row, schema_array)
@@ -94,6 +94,25 @@ RSpec.describe EffortImportDataPreparer, type: :model do
       expect(preparer.output_row).to eq(['John', 'Racer', Date.new(1967, 8, 8)])
     end
 
-  end
+    it 'should return ages greater than zero unchanged' do
+      schema_array = [:first_name, :last_name, :age]
+      input_row = ['John', 'Racer', 36]
+      preparer = EffortImportDataPreparer.new(input_row, schema_array)
+      expect(preparer.output_row).to eq(['John', 'Racer', 36])
+    end
 
+    it 'should assign age to nil if provided age is zero' do
+      schema_array = [:first_name, :last_name, :age]
+      input_row = ['John', 'Racer', 0]
+      preparer = EffortImportDataPreparer.new(input_row, schema_array)
+      expect(preparer.output_row).to eq(['John', 'Racer', nil])
+    end
+
+    it 'should assign age to nil if no age is provided' do
+      schema_array = [:first_name, :last_name, :age]
+      input_row = ['John', 'Racer', nil]
+      preparer = EffortImportDataPreparer.new(input_row, schema_array)
+      expect(preparer.output_row).to eq(['John', 'Racer', nil])
+    end
+  end
 end

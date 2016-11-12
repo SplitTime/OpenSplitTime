@@ -7,7 +7,6 @@ class EffortImportDataPreparer
     prepare_row_effort_data
   end
 
-
   def output_row
     schema_array.map { |attribute| schema_map[attribute] } # Preserves input order
   end
@@ -25,6 +24,7 @@ class EffortImportDataPreparer
     schema_map[:state_code] = prepare_state_data
     schema_map[:gender] = prepare_gender_data
     schema_map[:birthdate] = prepare_birthdate_data
+    schema_map[:age] = prepare_age_data
   end
 
   def prepare_country_data
@@ -63,11 +63,14 @@ class EffortImportDataPreparer
       begin
         Date.parse(birthdate_data)
       rescue ArgumentError
-        raise 'Birthdate column includes invalid data'
+        raise "Birthdate column includes invalid data for #{schema_map[:first_name]} #{schema_map[:last_name]}"
       end
     else
       nil
     end
   end
 
+  def prepare_age_data
+    (schema_map[:age] == 0) ? nil : schema_map[:age]
+  end
 end

@@ -51,43 +51,35 @@ RSpec.describe SplitImporter do
         effort_importer.effort_import
       end
 
-      it 'should import all valid efforts and set up names correctly' do
+      it 'should import all valid efforts and set up data correctly and return a failure array containing invalid rows' do
+        effort1 = Effort.find_by_bib_number(1)
+        effort2 = Effort.find_by_bib_number(143)
+        effort3 = Effort.find_by_bib_number(135)
         expect(Effort.all.count).to eq(11)
-        expect(Effort.find_by_bib_number(1).first_name).to eq('Fast')
-        expect(Effort.find_by_bib_number(1).last_name).to eq('Finisher')
-        expect(Effort.find_by_bib_number(143).first_name).to eq('First')
-        expect(Effort.find_by_bib_number(143).last_name).to eq('Female')
-        expect(Effort.find_by_bib_number(135).first_name).to eq('Local')
-        expect(Effort.find_by_bib_number(135).last_name).to eq('Boy')
-      end
-
-      it 'should return a failure array containing invalid rows' do
+        expect(effort1.first_name).to eq('Fast')
+        expect(effort1.last_name).to eq('Finisher')
+        expect(effort1.gender).to eq('male')
+        expect(effort1.country_code).to eq('DE')
+        expect(effort1.state_code).to eq('HH')
+        expect(effort1.age).to eq(28)
+        expect(effort1.birthdate).to eq(Date.new(1987,2,1))
+        expect(effort2.first_name).to eq('First')
+        expect(effort2.last_name).to eq('Female')
+        expect(effort2.gender).to eq('female')
+        expect(effort2.country_code).to eq('US')
+        expect(effort2.state_code).to eq('CO')
+        expect(effort2.age).to eq(25)
+        expect(effort2.birthdate).to be_nil
+        expect(effort3.first_name).to eq('Local')
+        expect(effort3.last_name).to eq('Boy')
+        expect(effort3.gender).to eq('male')
+        expect(effort3.country_code).to eq('US')
+        expect(effort3.state_code).to eq('CO')
+        expect(effort3.age).to be_nil
+        expect(effort3.birthdate).to be_nil
         expect(effort_importer.effort_failure_array.count).to eq(2)
         expect(effort_importer.effort_failure_array.first[0]).to eq('NoLastName')
         expect(effort_importer.effort_failure_array.last[1]).to eq('NoFirstName')
-      end
-
-      it 'should correctly assign country codes' do
-        expect(Effort.find_by_bib_number(1).country_code).to eq('DE')
-        expect(Effort.find_by_bib_number(2).country_code).to eq('US')
-        expect(Effort.find_by_bib_number(40).country_code).to eq('GB')
-        expect(Effort.find_by_bib_number(32).country_code).to eq('JP')
-        expect(Effort.find_by_bib_number(143).country_code).to eq('US')
-      end
-
-      it 'should correctly assign states and state codes' do
-        expect(Effort.find_by_bib_number(1).state_code).to eq('HH')
-        expect(Effort.find_by_bib_number(2).state_code).to eq('TX')
-        expect(Effort.find_by_bib_number(143).state_code).to eq('CO')
-        expect(Effort.find_by_bib_number(135).state_code).to eq('CO')
-      end
-
-      it 'should correctly assign genders' do
-        expect(Effort.find_by_bib_number(1).gender).to eq('male')
-        expect(Effort.find_by_bib_number(2).gender).to eq('male')
-        expect(Effort.find_by_bib_number(143).gender).to eq('female')
-        expect(Effort.find_by_bib_number(32).gender).to eq('male')
-        expect(Effort.find_by_bib_number(119).gender).to eq('female')
       end
 
       it 'should correctly determine dropped_split_id' do
@@ -98,12 +90,9 @@ RSpec.describe SplitImporter do
         expect(Effort.find_by_bib_number(1).dropped_split_id).to be_nil
       end
 
-      it 'should correctly set start offsets where start split time != 0' do
+      it 'should correctly set start offsets' do
         expect(Effort.find_by_bib_number(30).start_offset).to eq(30 * 60)
         expect(Effort.find_by_bib_number(135).start_offset).to eq(60 * 60)
-      end
-
-      it 'should set leave start_offset at zero where start split time == 0' do
         expect(Effort.find_by_bib_number(1).start_offset).to eq(0)
         expect(Effort.find_by_bib_number(32).start_offset).to eq(0)
       end
@@ -116,11 +105,7 @@ RSpec.describe SplitImporter do
         expect(SplitTime.find_by(effort: effort2, split: split).time_from_start).to eq(0)
       end
 
-      it 'should import all valid split_times' do
-        expect(SplitTime.all.count).to eq(75)
-      end
-
-      it 'should correctly set split_time times from start' do
+      it 'should import all valid split_times and correctly set split_time times from start' do
         split1 = Split.find_by_base_name('Ridgeline')
         split2 = Split.find_by_base_name('Mountain Town')
         split3 = Split.find_by_base_name('Tunnel')
@@ -129,6 +114,7 @@ RSpec.describe SplitImporter do
         effort2 = Effort.find_by_bib_number(143)
         effort3 = Effort.find_by_bib_number(186)
 
+        expect(SplitTime.all.count).to eq(75)
         expect(SplitTime.find_by(effort: effort1, split: split1, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((2.hours + 1.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split2, sub_split_bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((22.hours + 45.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split3, sub_split_bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((20.hours + 22.minutes).to_i)

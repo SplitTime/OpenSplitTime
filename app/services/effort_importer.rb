@@ -16,7 +16,7 @@ class EffortImporter
 
   def effort_import
     unless column_count_matches
-      self.effort_import_report = "Column count doesn't match"
+      self.effort_import_report = 'Column count does not match'
       return
     end
     start_offset_hash = {}
@@ -24,12 +24,15 @@ class EffortImporter
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0..split_offset - 2])
-      @effort = create_effort(row_effort_data)
-      if @effort
-        start_offset, final_split = create_split_times(row, @effort.id)
-        start_offset_hash[@effort.id] = start_offset if start_offset
-        final_split_hash[@effort.id] = final_split
-        effort_id_array << @effort.id
+      effort = create_effort(row_effort_data)
+      if effort
+        row_time_data = row[split_offset - 1..row.size - 1]
+        row_time_data.unshift(0) if finish_times_only?
+        creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
+        start_offset, final_split = create_split_times(row, effort.id)
+        start_offset_hash[effort.id] = start_offset if start_offset
+        final_split_hash[effort.id] = final_split
+        effort_id_array << effort.id
       else
         effort_failure_array << row
       end
@@ -95,16 +98,14 @@ class EffortImporter
   end
 
   def create_effort(row_effort_data)
-    @effort = event.efforts.new
-    (0...effort_schema.size).each do |i|
-      @effort.assign_attributes({effort_schema[i] => row_effort_data[i]}) unless effort_schema[i].nil?
-      @effort.assign_attributes(concealed: true) if event.concealed
-    end
-    if @effort.save
-      @effort
-    else
-      nil
-    end
+    effort = event.efforts.new
+    row_hash(row_effort_data).each { |attribute, data| effort.assign_attributes({attribute => data}) }
+    effort.concealed = true if event.concealed?
+    effort.save ? effort : nil
+  end
+
+  def row_hash(row_effort_data)
+    effort_schema.zip(row_effort_data).select { |title, data| title && data }.to_h
   end
 
   # Creates split_times for each valid time entry in the provided row

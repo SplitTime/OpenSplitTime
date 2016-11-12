@@ -18,7 +18,7 @@ class EffortSchema
                    'province' => 'state',
                    'sex' => 'gender'}
 
-  delegate :size, :index, :[], to: :to_a
+  delegate :size, :count, :index, :[], :zip, to: :to_a
 
   def initialize(header_column_titles)
     @header_column_titles = header_column_titles

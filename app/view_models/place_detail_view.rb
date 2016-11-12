@@ -1,8 +1,8 @@
 class PlaceDetailView
+  include EffortPlaceMethods
 
   attr_reader :effort, :event, :place_detail_rows
-  delegate :full_name, :event_name, :participant, :bib_number, :combined_places, :finish_status,
-           :gender, to: :effort
+  delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender, to: :effort
 
   def initialize(effort)
     @effort = effort
@@ -177,5 +177,4 @@ class PlaceDetailView
     encountered_ids.each { |id| counts[id] += 1 }
     counts.sort_by { |_, count| count }.reverse.first(5).map { |e| e[0] }
   end
-
 end

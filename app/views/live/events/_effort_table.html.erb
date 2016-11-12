@@ -5,11 +5,10 @@
       <%= "(#{@effort_show.bib_number})" if @effort_show.bib_number %>
       • <%= @effort_show.event_name %>
     </h3>
-    <% overall_place, gender_place = @effort_show.combined_places %>
     <h4>
       <%= @effort_show.finish_status %>
-      <%= "• #{overall_place.ordinalize} Place " if overall_place %>
-      <%= "• #{gender_place.ordinalize} #{@effort_show.gender.titleize}" if gender_place %>
+      <%= "• #{@effort_show.overall_place.ordinalize} Place " if @effort_show.overall_place %>
+      <%= "• #{@effort_show.gender_place.ordinalize} #{@effort_show.gender.titleize}" if @effort_show.gender_place %>
       <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
     </h4>
   </div>

@@ -58,7 +58,7 @@ class EventSpreadDisplay
   attr_reader :efforts, :split_times
 
   def sort_efforts(sort_by)
-    efforts.sort_by!(&:place) if sort_by == 'place'
+    efforts.sort_by!(&:overall_place) if sort_by == 'place'
     efforts.sort_by!(&:bib_number) if sort_by == 'bib'
     efforts.sort_by!(&:last_name) if sort_by == 'last'
     efforts.sort_by!(&:first_name) if sort_by == 'first'

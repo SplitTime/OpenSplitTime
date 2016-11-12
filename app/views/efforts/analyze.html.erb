@@ -11,9 +11,8 @@
       <% end %>
       <br/><%= link_to @effort_analysis.event_name, event_path(@effort_analysis.event) %></strong>
     </h2>
-    <% overall_place, gender_place = @effort_analysis.combined_places %>
     <h4>
-      <%= "#{@effort_analysis.finish_status} • #{overall_place.ordinalize} Place • #{gender_place.ordinalize} #{@effort_analysis.gender.titleize}" %>
+      <%= "#{@effort_analysis.finish_status} • #{@effort_analysis.overall_place.ordinalize} Place • #{@effort_analysis.gender_place.ordinalize} #{@effort_analysis.gender.titleize}" %>
       <%= "• Bib ##{@effort_analysis.bib_number}" if @effort_analysis.bib_number %>
     </h4>
   </div>

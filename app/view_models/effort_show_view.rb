@@ -1,4 +1,5 @@
 class EffortShowView
+  include EffortPlaceMethods
 
   attr_reader :effort, :event, :split_rows
   delegate :full_name, :event_name, :participant, :bib_number, :gender, :split_times,
@@ -25,10 +26,6 @@ class EffortShowView
 
   def in_progress?
     !dropped? && !finished?
-  end
-
-  def combined_places
-    started? ? effort.combined_places : [nil, nil]
   end
 
   def not_analyzable?

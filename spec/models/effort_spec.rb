@@ -111,7 +111,6 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort: @effort3, split: @split3, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 3000)
       SplitTime.create!(effort: @effort3, split: @split3, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 3100)
       SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 7500)
-
     end
 
     it 'should return only those efforts for which the finish time is between the parameters provided' do
@@ -120,7 +119,6 @@ RSpec.describe Effort, type: :model do
       expect(efforts.within_time_range(5000, 10000).count).to eq(3)
       expect(efforts.within_time_range(10000, 20000).count).to eq(0)
     end
-
   end
 
   describe 'expected_time_from_start' do
@@ -148,7 +146,6 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort: @effort2, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
       SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 6000)
       SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 6200)
-
     end
 
     it 'should return zero if the split parameter is a start split' do
@@ -161,7 +158,6 @@ RSpec.describe Effort, type: :model do
         expect(@effort1.expected_time_from_start(@split2.bitkey_hash_in)).to eq((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))
         expect(@effort1.expected_time_from_start(@split4.bitkey_hash_in)).to eq(4100 + (((15000 - 6000) * DISTANCE_FACTOR) + ((500 - 500) * VERT_GAIN_FACTOR)) * (4100 / ((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))))
       end
-
     end
 
     context 'sufficient historical data' do
@@ -264,7 +260,6 @@ RSpec.describe Effort, type: :model do
         @calcs5 = SegmentCalculations.new(@segment5)
         @calcs6 = SegmentCalculations.new(@segment6)
         @calcs7 = SegmentCalculations.new(@segment7)
-
       end
 
       it 'should determine expected time based on prior split_time and mean segment time (normalized to effort)' do
@@ -272,7 +267,6 @@ RSpec.describe Effort, type: :model do
         expect(@effort2.expected_time_from_start(@split4.bitkey_hash_in)).to eq(6200 + ((6200 / @calcs6.mean) * @calcs4.mean))
         expect(@effort12.expected_time_from_start(@split6.bitkey_hash_in)).to eq(12550 + ((12550 / @calcs7.mean) * @calcs5.mean))
       end
-
     end
   end
 end

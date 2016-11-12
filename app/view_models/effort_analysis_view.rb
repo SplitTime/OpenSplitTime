@@ -1,7 +1,8 @@
 class EffortAnalysisView
+  include EffortPlaceMethods
 
   attr_reader :effort, :event, :analysis_rows
-  delegate :full_name, :event_name, :participant, :bib_number, :combined_places, :finish_status,
+  delegate :full_name, :event_name, :participant, :bib_number, :finish_status,
            :gender, to: :effort
 
   def initialize(effort)
@@ -141,5 +142,4 @@ class EffortAnalysisView
   def effort_in_progress?
     effort.dropped_split_id.nil? && indexed_split_times[finish_bitkey_hash].nil?
   end
-
 end

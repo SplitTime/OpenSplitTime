@@ -11,13 +11,12 @@
       <% end %>
       <br/><%= link_to @effort_show.event_name, event_path(@effort_show.event) %></strong>
     </h2>
-    <% overall_place, gender_place = @effort_show.combined_places %>
     <h4>
       <%= "#{l(@effort_show.start_time, format: :full_with_weekday)} #{l(@effort_show.start_time, format: :ampm)}" %>
       <br/>
       <%= @effort_show.finish_status %>
-      <%= "• #{overall_place.ordinalize} Place " if overall_place %>
-      <%= "• #{gender_place.ordinalize} #{@effort_show.gender.titleize}" if gender_place %>
+      <%= "• #{@effort_show.overall_place.ordinalize} Place " if @effort_show.overall_place %>
+      <%= "• #{@effort_show.gender_place.ordinalize} #{@effort_show.gender.titleize}" if @effort_show.gender_place %>
       <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
     </h4>
   </div>

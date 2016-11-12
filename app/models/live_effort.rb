@@ -3,7 +3,7 @@ class LiveEffort
 
   attr_reader :effort, :over_under_due
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :country_code, :state_code,
-           :start_time, :place, to: :effort
+           :start_time, :overall_place, to: :effort
 
   # This object requires an effort object that includes
   # a last_reported_split_time and a next_expected_split_time

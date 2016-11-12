@@ -13,7 +13,8 @@ class Effort < ActiveRecord::Base
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
   attr_accessor :start_time_attr, :over_under_due, :last_reported_split_time_attr, :next_expected_split_time,
-                :suggested_match, :segment_time, :place
+                :suggested_match, :segment_time
+  attr_writer :overall_place, :gender_place
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
@@ -206,15 +207,15 @@ class Effort < ActiveRecord::Base
   end
 
   def combined_places
-    event.combined_places(self)
+    @combined_places ||= event.combined_places(self)
   end
 
   def overall_place
-    event.overall_place(self)
+    @overall_place ||= event.overall_place(self)
   end
 
   def gender_place
-    event.gender_place(self)
+    @gender_place ||= event.gender_place(self)
   end
 
   # Age methods
@@ -247,10 +248,9 @@ class Effort < ActiveRecord::Base
                    .joins(:split_times => :split)
                    .order('efforts.id, splits.distance_from_start DESC, split_times.sub_split_bitkey DESC')
     sorted_efforts = raw_sort.sort_by { |row| [row.dropped_split_id ? 1 : 0, -row.distance_from_start, row.time_from_start, row.gender, row.age ? -row.age : 0] }
-    c = 1
-    sorted_efforts.each do |effort|
-      effort.place = c
-      c += 1
+    sorted_efforts.each_with_index do |effort, i|
+      effort.overall_place = i + 1
+      effort.gender_place = sorted_efforts[0..i].count { |e| e.gender == effort.gender }
     end
     sorted_efforts
   end

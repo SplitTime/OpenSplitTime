@@ -87,7 +87,7 @@
   <tbody>
   <% @spread_display.effort_times_rows.each do |row| %>
       <tr>
-        <td><%= row.place %></td>
+        <td><%= row.overall_place %></td>
         <td><%= row.bib_number %></td>
         <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
         <td class="text-nowrap"><%= row.bio_historic %></td>

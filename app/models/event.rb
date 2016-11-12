@@ -78,8 +78,8 @@ class Event < ActiveRecord::Base
   def combined_places(effort)
     raw_sort = efforts_sorted
     overall_place = raw_sort.map(&:id).index(effort.id) + 1
-    gender_place = raw_sort[0...overall_place].map(&:gender).count(effort.gender)
-    return overall_place, gender_place
+    gender_place = raw_sort[0...overall_place].count { |e| e.gender == effort.gender }
+    [overall_place, gender_place]
   end
 
   def overall_place(effort)

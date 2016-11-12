@@ -1,6 +1,6 @@
 class EffortSplitTimeCreator
 
-  attr_reader :start_offset, :final_split
+  attr_reader :start_offset, :dropped_split_id
 
   def initialize(row_time_data, effort, current_user_id, event = nil)
     @row_time_data = row_time_data
@@ -16,12 +16,12 @@ class EffortSplitTimeCreator
   EXCEL_BASE_DATETIME = '1899-12-30'.to_datetime
 
   attr_reader :row_time_data, :effort_id, :current_user_id, :event
-  attr_writer :start_offset, :final_split
+  attr_writer :start_offset, :dropped_split_id
 
   def initialize_return_values
     self.start_offset = row_time_data.first || 0
     row_time_data[0] = 0 if row_time_data[0]
-    self.dropped_split_id = bitkey_hashes_with_times.last.split_id
+    self.dropped_split_id = last_bitkey_hash_with_time.try(:split_id) unless finished?
   end
 
   def create_split_times
@@ -39,7 +39,6 @@ class EffortSplitTimeCreator
                    updated_by: current_user_id)
       end
     end
-    self.dropped_split_pointer = (bitkey_hash == finish_bitkey_hash) ? nil : bitkey_hash.split_id
   end
 
   def sub_split_time_hash
@@ -61,6 +60,14 @@ class EffortSplitTimeCreator
 
   def finish_bitkey_hash
     @finish_bitkey_hash ||= sub_split_bitkey_hashes.last
+  end
+
+  def last_bitkey_hash_with_time
+    bitkey_hashes_with_times.last
+  end
+
+  def finished?
+    last_bitkey_hash_with_time == finish_bitkey_hash
   end
 
   def time_to_seconds(working_time)

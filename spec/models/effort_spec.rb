@@ -23,13 +23,13 @@ RSpec.describe Effort, type: :model do
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
   describe 'validations' do
-      let(:course) { Course.create!(name: 'Test Course') }
-      let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
-      let(:location1) { Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105) }
-      let(:location2) { Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05) }
-      let(:participant) { Participant.create!(first_name: 'Joe', last_name: 'Hardman',
-                                         gender: 'male', birthdate: '1989-12-15',
-                                         city: 'Boulder', state_code: 'CO', country_code: 'US') }
+    let(:course) { Course.create!(name: 'Test Course') }
+    let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
+    let(:location1) { Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105) }
+    let(:location2) { Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05) }
+    let(:participant) { Participant.create!(first_name: 'Joe', last_name: 'Hardman',
+                                            gender: 'male', birthdate: '1989-12-15',
+                                            city: 'Boulder', state_code: 'CO', country_code: 'US') }
 
     it 'should be valid when created with an event_id, first_name, last_name, and gender' do
       Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male')
@@ -72,6 +72,14 @@ RSpec.describe Effort, type: :model do
       expect(effort.errors[:participant_id]).to include('has already been taken')
     end
 
+    it 'should permit more than one effort in a given event with unassigned participants' do
+      Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male',
+                     participant: nil)
+      effort = Effort.new(event: event, first_name: 'Betty', last_name: 'Boop', gender: 'female',
+                          participant: nil)
+      expect(effort).to be_valid
+    end
+
     it 'should not permit duplicate bib_numbers within a given event' do
       Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', bib_number: 20)
       effort = Effort.new(event: event, participant_id: 2, bib_number: 20)
@@ -85,7 +93,7 @@ RSpec.describe Effort, type: :model do
 
       @course = Course.create!(name: 'Test Course 100')
       @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: '2015-07-01 06:00:00')
-      
+
       @location1 = Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
       @location2 = Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
 

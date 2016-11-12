@@ -12,12 +12,12 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
-  attr_accessor :start_time_attr, :over_under_due, :last_reported_split_time_attr, :next_expected_split_time,
+  attr_accessor :over_under_due, :last_reported_split_time_attr, :next_expected_split_time,
                 :suggested_match, :segment_time
-  attr_writer :overall_place, :gender_place
+  attr_writer :start_time, :overall_place, :gender_place
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
-  validates_uniqueness_of :participant_id, scope: :event_id, unless: 'participant_id.nil?'
+  validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
 
   before_save :reset_age_from_birthdate
@@ -64,11 +64,7 @@ class Effort < ActiveRecord::Base
   end
 
   def start_time
-    start_time_attr || start_time_calculated
-  end
-
-  def start_time_calculated
-    event_start_time + start_offset
+    @start_time ||= event_start_time + start_offset
   end
 
   def start_time=(datetime)
@@ -265,5 +261,4 @@ class Effort < ActiveRecord::Base
     update(dropped_split_id: dropped_split_id)
     dropped_split_id
   end
-
 end

@@ -41,17 +41,11 @@ class Effort < ActiveRecord::Base
     (column_names - (id + foreign_keys + stamps)).map &:to_sym
   end
 
-  def reset_age_from_birthdate
-    self.assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
-  end
-
   def self.reset_effort_ages
     counter = 0
     all.each do |effort|
       effort.reset_age_from_birthdate
-      if effort.save
-        counter += 1
-      end
+      counter += 1 if effort.save
     end
     counter
   end
@@ -62,6 +56,10 @@ class Effort < ActiveRecord::Base
     flexible_search(param)
   end
 
+  def reset_age_from_birthdate
+    assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
+  end
+
   def start_time
     @start_time ||= event_start_time + start_offset
   end
@@ -69,10 +67,17 @@ class Effort < ActiveRecord::Base
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    event_time = event_start_time
-    difference = TimeDifference.between(new_datetime, event_time).in_seconds
+    difference = TimeDifference.between(new_datetime, event_start_time).in_seconds
     # TimeDifference returns only positive values so make negative if appropriate
-    self.start_offset = (new_datetime > event_time) ? difference : -difference
+    self.start_offset = (new_datetime > event_start_time) ? difference : -difference
+  end
+
+  def event_start_time
+    @event_start_time ||= event.start_time
+  end
+
+  def event_name
+    @event_name ||= event.name
   end
 
   # Methods regarding split_times
@@ -105,20 +110,12 @@ class Effort < ActiveRecord::Base
     "In progress"
   end
 
-  def event_start_time
-    event.start_time
-  end
-
-  def event_name
-    event.name
-  end
-
   def finish_split_time
-    split_times.finish.first
+    @finish_split_time ||= split_times.finish.first
   end
 
   def start_split_time
-    split_times.start.first
+    @start_split_time ||= split_times.start.first
   end
 
   def time_in_aid(split)
@@ -177,7 +174,7 @@ class Effort < ActiveRecord::Base
 
 
   def ordered_splits
-    event.splits.ordered
+    @ordered_splits ||= event.splits.ordered
   end
 
   def ordered_split_times(split = nil)

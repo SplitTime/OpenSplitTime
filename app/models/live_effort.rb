@@ -35,13 +35,6 @@ class LiveEffort
   private
 
   attr_reader :split_name_hash, :bitkey_hashes
-
-  def last_reported_split_time
-    effort.last_reported_split_time
-  end
-
-  def next_expected_split_time
-    effort.next_expected_split_time
-  end
+  delegate :last_reported_split_time, :next_expected_split_time, to: :effort
 
 end

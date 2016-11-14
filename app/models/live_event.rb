@@ -70,7 +70,7 @@ class LiveEvent
 
   def set_effort_time_attributes
     efforts.each do |effort|
-      effort.last_reported_split_time_attr = split_times_by_effort[effort.id].last
+      effort.last_reported_split_time = split_times_by_effort[effort.id].last
       effort.start_time = event_start_time + effort.start_offset
       bitkey_hash = due_next_bitkey_hash(effort)
       unless bitkey_hash.nil?

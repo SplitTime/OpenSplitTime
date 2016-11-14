@@ -12,8 +12,7 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
-  attr_accessor :over_under_due, :last_reported_split_time_attr, :next_expected_split_time,
-                :suggested_match, :segment_time
+  attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :segment_time
   attr_writer :start_time, :overall_place, :gender_place
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
@@ -79,11 +78,7 @@ class Effort < ActiveRecord::Base
   # Methods regarding split_times
 
   def last_reported_split_time
-    last_reported_split_time_attr || last_reported_split_time_calc
-  end
-
-  def last_reported_split_time_calc
-    ordered_split_times.last
+    @last_reported_split_time ||= ordered_split_times.last
   end
 
   def finished?

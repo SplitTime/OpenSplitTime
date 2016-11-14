@@ -4,7 +4,9 @@
 # Each instance of SplitTime includes a bitkey indicating the type of time record it represents.
 # Each instance of Split includes a bitmap indicating all valid split_times that may relate to the split.
 # For example, the sub_split_bitmap for a start or finish split would be 1,
-# representing a single time recorded at that point.
+# representing a single time recorded at that point, while the sub_split_bitmap
+# for a split having 'in' and 'out' times would be 65, representing a
+# bitkey of 1 for the 'in' time and a bitkey of 64 for the 'out' time.
 
 class SubSplit
 
@@ -14,6 +16,8 @@ class SubSplit
   # For example, 'IN_BITKEY | CHANGE_BITKEY | OUT_BITKEY'
   # And add a new case to self.kind for its name
   # For example, 'when CHANGE_BITKEY; "Change"'
+  # And add a new case to self.bitkey for its kind
+  # For example, 'when 'change'; CHANGE_BITKEY
 
   IN_BITKEY = 1
   OUT_BITKEY = 64
@@ -75,5 +79,4 @@ class SubSplit
     (0...bitmap.to_s(2).size).each { |k| result << (bitmap & (1 << k)) }
     result.reject { |x| x == 0 }
   end
-
 end

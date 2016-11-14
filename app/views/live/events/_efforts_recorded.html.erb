@@ -17,8 +17,8 @@
           </thead>
           <tbody>
           <% @aid_station_detail.recorded_out_live_efforts.each do |live_effort| %>
-              <% prior_valid_display_data = @aid_station_detail.prior_valid_display_data(live_effort.effort, @aid_station_detail.bitkey_hash_in) %>
-              <% next_valid_display_data = @aid_station_detail.next_valid_display_data(live_effort.effort, @aid_station_detail.bitkey_hash_out) %>
+              <% prior_valid_display_data = @aid_station_detail.prior_valid_display_data(live_effort.effort, @aid_station_detail.sub_split_in) %>
+              <% next_valid_display_data = @aid_station_detail.next_valid_display_data(live_effort.effort, @aid_station_detail.sub_split_out) %>
               <tr>
                 <td class="text-center"><%= live_effort.bib_number %></td>
                 <td class="text-nowrap">

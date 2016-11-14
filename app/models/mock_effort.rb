@@ -49,32 +49,32 @@ class MockEffort
 
   def create_plan_split_times # Temporary split_time objects to assist in constructing the mock effort
     plan_times = calculate_plan_times
-    result = []
+    plan_split_times = []
     splits.each do |split|
-      split.sub_split_bitkeys.each do |key|
+      split.bitkeys.each do |key|
         split_time = SplitTime.new(split: split, sub_split_bitkey: key, time_from_start: plan_times[{split.id => key}])
-        result << split_time
+        plan_split_times << split_time
       end
     end
-    result.index_by(&:bitkey_hash)
+    plan_split_times.index_by(&:sub_split)
   end
 
-  def calculate_plan_times # Hash of {{split.id => bitkey} => mock_time_from_start}
+  def calculate_plan_times # Hash of {sub_split => mock_time_from_start}
     average_time_hash = {}
-    self.relevant_split_times = SplitTime.where(effort: relevant_efforts).group_by(&:bitkey_hash)
+    self.relevant_split_times = SplitTime.where(effort: relevant_efforts).group_by(&:sub_split)
     splits.each do |split|
       split.sub_split_bitkeys.each do |bitkey|
-        bitkey_hash = {split.id => bitkey}
-        average_time_hash[bitkey_hash] = relevant_split_times[bitkey_hash] ?
-            relevant_split_times[bitkey_hash].map(&:time_from_start).mean : nil
+        sub_split = {split.id => bitkey}
+        average_time_hash[sub_split] = relevant_split_times[sub_split] &&
+            relevant_split_times[sub_split].map(&:time_from_start).mean
       end
     end
     normalize_time_data(average_time_hash, expected_time)
   end
 
   def normalize_time_data(time_data, expected_time)
-    average_finish_time = relevant_split_times[finish_bitkey_hash] ?
-        relevant_split_times[finish_bitkey_hash].map(&:time_from_start).mean : nil
+    average_finish_time = relevant_split_times[finish_sub_split] ?
+        relevant_split_times[finish_sub_split].map(&:time_from_start).mean : nil
     return time_data unless average_finish_time
     factor = expected_time / average_finish_time
     time_data.each { |k, v| time_data[k] = v ? v * factor : nil }
@@ -92,11 +92,10 @@ class MockEffort
   end
 
   def related_split_times(split)
-    split.sub_split_bitkey_hashes.collect { |key_hash| indexed_split_times[key_hash] }
+    split.sub_splits.map { |key_hash| indexed_split_times[key_hash] }
   end
 
-  def finish_bitkey_hash
-    event.ordered_splits.last.bitkey_hash_in
+  def finish_sub_split
+    event.ordered_splits.last.sub_split_in
   end
-
 end

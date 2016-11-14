@@ -16,8 +16,8 @@ class EventSegmentCalcs
 
   def fetch_calculations(segment)
     self[segment] ||= SegmentCalculations.new(segment,
-                                              time_hashes[segment.begin_bitkey_hash],
-                                              time_hashes[segment.end_bitkey_hash])
+                                              time_hashes[segment.begin_sub_split],
+                                              time_hashes[segment.end_sub_split])
   end
 
   def get_data_status(segment, segment_time)
@@ -39,5 +39,4 @@ class EventSegmentCalcs
   def std(segment)
     fetch_calculations(segment).std
   end
-
 end

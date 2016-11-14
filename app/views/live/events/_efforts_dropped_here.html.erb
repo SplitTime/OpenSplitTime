@@ -17,7 +17,7 @@
           </thead>
           <tbody>
           <% @aid_station_detail.dropped_here_live_efforts.each do |live_effort| %>
-              <% prior_valid_display_data = @aid_station_detail.prior_valid_display_data(live_effort.effort, @aid_station_detail.bitkey_hash_in) %>
+              <% prior_valid_display_data = @aid_station_detail.prior_valid_display_data(live_effort.effort, @aid_station_detail.sub_split_in) %>
               <tr>
                 <td class="text-center"><%= live_effort.bib_number %></td>
                 <td class="text-nowrap">

@@ -19,23 +19,23 @@ RSpec.describe SplitRow, type: :model do
 
     @event.splits << @course.splits
 
-    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
-    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4000, data_status: 2)
-    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100, data_status: 2)
-    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 15200, data_status: 2)
-    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 15100, data_status: 0)
-    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 21000, data_status: 2)
+    @split_time1 = SplitTime.create!(effort: @effort1, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
+    @split_time2 = SplitTime.create!(effort: @effort1, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4000, data_status: 2)
+    @split_time3 = SplitTime.create!(effort: @effort1, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100, data_status: 2)
+    @split_time4 = SplitTime.create!(effort: @effort1, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 15200, data_status: 2)
+    @split_time6 = SplitTime.create!(effort: @effort1, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 15100, data_status: 0)
+    @split_time7 = SplitTime.create!(effort: @effort1, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 21000, data_status: 2)
 
-    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
-    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 120, data_status: 0)
-    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 24000, data_status: 2)
-    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 150000, data_status: 0)
-    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 40000, data_status: 1)
+    @split_time8 = SplitTime.create!(effort: @effort2, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
+    @split_time9 = SplitTime.create!(effort: @effort2, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 120, data_status: 0)
+    @split_time10 = SplitTime.create!(effort: @effort2, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 24000, data_status: 2)
+    @split_time12 = SplitTime.create!(effort: @effort2, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 150000, data_status: 0)
+    @split_time13 = SplitTime.create!(effort: @effort2, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 40000, data_status: 1)
 
-    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
-    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5000, data_status: 2)
-    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000, data_status: 2)
-    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 12200, data_status: 2)
+    @split_time14 = SplitTime.create!(effort: @effort3, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2)
+    @split_time15 = SplitTime.create!(effort: @effort3, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 5000, data_status: 2)
+    @split_time16 = SplitTime.create!(effort: @effort3, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000, data_status: 2)
+    @split_time17 = SplitTime.create!(effort: @effort3, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 12200, data_status: 2)
 
     event_start_time = @event.start_time
     effort1_start_time = event_start_time + @effort1.start_offset

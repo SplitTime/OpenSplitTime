@@ -1,6 +1,6 @@
 class Hash
 
-  # Convenience methods for parsing bitkey_hashes
+  # Convenience methods for parsing sub_splits
 
   def split_id
     keys.first

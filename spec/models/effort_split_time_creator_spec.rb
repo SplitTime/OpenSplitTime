@@ -4,7 +4,7 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
   let(:excel_epoch) { '1899-12-30'.to_datetime }
   let(:event) { double(:event,
                        start_time: DateTime.new(2016, 7, 1, 6).in_time_zone,
-                       sub_split_bitkey_hashes: [{101 => 1}, {102 => 1}, {102 => 64}, {103 => 1}, {103 => 64}, {104 => 1}]) }
+                       sub_splits: [{101 => 1}, {102 => 1}, {102 => 64}, {103 => 1}, {103 => 64}, {104 => 1}]) }
   let(:effort) { double(:effort, id: 1001, event: event, full_name: 'John Appleseed') }
   let(:current_user_id) { 1 }
 

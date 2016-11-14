@@ -52,9 +52,9 @@ class Event < ActiveRecord::Base
     complete_hash = SplitTime.valid_status
                         .select(:split_id, :sub_split_bitkey, :effort_id, :time_from_start)
                         .where(split_id: split_ids, effort_id: effort_ids)
-                        .group_by(&:bitkey_hash)
-    complete_hash.keys.each do |bitkey_hash|
-      result_hash[bitkey_hash] = Hash[complete_hash[bitkey_hash].map { |split_time| [split_time.effort_id, split_time.time_from_start] }]
+                        .group_by(&:sub_split)
+    complete_hash.keys.each do |sub_split|
+      result_hash[sub_split] = Hash[complete_hash[sub_split].map { |split_time| [split_time.effort_id, split_time.time_from_start] }]
     end
     result_hash
   end
@@ -64,7 +64,7 @@ class Event < ActiveRecord::Base
   end
 
   def split_time_hash
-    split_times.group_by(&:bitkey_hash)
+    split_times.group_by(&:sub_split)
   end
 
   def efforts_sorted
@@ -90,8 +90,8 @@ class Event < ActiveRecord::Base
     combined_places(effort)[1]
   end
 
-  def sub_split_bitkey_hashes
-    ordered_splits.map(&:sub_split_bitkey_hashes).flatten
+  def sub_splits
+    ordered_splits.map(&:sub_splits).flatten
   end
 
   def course_name
@@ -121,5 +121,4 @@ class Event < ActiveRecord::Base
     end
     BulkUpdateService.set_dropped_split_ids(update_hash)
   end
-
 end

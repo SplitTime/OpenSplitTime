@@ -9,7 +9,7 @@ class EffortTimesRow
   def initialize(effort, splits, split_times, event_start_time)
     @effort = effort
     @splits = splits
-    @split_times = split_times.index_by(&:bitkey_hash)
+    @split_times = split_times.index_by(&:sub_split)
     @event_start_time = event_start_time
     @time_clusters = []
     create_time_clusters
@@ -51,7 +51,6 @@ class EffortTimesRow
   end
 
   def related_split_times(split)
-    split.sub_split_bitkey_hashes.collect { |bitkey_hash| split_times[bitkey_hash] }
+    split.sub_splits.map { |sub_split| split_times[sub_split] }
   end
-
 end

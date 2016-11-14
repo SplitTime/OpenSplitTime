@@ -8,7 +8,7 @@ class EffortImporter
     @import_file = ImportFile.new(file_url)
     @event = event
     @current_user_id = current_user_id
-    @sub_splits = event.sub_split_bitkey_hashes
+    @sub_splits = event.sub_splits
     @effort_failure_array = []
     @effort_id_array = []
     @effort_schema = EffortSchema.new(header_column_titles)

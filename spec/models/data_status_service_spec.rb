@@ -29,91 +29,91 @@ RSpec.describe DataStatusService do
 
       @event.splits << @course.splits
 
-      SplitTime.create!(effort: @effort1, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 15200)
-      SplitTime.create!(effort: @effort1, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 15100)
-      SplitTime.create!(effort: @effort1, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 21000)
+      SplitTime.create!(effort: @effort1, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort1, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)
+      SplitTime.create!(effort: @effort1, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100)
+      SplitTime.create!(effort: @effort1, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 15200)
+      SplitTime.create!(effort: @effort1, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 15100)
+      SplitTime.create!(effort: @effort1, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 21000)
 
-      SplitTime.create!(effort: @effort2, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 60)
-      SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 120)
-      SplitTime.create!(effort: @effort2, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 24000)
-      SplitTime.create!(effort: @effort2, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 150000)
-      SplitTime.create!(effort: @effort2, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 40000)
+      SplitTime.create!(effort: @effort2, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort2, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 60)
+      SplitTime.create!(effort: @effort2, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 120)
+      SplitTime.create!(effort: @effort2, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 24000)
+      SplitTime.create!(effort: @effort2, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 150000)
+      SplitTime.create!(effort: @effort2, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 40000)
 
-      SplitTime.create!(effort: @effort3, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5000)
-      SplitTime.create!(effort: @effort3, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000)
-      SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 12200)
-      SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 12300)
-      SplitTime.create!(effort: @effort3, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 18000)
+      SplitTime.create!(effort: @effort3, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort3, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 5000)
+      SplitTime.create!(effort: @effort3, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000)
+      SplitTime.create!(effort: @effort3, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 12200)
+      SplitTime.create!(effort: @effort3, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 12300)
+      SplitTime.create!(effort: @effort3, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 18000)
 
-      SplitTime.create!(effort: @effort4, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 1000)
-      SplitTime.create!(effort: @effort4, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4500)
-      SplitTime.create!(effort: @effort4, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4400)
-      SplitTime.create!(effort: @effort4, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 11000)
-      SplitTime.create!(effort: @effort4, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 11000)
-      SplitTime.create!(effort: @effort4, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 17500)
+      SplitTime.create!(effort: @effort4, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 1000)
+      SplitTime.create!(effort: @effort4, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4500)
+      SplitTime.create!(effort: @effort4, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4400)
+      SplitTime.create!(effort: @effort4, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 11000)
+      SplitTime.create!(effort: @effort4, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 11000)
+      SplitTime.create!(effort: @effort4, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 17500)
 
-      SplitTime.create!(effort: @effort5, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort5, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4600)
-      SplitTime.create!(effort: @effort5, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4800)
-      SplitTime.create!(effort: @effort5, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 9800)
-      SplitTime.create!(effort: @effort5, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 10000)
-      SplitTime.create!(effort: @effort5, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 14550)
+      SplitTime.create!(effort: @effort5, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort5, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4600)
+      SplitTime.create!(effort: @effort5, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4800)
+      SplitTime.create!(effort: @effort5, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 9800)
+      SplitTime.create!(effort: @effort5, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 10000)
+      SplitTime.create!(effort: @effort5, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 14550)
 
-      SplitTime.create!(effort: @effort6, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort6, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 9600)
-      SplitTime.create!(effort: @effort6, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 9660)
-      SplitTime.create!(effort: @effort6, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 14650)
+      SplitTime.create!(effort: @effort6, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort6, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 9600)
+      SplitTime.create!(effort: @effort6, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 9660)
+      SplitTime.create!(effort: @effort6, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 14650)
 
-      SplitTime.create!(effort: @effort7, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort7, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 6300)
-      SplitTime.create!(effort: @effort7, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 6600)
-      SplitTime.create!(effort: @effort7, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 13000)
-      SplitTime.create!(effort: @effort7, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 13500)
+      SplitTime.create!(effort: @effort7, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort7, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 6300)
+      SplitTime.create!(effort: @effort7, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 6600)
+      SplitTime.create!(effort: @effort7, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 13000)
+      SplitTime.create!(effort: @effort7, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 13500)
 
-      SplitTime.create!(effort: @effort8, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort8, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5500)
-      SplitTime.create!(effort: @effort8, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5500)
-      SplitTime.create!(effort: @effort8, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 18700)
+      SplitTime.create!(effort: @effort8, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort8, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 5500)
+      SplitTime.create!(effort: @effort8, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 5500)
+      SplitTime.create!(effort: @effort8, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 18700)
 
-      SplitTime.create!(effort: @effort9, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort9, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 11000)
-      SplitTime.create!(effort: @effort9, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 12000)
-      SplitTime.create!(effort: @effort9, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 20000)
-      SplitTime.create!(effort: @effort9, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 30000)
-      SplitTime.create!(effort: @effort9, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 22000)
+      SplitTime.create!(effort: @effort9, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort9, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 11000)
+      SplitTime.create!(effort: @effort9, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 12000)
+      SplitTime.create!(effort: @effort9, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 20000)
+      SplitTime.create!(effort: @effort9, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 30000)
+      SplitTime.create!(effort: @effort9, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 22000)
 
-      SplitTime.create!(effort: @effort10, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort10, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 40240)
-      SplitTime.create!(effort: @effort10, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4300)
-      SplitTime.create!(effort: @effort10, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 11000)
-      SplitTime.create!(effort: @effort10, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 11100)
-      SplitTime.create!(effort: @effort10, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 17600)
+      SplitTime.create!(effort: @effort10, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort10, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 40240)
+      SplitTime.create!(effort: @effort10, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4300)
+      SplitTime.create!(effort: @effort10, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 11000)
+      SplitTime.create!(effort: @effort10, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 11100)
+      SplitTime.create!(effort: @effort10, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 17600)
 
-      SplitTime.create!(effort: @effort11, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort11, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 6800)
-      SplitTime.create!(effort: @effort11, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 6800)
-      SplitTime.create!(effort: @effort11, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 24000)
-      SplitTime.create!(effort: @effort11, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 24200)
-      SplitTime.create!(effort: @effort11, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 33000)
+      SplitTime.create!(effort: @effort11, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort11, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 6800)
+      SplitTime.create!(effort: @effort11, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 6800)
+      SplitTime.create!(effort: @effort11, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 24000)
+      SplitTime.create!(effort: @effort11, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 24200)
+      SplitTime.create!(effort: @effort11, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 33000)
 
-      SplitTime.create!(effort: @effort12, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort12, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 5300)
-      SplitTime.create!(effort: @effort12, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 5400)
-      SplitTime.create!(effort: @effort12, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 12500)
-      SplitTime.create!(effort: @effort12, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 12550)
-      SplitTime.create!(effort: @effort12, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 23232)
+      SplitTime.create!(effort: @effort12, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort12, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 5300)
+      SplitTime.create!(effort: @effort12, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 5400)
+      SplitTime.create!(effort: @effort12, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 12500)
+      SplitTime.create!(effort: @effort12, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 12550)
+      SplitTime.create!(effort: @effort12, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 23232)
 
-      SplitTime.create!(effort: @effort13, split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort13, split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 4900)
-      SplitTime.create!(effort: @effort13, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 4940)
-      SplitTime.create!(effort: @effort13, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 13400)
-      SplitTime.create!(effort: @effort13, split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 14300)
-      SplitTime.create!(effort: @effort13, split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 19800)
+      SplitTime.create!(effort: @effort13, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+      SplitTime.create!(effort: @effort13, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4900)
+      SplitTime.create!(effort: @effort13, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4940)
+      SplitTime.create!(effort: @effort13, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 13400)
+      SplitTime.create!(effort: @effort13, split: @split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 14300)
+      SplitTime.create!(effort: @effort13, split: @split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 19800)
 
       efforts = Effort.all
       DataStatusService.set_data_status(efforts)
@@ -142,13 +142,13 @@ RSpec.describe DataStatusService do
     end
 
     it 'should set the data status of negative segment times to bad' do
-      expect(@effort1.split_times.where(split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
-      expect(@effort4.split_times.where(split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
+      expect(@effort1.split_times.where(split: @split4, bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
+      expect(@effort4.split_times.where(split: @split2, bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
     end
 
     it 'should look past bad data points to the previous valid data point to calculate data status' do
-      expect(@effort2.split_times.where(split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY).first.questionable?).to eq(true)
-      expect(@effort10.split_times.where(split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY).first.good?).to eq(true)
+      expect(@effort2.split_times.where(split: @split6, bitkey: SubSplit::IN_BITKEY).first.questionable?).to eq(true)
+      expect(@effort10.split_times.where(split: @split2, bitkey: SubSplit::OUT_BITKEY).first.good?).to eq(true)
 
     end
 
@@ -166,22 +166,22 @@ RSpec.describe DataStatusService do
     end
 
     it 'should set the data status of non-zero start splits to bad' do
-      expect(@effort4.split_times.where(split: @split1, sub_split_bitkey: SubSplit::IN_BITKEY).first.data_status).to eq('bad')
+      expect(@effort4.split_times.where(split: @split1, bitkey: SubSplit::IN_BITKEY).first.data_status).to eq('bad')
     end
 
     it 'should set the data status of impossibly fast segments to bad' do
-      expect(@effort2.split_times.where(split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY).first.bad?).to eq(true)
-      expect(@effort2.split_times.where(split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split: @split2, bitkey: SubSplit::IN_BITKEY).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split: @split2, bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
     end
 
     it 'should set the data status of impossibly slow segments to bad' do
-      expect(@effort2.split_times.where(split: @split4, sub_split_bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
-      expect(@effort10.split_times.where(split: @split2, sub_split_bitkey: SubSplit::IN_BITKEY).first.bad?).to eq(true)
+      expect(@effort2.split_times.where(split: @split4, bitkey: SubSplit::OUT_BITKEY).first.bad?).to eq(true)
+      expect(@effort10.split_times.where(split: @split2, bitkey: SubSplit::IN_BITKEY).first.bad?).to eq(true)
     end
 
     it 'should set the data status of splits correctly even if missing prior splits' do
-      expect(@effort6.split_times.where(split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY).first.good?).to eq(true)
-      expect(@effort8.split_times.where(split: @split6, sub_split_bitkey: SubSplit::IN_BITKEY).first.good?).to eq(true)
+      expect(@effort6.split_times.where(split: @split4, bitkey: SubSplit::IN_BITKEY).first.good?).to eq(true)
+      expect(@effort8.split_times.where(split: @split6, bitkey: SubSplit::IN_BITKEY).first.good?).to eq(true)
     end
   end
 

@@ -125,7 +125,7 @@ RSpec.describe Split, kind: :model do
     expect(split.errors[:vert_loss_from_start]).to include("may not be negative")
   end
 
-  describe 'sub_split_bitkey_hashes' do
+  describe 'sub_splits' do
     let(:course) { Course.create!(name: 'split test') }
     let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current) }
     let(:event_same_course) { Event.create!(name: 'Waypoint Event on same course', course: course, start_time: Time.current) }
@@ -156,17 +156,17 @@ RSpec.describe Split, kind: :model do
 
     it 'should return a single key_hash for a start' do
       first_split = course.splits.first
-      expect(first_split.sub_split_bitkey_hashes.count).to eq(1)
+      expect(first_split.sub_splits.count).to eq(1)
     end
 
     it 'should return two key_hashes for an intermediate split' do
       first_split = course.splits.second
-      expect(first_split.sub_split_bitkey_hashes.count).to eq(2)
+      expect(first_split.sub_splits.count).to eq(2)
     end
 
     it 'should return all of the key_hashes for a given split' do
       first_split = event_same_course.splits.first
-      expect(first_split.sub_split_bitkey_hashes.count).to eq(2)
+      expect(first_split.sub_splits.count).to eq(2)
     end
   end
 

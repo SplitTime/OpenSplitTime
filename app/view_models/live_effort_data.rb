@@ -102,19 +102,19 @@ class LiveEffortData
     # Get all the split_times for this effort, which may or may not include
     # existing split_times corresponding to the effort + split being verified
 
-    self.split_times_hash = effort.split_times.index_by(&:bitkey_hash)
-    bitkey_hash_in = {split_id => SubSplit::IN_BITKEY}
-    bitkey_hash_out = {split_id => SubSplit::OUT_BITKEY}
+    self.split_times_hash = effort.split_times.index_by(&:sub_split)
+    sub_split_in = {split_id => SubSplit::IN_BITKEY}
+    sub_split_out = {split_id => SubSplit::OUT_BITKEY}
 
     # Set 'exists' booleans based on whether times for this effort + split
     # already exist in the database
 
-    self.time_in_exists = self.response_row[:timeInExists] = split_times_hash[bitkey_hash_in].present?
-    self.time_out_exists = self.response_row[:timeOutExists] = split_times_hash[bitkey_hash_out].present?
+    self.time_in_exists = self.response_row[:timeInExists] = split_times_hash[sub_split_in].present?
+    self.time_out_exists = self.response_row[:timeOutExists] = split_times_hash[sub_split_out].present?
 
     # Set 'started' flag based on existence of start split_time
 
-    self.started = split_times_hash[start_bitkey_hash].present?
+    self.started = split_times_hash[start_sub_split].present?
 
   end
 
@@ -122,9 +122,9 @@ class LiveEffortData
     self.dropped = effort.dropped?
     if dropped
       self.dropped_split = ordered_splits.find { |split| split.id == effort.dropped_split_id }
-      bitkey_hash_in = dropped_split ? {dropped_split.id => SubSplit::IN_BITKEY} : nil
-      bitkey_hash_out = dropped_split ? {dropped_split.id => SubSplit::OUT_BITKEY} : nil
-      dropped_split_time = split_times_hash[bitkey_hash_out] || split_times_hash[bitkey_hash_in]
+      sub_split_in = dropped_split ? {dropped_split.id => SubSplit::IN_BITKEY} : nil
+      sub_split_out = dropped_split ? {dropped_split.id => SubSplit::OUT_BITKEY} : nil
+      dropped_split_time = split_times_hash[sub_split_out] || split_times_hash[sub_split_in]
       self.dropped_day_and_time = dropped_split_time ? effort.start_time + dropped_split_time.time_from_start : nil
     end
   end
@@ -150,30 +150,30 @@ class LiveEffortData
                       pacer: pacer_out,
                       remarks: remarks) :
         nil
-    bitkey_hash_in = split_time_in ? split_time_in.bitkey_hash : nil
-    bitkey_hash_out = split_time_out ? split_time_out.bitkey_hash : nil
+    sub_split_in = split_time_in ? split_time_in.sub_split : nil
+    sub_split_out = split_time_out ? split_time_out.sub_split : nil
 
     # Now insert new SplitTime instances (if any) into hash table (or change existing ones)
 
-    split_times_hash[bitkey_hash_in] = split_time_in if split_time_in
-    split_times_hash[bitkey_hash_out] = split_time_out if split_time_out
+    split_times_hash[sub_split_in] = split_time_in if split_time_in
+    split_times_hash[sub_split_out] = split_time_out if split_time_out
 
-    # Use ordered_bitkey_hashes as a framework to collect split_times into correct order
+    # Use ordered_sub_splits as a framework to collect split_times into correct order
 
-    ordered_bitkey_hashes = ordered_splits.map(&:sub_split_bitkey_hashes).flatten
-    ordered_split_times = ordered_bitkey_hashes.collect { |key_hash| split_times_hash[key_hash] }
+    ordered_sub_splits = ordered_splits.map(&:sub_splits).flatten
+    ordered_split_times = ordered_sub_splits.collect { |key_hash| split_times_hash[key_hash] }
 
     # Now determine data status of each object in the ordered split_time group,
     # including the new in and/or out SplitTime instances
 
     status_hash = DataStatusService.live_entry_data_status(effort, ordered_splits, ordered_split_times.compact, calcs)
     valid_status_hash = status_hash.select { |_, status| status == 'good' }
-    prior_bitkey_hashes = ordered_splits[0..ordered_splits.index(split) - 1].map(&:sub_split_bitkey_hashes).flatten
-    prior_valid_bitkey_hash = prior_bitkey_hashes
-                                  .collect { |bitkey_hash| [bitkey_hash, valid_status_hash[bitkey_hash]] }
-                                  .select { |e| e[1].present? }
-                                  .last[0]
-    prior_valid_split_time = split_times_hash[prior_valid_bitkey_hash]
+    prior_sub_splits = ordered_splits[0..ordered_splits.index(split) - 1].map(&:sub_splits).flatten
+    prior_valid_sub_split = prior_sub_splits
+                                .map { |sub_split| [sub_split, valid_status_hash[sub_split]] }
+                                .select { |e| e[1].present? }
+                                .last[0]
+    prior_valid_split_time = split_times_hash[prior_valid_sub_split]
     self.prior_valid_day_and_time = prior_valid_split_time ? effort.start_time + prior_valid_split_time.time_from_start : nil
     self.prior_valid_split = prior_valid_split_time ? prior_valid_split_time.split : nil
     self.prior_valid_bitkey = prior_valid_split_time ? prior_valid_split_time.sub_split_bitkey : nil
@@ -181,8 +181,8 @@ class LiveEffortData
 
     # And save the data status of the new SplitTime instances and response_rows
 
-    self.split_time_in.data_status = self.response_row[:timeInStatus] = status_hash[bitkey_hash_in] if split_time_in
-    self.split_time_out.data_status = self.response_row[:timeOutStatus] = status_hash[bitkey_hash_out] if split_time_out
+    self.split_time_in.data_status = self.response_row[:timeInStatus] = status_hash[sub_split_in] if split_time_in
+    self.split_time_out.data_status = self.response_row[:timeOutStatus] = status_hash[sub_split_out] if split_time_out
   end
 
   def times_will_not_overwrite?
@@ -194,9 +194,8 @@ class LiveEffortData
         ((time_out_status == 'good') || time_out_status.nil?)
   end
 
-  def start_bitkey_hash
+  def start_sub_split
     return nil unless ordered_splits.present?
     {ordered_splits.first.id => SubSplit::IN_BITKEY}
   end
-
 end

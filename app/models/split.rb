@@ -14,25 +14,25 @@ class Split < ActiveRecord::Base
   validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :base_name, scope: :course_id, case_sensitive: false,
-                          message: "must be unique for a course"
+                          message: 'must be unique for a course'
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
-                          message: "only one start split permitted on a course"
+                          message: 'only one start split permitted on a course'
   validates_uniqueness_of :kind, scope: :course_id, if: 'is_finish?',
-                          message: "only one finish split permitted on a course"
+                          message: 'only one finish split permitted on a course'
   validates_uniqueness_of :distance_from_start, scope: :course_id,
-                          message: "only one split of a given distance permitted on a course. Use sub_splits if needed."
+                          message: 'only one split of a given distance permitted on a course. Use sub_splits if needed.'
   validates_numericality_of :distance_from_start, equal_to: 0, if: 'is_start?',
-                            message: "for the start split must be 0"
+                            message: 'for the start split must be 0'
   validates_numericality_of :vert_gain_from_start, equal_to: 0, if: 'is_start?', allow_nil: true,
-                            message: "for the start split must be 0"
+                            message: 'for the start split must be 0'
   validates_numericality_of :vert_loss_from_start, equal_to: 0, if: 'is_start?', allow_nil: true,
-                            message: "for the start split must be 0"
+                            message: 'for the start split must be 0'
   validates_numericality_of :distance_from_start, greater_than: 0, :unless => 'is_start?',
-                            message: "must be positive for intermediate and finish splits"
+                            message: 'must be positive for intermediate and finish splits'
   validates_numericality_of :vert_gain_from_start, greater_than_or_equal_to: 0, allow_nil: true,
-                            message: "may not be negative"
+                            message: 'may not be negative'
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
-                            message: "may not be negative"
+                            message: 'may not be negative'
 
   scope :ordered, -> { order(:distance_from_start) }
 
@@ -68,8 +68,8 @@ class Split < ActiveRecord::Base
     self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
 
-  def time_hash(sub_split_bitkey)
-    Hash[SplitTime.where(split_id: id, sub_split_bitkey: sub_split_bitkey).pluck(:effort_id, :time_from_start)]
+  def time_hash(bitkey)
+    Hash[SplitTime.where(split_id: id, sub_split_bitkey: bitkey).pluck(:effort_id, :time_from_start)]
   end
 
   def name(bitkey = nil)
@@ -85,11 +85,9 @@ class Split < ActiveRecord::Base
     sub_split_bitkeys.map { |bitkey| SubSplit.kind(bitkey) }
   end
 
-  def sub_split_bitkey_hashes
+  def sub_splits
     sub_split_bitkeys.map { |bitkey| {id => bitkey} }
   end
-
-  alias_method :bitkey_hashes, :sub_split_bitkey_hashes
 
   def sub_split_bitkeys
     SubSplit.reveal_valid_bitkeys(sub_split_bitmap)
@@ -97,11 +95,11 @@ class Split < ActiveRecord::Base
 
   alias_method :bitkeys, :sub_split_bitkeys
 
-  def bitkey_hash_in
+  def sub_split_in
     bitkeys.include?(SubSplit::IN_BITKEY) ? {id => SubSplit::IN_BITKEY} : nil
   end
 
-  def bitkey_hash_out
+  def sub_split_out
     bitkeys.include?(SubSplit::OUT_BITKEY) ? {id => SubSplit::OUT_BITKEY} : nil
   end
 
@@ -124,5 +122,4 @@ class Split < ActiveRecord::Base
   def random_location_name
     "#{name} Location #{(rand * 1000).to_i} (please change me)"
   end
-
 end

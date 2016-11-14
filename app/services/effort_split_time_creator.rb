@@ -60,7 +60,7 @@ class EffortSplitTimeCreator
   end
 
   def sub_splits
-    @sub_splits ||= event.sub_split_bitkey_hashes
+    @sub_splits ||= event.sub_splits
   end
 
   def populated_sub_splits

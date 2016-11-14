@@ -104,21 +104,21 @@ class AidStationDetail
     aid_station.split_id
   end
 
-  def bitkey_hash_in
+  def sub_split_in
     {split_id => SubSplit::IN_BITKEY}
   end
 
-  def bitkey_hash_out
+  def sub_split_out
     {split_id => SubSplit::OUT_BITKEY}
   end
 
   def recorded_in_day_and_time(live_effort)
-    split_time_in = split_times[live_effort.id].index_by(&:bitkey_hash)[bitkey_hash_in]
+    split_time_in = split_times[live_effort.id].index_by(&:sub_split)[sub_split_in]
     split_time_in ? live_effort.start_time + split_time_in.time_from_start : nil
   end
 
   def recorded_out_day_and_time(live_effort)
-    split_time_out = split_times[live_effort.id].index_by(&:bitkey_hash)[bitkey_hash_out]
+    split_time_out = split_times[live_effort.id].index_by(&:sub_split)[sub_split_out]
     split_time_out ? live_effort.start_time + split_time_out.time_from_start : nil
   end
 
@@ -221,5 +221,4 @@ class AidStationDetail
   def has_have(number)
     number == 1 ? 'has' : 'have'
   end
-
 end

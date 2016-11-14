@@ -56,10 +56,10 @@ class BestEffortsDisplay
     split1 = params[:split1].present? ? Split.find(params[:split1]) : course.start_split
     split2 = params[:split2].present? ? Split.find(params[:split2]) : course.finish_split
     splits = [split1, split2].sort_by(&:course_index)
-    self.segment = Segment.new(splits[0].bitkey_hashes.last,
-                               splits[1].bitkey_hashes.first,
-                               splits[0],
-                               splits[1])
+    self.segment = Segment.new(splits.first.sub_splits.last,
+                               splits.last.sub_splits.first,
+                               splits.first,
+                               splits.last)
   end
 
   def get_efforts(params)
@@ -98,5 +98,4 @@ class BestEffortsDisplay
   def gender_place(effort)
     sorted_effort_genders[0...overall_place(effort)].count(effort.gender)
   end
-
 end

@@ -11,7 +11,7 @@ class EffortShowView
     @effort = effort
     @event = effort.event
     @splits = effort.event.ordered_splits.to_a
-    @split_times = effort.split_times.index_by(&:bitkey_hash)
+    @split_times = effort.split_times.index_by(&:sub_split)
     @split_rows = []
     create_split_rows
   end
@@ -47,7 +47,7 @@ class EffortShowView
   end
 
   def related_split_times(split)
-    split.sub_split_bitkey_hashes.collect { |key_hash| split_times[key_hash] }
+    split.sub_splits.collect { |key_hash| split_times[key_hash] }
   end
 
   def dropped?
@@ -55,11 +55,10 @@ class EffortShowView
   end
 
   def finished?
-    split_times[finish_bitkey_hash].present?
+    split_times[finish_sub_split].present?
   end
 
-  def finish_bitkey_hash
+  def finish_sub_split
     {splits.last.id => SubSplit::IN_BITKEY}
   end
-
 end

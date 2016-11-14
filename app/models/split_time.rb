@@ -4,6 +4,7 @@ class SplitTime < ActiveRecord::Base
   strip_attributes collapse_spaces: true
   belongs_to :effort
   belongs_to :split
+  alias_attribute :bitkey, :sub_split_bitkey
 
   scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
   scope :ordered, -> { includes(:split).order('splits.distance_from_start, split_times.sub_split_bitkey') }
@@ -38,8 +39,8 @@ class SplitTime < ActiveRecord::Base
     end
   end
 
-  def bitkey_hash
-    {split_id => sub_split_bitkey}
+  def sub_split
+    {split_id => bitkey}
   end
 
   def set_effort_data_status
@@ -74,7 +75,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def split_name
-    split.name(sub_split_bitkey)
+    split.name(bitkey)
   end
 
   def effort_name

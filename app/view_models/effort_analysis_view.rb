@@ -10,7 +10,7 @@ class EffortAnalysisView
     @event = @effort.event
     @splits = @effort.event.ordered_splits.to_a
     @split_times = @effort.ordered_split_times.to_a
-    @indexed_split_times = @split_times.index_by(&:bitkey_hash)
+    @indexed_split_times = @split_times.index_by(&:sub_split)
     create_typical_effort
     @analysis_rows = []
     create_analysis_rows
@@ -63,7 +63,7 @@ class EffortAnalysisView
   end
 
   def effort_finished?
-    indexed_split_times[finish_bitkey_hash].present?
+    indexed_split_times[finish_sub_split].present?
   end
 
   def farthest_recorded_time
@@ -81,7 +81,7 @@ class EffortAnalysisView
   attr_reader :splits, :split_times, :indexed_split_times
 
   def create_typical_effort
-    mock_target_time = effort_finish_tfs || effort.expected_time_from_start(finish_bitkey_hash)
+    mock_target_time = effort_finish_tfs || effort.expected_time_from_start(finish_sub_split)
     self.typical_effort = MockEffort.new(event, mock_target_time, effort_start_time, relevant_calc_splits)
     self.indexed_typical_rows = typical_effort
                                     .split_rows
@@ -120,7 +120,7 @@ class EffortAnalysisView
   end
 
   def related_split_times(split)
-    split.sub_split_bitkey_hashes.collect { |key_hash| indexed_split_times[key_hash] }
+    split.sub_splits.collect { |key_hash| indexed_split_times[key_hash] }
   end
 
   def effort_start_time
@@ -128,11 +128,11 @@ class EffortAnalysisView
   end
 
   def effort_finish_tfs
-    indexed_split_times[finish_bitkey_hash] ? indexed_split_times[finish_bitkey_hash].time_from_start : nil
+    indexed_split_times[finish_sub_split] ? indexed_split_times[finish_sub_split].time_from_start : nil
   end
 
-  def finish_bitkey_hash
-    splits.last.bitkey_hash_in
+  def finish_sub_split
+    splits.last.sub_split_in
   end
 
   def sortable_analysis_rows
@@ -140,6 +140,6 @@ class EffortAnalysisView
   end
 
   def effort_in_progress?
-    effort.dropped_split_id.nil? && indexed_split_times[finish_bitkey_hash].nil?
+    effort.dropped_split_id.nil? && indexed_split_times[finish_sub_split].nil?
   end
 end

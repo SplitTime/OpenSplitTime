@@ -30,8 +30,8 @@ class DataStatusService
         if dropped_index && (ordered_split_ids.index(split_time.split_id) > dropped_index)
           status = 'bad'
         else
-          segment = Segment.new(latest_valid_split_time.bitkey_hash,
-                                split_time.bitkey_hash,
+          segment = Segment.new(latest_valid_split_time.sub_split,
+                                split_time.sub_split,
                                 splits[latest_valid_split_time.split_id],
                                 splits[split_time.split_id])
           segment_time = segment.end_split.start? ?
@@ -61,7 +61,7 @@ class DataStatusService
     latest_valid_split_time = ordered_split_times.first
 
     ordered_split_times.each do |split_time|
-      subject_bitkey_hash = split_time.bitkey_hash
+      subject_sub_split = split_time.sub_split
       if split_time.confirmed?
         status = 'confirmed'
         latest_valid_split_time = split_time
@@ -69,8 +69,8 @@ class DataStatusService
         if dropped_index && (ordered_split_ids.index(split_time.split_id) > dropped_index)
           status = 'bad'
         else
-          segment = Segment.new(latest_valid_split_time.bitkey_hash,
-                                split_time.bitkey_hash,
+          segment = Segment.new(latest_valid_split_time.sub_split,
+                                split_time.sub_split,
                                 indexed_splits[latest_valid_split_time.split_id],
                                 indexed_splits[split_time.split_id])
           segment_time = split_time.time_from_start - latest_valid_split_time.time_from_start
@@ -78,9 +78,8 @@ class DataStatusService
           latest_valid_split_time = split_time if status == 'good'
         end
       end
-      status_hash[subject_bitkey_hash] = status
+      status_hash[subject_sub_split] = status
     end
     status_hash
   end
-
 end

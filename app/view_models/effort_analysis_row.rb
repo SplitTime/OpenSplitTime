@@ -4,7 +4,7 @@ class EffortAnalysisRow
   delegate :base_name, :distance_from_start, :kind, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, to: :time_cluster
 
-  # split_times should be an array having size == split.sub_split_bitkey_hashes.size,
+  # split_times should be an array having size == split.sub_splits.size,
   # with nil values where no corresponding split_time exists
 
   def initialize(split, split_times, prior_split, prior_split_time, start_time, typical_row = nil)
@@ -65,7 +65,6 @@ class EffortAnalysisRow
   attr_reader :split, :prior_split, :prior_split_time, :prior_time, :start_time, :time_cluster, :typical_row
 
   def segment
-    Segment.new(prior_split_time.bitkey_hash, split_times.first.bitkey_hash, prior_split, split)
+    @segment ||= Segment.new(prior_split_time.sub_split, split_times.first.sub_split, prior_split, split)
   end
-
 end

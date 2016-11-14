@@ -4,7 +4,7 @@ class PlaceDetailRow
               :passed_by_segment, :passed_by_in_aid, :together_in_aid
   delegate :base_name, :distance_from_start, to: :split
 
-  # split_times should be an array having size == split.sub_split_bitkey_hashes.size,
+  # split_times should be an array having size == split.sub_splits.size,
   # with nil values where no corresponding split_time exists
 
   def initialize(effort, split, previous_split, split_times, places, efforts)
@@ -26,9 +26,9 @@ class PlaceDetailRow
     split_times.map { |split_time| split_time.present? ? split_time.day_and_time_attr : nil }
   end
 
-  def end_bitkey_hash
+  def end_sub_split
     return [] unless split_times
-    split_times.last.present? ? split_times.last.bitkey_hash : nil
+    split_times.last.present? ? split_times.last.sub_split : nil
   end
 
   def passed_segment_count
@@ -106,5 +106,4 @@ class PlaceDetailRow
   def persons(number)
     number == 1 ? "#{number} person" : "#{number} people"
   end
-
 end

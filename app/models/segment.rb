@@ -1,18 +1,18 @@
 class Segment
-  attr_reader :begin_split, :end_split, :begin_bitkey_hash, :end_bitkey_hash
+  attr_reader :begin_split, :end_split, :begin_sub_split, :end_sub_split
   delegate :course, to: :begin_split
   delegate :events, :earliest_event_date, :most_recent_event_date, to: :end_split
 
-  def initialize(begin_bitkey_hash, end_bitkey_hash, begin_split = nil, end_split = nil)
-    @begin_bitkey_hash = begin_bitkey_hash
-    @end_bitkey_hash = end_bitkey_hash
-    @begin_split = begin_split || Split.find(@begin_bitkey_hash.keys.first)
-    @end_split = end_split || Split.find(@end_bitkey_hash.keys.first)
+  def initialize(begin_sub_split, end_sub_split, begin_split = nil, end_split = nil)
+    @begin_sub_split = begin_sub_split
+    @end_sub_split = end_sub_split
+    @begin_split = begin_split || Split.find(begin_sub_split.split_id)
+    @end_split = end_split || Split.find(end_sub_split.split_id)
     validate_segment
   end
 
   def ==(other)
-    (begin_bitkey_hash == other.begin_bitkey_hash) && (end_bitkey_hash == other.end_bitkey_hash)
+    (begin_sub_split == other.begin_sub_split) && (end_sub_split == other.end_sub_split)
   end
 
   def eql?(other)
@@ -20,7 +20,7 @@ class Segment
   end
 
   def hash
-    [begin_bitkey_hash, end_bitkey_hash].hash
+    [begin_sub_split, end_sub_split].hash
   end
 
   def name
@@ -58,11 +58,11 @@ class Segment
   end
 
   def begin_bitkey
-    begin_bitkey_hash.values.first
+    begin_sub_split.bitkey
   end
 
   def end_bitkey
-    end_bitkey_hash.values.first
+    end_sub_split.bitkey
   end
 
   def times
@@ -79,8 +79,8 @@ class Segment
     raise 'Segment splits must be on same course' if begin_split.course_id != end_split.course_id
     raise 'Segment sub_splits are out of order' if within_split? && (begin_bitkey > end_bitkey)
     raise 'Segment splits are out of order' if begin_split.distance_from_start > end_split.distance_from_start
-    raise 'Segment begin bitkey_hash does not reconcile with begin split' if begin_bitkey_hash.keys.first != begin_id
-    raise 'Segment end bitkey_hash does not reconcile with end split' if end_bitkey_hash.keys.first != end_id
+    raise 'Segment begin sub_split does not reconcile with begin split' if begin_sub_split.split_id != begin_id
+    raise 'Segment end sub_split does not reconcile with end split' if end_sub_split.split_id != end_id
   end
 
   def within_split?

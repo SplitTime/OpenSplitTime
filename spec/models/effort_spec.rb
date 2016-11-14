@@ -31,7 +31,7 @@ RSpec.describe Effort, type: :model do
                                             gender: 'male', birthdate: '1989-12-15',
                                             city: 'Boulder', state_code: 'CO', country_code: 'US') }
 
-    it 'should be valid when created with an event_id, first_name, last_name, and gender' do
+    it 'is valid when created with an event_id, first_name, last_name, and gender' do
       Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male')
 
       expect(Effort.all.count).to(equal(1))
@@ -39,31 +39,31 @@ RSpec.describe Effort, type: :model do
       expect(Effort.first.last_name).to eq('Goliath')
     end
 
-    it 'should be invalid without an event_id' do
+    it 'is invalid without an event_id' do
       effort = Effort.new(event: nil, first_name: 'David', last_name: 'Goliath', gender: 'male')
       expect(effort).not_to be_valid
       expect(effort.errors[:event_id]).to include("can't be blank")
     end
 
-    it 'should be invalid without a first_name' do
+    it 'is invalid without a first_name' do
       effort = Effort.new(event: event, first_name: nil, last_name: 'Appleseed', gender: 'male')
       expect(effort).not_to be_valid
       expect(effort.errors[:first_name]).to include("can't be blank")
     end
 
-    it 'should be invalid without a last_name' do
+    it 'is invalid without a last_name' do
       effort = Effort.new(first_name: 'Johnny', last_name: nil, gender: 'male')
       expect(effort).not_to be_valid
       expect(effort.errors[:last_name]).to include("can't be blank")
     end
 
-    it 'should be invalid without a gender' do
+    it 'is invalid without a gender' do
       effort = Effort.new(first_name: 'Johnny', last_name: 'Appleseed', gender: nil)
       expect(effort).not_to be_valid
       expect(effort.errors[:gender]).to include("can't be blank")
     end
 
-    it 'should not permit more than one effort by a participant in a given event' do
+    it 'does not permit more than one effort by a participant in a given event' do
       Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male',
                      participant: participant)
       effort = Effort.new(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male',
@@ -72,7 +72,7 @@ RSpec.describe Effort, type: :model do
       expect(effort.errors[:participant_id]).to include('has already been taken')
     end
 
-    it 'should permit more than one effort in a given event with unassigned participants' do
+    it 'permits more than one effort in a given event with unassigned participants' do
       Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male',
                      participant: nil)
       effort = Effort.new(event: event, first_name: 'Betty', last_name: 'Boop', gender: 'female',
@@ -80,7 +80,7 @@ RSpec.describe Effort, type: :model do
       expect(effort).to be_valid
     end
 
-    it 'should not permit duplicate bib_numbers within a given event' do
+    it 'does not permit duplicate bib_numbers within a given event' do
       Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', bib_number: 20)
       effort = Effort.new(event: event, participant_id: 2, bib_number: 20)
       expect(effort).not_to be_valid
@@ -121,11 +121,64 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort: @effort3, split: @split4, sub_split_bitkey: SubSplit::IN_BITKEY, time_from_start: 7500)
     end
 
-    it 'should return only those efforts for which the finish time is between the parameters provided' do
+    it 'returns only those efforts for which the finish time is between the parameters provided' do
       efforts = Effort.all
       expect(efforts.within_time_range(7800, 8200).count).to eq(1)
       expect(efforts.within_time_range(5000, 10000).count).to eq(3)
       expect(efforts.within_time_range(10000, 20000).count).to eq(0)
+    end
+  end
+
+  describe 'time_in_aid' do
+    it 'returns nil when the split has no split_times' do
+      split_times = SplitTime.none
+      effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
+      split = FactoryGirl.build(:split)
+      expect(effort).to receive(:ordered_split_times).and_return(split_times)
+      expect(effort.time_in_aid(split)).to be_nil
+    end
+
+    it 'returns nil when the split has only one split_time' do
+      split_times = FactoryGirl.build_stubbed_list(:split_times_in_only, 4)
+      effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
+      split = FactoryGirl.build(:split, id: 202)
+      matching_split_times = split_times.select { |split_time| split_time.split_id == split.id }
+      expect(matching_split_times.count).to eq(1)
+      expect(effort).to receive(:ordered_split_times).and_return(matching_split_times)
+      expect(effort.time_in_aid(split)).to be_nil
+    end
+
+    it 'returns the difference between in and out times when the split has in and out split_times' do
+      split_times = FactoryGirl.build_stubbed_list(:split_times_in_out, 4)
+      effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
+      split = FactoryGirl.build(:split, id: 102)
+      matching_split_times = split_times.select { |split_time| split_time.split_id == split.id }
+      expect(matching_split_times.count).to eq(2)
+      expect(effort).to receive(:ordered_split_times).and_return(matching_split_times)
+      expect(effort.time_in_aid(split)).to eq(100)
+    end
+  end
+
+  describe 'total_time_in_aid' do
+    it 'returns zero when the event has no splits' do
+      split_times = []
+      effort = FactoryGirl.build(:effort)
+      expect(effort).to receive(:ordered_split_times).and_return(split_times)
+      expect(effort.total_time_in_aid).to eq(0)
+    end
+
+    it 'returns zero when the event has only "in" splits' do
+      split_times = FactoryGirl.build_stubbed_list(:split_times_in_only, 12)
+      effort = FactoryGirl.build(:effort)
+      expect(effort).to receive(:ordered_split_times).and_return(split_times)
+      expect(effort.total_time_in_aid).to eq(0)
+    end
+
+    it 'correctly calculates time in aid based on times in and out of splits' do
+      split_times = FactoryGirl.build_stubbed_list(:split_times_in_out, 12)
+      effort = FactoryGirl.build(:effort)
+      expect(effort).to receive(:ordered_split_times).and_return(split_times)
+      expect(effort.total_time_in_aid).to eq(500)
     end
   end
 
@@ -156,13 +209,13 @@ RSpec.describe Effort, type: :model do
       SplitTime.create!(effort: @effort2, split: @split2, sub_split_bitkey: SubSplit::OUT_BITKEY, time_from_start: 6200)
     end
 
-    it 'should return zero if the split parameter is a start split' do
+    it 'returns zero if the split parameter is a start split' do
       expect(@effort1.expected_time_from_start(@split1.sub_split_bitkey_hashes.first)).to eq(0)
     end
 
     context 'insufficient historical data' do
 
-      it 'should determine expected time based on most recent time from start and segment mileage/vertical' do
+      it 'determines expected time based on most recent time from start and segment mileage/vertical' do
         expect(@effort1.expected_time_from_start(@split2.bitkey_hash_in)).to eq((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))
         expect(@effort1.expected_time_from_start(@split4.bitkey_hash_in)).to eq(4100 + (((15000 - 6000) * DISTANCE_FACTOR) + ((500 - 500) * VERT_GAIN_FACTOR)) * (4100 / ((6000 * DISTANCE_FACTOR) + (500 * VERT_GAIN_FACTOR))))
       end
@@ -270,7 +323,7 @@ RSpec.describe Effort, type: :model do
         @calcs7 = SegmentCalculations.new(@segment7)
       end
 
-      it 'should determine expected time based on prior split_time and mean segment time (normalized to effort)' do
+      it 'determines expected time based on prior split_time and mean segment time (normalized to effort)' do
         expect(@effort1.expected_time_from_start(@split2.bitkey_hash_in)).to eq(@calcs1.mean)
         expect(@effort2.expected_time_from_start(@split4.bitkey_hash_in)).to eq(6200 + ((6200 / @calcs6.mean) * @calcs4.mean))
         expect(@effort12.expected_time_from_start(@split6.bitkey_hash_in)).to eq(12550 + ((12550 / @calcs7.mean) * @calcs5.mean))

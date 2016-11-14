@@ -126,31 +126,18 @@ class Effort < ActiveRecord::Base
     split_times.start.first
   end
 
-  def base_split_times
-    split_times.base.ordered
-  end
-
   def time_in_aid(split)
-    time_array = split_times.where(split: split).order(:sub_split_bitkey).pluck(:time_from_start)
+    time_array = ordered_split_times(split).map(&:time_from_start)
     time_array.count > 1 ? time_array.last - time_array.first : nil
   end
 
   def total_time_in_aid
-    total = 0
-    split_times_hash = ordered_split_times.group_by(&:split_id)
-    split_times_hash.each_key do |unicorn|
-      time_array = split_times_hash[unicorn].map(&:time_from_start)
-      tia = time_array.last - time_array.first
-      total = tia ? total + tia : total
-    end
-    total
+    @total_time_in_aid ||= ordered_split_times.group_by(&:split_id)
+                               .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
   end
 
   def likely_intended_time(military_time, split, event_segment_calcs = nil)
-    units = %w(hours minutes seconds)
-    seconds_into_day = military_time.split(':')
-                           .map.with_index { |x, i| x.to_i.send(units[i]) }
-                           .reduce(:+).to_i
+    seconds_into_day = TimeConversion.hms_to_seconds(military_time)
     return nil if seconds_into_day >= 1.day
     working_datetime = event_start_time.beginning_of_day + seconds_into_day
     expected = expected_day_and_time({split.id => SubSplit::IN_BITKEY}, event_segment_calcs)
@@ -198,8 +185,8 @@ class Effort < ActiveRecord::Base
     event.splits.ordered
   end
 
-  def ordered_split_times
-    split_times.ordered
+  def ordered_split_times(split = nil)
+    split ? split_times.where(split: split).order(:sub_split_bitkey) : split_times.ordered
   end
 
   def combined_places
@@ -214,25 +201,9 @@ class Effort < ActiveRecord::Base
     @gender_place ||= event.gender_place(self)
   end
 
-  # Age methods
-
   def approximate_age_today
     now = Time.now.utc.to_date
     age ? (TimeDifference.between(event_start_time.to_date, now).in_years + age).to_i : nil
-  end
-
-  def self.age_matches(param, efforts, rigor = 'soft')
-    return none unless param
-    matches = []
-    threshold = rigor == 'exact' ? 1 : 2
-    efforts.each do |effort|
-      age = effort.age_today
-      return none unless age
-      if (age - param).abs < threshold
-        matches << effort
-      end
-    end
-    matches
   end
 
   def unreconciled?
@@ -240,10 +211,10 @@ class Effort < ActiveRecord::Base
   end
 
   def self.sorted_with_finish_status
-    raw_sort = select('DISTINCT ON(efforts.id) efforts.*, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start, split_times.sub_split_bitkey')
-                   .joins(:split_times => :split)
-                   .order('efforts.id, splits.distance_from_start DESC, split_times.sub_split_bitkey DESC')
-    sorted_efforts = raw_sort.sort_by { |row| [row.dropped_split_id ? 1 : 0, -row.distance_from_start, row.time_from_start, row.gender, row.age ? -row.age : 0] }
+    sorted_efforts = select('DISTINCT ON(efforts.id) efforts.*, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start, split_times.sub_split_bitkey')
+                         .joins(:split_times => :split)
+                         .order('efforts.id, splits.distance_from_start DESC, split_times.sub_split_bitkey DESC')
+                         .sort_by { |row| [row.dropped_split_id ? 1 : 0, -row.distance_from_start, row.time_from_start, row.gender, row.age ? -row.age : 0] }
     sorted_efforts.each_with_index do |effort, i|
       effort.overall_place = i + 1
       effort.gender_place = sorted_efforts[0..i].count { |e| e.gender == effort.gender }

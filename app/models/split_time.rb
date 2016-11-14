@@ -32,7 +32,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def course_is_consistent
-    if effort && effort.event && split && effort.event.course_id != split.course_id
+    if effort && effort.event && split && (effort.event.course_id != split.course_id)
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
       errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end
@@ -46,23 +46,14 @@ class SplitTime < ActiveRecord::Base
     DataStatusService.set_data_status(effort)
   end
 
- def elapsed_time
-    return nil if time_from_start.nil?
-    seconds = time_from_start % 60
-    minutes = (time_from_start / 60) % 60
-    hours = time_from_start / (60 * 60)
-    format('%02d:%02d:%02d', hours, minutes, seconds)
+  def elapsed_time
+    time_from_start && TimeConversion.seconds_to_hms(time_from_start)
   end
 
   alias_method :formatted_time_hhmmss, :elapsed_time
 
   def elapsed_time=(elapsed_time)
-    if elapsed_time.present?
-      units = %w(hours minutes seconds)
-      self.time_from_start = elapsed_time.split(':').map.with_index { |x, i| x.to_i.send(units[i]) }.reduce(:+).to_i
-    else
-      self.time_from_start = nil
-    end
+    self.time_from_start = elapsed_time.present? ? TimeConversion.hms_to_seconds(elapsed_time) : nil
   end
 
   def day_and_time
@@ -70,11 +61,8 @@ class SplitTime < ActiveRecord::Base
   end
 
   def day_and_time=(absolute_time)
-    if absolute_time.present?
-      self.time_from_start = absolute_time - event_start_time - effort_start_offset
-    else
-      self.time_from_start = nil
-    end
+    self.time_from_start = absolute_time.present? ?
+        absolute_time - event_start_time - effort_start_offset : nil
   end
 
   def military_time
@@ -82,11 +70,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def military_time=(military_time)
-    if military_time.present?
-      self.day_and_time = effort.intended_datetime(military_time, split)
-    else
-      self.day_and_time = nil
-    end
+    self.day_and_time = military_time.present? ? effort.intended_datetime(military_time, split) : nil
   end
 
   def split_name

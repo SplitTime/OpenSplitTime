@@ -1,6 +1,11 @@
-require 'time_difference_helper'
-
 describe TimeDifference do
+  before(:context) do
+    ENV['TZ'] = 'UTC'
+  end
+
+  after(:context) do
+    ENV['TZ'] = nil
+  end
 
   def self.with_each_class(&block)
     classes = [Time, Date, DateTime]

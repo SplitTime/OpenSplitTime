@@ -41,15 +41,6 @@ class Effort < ActiveRecord::Base
     (column_names - (id + foreign_keys + stamps)).map &:to_sym
   end
 
-  def self.reset_effort_ages
-    counter = 0
-    all.each do |effort|
-      effort.reset_age_from_birthdate
-      counter += 1 if effort.save
-    end
-    counter
-  end
-
   def self.search(param)
     return all if param.blank?
     return where(bib_number: param.to_i) if param.to_i > 0
@@ -67,9 +58,7 @@ class Effort < ActiveRecord::Base
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    difference = TimeDifference.between(new_datetime, event_start_time).in_seconds
-    # TimeDifference returns only positive values so make negative if appropriate
-    self.start_offset = (new_datetime > event_start_time) ? difference : -difference
+    TimeDifference.from(new_datetime, event_start_time).in_seconds
   end
 
   def event_start_time
@@ -194,8 +183,8 @@ class Effort < ActiveRecord::Base
   end
 
   def approximate_age_today
-    now = Time.now.utc.to_date
-    age ? (TimeDifference.between(event_start_time.to_date, now).in_years + age).to_i : nil
+    @approximate_age_today ||=
+        age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
   end
 
   def unreconciled?

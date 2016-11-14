@@ -129,6 +129,31 @@ RSpec.describe Effort, type: :model do
     end
   end
 
+  describe 'approximate_age_today' do
+    it 'returns nil if age is not present' do
+      effort = FactoryGirl.build(:effort)
+      expect(effort.approximate_age_today).to be_nil
+    end
+
+    it 'calculates approximate age at the current time based on age at time of effort' do
+      age = 40
+      event_start_time = DateTime.new(2010, 1, 1, 0, 0, 0)
+      years_since_effort = Time.now.year - event_start_time.year
+      effort = FactoryGirl.build(:effort, age: age)
+      expect(effort).to receive(:event_start_time).and_return(event_start_time)
+      expect(effort.approximate_age_today).to eq(age + years_since_effort)
+    end
+
+    it 'functions properly for future events' do
+      age = 40
+      event_start_time = DateTime.new(2030, 1, 1, 0, 0, 0)
+      years_since_effort = Time.now.year - event_start_time.year
+      effort = FactoryGirl.build(:effort, age: age)
+      expect(effort).to receive(:event_start_time).and_return(event_start_time)
+      expect(effort.approximate_age_today).to eq(age + years_since_effort)
+    end
+  end
+
   describe 'time_in_aid' do
     it 'returns nil when the split has no split_times' do
       split_times = SplitTime.none

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :course do
-    name 'Test Course 100 CW'
+    sequence(:name) { |n| "Course #{n}" }
 
     factory :course_with_splits do
 

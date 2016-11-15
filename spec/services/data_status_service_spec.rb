@@ -121,16 +121,13 @@ RSpec.describe DataStatusService do
     end
 
     it 'should accept a single effort as a parameter' do
-      DataStatusService.set_data_status(@effort1)
+      effort = FactoryGirl.build_stubbed(:effort)
+      expect { DataStatusService.set_data_status(effort) }.not_to raise_error
     end
 
     it 'should accept an array of efforts as a parameter' do
-      DataStatusService.set_data_status([@effort1, @effort2])
-    end
-
-    it 'should accept an ActiveRecord relation as a parameter' do
-      efforts = Effort.female
-      DataStatusService.set_data_status(efforts)
+      efforts = FactoryGirl.build_stubbed_list(:effort, 2)
+      expect { DataStatusService.set_data_status(efforts) }.not_to raise_error
     end
 
     it 'should set the data status of the efforts to the lowest status of the split times' do

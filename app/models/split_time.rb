@@ -54,7 +54,7 @@ class SplitTime < ActiveRecord::Base
   alias_method :formatted_time_hhmmss, :elapsed_time
 
   def elapsed_time=(elapsed_time)
-    self.time_from_start = elapsed_time.present? ? TimeConversion.hms_to_seconds(elapsed_time) : nil
+    self.time_from_start = TimeConversion.hms_to_seconds(elapsed_time)
   end
 
   def day_and_time
@@ -67,7 +67,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def military_time
-    day_and_time && format('%02d:%02d:%02d', day_and_time.hour, day_and_time.min, day_and_time.sec)
+    day_and_time && TimeConversion.absolute_to_hms(day_and_time)
   end
 
   def military_time=(military_time)

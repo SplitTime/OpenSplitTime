@@ -1,0 +1,128 @@
+require 'rails_helper'
+
+describe TimeConversion do
+  before(:context) do
+    ENV['TZ'] = 'UTC'
+  end
+
+  after(:context) do
+    ENV['TZ'] = nil
+  end
+
+  def self.with_each_class(&block)
+    classes = [Time, DateTime]
+
+    classes.each do |clazz|
+      context "with a #{clazz.name} class" do
+        instance_exec clazz, &block
+      end
+    end
+  end
+
+  describe '.hms_to_seconds' do
+    it 'returns nil when passed a nil parameter' do
+      hms_elapsed = nil
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to be_nil
+    end
+
+    it 'returns nil when passed an empty string' do
+      hms_elapsed = ''
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to be_nil
+    end
+
+    it 'returns zero when passed a string of zeros' do
+      hms_elapsed = '00:00:00'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(0)
+    end
+
+    it 'converts a string in the form of hh:mm:ss to seconds' do
+      hms_elapsed = '12:30:40'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(12.hours + 30.minutes + 40.seconds)
+    end
+
+    it 'functions properly when passed a time greater than 24 hours' do
+      hms_elapsed = '27:30:40'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(27.hours + 30.minutes + 40.seconds)
+    end
+
+    it 'functions properly when passed a time greater than 100 hours' do
+      hms_elapsed = '105:30:40'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(105.hours + 30.minutes + 40.seconds)
+    end
+  end
+
+  describe '.seconds_to_hms' do
+    it 'returns an empty string when passed a nil parameter' do
+      seconds = nil
+      expect(TimeConversion.seconds_to_hms(seconds)).to eq('')
+    end
+
+    it 'returns 00:00:00 when passed zero' do
+      seconds = 0
+      expect(TimeConversion.seconds_to_hms(seconds)).to eq('00:00:00')
+    end
+
+    it 'returns a string in the form of hh:mm:ss when passed an integer number of seconds' do
+      seconds = 4545
+      expect(TimeConversion.seconds_to_hms(seconds)).to eq('01:15:45')
+    end
+
+    it 'functions properly for times in excess of 24 hours' do
+      seconds = 100000
+      expect(TimeConversion.seconds_to_hms(seconds)).to eq('27:46:40')
+    end
+
+    it 'functions properly for times in excess of 100 hours' do
+      seconds = 500000
+      expect(TimeConversion.seconds_to_hms(seconds)).to eq('138:53:20')
+    end
+  end
+
+  describe '.absolute_to_hms' do
+    it 'returns an empty string when passed a nil parameter' do
+      absolute = nil
+      expect(TimeConversion.absolute_to_hms(absolute)).to eq('')
+    end
+
+    it 'returns 00:00:00 when passed a date without time values' do
+      absolute = Date.new(2016, 1, 1)
+      expect(TimeConversion.absolute_to_hms(absolute)).to eq('00:00:00')
+    end
+
+    with_each_class do |clazz|
+      it 'returns a string in the form of hh:mm:ss when passed a time object' do
+        absolute = clazz.new(2016, 7, 1, 6, 30, 45)
+        expect(TimeConversion.absolute_to_hms(absolute)).to eq('06:30:45')
+      end
+    end
+
+    with_each_class do |clazz|
+      it 'functions properly when time is past 12:59:59' do
+        absolute = clazz.new(2016, 7, 1, 15, 30, 45)
+        expect(TimeConversion.absolute_to_hms(absolute)).to eq('15:30:45')
+      end
+    end
+  end
+
+  describe '.hms_to_absolute' do
+    it 'returns the absolute_base converted to a time object when passed a nil hms parameter' do
+      hms = nil
+      absolute_base = Date.new(2016, 1, 1)
+      expect(TimeConversion.hms_to_absolute(hms, absolute_base)).to eq(absolute_base.in_time_zone)
+    end
+
+    it 'returns the absolute_base converted to a time object when passed an empty string hms parameter' do
+      hms = ''
+      absolute_base = Date.new(2016, 1, 1)
+      expect(TimeConversion.hms_to_absolute(hms, absolute_base)).to eq(absolute_base.in_time_zone)
+    end
+
+    with_each_class do |clazz|
+      it 'adds hours, minutes, and seconds when passed a string in the form of hh:mm:ss and a time or datetime object' do
+        hms = '03:30:00'
+        absolute_base = clazz.new(2016, 7, 1, 6, 0, 0).in_time_zone
+        expect(TimeConversion.hms_to_absolute(hms, absolute_base)).to eq(Time.new(2016, 7, 1, 9, 30, 0).in_time_zone)
+      end
+    end
+  end
+end

@@ -12,6 +12,7 @@ class SplitTime < ActiveRecord::Base
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
+  scope :within_time_range, -> (low_time, high_time) { where(time_from_start: low_time..high_time) }
 
   attr_accessor :day_and_time_attr
 

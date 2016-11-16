@@ -44,7 +44,7 @@ class MockEffort
   attr_writer :relevant_events, :relevant_efforts
 
   def set_relevant_resources
-    finder = EffortFinder.new(finish_sub_split, expected_time, split: finish_split, course: course)
+    finder = SimilarEffortFinder.new(finish_sub_split, expected_time, split: finish_split)
     self.relevant_events = finder.events
     self.relevant_efforts = finder.efforts
   end

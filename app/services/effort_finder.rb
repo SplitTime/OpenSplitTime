@@ -29,30 +29,30 @@ class EffortFinder
   end
 
   def effort_ids
-    relevant_split_times.map(&:effort_id)
+    selected_split_times.map(&:effort_id)
   end
 
-  def relevant_split_times
-    split_time_groups.find { |group| group.count > minimum_efforts } || split_time_groups.last
+  def selected_split_times
+    time_ranges.each do |low_time, high_time|
+      proposed_set = split_times_in_range(low_time, high_time)
+      return proposed_set if proposed_set.count > minimum_efforts
+    end
+    possible_split_times
   end
 
-  def split_time_groups
-    time_ranges.map { |low_time, high_time| times_within_range(high_time, low_time) }
-  end
-
-  def times_within_range(high_time, low_time)
+  def split_times_in_range(low_time, high_time)
     possible_split_times.select { |split_time| (low_time..high_time).include? split_time.time_from_start }
   end
 
   def possible_split_times
-    @possible_split_times ||= SplitTime.valid_status.where(split: split, bitkey: sub_split.bitkey).within_time_range(low_time, high_time).to_a
+    @possible_split_times ||= SplitTime.valid_status.where(split: split, bitkey: sub_split.bitkey).within_time_range(lowest_time, highest_time).to_a
   end
 
-  def low_time
+  def lowest_time
     time_from_start * FACTOR_PAIRS.last.first
   end
 
-  def high_time
+  def highest_time
     time_from_start * FACTOR_PAIRS.last.last
   end
 

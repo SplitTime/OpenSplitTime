@@ -27,7 +27,7 @@ class PlanDisplay
 
   attr_reader :event, :mock_effort
 
-  def expected_time_from_param(entered_time)
+  def expected_time_from_param(entered_time) # TODO use TimeConversion methods here
     return nil unless entered_time.present?
     clean_time = entered_time.gsub(/[^\d:]/, '')
     clean_time.concat("00") if entered_time.last == ":"

@@ -28,18 +28,7 @@ class Course < ActiveRecord::Base
     splits.finish.first.update(description: "Finish point for the #{name} course.") if splits.finish.present?
   end
 
-  def relevant_efforts(target_time, relevant_events, min_efforts = 20)
-    return Effort.none if relevant_events.count < 1
-    event_efforts = Effort.valid_status.where(event: relevant_events)
-    5.step(25, 5) do |i|
-      scope_result = event_efforts.within_time_range(target_time * (1-(i/100.0)), target_time * (1+(i/100.0)))
-      return scope_result if scope_result.count >= min_efforts
-    end
-    event_efforts.within_time_range(target_time * 0.7, target_time * 1.3)
-  end
-
   def visible_events
     events.visible
   end
-
 end

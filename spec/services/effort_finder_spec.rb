@@ -28,7 +28,7 @@ RSpec.describe EffortFinder, type: :model do
     end
   end
 
-  describe '.efforts' do
+  describe '#efforts' do
     it 'returns an empty ActiveRecord association when no efforts meet the provided criteria' do
       skip 'need FactoryGirl setup that will create a working event with efforts and split_times in memory'
       effort_database = []
@@ -39,6 +39,20 @@ RSpec.describe EffortFinder, type: :model do
       finder = EffortFinder.new(sub_split, time_from_start, split: split, course: course)
       expect(finder).to receive(:effort_database).and_return(effort_database)
       expect(finder.efforts).to eq(Effort.none)
+    end
+
+    it 'returns an ActiveRecord association for the set of efforts that meets the provided criteria' do
+      skip 'need FactoryGirl setup that will create a working event with efforts and split_times in memory'
+    end
+  end
+
+  describe '#events' do
+    it 'returns an empty ActiveRecord association when no efforts meet the provided criteria' do
+      skip 'need FactoryGirl setup that will create a working event with efforts and split_times in memory'
+    end
+
+    it 'returns an ActiveRecord association for the set of unique events relating to efforts that meet the provided criteria' do
+      skip 'need FactoryGirl setup that will create a working event with efforts and split_times in memory'
     end
   end
 end

@@ -1,19 +1,23 @@
 class MockEffort
 
-  attr_accessor :relevant_events, :relevant_efforts
-  attr_reader :course, :expected_time, :start_time, :split_rows
+  attr_reader :course, :expected_time, :start_time, :relevant_events, :relevant_efforts
 
   MAX_EVENTS = 5
 
   def initialize(event, expected_time, start_time, splits = nil)
-    @event = event
-    @course = @event.course
+    @course = event.course
     @expected_time = expected_time
     @start_time = start_time
-    set_relevant_resources
     @splits = splits || course.ordered_splits.to_a
-    @indexed_split_times = create_plan_split_times
-    @split_rows = create_split_rows
+    set_relevant_resources
+  end
+
+  def indexed_split_times
+    @indexed_split_times ||= create_plan_split_times
+  end
+
+  def split_rows
+    @split_rows ||= create_split_rows
   end
 
   def total_segment_time
@@ -39,12 +43,12 @@ class MockEffort
   private
 
   attr_accessor :splits, :relevant_split_times
-  attr_reader :event, :indexed_split_times
+  attr_writer :relevant_events, :relevant_efforts
 
   def set_relevant_resources
-    self.relevant_events = course.events.where(concealed: false).recent(MAX_EVENTS)
-    self.relevant_events << event unless relevant_events.include?(event)
-    self.relevant_efforts = course.relevant_efforts(expected_time, relevant_events).to_a
+    finder = EffortFinder.new(finish_sub_split, expected_time, split: finish_split, course: course)
+    self.relevant_events = finder.events
+    self.relevant_efforts = finder.efforts
   end
 
   def create_plan_split_times # Temporary split_time objects to assist in constructing the mock effort
@@ -95,7 +99,11 @@ class MockEffort
     split.sub_splits.map { |key_hash| indexed_split_times[key_hash] }
   end
 
+  def finish_split
+    splits.last
+  end
+
   def finish_sub_split
-    event.ordered_splits.last.sub_split_in
+    finish_split.sub_split_in
   end
 end

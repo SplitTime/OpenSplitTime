@@ -23,14 +23,14 @@ class Effort < ActiveRecord::Base
 
   scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
-                                         .joins(:split_times => :split).where(splits: {kind: 1})
-                                         .order('split_times.time_from_start') }
+                                         .finished.order('split_times.time_from_start') }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :within_time_range, -> (low_time, high_time) { includes(:split_times => :split)
                                                            .where(splits: {kind: 1},
                                                                   split_times: {time_from_start: low_time..high_time}) }
   scope :unreconciled, -> { where(participant_id: nil) }
+  scope :finished, -> { joins(:split_times => :split).where(splits: {kind: 1}) }
 
   delegate :race, to: :event
 
@@ -160,7 +160,6 @@ class Effort < ActiveRecord::Base
         (prior_split_time.time_from_start + (subject_segment_calcs.mean * pace_factor)) :
         (prior_split_time.time_from_start + (subject_segment.typical_time_by_terrain * pace_factor))
   end
-
 
   def ordered_splits
     @ordered_splits ||= event.splits.ordered

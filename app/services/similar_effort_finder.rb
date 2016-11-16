@@ -6,6 +6,7 @@ class SimilarEffortFinder
     @split = options[:split] || Split.find(sub_split.split_id)
     @minimum_efforts = options[:minimum_efforts] || 20
     @maximum_efforts = options[:maximum_efforts] || 200
+    @finished_only = options[:finished_only]
     validate_finder
   end
 
@@ -19,7 +20,7 @@ class SimilarEffortFinder
 
   private
 
-  attr_reader :sub_split, :time_from_start, :split, :minimum_efforts, :maximum_efforts
+  attr_reader :sub_split, :time_from_start, :split, :minimum_efforts, :maximum_efforts, :finished_only
 
   FACTOR_PAIRS = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30].map { |step| [1 - step, 1 + step] }
 
@@ -36,11 +37,27 @@ class SimilarEffortFinder
       proposed_set = split_times_in_range(low_time, high_time)
       return proposed_set if proposed_set.count > minimum_efforts
     end
-    possible_split_times
+    scoped_split_times
   end
 
   def split_times_in_range(low_time, high_time)
-    possible_split_times.select { |split_time| (low_time..high_time).include? split_time.time_from_start }
+    scoped_split_times.select { |split_time| (low_time..high_time).include? split_time.time_from_start }
+  end
+
+  def scoped_split_times
+    finished_only ? finished_effort_split_times : possible_split_times
+  end
+
+  def finished_effort_split_times
+    possible_split_times.select { |split_time| finished_effort_ids.include?(split_time.effort_id) }
+  end
+
+  def finished_effort_ids
+    @finished_effort_ids ||= Effort.where(id: possible_effort_ids).finished.pluck(:id)
+  end
+
+  def possible_effort_ids
+    @possible_effort_ids ||= possible_split_times.map(&:effort_id).uniq
   end
 
   def possible_split_times
@@ -58,6 +75,6 @@ class SimilarEffortFinder
   end
 
   def validate_finder
-    raise 'Provided sub_split is not contained within the provided split' if split.id != sub_split.split_id
+    raise RuntimeError 'Provided sub_split is not contained within the provided split' if split.id != sub_split.split_id
   end
 end

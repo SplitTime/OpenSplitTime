@@ -50,7 +50,7 @@ class Event < ActiveRecord::Base
     split_ids = ordered_split_ids
     effort_ids = Effort.includes(:event).where(dropped_split_id: nil, events: {course_id: course_id}).order('events.start_time DESC').limit(200).pluck(:id)
     complete_hash = SplitTime.valid_status
-                        .select(:split_id, :sub_split_bitkey, :effort_id, :time_from_start)
+                        .basic_components
                         .where(split_id: split_ids, effort_id: effort_ids)
                         .group_by(&:sub_split)
     complete_hash.keys.each do |sub_split|

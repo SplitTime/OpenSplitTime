@@ -1,16 +1,11 @@
 class EffortAnalysisView
   include EffortPlaceMethods
 
-  attr_reader :effort, :event, :analysis_rows
-  delegate :full_name, :event_name, :participant, :bib_number, :finish_status,
-           :gender, to: :effort
+  attr_reader :effort, :analysis_rows
+  delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender, to: :effort
 
   def initialize(effort)
     @effort = effort
-    @event = @effort.event
-    @splits = @effort.event.ordered_splits.to_a
-    @split_times = @effort.ordered_split_times.to_a
-    @indexed_split_times = @split_times.index_by(&:sub_split)
     create_typical_effort
     @analysis_rows = []
     create_analysis_rows
@@ -75,14 +70,17 @@ class EffortAnalysisView
     farthest_split ? farthest_split.base_name : nil
   end
 
+  def event
+    @event ||= effort.event
+  end
+
   private
 
   attr_accessor :typical_effort, :indexed_typical_rows, :indexed_analysis_rows
-  attr_reader :splits, :split_times, :indexed_split_times
 
   def create_typical_effort
     mock_target_time = effort_finish_tfs || effort.expected_time_from_start(finish_sub_split)
-    self.typical_effort = MockEffort.new(event, mock_target_time, effort_start_time, relevant_calc_splits)
+    self.typical_effort = MockEffort.new(course, mock_target_time, effort_start_time, relevant_calc_splits)
     self.indexed_typical_rows = typical_effort
                                     .split_rows
                                     .index_by(&:split_id)
@@ -141,5 +139,21 @@ class EffortAnalysisView
 
   def effort_in_progress?
     effort.dropped_split_id.nil? && indexed_split_times[finish_sub_split].nil?
+  end
+
+  def course
+    @course ||= event.course
+  end
+
+  def splits
+    @splits ||= event.ordered_splits.to_a
+  end
+
+  def split_times
+    @split_times ||= effort.ordered_split_times.to_a
+  end
+
+  def indexed_split_times
+    @indexed_split_times ||= split_times.index_by(&:sub_split)
   end
 end

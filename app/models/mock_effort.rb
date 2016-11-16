@@ -2,10 +2,8 @@ class MockEffort
 
   attr_reader :course, :expected_time, :start_time, :relevant_events, :relevant_efforts
 
-  MAX_EVENTS = 5
-
-  def initialize(event, expected_time, start_time, splits = nil)
-    @course = event.course
+  def initialize(course, expected_time, start_time, splits = nil)
+    @course = course
     @expected_time = expected_time
     @start_time = start_time
     @splits = splits || course.ordered_splits.to_a

@@ -24,6 +24,14 @@ module TimeConversion
     hms.present? ? base_absolute.in_time_zone + hms_to_seconds(hms) : base_absolute.in_time_zone
   end
 
+  def self.components_to_absolute(components)
+    DateTime.new(components['date(1i)'].to_i,
+                 components['date(2i)'].to_i,
+                 components['date(3i)'].to_i,
+                 components['date(4i)'].to_i,
+                 components['date(5i)'].to_i)
+  end
+
   def self.to_hms(hours, minutes, seconds)
     format('%02d:%02d:%02d', hours, minutes, seconds)
   end

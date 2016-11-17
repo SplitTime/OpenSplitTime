@@ -1,6 +1,7 @@
 class SimilarEffortFinder
 
   def initialize(sub_split, time_from_start, options = {})
+    raise ArgumentError, 'optional parameters must be provided as a hash' unless options.is_a?(Hash)
     @sub_split = sub_split
     @time_from_start = time_from_start
     @split = options[:split] || Split.find(sub_split.split_id)

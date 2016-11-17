@@ -339,13 +339,13 @@ RSpec.describe Effort, type: :model do
         @segment6 = Segment.new(@split1.sub_split_in, @split2.sub_split_out)
         @segment7 = Segment.new(@split1.sub_split_in, @split4.sub_split_out)
 
-        @calcs1 = SegmentCalculations.new(@segment1)
-        @calcs2 = SegmentCalculations.new(@segment2)
-        @calcs3 = SegmentCalculations.new(@segment3)
-        @calcs4 = SegmentCalculations.new(@segment4)
-        @calcs5 = SegmentCalculations.new(@segment5)
-        @calcs6 = SegmentCalculations.new(@segment6)
-        @calcs7 = SegmentCalculations.new(@segment7)
+        @calcs1 = SegmentTimes.new(@segment1)
+        @calcs2 = SegmentTimes.new(@segment2)
+        @calcs3 = SegmentTimes.new(@segment3)
+        @calcs4 = SegmentTimes.new(@segment4)
+        @calcs5 = SegmentTimes.new(@segment5)
+        @calcs6 = SegmentTimes.new(@segment6)
+        @calcs7 = SegmentTimes.new(@segment7)
       end
 
       it 'determines expected time based on prior split_time and mean segment time (normalized to effort)' do

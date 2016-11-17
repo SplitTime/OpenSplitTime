@@ -1,4 +1,4 @@
-class SegmentCalculations
+class SegmentTimes
   attr_reader :times, :low_bad, :low_questionable, :high_questionable, :high_bad, :mean, :std
 
   STAT_CALC_THRESHOLD = 8
@@ -9,7 +9,7 @@ class SegmentCalculations
     @end_times_hash = end_hash || segment.end_split.time_hash(segment.end_bitkey)
     @times = calculate_times(begin_times_hash, end_times_hash)
     create_valid_data_array
-    set_status_limits(segment)
+    set_status_limits
   end
 
   def status(value)
@@ -52,7 +52,7 @@ class SegmentCalculations
     self.valid_data_array = data_array
   end
 
-  def set_status_limits(segment)
+  def set_status_limits
     if segment.end_split.start?
       self.low_bad = 0
       self.low_questionable = 0
@@ -64,22 +64,22 @@ class SegmentCalculations
       self.high_questionable = 6.hours
       self.high_bad = 1.day
     else # This is a "real" segment between waypoint groups
-      set_limits_by_terrain(segment)
-      set_limits_by_stats(valid_data_array)
+      set_limits_by_terrain
+      set_limits_by_stats
     end
   end
 
-  def set_limits_by_terrain(segment)
+  def set_limits_by_terrain
     self.low_bad = terrain_time / 5
     self.low_questionable = terrain_time / 3.5
     self.high_questionable = terrain_time * 3.5
     self.high_bad = terrain_time * 5
   end
 
-  def set_limits_by_stats(data_array)
-    return unless data_array && data_array.count > STAT_CALC_THRESHOLD
-    self.mean = data_array.mean
-    self.std = data_array.standard_deviation
+  def set_limits_by_stats
+    return unless valid_data_array && valid_data_array.count > STAT_CALC_THRESHOLD
+    self.mean = valid_data_array.mean
+    self.std = valid_data_array.standard_deviation
     self.low_bad = [self.low_bad, mean - (4 * std), 0].max
     self.low_questionable = [self.low_questionable, mean - (3 * std), 0].max
     self.high_questionable = [self.high_questionable, mean + (4 * std)].min

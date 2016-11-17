@@ -73,7 +73,10 @@ class SplitTime < ActiveRecord::Base
   end
 
   def military_time=(military_time)
-    self.day_and_time = military_time.present? ? effort.intended_datetime(military_time, split) : nil
+    self.day_and_time = military_time.present? ?
+        IntendedTimeCalculator.day_and_time(military_time: military_time,
+                                            effort: effort,
+                                            sub_split: sub_split) : nil
   end
 
   def split_name

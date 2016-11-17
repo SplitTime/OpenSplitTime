@@ -1,11 +1,12 @@
 class TimePredictor
 
   def initialize(args = {})
+    raise ArgumentError, 'parameters must be provided as a hash' unless args.is_a?(Hash)
     @effort = args[:effort]
     @sub_split = args[:sub_split]
     @ordered_splits = args[:ordered_splits] || effort.event.ordered_splits.to_a
-    @effort_segment_calcs = args[:effort_segment_calcs] || EffortSegmentCalcs.new(similar_efforts)
     @valid_split_times = args[:valid_split_times] || effort.split_times.valid_status.to_a
+    @effort_segment_calcs = args[:effort_segment_calcs] || EffortSegmentTimes.new(efforts: similar_efforts)
     validate_predictor
   end
 

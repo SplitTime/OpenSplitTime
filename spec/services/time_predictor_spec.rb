@@ -21,7 +21,7 @@ RSpec.describe TimePredictor do
       effort = FactoryGirl.build_stubbed(:effort)
       sub_split = split3.sub_splits.first
       split_times = split_times_101
-      calcs = EffortSegmentCalcs.new(split_times: split_times)
+      calcs = EffortSegmentTimes.new(split_times: split_times)
       expect { TimePredictor.new(effort: effort,
                                  sub_split: sub_split,
                                  ordered_splits: ordered_splits,
@@ -62,7 +62,7 @@ RSpec.describe TimePredictor do
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
       sub_split = split4.sub_splits.first
-      calcs = EffortSegmentCalcs.new(split_times: split_times)
+      calcs = EffortSegmentTimes.new(split_times: split_times)
       predictor = TimePredictor.new(effort: effort,
                                     sub_split: sub_split,
                                     ordered_splits: ordered_splits,
@@ -77,7 +77,7 @@ RSpec.describe TimePredictor do
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
       sub_split = split5.sub_splits.first
-      calcs = EffortSegmentCalcs.new(split_times: split_times)
+      calcs = EffortSegmentTimes.new(split_times: split_times)
       predictor = TimePredictor.new(effort: effort,
                                     sub_split: sub_split,
                                     ordered_splits: ordered_splits,
@@ -92,7 +92,7 @@ RSpec.describe TimePredictor do
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
       sub_split = split6.sub_splits.first
-      calcs = EffortSegmentCalcs.new(split_times: split_times)
+      calcs = EffortSegmentTimes.new(split_times: split_times)
       predictor = TimePredictor.new(effort: effort,
                                     sub_split: sub_split,
                                     ordered_splits: ordered_splits,

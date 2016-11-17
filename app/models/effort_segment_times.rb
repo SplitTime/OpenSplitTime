@@ -1,6 +1,7 @@
-class EffortSegmentCalcs
+class EffortSegmentTimes
 
   def initialize(args = {})
+    raise ArgumentError, 'parameters must be provided as a hash' unless args.is_a?(Hash)
     @effort_ids = args[:effort_ids] || (args[:efforts] && args[:efforts].map(&:id)) || []
     @split_times = args[:split_times] || SplitTime.valid_status.basic_components.where(effort_id: effort_ids)
     @segment_calcs = {}
@@ -12,7 +13,7 @@ class EffortSegmentCalcs
 
   def [](segment)
     segment_calcs[segment] ||=
-        SegmentCalculations.new(segment, time_hashes[segment.begin_sub_split], time_hashes[segment.end_sub_split])
+        SegmentTimes.new(segment, time_hashes[segment.begin_sub_split], time_hashes[segment.end_sub_split])
   end
 
   def time_hashes

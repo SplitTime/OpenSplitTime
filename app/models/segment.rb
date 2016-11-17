@@ -66,7 +66,7 @@ class Segment
   end
 
   def times
-    SegmentCalculations.new(self).times
+    SegmentTimes.new(self).times
   end
 
   def full_course?

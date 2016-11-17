@@ -24,7 +24,7 @@ class SplitRow
   end
 
   def pacer_in_out
-    split_times.map { |st| st ? pacer_text(st.pacer) : nil }
+    split_times.map { |st| st && st.pacer.humanize }
   end
 
   def remarks
@@ -34,8 +34,4 @@ class SplitRow
   private
 
   attr_reader :split_times, :prior_time, :start_time, :time_cluster
-
-  def pacer_text(boolean)
-    boolean ? 'Yes' : 'No'
-  end
 end

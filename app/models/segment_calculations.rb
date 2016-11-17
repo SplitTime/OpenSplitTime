@@ -1,11 +1,12 @@
 class SegmentCalculations
-  attr_accessor :times, :valid_data_array, :low_bad, :low_questionable, :high_questionable, :high_bad, :mean, :std
+  attr_reader :times, :low_bad, :low_questionable, :high_questionable, :high_bad, :mean, :std
 
   STAT_CALC_THRESHOLD = 8
 
-  def initialize(segment, begin_times_hash = nil, end_times_hash = nil)
-    begin_times_hash ||= segment.begin_split.time_hash(segment.begin_bitkey)
-    end_times_hash ||= segment.end_split.time_hash(segment.end_bitkey)
+  def initialize(segment, begin_hash = nil, end_hash = nil)
+    @segment = segment
+    @begin_times_hash = begin_hash || segment.begin_split.time_hash(segment.begin_bitkey)
+    @end_times_hash = end_hash || segment.end_split.time_hash(segment.end_bitkey)
     @times = calculate_times(begin_times_hash, end_times_hash)
     create_valid_data_array
     set_status_limits(segment)
@@ -26,14 +27,21 @@ class SegmentCalculations
     [low_bad, low_questionable, high_questionable, high_bad]
   end
 
+  def estimated_time
+    mean || terrain_time
+  end
+
   private
 
+  attr_reader :segment, :begin_times_hash, :end_times_hash
+  attr_writer :times, :low_bad, :low_questionable, :high_questionable, :high_bad, :mean, :std
+  attr_accessor :valid_data_array
+
   def calculate_times(begin_hash, end_hash)
-    b = begin_hash.dup
-    e = end_hash.dup
-    b.keep_if { |k, _| e.keys.include?(k) }
-    e.keep_if { |k, _| b.keys.include?(k) }
-    e.merge(b) { |_, x, y| x - y }
+    common_keys = begin_hash.select { |_, v| v}.keys & end_hash.select { |_, v| v}.keys
+    b_hash = begin_hash.select { |key| common_keys.include?(key) }
+    e_hash = end_hash.select { |key| common_keys.include?(key) }
+    e_hash.merge(b_hash) { |_, x, y| x - y }
   end
 
   def create_valid_data_array
@@ -62,11 +70,10 @@ class SegmentCalculations
   end
 
   def set_limits_by_terrain(segment)
-    typical_time = segment.typical_time_by_terrain
-    self.low_bad = typical_time / 5
-    self.low_questionable = typical_time / 3.5
-    self.high_questionable = typical_time * 3.5
-    self.high_bad = typical_time * 5
+    self.low_bad = terrain_time / 5
+    self.low_questionable = terrain_time / 3.5
+    self.high_questionable = terrain_time * 3.5
+    self.high_bad = terrain_time * 5
   end
 
   def set_limits_by_stats(data_array)
@@ -77,7 +84,9 @@ class SegmentCalculations
     self.low_questionable = [self.low_questionable, mean - (3 * std), 0].max
     self.high_questionable = [self.high_questionable, mean + (4 * std)].min
     self.high_bad = [self.high_bad, mean + (10 * std)].min
-
   end
 
+  def terrain_time
+    segment.typical_time_by_terrain
+  end
 end

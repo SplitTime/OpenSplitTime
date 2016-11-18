@@ -7,7 +7,7 @@ RSpec.describe SimilarEffortFinder, type: :model do
       split = FactoryGirl.build_stubbed(:split, course: course, id: 110)
       sub_split = {110 => 1}
       time_from_start = 10000
-      expect { SimilarEffortFinder.new(sub_split, time_from_start, split: split, course: course) }.not_to raise_error
+      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course) }.not_to raise_error
     end
 
     it 'raises a RunTime Error if the provided split does not resolve with the provided sub_split' do
@@ -15,7 +15,7 @@ RSpec.describe SimilarEffortFinder, type: :model do
       time_from_start = 10000
       course = FactoryGirl.build_stubbed(:course)
       split = FactoryGirl.build_stubbed(:split, course: course, id: 220)
-      expect { SimilarEffortFinder.new(sub_split, time_from_start, split: split, course: course) }.to raise_error(RuntimeError)
+      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course) }.to raise_error(RuntimeError)
     end
   end
 
@@ -27,7 +27,7 @@ RSpec.describe SimilarEffortFinder, type: :model do
       time_from_start = 10000
       course = FactoryGirl.build_stubbed(:course)
       split = FactoryGirl.build_stubbed(:split, course: course)
-      finder = SimilarEffortFinder.new(sub_split, time_from_start, split: split, course: course)
+      finder = SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course)
       expect(finder).to receive(:effort_database).and_return(effort_database)
       expect(finder.efforts).to eq(Effort.none)
     end

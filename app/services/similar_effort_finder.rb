@@ -1,14 +1,14 @@
 class SimilarEffortFinder
 
-  def initialize(sub_split, time_from_start, options = {})
-    raise ArgumentError, 'optional parameters must be provided as a hash' unless options.is_a?(Hash)
-    @sub_split = sub_split
-    @time_from_start = time_from_start
-    @split = options[:split] || Split.find(sub_split.split_id)
-    @minimum_efforts = options[:minimum_efforts] || 20
-    @maximum_efforts = options[:maximum_efforts] || 200
-    @finished = options[:finished]
-    validate_finder
+  def initialize(args)
+    ParamValidator.validate(params: args, required: [:sub_split, :time_from_start], class: self.class)
+    @sub_split = args[:sub_split]
+    @time_from_start = args[:time_from_start]
+    @split = args[:split] || Split.find(sub_split.split_id)
+    @minimum_efforts = args[:min] || 20
+    @maximum_efforts = args[:max] || 200
+    @finished = args[:finished]
+    validate_setup
   end
 
   def efforts
@@ -75,7 +75,7 @@ class SimilarEffortFinder
     time_from_start * FACTOR_PAIRS.last.last
   end
 
-  def validate_finder
-    raise RuntimeError, 'Provided sub_split is not contained within the provided split' if split.id != sub_split.split_id
+  def validate_setup
+    raise ArgumentError, 'Provided sub_split is not contained within the provided split' if split.id != sub_split.split_id
   end
 end

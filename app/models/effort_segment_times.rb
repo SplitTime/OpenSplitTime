@@ -1,7 +1,7 @@
 class EffortSegmentTimes
 
-  def initialize(args = {})
-    raise ArgumentError, 'parameters must be provided as a hash' unless args.is_a?(Hash)
+  def initialize(args)
+    ParamValidator.validate(params: args, required_alternatives: [:effort_ids, :efforts, :split_times], class: self.class)
     @effort_ids = args[:effort_ids] || (args[:efforts] && args[:efforts].map(&:id)) || []
     @split_times = args[:split_times] || SplitTime.valid_status.basic_components.where(effort_id: effort_ids)
     @segment_calcs = {}

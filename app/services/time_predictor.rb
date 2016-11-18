@@ -1,13 +1,13 @@
 class TimePredictor
 
-  def initialize(args = {})
-    raise ArgumentError, 'parameters must be provided as a hash' unless args.is_a?(Hash)
+  def initialize(args)
+    ParamValidator.validate(params: args, required: [:effort, :sub_split], class: self.class)
     @effort = args[:effort]
     @sub_split = args[:sub_split]
     @ordered_splits = args[:ordered_splits] || effort.event.ordered_splits.to_a
     @valid_split_times = args[:valid_split_times] || effort.split_times.valid_status.to_a
-    @effort_segment_calcs = args[:effort_segment_calcs] || EffortSegmentTimes.new(efforts: similar_efforts)
-    validate_predictor
+    @effort_segment_times = args[:effort_segment_times] || EffortSegmentTimes.new(efforts: similar_efforts)
+    validate_setup
   end
 
   def predicted_time
@@ -16,15 +16,15 @@ class TimePredictor
 
   private
 
-  attr_reader :effort, :sub_split, :ordered_splits, :effort_segment_calcs, :valid_split_times
+  attr_reader :effort, :sub_split, :ordered_splits, :effort_segment_times, :valid_split_times
 
   def similar_efforts
     @similar_efforts ||=
-        SimilarEffortFinder.new(completed_sub_split, completed_time, finished: true).efforts
+        SimilarEffortFinder.new(sub_split: completed_sub_split, time_from_start: completed_time, finished: true).efforts
   end
 
   def seconds_from_start
-    completed_time + (effort_segment_calcs[subject_segment].estimated_time * pace_factor)
+    completed_time + (effort_segment_times[subject_segment].estimated_time * pace_factor)
   end
 
   def pace_factor
@@ -32,11 +32,11 @@ class TimePredictor
   end
 
   def pace_baseline
-    effort_segment_calcs[completed_segment].estimated_time
+    effort_segment_times[completed_segment].estimated_time
   end
 
   def subject_average_time
-    effort_segment_calcs[subject_segment].mean
+    effort_segment_times[subject_segment].mean
   end
 
   def completed_segment
@@ -81,7 +81,7 @@ class TimePredictor
     @indexed_split_times ||= valid_split_times.index_by(&:sub_split)
   end
 
-  def validate_predictor
+  def validate_setup
     raise RuntimeError, 'Effort has not started' unless indexed_split_times[ordered_sub_splits.first].present?
   end
 end

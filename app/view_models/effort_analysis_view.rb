@@ -80,7 +80,10 @@ class EffortAnalysisView
 
   def create_typical_effort
     mock_target_time = effort_finish_tfs || effort.expected_time_from_start(finish_sub_split)
-    self.typical_effort = MockEffort.new(course, mock_target_time, effort_start_time, relevant_calc_splits)
+    self.typical_effort = MockEffort.new(course: course,
+                                         expected_time: mock_target_time,
+                                         start_time: effort_start_time,
+                                         splits: relevant_calc_splits)
     self.indexed_typical_rows = typical_effort
                                     .split_rows
                                     .index_by(&:split_id)

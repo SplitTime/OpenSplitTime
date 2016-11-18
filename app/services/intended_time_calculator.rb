@@ -1,11 +1,11 @@
 class IntendedTimeCalculator
 
-  def self.day_and_time(args = {})
+  def self.day_and_time(args)
     new(args).day_and_time
   end
 
-  def initialize(args = {})
-    raise ArgumentError, 'parameters must be provided as a hash' unless args.is_a?(Hash)
+  def initialize(args)
+    ParamValidator.validate(params: args, required: [:military_time, :effort], class: self.class)
     @military_time = args[:military_time]
     @effort = args[:effort]
     @sub_split = args[:sub_split]

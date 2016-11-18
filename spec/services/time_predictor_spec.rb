@@ -17,7 +17,7 @@ RSpec.describe TimePredictor do
     let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 50000) }
     let(:ordered_splits) { [split1, split2, split3, split4, split5, split6] }
 
-    it 'initializes with an effort, a sub_split, ordered_splits, and an EffortSegmentCalcs object in an args hash' do
+    it 'initializes with an effort, a sub_split, ordered_splits, and an EffortSegmentTimes object in an args hash' do
       effort = FactoryGirl.build_stubbed(:effort)
       sub_split = split3.sub_splits.first
       split_times = split_times_101

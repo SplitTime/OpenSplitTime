@@ -1,13 +1,16 @@
 class MockEffort
 
-  attr_reader :course, :expected_time, :start_time, :relevant_events, :relevant_efforts
+  attr_reader :course, :expected_time, :start_time
 
-  def initialize(course, expected_time, start_time, splits = nil)
-    @course = course
-    @expected_time = expected_time
-    @start_time = start_time
-    @splits = splits || course.ordered_splits.to_a
-    set_relevant_resources
+  def initialize(args)
+    ParamValidator.validate(params: args, required: [:course, :expected_time, :start_time], class: self.class)
+    @course = args[:course]
+    @expected_time = args[:expected_time]
+    @start_time = args[:start_time]
+    @splits = args[:splits] || course.ordered_splits.to_a
+    @finder = args[:effort_finder] ||
+        SimilarEffortFinder.new(sub_split: finish_sub_split, time_from_start: expected_time, split: finish_split)
+    validate_setup
   end
 
   def indexed_split_times
@@ -38,16 +41,18 @@ class MockEffort
     relevant_events.pluck(:start_time).sort.map(&:year).uniq
   end
 
+  def relevant_events
+    @relevant_events ||= finder.events
+  end
+
+  def relevant_efforts
+    @relevant_efforts ||= finder.efforts
+  end
+
+
   private
 
   attr_accessor :splits, :relevant_split_times
-  attr_writer :relevant_events, :relevant_efforts
-
-  def set_relevant_resources
-    finder = SimilarEffortFinder.new(finish_sub_split, expected_time, split: finish_split)
-    self.relevant_events = finder.events
-    self.relevant_efforts = finder.efforts
-  end
 
   def create_plan_split_times # Temporary split_time objects to assist in constructing the mock effort
     plan_times = calculate_plan_times
@@ -103,5 +108,9 @@ class MockEffort
 
   def finish_sub_split
     finish_split.sub_split_in
+  end
+
+  def validate_setup
+    raise ArgumentError, 'one or more provided splits are not contained within the provided course' unless splits.all? { |split| split.course_id == course.id }
   end
 end

@@ -25,6 +25,12 @@ class SplitImporter
     end
   end
 
+  def split_import_report
+    imported = "Imported #{split_id_array.count} splits. "
+    failed = "Failed to import #{split_failure_array.count} splits." if split_failure_array.count > 0
+    [imported, failed].join
+  end
+
   private
 
   attr_reader :import_file, :event, :current_user_id, :split_id_array

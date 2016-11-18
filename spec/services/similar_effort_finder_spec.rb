@@ -10,12 +10,13 @@ RSpec.describe SimilarEffortFinder, type: :model do
       expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course) }.not_to raise_error
     end
 
-    it 'raises a RunTime Error if the provided split does not resolve with the provided sub_split' do
+    it 'raises an error if the provided split does not resolve with the provided sub_split' do
       sub_split = {110 => 1}
       time_from_start = 10000
       course = FactoryGirl.build_stubbed(:course)
       split = FactoryGirl.build_stubbed(:split, course: course, id: 220)
-      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course) }.to raise_error(RuntimeError)
+      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course) }
+          .to raise_error(/provided sub_split is not contained within the provided split/)
     end
   end
 

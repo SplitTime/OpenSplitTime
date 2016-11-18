@@ -25,7 +25,7 @@ RSpec.describe TimePredictor do
       expect { TimePredictor.new(effort: effort,
                                  sub_split: sub_split,
                                  ordered_splits: ordered_splits,
-                                 effort_segment_calcs: calcs,
+                                 effort_segment_times: calcs,
                                  valid_split_times: split_times_101) }.not_to raise_error
     end
   end
@@ -66,7 +66,7 @@ RSpec.describe TimePredictor do
       predictor = TimePredictor.new(effort: effort,
                                     sub_split: sub_split,
                                     ordered_splits: ordered_splits,
-                                    effort_segment_calcs: calcs,
+                                    effort_segment_times: calcs,
                                     valid_split_times: split_times_112)
       expect(predictor.predicted_time).to be_within(100).of(4500)
     end
@@ -81,7 +81,7 @@ RSpec.describe TimePredictor do
       predictor = TimePredictor.new(effort: effort,
                                     sub_split: sub_split,
                                     ordered_splits: ordered_splits,
-                                    effort_segment_calcs: calcs,
+                                    effort_segment_times: calcs,
                                     valid_split_times: split_times_112)
       expect(predictor.predicted_time).to be_within(100).of(5900)
     end
@@ -96,7 +96,7 @@ RSpec.describe TimePredictor do
       predictor = TimePredictor.new(effort: effort,
                                     sub_split: sub_split,
                                     ordered_splits: ordered_splits,
-                                    effort_segment_calcs: calcs,
+                                    effort_segment_times: calcs,
                                     valid_split_times: split_times_112)
       expect(predictor.predicted_time).to be_within(100).of(7300)
     end

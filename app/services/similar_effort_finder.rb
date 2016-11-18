@@ -76,6 +76,6 @@ class SimilarEffortFinder
   end
 
   def validate_setup
-    raise ArgumentError, 'Provided sub_split is not contained within the provided split' if split.id != sub_split.split_id
+    raise ArgumentError, 'provided sub_split is not contained within the provided split' if split.id != sub_split.split_id
   end
 end

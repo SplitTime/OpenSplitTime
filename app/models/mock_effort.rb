@@ -111,6 +111,7 @@ class MockEffort
   end
 
   def validate_setup
-    raise ArgumentError, 'one or more provided splits are not contained within the provided course' unless splits.all? { |split| split.course_id == course.id }
+    raise ArgumentError, 'one or more provided splits are not contained within the provided course' unless
+        splits.all? { |split| split.course_id == course.id }
   end
 end

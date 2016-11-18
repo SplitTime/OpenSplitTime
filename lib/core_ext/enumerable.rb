@@ -4,6 +4,6 @@ module Enumerable
   end
 
   def count_each
-    each_with_object(Hash.new(0)) { |e, acc| acc[e] += 1 }
+    count_by { |e| e }
   end
 end

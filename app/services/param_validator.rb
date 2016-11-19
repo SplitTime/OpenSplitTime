@@ -7,6 +7,7 @@ class ParamValidator
     @params = args[:params]
     @required = args[:required] || []
     @required_alternatives = args[:required_alternatives] || []
+    @exclusive = args[:exclusive] || []
     @klass = args[:class]
     raise ArgumentError, 'no parameters provided for validation' unless params
   end
@@ -15,11 +16,12 @@ class ParamValidator
     validate_hash
     validate_required_params
     validate_required_alternatives
+    validate_exclusive_params
   end
 
   private
 
-  attr_reader :params, :required, :required_alternatives, :klass
+  attr_reader :params, :required, :required_alternatives, :exclusive, :klass
 
   def validate_hash
     raise ArgumentError, "parameters #{for_klass}must be provided as a hash" unless params.is_a?(Hash)
@@ -34,6 +36,13 @@ class ParamValidator
     if required_alternatives.present?
       raise ArgumentError, "parameters #{for_klass}must include one of #{required_alternatives.to_sentence(two_words_connector: ' or ', last_word_connector: ', or ')}" unless
           required_alternatives.any? { |arg| params[arg] }
+    end
+  end
+
+  def validate_exclusive_params
+    if exclusive.present?
+      raise ArgumentError, "parameters #{for_klass}may include only #{exclusive.to_sentence}" if
+          params.keys.any? { |arg| exclusive.exclude?(arg) }
     end
   end
 

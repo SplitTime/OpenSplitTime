@@ -88,5 +88,21 @@ RSpec.describe ParamValidator do
       expect { ParamValidator.validate(params: args, required_alternatives: required_alternatives) }
           .to raise_error(/must include one of/)
     end
+
+    it 'validates a populated args hash if all params are included in the exclusive param set' do
+      args = {time_from_start: 123, effort_id: 456}
+      exclusive = [:time_from_start, :effort_id, :other_param]
+      expect { ParamValidator.new(params: args, exclusive: exclusive).validate }.not_to raise_error
+      expect { ParamValidator.validate(params: args, exclusive: exclusive) }.not_to raise_error
+    end
+
+    it 'invalidates a populated args hash if any param is not included in the exclusive param set' do
+      args = {time_from_start: 123, effort_id: 456, other_param: 789}
+      exclusive = [:time_from_start, :effort_id]
+      expect { ParamValidator.new(params: args, exclusive: exclusive).validate }
+          .to raise_error(/may include only/)
+      expect { ParamValidator.validate(params: args, exclusive: exclusive) }
+          .to raise_error(/may include only/)
+    end
   end
 end

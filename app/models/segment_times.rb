@@ -8,7 +8,7 @@ class SegmentTimes
     @begin_times_hash = begin_hash || segment.begin_split.time_hash(segment.begin_bitkey)
     @end_times_hash = end_hash || segment.end_split.time_hash(segment.end_bitkey)
     @times = calculate_times(begin_times_hash, end_times_hash)
-    create_valid_data_array
+    set_mean_and_std
     set_status_limits
   end
 
@@ -35,7 +35,6 @@ class SegmentTimes
 
   attr_reader :segment, :begin_times_hash, :end_times_hash
   attr_writer :times, :low_bad, :low_questionable, :high_questionable, :high_bad, :mean, :std
-  attr_accessor :valid_data_array
 
   def calculate_times(begin_hash, end_hash)
     common_keys = begin_hash.select { |_, v| v}.keys & end_hash.select { |_, v| v}.keys
@@ -44,12 +43,19 @@ class SegmentTimes
     e_hash.merge(b_hash) { |_, x, y| x - y }
   end
 
-  def create_valid_data_array
-    baseline_median = times.median
-    return [] unless baseline_median
-    data_array = times.values
-    data_array.keep_if { |v| (v > (baseline_median / 2)) && (v < (baseline_median * 2)) }
-    self.valid_data_array = data_array
+  def valid_data_array
+    @valid_data_array ||= reject_outliers(times.values)
+  end
+
+  def reject_outliers(array)
+    baseline_median = array.median
+    baseline_median ? array.select { |v| (v >= (baseline_median / 2)) && (v <= (baseline_median * 2)) } : []
+  end
+
+  def set_mean_and_std
+    return unless valid_data_array.count > STAT_CALC_THRESHOLD
+    self.mean = valid_data_array.mean
+    self.std = valid_data_array.standard_deviation
   end
 
   def set_status_limits
@@ -77,9 +83,7 @@ class SegmentTimes
   end
 
   def set_limits_by_stats
-    return unless valid_data_array && valid_data_array.count > STAT_CALC_THRESHOLD
-    self.mean = valid_data_array.mean
-    self.std = valid_data_array.standard_deviation
+    return unless valid_data_array.count > STAT_CALC_THRESHOLD
     self.low_bad = [self.low_bad, mean - (4 * std), 0].max
     self.low_questionable = [self.low_questionable, mean - (3 * std), 0].max
     self.high_questionable = [self.high_questionable, mean + (4 * std)].min

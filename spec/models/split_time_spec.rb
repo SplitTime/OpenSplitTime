@@ -308,7 +308,7 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
-  describe 'military_time=' do
+  xdescribe 'military_time=' do
     it 'should set time_from_start to nil if passed a nil value' do
       split_time = SplitTime.new(effort: effort, split: split, bitkey: 1, time_from_start: 1000)
       split_time.military_time = nil

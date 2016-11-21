@@ -5,15 +5,15 @@ class IntendedTimeCalculator
   end
 
   def initialize(args)
-    ParamValidator.validate(params: args, required: [:military_time, :effort], class: self.class)
+    ArgsValidator.validate(params: args, required: [:military_time, :effort, :sub_split], class: self.class)
     @military_time = args[:military_time]
     @effort = args[:effort]
     @sub_split = args[:sub_split]
-    @predictor = args[:predictor] || TimePredictor.new(effort: effort, sub_split: sub_split)
+    @predictor = args[:predictor] || TimesPredictor.new(effort: effort)
+    validate_setup
   end
 
   def day_and_time
-    return nil if seconds_into_day >= 1.day
     expected_day_and_time && earliest_datetime + days_from_earliest
   end
 
@@ -34,7 +34,7 @@ class IntendedTimeCalculator
   end
 
   def expected_time_from_start
-    @expected_time_from_start ||= predictor.predicted_time
+    @expected_time_from_start ||= predictor.times_from_start[sub_split]
   end
 
   def start_time
@@ -43,5 +43,10 @@ class IntendedTimeCalculator
 
   def seconds_into_day
     TimeConversion.hms_to_seconds(military_time)
+  end
+
+  def validate_setup
+    raise RangeError, "#{military_time} is out of range for #{self.class}" if
+        (seconds_into_day >= 1.day) | (seconds_into_day < 0)
   end
 end

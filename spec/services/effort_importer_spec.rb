@@ -70,7 +70,6 @@ RSpec.describe SplitImporter do
         effort3 = Effort.find_by_bib_number(186)
 
         expect(SplitTime.all.count).to eq(75)
-        expect(SplitTime.find_by(effort: effort1, split: split1, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((2.hours + 1.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split2, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((22.hours + 45.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split3, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((20.hours + 22.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split4, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((25.hours + 45.minutes).to_i)
@@ -82,6 +81,7 @@ RSpec.describe SplitImporter do
         expect(SplitTime.find_by(effort: effort3, split: split2, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((37.hours + 45.minutes).to_i)
         expect(SplitTime.find_by(effort: effort3, split: split3, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((41.hours + 24.minutes).to_i)
         expect(SplitTime.find_by(effort: effort3, split: split4, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((43.hours + 58.minutes).to_i)
+        expect(SplitTime.find_by(effort: effort1, split: split1, bitkey: SubSplit::IN_BITKEY).time_from_start).to be_within(1.second).of((2.hours + 1.minutes).to_i)
       end
 
       it 'should not create a split_time where no time is provided' do

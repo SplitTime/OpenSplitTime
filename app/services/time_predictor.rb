@@ -1,12 +1,12 @@
 class TimePredictor
 
   def initialize(args)
-    ParamValidator.validate(params: args, required: [:effort, :sub_split], class: self.class)
+    ArgsValidator.validate(params: args, required: [:effort, :sub_split], class: self.class)
     @effort = args[:effort]
     @sub_split = args[:sub_split]
     @ordered_splits = args[:ordered_splits] || effort.event.ordered_splits.to_a
     @valid_split_times = args[:valid_split_times] || effort.split_times.valid_status.to_a
-    @effort_segment_times = args[:effort_segment_times] || EffortSegmentTimes.new(efforts: similar_efforts)
+    @effort_segment_times = args[:effort_segment_times] || SegmentTimesContainer.new(efforts: similar_efforts)
     validate_setup
   end
 

@@ -1,7 +1,7 @@
 class SimilarEffortFinder
 
   def initialize(args)
-    ParamValidator.validate(params: args, required: [:sub_split, :time_from_start], class: self.class)
+    ArgsValidator.validate(params: args, required: [:sub_split, :time_from_start], class: self.class)
     @sub_split = args[:sub_split]
     @time_from_start = args[:time_from_start]
     @split = args[:split] || Split.find(sub_split.split_id)

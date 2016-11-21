@@ -3,7 +3,7 @@ class MockEffort
   attr_reader :course, :expected_time, :start_time
 
   def initialize(args)
-    ParamValidator.validate(params: args, required: [:course, :expected_time, :start_time], class: self.class)
+    ArgsValidator.validate(params: args, required: [:course, :expected_time, :start_time], class: self.class)
     @course = args[:course]
     @expected_time = args[:expected_time]
     @start_time = args[:start_time]

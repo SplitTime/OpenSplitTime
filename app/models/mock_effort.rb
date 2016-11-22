@@ -53,6 +53,7 @@ class MockEffort
   private
 
   attr_accessor :splits, :relevant_split_times
+  attr_reader :finder
 
   def create_plan_split_times # Temporary split_time objects to assist in constructing the mock effort
     plan_times = calculate_plan_times

@@ -2,7 +2,9 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe PriorSplitTimeFinder do
-  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort_id: 101).first(10) }
+  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20,
+                                                         effort_id: 101,
+                                                         data_status: SplitTime::data_statuses[:good]).first(10) }
   let(:split_ids) { split_times_101.map(&:split_id).uniq }
   let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
   let(:split2) { FactoryGirl.build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }

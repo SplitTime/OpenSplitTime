@@ -55,15 +55,22 @@ class TimesPredictor
   end
 
   def completed_split_time
-    @completed_split_time ||= ordered_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last
+    @completed_split_time ||= finish_split_time || prior_split_time_finder.split_time
   end
 
-  def ordered_sub_splits
-    @ordered_sub_splits ||= ordered_splits.map(&:sub_splits).flatten
+  def prior_split_time_finder
+    @prior_split_time_finder ||= PriorSplitTimeFinder.new(effort: effort,
+                                                          sub_split: finish_sub_split,
+                                                          split_times: valid_split_times,
+                                                          ordered_splits: ordered_splits)
   end
 
-  def indexed_split_times
-    @indexed_split_times ||= valid_split_times.index_by(&:sub_split)
+  def finish_split_time
+    valid_split_times.find { |split_time| split_time.sub_split == finish_sub_split }
+  end
+
+  def finish_sub_split
+    @finish_sub_split ||= ordered_splits.last.sub_splits.first
   end
 
   def validate_setup

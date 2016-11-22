@@ -81,7 +81,7 @@ RSpec.describe TimesPredictor do
 
     context 'for a partially completed effort' do
       it 'returns a hash containing elements corresponding to the sub_splits related to the effort.event' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101.first(5)
@@ -94,7 +94,7 @@ RSpec.describe TimesPredictor do
       end
 
       it 'predicts zero time for start splits' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101.first(5)
@@ -106,7 +106,7 @@ RSpec.describe TimesPredictor do
       end
 
       it 'predicts the actual time from start for the last valid sub_split recorded' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101.first(5)
@@ -118,7 +118,7 @@ RSpec.describe TimesPredictor do
       end
 
       it 'predicts the correct expected time from start for prior sub_splits using a calculated pace_factor' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101.first(5)
@@ -132,7 +132,7 @@ RSpec.describe TimesPredictor do
       end
 
       it 'predicts the correct expected time from start for later sub_splits using a calculated pace_factor' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101.first(5)
@@ -150,7 +150,7 @@ RSpec.describe TimesPredictor do
 
     context 'for a completed effort' do
       it 'returns a hash containing elements corresponding to the sub_splits related to the effort.event' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101
@@ -163,7 +163,7 @@ RSpec.describe TimesPredictor do
       end
 
       it 'predicts zero time for start splits' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101
@@ -175,7 +175,7 @@ RSpec.describe TimesPredictor do
       end
 
       it 'predicts the actual time from start for the finish sub_split' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101
@@ -187,7 +187,7 @@ RSpec.describe TimesPredictor do
       end
 
       it 'predicts the correct expected time from start for prior sub_splits using a calculated pace_factor' do
-        effort = FactoryGirl.build_stubbed(:effort)
+        effort = FactoryGirl.build_stubbed(:effort, id: 101)
         ordered_splits = [split1, split2, split3, split4, split5, split6]
         sub_splits = ordered_splits.map(&:sub_splits).flatten
         valid_split_times = split_times_101

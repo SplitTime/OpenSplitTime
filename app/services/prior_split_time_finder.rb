@@ -10,8 +10,8 @@ class PriorSplitTimeFinder
   end
 
   def split_time
-    @split_time ||=
-        relevant_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last || split_times.first
+    @split_time ||= relevant_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last ||
+        split_times.first || mock_start_split_time
   end
 
   private
@@ -20,6 +20,10 @@ class PriorSplitTimeFinder
 
   def relevant_sub_splits
     sub_split_index.zero? ? [] : ordered_sub_splits[0..sub_split_index - 1]
+  end
+
+  def mock_start_split_time
+    SplitTime.new(split_id: ordered_sub_splits.first.split_id, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
   end
 
   def sub_split_index
@@ -40,7 +44,6 @@ class PriorSplitTimeFinder
 
   def validate_setup
     raise ArgumentError, 'sub_split is not contained in the provided splits' unless ordered_sub_splits.include?(sub_split)
-    raise ArgumentError, 'sub_split is not contained in the provided split_times' unless indexed_split_times[sub_split].present?
     raise ArgumentError, 'split_times do not all belong to the same effort' unless split_times.map(&:effort_id).uniq.count < 2
     raise ArgumentError, 'split_times do not relate to the provided effort' if split_times.any? { |st| st.effort_id != effort.id }
   end

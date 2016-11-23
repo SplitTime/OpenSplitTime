@@ -6,7 +6,8 @@ class SplitTime < ActiveRecord::Base
   belongs_to :split
   alias_attribute :bitkey, :sub_split_bitkey
 
-  VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed], 'good', 'confirmed']
+  VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
+  VALID_STATUS_STRINGS = [nil, 'good', 'confirmed']
 
   scope :valid_status, -> { where(data_status: VALID_STATUSES) }
   scope :ordered, -> { includes(:split).order('splits.distance_from_start, split_times.sub_split_bitkey') }

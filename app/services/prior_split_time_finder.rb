@@ -39,7 +39,7 @@ class PriorSplitTimeFinder
   end
 
   def valid_split_times
-    split_times.select { |st| SplitTime::VALID_STATUSES.include?(st.data_status) }
+    split_times.select { |st| SplitTime::VALID_STATUS_STRINGS.include?(st.data_status) }
   end
 
   def validate_setup

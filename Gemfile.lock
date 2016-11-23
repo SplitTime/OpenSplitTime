@@ -20,6 +20,7 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_record_query_trace (1.5.4)
     active_record_union (1.2.0)
       activerecord (>= 4.0)
     activejob (4.2.5)
@@ -397,6 +398,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_record_query_trace
   active_record_union
   alchemist
   aws-sdk
@@ -465,4 +467,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

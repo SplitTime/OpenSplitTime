@@ -50,6 +50,7 @@ group :development do
   gem 'bullet'
   gem 'quiet_assets'
   gem 'derailed_benchmarks'
+  gem 'active_record_query_trace'
 end
 
 group :test do

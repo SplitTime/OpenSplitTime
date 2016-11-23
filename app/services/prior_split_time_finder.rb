@@ -4,7 +4,7 @@ class PriorSplitTimeFinder
     ArgsValidator.validate(params: args, required: [:effort, :sub_split], class: self.class)
     @effort = args[:effort]
     @sub_split = args[:sub_split]
-    @ordered_splits = args[:ordered_splits] || effort.event.ordered_splits.to_a
+    @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
     validate_setup
   end
@@ -23,7 +23,7 @@ class PriorSplitTimeFinder
   end
 
   def mock_start_split_time
-    SplitTime.new(split_id: ordered_sub_splits.first.split_id, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+    SplitTime.new(sub_split: ordered_sub_splits.first, time_from_start: 0)
   end
 
   def sub_split_index

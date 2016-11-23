@@ -75,8 +75,7 @@ class LiveEvent
       sub_split = due_next_sub_split(effort)
       unless sub_split.nil?
         effort.next_expected_split_time = SplitTime.new(effort_id: effort.id,
-                                                        split_id: sub_split.split_id,
-                                                        sub_split_bitkey: sub_split.bitkey,
+                                                        sub_split: sub_split,
                                                         time_from_start: expected_time_from_start(effort, sub_split))
       end
     end

@@ -363,4 +363,19 @@ RSpec.describe SplitTime, kind: :model do
       expect(split_time.time_from_start).to eq(18.hours + 5.minutes)
     end
   end
+
+  describe '#sub_split' do
+    it 'returns split_id and sub_split_bitkey as a sub_split hash' do
+      split_time = SplitTime.new(effort: effort, split_id: 101, bitkey: 1, time_from_start: 0)
+      expect(split_time.sub_split).to eq({101=>1})
+    end
+  end
+
+  describe '#sub_split=' do
+    it 'sets both split_id and sub_split_bitkey' do
+      split_time = SplitTime.new(effort: effort, sub_split: {101=>1}, time_from_start: 0)
+      expect(split_time.split_id).to eq(101)
+      expect(split_time.bitkey).to eq(1)
+    end
+  end
 end

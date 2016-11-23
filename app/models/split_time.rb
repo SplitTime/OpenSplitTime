@@ -48,6 +48,11 @@ class SplitTime < ActiveRecord::Base
     {split_id => bitkey}
   end
 
+  def sub_split=(sub_split)
+    self.split_id = sub_split.split_id
+    self.bitkey = sub_split.bitkey
+  end
+
   def set_effort_data_status
     DataStatusService.set_data_status(effort)
   end
@@ -63,7 +68,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def day_and_time
-    time_from_start && (event_start_time + effort_start_offset + time_from_start)
+    @day_and_time ||= time_from_start && (event_start_time + effort_start_offset + time_from_start)
   end
 
   def day_and_time=(absolute_time)
@@ -75,11 +80,11 @@ class SplitTime < ActiveRecord::Base
     day_and_time && TimeConversion.absolute_to_hms(day_and_time)
   end
 
-  def military_time=(military_time)
+  def military_time=(military_time, time_calculator = IntendedTimeCalculator)
     self.day_and_time = military_time.present? ?
-        IntendedTimeCalculator.day_and_time(military_time: military_time,
-                                            effort: effort,
-                                            sub_split: sub_split) : nil
+        time_calculator.day_and_time(military_time: military_time,
+                                     effort: effort,
+                                     sub_split: sub_split) : nil
   end
 
   def split_name
@@ -97,11 +102,11 @@ class SplitTime < ActiveRecord::Base
   private
 
   def event_start_time
-    effort.event_start_time
+    @event_start_time ||= effort.event_start_time
   end
 
   def effort_start_offset
-    effort.start_offset
+    @effort_start_offset ||= effort.start_offset
   end
 
   def delete_if_blank

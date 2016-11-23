@@ -48,8 +48,7 @@ class EffortSplitTimeCreator
 
   def split_time_build(sub_split)
     SplitTime.new(effort_id: effort.id,
-                  split_id: sub_split.split_id,
-                  sub_split_bitkey: sub_split.bitkey,
+                  sub_split: sub_split,
                   time_from_start: time_to_seconds(sub_split_time_hash[sub_split]),
                   created_by: current_user_id,
                   updated_by: current_user_id)

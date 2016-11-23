@@ -13,15 +13,10 @@ class MockEffort
         StatTimesCalculator.new(ordered_splits: ordered_splits,
                                 completed_split_time: mock_finish_split_time,
                                 similar_efforts: relevant_efforts)
-    validate_setup
   end
 
   def indexed_split_times
-    @indexed_split_times ||=
-        ordered_sub_splits.map { |sub_split| SplitTime.new(split: indexed_splits[sub_split.split_id],
-                                                           bitkey: sub_split.bitkey,
-                                                           time_from_start: plan_times[sub_split]) }
-            .index_by(&:sub_split)
+    @indexed_split_times ||= ordered_sub_splits.map { |sub_split| plan_split_time(sub_split) }.index_by(&:sub_split)
   end
 
   def split_rows
@@ -61,6 +56,10 @@ class MockEffort
   attr_accessor :relevant_split_times
   attr_reader :ordered_splits, :finder, :times_calculator
 
+  def plan_split_time(sub_split)
+    SplitTime.new(sub_split: sub_split, time_from_start: plan_times[sub_split])
+  end
+
   def plan_times
     @plan_times ||= times_calculator.times_from_start
   end
@@ -77,7 +76,7 @@ class MockEffort
   end
 
   def mock_finish_split_time
-    SplitTime.new(split: finish_split, bitkey: SubSplit::IN_BITKEY, time_from_start: expected_time)
+    SplitTime.new(sub_split: finish_sub_split, time_from_start: expected_time)
   end
 
   def related_split_times(split)
@@ -92,14 +91,7 @@ class MockEffort
     finish_split.sub_split_in
   end
 
-  def indexed_splits
-    @indexed_splits ||= ordered_splits.index_by(&:id)
-  end
-
   def ordered_sub_splits
     ordered_splits.map(&:sub_splits).flatten
-  end
-
-  def validate_setup
   end
 end

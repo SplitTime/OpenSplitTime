@@ -82,13 +82,13 @@ RSpec.describe SegmentTimesContainer do
   #
   #   it 'exists for each sub_split contained in split_times' do
   #     split_times = [split_times_101, split_times_102, split_times_103].flatten
-  #     calcs = EffortSegmentTimes.new(split_times: split_times)
+  #     calcs = SegmentTimesContainer.new(split_times: split_times)
   #     expect(calcs.time_hashes.count).to eq(20)
   #   end
   #
   #   it 'exists even if some sub_splits are not contained in all efforts' do
   #     split_times = [split_times_101, split_times_102.first(10), split_times_103.first(10)].flatten
-  #     calcs = EffortSegmentTimes.new(split_times: split_times)
+  #     calcs = SegmentTimesContainer.new(split_times: split_times)
   #     expect(calcs.time_hashes.count).to eq(20)
   #   end
   #
@@ -99,7 +99,7 @@ RSpec.describe SegmentTimesContainer do
   #     sub_split2 = split_times[2].sub_split
   #     sub_split3 = split_times[3].sub_split
   #     sub_split4 = split_times[4].sub_split
-  #     calcs = EffortSegmentTimes.new(split_times: split_times)
+  #     calcs = SegmentTimesContainer.new(split_times: split_times)
   #     expect(calcs.time_hashes[sub_split0]).to eq({101 => 0, 102 => 0, 103 => 0})
   #     expect(calcs.time_hashes[sub_split1]).to eq({101 => 1000, 102 => 700, 103 => 1500})
   #     expect(calcs.time_hashes[sub_split2]).to eq({101 => 1100, 102 => 750})

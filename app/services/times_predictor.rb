@@ -6,8 +6,8 @@ class TimesPredictor
                            exclusive: [:effort, :ordered_splits, :valid_split_times, :times_calculator, :calculate_by],
                            class: self.class)
     @effort = args[:effort]
-    @ordered_splits = args[:ordered_splits] || effort.event.ordered_splits.to_a
-    @valid_split_times = args[:valid_split_times] || effort.split_times.valid_status.to_a
+    @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
+    @valid_split_times = args[:valid_split_times] || effort.valid_split_times.to_a
     @times_calculator = args[:times_calculator] || build_times_calculator(args[:calculate_by])
     validate_setup
   end

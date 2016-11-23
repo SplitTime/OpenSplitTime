@@ -1,20 +1,27 @@
 class MockEffort
 
-  attr_reader :course, :expected_time, :start_time
+  attr_reader :expected_time, :start_time
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: [:course, :expected_time, :start_time], class: self.class)
-    @course = args[:course]
+    ArgsValidator.validate(params: args, required: [:ordered_splits, :expected_time, :start_time], class: self.class)
+    @ordered_splits = args[:ordered_splits]
     @expected_time = args[:expected_time]
     @start_time = args[:start_time]
-    @splits = args[:splits] || course.ordered_splits.to_a
     @finder = args[:effort_finder] ||
         SimilarEffortFinder.new(sub_split: finish_sub_split, time_from_start: expected_time, split: finish_split)
+    @times_calculator = args[:times_calculator] ||
+        StatTimesCalculator.new(ordered_splits: ordered_splits,
+                                completed_split_time: mock_finish_split_time,
+                                similar_efforts: relevant_efforts)
     validate_setup
   end
 
   def indexed_split_times
-    @indexed_split_times ||= create_plan_split_times
+    @indexed_split_times ||=
+        ordered_sub_splits.map { |sub_split| SplitTime.new(split: indexed_splits[sub_split.split_id],
+                                                           bitkey: sub_split.bitkey,
+                                                           time_from_start: plan_times[sub_split]) }
+            .index_by(&:sub_split)
   end
 
   def split_rows
@@ -38,60 +45,30 @@ class MockEffort
   end
 
   def event_years_analyzed
-    relevant_events.pluck(:start_time).sort.map(&:year).uniq
+    relevant_events.map(&:start_time).sort.map(&:year).uniq
   end
 
   def relevant_events
-    @relevant_events ||= finder.events
+    @relevant_events ||= finder.events.to_a
   end
 
   def relevant_efforts
-    @relevant_efforts ||= finder.efforts
+    @relevant_efforts ||= finder.efforts.to_a
   end
-
 
   private
 
-  attr_accessor :splits, :relevant_split_times
-  attr_reader :finder
+  attr_accessor :relevant_split_times
+  attr_reader :ordered_splits, :finder, :times_calculator
 
-  def create_plan_split_times # Temporary split_time objects to assist in constructing the mock effort
-    plan_times = calculate_plan_times
-    plan_split_times = []
-    splits.each do |split|
-      split.bitkeys.each do |key|
-        split_time = SplitTime.new(split: split, sub_split_bitkey: key, time_from_start: plan_times[{split.id => key}])
-        plan_split_times << split_time
-      end
-    end
-    plan_split_times.index_by(&:sub_split)
-  end
-
-  def calculate_plan_times # Hash of {sub_split => mock_time_from_start}
-    average_time_hash = {}
-    self.relevant_split_times = SplitTime.where(effort: relevant_efforts).group_by(&:sub_split)
-    splits.each do |split|
-      split.sub_split_bitkeys.each do |bitkey|
-        sub_split = {split.id => bitkey}
-        average_time_hash[sub_split] = relevant_split_times[sub_split] &&
-            relevant_split_times[sub_split].map(&:time_from_start).mean
-      end
-    end
-    normalize_time_data(average_time_hash, expected_time)
-  end
-
-  def normalize_time_data(time_data, expected_time)
-    average_finish_time = relevant_split_times[finish_sub_split] ?
-        relevant_split_times[finish_sub_split].map(&:time_from_start).mean : nil
-    return time_data unless average_finish_time
-    factor = expected_time / average_finish_time
-    time_data.each { |k, v| time_data[k] = v ? v * factor : nil }
+  def plan_times
+    @plan_times ||= times_calculator.times_from_start
   end
 
   def create_split_rows
     prior_time = 0
     result = []
-    splits.each do |split|
+    ordered_splits.each do |split|
       split_row = SplitRow.new(split, related_split_times(split), prior_time, start_time)
       result << split_row
       prior_time = split_row.times_from_start.last
@@ -99,20 +76,30 @@ class MockEffort
     result
   end
 
+  def mock_finish_split_time
+    SplitTime.new(split: finish_split, bitkey: SubSplit::IN_BITKEY, time_from_start: expected_time)
+  end
+
   def related_split_times(split)
-    split.sub_splits.map { |key_hash| indexed_split_times[key_hash] }
+    split.sub_splits.map { |sub_split| indexed_split_times[sub_split] }
   end
 
   def finish_split
-    splits.last
+    ordered_splits.last
   end
 
   def finish_sub_split
     finish_split.sub_split_in
   end
 
+  def indexed_splits
+    @indexed_splits ||= ordered_splits.index_by(&:id)
+  end
+
+  def ordered_sub_splits
+    ordered_splits.map(&:sub_splits).flatten
+  end
+
   def validate_setup
-    raise ArgumentError, 'one or more provided splits are not contained within the provided course' unless
-        splits.all? { |split| split.course_id == course.id }
   end
 end

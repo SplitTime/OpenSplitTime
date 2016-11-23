@@ -75,6 +75,10 @@ class Effort < ActiveRecord::Base
     @last_reported_split_time ||= ordered_split_times.last
   end
 
+  def valid_split_times
+    split_times.valid_status.ordered
+  end
+
   def finished?
     finish_split_time.present?
   end
@@ -132,7 +136,7 @@ class Effort < ActiveRecord::Base
 
   def expected_time_from_start(sub_split, event_segment_calcs = nil)
     split_times_hash = split_times.index_by(&:sub_split)
-    ordered_splits = event.ordered_splits.to_a
+    ordered_splits = self.ordered_splits.to_a
     ordered_sub_splits = ordered_splits.map(&:sub_splits).flatten
     start_sub_split = ordered_sub_splits.first
     return nil unless split_times_hash[start_sub_split].present?
@@ -162,7 +166,7 @@ class Effort < ActiveRecord::Base
   end
 
   def ordered_splits
-    @ordered_splits ||= event.splits.ordered
+    @ordered_splits ||= event.ordered_splits
   end
 
   def ordered_split_times(split = nil)

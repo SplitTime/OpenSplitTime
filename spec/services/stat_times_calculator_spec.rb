@@ -128,13 +128,13 @@ RSpec.describe StatTimesCalculator do
                                                  segment_times_container: times_container)
       expect(times_calculator.times_from_start[sub_splits[1]]).to be_within(100).of(1000)
       expect(times_calculator.times_from_start[sub_splits[2]]).to be_within(100).of(1100)
-      expect(times_calculator.times_from_start[sub_splits[3]]).to be_within(100).of(2100)
-      expect(times_calculator.times_from_start[sub_splits[4]]).to be_within(100).of(2200)
-      expect(times_calculator.times_from_start[sub_splits[5]]).to be_within(100).of(3100)
-      expect(times_calculator.times_from_start[sub_splits[6]]).to be_within(100).of(3200)
-      expect(times_calculator.times_from_start[sub_splits[7]]).to be_within(100).of(4100)
-      expect(times_calculator.times_from_start[sub_splits[8]]).to be_within(100).of(4200)
-      expect(times_calculator.times_from_start[sub_splits[9]]).to be_within(100).of(5100)
+      expect(times_calculator.times_from_start[sub_splits[3]]).to be_within(100).of(2000)
+      expect(times_calculator.times_from_start[sub_splits[4]]).to be_within(100).of(2100)
+      expect(times_calculator.times_from_start[sub_splits[5]]).to be_within(100).of(3000)
+      expect(times_calculator.times_from_start[sub_splits[6]]).to be_within(100).of(3100)
+      expect(times_calculator.times_from_start[sub_splits[7]]).to be_within(100).of(4000)
+      expect(times_calculator.times_from_start[sub_splits[8]]).to be_within(100).of(4100)
+      expect(times_calculator.times_from_start[sub_splits[9]]).to be_within(100).of(5000)
     end
   end
 

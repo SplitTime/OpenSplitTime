@@ -39,8 +39,13 @@ class ArgsValidator
 
   def validate_required_alternatives
     if required_alternatives.present?
-      raise ArgumentError, "arguments #{for_klass}must include one of #{required_alternatives.to_sentence(two_words_connector: ' or ', last_word_connector: ', or ')}" unless
-          required_alternatives.any? { |arg| params[arg] }
+      required_groups = required_alternatives.map { |alternative| Array.wrap(alternative) }
+      unless required_groups.any? { |group| group.all? { |arg| params.keys.include?(arg) } }
+        raise ArgumentError,
+              "arguments #{for_klass}must include one of #{required_groups
+                                                               .map(&:to_sentence)
+                                                               .to_sentence(two_words_connector: ' or ', last_word_connector: ', or ')}"
+      end
     end
   end
 

@@ -80,6 +80,29 @@ RSpec.describe ArgsValidator do
       expect { ArgsValidator.validate(params: args, required_alternatives: required_alternatives) }.not_to raise_error
     end
 
+    it 'validates a populated args hash that includes one required_alternative params when the alternative is a set of multiple params' do
+      args = {param_a: 456}
+      required_alternatives = [:param_a, [:param_b1, :param_b2]]
+      expect { ArgsValidator.new(params: args, required_alternatives: required_alternatives).validate }.not_to raise_error
+      expect { ArgsValidator.validate(params: args, required_alternatives: required_alternatives) }.not_to raise_error
+    end
+
+    it 'validates a populated args hash that includes one of a set of multiple required_alternative params' do
+      args = {param_b1: 123, param_b2: 456}
+      required_alternatives = [:param_a, [:param_b1, :param_b2]]
+      expect { ArgsValidator.new(params: args, required_alternatives: required_alternatives).validate }.not_to raise_error
+      expect { ArgsValidator.validate(params: args, required_alternatives: required_alternatives) }.not_to raise_error
+    end
+
+    it 'invalidates a populated args hash that includes only a portion of a set of multiple required_alternative params' do
+      args = {param_b1: 123}
+      required_alternatives = [:param_a, [:param_b1, :param_b2]]
+      expect { ArgsValidator.new(params: args, required_alternatives: required_alternatives).validate }
+          .to raise_error(/must include one of param_a or param_b1 and param_b2/)
+      expect { ArgsValidator.validate(params: args, required_alternatives: required_alternatives) }
+          .to raise_error(/must include one of param_a or param_b1 and param_b2/)
+    end
+
     it 'validates a populated args hash that includes all required params and at least one required_alternative param' do
       args = {time_from_start: 123, effort_id: 456, other_param: 789}
       required = [:time_from_start, :effort_id]

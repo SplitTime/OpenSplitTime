@@ -18,12 +18,17 @@ RSpec.describe ArgsValidator do
       expect { ArgsValidator.new(params: args) }.to raise_error(/no arguments provided/)
     end
 
+    it 'raises ArgumentError if any unknown argument is given' do
+      args = {time_from_start: 123, effort_id: 456}
+      expect { ArgsValidator.new(params: args, super_secret_required: :effort_id) }.to raise_error(/may not include super_secret_required/)
+    end
+
     it 'instantiates an object when provided a fully populated set of parameters' do
       args = {time_from_start: 123, effort_id: 456}
       required = [:time_from_start, :effort_id, :other_param]
       required_alternatives = [:pick_one, :pick_the_other]
       klass = Effort
-      expect { ArgsValidator.new(params: args, required: required, required_alternatives: required_alternatives, klass: klass) }
+      expect { ArgsValidator.new(params: args, required: required, required_alternatives: required_alternatives, class: klass) }
           .not_to raise_error
     end
   end

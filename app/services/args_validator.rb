@@ -3,13 +3,17 @@ class ArgsValidator
     new(args).validate
   end
 
+  def self.exclusive
+    [:params, :required, :required_alternatives, :exclusive, :class]
+  end
+
   def initialize(args)
     @params = args[:params]
     @required = Array.wrap(args[:required]) || []
     @required_alternatives = Array.wrap(args[:required_alternatives]) || []
     @exclusive = Array.wrap(args[:exclusive]) || []
     @klass = args[:class]
-    raise ArgumentError, 'no arguments provided for validation' unless params
+    validate_setup(args)
   end
 
   def validate
@@ -42,13 +46,20 @@ class ArgsValidator
 
   def validate_exclusive_params
     if exclusive.present?
-      params.each do |arg, _|
-        raise ArgumentError, "arguments #{for_klass}may not include #{arg}" unless exclusive.include?(arg)
+      params.each_key do |arg_name|
+        raise ArgumentError, "arguments #{for_klass}may not include #{arg_name}" unless exclusive.include?(arg_name)
       end
     end
   end
 
   def for_klass
     klass && "for #{klass} "
+  end
+
+  def validate_setup(args)
+    raise ArgumentError, 'no arguments provided for validation' unless params
+    args.each_key do |arg_name|
+      raise ArgumentError, "arguments for ArgsValidator may not include #{arg_name}" unless ArgsValidator.exclusive.include?(arg_name)
+    end
   end
 end

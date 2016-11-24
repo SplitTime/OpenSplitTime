@@ -24,11 +24,11 @@ class MockEffort
   end
 
   def total_segment_time
-    split_rows.sum { |row| row.segment_time }
+    split_rows.sum(&:segment_time)
   end
 
   def total_time_in_aid
-    split_rows.sum { |unicorn| unicorn.time_in_aid }
+    split_rows.sum(&:time_in_aid)
   end
 
   def finish_time_from_start

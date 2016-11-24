@@ -33,7 +33,7 @@ class StatTimesCalculator
   end
 
   def stat_times
-    segments.map { |segment| [segment.end_sub_split, segment_times_container[segment].mean * normalizing_factor] }
+    segments.map { |segment| [segment.end_sub_split, segment_times_container[segment].estimated_time * normalizing_factor] }
   end
 
   def normalizing_factor

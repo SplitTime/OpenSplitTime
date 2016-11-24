@@ -4,19 +4,9 @@ RSpec.describe SimilarEffortFinder, type: :model do
   describe '#initialize' do
     it 'initializes when provided with a sub_split and time_from_start' do
       course = FactoryGirl.build_stubbed(:course)
-      split = FactoryGirl.build_stubbed(:split, course: course, id: 110)
       sub_split = {110 => 1}
       time_from_start = 10000
-      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course) }.not_to raise_error
-    end
-
-    it 'raises an error if the provided split does not resolve with the provided sub_split' do
-      sub_split = {110 => 1}
-      time_from_start = 10000
-      course = FactoryGirl.build_stubbed(:course)
-      split = FactoryGirl.build_stubbed(:split, course: course, id: 220)
-      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course) }
-          .to raise_error(/provided sub_split is not contained within the provided split/)
+      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, course: course) }.not_to raise_error
     end
   end
 
@@ -27,8 +17,7 @@ RSpec.describe SimilarEffortFinder, type: :model do
       sub_split = {110 => 1}
       time_from_start = 10000
       course = FactoryGirl.build_stubbed(:course)
-      split = FactoryGirl.build_stubbed(:split, course: course)
-      finder = SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, split: split, course: course)
+      finder = SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, course: course)
       expect(finder).to receive(:effort_database).and_return(effort_database)
       expect(finder.efforts).to eq(Effort.none)
     end

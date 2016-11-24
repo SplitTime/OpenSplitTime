@@ -1,7 +1,8 @@
 class PriorSplitTimeFinder
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: [:effort, :sub_split], class: self.class)
+    ArgsValidator.validate(params: args, required: :sub_split,
+                           required_alternatives: [:effort, :ordered_splits], class: self.class)
     @effort = args[:effort]
     @sub_split = args[:sub_split]
     @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
@@ -43,8 +44,11 @@ class PriorSplitTimeFinder
   end
 
   def validate_setup
-    raise ArgumentError, 'sub_split is not contained in the provided splits' unless ordered_sub_splits.include?(sub_split)
-    raise ArgumentError, 'split_times do not all belong to the same effort' unless split_times.map(&:effort_id).uniq.count < 2
-    raise ArgumentError, 'split_times do not relate to the provided effort' if split_times.any? { |st| st.effort_id != effort.id }
+    raise ArgumentError, 'sub_split is not contained in the provided splits' unless
+        ordered_sub_splits.include?(sub_split)
+    raise ArgumentError, 'split_times do not all belong to the same effort' unless
+        split_times.map(&:effort_id).uniq.count < 2
+    raise ArgumentError, 'split_times do not relate to the provided effort' if
+        effort && split_times.any? { |st| st.effort_id != effort.id }
   end
 end

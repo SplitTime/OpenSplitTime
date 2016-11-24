@@ -4,11 +4,9 @@ class SimilarEffortFinder
     ArgsValidator.validate(params: args, required: [:sub_split, :time_from_start], class: self.class)
     @sub_split = args[:sub_split]
     @time_from_start = args[:time_from_start]
-    @split = args[:split] || Split.find(sub_split.split_id)
     @minimum_efforts = args[:min] || 20
     @maximum_efforts = args[:max] || 200
     @finished = args[:finished]
-    validate_setup
   end
 
   def efforts
@@ -21,7 +19,7 @@ class SimilarEffortFinder
 
   private
 
-  attr_reader :sub_split, :time_from_start, :split, :minimum_efforts, :maximum_efforts, :finished
+  attr_reader :sub_split, :time_from_start, :minimum_efforts, :maximum_efforts, :finished
 
   FACTOR_PAIRS = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30].map { |step| [1 - step, 1 + step] }
 
@@ -62,9 +60,10 @@ class SimilarEffortFinder
   end
 
   def possible_split_times
-    @possible_split_times ||=
-        SplitTime.valid_status
-            .where(split: split, bitkey: sub_split.bitkey).within_time_range(lowest_time, highest_time).to_a
+    @possible_split_times ||= SplitTime.valid_status
+                                  .where(split_id: sub_split.split_id, bitkey: sub_split.bitkey)
+                                  .within_time_range(lowest_time, highest_time)
+                                  .to_a
   end
 
   def lowest_time
@@ -73,9 +72,5 @@ class SimilarEffortFinder
 
   def highest_time
     time_from_start * FACTOR_PAIRS.last.last
-  end
-
-  def validate_setup
-    raise ArgumentError, 'provided sub_split is not contained within the provided split' if split.id != sub_split.split_id
   end
 end

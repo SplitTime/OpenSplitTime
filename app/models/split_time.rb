@@ -82,9 +82,7 @@ class SplitTime < ActiveRecord::Base
 
   def military_time=(military_time, time_calculator = IntendedTimeCalculator)
     self.day_and_time = military_time.present? ?
-        time_calculator.day_and_time(military_time: military_time,
-                                     effort: effort,
-                                     sub_split: sub_split) : nil
+        time_calculator.day_and_time(military_time: military_time, effort: effort, sub_split: sub_split) : nil
   end
 
   def split_name
@@ -112,5 +110,4 @@ class SplitTime < ActiveRecord::Base
   def delete_if_blank
     self.delete if elapsed_time == ''
   end
-
 end

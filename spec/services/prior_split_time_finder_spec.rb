@@ -26,9 +26,9 @@ RSpec.describe PriorSplitTimeFinder do
                                         split_times: split_times) }.not_to raise_error
     end
 
-    it 'raises an ArgumentError if no effort is given' do
+    it 'raises an ArgumentError if neither effort nor ordered_splits is given' do
       sub_split = split_times_101.last.sub_split
-      expect { PriorSplitTimeFinder.new(sub_split: sub_split) }.to raise_error(/must include effort/)
+      expect { PriorSplitTimeFinder.new(sub_split: sub_split) }.to raise_error(/must include one of effort or ordered_splits/)
     end
 
     it 'raises an ArgumentError if no sub_split is given' do
@@ -50,8 +50,7 @@ RSpec.describe PriorSplitTimeFinder do
       finder = PriorSplitTimeFinder.new(effort: effort,
                                         sub_split: sub_split,
                                         ordered_splits: ordered_splits,
-                                        split_times: split_times,
-                                        calculate_by: :terrain)
+                                        split_times: split_times)
       expected = split_times[4]
       expect(finder.split_time).to eq(expected)
     end
@@ -66,8 +65,7 @@ RSpec.describe PriorSplitTimeFinder do
       finder = PriorSplitTimeFinder.new(effort: effort,
                                         sub_split: sub_split,
                                         ordered_splits: ordered_splits,
-                                        split_times: split_times,
-                                        calculate_by: :terrain)
+                                        split_times: split_times)
       expected = split_times[2]
       expect(finder.split_time).to eq(expected)
     end
@@ -85,8 +83,7 @@ RSpec.describe PriorSplitTimeFinder do
       finder = PriorSplitTimeFinder.new(effort: effort,
                                         sub_split: sub_split,
                                         ordered_splits: ordered_splits,
-                                        split_times: split_times,
-                                        calculate_by: :terrain)
+                                        split_times: split_times)
       expected = split_times[0]
       expect(finder.split_time).to eq(expected)
     end
@@ -99,8 +96,7 @@ RSpec.describe PriorSplitTimeFinder do
       finder = PriorSplitTimeFinder.new(effort: effort,
                                         sub_split: sub_split,
                                         ordered_splits: ordered_splits,
-                                        split_times: split_times,
-                                        calculate_by: :terrain)
+                                        split_times: split_times)
       expected = split_times[0]
       expect(finder.split_time).to eq(expected)
     end

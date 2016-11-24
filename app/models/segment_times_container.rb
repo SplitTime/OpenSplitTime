@@ -36,6 +36,10 @@ class SegmentTimesContainer
     self[segment].std
   end
 
+  def estimated_time(segment)
+    self[segment].estimated_time
+  end
+
   private
 
   attr_reader :effort_ids, :split_times, :segment_calcs

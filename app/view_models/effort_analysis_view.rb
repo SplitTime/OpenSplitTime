@@ -6,13 +6,12 @@ class EffortAnalysisView
 
   def initialize(effort)
     @effort = effort
-    create_typical_effort
     @analysis_rows = []
     create_analysis_rows
   end
 
   def total_segment_time
-    analysis_rows.sum { |row| row.segment_time }
+    analysis_rows.sum(&:segment_time)
   end
 
   def total_segment_time_typical
@@ -20,11 +19,11 @@ class EffortAnalysisView
   end
 
   def total_segment_time_over_under
-    analysis_rows.map(&:segment_time_over_under).sum
+    analysis_rows.sum(&:segment_time_over_under)
   end
 
   def total_time_in_aid
-    analysis_rows.sum { |unicorn| unicorn.time_in_aid }
+    analysis_rows.sum(&:time_in_aid)
   end
 
   def total_time_in_aid_typical
@@ -32,7 +31,7 @@ class EffortAnalysisView
   end
 
   def total_time_in_aid_over_under
-    analysis_rows.map(&:time_in_aid_over_under).sum
+    analysis_rows.sum(&:time_in_aid_over_under)
   end
 
   def total_time_combined
@@ -48,13 +47,13 @@ class EffortAnalysisView
   end
 
   def best_segments
-    segment_count = [((sortable_analysis_rows.count / 2.0)).round(0), 3].min
-    sortable_analysis_rows.sort_by(&:segment_over_under_percent).first(segment_count).map(&:segment_name).join(', ')
+    segment_count = [((sorted_analysis_rows.count / 2.0)).round(0), 3].min
+    sorted_analysis_rows.first(segment_count).map(&:segment_name).join(', ')
   end
 
   def worst_segments
-    segment_count = [(sortable_analysis_rows.count / 2), 3].min
-    sortable_analysis_rows.sort_by(&:segment_over_under_percent).reverse.first(segment_count).map(&:segment_name).join(', ')
+    segment_count = [(sorted_analysis_rows.count / 2), 3].min
+    sorted_analysis_rows.reverse.first(segment_count).map(&:segment_name).join(', ')
   end
 
   def effort_finished?
@@ -66,7 +65,7 @@ class EffortAnalysisView
   end
 
   def farthest_recorded_split_name
-    farthest_split = splits.find { |split| split.id == split_times.last.split_id }
+    farthest_split = ordered_splits.find { |split| split.id == split_times.last.split_id }
     farthest_split ? farthest_split.base_name : nil
   end
 
@@ -76,22 +75,30 @@ class EffortAnalysisView
 
   private
 
-  attr_accessor :typical_effort, :indexed_typical_rows, :indexed_analysis_rows
+  attr_accessor :indexed_analysis_rows
 
-  def create_typical_effort
-    mock_target_time = effort_finish_tfs || effort.expected_time_from_start(finish_sub_split)
-    self.typical_effort = MockEffort.new(ordered_splits: relevant_calc_splits,
-                                         expected_time: mock_target_time,
-                                         start_time: effort_start_time)
-    self.indexed_typical_rows = typical_effort
-                                    .split_rows
-                                    .index_by(&:split_id)
+  def typical_effort
+    @typical_effort ||= MockEffort.new(ordered_splits: ordered_splits,
+                                       expected_time: mock_finish_time,
+                                       start_time: effort_start_time)
+  end
+
+  def indexed_typical_rows
+    @indexed_typical_rows ||= typical_effort.split_rows.index_by(&:split_id)
+  end
+
+  def mock_finish_time
+    effort_finish_tfs || finish_time_predictor.times_from_start[finish_sub_split]
+  end
+
+  def finish_time_predictor
+    @finish_time_predictor ||= TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calculate_by: :stats)
   end
 
   def create_analysis_rows
-    prior_split_time = related_split_times(splits.first).first
-    prior_split = splits.first
-    splits.each do |split|
+    prior_split_time = related_split_times(ordered_splits.first).first
+    prior_split = ordered_splits.first
+    ordered_splits.each do |split|
       next if split.start?
       analysis_row = EffortAnalysisRow.new(split,
                                            related_split_times(split),
@@ -101,26 +108,13 @@ class EffortAnalysisView
                                            indexed_typical_rows[split.id])
       analysis_rows << analysis_row
       prior_split_time = analysis_row.split_times.compact.last if analysis_row.split_times.compact.present?
-      prior_split = splits.find { |s| s.id == prior_split_time.split_id }
+      prior_split = ordered_splits.find { |s| s.id == prior_split_time.split_id }
     end
     self.indexed_analysis_rows = analysis_rows.index_by(&:split_id)
   end
 
-  def relevant_calc_splits
-    splits = effort_in_progress? ? (recorded_splits + incomplete_splits).flatten : recorded_splits
-    splits.sort_by!(&:distance_from_start)
-  end
-
-  def recorded_splits
-    splits.select { |split| split_times.map(&:split_id).include?(split.id) }
-  end
-
-  def incomplete_splits
-    splits[splits.index(recorded_splits.last) + 1..-1]
-  end
-
   def related_split_times(split)
-    split.sub_splits.collect { |key_hash| indexed_split_times[key_hash] }
+    split.sub_splits.map { |sub_split| indexed_split_times[sub_split] }
   end
 
   def effort_start_time
@@ -132,11 +126,11 @@ class EffortAnalysisView
   end
 
   def finish_sub_split
-    splits.last.sub_split_in
+    ordered_splits.last.sub_split_in
   end
 
-  def sortable_analysis_rows
-    analysis_rows.select { |row| row.segment_over_under_percent }
+  def sorted_analysis_rows
+    analysis_rows.select(&:segment_over_under_percent).sort_by(&:segment_over_under_percent)
   end
 
   def effort_in_progress?
@@ -147,8 +141,8 @@ class EffortAnalysisView
     @course ||= event.course
   end
 
-  def splits
-    @splits ||= event.ordered_splits.to_a
+  def ordered_splits
+    @ordered_splits ||= event.ordered_splits.to_a
   end
 
   def split_times

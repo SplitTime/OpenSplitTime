@@ -4,15 +4,15 @@ class SegmentTimesContainer
     ArgsValidator.validate(params: args, required_alternatives: [:effort_ids, :efforts, :split_times], class: self.class)
     @effort_ids = args[:effort_ids] || (args[:efforts] && args[:efforts].map(&:id)) || []
     @split_times = args[:split_times] || SplitTime.valid_status.basic_components.where(effort_id: effort_ids)
-    @segment_calcs = {}
+    @segment_times = args[:segment_times] || {}
   end
 
-  def []=(segment, calcs)
-    segment_calcs[segment] = calcs
+  def []=(segment, times)
+    segment_times[segment] = times
   end
 
   def [](segment)
-    segment_calcs[segment] ||=
+    segment_times[segment] ||=
         SegmentTimes.new(segment, time_hashes[segment.begin_sub_split], time_hashes[segment.end_sub_split])
   end
 
@@ -42,7 +42,7 @@ class SegmentTimesContainer
 
   private
 
-  attr_reader :effort_ids, :split_times, :segment_calcs
+  attr_reader :effort_ids, :split_times, :segment_times
 
   def time_hashes
     @time_hashes ||=

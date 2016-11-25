@@ -3,10 +3,9 @@ require 'rails_helper'
 RSpec.describe SimilarEffortFinder, type: :model do
   describe '#initialize' do
     it 'initializes when provided with a sub_split and time_from_start' do
-      course = FactoryGirl.build_stubbed(:course)
       sub_split = {110 => 1}
       time_from_start = 10000
-      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, course: course) }.not_to raise_error
+      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start) }.not_to raise_error
     end
   end
 

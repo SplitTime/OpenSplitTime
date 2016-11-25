@@ -1,8 +1,8 @@
 class EventSegmentCalcs
   attr_reader :time_hashes
 
-  def initialize(event, hash = {})
-    @segment_calcs = hash
+  def initialize(event, segment_calcs = {})
+    @segment_calcs = segment_calcs
     @time_hashes = event.time_hashes_similar_events
   end
 

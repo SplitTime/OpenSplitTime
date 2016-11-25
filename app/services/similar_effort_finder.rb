@@ -1,7 +1,10 @@
 class SimilarEffortFinder
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: [:sub_split, :time_from_start], class: self.class)
+    ArgsValidator.validate(params: args,
+                           required: [:sub_split, :time_from_start],
+                           exclusive: [:sub_split, :time_from_start, :minimum_efforts, :maximum_efforts, :finished],
+                           class: self.class)
     @sub_split = args[:sub_split]
     @time_from_start = args[:time_from_start]
     @minimum_efforts = args[:min] || 20
@@ -40,7 +43,7 @@ class SimilarEffortFinder
   end
 
   def split_times_in_range(low_time, high_time)
-    scoped_split_times.select { |split_time| (low_time..high_time).include? split_time.time_from_start }
+    scoped_split_times.select { |split_time| split_time.time_from_start.between?(low_time, high_time) }
   end
 
   def scoped_split_times

@@ -6,8 +6,8 @@ class SegmentsBuilder
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required_alternatives: [:sub_splits, :ordered_splits],
-                           exclusive: [:sub_splits, :ordered_splits])
+                           required_alternatives: [:ordered_splits, :sub_splits],
+                           exclusive: [:ordered_splits, :sub_splits])
     @ordered_splits = args[:ordered_splits] || Split.where(id: args[:sub_splits].map(&:split_id)).ordered.to_a
     @sub_splits = args[:sub_splits] || sub_splits_from_splits
     validate_setup

@@ -132,10 +132,10 @@ RSpec.describe IntendedTimeCalculator do
       it 'calculates the likely intended day and time based on inputs, rolling into the next day if necessary' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
         ordered_splits = splits
-        valid_split_times = split_times
+        working_split_time = split_times.last
         time_predictor = TimesPredictor.new(effort: effort,
                                             ordered_splits: ordered_splits,
-                                            valid_split_times: valid_split_times,
+                                            working_split_time: working_split_time,
                                             calculate_by: :terrain)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
@@ -181,10 +181,10 @@ RSpec.describe IntendedTimeCalculator do
       it 'functions properly when expected time is near midnight' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
         ordered_splits = splits
-        valid_split_times = split_times
+        working_split_time = split_times.last
         time_predictor = TimesPredictor.new(effort: effort,
                                             ordered_splits: ordered_splits,
-                                            valid_split_times: valid_split_times,
+                                            working_split_time: working_split_time,
                                             calculate_by: :terrain)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
@@ -230,10 +230,10 @@ RSpec.describe IntendedTimeCalculator do
       it 'rolls over to the next day if prior valid split time is later than the calculated time' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
         ordered_splits = splits
-        valid_split_times = split_times
+        working_split_time = split_times.last
         time_predictor = TimesPredictor.new(effort: effort,
                                             ordered_splits: ordered_splits,
-                                            valid_split_times: valid_split_times,
+                                            working_split_time: working_split_time,
                                             calculate_by: :terrain)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 

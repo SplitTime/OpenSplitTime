@@ -19,14 +19,12 @@ RSpec.describe StatTimesCalculator do
     it 'initializes with an effort, ordered_splits, and a SegmentTimesContainer object in an args hash' do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
-      completed_split_time = split_times_101.last
+      working_split_time = split_times_101.last
       split_times = split_times_101
-      similar_efforts = []
       times_container = SegmentTimesContainer.new(split_times: split_times)
       expect { StatTimesCalculator.new(effort: effort,
                                        ordered_splits: ordered_splits,
-                                       completed_split_time: completed_split_time,
-                                       similar_efforts: similar_efforts,
+                                       working_split_time: working_split_time,
                                        segment_times_container: times_container) }.not_to raise_error
     end
 
@@ -64,16 +62,14 @@ RSpec.describe StatTimesCalculator do
     it 'returns a hash containing the same number of elements as the sub_splits of the ordered_splits provided' do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
-      completed_split_time = split_times_101.last
+      working_split_time = split_times_101.last
       split_times = [split_times_101, split_times_102, split_times_103, split_times_104,
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
-      similar_efforts = []
       times_container = SegmentTimesContainer.new(split_times: split_times)
       times_calculator = StatTimesCalculator.new(effort: effort,
                                        ordered_splits: ordered_splits,
-                                       completed_split_time: completed_split_time,
-                                       similar_efforts: similar_efforts,
+                                       working_split_time: working_split_time,
                                        segment_times_container: times_container)
       expect(times_calculator.times_from_start.count).to eq(10)
     end
@@ -82,16 +78,14 @@ RSpec.describe StatTimesCalculator do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       sub_splits = ordered_splits.map(&:sub_splits).flatten
-      completed_split_time = split_times_101.last
+      working_split_time = split_times_101.last
       split_times = [split_times_101, split_times_102, split_times_103, split_times_104,
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
-      similar_efforts = []
       times_container = SegmentTimesContainer.new(split_times: split_times)
       times_calculator = StatTimesCalculator.new(effort: effort,
                                                  ordered_splits: ordered_splits,
-                                                 completed_split_time: completed_split_time,
-                                                 similar_efforts: similar_efforts,
+                                                 working_split_time: working_split_time,
                                                  segment_times_container: times_container)
       expect(times_calculator.times_from_start.keys).to eq(sub_splits)
     end
@@ -101,14 +95,14 @@ RSpec.describe StatTimesCalculator do
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       sub_splits = ordered_splits.map(&:sub_splits).flatten
       start_sub_split = sub_splits.first
-      completed_split_time = split_times_101.last
+      working_split_time = split_times_101.last
       split_times = [split_times_101, split_times_102, split_times_103, split_times_104,
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
       times_container = SegmentTimesContainer.new(split_times: split_times)
       times_calculator = StatTimesCalculator.new(effort: effort,
                                                  ordered_splits: ordered_splits,
-                                                 completed_split_time: completed_split_time,
+                                                 working_split_time: working_split_time,
                                                  segment_times_container: times_container)
       expect(times_calculator.times_from_start[start_sub_split]).to eq(0)
     end
@@ -117,14 +111,14 @@ RSpec.describe StatTimesCalculator do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       sub_splits = ordered_splits.map(&:sub_splits).flatten
-      completed_split_time = split_times_101.last
+      working_split_time = split_times_101.last
       split_times = [split_times_101, split_times_102, split_times_103, split_times_104,
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
       times_container = SegmentTimesContainer.new(split_times: split_times)
       times_calculator = StatTimesCalculator.new(effort: effort,
                                                  ordered_splits: ordered_splits,
-                                                 completed_split_time: completed_split_time,
+                                                 working_split_time: working_split_time,
                                                  segment_times_container: times_container)
       expect(times_calculator.times_from_start[sub_splits[1]]).to be_within(100).of(1000)
       expect(times_calculator.times_from_start[sub_splits[2]]).to be_within(100).of(1100)
@@ -167,14 +161,14 @@ RSpec.describe StatTimesCalculator do
     it 'returns average elapsed time in seconds between begin and end of the provided segment' do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
-      completed_split_time = split_times_101.last
+      working_split_time = split_times_101.last
       split_times = [split_times_101, split_times_102, split_times_103, split_times_104,
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
       times_container = SegmentTimesContainer.new(split_times: split_times)
       times_calculator = StatTimesCalculator.new(effort: effort,
                                                  ordered_splits: ordered_splits,
-                                                 completed_split_time: completed_split_time,
+                                                 working_split_time: working_split_time,
                                                  segment_times_container: times_container)
       segment = Segment.new(split2.sub_splits.last, split3.sub_splits.first, split2, split3)
       expect(times_calculator.segment_time(segment)).to be_within(100).of(1000)
@@ -183,14 +177,14 @@ RSpec.describe StatTimesCalculator do
     it 'returns average elapsed time in seconds between begin and end of the provided segment within an aid station' do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
-      completed_split_time = split_times_101.last
+      working_split_time = split_times_101.last
       split_times = [split_times_101, split_times_102, split_times_103, split_times_104,
                      split_times_105, split_times_106, split_times_107, split_times_108,
                      split_times_109, split_times_110, split_times_111, split_times_112].flatten
       times_container = SegmentTimesContainer.new(split_times: split_times)
       times_calculator = StatTimesCalculator.new(effort: effort,
                                                  ordered_splits: ordered_splits,
-                                                 completed_split_time: completed_split_time,
+                                                 working_split_time: working_split_time,
                                                  segment_times_container: times_container)
       segment = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
       expect(times_calculator.segment_time(segment)).to be_within(10).of(80)

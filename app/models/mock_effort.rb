@@ -3,15 +3,18 @@ class MockEffort
   attr_reader :expected_time, :start_time
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: [:ordered_splits, :expected_time, :start_time], class: self.class)
+    ArgsValidator.validate(params: args,
+                           required: [:ordered_splits, :expected_time, :start_time],
+                           exclusive: [:ordered_splits, :expected_time, :start_time, :finder, :times_calculator],
+                           class: self.class)
     @ordered_splits = args[:ordered_splits]
     @expected_time = args[:expected_time]
     @start_time = args[:start_time]
     @finder = args[:effort_finder] ||
-        SimilarEffortFinder.new(sub_split: finish_sub_split, time_from_start: expected_time, split: finish_split)
+        SimilarEffortFinder.new(sub_split: finish_sub_split, time_from_start: expected_time)
     @times_calculator = args[:times_calculator] ||
         StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                completed_split_time: mock_finish_split_time,
+                                working_split_time: mock_finish_split_time,
                                 similar_efforts: relevant_efforts)
   end
 

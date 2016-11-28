@@ -10,12 +10,10 @@ class MockEffort
     @ordered_splits = args[:ordered_splits]
     @expected_time = args[:expected_time]
     @start_time = args[:start_time]
-    @finder = args[:effort_finder] ||
-        SimilarEffortFinder.new(sub_split: finish_sub_split, time_from_start: expected_time)
-    @times_calculator = args[:times_calculator] ||
-        StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                working_split_time: mock_finish_split_time,
-                                similar_efforts: relevant_efforts)
+    @finder = args[:effort_finder] || SimilarEffortFinder.new(sub_split: finish_sub_split, time_from_start: expected_time)
+    @times_predictor = args[:times_predictor] || TimesPredictor.new(ordered_splits: ordered_splits,
+                                                                    working_split_time: mock_finish_split_time,
+                                                                    similar_efforts: relevant_efforts)
   end
 
   def indexed_split_times
@@ -57,14 +55,14 @@ class MockEffort
   private
 
   attr_accessor :relevant_split_times
-  attr_reader :ordered_splits, :finder, :times_calculator
+  attr_reader :ordered_splits, :finder, :times_predictor
 
   def plan_split_time(sub_split)
     SplitTime.new(sub_split: sub_split, time_from_start: plan_times[sub_split])
   end
 
   def plan_times
-    @plan_times ||= times_calculator.times_from_start
+    @plan_times ||= times_predictor.times_from_start
   end
 
   def create_split_rows

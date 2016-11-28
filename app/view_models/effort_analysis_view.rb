@@ -92,7 +92,7 @@ class EffortAnalysisView
   end
 
   def finish_time_predictor
-    @finish_time_predictor ||= TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calculate_by: :stats)
+    @finish_time_predictor ||= TimesPredictor.new(effort: effort, ordered_splits: ordered_splits)
   end
 
   def create_analysis_rows

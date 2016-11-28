@@ -13,17 +13,21 @@ RSpec.describe TimesPredictor do
 
   describe '#initialize' do
 
-    it 'initializes with an effort, ordered_splits, and working_split_time in an args hash' do
-      effort = FactoryGirl.build_stubbed(:effort)
+    it 'initializes with ordered_splits and working_split_time in an args hash' do
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       working_split_time = split_times_101.last
-      expect { TimesPredictor.new(effort: effort,
-                                  ordered_splits: ordered_splits,
+      expect { TimesPredictor.new(ordered_splits: ordered_splits,
                                   working_split_time: working_split_time) }.not_to raise_error
     end
 
-    it 'raises an ArgumentError if no effort is given' do
-      expect { TimesPredictor.new(random_param: 123) }.to raise_error(/must include one of effort or ordered_splits/)
+    it 'raises an ArgumentError if no effort or ordered_splits are given' do
+      working_split_time = split_times_101.last
+      expect { TimesPredictor.new(working_split_time: working_split_time) }.to raise_error(/must include one of effort or ordered_splits and working_split_time/)
+    end
+
+    it 'raises an ArgumentError if no effort or working_split_time are given' do
+      ordered_splits = [split1, split2, split3, split4, split5, split6]
+      expect { TimesPredictor.new(ordered_splits: ordered_splits) }.to raise_error(/must include one of effort or ordered_splits and working_split_time/)
     end
   end
 
@@ -41,7 +45,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start.count).to eq(10)
         expect(predictor.times_from_start.keys).to eq(sub_splits)
       end
@@ -54,7 +58,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[0]]).to eq(0)
       end
 
@@ -66,7 +70,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
         expect(predictor.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
         expect(predictor.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * DISTANCE_FACTOR)
@@ -88,7 +92,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start.count).to eq(10)
         expect(predictor.times_from_start.keys).to eq(sub_splits)
       end
@@ -101,7 +105,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[0]]).to eq(0)
       end
 
@@ -113,7 +117,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[4]]).to eq(2100)
       end
 
@@ -125,7 +129,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[1]]).to be_within(50).of(1050)
         expect(predictor.times_from_start[sub_splits[2]]).to be_within(50).of(1050)
         expect(predictor.times_from_start[sub_splits[3]]).to be_within(50).of(2100)
@@ -139,7 +143,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[5]]).to be_within(50).of(3150)
         expect(predictor.times_from_start[sub_splits[6]]).to be_within(50).of(3150)
         expect(predictor.times_from_start[sub_splits[7]]).to be_within(50).of(4200)
@@ -157,7 +161,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start.count).to eq(10)
         expect(predictor.times_from_start.keys).to eq(sub_splits)
       end
@@ -170,7 +174,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[0]]).to eq(0)
       end
 
@@ -182,7 +186,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[9]]).to eq(5000)
       end
 
@@ -194,7 +198,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       calculate_by: :terrain)
+                                       similar_efforts: nil)
         expect(predictor.times_from_start[sub_splits[1]]).to be_within(50).of(1000)
         expect(predictor.times_from_start[sub_splits[2]]).to be_within(50).of(1000)
         expect(predictor.times_from_start[sub_splits[3]]).to be_within(50).of(2000)

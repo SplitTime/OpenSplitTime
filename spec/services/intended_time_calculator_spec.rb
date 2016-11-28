@@ -51,8 +51,7 @@ RSpec.describe IntendedTimeCalculator do
       start_time = Time.new(2016, 7, 1, 6, 0, 0)
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {44 => 1}
-      mock_time_hash = {{44 => 1} => 10000, {45 => 1} => 200000, {46 => 1} => 400000}
-      time_predictor = instance_double('TimesPredictor', times_from_start: mock_time_hash)
+      times_predictor = instance_double('TimesPredictor', segment_time: 10000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
       split_time_finder = instance_double('PriorSplitTimeFinder', split_time: prior_split_time)
@@ -60,14 +59,14 @@ RSpec.describe IntendedTimeCalculator do
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
                                               sub_split: sub_split,
-                                              predictor: time_predictor,
+                                              predictor: times_predictor,
                                               split_time_finder: split_time_finder)
       expect(calculator.day_and_time).to eq(Time.new(2016, 7, 1, 9, 30, 45))
 
       day_and_time = IntendedTimeCalculator.day_and_time(effort: effort,
                                                          military_time: military_time,
                                                          sub_split: sub_split,
-                                                         predictor: time_predictor,
+                                                         predictor: times_predictor,
                                                          split_time_finder: split_time_finder)
       expect(day_and_time).to eq(Time.new(2016, 7, 1, 9, 30, 45))
     end
@@ -77,8 +76,7 @@ RSpec.describe IntendedTimeCalculator do
       start_time = Time.new(2016, 7, 1, 6, 0, 0)
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {45 => 1}
-      mock_time_hash = {{44 => 1} => 10000, {45 => 1} => 200000, {46 => 1} => 400000}
-      time_predictor = instance_double('TimesPredictor', times_from_start: mock_time_hash)
+      times_predictor = instance_double('TimesPredictor', segment_time: 200000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
       split_time_finder = instance_double('PriorSplitTimeFinder', split_time: prior_split_time)
@@ -86,14 +84,14 @@ RSpec.describe IntendedTimeCalculator do
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
                                               sub_split: sub_split,
-                                              predictor: time_predictor,
+                                              predictor: times_predictor,
                                               split_time_finder: split_time_finder)
       expect(calculator.day_and_time).to eq(Time.new(2016, 7, 3, 15, 30, 45))
 
       day_and_time = IntendedTimeCalculator.day_and_time(effort: effort,
                                                          military_time: military_time,
                                                          sub_split: sub_split,
-                                                         predictor: time_predictor,
+                                                         predictor: times_predictor,
                                                          split_time_finder: split_time_finder)
       expect(day_and_time).to eq(Time.new(2016, 7, 3, 15, 30, 45))
     end
@@ -104,8 +102,7 @@ RSpec.describe IntendedTimeCalculator do
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {46 => 1}
 
-      mock_time_hash = {{44 => 1} => 10000, {45 => 1} => 200000, {46 => 1} => 400000}
-      time_predictor = instance_double('TimesPredictor', times_from_start: mock_time_hash)
+      times_predictor = instance_double('TimesPredictor', segment_time: 400000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
       split_time_finder = instance_double('PriorSplitTimeFinder', split_time: prior_split_time)
@@ -113,14 +110,14 @@ RSpec.describe IntendedTimeCalculator do
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
                                               sub_split: sub_split,
-                                              predictor: time_predictor,
+                                              predictor: times_predictor,
                                               split_time_finder: split_time_finder)
       expect(calculator.day_and_time).to eq(Time.new(2016, 7, 5, 15, 30, 45))
 
       day_and_time = IntendedTimeCalculator.day_and_time(effort: effort,
                                                          military_time: military_time,
                                                          sub_split: sub_split,
-                                                         predictor: time_predictor,
+                                                         predictor: times_predictor,
                                                          split_time_finder: split_time_finder)
       expect(day_and_time).to eq(Time.new(2016, 7, 5, 15, 30, 45))
     end
@@ -133,10 +130,8 @@ RSpec.describe IntendedTimeCalculator do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
         ordered_splits = splits
         working_split_time = split_times.last
-        time_predictor = TimesPredictor.new(effort: effort,
-                                            ordered_splits: ordered_splits,
-                                            working_split_time: working_split_time,
-                                            calculate_by: :terrain)
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                            working_split_time: working_split_time)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
@@ -145,7 +140,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 1, 18, 0, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -154,7 +149,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 1, 20, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -163,7 +158,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 1, 0, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -172,7 +167,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 5, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -182,10 +177,8 @@ RSpec.describe IntendedTimeCalculator do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
         ordered_splits = splits
         working_split_time = split_times.last
-        time_predictor = TimesPredictor.new(effort: effort,
-                                            ordered_splits: ordered_splits,
-                                            working_split_time: working_split_time,
-                                            calculate_by: :terrain)
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                            working_split_time: working_split_time)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
@@ -194,7 +187,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 1, 23, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -203,7 +196,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 0, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -212,7 +205,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 5, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -221,7 +214,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 9, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -231,10 +224,8 @@ RSpec.describe IntendedTimeCalculator do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
         ordered_splits = splits
         working_split_time = split_times.last
-        time_predictor = TimesPredictor.new(effort: effort,
-                                            ordered_splits: ordered_splits,
-                                            working_split_time: working_split_time,
-                                            calculate_by: :terrain)
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                            working_split_time: working_split_time)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
         military_time = '16:00:00' # Expected time is roughly 17:00 on 7/1, so this would normally be interpreted as 16:00 on 7/1
@@ -242,7 +233,7 @@ RSpec.describe IntendedTimeCalculator do
         calculator = IntendedTimeCalculator.new(effort: effort,
                                                 military_time: military_time,
                                                 sub_split: sub_split,
-                                                predictor: time_predictor,
+                                                predictor: times_predictor,
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 16, 0, 0)
         expect(calculator.day_and_time).to eq(expected)
@@ -255,13 +246,13 @@ RSpec.describe IntendedTimeCalculator do
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {46 => 1}
       mock_time_hash = {{44 => 1} => 10000, {45 => 1} => 200000, {46 => 1} => 400000}
-      time_predictor = instance_double('TimesPredictor', times_from_start: mock_time_hash)
+      times_predictor = instance_double('TimesPredictor', times_from_start: mock_time_hash)
       split_time_finder = instance_double('PriorSplitTimeFinder', split_time: SplitTime.new)
 
       expect { IntendedTimeCalculator.new(effort: effort,
                                           military_time: military_time,
                                           sub_split: sub_split,
-                                          predictor: time_predictor,
+                                          predictor: times_predictor,
                                           split_time_finder: split_time_finder) }.to raise_error(/out of range/)
     end
   end

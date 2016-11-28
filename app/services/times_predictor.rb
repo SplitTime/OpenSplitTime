@@ -3,12 +3,12 @@ class TimesPredictor
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required_alternatives: [:effort, [:ordered_splits, :working_split_time]],
-                           exclusive: [:effort, :ordered_splits, :working_split_time, :times_calculator, :calculate_by],
+                           exclusive: [:effort, :ordered_splits, :working_split_time, :times_calculator, :similar_efforts],
                            class: self.class)
     @effort = args[:effort]
     @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
     @working_split_time = args[:working_split_time] || effort.valid_split_times.last
-    @times_calculator = args[:times_calculator] || build_times_calculator(args[:calculate_by])
+    @times_calculator = args[:times_calculator] || build_times_calculator(args[:similar_efforts])
     validate_setup
   end
 
@@ -20,13 +20,17 @@ class TimesPredictor
     times_calculator.segment_time(segment) * pace_factor
   end
 
+  def limits(segment)
+    times_calculator.limits(segment).map { |limit| limit * pace_factor }
+  end
+
   private
 
   attr_reader :effort, :ordered_splits, :working_split_time, :times_calculator
 
-  def build_times_calculator(calculate_by)
-    calculate_by == :stats ?
-        StatTimesCalculator.new(effort: effort, ordered_splits: ordered_splits, working_split_time: working_split_time) :
+  def build_times_calculator(similar_efforts)
+    similar_efforts && (similar_efforts.count > SegmentTimes::STAT_CALC_THRESHOLD) ?
+        StatTimesCalculator.new(ordered_splits: ordered_splits, efforts: similar_efforts) :
         TerrainTimesCalculator.new(ordered_splits: ordered_splits)
   end
 

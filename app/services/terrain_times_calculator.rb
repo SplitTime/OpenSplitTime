@@ -10,9 +10,14 @@ class TerrainTimesCalculator
   end
 
   def segment_time(segment)
-    raise ArgumentError, "segment #{segment.name} is not valid for #{self}" unless
-        times_from_start[segment.end_sub_split] && times_from_start[segment.begin_sub_split]
+    unless times_from_start[segment.end_sub_split] && times_from_start[segment.begin_sub_split]
+      raise ArgumentError, "segment #{segment.name} is not valid for #{self}"
+    end
     times_from_start[segment.end_sub_split] - times_from_start[segment.begin_sub_split]
+  end
+
+  def limits(segment)
+    segment.limits_by_terrain
   end
 
   private

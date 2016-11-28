@@ -13,11 +13,11 @@ class SimilarEffortFinder
   end
 
   def efforts
-    @efforts ||= Effort.where(id: effort_ids).limit(maximum_efforts)
+    @efforts ||= Effort.where(id: effort_ids).limit(maximum_efforts).to_a
   end
 
   def events
-    @events ||= Event.where(id: efforts.pluck(:event_id).uniq)
+    @events ||= Event.where(id: efforts.map(&:event_id).uniq).to_a
   end
 
   private

@@ -12,6 +12,10 @@ class TimesPredictor
     validate_setup
   end
 
+  # Note: #times_from_start will return all times regardless of segment completion.
+  # To ensure greatest accuracy, call #segment_time when you need the most accurate
+  # times for a particular segment.
+
   def times_from_start
     @times_from_start ||= baseline_times.transform_values { |seconds| seconds * pace_factor }
   end

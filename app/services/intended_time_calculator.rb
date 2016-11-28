@@ -44,8 +44,11 @@ class IntendedTimeCalculator
   end
 
   def expected_time_from_prior
-    @expected_time_from_prior ||=
-        predictor.times_from_start[sub_split] - predictor.times_from_start[prior_valid_split_time.sub_split]
+    @expected_time_from_prior ||= predictor.segment_time(subject_segment)
+  end
+
+  def subject_segment
+    Segment.new(prior_valid_split_time.sub_split, sub_split)
   end
 
   def prior_day_and_time

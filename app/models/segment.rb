@@ -42,7 +42,27 @@ class Segment
   end
 
   def typical_time_by_terrain
-    (distance * DISTANCE_FACTOR) + (vert_gain * VERT_GAIN_FACTOR)
+    @typical_time_by_terrain ||= (distance * DISTANCE_FACTOR) + (vert_gain * VERT_GAIN_FACTOR)
+  end
+
+  def terrain_low_bad
+    typical_time_by_terrain / 5
+  end
+
+  def terrain_low_questionable
+    typical_time_by_terrain / 3.5
+  end
+
+  def terrain_high_questionable
+    typical_time_by_terrain * 3.5
+  end
+
+  def terrain_high_bad
+    typical_time_by_terrain * 5
+  end
+
+  def limits_by_terrain
+    [terrain_low_bad, terrain_low_questionable, terrain_high_questionable, terrain_high_bad]
   end
 
   def begin_id

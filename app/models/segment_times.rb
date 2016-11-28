@@ -28,7 +28,7 @@ class SegmentTimes
   end
 
   def estimated_time
-    mean || terrain_time
+    mean || segment.typical_time_by_terrain
   end
 
   private
@@ -70,27 +70,30 @@ class SegmentTimes
       self.high_questionable = 6.hours
       self.high_bad = 1.day
     else # This is a "real" segment between waypoint groups
-      set_limits_by_terrain
-      set_limits_by_stats
+      set_limits_by_terrain_and_stats
     end
   end
 
-  def set_limits_by_terrain
-    self.low_bad = terrain_time / 5
-    self.low_questionable = terrain_time / 3.5
-    self.high_questionable = terrain_time * 3.5
-    self.high_bad = terrain_time * 5
+  def set_limits_by_terrain_and_stats
+    self.low_bad = [segment.terrain_low_bad, stat_low_bad, 0].compact.max
+    self.low_questionable = [segment.terrain_low_questionable, stat_low_questionable, 0].compact.max
+    self.high_questionable = [segment.terrain_high_questionable, stat_high_questionable].compact.min
+    self.high_bad = [segment.terrain_high_bad, stat_high_bad].compact.min
   end
 
-  def set_limits_by_stats
-    return unless valid_data_array.count > STAT_CALC_THRESHOLD
-    self.low_bad = [self.low_bad, mean - (4 * std), 0].max
-    self.low_questionable = [self.low_questionable, mean - (3 * std), 0].max
-    self.high_questionable = [self.high_questionable, mean + (4 * std)].min
-    self.high_bad = [self.high_bad, mean + (10 * std)].min
+  def stat_low_bad
+    mean && mean - (4 * std)
   end
 
-  def terrain_time
-    segment.typical_time_by_terrain
+  def stat_low_questionable
+    mean && mean - (3 * std)
+  end
+
+  def stat_high_questionable
+    mean && mean + (4 * std)
+  end
+
+  def stat_high_bad
+    mean && mean + (10 * std)
   end
 end

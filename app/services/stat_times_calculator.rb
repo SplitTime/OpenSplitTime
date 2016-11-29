@@ -17,7 +17,11 @@ class StatTimesCalculator
     unless ordered_splits.include?(segment.begin_split) && ordered_splits.include?(segment.end_split)
       raise ArgumentError, "segment #{segment.name} is not valid for #{self}"
     end
-    segment_times_container[segment].estimated_time
+    segment_times_container.estimated_time(segment)
+  end
+
+  def limits(segment)
+    segment_times_container.limits(segment)
   end
 
   private

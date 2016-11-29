@@ -28,6 +28,10 @@ class TimesPredictor
     times_calculator.limits(segment).map { |limit| limit * pace_factor }
   end
 
+  def data_status(segment, time_from_start)
+    DataStatus.determine(limits(segment), time_from_start)
+  end
+
   private
 
   attr_reader :effort, :ordered_splits, :working_split_time, :times_calculator

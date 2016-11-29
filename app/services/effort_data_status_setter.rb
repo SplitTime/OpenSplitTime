@@ -5,7 +5,7 @@ class EffortDataStatusSetter
   end
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: :effort)
+    ArgsValidator.validate(params: args, required: :effort, class: self.class)
     @effort = args[:effort]
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
     @times_calculator = args[:times_calculator] ||
@@ -13,10 +13,7 @@ class EffortDataStatusSetter
   end
 
   def set_data_status
-    split_times.each do |split_time|
-      self.subject_split_time = split_time
-      set_split_time_data_status
-    end
+    split_times.each { |split_time| set_split_time_data_status(split_time) }
     set_effort_data_status
   end
 
@@ -49,9 +46,11 @@ class EffortDataStatusSetter
                             time_from_start: last_valid_split_time.time_from_start).efforts
   end
 
-  def set_split_time_data_status
+  def set_split_time_data_status(split_time)
+    self.subject_split_time = split_time
     return if subject_split_time.confirmed?
-    subject_split_time.data_status = times_predictor.data_status(subject_segment, subject_split_time.time_from_start)
+    subject_split_time.data_status = beyond_drop? ? 'bad' :
+        times_predictor.data_status(subject_segment, subject_segment_time)
   end
 
   def set_effort_data_status
@@ -59,7 +58,9 @@ class EffortDataStatusSetter
   end
 
   def times_predictor
-    TimesPredictor.new(working_split_time: split_time_for_prediction, ordered_splits: ordered_splits, times_calculator: times_calculator)
+    TimesPredictor.new(working_split_time: split_time_for_prediction,
+                       ordered_splits: ordered_splits,
+                       times_calculator: times_calculator)
   end
 
   def split_time_for_prediction
@@ -69,11 +70,31 @@ class EffortDataStatusSetter
   end
 
   def subject_segment
-    Segment.new(split_time_for_prediction.sub_split, subject_split_time.sub_split)
+    Segment.new(split_time_for_prediction.sub_split, subject_split_time.sub_split, subject_begin_split, subject_end_split)
+  end
+
+  def beyond_drop?
+    dropped_split && ordered_splits.index(subject_end_split) > ordered_splits.index(dropped_split)
+  end
+
+  def dropped_split
+    ordered_splits.find { |split| split.id == effort.dropped_split_id }
+  end
+
+  def subject_begin_split
+    ordered_splits.find { |split| split.id == split_time_for_prediction.split_id }
+  end
+
+  def subject_end_split
+    ordered_splits.find { |split| split.id == subject_split_time.split_id }
+  end
+
+  def subject_segment_time
+    subject_split_time.time_from_start - split_time_for_prediction.time_from_start
   end
 
   def last_valid_split_time
-    valid_split_times.last
+    valid_split_times.last || mock_start_split_time
   end
 
   def valid_split_times

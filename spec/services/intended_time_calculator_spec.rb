@@ -45,6 +45,10 @@ RSpec.describe IntendedTimeCalculator do
   end
 
   describe '.day_and_time / #day_and_time' do
+    before do
+      FactoryGirl.reload
+    end
+
     context 'for an effort that has not yet started'
     it 'calculates the likely intended day and time for a same-day time based on inputs' do
       military_time = '9:30:45'
@@ -126,12 +130,12 @@ RSpec.describe IntendedTimeCalculator do
       let(:split_times) { FactoryGirl.build_stubbed_list(:split_times_hardrock_1, 30, effort_id: 101) }
       let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
-      it 'calculates the likely intended day and time based on inputs, rolling into the next day if necessary' do
+      it 'calculates the likely intended day and time based on inputs' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
         ordered_splits = splits
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                            working_split_time: working_split_time)
+                                             working_split_time: working_split_time)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
@@ -144,6 +148,17 @@ RSpec.describe IntendedTimeCalculator do
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 1, 18, 0, 0)
         expect(calculator.day_and_time).to eq(expected)
+      end
+
+      it 'calculates the likely intended day and time based on inputs, where time is late evening' do
+        effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
+        ordered_splits = splits
+        working_split_time = split_times.last
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                             working_split_time: working_split_time)
+        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+
+        sub_split = split_times[9].sub_split # Burrows In
 
         military_time = '20:30:00'
         calculator = IntendedTimeCalculator.new(effort: effort,
@@ -153,6 +168,18 @@ RSpec.describe IntendedTimeCalculator do
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 1, 20, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
+      end
+
+
+      it 'rolls into the next day if necessary' do
+        effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
+        ordered_splits = splits
+        working_split_time = split_times.last
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                             working_split_time: working_split_time)
+        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+
+        sub_split = split_times[9].sub_split # Burrows In
 
         military_time = '1:00:00'
         calculator = IntendedTimeCalculator.new(effort: effort,
@@ -162,6 +189,17 @@ RSpec.describe IntendedTimeCalculator do
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 1, 0, 0)
         expect(calculator.day_and_time).to eq(expected)
+      end
+
+      it 'functions properly when intended time is well into the following day' do
+        effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
+        ordered_splits = splits
+        working_split_time = split_times.last
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                             working_split_time: working_split_time)
+        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+
+        sub_split = split_times[9].sub_split # Burrows In
 
         military_time = '5:30:00'
         calculator = IntendedTimeCalculator.new(effort: effort,
@@ -178,7 +216,7 @@ RSpec.describe IntendedTimeCalculator do
         ordered_splits = splits
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                            working_split_time: working_split_time)
+                                             working_split_time: working_split_time)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
@@ -191,6 +229,17 @@ RSpec.describe IntendedTimeCalculator do
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 1, 23, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
+      end
+
+      it 'functions properly when expected time is past midnight' do
+        effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
+        ordered_splits = splits
+        working_split_time = split_times.last
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                             working_split_time: working_split_time)
+        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+
+        sub_split = split_times[13].sub_split # Engineer In
 
         military_time = '00:30:00'
         calculator = IntendedTimeCalculator.new(effort: effort,
@@ -200,6 +249,17 @@ RSpec.describe IntendedTimeCalculator do
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 0, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
+      end
+
+      it 'functions properly when expected time is early morning' do
+        effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
+        ordered_splits = splits
+        working_split_time = split_times.last
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                             working_split_time: working_split_time)
+        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+
+        sub_split = split_times[13].sub_split # Engineer In
 
         military_time = '5:30:00'
         calculator = IntendedTimeCalculator.new(effort: effort,
@@ -209,6 +269,17 @@ RSpec.describe IntendedTimeCalculator do
                                                 split_time_finder: split_time_finder)
         expected = Time.new(2016, 7, 2, 5, 30, 0)
         expect(calculator.day_and_time).to eq(expected)
+      end
+
+      it 'functions properly when expected time is mid morning' do
+        effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
+        ordered_splits = splits
+        working_split_time = split_times.last
+        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
+                                             working_split_time: working_split_time)
+        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+
+        sub_split = split_times[13].sub_split # Engineer In
 
         military_time = '9:30:00'
         calculator = IntendedTimeCalculator.new(effort: effort,
@@ -225,7 +296,7 @@ RSpec.describe IntendedTimeCalculator do
         ordered_splits = splits
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                            working_split_time: working_split_time)
+                                             working_split_time: working_split_time)
         split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
 
         military_time = '16:00:00' # Expected time is roughly 17:00 on 7/1, so this would normally be interpreted as 16:00 on 7/1

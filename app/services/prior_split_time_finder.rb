@@ -11,8 +11,9 @@ class PriorSplitTimeFinder
   end
 
   def split_time
-    @split_time ||= relevant_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last ||
-        split_times.first || mock_start_split_time
+    @split_time ||=
+        relevant_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last ||
+        mock_start_split_time
   end
 
   private

@@ -37,6 +37,14 @@ class SplitTime < ActiveRecord::Base
     all.each { |split_time| split_time.good! }
   end
 
+  def data_status_numeric
+    SplitTime.data_statuses[data_status]
+  end
+
+  def valid_status?
+    VALID_STATUS_STRINGS.include?(data_status)
+  end
+
   def course_is_consistent
     if effort && effort.event && split && (effort.event.course_id != split.course_id)
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')

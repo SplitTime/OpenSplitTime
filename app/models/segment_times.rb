@@ -13,14 +13,7 @@ class SegmentTimes
   end
 
   def status(value)
-    return nil unless value
-    if (value < low_bad) | (value > high_bad)
-      'bad'
-    elsif (value < low_questionable) | (value > high_questionable)
-      'questionable'
-    else
-      'good'
-    end
+    DataStatus.determine(limits, value)
   end
 
   def limits
@@ -37,7 +30,7 @@ class SegmentTimes
   attr_writer :times, :low_bad, :low_questionable, :high_questionable, :high_bad, :mean, :std
 
   def calculate_times(begin_hash, end_hash)
-    common_keys = begin_hash.select { |_, v| v}.keys & end_hash.select { |_, v| v}.keys
+    common_keys = begin_hash.select { |_, v| v }.keys & end_hash.select { |_, v| v }.keys
     b_hash = begin_hash.select { |key| common_keys.include?(key) }
     e_hash = end_hash.select { |key| common_keys.include?(key) }
     e_hash.merge(b_hash) { |_, x, y| x - y }

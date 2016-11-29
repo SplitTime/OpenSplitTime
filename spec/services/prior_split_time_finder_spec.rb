@@ -59,8 +59,8 @@ RSpec.describe PriorSplitTimeFinder do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       split_times = split_times_101
-      split_times[4].bad!
-      split_times[3].questionable!
+      split_times[4].data_status = 'bad'
+      split_times[3].data_status = 'questionable'
       sub_split = split_times[5].sub_split
       finder = PriorSplitTimeFinder.new(effort: effort,
                                         sub_split: sub_split,
@@ -70,25 +70,25 @@ RSpec.describe PriorSplitTimeFinder do
       expect(finder.split_time).to eq(expected)
     end
 
-    it 'when all prior split_times are invalid, returns the starting split_time' do
+    it 'when all prior split_times are invalid, returns a mock starting split_time' do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       split_times = split_times_101
-      split_times[4].bad!
-      split_times[3].questionable!
-      split_times[2].bad!
-      split_times[1].questionable!
-      split_times[0].bad!
+      split_times[4].data_status = 'bad'
+      split_times[3].data_status = 'questionable'
+      split_times[2].data_status = 'bad'
+      split_times[1].data_status = 'questionable'
+      split_times[0].data_status = 'bad'
       sub_split = split_times[5].sub_split
       finder = PriorSplitTimeFinder.new(effort: effort,
                                         sub_split: sub_split,
                                         ordered_splits: ordered_splits,
                                         split_times: split_times)
-      expected = split_times[0]
-      expect(finder.split_time).to eq(expected)
+      expected = SplitTime.new(sub_split: split_times[0].sub_split, time_from_start: 0, id: nil, effort_id: nil)
+      expect(finder.split_time.attributes).to eq(expected.attributes)
     end
 
-    it 'when all the starting sub_split is provided, returns the starting split_time' do
+    it 'when the starting sub_split is provided, returns a mock starting split_time' do
       effort = FactoryGirl.build_stubbed(:effort, id: 101)
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       split_times = split_times_101
@@ -97,8 +97,8 @@ RSpec.describe PriorSplitTimeFinder do
                                         sub_split: sub_split,
                                         ordered_splits: ordered_splits,
                                         split_times: split_times)
-      expected = split_times[0]
-      expect(finder.split_time).to eq(expected)
+      expected = SplitTime.new(sub_split: sub_split, time_from_start: 0, id: nil, effort_id: nil)
+      expect(finder.split_time.attributes).to eq(expected.attributes)
     end
   end
 end

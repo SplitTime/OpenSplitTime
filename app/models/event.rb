@@ -48,7 +48,10 @@ class Event < ActiveRecord::Base
   def time_hashes_similar_events
     result_hash = {}
     split_ids = ordered_split_ids
-    effort_ids = Effort.includes(:event).where(dropped_split_id: nil, events: {course_id: course_id}).order('events.start_time DESC').limit(200).pluck(:id)
+    effort_ids = Effort.includes(:event)
+                     .where(dropped_split_id: nil, events: {course_id: course_id})
+                     .order('events.start_time DESC')
+                     .limit(200).ids
     complete_hash = SplitTime.valid_status
                         .basic_components
                         .where(split_id: split_ids, effort_id: effort_ids)
@@ -101,8 +104,7 @@ class Event < ActiveRecord::Base
   end
 
   def started?
-    effort_ids = efforts.pluck(:id)
-    SplitTime.where(effort_id: effort_ids).present?
+    SplitTime.where(effort: efforts).present?
   end
 
   def set_dropped_split_ids

@@ -55,7 +55,7 @@ class SimilarEffortFinder
   end
 
   def finished_effort_ids
-    @finished_effort_ids ||= Effort.where(id: possible_effort_ids).finished.pluck(:id)
+    @finished_effort_ids ||= Effort.where(id: possible_effort_ids).finished.ids
   end
 
   def possible_effort_ids

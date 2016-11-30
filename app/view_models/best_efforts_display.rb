@@ -76,7 +76,7 @@ class BestEffortsDisplay
     self.unsorted_filtered_ids = Effort.where(id: sorted_effort_ids)
                                      .where(gender: genders_numeric)
                                      .search(params[:search])
-                                     .pluck(:id)
+                                     .ids
     self.filtered_efforts = all_efforts
                                 .select { |effort| unsorted_filtered_ids.include?(effort.id) }
                                 .paginate(page: params[:page], per_page: 25)

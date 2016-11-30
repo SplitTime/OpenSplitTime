@@ -18,7 +18,7 @@
                       class: 'btn btn-sm btn-primary btn-margin-top' %>
       <% end %>
       <%= link_to "Create #{@unreconciled_batch.count} participants",
-                  create_participants_event_path(@event.id, effort_ids: @unreconciled_batch.pluck(:id)),
+                  create_participants_event_path(@event.id, effort_ids: @unreconciled_batch.ids),
                   method: :post,
                   data: {confirm: "Create #{@unreconciled_batch.count} new participants?"},
                   class: 'btn btn-sm btn-success btn-margin-top pull-right' %>

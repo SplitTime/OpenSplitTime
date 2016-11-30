@@ -1,5 +1,11 @@
 class EffortDataStatusSetter
 
+  def self.set_data_status(args)
+    setter = new(args)
+    setter.set_data_status
+    setter.save_changes
+  end
+
   def initialize(args)
     ArgsValidator.validate(params: args, required: :effort, class: self.class)
     @effort = args[:effort]
@@ -95,6 +101,10 @@ class EffortDataStatusSetter
 
   def last_valid_split_time
     valid_split_times.last || mock_start_split_time
+  end
+
+  def mock_start_split_time
+    SplitTime.new(sub_split: split_times.first.sub_split, time_from_start: 0)
   end
 
   def valid_split_times

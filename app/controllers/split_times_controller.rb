@@ -47,7 +47,7 @@ class SplitTimesController < ApplicationController
   def destroy
     authorize @split_time
     @split_time.destroy
-    DataStatusService.set_data_status(@split_time.effort)
+    EffortDataStatusSetter.set_data_status(effort: @split_time.effort)
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || split_times_path
   end

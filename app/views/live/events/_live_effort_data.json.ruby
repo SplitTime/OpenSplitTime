@@ -1,4 +1,4 @@
-effort_data_object = LiveEffortData.new(@event, params)
+effort_data_object = LiveEffortData.new(event: @event, params: params)
 last_split = effort_data_object.last_split
 dropped_split = effort_data_object.dropped_split
 report_text = case

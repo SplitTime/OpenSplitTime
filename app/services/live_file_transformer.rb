@@ -51,7 +51,7 @@ class LiveFileTransformer
     calcs = EventSegmentCalcs.new(event)
     ordered_split_array = event.ordered_splits.to_a
     file_rows.each do |file_row|
-      effort_data_object = LiveEffortData.new(event, file_row, calcs, ordered_split_array)
+      effort_data_object = LiveEffortData.new(event: event, params: file_row, calcs: calcs, ordered_splits: ordered_split_array)
       transformed_rows << effort_data_object.response_row
     end
   end

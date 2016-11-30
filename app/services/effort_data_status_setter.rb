@@ -1,9 +1,5 @@
 class EffortDataStatusSetter
 
-  def self.set_data_status(args)
-    new(args).set_data_status
-  end
-
   def initialize(args)
     ArgsValidator.validate(params: args, required: :effort, class: self.class)
     @effort = args[:effort]
@@ -23,6 +19,10 @@ class EffortDataStatusSetter
 
   def changed_efforts
     [effort].select(&:changed?)
+  end
+
+  def split_times_status_hash
+    split_times.map { |st| [st.sub_split, st.data_status] }.to_h
   end
 
   def save_changes
@@ -66,7 +66,7 @@ class EffortDataStatusSetter
   def split_time_for_prediction
     PriorSplitTimeFinder.new(sub_split: subject_split_time.sub_split,
                              ordered_splits: ordered_splits,
-                             split_times: split_times).split_time
+                             split_times: split_times).guaranteed_split_time
   end
 
   def subject_segment

@@ -13,7 +13,7 @@ class Effort < ActiveRecord::Base
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :segment_time
-  attr_writer :start_time, :overall_place, :gender_place, :last_reported_split_time
+  attr_writer :overall_place, :gender_place, :last_reported_split_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
@@ -119,50 +119,6 @@ class Effort < ActiveRecord::Base
   def total_time_in_aid
     @total_time_in_aid ||= ordered_split_times.group_by(&:split_id)
                                .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
-  end
-
-  def likely_intended_time(military_time, split, event_segment_calcs = nil)
-    seconds_into_day = TimeConversion.hms_to_seconds(military_time)
-    return nil if seconds_into_day >= 1.day
-    working_datetime = event_start_time.beginning_of_day + seconds_into_day
-    expected = expected_day_and_time({split.id => SubSplit::IN_BITKEY}, event_segment_calcs)
-    expected ? working_datetime + ((((working_datetime - expected) * -1) / 1.day).round(0) * 1.day) : nil
-  end
-
-  def expected_day_and_time(sub_split, event_segment_calcs = nil)
-    expected_tfs = expected_time_from_start(sub_split, event_segment_calcs)
-    expected_tfs ? start_time + expected_tfs : nil
-  end
-
-  def expected_time_from_start(sub_split, event_segment_calcs = nil)
-    split_times_hash = split_times.index_by(&:sub_split)
-    ordered_splits = self.ordered_splits.to_a
-    ordered_sub_splits = ordered_splits.map(&:sub_splits).flatten
-    start_sub_split = ordered_sub_splits.first
-    return nil unless split_times_hash[start_sub_split].present?
-    return 0 if sub_split == start_sub_split
-    relevant_sub_splits = ordered_sub_splits[0..(ordered_sub_splits.index(sub_split) - 1)]
-    prior_split_time = relevant_sub_splits.collect { |bh| split_times_hash[bh] }.compact.last
-    prior_sub_split = prior_split_time.sub_split
-    event_segment_calcs ||= EventSegmentCalcs.new(event)
-    completed_segment = Segment.new(start_sub_split,
-                                    prior_sub_split,
-                                    ordered_splits.find { |split| split.id == start_sub_split.split_id },
-                                    ordered_splits.find { |split| split.id == prior_sub_split.split_id })
-    subject_segment = Segment.new(prior_sub_split,
-                                  sub_split,
-                                  ordered_splits.find { |split| split.id == prior_sub_split.split_id },
-                                  ordered_splits.find { |split| split.id == sub_split.split_id })
-    completed_segment_calcs = event_segment_calcs.fetch_calculations(completed_segment)
-    subject_segment_calcs = event_segment_calcs.fetch_calculations(subject_segment)
-    pace_baseline = completed_segment_calcs.mean ?
-        completed_segment_calcs.mean :
-        completed_segment.typical_time_by_terrain
-    pace_factor = pace_baseline == 0 ? 1 :
-        prior_split_time.time_from_start / pace_baseline
-    subject_segment_calcs.mean ?
-        (prior_split_time.time_from_start + (subject_segment_calcs.mean * pace_factor)) :
-        (prior_split_time.time_from_start + (subject_segment.typical_time_by_terrain * pace_factor))
   end
 
   def ordered_splits

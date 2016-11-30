@@ -58,7 +58,7 @@ RSpec.describe IntendedTimeCalculator do
       times_predictor = instance_double('TimesPredictor', segment_time: 10000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
-      split_time_finder = instance_double('PriorSplitTimeFinder', split_time: prior_split_time)
+      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: prior_split_time)
 
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
@@ -83,7 +83,7 @@ RSpec.describe IntendedTimeCalculator do
       times_predictor = instance_double('TimesPredictor', segment_time: 200000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
-      split_time_finder = instance_double('PriorSplitTimeFinder', split_time: prior_split_time)
+      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: prior_split_time)
 
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
@@ -109,7 +109,7 @@ RSpec.describe IntendedTimeCalculator do
       times_predictor = instance_double('TimesPredictor', segment_time: 400000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
-      split_time_finder = instance_double('PriorSplitTimeFinder', split_time: prior_split_time)
+      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: prior_split_time)
 
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
@@ -136,7 +136,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -156,7 +156,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -177,7 +177,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -197,7 +197,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -217,7 +217,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -237,7 +237,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -257,7 +257,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -277,7 +277,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -297,7 +297,7 @@ RSpec.describe IntendedTimeCalculator do
         working_split_time = split_times.last
         times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
                                              working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', split_time: split_times[8])
+        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
 
         military_time = '16:00:00' # Expected time is roughly 17:00 on 7/1, so this would normally be interpreted as 16:00 on 7/1
         sub_split = split_times[9].sub_split
@@ -318,7 +318,7 @@ RSpec.describe IntendedTimeCalculator do
       sub_split = {46 => 1}
       mock_time_hash = {{44 => 1} => 10000, {45 => 1} => 200000, {46 => 1} => 400000}
       times_predictor = instance_double('TimesPredictor', times_from_start: mock_time_hash)
-      split_time_finder = instance_double('PriorSplitTimeFinder', split_time: SplitTime.new)
+      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: SplitTime.new)
 
       expect { IntendedTimeCalculator.new(effort: effort,
                                           military_time: military_time,

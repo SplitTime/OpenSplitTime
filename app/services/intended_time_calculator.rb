@@ -40,7 +40,7 @@ class IntendedTimeCalculator
   end
 
   def prior_valid_split_time
-    split_time_finder.split_time
+    split_time_finder.guaranteed_split_time
   end
 
   def expected_time_from_prior

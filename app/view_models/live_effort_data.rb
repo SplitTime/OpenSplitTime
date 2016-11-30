@@ -9,11 +9,16 @@ class LiveEffortData
 
   delegate :participant_id, to: :effort
 
-  def initialize(event, params, calcs = nil, ordered_split_array = nil)
-    @calcs = calcs || EventSegmentCalcs.new(event)
-    @ordered_splits = ordered_split_array || event.ordered_splits.to_a
-    @response_row = params.symbolize_keys.slice(:splitId, :bibNumber, :timeIn, :timeOut,
-                                                :pacerIn, :pacerOut, :droppedHere, :remarks, :remark)
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:event, :params],
+                           exclusive: [:event, :params, :calcs, :ordered_splits, :times_calculator],
+                           class: self.class)
+    @event = args[:event]
+    @calcs = args[:calcs] || EventSegmentCalcs.new(event)
+    @ordered_splits = args[:ordered_splits] || event.ordered_splits.to_a
+    @response_row = args[:params].symbolize_keys.slice(:splitId, :bibNumber, :timeIn, :timeOut,
+                                                       :pacerIn, :pacerOut, :droppedHere, :remarks, :remark)
     @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
     @split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
     set_non_dependent_attributes
@@ -28,23 +33,23 @@ class LiveEffortData
   end
 
   def split_id
-    split ? split.id : nil
+    split && split.id
   end
 
   def sub_split_bitkey_out?
-    split ? split.sub_split_bitkeys.include?(SubSplit::OUT_BITKEY) : false
+    split ? split.sub_split_out.present? : false
   end
 
   def split_name
-    split ? split.base_name : nil
+    split && split.base_name
   end
 
   def split_distance
-    split ? split.distance_from_start : nil
+    split && split.distance_from_start
   end
 
   def effort_id
-    effort ? effort.id : nil
+    effort && effort.id
   end
 
   def effort_name
@@ -60,17 +65,17 @@ class LiveEffortData
   end
 
   def time_in_status
-    split_time_in ? split_time_in.data_status : nil
+    split_time_in && split_time_in.data_status
   end
 
   def time_out_status
-    split_time_out ? split_time_out.data_status : nil
+    split_time_out && split_time_out.data_status
   end
 
   private
 
   attr_accessor :split_times_hash, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out, :remarks
-  attr_reader :calcs, :ordered_splits, :split
+  attr_reader :event, :calcs, :ordered_splits, :split
 
   def set_non_dependent_attributes
     self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn].try(&:downcase) == 'true')
@@ -83,8 +88,8 @@ class LiveEffortData
   end
 
   def set_effort_related_attributes
-    self.day_and_time_in = (split && response_row[:timeIn].present?) ? effort.likely_intended_time(response_row[:timeIn], split, calcs) : nil
-    self.day_and_time_out = (split && response_row[:timeOut].present?) ? effort.likely_intended_time(response_row[:timeOut], split, calcs) : nil
+    self.day_and_time_in = (split && response_row[:timeIn].present?) ? IntendedTimeCalculator.day_and_time(military_time: response_row[:timeIn], effort: effort, sub_split: split.sub_split_in) : nil
+    self.day_and_time_out = (split && response_row[:timeOut].present?) ? IntendedTimeCalculator.day_and_time(military_time: response_row[:timeOut], effort: effort, sub_split: split.sub_split_out) : nil
     last_split_time = effort.last_reported_split_time
     if last_split_time
       self.last_day_and_time = effort.start_time + last_split_time.time_from_start
@@ -130,59 +135,62 @@ class LiveEffortData
   end
 
   def verify_time_status
+    self.split_time_in = proposed_split_time_in
+    self.split_time_out = proposed_split_time_out
 
-    # Build in and/or out SplitTime instances (depending on availability of time data)
-    # to determine status of entered times.
+    # Insert new SplitTime instances (if any) into hash table (or replace existing ones)
 
-    self.split_time_in = time_from_start_in ?
-        SplitTime.new(effort_id: effort_id,
-                      split_id: split_id,
-                      sub_split_bitkey: SubSplit::IN_BITKEY,
-                      time_from_start: time_from_start_in,
-                      pacer: pacer_in,
-                      remarks: remarks) :
-        nil
-    self.split_time_out = time_from_start_out ?
-        SplitTime.new(effort_id: effort.id,
-                      split_id: split_id,
-                      sub_split_bitkey: SubSplit::OUT_BITKEY,
-                      time_from_start: time_from_start_out,
-                      pacer: pacer_out,
-                      remarks: remarks) :
-        nil
-    sub_split_in = split_time_in ? split_time_in.sub_split : nil
-    sub_split_out = split_time_out ? split_time_out.sub_split : nil
+    proposed_split_times.each { |split_time| split_times_hash[split_time.sub_split] = split_time }
 
-    # Now insert new SplitTime instances (if any) into hash table (or change existing ones)
-
-    split_times_hash[sub_split_in] = split_time_in if split_time_in
-    split_times_hash[sub_split_out] = split_time_out if split_time_out
-
-    # Use ordered_sub_splits as a framework to collect split_times into correct order
-
-    ordered_sub_splits = ordered_splits.map(&:sub_splits).flatten
-    ordered_split_times = ordered_sub_splits.collect { |key_hash| split_times_hash[key_hash] }
-
-    # Now determine data status of each object in the ordered split_time group,
+    # Determine data status of each object in the ordered split_time group,
     # including the new in and/or out SplitTime instances
 
-    status_hash = DataStatusService.live_entry_data_status(effort, ordered_splits, ordered_split_times.compact, calcs)
-    valid_status_hash = status_hash.select { |_, status| status == 'good' }
-    prior_sub_splits = ordered_splits[0..ordered_splits.index(split) - 1].map(&:sub_splits).flatten
-    prior_valid_sub_split = prior_sub_splits
-                                .map { |sub_split| [sub_split, valid_status_hash[sub_split]] }
-                                .select { |e| e[1].present? }
-                                .last[0]
-    prior_valid_split_time = split_times_hash[prior_valid_sub_split]
-    self.prior_valid_day_and_time = prior_valid_split_time ? effort.start_time + prior_valid_split_time.time_from_start : nil
-    self.prior_valid_split = prior_valid_split_time ? prior_valid_split_time.split : nil
-    self.prior_valid_bitkey = prior_valid_split_time ? prior_valid_split_time.sub_split_bitkey : nil
-    self.time_from_prior_valid = (time_from_start_in && prior_valid_split_time) ? time_from_start_in - prior_valid_split_time.time_from_start : nil
+    setter = EffortDataStatusSetter.new(effort: effort,
+                                        split_times: ordered_split_times)
+    setter.set_data_status
+    status_hash = setter.split_times_status_hash
+    prior_valid_split_time = PriorSplitTimeFinder.new(sub_split: split.sub_splits.first,
+                                                      split_times: ordered_split_times,
+                                                      ordered_splits: ordered_splits).split_time
+    if prior_valid_split_time
+      self.prior_valid_day_and_time = effort.start_time + prior_valid_split_time.time_from_start
+      self.prior_valid_split = prior_valid_split_time.split
+      self.prior_valid_bitkey = prior_valid_split_time.sub_split_bitkey
+      self.time_from_prior_valid = time_from_start_in && time_from_start_in - prior_valid_split_time.time_from_start
+    end
 
     # And save the data status of the new SplitTime instances and response_rows
 
-    self.split_time_in.data_status = self.response_row[:timeInStatus] = status_hash[sub_split_in] if split_time_in
-    self.split_time_out.data_status = self.response_row[:timeOutStatus] = status_hash[sub_split_out] if split_time_out
+    self.split_time_in.data_status = self.response_row[:timeInStatus] = status_hash[proposed_split_time_in.sub_split] if split_time_in
+    self.split_time_out.data_status = self.response_row[:timeOutStatus] = status_hash[proposed_split_time_out.sub_split] if split_time_out
+  end
+
+  def ordered_split_times
+    ordered_sub_splits.map { |key_hash| split_times_hash[key_hash] }.compact
+  end
+
+  def ordered_sub_splits
+    ordered_splits.map(&:sub_splits).flatten
+  end
+
+  def proposed_split_times
+    [proposed_split_time_in, proposed_split_time_out].compact
+  end
+
+  def proposed_split_time_in
+    time_from_start_in && SplitTime.new(effort_id: effort_id,
+                                        sub_split: {split_id => SubSplit::IN_BITKEY},
+                                        time_from_start: time_from_start_in,
+                                        pacer: pacer_in,
+                                        remarks: remarks)
+  end
+
+  def proposed_split_time_out
+    time_from_start_out && SplitTime.new(effort_id: effort.id,
+                                         sub_split: {split_id => SubSplit::OUT_BITKEY},
+                                         time_from_start: time_from_start_out,
+                                         pacer: pacer_out,
+                                         remarks: remarks)
   end
 
   def times_will_not_overwrite?

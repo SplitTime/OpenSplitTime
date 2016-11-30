@@ -3,17 +3,19 @@ class PriorSplitTimeFinder
   def initialize(args)
     ArgsValidator.validate(params: args, required: :sub_split,
                            required_alternatives: [:effort, [:ordered_splits, :split_times]], class: self.class)
-    @effort = args[:effort]
     @sub_split = args[:sub_split]
+    @effort = args[:effort]
     @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
     validate_setup
   end
 
   def split_time
-    @split_time ||=
-        relevant_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last ||
-        mock_start_split_time
+    @split_time ||= relevant_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last
+  end
+
+  def guaranteed_split_time
+    @guaranteed_split_time ||= split_time || mock_start_split_time
   end
 
   private

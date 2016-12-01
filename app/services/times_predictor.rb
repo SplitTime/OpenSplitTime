@@ -28,8 +28,8 @@ class TimesPredictor
     times_calculator.limits(segment).transform_values { |limit| limit * pace_factor }
   end
 
-  def data_status(segment, time_from_start)
-    DataStatus.determine(limits(segment), time_from_start)
+  def data_status(segment, seconds)
+    DataStatus.determine(limits(segment), seconds)
   end
 
   private

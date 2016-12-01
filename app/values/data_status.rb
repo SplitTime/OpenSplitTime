@@ -9,6 +9,11 @@ class DataStatus
   LIMIT_TYPE_ARRAY = LIMIT_FACTORS.keys.map(&:to_sym)
   LIMIT_ARRAY = LIMIT_FACTORS[LIMIT_TYPE_ARRAY.first].keys.map(&:to_sym)
 
+  # Bad and questionable data_status enums are 0 and 1, respectively. Good and confirmed are 2 and 3.
+  # Unknown data_status is nil. To sort properly, this algorithm treats nil as 1.5.
+  # TODO Fix this by migrating good and confirmed to 3 and 4, respectively,
+  # make a new 'unknown' data_status enum as 2, and set the default for new records to 2.
+
   def self.worst(status_array)
     return nil if status_array.empty?
     worst_numeric = status_array.map { |status| status ? SplitTime.data_statuses[status] : 1.5 }.min

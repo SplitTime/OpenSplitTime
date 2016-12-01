@@ -465,6 +465,31 @@ RSpec.describe EffortDataStatusSetter do
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good bad bad bad bad bad))
         expect(effort.data_status).to eq('bad')
       end
+
+      it 'if split_times are all confirmed, sets effort data_status to "good"' do
+        n = 3
+        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
+                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
+                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
+                       split_times_109.first(n)].flatten
+        container = SegmentTimesContainer.new(split_times: split_times)
+
+        ordered_splits = splits
+        similar_efforts = efforts
+        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
+                                                   efforts: similar_efforts,
+                                                   segment_times_container: container)
+
+        effort = efforts.find { |effort| effort.id == 104 }
+        effort_split_times = split_times_104.first(n)
+        effort_split_times.each { |st| st.data_status = 'confirmed' }
+        setter = EffortDataStatusSetter.new(effort: effort,
+                                            split_times: effort_split_times,
+                                            times_calculator: times_calculator)
+        setter.set_data_status
+        expect(effort_split_times.map(&:data_status)).to eq(%w(confirmed confirmed confirmed))
+        expect(effort.data_status).to eq('good')
+      end
     end
 
     describe '#changed_split_times and #changed_efforts' do

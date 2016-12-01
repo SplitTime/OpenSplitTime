@@ -60,7 +60,8 @@ class EffortDataStatusSetter
   end
 
   def set_effort_data_status
-    effort.data_status = split_times.map(&:data_status_numeric).compact.min
+    effort.data_status = split_times.present? &&
+        [split_times.map(&:data_status_numeric).compact.min, Effort.data_statuses['good']].min
   end
 
   def times_predictor

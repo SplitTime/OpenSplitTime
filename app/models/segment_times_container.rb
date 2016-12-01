@@ -32,10 +32,6 @@ class SegmentTimesContainer
     self[segment].mean
   end
 
-  def std(segment)
-    self[segment].std
-  end
-
   def estimated_time(segment)
     self[segment].estimated_time
   end

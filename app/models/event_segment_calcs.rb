@@ -35,8 +35,4 @@ class EventSegmentCalcs
   def mean(segment)
     fetch_calculations(segment).mean
   end
-
-  def std(segment)
-    fetch_calculations(segment).std
-  end
 end

@@ -17,7 +17,9 @@ class TerrainTimesCalculator
   end
 
   def limits(segment)
-    segment.limits_by_terrain
+    typical_time = segment.typical_time_by_terrain
+    type = segment.special_limits_type || :terrain
+    DataStatus.limits(typical_time, type)
   end
 
   private

@@ -25,7 +25,7 @@ class TimesPredictor
   end
 
   def limits(segment)
-    times_calculator.limits(segment).map { |limit| limit * pace_factor }
+    times_calculator.limits(segment).transform_values { |limit| limit * pace_factor }
   end
 
   def data_status(segment, time_from_start)
@@ -37,7 +37,7 @@ class TimesPredictor
   attr_reader :effort, :ordered_splits, :working_split_time, :times_calculator
 
   def build_times_calculator(similar_efforts)
-    similar_efforts && (similar_efforts.count > SegmentTimes::STAT_CALC_THRESHOLD) ?
+    similar_efforts && (similar_efforts.count > SegmentTimes::STATS_CALC_THRESHOLD) ?
         StatTimesCalculator.new(ordered_splits: ordered_splits, efforts: similar_efforts) :
         TerrainTimesCalculator.new(ordered_splits: ordered_splits)
   end

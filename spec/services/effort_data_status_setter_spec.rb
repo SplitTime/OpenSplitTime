@@ -204,7 +204,7 @@ RSpec.describe EffortDataStatusSetter do
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
-        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 1.hours
+        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 45.minutes
         expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
@@ -427,7 +427,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times = split_times_105.first(n)
         effort_split_times[0].time_from_start = -60 # Non-zero start time
         effort_split_times[2].time_from_start = effort_split_times[1].time_from_start - 1.minute # Negative time in aid
-        effort_split_times[4].time_from_start = effort_split_times[3].time_from_start + 26.hours # Too long in aid
+        effort_split_times[4].time_from_start = effort_split_times[3].time_from_start + 40.hours # Too long in aid
         effort_split_times[7].time_from_start = effort_split_times[6].time_from_start + 20.minutes # Too short for segment
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 10.hours # Too long for segment
 

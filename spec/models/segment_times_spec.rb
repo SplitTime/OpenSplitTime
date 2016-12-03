@@ -5,10 +5,10 @@ RSpec.describe SegmentTimes do
   let(:split1) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000) }
   let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 20000, vert_gain_from_start: 2000) }
   let(:split3) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 30000, vert_gain_from_start: 3000) }
-  let(:sub_split1) { split1.sub_splits.last }
-  let(:sub_split2) { split2.sub_splits.first }
-  let(:sub_split3) { split3.sub_splits.first }
-  let(:sub_split4) { split3.sub_splits.last }
+  let(:sub_split1) { split1.sub_split_out }
+  let(:sub_split2) { split2.sub_split_in }
+  let(:sub_split3) { split3.sub_split_in }
+  let(:sub_split4) { split3.sub_split_out }
   let(:segment1) { Segment.new(sub_split1, sub_split2, split1, split2) }
   let(:segment2) { Segment.new(sub_split3, sub_split4, split3, split3) }
 

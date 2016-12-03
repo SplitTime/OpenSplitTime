@@ -68,15 +68,15 @@ RSpec.describe TerrainTimesCalculator do
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       sub_splits = ordered_splits.map { |split| split.sub_splits }.flatten
       times_calculator = TerrainTimesCalculator.new(sub_splits: sub_splits, ordered_splits: ordered_splits)
-      expect(times_calculator.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[4]]).to eq(split3.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[5]]).to eq(split4.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[6]]).to eq(split4.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[7]]).to eq(split5.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[8]]).to eq(split5.distance_from_start * DISTANCE_FACTOR)
-      expect(times_calculator.times_from_start[sub_splits[9]]).to eq(split6.distance_from_start * DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[4]]).to eq(split3.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[5]]).to eq(split4.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[6]]).to eq(split4.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[7]]).to eq(split5.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[8]]).to eq(split5.distance_from_start * Segment::DISTANCE_FACTOR)
+      expect(times_calculator.times_from_start[sub_splits[9]]).to eq(split6.distance_from_start * Segment::DISTANCE_FACTOR)
     end
   end
 
@@ -87,7 +87,7 @@ RSpec.describe TerrainTimesCalculator do
       sub_splits = ordered_splits.map { |split| split.sub_splits }.flatten
       times_calculator = TerrainTimesCalculator.new(sub_splits: sub_splits, ordered_splits: ordered_splits)
       expect(times_calculator.segment_time(segment))
-          .to eq((split3.distance_from_start * DISTANCE_FACTOR) - (split2.distance_from_start * DISTANCE_FACTOR))
+          .to eq((split3.distance_from_start * Segment::DISTANCE_FACTOR) - (split2.distance_from_start * Segment::DISTANCE_FACTOR))
     end
 
     it 'raises an ArgumentError if the provided segment is not contained within #times_from_start' do

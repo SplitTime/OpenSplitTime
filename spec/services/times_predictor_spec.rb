@@ -71,15 +71,15 @@ RSpec.describe TimesPredictor do
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
                                        similar_efforts: nil)
-        expect(predictor.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[4]]).to eq(split3.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[5]]).to eq(split4.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[6]]).to eq(split4.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[7]]).to eq(split5.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[8]]).to eq(split5.distance_from_start * DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[9]]).to eq(split6.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[4]]).to eq(split3.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[5]]).to eq(split4.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[6]]).to eq(split4.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[7]]).to eq(split5.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[8]]).to eq(split5.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[9]]).to eq(split6.distance_from_start * Segment::DISTANCE_FACTOR)
       end
     end
 

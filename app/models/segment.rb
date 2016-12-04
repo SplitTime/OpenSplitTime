@@ -66,6 +66,10 @@ class Segment
     effort_count > SegmentTimes::STATS_CALC_THRESHOLD ? segment_time : nil
   end
 
+  def typical_time(effort_ids = nil)
+    typical_time_by_stats(effort_ids) || typical_time_by_terrain
+  end
+
   def begin_id
     begin_sub_split.split_id
   end

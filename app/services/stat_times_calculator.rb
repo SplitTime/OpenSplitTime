@@ -17,7 +17,7 @@ class StatTimesCalculator
     unless ordered_splits.include?(segment.begin_split) && ordered_splits.include?(segment.end_split)
       raise ArgumentError, "segment #{segment.name} is not valid for #{self}"
     end
-    segment_times_container.estimated_time(segment)
+    segment_times_container.mean(segment)
   end
 
   def limits(segment)
@@ -33,6 +33,6 @@ class StatTimesCalculator
   end
 
   def stat_times
-    segments.map { |segment| [segment.end_sub_split, segment_times_container[segment].estimated_time] }
+    segments.map { |segment| [segment.end_sub_split, segment_times_container[segment].mean] }
   end
 end

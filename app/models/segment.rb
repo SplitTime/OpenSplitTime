@@ -6,6 +6,7 @@ class Segment
   TYPICAL_TIME_IN_AID = 15.minutes
   DISTANCE_FACTOR = 0.6 # Multiply distance in meters by this factor to approximate normal travel time on foot
   VERT_GAIN_FACTOR = 4.0 # Multiply vert_gain in meters by this factor to approximate normal travel time on foot
+  STATS_CALC_THRESHOLD = SegmentTimes::STATS_CALC_THRESHOLD
 
   def initialize(begin_sub_split, end_sub_split, begin_split = nil, end_split = nil)
     @begin_sub_split = begin_sub_split
@@ -62,12 +63,9 @@ class Segment
   end
 
   def typical_time_by_stats(effort_ids = nil)
-    segment_time, effort_count = SplitTime.connection.execute(typical_time_sql(effort_ids)).values.flatten
-    effort_count > SegmentTimes::STATS_CALC_THRESHOLD ? segment_time : nil
-  end
-
-  def typical_time(effort_ids = nil)
-    typical_time_by_stats(effort_ids) || typical_time_by_terrain
+    return nil if effort_ids && effort_ids.empty?
+    segment_time, effort_count = SplitTime.connection.execute(typical_time_sql(effort_ids)).values.flatten.map(&:to_i)
+    effort_count > STATS_CALC_THRESHOLD ? segment_time : nil
   end
 
   def begin_id

@@ -21,7 +21,9 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
-  scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
+  VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
+
+  scope :valid_status, -> { where(data_status: VALID_STATUSES) }
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
                                          .finished.order('split_times.time_from_start') }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
@@ -96,11 +98,11 @@ class Effort < ActiveRecord::Base
   end
 
   def finish_status
-    return "DNF" if dropped?
-    return "Not yet started" unless started?
+    return 'DNF' if dropped?
+    return 'Not yet started' unless started?
     split_time = finish_split_time
     return split_time.formatted_time_hhmmss if split_time
-    "In progress"
+    'In progress'
   end
 
   def finish_split_time

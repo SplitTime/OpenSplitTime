@@ -17,6 +17,7 @@ class SplitTime < ActiveRecord::Base
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
   scope :within_time_range, -> (low_time, high_time) { where(time_from_start: low_time..high_time) }
   scope :basic_components, -> { select(:split_id, :sub_split_bitkey, :effort_id, :time_from_start) }
+  scope :from_finished_efforts, -> { joins(:effort => {:split_times => :split}).where(splits: {kind: 1}) }
 
   attr_accessor :day_and_time_attr
 

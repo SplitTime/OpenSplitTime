@@ -9,8 +9,8 @@ class IntendedTimeCalculator
     @military_time = args[:military_time]
     @effort = args[:effort]
     @sub_split = args[:sub_split]
-    @predictor = args[:predictor] || TimesPredictor.new(effort: effort)
     @split_time_finder = args[:split_time_finder] || PriorSplitTimeFinder.new(effort: effort, sub_split: sub_split)
+    @predictor = args[:predictor] || TimesPredictor.new(effort: effort, working_split_time: prior_valid_split_time)
     validate_setup
   end
 
@@ -27,6 +27,10 @@ class IntendedTimeCalculator
     expected_day_and_time && earliest_datetime + days_from_earliest
   end
 
+  def prior_day_and_time
+    @prior_day_and_time ||= effort.start_time + prior_valid_split_time.time_from_start
+  end
+
   def expected_day_and_time
     expected_time_from_prior && prior_day_and_time + expected_time_from_prior
   end
@@ -39,20 +43,16 @@ class IntendedTimeCalculator
     ((expected_day_and_time - earliest_datetime) / 1.day).round(0) * 1.day
   end
 
-  def prior_valid_split_time
-    split_time_finder.guaranteed_split_time
-  end
-
   def expected_time_from_prior
     @expected_time_from_prior ||= predictor.segment_time(subject_segment)
   end
 
-  def subject_segment
-    Segment.new(prior_valid_split_time.sub_split, sub_split)
+  def prior_valid_split_time
+    split_time_finder.guaranteed_split_time
   end
 
-  def prior_day_and_time
-    @prior_day_and_time ||= effort.start_time + prior_valid_split_time.time_from_start
+  def subject_segment
+    Segment.new(prior_valid_split_time.sub_split, sub_split)
   end
 
   def seconds_into_day

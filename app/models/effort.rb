@@ -78,7 +78,7 @@ class Effort < ActiveRecord::Base
   end
 
   def valid_split_times
-    split_times.valid_status.ordered
+    @valid_split_times ||= split_times.valid_status.ordered
   end
 
   def finished?

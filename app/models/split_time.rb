@@ -1,15 +1,15 @@
 class SplitTime < ActiveRecord::Base
-  include Auditable
   enum data_status: [:bad, :questionable, :good, :confirmed]
   strip_attributes collapse_spaces: true
+
+  VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
+
+  include Auditable
+  include DataStatusMethods
   belongs_to :effort
   belongs_to :split
   alias_attribute :bitkey, :sub_split_bitkey
 
-  VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
-  VALID_STATUS_STRINGS = [nil, 'good', 'confirmed']
-
-  scope :valid_status, -> { where(data_status: VALID_STATUSES) }
   scope :ordered, -> { includes(:split).order('splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
@@ -25,25 +25,12 @@ class SplitTime < ActiveRecord::Base
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
   validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start
-  validates :data_status, inclusion: {in: SplitTime.data_statuses.keys}, allow_nil: true
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey],
                           message: 'only one of any given split/sub_split permitted within an effort'
   validate :course_is_consistent
 
   def self.confirmed!
-    all.each { |split_time| split_time.confirmed! }
-  end
-
-  def self.good!
-    all.each { |split_time| split_time.good! }
-  end
-
-  def data_status_numeric
-    SplitTime.data_statuses[data_status]
-  end
-
-  def valid_status?
-    VALID_STATUS_STRINGS.include?(data_status)
+    all.each { |resource| resource.confirmed! }
   end
 
   def course_is_consistent

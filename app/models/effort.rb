@@ -1,12 +1,16 @@
 class Effort < ActiveRecord::Base
+  enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
+  enum gender: [:male, :female]
+  strip_attributes collapse_spaces: true
+
+  VALID_STATUSES = [nil, data_statuses[:good]]
+
   include Auditable
   include Concealable
+  include DataStatusMethods
   include PersonalInfo
   include Searchable
   include Matchable
-  strip_attributes collapse_spaces: true
-  enum gender: [:male, :female]
-  enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event
   belongs_to :participant
   has_many :split_times, dependent: :destroy
@@ -21,9 +25,6 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
-  VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
-
-  scope :valid_status, -> { where(data_status: VALID_STATUSES) }
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
                                          .finished.order('split_times.time_from_start') }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }

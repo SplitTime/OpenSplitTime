@@ -29,11 +29,11 @@ class Segment
   end
 
   def begin_split
-    @begin_split ||= arg_begin_split || splits.find { |split| split.id = begin_id }
+    @begin_split ||= arg_begin_split || splits.find { |split| split.id == begin_id }
   end
 
   def end_split
-    @end_split ||= arg_end_split || splits.find { |split| split.id = end_id }
+    @end_split ||= arg_end_split || splits.find { |split| split.id == end_id }
   end
 
   def splits

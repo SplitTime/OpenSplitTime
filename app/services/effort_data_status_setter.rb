@@ -13,7 +13,7 @@ class EffortDataStatusSetter
                            class: self.class)
     @effort = args[:effort]
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
-    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :terrain)
+    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
   end
 
   def set_data_status

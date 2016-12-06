@@ -17,15 +17,16 @@ class TimesPredictor
   end
 
   # Note: #times_from_start will return all times regardless of segment completion.
-  # To ensure greatest accuracy, call #segment_time when you need the most accurate
-  # times for a particular segment.
+  # Call #segment_time when you need the most accurate times for a particular segment.
+  # When using #times_from_start, consider finding similar_effort_ids using
+  # SimilarEffortsFinder#effort_ids with args[:finished] = true
 
   def times_from_start
     @times_from_start ||= baseline_times.transform_values { |seconds| seconds * pace_factor }
   end
 
   def segment_time(segment)
-    times_container.segment_time(segment) * pace_factor
+    times_container.segment_time(segment) && times_container.segment_time(segment) * pace_factor
   end
 
   def limits(segment)
@@ -33,7 +34,7 @@ class TimesPredictor
   end
 
   def data_status(segment, seconds)
-    times_container.data_status(segment, seconds)
+    DataStatus.determine(limits(segment), seconds)
   end
 
   private
@@ -57,7 +58,15 @@ class TimesPredictor
   end
 
   def working_segment
-    Segment.new(ordered_splits.first.sub_split_in, working_split_time.sub_split)
+    Segment.new(start_split.sub_split_in, working_split_time.sub_split, start_split, working_split)
+  end
+
+  def start_split
+    ordered_splits.first
+  end
+
+  def working_split
+    ordered_splits.find { |split| split.id == working_split_time.split_id }
   end
 
   def baseline_times

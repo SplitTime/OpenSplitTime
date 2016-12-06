@@ -150,7 +150,7 @@ RSpec.describe EffortDataStatusSetter do
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
-        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 45.minutes
+        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 30.minutes
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
@@ -167,7 +167,7 @@ RSpec.describe EffortDataStatusSetter do
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
-        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 10.hours
+        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 8.hours
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,

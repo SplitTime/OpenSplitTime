@@ -116,7 +116,7 @@ RSpec.describe SegmentTimes do
                      106 => 45000, 107 => 46000, 108 => 55000, 109 => 56000, 110 => 65000}
       segment_calcs = SegmentTimes.new(segment1, times_hash1, times_hash2)
       expect(segment_calcs.status(2000)).to eq('bad')
-      expect(segment_calcs.status(4000)).to eq('questionable')
+      expect(segment_calcs.status(5000)).to eq('questionable')
       expect(segment_calcs.status(10000)).to eq('good')
       expect(segment_calcs.status(30000)).to eq('questionable')
       expect(segment_calcs.status(50000)).to eq('bad')

@@ -66,7 +66,7 @@ class EffortAnalysisView
 
   def farthest_recorded_split_name
     farthest_split = ordered_splits.find { |split| split.id == split_times.last.split_id }
-    farthest_split ? farthest_split.base_name : nil
+    farthest_split && farthest_split.base_name
   end
 
   def event
@@ -88,11 +88,11 @@ class EffortAnalysisView
   end
 
   def mock_finish_time
-    effort_finish_tfs || finish_time_predictor.times_from_start[finish_sub_split]
+    effort_finish_tfs || finish_time_predictor.segment_time(start_to_finish)
   end
 
   def finish_time_predictor
-    @finish_time_predictor ||= TimesPredictor.new(effort: effort, ordered_splits: ordered_splits)
+    @finish_time_predictor ||= TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calc_model: :focused)
   end
 
   def create_analysis_rows
@@ -122,11 +122,19 @@ class EffortAnalysisView
   end
 
   def effort_finish_tfs
-    indexed_split_times[finish_sub_split] ? indexed_split_times[finish_sub_split].time_from_start : nil
+    indexed_split_times[finish_sub_split] && indexed_split_times[finish_sub_split].time_from_start
   end
 
   def finish_sub_split
     ordered_splits.last.sub_split_in
+  end
+
+  def start_sub_split
+    ordered_splits.first.sub_split_in
+  end
+
+  def start_to_finish
+    Segment.new(start_sub_split, finish_sub_split)
   end
 
   def sorted_analysis_rows

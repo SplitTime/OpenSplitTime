@@ -5,7 +5,10 @@ class IntendedTimeCalculator
   end
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: [:military_time, :effort, :sub_split], class: self.class)
+    ArgsValidator.validate(params: args,
+                           required: [:military_time, :effort, :sub_split],
+                           exclusive: [:military_time, :effort, :sub_split, :split_time_finder, :predictor],
+                           class: self.class)
     @military_time = args[:military_time]
     @effort = args[:effort]
     @sub_split = args[:sub_split]

@@ -7,11 +7,13 @@ class EffortDataStatusSetter
   end
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: :effort, class: self.class)
+    ArgsValidator.validate(params: args,
+                           required: :effort,
+                           exclusive: [:effort, :split_times, :times_predictor, :times_container],
+                           class: self.class)
     @effort = args[:effort]
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
-    @times_calculator = args[:times_calculator] ||
-        StatTimesCalculator.new(ordered_splits: ordered_splits, efforts: similar_efforts)
+    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :terrain)
   end
 
   def set_data_status
@@ -40,16 +42,11 @@ class EffortDataStatusSetter
 
   private
 
-  attr_reader :effort, :split_times, :times_calculator
+  attr_reader :effort, :split_times, :times_container
   attr_accessor :subject_split_time
 
   def ordered_splits
     @ordered_splits ||= effort.ordered_splits.to_a
-  end
-
-  def similar_efforts
-    SimilarEffortFinder.new(sub_split: last_valid_split_time.sub_split,
-                            time_from_start: last_valid_split_time.time_from_start).efforts
   end
 
   def set_split_time_data_status(split_time)
@@ -67,13 +64,13 @@ class EffortDataStatusSetter
   def times_predictor
     TimesPredictor.new(working_split_time: split_time_for_prediction,
                        ordered_splits: ordered_splits,
-                       times_calculator: times_calculator)
+                       times_container: times_container)
   end
 
   def split_time_for_prediction
-    PriorSplitTimeFinder.new(sub_split: subject_split_time.sub_split,
-                             ordered_splits: ordered_splits,
-                             split_times: split_times).guaranteed_split_time
+    PriorSplitTimeFinder
+        .new(sub_split: subject_split_time.sub_split, ordered_splits: ordered_splits, split_times: split_times)
+        .guaranteed_split_time
   end
 
   def subject_segment

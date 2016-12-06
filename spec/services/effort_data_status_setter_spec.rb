@@ -12,16 +12,16 @@ RSpec.describe EffortDataStatusSetter do
   let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
 
   describe '#initialize' do
-    it 'initializes with an effort and a times_calculator in an args hash' do
+    it 'initializes with an effort and a times_container in an args hash' do
       effort = FactoryGirl.build_stubbed(:effort)
-      times_calculator = instance_double(StatTimesCalculator)
+      times_container = instance_double(SegmentTimesContainer)
       expect { EffortDataStatusSetter.new(effort: effort,
-                                          times_calculator: times_calculator) }.not_to raise_error
+                                          times_container: times_container) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if no effort is given' do
-      times_calculator = instance_double(StatTimesCalculator)
-      expect { EffortDataStatusSetter.new(times_calculator: times_calculator) }
+      times_container = instance_double(SegmentTimesContainer)
+      expect { EffortDataStatusSetter.new(times_container: times_container) }
           .to raise_error(/must include effort/)
     end
   end
@@ -30,8 +30,8 @@ RSpec.describe EffortDataStatusSetter do
     context 'for an effort that has not yet started' do
       it 'sets effort data_status to nil and does not attempt to change split_times' do
         effort = Effort.new(first_name: 'John', last_name: 'Doe', gender: 'male', data_status: 2)
-        times_calculator = instance_double(StatTimesCalculator)
-        setter = EffortDataStatusSetter.new(effort: effort, times_calculator: times_calculator)
+        times_container = instance_double(SegmentTimesContainer)
+        setter = EffortDataStatusSetter.new(effort: effort, times_container: times_container)
         setter.set_data_status
         expect(setter.changed_split_times).to eq([])
         expect(setter.changed_efforts).to eq([effort])
@@ -59,24 +59,15 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets data_status of all split_times and effort to "good" when split_times fall within expected ranges' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status).uniq).to eq(['good'])
         expect(effort.data_status).to eq('good')
@@ -84,25 +75,16 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets data_status of starting split_time to "bad" if time_from_start is non-zero' do
         n = 5
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
         effort_split_times[0].time_from_start = 100
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(bad good good good good))
         expect(effort.data_status).to eq('bad')
@@ -110,26 +92,17 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets data_status of intermediate split_times to "bad" if time_from_start is less than earlier time_from_start' do
         n = 5
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
         effort_split_times[2].time_from_start = effort_split_times[1].time_from_start - 60
         effort_split_times[4].time_from_start = effort_split_times[3].time_from_start - 60
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good bad good bad))
         expect(effort.data_status).to eq('bad')
@@ -137,26 +110,17 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets data_status of intermediate split_times to "bad" if time_from_start is impossibly too short' do
         n = 5
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
         effort_split_times[1].time_from_start = effort_split_times[0].time_from_start + 1000
         effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 1000
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good bad good bad good))
         expect(effort.data_status).to eq('bad')
@@ -164,25 +128,16 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets data_status of intermediate split_times to "bad" if time_from_start is impossibly too long' do
         n = 4
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
         effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 24.hours
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good bad))
         expect(effort.data_status).to eq('bad')
@@ -190,25 +145,16 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets data_status of intermediate split_times to "questionable" if time_from_start is probably too short' do
         n = 4
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
         effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 45.minutes
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good questionable))
         expect(effort.data_status).to eq('questionable')
@@ -216,25 +162,16 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets data_status of intermediate split_times to "questionable" if time_from_start is probably too long' do
         n = 4
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
-        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 5.hours
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 10.hours
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good questionable))
         expect(effort.data_status).to eq('questionable')
@@ -242,17 +179,8 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'sets looks past bad or questionable times to determine validity of later split_times' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
@@ -261,10 +189,10 @@ RSpec.describe EffortDataStatusSetter do
 
         # Much too long from [8] to [9] but reasonable from [6] to [9]
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 5.hours
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good good good bad bad good))
         expect(effort.data_status).to eq('bad')
@@ -272,24 +200,15 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'works properly for an effort on the fast end of the spectrum of available efforts with all good times' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 109 }
         effort_split_times = split_times_109.first(n)
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status).uniq).to eq(['good'])
         expect(effort.data_status).to eq('good')
@@ -297,24 +216,15 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'works properly for an effort on the slow end of the spectrum of available efforts with all good times' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 100 }
         effort_split_times = split_times_100.first(n)
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status).uniq).to eq(['good'])
         expect(effort.data_status).to eq('good')
@@ -322,17 +232,8 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'works properly for an effort on the fast end of the spectrum of available efforts with some bad times' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 109 }
         effort_split_times = split_times_109.first(n)
@@ -341,10 +242,10 @@ RSpec.describe EffortDataStatusSetter do
 
         # Much too long from [8] to [9] but reasonable from [6] to [9]
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 4.hours
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good good good bad bad good))
         expect(effort.data_status).to eq('bad')
@@ -352,17 +253,8 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'works properly for an effort on the slow end of the spectrum of available efforts with some bad times' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 100 }
         effort_split_times = split_times_100.first(n)
@@ -371,10 +263,10 @@ RSpec.describe EffortDataStatusSetter do
 
         # Much too long from [8] to [9] but reasonable from [6] to [9]
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 6.hours
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good good good bad bad good))
         expect(effort.data_status).to eq('bad')
@@ -382,17 +274,8 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'works properly for a full effort with multiple problems' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 105 }
         effort_split_times = split_times_105.first(n)
@@ -402,10 +285,10 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[7].time_from_start = effort_split_times[6].time_from_start + 20.minutes # Too short for segment
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 10.hours # Too long for segment
 
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(bad good bad good bad good good bad good bad))
         expect(effort.data_status).to eq('bad')
@@ -413,15 +296,8 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'works properly for a full effort with multiple problems and not enough data for statistical limits' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 105 }
         effort_split_times = split_times_105.first(n)
@@ -431,10 +307,10 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[7].time_from_start = effort_split_times[6].time_from_start + 20.minutes # Too short for segment
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 10.hours # Too long for segment
 
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(bad good bad good bad good good bad good bad))
         expect(effort.data_status).to eq('bad')
@@ -442,25 +318,16 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'if effort has a dropped_split_id, sets data_status of all split_times beyond that point to "bad"' do
         n = 10
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort.dropped_split_id = ordered_splits[2].id
         effort_split_times = split_times_104.first(n)
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good bad bad bad bad bad))
         expect(effort.data_status).to eq('bad')
@@ -468,24 +335,14 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'if split_times are all confirmed, sets effort data_status to "good"' do
         n = 3
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
-        ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
         effort_split_times.each { |st| st.data_status = 'confirmed' }
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(confirmed confirmed confirmed))
         expect(effort.data_status).to eq('good')
@@ -512,17 +369,8 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'returns an array containing split_times whose data_status was changed' do
         n = 5
-        split_times = [split_times_100.first(n), split_times_101.first(n), split_times_102.first(n),
-                       split_times_103.first(n), split_times_104.first(n), split_times_105.first(n),
-                       split_times_106.first(n), split_times_107.first(n), split_times_108.first(n),
-                       split_times_109.first(n)].flatten
-        container = SegmentTimesContainer.new(split_times: split_times)
-
         ordered_splits = splits
-        similar_efforts = efforts
-        times_calculator = StatTimesCalculator.new(ordered_splits: ordered_splits,
-                                                   efforts: similar_efforts,
-                                                   segment_times_container: container)
+        times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
@@ -532,10 +380,10 @@ RSpec.describe EffortDataStatusSetter do
         expect(effort_split_times[0]).to receive(:changed?).and_return(false)
         expect(effort_split_times[1]).to receive(:changed?).and_return(false)
         expect(effort_split_times[2]).to receive(:changed?).and_return(false)
-        expect(effort).to receive(:ordered_splits).and_return(ordered_splits)
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             split_times: effort_split_times,
-                                            times_calculator: times_calculator)
+                                            times_container: times_container)
         setter.set_data_status
         expect(setter.changed_split_times).to eq(effort_split_times[3..4])
         expect(setter.changed_efforts).to eq([effort])

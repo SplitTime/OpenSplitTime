@@ -10,10 +10,13 @@ class MockEffort
     @ordered_splits = args[:ordered_splits]
     @expected_time = args[:expected_time]
     @start_time = args[:start_time]
-    @finder = args[:effort_finder] || SimilarEffortFinder.new(sub_split: finish_sub_split, time_from_start: expected_time)
+    @finder = args[:effort_finder] || SimilarEffortFinder.new(sub_split: finish_sub_split,
+                                                              time_from_start: expected_time,
+                                                              finished: true)
     @times_predictor = args[:times_predictor] || TimesPredictor.new(ordered_splits: ordered_splits,
                                                                     working_split_time: mock_finish_split_time,
-                                                                    similar_efforts: relevant_efforts)
+                                                                    similar_effort_ids: relevant_effort_ids,
+                                                                    calc_model: :focused)
   end
 
   def indexed_split_times
@@ -37,7 +40,7 @@ class MockEffort
   end
 
   def relevant_efforts_count
-    relevant_efforts.count
+    relevant_effort_ids.count
   end
 
   def event_years_analyzed
@@ -94,5 +97,9 @@ class MockEffort
 
   def ordered_sub_splits
     ordered_splits.map(&:sub_splits).flatten
+  end
+
+  def relevant_effort_ids
+    finder.effort_ids
   end
 end

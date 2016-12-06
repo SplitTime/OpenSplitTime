@@ -3,12 +3,16 @@ class TimesPredictor
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required_alternatives: [:effort, [:ordered_splits, :working_split_time]],
-                           exclusive: [:effort, :ordered_splits, :working_split_time, :times_calculator, :similar_efforts],
+                           exclusive: [:effort, :ordered_splits, :working_split_time,
+                                       :calc_model, :similar_effort_ids, :times_container],
                            class: self.class)
     @effort = args[:effort]
     @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
     @working_split_time = args[:working_split_time] || effort.valid_split_times.last
-    @times_calculator = args[:times_calculator] || build_times_calculator(args[:similar_efforts])
+    @calc_model = args[:calc_model] || :terrain
+    @similar_effort_ids = args[:similar_effort_ids]
+    @times_container = args[:times_container] ||
+        SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
     validate_setup
   end
 
@@ -21,33 +25,23 @@ class TimesPredictor
   end
 
   def segment_time(segment)
-    times_calculator.segment_time(segment) * pace_factor
+    times_container.segment_time(segment) * pace_factor
   end
 
   def limits(segment)
-    times_calculator.limits(segment).transform_values { |limit| limit * pace_factor }
+    times_container.limits(segment).transform_values { |limit| limit * pace_factor }
   end
 
   def data_status(segment, seconds)
-    DataStatus.determine(limits(segment), seconds)
+    times_container.data_status(segment, seconds)
   end
 
   private
 
-  attr_reader :effort, :ordered_splits, :working_split_time, :times_calculator
-
-  def build_times_calculator(similar_efforts)
-    similar_efforts && (similar_efforts.count > SegmentTimes::STATS_CALC_THRESHOLD) ?
-        StatTimesCalculator.new(ordered_splits: ordered_splits, efforts: similar_efforts) :
-        TerrainTimesCalculator.new(ordered_splits: ordered_splits)
-  end
-
-  def baseline_times
-    times_calculator.times_from_start
-  end
+  attr_reader :effort, :ordered_splits, :working_split_time, :calc_model, :similar_effort_ids, :times_container
 
   def pace_factor
-    measurable_pace? ? working_time / baseline_times[working_split_time.sub_split] : 1
+    measurable_pace? ? working_time / baseline_working_time : 1
   end
 
   def measurable_pace?
@@ -56,6 +50,22 @@ class TimesPredictor
 
   def working_time
     working_split_time.time_from_start
+  end
+
+  def baseline_working_time
+    times_container.segment_time(working_segment)
+  end
+
+  def working_segment
+    Segment.new(ordered_splits.first.sub_split_in, working_split_time.sub_split)
+  end
+
+  def baseline_times
+    segments.map { |segment| [segment.end_sub_split, times_container.segment_time(segment)] }.to_h
+  end
+
+  def segments
+    SegmentsBuilder.segments(ordered_splits: ordered_splits)
   end
 
   def validate_setup

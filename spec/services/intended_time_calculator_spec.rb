@@ -19,7 +19,8 @@ RSpec.describe IntendedTimeCalculator do
       expect { IntendedTimeCalculator.new(effort: effort,
                                           military_time: military_time,
                                           sub_split: sub_split,
-                                          split_time_finder: 123) }.not_to raise_error
+                                          split_time_finder: 123,
+                                          predictor: 456) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if no military time is given' do
@@ -55,10 +56,10 @@ RSpec.describe IntendedTimeCalculator do
       start_time = Time.new(2016, 7, 1, 6, 0, 0)
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {44 => 1}
-      times_predictor = instance_double('TimesPredictor', segment_time: 10000)
+      times_predictor = instance_double(TimesPredictor, segment_time: 10000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
-      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: prior_split_time)
+      split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: prior_split_time)
 
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
@@ -80,10 +81,10 @@ RSpec.describe IntendedTimeCalculator do
       start_time = Time.new(2016, 7, 1, 6, 0, 0)
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {45 => 1}
-      times_predictor = instance_double('TimesPredictor', segment_time: 200000)
+      times_predictor = instance_double(TimesPredictor, segment_time: 200000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
-      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: prior_split_time)
+      split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: prior_split_time)
 
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
@@ -106,10 +107,10 @@ RSpec.describe IntendedTimeCalculator do
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {46 => 1}
 
-      times_predictor = instance_double('TimesPredictor', segment_time: 400000)
+      times_predictor = instance_double(TimesPredictor, segment_time: 400000)
 
       prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
-      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: prior_split_time)
+      split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: prior_split_time)
 
       calculator = IntendedTimeCalculator.new(effort: effort,
                                               military_time: military_time,
@@ -132,11 +133,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'calculates the likely intended day and time based on inputs' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(1.hour)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -152,11 +151,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'calculates the likely intended day and time based on inputs, where time is late evening' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(1.hour)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -173,11 +170,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'rolls into the next day if necessary' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(1.hour)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -193,11 +188,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'functions properly when intended time is well into the following day' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(1.hour)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[9].sub_split # Burrows In
 
@@ -213,11 +206,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'functions properly when expected time is near midnight' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(8.hours)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -233,11 +224,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'functions properly when expected time is past midnight' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(8.hours)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -253,11 +242,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'functions properly when expected time is early morning' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(8.hours)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -273,11 +260,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'functions properly when expected time is mid morning' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(8.hours)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         sub_split = split_times[13].sub_split # Engineer In
 
@@ -293,11 +278,9 @@ RSpec.describe IntendedTimeCalculator do
 
       it 'rolls over to the next day if prior valid split time is later than the calculated time' do
         effort = FactoryGirl.build_stubbed(:effort, start_time: Time.new(2016, 7, 1, 6, 0, 0), id: 101)
-        ordered_splits = splits
-        working_split_time = split_times.last
-        times_predictor = TimesPredictor.new(ordered_splits: ordered_splits,
-                                             working_split_time: working_split_time)
-        split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: split_times[8])
+        times_predictor = instance_double(TimesPredictor)
+        allow(times_predictor).to receive(:segment_time).with(instance_of(Segment)).and_return(90.minutes)
+        split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: split_times[8])
 
         military_time = '16:00:00' # Expected time is roughly 17:00 on 7/1, so this would normally be interpreted as 16:00 on 7/1
         sub_split = split_times[9].sub_split
@@ -317,8 +300,8 @@ RSpec.describe IntendedTimeCalculator do
       effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
       sub_split = {46 => 1}
       mock_time_hash = {{44 => 1} => 10000, {45 => 1} => 200000, {46 => 1} => 400000}
-      times_predictor = instance_double('TimesPredictor', times_from_start: mock_time_hash)
-      split_time_finder = instance_double('PriorSplitTimeFinder', guaranteed_split_time: SplitTime.new)
+      times_predictor = instance_double(TimesPredictor, times_from_start: mock_time_hash)
+      split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: SplitTime.new)
 
       expect { IntendedTimeCalculator.new(effort: effort,
                                           military_time: military_time,

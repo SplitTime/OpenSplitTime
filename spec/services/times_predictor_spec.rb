@@ -45,7 +45,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start.count).to eq(10)
         expect(predictor.times_from_start.keys).to eq(sub_splits)
       end
@@ -58,7 +58,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[0]]).to eq(0)
       end
 
@@ -70,7 +70,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
         expect(predictor.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
         expect(predictor.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * Segment::DISTANCE_FACTOR)
@@ -92,7 +92,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start.count).to eq(10)
         expect(predictor.times_from_start.keys).to eq(sub_splits)
       end
@@ -105,7 +105,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[0]]).to eq(0)
       end
 
@@ -117,7 +117,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[4]]).to eq(2100)
       end
 
@@ -129,7 +129,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[1]]).to be_within(50).of(1050)
         expect(predictor.times_from_start[sub_splits[2]]).to be_within(50).of(1050)
         expect(predictor.times_from_start[sub_splits[3]]).to be_within(50).of(2100)
@@ -143,7 +143,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[5]]).to be_within(50).of(3150)
         expect(predictor.times_from_start[sub_splits[6]]).to be_within(50).of(3150)
         expect(predictor.times_from_start[sub_splits[7]]).to be_within(50).of(4200)
@@ -161,7 +161,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start.count).to eq(10)
         expect(predictor.times_from_start.keys).to eq(sub_splits)
       end
@@ -174,7 +174,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[0]]).to eq(0)
       end
 
@@ -186,7 +186,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[9]]).to eq(5000)
       end
 
@@ -198,7 +198,7 @@ RSpec.describe TimesPredictor do
         predictor = TimesPredictor.new(effort: effort,
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
-                                       similar_efforts: nil)
+                                       calc_model: :terrain)
         expect(predictor.times_from_start[sub_splits[1]]).to be_within(50).of(1000)
         expect(predictor.times_from_start[sub_splits[2]]).to be_within(50).of(1000)
         expect(predictor.times_from_start[sub_splits[3]]).to be_within(50).of(2000)

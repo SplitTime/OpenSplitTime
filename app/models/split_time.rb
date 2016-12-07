@@ -16,7 +16,7 @@ class SplitTime < ActiveRecord::Base
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
   scope :within_time_range, -> (low_time, high_time) { where(time_from_start: low_time..high_time) }
-  scope :basic_components, -> { select(:split_id, :sub_split_bitkey, :effort_id, :time_from_start) }
+  scope :basic_components, -> { select(:id, :split_id, :sub_split_bitkey, :effort_id, :time_from_start, :data_status) }
   scope :from_finished_efforts, -> { joins(:effort => {:split_times => :split}).where(splits: {kind: 1}) }
 
   attr_accessor :day_and_time_attr
@@ -81,16 +81,20 @@ class SplitTime < ActiveRecord::Base
         time_calculator.day_and_time(military_time: military_time, effort: effort, sub_split: sub_split) : nil
   end
 
+  def name
+    "#{effort_name}: #{split_name}"
+  end
+
   def split_name
-    split.name(bitkey)
+    @split_name ||= split ? split.name(bitkey) : '[unknown split]'
   end
 
   def effort_name
-    effort.full_name
+    @effort_name ||= effort ? effort.full_name : '[unknown effort]'
   end
 
   def event_name
-    effort.event_name
+    @event_name ||= effort ? effort.event_name : '[unknown event]'
   end
 
   private

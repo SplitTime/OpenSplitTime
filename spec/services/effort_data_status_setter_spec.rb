@@ -31,6 +31,7 @@ RSpec.describe EffortDataStatusSetter do
       it 'sets effort data_status to nil and does not attempt to change split_times' do
         effort = Effort.new(first_name: 'John', last_name: 'Doe', gender: 'male', data_status: 2)
         times_container = instance_double(SegmentTimesContainer)
+        allow(effort).to receive(:ordered_splits).and_return([])
         setter = EffortDataStatusSetter.new(effort: effort, times_container: times_container)
         setter.set_data_status
         expect(setter.changed_split_times).to eq([])
@@ -66,7 +67,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times = split_times_104.first(n)
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status).uniq).to eq(['good'])
@@ -83,7 +84,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[0].time_from_start = 100
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(bad good good good good))
@@ -101,7 +102,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[4].time_from_start = effort_split_times[3].time_from_start - 60
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good bad good bad))
@@ -119,7 +120,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 1000
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good bad good bad good))
@@ -136,7 +137,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 24.hours
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good bad))
@@ -153,7 +154,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 30.minutes
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good questionable))
@@ -170,7 +171,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[3].time_from_start = effort_split_times[2].time_from_start + 8.hours
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good questionable))
@@ -191,7 +192,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 5.hours
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good good good bad bad good))
@@ -207,7 +208,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times = split_times_109.first(n)
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status).uniq).to eq(['good'])
@@ -223,7 +224,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times = split_times_100.first(n)
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status).uniq).to eq(['good'])
@@ -244,7 +245,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 4.hours
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good good good bad bad good))
@@ -265,7 +266,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times[9].time_from_start = effort_split_times[8].time_from_start + 6.hours
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good good good bad bad good))
@@ -287,7 +288,7 @@ RSpec.describe EffortDataStatusSetter do
 
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(bad good bad good bad good good bad good bad))
@@ -309,7 +310,7 @@ RSpec.describe EffortDataStatusSetter do
 
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(bad good bad good bad good good bad good bad))
@@ -326,7 +327,7 @@ RSpec.describe EffortDataStatusSetter do
         effort_split_times = split_times_104.first(n)
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(good good good good good bad bad bad bad bad))
@@ -335,13 +336,15 @@ RSpec.describe EffortDataStatusSetter do
 
       it 'if split_times are all confirmed, sets effort data_status to "good"' do
         n = 3
+        ordered_splits = splits
         times_container = SegmentTimesContainer.new(calc_model: :terrain)
 
         effort = efforts.find { |effort| effort.id == 104 }
         effort_split_times = split_times_104.first(n)
         effort_split_times.each { |st| st.data_status = 'confirmed' }
+        allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(effort_split_times.map(&:data_status)).to eq(%w(confirmed confirmed confirmed))
@@ -382,7 +385,7 @@ RSpec.describe EffortDataStatusSetter do
         expect(effort_split_times[2]).to receive(:changed?).and_return(false)
         allow(effort).to receive(:ordered_splits).and_return(ordered_splits)
         setter = EffortDataStatusSetter.new(effort: effort,
-                                            split_times: effort_split_times,
+                                            ordered_split_times: effort_split_times,
                                             times_container: times_container)
         setter.set_data_status
         expect(setter.changed_split_times).to eq(effort_split_times[3..4])

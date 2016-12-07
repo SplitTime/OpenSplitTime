@@ -45,6 +45,7 @@ module PersonalInfo
   def full_name
     [first_name, last_name].join(' ')
   end
+  alias_method :name, :full_name
 
   def age_today
     birthdate ? exact_age_today : approximate_age_today

@@ -2,7 +2,7 @@ module DataStatusMethods
   extend ActiveSupport::Concern
 
   included do
-    scope :valid_status, -> { where(data_status: VALID_STATUSES) }
+    scope :valid_status, -> { where(data_status: self::VALID_STATUSES) }
     validates :data_status, inclusion: {in: self.data_statuses.keys}, allow_nil: true
   end
 

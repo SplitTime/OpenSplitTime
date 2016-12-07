@@ -1,12 +1,16 @@
 class ArgsValidator
   include ColorizeText
 
-  def self.validate(args)
-    new(args).validate
-  end
+  class << self
+    attr_accessor :console_notifications
 
-  def self.exclusive
-    [:params, :required, :required_alternatives, :exclusive, :class]
+    def validate(args)
+      new(args).validate
+    end
+
+    def exclusive
+      [:params, :required, :required_alternatives, :exclusive, :class]
+    end
   end
 
   def initialize(args)
@@ -16,11 +20,10 @@ class ArgsValidator
     @exclusive = Array.wrap(args[:exclusive]) || []
     @klass = args[:class]
     validate_setup(args)
-    # notify_console(args)
+    notify_console(args) if self.class.console_notifications
+    # Set ArgsValidator.console_notifications to true or false
+    # in /config/initializers/args_validator.rb
   end
-
-  # Un-comment the 'notify_console' method in the constructor to provide detailed
-  # information about object instantiation for classes that call ArgsValidator
 
   def validate
     validate_hash

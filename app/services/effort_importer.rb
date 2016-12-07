@@ -40,7 +40,7 @@ class EffortImporter
     BulkUpdateService.bulk_update_start_offset(start_offset_hash)
     BulkUpdateService.bulk_update_dropped(final_split_hash)
     # Set data status on only those efforts that were successfully created
-    DataStatusService.set_data_status(event.efforts.find(effort_id_array))
+    BulkDataStatusSetter.set_data_status(efforts: event.efforts.find(effort_id_array))
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 

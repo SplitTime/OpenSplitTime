@@ -4,12 +4,15 @@ module ColorizeText
   # or puts bold_cyan('Attention:')
   # (These methods do not work with p)
 
-  COLORS ||= {bold_white: "1;30",
-              white: "30",
+
+  COLORS ||= {white: "30",
+              bold_white: "1;30",
               light_grey: "38",
+              bold_light_grey: "1;38",
               grey: "37",
               bold_grey: "1;37",
-              yellow: "1;33",
+              yellow: "33",
+              bold_yellow: "1;33",
               blue: "34",
               bold_blue: "1;34",
               cyan: "36",

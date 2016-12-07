@@ -1,4 +1,6 @@
 class ArgsValidator
+  include ColorizeText
+
   def self.validate(args)
     new(args).validate
   end
@@ -14,7 +16,11 @@ class ArgsValidator
     @exclusive = Array.wrap(args[:exclusive]) || []
     @klass = args[:class]
     validate_setup(args)
+    # notify_console(args)
   end
+
+  # Un-comment the 'notify_console' method in the constructor to provide detailed
+  # information about object instantiation for classes that call ArgsValidator
 
   def validate
     validate_hash
@@ -66,5 +72,12 @@ class ArgsValidator
     args.each_key do |arg_name|
       raise ArgumentError, "arguments for ArgsValidator may not include #{arg_name}" unless ArgsValidator.exclusive.include?(arg_name)
     end
+  end
+
+  def notify_console(args)
+    puts green("ArgsValidator validated arguments for #{klass || 'an unspecified class'}")
+    puts args[:params].transform_values { |value| value.respond_to?(:map) ?
+        value.map { |object| object.try(:name) || object.try(:id) || object.to_s } :
+        value.try(:name) || value.try(:id) || value.to_s }
   end
 end

@@ -14,25 +14,66 @@ RSpec.describe Segment, type: :model do
   let(:aid_3_in) { aid_3.sub_split_in }
   let(:aid_3_out) { aid_3.sub_split_out }
   let(:finish_in) { finish.sub_split_in }
-  let(:start_to_aid_1) { Segment.new(start_in, aid_1_in, start, aid_1) }
-  let(:start_to_aid_2) { Segment.new(start_in, aid_2_in, start, aid_2) }
-  let(:start_to_aid_3) { Segment.new(start_in, aid_3_in, start, aid_3) }
-  let(:start_to_finish) { Segment.new(start_in, finish_in, start, finish) }
-  let(:aid_1_to_aid_2) { Segment.new(aid_1_out, aid_2_in, aid_1, aid_2) }
-  let(:aid_2_to_aid_3) { Segment.new(aid_2_out, aid_3_in, aid_2, aid_3) }
-  let(:aid_3_to_finish) { Segment.new(aid_3_out, finish_in, aid_3, finish) }
-  let(:aid_1_to_finish) { Segment.new(aid_1_out, finish_in, aid_1, finish) }
-  let(:aid_2_to_finish) { Segment.new(aid_2_out, finish_in, aid_2, finish) }
-  let(:in_aid_1) { Segment.new(aid_1_in, aid_1_out, aid_1, aid_1) }
-  let(:in_aid_2) { Segment.new(aid_2_in, aid_2_out, aid_2, aid_2) }
-  let(:in_aid_3) { Segment.new(aid_3_in, aid_3_out, aid_3, aid_3) }
-  let(:aid_1_to_aid_2_inclusive) { Segment.new(aid_1_in, aid_2_out, aid_1, aid_2) }
-  let(:start_to_start) { Segment.new(start_in, start_in, start, start) }
-  let(:aid_1_in_to_aid_1_in) { Segment.new(aid_1_in, aid_1_in, aid_1, aid_1) }
-  let(:start_to_aid_1_duplicate) { Segment.new(start_in, aid_1_in, start, aid_1) }
+  let(:start_to_aid_1) { Segment.new(begin_sub_split: start_in, end_sub_split: aid_1_in, begin_split: start, end_split: aid_1) }
+  let(:start_to_aid_2) { Segment.new(begin_sub_split: start_in, end_sub_split: aid_2_in, begin_split: start, end_split: aid_2) }
+  let(:start_to_aid_3) { Segment.new(begin_sub_split: start_in, end_sub_split: aid_3_in, begin_split: start, end_split: aid_3) }
+  let(:start_to_finish) { Segment.new(begin_sub_split: start_in, end_sub_split: finish_in, begin_split: start, end_split: finish) }
+  let(:aid_1_to_aid_2) { Segment.new(begin_sub_split: aid_1_out, end_sub_split: aid_2_in, begin_split: aid_1, end_split: aid_2) }
+  let(:aid_2_to_aid_3) { Segment.new(begin_sub_split: aid_2_out, end_sub_split: aid_3_in, begin_split: aid_2, end_split: aid_3) }
+  let(:aid_3_to_finish) { Segment.new(begin_sub_split: aid_3_out, end_sub_split: finish_in, begin_split: aid_3, end_split: finish) }
+  let(:aid_1_to_finish) { Segment.new(begin_sub_split: aid_1_out, end_sub_split: finish_in, begin_split: aid_1, end_split: finish) }
+  let(:aid_2_to_finish) { Segment.new(begin_sub_split: aid_2_out, end_sub_split: finish_in, begin_split: aid_2, end_split: finish) }
+  let(:in_aid_1) { Segment.new(begin_sub_split: aid_1_in, end_sub_split: aid_1_out, begin_split: aid_1, end_split: aid_1) }
+  let(:in_aid_2) { Segment.new(begin_sub_split: aid_2_in, end_sub_split: aid_2_out, begin_split: aid_2, end_split: aid_2) }
+  let(:in_aid_3) { Segment.new(begin_sub_split: aid_3_in, end_sub_split: aid_3_out, begin_split: aid_3, end_split: aid_3) }
+  let(:aid_1_to_aid_2_inclusive) { Segment.new(begin_sub_split: aid_1_in, end_sub_split: aid_2_out, begin_split: aid_1, end_split: aid_2) }
+  let(:start_to_start) { Segment.new(begin_sub_split: start_in, end_sub_split: start_in, begin_split: start, end_split: start) }
+  let(:aid_1_in_to_aid_1_in) { Segment.new(begin_sub_split: aid_1_in, end_sub_split: aid_1_in, begin_split: aid_1, end_split: aid_1) }
+  let(:start_to_aid_1_duplicate) { Segment.new(begin_sub_split: start_in, end_sub_split: aid_1_in, begin_split: start, end_split: aid_1) }
 
   describe 'initialization' do
+    it 'initializes when given a begin_sub_split and end_sub_split in an args hash' do
+      begin_sub_split = aid_1.sub_split_in
+      end_sub_split = aid_1.sub_split_out
+      expect { Segment.new(begin_sub_split: begin_sub_split, end_sub_split: end_sub_split) }.not_to raise_error
+    end
 
+    it 'raises an error if missing begin_sub_split' do
+      end_sub_split = aid_1.sub_split_out
+      expect { Segment.new(end_sub_split: end_sub_split) }.to raise_error(/must include begin_sub_split/)
+    end
+
+    it 'raises an error if missing end_sub_split' do
+      begin_sub_split = aid_1.sub_split_in
+      expect { Segment.new(begin_sub_split: begin_sub_split) }.to raise_error(/must include end_sub_split/)
+    end
+
+    it 'raises an error when splits are out of order' do
+      begin_sub_split = aid_2.sub_split_in
+      end_sub_split = aid_1.sub_split_out
+      begin_split = aid_2
+      end_split = aid_1
+      expect { Segment.new(begin_sub_split: begin_sub_split, end_sub_split: end_sub_split,
+                           begin_split: begin_split, end_split: end_split) }
+          .to raise_error(/Segment splits are out of order/)
+    end
+
+    it 'raises an error when sub_splits are out of order' do
+      begin_sub_split = aid_1.sub_split_out
+      end_sub_split = aid_1.sub_split_in
+      expect { Segment.new(begin_sub_split: begin_sub_split, end_sub_split: end_sub_split) }
+          .to raise_error(/Segment sub_splits are out of order/)
+    end
+
+    it 'does not raise an error when splits are out of order if order_control: false is given' do
+      begin_sub_split = aid_2.sub_split_in
+      end_sub_split = aid_1.sub_split_out
+      begin_split = aid_2
+      end_split = aid_1
+      expect { Segment.new(begin_sub_split: begin_sub_split, end_sub_split: end_sub_split,
+                           begin_split: begin_split, end_split: end_split, order_control: false) }
+          .not_to raise_error
+    end
   end
 
   describe '#==' do
@@ -59,6 +100,11 @@ RSpec.describe Segment, type: :model do
       expect(start_to_aid_1.name).to eq('Start Split to Aid 1')
       expect(aid_2_to_finish.name).to eq('Aid 2 to Finish Split')
     end
+
+    it 'should return a single name if begin sub_split and end sub_split are the same' do
+      expect(start_to_start.name).to eq('Start Split')
+      expect(aid_1_in_to_aid_1_in.name).to eq('Aid 1 In')
+    end
   end
 
   describe '#typical_time_by_terrain' do
@@ -66,8 +112,8 @@ RSpec.describe Segment, type: :model do
       expect(start_to_aid_1.typical_time_by_terrain).to eq(10000 * Segment::DISTANCE_FACTOR + 1000 * Segment::VERT_GAIN_FACTOR)
     end
 
-    it 'should return a specified "in aid" time for a segment in aid' do
-      expect(in_aid_1.typical_time_by_terrain).to eq(Segment::TYPICAL_TIME_IN_AID)
+    it 'should return zero for a segment in aid' do
+      expect(in_aid_1.typical_time_by_terrain).to eq(0)
     end
 
     it 'should return zero for a segment having the same begin and end sub_splits' do
@@ -207,10 +253,10 @@ RSpec.describe Segment, type: :model do
 
       @event.splits << @course.splits
 
-      @segment1 = Segment.new(@split1.sub_split_in, @split2.sub_split_in)
-      @segment2 = Segment.new(@split2.sub_split_in, @split2.sub_split_out)
-      @segment3 = Segment.new(@split1.sub_split_in, @split4.sub_split_in)
-      @segment4 = Segment.new(@split2.sub_split_out, @split4.sub_split_in)
+      @segment1 = Segment.new(begin_sub_split: @split1.sub_split_in, end_sub_split: @split2.sub_split_in)
+      @segment2 = Segment.new(begin_sub_split: @split2.sub_split_in, end_sub_split: @split2.sub_split_out)
+      @segment3 = Segment.new(begin_sub_split: @split1.sub_split_in, end_sub_split: @split4.sub_split_in)
+      @segment4 = Segment.new(begin_sub_split: @split2.sub_split_out, end_sub_split: @split4.sub_split_in)
 
       SplitTime.create!(effort: @effort1, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
       SplitTime.create!(effort: @effort1, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)

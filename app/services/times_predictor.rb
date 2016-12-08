@@ -20,6 +20,10 @@ class TimesPredictor
     @times_from_start ||= times_from_working_time.transform_values { |seconds| seconds + working_time }
   end
 
+  def time_from_start(sub_split)
+    subject_time_from_working_time(sub_split) + working_time
+  end
+
   def segment_time(segment)
     times_container.segment_time(segment) && times_container.segment_time(segment) * pace_factor
   end
@@ -50,6 +54,18 @@ class TimesPredictor
 
   def segments
     @segments ||= SegmentsBuilder.segments(ordered_splits: ordered_splits, working_sub_split: working_sub_split)
+  end
+
+  def subject_time_from_working_time(sub_split)
+    times_container.segment_time(subject_segment(sub_split)) * pace_factor
+  end
+
+  def subject_segment(sub_split)
+    Segment.new(begin_sub_split: working_sub_split,
+                end_sub_split: sub_split,
+                begin_split: working_split,
+                end_split: ordered_splits.find { |split| split.id == sub_split.split_id },
+                order_control: false)
   end
 
   def pace_factor

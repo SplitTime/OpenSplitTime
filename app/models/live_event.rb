@@ -1,7 +1,7 @@
 class LiveEvent
 
-  attr_accessor :efforts_started, :efforts_finished, :efforts_dropped, :efforts_in_progress, :efforts_unfinished
-  attr_reader :event, :ordered_split_ids, :split_times, :live_efforts
+  attr_reader :event, :ordered_split_ids, :split_times, :live_efforts,
+              :efforts_started, :efforts_finished, :efforts_dropped, :efforts_in_progress, :efforts_unfinished
   delegate :course, :race, :simple?, to: :event
 
   # initialize(event)
@@ -13,7 +13,6 @@ class LiveEvent
     @ordered_split_ids = ordered_splits.map(&:id)
     @split_name_hash = Hash[@ordered_splits.map { |split| [split.id, split.base_name] }]
     @sub_splits = @ordered_splits.map(&:sub_splits).flatten
-    @event_segment_calcs = EventSegmentCalcs.new(event)
     @efforts = event.efforts.sorted_with_finish_status
     @split_times = SplitTime.joins(:effort)
                        .select(:sub_split_bitkey, :split_id, :time_from_start)
@@ -58,7 +57,8 @@ class LiveEvent
 
   private
 
-  attr_reader :ordered_splits, :split_name_hash, :sub_splits, :event_segment_calcs, :efforts, :split_times_by_effort
+  attr_reader :ordered_splits, :split_name_hash, :sub_splits, :efforts, :split_times_by_effort
+  attr_writer :efforts_started, :efforts_finished, :efforts_dropped, :efforts_in_progress, :efforts_unfinished
 
   def set_effort_categories
     self.efforts_started = efforts.select { |effort| split_times_by_effort[effort.id].count > 0 }
@@ -73,7 +73,7 @@ class LiveEvent
       effort.last_reported_split_time = split_times_by_effort[effort.id].last
       effort.start_time = event_start_time + effort.start_offset
       sub_split = due_next_sub_split(effort)
-      unless sub_split.nil?
+      if sub_split
         effort.next_expected_split_time = SplitTime.new(effort_id: effort.id,
                                                         sub_split: sub_split,
                                                         time_from_start: expected_time_from_start(effort, sub_split))
@@ -88,33 +88,16 @@ class LiveEvent
     end
   end
 
+  def times_container
+    @times_container ||= SegmentTimesContainer.new(calc_model: :stats)
+  end
+
   def expected_time_from_start(effort, sub_split)
-    indexed_splits = ordered_splits.index_by(&:id)
-    split_times = split_times_by_effort[effort.id]
-    start_split_time = split_times.first
-    return 0 if sub_split == start_split_time.sub_split
-    subject_split_time = split_times.find { |split_time| split_time.sub_split == sub_split }
-    prior_split_time = subject_split_time ?
-        split_times[split_times.index(subject_split_time) - 1] :
-        split_times.last
-    completed_segment = Segment.new(start_split_time.sub_split,
-                                    prior_split_time.sub_split,
-                                    indexed_splits[start_split_time.split_id],
-                                    indexed_splits[prior_split_time.split_id])
-    subject_segment = Segment.new(prior_split_time.sub_split,
-                                  sub_split,
-                                  indexed_splits[prior_split_time.split_id],
-                                  indexed_splits[sub_split.split_id])
-    completed_segment_calcs = event_segment_calcs.fetch_calculations(completed_segment)
-    subject_segment_calcs = event_segment_calcs.fetch_calculations(subject_segment)
-    pace_baseline = completed_segment_calcs.mean ?
-        completed_segment_calcs.mean :
-        completed_segment.typical_time_by_terrain
-    pace_factor = pace_baseline == 0 ? 1 :
-        prior_split_time.time_from_start / pace_baseline
-    subject_segment_calcs.mean ?
-        (prior_split_time.time_from_start + (subject_segment_calcs.mean * pace_factor)) :
-        (prior_split_time.time_from_start + (subject_segment.typical_time_by_terrain * pace_factor))
+    TimesPredictor.new(effort: effort,
+                       ordered_splits: ordered_splits,
+                       working_split_time: effort.last_reported_split_time,
+                       times_container: times_container)
+        .time_from_start(sub_split)
   end
 
   def due_next_sub_split(effort)

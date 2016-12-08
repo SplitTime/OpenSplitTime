@@ -210,4 +210,59 @@ RSpec.describe TimesPredictor do
       end
     end
   end
+
+  describe '#time_from_start' do
+    it 'predicts zero time for start splits' do
+      effort = FactoryGirl.build_stubbed(:effort, id: 101)
+      ordered_splits = [split1, split2, split3, split4, split5, split6]
+      sub_splits = ordered_splits.map(&:sub_splits).flatten
+      working_split_time = split_times_101.first(5).last
+      predictor = TimesPredictor.new(effort: effort,
+                                     ordered_splits: ordered_splits,
+                                     working_split_time: working_split_time,
+                                     calc_model: :terrain)
+      expect(predictor.time_from_start(sub_splits[0])).to eq(0)
+    end
+
+    it 'predicts the actual time from start for the specified working_sub_split' do
+      effort = FactoryGirl.build_stubbed(:effort, id: 101)
+      ordered_splits = [split1, split2, split3, split4, split5, split6]
+      working_split_time = split_times_101.first(5).last
+      predictor = TimesPredictor.new(effort: effort,
+                                     ordered_splits: ordered_splits,
+                                     working_split_time: working_split_time,
+                                     calc_model: :terrain)
+      expect(predictor.time_from_start(working_split_time.sub_split)).to eq(2100)
+    end
+
+    it 'predicts the correct expected time from start for prior sub_splits using a calculated pace_factor' do
+      effort = FactoryGirl.build_stubbed(:effort, id: 101)
+      ordered_splits = [split1, split2, split3, split4, split5, split6]
+      sub_splits = ordered_splits.map(&:sub_splits).flatten
+      working_split_time = split_times_101.first(5).last
+      predictor = TimesPredictor.new(effort: effort,
+                                     ordered_splits: ordered_splits,
+                                     working_split_time: working_split_time,
+                                     calc_model: :terrain)
+      expect(predictor.time_from_start(sub_splits[1])).to be_within(50).of(1050)
+      expect(predictor.time_from_start(sub_splits[2])).to be_within(50).of(1050)
+      expect(predictor.time_from_start(sub_splits[3])).to be_within(50).of(2100)
+    end
+
+    it 'predicts the correct expected time from start for later sub_splits using a calculated pace_factor' do
+      effort = FactoryGirl.build_stubbed(:effort, id: 101)
+      ordered_splits = [split1, split2, split3, split4, split5, split6]
+      sub_splits = ordered_splits.map(&:sub_splits).flatten
+      working_split_time = split_times_101.first(5).last
+      predictor = TimesPredictor.new(effort: effort,
+                                     ordered_splits: ordered_splits,
+                                     working_split_time: working_split_time,
+                                     calc_model: :terrain)
+      expect(predictor.time_from_start(sub_splits[5])).to be_within(50).of(3150)
+      expect(predictor.time_from_start(sub_splits[6])).to be_within(50).of(3150)
+      expect(predictor.time_from_start(sub_splits[7])).to be_within(50).of(4200)
+      expect(predictor.time_from_start(sub_splits[8])).to be_within(50).of(4200)
+      expect(predictor.time_from_start(sub_splits[9])).to be_within(50).of(5250)
+    end
+  end
 end

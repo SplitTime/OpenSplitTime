@@ -5,7 +5,8 @@ class LiveEffortMailData
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required_alternatives: [:participant, :participant_id],
-                           exclusive: [:participant, :participant_id, :split_times, :split_time_ids])
+                           exclusive: [:participant, :participant_id, :split_times, :split_time_ids],
+                           class: self.class)
     @participant = args[:participant] || Participant.find(args[:participant_id])
     @split_times = args[:split_times] || SplitTime.find(args[:split_time_ids])
     @effort = split_times.first.effort

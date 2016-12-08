@@ -26,7 +26,7 @@ module ColorizeText
               tan: "33",
               bold_tan: "1;33"}
 
-  COLORS.keys.each do |color|
+  COLORS.each_key do |color|
     define_method("#{color}") do |text|
       colorize(text, COLORS[color])
     end

@@ -2,10 +2,14 @@ class SplitImporter
 
   attr_reader :split_id_array, :split_failure_array, :splits
 
-  def initialize(file, event, current_user_id)
-    @import_file = ImportFile.new(file)
-    @event = event
-    @current_user_id = current_user_id
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:file_path, :event, :current_user_id],
+                           exclusive: [:file_path, :event, :current_user_id],
+                           class: self.class)
+    @import_file = ImportFile.new(args[:file_path])
+    @event = args[:event]
+    @current_user_id = args[:current_user_id]
     @split_id_array = []
     @split_failure_array = []
     @splits = SplitBuilder.new(split_header_map).splits

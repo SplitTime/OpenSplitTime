@@ -17,11 +17,11 @@ class TimesPredictor
   end
 
   def times_from_start
-    @times_from_start ||= times_from_working_time.transform_values { |seconds| seconds + working_time }
+    @times_from_start ||= baseline_times.transform_values { |seconds| seconds * pace_factor + working_time }
   end
 
   def time_from_start(sub_split)
-    subject_time_from_working_time(sub_split) + working_time
+    baseline_time(sub_split) * pace_factor + working_time
   end
 
   def segment_time(segment)
@@ -44,10 +44,6 @@ class TimesPredictor
     SplitTime.new(sub_split: start_split.sub_split_in, time_from_start: 0)
   end
 
-  def times_from_working_time
-    @times_from_working ||= baseline_times.transform_values { |seconds| seconds * pace_factor }
-  end
-
   def baseline_times
     @baseline_times ||= segments.map { |segment| [segment.end_sub_split, times_container.segment_time(segment)] }.to_h
   end
@@ -56,8 +52,8 @@ class TimesPredictor
     @segments ||= SegmentsBuilder.segments(ordered_splits: ordered_splits, working_sub_split: working_sub_split)
   end
 
-  def subject_time_from_working_time(sub_split)
-    times_container.segment_time(subject_segment(sub_split)) * pace_factor
+  def baseline_time(sub_split)
+    times_container.segment_time(subject_segment(sub_split))
   end
 
   def subject_segment(sub_split)
@@ -69,7 +65,7 @@ class TimesPredictor
   end
 
   def pace_factor
-    measurable_pace? ? working_time / baseline_working_time : 1
+    @pace_factor ||= measurable_pace? ? working_time / baseline_working_time : 1
   end
 
   def measurable_pace?
@@ -77,18 +73,18 @@ class TimesPredictor
   end
 
   def working_time
-    @working_time ||= working_split_time.time_from_start
+    working_split_time.time_from_start
   end
 
   def baseline_working_time
-    @baseline_working_time ||= times_container.segment_time(working_segment)
+    times_container.segment_time(working_segment)
   end
 
   def working_segment
-    @working_segment ||= Segment.new(begin_sub_split: start_split.sub_split_in,
-                                     end_sub_split: working_sub_split,
-                                     begin_split: start_split,
-                                     end_split: working_split)
+    Segment.new(begin_sub_split: start_split.sub_split_in,
+                end_sub_split: working_sub_split,
+                begin_split: start_split,
+                end_split: working_split)
   end
 
   def start_split

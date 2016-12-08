@@ -1,8 +1,10 @@
 class PriorSplitTimeFinder
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: :sub_split,
-                           required_alternatives: [:effort, [:ordered_splits, :split_times]], class: self.class)
+    ArgsValidator.validate(params: args,
+                           required: :sub_split,
+                           required_alternatives: [:effort, [:ordered_splits, :split_times]],
+                           class: self.class)
     @sub_split = args[:sub_split]
     @effort = args[:effort]
     @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a

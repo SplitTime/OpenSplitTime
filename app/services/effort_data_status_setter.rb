@@ -65,7 +65,10 @@ class EffortDataStatusSetter
     self.prior_valid_split_time = subject_index == 0 ? mock_start_split_time : valid_split_times[subject_index - 1]
     self.subject_begin_split = indexed_splits[prior_valid_split_time.split_id]
     self.subject_end_split = indexed_splits[subject_split_time.split_id]
-    self.subject_segment = Segment.new(prior_valid_split_time.sub_split, subject_split_time.sub_split, subject_begin_split, subject_end_split)
+    self.subject_segment = Segment.new(begin_sub_split: prior_valid_split_time.sub_split,
+                                       end_sub_split: subject_split_time.sub_split,
+                                       begin_split: subject_begin_split,
+                                       end_split: subject_end_split)
     self.subject_segment_time = subject_split_time.time_from_start - prior_valid_split_time.time_from_start
   end
 

@@ -9,8 +9,8 @@ RSpec.describe SegmentTimes do
   let(:sub_split2) { split2.sub_split_in }
   let(:sub_split3) { split3.sub_split_in }
   let(:sub_split4) { split3.sub_split_out }
-  let(:segment1) { Segment.new(sub_split1, sub_split2, split1, split2) }
-  let(:segment2) { Segment.new(sub_split3, sub_split4, split3, split3) }
+  let(:segment1) { Segment.new(begin_sub_split: sub_split1, end_sub_split: sub_split2, begin_split: split1, end_split: split2) }
+  let(:segment2) { Segment.new(begin_sub_split: sub_split3, end_sub_split: sub_split4, begin_split: split3, end_split: split3) }
 
   describe '#initialize' do
     let(:times_hash1) { {101 => 1000, 102 => 700, 103 => 1500} }

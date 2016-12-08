@@ -134,7 +134,7 @@ class EffortAnalysisView
   end
 
   def start_to_finish
-    Segment.new(start_sub_split, finish_sub_split)
+    Segment.new(begin_sub_split: start_sub_split, end_sub_split: finish_sub_split)
   end
 
   def sorted_analysis_rows

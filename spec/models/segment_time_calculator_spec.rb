@@ -7,12 +7,12 @@ RSpec.describe SegmentTimeCalculator do
     let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10) }
 
     it 'initializes with an args hash that contains only a calc_model and a segment' do
-      segment = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
+      segment = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       expect { SegmentTimeCalculator.new(segment: segment, calc_model: :terrain) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if initialized without a calc_model' do
-      segment = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
+      segment = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       expect { SegmentTimeCalculator.new(segment: segment) }.to raise_error(/must include calc_model/)
     end
 
@@ -21,12 +21,12 @@ RSpec.describe SegmentTimeCalculator do
     end
 
     it 'raises an ArgumentError if initialized with calc_model: :focused but without effort_ids' do
-      segment = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
+      segment = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       expect { SegmentTimeCalculator.new(segment: segment, calc_model: :focused) }.to raise_error(/cannot be initialized/)
     end
 
     it 'raises an ArgumentError if initialized with an unrecognized calc_model' do
-      segment = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
+      segment = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       expect { SegmentTimeCalculator.new(segment: segment, calc_model: :random) }.to raise_error(/calc_model random is not recognized/)
     end
   end
@@ -36,21 +36,21 @@ RSpec.describe SegmentTimeCalculator do
     let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000) }
 
     it 'calculates a segment time in seconds using the specified calc_model' do
-      segment = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
+      segment = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
       expect(calculator.calculated_time).to eq(10000 * Segment::DISTANCE_FACTOR)
     end
 
     it 'returns zero for a segment that begins and ends with a start split' do
-      segment = Segment.new(split1.sub_splits.first, split1.sub_splits.first, split1, split1)
+      segment = Segment.new(begin_sub_split: split1.sub_splits.first, end_sub_split: split1.sub_splits.first, begin_split: split1, end_split: split1)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
       expect(calculator.calculated_time).to eq(0)
     end
 
     it 'returns typical time in aid for a segment that begins and ends within an intermediate split' do
-      segment = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
+      segment = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
-      expect(calculator.calculated_time).to eq(Segment::TYPICAL_TIME_IN_AID)
+      expect(calculator.calculated_time).to eq(0)
     end
   end
 
@@ -59,8 +59,8 @@ RSpec.describe SegmentTimeCalculator do
     let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000) }
 
     it 'returns a limits hash for segments both between and within splits, using the provided calc_model' do
-      segment1 = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
-      segment2 = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
       calculator1 = SegmentTimeCalculator.new(segment: segment1, calc_model: :terrain)
       calculator2 = SegmentTimeCalculator.new(segment: segment2, calc_model: :terrain)
       limits1 = calculator1.limits
@@ -76,7 +76,7 @@ RSpec.describe SegmentTimeCalculator do
     end
 
     it 'returns a limits hash of all zeros for a segment that begins and ends with a start split' do
-      segment1 = Segment.new(split1.sub_splits.first, split1.sub_splits.first, split1, split1)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.first, end_sub_split: split1.sub_splits.first, begin_split: split1, end_split: split1)
       calculator1 = SegmentTimeCalculator.new(segment: segment1, calc_model: :terrain)
       limits1 = calculator1.limits
       expect(limits1[:low_bad]).to eq(0)
@@ -92,9 +92,9 @@ RSpec.describe SegmentTimeCalculator do
     let(:split3) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 25000) }
 
     it 'returns a data status based on calculated limits' do
-      segment1 = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
-      segment2 = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
-      segment3 = Segment.new(split2.sub_splits.last, split3.sub_splits.first, split2, split3)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
+      segment3 = Segment.new(begin_sub_split: split2.sub_splits.last, end_sub_split: split3.sub_splits.first, begin_split: split2, end_split: split3)
       calculator1 = SegmentTimeCalculator.new(segment: segment1, calc_model: :terrain)
       calculator2 = SegmentTimeCalculator.new(segment: segment2, calc_model: :terrain)
       calculator3 = SegmentTimeCalculator.new(segment: segment3, calc_model: :terrain)

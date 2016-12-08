@@ -65,6 +65,9 @@ class EffortAnalysisRow
   attr_reader :split, :prior_split, :prior_split_time, :prior_time, :start_time, :time_cluster, :typical_row
 
   def segment
-    @segment ||= Segment.new(prior_split_time.sub_split, split_times.first.sub_split, prior_split, split)
+    @segment ||= Segment.new(begin_sub_split: prior_split_time.sub_split,
+                             end_sub_split: split_times.first.sub_split,
+                             begin_split: prior_split,
+                             end_split: split)
   end
 end

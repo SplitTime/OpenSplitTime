@@ -9,6 +9,7 @@ class DataStatus
 
   LIMIT_TYPE_ARRAY = LIMIT_FACTORS.keys.map(&:to_sym)
   LIMIT_ARRAY = LIMIT_FACTORS[LIMIT_TYPE_ARRAY.first].keys.map(&:to_sym)
+  TYPICAL_TIME_IN_AID = 15.minutes
 
   # Bad and questionable data_status enums are 0 and 1, respectively. Good and confirmed are 2 and 3.
   # Unknown data_status is nil. To sort properly, this algorithm treats nil as 1.5.
@@ -34,6 +35,7 @@ class DataStatus
 
   def self.limits(typical_time, type)
     raise ArgumentError, "type '#{type}' is not recognized" unless LIMIT_TYPE_ARRAY.include?(type.to_sym)
+    typical_time += TYPICAL_TIME_IN_AID if type == :in_aid
     LIMIT_ARRAY.map { |limit| [limit, typical_time * LIMIT_FACTORS[type][limit]] }.to_h
   end
 end

@@ -55,7 +55,7 @@ class IntendedTimeCalculator
   end
 
   def subject_segment
-    Segment.new(prior_valid_split_time.sub_split, sub_split)
+    Segment.new(begin_sub_split: prior_valid_split_time.sub_split, end_sub_split: sub_split)
   end
 
   def seconds_into_day

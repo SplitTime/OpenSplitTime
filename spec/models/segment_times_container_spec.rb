@@ -31,8 +31,8 @@ RSpec.describe SegmentTimesContainer do
 
     it 'creates a unique SegmentTimeCalculator for each provided segment' do
       container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
-      segment2 = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
       expect(container[segment1]).to be_a(SegmentTimeCalculator)
       expect(container[segment2]).to be_a(SegmentTimeCalculator)
       expect(container[segment1]).not_to eq(container[segment2])
@@ -40,7 +40,7 @@ RSpec.describe SegmentTimesContainer do
 
     it 'returns the same SegmentTimeCalculator for each provided segment once created' do
       container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       calculator1 = container[segment1]
       calculator2 = container[segment1]
       expect(calculator1).to eq(calculator2)
@@ -54,11 +54,11 @@ RSpec.describe SegmentTimesContainer do
 
     it 'returns a segment time in seconds using the provided calc_model' do
       container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
-      segment2 = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
-      segment3 = Segment.new(split2.sub_splits.last, split3.sub_splits.first, split2, split3)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
+      segment3 = Segment.new(begin_sub_split: split2.sub_splits.last, end_sub_split: split3.sub_splits.first, begin_split: split2, end_split: split3)
       expect(container.segment_time(segment1)).to eq(10000 * Segment::DISTANCE_FACTOR)
-      expect(container.segment_time(segment2)).to eq(Segment::TYPICAL_TIME_IN_AID)
+      expect(container.segment_time(segment2)).to eq(0)
       expect(container.segment_time(segment3)).to eq(15000 * Segment::DISTANCE_FACTOR)
     end
   end
@@ -70,8 +70,8 @@ RSpec.describe SegmentTimesContainer do
 
     it 'returns a limits hash for segments both between and within splits, using the provided calc_model' do
       container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
-      segment2 = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
       limits1 = container.limits(segment1)
       limits2 = container.limits(segment2)
       expect(limits1[:low_bad]).not_to be_nil
@@ -92,9 +92,9 @@ RSpec.describe SegmentTimesContainer do
 
     it 'returns a data status based on calculated limits' do
       container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(split1.sub_splits.last, split2.sub_splits.first, split1, split2)
-      segment2 = Segment.new(split2.sub_splits.first, split2.sub_splits.last, split2, split2)
-      segment3 = Segment.new(split2.sub_splits.last, split3.sub_splits.first, split2, split3)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
+      segment3 = Segment.new(begin_sub_split: split2.sub_splits.last, end_sub_split: split3.sub_splits.first, begin_split: split2, end_split: split3)
       expect(container.data_status(segment1, 10000 * Segment::DISTANCE_FACTOR)).to eq('good')
       expect(container.data_status(segment2, 0)).to eq('good')
       expect(container.data_status(segment3, 100_000)).to eq('bad')

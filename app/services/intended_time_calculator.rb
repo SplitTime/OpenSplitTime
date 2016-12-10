@@ -18,6 +18,7 @@ class IntendedTimeCalculator
   end
 
   def day_and_time
+    return nil unless military_time.present?
     preliminary_day_and_time && (preliminary_day_and_time < prior_day_and_time) ?
         preliminary_day_and_time + 1.day : preliminary_day_and_time
   end
@@ -64,6 +65,6 @@ class IntendedTimeCalculator
 
   def validate_setup
     raise RangeError, "#{military_time} is out of range for #{self.class}" if
-        (seconds_into_day >= 1.day) | (seconds_into_day < 0)
+        seconds_into_day && ((seconds_into_day >= 1.day) | (seconds_into_day < 0))
   end
 end

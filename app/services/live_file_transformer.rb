@@ -48,10 +48,13 @@ class LiveFileTransformer
   end
 
   def transform_rows
-    calcs = EventSegmentCalcs.new(event)
+    container = SegmentTimesContainer.new(calc_model: :stats)
     ordered_split_array = event.ordered_splits.to_a
     file_rows.each do |file_row|
-      effort_data_object = LiveEffortData.new(event: event, params: file_row, calcs: calcs, ordered_splits: ordered_split_array)
+      effort_data_object = LiveEffortData.new(event: event,
+                                              params: file_row,
+                                              container: container,
+                                              ordered_splits: ordered_split_array)
       transformed_rows << effort_data_object.response_row
     end
   end
@@ -63,7 +66,7 @@ class LiveFileTransformer
   end
 
   def split_id
-    split ? split.id : nil
+    split && split.id
   end
 
   def strip_white_space(file_row)

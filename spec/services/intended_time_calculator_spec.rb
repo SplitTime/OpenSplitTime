@@ -50,6 +50,31 @@ RSpec.describe IntendedTimeCalculator do
       FactoryGirl.reload
     end
 
+    it 'returns nil if military_time provided is blank' do
+      military_time = ''
+      start_time = Time.new(2016, 7, 1, 6, 0, 0)
+      effort = FactoryGirl.build_stubbed(:effort, start_time: start_time)
+      sub_split = {44 => 1}
+      times_predictor = instance_double(TimesPredictor, segment_time: 10000)
+
+      prior_split_time = FactoryGirl.build_stubbed(:split_times_in_only, split_id: 44, bitkey: 1, time_from_start: 0)
+      split_time_finder = instance_double(PriorSplitTimeFinder, guaranteed_split_time: prior_split_time)
+
+      calculator = IntendedTimeCalculator.new(effort: effort,
+                                              military_time: military_time,
+                                              sub_split: sub_split,
+                                              predictor: times_predictor,
+                                              split_time_finder: split_time_finder)
+      expect(calculator.day_and_time).to be_nil
+
+      day_and_time = IntendedTimeCalculator.day_and_time(effort: effort,
+                                                         military_time: military_time,
+                                                         sub_split: sub_split,
+                                                         predictor: times_predictor,
+                                                         split_time_finder: split_time_finder)
+      expect(day_and_time).to be_nil
+    end
+
     context 'for an effort that has not yet started'
     it 'calculates the likely intended day and time for a same-day time based on inputs' do
       military_time = '9:30:45'

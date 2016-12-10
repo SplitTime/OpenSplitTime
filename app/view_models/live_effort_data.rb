@@ -1,4 +1,5 @@
 class LiveEffortData
+  require 'pp'
 
   attr_accessor :time_from_start_in, :time_from_start_out, :time_from_prior_valid, :last_day_and_time,
                 :time_in_aid, :dropped, :finished, :last_split, :last_bitkey,
@@ -12,20 +13,21 @@ class LiveEffortData
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:event, :params],
-                           exclusive: [:event, :params, :calcs, :ordered_splits, :times_calculator],
+                           exclusive: [:event, :params, :ordered_splits, :times_container],
                            class: self.class)
     @event = args[:event]
-    @calcs = args[:calcs] || EventSegmentCalcs.new(event)
     @ordered_splits = args[:ordered_splits] || event.ordered_splits.to_a
     @response_row = args[:params].symbolize_keys.slice(:splitId, :bibNumber, :timeIn, :timeOut,
                                                        :pacerIn, :pacerOut, :droppedHere, :remarks, :remark)
-    @effort = event.efforts.find_by_bib_number(@response_row[:bibNumber])
+    @effort = event.efforts.find_by_bib_number(response_row[:bibNumber])
     @split = ordered_splits.find { |split| split.id == response_row[:splitId].to_i }
+    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     set_non_dependent_attributes
-    set_effort_related_attributes if @effort
-    verify_time_existence if (@effort && @split)
-    set_dropped_attributes if @effort
-    verify_time_status if (@effort && @split && started)
+    set_effort_related_attributes if effort
+    verify_time_existence if (effort && split)
+    set_dropped_attributes if effort
+    verify_time_status if (effort && split && started)
+    pp response_row
   end
 
   def success?
@@ -75,7 +77,7 @@ class LiveEffortData
   private
 
   attr_accessor :split_times_hash, :day_and_time_in, :day_and_time_out, :pacer_in, :pacer_out, :remarks
-  attr_reader :event, :calcs, :ordered_splits, :split
+  attr_reader :event, :params, :times_container, :ordered_splits, :split
 
   def set_non_dependent_attributes
     self.pacer_in = response_row[:pacerIn] = (response_row[:pacerIn].try(&:downcase) == 'true')
@@ -146,7 +148,7 @@ class LiveEffortData
     # including the new in and/or out SplitTime instances
 
     setter = EffortDataStatusSetter.new(effort: effort,
-                                        split_times: ordered_split_times)
+                                        ordered_split_times: ordered_split_times)
     setter.set_data_status
     status_hash = setter.split_times_status_hash
     prior_valid_split_time = PriorSplitTimeFinder.new(sub_split: split.sub_splits.first,

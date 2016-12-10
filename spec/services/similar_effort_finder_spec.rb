@@ -38,9 +38,9 @@ RSpec.describe SimilarEffortFinder, type: :model do
     end
 
     it 'limits the set of ids to those elements of #effort_times that most closely meet the provided criteria' do
-      effort_times = {90=>6000,
-                      91=>6500,
-                      92=>7000,
+      effort_times = {90 => 6000,
+                      91 => 6500,
+                      92 => 7000,
                       101 => 9000,
                       102 => 10000,
                       103 => 11000,
@@ -55,9 +55,9 @@ RSpec.describe SimilarEffortFinder, type: :model do
     end
 
     it 'expands to include additional elements of #effort_times as min: argument increases' do
-      effort_times = {90=>6000,
-                      91=>6500,
-                      92=>7000,
+      effort_times = {90 => 6000,
+                      91 => 6500,
+                      92 => 7000,
                       101 => 9000,
                       102 => 10000,
                       103 => 11000,

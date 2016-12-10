@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :effort do
+    sequence(:id, (100..109).cycle)
+    sequence(:bib_number, (200..209).cycle)
     first_name 'Joe'
     sequence(:last_name) { |n| "LastName #{n}" }
     gender 'male'

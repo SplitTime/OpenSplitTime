@@ -8,6 +8,7 @@ class Effort < ActiveRecord::Base
   include Auditable
   include Concealable
   include DataStatusMethods
+  include GuaranteedFindable
   include PersonalInfo
   include Searchable
   include Matchable
@@ -36,6 +37,10 @@ class Effort < ActiveRecord::Base
   scope :finished, -> { joins(:split_times => :split).where(splits: {kind: 1}) }
 
   delegate :race, to: :event
+
+  def self.null_record
+    @null_record ||= Effort.new(first_name: '', last_name: '')
+  end
 
   def self.attributes_for_import
     id = ['id']

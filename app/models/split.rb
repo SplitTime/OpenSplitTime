@@ -1,5 +1,6 @@
 class Split < ActiveRecord::Base
   include Auditable
+  include GuaranteedFindable
   include UnitConversions
   strip_attributes collapse_spaces: true
   enum kind: [:start, :finish, :intermediate]
@@ -35,6 +36,10 @@ class Split < ActiveRecord::Base
                             message: 'may not be negative'
 
   scope :ordered, -> { order(:distance_from_start) }
+
+  def self.null_record
+    @null_record ||= Split.new(base_name: '[not found]', description: '', sub_split_bitmap: 0)
+  end
 
   def is_start?
     self.start?

@@ -98,7 +98,7 @@ class LiveEffortData
       self.last_split = last_split_time.split
       self.last_bitkey = last_split_time.sub_split_bitkey
     end
-    self.finished = effort.finished?
+    self.finished = existing_split_times[finish_sub_split].present?
     self.time_from_start_in = day_and_time_in ? day_and_time_in - effort.start_time : nil
     self.time_from_start_out = day_and_time_out ? day_and_time_out - effort.start_time : nil
     self.time_in_aid = (time_from_start_out && time_from_start_in) ? time_from_start_out - time_from_start_in : nil

@@ -14,50 +14,51 @@ RSpec.describe NewLiveEffortData do
   describe '#initialize' do
     it 'initializes with an event and params in an args hash' do
       event = FactoryGirl.build_stubbed(:event)
-      params = {"splitId" => "2", "bibNumber" => "124", "timeIn" => "08:30:00", "timeOut" => "08:50:00", "id" => "4"}
+      params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
       expect { NewLiveEffortData.new(event: event, params: params) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if no event is given' do
-      params = {"splitId" => "2", "bibNumber" => "124", "timeIn" => "08:30:00", "timeOut" => "08:50:00", "id" => "4"}
+      params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
       expect { NewLiveEffortData.new(params: params) }.to raise_error(/must include event/)
     end
 
     it 'raises an ArgumentError if any parameter other than event, params, ordered_splits, or times_container is given' do
       event = FactoryGirl.build_stubbed(:event)
-      params = {"splitId" => "2", "bibNumber" => "124", "timeIn" => "08:30:00", "timeOut" => "08:50:00", "id" => "4"}
+      params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
       expect { NewLiveEffortData.new(event: event, params: params, random_param: 123) }
           .to raise_error(/may not include random_param/)
     end
   end
 
-  describe '#response_row' do
+  describe '#new_split_times' do
     let(:event) { FactoryGirl.build_stubbed(:event, id: 20) }
     let(:efforts) { FactoryGirl.build_stubbed_list(:effort, 5, event_id: 20) }
     let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
-    it 'returns a hash of response values related to aid station times reported in the form of args[:params]' do
+    it 'returns a hash of {in: SplitTime} when the split contains only an in sub_split' do
       ordered_splits = [split1, split2, split3, split4, split5, split6]
       effort = FactoryGirl.build_stubbed(:effort, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
-      efforts_relation = event.efforts
-      params = {"splitId" => split_ids[3], "bibNumber" => "205", "timeIn" => "08:30:00", "timeOut" => "08:50:00", "id" => "4"}
-      expect(event).to receive(:efforts).and_return(efforts_relation)
-      expect(efforts_relation).to receive(:find_by_bib_number).with('205').and_return(effort)
-      effort_data = NewLiveEffortData.new(event: event, ordered_splits: ordered_splits, params: params, times_container: times_container)
-      expect(effort_data.response_row).to eq({:splitId => "2",
-                                              :bibNumber => "205",
-                                              :timeIn => "08:30:00",
-                                              :timeOut => "08:50:00",
-                                              :pacerIn => false,
-                                              :pacerOut => false,
-                                              :droppedHere => false,
-                                              :effortName => "Michael Evans",
-                                              :splitName => "Cunningham",
-                                              :splitDistance => 14966,
-                                              :timeInExists => true,
-                                              :timeOutExists => true,
-                                              :timeInStatus => "good",
-                                              :timeOutStatus => "good"})
+      params = {'splitId' => split_ids[0], 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      effort_data = NewLiveEffortData.new(event: event,
+                                          params: params,
+                                          ordered_splits: ordered_splits,
+                                          effort: effort)
+      expect(effort_data.new_split_times.size).to eq(1)
+      expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+    end
+
+    it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do
+      ordered_splits = [split1, split2, split3, split4, split5, split6]
+      effort = FactoryGirl.build_stubbed(:effort, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      params = {'splitId' => split_ids[1].to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      effort_data = NewLiveEffortData.new(event: event,
+                                          params: params,
+                                          ordered_splits: ordered_splits,
+                                          effort: effort)
+      expect(effort_data.new_split_times.size).to eq(2)
+      expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+      expect(effort_data.new_split_times[:out]).to be_a(SplitTime)
     end
   end
 end

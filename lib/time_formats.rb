@@ -114,11 +114,11 @@ module TimeFormats
 
   alias_method :e, :elevation_to_preferred
 
-  LENGTH_UNIT_MAP = {miles: {short: 'mi', singular: 'mile', plural: 'miles'},
-                     kilometers: {short: 'km', singular: 'kilometer', plural: 'kilometers'},
-                     meters: {short: 'm', singular: 'meter', plural: 'meters'},
-                     feet: {short: 'ft', singular: 'foot', plural: 'feet'}}
-                        .with_indifferent_access
+  LENGTH_UNIT_MAP ||= {miles: {short: 'mi', singular: 'mile', plural: 'miles'},
+                       kilometers: {short: 'km', singular: 'kilometer', plural: 'kilometers'},
+                       meters: {short: 'm', singular: 'meter', plural: 'meters'},
+                       feet: {short: 'ft', singular: 'foot', plural: 'feet'}}
+                          .with_indifferent_access
 
   def preferred_distance_unit(param = 'plural')
     distance_unit = current_user.try(:pref_distance_unit) || 'miles'

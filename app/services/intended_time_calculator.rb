@@ -7,16 +7,17 @@ class IntendedTimeCalculator
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:military_time, :effort, :sub_split],
-                           exclusive: [:military_time, :effort, :sub_split, :split_time_finder,
+                           exclusive: [:military_time, :effort, :sub_split, :prior_valid_split_time,
                                        :predictor, :ordered_splits, :split_times],
                            class: self.class)
     @military_time = args[:military_time]
     @effort = args[:effort]
     @sub_split = args[:sub_split]
-    @split_time_finder = args[:split_time_finder] || PriorSplitTimeFinder.new(effort: effort,
-                                                                              sub_split: sub_split,
-                                                                              ordered_splits: args[:ordered_splits],
-                                                                              split_times: args[:split_times])
+    @prior_valid_split_time = args[:prior_valid_split_time] ||
+        PriorSplitTimeFinder.guaranteed_split_time(effort: effort,
+                                                   sub_split: sub_split,
+                                                   ordered_splits: args[:ordered_splits],
+                                                   split_times: args[:split_times])
     @predictor = args[:predictor] || TimesPredictor.new(effort: effort, working_split_time: prior_valid_split_time)
     validate_setup
   end
@@ -29,7 +30,7 @@ class IntendedTimeCalculator
 
   private
 
-  attr_reader :military_time, :effort, :sub_split, :predictor, :split_time_finder
+  attr_reader :military_time, :effort, :sub_split, :predictor, :prior_valid_split_time
 
   def preliminary_day_and_time
     expected_day_and_time && earliest_datetime + days_from_earliest
@@ -53,10 +54,6 @@ class IntendedTimeCalculator
 
   def expected_time_from_prior
     @expected_time_from_prior ||= predictor.segment_time(subject_segment)
-  end
-
-  def prior_valid_split_time
-    split_time_finder.guaranteed_split_time
   end
 
   def subject_segment

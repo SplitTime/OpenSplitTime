@@ -1,5 +1,13 @@
 class PriorSplitTimeFinder
 
+  def self.split_time(args)
+    new(args).split_time
+  end
+
+  def self.guaranteed_split_time(args)
+    new(args).guaranteed_split_time
+  end
+
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: :sub_split,

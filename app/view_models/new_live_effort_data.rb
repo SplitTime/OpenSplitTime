@@ -1,5 +1,6 @@
 class NewLiveEffortData
   include TimeFormats
+  attr_reader :new_split_times
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -13,24 +14,26 @@ class NewLiveEffortData
     @indexed_split_times = args[:indexed_split_times] || effort.split_times.index_by(&:sub_split)
     @existing_split_times = indexed_split_times.dup
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
-    insert_split_times
+    @new_split_times = {}
+    create_split_times
   end
 
   def response_row
     {:splitId => split.id,
      :splitName => split.base_name,
      :splitDistance => split.distance_from_start,
+     :effortId => effort.id,
      :bibNumber => effort.bib_number,
-     :effortName => effort_name,
+     :name => effort_name,
      :droppedHere => dropped_here?,
-     :timeIn => military_times[:in],
-     :timeOut => military_times[:out],
-     :pacerIn => pacers_present[:in],
-     :pacerOut => pacers_present[:out],
+     :timeIn => new_split_times[:in].military_time,
+     :timeOut => new_split_times[:out].military_time,
+     :pacerIn => new_split_times[:in].pacer,
+     :pacerOut => new_split_times[:out].pacer,
+     :timeInStatus => new_split_times[:in].data_status,
+     :timeOutStatus => new_split_times[:out].data_status,
      :timeInExists => times_exist[:in],
      :timeOutExists => times_exist[:out],
-     :timeInStatus => time_statuses[:in],
-     :timeOutStatus => time_statuses[:out],
      :reportText => report_text,
      :priorValidReportText => prior_valid_report_text,
      :timeFromPriorValid => time_from_prior_valid,
@@ -41,9 +44,13 @@ class NewLiveEffortData
 
   attr_reader :event, :params, :ordered_splits, :effort, :indexed_split_times, :times_container, :existing_split_times
 
-
-  def insert_split_times
-    new_split_times.each_value { |split_time| indexed_split_times[split_time.sub_split] = split_time }
+  def create_split_times
+    sub_split_kinds.each do |kind|
+      split_time = new_split_time(kind)
+      split_time.data_status = times_container.data_status(segments[kind], split_time.time_from_start)
+      self.new_split_times[kind] = split_time
+      indexed_split_times[split_time.sub_split] = split_time if split_time.time_from_start
+    end
   end
 
   def ordered_split_times
@@ -55,7 +62,7 @@ class NewLiveEffortData
   end
 
   def sub_splits
-    split.sub_splits.map { |sub_split| [SubSplit.kind(sub_split.bitkey).downcase.to_sym, sub_split] }.to_h
+    @sub_splits ||= split.sub_splits.map { |sub_split| [SubSplit.kind(sub_split.bitkey).downcase.to_sym, sub_split] }.to_h
   end
 
   def effort_name
@@ -64,18 +71,6 @@ class NewLiveEffortData
 
   def dropped_here?
     params[:droppedHere] == 'true'
-  end
-
-  def military_times
-    sub_split_kinds.map { |kind| [kind, new_split_times[kind] && new_split_times[kind].military_time] }.to_h
-  end
-
-  def pacers_present
-    @pacers_present ||= sub_split_kinds.map { |kind| [kind, camelized_param('pacer', kind) == 'true'] }.to_h
-  end
-
-  def time_statuses
-    @time_statuses ||= sub_split_kinds.map { |kind| [kind, times_container.data_status(segments[kind], times_from_start[kind])] }.to_h
   end
 
   def times_exist
@@ -98,74 +93,60 @@ class NewLiveEffortData
         "#{prior_valid_split_time.split_name} at #{day_time_military_format(prior_valid_split_time.day_and_time)}" : 'n/a'
   end
 
+  def last_reported_split_time
+    ordered_split_times.last
+  end
+
   def time_from_prior_valid
-    first_new_split_time && prior_valid_split_time &&
+    first_new_split_time.try(:time_from_start) && prior_valid_split_time.try(:time_from_start) &&
         time_format_xxhyym(first_new_split_time.time_from_start - prior_valid_split_time.time_from_start)
   end
 
   def first_new_split_time
-    sub_split_kinds.map { |kind| new_split_times[kind] }.compact.first
+    new_split_times.values.sort_by(&:bitkey).first
   end
 
   def time_in_aid
-    new_split_times[:in] && new_split_times[:out] &&
+    new_split_times[:in].try(:time_from_start) && new_split_times[:out].try(:time_from_start) &&
         time_format_xxhyym(new_split_times[:out].time_from_start - new_split_times[:in].time_from_start)
   end
 
   def segments
-    @segments ||= sub_split_kinds.map { |kind| [kind, Segment.new(begin_sub_split: start_sub_split, end_sub_split: sub_splits[kind])] }.to_h
-  end
-
-  def new_split_times
-    @new_split_times ||= sub_split_kinds.map { |kind| [kind, new_split_time(kind)] }.to_h
-  end
-
-  def times_from_start
-    @times_from_start ||= sub_split_kinds.map { |kind| [kind, time_from_start(kind)] }.to_h
-  end
-
-  def days_and_times
-    @days_and_times ||= sub_split_kinds.map { |kind| [kind, intended_day_and_time(camelized_param('time', kind), sub_splits[kind])] }.to_h
+    @segments ||= sub_split_kinds.map { |kind| [kind, Segment.new(begin_sub_split: ordered_splits.first.sub_split_in,
+                                                                  end_sub_split: sub_splits[kind])] }.to_h
   end
 
   def split
     @split ||= Split.find_guaranteed(id: params[:splitId])
   end
 
-  def start_sub_split
-    ordered_splits.first.sub_split_in
-  end
-
-  def finish_sub_split
-    ordered_splits.last.sub_split_in
+  def prior_valid_split_time
+    @prior_valid_split_time ||= PriorSplitTimeFinder.split_time(effort: effort,
+                                                                sub_split: split.sub_split_in,
+                                                                ordered_splits: ordered_splits,
+                                                                split_times: ordered_split_times)
   end
 
   def new_split_time(kind)
-    sub_splits[kind] && SplitTime.new(effort: effort, sub_split: sub_splits[kind], time_from_start: times_from_start[kind])
+    SplitTime.new(effort: effort,
+                  sub_split: sub_splits[kind],
+                  time_from_start: time_from_start(kind),
+                  pacer: camelized_param('pacer', kind) == 'true')
   end
 
   def time_from_start(kind)
-    days_and_times[kind] && (days_and_times[kind] - event.start_time - effort.start_offset)
+    day_and_time = day_and_time(kind)
+    day_and_time && (day_and_time - event.start_time - effort.start_offset)
   end
 
-  def intended_day_and_time(military_time, sub_split)
-    sub_split && IntendedTimeCalculator.day_and_time(military_time: military_time,
-                                                     effort: effort,
-                                                     sub_split: sub_split,
-                                                     ordered_splits: ordered_splits,
-                                                     split_times: ordered_split_times)
+  def day_and_time(kind)
+    sub_splits[kind] && IntendedTimeCalculator.day_and_time(military_time: camelized_param('time', kind),
+                                                            effort: effort,
+                                                            sub_split: sub_splits[kind],
+                                                            ordered_splits: ordered_splits,
+                                                            split_times: ordered_split_times)
   end
 
-  def last_reported_split_time
-    ordered_split_times.last
-  end
-
-  def prior_valid_split_time
-    @prior_valid_split_time = effort && split && PriorSplitTimeFinder.new(effort: effort,
-                                                                          sub_split: split.sub_split_in,
-                                                                          ordered_splits: ordered_splits,
-                                                                          split_times: ordered_split_times).split_time
-  end
 
   def camelized_param(base, kind)
     params["#{base}_#{kind}".camelize(:lower).to_sym]

@@ -29,7 +29,7 @@ class LiveTimeRowImporter
       # time_row[0] is an id number used by the live entry javascript but not needed by the importer,
       # so just use time_row[1], which contains the needed data.
 
-      effort_data_object = LiveEffortData.new(event: event, params: time_row[1], container: container, ordered_splits: ordered_split_array)
+      effort_data_object = LiveEffortData.new(event: event, params: time_row[1], times_container: container, ordered_splits: ordered_split_array)
       if effort_data_object.success? && (effort_data_object.clean? || (force_option == 'force'))
         if create_or_update_times(effort_data_object)
           effort = effort_data_object.effort

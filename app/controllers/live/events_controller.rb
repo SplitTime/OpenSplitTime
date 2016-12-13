@@ -46,6 +46,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
+      @effort_data_reporter = NewLiveEffortData.new(event: @event, params: params)
       render partial: 'live_effort_data.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'

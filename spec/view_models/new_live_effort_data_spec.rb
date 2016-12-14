@@ -2,14 +2,8 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe NewLiveEffortData do
-  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort_id: 101) }
-  let(:split_ids) { split_times_101.map(&:split_id).uniq }
-  let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
-  let(:split2) { FactoryGirl.build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
-  let(:split3) { FactoryGirl.build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
-  let(:split4) { FactoryGirl.build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
-  let(:split5) { FactoryGirl.build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
-  let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
+  let(:split_times_4) { FactoryGirl.build_stubbed_list(:split_times_hardrock_4, 30, effort_id: 104) }
+  let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
   describe '#initialize' do
     it 'initializes with an event and params in an args hash' do
@@ -32,33 +26,412 @@ RSpec.describe NewLiveEffortData do
   end
 
   describe '#new_split_times' do
-    let(:event) { FactoryGirl.build_stubbed(:event, id: 20) }
+    let(:event) { FactoryGirl.build_stubbed(:event, id: 20, start_time: '2016-07-01 06:00:00') }
     let(:efforts) { FactoryGirl.build_stubbed_list(:effort, 5, event_id: 20) }
     let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
-    it 'returns a hash of {in: SplitTime} when the split contains only an in sub_split' do
-      ordered_splits = [split1, split2, split3, split4, split5, split6]
-      effort = FactoryGirl.build_stubbed(:effort, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
-      params = {'splitId' => split_ids[0], 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
-      effort_data = NewLiveEffortData.new(event: event,
-                                          params: params,
-                                          ordered_splits: ordered_splits,
-                                          effort: effort)
-      expect(effort_data.new_split_times.size).to eq(1)
-      expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+    context 'for an unstarted effort' do
+      it 'returns a hash of {in: SplitTime} when the split contains only an in sub_split' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = []
+        split = ordered_splits[0]
+        allow(effort).to receive(:split_times).and_return(split_times)
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times.size).to eq(1)
+        expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+      end
+
+      it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = []
+        split = ordered_splits[1]
+        allow(effort).to receive(:split_times).and_return(split_times)
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times.size).to eq(2)
+        expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+        expect(effort_data.new_split_times[:out]).to be_a(SplitTime)
+      end
+
+      it 'populates split_times with correct times from start' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = []
+        split = ordered_splits[1]
+        allow(effort).to receive(:split_times).and_return(split_times)
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].time_from_start).to eq(150.minutes)
+        expect(effort_data.new_split_times[:out].time_from_start).to eq(170.minutes)
+      end
     end
 
-    it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do
-      ordered_splits = [split1, split2, split3, split4, split5, split6]
-      effort = FactoryGirl.build_stubbed(:effort, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
-      params = {'splitId' => split_ids[1].to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
-      effort_data = NewLiveEffortData.new(event: event,
-                                          params: params,
-                                          ordered_splits: ordered_splits,
-                                          effort: effort)
-      expect(effort_data.new_split_times.size).to eq(2)
-      expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
-      expect(effort_data.new_split_times[:out]).to be_a(SplitTime)
+    context 'when effort is a null_record, as when a bib number is not provided or not located' do
+      it 'returns split_times with nil times from start and nil data statuses' do
+        ordered_splits = splits
+        effort = Effort.null_record
+        split_times = []
+        split = ordered_splits[1]
+        allow(effort).to receive(:split_times).and_return(split_times)
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].time_from_start).to be_nil
+        expect(effort_data.new_split_times[:out].time_from_start).to be_nil
+        expect(effort_data.new_split_times[:in].data_status).to be_nil
+        expect(effort_data.new_split_times[:out].data_status).to be_nil
+      end
+    end
+
+    context 'when split_times for the given effort and split do not yet exist in the database' do
+      it 'returns a hash of {in: SplitTime} when the split contains only an in sub_split' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[0]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times.size).to eq(1)
+        expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+      end
+
+      it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times.size).to eq(2)
+        expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+        expect(effort_data.new_split_times[:out]).to be_a(SplitTime)
+      end
+
+      it 'populates split_times with correct times from start when both times are provided' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].time_from_start).to eq(150.minutes)
+        expect(effort_data.new_split_times[:out].time_from_start).to eq(170.minutes)
+      end
+
+      it 'populates split_times with correct times from start when only first time is provided' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].time_from_start).to eq(150.minutes)
+        expect(effort_data.new_split_times[:out].time_from_start).to be_nil
+      end
+
+      it 'populates split_times with correct times from start when only second time is provided' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '', 'timeOut' => '08:30:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].time_from_start).to be_nil
+        expect(effort_data.new_split_times[:out].time_from_start).to eq(150.minutes)
+      end
+
+      it 'populates split_times with nil times_from_start when neither time is provided' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].time_from_start).to be_nil
+        expect(effort_data.new_split_times[:out].time_from_start).to be_nil
+      end
+
+      it 'populates data_status with correct data statuses when times are both good' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('good')
+        expect(effort_data.new_split_times[:out].data_status).to eq('good')
+      end
+
+      it 'populates data_status with correct data statuses when times are both questionable' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '07:15:00', 'timeOut' => '07:20:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('questionable')
+        expect(effort_data.new_split_times[:out].data_status).to eq('questionable')
+      end
+
+      it 'populates data_status with correct data statuses when times are both bad' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '06:30:00', 'timeOut' => '06:35:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('bad')
+        expect(effort_data.new_split_times[:out].data_status).to eq('bad')
+      end
+
+      it 'populates data_status with correct data statuses when first time is good and second time is prior to first' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:20:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('good')
+        expect(effort_data.new_split_times[:out].data_status).to eq('bad')
+      end
+
+      it 'looks past first time to determine data status of second time when first time is bad' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '18:00:00', 'timeOut' => '08:20:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('bad')
+        expect(effort_data.new_split_times[:out].data_status).to eq('good')
+      end
+
+      it 'works properly when first time is missing and second time is good' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '', 'timeOut' => '08:20:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to be_nil
+        expect(effort_data.new_split_times[:out].data_status).to eq('good')
+      end
+
+      it 'works properly when first time is missing and second time is bad' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(1)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '', 'timeOut' => '07:00:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to be_nil
+        expect(effort_data.new_split_times[:out].data_status).to eq('bad')
+      end
+    end
+
+    context 'when split_times for the given effort and split already exist in the database' do
+      it 'populates split_times with correct times from start when both times are provided' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(3)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1] # Relates to the second and third elements of split_times_4
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].time_from_start).to eq(150.minutes)
+        expect(effort_data.new_split_times[:out].time_from_start).to eq(170.minutes)
+      end
+
+      it 'populates data_status with correct data statuses when times are both good' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(3)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('good')
+        expect(effort_data.new_split_times[:out].data_status).to eq('good')
+      end
+
+      it 'populates data_status with correct data statuses when times are both bad' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(3)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '06:30:00', 'timeOut' => '06:35:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('bad')
+        expect(effort_data.new_split_times[:out].data_status).to eq('bad')
+      end
+
+      it 'populates data_status with correct data statuses when first time is good and second time is prior to first' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(3)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:20:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('good')
+        expect(effort_data.new_split_times[:out].data_status).to eq('bad')
+      end
+
+      it 'looks past first time to determine data status of second time when first time is bad' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(3)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '18:00:00', 'timeOut' => '08:20:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to eq('bad')
+        expect(effort_data.new_split_times[:out].data_status).to eq('good')
+      end
+
+      it 'measures the second time against the existing first time in the database when first time is missing' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(3)  # Existing in and out times are 08:27
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '', 'timeOut' => '08:20:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to be_nil
+        expect(effort_data.new_split_times[:out].data_status).to eq('bad') # Because 08:20 < 08:27 although 2h20m is a reasonable time
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '', 'timeOut' => '08:30:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to be_nil
+        expect(effort_data.new_split_times[:out].data_status).to eq('good') # Because 08:30 > 08:27 and 2h30m is a reasonable time
+      end
+
+      it 'works properly when first time is missing and second time is bad on its own merits' do
+        ordered_splits = splits
+        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        split_times = split_times_4.first(3)
+        allow(effort).to receive(:split_times).and_return(split_times)
+        split = ordered_splits[1]
+        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '', 'timeOut' => '18:00:00', 'id' => '4'}
+        effort_data = NewLiveEffortData.new(event: event,
+                                            params: params,
+                                            ordered_splits: ordered_splits,
+                                            effort: effort,
+                                            times_container: times_container)
+        expect(effort_data.new_split_times[:in].data_status).to be_nil
+        expect(effort_data.new_split_times[:out].data_status).to eq('bad')
+      end
     end
   end
 end

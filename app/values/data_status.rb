@@ -1,6 +1,6 @@
 class DataStatus
 
-  LIMIT_FACTORS = {terrain: {low_bad: 0.2, low_questionable: 0.3, high_questionable: 3.5, high_bad: 5.0},
+  LIMIT_FACTORS = {terrain: {low_bad: 0.3, low_questionable: 0.4, high_questionable: 2.2, high_bad: 3.0},
                    stats: {low_bad: 0.4, low_questionable: 0.6, high_questionable: 1.7, high_bad: 2.5},
                    focused: {low_bad: 0.5, low_questionable: 0.7, high_questionable: 1.5, high_bad: 2.2},
                    start: {low_bad: 0, low_questionable: 0, high_questionable: 0, high_bad: 0},

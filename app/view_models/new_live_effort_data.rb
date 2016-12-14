@@ -62,7 +62,9 @@ class NewLiveEffortData
 
   def segments
     @segments ||= sub_split_kinds.map { |kind| [kind, Segment.new(begin_sub_split: ordered_splits.first.sub_split_in,
-                                                                  end_sub_split: sub_splits[kind])] }.to_h
+                                                                  end_sub_split: sub_splits[kind],
+                                                                  begin_split: ordered_splits.first,
+                                                                  end_split: split)] }.to_h
   end
 
   def new_split_time(kind)
@@ -78,11 +80,11 @@ class NewLiveEffortData
   end
 
   def day_and_time(kind)
-    sub_splits[kind] && IntendedTimeCalculator.day_and_time(military_time: camelized_param('time', kind),
-                                                            effort: effort,
-                                                            sub_split: sub_splits[kind],
-                                                            ordered_splits: ordered_splits,
-                                                            split_times: ordered_split_times)
+    effort.real_presence && IntendedTimeCalculator.day_and_time(military_time: camelized_param('time', kind),
+                                                                effort: effort,
+                                                                sub_split: sub_splits[kind],
+                                                                ordered_splits: ordered_splits,
+                                                                split_times: ordered_split_times)
   end
 
 

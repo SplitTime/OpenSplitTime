@@ -8,17 +8,22 @@ class IntendedTimeCalculator
     ArgsValidator.validate(params: args,
                            required: [:military_time, :effort, :sub_split],
                            exclusive: [:military_time, :effort, :sub_split, :prior_valid_split_time,
-                                       :predictor, :ordered_splits, :split_times],
+                                       :expected_time_from_prior, :ordered_splits, :split_times],
                            class: self.class)
     @military_time = args[:military_time]
     @effort = args[:effort]
     @sub_split = args[:sub_split]
+    @ordered_splits = args[:ordered_splits]
     @prior_valid_split_time = args[:prior_valid_split_time] ||
         PriorSplitTimeFinder.guaranteed_split_time(effort: effort,
                                                    sub_split: sub_split,
-                                                   ordered_splits: args[:ordered_splits],
+                                                   ordered_splits: ordered_splits,
                                                    split_times: args[:split_times])
-    @predictor = args[:predictor] || TimesPredictor.new(effort: effort, working_split_time: prior_valid_split_time)
+    @expected_time_from_prior = args[:expected_time_from_prior] ||
+        TimesPredictor.new(effort: effort,
+                           ordered_splits: ordered_splits,
+                           working_split_time: prior_valid_split_time)
+            .segment_time(subject_segment)
     validate_setup
   end
 
@@ -30,7 +35,7 @@ class IntendedTimeCalculator
 
   private
 
-  attr_reader :military_time, :effort, :sub_split, :predictor, :prior_valid_split_time
+  attr_reader :military_time, :effort, :sub_split, :ordered_splits, :prior_valid_split_time, :expected_time_from_prior
 
   def preliminary_day_and_time
     expected_day_and_time && earliest_datetime + days_from_earliest
@@ -52,12 +57,19 @@ class IntendedTimeCalculator
     ((expected_day_and_time - earliest_datetime) / 1.day).round(0) * 1.day
   end
 
-  def expected_time_from_prior
-    @expected_time_from_prior ||= predictor.segment_time(subject_segment)
+  def subject_segment
+    Segment.new(begin_sub_split: prior_valid_split_time.sub_split,
+                end_sub_split: sub_split,
+                begin_split: begin_split,
+                end_split: end_split)
   end
 
-  def subject_segment
-    Segment.new(begin_sub_split: prior_valid_split_time.sub_split, end_sub_split: sub_split)
+  def begin_split
+    ordered_splits && ordered_splits.find { |split| split.id == prior_valid_split_time.split_id }
+  end
+
+  def end_split
+    ordered_splits && ordered_splits.find { |split| split.id == sub_split.split_id }
   end
 
   def seconds_into_day

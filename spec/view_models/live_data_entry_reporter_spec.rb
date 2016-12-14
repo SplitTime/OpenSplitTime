@@ -90,6 +90,62 @@ RSpec.describe LiveDataEntryReporter do
       expect(reporter.response_row[:reportText]).to eq('Cunningham Out at Fri 08:30')
     end
 
+    it 'adds a dropped notation when the effort has a dropped_split_id at the last reported split' do
+      ordered_splits = splits
+      effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      split_times = split_times_4.first(9) # Through Sherman out
+      allow(effort).to receive(:split_times).and_return(split_times)
+      split = ordered_splits[2]
+      params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      effort_data = NewLiveEffortData.new(event: event,
+                                          params: params,
+                                          ordered_splits: ordered_splits,
+                                          effort: effort,
+                                          times_container: times_container)
+      reporter = LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data)
+      existing_times = effort_data.ordered_existing_split_times
+      prior_valid_split_time = existing_times[2]
+      last_reported_split_time = existing_times.last
+      last_reported_split = ordered_splits.find { |s| s.id == last_reported_split_time.split_id }
+      allow(effort).to receive(:dropped_split_id).and_return(last_reported_split.id)
+      allow(prior_valid_split_time).to receive(:day_and_time).and_return(event.start_time + 2.5.hours)
+      allow(last_reported_split_time).to receive(:day_and_time).and_return(event.start_time + 7.hours)
+      allow(last_reported_split_time).to receive(:split).and_return(last_reported_split)
+      allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
+      allow(reporter).to receive(:last_reported_split_time).and_return(last_reported_split_time)
+      expect(reporter.response_row[:reportText]).to eq('Sherman Out at Fri 13:00 and dropped there')
+    end
+
+    it 'adds an additional dropped notation when the effort has a dropped_split_id before the last reported split' do
+      ordered_splits = splits
+      effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      split_times = split_times_4.first(9) # Through Sherman out
+      allow(effort).to receive(:split_times).and_return(split_times)
+      split = ordered_splits[2]
+      params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      effort_data = NewLiveEffortData.new(event: event,
+                                          params: params,
+                                          ordered_splits: ordered_splits,
+                                          effort: effort,
+                                          times_container: times_container)
+      reporter = LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data)
+      existing_times = effort_data.ordered_existing_split_times
+      prior_valid_split_time = existing_times[2]
+      last_reported_split_time = existing_times.last
+      last_reported_split = ordered_splits.find { |s| s.id == last_reported_split_time.split_id }
+      dropped_split_time = existing_times[6]
+      dropped_split = ordered_splits.find { |s| s.id == dropped_split_time.split_id }
+      allow(effort).to receive(:dropped_split_id).and_return(dropped_split.id)
+      allow(prior_valid_split_time).to receive(:day_and_time).and_return(event.start_time + 2.5.hours)
+      allow(last_reported_split_time).to receive(:day_and_time).and_return(event.start_time + 7.hours)
+      allow(last_reported_split_time).to receive(:split).and_return(last_reported_split)
+      allow(dropped_split_time).to receive(:day_and_time).and_return(event.start_time + 5.hours)
+      allow(dropped_split_time).to receive(:split).and_return(dropped_split)
+      allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
+      allow(reporter).to receive(:last_reported_split_time).and_return(last_reported_split_time)
+      expect(reporter.response_row[:reportText]).to eq('Sherman Out at Fri 13:00 but reported dropped at PoleCreek as of Fri 11:00')
+    end
+
     it 'returns "n/a" if effort is not located' do
       ordered_splits = splits
       effort = Effort.null_record

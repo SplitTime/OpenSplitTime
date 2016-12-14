@@ -11,26 +11,11 @@ class LiveDataEntryReporter
     @effort_data = args[:effort_data] || NewLiveEffortData.new(event: event, params: params)
   end
 
-  def response_row
-    {:splitId => split.id,
-     :splitName => split.base_name,
-     :splitDistance => split.distance_from_start,
-     :effortId => effort.id,
-     :bibNumber => effort.bib_number,
-     :name => effort_name,
-     :droppedHere => dropped_here?,
-     :timeIn => new_split_times[:in].military_time,
-     :timeOut => new_split_times[:out].military_time,
-     :pacerIn => new_split_times[:in].pacer,
-     :pacerOut => new_split_times[:out].pacer,
-     :timeInStatus => new_split_times[:in].data_status,
-     :timeOutStatus => new_split_times[:out].data_status,
-     :timeInExists => times_exist[:in],
-     :timeOutExists => times_exist[:out],
-     :reportText => report_text,
-     :priorValidReportText => prior_valid_report_text,
-     :timeFromPriorValid => time_from_prior_valid,
-     :timeInAid => time_in_aid}
+  def full_report
+    effort_data.response_row.merge({:reportText => report_text,
+                                    :priorValidReportText => prior_valid_report_text,
+                                    :timeFromPriorValid => time_from_prior_valid,
+                                    :timeInAid => time_in_aid})
   end
 
   private
@@ -39,10 +24,6 @@ class LiveDataEntryReporter
   delegate :split, :effort, :dropped_here?, :new_split_times, :times_exist, :ordered_splits,
            :ordered_split_times, :ordered_existing_split_times, to: :effort_data
   delegate :dropped_split_id, to: :effort
-
-  def effort_name
-    effort.try(:full_name) || (params[:bibNumber].present? ? 'Bib number not located' : 'n/a')
-  end
 
   def report_text
     case

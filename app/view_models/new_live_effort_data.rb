@@ -18,8 +18,30 @@ class NewLiveEffortData
     create_split_times
   end
 
+  def response_row
+    {splitId: split.id,
+     splitName: split.base_name,
+     splitDistance: split.distance_from_start,
+     effortId: effort.id,
+     bibNumber: effort.bib_number,
+     name: effort_name,
+     droppedHere: dropped_here?,
+     timeIn: new_split_times[:in].military_time,
+     timeOut: new_split_times[:out].military_time,
+     pacerIn: new_split_times[:in].pacer,
+     pacerOut: new_split_times[:out].pacer,
+     timeInStatus: new_split_times[:in].data_status,
+     timeOutStatus: new_split_times[:out].data_status,
+     timeInExists: times_exist[:in],
+     timeOutExists: times_exist[:out]}
+  end
+
   def split
     @split ||= ordered_splits.find { |split| split.id == params[:splitId].to_i } || Split.null_record
+  end
+
+  def effort_name
+    effort.try(:full_name) || (params[:bibNumber].present? ? 'Bib number not located' : 'n/a')
   end
 
   def dropped_here?

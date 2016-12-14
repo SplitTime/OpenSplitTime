@@ -1,1 +1,1 @@
-@effort_data_reporter.response_row.to_json
+@live_data_entry_reporter.full_report.to_json

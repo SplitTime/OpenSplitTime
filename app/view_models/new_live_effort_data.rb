@@ -30,13 +30,12 @@ class NewLiveEffortData
     new_split_times.map { |kind, split_time| [kind, existing_split_times[split_time.sub_split].present?] }.to_h
   end
 
-  def time_in_aid
-    new_split_times[:in].try(:time_from_start) && new_split_times[:out].try(:time_from_start) &&
-        time_format_xxhyym(new_split_times[:out].time_from_start - new_split_times[:in].time_from_start)
-  end
-
   def ordered_split_times
     ordered_splits.map(&:sub_splits).flatten.map { |sub_split| indexed_split_times[sub_split] }.compact
+  end
+
+  def ordered_existing_split_times
+    ordered_splits.map(&:sub_splits).flatten.map { |sub_split| existing_split_times[sub_split] }.compact
   end
 
   private
@@ -46,9 +45,14 @@ class NewLiveEffortData
   def create_split_times
     sub_split_kinds.each do |kind|
       split_time = new_split_time(kind)
-      split_time.data_status = times_container.data_status(segments[kind], split_time.time_from_start)
+      if split_time.time_from_start
+        indexed_split_times[split_time.sub_split] = split_time
+        EffortDataStatusSetter.new(effort: effort,
+                                   ordered_split_times: ordered_split_times,
+                                   ordered_splits: ordered_splits,
+                                   times_container: times_container).set_data_status
+      end
       self.new_split_times[kind] = split_time
-      indexed_split_times[split_time.sub_split] = split_time if split_time.time_from_start
     end
   end
 

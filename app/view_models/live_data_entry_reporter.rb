@@ -36,8 +36,9 @@ class LiveDataEntryReporter
   private
 
   attr_reader :event, :params, :effort_data
-  delegate :split, :effort, :dropped_here?, :new_split_times, :times_exist,
-           :ordered_splits, :ordered_split_times, to: :effort_data
+  delegate :split, :effort, :dropped_here?, :new_split_times, :times_exist, :ordered_splits,
+           :ordered_split_times, :ordered_existing_split_times, to: :effort_data
+  delegate :dropped_split_id, to: :effort
 
   def effort_name
     effort.try(:full_name) || (params[:bibNumber].present? ? 'Bib number not located' : 'n/a')
@@ -45,17 +46,37 @@ class LiveDataEntryReporter
 
   def report_text
     case
-    when effort.nil?
+    when effort.null_record?
       'n/a'
     when last_reported_split_time.nil?
       'Not yet started'
     else
-      "#{last_reported_split_time.split_name} at #{day_time_military_format(last_reported_split_time.day_and_time)}"
+      "#{last_reported_split_time.split_name} at #{day_time_military_format(last_reported_split_time.day_and_time)}" +
+          dropped_addendum
     end
   end
 
   def last_reported_split_time
-    ordered_split_times.last
+    ordered_existing_split_times.last
+  end
+
+  def dropped_addendum
+    case
+    when dropped_split_id && dropped_split_id == last_reported_split_time.split_id
+      ' and dropped there'
+    when dropped_split_id
+      " but reported dropped at #{dropped_split.base_name} as of #{day_time_military_format(dropped_split_time.day_and_time)}"
+    else
+      ''
+    end
+  end
+
+  def dropped_split
+    dropped_split_id && ordered_splits.find { |split| split.id == dropped_split_id }
+  end
+
+  def dropped_split_time
+    dropped_split_id && ordered_existing_split_times.select { |st| st.split_id == dropped_split_id }.last
   end
 
   def prior_valid_report_text
@@ -64,8 +85,9 @@ class LiveDataEntryReporter
   end
 
   def time_from_prior_valid
-    first_new_split_time.try(:time_from_start) && prior_valid_split_time.try(:time_from_start) &&
-        time_format_xxhyym(first_new_split_time.time_from_start - prior_valid_split_time.time_from_start)
+    seconds = first_new_split_time.try(:time_from_start) && prior_valid_split_time.try(:time_from_start) &&
+        first_new_split_time.time_from_start - prior_valid_split_time.time_from_start
+    time_format_xxhyym(seconds)
   end
 
   def first_new_split_time
@@ -76,11 +98,12 @@ class LiveDataEntryReporter
     @prior_valid_split_time ||= PriorSplitTimeFinder.split_time(effort: effort,
                                                                 sub_split: split.sub_split_in,
                                                                 ordered_splits: ordered_splits,
-                                                                split_times: ordered_split_times)
+                                                                split_times: ordered_existing_split_times)
   end
 
   def time_in_aid
-    new_split_times[:in].try(:time_from_start) && new_split_times[:out].try(:time_from_start) &&
-        time_format_xxhyym(new_split_times[:out].time_from_start - new_split_times[:in].time_from_start)
+    seconds = new_split_times[:in].try(:time_from_start) && new_split_times[:out].try(:time_from_start) &&
+        new_split_times[:out].time_from_start - new_split_times[:in].time_from_start
+    time_format_minutes(seconds)
   end
 end

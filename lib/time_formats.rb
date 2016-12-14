@@ -17,9 +17,9 @@ module TimeFormats
 
   def time_format_xxhyym(time_in_seconds)
     if hours(time_in_seconds) == 0
-      time_formatter(time_in_seconds, '%02dm', 'm', '--:--')
+      time_formatter(time_in_seconds, '%01dm', 'm', '--:--')
     else
-      time_formatter(time_in_seconds, '%02dh%02dm', 'hm', '--:--')
+      time_formatter(time_in_seconds, '%01dh%02dm', 'hm', '--:--')
     end
   end
 
@@ -27,7 +27,7 @@ module TimeFormats
     if true_minutes(time_in_seconds).to_i <= 90
       time_formatter(time_in_seconds, '%1dm', 't', '--')
     else
-      time_formatter(time_in_seconds, '%1dh%1dm', 'hm', '--')
+      time_formatter(time_in_seconds, '%1dh%02dm', 'hm', '--')
     end
   end
 

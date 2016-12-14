@@ -61,7 +61,7 @@ RSpec.describe ApplicationHelper do
     end
 
     it 'returns time in xxhyym format' do
-      expect(helper.time_format_xxhyym(3630)).to eq('01h00m')
+      expect(helper.time_format_xxhyym(3630)).to eq('1h00m')
     end
 
     it 'returns time in yym format when less than one hour' do
@@ -69,7 +69,7 @@ RSpec.describe ApplicationHelper do
     end
 
     it 'returns time in yym format when less than 10 minutes' do
-      expect(helper.time_format_xxhyym(540)).to eq('09m')
+      expect(helper.time_format_xxhyym(540)).to eq('9m')
     end
 
     it 'works for times in excess of 24 hours' do
@@ -83,7 +83,7 @@ RSpec.describe ApplicationHelper do
     end
 
     it 'returns time in xhym format when greater than 90 minutes' do
-      expect(helper.time_format_minutes(7380)).to eq('2h3m')
+      expect(helper.time_format_minutes(7380)).to eq('2h03m')
     end
 
     it 'returns time in yym format when less than 90 minutes' do

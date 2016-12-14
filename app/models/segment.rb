@@ -5,7 +5,7 @@ class Segment
 
   DISTANCE_FACTOR = 0.6 # Multiply distance in meters by this factor to approximate normal travel time on foot
   VERT_GAIN_FACTOR = 4.0 # Multiply vert_gain in meters by this factor to approximate normal travel time on foot
-  STATS_CALC_THRESHOLD = SegmentTimes::STATS_CALC_THRESHOLD
+  STATS_CALC_THRESHOLD = 4
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -95,10 +95,6 @@ class Segment
 
   def end_bitkey
     end_sub_split.bitkey
-  end
-
-  def times
-    SegmentTimes.new(self).times
   end
 
   def full_course?

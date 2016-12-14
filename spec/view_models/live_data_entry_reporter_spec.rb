@@ -220,7 +220,7 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_split_time = split_times.first
       allow(prior_valid_split_time).to receive(:day_and_time).and_return(event.start_time)
       allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
-      expect(reporter.response_row[:timeInAid]).to eq('--:--')
+      expect(reporter.response_row[:timeInAid]).to eq('--')
     end
   end
 end

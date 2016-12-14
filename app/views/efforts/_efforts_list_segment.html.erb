@@ -15,13 +15,13 @@
   <% @best_display.effort_rows.each do |effort_row| %>
       <tr>
         <td>
-          <%= "#{effort_row.overall_place}/#{effort_row.gender_place}" %>
+          <%= "#{effort_row.overall_rank}/#{effort_row.gender_rank}" %>
         </td>
         <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
         <td><%= effort_row.bio_historic %></td>
         <td><%= effort_row.state_and_country %></td>
         <td><%= effort_row.year %></td>
-        <td class="text-right"><%= time_format_hhmmss(effort_row.segment_time) %></td>
+        <td class="text-right"><%= time_format_hhmmss(effort_row.segment_seconds) %></td>
       </tr>
   <% end %>
   </tbody>

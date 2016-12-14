@@ -237,48 +237,4 @@ RSpec.describe Segment, type: :model do
       expect(aid_1_to_aid_2_inclusive.special_limits_type).to be_nil
     end
   end
-
-  xdescribe 'times' do
-    before do
-      @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
-
-      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
-      @effort3 = Effort.create!(event: @event, bib_number: 13, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Jon', last_name: 'Henkla', gender: 'male')
-
-      @split1 = Split.create!(course: @course, base_name: 'Test Starting Line', distance_from_start: 0, sub_split_bitmap: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split2 = Split.create!(course: @course, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, base_name: 'Test Finish Line', distance_from_start: 10000, sub_split_bitmap: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
-
-      @event.splits << @course.splits
-
-      @segment1 = Segment.new(begin_sub_split: @split1.sub_split_in, end_sub_split: @split2.sub_split_in)
-      @segment2 = Segment.new(begin_sub_split: @split2.sub_split_in, end_sub_split: @split2.sub_split_out)
-      @segment3 = Segment.new(begin_sub_split: @split1.sub_split_in, end_sub_split: @split4.sub_split_in)
-      @segment4 = Segment.new(begin_sub_split: @split2.sub_split_out, end_sub_split: @split4.sub_split_in)
-
-      SplitTime.create!(effort: @effort1, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 8000)
-      SplitTime.create!(effort: @effort2, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 9000)
-      SplitTime.create!(effort: @effort3, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 6000)
-      SplitTime.create!(effort: @effort3, split: @split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 9200)
-    end
-
-    it 'should return a hash containing effort => time for the segment' do
-      expect(@segment1.times.count).to eq(3)
-      expect(@segment2.times.count).to eq(3)
-      expect(@segment3.times.count).to eq(2)
-      expect(@segment1.times[@effort1.id]).to eq(4000)
-      expect(@segment3.times[@effort2.id]).to eq(9000)
-      expect(@segment4.times[@effort1.id]).to eq(3900)
-      expect(@segment3.times[@effort3.id]).to be_nil
-    end
-  end
 end

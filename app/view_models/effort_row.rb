@@ -2,9 +2,10 @@ class EffortRow
   include PersonalInfo
 
   attr_reader :overall_place, :gender_place, :finish_status, :run_status, :dropped_split_name, :day_and_time,
-              :start_time_from_params, :participant
+              :start_time_from_params, :participant, :segment_seconds
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :bio, :birthdate, to: :effort
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :segment_seconds, :overall_rank, :gender_rank,
+           :bio, :birthdate, to: :effort
 
   def initialize(effort, options = {})
     @effort = effort
@@ -16,14 +17,15 @@ class EffortRow
     @day_and_time = options[:day_and_time]
     @start_time_from_params = options[:start_time]
     @participant = options[:participant]
+    @segment_seconds = options[:segment_seconds]
   end
 
   def effective_start_time
-    start_time_from_params.try(:to_datetime) || effort.start_time
+    start_time_from_params.try(:to_datetime) || effort.try(:query_start_time) || effort.start_time
   end
 
   def year
-    effective_start_time ? effective_start_time.year : nil
+    effective_start_time.try(:year)
   end
 
   def finish_time

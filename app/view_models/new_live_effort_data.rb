@@ -24,7 +24,7 @@ class NewLiveEffortData
      splitDistance: split.distance_from_start,
      effortId: effort.id,
      bibNumber: effort.bib_number,
-     name: effort_name,
+     effortName: effort_name,
      droppedHere: dropped_here?,
      timeIn: new_split_times[:in].military_time,
      timeOut: new_split_times[:out].military_time,

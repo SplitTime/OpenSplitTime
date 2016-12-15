@@ -6,7 +6,7 @@ RSpec.describe LiveDataEntryReporter do
   let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
   describe '#initialize' do
-    it 'initializes with an event and params and a LiveEffortData object in an args hash' do
+    it 'initializes with an event and params and a NewLiveEffortData object in an args hash' do
       event = FactoryGirl.build_stubbed(:event)
       params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(NewLiveEffortData)
@@ -62,7 +62,7 @@ RSpec.describe LiveDataEntryReporter do
       allow(last_reported_split_time).to receive(:split).and_return(last_reported_split)
       allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
       allow(reporter).to receive(:last_reported_split_time).and_return(last_reported_split_time)
-      expect(reporter.response_row[:reportText]).to eq('Sherman Out at Fri 13:00')
+      expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00')
     end
 
     it 'returns the name and time of the furthest split other than the provided split when provided split is furthest' do
@@ -87,7 +87,7 @@ RSpec.describe LiveDataEntryReporter do
       allow(last_reported_split_time).to receive(:split).and_return(last_reported_split)
       allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
       allow(reporter).to receive(:last_reported_split_time).and_return(last_reported_split_time)
-      expect(reporter.response_row[:reportText]).to eq('Cunningham Out at Fri 08:30')
+      expect(reporter.full_report[:reportText]).to eq('Cunningham Out at Fri 08:30')
     end
 
     it 'adds a dropped notation when the effort has a dropped_split_id at the last reported split' do
@@ -113,7 +113,7 @@ RSpec.describe LiveDataEntryReporter do
       allow(last_reported_split_time).to receive(:split).and_return(last_reported_split)
       allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
       allow(reporter).to receive(:last_reported_split_time).and_return(last_reported_split_time)
-      expect(reporter.response_row[:reportText]).to eq('Sherman Out at Fri 13:00 and dropped there')
+      expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 and dropped there')
     end
 
     it 'adds an additional dropped notation when the effort has a dropped_split_id before the last reported split' do
@@ -143,7 +143,7 @@ RSpec.describe LiveDataEntryReporter do
       allow(dropped_split_time).to receive(:split).and_return(dropped_split)
       allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
       allow(reporter).to receive(:last_reported_split_time).and_return(last_reported_split_time)
-      expect(reporter.response_row[:reportText]).to eq('Sherman Out at Fri 13:00 but reported dropped at PoleCreek as of Fri 11:00')
+      expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 but reported dropped at PoleCreek as of Fri 11:00')
     end
 
     it 'returns "n/a" if effort is not located' do
@@ -159,7 +159,7 @@ RSpec.describe LiveDataEntryReporter do
                                           effort: effort,
                                           times_container: times_container)
       reporter = LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data)
-      expect(reporter.response_row[:reportText]).to eq('n/a')
+      expect(reporter.full_report[:reportText]).to eq('n/a')
     end
 
     it 'returns "Not yet started" if effort is located but has no split_times' do
@@ -175,7 +175,7 @@ RSpec.describe LiveDataEntryReporter do
                                           effort: effort,
                                           times_container: times_container)
       reporter = LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data)
-      expect(reporter.response_row[:reportText]).to eq('Not yet started')
+      expect(reporter.full_report[:reportText]).to eq('Not yet started')
     end
   end
 
@@ -201,7 +201,7 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_split_time = split_times.first
       allow(prior_valid_split_time).to receive(:day_and_time).and_return(event.start_time)
       allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
-      expect(reporter.response_row[:timeInAid]).to eq('20m')
+      expect(reporter.full_report[:timeInAid]).to eq('20m')
     end
 
     it 'returns dashes if either in or out time is not provided' do
@@ -220,7 +220,7 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_split_time = split_times.first
       allow(prior_valid_split_time).to receive(:day_and_time).and_return(event.start_time)
       allow(reporter).to receive(:prior_valid_split_time).and_return(prior_valid_split_time)
-      expect(reporter.response_row[:timeInAid]).to eq('--')
+      expect(reporter.full_report[:timeInAid]).to eq('--')
     end
   end
 end

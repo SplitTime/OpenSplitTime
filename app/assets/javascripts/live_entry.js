@@ -305,7 +305,7 @@
 
                 return $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
-                    $('#js-effort-name').html( response.name ).attr('data-effort-id', response.effortId );
+                    $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
                     $('#js-effort-last-reported').html( response.reportText );
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );

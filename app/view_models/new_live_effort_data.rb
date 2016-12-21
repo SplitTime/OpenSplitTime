@@ -1,5 +1,6 @@
 class NewLiveEffortData
-  attr_reader :ordered_splits, :effort, :new_split_times
+  attr_reader :ordered_splits, :effort, :existing_split_times, :new_split_times
+  delegate :participant_id, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -36,8 +37,20 @@ class NewLiveEffortData
      timeOutExists: times_exist[:out]}
   end
 
+  def valid?
+    split.real_record? && effort.real_record?
+  end
+
+  def clean?
+    times_exist.values.none? && new_split_times.values.all?(&:valid_status?)
+  end
+
   def split
     @split ||= ordered_splits.find { |split| split.id == params[:splitId].to_i } || Split.null_record
+  end
+
+  def split_id
+    split.id
   end
 
   def effort_name
@@ -49,7 +62,7 @@ class NewLiveEffortData
   end
 
   def times_exist
-    new_split_times.map { |kind, split_time| [kind, existing_split_times[split_time.sub_split].present?] }.to_h
+    new_split_times.transform_values { |split_time| existing_split_times[split_time.sub_split].present? }
   end
 
   def ordered_split_times
@@ -62,7 +75,7 @@ class NewLiveEffortData
 
   private
 
-  attr_reader :event, :params, :indexed_split_times, :times_container, :existing_split_times
+  attr_reader :event, :params, :indexed_split_times, :times_container
 
   def create_split_times
     sub_split_kinds.each do |kind|
@@ -112,7 +125,6 @@ class NewLiveEffortData
                                                                 ordered_splits: ordered_splits,
                                                                 split_times: ordered_split_times)
   end
-
 
   def camelized_param(base, kind)
     params["#{base}_#{kind}".camelize(:lower).to_sym]

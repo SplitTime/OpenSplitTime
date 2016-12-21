@@ -21,8 +21,7 @@ class LiveDataEntryReporter
   private
 
   attr_reader :event, :params, :effort_data
-  delegate :split, :effort, :dropped_here?, :new_split_times, :times_exist, :ordered_splits,
-           :ordered_split_times, :ordered_existing_split_times, to: :effort_data
+  delegate :split, :effort, :new_split_times, :ordered_splits, :ordered_existing_split_times, to: :effort_data
   delegate :dropped_split_id, to: :effort
 
   def report_text

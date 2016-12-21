@@ -125,4 +125,97 @@ describe TimeConversion do
       end
     end
   end
+
+  describe '.file_to_military' do
+    it 'returns time in hh:mm:ss format when provided in hh:mm:ss format' do
+      file_string = '12:30:45'
+      expected = '12:30:45'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'returns time in hh:mm:ss format with :00 for seconds when provided in hh:mm format' do
+      file_string = '12:30'
+      expected = '12:30:00'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'returns time in hh:mm:ss format with a leading zero when provided in h:mm:ss format' do
+      file_string = '2:30:45'
+      expected = '02:30:45'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'returns time in hh:mm:ss format with a leading zero and :00 for seconds when provided in h:mm format' do
+      file_string = '2:30'
+      expected = '02:30:00'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'properly determines colon insertion points when time is provided in hhmmss format' do
+      file_string = '123045'
+      expected = '12:30:45'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'properly determines colon insertion points when time is provided in hhmm format' do
+      file_string = '1230'
+      expected = '12:30:00'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'properly determines colon insertion points when time is provided in hmmss format' do
+      file_string = '23045'
+      expected = '02:30:45'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'properly determines colon insertion points when time is provided in hmm format' do
+      file_string = '230'
+      expected = '02:30:00'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'ignores non-numeric characters at the end of the string' do
+      file_string = '12:30:xx'
+      expected = '12:30:00'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'ignores non-numeric characters in the middle of the string' do
+      file_string = '12abc30'
+      expected = '12:30:00'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'ignores non-numeric characters at the beginning of the string' do
+      file_string = 'joe123000'
+      expected = '12:30:00'
+      expect(TimeConversion.file_to_military(file_string)).to eq(expected)
+    end
+
+    it 'returns nil when the hours provided is out of range' do
+      file_string = '24:00:00'
+      expect(TimeConversion.file_to_military(file_string)).to be_nil
+    end
+
+    it 'returns nil when the minutes provided is out of range' do
+      file_string = '12:60:00'
+      expect(TimeConversion.file_to_military(file_string)).to be_nil
+    end
+
+    it 'returns nil when the seconds provided is out of range' do
+      file_string = '12:00:60'
+      expect(TimeConversion.file_to_military(file_string)).to be_nil
+    end
+
+    it 'returns nil when time provided is an empty string' do
+      file_string = ''
+      expect(TimeConversion.file_to_military(file_string)).to be_nil
+    end
+
+    it 'returns nil when time provided is less than three characters in length' do
+      file_string = '12'
+      expect(TimeConversion.file_to_military(file_string)).to be_nil
+    end
+  end
 end

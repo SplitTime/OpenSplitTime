@@ -23,7 +23,7 @@ class LiveRowNormalizer
   AFFIRMATIVE_LETTERS = %w(t y)
 
   def strip_white_space
-    row.transform_values! { |v| v.try(:strip) || v }
+    row.transform_values! { |v| v.try(:strip).presence || v.presence }
   end
 
   def normalize_times
@@ -35,6 +35,7 @@ class LiveRowNormalizer
   end
 
   def boolean_string(string)
+    return nil unless string.present?
     AFFIRMATIVE_LETTERS.include?(string[0].downcase) ? 'true' : 'false'
   end
 end

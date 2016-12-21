@@ -39,7 +39,7 @@ module TimeConversion
   end
 
   def self.file_to_military(time_string)
-    number_string = time_string.gsub(/[^\d]/, '')
+    number_string = time_string ? time_string.gsub(/[^\d]/, '') : ''
     return nil unless number_string.length.between?(3, 6)
     military = number_string.rjust((number_string.length / 2.0).ceil * 2, '0').ljust(6, '0')
                           .chars.each_slice(2).map(&:join).join(':')

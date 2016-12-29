@@ -14,10 +14,7 @@ class Participant < ActiveRecord::Base
 
   attr_accessor :suggested_match
 
-  scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count])
-                                             .joins('LEFT OUTER JOIN efforts ON (efforts.participant_id = participants.id)')
-                                             .joins('LEFT OUTER JOIN events ON (events.id = efforts.event_id)')
-                                             .group('participants.id') }
+  scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count]).joins(:efforts => :event).group(:id) }
   scope :ordered_by_name, -> { order(:last_name, :first_name) }
 
   SQL = {age_and_effort_count: 'participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as participant_age',

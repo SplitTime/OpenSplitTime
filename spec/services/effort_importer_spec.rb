@@ -8,16 +8,16 @@ RSpec.describe SplitImporter do
     let(:event) { Event.create!(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00") }
     let(:import_file) { 'spec/fixtures/files/baddata2015test.xlsx' }
     let(:current_user_id) { 1 }
-    let(:split_importer) { SplitImporter.new(import_file, event, current_user_id) }
+    let(:split_importer) { SplitImporter.new(file_path: import_file, event: event, current_user_id: current_user_id) }
 
     describe 'effort_import' do
-      let(:effort_importer) { EffortImporter.new(import_file, event, current_user_id) }
+      let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, without_status: true) }
       before do
         split_importer.split_import
         effort_importer.effort_import
       end
 
-      it 'should import all valid efforts and set up data correctly and return a failure array containing invalid rows' do
+      it 'imports all valid efforts, sets up data correctly, and returns a failure array containing invalid rows' do
         effort1 = Effort.find_by_bib_number(1)
         effort2 = Effort.find_by_bib_number(143)
         effort3 = Effort.find_by_bib_number(135)
@@ -60,7 +60,7 @@ RSpec.describe SplitImporter do
         expect(Effort.find_by_bib_number(32).start_offset).to eq(0)
       end
 
-      it 'should import all valid split_times and correctly set split_time times from start' do
+      it 'imports all valid split_times and correctly sets split_time times from start' do
         split1 = Split.find_by_base_name('Ridgeline')
         split2 = Split.find_by_base_name('Mountain Top')
         split3 = Split.find_by_base_name('Tunnel')
@@ -70,7 +70,6 @@ RSpec.describe SplitImporter do
         effort3 = Effort.find_by_bib_number(186)
 
         expect(SplitTime.all.count).to eq(75)
-        expect(SplitTime.find_by(effort: effort1, split: split1, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((2.hours + 1.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split2, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((22.hours + 45.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split3, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((20.hours + 22.minutes).to_i)
         expect(SplitTime.find_by(effort: effort1, split: split4, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((25.hours + 45.minutes).to_i)
@@ -82,9 +81,10 @@ RSpec.describe SplitImporter do
         expect(SplitTime.find_by(effort: effort3, split: split2, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((37.hours + 45.minutes).to_i)
         expect(SplitTime.find_by(effort: effort3, split: split3, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((41.hours + 24.minutes).to_i)
         expect(SplitTime.find_by(effort: effort3, split: split4, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((43.hours + 58.minutes).to_i)
+        expect(SplitTime.find_by(effort: effort1, split: split1, bitkey: SubSplit::IN_BITKEY).time_from_start).to be_within(1.second).of((2.hours + 1.minutes).to_i)
       end
 
-      it 'should not create a split_time where no time is provided' do
+      it 'does not create a split_time where no time is provided' do
         split1 = Split.find_by(base_name: 'Ridgeline')
         split2 = Split.find_by(base_name: 'Tunnel')
         split3 = Split.find_by(base_name: 'Finish')

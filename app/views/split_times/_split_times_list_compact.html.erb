@@ -26,7 +26,7 @@
             <strong><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></strong>
           </td>
           <td class="text-center"><strong><%= composite_time_zzs(split_row) %></strong></td>
-          <td class="text-center"><strong><%= split_row.pacer_in_out.compact.join(' / ') %></strong></td>
+          <td class="text-center"><strong><%= split_row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></strong></td>
           <% if @effort_show.dropped_split_id == split_row.id %>
               <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
           <% else %>
@@ -37,7 +37,7 @@
           <td class="text-right"><%= d(split_row.distance_from_start) %></td>
           <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></td>
           <td class="text-center"><%= composite_time(split_row) %></td>
-          <td class="text-center"><%= split_row.pacer_in_out.compact.join(' / ') %></td>
+          <td class="text-center"><%= split_row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></td>
           <% if @effort_show.dropped_split_id == split_row.id %>
               <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
           <% else %>

@@ -179,7 +179,7 @@ class EventsController < ApplicationController
 
   def set_data_status
     authorize @event
-    report = DataStatusService.set_data_status(@event.efforts)
+    report = BulkDataStatusSetter.set_data_status(efforts: @event.efforts)
     flash[:warning] = report if report
     redirect_to stage_event_path(@event)
   end

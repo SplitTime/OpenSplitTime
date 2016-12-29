@@ -48,8 +48,7 @@ class EffortSplitTimeCreator
 
   def split_time_build(sub_split)
     SplitTime.new(effort_id: effort.id,
-                  split_id: sub_split.split_id,
-                  sub_split_bitkey: sub_split.bitkey,
+                  sub_split: sub_split,
                   time_from_start: time_to_seconds(sub_split_time_hash[sub_split]),
                   created_by: current_user_id,
                   updated_by: current_user_id)
@@ -76,11 +75,18 @@ class EffortSplitTimeCreator
   end
 
   def time_to_seconds(working_time)
-    return nil if working_time.blank?
-    return working_time if working_time.is_a?(Numeric)
-    working_time = working_time.to_datetime if working_time.is_a?(Date)
-    working_time = datetime_to_seconds(working_time) if working_time.acts_like?(:time)
-    if working_time.try(:to_i)
+    case
+    when working_time.blank?
+      nil
+    when working_time.is_a?(Numeric)
+      working_time
+    when working_time.is_a?(Date)
+      datetime_to_seconds(working_time.to_datetime)
+    when working_time.acts_like?(:time)
+      datetime_to_seconds(working_time)
+    when working_time.is_a?(String)
+      TimeConversion.hms_to_seconds(working_time)
+    when working_time.try(:to_i)
       working_time
     else
       errors.add(:effort_split_time_creator, "Invalid time data for #{effort.full_name}. #{errors.full_messages}.")

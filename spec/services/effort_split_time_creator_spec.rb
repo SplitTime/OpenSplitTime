@@ -126,24 +126,27 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
     end
 
     it 'understands elapsed time string data formatted as h:mm:ss' do
-      skip
       row_time_data = %w(0:00:00 1:00:00 2:00:00 3:00:00 4:00:00 5:00:00)
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.split_times.map(&:time_from_start)).to eq([0, 1.hour, 2.hours, 3.hours, 4.hours, 5.hours])
     end
 
     it 'understands elapsed time string data formatted as h:mm' do
-      skip
       row_time_data = %w(0:00 1:00 2:00 3:00 4:00 5:00)
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.split_times.map(&:time_from_start)).to eq([0, 1.hour, 2.hours, 3.hours, 4.hours, 5.hours])
     end
 
     it 'understands elapsed time string data with values greater than 24 hours' do
-      skip
       row_time_data = %w(0:00 10:00 20:00 30:00 40:00 50:00)
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.split_times.map(&:time_from_start)).to eq([0, 10.hours, 20.hours, 30.hours, 40.hours, 50.hours])
+    end
+
+    it 'understands elapsed time string data with values greater than 100 hours' do
+      row_time_data = %w(0:00 100:00 200:00 300:00 400:00 500:00)
+      creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
+      expect(creator.split_times.map(&:time_from_start)).to eq([0, 100.hours, 200.hours, 300.hours, 400.hours, 500.hours])
     end
   end
 end

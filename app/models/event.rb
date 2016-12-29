@@ -38,52 +38,28 @@ class Event < ActiveRecord::Base
   end
 
   def unreconciled_efforts?
-    unreconciled_efforts.count > 0
+    unreconciled_efforts.present?
   end
 
   def set_all_course_splits
     splits << course.splits
   end
 
-  def time_hashes_similar_events
-    result_hash = {}
-    split_ids = ordered_split_ids
-    effort_ids = Effort.includes(:event).where(dropped_split_id: nil, events: {course_id: course_id}).order('events.start_time DESC').limit(200).pluck(:id)
-    complete_hash = SplitTime.valid_status
-                        .select(:split_id, :sub_split_bitkey, :effort_id, :time_from_start)
-                        .where(split_id: split_ids, effort_id: effort_ids)
-                        .group_by(&:sub_split)
-    complete_hash.keys.each do |sub_split|
-      result_hash[sub_split] = Hash[complete_hash[sub_split].map { |split_time| [split_time.effort_id, split_time.time_from_start] }]
-    end
-    result_hash
-  end
-
   def split_times
     SplitTime.includes(:effort).where(efforts: {event_id: id})
-  end
-
-  def split_time_hash
-    split_times.group_by(&:sub_split)
   end
 
   def efforts_sorted
     efforts.sorted_with_finish_status
   end
 
-  def ids_sorted
-    efforts.sorted_with_finish_status.map(&:id)
-  end
-
   def combined_places(effort)
-    raw_sort = efforts_sorted
-    overall_place = raw_sort.map(&:id).index(effort.id) + 1
-    gender_place = raw_sort[0...overall_place].count { |e| e.gender == effort.gender }
-    [overall_place, gender_place]
+    found_effort = efforts_sorted.find { |e| e.id == effort.id }
+    [found_effort && found_effort.overall_place, found_effort && found_effort.gender_place]
   end
 
   def overall_place(effort)
-    ids_sorted.index(effort.id) + 1
+    combined_places(effort)[0]
   end
 
   def gender_place(effort)
@@ -103,8 +79,7 @@ class Event < ActiveRecord::Base
   end
 
   def started?
-    effort_ids = efforts.pluck(:id)
-    SplitTime.where(effort_id: effort_ids).present?
+    SplitTime.where(effort: efforts).present?
   end
 
   def set_dropped_split_ids

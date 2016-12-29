@@ -46,6 +46,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
+      @live_data_entry_reporter = LiveDataEntryReporter.new(event: @event, params: params)
       render partial: 'live_effort_data.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'
@@ -67,7 +68,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
-      @file_transformer = LiveFileTransformer.new(@event, params[:file], params[:splitId])
+      @file_transformer = LiveFileTransformer.new(event: @event, file: params[:file], split_id: params[:splitId])
       render partial: 'file_effort_data_report.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'
@@ -82,7 +83,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
-      @live_importer = LiveTimeRowImporter.new(@event, params[:timeRows])
+      @live_importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:timeRows])
       render partial: 'set_times_data_report.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'
@@ -109,7 +110,7 @@ class Live::EventsController < Live::BaseController
     authorize @event
     aid_station = @event.aid_stations.find(params[:aid_station])
     params[:efforts] ||= 'expected'
-    @aid_station_detail = AidStationDetail.new(aid_station)
+    @aid_station_detail = AidStationDetail.new(aid_station: aid_station)
   end
 
   private

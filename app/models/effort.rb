@@ -1,19 +1,24 @@
 class Effort < ActiveRecord::Base
+  enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
+  enum gender: [:male, :female]
+  strip_attributes collapse_spaces: true
+
+  VALID_STATUSES = [nil, data_statuses[:good]]
+
   include Auditable
   include Concealable
+  include DataStatusMethods
+  include GuaranteedFindable
   include PersonalInfo
   include Searchable
   include Matchable
-  strip_attributes collapse_spaces: true
-  enum gender: [:male, :female]
-  enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   belongs_to :event
   belongs_to :participant
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :segment_time
-  attr_writer :start_time, :overall_place, :gender_place, :last_reported_split_time
+  attr_writer :overall_place, :gender_place, :last_reported_split_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
@@ -21,7 +26,6 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
-  scope :valid_status, -> { where(data_status: [nil, data_statuses[:good], data_statuses[:confirmed]]) }
   scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
                                          .finished.order('split_times.time_from_start') }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
@@ -33,6 +37,10 @@ class Effort < ActiveRecord::Base
   scope :finished, -> { joins(:split_times => :split).where(splits: {kind: 1}) }
 
   delegate :race, to: :event
+
+  def self.null_record
+    @null_record ||= Effort.new(first_name: '', last_name: '')
+  end
 
   def self.attributes_for_import
     id = ['id']
@@ -69,10 +77,12 @@ class Effort < ActiveRecord::Base
     @event_name ||= event.name
   end
 
-  # Methods regarding split_times
-
   def last_reported_split_time
     @last_reported_split_time ||= ordered_split_times.last
+  end
+
+  def valid_split_times
+    @valid_split_times ||= split_times.valid_status.ordered
   end
 
   def finished?
@@ -92,11 +102,11 @@ class Effort < ActiveRecord::Base
   end
 
   def finish_status
-    return "DNF" if dropped?
-    return "Not yet started" unless started?
+    return 'DNF' if dropped?
+    return 'Not yet started' unless started?
     split_time = finish_split_time
     return split_time.formatted_time_hhmmss if split_time
-    "In progress"
+    'In progress'
   end
 
   def finish_split_time
@@ -117,52 +127,8 @@ class Effort < ActiveRecord::Base
                                .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
   end
 
-  def likely_intended_time(military_time, split, event_segment_calcs = nil)
-    seconds_into_day = TimeConversion.hms_to_seconds(military_time)
-    return nil if seconds_into_day >= 1.day
-    working_datetime = event_start_time.beginning_of_day + seconds_into_day
-    expected = expected_day_and_time({split.id => SubSplit::IN_BITKEY}, event_segment_calcs)
-    expected ? working_datetime + ((((working_datetime - expected) * -1) / 1.day).round(0) * 1.day) : nil
-  end
-
-  def expected_day_and_time(sub_split, event_segment_calcs = nil)
-    expected_tfs = expected_time_from_start(sub_split, event_segment_calcs)
-    expected_tfs ? start_time + expected_tfs : nil
-  end
-
-  def expected_time_from_start(sub_split, event_segment_calcs = nil)
-    split_times_hash = split_times.index_by(&:sub_split)
-    ordered_splits = event.ordered_splits.to_a
-    ordered_sub_splits = ordered_splits.map(&:sub_splits).flatten
-    start_sub_split = ordered_sub_splits.first
-    return nil unless split_times_hash[start_sub_split].present?
-    return 0 if sub_split == start_sub_split
-    relevant_sub_splits = ordered_sub_splits[0..(ordered_sub_splits.index(sub_split) - 1)]
-    prior_split_time = relevant_sub_splits.collect { |bh| split_times_hash[bh] }.compact.last
-    prior_sub_split = prior_split_time.sub_split
-    event_segment_calcs ||= EventSegmentCalcs.new(event)
-    completed_segment = Segment.new(start_sub_split,
-                                    prior_sub_split,
-                                    ordered_splits.find { |split| split.id == start_sub_split.split_id },
-                                    ordered_splits.find { |split| split.id == prior_sub_split.split_id })
-    subject_segment = Segment.new(prior_sub_split,
-                                  sub_split,
-                                  ordered_splits.find { |split| split.id == prior_sub_split.split_id },
-                                  ordered_splits.find { |split| split.id == sub_split.split_id })
-    completed_segment_calcs = event_segment_calcs.fetch_calculations(completed_segment)
-    subject_segment_calcs = event_segment_calcs.fetch_calculations(subject_segment)
-    pace_baseline = completed_segment_calcs.mean ?
-        completed_segment_calcs.mean :
-        completed_segment.typical_time_by_terrain
-    pace_factor = pace_baseline == 0 ? 1 :
-        prior_split_time.time_from_start / pace_baseline
-    subject_segment_calcs.mean ?
-        (prior_split_time.time_from_start + (subject_segment_calcs.mean * pace_factor)) :
-        (prior_split_time.time_from_start + (subject_segment.typical_time_by_terrain * pace_factor))
-  end
-
   def ordered_splits
-    @ordered_splits ||= event.splits.ordered
+    @ordered_splits ||= event.ordered_splits
   end
 
   def ordered_split_times(split = nil)
@@ -203,13 +169,14 @@ class Effort < ActiveRecord::Base
   end
 
   def set_dropped_split_id
-    dropped_split_id =
-        finish_split_time ?
-            nil :
-            split_times.joins(:split).joins(:effort)
-                .order('efforts.id, splits.distance_from_start DESC')
-                .first.split_id
+    dropped_split_id = find_dropped_split_id
     update(dropped_split_id: dropped_split_id)
     dropped_split_id
+  end
+
+  def find_dropped_split_id
+    unless finish_split_time
+      split_times.joins(:split).joins(:effort).order('efforts.id, splits.distance_from_start DESC').first.split_id
+    end
   end
 end

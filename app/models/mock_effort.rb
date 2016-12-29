@@ -1,17 +1,26 @@
 class MockEffort
 
-  attr_reader :course, :expected_time, :start_time, :relevant_events, :relevant_efforts
+  attr_reader :expected_time, :start_time
 
-  def initialize(course, expected_time, start_time, splits = nil)
-    @course = course
-    @expected_time = expected_time
-    @start_time = start_time
-    @splits = splits || course.ordered_splits.to_a
-    set_relevant_resources
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:ordered_splits, :expected_time, :start_time],
+                           exclusive: [:ordered_splits, :expected_time, :start_time, :finder, :times_calculator],
+                           class: self.class)
+    @ordered_splits = args[:ordered_splits]
+    @expected_time = args[:expected_time]
+    @start_time = args[:start_time]
+    @finder = args[:effort_finder] || SimilarEffortFinder.new(sub_split: finish_sub_split,
+                                                              time_from_start: expected_time,
+                                                              finished: true)
+    @times_predictor = args[:times_predictor] || TimesPredictor.new(ordered_splits: ordered_splits,
+                                                                    working_split_time: mock_finish_split_time,
+                                                                    similar_effort_ids: relevant_effort_ids,
+                                                                    calc_model: :focused)
   end
 
   def indexed_split_times
-    @indexed_split_times ||= create_plan_split_times
+    @indexed_split_times ||= ordered_sub_splits.map { |sub_split| plan_split_time(sub_split) }.index_by(&:sub_split)
   end
 
   def split_rows
@@ -19,11 +28,11 @@ class MockEffort
   end
 
   def total_segment_time
-    split_rows.sum { |row| row.segment_time }
+    split_rows.sum(&:segment_time)
   end
 
   def total_time_in_aid
-    split_rows.sum { |unicorn| unicorn.time_in_aid }
+    split_rows.sum(&:time_in_aid)
   end
 
   def finish_time_from_start
@@ -31,61 +40,38 @@ class MockEffort
   end
 
   def relevant_efforts_count
-    relevant_efforts.count
+    relevant_effort_ids.count
   end
 
   def event_years_analyzed
-    relevant_events.pluck(:start_time).sort.map(&:year).uniq
+    relevant_events.map(&:start_time).sort.map(&:year).uniq
+  end
+
+  def relevant_events
+    @relevant_events ||= finder.events.to_a
+  end
+
+  def relevant_efforts
+    @relevant_efforts ||= finder.efforts.to_a
   end
 
   private
 
-  attr_accessor :splits, :relevant_split_times
-  attr_writer :relevant_events, :relevant_efforts
+  attr_accessor :relevant_split_times
+  attr_reader :ordered_splits, :finder, :times_predictor
 
-  def set_relevant_resources
-    finder = SimilarEffortFinder.new(finish_sub_split, expected_time, split: finish_split)
-    self.relevant_events = finder.events
-    self.relevant_efforts = finder.efforts
+  def plan_split_time(sub_split)
+    SplitTime.new(sub_split: sub_split, time_from_start: plan_times[sub_split])
   end
 
-  def create_plan_split_times # Temporary split_time objects to assist in constructing the mock effort
-    plan_times = calculate_plan_times
-    plan_split_times = []
-    splits.each do |split|
-      split.bitkeys.each do |key|
-        split_time = SplitTime.new(split: split, sub_split_bitkey: key, time_from_start: plan_times[{split.id => key}])
-        plan_split_times << split_time
-      end
-    end
-    plan_split_times.index_by(&:sub_split)
-  end
-
-  def calculate_plan_times # Hash of {sub_split => mock_time_from_start}
-    average_time_hash = {}
-    self.relevant_split_times = SplitTime.where(effort: relevant_efforts).group_by(&:sub_split)
-    splits.each do |split|
-      split.sub_split_bitkeys.each do |bitkey|
-        sub_split = {split.id => bitkey}
-        average_time_hash[sub_split] = relevant_split_times[sub_split] &&
-            relevant_split_times[sub_split].map(&:time_from_start).mean
-      end
-    end
-    normalize_time_data(average_time_hash, expected_time)
-  end
-
-  def normalize_time_data(time_data, expected_time)
-    average_finish_time = relevant_split_times[finish_sub_split] ?
-        relevant_split_times[finish_sub_split].map(&:time_from_start).mean : nil
-    return time_data unless average_finish_time
-    factor = expected_time / average_finish_time
-    time_data.each { |k, v| time_data[k] = v ? v * factor : nil }
+  def plan_times
+    @plan_times ||= times_predictor.times_from_start
   end
 
   def create_split_rows
     prior_time = 0
     result = []
-    splits.each do |split|
+    ordered_splits.each do |split|
       split_row = SplitRow.new(split, related_split_times(split), prior_time, start_time)
       result << split_row
       prior_time = split_row.times_from_start.last
@@ -93,15 +79,27 @@ class MockEffort
     result
   end
 
+  def mock_finish_split_time
+    SplitTime.new(sub_split: finish_sub_split, time_from_start: expected_time)
+  end
+
   def related_split_times(split)
-    split.sub_splits.map { |key_hash| indexed_split_times[key_hash] }
+    split.sub_splits.map { |sub_split| indexed_split_times[sub_split] }
   end
 
   def finish_split
-    splits.last
+    ordered_splits.last
   end
 
   def finish_sub_split
     finish_split.sub_split_in
+  end
+
+  def ordered_sub_splits
+    ordered_splits.map(&:sub_splits).flatten
+  end
+
+  def relevant_effort_ids
+    finder.effort_ids
   end
 end

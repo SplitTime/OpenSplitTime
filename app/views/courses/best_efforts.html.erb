@@ -4,17 +4,18 @@
 <div class="row header">
   <div class="col-xs-7">
     <h2><strong><%= link_to @best_display.name, course_path(@best_display.course) -%>: All-time best</strong></h2>
-      <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %><br/>
+    <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %>
+      <br/>
       <% if @best_display.events_count > 0 %>
 
-            <%= "Searched #{pluralize(@best_display.events_count, 'event')}
+          <%= "Searched #{pluralize(@best_display.events_count, 'event')}
         from #{@best_display.earliest_event_date.to_date.to_formatted_s(:long)}
         to #{@best_display.most_recent_event_date.to_date.to_formatted_s(:long)}" %>
           <br/>
       <% else %>
           No efforts have been measured on this segment.
       <% end %>
-      </strong>
+    </strong>
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="row">
@@ -71,4 +72,8 @@
         <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
       </div>
     </div>
+<% elsif params[:search].length < 3 %>
+    <p><strong>Search parameter is too short</strong></p>
+<% else %>
+    <p><strong>No efforts match this search</strong></p>
 <% end %>

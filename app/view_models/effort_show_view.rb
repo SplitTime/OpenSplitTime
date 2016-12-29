@@ -10,7 +10,7 @@ class EffortShowView
   def initialize(effort)
     @effort = effort
     @event = effort.event
-    @splits = effort.event.ordered_splits.to_a
+    @splits = effort.ordered_splits.to_a
     @split_times = effort.split_times.index_by(&:sub_split)
     @split_rows = []
     create_split_rows

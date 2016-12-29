@@ -34,7 +34,11 @@ class PlanDisplay
 
   def mock_effort
     @mock_effort ||=
-        MockEffort.new(course, expected_time, start_time) if expected_time && start_time
+        MockEffort.new(ordered_splits: ordered_splits, expected_time: expected_time, start_time: start_time) if expected_time && start_time
+  end
+
+  def ordered_splits
+    @ordered_splits ||= course.ordered_splits.to_a
   end
 
   def expected_time_from_param(entered_time)

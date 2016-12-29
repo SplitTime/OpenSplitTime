@@ -26,7 +26,7 @@ class EventDroppedDisplay
     dropped_efforts ? dropped_efforts.count : 0
   end
 
-  # private
+  private
 
   attr_accessor :event_efforts, :started_efforts, :event_final_split_id
 

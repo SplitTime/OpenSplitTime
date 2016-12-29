@@ -1,27 +1,42 @@
 class BestEffortsDisplay
 
-  attr_accessor :filtered_efforts
-  attr_reader :course, :effort_rows
+  attr_reader :course
   delegate :name, to: :course
-  delegate :distance, :vert_gain, :vert_loss, :events, :earliest_event_date,
-           :most_recent_event_date, :begin_id, :end_id, to: :segment
+  delegate :distance, :vert_gain, :vert_loss, :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
 
   def initialize(course, params = {})
     @course = course
-    @genders_numeric = Effort.genders.keys.include?(params[:gender]) ? [Effort.genders[params[:gender]]] : Effort.genders.values
     set_segment(params)
-    get_efforts(params)
-    @effort_rows = []
-    create_effort_rows
+    @events = Event.where(id: all_efforts.map(&:event_id).uniq, concealed: false).order(start_time: :desc).to_a
+    @genders_numeric = Effort.genders[params[:gender]] || Effort.genders.values
+    @params = params
+  end
+
+  def filtered_efforts
+    selected_efforts.paginate(page: params[:page], per_page: 25)
+  end
+
+  def selected_efforts
+    (params[:gender] != 'combined') | params[:search].present? ?
+        all_efforts.select { |effort| filter_ids.include?(effort.id) } :
+        all_efforts
+  end
+
+  def filter_ids
+    @filter_ids ||= Effort.where(gender: genders_numeric).search(params[:search]).map(&:id)
   end
 
   def all_efforts_count
-    all_efforts.count
+    all_efforts.size
   end
 
   def filtered_efforts_count
     filtered_efforts.total_entries
+  end
+
+  def effort_rows
+    @effort_rows ||= filtered_efforts.map { |effort| EffortRow.new(effort) }
   end
 
   def segment_name
@@ -29,73 +44,69 @@ class BestEffortsDisplay
   end
 
   def events_count
-    events.where(concealed: false).count
+    events.size
   end
 
   def segment_is_full_course?
     segment.full_course?
   end
 
+  def earliest_event_date
+    events.last.start_time
+  end
+
+  def latest_event_date
+    events.first.start_time
+  end
+
+  def most_recent_event_date
+    events.find { |event| event.start_time < Time.now }.start_time
+  end
+
   def gender_text
-    case genders_numeric
-      when [0]
-        'male'
-      when [1]
-        'female'
-      else
-        'combined'
+    case Array.wrap(genders_numeric)
+    when [0]
+      'male'
+    when [1]
+      'female'
+    else
+      'combined'
     end
   end
 
   private
 
-  attr_accessor :segment, :all_efforts, :sorted_effort_ids, :sorted_effort_genders, :unsorted_filtered_ids
-  attr_reader :genders_numeric
+  attr_accessor :segment
+  attr_reader :events, :genders_numeric, :params
 
   def set_segment(params)
     split1 = params[:split1].present? ? Split.find(params[:split1]) : course.start_split
     split2 = params[:split2].present? ? Split.find(params[:split2]) : course.finish_split
     splits = [split1, split2].sort_by(&:course_index)
-    self.segment = Segment.new(splits.first.sub_splits.last,
-                               splits.last.sub_splits.first,
-                               splits.first,
-                               splits.last)
+    self.segment = Segment.new(begin_sub_split: splits.first.sub_splits.last,
+                               end_sub_split: splits.last.sub_splits.first,
+                               begin_split: splits.first,
+                               end_split: splits.last)
   end
 
-  def get_efforts(params)
-    segment_time_hash = segment.times
-    self.all_efforts = Effort.joins(:event)
-                           .select('efforts.*, events.start_time')
-                           .where(id: segment_time_hash.keys)
-                           .where(concealed: false)
-                           .to_a
-                           .each { |effort| effort.segment_time = segment_time_hash[effort.id] }
-                           .sort_by! { |effort| [effort.segment_time, effort.gender, effort.age ? -effort.age : 0] }
-    self.sorted_effort_ids = all_efforts.map(&:id)
-    self.sorted_effort_genders = all_efforts.map(&:gender)
-    self.unsorted_filtered_ids = Effort.where(id: sorted_effort_ids)
-                                     .where(gender: genders_numeric)
-                                     .search(params[:search])
-                                     .pluck(:id)
-    self.filtered_efforts = all_efforts
-                                .select { |effort| unsorted_filtered_ids.include?(effort.id) }
-                                .paginate(page: params[:page], per_page: 25)
+  def all_efforts
+    @all_efforts ||= Effort.select('efforts.*, rank() over (order by segment_seconds, gender, -age) as overall_rank, rank() over (partition by gender order by segment_seconds, -age) as gender_rank').from("(#{subquery_segment_seconds.to_sql}) as efforts")
+                         .order('overall_rank').to_a
   end
 
-  def create_effort_rows
-    filtered_efforts.each do |effort|
-      effort_row = EffortRow.new(effort, overall_place: overall_place(effort),
-                                 gender_place: gender_place(effort),
-                                 start_time: effort.start_time)
-      effort_rows << effort_row
-    end
+  def subquery_segment_seconds
+    Effort.select('e1.*, (tfs_end - tfs_begin) as segment_seconds').from("(#{subquery_base.to_sql}) as e1, (#{subquery_base_join.to_sql}) as e2")
+        .where('e1.effort_id = e2.effort_id')
   end
 
-  def overall_place(effort)
-    sorted_effort_ids.index(effort.id) + 1
+  def subquery_base
+    Effort.joins(:split_times).joins(:event)
+        .select('efforts.*, events.start_time as query_start_time, split_times.effort_id, split_times.time_from_start as tfs_begin, split_times.split_id, split_times.sub_split_bitkey')
+        .where(split_times: {split_id: begin_id, sub_split_bitkey: begin_bitkey})
   end
 
-  def gender_place(effort)
-    sorted_effort_genders[0...overall_place(effort)].count(effort.gender)
+  def subquery_base_join
+    Effort.joins(:split_times).select('efforts.id, split_times.effort_id, split_times.time_from_start as tfs_end, split_times.split_id, split_times.sub_split_bitkey')
+        .where(split_times: {split_id: end_id, sub_split_bitkey: end_bitkey})
   end
 end

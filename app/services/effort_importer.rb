@@ -1,13 +1,18 @@
 class EffortImporter
   extend ActiveModel::Naming
 
-  attr_reader :errors, :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
+  attr_reader :errors, :effort_import_report, :effort_id_array, :effort_failure_array
 
-  def initialize(file_url, event, current_user_id)
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:file_path, :event, :current_user_id],
+                           exclusive: [:file_path, :event, :current_user_id, :without_status],
+                           class: self.class)
     @errors = ActiveModel::Errors.new(self)
-    @import_file = ImportFile.new(file_url)
-    @event = event
-    @current_user_id = current_user_id
+    @import_file = ImportFile.new(args[:file_path])
+    @event = args[:event]
+    @current_user_id = args[:current_user_id]
+    @without_status = args[:without_status]
     @sub_splits = event.sub_splits
     @effort_failure_array = []
     @effort_id_array = []
@@ -40,7 +45,7 @@ class EffortImporter
     BulkUpdateService.bulk_update_start_offset(start_offset_hash)
     BulkUpdateService.bulk_update_dropped(final_split_hash)
     # Set data status on only those efforts that were successfully created
-    DataStatusService.set_data_status(event.efforts.find(effort_id_array))
+    BulkDataStatusSetter.set_data_status(efforts: event.efforts.find(effort_id_array)) unless without_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 
@@ -78,19 +83,23 @@ class EffortImporter
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
                 :effort_schema, :import_without_times
 
-  attr_reader :event, :current_user_id, :sub_splits
+  attr_reader :event, :current_user_id, :sub_splits, :without_status
 
-  attr_writer :effort_import_report, :effort_id_array, :effort_failure_array, :effort_importer
+  attr_writer :effort_import_report, :effort_id_array, :effort_failure_array
 
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
            :header1_downcase, to: :import_file
 
   def column_count_matches
     if (event_sub_split_count == 2) && ((split_title_array.size < 1) | (split_title_array.size > 2))
-      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, but this event expects only a finish time column with an optional start time column. Please check your import file or create, remove, or associate splits as needed.")
+      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
+          "but this event expects only a finish time column with an optional start time column. " +
+          "Please check your import file or create, remove, or associate splits as needed.")
       false
     elsif (event_sub_split_count > 2) && (split_title_array.size != event_sub_split_count)
-      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, but this event expects #{event_sub_split_count} columns. Please check your import file or create, remove, or associate splits as needed.")
+      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
+          "but this event expects #{event_sub_split_count} columns. " +
+          "Please check your import file or create, remove, or associate splits as needed.")
       false
     else
       true

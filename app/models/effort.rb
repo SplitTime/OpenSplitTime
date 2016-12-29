@@ -77,8 +77,6 @@ class Effort < ActiveRecord::Base
     @event_name ||= event.name
   end
 
-  # Methods regarding split_times
-
   def last_reported_split_time
     @last_reported_split_time ||= ordered_split_times.last
   end
@@ -171,13 +169,14 @@ class Effort < ActiveRecord::Base
   end
 
   def set_dropped_split_id
-    dropped_split_id =
-        finish_split_time ?
-            nil :
-            split_times.joins(:split).joins(:effort)
-                .order('efforts.id, splits.distance_from_start DESC')
-                .first.split_id
+    dropped_split_id = find_dropped_split_id
     update(dropped_split_id: dropped_split_id)
     dropped_split_id
+  end
+
+  def find_dropped_split_id
+    unless finish_split_time
+      split_times.joins(:split).joins(:effort).order('efforts.id, splits.distance_from_start DESC').first.split_id
+    end
   end
 end

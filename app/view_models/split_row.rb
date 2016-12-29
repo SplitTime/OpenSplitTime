@@ -24,7 +24,7 @@ class SplitRow
   end
 
   def pacer_in_out
-    split_times.map { |st| st && st.pacer && st.pacer.humanize }
+    split_times.map { |st| st.try(:pacer) }
   end
 
   def remarks

@@ -17,8 +17,9 @@ class TimesPredictor
   end
 
   def times_from_start
-    puts "Baseline times: #{baseline_times}"
-    @times_from_start ||= baseline_times.transform_values { |seconds| seconds * pace_factor + working_time }
+    @times_from_start ||= baseline_times
+                              .select { |_, v| v }
+                              .transform_values { |seconds| seconds * pace_factor + working_time }
   end
 
   def time_from_start(sub_split)

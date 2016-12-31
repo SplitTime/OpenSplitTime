@@ -127,17 +127,17 @@ class LiveEvent
     subject_index = sub_splits.index(sub_split)
     return nil if subject_index == 0
     relevant_sub_splits = sub_splits[0..subject_index - 1]
-    find_valid_split_time(effort, relevant_sub_splits).last
+    valid_split_times(effort, relevant_sub_splits).last
   end
 
   def next_valid_split_time(effort, sub_split)
     subject_index = sub_splits.index(sub_split)
     return nil if subject_index == sub_splits.size
     relevant_sub_splits = sub_splits[subject_index + 1..-1]
-    find_valid_split_time(effort, relevant_sub_splits).first
+    valid_split_times(effort, relevant_sub_splits).first
   end
 
-  def find_valid_split_time(effort, relevant_sub_splits)
+  def valid_split_times(effort, relevant_sub_splits)
     split_times_by_effort[effort.id]
         .select { |split_time| split_time.valid_status? && relevant_sub_splits.include?(split_time.sub_split) }
   end

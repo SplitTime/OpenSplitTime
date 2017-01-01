@@ -32,7 +32,7 @@ class SimilarEffortFinder
   POSSIBLE_EFFORT_FACTOR = 2
 
   def time_ranges
-    FACTOR_PAIRS.map { |low_factor, high_factor| [time_from_start * low_factor, time_from_start * high_factor] }
+    @time_ranges ||= FACTOR_PAIRS.map { |low_factor, high_factor| [time_from_start * low_factor, time_from_start * high_factor] }
   end
 
   def selected_effort_times
@@ -49,6 +49,7 @@ class SimilarEffortFinder
 
   def effort_times
     @effort_times ||= scoped_split_times
+                          .order('events.start_time desc')
                           .limit(maximum_efforts * POSSIBLE_EFFORT_FACTOR)
                           .pluck(:effort_id, :time_from_start).to_h
   end
@@ -62,16 +63,16 @@ class SimilarEffortFinder
   end
 
   def ranged_split_times
-    SplitTime.valid_status.includes(:effort)
+    SplitTime.valid_status.includes(:effort => :event)
         .where(split_id: sub_split.split_id, bitkey: sub_split.bitkey, :efforts => {concealed: false})
         .within_time_range(lowest_time, highest_time)
   end
 
   def lowest_time
-    time_from_start * FACTOR_PAIRS.last.first
+    time_ranges.last.first
   end
 
   def highest_time
-    time_from_start * FACTOR_PAIRS.last.last
+    time_ranges.last.last
   end
 end

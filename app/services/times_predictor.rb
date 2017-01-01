@@ -23,7 +23,7 @@ class TimesPredictor
   end
 
   def time_from_start(sub_split)
-    baseline_time(sub_split) * pace_factor + working_time
+    baseline_time(sub_split) && baseline_time(sub_split) * pace_factor + working_time
   end
 
   def segment_time(segment)

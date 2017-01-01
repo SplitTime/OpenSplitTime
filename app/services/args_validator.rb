@@ -1,5 +1,5 @@
 class ArgsValidator
-  # include ColorizeText
+  include ColorizeText
 
   class << self
     attr_accessor :console_notifications

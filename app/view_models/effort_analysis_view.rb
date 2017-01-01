@@ -78,9 +78,9 @@ class EffortAnalysisView
   attr_accessor :indexed_analysis_rows
 
   def typical_effort
-    @typical_effort ||= MockEffort.new(ordered_splits: ordered_splits,
-                                       expected_time: mock_finish_time,
-                                       start_time: effort_start_time)
+    @typical_effort ||= mock_finish_time && MockEffort.new(ordered_splits: ordered_splits,
+                                                           expected_time: mock_finish_time,
+                                                           start_time: effort_start_time)
   end
 
   def indexed_typical_rows
@@ -88,14 +88,26 @@ class EffortAnalysisView
   end
 
   def mock_finish_time
-    effort_finish_tfs || finish_time_predictor.segment_time(start_to_finish)
+    effort_finish_tfs || focused_finish_time_predictor.segment_time(start_to_finish) ||
+        stats_finish_time_predictor.segment_time(start_to_finish)
   end
 
-  def finish_time_predictor
-    @finish_time_predictor ||= TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calc_model: :focused)
+  def focused_finish_time_predictor
+    puts similar_effort_ids
+    TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calc_model: :focused,
+                       similar_effort_ids: similar_effort_ids)
+  end
+
+  def stats_finish_time_predictor
+    TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calc_model: :stats)
+  end
+
+  def similar_effort_ids
+    @similar_effort_ids ||= SimilarEffortFinder.new(split_time: split_times.last).effort_ids
   end
 
   def create_analysis_rows
+    return unless typical_effort
     prior_split_time = related_split_times(ordered_splits.first).first
     prior_split = ordered_splits.first
     ordered_splits.each do |split|
@@ -122,7 +134,7 @@ class EffortAnalysisView
   end
 
   def effort_finish_tfs
-    indexed_split_times[finish_sub_split] && indexed_split_times[finish_sub_split].time_from_start
+    indexed_split_times[finish_sub_split].try(:time_from_start)
   end
 
   def finish_sub_split

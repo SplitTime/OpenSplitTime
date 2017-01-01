@@ -3,10 +3,6 @@ class Segment
   delegate :course, to: :begin_split
   delegate :events, :earliest_event_date, :most_recent_event_date, :start?, to: :end_split
 
-  DISTANCE_FACTOR = 0.6 # Multiply distance in meters by this factor to approximate normal travel time on foot
-  VERT_GAIN_FACTOR = 4.0 # Multiply vert_gain in meters by this factor to approximate normal travel time on foot
-  STATS_CALC_THRESHOLD = 4
-
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:begin_sub_split, :end_sub_split],
@@ -67,16 +63,6 @@ class Segment
     end_split.vert_loss_from_start.to_i - begin_split.vert_loss_from_start.to_i
   end
 
-  def typical_time_by_terrain
-    (distance * DISTANCE_FACTOR) + (vert_gain * VERT_GAIN_FACTOR)
-  end
-
-  def typical_time_by_stats(effort_ids = nil)
-    return nil if effort_ids == []
-    segment_time, effort_count = SplitTime.connection.execute(typical_time_sql(effort_ids)).values.flatten.map(&:to_i)
-    effort_count > STATS_CALC_THRESHOLD ? segment_time : nil
-  end
-
   def begin_id
     begin_sub_split.split_id
   end
@@ -122,24 +108,6 @@ class Segment
 
   def zero_segment?
     begin_sub_split == end_sub_split
-  end
-
-  def typical_time_sql(effort_ids)
-    conn = ActiveRecord::Base.connection
-    begin_id = conn.quote(self.begin_id)
-    begin_bitkey = conn.quote(self.begin_bitkey)
-    end_id = conn.quote(self.end_id)
-    end_bitkey = conn.quote(self.end_bitkey)
-    effort_id_list = conn.quote(effort_ids.join(','))[1..-2] if effort_ids # [1..-2] strips the resulting single quotes
-    query = "SELECT AVG(st2.time_from_start - st1.time_from_start) AS segment_time, " +
-        "COUNT(st1.time_from_start) AS effort_count " +
-        "FROM (SELECT st.effort_id, st.time_from_start, st.split_id, st.sub_split_bitkey " +
-        "FROM split_times st WHERE st.split_id = #{begin_id} AND st.sub_split_bitkey = #{begin_bitkey}) AS st1, " +
-        "(SELECT st.effort_id, st.time_from_start, st.split_id, st.sub_split_bitkey " +
-        "FROM split_times st WHERE st.split_id = #{end_id} AND st.sub_split_bitkey = #{end_bitkey}) AS st2 " +
-        "WHERE st1.effort_id = st2.effort_id"
-    query += " AND st1.effort_id IN (#{effort_id_list})" if effort_ids
-    query
   end
 
   def validate_setup

@@ -2,6 +2,8 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe SegmentTimesContainer do
+  DISTANCE_FACTOR ||= SegmentTimeCalculator::DISTANCE_FACTOR
+
   describe '#initialize' do
     it 'initializes with no arguments' do
       expect { SegmentTimesContainer.new }.not_to raise_error
@@ -57,9 +59,9 @@ RSpec.describe SegmentTimesContainer do
       segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
       segment3 = Segment.new(begin_sub_split: split2.sub_splits.last, end_sub_split: split3.sub_splits.first, begin_split: split2, end_split: split3)
-      expect(container.segment_time(segment1)).to eq(10000 * Segment::DISTANCE_FACTOR)
+      expect(container.segment_time(segment1)).to eq(10000 * DISTANCE_FACTOR)
       expect(container.segment_time(segment2)).to eq(0)
-      expect(container.segment_time(segment3)).to eq(15000 * Segment::DISTANCE_FACTOR)
+      expect(container.segment_time(segment3)).to eq(15000 * DISTANCE_FACTOR)
     end
   end
 
@@ -95,7 +97,7 @@ RSpec.describe SegmentTimesContainer do
       segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
       segment3 = Segment.new(begin_sub_split: split2.sub_splits.last, end_sub_split: split3.sub_splits.first, begin_split: split2, end_split: split3)
-      expect(container.data_status(segment1, 10000 * Segment::DISTANCE_FACTOR)).to eq('good')
+      expect(container.data_status(segment1, 10000 * DISTANCE_FACTOR)).to eq('good')
       expect(container.data_status(segment2, 0)).to eq('good')
       expect(container.data_status(segment3, 100_000)).to eq('bad')
     end

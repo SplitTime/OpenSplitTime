@@ -2,6 +2,8 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe SegmentTimeCalculator do
+  DISTANCE_FACTOR ||= SegmentTimeCalculator::DISTANCE_FACTOR
+
   describe '#initialize' do
     let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
     let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10) }
@@ -38,7 +40,7 @@ RSpec.describe SegmentTimeCalculator do
     it 'calculates a segment time in seconds using the specified calc_model' do
       segment = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
-      expect(calculator.calculated_time).to eq(10000 * Segment::DISTANCE_FACTOR)
+      expect(calculator.calculated_time).to eq(10000 * DISTANCE_FACTOR)
     end
 
     it 'returns zero for a segment that begins and ends with a start split' do
@@ -98,16 +100,16 @@ RSpec.describe SegmentTimeCalculator do
       calculator1 = SegmentTimeCalculator.new(segment: segment1, calc_model: :terrain)
       calculator2 = SegmentTimeCalculator.new(segment: segment2, calc_model: :terrain)
       calculator3 = SegmentTimeCalculator.new(segment: segment3, calc_model: :terrain)
-      expect(calculator1.data_status(10000 * Segment::DISTANCE_FACTOR)).to eq('good')
+      expect(calculator1.data_status(10000 * DISTANCE_FACTOR)).to eq('good')
       expect(calculator1.data_status(100_000)).to eq('bad')
       expect(calculator1.data_status(0)).to eq('bad')
       expect(calculator2.data_status(0)).to eq('good')
       expect(calculator2.data_status(-100)).to eq('bad')
       expect(calculator2.data_status(1.day)).to eq('questionable')
       expect(calculator2.data_status(2.days)).to eq('bad')
-      expect(calculator3.data_status(15000 * Segment::DISTANCE_FACTOR)).to eq('good')
+      expect(calculator3.data_status(15000 * DISTANCE_FACTOR)).to eq('good')
       expect(calculator3.data_status(1000)).to eq('bad')
-      expect(calculator3.data_status(100_000 * Segment::DISTANCE_FACTOR)).to eq('bad')
+      expect(calculator3.data_status(100_000 * DISTANCE_FACTOR)).to eq('bad')
     end
   end
 end

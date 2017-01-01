@@ -32,7 +32,7 @@ class SimilarEffortFinder
   POSSIBLE_EFFORT_FACTOR = 2
 
   def time_ranges
-    @time_ranges ||= FACTOR_PAIRS.map { |low_factor, high_factor| [time_from_start * low_factor, time_from_start * high_factor] }
+    @time_ranges ||= FACTOR_PAIRS.map { |low, high| [time_from_start * low, time_from_start * high] }
   end
 
   def selected_effort_times

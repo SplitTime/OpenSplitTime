@@ -2,6 +2,8 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe TimesPredictor do
+  DISTANCE_FACTOR ||= SegmentTimeCalculator::DISTANCE_FACTOR
+
   let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort_id: 101).first(10) }
   let(:split_ids) { split_times_101.map(&:split_id).uniq }
   let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
@@ -71,15 +73,15 @@ RSpec.describe TimesPredictor do
                                        ordered_splits: ordered_splits,
                                        working_split_time: working_split_time,
                                        calc_model: :terrain)
-        expect(predictor.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[4]]).to eq(split3.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[5]]).to eq(split4.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[6]]).to eq(split4.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[7]]).to eq(split5.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[8]]).to eq(split5.distance_from_start * Segment::DISTANCE_FACTOR)
-        expect(predictor.times_from_start[sub_splits[9]]).to eq(split6.distance_from_start * Segment::DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[1]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[2]]).to eq(split2.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[3]]).to eq(split3.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[4]]).to eq(split3.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[5]]).to eq(split4.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[6]]).to eq(split4.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[7]]).to eq(split5.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[8]]).to eq(split5.distance_from_start * DISTANCE_FACTOR)
+        expect(predictor.times_from_start[sub_splits[9]]).to eq(split6.distance_from_start * DISTANCE_FACTOR)
       end
     end
 
@@ -259,6 +261,26 @@ RSpec.describe TimesPredictor do
                                      working_split_time: working_split_time,
                                      calc_model: :terrain)
       expect(predictor.time_from_start(sub_splits[5])).to be_within(50).of(3150)
+      expect(predictor.time_from_start(sub_splits[6])).to be_within(50).of(3150)
+      expect(predictor.time_from_start(sub_splits[7])).to be_within(50).of(4200)
+      expect(predictor.time_from_start(sub_splits[8])).to be_within(50).of(4200)
+      expect(predictor.time_from_start(sub_splits[9])).to be_within(50).of(5250)
+    end
+  end
+
+  describe '#segment_time' do
+    it 'predicts the correct expected time for a given segment using a calculated pace factor' do
+      skip
+      effort = FactoryGirl.build_stubbed(:effort, id: 101)
+      ordered_splits = [split1, split2, split3, split4, split5, split6]
+      sub_splits = ordered_splits.map(&:sub_splits).flatten
+      working_split_time = split_times_101.first(5).last
+      # segment = Segment.new()
+      predictor = TimesPredictor.new(effort: effort,
+                                     ordered_splits: ordered_splits,
+                                     working_split_time: working_split_time,
+                                     calc_model: :terrain)
+      expect(predictor.segment_time(segment1)).to be_within(50).of(3150)
       expect(predictor.time_from_start(sub_splits[6])).to be_within(50).of(3150)
       expect(predictor.time_from_start(sub_splits[7])).to be_within(50).of(4200)
       expect(predictor.time_from_start(sub_splits[8])).to be_within(50).of(4200)

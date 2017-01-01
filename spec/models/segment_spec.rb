@@ -107,20 +107,6 @@ RSpec.describe Segment, type: :model do
     end
   end
 
-  describe '#typical_time_by_terrain' do
-    it 'should return a typical time based on the distance and vertical gain multiplied by constant factors' do
-      expect(start_to_aid_1.typical_time_by_terrain).to eq(10000 * Segment::DISTANCE_FACTOR + 1000 * Segment::VERT_GAIN_FACTOR)
-    end
-
-    it 'should return zero for a segment in aid' do
-      expect(in_aid_1.typical_time_by_terrain).to eq(0)
-    end
-
-    it 'should return zero for a segment having the same begin and end sub_splits' do
-      expect(aid_1_in_to_aid_1_in.typical_time_by_terrain).to eq(0)
-    end
-  end
-
   describe '#distance' do
     it 'should return zero distance for in_aid segments' do
       expect(in_aid_1.distance).to eq(0)

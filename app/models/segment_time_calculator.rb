@@ -1,5 +1,9 @@
 class SegmentTimeCalculator
 
+  def self.typical_time(args)
+    new(args).typical_time
+  end
+
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:segment, :calc_model],
@@ -11,24 +15,15 @@ class SegmentTimeCalculator
     validate_setup
   end
 
-  def calculated_time
-    @calculated_time ||=
-        case calc_model
-        when :focused
-          typical_time_by_stats(effort_ids)
-        when :stats
-          typical_time_by_stats
-        else
-          typical_time_by_terrain
-        end
-  end
-
-  def data_status(seconds)
-    limits.present? ? DataStatus.determine(limits, seconds) : nil
-  end
-
-  def limits
-    calculated_time ? DataStatus.limits(calculated_time, limits_type) : {}
+  def typical_time
+    case calc_model
+    when :focused
+      typical_time_by_stats(effort_ids)
+    when :stats
+      typical_time_by_stats
+    else
+      typical_time_by_terrain
+    end
   end
 
   private
@@ -67,13 +62,9 @@ class SegmentTimeCalculator
     query
   end
 
-  def limits_type
-    segment.special_limits_type || calc_model
-  end
-
   def validate_setup
     if calc_model == :focused && effort_ids.nil?
-      raise ArgumentError, 'SegmentTimesContainer cannot be initialized with calc_model: :focused unless effort_ids are provided'
+      raise ArgumentError, 'SegmentTimeCalculator cannot be initialized with calc_model: :focused unless effort_ids are provided'
     end
     if calc_model && SegmentTimesContainer::VALID_CALC_MODELS.exclude?(calc_model)
       raise ArgumentError, "calc_model #{calc_model} is not recognized"

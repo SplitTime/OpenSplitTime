@@ -27,28 +27,6 @@ RSpec.describe SegmentTimesContainer do
     end
   end
 
-  describe '#[]' do
-    let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
-    let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10) }
-
-    it 'creates a unique SegmentTimeCalculator for each provided segment' do
-      container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
-      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
-      expect(container[segment1]).to be_a(SegmentTimeCalculator)
-      expect(container[segment2]).to be_a(SegmentTimeCalculator)
-      expect(container[segment1]).not_to eq(container[segment2])
-    end
-
-    it 'returns the same SegmentTimeCalculator for each provided segment once created' do
-      container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
-      calculator1 = container[segment1]
-      calculator2 = container[segment1]
-      expect(calculator1).to eq(calculator2)
-    end
-  end
-
   describe '#segment_time' do
     let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
     let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000) }

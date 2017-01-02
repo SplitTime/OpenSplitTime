@@ -24,11 +24,11 @@ class SegmentTimeCalculator
   end
 
   def data_status(seconds)
-    DataStatus.determine(limits, seconds)
+    limits.present? ? DataStatus.determine(limits, seconds) : nil
   end
 
   def limits
-    DataStatus.limits(calculated_time, limits_type)
+    calculated_time ? DataStatus.limits(calculated_time, limits_type) : {}
   end
 
   private

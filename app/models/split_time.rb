@@ -76,9 +76,9 @@ class SplitTime < ActiveRecord::Base
     day_and_time && TimeConversion.absolute_to_hms(day_and_time)
   end
 
-  def military_time=(military_time, time_calculator = IntendedTimeCalculator)
+  def military_time=(military_time)
     self.day_and_time = military_time.present? ?
-        time_calculator.day_and_time(military_time: military_time, effort: effort, sub_split: sub_split) : nil
+        IntendedTimeCalculator.day_and_time(military_time: military_time, effort: effort, sub_split: sub_split) : nil
   end
 
   def name

@@ -45,7 +45,7 @@ class Segment
     when in_aid?
       "Time in #{begin_split.base_name}"
     when zero_segment?
-      "#{begin_split.name(begin_bitkey)}"
+      begin_split.name(begin_bitkey)
     else
       [begin_split.base_name, end_split.base_name].join(' to ')
     end

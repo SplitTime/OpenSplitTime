@@ -17,8 +17,7 @@ class TimesPredictor
   end
 
   def times_from_start
-    @times_from_start ||= baseline_times
-                              .select { |_, v| v }
+    @times_from_start ||= baseline_times.compact
                               .transform_values { |seconds| seconds * pace_factor + working_time }
   end
 

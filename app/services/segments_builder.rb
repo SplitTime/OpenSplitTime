@@ -11,23 +11,32 @@ class SegmentsBuilder
                            class: self.class)
     @ordered_splits = args[:ordered_splits] || Split.where(id: args[:sub_splits].map(&:split_id)).ordered.to_a
     @sub_splits = args[:sub_splits] || sub_splits_from_splits
-    @working_sub_split = args[:working_sub_split] || sub_splits.first
+    @working_sub_split = args[:working_sub_split]
     validate_setup
   end
 
   def segments
-    @segments ||= sub_splits.map do |sub_split|
-      Segment.new(begin_sub_split: working_sub_split,
-                  end_sub_split: sub_split,
-                  begin_split: indexed_splits[working_sub_split.split_id],
-                  end_split: indexed_splits[sub_split.split_id],
-                  order_control: false)
-    end
+    @segments ||= working_sub_split ? working_segments : serial_segments
   end
 
   private
 
   attr_accessor :sub_splits, :ordered_splits, :working_sub_split
+
+  def working_segments
+    sub_splits.map { |sub_split| Segment.new(begin_sub_split: working_sub_split,
+                                             end_sub_split: sub_split,
+                                             begin_split: indexed_splits[working_sub_split.split_id],
+                                             end_split: indexed_splits[sub_split.split_id],
+                                             order_control: false) }
+  end
+
+  def serial_segments
+    sub_splits.each_cons(2).map { |begin_ss, end_ss| Segment.new(begin_sub_split: begin_ss,
+                                                                 end_sub_split: end_ss,
+                                                                 begin_split: indexed_splits[begin_ss.split_id],
+                                                                 end_split: indexed_splits[end_ss.split_id]) }
+  end
 
   def sub_splits_from_splits
     ordered_splits.map(&:sub_splits).flatten

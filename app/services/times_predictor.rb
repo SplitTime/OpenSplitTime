@@ -17,12 +17,16 @@ class TimesPredictor
   end
 
   def times_from_start
-    @times_from_start ||= baseline_times.compact
-                              .transform_values { |seconds| seconds * pace_factor + working_time }
+    @times_from_start ||= baseline_times.compact.transform_values { |seconds| seconds * pace_factor + working_time }
   end
 
   def time_from_start(sub_split)
     baseline_time(sub_split) && baseline_time(sub_split) * pace_factor + working_time
+  end
+
+  def serial_segment_times
+    @serial_segment_times ||=
+        serial_times.include?(nil) ? nil : serial_times.transform_values { |seconds| seconds * serial_pace_factor }
   end
 
   def segment_time(segment)
@@ -46,23 +50,37 @@ class TimesPredictor
   end
 
   def baseline_times
-    @baseline_times ||= segments.map { |segment| [segment.end_sub_split, times_container.segment_time(segment)] }.to_h
+    @baseline_times ||=
+        baseline_segments.map { |segment| [segment.end_sub_split, times_container.segment_time(segment)] }.to_h
   end
 
-  def segments
-    @segments ||= SegmentsBuilder.segments(ordered_splits: ordered_splits, working_sub_split: working_sub_split)
+  def baseline_segments
+    @baseline_segments ||=
+        SegmentsBuilder.segments(ordered_splits: ordered_splits, working_sub_split: working_sub_split)
   end
 
   def baseline_time(sub_split)
-    times_container.segment_time(subject_segment(sub_split))
+    times_container.segment_time(baseline_segment(sub_split))
   end
 
-  def subject_segment(sub_split)
+  def baseline_segment(sub_split)
     Segment.new(begin_sub_split: working_sub_split,
                 end_sub_split: sub_split,
                 begin_split: working_split,
                 end_split: ordered_splits.find { |split| split.id == sub_split.split_id },
                 order_control: false)
+  end
+
+  def serial_times
+    @serial_times ||= serial_segments.map { |segment| [segment, times_container.segment_time(segment)] }.to_h
+  end
+
+  def serial_segments
+    @serial_segments ||= SegmentsBuilder.segments(ordered_splits: ordered_splits)
+  end
+
+  def serial_pace_factor
+    measurable_pace?
   end
 
   def pace_factor
@@ -82,10 +100,8 @@ class TimesPredictor
   end
 
   def working_segment
-    Segment.new(begin_sub_split: start_split.sub_split_in,
-                end_sub_split: working_sub_split,
-                begin_split: start_split,
-                end_split: working_split)
+    Segment.new(begin_sub_split: start_split.sub_split_in, end_sub_split: working_sub_split,
+                begin_split: start_split, end_split: working_split)
   end
 
   def start_split

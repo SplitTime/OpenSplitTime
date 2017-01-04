@@ -33,83 +33,26 @@ RSpec.describe SegmentTimeCalculator do
     end
   end
 
-  describe '#calculated_time' do
+  describe '#typical_time' do
     let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
     let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000) }
 
     it 'calculates a segment time in seconds using the specified calc_model' do
       segment = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
-      expect(calculator.calculated_time).to eq(10000 * DISTANCE_FACTOR)
+      expect(calculator.typical_time).to eq(10000 * DISTANCE_FACTOR)
     end
 
     it 'returns zero for a segment that begins and ends with a start split' do
       segment = Segment.new(begin_sub_split: split1.sub_splits.first, end_sub_split: split1.sub_splits.first, begin_split: split1, end_split: split1)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
-      expect(calculator.calculated_time).to eq(0)
+      expect(calculator.typical_time).to eq(0)
     end
 
     it 'returns typical time in aid for a segment that begins and ends within an intermediate split' do
       segment = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
-      expect(calculator.calculated_time).to eq(0)
-    end
-  end
-
-  describe '#limits' do
-    let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
-    let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000) }
-
-    it 'returns a limits hash for segments both between and within splits, using the provided calc_model' do
-      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
-      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
-      calculator1 = SegmentTimeCalculator.new(segment: segment1, calc_model: :terrain)
-      calculator2 = SegmentTimeCalculator.new(segment: segment2, calc_model: :terrain)
-      limits1 = calculator1.limits
-      limits2 = calculator2.limits
-      expect(limits1[:low_bad]).not_to be_nil
-      expect(limits1[:low_questionable]).not_to be_nil
-      expect(limits1[:high_questionable]).not_to be_nil
-      expect(limits1[:high_bad]).not_to be_nil
-      expect(limits2[:low_bad]).not_to be_nil
-      expect(limits2[:low_questionable]).not_to be_nil
-      expect(limits2[:high_questionable]).not_to be_nil
-      expect(limits2[:high_bad]).not_to be_nil
-    end
-
-    it 'returns a limits hash of all zeros for a segment that begins and ends with a start split' do
-      segment1 = Segment.new(begin_sub_split: split1.sub_splits.first, end_sub_split: split1.sub_splits.first, begin_split: split1, end_split: split1)
-      calculator1 = SegmentTimeCalculator.new(segment: segment1, calc_model: :terrain)
-      limits1 = calculator1.limits
-      expect(limits1[:low_bad]).to eq(0)
-      expect(limits1[:low_questionable]).to eq(0)
-      expect(limits1[:high_questionable]).to eq(0)
-      expect(limits1[:high_bad]).to eq(0)
-    end
-  end
-
-  describe '#data_status' do
-    let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
-    let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000) }
-    let(:split3) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 25000) }
-
-    it 'returns a data status based on calculated limits' do
-      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
-      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
-      segment3 = Segment.new(begin_sub_split: split2.sub_splits.last, end_sub_split: split3.sub_splits.first, begin_split: split2, end_split: split3)
-      calculator1 = SegmentTimeCalculator.new(segment: segment1, calc_model: :terrain)
-      calculator2 = SegmentTimeCalculator.new(segment: segment2, calc_model: :terrain)
-      calculator3 = SegmentTimeCalculator.new(segment: segment3, calc_model: :terrain)
-      expect(calculator1.data_status(10000 * DISTANCE_FACTOR)).to eq('good')
-      expect(calculator1.data_status(100_000)).to eq('bad')
-      expect(calculator1.data_status(0)).to eq('bad')
-      expect(calculator2.data_status(0)).to eq('good')
-      expect(calculator2.data_status(-100)).to eq('bad')
-      expect(calculator2.data_status(1.day)).to eq('questionable')
-      expect(calculator2.data_status(2.days)).to eq('bad')
-      expect(calculator3.data_status(15000 * DISTANCE_FACTOR)).to eq('good')
-      expect(calculator3.data_status(1000)).to eq('bad')
-      expect(calculator3.data_status(100_000 * DISTANCE_FACTOR)).to eq('bad')
+      expect(calculator.typical_time).to eq(0)
     end
   end
 end

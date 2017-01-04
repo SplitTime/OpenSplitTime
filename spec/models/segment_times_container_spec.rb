@@ -27,28 +27,6 @@ RSpec.describe SegmentTimesContainer do
     end
   end
 
-  describe '#[]' do
-    let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
-    let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10) }
-
-    it 'creates a unique SegmentTimeCalculator for each provided segment' do
-      container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
-      segment2 = Segment.new(begin_sub_split: split2.sub_splits.first, end_sub_split: split2.sub_splits.last, begin_split: split2, end_split: split2)
-      expect(container[segment1]).to be_a(SegmentTimeCalculator)
-      expect(container[segment2]).to be_a(SegmentTimeCalculator)
-      expect(container[segment1]).not_to eq(container[segment2])
-    end
-
-    it 'returns the same SegmentTimeCalculator for each provided segment once created' do
-      container = SegmentTimesContainer.new(calc_model: :terrain)
-      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
-      calculator1 = container[segment1]
-      calculator2 = container[segment1]
-      expect(calculator1).to eq(calculator2)
-    end
-  end
-
   describe '#segment_time' do
     let(:split1) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
     let(:split2) { FactoryGirl.build_stubbed(:split, course_id: 10, distance_from_start: 10000) }
@@ -85,6 +63,13 @@ RSpec.describe SegmentTimesContainer do
       expect(limits2[:high_questionable]).not_to be_nil
       expect(limits2[:high_bad]).not_to be_nil
     end
+
+    it 'returns an empty hash if segment_time cannot be determined' do
+      container = SegmentTimesContainer.new(calc_model: :stats)
+      allow(container).to receive(:segment_time).and_return(nil)
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      expect(container.limits(segment1)).to eq({})
+    end
   end
 
   describe '#data_status' do
@@ -100,6 +85,13 @@ RSpec.describe SegmentTimesContainer do
       expect(container.data_status(segment1, 10000 * DISTANCE_FACTOR)).to eq('good')
       expect(container.data_status(segment2, 0)).to eq('good')
       expect(container.data_status(segment3, 100_000)).to eq('bad')
+    end
+
+    it 'returns nil if limits is not present' do
+      container = SegmentTimesContainer.new(calc_model: :stats)
+      allow(container).to receive(:limits).and_return({})
+      segment1 = Segment.new(begin_sub_split: split1.sub_splits.last, end_sub_split: split2.sub_splits.first, begin_split: split1, end_split: split2)
+      expect(container.data_status(segment1, 0)).to be_nil
     end
   end
 end

@@ -4,25 +4,29 @@ class SegmentsBuilder
     new(args).segments
   end
 
+  def self.segments_with_zero_start(args)
+    new(args).segments_with_zero_start
+  end
+
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required_alternatives: [:ordered_splits, :sub_splits],
-                           exclusive: [:ordered_splits, :sub_splits, :working_sub_split],
+                           exclusive: [:ordered_splits, :sub_splits],
                            class: self.class)
     @ordered_splits = args[:ordered_splits] || Split.where(id: args[:sub_splits].map(&:split_id)).ordered.to_a
     @sub_splits = args[:sub_splits] || sub_splits_from_splits
-    @working_sub_split = args[:working_sub_split] || sub_splits.first
     validate_setup
   end
 
   def segments
-    @segments ||= sub_splits.map do |sub_split|
-      Segment.new(begin_sub_split: working_sub_split,
-                  end_sub_split: sub_split,
-                  begin_split: indexed_splits[working_sub_split.split_id],
-                  end_split: indexed_splits[sub_split.split_id],
-                  order_control: false)
-    end
+    sub_splits.each_cons(2).map { |begin_ss, end_ss| Segment.new(begin_sub_split: begin_ss,
+                                                                 end_sub_split: end_ss,
+                                                                 begin_split: indexed_splits[begin_ss.split_id],
+                                                                 end_split: indexed_splits[end_ss.split_id]) }
+  end
+
+  def segments_with_zero_start
+    segments.unshift(zero_start_segment)
   end
 
   private
@@ -37,8 +41,18 @@ class SegmentsBuilder
     @indexed_splits ||= ordered_splits.index_by(&:id)
   end
 
+  def start_split
+    @start_split ||= ordered_splits.first
+  end
+
+  def zero_start_segment
+    Segment.new(begin_sub_split: start_split.sub_split_in,
+                end_sub_split: start_split.sub_split_in,
+                begin_split: start_split,
+                end_split: start_split)
+  end
+
   def validate_setup
     raise ArgumentError, 'sub_splits and ordered_splits do not reconcile' unless sub_splits_from_splits == sub_splits
-    raise ArgumentError, 'working sub_split is not contained within the provided sub_splits' if working_sub_split && sub_splits.exclude?(working_sub_split)
   end
 end

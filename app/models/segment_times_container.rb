@@ -8,34 +8,32 @@ class SegmentTimesContainer
                            class: self.class)
     @effort_ids = args[:effort_ids] || (args[:efforts] && args[:efforts].map(&:id))
     @calc_model = args[:calc_model] || :terrain
-    @segment_time_calculators = {}
+    @segment_times = {}
+    @limits_hashes = {}
     validate_setup
   end
 
-  def []=(segment, time_calculator)
-    segment_time_calculators[segment] = time_calculator
-  end
-
-  def [](segment)
-    segment_time_calculators[segment] ||=
-        SegmentTimeCalculator.new(segment: segment, effort_ids: effort_ids, calc_model: calc_model)
-  end
-
   def segment_time(segment)
-    self[segment].calculated_time
-  end
-
-  def data_status(segment, seconds)
-    self[segment].data_status(seconds)
+    @segment_times[segment] ||=
+        SegmentTimeCalculator.typical_time(segment: segment, effort_ids: effort_ids, calc_model: calc_model)
   end
 
   def limits(segment)
-    self[segment].limits
+    @limits_hashes[segment] ||=
+        segment_time(segment) ? DataStatus.limits(segment_time(segment), limits_type(segment)) : {}
+  end
+
+  def data_status(segment, seconds)
+    limits(segment).present? ? DataStatus.determine(limits(segment), seconds) : nil
   end
 
   private
 
-  attr_reader :effort_ids, :segment_time_calculators, :calc_model
+  attr_reader :effort_ids, :calc_model, :segment_times, :limits_hashes
+
+  def limits_type(segment)
+    segment.special_limits_type || calc_model
+  end
 
   def validate_setup
     if calc_model == :focused && effort_ids.nil?

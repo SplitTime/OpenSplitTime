@@ -50,7 +50,7 @@ class EffortDataStatusSetter
   def set_split_time_data_status(split_time)
     set_subject_attributes(split_time)
     subject_split_time.data_status = beyond_drop? ? 'bad' :
-        times_predictor.data_status(subject_segment, subject_segment_time)
+        time_predictor.data_status(subject_segment_time)
   end
 
   def set_effort_data_status
@@ -76,10 +76,11 @@ class EffortDataStatusSetter
     dropped_split && ordered_splits.index(subject_end_split) > ordered_splits.index(dropped_split)
   end
 
-  def times_predictor
-    TimesPredictor.new(working_split_time: prior_valid_split_time,
-                       ordered_splits: ordered_splits,
-                       times_container: times_container)
+  def time_predictor
+    TimePredictor.new(segment: subject_segment,
+                      completed_split_time: prior_valid_split_time,
+                      ordered_splits: ordered_splits,
+                      times_container: times_container)
   end
 
   def mock_start_split_time

@@ -88,18 +88,17 @@ class EffortAnalysisView
   end
 
   def mock_finish_time
-    effort_finish_tfs || focused_finish_time_predictor.segment_time(start_to_finish) ||
-        stats_finish_time_predictor.segment_time(start_to_finish)
+    effort_finish_tfs || focused_predicted_time || stats_predicted_time
   end
 
-  def focused_finish_time_predictor
-    puts similar_effort_ids
-    TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calc_model: :focused,
-                       similar_effort_ids: similar_effort_ids)
+  def focused_predicted_time
+    TimePredictor.segment_time(segment: start_to_finish, effort: effort, ordered_splits: ordered_splits,
+                               calc_model: :focused, similar_effort_ids: similar_effort_ids)
   end
 
-  def stats_finish_time_predictor
-    TimesPredictor.new(effort: effort, ordered_splits: ordered_splits, calc_model: :stats)
+  def stats_predicted_time
+    TimePredictor.segment_time(segment: start_to_finish, effort: effort, ordered_splits: ordered_splits,
+                                calc_model: :stats)
   end
 
   def similar_effort_ids

@@ -18,7 +18,7 @@ module TimeConversion
 
   def self.absolute_to_hms(absolute)
     return '' unless absolute
-    time = absolute.to_time
+    time = absolute.is_a?(Date) ? absolute.to_time : absolute
     to_hms(time.hour, time.min, time.sec)
   end
 

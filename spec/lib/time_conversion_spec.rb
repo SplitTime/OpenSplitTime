@@ -102,6 +102,14 @@ describe TimeConversion do
         expect(TimeConversion.absolute_to_hms(absolute)).to eq('15:30:45')
       end
     end
+
+    with_each_class do |clazz|
+      it 'functions properly with an ActiveSupport::TimeWithZone object' do
+        absolute = clazz.new(2016, 7, 1, 15, 30, 45).in_time_zone
+        expected = format('%02d:%02d:%02d', absolute.hour, absolute.min, absolute.sec)
+        expect(TimeConversion.absolute_to_hms(absolute)).to eq(expected)
+      end
+    end
   end
 
   describe '.hms_to_absolute' do

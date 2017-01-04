@@ -8,7 +8,7 @@ class TimePredictor
     ArgsValidator.validate(params: args,
                            required: :segment,
                            required_alternatives: [:effort, [:ordered_splits, :completed_split_time]],
-                           exclusive: [:effort, :ordered_splits, :completed_split_time,
+                           exclusive: [:segment, :effort, :ordered_splits, :completed_split_time,
                                        :calc_model, :similar_effort_ids, :times_container],
                            class: self.class)
     @segment = args[:segment]
@@ -26,10 +26,6 @@ class TimePredictor
     times_container.segment_time(segment) && times_container.segment_time(segment) * pace_factor
   end
 
-  def limits
-    times_container.limits(segment).transform_values { |limit| limit * pace_factor }
-  end
-
   def data_status(seconds)
     DataStatus.determine(limits, seconds)
   end
@@ -38,6 +34,10 @@ class TimePredictor
 
   attr_reader :segment, :effort, :ordered_splits, :completed_split_time,
               :calc_model, :similar_effort_ids, :times_container
+
+  def limits
+    times_container.limits(segment).transform_values { |limit| limit * pace_factor }
+  end
 
   def pace_factor
     @pace_factor ||= measurable_pace? ? actual_completed_time / typical_completed_time : 1

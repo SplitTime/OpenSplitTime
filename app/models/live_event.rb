@@ -103,11 +103,12 @@ class LiveEvent
   end
 
   def expected_time_from_start(effort, sub_split)
-    TimesPredictor.new(effort: effort,
-                       ordered_splits: ordered_splits,
-                       working_split_time: effort.last_reported_split_time,
-                       times_container: times_container)
-        .time_from_start(sub_split)
+    TimePredictor.segment_time(segment: Segment.new(begin_sub_split: sub_splits.first,
+                                                    end_sub_split: sub_split),
+                               effort: effort,
+                               ordered_splits: ordered_splits,
+                               completed_split_time: effort.last_reported_split_time,
+                               times_container: times_container)
   end
 
   def ordered_splits

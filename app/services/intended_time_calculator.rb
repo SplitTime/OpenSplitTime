@@ -20,10 +20,10 @@ class IntendedTimeCalculator
                                                    ordered_splits: ordered_splits,
                                                    split_times: args[:split_times])
     @expected_time_from_prior = args[:expected_time_from_prior] ||
-        TimesPredictor.new(effort: effort,
-                           ordered_splits: ordered_splits,
-                           working_split_time: prior_valid_split_time)
-            .segment_time(subject_segment)
+        TimePredictor.segment_time(segment: subject_segment,
+                                   effort: effort,
+                                   ordered_splits: ordered_splits,
+                                   completed_split_time: prior_valid_split_time)
     validate_setup
   end
 
@@ -77,7 +77,6 @@ class IntendedTimeCalculator
   end
 
   def validate_setup
-    raise RangeError, "#{military_time} is out of range for #{self.class}" if
-        seconds_into_day && ((seconds_into_day >= 1.day) | (seconds_into_day < 0))
+    raise RangeError, "#{military_time} is out of range for #{self.class}" if seconds_into_day && ((seconds_into_day >= 1.day) | (seconds_into_day < 0))
   end
 end

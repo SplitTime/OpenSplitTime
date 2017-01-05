@@ -43,6 +43,7 @@ gem 'puma'
 gem 'puma_worker_killer'
 gem 'sidekiq'
 gem 'aws-sdk'
+gem 'skylight'
 
 group :development do
   gem 'web-console', '~> 2.0'

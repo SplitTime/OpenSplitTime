@@ -3,9 +3,9 @@ class TimeCluster
   attr_reader :drop_display
   delegate :finish?, to: :split
 
-  def initialize(split, split_times, prior_time, start_time, drop_display = false)
+  def initialize(split, split_times_data, prior_time, start_time, drop_display = false)
     @split = split
-    @split_times = split_times
+    @split_times_data = split_times_data
     @prior_time = prior_time
     @start_time = start_time
     @drop_display = drop_display
@@ -22,7 +22,7 @@ class TimeCluster
   end
 
   def times_from_start
-    @times_from_start ||= split_times.map { |st| st.try(:time_from_start) }
+    @times_from_start ||= split_times_data.map { |st| st && st[:time_from_start] }
   end
 
   def days_and_times
@@ -30,10 +30,10 @@ class TimeCluster
   end
 
   def time_data_statuses
-    @time_data_statuses ||= split_times.map { |st| st.try(:data_status) }
+    @time_data_statuses ||= split_times_data.map { |st| st && st[:data_status] }
   end
 
   private
 
-  attr_reader :split, :split_times, :start_time, :prior_time
+  attr_reader :split, :split_times_data, :start_time, :prior_time
 end

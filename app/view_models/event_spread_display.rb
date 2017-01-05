@@ -13,7 +13,9 @@ class EventSpreadDisplay
     @event = event
     @splits = event.ordered_splits.to_a
     @display_style = params[:style]
-    @split_times = @event.split_times.group_by(&:effort_id)
+    @split_times_data_by_effort = @event.split_times
+                       .pluck_to_hash(:effort_id, :time_from_start, :split_id, :sub_split_bitkey, :data_status)
+                       .group_by { |row| row[:effort_id] }
     @efforts = @event.efforts.sorted_with_finish_status
     @effort_times_rows = []
     sort_efforts(params[:sort])
@@ -55,7 +57,7 @@ class EventSpreadDisplay
 
   private
 
-  attr_reader :efforts, :split_times
+  attr_reader :efforts, :split_times_data_by_effort
 
   def sort_efforts(sort_by)
     efforts.sort_by!(&:overall_place) if sort_by == 'place'
@@ -68,7 +70,7 @@ class EventSpreadDisplay
     efforts.each do |effort|
       effort_times_row = EffortTimesRow.new(effort,
                                             relevant_splits,
-                                            split_times[effort.id],
+                                            split_times_data_by_effort[effort.id],
                                             event_start_time)
       effort_times_rows << effort_times_row
     end

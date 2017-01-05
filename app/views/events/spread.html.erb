@@ -98,7 +98,7 @@
                   <strong><==DROPPED</strong>
               <% else %>
                   <% case @spread_display.display_style %>
-              <% when 'segment' %>
+                  <% when 'segment' %>
                       <% if cluster.finish? %>
                           <%= time_format_xxhyymzzs(cluster.segment_time) %>
                       <% else %>

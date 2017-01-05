@@ -6,10 +6,10 @@ class EffortTimesRow
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_place, :start_offset, to: :effort
 
-  def initialize(effort, splits, split_times, event_start_time)
+  def initialize(effort, splits, split_times_data, event_start_time)
     @effort = effort
     @splits = splits
-    @split_times = split_times.index_by(&:sub_split)
+    @split_times_data_by_sub_split = split_times_data.index_by { |row| {row[:split_id] => row[:sub_split_bitkey]} }
     @event_start_time = event_start_time
     @time_clusters = []
     create_time_clusters
@@ -25,7 +25,7 @@ class EffortTimesRow
 
   private
 
-  attr_reader :splits, :split_times, :event_start_time
+  attr_reader :splits, :split_times_data_by_sub_split, :event_start_time
 
   def effective_start_time
     event_start_time + start_offset
@@ -41,7 +41,7 @@ class EffortTimesRow
     end
     splits.each do |split|
       time_cluster = TimeCluster.new(split,
-                                     related_split_times(split),
+                                     related_split_times_data(split),
                                      prior_time,
                                      effective_start_time,
                                      drop_display_split_id == split.id)
@@ -50,7 +50,7 @@ class EffortTimesRow
     end
   end
 
-  def related_split_times(split)
-    split.sub_splits.map { |sub_split| split_times[sub_split] }
+  def related_split_times_data(split)
+    split.sub_splits.map { |sub_split| split_times_data_by_sub_split[sub_split] }
   end
 end

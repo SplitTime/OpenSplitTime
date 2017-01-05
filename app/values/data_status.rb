@@ -19,7 +19,7 @@ class DataStatus
   def self.worst(status_array)
     return nil if status_array.empty?
     worst_numeric = status_array.map { |status| status ? SplitTime.data_statuses[status] : 1.5 }.min
-    worst_numeric == 1.5 ? nil : SplitTime.data_statuses.invert[worst_numeric]
+    worst_numeric == 1.5 ? nil : SplitTime.data_statuses.key(worst_numeric)
   end
 
   def self.determine(limits, seconds)

@@ -30,7 +30,7 @@ class TimeCluster
   end
 
   def time_data_statuses
-    @time_data_statuses ||= split_times_data.map { |st| st && st[:data_status] }
+    @time_data_statuses ||= split_times_data.map { |st| st && SplitTime.data_statuses.key(st[:data_status]) }
   end
 
   private

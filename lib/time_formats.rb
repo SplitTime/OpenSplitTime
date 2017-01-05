@@ -1,4 +1,6 @@
 module TimeFormats
+  extend ActiveSupport::Concern
+
   def time_format_hhmmss(time_in_seconds)
     time_formatter(time_in_seconds, '%02d:%02d:%02d', 'hms', '--:--:--')
   end

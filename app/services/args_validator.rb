@@ -19,8 +19,8 @@ class ArgsValidator
     @required_alternatives = Array.wrap(args[:required_alternatives]) || []
     @exclusive = Array.wrap(args[:exclusive]) || []
     @klass = args[:class]
+    @args = args
     validate_setup(args)
-    notify_console(args) if self.class.console_notifications
     # Set ArgsValidator.console_notifications to true or false
     # in /config/initializers/args_validator.rb
   end
@@ -30,11 +30,12 @@ class ArgsValidator
     validate_required_params
     validate_required_alternatives
     validate_exclusive_params
+    notify_console(args) if self.class.console_notifications
   end
 
   private
 
-  attr_reader :params, :required, :required_alternatives, :exclusive, :klass
+  attr_reader :params, :required, :required_alternatives, :exclusive, :klass, :args
 
   def validate_hash
     raise ArgumentError, "arguments #{for_klass}must be provided as a hash" unless params.is_a?(Hash)

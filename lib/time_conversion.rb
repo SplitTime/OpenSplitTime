@@ -1,4 +1,4 @@
-module TimeConversion
+class TimeConversion
 
   MILITARY_TIME_LIMITS = {hours: 23, minutes: 59, seconds: 59}
 
@@ -42,7 +42,7 @@ module TimeConversion
     number_string = time_string ? time_string.gsub(/[^\d]/, '') : ''
     return nil unless number_string.length.between?(3, 6)
     military = number_string.rjust((number_string.length / 2.0).ceil * 2, '0').ljust(6, '0')
-                          .chars.each_slice(2).map(&:join).join(':')
+                   .chars.each_slice(2).map(&:join).join(':')
     valid_military?(military) ? military : nil
   end
 

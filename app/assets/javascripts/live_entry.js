@@ -234,6 +234,10 @@
                 // Listen for keydown on bibNumber
                 $('#js-bib-number').on('blur', function (event) {
                     liveEntry.liveEntryForm.fetchEffortData();
+                    if (liveEntry.liveEntryForm.rapidEntry) {
+                        $('#js-time-in').val(liveEntry.liveEntryForm.currentTime());
+                        $('#js-time-out').val(liveEntry.liveEntryForm.currentTime);
+                    }
                 });
 
                 $('#js-time-in').on('blur', function (event) {
@@ -256,6 +260,11 @@
                         $(this).val(timeIn);
                         liveEntry.liveEntryForm.fetchEffortData();
                     }
+                });
+
+                // Enable / Disable Rapid Entry Mode
+                $('#js-rapid-mode').on('change', function (event) {
+                    liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
                 });
 
                 // Listen for keydown in pacer-in and pacer-out.
@@ -394,7 +403,7 @@
             },
 
             /**
-             * Valiates the time fields
+             * Validates the time fields
              *
              * @param string time time format from the input mask
              */
@@ -406,6 +415,13 @@
                     time = time.concat('0');
                 }
                 return time;
+            },
+            /**
+             * Returns the current time in the standard format
+             */
+            currentTime: function() {
+                var now = new Date();
+                return ("0" + now.getHours()).slice(-2) + ("0" + now.getMinutes()).slice(-2) + ("0" + now.getSeconds()).slice(-2);
             }
         }, // END liveEntryForm form
 

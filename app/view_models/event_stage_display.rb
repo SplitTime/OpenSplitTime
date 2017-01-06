@@ -1,6 +1,5 @@
 class EventStageDisplay
 
-  attr_accessor :event_efforts, :filtered_efforts
   attr_reader :event, :associated_splits
   delegate :id, :name, :start_time, :course, :race, :available_live, :simple?,
            :unreconciled_efforts, :unreconciled_efforts?, :started?, :beacon_url, to: :event
@@ -11,12 +10,21 @@ class EventStageDisplay
   def initialize(event, params)
     @event = event
     @params = params
-    @associated_splits = @event.ordered_splits
-    get_efforts(params)
+    @associated_splits = event.ordered_splits
+  end
+
+  def event_efforts
+    @event_efforts ||= event.efforts
+  end
+
+  def filtered_efforts
+    @filtered_efforts ||= event_efforts
+                              .search(params[:search])
+                              .paginate(page: params[:page], per_page: 25)
   end
 
   def efforts_count
-    event_efforts ? event_efforts.count : 0
+    event_efforts.size
   end
 
   def filtered_efforts_count
@@ -28,7 +36,7 @@ class EventStageDisplay
   end
 
   def event_splits_count
-    associated_splits.count
+    associated_splits.size
   end
 
   def course_splits
@@ -36,27 +44,18 @@ class EventStageDisplay
   end
 
   def course_splits_count
-    course_splits ? course_splits.count : 0
+    course_splits.size
   end
 
   def race_name
-    race ? race.name : nil
+    race.try(:name)
   end
 
   def view_text
     params[:view] == 'splits' ? 'splits' : 'efforts'
   end
 
-
   private
 
-  attr_accessor :params
-
-  def get_efforts(params)
-    self.event_efforts = event.efforts
-    self.filtered_efforts = event_efforts
-                                .search(params[:search])
-                                .paginate(page: params[:page], per_page: 25)
-  end
-
+  attr_reader :params
 end

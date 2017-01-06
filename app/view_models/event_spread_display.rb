@@ -1,6 +1,6 @@
 class EventSpreadDisplay
 
-  attr_reader :event, :splits, :effort_times_rows, :display_style
+  attr_reader :event, :splits, :display_style
   delegate :name, :start_time, :course, :race, :available_live, :beacon_url, :simple?, to: :event
 
   # initialize(event, params = {})
@@ -13,17 +13,21 @@ class EventSpreadDisplay
     @event = event
     @splits = event.ordered_splits.to_a
     @display_style = params[:style]
-    @split_times_data_by_effort = @event.split_times
-                       .pluck_to_hash(:effort_id, :time_from_start, :split_id, :sub_split_bitkey, :data_status)
-                       .group_by { |row| row[:effort_id] }
-    @efforts = @event.efforts.sorted_with_finish_status
-    @effort_times_rows = []
+    @split_times_data_by_effort = event.split_times
+                                      .pluck_to_hash(:effort_id, :time_from_start, :split_id, :sub_split_bitkey, :data_status)
+                                      .group_by { |row| row[:effort_id] }
+    @efforts = event.efforts.sorted_with_finish_status
     sort_efforts(params[:sort])
-    create_effort_times_rows
+  end
+
+  def effort_times_rows
+    @effort_times_rows ||=
+        efforts.map { |effort| EffortTimesRow.new(effort, relevant_splits, split_times_data_by_effort[effort.id],
+                                                  event_start_time) }
   end
 
   def efforts_count
-    efforts.count
+    efforts.size
   end
 
   def course_name
@@ -31,7 +35,7 @@ class EventSpreadDisplay
   end
 
   def race_name
-    race ? race.name : nil
+    race.try(:name)
   end
 
   def event_start_time
@@ -40,14 +44,14 @@ class EventSpreadDisplay
 
   def display_style_text
     case display_style
-      when 'segment'
-        'Segment times'
-      when 'ampm'
-        'Time of day'
-      when 'military'
-        'Military time'
-      else
-        'Elapsed times'
+    when 'segment'
+      'Segment times'
+    when 'ampm'
+      'Time of day'
+    when 'military'
+      'Military time'
+    else
+      'Elapsed times'
     end
   end
 
@@ -66,18 +70,7 @@ class EventSpreadDisplay
     efforts.sort_by!(&:first_name) if sort_by == 'first'
   end
 
-  def create_effort_times_rows
-    efforts.each do |effort|
-      effort_times_row = EffortTimesRow.new(effort,
-                                            relevant_splits,
-                                            split_times_data_by_effort[effort.id],
-                                            event_start_time)
-      effort_times_rows << effort_times_row
-    end
-  end
-
   def splits_without_start
     splits[1..-1]
   end
-
 end

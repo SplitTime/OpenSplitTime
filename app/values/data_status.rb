@@ -17,7 +17,7 @@ class DataStatus
   # make a new 'unknown' data_status enum as 2, and set the default for new records to 2.
 
   def self.worst(status_array)
-    return nil if status_array.empty?
+    return nil if status_array.blank?
     worst_numeric = status_array.map { |status| status ? SplitTime.data_statuses[status] : 1.5 }.min
     worst_numeric == 1.5 ? nil : SplitTime.data_statuses.key(worst_numeric)
   end
@@ -34,6 +34,7 @@ class DataStatus
   end
 
   def self.limits(typical_time, type)
+    return nil unless typical_time && type
     raise ArgumentError, "type '#{type}' is not recognized" unless LIMIT_TYPE_ARRAY.include?(type.to_sym)
     typical_time += TYPICAL_TIME_IN_AID if type == :in_aid
     LIMIT_ARRAY.map { |limit| [limit, typical_time * LIMIT_FACTORS[type][limit]] }.to_h

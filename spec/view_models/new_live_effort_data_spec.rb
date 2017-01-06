@@ -31,7 +31,7 @@ RSpec.describe NewLiveEffortData do
     let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
     context 'for an unstarted effort' do
-      it 'returns a hash of {in: SplitTime} when the split contains only an in sub_split' do
+      it 'returns a hash of {in: SplitTime, out: SplitTime.null_record} when the split contains only an in sub_split' do
         ordered_splits = splits
         effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
         split_times = []
@@ -43,8 +43,10 @@ RSpec.describe NewLiveEffortData do
                                             ordered_splits: ordered_splits,
                                             effort: effort,
                                             times_container: times_container)
-        expect(effort_data.new_split_times.size).to eq(1)
+        expect(effort_data.new_split_times.size).to eq(2)
         expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+        expect(effort_data.new_split_times[:in].null_record?).to eq(false)
+        expect(effort_data.new_split_times[:out].null_record?).to eq(true)
       end
 
       it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do
@@ -102,7 +104,7 @@ RSpec.describe NewLiveEffortData do
     end
 
     context 'when split_times for the given effort and split do not yet exist in the database' do
-      it 'returns a hash of {in: SplitTime} when the split contains only an in sub_split' do
+      it 'returns a hash of {in: SplitTime, out: SplitTime.null_record} when the split contains only an in sub_split' do
         ordered_splits = splits
         effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
         split_times = split_times_4.first(1)
@@ -114,8 +116,10 @@ RSpec.describe NewLiveEffortData do
                                             ordered_splits: ordered_splits,
                                             effort: effort,
                                             times_container: times_container)
-        expect(effort_data.new_split_times.size).to eq(1)
+        expect(effort_data.new_split_times.size).to eq(2)
         expect(effort_data.new_split_times[:in]).to be_a(SplitTime)
+        expect(effort_data.new_split_times[:in].null_record?).to eq(false)
+        expect(effort_data.new_split_times[:out].null_record?).to eq(true)
       end
 
       it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do

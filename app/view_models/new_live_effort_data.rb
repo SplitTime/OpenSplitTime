@@ -1,6 +1,7 @@
 class NewLiveEffortData
   attr_reader :ordered_splits, :effort, :existing_split_times, :new_split_times
   delegate :participant_id, to: :effort
+  SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -17,6 +18,7 @@ class NewLiveEffortData
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @new_split_times = {}
     create_split_times
+    fill_with_null_split_times
   end
 
   def response_row
@@ -62,7 +64,7 @@ class NewLiveEffortData
   end
 
   def times_exist
-    new_split_times.transform_values { |split_time| existing_split_times[split_time.sub_split].present? }
+    sub_split_kinds.map { |kind| [kind, existing_split_times[sub_splits[kind]].present?] }.to_h
   end
 
   def ordered_split_times
@@ -89,6 +91,10 @@ class NewLiveEffortData
       end
       self.new_split_times[kind] = split_time
     end
+  end
+
+  def fill_with_null_split_times
+    SUB_SPLIT_KINDS.each { |kind| self.new_split_times[kind] ||= SplitTime.null_record }
   end
 
   def sub_split_kinds # Typically [:in] or [:in, :out]

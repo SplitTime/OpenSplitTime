@@ -23,7 +23,7 @@ class DataStatus
   end
 
   def self.determine(limits, seconds)
-    return nil unless seconds
+    return nil unless limits.present? && seconds
     if (seconds < limits[:low_bad]) | (seconds > limits[:high_bad])
       'bad'
     elsif (seconds < limits[:low_questionable]) | (seconds > limits[:high_questionable])

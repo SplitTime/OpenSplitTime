@@ -71,14 +71,15 @@ class LiveDataEntryReporter
   end
 
   def first_new_split_time
-    new_split_times.values.sort_by(&:bitkey).first
+    new_split_times.values.reject(&:null_record?).sort_by(&:bitkey).first
   end
 
   def prior_valid_split_time
-    @prior_valid_split_time ||= PriorSplitTimeFinder.split_time(effort: effort,
-                                                                sub_split: split.sub_split_in,
-                                                                ordered_splits: ordered_splits,
-                                                                split_times: ordered_existing_split_times)
+    @prior_valid_split_time ||=
+        split.real_presence && PriorSplitTimeFinder.split_time(effort: effort,
+                                                               sub_split: split.sub_split_in,
+                                                               ordered_splits: ordered_splits,
+                                                               split_times: ordered_existing_split_times)
   end
 
   def time_in_aid

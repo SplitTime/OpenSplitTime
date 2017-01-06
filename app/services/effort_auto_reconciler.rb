@@ -24,8 +24,7 @@ class EffortAutoReconciler
 
   def exact_matches
     @exact_matches ||= unreconciled_efforts
-                           .map { |effort| [effort, effort.exact_matching_participant] }
-                           .select { |_, participant| participant }.to_h
+                           .map { |effort| [effort, effort.exact_matching_participant] }.to_h.compact
   end
 
   def close_matches

@@ -38,7 +38,7 @@ class SimilarEffortFinder
   def selected_effort_times
     time_ranges.each do |low_time, high_time|
       proposed_set = effort_times_in_range(low_time, high_time)
-      return proposed_set if proposed_set.count >= minimum_efforts
+      return proposed_set if proposed_set.size >= minimum_efforts
     end
     effort_times
   end

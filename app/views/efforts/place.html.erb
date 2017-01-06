@@ -36,6 +36,6 @@
 
 <hr>
 
-<% if @effort_place.place_detail_rows.count > 0 %>
+<% if @effort_place.place_detail_rows.present? %>
     <%= render 'place_detail_rows' %>
 <% end %>

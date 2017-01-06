@@ -29,7 +29,7 @@ class EffortShowView
   end
 
   def not_analyzable?
-    split_times.count < 2
+    split_times.size < 2
   end
 
   private

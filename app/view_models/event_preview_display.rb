@@ -19,7 +19,7 @@ class EventPreviewDisplay
   end
 
   def efforts_count
-    event_efforts.count
+    event_efforts.size
   end
 
   def filtered_efforts_count
@@ -54,5 +54,4 @@ class EventPreviewDisplay
       effort_preview_rows << effort_preview_row
     end
   end
-
 end

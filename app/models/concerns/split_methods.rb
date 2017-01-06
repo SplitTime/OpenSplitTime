@@ -38,6 +38,6 @@ module SplitMethods
   end
 
   def simple?
-    splits.count < 3
+    splits.size < 3
   end
 end

@@ -7,7 +7,7 @@
 <div class="page-header">
   <div class="row">
     <div class="col-md-8">
-      <h3><%= "Showing #{@unreconciled_batch.count} of #{@event.unreconciled_efforts.count} Unreconciled efforts for #{@event.name}" %></h3>
+      <h3><%= "Showing #{@unreconciled_batch.size} of #{@event.unreconciled_efforts.size} Unreconciled efforts for #{@event.name}" %></h3>
     </div>
     <div class="col-md-4">
       <% if suggested_match_count(@unreconciled_batch) > 0 %>
@@ -17,10 +17,10 @@
                       method: :put,
                       class: 'btn btn-sm btn-primary btn-margin-top' %>
       <% end %>
-      <%= link_to "Create #{@unreconciled_batch.count} participants",
+      <%= link_to "Create #{@unreconciled_batch.size} participants",
                   create_participants_event_path(@event.id, effort_ids: @unreconciled_batch.ids),
                   method: :post,
-                  data: {confirm: "Create #{@unreconciled_batch.count} new participants?"},
+                  data: {confirm: "Create #{@unreconciled_batch.size} new participants?"},
                   class: 'btn btn-sm btn-success btn-margin-top pull-right' %>
     </div>
   </div>

@@ -24,11 +24,11 @@ class EventProgressDisplay
   end
 
   def race_name
-    race ? race.name : nil
+    race.try(:name)
   end
 
   def efforts_past_due_count
-    past_due_progress_rows.count
+    past_due_progress_rows.size
   end
 
   def past_due_progress_rows
@@ -38,5 +38,4 @@ class EventProgressDisplay
   def live_efforts_in_progress
     live_efforts.select { |live_effort| efforts_in_progress.map(&:id).include?(live_effort.id)}
   end
-
 end

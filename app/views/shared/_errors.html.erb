@@ -4,7 +4,7 @@
         <div class="panel panel-danger">
           <div class="panel-heading">
             <h2 class="panel-title">
-              <%= pluralize(obj.errors.count, "error") %>
+              <%= pluralize(obj.errors.size, "error") %>
               prohibited this record from being saved:
             </h2>
             <div class="panel-body">

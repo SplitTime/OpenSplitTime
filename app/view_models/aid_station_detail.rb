@@ -48,7 +48,7 @@ class AidStationDetail
 
   EFFORT_CATEGORIES.each do |category|
     define_method("efforts_#{category}_count") do
-      method("efforts_#{category}").call.count
+      method("efforts_#{category}").call.size
     end
   end
 

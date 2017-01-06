@@ -10,14 +10,14 @@
 <div class="row">
   <div class="col-xs-6">
     <h4>Database Statistics</h4><br/>
-    <%= "Participants: #{Participant.all.count}" %><br/>
-    <%= "Events: #{Event.all.count} with #{Effort.unreconciled.count} unreconciled efforts" %><br/>
-    <%= "Efforts: #{Effort.all.count} with #{Effort.bad.count} bad and #{Effort.questionable.count} questionable" %><br/>
-    <%= "Split Times: #{SplitTime.all.count} with #{SplitTime.bad.count} bad and #{SplitTime.questionable.count} questionable" %><br/>
-    <%= "Courses: #{Course.all.count}" %><br/>
-    <%= "Splits: #{Split.all.count}" %><br/>
-    <%= "Locations: #{Location.all.count}" %><br/>
-    <%= "Users: #{User.all.count}" %><br/>
+    <%= "Participants: #{Participant.all.size}" %><br/>
+    <%= "Events: #{Event.all.size} with #{Effort.unreconciled.size} unreconciled efforts" %><br/>
+    <%= "Efforts: #{Effort.all.size} with #{Effort.bad.size} bad and #{Effort.questionable.size} questionable" %><br/>
+    <%= "Split Times: #{SplitTime.all.size} with #{SplitTime.bad.size} bad and #{SplitTime.questionable.size} questionable" %><br/>
+    <%= "Courses: #{Course.all.size}" %><br/>
+    <%= "Splits: #{Split.all.size}" %><br/>
+    <%= "Locations: #{Location.all.size}" %><br/>
+    <%= "Users: #{User.all.size}" %><br/>
   </div>
 </div>
 <hr>

@@ -59,10 +59,10 @@ class CoursesController < ApplicationController
 
   def best_efforts
     course = Course.find(params[:id])
-    if course.visible_events.count < 1
+    if course.visible_events.empty?
       flash[:danger] = "No events yet held on this course"
       redirect_to course_path(course)
-    elsif Effort.visible.on_course(course).count < 1
+    elsif Effort.visible.on_course(course).empty?
       flash[:danger] = "No efforts yet run on this course"
       redirect_to course_path(course)
     end

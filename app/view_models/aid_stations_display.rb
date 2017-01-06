@@ -26,19 +26,19 @@ class AidStationsDisplay
   end
 
   def efforts_started_count
-    efforts_started.count
+    efforts_started.size
   end
 
   def efforts_finished_count
-    efforts_finished.count
+    efforts_finished.size
   end
 
   def efforts_dropped_count
-    efforts_dropped.count
+    efforts_dropped.size
   end
 
   def efforts_in_progress_count
-    efforts_in_progress.count
+    efforts_in_progress.size
   end
 
   def event_name

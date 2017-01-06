@@ -75,7 +75,7 @@ module EventsHelper
   end
 
   def suggested_match_count(efforts)
-    suggested_match_id_hash(efforts).count
+    suggested_match_id_hash(efforts).size
   end
 
   def data_status(status_int)

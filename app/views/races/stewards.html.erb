@@ -17,7 +17,7 @@
 
 <%= render 'user_lookup' %>
 
-<% if @race.stewards.count > 0 %>
+<% if @race.stewards.present? %>
     <div class="row">
       <div class="col-xs-8">
         <h4>Stewards associated with this race:</h4>

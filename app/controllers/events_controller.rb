@@ -79,7 +79,7 @@ class EventsController < ApplicationController
   def reconcile
     authorize @event
     @unreconciled_batch = @event.unreconciled_efforts.order(:last_name).limit(20)
-    if @unreconciled_batch.count < 1
+    if @unreconciled_batch.empty?
       redirect_to stage_event_path(@event)
     else
       @unreconciled_batch.each { |effort| effort.suggest_close_match }
@@ -228,7 +228,7 @@ class EventsController < ApplicationController
 
   def export_to_ultrasignup
     authorize @event
-    params[:per_page] = @event.efforts.count # Get all efforts without pagination
+    params[:per_page] = @event.efforts.size # Get all efforts without pagination
     @event_display = EventEffortsDisplay.new(@event, params)
     respond_to do |format|
       format.html { redirect_to stage_event_path(@event) }

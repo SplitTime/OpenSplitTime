@@ -48,7 +48,7 @@ class EffortAutoReconciler
   end
 
   def close_matched_count
-    close_matched_efforts.count
+    close_matched_efforts.size
   end
 
   def matched_report

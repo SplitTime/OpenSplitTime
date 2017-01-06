@@ -97,7 +97,7 @@
     <hr>
 <% end %>
 
-<% if @effort_show.split_rows.count > 0 %>
+<% if @effort_show.split_rows.present? %>
     <%= render 'split_times/split_times_list' %>
 <% end %>
 

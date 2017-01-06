@@ -38,7 +38,7 @@ class BulkDataStatusSetter
   def save_changes
     bulk_update(:split_times, changed_split_times)
     bulk_update(:efforts, changed_efforts)
-    self.report = "Updated #{changed_split_times.count} split times and #{changed_efforts.count} efforts."
+    self.report = "Updated #{changed_split_times.size} split times and #{changed_efforts.size} efforts."
   end
 
   private

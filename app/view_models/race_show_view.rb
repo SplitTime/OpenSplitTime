@@ -11,15 +11,15 @@ class RaceShowView
   end
 
   def events_count
-    events ? events.count : 0
+    events.size
   end
 
   def courses_count
-    courses ? courses.count : 0
+    courses.size
   end
 
   def stewards_count
-    stewards ? stewards.count : 0
+    stewards.size
   end
 
   def view_text

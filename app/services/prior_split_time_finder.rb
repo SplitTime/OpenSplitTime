@@ -60,7 +60,7 @@ class PriorSplitTimeFinder
     raise ArgumentError, 'sub_split is not contained in the provided splits' unless
         ordered_sub_splits.include?(sub_split)
     raise ArgumentError, 'split_times do not all belong to the same effort' unless
-        split_times.map(&:effort_id).uniq.count < 2
+        split_times.map(&:effort_id).uniq.size < 2
     raise ArgumentError, 'split_times do not relate to the provided effort' if
         effort && split_times.any? { |st| st.effort_id != effort.id }
   end

@@ -119,7 +119,7 @@ class Effort < ActiveRecord::Base
 
   def time_in_aid(split)
     time_array = ordered_split_times(split).map(&:time_from_start)
-    time_array.count > 1 ? time_array.last - time_array.first : nil
+    time_array.size > 1 ? time_array.last - time_array.first : nil
   end
 
   def total_time_in_aid

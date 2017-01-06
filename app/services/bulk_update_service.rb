@@ -119,7 +119,7 @@ class BulkUpdateService
       end
     end
     # TODO determine if split_times were actually added before returning this report
-    "Added start times for #{efforts.count} efforts."
+    "Added start times for #{efforts.size} efforts."
   end
 
   def self.set_dropped_split_ids(update_hash)
@@ -146,5 +146,4 @@ class BulkUpdateService
       end
     end
   end
-
 end

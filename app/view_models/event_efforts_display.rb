@@ -21,11 +21,11 @@ class EventEffortsDisplay
   end
 
   def efforts_count
-    event_efforts.count
+    event_efforts.size
   end
 
   def started_efforts_count
-    started_efforts.count
+    started_efforts.size
   end
 
   def unstarted_efforts_count
@@ -102,5 +102,4 @@ class EventEffortsDisplay
   def sorted_genders
     started_efforts.map(&:gender)
   end
-
 end

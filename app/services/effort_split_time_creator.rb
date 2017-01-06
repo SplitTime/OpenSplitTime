@@ -42,8 +42,8 @@ class EffortSplitTimeCreator
   end
 
   def validate_row_time_data
-    raise ArgumentError, "row time data contains #{row_time_data.count} elements but event requires #{event_sub_split_count} elements" if
-        event_sub_split_count != row_time_data.count
+    raise ArgumentError, "row time data contains #{row_time_data.size} elements but event requires #{event_sub_split_count} elements" if
+        event_sub_split_count != row_time_data.size
   end
 
   def split_time_build(sub_split)
@@ -67,7 +67,7 @@ class EffortSplitTimeCreator
   end
 
   def event_sub_split_count
-    sub_splits.count
+    sub_splits.size
   end
   
   def finished?

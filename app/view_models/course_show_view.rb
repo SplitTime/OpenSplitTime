@@ -7,8 +7,8 @@ class CourseShowView
     @course = course
     @params = params
     @locations = Location.on_course(course)
-    @events = course.events.select_with_params(@params[:search]).to_a
-    @ordered_splits = @course.splits.includes(:course, :location).ordered if @course.splits
+    @events = course.events.select_with_params(params[:search]).to_a
+    @ordered_splits = @course.splits.includes(:course, :location).ordered
   end
 
   def course_id
@@ -16,11 +16,11 @@ class CourseShowView
   end
 
   def splits_count
-    ordered_splits ? ordered_splits.count : 0
+    ordered_splits.size
   end
 
   def events_count
-    events ? events.count : 0
+    events.size
   end
 
   def latitude_center

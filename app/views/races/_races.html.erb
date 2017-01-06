@@ -11,7 +11,7 @@
   <% races.each do |race| %>
       <tr>
         <td><strong><%= link_to race.name, race_path(race) %></strong></td>
-        <td><%= pluralize(race.events.count, 'event') %></td>
+        <td><%= pluralize(race.events.size, 'event') %></td>
       </tr>
   <% end %>
   </tbody>

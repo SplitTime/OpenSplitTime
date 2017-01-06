@@ -89,7 +89,7 @@
     <strong>Associated Efforts:</strong>
     <%= @event_stage.efforts_count %>
     <% if @event_stage.unreconciled_efforts? %>
-        <%= "(#{@event_stage.unreconciled_efforts.count} unreconciled)" %>
+        <%= "(#{@event_stage.unreconciled_efforts.size} unreconciled)" %>
     <% elsif @event_stage.efforts_count > 0 %>
         (All reconciled)
     <% end %>

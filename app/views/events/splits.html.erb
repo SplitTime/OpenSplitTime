@@ -4,7 +4,7 @@
 <%= link_to '< Back to admin', stage_event_path(id: @event.id),
             :class => 'btn btn-sm btn-default' %>
 
-<% if @event.splits.count > 0 %>
+<% if @event.splits.present? %>
     <div class="page-header">
       <div class="row">
         <div class="col-md-10">
@@ -48,7 +48,7 @@
     </table>
 <% end %>
 
-<% if @other_splits.count > 0 %>
+<% if @other_splits.present? %>
     <div class="page-header">
       <div class="row">
         <div class="col-md-10">

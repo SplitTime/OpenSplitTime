@@ -45,6 +45,6 @@
   </div>
 </div>
 
-<% if @participant.efforts.count > 0 %>
+<% if @participant.efforts.present? %>
     <%= render 'efforts/efforts_list_participant', efforts: @participant.efforts.where(concealed: false).ordered_by_date %>
 <% end %>

@@ -79,9 +79,9 @@ class Split < ActiveRecord::Base
 
   def name(bitkey = nil)
     if bitkey
-      name_extensions.count > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name
+      name_extensions.size > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name
     else
-      extensions = name_extensions.count > 1 ? name_extensions.join(' / ') : nil
+      extensions = name_extensions.size > 1 ? name_extensions.join(' / ') : nil
       [base_name, extensions].compact.join(' ')
     end
   end

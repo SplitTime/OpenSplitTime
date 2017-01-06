@@ -19,11 +19,11 @@ class EventDroppedDisplay
   end
 
   def efforts_count
-    event_efforts ? event_efforts.count : 0
+    event_efforts.size
   end
 
   def dropped_efforts_count
-    dropped_efforts ? dropped_efforts.count : 0
+    dropped_efforts.size
   end
 
   private
@@ -33,7 +33,7 @@ class EventDroppedDisplay
   def get_efforts
     self.event_efforts = event.efforts
     self.started_efforts = event_efforts.sorted_with_finish_status # This method ignores efforts having no split_times.
-    self.dropped_efforts = started_efforts.select { |effort| effort.dropped_split_id.present? }
+    self.dropped_efforts = started_efforts.select(&:dropped_split_id)
   end
 
   def sort_efforts(sort_by)
@@ -59,5 +59,4 @@ class EventDroppedDisplay
   def dropped_split_name(effort)
      effort.final_split_name
   end
-
 end

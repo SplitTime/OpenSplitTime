@@ -30,8 +30,8 @@ class SplitImporter
   end
 
   def split_import_report
-    imported = "Imported #{split_id_array.count} splits. "
-    failed = "Failed to import #{split_failure_array.count} splits." if split_failure_array.count > 0
+    imported = "Imported #{split_id_array.size} splits. "
+    failed = "Failed to import #{split_failure_array.size} splits." if split_failure_array.present?
     [imported, failed].join
   end
 
@@ -46,5 +46,4 @@ class SplitImporter
     self.splits[0] = event.course.start_split || splits[0]
     self.splits[-1] = event.course.finish_split || splits[-1]
   end
-
 end

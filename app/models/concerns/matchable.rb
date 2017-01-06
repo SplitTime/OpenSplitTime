@@ -19,7 +19,7 @@ module Matchable
     exact_match = name_gender_age_match.present? ?
         name_gender_age_match :
         possible_matching_participants.state_matches(state_code)
-    exact_match.count == 1 ? exact_match.first : nil # Convert single match to object; return nil if more than one match
+    exact_match.one? ? exact_match.first : nil # Convert single match to object; return nil if more than one match
   end
 
   def suggest_close_match

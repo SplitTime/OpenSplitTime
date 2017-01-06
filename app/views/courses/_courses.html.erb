@@ -12,8 +12,8 @@
   <% courses.each do |course| %>
       <tr>
         <td><strong><%= link_to course.name, course_path(course) %></strong></td>
-        <td><%= pluralize(course.splits.count, 'split') %></td>
-        <td><%= pluralize(course.events.count, 'event') %></td>
+        <td><%= pluralize(course.splits.size, 'split') %></td>
+        <td><%= pluralize(course.events.size, 'event') %></td>
       </tr>
   <% end %>
   </tbody>

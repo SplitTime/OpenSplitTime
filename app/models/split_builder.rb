@@ -39,7 +39,7 @@ class SplitBuilder
     case
     when index == 0
       :start
-    when index == distance_grouped_attributes.count - 1
+    when index == distance_grouped_attributes.size - 1
       :finish
     else
       :intermediate
@@ -60,9 +60,9 @@ class SplitBuilder
 
   def sub_split_bitkeys(groups)
     case
-    when groups.count == 1
+    when groups.size == 1
       [SubSplit::IN_BITKEY]
-    when groups.count == 2
+    when groups.size == 2
       [SubSplit::IN_BITKEY, SubSplit::OUT_BITKEY]
     else
       group_names(groups)

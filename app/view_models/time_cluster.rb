@@ -13,12 +13,12 @@ class TimeCluster
 
   def segment_time
     @segment_time ||=
-        times_from_start.compact.first - prior_time if (prior_time && (times_from_start.compact.count > 0))
+        times_from_start.compact.first - prior_time if (prior_time && (times_from_start.compact.present?))
   end
 
   def time_in_aid
     @time_in_aid ||=
-        times_from_start.compact.last - times_from_start.compact.first if times_from_start.compact.count > 1
+        times_from_start.compact.last - times_from_start.compact.first if times_from_start.compact.size > 1
   end
 
   def times_from_start

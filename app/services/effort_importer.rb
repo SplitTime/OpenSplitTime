@@ -122,11 +122,10 @@ class EffortImporter
   end
 
   def event_sub_split_count
-    sub_splits.count
+    sub_splits.size
   end
 
   def header_column_titles
     import_without_times ? header1 : header1[0..split_offset - 2]
   end
-
 end

@@ -18,4 +18,5 @@
 //= require gmaps/google
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
+//= require switchery
 //= require_tree .

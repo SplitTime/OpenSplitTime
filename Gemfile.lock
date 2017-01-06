@@ -365,6 +365,8 @@ GEM
       sprockets (>= 3.0.0)
     strip_attributes (1.8.0)
       activemodel (>= 3.0, < 6.0)
+    switchery-rails (0.8.1.1)
+      railties (>= 3.2, < 6.0)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -458,6 +460,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   strip_attributes
+  switchery-rails
   therubyracer
   turbolinks
   twitter-bootstrap-rails
@@ -470,4 +473,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.13.6
+   1.13.7

@@ -13,27 +13,14 @@ class ParticipantMergeView
     set_effort_counts
   end
 
-  def proposed_match_id
-    proposed_match.id
-  end
-
   def proposed_match_name
     "#{proposed_match.last_name}, #{proposed_match.first_name}"
   end
   
-  def proposed_match_present?
-    proposed_match.present?
-  end
-  
-  def possible_matches_present?
-    possible_matches.present?
-  end
-
   private
 
   def set_effort_counts
     participants = possible_matches + [proposed_match] + [participant]
-    @effort_counts = Effort.group(:participant_id).where(participant: participants).count
+    @effort_counts = Effort.group(:participant_id).where(participant: participants).size
   end
-
 end

@@ -5,10 +5,10 @@
   <div class="col-xs-5">
     <h2><%= "#{@participant_merge.last_name}, #{@participant_merge.first_name}" %></h2>
   </div>
-  <% if @participant_merge.proposed_match_present? %>
+  <% if @participant_merge.proposed_match.present? %>
       <div class="col-xs-2"><%= link_to '<< Merge into',
                                         combine_participant_path(@participant_merge.id,
-                                                                 target_id: @participant_merge.proposed_match_id),
+                                                                 target_id: @participant_merge.proposed_match.id),
                                         method: :put,
                                         class: 'btn btn-sm btn-success btn-margin-top' %>
       </div>
@@ -46,6 +46,6 @@
 </div>
 <hr>
 
-<% if @participant_merge.possible_matches_present? %>
+<% if @participant_merge.possible_matches.present? %>
     <%= render 'participants/participants_list_merge' %>
 <% end %>

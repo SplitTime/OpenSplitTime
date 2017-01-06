@@ -132,7 +132,7 @@ class EventsController < ApplicationController
       ImportEffortsWithoutTimesJob.perform_later(file_url, @event, current_user.id)
       flash[:success] = 'Import in progress. Reload the page in a minute or two (depending on file size) and your import should be complete.'
     else
-      flash[:danger] = 'Import file too large.'
+      flash[:danger] = 'The import file is too large. Delete extraneous data and if it is still too large, divide the file and import in multiple steps.'
     end
     redirect_to stage_event_path(@event)
   end
@@ -150,7 +150,7 @@ class EventsController < ApplicationController
 
   def splits
     authorize @event
-    @other_splits = @event.course.splits.ordered - @event.splits
+    @other_splits = @event.course.ordered_splits - @event.splits
   end
 
   def associate_splits
@@ -165,15 +165,9 @@ class EventsController < ApplicationController
     end
   end
 
-  def remove_split
+  def remove_splits
     authorize @event
-    @event.splits.delete(params[:split_id])
-    redirect_to splits_event_path(@event)
-  end
-
-  def remove_all_splits
-    authorize @event
-    @event.splits.delete(Split.intermediate)
+    params[:split_ids].each { |split_id| @event.splits.delete(split_id) }
     redirect_to splits_event_path(@event)
   end
 

@@ -54,11 +54,7 @@ class EventPolicy
     current_user.authorized_to_edit?(event)
   end
 
-  def remove_split?
-    current_user.authorized_to_edit?(event)
-  end
-
-  def remove_all_splits?
+  def remove_splits?
     current_user.authorized_to_edit?(event)
   end
 

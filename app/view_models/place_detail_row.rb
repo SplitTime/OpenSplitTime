@@ -32,43 +32,43 @@ class PlaceDetailRow
   end
 
   def passed_segment_count
-    passed_segment ? passed_segment.count : nil
+    passed_segment.size
   end
   
   def passed_in_aid_count
-    passed_in_aid ? passed_in_aid.count : nil
+    passed_in_aid.size
   end
 
   def passed_by_segment_count
-    passed_by_segment ? passed_by_segment.count : nil
+    passed_by_segment.size
   end
 
   def passed_by_in_aid_count
-    passed_by_in_aid ? passed_by_in_aid.count : nil
+    passed_by_in_aid.size
   end
 
   def together_in_aid_count
-    together_in_aid ? together_in_aid.count : nil
+    together_in_aid.size
   end
 
   def passed_segment_ids
-    passed_segment ? passed_segment.map(&:id) : nil
+    passed_segment.map(&:id)
   end
 
   def passed_in_aid_ids
-    passed_in_aid ? passed_in_aid.map(&:id) : nil
+    passed_in_aid.map(&:id)
   end
 
   def passed_by_segment_ids
-    passed_by_segment ? passed_by_segment.map(&:id) : nil
+    passed_by_segment.map(&:id)
   end
 
   def passed_by_in_aid_ids
-    passed_by_in_aid ? passed_by_in_aid.map(&:id) : nil
+    passed_by_in_aid.map(&:id)
   end
 
   def together_in_aid_ids
-    together_in_aid ? together_in_aid.map(&:id) : nil
+    together_in_aid.map(&:id)
   end
 
   def passed_segment_table_title

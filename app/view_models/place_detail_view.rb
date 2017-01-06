@@ -22,7 +22,7 @@ class PlaceDetailView
   def efforts_passed(begin_sub_split, end_sub_split)
     begin_ids_ahead = effort_ids_ahead(begin_sub_split)
     end_ids_ahead = effort_ids_ahead(end_sub_split)
-    return nil if begin_ids_ahead.nil? || end_ids_ahead.nil?
+    return [] unless begin_ids_ahead && end_ids_ahead
     ids_passed = begin_ids_ahead - end_ids_ahead
     event_efforts.select { |effort| ids_passed.include?(effort.id) }
   end
@@ -30,7 +30,7 @@ class PlaceDetailView
   def efforts_passed_by(begin_sub_split, end_sub_split)
     begin_ids_ahead = effort_ids_ahead_or_tied(begin_sub_split)
     end_ids_ahead = effort_ids_ahead(end_sub_split)
-    return nil if begin_ids_ahead.nil? || end_ids_ahead.nil?
+    return [] unless begin_ids_ahead && end_ids_ahead
     ids_passed_by = end_ids_ahead - begin_ids_ahead
     event_efforts.select { |effort| ids_passed_by.include?(effort.id) }
   end
@@ -94,17 +94,18 @@ class PlaceDetailView
     ordered_splits.each do |split|
       next if split.start?
       previous_split = ordered_splits.find { |s| s.id == prior_sub_split.split_id }
+      efforts = {passed_segment: efforts_passed(prior_sub_split, split.sub_split_in),
+                 passed_in_aid: efforts_passed(split.sub_split_in, split.sub_split_out),
+                 passed_by_segment: efforts_passed_by(prior_sub_split, split.sub_split_in),
+                 passed_by_in_aid: efforts_passed_by(split.sub_split_in, split.sub_split_out),
+                 together_in_aid: efforts_together_in_aid(split)}
       place_detail_row = PlaceDetailRow.new(effort,
                                             split,
                                             previous_split,
                                             related_split_times(split),
                                             {split_place_in: split_place(split.sub_split_in),
                                              split_place_out: split_place(split.sub_split_out)},
-                                            {passed_segment: efforts_passed(prior_sub_split, split.sub_split_in),
-                                             passed_in_aid: efforts_passed(split.sub_split_in, split.sub_split_out),
-                                             passed_by_segment: efforts_passed_by(prior_sub_split, split.sub_split_in),
-                                             passed_by_in_aid: efforts_passed_by(split.sub_split_in, split.sub_split_out),
-                                             together_in_aid: efforts_together_in_aid(split)})
+                                            efforts)
       place_detail_rows << place_detail_row
       prior_sub_split = place_detail_row.end_sub_split if place_detail_row.end_sub_split
     end

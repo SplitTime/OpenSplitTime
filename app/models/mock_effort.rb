@@ -24,7 +24,7 @@ class MockEffort
   end
 
   def split_rows
-    @split_rows ||= create_split_rows
+    @split_rows ||= plan_times.present? ? create_split_rows : []
   end
 
   def total_segment_time
@@ -40,7 +40,7 @@ class MockEffort
   end
 
   def relevant_efforts_count
-    relevant_effort_ids.count
+    relevant_effort_ids.size
   end
 
   def event_years_analyzed

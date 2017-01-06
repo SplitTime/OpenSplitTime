@@ -6,6 +6,7 @@ class SplitTime < ActiveRecord::Base
 
   include Auditable
   include DataStatusMethods
+  include GuaranteedFindable
   belongs_to :effort
   belongs_to :split
   alias_attribute :bitkey, :sub_split_bitkey
@@ -28,6 +29,10 @@ class SplitTime < ActiveRecord::Base
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey],
                           message: 'only one of any given split/sub_split permitted within an effort'
   validate :course_is_consistent
+
+  def self.null_record
+    @null_record ||= SplitTime.new
+  end
 
   def self.confirmed!
     all.each { |resource| resource.confirmed! }

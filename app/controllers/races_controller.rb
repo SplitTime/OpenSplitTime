@@ -61,7 +61,7 @@ class RacesController < ApplicationController
   def stewards
     authorize @race
     if params[:search].present?
-      user = User.find_by_email(params[:search])
+      user = User.find_by(email: params[:search])
       if user
         if @race.stewards.include?(user)
           flash[:warning] = 'That user is already a steward of this race.'

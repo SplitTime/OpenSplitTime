@@ -18,9 +18,9 @@ RSpec.describe SplitImporter do
       end
 
       it 'imports all valid efforts, sets up data correctly, and returns a failure array containing invalid rows' do
-        effort1 = Effort.find_by_bib_number(1)
-        effort2 = Effort.find_by_bib_number(143)
-        effort3 = Effort.find_by_bib_number(135)
+        effort1 = Effort.find_by(bib_number: 1)
+        effort2 = Effort.find_by(bib_number: 143)
+        effort3 = Effort.find_by(bib_number: 135)
         expect(Effort.all.count).to eq(11)
         expect(effort1.first_name).to eq('Fast')
         expect(effort1.last_name).to eq('Finisher')
@@ -50,24 +50,24 @@ RSpec.describe SplitImporter do
 
       it 'correctly determines dropped_split_ids and sets start_offsets' do
         split1 = Split.find_by(base_name: 'Tunnel')
-        expect(Effort.find_by_bib_number(49).dropped_split_id).to eq(split1.id)
-        expect(Effort.find_by_bib_number(135).dropped_split_id).to eq(split1.id)
-        expect(Effort.find_by_bib_number(32).dropped_split_id).to eq(split1.id)
-        expect(Effort.find_by_bib_number(1).dropped_split_id).to be_nil
-        expect(Effort.find_by_bib_number(30).start_offset).to eq(30 * 60)
-        expect(Effort.find_by_bib_number(135).start_offset).to eq(60 * 60)
-        expect(Effort.find_by_bib_number(1).start_offset).to eq(0)
-        expect(Effort.find_by_bib_number(32).start_offset).to eq(0)
+        expect(Effort.find_by(bib_number: 49).dropped_split_id).to eq(split1.id)
+        expect(Effort.find_by(bib_number: 135).dropped_split_id).to eq(split1.id)
+        expect(Effort.find_by(bib_number: 32).dropped_split_id).to eq(split1.id)
+        expect(Effort.find_by(bib_number: 1).dropped_split_id).to be_nil
+        expect(Effort.find_by(bib_number: 30).start_offset).to eq(30 * 60)
+        expect(Effort.find_by(bib_number: 135).start_offset).to eq(60 * 60)
+        expect(Effort.find_by(bib_number: 1).start_offset).to eq(0)
+        expect(Effort.find_by(bib_number: 32).start_offset).to eq(0)
       end
 
       it 'imports all valid split_times and correctly sets split_time times from start' do
-        split1 = Split.find_by_base_name('Ridgeline')
-        split2 = Split.find_by_base_name('Mountain Top')
-        split3 = Split.find_by_base_name('Tunnel')
-        split4 = Split.find_by_base_name('Finish')
-        effort1 = Effort.find_by_bib_number(128)
-        effort2 = Effort.find_by_bib_number(143)
-        effort3 = Effort.find_by_bib_number(186)
+        split1 = Split.find_by(base_name: 'Ridgeline')
+        split2 = Split.find_by(base_name: 'Mountain Top')
+        split3 = Split.find_by(base_name: 'Tunnel')
+        split4 = Split.find_by(base_name: 'Finish')
+        effort1 = Effort.find_by(bib_number: 128)
+        effort2 = Effort.find_by(bib_number: 143)
+        effort3 = Effort.find_by(bib_number: 186)
 
         expect(SplitTime.all.count).to eq(75)
         expect(SplitTime.find_by(effort: effort1, split: split2, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((22.hours + 45.minutes).to_i)
@@ -88,10 +88,10 @@ RSpec.describe SplitImporter do
         split1 = Split.find_by(base_name: 'Ridgeline')
         split2 = Split.find_by(base_name: 'Tunnel')
         split3 = Split.find_by(base_name: 'Finish')
-        effort1 = Effort.find_by_bib_number(2)
-        effort2 = Effort.find_by_bib_number(131)
-        effort3 = Effort.find_by_bib_number(49)
-        effort4 = Effort.find_by_bib_number(119)
+        effort1 = Effort.find_by(bib_number: 2)
+        effort2 = Effort.find_by(bib_number: 131)
+        effort3 = Effort.find_by(bib_number: 49)
+        effort4 = Effort.find_by(bib_number: 119)
 
         expect(SplitTime.where(effort: effort1, split: split1).count).to eq(1)
         expect(SplitTime.where(effort: effort2, split: split1, bitkey: 64).count).to eq(0)

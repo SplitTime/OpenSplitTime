@@ -17,29 +17,29 @@ RSpec.describe SplitImporter do
 
       it 'should import the splits correctly' do
         expect(Split.all.count).to eq(6)
-        expect(Split.find_by_base_name('Start').distance_from_start).to eq(0)
-        expect(Split.find_by_base_name('Tunnel').distance_from_start).to eq(46.6.miles.to.meters.to_i)
+        expect(Split.find_by(base_name: 'Start').distance_from_start).to eq(0)
+        expect(Split.find_by(base_name: 'Tunnel').distance_from_start).to eq(46.6.miles.to.meters.to_i)
         expect(Split.where(base_name: 'Tunnel').count).to eq(1)
       end
 
       it 'should correctly set up sub_split_bitmaps for imported splits' do
-        expect(Split.find_by_base_name('Start').sub_split_bitmap).to eq(1)
-        expect(Split.find_by_base_name('Tunnel').sub_split_bitmap).to eq(65)
+        expect(Split.find_by(base_name: 'Start').sub_split_bitmap).to eq(1)
+        expect(Split.find_by(base_name: 'Tunnel').sub_split_bitmap).to eq(65)
       end
 
       it 'should correctly determine start status' do
         expect(Split.start.count).to eq(1)
-        expect(Split.find_by_base_name('Start').kind).to eq('start')
+        expect(Split.find_by(base_name: 'Start').kind).to eq('start')
       end
 
       it 'should correctly determine intermediate status' do
         expect(Split.intermediate.count).to eq(4)
-        expect(Split.find_by_base_name('Ridgeline').kind).to eq('intermediate')
+        expect(Split.find_by(base_name: 'Ridgeline').kind).to eq('intermediate')
       end
 
       it 'should correctly determine finish status' do
         expect(Split.finish.count).to eq(1)
-        expect(Split.find_by_base_name('Finish').kind).to eq('finish')
+        expect(Split.find_by(base_name: 'Finish').kind).to eq('finish')
       end
     end
   end

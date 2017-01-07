@@ -232,12 +232,15 @@
                 });
 
                 // Listen for keydown on bibNumber
+                var lastBib = '';
                 $('#js-bib-number').on('blur', function (event) {
                     liveEntry.liveEntryForm.fetchEffortData();
-                    if (liveEntry.liveEntryForm.rapidEntry) {
+                    var newBib = ($(this).val() != '') && ($(this).val() != lastBib);
+                    if (liveEntry.liveEntryForm.rapidEntry && newBib) {
                         $('#js-time-in').val(liveEntry.liveEntryForm.currentTime());
                         $('#js-time-out').val(liveEntry.liveEntryForm.currentTime);
                     }
+                    lastBib = $(this).val();
                 });
 
                 $('#js-time-in').on('blur', function (event) {
@@ -265,7 +268,8 @@
                 // Enable / Disable Rapid Entry Mode
                 $('#js-rapid-mode').on('change', function (event) {
                     liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
-                });
+                    $('#js-time-in, #js-time-out').toggleClass('success', $(this).prop('checked'));
+                }).change();
 
                 // Listen for keydown in pacer-in and pacer-out.
                 // Enter checks the box, tab moves to next field.

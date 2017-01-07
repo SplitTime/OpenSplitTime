@@ -234,13 +234,17 @@
                 // Listen for keydown on bibNumber
                 var lastBib = '';
                 $('#js-bib-number').on('blur', function (event) {
-                    liveEntry.liveEntryForm.fetchEffortData();
-                    var newBib = ($(this).val() != '') && ($(this).val() != lastBib);
-                    if (liveEntry.liveEntryForm.rapidEntry && newBib) {
-                        $('#js-time-in').val(liveEntry.liveEntryForm.currentTime());
-                        $('#js-time-out').val(liveEntry.liveEntryForm.currentTime);
+                    if ( liveEntry.liveEntryForm.rapidEntry ) {
+                        if ($(this).val() == '') {
+                            $('#js-time-in').val('');
+                            $('#js-time-out').val('');
+                        } else if ($(this).val() != lastBib) {
+                            $('#js-time-in').val(liveEntry.liveEntryForm.currentTime());
+                            $('#js-time-out').val(liveEntry.liveEntryForm.currentTime());
+                        }
                     }
                     lastBib = $(this).val();
+                    liveEntry.liveEntryForm.fetchEffortData();
                 });
 
                 $('#js-time-in').on('blur', function (event) {

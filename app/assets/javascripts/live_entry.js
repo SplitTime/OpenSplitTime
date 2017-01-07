@@ -239,8 +239,8 @@
                             $('#js-time-in').val('');
                             $('#js-time-out').val('');
                         } else if ($(this).val() != lastBib) {
-                            $('#js-time-in').val(liveEntry.liveEntryForm.currentTime());
-                            $('#js-time-out').val(liveEntry.liveEntryForm.currentTime());
+                            $('#js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
+                            $('#js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
                         }
                     }
                     lastBib = $(this).val();

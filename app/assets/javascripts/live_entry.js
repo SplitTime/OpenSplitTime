@@ -197,6 +197,7 @@
          *
          */
         liveEntryForm: {
+            lastBib: null,
             init: function () {
                 // Apply input masks on time in / out
                 var maskOptions = {
@@ -232,18 +233,9 @@
                 });
 
                 // Listen for keydown on bibNumber
-                var lastBib = '';
                 $('#js-bib-number').on('blur', function (event) {
-                    if ( liveEntry.liveEntryForm.rapidEntry ) {
-                        if ($(this).val() == '') {
-                            $('#js-time-in').val('');
-                            $('#js-time-out').val('');
-                        } else if ($(this).val() != lastBib) {
-                            $('#js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                            $('#js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                        }
-                    }
-                    lastBib = $(this).val();
+                    liveEntry.liveEntryForm.prefillCurrentTime();
+                    liveEntry.liveEntryForm.lastBib = $(this).val();
                     liveEntry.liveEntryForm.fetchEffortData();
                 });
 
@@ -361,16 +353,17 @@
                 thisTimeRow.splitName = $('#split-select option:selected').html();
                 thisTimeRow.effortName = $('#js-effort-name').html();
                 thisTimeRow.bibNumber = $('#js-bib-number').val();
-                thisTimeRow.timeIn = $('#js-time-in').val();
-                thisTimeRow.timeOut = $('#js-time-out').val();
-                thisTimeRow.pacerIn = $('#js-pacer-in').prop('checked');
-                thisTimeRow.pacerOut = $('#js-pacer-out').prop('checked');
+                thisTimeRow.timeIn = $('#js-time-in:not(:disabled)').val() || '';
+                thisTimeRow.timeOut = $('#js-time-out:not(:disabled)').val() || '';
+                thisTimeRow.pacerIn = $('#js-pacer-in:not(:disabled)').prop('checked') || false;
+                thisTimeRow.pacerOut = $('#js-pacer-out:not(:disabled)').prop('checked') || false;
                 thisTimeRow.droppedHere = $('#js-dropped').prop('checked');
                 thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
                 thisTimeRow.timeOutExists = liveEntry.currentEffortData.timeOutExists;
+                console.log( thisTimeRow );
                 return thisTimeRow;
             },
 
@@ -430,6 +423,20 @@
             currentTime: function() {
                 var now = new Date();
                 return ("0" + now.getHours()).slice(-2) + ("0" + now.getMinutes()).slice(-2) + ("0" + now.getSeconds()).slice(-2);
+            },
+            /**
+             * Prefills the time fields with the current time
+             */
+            prefillCurrentTime: function() {
+                if ( liveEntry.liveEntryForm.rapidEntry ) {
+                    if ($('#js-bib-number').val() == '') {
+                        $('#js-time-in').val('');
+                        $('#js-time-out').val('');
+                    } else if ($('#js-bib-number').val() != liveEntry.liveEntryForm.lastBib) {
+                        $('#js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
+                        $('#js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
+                    }
+                }
             }
         }, // END liveEntryForm form
 
@@ -477,6 +484,7 @@
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
                     event.preventDefault();
+                    liveEntry.liveEntryForm.prefillCurrentTime();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     return false;
                 });

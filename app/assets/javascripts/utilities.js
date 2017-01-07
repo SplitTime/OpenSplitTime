@@ -100,8 +100,19 @@
         }
     };
 
+    var switchery = {
+    	init: function () {
+    		$( '[data-toggle="switchery"]' ).each( function( i, el ) {
+				$( el ).data( 'switchery', new Switchery( el, {
+					size: $( el ).data( 'size' )
+				} ) );
+    		} );
+    	}
+    }
+
     $(document).ready(function () {
         effortsPopover.init();
         staticPopover.init();
+        switchery.init();
     });
 })(jQuery);

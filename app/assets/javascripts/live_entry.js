@@ -232,7 +232,18 @@
                 });
 
                 // Listen for keydown on bibNumber
+                var lastBib = '';
                 $('#js-bib-number').on('blur', function (event) {
+                    if ( liveEntry.liveEntryForm.rapidEntry ) {
+                        if ($(this).val() == '') {
+                            $('#js-time-in').val('');
+                            $('#js-time-out').val('');
+                        } else if ($(this).val() != lastBib) {
+                            $('#js-time-in').val(liveEntry.liveEntryForm.currentTime());
+                            $('#js-time-out').val(liveEntry.liveEntryForm.currentTime());
+                        }
+                    }
+                    lastBib = $(this).val();
                     liveEntry.liveEntryForm.fetchEffortData();
                 });
 
@@ -257,6 +268,12 @@
                         liveEntry.liveEntryForm.fetchEffortData();
                     }
                 });
+
+                // Enable / Disable Rapid Entry Mode
+                $('#js-rapid-mode').on('change', function (event) {
+                    liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
+                    $('#js-time-in, #js-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
+                }).change();
 
                 // Listen for keydown in pacer-in and pacer-out.
                 // Enter checks the box, tab moves to next field.
@@ -394,7 +411,7 @@
             },
 
             /**
-             * Valiates the time fields
+             * Validates the time fields
              *
              * @param string time time format from the input mask
              */
@@ -406,6 +423,13 @@
                     time = time.concat('0');
                 }
                 return time;
+            },
+            /**
+             * Returns the current time in the standard format
+             */
+            currentTime: function() {
+                var now = new Date();
+                return ("0" + now.getHours()).slice(-2) + ("0" + now.getMinutes()).slice(-2) + ("0" + now.getSeconds()).slice(-2);
             }
         }, // END liveEntryForm form
 

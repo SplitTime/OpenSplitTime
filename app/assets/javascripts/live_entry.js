@@ -268,7 +268,7 @@
                 // Enable / Disable Rapid Entry Mode
                 $('#js-rapid-mode').on('change', function (event) {
                     liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
-                    $('#js-time-in, #js-time-out').toggleClass('success', $(this).prop('checked'));
+                    $('#js-time-in, #js-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
                 }).change();
 
                 // Listen for keydown in pacer-in and pacer-out.

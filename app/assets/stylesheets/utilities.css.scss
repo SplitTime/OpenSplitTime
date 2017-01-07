@@ -62,3 +62,16 @@ Efforts Popover
 		}
 	}
 }
+
+label.switchery-label {
+	cursor: pointer;
+	
+	> span {
+		display: inline-block;
+		font-size: 12px;
+		line-height: 1;
+		font-weight: normal;
+		vertical-align: middle;
+		margin-right: 5px;
+	}
+}

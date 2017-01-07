@@ -10,8 +10,10 @@
   </div>
 
   <div class="col-xs-12 col-md-6 page-navigation">
-    <p class="btn btn-sm">Rapid Mode</p>
-    <input type="checkbox" id="js-rapid-mode" data-toggle="switchery" data-size="small"/>
+    <label class="switchery-label">
+      <span>Rapid<br>Mode</span>
+      <input type="checkbox" id="js-rapid-mode" data-toggle="switchery" data-size="small"/>
+    </label>
     &nbsp;
     <%= link_to 'View Event', event_path(@event), class: 'btn btn-sm btn-primary' %>
     <div class="btn-group">

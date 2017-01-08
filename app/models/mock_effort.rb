@@ -65,7 +65,7 @@ class MockEffort
   end
 
   def plan_times
-    @plan_times ||= times_planner.times_from_start
+    @plan_times ||= times_planner.times_from_start(round_to: 1.minute)
   end
 
   def create_split_rows

@@ -14,15 +14,17 @@ class SegmentTimesPlanner
         SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
   end
 
-  def segment_times
+  def segment_times(round_to: 0)
     @segment_times ||=
-        indexed_serial_times.transform_values { |seconds| seconds * pace_factor } if complete_time_set?
+        indexed_serial_times
+            .transform_values { |seconds| (seconds * pace_factor).round_to_nearest(round_to) } if complete_time_set?
   end
 
-  def times_from_start
+  def times_from_start(round_to: 0)
     @times_from_start ||=
         serial_segments.map
-            .with_index { |segment, i| [segment.end_sub_split, serial_times[0..i].sum * pace_factor] }
+            .with_index { |segment, i| [segment.end_sub_split,
+                                        (serial_times[0..i].sum * pace_factor).round_to_nearest(round_to)] }
             .to_h if complete_time_set?
   end
 

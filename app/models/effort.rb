@@ -18,7 +18,7 @@ class Effort < ActiveRecord::Base
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :segment_time
-  attr_writer :overall_place, :gender_place, :last_reported_split_time
+  attr_writer :overall_place, :gender_place, :last_reported_split_time, :event_start_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
@@ -46,13 +46,18 @@ class Effort < ActiveRecord::Base
     id = ['id']
     foreign_keys = Effort.column_names.find_all { |x| x.include?('_id') }
     stamps = Effort.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
-    (column_names - (id + foreign_keys + stamps)).map &:to_sym
+    (column_names - (id + foreign_keys + stamps)).map(&:to_sym)
   end
 
   def self.search(param)
-    return all if param.blank?
-    return where(bib_number: param.to_i) if param.to_i > 0
-    flexible_search(param)
+    case
+    when param.blank?
+      all
+    when param.numeric?
+      where(bib_number: param.to_i)
+    else
+      flexible_search(param)
+    end
   end
 
   def reset_age_from_birthdate
@@ -66,7 +71,7 @@ class Effort < ActiveRecord::Base
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    TimeDifference.from(new_datetime, event_start_time).in_seconds
+    self.start_offset = TimeDifference.from(new_datetime, event_start_time).in_seconds
   end
 
   def event_start_time
@@ -77,6 +82,10 @@ class Effort < ActiveRecord::Base
     @event_name ||= event.name
   end
 
+  def laps_required
+    @laps_required ||= event.laps_required
+  end
+
   def last_reported_split_time
     @last_reported_split_time ||= ordered_split_times.last
   end
@@ -85,36 +94,57 @@ class Effort < ActiveRecord::Base
     @valid_split_times ||= split_times.valid_status.ordered
   end
 
-  def finished?
-    finish_split_time.present?
+  def finish_split_times
+    @finish_split_times ||= split_times.finish.ordered
   end
 
-  def in_progress?
-    dropped_split_id.nil? && finish_split_time.nil?
+  def start_split_times
+    @start_split_times ||= split_times.start.ordered
+  end
+
+  def finish_split_time
+    finish_split_times.last if finished?
+  end
+
+  def start_split_time
+    start_split_times.first
+  end
+
+  def laps_finished
+    finish_split_times.size
+  end
+
+  def laps_started
+    start_split_times.size
+  end
+
+  def finished?
+    laps_finished >= laps_required
+  end
+
+  def started?
+    start_split_times.present?
   end
 
   def dropped?
     dropped_split_id.present?
   end
 
-  def started?
-    split_times.present?
+  def in_progress?
+    started? && !dropped? && !finished?
   end
 
   def finish_status
-    return 'DNF' if dropped?
-    return 'Not yet started' unless started?
-    split_time = finish_split_time
-    return split_time.formatted_time_hhmmss if split_time
-    'In progress'
-  end
-
-  def finish_split_time
-    @finish_split_time ||= split_times.finish.first
-  end
-
-  def start_split_time
-    @start_split_time ||= split_times.start.first
+    case
+    when !started?
+      'Not yet started'
+    when dropped?
+      'DNF'
+    when finished?
+      finish_split_time.formatted_time_hhmmss
+    else
+      'In progress'
+    end
   end
 
   def time_in_aid(split)

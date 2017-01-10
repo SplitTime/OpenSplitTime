@@ -4,9 +4,6 @@ class EventStageDisplay
   delegate :id, :name, :start_time, :course, :race, :available_live, :simple?,
            :unreconciled_efforts, :unreconciled_efforts?, :started?, :beacon_url, to: :event
 
-  # initialize(event)
-  # event is an ordinary event object
-
   def initialize(event, params)
     @event = event
     @params = params
@@ -18,9 +15,13 @@ class EventStageDisplay
   end
 
   def filtered_efforts
-    @filtered_efforts ||= event_efforts
+    @filtered_efforts ||= scoped_efforts
                               .search(params[:search])
                               .paginate(page: params[:page], per_page: 25)
+  end
+
+  def scoped_efforts
+    params[:view] == 'problems' ? event_efforts.invalid_status : event_efforts
   end
 
   def efforts_count
@@ -52,7 +53,7 @@ class EventStageDisplay
   end
 
   def view_text
-    params[:view] == 'splits' ? 'splits' : 'efforts'
+    %w(splits efforts problems).include?(params[:view]) ? params[:view] : 'efforts'
   end
 
   private

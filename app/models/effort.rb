@@ -3,6 +3,7 @@ class Effort < ActiveRecord::Base
   enum gender: [:male, :female]
   strip_attributes collapse_spaces: true
 
+  # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]]
 
   include Auditable

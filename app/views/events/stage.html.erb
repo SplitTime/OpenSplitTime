@@ -127,6 +127,10 @@
                     stage_event_path(@event_stage.event, view: 'efforts'),
                     disabled: @event_stage.view_text == 'efforts',
                     class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Show problems',
+                    stage_event_path(@event_stage.event, view: 'problems'),
+                    disabled: @event_stage.view_text == 'problems',
+                    class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
   </div>

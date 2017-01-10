@@ -2,6 +2,7 @@ class SplitTime < ActiveRecord::Base
   enum data_status: [:bad, :questionable, :good, :confirmed]
   strip_attributes collapse_spaces: true
 
+  # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
 
   include Auditable

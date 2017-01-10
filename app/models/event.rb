@@ -9,7 +9,7 @@ class Event < ActiveRecord::Base
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
 
-  validates_presence_of :course_id, :name, :start_time
+  validates_presence_of :course_id, :name, :start_time, :laps_required
   validates_uniqueness_of :name, case_sensitive: false
 
   scope :recent, -> (max) { where('start_time < ?', Time.now).order(start_time: :desc).limit(max) }
@@ -21,8 +21,7 @@ class Event < ActiveRecord::Base
                                                      .where(concealed: false)
                                                      .select("events.*, COUNT(efforts.id) as effort_count")
                                                      .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
-                                                     .group("events.id")
-                                                     .order(start_time: :desc) }
+                                                     .group("events.id").order(start_time: :desc) }
 
   def self.search(search_param)
     return all if search_param.blank?
@@ -49,21 +48,16 @@ class Event < ActiveRecord::Base
     SplitTime.includes(:effort).where(efforts: {event_id: id})
   end
 
-  def efforts_sorted
-    efforts.sorted_with_finish_status
-  end
-
   def combined_places(effort)
-    found_effort = efforts_sorted.find { |e| e.id == effort.id }
-    [found_effort && found_effort.overall_place, found_effort && found_effort.gender_place]
+    [overall_place(effort), gender_place(effort)]
   end
 
   def overall_place(effort)
-    combined_places(effort)[0]
+    effort_places[effort.id].try(:overall_rank)
   end
 
   def gender_place(effort)
-    combined_places(effort)[1]
+    effort_places[effort.id].try(:gender_rank)
   end
 
   def sub_splits
@@ -75,25 +69,37 @@ class Event < ActiveRecord::Base
   end
 
   def race_name
-    race && race.name
+    race.try(:name)
   end
 
   def started?
     SplitTime.where(effort: efforts).present?
   end
 
-  def set_dropped_split_ids
-    finish_split_id = ordered_splits.last.id
-    efforts = efforts_sorted # Includes final_split_id for each effort
-    update_hash = {}
-    efforts.each do |effort|
-      if (effort.final_split_id == finish_split_id) && effort.dropped_split_id.present?
-        update_hash[effort.id] = nil
-      end
-      if (effort.final_split_id != finish_split_id) && (effort.final_split_id != effort.dropped_split_id)
-        update_hash[effort.id] = effort.final_split_id
-      end
+  def set_dropped_attributes
+    BulkUpdateService.set_dropped_attributes(outdated_dropped_attributes)
+  end
+
+  def outdated_dropped_attributes
+    efforts_sorted.map { |effort| dropped_attributes(effort) }
+  end
+
+  private
+
+  def dropped_attributes(effort)
+    if effort.finished
+      update_hash[effort.id] = {} if effort.dropped_split_id || effort.dropped_lap
+    else
+      update_hash[effort.id] = {lap: effort.final_lap, split_id: effort.final_split_id} if
+          (effort.final_split_id != effort.dropped_split_id) || (effort.final_lap != effort.dropped_lap)
     end
-    BulkUpdateService.set_dropped_split_ids(update_hash)
+  end
+
+  def efforts_sorted
+    @efforts_sorted ||= efforts.sorted_with_finish_status
+  end
+
+  def effort_places
+    @effort_places ||= efforts.sorted_with_finish_status(limited: true).index_by(&:id)
   end
 end

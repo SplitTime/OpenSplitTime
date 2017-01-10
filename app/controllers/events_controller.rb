@@ -178,9 +178,9 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-  def set_dropped_split_ids
+  def set_dropped_attributes
     authorize @event
-    report = @event.set_dropped_split_ids
+    report = @event.set_dropped_attributes
     flash[:warning] = report if report
     redirect_to stage_event_path(@event)
   end

@@ -45,8 +45,9 @@ class LiveTimeRowImporter
   def set_dropped_split_id(effort_data)
     effort = effort_data.effort
     dropped_here_id = effort_data.dropped_here? ? effort_data.split_id : nil
+    dropped_here_lap = effort_data.dropped_here? ? effort_data.lap : nil
     if dropped_here_id || (effort.dropped_split_id == effort_data.split_id)
-      effort.update(dropped_split_id: dropped_here_id)
+      effort.update(dropped_split_id: dropped_here_id, dropped_lap: dropped_here_lap)
       EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
     end
   end

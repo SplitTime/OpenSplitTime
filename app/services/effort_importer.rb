@@ -36,14 +36,14 @@ class EffortImporter
         creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
         creator.create_split_times
         start_offset_hash[effort.id] = creator.start_offset if creator.start_offset
-        final_split_hash[effort.id] = creator.dropped_split_id
+        final_split_hash[effort.id] = {split_id: creator.dropped_split_id, lap: creator.dropped_lap}
         effort_id_array << effort.id
       else
         effort_failure_array << row
       end
     end
     BulkUpdateService.bulk_update_start_offset(start_offset_hash)
-    BulkUpdateService.bulk_update_dropped(final_split_hash)
+    BulkUpdateService.set_dropped_attributes(final_split_hash)
     # Set data status on only those efforts that were successfully created
     BulkDataStatusSetter.set_data_status(efforts: event.efforts.find(effort_id_array)) unless without_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)

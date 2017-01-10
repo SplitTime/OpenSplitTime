@@ -23,18 +23,17 @@ class Effort < ActiveRecord::Base
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
+  validate :dropped_attributes_consistent
 
   before_save :reset_age_from_birthdate
 
-  scope :sorted_by_finish_time, -> { select('efforts.*, splits.kind, split_times.time_from_start as time')
-                                         .finished.order('split_times.time_from_start') }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
-  scope :within_time_range, -> (low_time, high_time) { includes(:split_times => :split)
-                                                           .where(splits: {kind: 1},
-                                                                  split_times: {time_from_start: low_time..high_time}) }
   scope :unreconciled, -> { where(participant_id: nil) }
-  scope :finished, -> { joins(:split_times => :split).where(splits: {kind: 1}) }
+  scope :finished, -> { select('efforts.*, split_times.lap')
+                            .joins(:event).joins(:split_times => :split)
+                            .where(splits: {kind: 1}).where('split_times.lap >= events.laps_required')
+                            .order('split_times.lap desc').uniq }
 
   delegate :race, to: :event
 
@@ -58,6 +57,76 @@ class Effort < ActiveRecord::Base
     else
       flexible_search(param)
     end
+  end
+
+  def self.sorted_with_finish_status(limited: false)
+    query = <<-SQL
+    WITH
+        existing_scope AS (#{existing_scope_sql}),
+        efforts_scoped AS (SELECT efforts.*
+                                       FROM efforts
+                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id)
+     SELECT #{limited ? 'id' : '*'}, 
+            rank() over 
+              (ORDER BY dropped, 
+                        final_lap desc, 
+                        distance_from_start desc, 
+                        time_from_start, 
+                        gender desc, 
+                        age desc) 
+            AS overall_rank, 
+            rank() over 
+              (PARTITION BY gender 
+               ORDER BY dropped, 
+                        final_lap desc, 
+                        distance_from_start desc, 
+                        time_from_start, 
+                        gender desc, 
+                        age desc) 
+            AS gender_rank,
+            CASE 
+              when final_lap >= laps_required then true 
+              else false 
+            END 
+            AS finished
+      FROM 
+            (SELECT DISTINCT ON(efforts_scoped.id) 
+                efforts_scoped.*,
+                events.laps_required,
+                CASE 
+                  when efforts_scoped.dropped_split_id is null then false 
+                  else true 
+                END 
+                AS dropped, 
+                splits.id as final_split_id, 
+                splits.base_name as final_split_name, 
+                splits.distance_from_start, 
+                split_times.lap as final_lap, 
+                split_times.time_from_start, 
+                split_times.sub_split_bitkey 
+            FROM efforts_scoped
+                INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
+                INNER JOIN splits ON splits.id = split_times.split_id
+                INNER JOIN events ON events.id = efforts_scoped.event_id
+            ORDER BY  efforts_scoped.id, 
+                      split_times.lap desc, 
+                      splits.distance_from_start desc, 
+                      split_times.sub_split_bitkey desc) 
+            AS subquery
+      ORDER BY overall_rank
+    SQL
+    self.find_by_sql(query)
+  end
+
+  def self.existing_scope_sql
+    # have to do this to get the binds interpolated. remove any ordering and just grab the ID
+    self.connection.unprepared_statement {self.reorder(nil).select("id").to_sql}
+  end
+  private_class_method(:existing_scope_sql)
+
+  def dropped_attributes_consistent
+    errors.add(:dropped_split_id, 'a dropped_split_id exists with no dropped_lap') if dropped_split_id && !dropped_lap
+    errors.add(:dropped_lap, 'a dropped_lap exists with no dropped_split_id') if !dropped_split_id && dropped_lap
   end
 
   def reset_age_from_birthdate
@@ -186,27 +255,18 @@ class Effort < ActiveRecord::Base
     participant_id.nil?
   end
 
-  def self.sorted_with_finish_status
-    sorted_efforts = select('DISTINCT ON(efforts.id) efforts.*, splits.id as final_split_id, splits.base_name as final_split_name, splits.distance_from_start, split_times.time_from_start, split_times.sub_split_bitkey')
-                         .joins(:split_times => :split)
-                         .order('efforts.id, splits.distance_from_start DESC, split_times.sub_split_bitkey DESC')
-                         .sort_by { |row| [row.dropped_split_id ? 1 : 0, -row.distance_from_start, row.time_from_start, row.gender, row.age ? -row.age : 0] }
-    sorted_efforts.each_with_index do |effort, i|
-      effort.overall_place = i + 1
-      effort.gender_place = sorted_efforts[0..i].count { |e| e.gender == effort.gender }
-    end
-    sorted_efforts
+  def set_dropped_attributes
+    update(dropped_split_id: dropped_attributes[:split_id], dropped_lap: dropped_attributes[:lap])
+    dropped_attributes
   end
 
-  def set_dropped_split_id
-    dropped_split_id = find_dropped_split_id
-    update(dropped_split_id: dropped_split_id)
-    dropped_split_id
+  private
+
+  def dropped_attributes
+    @dropped_attributes ||= {split_id: dropped_split_time.split_id, lap: dropped_split_time.lap}
   end
 
-  def find_dropped_split_id
-    unless finish_split_time
-      split_times.joins(:split).joins(:effort).order('efforts.id, splits.distance_from_start DESC').first.split_id
-    end
+  def dropped_split_time
+    @dropped_split_time ||= finished? ? SplitTime.null_record : ordered_split_times.last
   end
 end

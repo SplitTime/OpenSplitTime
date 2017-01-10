@@ -11,7 +11,7 @@ RSpec.describe Event, type: :model do
   let(:course2) { Course.create!(name: 'Slo Mo 100 CW') }
 
   it 'should be valid when created with a course, a name, and a start time' do
-    event = Event.create!(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01 06:00:00')
+    event = Event.create!(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01 06:00:00', laps_required: 1)
 
     expect(Event.all.count).to eq(1)
     expect(event.course).to eq(course)
@@ -21,26 +21,32 @@ RSpec.describe Event, type: :model do
   end
 
   it 'should be invalid without a course' do
-    event = Event.new(course: nil, name: 'Slo Mo 100 2015', start_time: '2015-07-01')
+    event = Event.new(course: nil, name: 'Slo Mo 100 2015', start_time: '2015-07-01', laps_required: 1)
     expect(event).not_to be_valid
     expect(event.errors[:course_id]).to include("can't be blank")
   end
 
   it 'should be invalid without a name' do
-    event = Event.new(course: course, name: nil, start_time: '2015-07-01')
+    event = Event.new(course: course, name: nil, start_time: '2015-07-01', laps_required: 1)
     expect(event).not_to be_valid
     expect(event.errors[:name]).to include("can't be blank")
   end
 
   it 'should be invalid without a start date' do
-    event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: nil)
+    event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: nil, laps_required: 1)
     expect(event).not_to be_valid
     expect(event.errors[:start_time]).to include("can't be blank")
   end
 
+  it 'should be invalid without a laps_required' do
+    event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01', laps_required: nil)
+    expect(event).not_to be_valid
+    expect(event.errors[:laps_required]).to include("can't be blank")
+  end
+
   it 'should not allow for duplicate names' do
-    Event.create!(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01')
-    event = Event.new(course: course2, name: 'Slo Mo 100 2015', start_time: '2016-07-01')
+    Event.create!(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01', laps_required: 1)
+    event = Event.new(course: course2, name: 'Slo Mo 100 2015', start_time: '2016-07-01', laps_required: 1)
     expect(event).not_to be_valid
     expect(event.errors[:name]).to include('has already been taken')
   end

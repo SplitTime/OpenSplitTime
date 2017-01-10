@@ -60,9 +60,9 @@ RSpec.describe Participant, type: :model do
 
   describe 'merge_with' do
     let(:course) { Course.create!(name: 'Test Course 100') }
-    let(:event1) { Event.create!(course: course, name: 'Test Event A', start_time: '2012-08-08 05:00:00') }
-    let(:event2) { Event.create!(course: course, name: 'Test Event B', start_time: '2013-08-08 05:00:00') }
-    let(:event3) { Event.create!(course: course, name: 'Test Event C', start_time: '2014-08-08 05:00:00') }
+    let(:event1) { Event.create!(course: course, name: 'Test Event A', start_time: '2012-08-08 05:00:00', laps_required: 1) }
+    let(:event2) { Event.create!(course: course, name: 'Test Event B', start_time: '2013-08-08 05:00:00', laps_required: 1) }
+    let(:event3) { Event.create!(course: course, name: 'Test Event C', start_time: '2014-08-08 05:00:00', laps_required: 1) }
     let(:participant1) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CA') }
     let(:participant2) { Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: nil, state_code: 'CA', city: 'Los Angeles') }
 
@@ -101,7 +101,7 @@ RSpec.describe Participant, type: :model do
 
   describe 'associate_effort' do
     let(:course) { Course.create!(name: 'Test Course 100') }
-    let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
+    let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
 
     it 'upon successful save should associate the participant with the pulled effort' do
       participant = Participant.new

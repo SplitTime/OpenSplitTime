@@ -124,13 +124,14 @@
                     disabled: @event_stage.view_text == 'splits',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Show efforts',
-                    stage_event_path(@event_stage.event, view: 'efforts'),
+                    stage_event_path(@event_stage.event, view: 'efforts', search: params[:search]),
                     disabled: @event_stage.view_text == 'efforts',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Show problems',
-                    stage_event_path(@event_stage.event, view: 'problems'),
+                    stage_event_path(@event_stage.event, view: 'problems', search: params[:search]),
                     disabled: @event_stage.view_text == 'problems',
-                    class: 'btn btn-sm btn-primary' %>
+                    class: 'btn btn-sm btn-primary',
+                    search: params[:search] %>
       </div>
     </div>
   </div>
@@ -175,15 +176,15 @@
 <% end %>
 
 <script>
-  $('#beacon-link').editable({
-    type: 'text',
-    emptytext: 'Click here',
-    url: '<%= add_beacon_event_path(@event_stage.event) %>',
-    pk: 1,
-    title: 'Paste link:',
-    ajaxOptions: {
-      type: 'get',
-      dataType: 'script'
-    }
-  });
+    $('#beacon-link').editable({
+        type: 'text',
+        emptytext: 'Click here',
+        url: '<%= add_beacon_event_path(@event_stage.event) %>',
+        pk: 1,
+        title: 'Paste link:',
+        ajaxOptions: {
+            type: 'get',
+            dataType: 'script'
+        }
+    });
 </script>

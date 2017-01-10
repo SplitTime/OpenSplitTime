@@ -1,7 +1,6 @@
 class EventEffortsDisplay
 
-  attr_accessor :filtered_efforts
-  attr_reader :event, :effort_rows
+  attr_reader :event
   delegate :name, :start_time, :course, :race, :simple?, :beacon_url, :available_live,
            :finish_split, :start_split, to: :event
 
@@ -13,11 +12,26 @@ class EventEffortsDisplay
 
   def initialize(event, params = {})
     @event = event
-    @event_final_split_id = finish_split.id if finish_split
-    @event_start_split_id = start_split.id if start_split
-    get_efforts(params)
-    @effort_rows = []
-    create_effort_rows
+    @params = params
+  end
+
+  def effort_rows
+    @effort_rows ||= filtered_efforts.map do |effort|
+      EffortRow.new(effort,
+                    overall_place: effort.overall_rank,
+                    gender_place: effort.gender_rank,
+                    finish_status: finish_status(effort),
+                    run_status: run_status(effort),
+                    day_and_time: start_time + effort.start_offset + effort.time_from_start,
+                    participant: indexed_participants[effort.participant_id])
+    end
+  end
+
+  def filtered_efforts
+    @filtered_efforts ||= event_efforts
+                              .search(params[:search])
+                              .sorted_with_finish_status
+                              .paginate(page: params[:page], per_page: params[:per_page] || 25)
   end
 
   def efforts_count
@@ -41,35 +55,31 @@ class EventEffortsDisplay
   end
 
   def race_name
-    race ? race.name : nil
+    race.try(:name)
   end
 
   private
 
-  attr_accessor :event_efforts, :started_efforts, :event_final_split_id,
-                :event_start_split_id, :indexed_participants
+  attr_reader :params
 
-  def get_efforts(params)
-    self.event_efforts = event.efforts
-    self.started_efforts = event_efforts.sorted_with_finish_status # This method ignores efforts having no split_times.
-    self.filtered_efforts = event_efforts
-                                .search(params[:search])
-                                .sorted_with_finish_status
-                                .paginate(page: params[:page], per_page: params[:per_page] || 25)
-    self.indexed_participants = Participant.find(filtered_efforts.map(&:participant_id).compact).index_by(&:id)
+  def event_final_split_id
+    @event_final_split_id ||= finish_split.try(:id)
   end
 
-  def create_effort_rows
-    filtered_efforts.each do |effort|
-      effort_row = EffortRow.new(effort,
-                                 overall_place: overall_place(effort),
-                                 gender_place: gender_place(effort),
-                                 finish_status: finish_status(effort),
-                                 run_status: run_status(effort),
-                                 day_and_time: start_time + effort.start_offset + effort.time_from_start,
-                                 participant: indexed_participants[effort.participant_id])
-      effort_rows << effort_row
-    end
+  def event_start_split_id
+    @event_start_split_id ||= start_split.try(:id)
+  end
+
+  def event_efforts
+    event.efforts
+  end
+
+  def started_efforts
+    event_efforts.started
+  end
+
+  def indexed_participants
+    @indexed_participants ||= Participant.find(filtered_efforts.map(&:participant_id).compact).index_by(&:id)
   end
 
   def finish_status(effort)
@@ -85,21 +95,5 @@ class EventEffortsDisplay
     return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
     return "Finished" if effort.final_split_id == event_final_split_id
     "Reported through #{effort.final_split_name}"
-  end
-
-  def overall_place(effort)
-    sorted_effort_ids.index(effort.id) + 1
-  end
-
-  def gender_place(effort)
-    sorted_genders[0...overall_place(effort)].count(effort.gender)
-  end
-
-  def sorted_effort_ids
-    started_efforts.map(&:id)
-  end
-
-  def sorted_genders
-    started_efforts.map(&:gender)
   end
 end

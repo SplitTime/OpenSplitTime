@@ -34,6 +34,7 @@ class Effort < ActiveRecord::Base
                             .joins(:event).joins(:split_times => :split)
                             .where(splits: {kind: 1}).where('split_times.lap >= events.laps_required')
                             .order('split_times.lap desc').uniq }
+  scope :started, -> { joins(split_times: :split).where(splits: {kind: 0}).uniq }
 
   delegate :race, to: :event
 
@@ -60,6 +61,7 @@ class Effort < ActiveRecord::Base
   end
 
   def self.sorted_with_finish_status(limited: false)
+    return [] if existing_scope_sql.blank?
     query = <<-SQL
     WITH
         existing_scope AS (#{existing_scope_sql}),

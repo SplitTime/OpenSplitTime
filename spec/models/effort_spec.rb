@@ -17,6 +17,7 @@ require 'rails_helper'
 # t.integer  "start_offset"
 
 RSpec.describe Effort, type: :model do
+  it_behaves_like 'data_status_methods'
   it { is_expected.to strip_attribute(:first_name).collapse_spaces }
   it { is_expected.to strip_attribute(:last_name).collapse_spaces }
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }

@@ -9,6 +9,7 @@ require 'rails_helper'
 # t.string   "remarks"
 
 RSpec.describe SplitTime, kind: :model do
+  it_behaves_like 'data_status_methods'
   let(:course) { Course.create!(name: 'Test Course') }
   let(:event) { Event.create!(course: course, name: 'Test Event 2015', start_time: '2015-07-01 06:00:00') }
   let(:effort) { Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0) }

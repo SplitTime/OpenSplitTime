@@ -1,4 +1,11 @@
 FactoryGirl.define do
+  factory :split_time do
+    bitkey 1
+    time_from_start 0
+    split
+    effort
+  end
+
   factory :split_times_in_out, class: SplitTime do
     sequence(:split_id, [101, 102, 102, 103, 103, 104, 104, 105, 105, 106, 106, 107, 107, 108, 108, 109, 109, 110, 110, 111].cycle)
     sequence(:bitkey, [1, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1].cycle)

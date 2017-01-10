@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170108224735) do
+ActiveRecord::Schema.define(version: 20170110053224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20170108224735) do
     t.string   "beacon_url"
     t.string   "report_url"
     t.string   "photo_url"
+    t.integer  "dropped_lap"
   end
 
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id", using: :btree
@@ -97,7 +98,7 @@ ActiveRecord::Schema.define(version: 20170108224735) do
     t.boolean  "concealed",                 default: false
     t.boolean  "available_live",            default: false
     t.string   "beacon_url"
-    t.integer  "laps_required",             default: 1
+    t.integer  "laps_required"
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
@@ -147,18 +148,18 @@ ActiveRecord::Schema.define(version: 20170108224735) do
   end
 
   create_table "split_times", force: :cascade do |t|
-    t.integer  "effort_id",                    null: false
-    t.integer  "split_id",                     null: false
-    t.float    "time_from_start",              null: false
+    t.integer  "effort_id",        null: false
+    t.integer  "split_id",         null: false
+    t.float    "time_from_start",  null: false
     t.integer  "data_status"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.integer  "sub_split_bitkey"
     t.boolean  "pacer"
     t.string   "remarks"
-    t.integer  "lap",              default: 1
+    t.integer  "lap"
   end
 
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree

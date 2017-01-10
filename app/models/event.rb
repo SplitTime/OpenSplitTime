@@ -100,6 +100,6 @@ class Event < ActiveRecord::Base
   end
 
   def effort_places
-    @effort_places ||= efforts.sorted_with_finish_status(limited: true).index_by(&:id)
+    @effort_places ||= efforts.sorted_with_finish_status(effort_fields: 'id').index_by(&:id)
   end
 end

@@ -60,7 +60,7 @@ class Effort < ActiveRecord::Base
     end
   end
 
-  def self.sorted_with_finish_status(limited: false)
+  def self.sorted_with_finish_status(effort_fields: '*')
     return [] if existing_scope_sql.blank?
     query = <<-SQL
     WITH
@@ -68,7 +68,7 @@ class Effort < ActiveRecord::Base
         efforts_scoped AS (SELECT efforts.*
                                        FROM efforts
                                        INNER JOIN existing_scope ON existing_scope.id = efforts.id)
-     SELECT #{limited ? 'id' : '*'}, 
+     SELECT #{effort_fields}, 
             rank() over 
               (ORDER BY dropped, 
                         final_lap desc, 

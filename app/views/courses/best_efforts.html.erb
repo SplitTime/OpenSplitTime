@@ -72,7 +72,7 @@
         <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
       </div>
     </div>
-<% elsif params[:search].length < 3 %>
+<% elsif params[:search].present? && params[:search].length < 3 %>
     <p><strong>Search parameter is too short</strong></p>
 <% else %>
     <p><strong>No efforts match this search</strong></p>

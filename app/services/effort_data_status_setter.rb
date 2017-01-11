@@ -54,8 +54,8 @@ class EffortDataStatusSetter
   end
 
   def set_effort_data_status
-    effort.data_status = ordered_split_times.present? ?
-        [ordered_split_times.map(&:data_status_numeric).compact.min, Effort.data_statuses['good']].min : nil
+    effort.data_status =
+        ordered_split_times.map(&:data_status_numeric).push(Effort.data_statuses['good']).compact.min
   end
 
   def set_subject_attributes(split_time)

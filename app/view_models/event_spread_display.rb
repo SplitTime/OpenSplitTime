@@ -59,6 +59,12 @@ class EventSpreadDisplay
     (display_style == 'ampm') || (display_style == 'military') ? splits : splits_without_start
   end
 
+  def to_csv
+    CSV.generate do |csv|
+      csv << ['Under construction']
+    end
+  end
+
   private
 
   attr_reader :efforts, :split_times_data_by_effort

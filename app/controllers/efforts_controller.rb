@@ -98,8 +98,7 @@ class EffortsController < ApplicationController
     authorize @effort
     @effort.split_times.where(id: params[:split_time_ids]).destroy_all
     EffortDataStatusSetter.set_data_status(effort: @effort)
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || effort_path(@effort)
+    redirect_to effort_path(@effort)
   end
 
   def confirm_split_times
@@ -111,8 +110,7 @@ class EffortsController < ApplicationController
       split_times.good!
     end
     EffortDataStatusSetter.set_data_status(effort: @effort)
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || effort_path(@effort)
+    redirect_to effort_path(@effort)
   end
 
   def set_data_status

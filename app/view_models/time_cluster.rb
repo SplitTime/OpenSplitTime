@@ -33,6 +33,10 @@ class TimeCluster
     @time_data_statuses ||= split_times_data.map { |st| st && SplitTime.data_statuses.key(st[:data_status]) }
   end
 
+  def split_time_ids
+    @split_time_ids ||= split_times_data.map { |st| st && st[:id] }
+  end
+
   private
 
   attr_reader :split, :split_times_data, :start_time, :prior_time

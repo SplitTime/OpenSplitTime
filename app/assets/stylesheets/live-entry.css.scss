@@ -109,8 +109,14 @@ Mixins
   }
 
   .time-status {
+  	cursor: pointer;
     span { display: none; }
     .null { display: inline-block; }
+  }
+
+  .form-group.rapid-mode .time-status {
+    .null { display: none; }
+    .rapid-mode { display: inline-block; }
   }
 
   input.good ~ .time-status {

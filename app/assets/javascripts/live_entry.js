@@ -261,6 +261,11 @@
                     }
                 });
 
+                $('#js-rapid-time-in,#js-rapid-time-out').on('click', function (event) {
+                    var rapid = $(this).closest('.form-group').toggleClass( 'has-warning' ).hasClass( 'has-warning' );
+                    $(this).closest('.form-group').toggleClass( 'rapid-mode', rapid );
+                });
+
                 // Enable / Disable Rapid Entry Mode
                 $('#js-rapid-mode').on('change', function (event) {
                     liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
@@ -427,14 +432,12 @@
              * Prefills the time fields with the current time
              */
             prefillCurrentTime: function() {
-                if ( liveEntry.liveEntryForm.rapidEntry ) {
-                    if ($('#js-bib-number').val() == '') {
-                        $('#js-time-in').val('');
-                        $('#js-time-out').val('');
-                    } else if ($('#js-bib-number').val() != liveEntry.liveEntryForm.lastBib) {
-                        $('#js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                        $('#js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                    }
+                if ($('#js-bib-number').val() == '') {
+                    $('.rapid-mode #js-time-in').val('');
+                    $('.rapid-mode #js-time-out').val('');
+                } else if ($('#js-bib-number').val() != liveEntry.liveEntryForm.lastBib) {
+                    $('.rapid-mode #js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
+                    $('.rapid-mode #js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
                 }
             }
         }, // END liveEntryForm form

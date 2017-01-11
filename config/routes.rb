@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     member { get :add_beacon }
     member { get :drop_list }
     member { get :export_to_ultrasignup }
+    member { get :find_problem_effort }
   end
   resources :splits do
     member { get :assign_location }

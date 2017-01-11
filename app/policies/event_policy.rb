@@ -148,4 +148,7 @@ class EventPolicy
     current_user.authorized_to_edit?(event)
   end
 
+  def find_problem_effort?
+    current_user.authorized_to_edit?(event)
+  end
 end

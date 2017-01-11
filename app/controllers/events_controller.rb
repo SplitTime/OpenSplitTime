@@ -24,10 +24,10 @@ class EventsController < ApplicationController
 
   def new
     if params[:course_id]
-      @event = Event.new(course_id: params[:course_id])
+      @event = Event.new(course_id: params[:course_id], laps_required: 1)
       @course = Course.find(params[:course_id])
     else
-      @event = Event.new
+      @event = Event.new(laps_required: 1)
     end
     authorize @event
   end
@@ -233,7 +233,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:course_id, :race_id, :name, :start_time, :concealed)
+    params.require(:event).permit(:course_id, :race_id, :name, :start_time, :concealed, :laps_required)
   end
 
   def query_params

@@ -19,9 +19,9 @@
   <div class="col-xs-5 page-navigation">
     <div class="row">
       <div class="btn-group">
-        <%= link_to "Split times", effort_path(@effort_analysis.effort), class: "btn btn-sm btn-primary" %>
-        <%= link_to "Analyze times", analyze_effort_path(@effort_analysis.effort), disabled: true, class: "btn btn-sm btn-primary" %>
-        <%= link_to "Places + peers", place_effort_path(@effort_analysis.effort), class: "btn btn-sm btn-primary" %>
+        <%= link_to 'Split times', effort_path(@effort_analysis.effort), class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Analyze times', analyze_effort_path(@effort_analysis.effort), disabled: true, class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Places + peers', place_effort_path(@effort_analysis.effort), class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
     <div class="page-navigation-text">
@@ -30,11 +30,11 @@
   </div>
 </div>
 
-<strong><%= "Best segments: #{@effort_analysis.best_segments}" %></strong><br/>
-<strong><%= "Worst segments: #{@effort_analysis.worst_segments}" %></strong>
-
-<hr>
-
 <% if @effort_analysis.analysis_rows.present? %>
+    <strong><%= "Best segments: #{@effort_analysis.best_segments}" %></strong><br/>
+    <strong><%= "Worst segments: #{@effort_analysis.worst_segments}" %></strong>
+    <hr>
     <%= render 'split_times/split_times_analysis' %>
+<% else %>
+    <strong>Not enough data available to provide a reliable analysis.</strong>
 <% end %>

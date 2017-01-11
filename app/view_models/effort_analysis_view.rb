@@ -106,7 +106,7 @@ class EffortAnalysisView
   end
 
   def create_analysis_rows
-    return unless typical_effort
+    return unless typical_effort.split_rows.present?
     prior_split_time = related_split_times(ordered_splits.first).first
     prior_split = ordered_splits.first
     ordered_splits.each do |split|

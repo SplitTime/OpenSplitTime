@@ -91,7 +91,7 @@ class BestEffortsDisplay
 
   def all_efforts
     @all_efforts ||= Effort.select('efforts.*, rank() over (order by segment_seconds, gender, -age) as overall_rank, rank() over (partition by gender order by segment_seconds, -age) as gender_rank').from("(#{subquery_segment_seconds.to_sql}) as efforts")
-                         .order('overall_rank').to_a
+                         .visible.order('overall_rank').to_a
   end
 
   def subquery_segment_seconds

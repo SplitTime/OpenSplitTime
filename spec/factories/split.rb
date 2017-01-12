@@ -1,7 +1,11 @@
 FactoryGirl.define do
+  sequence(:distance_from_start) do |d|
+    d * 10000
+  end
+
   factory :split do
     sequence(:base_name) { |n| "Split #{n}" }
-    sequence(:distance_from_start, aliases: :finish_split) { |d| d * 10000 }
+    distance_from_start
     sub_split_bitmap 65
     kind :intermediate
     course
@@ -17,7 +21,7 @@ FactoryGirl.define do
 
   factory :finish_split, class: Split do
     base_name 'Finish Split'
-    sequence(:distance_from_start) { |d| d * 10000 }
+    distance_from_start
     sub_split_bitmap 1
     kind :finish
     course

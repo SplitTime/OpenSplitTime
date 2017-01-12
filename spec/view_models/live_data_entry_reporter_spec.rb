@@ -2,7 +2,7 @@ require 'rails_helper'
 # include ActionDispatch::TestProcess
 
 RSpec.describe LiveDataEntryReporter do
-  let(:split_times_4) { FactoryGirl.build_stubbed_list(:split_times_hardrock_4, 30, effort_id: 104) }
+  let(:split_times_4) { FactoryGirl.build_stubbed_list(:split_times_hardrock_36, 30, effort_id: 104) }
   let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
   describe '#initialize' do

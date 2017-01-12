@@ -262,7 +262,8 @@
                 });
 
                 $('#js-rapid-time-in,#js-rapid-time-out').on('click', function (event) {
-                    var rapid = $(this).closest('.form-group').toggleClass( 'has-warning' ).hasClass( 'has-warning' );
+                    if ( $( this ).siblings( 'input:disabled' ).length ) return;
+                    var rapid = $(this).closest('.form-group').toggleClass( 'has-highlight' ).hasClass( 'has-highlight' );
                     $(this).closest('.form-group').toggleClass( 'rapid-mode', rapid );
                 });
 

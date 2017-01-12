@@ -44,7 +44,7 @@ class NewLiveEffortData
   end
 
   def clean?
-    times_exist.values.none? && new_split_times.values.all?(&:valid_status?)
+    times_exist.values.none? && proposed_split_times.all?(&:valid_status?)
   end
 
   def split
@@ -73,6 +73,10 @@ class NewLiveEffortData
 
   def ordered_existing_split_times
     ordered_splits.map(&:sub_splits).flatten.map { |sub_split| existing_split_times[sub_split] }.compact
+  end
+
+  def proposed_split_times
+    new_split_times.values.select(&:time_from_start)
   end
 
   private

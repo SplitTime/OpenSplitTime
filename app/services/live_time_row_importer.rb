@@ -59,9 +59,9 @@ class LiveTimeRowImporter
     existing_split_times = effort_data.existing_split_times
     split_time_ids = []
 
-    effort_data.new_split_times.each_value do |new_split_time|
-      working_split_time = existing_split_times[new_split_time.sub_split] || new_split_time
-      saved_split_id = create_or_update_split_time(new_split_time, working_split_time)
+    effort_data.proposed_split_times.each do |proposed_split_time|
+      working_split_time = existing_split_times[proposed_split_time.sub_split] || proposed_split_time
+      saved_split_id = create_or_update_split_time(proposed_split_time, working_split_time)
       split_time_ids << saved_split_id
     end
 

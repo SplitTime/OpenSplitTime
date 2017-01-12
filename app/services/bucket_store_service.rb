@@ -3,7 +3,9 @@ class BucketStoreService
   MAX_FILESIZE = 500.megabytes
 
   def self.upload_to_bucket(directory, file, id)
-    if file_size_ok(file)
+    if Rails.env == 'development'
+      file.path
+    elsif file_size_ok(file)
       obj = Aws::S3::Resource.new.bucket(ENV['S3_BUCKET']).object("#{directory}/#{id}/#{file.original_filename}")
       obj.upload_file(file.path, acl: 'public-read')
       obj.public_url

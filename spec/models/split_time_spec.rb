@@ -62,7 +62,7 @@ RSpec.describe SplitTime, kind: :model do
     SplitTime.create!(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 10000, lap: 1)
     split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 11000, lap: 1)
     expect(split_time).not_to be_valid
-    expect(split_time.errors[:split_id]).to include('only one of any given split/sub_split permitted within an effort')
+    expect(split_time.errors[:split_id]).to include('only one of any given split/sub_split/lap combination permitted within an effort')
   end
 
   it 'allows within an effort one of a given split_id/lap combination for each sub_split' do
@@ -345,16 +345,33 @@ RSpec.describe SplitTime, kind: :model do
 
   describe '#sub_split' do
     it 'returns split_id and sub_split_bitkey as a sub_split hash' do
-      split_time = SplitTime.new(effort: effort, split_id: 101, bitkey: 1, time_from_start: 0)
+      split_time = SplitTime.new(split_id: 101, bitkey: 1)
       expect(split_time.sub_split).to eq({101=>1})
     end
   end
 
   describe '#sub_split=' do
     it 'sets both split_id and sub_split_bitkey' do
-      split_time = SplitTime.new(effort: effort, sub_split: {101=>1}, time_from_start: 0)
+      split_time = SplitTime.new(sub_split: {101=>1})
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)
+    end
+  end
+
+  describe '#time_point' do
+    it 'returns split_id, sub_split_bitkey, and lap in a TimePoint struct' do
+      split_time = SplitTime.new(split_id: 101, bitkey: 1, lap: 2)
+      expect(split_time.time_point).to eq(TimePoint.new(101, 1, 2))
+    end
+  end
+
+  describe '#time_point=' do
+    it 'sets both split_id and sub_split_bitkey' do
+      time_point = TimePoint.new(101, 1, 2)
+      split_time = SplitTime.new(time_point: time_point)
+      expect(split_time.split_id).to eq(101)
+      expect(split_time.bitkey).to eq(1)
+      expect(split_time.lap).to eq(2)
     end
   end
 end

@@ -54,6 +54,16 @@ class SplitTime < ActiveRecord::Base
     self.bitkey = sub_split.bitkey
   end
 
+  def time_point
+    TimePoint.new(split_id, bitkey, lap)
+  end
+
+  def time_point=(time_point)
+    self.split_id = time_point.split_id
+    self.bitkey = time_point.bitkey
+    self.lap = time_point.lap
+  end
+
   def set_effort_data_status
     EffortDataStatusSetter.set_data_status(effort: effort)
   end

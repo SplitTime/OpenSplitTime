@@ -10,11 +10,6 @@
   </div>
 
   <div class="col-xs-12 col-md-6 page-navigation">
-    <label class="switchery-label">
-      <span>Rapid<br>Mode</span>
-      <input type="checkbox" id="js-rapid-mode" data-toggle="switchery" data-size="small"/>
-    </label>
-    &nbsp;
     <%= link_to 'View Event', event_path(@event), class: 'btn btn-sm btn-primary' %>
     <div class="btn-group">
       <%= link_to 'Live entry', live_entry_live_event_path(@event), disabled: true, class: 'btn btn-sm btn-warning' %>
@@ -44,15 +39,17 @@
         <label class="col-xs-4" for="js-time-in">Time In</label>
         <div class="col-xs-8">
           <div class="input-group">
-            <input id="js-time-in" type="text" name="timeIn" class="form-control" value="">
-            <span class="input-group-addon time-exists">
-              <span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
-            </span>
+            <input id="js-time-in" type="text" name="timeIn" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
             <span class="input-group-addon time-status">
-              <span class="glyphicon glyphicon-circle-arrow-left null" title="Enter Time Data" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-question-sign questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-remove-sign bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+            <span id="js-rapid-time-in" class="input-group-addon time-mode">
+              <span class="glyphicon glyphicon-time null" title="Enable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-flash enabled" title="Disable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ban-circle disabled" title="Rapid Mode Haltede" data-toggle="tooltip" data-placement="right"></span>
             </span>
           </div>
         </div>
@@ -61,15 +58,17 @@
         <label class="col-xs-4" for="js-time-out">Time Out</label>
         <div class="col-xs-8">
           <div class="input-group">
-            <input id="js-time-out" type="text" name="timeOut" class="form-control" value="">
-            <span class="input-group-addon time-exists">
-              <span class="glyphicon glyphicon-exclamation-sign" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
-            </span>
+            <input id="js-time-out" type="text" name="timeOut" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
             <span class="input-group-addon time-status">
-              <span class="glyphicon glyphicon-circle-arrow-left null" title="Enter Time Data" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-question-sign questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-remove-sign bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+            <span id="js-rapid-time-in" class="input-group-addon time-mode">
+              <span class="glyphicon glyphicon-time null" title="Enable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-flash enabled" title="Disable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ban-circle disabled" title="Rapid Mode Halted" data-toggle="tooltip" data-placement="right"></span>
             </span>
           </div>
         </div>

@@ -1,3 +1,8 @@
+/* Copied from bootstrap source */
+$state-info-text:                #31708f !default;
+$state-info-bg:                  #d9edf7 !default;
+$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
+
 /***********
 Efforts Popover
 ************/
@@ -73,5 +78,42 @@ label.switchery-label {
 		font-weight: normal;
 		vertical-align: middle;
 		margin-right: 5px;
+	}
+}
+
+.has-highlight {
+	.help-block,
+	.control-label,
+	.radio,
+	.checkbox,
+	.radio-inline,
+	.checkbox-inline,
+	.radio label,
+	.checkbox label,
+	.radio-inline label,
+	.checkbox-inline label {
+		color: $state-info-text;
+	}
+
+	.form-control {
+		border-color: $state-info-text;
+		-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
+		box-shadow:inset 0 1px 1px rgba(0,0,0,0.075)
+	}
+
+	.form-control:focus {
+		border-color: $state-info-border;
+		-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #c0a16b;
+		box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #c0a16b
+	}
+
+	.input-group-addon {
+		color: $state-info-text;
+		border-color: $state-info-text;
+		background-color: $state-info-bg;
+	}
+
+	.form-control-feedback {
+		color: $state-info-text;
 	}
 }

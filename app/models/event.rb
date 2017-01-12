@@ -60,10 +60,6 @@ class Event < ActiveRecord::Base
     effort_places[effort.id].try(:gender_rank)
   end
 
-  def sub_splits
-    ordered_splits.map(&:sub_splits).flatten
-  end
-
   def course_name
     course.name
   end

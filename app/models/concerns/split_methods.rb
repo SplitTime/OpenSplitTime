@@ -5,6 +5,10 @@ module SplitMethods
     splits.ordered
   end
 
+  def sub_splits
+    ordered_splits.map(&:sub_splits).flatten
+  end
+
   def ordered_splits_without_start
     ordered_splits.where(kind: [1, 2])
   end

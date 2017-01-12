@@ -45,7 +45,8 @@ class LiveDataEntryReporter
     when dropped_split_id && dropped_split_id == last_reported_split_time.split_id
       ' and dropped there'
     when dropped_split_id
-      " but reported dropped at #{dropped_split.base_name} as of #{day_time_military_format(dropped_split_time.day_and_time)}"
+      " but reported dropped at #{dropped_split.base_name}" +
+          (dropped_split_time ? " as of #{day_time_military_format(dropped_split_time.day_and_time)}" : '')
     else
       ''
     end

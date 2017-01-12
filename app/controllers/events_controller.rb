@@ -153,7 +153,13 @@ class EventsController < ApplicationController
     params[:style] ||= event.available_live ? 'ampm' : 'elapsed'
     params[:sort] ||= 'place'
     @spread_display = EventSpreadDisplay.new(event, params)
-    session[:return_to] = spread_event_path(event)
+    respond_to do |format|
+      format.html
+      format.csv do
+        authorize event
+        send_data(@spread_display.to_csv, filename: "ost-spread-#{event.name}-#{Date.today}.csv")
+      end
+    end
   end
 
 
@@ -237,7 +243,7 @@ class EventsController < ApplicationController
     @event_display = EventEffortsDisplay.new(@event, params)
     respond_to do |format|
       format.html { redirect_to stage_event_path(@event) }
-      format.csv { render partial: 'export_to_ultrasignup.csv.ruby' }
+      format.csv { send_data @event_display.to_ultrasignup_csv, filename: "#{@event.name}-ultrasignup-report-#{Date.today}.csv" }
     end
   end
 

@@ -28,15 +28,15 @@ RSpec.describe EffortDataStatusSetter do
 
   describe '#set_data_status' do
     context 'for an effort that has not yet started' do
-      it 'sets effort data_status to nil and does not attempt to change split_times' do
-        effort = Effort.new(first_name: 'John', last_name: 'Doe', gender: 'male', data_status: 2)
+      it 'sets effort data_status to good and does not attempt to change split_times' do
+        effort = Effort.new(first_name: 'John', last_name: 'Doe', gender: 'male', data_status: nil)
         times_container = instance_double(SegmentTimesContainer)
         allow(effort).to receive(:ordered_splits).and_return([])
         setter = EffortDataStatusSetter.new(effort: effort, times_container: times_container)
         setter.set_data_status
         expect(setter.changed_split_times).to eq([])
         expect(setter.changed_efforts).to eq([effort])
-        expect(effort.data_status).to be_nil
+        expect(effort.data_status).to eq('good')
       end
     end
 

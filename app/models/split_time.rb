@@ -55,7 +55,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def time_point
-    TimePoint.new(split_id, bitkey, lap)
+    TimePoint.new(lap, split_id, bitkey)
   end
 
   def time_point=(time_point)

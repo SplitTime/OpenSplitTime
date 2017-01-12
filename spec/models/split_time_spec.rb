@@ -361,13 +361,13 @@ RSpec.describe SplitTime, kind: :model do
   describe '#time_point' do
     it 'returns split_id, sub_split_bitkey, and lap in a TimePoint struct' do
       split_time = SplitTime.new(split_id: 101, bitkey: 1, lap: 2)
-      expect(split_time.time_point).to eq(TimePoint.new(101, 1, 2))
+      expect(split_time.time_point).to eq(TimePoint.new(2, 101, 1))
     end
   end
 
   describe '#time_point=' do
     it 'sets both split_id and sub_split_bitkey' do
-      time_point = TimePoint.new(101, 1, 2)
+      time_point = TimePoint.new(2, 101, 1)
       split_time = SplitTime.new(time_point: time_point)
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)

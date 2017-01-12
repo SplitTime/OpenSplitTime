@@ -77,7 +77,7 @@ class Event < ActiveRecord::Base
   end
 
   def time_points
-    laps.map { |lap| sub_splits.map { |sub_split| TimePoint.new(sub_split.split_id, sub_split.bitkey, lap) } }.flatten
+    laps.map { |lap| sub_splits.map { |sub_split| TimePoint.new(lap, sub_split.split_id, sub_split.bitkey) } }.flatten
   end
 
   def laps

@@ -100,6 +100,13 @@
         }
     };
 
+    /*
+    <label class="switchery-label">
+      <span>Rapid<br>Mode</span>
+      <input type="checkbox" id="js-rapid-mode" data-toggle="switchery" data-size="small"/>
+    </label>
+     */
+
     var switchery = {
     	init: function () {
     		$( '[data-toggle="switchery"]' ).each( function( i, el ) {

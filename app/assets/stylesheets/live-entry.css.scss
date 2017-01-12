@@ -94,39 +94,55 @@ Mixins
 		}
 	}
 
-  .time-status,
-  .time-exists {
+  .time-status {
+  	display: none;
     font-size: 16px;
     padding: 6px 8px 4px 8px;
+    min-width: 54px;
+    text-align: center;
   }
 
-  .time-exists {
-    display: none;
-  }
-
-  input.exists ~ .time-exists {
-    display: table-cell;
-  }
-
-  .time-status {
+  .time-status, .time-mode {
     span { display: none; }
     .null { display: inline-block; }
   }
 
-  input.good ~ .time-status {
-    .null { display: none; }
+  input.good ~ .time-status { 
+  	display: table-cell;
     .good { display: inline-block; }
   }
 
   input.bad ~ .time-status {
-    .null { display: none; }
+  	display: table-cell;
     .bad { display: inline-block; }
   }
 
   input.questionable ~ .time-status {
-    .null { display: none; }
+  	display: table-cell;
     .questionable { display: inline-block; }
   }
+
+  input.exists ~ .time-status {
+  	display: table-cell;
+    .exists { display: inline-block; }
+  }
+
+  .time-mode {
+	cursor: pointer;
+	padding: 6px;
+  }
+
+  input:disabled ~ .time-mode {
+	pointer-events: none;
+    .null { display: none; }
+    .disabled { display: inline-block; }
+  }
+
+  .form-group.rapid-mode .time-mode {
+    .null { display: none; }
+    .enabled { display: inline-block; }
+  }
+
 }
 
 /******* Splits Slider ********/

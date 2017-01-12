@@ -560,9 +560,9 @@
                     'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
                 var timeInIcon = icons[timeRow.timeInStatus] || '';
-                timeInIcon += ( timeRow.timeInExists && timeRow.timeIn != '' ) ? icons['exists'] : '';
+                timeInIcon += ( timeRow.timeInExists && timeRow.timeIn ) ? icons['exists'] : '';
                 var timeOutIcon = icons[timeRow.timeOutStatus] || '';
-                timeOutIcon += ( timeRow.timeOutExists && timeRow.timeOut != '' ) ? icons['exists'] : '';
+                timeOutIcon += ( timeRow.timeOutExists && timeRow.timeOut ) ? icons['exists'] : '';
 
                 // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible
@@ -609,7 +609,6 @@
             },
 
             submitTimeRows: function(timeRows) {
-                console.log( liveEntry.timeRowsTable.busy ); 
                 if ( liveEntry.timeRowsTable.busy ) return;
                 liveEntry.timeRowsTable.busy = true;
                 var data = {timeRows:[]}

@@ -122,8 +122,9 @@ class Effort < ActiveRecord::Base
 
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
-    self.connection.unprepared_statement {self.reorder(nil).select("id").to_sql}
+    self.connection.unprepared_statement { self.reorder(nil).select("id").to_sql }
   end
+
   private_class_method(:existing_scope_sql)
 
   def dropped_attributes_consistent
@@ -258,17 +259,6 @@ class Effort < ActiveRecord::Base
   end
 
   def set_dropped_attributes
-    update(dropped_split_id: dropped_attributes[:split_id], dropped_lap: dropped_attributes[:lap])
-    dropped_attributes
-  end
-
-  private
-
-  def dropped_attributes
-    @dropped_attributes ||= {split_id: dropped_split_time.split_id, lap: dropped_split_time.lap}
-  end
-
-  def dropped_split_time
-    @dropped_split_time ||= finished? ? SplitTime.null_record : ordered_split_times.last
+    EffortDroppedAttributesSetter.set_attributes(effort: self)
   end
 end

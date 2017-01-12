@@ -26,7 +26,7 @@ class LiveEvent
   end
 
   def efforts_started
-    @efforts_started ||= efforts.select { |effort| split_times_by_effort[effort.id].present? }
+    @efforts_started ||= efforts.select { |effort| split_times_by_effort[effort.id] }
   end
 
   def efforts_finished
@@ -34,7 +34,7 @@ class LiveEvent
   end
 
   def efforts_dropped
-    @efforts_dropped ||= efforts.select { |effort| effort.dropped_split_id.present? }
+    @efforts_dropped ||= efforts.select(&:dropped_split_id)
   end
 
   def efforts_in_progress
@@ -80,7 +80,7 @@ class LiveEvent
   def set_effort_time_attributes
     efforts.each do |effort|
       effort.last_reported_split_time = split_times_by_effort[effort.id].last
-      effort.start_time = event_start_time + effort.start_offset
+      effort.event_start_time = event_start_time
       sub_split = due_next_sub_split(effort)
       if sub_split
         effort.next_expected_split_time =
@@ -148,6 +148,6 @@ class LiveEvent
   end
 
   def event_start_time
-    event.start_time
+    @event_start_time ||= event.start_time
   end
 end

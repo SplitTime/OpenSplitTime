@@ -149,7 +149,7 @@ RSpec.describe IntendedTimeCalculator do
     end
 
     context 'for an effort partially underway' do
-      let(:split_times) { FactoryGirl.build_stubbed_list(:split_times_hardrock_1, 30, effort_id: 101) }
+      let(:split_times) { FactoryGirl.build_stubbed_list(:split_times_hardrock_43, 30, effort_id: 101) }
       let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
       it 'calculates the likely intended day and time based on inputs' do

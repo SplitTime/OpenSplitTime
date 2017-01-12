@@ -23,6 +23,7 @@ class NewLiveEffortData
 
   def response_row
     {splitId: split.id,
+     lap: lap,
      splitName: split.base_name,
      splitDistance: split.distance_from_start,
      effortId: effort.id,
@@ -53,6 +54,10 @@ class NewLiveEffortData
 
   def split_id
     split.id
+  end
+
+  def lap
+    params[:lap]
   end
 
   def effort_name

@@ -25,7 +25,7 @@ RSpec.describe Effort, type: :model do
 
   describe 'validations' do
     let(:course) { Course.create!(name: 'Test Course') }
-    let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
+    let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
     let(:location1) { Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105) }
     let(:location2) { Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05) }
     let(:participant) { Participant.create!(first_name: 'Joe', last_name: 'Hardman',
@@ -86,47 +86,6 @@ RSpec.describe Effort, type: :model do
       effort = Effort.new(event: event, participant_id: 2, bib_number: 20)
       expect(effort).not_to be_valid
       expect(effort.errors[:bib_number]).to include('has already been taken')
-    end
-  end
-
-  describe 'within_time_range' do
-    before do
-
-      @course = Course.create!(name: 'Test Course 100')
-      @event = Event.create!(name: 'Test Event 2015', course: @course, start_time: '2015-07-01 06:00:00')
-
-      @location1 = Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
-      @location2 = Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
-
-      @effort1 = Effort.create!(event: @event, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
-      @effort2 = Effort.create!(event: @event, bib_number: 12, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
-      @effort3 = Effort.create!(event: @event, bib_number: 150, city: 'Nantucket', state_code: 'MA', country_code: 'US', age: 26, first_name: 'Jane', last_name: 'Rockstar', gender: 'female')
-
-      @split1 = Split.create!(course: @course, location: @location1, base_name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-      @split3 = Split.create!(course: @course, location: @location2, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-      @split4 = Split.create!(course: @course, location: @location1, base_name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
-
-      @event.splits << @course.splits
-
-      SplitTime.create!(effort: @effort1, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort1, split: @split3, bitkey: SubSplit::IN_BITKEY, time_from_start: 4000)
-      SplitTime.create!(effort: @effort1, split: @split3, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100)
-      SplitTime.create!(effort: @effort1, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 8000)
-      SplitTime.create!(effort: @effort2, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort2, split: @split3, bitkey: SubSplit::IN_BITKEY, time_from_start: 5000)
-      SplitTime.create!(effort: @effort2, split: @split3, bitkey: SubSplit::OUT_BITKEY, time_from_start: 5100)
-      SplitTime.create!(effort: @effort2, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 9000)
-      SplitTime.create!(effort: @effort3, split: @split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-      SplitTime.create!(effort: @effort3, split: @split3, bitkey: SubSplit::IN_BITKEY, time_from_start: 3000)
-      SplitTime.create!(effort: @effort3, split: @split3, bitkey: SubSplit::OUT_BITKEY, time_from_start: 3100)
-      SplitTime.create!(effort: @effort3, split: @split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 7500)
-    end
-
-    it 'returns only those efforts for which the finish time is between the parameters provided' do
-      efforts = Effort.all
-      expect(efforts.within_time_range(7800, 8200).count).to eq(1)
-      expect(efforts.within_time_range(5000, 10000).count).to eq(3)
-      expect(efforts.within_time_range(10000, 20000).count).to eq(0)
     end
   end
 

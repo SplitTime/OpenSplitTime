@@ -52,31 +52,6 @@ class BulkUpdateService
     end
   end
 
-  def self.bulk_update_dropped(update_hash)
-    return if update_hash.blank?
-    if Rails.env.test? # Rspec doesn't seem to play well with upsert
-      update_hash.each do |effort_id, dropped_split_id|
-        effort = Effort.find(effort_id)
-        effort.update(dropped_split_id: dropped_split_id, updated_at: Time.now)
-      end
-    else
-      begin
-        connection = ActiveRecord::Base.connection
-        table_name = :efforts
-        Upsert.batch(connection, table_name) do |upsert|
-          update_hash.each do |effort_id, dropped_split_id|
-            upsert.row({id: effort_id}, dropped_split_id: dropped_split_id, updated_at: Time.now)
-          end
-        end
-      rescue Exception => e
-        puts "SQL error in #{ __method__ }"
-        ActiveRecord::Base.connection.execute 'ROLLBACK'
-
-        raise e
-      end
-    end
-  end
-
   def self.bulk_update_start_offset(update_hash)
     return if update_hash.blank?
     if Rails.env.test? # Rspec doesn't seem to play well with upsert
@@ -122,20 +97,25 @@ class BulkUpdateService
     "Added start times for #{efforts.size} efforts."
   end
 
-  def self.set_dropped_split_ids(update_hash)
+  def self.set_dropped_attributes(update_hash)
     return if update_hash.blank?
     if Rails.env.test? # Rspec doesn't seem to play well with upsert
-      update_hash.each do |effort_id, dropped_split_id|
+      update_hash.each do |effort_id, dropped_attributes|
         effort = Effort.find(effort_id)
-        effort.update(dropped_split_id: dropped_split_id, updated_at: Time.now)
+        effort.update(dropped_split_id: dropped_attributes[:split_id],
+                      dropped_lap: dropped_attributes[:lap],
+                      updated_at: Time.now)
       end
     else
       begin
         connection = ActiveRecord::Base.connection
         table_name = :efforts
         Upsert.batch(connection, table_name) do |upsert|
-          update_hash.each do |effort_id, dropped_split_id|
-            upsert.row({id: effort_id}, dropped_split_id: dropped_split_id, updated_at: Time.now)
+          update_hash.each do |effort_id, dropped_attributes|
+            upsert.row({id: effort_id},
+                       dropped_split_id: dropped_attributes[:split_id],
+                       dropped_lap: dropped_attributes[:lap],
+                       updated_at: Time.now)
           end
         end
       rescue Exception => e

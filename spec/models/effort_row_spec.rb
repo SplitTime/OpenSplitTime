@@ -6,10 +6,10 @@ RSpec.describe EffortRow, type: :model do
   before do
 
     @course = Course.create!(name: 'Test Course 100')
-    @event1 = Event.create!(name: 'Test Event 2012', course: @course, start_time: "2012-07-01 06:00:00")
-    @event2 = Event.create!(name: 'Test Event 2013', course: @course, start_time: "2013-07-01 06:00:00")
-    @event3 = Event.create!(name: 'Test Event 2014', course: @course, start_time: "2014-07-01 06:00:00")
-    @event4 = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00")
+    @event1 = Event.create!(name: 'Test Event 2012', course: @course, start_time: "2012-07-01 06:00:00", laps_required: 1)
+    @event2 = Event.create!(name: 'Test Event 2013', course: @course, start_time: "2013-07-01 06:00:00", laps_required: 1)
+    @event3 = Event.create!(name: 'Test Event 2014', course: @course, start_time: "2014-07-01 06:00:00", laps_required: 1)
+    @event4 = Event.create!(name: 'Test Event 2015', course: @course, start_time: "2015-07-01 06:00:00", laps_required: 1)
 
     @effort1 = Effort.create!(event: @event1, bib_number: 1, state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female')
     @effort2 = Effort.create!(event: @event1, bib_number: 2, state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male')
@@ -23,7 +23,6 @@ RSpec.describe EffortRow, type: :model do
   end
 
   describe 'initialization' do
-
     it 'should instantiate new objects if provided an effort' do
       @effort_row1 = EffortRow.new(@effort1)
       @effort_row2 = EffortRow.new(@effort2)
@@ -47,11 +46,9 @@ RSpec.describe EffortRow, type: :model do
       expect(@effort_row7.present?).to eq(true)
       expect(@effort_row8.present?).to eq(true)
     end
-
   end
 
   describe 'year' do
-
     it 'should return the year of start_time if provided' do
       @effort_row5 = EffortRow.new(@effort5, overall_place: 10, gender_place: 5, start_time: "1992-02-01 00:00:00")
       @effort_row6 = EffortRow.new(@effort6, overall_place: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
@@ -67,11 +64,9 @@ RSpec.describe EffortRow, type: :model do
       expect(@effort_row2.year).to eq(2012)
       expect(@effort_row5.year).to eq(2014)
     end
-
   end
 
   describe 'finish_time' do
-
     it 'should return nil if no finish_status is provided or if finish_status is a string' do
       @effort_row7 = EffortRow.new(@effort7, finish_status: "DNF at Ridgeline")
       @effort_row8 = EffortRow.new(@effort8, gender_place: 3)
@@ -87,11 +82,9 @@ RSpec.describe EffortRow, type: :model do
       expect(@effort_row4.finish_time).to eq(25000)
       expect(@effort_row6.finish_time).to eq(50000)
     end
-
   end
 
   describe 'effort_attributes' do
-
     it 'should return delegated effort attributes' do
       @effort_row1 = EffortRow.new(@effort1)
       @effort_row2 = EffortRow.new(@effort2)
@@ -115,7 +108,5 @@ RSpec.describe EffortRow, type: :model do
       expect(@effort_row6.bio_historic).to eq('Male, 27')
       expect(@effort_row7.state_and_country).to eq('Colorado, US')
     end
-
   end
-
 end

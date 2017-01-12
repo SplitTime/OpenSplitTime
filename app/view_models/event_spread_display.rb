@@ -17,13 +17,13 @@ class EventSpreadDisplay
                                       .pluck_to_hash(:effort_id, :time_from_start, :split_id, :sub_split_bitkey, :data_status)
                                       .group_by { |row| row[:effort_id] }
     @efforts = event.efforts.sorted_with_finish_status
-    sort_efforts(params[:sort])
+    @sort_method = params[:sort]
   end
 
   def effort_times_rows
     @effort_times_rows ||=
-        efforts.map { |effort| EffortTimesRow.new(effort, relevant_splits, split_times_data_by_effort[effort.id],
-                                                  event_start_time) }
+        sorted_efforts.map { |effort| EffortTimesRow.new(effort, relevant_splits, split_times_data_by_effort[effort.id],
+                                                         event_start_time) }
   end
 
   def efforts_count
@@ -39,7 +39,7 @@ class EventSpreadDisplay
   end
 
   def event_start_time
-    event.start_time
+    @event_start_time ||= event.start_time
   end
 
   def display_style_text
@@ -56,7 +56,7 @@ class EventSpreadDisplay
   end
 
   def relevant_splits
-    (display_style == 'ampm') || (display_style == 'military') ? splits : splits_without_start
+    @relevant_splits ||= %w(ampm military).include?(display_style) ? splits : splits_without_start
   end
 
   def to_csv
@@ -67,13 +67,20 @@ class EventSpreadDisplay
 
   private
 
-  attr_reader :efforts, :split_times_data_by_effort
+  attr_reader :efforts, :split_times_data_by_effort, :sort_method
 
-  def sort_efforts(sort_by)
-    efforts.sort_by!(&:overall_place) if sort_by == 'place'
-    efforts.sort_by!(&:bib_number) if sort_by == 'bib'
-    efforts.sort_by!(&:last_name) if sort_by == 'last'
-    efforts.sort_by!(&:first_name) if sort_by == 'first'
+  def sorted_efforts
+    @sorted_efforts ||=
+        case sort_method
+        when 'bib'
+          efforts.sort_by(&:bib_number)
+        when 'last'
+          efforts.sort_by(&:last_name)
+        when 'first'
+          efforts.sort_by(&:first_name)
+        else
+          efforts
+        end
   end
 
   def splits_without_start

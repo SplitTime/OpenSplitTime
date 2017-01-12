@@ -92,7 +92,7 @@ RSpec.describe AttributePuller, type: :model do
 
     context 'when pulling all available data' do
       let(:course) { Course.create!(name: 'Test Course 100') }
-      let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
+      let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
 
       it 'should pull all target data into corresponding empty fields' do
         participant = Participant.new

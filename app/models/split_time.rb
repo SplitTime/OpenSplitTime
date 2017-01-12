@@ -26,9 +26,9 @@ class SplitTime < ActiveRecord::Base
   before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
-  validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start
-  validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey],
-                          message: 'only one of any given split/sub_split permitted within an effort'
+  validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start, :lap
+  validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
+                          message: 'only one of any given split/sub_split/lap combination permitted within an effort'
   validate :course_is_consistent
 
   def self.null_record
@@ -53,6 +53,16 @@ class SplitTime < ActiveRecord::Base
   def sub_split=(sub_split)
     self.split_id = sub_split.split_id
     self.bitkey = sub_split.bitkey
+  end
+
+  def time_point
+    TimePoint.new(lap, split_id, bitkey)
+  end
+
+  def time_point=(time_point)
+    self.split_id = time_point.split_id
+    self.bitkey = time_point.bitkey
+    self.lap = time_point.lap
   end
 
   def set_effort_data_status

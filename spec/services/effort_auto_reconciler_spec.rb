@@ -3,7 +3,7 @@ include ActionDispatch::TestProcess
 
 RSpec.describe EffortAutoReconciler do
   let(:course) { Course.create!(name: 'Test Course 100') }
-  let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
+  let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
   let!(:effort1) { Effort.create!(event: event, first_name: 'Jen', last_name: 'Abelman', gender: 'female', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
   let!(:effort2) { Effort.create!(event: event, first_name: 'John', last_name: 'Benenson', gender: 'male', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
   let!(:effort3) { Effort.create!(event: event, first_name: 'Jim', last_name: 'Carlson', gender: 'male') }

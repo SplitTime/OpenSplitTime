@@ -27,7 +27,7 @@
           <% if @event_stage.started? %>
               <%= link_to_set_data_status(@event_stage) %>
               <% unless @event_stage.available_live %>
-                  <%= link_to_set_dropped_splits(@event_stage) %>
+                  <%= link_to_set_dropped_attributes(@event_stage) %>
                   <%= link_to_ultrasignup_export(@event_stage) %>
               <% end %>
           <% else %>

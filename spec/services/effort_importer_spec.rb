@@ -5,7 +5,7 @@ RSpec.describe SplitImporter do
 
   describe 'initialization' do
     let(:course) { Course.create!(name: 'Test Course 100') }
-    let(:event) { Event.create!(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00") }
+    let(:event) { Event.create!(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00", laps_required: 1) }
     let(:import_file) { 'spec/fixtures/files/baddata2015test.xlsx' }
     let(:current_user_id) { 1 }
     let(:split_importer) { SplitImporter.new(file_path: import_file, event: event, current_user_id: current_user_id) }

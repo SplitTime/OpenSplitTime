@@ -53,6 +53,15 @@
                                   {class: "dropdown-select-field"} %>
           </div>
         </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :laps_required, "Laps required" %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.number_field :laps_required, class: "form-control", placeholder: "#" %>
+            <p>(Use 1 for an event that travels the course only once. Use 0 for unlimited laps (for a time-based cutoff)</p>
+          </div>
+        </div>
         <% if current_user && current_user.admin? %>
             <div class="form-group">
               <div class="control-label col-sm-2">

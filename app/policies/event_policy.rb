@@ -78,7 +78,7 @@ class EventPolicy
     current_user.authorized_to_edit?(event)
   end
 
-  def set_dropped_split_ids?
+  def set_dropped_attributes?
     current_user.authorized_to_edit?(event)
   end
 

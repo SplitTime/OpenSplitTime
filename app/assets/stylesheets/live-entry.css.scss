@@ -134,6 +134,7 @@ Mixins
 
   input:disabled ~ .time-mode {
 	pointer-events: none;
+    .null { display: none; }
     .disabled { display: inline-block; }
   }
 

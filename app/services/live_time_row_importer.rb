@@ -20,10 +20,6 @@ class LiveTimeRowImporter
   attr_reader :event, :time_rows, :times_container
   attr_accessor :unsaved_rows
 
-  # If just one row was submitted, assume the user has noticed if data status is bad or questionable,
-  # or if times will be overwritten, so call bulk_create_or_update with force option. If more than one
-  # row was submitted, call bulk_create_or_update without force option.
-
   def import_time_rows
     time_rows.each do |time_row|
 
@@ -34,6 +30,11 @@ class LiveTimeRowImporter
                                           params: time_row[1],
                                           ordered_splits: ordered_splits,
                                           times_container: times_container)
+
+      # If just one row was submitted, assume the user has noticed if data status is bad or questionable,
+      # or if times will be overwritten, so call bulk_create_or_update with force option. If more than one
+      # row was submitted, call bulk_create_or_update without force option.
+
       if effort_data.valid? && (effort_data.clean? || force_option?) && create_or_update_times(effort_data)
         set_dropped_split_id(effort_data)
       else

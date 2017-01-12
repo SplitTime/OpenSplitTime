@@ -462,6 +462,7 @@
              * @type object
              */
             $dataTable: null,
+            busy: false,
 
             /**
              * Inits the provisional data table
@@ -559,9 +560,9 @@
                     'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
                 var timeInIcon = icons[timeRow.timeInStatus] || '';
-                timeInIcon += timeRow.timeInExists ? icons['exists'] : '';
+                timeInIcon += ( timeRow.timeInExists && timeRow.timeIn ) ? icons['exists'] : '';
                 var timeOutIcon = icons[timeRow.timeOutStatus] || '';
-                timeOutIcon += timeRow.timeOutExists ? icons['exists'] : '';
+                timeOutIcon += ( timeRow.timeOutExists && timeRow.timeOut ) ? icons['exists'] : '';
 
                 // Base64 encode the stringifyed timeRow to add to the timeRow
                 // This is ie9 incompatible
@@ -570,8 +571,8 @@
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
                         <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
-                        <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + timeRow.timeIn + timeInIcon + '</td>\
-                        <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + timeRow.timeOut + timeOutIcon + '</td>\
+                        <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
+                        <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
                         <td class="dropped-here js-dropped-here">' + (timeRow.droppedHere ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
@@ -608,6 +609,8 @@
             },
 
             submitTimeRows: function(timeRows) {
+                if ( liveEntry.timeRowsTable.busy ) return;
+                liveEntry.timeRowsTable.busy = true;
                 var data = {timeRows:[]}
                 $.each(timeRows, function(index) {
                     var $row = $(this).closest('tr');
@@ -628,6 +631,8 @@
                             liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
                         }
                     }
+                }).always( function() {
+                    liveEntry.timeRowsTable.busy = false;
                 });
             },
 
@@ -716,6 +721,7 @@
                     url: '/live/events/' + liveEntry.currentEventId + '/post_file_effort_data',
                     submit: function (e, data) {
                         data.formData = {splitId: liveEntry.currentSplitId};
+                        liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {
                         var response = data.result;
@@ -733,6 +739,9 @@
                     },
                     fail: function (e, data) {
                         $('#debug').empty().append( data.response().jqXHR.responseText );
+                    },
+                    always: function () {
+                        liveEntry.timeRowsTable.busy = false;
                     }
                 });
             },

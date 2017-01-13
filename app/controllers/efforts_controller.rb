@@ -96,9 +96,7 @@ class EffortsController < ApplicationController
 
   def delete_split_times
     authorize @effort
-    @effort.split_times.where(id: params[:split_time_ids]).destroy_all
-    EffortDataStatusSetter.set_data_status(effort: @effort)
-    @effort.set_dropped_split_id if @effort.dropped_split_id
+    @effort.destroy_split_times(params[:split_time_ids])
     redirect_to effort_path(@effort)
   end
 

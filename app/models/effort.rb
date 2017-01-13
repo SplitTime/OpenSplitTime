@@ -259,6 +259,16 @@ class Effort < ActiveRecord::Base
     participant_id.nil?
   end
 
+  def destroy_split_times(split_time_ids)
+    split_times.where(id: split_time_ids).destroy_all
+    set_data_status
+    set_dropped_attributes if dropped?
+  end
+
+  def set_data_status
+    EffortDataStatusSetter.set_data_status(effort: self)
+  end
+
   def set_dropped_attributes
     EffortDroppedAttributesSetter.set_attributes(effort: self)
   end

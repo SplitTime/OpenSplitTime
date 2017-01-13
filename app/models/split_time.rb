@@ -66,7 +66,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def set_effort_data_status
-    EffortDataStatusSetter.set_data_status(effort: effort)
+    effort.set_data_status
   end
 
   def elapsed_time

@@ -60,6 +60,7 @@ class EventEffortsDisplay
   end
 
   def to_ultrasignup_csv
+    return 'Export failed because efforts are in progress. Set drops before exporting.' unless event_finished?
     CSV.generate do |csv|
       csv << %w(place time first last age gender city state dob bib status)
       effort_rows.each do |row|
@@ -81,6 +82,10 @@ class EventEffortsDisplay
   private
 
   attr_reader :params
+
+  def event_finished?
+    event.finished?
+  end
 
   def event_final_split_id
     @event_final_split_id ||= finish_split.try(:id)
@@ -104,16 +109,16 @@ class EventEffortsDisplay
 
   def finish_status(effort)
     return effort.time_from_start if effort.final_split_id == event_final_split_id
-    return "DNS" unless started_efforts.include?(effort)
+    return 'DNS' unless started_efforts.include?(effort)
     return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
-    "In progress"
+    'In progress'
   end
 
   def run_status(effort)
-    return "DNS" unless started_efforts.include?(effort)
-    return "Started" if effort.final_split_id == event_start_split_id
+    return 'DNS' unless started_efforts.include?(effort)
+    return 'Started' if effort.final_split_id == event_start_split_id
     return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
-    return "Finished" if effort.final_split_id == event_final_split_id
+    return 'Finished' if effort.final_split_id == event_final_split_id
     "Reported through #{effort.final_split_name}"
   end
 end

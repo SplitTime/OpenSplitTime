@@ -88,6 +88,10 @@ class Event < ActiveRecord::Base
     (1..laps_required).to_a
   end
 
+  def finished?
+    efforts_sorted.none?(&:in_progress?)
+  end
+
   private
 
   def efforts_sorted

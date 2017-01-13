@@ -38,14 +38,16 @@ class EffortRow
 
   def ultrasignup_finish_status
     case
-      when finish_status.is_a?(Numeric)
-        1
-      when finish_status.include?("Dropped")
-        2
-      when finish_status.include?("DNS")
-        3
-      else
-        raise "Problem with finish status for effort id #{effort_id}"
+    when finish_status.is_a?(Numeric)
+      1
+    when finish_status.include?('Dropped')
+      2
+    when finish_status.include?('DNS')
+      3
+    when finish_status.include?('In progress')
+      "#{effort.name} (id: #{effort_id}, bib: #{bib_number}) is in progress"
+    else
+      "Problem with finish status for effort id #{effort_id}"
     end
   end
 

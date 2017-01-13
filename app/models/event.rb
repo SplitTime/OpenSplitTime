@@ -76,6 +76,10 @@ class Event < ActiveRecord::Base
     BulkUpdateService.set_dropped_attributes(outdated_dropped_attributes)
   end
 
+  def lap_splits
+    laps.map { |lap| ordered_splits.map { |split| LapSplit.new(lap, split) } }.flatten
+  end
+
   def time_points
     laps.map { |lap| sub_splits.map { |sub_split| TimePoint.new(lap, sub_split.split_id, sub_split.bitkey) } }.flatten
   end
@@ -85,19 +89,6 @@ class Event < ActiveRecord::Base
   end
 
   private
-
-  def outdated_dropped_attributes
-    efforts_sorted.map { |effort| dropped_attributes(effort) }
-  end
-
-  def dropped_attributes(effort)
-    if effort.finished
-      update_hash[effort.id] = {} if effort.dropped_split_id || effort.dropped_lap
-    else
-      update_hash[effort.id] = {lap: effort.final_lap, split_id: effort.final_split_id} if
-          (effort.final_split_id != effort.dropped_split_id) || (effort.final_lap != effort.dropped_lap)
-    end
-  end
 
   def efforts_sorted
     @efforts_sorted ||= efforts.sorted_with_finish_status

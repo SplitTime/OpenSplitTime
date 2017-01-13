@@ -54,6 +54,25 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe '#lap_splits' do
+    let(:event) { FactoryGirl.build_stubbed(:event, laps_required: 2) }
+    let(:start_split) { FactoryGirl.build_stubbed(:start_split, id: 111) }
+    let(:intermediate_split1) { FactoryGirl.build_stubbed(:split, id: 102) }
+    let(:intermediate_split2) { FactoryGirl.build_stubbed(:split, id: 103) }
+    let(:finish_split) { FactoryGirl.build_stubbed(:finish_split, id: 112) }
+    let(:splits) { [start_split, intermediate_split1, intermediate_split2, finish_split] }
+
+    it 'returns an array of TimePoint objects ordered by lap, split distance, and bitkey' do
+      test_event = event
+      ordered_splits = splits
+      allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
+      lap_splits = test_event.lap_splits
+      expect(lap_splits.size).to eq(8)
+      expect(lap_splits.map(&:lap)).to eq([1] * 4 + [2] * 4)
+      expect(lap_splits.map(&:split).map(&:id)).to eq([111, 102, 103, 112] * 2)
+    end
+  end
+
   describe '#time_points' do
     let(:event) { FactoryGirl.build_stubbed(:event, laps_required: 2) }
     let(:start_split) { FactoryGirl.build_stubbed(:start_split, id: 111) }
@@ -68,18 +87,9 @@ RSpec.describe Event, type: :model do
       allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
       time_points = test_event.time_points
       expect(time_points.size).to eq(12)
-      expect(time_points[0]).to eq(TimePoint.new(1, 111, 1))
-      expect(time_points[1]).to eq(TimePoint.new(1, 102, 1))
-      expect(time_points[2]).to eq(TimePoint.new(1, 102, 64))
-      expect(time_points[3]).to eq(TimePoint.new(1, 103, 1))
-      expect(time_points[4]).to eq(TimePoint.new(1, 103, 64))
-      expect(time_points[5]).to eq(TimePoint.new(1, 112, 1))
-      expect(time_points[6]).to eq(TimePoint.new(2, 111, 1))
-      expect(time_points[7]).to eq(TimePoint.new(2, 102, 1))
-      expect(time_points[8]).to eq(TimePoint.new(2, 102, 64))
-      expect(time_points[9]).to eq(TimePoint.new(2, 103, 1))
-      expect(time_points[10]).to eq(TimePoint.new(2, 103, 64))
-      expect(time_points[11]).to eq(TimePoint.new(2, 112, 1))
+      expect(time_points.map(&:lap)).to eq([1] * 6 + [2] * 6)
+      expect(time_points.map(&:split_id)).to eq([111, 102, 102, 103, 103, 112] * 2)
+      expect(time_points.map(&:bitkey)).to eq([1, 1, 64, 1, 64, 1] * 2)
     end
   end
 

@@ -11,6 +11,13 @@ RSpec.describe SplitImporter do
     let(:split_importer) { SplitImporter.new(file_path: import_file, event: event, current_user_id: current_user_id) }
 
     describe 'effort_import' do
+      let(:effort_1) { Effort.find_by(bib_number: 1) }
+      let(:effort_30) { Effort.find_by(bib_number: 30) }
+      let(:effort_32) { Effort.find_by(bib_number: 32) }
+      let(:effort_49) { Effort.find_by(bib_number: 49) }
+      let(:effort_135) { Effort.find_by(bib_number: 135) }
+      let(:effort_143) { Effort.find_by(bib_number: 143) }
+
       let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, without_status: true) }
       before do
         split_importer.split_import
@@ -18,46 +25,47 @@ RSpec.describe SplitImporter do
       end
 
       it 'imports all valid efforts, sets up data correctly, and returns a failure array containing invalid rows' do
-        effort1 = Effort.find_by(bib_number: 1)
-        effort2 = Effort.find_by(bib_number: 143)
-        effort3 = Effort.find_by(bib_number: 135)
         expect(Effort.all.count).to eq(11)
-        expect(effort1.first_name).to eq('Fast')
-        expect(effort1.last_name).to eq('Finisher')
-        expect(effort1.gender).to eq('male')
-        expect(effort1.country_code).to eq('DE')
-        expect(effort1.state_code).to eq('HH')
-        expect(effort1.age).to eq(28)
-        expect(effort1.birthdate).to eq(Date.new(1987,2,1))
-        expect(effort2.first_name).to eq('First')
-        expect(effort2.last_name).to eq('Female')
-        expect(effort2.gender).to eq('female')
-        expect(effort2.country_code).to eq('US')
-        expect(effort2.state_code).to eq('CO')
-        expect(effort2.age).to eq(25)
-        expect(effort2.birthdate).to be_nil
-        expect(effort3.first_name).to eq('Local')
-        expect(effort3.last_name).to eq('Boy')
-        expect(effort3.gender).to eq('male')
-        expect(effort3.country_code).to eq('US')
-        expect(effort3.state_code).to eq('CO')
-        expect(effort3.age).to be_nil
-        expect(effort3.birthdate).to be_nil
+        expect(effort_1.first_name).to eq('Fast')
+        expect(effort_1.last_name).to eq('Finisher')
+        expect(effort_1.gender).to eq('male')
+        expect(effort_1.country_code).to eq('DE')
+        expect(effort_1.state_code).to eq('HH')
+        expect(effort_1.age).to eq(28)
+        expect(effort_1.birthdate).to eq(Date.new(1987, 2, 1))
+        expect(effort_143.first_name).to eq('First')
+        expect(effort_143.last_name).to eq('Female')
+        expect(effort_143.gender).to eq('female')
+        expect(effort_143.country_code).to eq('US')
+        expect(effort_143.state_code).to eq('CO')
+        expect(effort_143.age).to eq(25)
+        expect(effort_143.birthdate).to be_nil
+        expect(effort_135.first_name).to eq('Local')
+        expect(effort_135.last_name).to eq('Boy')
+        expect(effort_135.gender).to eq('male')
+        expect(effort_135.country_code).to eq('US')
+        expect(effort_135.state_code).to eq('CO')
+        expect(effort_135.age).to be_nil
+        expect(effort_135.birthdate).to be_nil
         expect(effort_importer.effort_failure_array.count).to eq(2)
         expect(effort_importer.effort_failure_array.first[0]).to eq('NoLastName')
         expect(effort_importer.effort_failure_array.last[1]).to eq('NoFirstName')
       end
 
-      it 'correctly determines dropped_split_ids and sets start_offsets' do
+      it 'correctly sets dropped_split_ids, dropped_laps (on a single-lap course), and start_offsets' do
         split1 = Split.find_by(base_name: 'Tunnel')
-        expect(Effort.find_by(bib_number: 49).dropped_split_id).to eq(split1.id)
-        expect(Effort.find_by(bib_number: 135).dropped_split_id).to eq(split1.id)
-        expect(Effort.find_by(bib_number: 32).dropped_split_id).to eq(split1.id)
-        expect(Effort.find_by(bib_number: 1).dropped_split_id).to be_nil
-        expect(Effort.find_by(bib_number: 30).start_offset).to eq(30 * 60)
-        expect(Effort.find_by(bib_number: 135).start_offset).to eq(60 * 60)
-        expect(Effort.find_by(bib_number: 1).start_offset).to eq(0)
-        expect(Effort.find_by(bib_number: 32).start_offset).to eq(0)
+        expect(effort_49.dropped_split_id).to eq(split1.id)
+        expect(effort_49.dropped_lap).to eq(1)
+        expect(effort_135.dropped_split_id).to eq(split1.id)
+        expect(effort_135.dropped_lap).to eq(1)
+        expect(effort_135.start_offset).to eq(60 * 60)
+        expect(effort_32.dropped_split_id).to eq(split1.id)
+        expect(effort_32.dropped_lap).to eq(1)
+        expect(effort_32.start_offset).to eq(0)
+        expect(effort_1.dropped_split_id).to be_nil
+        expect(effort_1.dropped_lap).to be_nil
+        expect(effort_1.start_offset).to eq(0)
+        expect(effort_30.start_offset).to eq(30 * 60)
       end
 
       it 'imports all valid split_times and correctly sets split_time times from start' do

@@ -31,14 +31,12 @@ class BulkDataStatusSetter
       changed_split_times.push(*setter.changed_split_times)
       changed_efforts.push(*setter.changed_efforts)
     end
-    changed_split_times
-    changed_efforts
   end
 
   def save_changes
-    bulk_update(:split_times, changed_split_times)
-    bulk_update(:efforts, changed_efforts)
-    self.report = "Updated #{changed_split_times.size} split times and #{changed_efforts.size} efforts."
+    split_time_report = BulkUpdateService.update_attributes(:split_times, changed_split_time_attributes)
+    effort_report = BulkUpdateService.update_attributes(:efforts, changed_effort_attributes)
+    self.report = "#{split_time_report} #{effort_report}"
   end
 
   private
@@ -46,22 +44,15 @@ class BulkDataStatusSetter
   attr_reader :efforts, :times_container, :grouped_split_times
   attr_writer :report
 
-  def ordered_splits
-    @ordered_splits ||= efforts.first.ordered_splits.to_a
+  def changed_split_time_attributes
+    changed_split_times.map { |st| [st.id, {data_status: st.data_status_numeric}] }.to_h
   end
 
-  def bulk_update(table, changed_resources)
-    begin
-      Upsert.batch(ActiveRecord::Base.connection, table) do |upsert|
-        changed_resources.each do |resource|
-          upsert.row({id: resource.id}, data_status: resource.data_status_numeric, updated_at: Time.now)
-        end
-      end
-    rescue Exception => e
-      puts "SQL error in #{ __method__ }"
-      ActiveRecord::Base.connection.execute 'ROLLBACK'
+  def changed_effort_attributes
+    changed_efforts.map { |effort| [effort.id, {data_status: effort.data_status_numeric}] }.to_h
+  end
 
-      raise e
-    end
+  def ordered_splits
+    @ordered_splits ||= efforts.first.ordered_splits.to_a
   end
 end

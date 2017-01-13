@@ -23,7 +23,7 @@ class EventEffortsDisplay
                     gender_place: effort.gender_rank,
                     finish_status: finish_status(effort),
                     run_status: run_status(effort),
-                    day_and_time: start_time + effort.start_offset + effort.time_from_start,
+                    day_and_time: start_time + effort.start_offset + effort.final_time,
                     participant: indexed_participants[effort.participant_id])
     end
   end
@@ -108,16 +108,16 @@ class EventEffortsDisplay
   end
 
   def finish_status(effort)
-    return effort.time_from_start if effort.final_split_id == event_final_split_id
+    return effort.final_time if effort.final_split_id == event_final_split_id
     return 'DNS' unless started_efforts.include?(effort)
-    return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
+    return "Dropped at #{effort.final_split_name}" if effort.dropped?
     'In progress'
   end
 
   def run_status(effort)
     return 'DNS' unless started_efforts.include?(effort)
     return 'Started' if effort.final_split_id == event_start_split_id
-    return "Dropped at #{effort.final_split_name}" if effort.dropped_split_id
+    return "Dropped at #{effort.final_split_name}" if effort.dropped?
     return 'Finished' if effort.final_split_id == event_final_split_id
     "Reported through #{effort.final_split_name}"
   end

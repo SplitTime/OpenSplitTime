@@ -62,71 +62,10 @@ class Effort < ActiveRecord::Base
   end
 
   def self.sorted_with_finish_status(effort_fields: '*')
-    return [] if existing_scope_sql.blank?
-    query = <<-SQL
-    WITH
-        existing_scope AS (#{existing_scope_sql}),
-        efforts_scoped AS (SELECT efforts.*
-                                       FROM efforts
-                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id)
-     SELECT #{effort_fields}, 
-            rank() over 
-              (ORDER BY dropped, 
-                        final_lap desc, 
-                        distance_from_start desc, 
-                        time_from_start, 
-                        gender desc, 
-                        age desc) 
-            AS overall_rank, 
-            rank() over 
-              (PARTITION BY gender 
-               ORDER BY dropped, 
-                        final_lap desc, 
-                        distance_from_start desc, 
-                        time_from_start, 
-                        gender desc, 
-                        age desc) 
-            AS gender_rank,
-            CASE 
-              when final_lap >= laps_required then true 
-              else false 
-            END 
-            AS finished
-      FROM 
-            (SELECT DISTINCT ON(efforts_scoped.id) 
-                efforts_scoped.*,
-                events.laps_required,
-                CASE 
-                  when efforts_scoped.dropped_split_id is null then false 
-                  else true 
-                END 
-                AS dropped, 
-                splits.id as final_split_id, 
-                splits.base_name as final_split_name, 
-                splits.distance_from_start, 
-                split_times.lap as final_lap, 
-                split_times.time_from_start, 
-                split_times.sub_split_bitkey 
-            FROM efforts_scoped
-                INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
-                INNER JOIN splits ON splits.id = split_times.split_id
-                INNER JOIN events ON events.id = efforts_scoped.event_id
-            ORDER BY  efforts_scoped.id, 
-                      split_times.lap desc, 
-                      splits.distance_from_start desc, 
-                      split_times.sub_split_bitkey desc) 
-            AS subquery
-      ORDER BY overall_rank
-    SQL
+    return [] if EffortQuery.existing_scope_sql.blank?
+    query = EffortQuery.with_finish_status(effort_fields: effort_fields)
     self.find_by_sql(query)
   end
-
-  def self.existing_scope_sql
-    # have to do this to get the binds interpolated. remove any ordering and just grab the ID
-    self.connection.unprepared_statement { self.reorder(nil).select("id").to_sql }
-  end
-
-  private_class_method(:existing_scope_sql)
 
   def dropped_attributes_consistent
     errors.add(:dropped_split_id, 'a dropped_split_id exists with no dropped_lap') if dropped_split_id && !dropped_lap
@@ -192,15 +131,15 @@ class Effort < ActiveRecord::Base
   end
 
   def finished?
-    laps_finished >= laps_required
+    query_attribute(:finished) ? finished : (laps_finished >= laps_required)
   end
 
   def started?
-    start_split_times.present?
+    query_attribute(:started) ? started : start_split_times.present?
   end
 
   def dropped?
-    dropped_split_id.present?
+    query_attribute(:dropped) ? dropped : dropped_split_id.present?
   end
 
   def in_progress?

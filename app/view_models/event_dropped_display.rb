@@ -33,7 +33,7 @@ class EventDroppedDisplay
   def get_efforts
     self.event_efforts = event.efforts
     self.started_efforts = event_efforts.sorted_with_finish_status # This method ignores efforts having no split_times.
-    self.dropped_efforts = started_efforts.select(&:dropped_split_id)
+    self.dropped_efforts = started_efforts.select(&:dropped?)
   end
 
   def sort_efforts(sort_by)
@@ -41,22 +41,18 @@ class EventDroppedDisplay
     dropped_efforts.sort_by!(&:bib_number).reverse! if sort_by == 'bib_desc'
     dropped_efforts.sort_by!(&:last_name) if sort_by == 'last'
     dropped_efforts.sort_by!(&:first_name) if sort_by == 'first'
-    dropped_efforts.sort_by!(&:distance_from_start) if sort_by == 'distance_asc'
-    dropped_efforts.sort_by!(&:distance_from_start).reverse! if sort_by == 'distance_desc'
-    dropped_efforts.sort_by!(&:time_from_start) if sort_by == 'time_asc'
-    dropped_efforts.sort_by!(&:time_from_start).reverse! if sort_by == 'time_desc'
+    dropped_efforts.sort_by!(&:final_distance) if sort_by == 'distance_asc'
+    dropped_efforts.sort_by!(&:final_distance).reverse! if sort_by == 'distance_desc'
+    dropped_efforts.sort_by!(&:final_time) if sort_by == 'time_asc'
+    dropped_efforts.sort_by!(&:final_time).reverse! if sort_by == 'time_desc'
   end
 
   def create_effort_rows
     dropped_efforts.each do |effort|
       effort_row = EffortRow.new(effort,
-                                 dropped_split_name: dropped_split_name(effort),
-                                 day_and_time: start_time + effort.start_offset + effort.time_from_start)
+                                 dropped_split_name: effort.final_split_name,
+                                 day_and_time: start_time + effort.start_offset + effort.final_time)
       effort_rows << effort_row
     end
-  end
-
-  def dropped_split_name(effort)
-     effort.final_split_name
   end
 end

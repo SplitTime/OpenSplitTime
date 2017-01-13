@@ -45,6 +45,7 @@ gem 'puma_worker_killer'
 gem 'sidekiq'
 gem 'aws-sdk'
 gem 'skylight'
+gem 'pusher'
 
 group :development do
   gem 'web-console', '~> 2.0'

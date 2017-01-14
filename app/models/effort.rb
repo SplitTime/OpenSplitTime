@@ -87,7 +87,7 @@ class Effort < ActiveRecord::Base
   end
 
   def event_start_time
-    @event_start_time ||= event.start_time
+    @event_start_time ||= attributes['event_start_time'] || event.start_time
   end
 
   def event_name
@@ -95,7 +95,7 @@ class Effort < ActiveRecord::Base
   end
 
   def laps_required
-    @laps_required ||= event.laps_required
+    attributes['laps_required'] || event.laps_required
   end
 
   def last_reported_split_time
@@ -115,7 +115,7 @@ class Effort < ActiveRecord::Base
   end
 
   def finish_split_time
-    finish_split_times.last if finished?
+    @finish_split_time ||= finish_split_times.last if finished?
   end
 
   def start_split_time
@@ -123,7 +123,7 @@ class Effort < ActiveRecord::Base
   end
 
   def laps_finished
-    finish_split_times.size
+    attributes['laps_finished'] || finish_split_times.size
   end
 
   def laps_started
@@ -131,15 +131,15 @@ class Effort < ActiveRecord::Base
   end
 
   def finished?
-    query_attribute(:finished) ? finished : (laps_finished >= laps_required)
+    attributes['finished'] || (laps_finished >= laps_required)
   end
 
   def started?
-    query_attribute(:started) ? started : start_split_times.present?
+    attributes['started'] || start_split_times.present?
   end
 
   def dropped?
-    query_attribute(:dropped) ? dropped : dropped_split_id.present?
+    attributes['dropped'] || dropped_split_id.present?
   end
 
   def in_progress?
@@ -177,16 +177,12 @@ class Effort < ActiveRecord::Base
     split ? split_times.where(split: split).order(:sub_split_bitkey) : split_times.ordered
   end
 
-  def combined_places
-    @combined_places ||= event.combined_places(self)
-  end
-
   def overall_place
-    @overall_place ||= event.overall_place(self)
+    (attributes['overall_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
   def gender_place
-    @gender_place ||= event.gender_place(self)
+    (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
   def approximate_age_today
@@ -210,5 +206,13 @@ class Effort < ActiveRecord::Base
 
   def set_dropped_attributes
     EffortDroppedAttributesSetter.set_attributes(effort: self)
+  end
+
+  def undrop!
+    update(dropped_split_id: nil, dropped_lap: nil)
+  end
+
+  def enriched
+    event.efforts.sorted_with_finish_status.find { |e| e.id == id }
   end
 end

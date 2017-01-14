@@ -1,14 +1,13 @@
 class EffortShowView
-  include EffortPlaceMethods
 
   attr_reader :effort, :event, :split_rows
   delegate :full_name, :event_name, :participant, :bib_number, :gender, :split_times,
-           :finish_status, :report_url, :beacon_url, :dropped_split_id, :start_time,
-           :photo_url, to: :effort
+           :finish_status, :report_url, :beacon_url, :dropped_split_id, :start_time, :photo_url,
+           :overall_place, :gender_place, :started?, :finished?, :dropped?, :in_progress?, to: :effort
   delegate :simple?, to: :event
 
-  def initialize(effort)
-    @effort = effort
+  def initialize(args_effort)
+    @effort = args_effort.enriched || args_effort
     @event = effort.event
     @splits = effort.ordered_splits.to_a
     @split_times = effort.split_times.index_by(&:sub_split)
@@ -17,15 +16,7 @@ class EffortShowView
   end
 
   def total_time_in_aid
-    split_rows.sum { |unicorn| unicorn.time_in_aid }
-  end
-
-  def started?
-    split_times.present?
-  end
-
-  def in_progress?
-    !dropped? && !finished?
+    split_rows.sum(&:time_in_aid)
   end
 
   def not_analyzable?
@@ -48,14 +39,6 @@ class EffortShowView
 
   def related_split_times(split)
     split.sub_splits.collect { |key_hash| split_times[key_hash] }
-  end
-
-  def dropped?
-    effort.dropped_split_id.present?
-  end
-
-  def finished?
-    split_times[finish_sub_split].present?
   end
 
   def finish_sub_split

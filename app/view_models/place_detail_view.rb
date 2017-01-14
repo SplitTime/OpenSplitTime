@@ -1,18 +1,18 @@
 class PlaceDetailView
-  include EffortPlaceMethods
 
   attr_reader :effort, :event, :place_detail_rows
-  delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender, to: :effort
+  delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender,
+           :overall_place, :gender_place, to: :effort
 
-  def initialize(effort)
-    @effort = effort
-    @event = @effort.event
-    @event_efforts = @event.efforts.to_a
-    @indexed_start_offsets = Hash[@event_efforts.map { |e| [e.id, e.start_offset] }]
-    @ordered_splits = @event.ordered_splits.to_a
-    @event_split_times = @event.split_times.to_a
+  def initialize(args_effort)
+    @effort = args_effort.enriched || args_effort
+    @event = effort.event
+    @event_efforts = event.efforts.to_a
+    @indexed_start_offsets = Hash[event_efforts.map { |e| [e.id, e.start_offset] }]
+    @ordered_splits = event.ordered_splits.to_a
+    @event_split_times = event.split_times.to_a
     set_day_and_time_attrs
-    @indexed_split_times = @event_split_times.group_by(&:sub_split)
+    @indexed_split_times = event_split_times.group_by(&:sub_split)
     @split_place_columns = {}
     create_split_place_columns
     @place_detail_rows = []
@@ -60,7 +60,8 @@ class PlaceDetailView
 
   private
 
-  attr_reader :ordered_splits, :event_efforts, :event_split_times, :indexed_split_times, :indexed_start_offsets, :split_place_columns
+  attr_reader :ordered_splits, :event_efforts, :event_split_times, :indexed_split_times,
+              :indexed_start_offsets, :split_place_columns
 
   def set_day_and_time_attrs
     event_start_time = event.start_time

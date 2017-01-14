@@ -1,11 +1,11 @@
 class EffortAnalysisView
-  include EffortPlaceMethods
 
   attr_reader :effort, :analysis_rows
-  delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender, to: :effort
+  delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender,
+           :overall_place, :gender_place, to: :effort
 
-  def initialize(effort)
-    @effort = effort
+  def initialize(args_effort)
+    @effort = args_effort.enriched || args_effort
     @analysis_rows = []
     create_analysis_rows
   end
@@ -56,17 +56,12 @@ class EffortAnalysisView
     sorted_analysis_rows.reverse.first(segment_count).map(&:segment_name).join(', ')
   end
 
-  def effort_finished?
-    indexed_split_times[finish_sub_split].present?
-  end
-
   def farthest_recorded_time
-    split_times.present? ? split_times.last.time_from_start : nil
+    effort.final_time
   end
 
   def farthest_recorded_split_name
-    farthest_split = ordered_splits.find { |split| split.id == split_times.last.split_id }
-    farthest_split && farthest_split.base_name
+    effort.final_split_name
   end
 
   def event
@@ -129,7 +124,7 @@ class EffortAnalysisView
   end
 
   def effort_start_time
-    event.start_time + effort.start_offset
+    effort.event_start_time + effort.start_offset
   end
 
   def effort_finish_tfs
@@ -150,10 +145,6 @@ class EffortAnalysisView
 
   def sorted_analysis_rows
     analysis_rows.select(&:segment_over_under_percent).sort_by(&:segment_over_under_percent)
-  end
-
-  def effort_in_progress?
-    effort.dropped_split_id.nil? && indexed_split_times[finish_sub_split].nil?
   end
 
   def course

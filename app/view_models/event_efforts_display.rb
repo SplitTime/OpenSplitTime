@@ -60,7 +60,7 @@ class EventEffortsDisplay
   end
 
   def to_ultrasignup_csv
-    return 'Export failed because efforts are in progress. Set drops before exporting.' unless event_finished?
+    return 'One or more efforts is in progress. Set drops before exporting.' unless event_finished?
     CSV.generate do |csv|
       csv << %w(place time first last age gender city state dob bib status)
       effort_rows.each do |row|

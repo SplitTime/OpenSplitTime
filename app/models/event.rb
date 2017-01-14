@@ -48,18 +48,6 @@ class Event < ActiveRecord::Base
     SplitTime.includes(:effort).where(efforts: {event_id: id})
   end
 
-  def combined_places(effort)
-    [overall_place(effort), gender_place(effort)]
-  end
-
-  def overall_place(effort)
-    effort_places[effort.id].try(:overall_rank)
-  end
-
-  def gender_place(effort)
-    effort_places[effort.id].try(:gender_rank)
-  end
-
   def course_name
     course.name
   end
@@ -96,9 +84,5 @@ class Event < ActiveRecord::Base
 
   def efforts_sorted
     @efforts_sorted ||= efforts.sorted_with_finish_status
-  end
-
-  def effort_places
-    @effort_places ||= efforts.sorted_with_finish_status(effort_fields: 'id').index_by(&:id)
   end
 end

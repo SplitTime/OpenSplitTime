@@ -12,9 +12,8 @@ class EffortAnalysisRow
     @split_times = split_times
     @prior_split = prior_split
     @prior_split_time = prior_split_time
-    @prior_time = @prior_split_time.time_from_start
     @start_time = start_time
-    @time_cluster = TimeCluster.new(split, split_times, @prior_time, start_time)
+    @time_cluster = TimeCluster.new(split, split_times, prior_time, start_time)
     @typical_row = typical_row
   end
 
@@ -62,12 +61,20 @@ class EffortAnalysisRow
 
   private
 
-  attr_reader :split, :prior_split, :prior_split_time, :prior_time, :start_time, :time_cluster, :typical_row
+  attr_reader :split, :prior_split, :prior_split_time, :start_time, :time_cluster, :typical_row
+
+  def prior_time
+    @prior_time ||= prior_split_time.time_from_start
+  end
 
   def segment
-    @segment ||= Segment.new(begin_sub_split: prior_split_time.sub_split,
-                             end_sub_split: split_times.first.sub_split,
-                             begin_split: prior_split,
-                             end_split: split)
+    @segment ||= end_sub_split && Segment.new(begin_sub_split: prior_split_time.sub_split,
+                                              end_sub_split: end_sub_split,
+                                              begin_split: prior_split,
+                                              end_split: split)
+  end
+
+  def end_sub_split
+    split_times.compact.first.try(:sub_split)
   end
 end

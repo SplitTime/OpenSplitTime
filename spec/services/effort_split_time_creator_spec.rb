@@ -9,54 +9,47 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
   let(:current_user_id) { 1 }
 
   describe 'initialize' do
-    it 'properly calculates start_offset and dropped_split_id from empty row data' do
+    it 'properly calculates start_offset from empty row data' do
       row_time_data = Array.new(6)
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.start_offset).to eq(0)
-      expect(creator.dropped_split_id).to be_nil
     end
 
-    it 'properly calculates start_offset and dropped_split_id from a populated row' do
+    it 'properly calculates start_offset from a populated row' do
       row_time_data = [excel_epoch, excel_epoch + 1.hour, excel_epoch + 1.hour, excel_epoch + 3.hours, nil, nil]
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.start_offset).to eq(0)
-      expect(creator.dropped_split_id).to eq(103)
     end
 
-    it 'properly calculates start_offset and dropped_split_id from another populated row' do
+    it 'properly calculates start_offset from another populated row' do
       row_time_data = [30.minutes.to_i, 90.minutes.to_i, 95.minutes.to_i,
                        300.minutes.to_i, 310.minutes.to_i, nil]
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.start_offset).to eq(30.minutes)
-      expect(creator.dropped_split_id).to eq(103)
     end
 
-    it 'properly calculates negative start_offset and dropped_split_id from another populated row' do
+    it 'properly calculates negative start_offset from another populated row' do
       row_time_data = [-30.minutes.to_i, 90.minutes.to_i, nil, nil, nil, nil]
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.start_offset).to eq(-30.minutes)
-      expect(creator.dropped_split_id).to eq(102)
     end
 
     it 'sets dropped_split_id to last existing time regardless of interim gaps' do
       row_time_data = [0, nil, 3000, nil, 5000, nil]
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.start_offset).to eq(0)
-      expect(creator.dropped_split_id).to eq(103)
     end
 
     it 'sets dropped_split_id to nil when row is fully populated' do
       row_time_data = [0, 1000, 2000, 3000, 4000, 5000]
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.start_offset).to eq(0)
-      expect(creator.dropped_split_id).to be_nil
     end
 
     it 'sets dropped_split_id to nil if interim times are missing but finish time exists' do
       row_time_data = [0, 1000, nil, 3000, nil, 5000]
       creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
       expect(creator.start_offset).to eq(0)
-      expect(creator.dropped_split_id).to be_nil
     end
 
     it 'raises an ArgumentError if row_time_data and event sub_split count do not match' do

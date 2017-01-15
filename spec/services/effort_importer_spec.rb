@@ -52,18 +52,9 @@ RSpec.describe SplitImporter do
         expect(effort_importer.effort_failure_array.last[1]).to eq('NoFirstName')
       end
 
-      it 'correctly sets dropped_split_ids, dropped_laps (on a single-lap course), and start_offsets' do
-        split1 = Split.find_by(base_name: 'Tunnel')
-        expect(effort_49.dropped_split_id).to eq(split1.id)
-        expect(effort_49.dropped_lap).to eq(1)
-        expect(effort_135.dropped_split_id).to eq(split1.id)
-        expect(effort_135.dropped_lap).to eq(1)
+      it 'correctly sets start_offsets' do
         expect(effort_135.start_offset).to eq(60 * 60)
-        expect(effort_32.dropped_split_id).to eq(split1.id)
-        expect(effort_32.dropped_lap).to eq(1)
         expect(effort_32.start_offset).to eq(0)
-        expect(effort_1.dropped_split_id).to be_nil
-        expect(effort_1.dropped_lap).to be_nil
         expect(effort_1.start_offset).to eq(0)
         expect(effort_30.start_offset).to eq(30 * 60)
       end

@@ -34,7 +34,7 @@ class EffortTimesRow
   def create_time_clusters
     prior_time = 0
     drop_display_split_id = nil
-    if effort.dropped_split_id
+    if effort.dropped?
       ordered_split_ids = splits.map(&:id)
       drop_split_index = ordered_split_ids.index(effort.dropped_split_id)
       drop_display_split_id = ordered_split_ids[drop_split_index + 1] if drop_split_index

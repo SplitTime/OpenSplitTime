@@ -1,6 +1,6 @@
 class EffortSplitTimeCreator
 
-  attr_reader :start_offset, :dropped_split_id, :dropped_lap
+  attr_reader :start_offset
 
   def initialize(row_time_data, effort, current_user_id, event = nil)
     @row_time_data = row_time_data
@@ -33,13 +33,11 @@ class EffortSplitTimeCreator
   CUTOVER_YEAR = 1910
 
   attr_reader :row_time_data, :effort, :current_user_id, :event
-  attr_writer :start_offset, :dropped_split_id, :dropped_lap
+  attr_writer :start_offset
 
   def initialize_return_values
     self.start_offset = time_to_seconds(row_time_data.first) || 0
     row_time_data[0] = 0 if row_time_data[0]
-    self.dropped_split_id = populated_sub_splits.last.try(:split_id) unless finished?
-    self.dropped_lap = dropped_split_id ? 1 : nil # TODO This is a temporary patch; need to determine actual dropped_lap
   end
 
   def validate_row_time_data

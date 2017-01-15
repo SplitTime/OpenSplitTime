@@ -36,14 +36,14 @@ class LiveTimeRowImporter
       # row was submitted, call bulk_create_or_update without force option.
 
       if effort_data.valid? && (effort_data.clean? || force_option?) && create_or_update_times(effort_data)
-        set_dropped_split_id(effort_data)
+        set_dropped_attributes(effort_data)
       else
         unsaved_rows << effort_data.response_row
       end
     end
   end
 
-  def set_dropped_split_id(effort_data)
+  def set_dropped_attributes(effort_data)
     effort = effort_data.effort
     dropped_here_id = effort_data.dropped_here? ? effort_data.split_id : nil
     dropped_here_lap = effort_data.dropped_here? ? effort_data.lap : nil

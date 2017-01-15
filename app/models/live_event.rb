@@ -26,19 +26,19 @@ class LiveEvent
   end
 
   def efforts_started
-    @efforts_started ||= efforts.select { |effort| split_times_by_effort[effort.id] }
+    @efforts_started ||= efforts.select(&:started?)
   end
 
   def efforts_finished
-    @efforts_finished ||= efforts.select { |effort| effort.final_split_id == ordered_split_ids.last }
+    @efforts_finished ||= efforts.select(&:finished?)
   end
 
   def efforts_dropped
-    @efforts_dropped ||= efforts.select(&:dropped_split_id)
+    @efforts_dropped ||= efforts.select(&:dropped?)
   end
 
   def efforts_in_progress
-    @efforts_in_progress ||= efforts_started - efforts_finished - efforts_dropped
+    @efforts_in_progress ||= efforts.select(&:in_progress?)
   end
 
   def efforts_unfinished

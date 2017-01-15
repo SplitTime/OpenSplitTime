@@ -3,18 +3,26 @@ class BulkUpdateService
   # Changed_records is a hash containing {id: {attribute: value, attribute: value, ...}}
 
   def self.update_attributes(model, changed_records)
-    begin
-      Upsert.batch(ActiveRecord::Base.connection, model) do |upsert|
-        changed_records.each do |resource|
-          upsert.row({id: resource.first}, resource.last, updated_at: Time.now)
-        end
+    if Rails.env.test? # Rspec doesn't play well with upsert
+      klass = model.to_s.classify.constantize
+      changed_records.each do |changed_record|
+        subject_record = klass.find(changed_record.first)
+        subject_record.update(changed_record.last)
       end
-      "Updated #{changed_records.size} #{model.to_s.humanize(capitalize: false)}"
-    rescue Exception => e
-      puts "SQL error in #{ __method__ }"
-      ActiveRecord::Base.connection.execute 'ROLLBACK'
+    else
+      begin
+        Upsert.batch(ActiveRecord::Base.connection, model) do |upsert|
+          changed_records.each do |changed_record|
+            upsert.row({id: changed_record.first}, changed_record.last, updated_at: Time.now)
+          end
+        end
+        "Updated #{changed_records.size} #{model.to_s.humanize(capitalize: false)}"
+      rescue Exception => e
+        puts "SQL error in #{ __method__ }"
+        ActiveRecord::Base.connection.execute 'ROLLBACK'
 
-      raise e
+        raise e
+      end
     end
   end
 
@@ -27,8 +35,7 @@ class BulkUpdateService
     SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
       efforts.each do |effort|
         worker.add(effort_id: effort.id,
-                   split_id: start_split_id,
-                   sub_split_bitkey: SubSplit::IN_BITKEY,
+                   time_point: TimePoint.new(1, start_split_id, SubSplit::IN_BITKEY),
                    time_from_start: 0,
                    created_by: current_user_id,
                    updated_by: current_user_id)

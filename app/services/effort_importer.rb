@@ -25,7 +25,6 @@ class EffortImporter
       return
     end
     start_offset_hash = {}
-    final_split_hash = {}
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0..split_offset - 2])
@@ -35,17 +34,16 @@ class EffortImporter
         row_time_data.unshift(0) if finish_times_only?
         creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
         creator.create_split_times
-        start_offset_hash[effort.id] = creator.start_offset if creator.start_offset
-        final_split_hash[effort.id] = {split_id: creator.dropped_split_id, lap: creator.dropped_lap}
+        start_offset_hash[effort.id] = {start_offset: creator.start_offset} if creator.start_offset
         effort_id_array << effort.id
       else
         effort_failure_array << row
       end
     end
-    BulkUpdateService.bulk_update_start_offset(start_offset_hash)
-    BulkUpdateService.set_dropped_attributes(final_split_hash)
-    # Set data status on only those efforts that were successfully created
-    BulkDataStatusSetter.set_data_status(efforts: event.efforts.find(effort_id_array)) unless without_status
+    BulkUpdateService.update_attributes(:efforts, start_offset_hash)
+    DroppedAttributesSetter.set_attributes(efforts: event.efforts.where(id: effort_id_array))
+    BulkDataStatusSetter.set_data_status(efforts: event.efforts.where(id: effort_id_array),
+                                         event: event) unless without_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 

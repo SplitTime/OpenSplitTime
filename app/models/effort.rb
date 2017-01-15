@@ -205,7 +205,7 @@ class Effort < ActiveRecord::Base
   end
 
   def set_dropped_attributes
-    EffortDroppedAttributesSetter.set_attributes(effort: self)
+    DroppedAttributesSetter.set_attributes(efforts: Effort.where(id: id))
   end
 
   def undrop!

@@ -61,7 +61,7 @@ class Event < ActiveRecord::Base
   end
 
   def set_dropped_attributes
-    BulkUpdateService.set_dropped_attributes(outdated_dropped_attributes)
+    DroppedAttributesSetter.set_attributes(efforts: efforts)
   end
 
   def lap_splits

@@ -8,7 +8,7 @@ FactoryGirl.define do
     start_offset 0
     event
     participant
-  end
+   end
 
   factory :efforts_hardrock, class: Effort do
     sequence(:id, (100..109).cycle)

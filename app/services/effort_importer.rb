@@ -13,14 +13,13 @@ class EffortImporter
     @event = args[:event]
     @current_user_id = args[:current_user_id]
     @without_status = args[:without_status]
-    @sub_splits = event.sub_splits
     @effort_failure_array = []
     @effort_id_array = []
     @effort_schema = EffortSchema.new(header_column_titles)
   end
 
   def effort_import
-    unless column_count_matches
+    unless column_count_matches?
       self.effort_import_report = 'Column count does not match'
       return
     end
@@ -80,24 +79,24 @@ class EffortImporter
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
                 :effort_schema, :import_without_times
-
-  attr_reader :event, :current_user_id, :sub_splits, :without_status
-
+  attr_reader :event, :current_user_id, :without_status
   attr_writer :effort_import_report, :effort_id_array, :effort_failure_array
-
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
            :header1_downcase, to: :import_file
+  delegate :laps_unlimited?, to: :event
 
-  def column_count_matches
-    if (event_sub_split_count == 2) && ((split_title_array.size < 1) | (split_title_array.size > 2))
+  def column_count_matches?
+    if laps_unlimited?
+      true
+    elsif (event_time_points_count == 2) && ((split_title_array.size < 1) | (split_title_array.size > 2))
       errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
-          "but this event expects only a finish time column with an optional start time column. " +
-          "Please check your import file or create, remove, or associate splits as needed.")
+          'but this event expects only a finish time column with an optional start time column. ' +
+          'Please check your import file or create, remove, or associate splits as needed.')
       false
-    elsif (event_sub_split_count > 2) && (split_title_array.size != event_sub_split_count)
+    elsif (event_time_points_count > 2) && (split_title_array.size != event_time_points_count)
       errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
-          "but this event expects #{event_sub_split_count} columns. " +
-          "Please check your import file or create, remove, or associate splits as needed.")
+          "but this event expects #{event_time_points_count} columns. " +
+          'Please check your import file or create, remove, or associate splits as needed.')
       false
     else
       true
@@ -107,8 +106,8 @@ class EffortImporter
   def create_effort(row_effort_data)
     effort = event.efforts.new
     row_effort_hash(row_effort_data).each { |attribute, data| effort.assign_attributes({attribute => data}) }
-    effort.concealed = true if event.concealed?
-    effort.save ? effort : nil
+    effort.concealed = event.concealed?
+    effort if effort.save
   end
 
   def row_effort_hash(row_effort_data)
@@ -119,11 +118,15 @@ class EffortImporter
     EffortImportDataPreparer.new(row_effort_data, effort_schema.to_a).output_row
   end
 
-  def event_sub_split_count
-    sub_splits.size
+  def event_time_points
+    @event_time_points ||= event.time_points
+  end
+
+  def event_time_points_count
+    event_time_points.size
   end
 
   def header_column_titles
-    import_without_times ? header1 : header1[0..split_offset - 2]
+    import_without_times ? header1 : header1[0...split_offset - 1]
   end
 end

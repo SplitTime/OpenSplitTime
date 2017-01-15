@@ -18,83 +18,6 @@ class BulkUpdateService
     end
   end
 
-  def self.bulk_update_split_time_status(update_hash)
-    return if update_hash.blank?
-    if Rails.env.test? # Rspec doesn't seem to play well with upsert
-      update_hash.each do |split_time_id, status|
-        split_time = SplitTime.find(split_time_id)
-        split_time.update(data_status: SplitTime.data_statuses[status], updated_at: Time.now)
-      end
-    else
-      begin
-        connection = ActiveRecord::Base.connection
-        table_name = :split_times
-        begin
-          Upsert.batch(connection, table_name) do |upsert|
-            update_hash.each do |split_time_id, status|
-              upsert.row({id: split_time_id}, data_status: SplitTime.data_statuses[status], updated_at: Time.now)
-            end
-          end
-        rescue Exception => e
-          puts "SQL error in #{ __method__ }"
-          ActiveRecord::Base.connection.execute 'ROLLBACK'
-
-          raise e
-        end
-      end
-    end
-  end
-
-  def self.bulk_update_effort_status(update_hash)
-    return if update_hash.blank?
-    if Rails.env.test? # Rspec doesn't seem to play well with upsert
-      update_hash.each do |effort_id, status|
-        effort = Effort.find(effort_id)
-        effort.update(data_status: Effort.data_statuses[status], updated_at: Time.now)
-      end
-    else
-      begin
-        connection = ActiveRecord::Base.connection
-        table_name = :efforts
-        Upsert.batch(connection, table_name) do |upsert|
-          update_hash.each do |effort_id, status|
-            upsert.row({id: effort_id}, data_status: SplitTime.data_statuses[status], updated_at: Time.now)
-          end
-        end
-      rescue Exception => e
-        puts "SQL error in #{ __method__ }"
-        ActiveRecord::Base.connection.execute 'ROLLBACK'
-
-        raise e
-      end
-    end
-  end
-
-  def self.bulk_update_start_offset(update_hash)
-    return if update_hash.blank?
-    if Rails.env.test? # Rspec doesn't seem to play well with upsert
-      update_hash.each do |effort_id, start_offset|
-        effort = Effort.find(effort_id)
-        effort.update(start_offset: start_offset, updated_at: Time.now)
-      end
-    else
-      begin
-        connection = ActiveRecord::Base.connection
-        table_name = :efforts
-        Upsert.batch(connection, table_name) do |upsert|
-          update_hash.each do |effort_id, start_offset|
-            upsert.row({id: effort_id}, start_offset: start_offset, updated_at: Time.now)
-          end
-        end
-      rescue Exception => e
-        puts "SQL error in #{ __method__ }"
-        ActiveRecord::Base.connection.execute 'ROLLBACK'
-
-        raise e
-      end
-    end
-  end
-
   def self.start_all_efforts(event, current_user_id)
     start_efforts(event.efforts, current_user_id)
   end
@@ -113,35 +36,5 @@ class BulkUpdateService
     end
     # TODO determine if split_times were actually added before returning this report
     "Added start times for #{efforts.size} efforts."
-  end
-
-  def self.set_dropped_attributes(update_hash)
-    return if update_hash.blank?
-    if Rails.env.test? # Rspec doesn't seem to play well with upsert
-      update_hash.each do |effort_id, dropped_attributes|
-        effort = Effort.find(effort_id)
-        effort.update(dropped_split_id: dropped_attributes[:split_id],
-                      dropped_lap: dropped_attributes[:lap],
-                      updated_at: Time.now)
-      end
-    else
-      begin
-        connection = ActiveRecord::Base.connection
-        table_name = :efforts
-        Upsert.batch(connection, table_name) do |upsert|
-          update_hash.each do |effort_id, dropped_attributes|
-            upsert.row({id: effort_id},
-                       dropped_split_id: dropped_attributes[:split_id],
-                       dropped_lap: dropped_attributes[:lap],
-                       updated_at: Time.now)
-          end
-        end
-      rescue Exception => e
-        puts "SQL error in #{ __method__ }"
-        ActiveRecord::Base.connection.execute 'ROLLBACK'
-
-        raise e
-      end
-    end
   end
 end

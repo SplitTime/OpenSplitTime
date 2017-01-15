@@ -19,8 +19,8 @@ class EventEffortsDisplay
   def effort_rows
     @effort_rows ||= filtered_efforts.map do |effort|
       EffortRow.new(effort,
-                    overall_place: effort.overall_rank,
-                    gender_place: effort.gender_rank,
+                    overall_place: effort.overall_place,
+                    gender_place: effort.gender_place,
                     finish_status: finish_status(effort),
                     run_status: run_status(effort),
                     day_and_time: start_time + effort.start_offset + effort.final_time,
@@ -40,7 +40,7 @@ class EventEffortsDisplay
   end
 
   def started_efforts_count
-    started_efforts.size
+    started_effort_ids.size
   end
 
   def unstarted_efforts_count
@@ -99,8 +99,8 @@ class EventEffortsDisplay
     event.efforts
   end
 
-  def started_efforts
-    event_efforts.started
+  def started_effort_ids
+    @started_effort_ids ||= event_efforts.started.ids
   end
 
   def indexed_participants
@@ -108,17 +108,17 @@ class EventEffortsDisplay
   end
 
   def finish_status(effort)
-    return effort.final_time if effort.final_split_id == event_final_split_id
-    return 'DNS' unless started_efforts.include?(effort)
+    return effort.final_time if effort.finished?
+    return 'DNS' unless started_effort_ids.include?(effort.id)
     return "Dropped at #{effort.final_split_name}" if effort.dropped?
     'In progress'
   end
 
   def run_status(effort)
-    return 'DNS' unless started_efforts.include?(effort)
+    return 'DNS' unless started_effort_ids.include?(effort.id)
     return 'Started' if effort.final_split_id == event_start_split_id
     return "Dropped at #{effort.final_split_name}" if effort.dropped?
-    return 'Finished' if effort.final_split_id == event_final_split_id
+    return 'Finished' if effort.finished?
     "Reported through #{effort.final_split_name}"
   end
 end

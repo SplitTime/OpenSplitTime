@@ -18,15 +18,15 @@ module SplitMethods
   end
 
   def ordered_split_ids
-    ordered_splits.map(&:id)
+    ordered_splits.ids
   end
 
   def start_split
-    splits.start.first
+    ordered_splits.start.first
   end
 
   def finish_split
-    splits.finish.first
+    ordered_splits.finish.first
   end
 
   def next_split(split)
@@ -42,6 +42,10 @@ module SplitMethods
   end
 
   def simple?
-    splits.size < 3
+    splits_count < 3
+  end
+
+  def splits_count
+    @splits_count ||= splits.size
   end
 end

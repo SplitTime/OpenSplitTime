@@ -31,4 +31,8 @@ class Course < ActiveRecord::Base
   def visible_events
     events.visible
   end
+
+  def distance
+    ordered_splits.last.distance_from_start if ordered_splits.present?
+  end
 end

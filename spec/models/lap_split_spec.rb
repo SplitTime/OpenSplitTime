@@ -77,7 +77,7 @@ RSpec.describe LapSplit, type: :model do
     let(:lap_1) { 1 }
     let(:lap_2) { 2 }
     let(:lap_3) { 3 }
-    let(:split_1) { FactoryGirl.build_stubbed(:split, distance_from_start: 10000) }
+    let(:split_1) { FactoryGirl.build_stubbed(:start_split) }
     let(:split_2) { FactoryGirl.build_stubbed(:split, distance_from_start: 20000) }
     let(:split_3) { FactoryGirl.build_stubbed(:split, distance_from_start: 30000) }
 
@@ -126,6 +126,49 @@ RSpec.describe LapSplit, type: :model do
 
         expect(lap_split_1).to be == lap_split_2
       end
+    end
+  end
+
+  describe '#course' do
+    it 'returns the course to which split belongs' do
+      lap_1 = 1
+      course = FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 3)
+      split = course.splits.first
+      lap_split = LapSplit.new(lap_1, split)
+      expect(lap_split.course).to eq(course)
+    end
+  end
+
+  describe '#distance_from_start' do
+    let(:lap_1) { 1 }
+    let(:lap_2) { 2 }
+    let(:lap_3) { 3 }
+    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 3) }
+    let(:splits) { course_with_splits.splits }
+
+    it 'returns 0 for a start split on lap 1' do
+      course = course_with_splits
+      split = splits.first
+      allow(course).to receive(:distance).and_return(split.distance_from_start)
+      lap_split = LapSplit.new(lap_1, split)
+      expect(lap_split.distance_from_start).to eq(0)
+    end
+
+    it 'returns a value equal to split.distance_from_start when lap is 1' do
+      course = course_with_splits
+      split = splits.second
+      allow(course).to receive(:distance).and_return(split.distance_from_start)
+      lap_split = LapSplit.new(lap_1, split)
+      expect(lap_split.distance_from_start).to eq(splits.second.distance_from_start)
+    end
+
+    it 'returns course length times finished laps plus split.distance_from_start when lap is greater than 1' do
+      course = course_with_splits
+      split = splits.second
+      allow(course).to receive(:distance).and_return(split.distance_from_start)
+      course_distance = course.distance
+      lap_split = LapSplit.new(lap_2, split)
+      expect(lap_split.distance_from_start).to eq(course_distance + splits.second.distance_from_start)
     end
   end
 end

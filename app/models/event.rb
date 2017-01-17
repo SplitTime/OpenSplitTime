@@ -64,20 +64,24 @@ class Event < ActiveRecord::Base
     DroppedAttributesSetter.set_attributes(efforts: efforts)
   end
 
-  def lap_splits
-    laps.map { |lap| ordered_splits.map { |split| LapSplit.new(lap, split) } }.flatten
+  def required_lap_splits
+    @required_lap_splits ||= cycled_lap_splits.first(laps_required * ordered_splits.size)
   end
 
-  def time_points
-    laps.map { |lap| sub_splits.map { |sub_split| TimePoint.new(lap, sub_split.split_id, sub_split.bitkey) } }.flatten
-  end
-
-  def laps
-    (1..laps_required).to_a
+  def required_time_points
+    @required_time_points ||= cycled_time_points.first(laps_required * sub_splits.size)
   end
 
   def laps_unlimited?
     laps_required.zero?
+  end
+
+  def cycled_lap_splits # For events with unlimited laps, call Event#cycled_lap_splits.first(n)
+    ordered_splits.each_with_iteration { |split, i| LapSplit.new(i, split) }
+  end
+
+  def cycled_time_points # For events with unlimited laps, call Event#cycled_time_points.first(n)
+    sub_splits.each_with_iteration { |sub_split, i| TimePoint.new(i, sub_split.split_id, sub_split.bitkey) }
   end
 
   def finished?

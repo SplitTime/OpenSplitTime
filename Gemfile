@@ -54,6 +54,7 @@ group :development do
   gem 'quiet_assets'
   gem 'derailed_benchmarks'
   gem 'active_record_query_trace'
+  gem 'rails-erd'
 end
 
 group :test do

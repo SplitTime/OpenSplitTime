@@ -12,8 +12,8 @@ class LapSplit
     lap && split && "#{split.base_name} Lap #{lap}"
   end
 
-  def time_point
-    lap && split && split.id && TimePoint.new(lap, split.id)
+  def time_points
+    lap && split.try(:id) && split.bitkeys.map { |bitkey| TimePoint.new(lap, split.id, bitkey) }
   end
 
   def <=>(other)

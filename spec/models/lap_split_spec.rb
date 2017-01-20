@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe LapSplit, type: :model do
+  let(:in_bitkey) { SubSplit::IN_BITKEY }
+  let(:out_bitkey) { SubSplit::OUT_BITKEY }
+
   describe 'initialization' do
     it 'initializes with a lap and a split' do
       lap = 1
@@ -49,19 +52,27 @@ RSpec.describe LapSplit, type: :model do
     end
   end
 
-  describe '#time_point' do
-    it 'returns a TimePoint using the lap and split.id with no bitkey argument' do
+  describe '#time_points' do
+    it 'for split with multiple bitkeys, returns an array of TimePoints using the lap and split.id and all valid bitkeys' do
       lap = 1
       split = FactoryGirl.build_stubbed(:split, id: 123)
       lap_split = LapSplit.new(lap, split)
-      expected = TimePoint.new(lap, split.id)
-      expect(lap_split.time_point).to eq(expected)
+      expected = [TimePoint.new(lap, split.id, in_bitkey), TimePoint.new(lap, split.id, out_bitkey)]
+      expect(lap_split.time_points).to eq(expected)
+    end
+
+    it 'for a split with a single bitkey, returns an array of one TimePoint using the lap and split.id and bitkey' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:start_split, id: 123)
+      lap_split = LapSplit.new(lap, split)
+      expected = [TimePoint.new(lap, split.id, in_bitkey)]
+      expect(lap_split.time_points).to eq(expected)
     end
 
     it 'returns nil if split is not present' do
       lap = 1
       lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.time_point).to be_nil
+      expect(lap_split.time_points).to be_nil
     end
 
     it 'returns nil if split is present but has no id' do
@@ -69,7 +80,7 @@ RSpec.describe LapSplit, type: :model do
       split = FactoryGirl.build_stubbed(:split)
       split.id = nil
       lap_split = LapSplit.new(lap, split)
-      expect(lap_split.time_point).to be_nil
+      expect(lap_split.time_points).to be_nil
     end
   end
 

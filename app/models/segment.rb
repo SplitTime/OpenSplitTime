@@ -1,23 +1,26 @@
 class Segment
-  attr_reader :begin_sub_split, :end_sub_split
+  attr_reader :begin_point, :end_point
   delegate :course, to: :begin_split
-  delegate :events, :earliest_event_date, :most_recent_event_date, :start?, to: :end_split
+  delegate :events, :earliest_event_date, :most_recent_event_date, to: :end_split
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:begin_sub_split, :end_sub_split],
-                           exclusive: [:begin_sub_split, :end_sub_split, :begin_split, :end_split, :order_control],
+                           required_alternatives: [[:begin_point, :end_point], [:begin_sub_split, :end_sub_split]],
+                           exclusive: [:begin_point, :end_point, :begin_sub_split, :end_sub_split,
+                                       :begin_split, :end_split, :order_control, :begin_lap_split, :end_lap_split],
                            class: self.class)
-    @begin_sub_split = args[:begin_sub_split]
-    @end_sub_split = args[:end_sub_split]
+    @begin_point = args[:begin_point] || assumed_time_point(args[:begin_sub_split])
+    @end_point = args[:end_point] || assumed_time_point(args[:end_sub_split])
     @arg_begin_split = args[:begin_split]
     @arg_end_split = args[:end_split]
+    @arg_begin_lap_split = args[:begin_lap_split]
+    @arg_end_lap_split = args[:end_lap_split]
     @order_control = args[:order_control].nil? ? true : args[:order_control]
     validate_setup
   end
 
   def ==(other)
-    (begin_sub_split == other.begin_sub_split) && (end_sub_split == other.end_sub_split)
+    (begin_point == other.begin_point) && (end_point == other.end_point)
   end
 
   def eql?(other)
@@ -25,19 +28,47 @@ class Segment
   end
 
   def hash
-    [begin_sub_split, end_sub_split].hash
+    [begin_point, end_point].hash
   end
 
+  def begin_sub_split
+    warn 'DEPRECATION WARNING: Segment#begin_sub_split will be phased out in favor of Segment#begin_point'
+    assumed_lap = 1
+    TimePoint.new(assumed_lap, begin_point.split_id, begin_point.bitkey)
+  end
+
+  def end_sub_split
+    warn 'DEPRECATION WARNING: Segment#end_sub_split will be phased out in favor of Segment#end_point'
+    assumed_lap = 1
+    TimePoint.new(assumed_lap, end_point.split_id, end_point.bitkey)
+  end
+  
   def begin_split
-    @begin_split ||= arg_begin_split || splits.find { |split| split.id == begin_id }
+    begin_lap_split.split
+  end
+  
+  def end_split
+    end_lap_split.split
   end
 
-  def end_split
-    @end_split ||= arg_end_split || splits.find { |split| split.id == end_id }
+  def begin_lap_split
+    @begin_lap_split ||= arg_begin_lap_split || discovered_lap_split(begin_point)
+  end
+
+  def end_lap_split
+    @end_lap_split ||= arg_end_lap_split || discovered_lap_split(end_point)
   end
 
   def splits
     @splits ||= Split.find(split_ids).to_a
+  end
+
+  def begin_lap
+    begin_point.lap
+  end
+
+  def end_lap
+    end_point.lap
   end
 
   def name
@@ -64,11 +95,11 @@ class Segment
   end
 
   def begin_id
-    begin_sub_split.split_id
+    begin_point.split_id
   end
 
   def end_id
-    end_sub_split.split_id
+    end_point.split_id
   end
 
   def split_ids
@@ -76,15 +107,19 @@ class Segment
   end
 
   def begin_bitkey
-    begin_sub_split.bitkey
+    begin_point.bitkey
   end
 
   def end_bitkey
-    end_sub_split.bitkey
+    end_point.bitkey
   end
 
   def full_course?
     begin_split.start? && end_split.finish?
+  end
+
+  def start?
+    begin_split.start? && end_split.start? && (begin_lap == 1) && (end_lap == 1)
   end
 
   def special_limits_type
@@ -100,22 +135,66 @@ class Segment
 
   private
 
-  attr_reader :arg_begin_split, :arg_end_split, :order_control
+  attr_reader :arg_begin_split, :arg_end_split, :arg_begin_lap_split, :arg_end_lap_split, :order_control
+
+  def assumed_time_point(sub_split)
+    warn 'DEPRECATION WARNING: Segment initialization with begin_sub_split and end_sub_split ' +
+             'will be phased out in favor of begin_point and end_point'
+    assumed_lap = 1
+    TimePoint.new(assumed_lap, sub_split.split_id, sub_split.bitkey)
+  end
+
+  def discovered_lap_split(time_point)
+    LapSplit.new(time_point.lap, splits.find { |split| split.id == time_point.split_id })
+  end
 
   def in_aid?
-    (begin_sub_split.split_id == end_sub_split.split_id) && (begin_bitkey != end_bitkey)
+    (begin_point.split_id == end_point.split_id) && (begin_bitkey != end_bitkey)
   end
 
   def zero_segment?
-    begin_sub_split == end_sub_split
+    begin_point == end_point
   end
 
   def validate_setup
-    raise 'Segment splits must be on same course' if arg_begin_split && arg_end_split && (arg_begin_split.course_id != end_split.course_id)
-    raise 'Segment sub_splits are out of order' if order_control && in_aid? && (begin_bitkey > end_bitkey)
-    raise 'Segment splits are out of order' if order_control && arg_begin_split && arg_end_split &&
-        (begin_split.distance_from_start > end_split.distance_from_start)
-    raise 'Segment begin sub_split does not reconcile with begin split' if arg_begin_split && (arg_begin_split.id != begin_id)
-    raise 'Segment end sub_split does not reconcile with end split' if arg_end_split && (arg_end_split.id != end_id)
+    raise ArgumentError,
+          'Segment splits must be on same course' if splits_inconsistent?
+    raise ArgumentError,
+          'Segment lap_splits must be on same course' if lap_splits_inconsistent?
+    raise ArgumentError,
+          'Segment bitkeys within the same split are out of order' if order_control && in_aid_bitkeys_reversed?
+    raise ArgumentError,
+          'Segment splits on the same lap are out of order' if order_control && splits_reversed_on_lap?
+    raise ArgumentError,
+          'Segment laps are out of order' if order_control && laps_reversed?
+    raise ArgumentError,
+          'Segment begin_point does not reconcile with begin split' if arg_begin_split && (arg_begin_split.id != begin_id)
+    raise ArgumentError,
+          'Segment end_point does not reconcile with end split' if arg_end_split && (arg_end_split.id != end_id)
+    warn 'DEPRECATION WARNING: Segment initialization with begin_split and end_split ' +
+             'will be phased out in favor of begin_lap_split and end_lap_split' if arg_begin_split || arg_end_split
   end
+
+  def splits_inconsistent?
+    arg_begin_split && arg_end_split && (arg_begin_split.course_id != arg_end_split.course_id)
+  end
+
+  def lap_splits_inconsistent?
+    arg_begin_lap_split && arg_end_lap_split && (arg_begin_lap_split.course_id != arg_end_lap_split.course_id)
+  end
+
+  def in_aid_bitkeys_reversed?
+    in_aid? && (begin_bitkey > end_bitkey)
+  end
+
+  def splits_reversed_on_lap?
+    (begin_lap == end_lap) &&
+        ((arg_begin_split && arg_end_split) || (arg_begin_lap_split && arg_end_lap_split)) &&
+        (begin_split.distance_from_start > end_split.distance_from_start)
+  end
+
+  def laps_reversed?
+    begin_lap > end_lap
+  end
+
 end

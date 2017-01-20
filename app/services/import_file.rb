@@ -52,19 +52,16 @@ class ImportFile
 
   private
 
+  VALID_EXTENSIONS = %w(csv xls xlsx)
+
   def open_spreadsheet(file_url)
-    return nil unless file_url
+    return nil unless file_url.present?
     spreadsheet_format = file_url.split('.').last
     filename = file_url.split('/').last
-    case spreadsheet_format
-      # when 'csv' then
-      #   Roo::Spreadsheet.open(file_url, :csv)
-      when 'xls' then
-        Roo::Spreadsheet.open(file_url)
-      when 'xlsx' then
-        Roo::Spreadsheet.open(file_url)
-      else
-        raise "Unknown file type: #{filename}"
+    if VALID_EXTENSIONS.include?(spreadsheet_format)
+      Roo::Spreadsheet.open(file_url)
+    else
+      raise ArgumentError, "Unknown file type: #{filename}"
     end
   end
 
@@ -76,5 +73,4 @@ class ImportFile
     measurement = units.to_s.downcase.first == 'k' ? 1.kilometer : 1.mile
     measurement.to.meters.value
   end
-
 end

@@ -12,7 +12,7 @@ class SplitTime < ActiveRecord::Base
   belongs_to :split
   alias_attribute :bitkey, :sub_split_bitkey
 
-  scope :ordered, -> { includes(:split).order('splits.distance_from_start, split_times.sub_split_bitkey') }
+  scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }

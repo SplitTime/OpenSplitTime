@@ -12,7 +12,7 @@ class EffortSplitTimeCreator
   end
 
   def split_times
-    @split_times ||= populated_sub_splits.map { |sub_split| split_time_build(sub_split) }
+    @split_times ||= populated_time_points.map { |time_point| split_time_build(time_point) }
   end
 
   def create_split_times
@@ -41,36 +41,34 @@ class EffortSplitTimeCreator
   end
 
   def validate_row_time_data
-    raise ArgumentError, "row time data contains #{row_time_data.size} elements but event requires #{event_sub_split_count} elements" if
-        event_sub_split_count != row_time_data.size
+    raise ArgumentError, "row time data contains #{row_time_data.size} elements but event requires #{time_points_count} elements" if
+        time_points_count != row_time_data.size
   end
 
-  def split_time_build(sub_split)
+  def split_time_build(time_point)
     SplitTime.new(effort_id: effort.id,
-                  sub_split: sub_split,
-                  time_from_start: time_to_seconds(sub_split_time_hash[sub_split]),
+                  time_point: time_point,
+                  time_from_start: time_to_seconds(time_points_time_hash[time_point]),
                   created_by: current_user_id,
                   updated_by: current_user_id)
   end
 
-  def sub_split_time_hash
-    @sub_split_time_hash ||= sub_splits.zip(row_time_data).to_h
+  def populated_time_points
+    @populated_time_points ||= time_points.select { |time_point| time_points_time_hash[time_point].present? }
   end
 
-  def sub_splits
-    @sub_splits ||= event.sub_splits
+  def time_points_time_hash
+    @time_points_time_hash ||= time_points.zip(row_time_data).to_h
   end
 
-  def populated_sub_splits
-    @populated_sub_splits ||= sub_splits.select { |sub_split| sub_split_time_hash[sub_split].present? }
+  def time_points
+    @time_points ||= event.laps_unlimited? ?
+        event.cycled_time_points.first(row_time_data.size) :
+        event.required_time_points
   end
 
-  def event_sub_split_count
-    sub_splits.size
-  end
-  
-  def finished?
-    populated_sub_splits.last == sub_splits.last
+  def time_points_count
+    time_points.size
   end
 
   def time_to_seconds(working_time)

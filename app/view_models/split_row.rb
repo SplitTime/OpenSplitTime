@@ -12,13 +12,13 @@ class SplitRow
                            required: [:split_times, :start_time],
                            required_alternatives: [:lap_split, :split],
                            exclusive: [:lap_split, :split, :split_times, :prior_time, :start_time],
+                           deprecated: {split: :lap_split},
                            class: self.class)
     @lap_split = args[:lap_split]
     @arg_split = args[:split]
     @split_times = args[:split_times]
     @prior_time = args[:prior_time]
     @start_time = args[:start_time]
-    validate_setup
   end
 
   def time_cluster
@@ -48,8 +48,4 @@ class SplitRow
   private
 
   attr_reader :lap_split, :arg_split, :split_times, :prior_time, :start_time
-
-  def validate_setup
-    warn 'DEPRECATION WARNING: Initialize SplitRow with lap_split instead of split' if arg_split
-  end
 end

@@ -34,6 +34,28 @@ RSpec.describe ArgsValidator do
   end
 
   describe '#validate and .validate' do
+    it 'reports any deprecated args as determined by the calling class' do
+      args = {time: 123, effort_id: 456, other_param: 789}
+      deprecated = {time: :time_from_start}
+      expect { ArgsValidator.new(params: args, deprecated: deprecated).validate }
+          .to output(/use of 'time' has been deprecated in favor of 'time_from_start'/).to_stderr
+      expect { ArgsValidator.validate(params: args, deprecated: deprecated) }
+          .to output(/use of 'time' has been deprecated in favor of 'time_from_start'/).to_stderr
+    end
+
+    it 'reports only those deprecated args that are used in params' do
+      args = {c: 123, d: 456}
+      deprecated = {a: :b, c: :d}
+      expect { ArgsValidator.new(params: args, deprecated: deprecated).validate }
+          .to_not output(/use of 'a' has been deprecated in favor of 'b'/).to_stderr
+      expect { ArgsValidator.new(params: args, deprecated: deprecated).validate }
+          .to output(/use of 'c' has been deprecated in favor of 'd'/).to_stderr
+      expect { ArgsValidator.validate(params: args, deprecated: deprecated) }
+          .to_not output(/use of 'a' has been deprecated in favor of 'b'/).to_stderr
+      expect { ArgsValidator.validate(params: args, deprecated: deprecated) }
+          .to output(/use of 'c' has been deprecated in favor of 'd'/).to_stderr
+    end
+
     it 'raises ArgumentError if params argument is not a Hash' do
       args = 123
       expect { ArgsValidator.new(params: args).validate }.to raise_error(/must be provided as a hash/)

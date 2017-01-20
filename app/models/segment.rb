@@ -8,6 +8,8 @@ class Segment
                            required_alternatives: [[:begin_point, :end_point], [:begin_sub_split, :end_sub_split]],
                            exclusive: [:begin_point, :end_point, :begin_sub_split, :end_sub_split,
                                        :begin_split, :end_split, :order_control, :begin_lap_split, :end_lap_split],
+                           deprecated: {begin_sub_split: :begin_point, end_sub_split: :end_point,
+                                        begin_split: :begin_lap_split, end_split: :end_lap_split},
                            class: self.class)
     @begin_point = args[:begin_point] || assumed_time_point(args[:begin_sub_split])
     @end_point = args[:end_point] || assumed_time_point(args[:end_sub_split])
@@ -32,13 +34,11 @@ class Segment
   end
 
   def begin_sub_split
-    warn 'DEPRECATION WARNING: Segment#begin_sub_split will be phased out in favor of Segment#begin_point'
     assumed_lap = 1
     TimePoint.new(assumed_lap, begin_point.split_id, begin_point.bitkey)
   end
 
   def end_sub_split
-    warn 'DEPRECATION WARNING: Segment#end_sub_split will be phased out in favor of Segment#end_point'
     assumed_lap = 1
     TimePoint.new(assumed_lap, end_point.split_id, end_point.bitkey)
   end
@@ -138,8 +138,6 @@ class Segment
   attr_reader :arg_begin_split, :arg_end_split, :arg_begin_lap_split, :arg_end_lap_split, :order_control
 
   def assumed_time_point(sub_split)
-    warn 'DEPRECATION WARNING: Segment initialization with begin_sub_split and end_sub_split ' +
-             'will be phased out in favor of begin_point and end_point'
     assumed_lap = 1
     TimePoint.new(assumed_lap, sub_split.split_id, sub_split.bitkey)
   end
@@ -171,8 +169,6 @@ class Segment
           'Segment begin_point does not reconcile with begin split' if arg_begin_split && (arg_begin_split.id != begin_id)
     raise ArgumentError,
           'Segment end_point does not reconcile with end split' if arg_end_split && (arg_end_split.id != end_id)
-    warn 'DEPRECATION WARNING: Segment initialization with begin_split and end_split ' +
-             'will be phased out in favor of begin_lap_split and end_lap_split' if arg_begin_split || arg_end_split
   end
 
   def splits_inconsistent?

@@ -2,12 +2,12 @@ class SegmentTimesPlanner
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:expected_time, :ordered_splits],
-                           exclusive: [:expected_time, :ordered_splits, :calc_model,
+                           required: [:expected_time, :lap_splits],
+                           exclusive: [:expected_time, :lap_splits, :calc_model,
                                        :similar_effort_ids, :times_container],
                            class: self.class)
     @expected_time = args[:expected_time]
-    @ordered_splits = args[:ordered_splits]
+    @lap_splits = args[:lap_splits]
     @calc_model = args[:calc_model] || :terrain
     @similar_effort_ids = args[:similar_effort_ids]
     @times_container = args[:times_container] ||
@@ -30,7 +30,7 @@ class SegmentTimesPlanner
 
   private
 
-  attr_reader :expected_time, :ordered_splits, :calc_model, :similar_effort_ids, :times_container
+  attr_reader :expected_time, :lap_splits, :calc_model, :similar_effort_ids, :times_container
 
   def complete_time_set?
     serial_times.present? && serial_times.exclude?(nil)
@@ -45,7 +45,7 @@ class SegmentTimesPlanner
   end
 
   def serial_segments
-    @serial_segments ||= SegmentsBuilder.segments_with_zero_start(ordered_splits: ordered_splits)
+    @serial_segments ||= SegmentsBuilder.segments_with_zero_start(lap_splits: lap_splits)
   end
 
   def pace_factor

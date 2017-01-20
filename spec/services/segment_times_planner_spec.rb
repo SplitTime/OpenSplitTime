@@ -2,51 +2,49 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe SegmentTimesPlanner do
-  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort_id: 101).first(10) }
-  let(:split_ids) { split_times_101.map(&:split_id).uniq }
-  let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
-  let(:split2) { FactoryGirl.build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
-  let(:split3) { FactoryGirl.build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
-  let(:split4) { FactoryGirl.build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
-  let(:split5) { FactoryGirl.build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
-  let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
-  let(:ordered_splits) { [split1, split2, split3, split4, split5, split6] }
-  let(:segments) { SegmentsBuilder.segments_with_zero_start(ordered_splits: ordered_splits) }
-  let(:sub_splits) { ordered_splits.map(&:sub_splits).flatten }
+  before do
+    FactoryGirl.reload
+  end
+
+  let(:test_event) { FactoryGirl.build_stubbed(:event_with_standard_splits, splits_count: 6) }
 
   describe '#initialize' do
-    it 'initializes with expected_time and ordered_splits in an args hash' do
+    it 'initializes with expected_time and lap_splits in an args hash' do
       expected_time = 1000
-      expect { SegmentTimesPlanner.new(expected_time: expected_time, ordered_splits: ordered_splits) }.not_to raise_error
+      lap_splits = lap_splits_and_time_points(test_event).first
+      expect { SegmentTimesPlanner.new(expected_time: expected_time, lap_splits: lap_splits) }.not_to raise_error
     end
 
-    it 'raises an ArgumentError if no ordered_splits are given' do
+    it 'raises an ArgumentError if no lap_splits are given' do
       expected_time = 1000
-      expect { SegmentTimesPlanner.new(expected_time: expected_time) }.to raise_error(/must include ordered_splits/)
+      expect { SegmentTimesPlanner.new(expected_time: expected_time) }.to raise_error(/must include lap_splits/)
     end
 
     it 'raises an ArgumentError if no expected_time is given' do
-      expect { SegmentTimesPlanner.new(ordered_splits: ordered_splits) }.to raise_error(/must include expected_time/)
+      lap_splits = lap_splits_and_time_points(test_event).first
+      expect { SegmentTimesPlanner.new(lap_splits: lap_splits) }.to raise_error(/must include expected_time/)
     end
   end
 
   describe '#times_from_start' do
     it 'returns nil when any expected segment time is nil' do
       expected_time = 4500
+      lap_splits = lap_splits_and_time_points(test_event).first
       planner = SegmentTimesPlanner.new(expected_time: expected_time,
-                                        ordered_splits: ordered_splits,
+                                        lap_splits: lap_splits,
                                         calc_model: :terrain)
       allow(planner).to receive(:serial_times).and_return([0, nil, 1000])
       expect(planner.times_from_start).to be_nil
     end
 
-    it 'returns a hash containing keys corresponding to the segments generated from ordered_splits' do
+    it 'returns a hash containing keys corresponding to the segments generated from lap_splits' do
       expected_time = 4000
+      lap_splits, time_points = lap_splits_and_time_points(test_event)
       planner = SegmentTimesPlanner.new(expected_time: expected_time,
-                                        ordered_splits: ordered_splits,
+                                        lap_splits: lap_splits,
                                         calc_model: :terrain)
-      expect(planner.times_from_start.size).to eq(sub_splits.size)
-      expect(planner.times_from_start.keys).to eq(sub_splits)
+      expect(planner.times_from_start.size).to eq(time_points.size)
+      expect(planner.times_from_start.keys).to eq(time_points)
     end
 
     it 'returns values corresponding to the expected times from start when expected_time equals total segment times' do
@@ -96,8 +94,9 @@ RSpec.describe SegmentTimesPlanner do
     end
 
     def validate_times_from_start(expected_time, expected, round_to = nil)
+      lap_splits = lap_splits_and_time_points(test_event).first
       planner = SegmentTimesPlanner.new(expected_time: expected_time,
-                                        ordered_splits: ordered_splits,
+                                        lap_splits: lap_splits,
                                         calc_model: :terrain)
       times = round_to ?
           planner.times_from_start(round_to: round_to).values :
@@ -111,17 +110,20 @@ RSpec.describe SegmentTimesPlanner do
 
     it 'returns nil when any expected segment time is nil' do
       expected_time = 4500
+      lap_splits = lap_splits_and_time_points(test_event).first
       planner = SegmentTimesPlanner.new(expected_time: expected_time,
-                                        ordered_splits: ordered_splits,
+                                        lap_splits: lap_splits,
                                         calc_model: :terrain)
       allow(planner).to receive(:serial_times).and_return([0, nil, 1000])
       expect(planner.segment_times).to be_nil
     end
 
-    it 'returns a hash containing keys corresponding to the sub_splits generated from ordered_splits' do
+    it 'returns a hash containing keys corresponding to the time_points generated from lap_splits' do
       expected_time = 4000
+      lap_splits = lap_splits_and_time_points(test_event).first
+      segments = SegmentsBuilder.segments_with_zero_start(lap_splits: lap_splits)
       planner = SegmentTimesPlanner.new(expected_time: expected_time,
-                                        ordered_splits: ordered_splits,
+                                        lap_splits: lap_splits,
                                         calc_model: :terrain)
       expect(planner.segment_times.size).to eq(segments.size)
       expect(planner.segment_times.keys).to eq(segments)
@@ -160,13 +162,21 @@ RSpec.describe SegmentTimesPlanner do
     end
 
     def validate_segment_times(expected_time, expected, round_to = nil)
+      lap_splits = lap_splits_and_time_points(test_event).first
       planner = SegmentTimesPlanner.new(expected_time: expected_time,
-                                        ordered_splits: ordered_splits,
+                                        lap_splits: lap_splits,
                                         calc_model: :terrain)
       times = round_to ?
           planner.segment_times(round_to: round_to).values :
           planner.segment_times.values
       expect(times).to eq(expected)
     end
+  end
+
+  def lap_splits_and_time_points(event)
+    allow(event).to receive(:ordered_splits).and_return(event.splits)
+    lap_splits = event.required_lap_splits
+    time_points = lap_splits.map(&:time_points).flatten
+    [lap_splits, time_points]
   end
 end

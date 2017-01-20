@@ -10,49 +10,45 @@ class SegmentsBuilder
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required_alternatives: [:ordered_splits, :sub_splits],
-                           exclusive: [:ordered_splits, :sub_splits],
+                           required: :lap_splits,
+                           exclusive: :lap_splits,
                            class: self.class)
-    @ordered_splits = args[:ordered_splits] || Split.where(id: args[:sub_splits].map(&:split_id)).ordered.to_a
-    @sub_splits = args[:sub_splits] || sub_splits_from_splits
-    validate_setup
+    @lap_splits = args[:lap_splits] || Split.where(id: args[:sub_splits].map(&:split_id)).ordered.to_a
   end
 
   def segments
-    sub_splits.each_cons(2).map { |begin_ss, end_ss| Segment.new(begin_sub_split: begin_ss,
-                                                                 end_sub_split: end_ss,
-                                                                 begin_split: indexed_splits[begin_ss.split_id],
-                                                                 end_split: indexed_splits[end_ss.split_id]) }
+    time_points.each_cons(2).map do |begin_point, end_point|
+      Segment.new(begin_point: begin_point,
+                  end_point: end_point,
+                  begin_lap_split: indexed_lap_splits[begin_point.lap_split_id],
+                  end_lap_split: indexed_lap_splits[end_point.lap_split_id])
+    end
   end
 
   def segments_with_zero_start
-    segments.unshift(zero_start_segment)
+    segments.present? ? segments.unshift(zero_start_segment) : []
   end
 
   private
 
-  attr_accessor :sub_splits, :ordered_splits, :working_sub_split
+  attr_accessor :lap_splits
 
-  def sub_splits_from_splits
-    ordered_splits.map(&:sub_splits).flatten
+  def time_points
+    @time_points ||= lap_splits.map(&:time_points).flatten
   end
 
-  def indexed_splits
-    @indexed_splits ||= ordered_splits.index_by(&:id)
+  def indexed_lap_splits
+    @indexed_lap_splits ||= lap_splits.index_by(&:id)
   end
 
-  def start_split
-    @start_split ||= ordered_splits.first
+  def start_lap_split
+    @start_lap_split ||= lap_splits.first
   end
 
   def zero_start_segment
-    Segment.new(begin_sub_split: start_split.sub_split_in,
-                end_sub_split: start_split.sub_split_in,
-                begin_split: start_split,
-                end_split: start_split)
-  end
-
-  def validate_setup
-    raise ArgumentError, 'sub_splits and ordered_splits do not reconcile' unless sub_splits_from_splits == sub_splits
+    Segment.new(begin_point: start_lap_split.time_point_in,
+                end_point: start_lap_split.time_point_in,
+                begin_lap_split: start_lap_split,
+                end_lap_split: start_lap_split)
   end
 end

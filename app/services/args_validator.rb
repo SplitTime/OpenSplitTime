@@ -1,6 +1,4 @@
 class ArgsValidator
-  include ColorizeText
-
   class << self
     attr_accessor :console_notifications
 
@@ -79,7 +77,7 @@ class ArgsValidator
   end
 
   def notify_console(args)
-    puts green("ArgsValidator validated arguments for #{klass || 'an unspecified class'}")
+    puts ColorizeText.green("ArgsValidator validated arguments for #{klass || 'an unspecified class'}")
     puts args[:params].transform_values { |value| value.respond_to?(:map) ?
         value.map { |object| object.try(:name) || object.try(:id) || object.to_s } :
         value.try(:name) || value.try(:id) || value.to_s }

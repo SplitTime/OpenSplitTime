@@ -84,6 +84,52 @@ RSpec.describe LapSplit, type: :model do
     end
   end
 
+  describe '#time_point_in and #time_point_out' do
+    it 'returns a TimePoint using the lap and split.id and an in or out bitkey' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, sub_split_bitmap: 65, id: 123)
+      lap_split = LapSplit.new(lap, split)
+      expected = TimePoint.new(lap, split.id, in_bitkey)
+      expect(lap_split.time_point_in).to eq(expected)
+      expected = TimePoint.new(lap, split.id, out_bitkey)
+      expect(lap_split.time_point_out).to eq(expected)
+    end
+
+    it 'for a split with only an out bitkey, returns nil for time_point_in and a TimePoint for time_point_out' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:start_split, sub_split_bitmap: 64, id: 123)
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.time_point_in).to be_nil
+      expected = TimePoint.new(lap, split.id, out_bitkey)
+      expect(lap_split.time_point_out).to eq(expected)
+    end
+
+    it 'for a split with only an in bitkey, returns nil for time_point_out and a TimePoint for time_point_in' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:start_split, sub_split_bitmap: 1, id: 123)
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.time_point_out).to be_nil
+      expected = TimePoint.new(lap, split.id, in_bitkey)
+      expect(lap_split.time_point_in).to eq(expected)
+    end
+
+    it 'returns nil if split is not present' do
+      lap = 1
+      lap_split = LapSplit.new(lap, nil)
+      expect(lap_split.time_point_in).to be_nil
+      expect(lap_split.time_point_out).to be_nil
+    end
+
+    it 'returns nil if split is present but has no id' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split)
+      split.id = nil
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.time_point_in).to be_nil
+      expect(lap_split.time_point_out).to be_nil
+    end
+  end
+
   describe '#<=>' do
     let(:lap_1) { 1 }
     let(:lap_2) { 2 }

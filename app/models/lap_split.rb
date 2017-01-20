@@ -12,6 +12,10 @@ class LapSplit
     [self.lap, self.split.distance_from_start] <=> [other.lap, other.split.distance_from_start]
   end
 
+  def id
+    lap && split.try(:id) && LapSplitId.new(lap, split.id)
+  end
+
   def name
     lap && split && "#{split.base_name} Lap #{lap}"
   end

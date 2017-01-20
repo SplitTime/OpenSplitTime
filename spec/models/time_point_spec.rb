@@ -14,6 +14,53 @@ RSpec.describe TimePoint, type: :model do
     end
   end
 
+  describe '#==' do
+    it 'equates time_points with identical lap, split_id, and bitkey' do
+      lap = 1
+      split_id = 101
+      bitkey = 64
+      lap_split_id_1 = TimePoint.new(lap, split_id, bitkey)
+      lap_split_id_2 = TimePoint.new(lap, split_id, bitkey)
+      expect(lap_split_id_1).to eq(lap_split_id_2)
+    end
+
+    it 'does not equate time_points with different laps' do
+      lap_1 = 1
+      lap_2 = 2
+      split_id_1 = 101
+      split_id_2 = 101
+      bitkey_1 = 64
+      bitkey_2 = 64
+      time_point_1 = TimePoint.new(lap_1, split_id_1, bitkey_1)
+      time_point_2 = TimePoint.new(lap_2, split_id_2, bitkey_2)
+      expect(time_point_1).not_to eq(time_point_2)
+    end
+
+    it 'does not equate time_points with different split_ids' do
+      lap_1 = 1
+      lap_2 = 1
+      split_id_1 = 101
+      split_id_2 = 102
+      bitkey_1 = 64
+      bitkey_2 = 64
+      time_point_1 = TimePoint.new(lap_1, split_id_1, bitkey_1)
+      time_point_2 = TimePoint.new(lap_2, split_id_2, bitkey_2)
+      expect(time_point_1).not_to eq(time_point_2)
+    end
+
+    it 'does not equate time_points with different bitkeys' do
+      lap_1 = 1
+      lap_2 = 1
+      split_id_1 = 101
+      split_id_2 = 101
+      bitkey_1 = 1
+      bitkey_2 = 64
+      time_point_1 = TimePoint.new(lap_1, split_id_1, bitkey_1)
+      time_point_2 = TimePoint.new(lap_2, split_id_2, bitkey_2)
+      expect(time_point_1).not_to eq(time_point_2)
+    end
+  end
+
   describe '#lap' do
     it 'returns the first value passed to the TimePoint at initialization' do
       lap = 1
@@ -80,6 +127,32 @@ RSpec.describe TimePoint, type: :model do
       bitkey = 64
       time_point = TimePoint.new(lap, nil, bitkey)
       expect(time_point.sub_split).to be_nil
+    end
+  end
+
+  describe '#lap_split_id' do
+    it 'returns a lap_split_id using lap and split_id' do
+      lap = 1
+      split_id = 101
+      bitkey = 64
+      time_point = TimePoint.new(lap, split_id, bitkey)
+      expect(time_point.lap_split_id).to eq(LapSplitId.new(lap, split_id))
+    end
+
+    it 'returns nil if lap is not present' do
+      lap = nil
+      split_id = 101
+      bitkey = 64
+      time_point = TimePoint.new(lap, split_id, bitkey)
+      expect(time_point.lap_split_id).to be_nil
+    end
+
+    it 'returns nil if split_id is not present' do
+      lap = 1
+      split_id = nil
+      bitkey = 64
+      time_point = TimePoint.new(lap, split_id, bitkey)
+      expect(time_point.lap_split_id).to be_nil
     end
   end
 end

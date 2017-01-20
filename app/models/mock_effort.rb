@@ -4,23 +4,23 @@ class MockEffort
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:ordered_splits, :expected_time, :start_time],
-                           exclusive: [:ordered_splits, :expected_time, :start_time, :finder, :times_calculator],
+                           required: [:lap_splits, :expected_time, :start_time],
+                           exclusive: [:lap_splits, :expected_time, :start_time, :finder, :times_calculator],
                            class: self.class)
-    @ordered_splits = args[:ordered_splits]
+    @lap_splits = args[:lap_splits]
     @expected_time = args[:expected_time]
     @start_time = args[:start_time]
     @finder = args[:effort_finder] || SimilarEffortFinder.new(sub_split: finish_sub_split,
                                                               time_from_start: expected_time,
                                                               finished: true)
-    @times_planner = args[:times_planner] || SegmentTimesPlanner.new(ordered_splits: ordered_splits,
+    @times_planner = args[:times_planner] || SegmentTimesPlanner.new(lap_splits: lap_splits,
                                                                      expected_time: expected_time,
                                                                      similar_effort_ids: relevant_effort_ids,
                                                                      calc_model: :focused)
   end
 
   def indexed_split_times
-    @indexed_split_times ||= ordered_sub_splits.map { |sub_split| plan_split_time(sub_split) }.index_by(&:sub_split)
+    @indexed_split_times ||= ordered_time_points.map { |time_point| plan_split_time(time_point) }.index_by(&:time_point)
   end
 
   def split_rows
@@ -58,10 +58,10 @@ class MockEffort
   private
 
   attr_accessor :relevant_split_times
-  attr_reader :ordered_splits, :finder, :times_planner
+  attr_reader :lap_splits, :finder, :times_planner
 
-  def plan_split_time(sub_split)
-    SplitTime.new(sub_split: sub_split, time_from_start: plan_times[sub_split])
+  def plan_split_time(time_point)
+    SplitTime.new(time_point: time_point, time_from_start: plan_times[time_point])
   end
 
   def plan_times
@@ -71,28 +71,29 @@ class MockEffort
   def create_split_rows
     prior_time = 0
     result = []
-    ordered_splits.each do |split|
-      split_row = SplitRow.new(split, related_split_times(split), prior_time, start_time)
+    lap_splits.each do |lap_split|
+      split_row = SplitRow.new(lap_split: lap_split, split_times: related_split_times(lap_split),
+                               prior_time: prior_time, start_time:  start_time)
       result << split_row
       prior_time = split_row.times_from_start.last
     end
     result
   end
 
-  def related_split_times(split)
-    split.sub_splits.map { |sub_split| indexed_split_times[sub_split] }
+  def related_split_times(lap_split)
+    lap_split.time_points.map { |time_point| indexed_split_times[time_point] }
   end
 
   def finish_split
-    ordered_splits.last
+    lap_splits.last
   end
 
   def finish_sub_split
     finish_split.sub_split_in
   end
 
-  def ordered_sub_splits
-    ordered_splits.map(&:sub_splits).flatten
+  def ordered_time_points
+    lap_splits.map(&:time_points).flatten
   end
 
   def relevant_effort_ids

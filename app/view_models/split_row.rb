@@ -1,6 +1,5 @@
 class SplitRow
 
-  attr_reader :split
   delegate :id, :name, :distance_from_start, :kind, :start?, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, :days_and_times, :time_data_statuses,
            :split_time_ids, to: :time_cluster
@@ -8,12 +7,26 @@ class SplitRow
   # split_times should be an array having size == split.sub_splits.size,
   # with nil values where no corresponding split_time exists
 
-  def initialize(split, split_times, prior_time, start_time)
-    @split = split
-    @split_times = split_times
-    @prior_time = prior_time
-    @start_time = start_time
-    @time_cluster = TimeCluster.new(split, split_times, prior_time, start_time)
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:split_times, :start_time],
+                           required_alternatives: [:lap_split, :split],
+                           exclusive: [:lap_split, :split, :split_times, :prior_time, :start_time],
+                           class: self.class)
+    @lap_split = args[:lap_split]
+    @arg_split = args[:split]
+    @split_times = args[:split_times]
+    @prior_time = args[:prior_time]
+    @start_time = args[:start_time]
+    validate_setup
+  end
+
+  def time_cluster
+    @time_cluster ||= TimeCluster.new(split, split_times, prior_time, start_time)
+  end
+
+  def split
+    @split ||= arg_split || lap_split.split
   end
 
   def split_id
@@ -34,5 +47,9 @@ class SplitRow
 
   private
 
-  attr_reader :split_times, :prior_time, :start_time, :time_cluster
+  attr_reader :lap_split, :arg_split, :split_times, :prior_time, :start_time
+
+  def validate_setup
+    warn 'DEPRECATION WARNING: Initialize SplitRow with lap_split instead of split' if arg_split
+  end
 end

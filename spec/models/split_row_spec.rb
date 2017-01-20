@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'pry-byebug'
 
 RSpec.describe SplitRow, type: :model do
+  let(:in_bitkey) { SubSplit::IN_BITKEY }
+  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   let(:course) { Course.new(name: 'Test Course 100') }
   let(:event) { Event.new(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00", laps_required: 1) }
@@ -15,39 +17,39 @@ RSpec.describe SplitRow, type: :model do
   let(:split4) { Split.new(course: course, base_name: 'Aid Station 2', distance_from_start: 15000, sub_split_bitmap: 73, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2) }
   let(:split6) { Split.new(course: course, base_name: 'Finish Line', distance_from_start: 25000, sub_split_bitmap: 1, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1) }
 
-  let(:split_time1) { SplitTime.new(effort: effort1, lap: 1, split: split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2) }
-  let(:split_time2) { SplitTime.new(effort: effort1, lap: 1, split: split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 4000, data_status: 2) }
-  let(:split_time3) { SplitTime.new(effort: effort1, lap: 1, split: split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 4100, data_status: 2) }
-  let(:split_time4) { SplitTime.new(effort: effort1, lap: 1, split: split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 15200, data_status: 2) }
-  let(:split_time6) { SplitTime.new(effort: effort1, lap: 1, split: split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 15100, data_status: 0) }
-  let(:split_time7) { SplitTime.new(effort: effort1, lap: 1, split: split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 21000, data_status: 2) }
-  let(:split_time8) { SplitTime.new(effort: effort2, lap: 1, split: split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2) }
-  let(:split_time9) { SplitTime.new(effort: effort2, lap: 1, split: split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 120, data_status: 0) }
-  let(:split_time10) { SplitTime.new(effort: effort2, lap: 1, split: split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 24000, data_status: 2) }
-  let(:split_time12) { SplitTime.new(effort: effort2, lap: 1, split: split4, bitkey: SubSplit::OUT_BITKEY, time_from_start: 150000, data_status: 0) }
-  let(:split_time13) { SplitTime.new(effort: effort2, lap: 1, split: split6, bitkey: SubSplit::IN_BITKEY, time_from_start: 40000, data_status: 1) }
-  let(:split_time14) { SplitTime.new(effort: effort3, lap: 1, split: split1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, data_status: 2) }
-  let(:split_time15) { SplitTime.new(effort: effort3, lap: 1, split: split2, bitkey: SubSplit::IN_BITKEY, time_from_start: 5000, data_status: 2) }
-  let(:split_time16) { SplitTime.new(effort: effort3, lap: 1, split: split2, bitkey: SubSplit::OUT_BITKEY, time_from_start: 5000, data_status: 2) }
-  let(:split_time17) { SplitTime.new(effort: effort3, lap: 1, split: split4, bitkey: SubSplit::IN_BITKEY, time_from_start: 12200, data_status: 2) }
+  let(:split_time1) { SplitTime.new(effort: effort1, lap: 1, split: split1, bitkey: in_bitkey, time_from_start: 0, data_status: 2) }
+  let(:split_time2) { SplitTime.new(effort: effort1, lap: 1, split: split2, bitkey: in_bitkey, time_from_start: 4000, data_status: 2) }
+  let(:split_time3) { SplitTime.new(effort: effort1, lap: 1, split: split2, bitkey: out_bitkey, time_from_start: 4100, data_status: 2) }
+  let(:split_time4) { SplitTime.new(effort: effort1, lap: 1, split: split4, bitkey: in_bitkey, time_from_start: 15200, data_status: 2) }
+  let(:split_time6) { SplitTime.new(effort: effort1, lap: 1, split: split4, bitkey: out_bitkey, time_from_start: 15100, data_status: 0) }
+  let(:split_time7) { SplitTime.new(effort: effort1, lap: 1, split: split6, bitkey: in_bitkey, time_from_start: 21000, data_status: 2) }
+  let(:split_time8) { SplitTime.new(effort: effort2, lap: 1, split: split1, bitkey: in_bitkey, time_from_start: 0, data_status: 2) }
+  let(:split_time9) { SplitTime.new(effort: effort2, lap: 1, split: split2, bitkey: out_bitkey, time_from_start: 120, data_status: 0) }
+  let(:split_time10) { SplitTime.new(effort: effort2, lap: 1, split: split4, bitkey: in_bitkey, time_from_start: 24000, data_status: 2) }
+  let(:split_time12) { SplitTime.new(effort: effort2, lap: 1, split: split4, bitkey: out_bitkey, time_from_start: 150000, data_status: 0) }
+  let(:split_time13) { SplitTime.new(effort: effort2, lap: 1, split: split6, bitkey: in_bitkey, time_from_start: 40000, data_status: 1) }
+  let(:split_time14) { SplitTime.new(effort: effort3, lap: 1, split: split1, bitkey: in_bitkey, time_from_start: 0, data_status: 2) }
+  let(:split_time15) { SplitTime.new(effort: effort3, lap: 1, split: split2, bitkey: in_bitkey, time_from_start: 5000, data_status: 2) }
+  let(:split_time16) { SplitTime.new(effort: effort3, lap: 1, split: split2, bitkey: out_bitkey, time_from_start: 5000, data_status: 2) }
+  let(:split_time17) { SplitTime.new(effort: effort3, lap: 1, split: split4, bitkey: in_bitkey, time_from_start: 12200, data_status: 2) }
 
   let(:event_start_time) { event.start_time }
   let(:effort1_start_time) { event_start_time + effort1.start_offset }
   let(:effort2_start_time) { event_start_time + effort2.start_offset }
   let(:effort3_start_time) { event_start_time + effort3.start_offset }
 
-  let(:split_row1) { SplitRow.new(split1, [split_time1], nil, effort1_start_time) }
-  let(:split_row2) { SplitRow.new(split2, [split_time2, split_time3], 0, effort1_start_time) }
-  let(:split_row3) { SplitRow.new(split4, [split_time4, split_time6], 4100, effort1_start_time) }
-  let(:split_row4) { SplitRow.new(split6, [split_time7], 15100, effort1_start_time) }
-  let(:split_row5) { SplitRow.new(split1, [split_time8], nil, effort2_start_time) }
-  let(:split_row6) { SplitRow.new(split2, [nil, split_time9], 0, effort2_start_time) }
-  let(:split_row7) { SplitRow.new(split4, [split_time10, split_time12], nil, effort2_start_time) }
-  let(:split_row8) { SplitRow.new(split6, [split_time13], 150000, effort2_start_time) }
-  let(:split_row9) { SplitRow.new(split1, [split_time14], nil, effort3_start_time) }
-  let(:split_row10) { SplitRow.new(split2, [split_time15, split_time16], 0, effort3_start_time) }
-  let(:split_row11) { SplitRow.new(split4, [split_time17, nil], 5000, effort3_start_time) }
-  let(:split_row12) { SplitRow.new(split6, [nil, nil], 12200, effort3_start_time) }
+  let(:split_row1) { SplitRow.new(split: split1, split_times: [split_time1], prior_time: nil, start_time: effort1_start_time) }
+  let(:split_row2) { SplitRow.new(split: split2, split_times: [split_time2, split_time3], prior_time: 0, start_time: effort1_start_time) }
+  let(:split_row3) { SplitRow.new(split: split4, split_times: [split_time4, split_time6], prior_time: 4100, start_time: effort1_start_time) }
+  let(:split_row4) { SplitRow.new(split: split6, split_times: [split_time7], prior_time: 15100, start_time: effort1_start_time) }
+  let(:split_row5) { SplitRow.new(split: split1, split_times: [split_time8], prior_time: nil, start_time: effort2_start_time) }
+  let(:split_row6) { SplitRow.new(split: split2, split_times: [nil, split_time9], prior_time: 0, start_time: effort2_start_time) }
+  let(:split_row7) { SplitRow.new(split: split4, split_times: [split_time10, split_time12], prior_time: nil, start_time: effort2_start_time) }
+  let(:split_row8) { SplitRow.new(split: split6, split_times: [split_time13], prior_time: 150000, start_time: effort2_start_time) }
+  let(:split_row9) { SplitRow.new(split: split1, split_times: [split_time14], prior_time: nil, start_time: effort3_start_time) }
+  let(:split_row10) { SplitRow.new(split: split2, split_times: [split_time15, split_time16], prior_time: 0, start_time: effort3_start_time) }
+  let(:split_row11) { SplitRow.new(split: split4, split_times: [split_time17, nil], prior_time: 5000, start_time: effort3_start_time) }
+  let(:split_row12) { SplitRow.new(split: split6, split_times: [nil, nil], prior_time: 12200, start_time: effort3_start_time) }
 
   describe 'initialization' do
     it 'should instantiate new objects properly' do

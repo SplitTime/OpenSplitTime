@@ -31,7 +31,8 @@ class EffortShowView
     start_time = event.start_time + effort.start_offset
     prior_time = 0
     splits.each do |split|
-      split_row = SplitRow.new(split, related_split_times(split), prior_time, start_time)
+      split_row = SplitRow.new(split: split, split_times: related_split_times(split),
+                               prior_time: prior_time, start_time: start_time)
       split_rows << split_row
       prior_time = split_row.times_from_start.compact.last if split_row.times_from_start.compact.present?
     end

@@ -60,7 +60,7 @@ class Segment
   end
 
   def splits
-    @splits ||= Split.find(split_ids).to_a
+    @splits ||= [arg_begin_split, arg_end_split].compact.presence || Split.find(split_ids).to_a
   end
 
   def begin_lap

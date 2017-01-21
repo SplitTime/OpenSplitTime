@@ -3,7 +3,7 @@ TimePoint = Struct.new(:lap, :split_id, :bitkey) do
     split_id && bitkey && {split_id => bitkey}
   end
 
-  def lap_split_id
-    lap && split_id && LapSplitId.new(lap, split_id)
+  def lap_split_key
+    lap && split_id && LapSplitKey.new(lap, split_id)
   end
 end

@@ -12,8 +12,12 @@ class LapSplit
     [self.lap, self.split.distance_from_start] <=> [other.lap, other.split.distance_from_start]
   end
 
-  def id
-    lap && split.try(:id) && LapSplitId.new(lap, split.id)
+  def key
+    lap && split_id && LapSplitKey.new(lap, split_id)
+  end
+
+  def split_id
+    split.try(:id)
   end
 
   def name
@@ -21,15 +25,15 @@ class LapSplit
   end
 
   def time_points
-    lap && split.try(:id) && split.bitkeys.map { |bitkey| TimePoint.new(lap, split.id, bitkey) }
+    lap && split_id && split.bitkeys.map { |bitkey| TimePoint.new(lap, split_id, bitkey) }
   end
 
   def time_point_in
-    lap && split.try(:id) && split.in_bitkey && TimePoint.new(lap, split.id, split.in_bitkey)
+    lap && split.try(:id) && split.in_bitkey && TimePoint.new(lap, split_id, split.in_bitkey)
   end
 
   def time_point_out
-    lap && split.try(:id) && split.out_bitkey && TimePoint.new(lap, split.id, split.out_bitkey)
+    lap && split.try(:id) && split.out_bitkey && TimePoint.new(lap, split_id, split.out_bitkey)
   end
 
   def distance_from_start

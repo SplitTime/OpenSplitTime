@@ -19,9 +19,9 @@ RSpec.describe TimePoint, type: :model do
       lap = 1
       split_id = 101
       bitkey = 64
-      lap_split_id_1 = TimePoint.new(lap, split_id, bitkey)
-      lap_split_id_2 = TimePoint.new(lap, split_id, bitkey)
-      expect(lap_split_id_1).to eq(lap_split_id_2)
+      lap_split_key_1 = TimePoint.new(lap, split_id, bitkey)
+      lap_split_key_2 = TimePoint.new(lap, split_id, bitkey)
+      expect(lap_split_key_1).to eq(lap_split_key_2)
     end
 
     it 'does not equate time_points with different laps' do
@@ -130,13 +130,13 @@ RSpec.describe TimePoint, type: :model do
     end
   end
 
-  describe '#lap_split_id' do
-    it 'returns a lap_split_id using lap and split_id' do
+  describe '#lap_split_key' do
+    it 'returns a lap_split_key using lap and split_id' do
       lap = 1
       split_id = 101
       bitkey = 64
       time_point = TimePoint.new(lap, split_id, bitkey)
-      expect(time_point.lap_split_id).to eq(LapSplitId.new(lap, split_id))
+      expect(time_point.lap_split_key).to eq(LapSplitKey.new(lap, split_id))
     end
 
     it 'returns nil if lap is not present' do
@@ -144,7 +144,7 @@ RSpec.describe TimePoint, type: :model do
       split_id = 101
       bitkey = 64
       time_point = TimePoint.new(lap, split_id, bitkey)
-      expect(time_point.lap_split_id).to be_nil
+      expect(time_point.lap_split_key).to be_nil
     end
 
     it 'returns nil if split_id is not present' do
@@ -152,7 +152,7 @@ RSpec.describe TimePoint, type: :model do
       split_id = nil
       bitkey = 64
       time_point = TimePoint.new(lap, split_id, bitkey)
-      expect(time_point.lap_split_id).to be_nil
+      expect(time_point.lap_split_key).to be_nil
     end
   end
 end

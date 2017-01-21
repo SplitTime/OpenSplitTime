@@ -1,1 +1,0 @@
-LapSplitId = Struct.new(:lap, :split_id)

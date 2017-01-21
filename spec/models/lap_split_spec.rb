@@ -86,13 +86,13 @@ RSpec.describe LapSplit, type: :model do
     end
   end
 
-  describe '#id' do
-    it 'returns a LapSplitId containing the split_id and lap number' do
+  describe '#key' do
+    it 'returns a LapSplitKey containing the split_id and lap number' do
       lap = 1
       split = FactoryGirl.build_stubbed(:split, id: 123)
       lap_split = LapSplit.new(lap, split)
-      expected = LapSplitId.new(1, 123)
-      expect(lap_split.id).to eq(expected)
+      expected = LapSplitKey.new(1, 123)
+      expect(lap_split.key).to eq(expected)
     end
 
     it 'returns nil if split_id is not present' do
@@ -100,13 +100,13 @@ RSpec.describe LapSplit, type: :model do
       split = FactoryGirl.build_stubbed(:split)
       split.id = nil
       lap_split = LapSplit.new(lap, split)
-      expect(lap_split.id).to be_nil
+      expect(lap_split.key).to be_nil
     end
 
     it 'returns nil if lap is not present' do
       split = FactoryGirl.build_stubbed(:split, id: 123)
       lap_split = LapSplit.new(nil, split)
-      expect(lap_split.id).to be_nil
+      expect(lap_split.key).to be_nil
     end
   end
 

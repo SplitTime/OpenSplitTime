@@ -20,8 +20,8 @@ class SegmentsBuilder
     time_points.each_cons(2).map do |begin_point, end_point|
       Segment.new(begin_point: begin_point,
                   end_point: end_point,
-                  begin_lap_split: indexed_lap_splits[begin_point.lap_split_id],
-                  end_lap_split: indexed_lap_splits[end_point.lap_split_id])
+                  begin_lap_split: indexed_lap_splits[begin_point.lap_split_key],
+                  end_lap_split: indexed_lap_splits[end_point.lap_split_key])
     end
   end
 
@@ -38,7 +38,7 @@ class SegmentsBuilder
   end
 
   def indexed_lap_splits
-    @indexed_lap_splits ||= lap_splits.index_by(&:id)
+    @indexed_lap_splits ||= lap_splits.index_by(&:key)
   end
 
   def start_lap_split

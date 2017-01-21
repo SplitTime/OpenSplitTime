@@ -10,18 +10,18 @@ class PriorSplitTimeFinder
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: :sub_split,
-                           required_alternatives: [:effort, [:ordered_splits, :split_times]],
+                           required: :time_point,
+                           required_alternatives: [:effort, [:lap_splits, :split_times]],
                            class: self.class)
-    @sub_split = args[:sub_split]
+    @time_point = args[:time_point]
     @effort = args[:effort]
-    @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
+    @lap_splits = args[:lap_splits]
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
     validate_setup
   end
 
   def split_time
-    @split_time ||= relevant_sub_splits.map { |sub_split| indexed_split_times[sub_split] }.compact.last
+    @split_time ||= relevant_time_points.map { |time_point| indexed_split_times[time_point] }.compact.last
   end
 
   def guaranteed_split_time
@@ -30,26 +30,26 @@ class PriorSplitTimeFinder
 
   private
 
-  attr_reader :effort, :sub_split, :ordered_splits, :split_times
+  attr_reader :effort, :time_point, :lap_splits, :split_times
 
-  def relevant_sub_splits
-    sub_split_index.zero? ? [] : ordered_sub_splits[0..sub_split_index - 1]
+  def relevant_time_points
+    time_point_index.zero? ? [] : ordered_time_points[0..time_point_index - 1]
   end
 
   def mock_start_split_time
-    SplitTime.new(sub_split: ordered_sub_splits.first, time_from_start: 0)
+    SplitTime.new(time_point: ordered_time_points.first, time_from_start: 0)
   end
 
-  def sub_split_index
-    ordered_sub_splits.index(sub_split)
+  def time_point_index
+    ordered_time_points.index(time_point)
   end
 
-  def ordered_sub_splits
-    @ordered_sub_splits ||= ordered_splits.map(&:sub_splits).flatten
+  def ordered_time_points
+    @ordered_time_points ||= lap_splits.map(&:time_points).flatten
   end
 
   def indexed_split_times
-    @indexed_split_times ||= valid_split_times.index_by(&:sub_split)
+    @indexed_split_times ||= valid_split_times.index_by(&:time_point)
   end
 
   def valid_split_times
@@ -57,8 +57,8 @@ class PriorSplitTimeFinder
   end
 
   def validate_setup
-    raise ArgumentError, 'sub_split is not contained in the provided splits' unless
-        ordered_sub_splits.include?(sub_split)
+    raise ArgumentError, 'time_point is not contained in the provided splits' unless
+        ordered_time_points.include?(time_point)
     raise ArgumentError, 'split_times do not all belong to the same effort' unless
         split_times.map(&:effort_id).uniq.size < 2
     raise ArgumentError, 'split_times do not relate to the provided effort' if

@@ -37,7 +37,7 @@ RSpec.describe NewLiveEffortData do
         split_times = []
         split = ordered_splits[0]
         allow(effort).to receive(:split_times).and_return(split_times)
-        params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        params = {'splitId' => split.id.to_s, lap: '1', 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
         effort_data = NewLiveEffortData.new(event: event,
                                             params: params,
                                             ordered_splits: ordered_splits,

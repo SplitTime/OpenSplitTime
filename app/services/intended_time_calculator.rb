@@ -6,23 +6,23 @@ class IntendedTimeCalculator
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:military_time, :effort, :sub_split],
-                           exclusive: [:military_time, :effort, :sub_split, :prior_valid_split_time,
-                                       :expected_time_from_prior, :ordered_splits, :split_times],
+                           required: [:military_time, :effort, :time_point],
+                           exclusive: [:military_time, :effort, :time_point, :prior_valid_split_time,
+                                       :expected_time_from_prior, :lap_splits, :split_times],
                            class: self.class)
     @military_time = args[:military_time]
     @effort = args[:effort]
-    @sub_split = args[:sub_split]
-    @ordered_splits = args[:ordered_splits]
+    @time_point = args[:time_point]
+    @lap_splits = args[:lap_splits]
     @prior_valid_split_time = args[:prior_valid_split_time] ||
         PriorSplitTimeFinder.guaranteed_split_time(effort: effort,
-                                                   sub_split: sub_split,
-                                                   ordered_splits: ordered_splits,
+                                                   time_point: time_point,
+                                                   lap_splits: lap_splits,
                                                    split_times: args[:split_times])
     @expected_time_from_prior = args[:expected_time_from_prior] ||
         TimePredictor.segment_time(segment: subject_segment,
                                    effort: effort,
-                                   ordered_splits: ordered_splits,
+                                   lap_splits: lap_splits,
                                    completed_split_time: prior_valid_split_time)
     validate_setup
   end
@@ -35,7 +35,7 @@ class IntendedTimeCalculator
 
   private
 
-  attr_reader :military_time, :effort, :sub_split, :ordered_splits, :prior_valid_split_time, :expected_time_from_prior
+  attr_reader :military_time, :effort, :time_point, :lap_splits, :prior_valid_split_time, :expected_time_from_prior
 
   def preliminary_day_and_time
     expected_day_and_time && earliest_datetime + days_from_earliest
@@ -58,18 +58,18 @@ class IntendedTimeCalculator
   end
 
   def subject_segment
-    Segment.new(begin_sub_split: prior_valid_split_time.sub_split,
-                end_sub_split: sub_split,
-                begin_split: begin_split,
-                end_split: end_split)
+    Segment.new(begin_point: prior_valid_split_time.time_point,
+                end_point: time_point,
+                begin_lap_split: begin_lap_split,
+                end_lap_split: end_lap_split)
   end
 
-  def begin_split
-    ordered_splits && ordered_splits.find { |split| split.id == prior_valid_split_time.split_id }
+  def begin_lap_split
+    lap_splits && lap_splits.find { |lap_split| lap_split.key == prior_valid_split_time.lap_split_key }
   end
 
-  def end_split
-    ordered_splits && ordered_splits.find { |split| split.id == sub_split.split_id }
+  def end_lap_split
+    lap_splits && lap_splits.find { |lap_split| lap_split.key == time_point.lap_split_key }
   end
 
   def seconds_into_day

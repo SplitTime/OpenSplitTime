@@ -22,16 +22,23 @@ FactoryGirl.define do
       transient do
         splits_count 4
         efforts_count 5
+        laps_required 1
       end
 
       after(:stub) do |event, evaluator|
         course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count)
         splits = course.splits.to_a
         sub_splits = splits.map(&:sub_splits).flatten
+        event.laps_required = evaluator.laps_required
+        time_points = sub_splits.each_with_iteration.first(sub_splits.size * event.laps_required)
+                          .map { |sub_split, iter| TimePoint.new(iter, sub_split.split_id, sub_split.bitkey) }
         efforts = build_stubbed_list(:effort, evaluator.efforts_count)
+
         efforts.each do |effort|
-          split_times = FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort: effort).first(sub_splits.size)
-          split_times.each_with_index { |split_time, i| split_time.sub_split = sub_splits[i] }
+          split_times = FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort: effort).first(time_points.size)
+          split_times.each_with_index do |split_time, i|
+            split_time.time_point = time_points[i]
+          end
           assign_fg_stub_relations(effort, {split_times: split_times, event: event})
         end
 

@@ -83,15 +83,15 @@ class Segment
   end
 
   def distance
-    end_split.distance_from_start - begin_split.distance_from_start
+    end_lap_split.distance_from_start - begin_lap_split.distance_from_start
   end
 
   def vert_gain
-    end_split.vert_gain_from_start.to_i - begin_split.vert_gain_from_start.to_i
+    end_lap_split.vert_gain_from_start.to_i - begin_lap_split.vert_gain_from_start.to_i
   end
 
   def vert_loss
-    end_split.vert_loss_from_start.to_i - begin_split.vert_loss_from_start.to_i
+    end_lap_split.vert_loss_from_start.to_i - begin_lap_split.vert_loss_from_start.to_i
   end
 
   def begin_id

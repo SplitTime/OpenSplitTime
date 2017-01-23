@@ -3,9 +3,19 @@ FactoryGirl.define do
     d * 10000
   end
 
+  sequence(:vert_gain_from_start) do |d|
+    d * 100
+  end
+
+  sequence(:vert_loss_from_start) do |d|
+    d * 100
+  end
+
   factory :split do
     sequence(:base_name) { |n| "Split #{n}" }
     distance_from_start
+    vert_gain_from_start
+    vert_loss_from_start
     sub_split_bitmap 65
     kind :intermediate
     course
@@ -14,6 +24,8 @@ FactoryGirl.define do
   factory :start_split, class: Split do
     base_name 'Start Split'
     distance_from_start 0
+    vert_gain_from_start 0
+    vert_loss_from_start 0
     sub_split_bitmap 1
     kind :start
     course
@@ -22,6 +34,8 @@ FactoryGirl.define do
   factory :finish_split, class: Split do
     base_name 'Finish Split'
     distance_from_start
+    vert_gain_from_start
+    vert_loss_from_start
     sub_split_bitmap 1
     kind :finish
     course

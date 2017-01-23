@@ -221,35 +221,143 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#distance_from_start' do
-    let(:lap_1) { 1 }
-    let(:lap_2) { 2 }
-    let(:lap_3) { 3 }
-    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 3) }
+    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 4) }
     let(:splits) { course_with_splits.splits }
 
     it 'returns 0 for a start split on lap 1' do
-      course = course_with_splits
+      lap = 1
       split = splits.first
-      allow(course).to receive(:distance).and_return(split.distance_from_start)
-      lap_split = LapSplit.new(lap_1, split)
-      expect(lap_split.distance_from_start).to eq(0)
+      expected = 0
+      validate_distance(lap, split, expected)
     end
 
     it 'returns a value equal to split.distance_from_start when lap is 1' do
-      course = course_with_splits
+      lap = 1
       split = splits.second
-      allow(course).to receive(:distance).and_return(split.distance_from_start)
-      lap_split = LapSplit.new(lap_1, split)
-      expect(lap_split.distance_from_start).to eq(splits.second.distance_from_start)
+      expected = splits.second.distance_from_start
+      validate_distance(lap, split, expected)
     end
 
     it 'returns course length times finished laps plus split.distance_from_start when lap is greater than 1' do
-      course = course_with_splits
+      lap = 2
       split = splits.second
-      allow(course).to receive(:distance).and_return(split.distance_from_start)
-      course_distance = course.distance
-      lap_split = LapSplit.new(lap_2, split)
-      expect(lap_split.distance_from_start).to eq(course_distance + splits.second.distance_from_start)
+      expected = splits.last.distance_from_start + splits.second.distance_from_start
+      validate_distance(lap, split, expected)
+    end
+
+    it 'functions properly over many laps with a partially completed lap' do
+      lap = 4
+      split = splits.third
+      expected = splits.last.distance_from_start * 3 + splits.third.distance_from_start
+      validate_distance(lap, split, expected)
+    end
+
+    it 'functions properly for many completed laps' do
+      lap = 4
+      split = splits.last
+      expected = splits.last.distance_from_start * 4
+      validate_distance(lap, split, expected)
+    end
+
+    def validate_distance(lap, split, expected)
+      course = course_with_splits
+      allow(course).to receive(:ordered_splits).and_return(splits)
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.distance_from_start).to eq(expected)
+    end
+  end
+
+  describe '#vert_gain_from_start' do
+    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 4) }
+    let(:splits) { course_with_splits.splits }
+
+    it 'returns 0 for a start split on lap 1' do
+      lap = 1
+      split = splits.first
+      expected = 0
+      validate_vert_gain(lap, split, expected)
+    end
+
+    it 'returns a value equal to split.vert_gain_from_start when lap is 1' do
+      lap = 1
+      split = splits.second
+      expected = splits.second.vert_gain_from_start
+      validate_vert_gain(lap, split, expected)
+    end
+
+    it 'returns course vert_gain times finished laps plus split.vert_gain_from_start when lap is greater than 1' do
+      lap = 2
+      split = splits.second
+      expected = splits.last.vert_gain_from_start + splits.second.vert_gain_from_start
+      validate_vert_gain(lap, split, expected)
+    end
+
+    it 'functions properly over many laps with a partially completed lap' do
+      lap = 4
+      split = splits.third
+      expected = splits.last.vert_gain_from_start * 3 + splits.third.vert_gain_from_start
+      validate_vert_gain(lap, split, expected)
+    end
+
+    it 'functions properly for many completed laps' do
+      lap = 4
+      split = splits.last
+      expected = splits.last.vert_gain_from_start * 4
+      validate_vert_gain(lap, split, expected)
+    end
+
+    def validate_vert_gain(lap, split, expected)
+      course = course_with_splits
+      allow(course).to receive(:ordered_splits).and_return(splits)
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.vert_gain_from_start).to eq(expected)
+    end
+  end
+
+  describe '#vert_loss_from_start' do
+    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 4) }
+    let(:splits) { course_with_splits.splits }
+
+    it 'returns 0 for a start split on lap 1' do
+      lap = 1
+      split = splits.first
+      expected = 0
+      validate_vert_loss(lap, split, expected)
+    end
+
+    it 'returns a value equal to split.vert_loss_from_start when lap is 1' do
+      lap = 1
+      split = splits.second
+      expected = splits.second.vert_loss_from_start
+      validate_vert_loss(lap, split, expected)
+    end
+
+    it 'returns course vert_loss times finished laps plus split.vert_loss_from_start when lap is greater than 1' do
+      lap = 2
+      split = splits.second
+      expected = splits.last.vert_loss_from_start + splits.second.vert_loss_from_start
+      validate_vert_loss(lap, split, expected)
+    end
+
+    it 'functions properly over many laps with a partially completed lap' do
+      lap = 4
+      split = splits.third
+      expected = splits.last.vert_loss_from_start * 3 + splits.third.vert_loss_from_start
+      validate_vert_loss(lap, split, expected)
+    end
+
+    it 'functions properly for many completed laps' do
+      lap = 4
+      split = splits.last
+      expected = splits.last.vert_loss_from_start * 4
+      validate_vert_loss(lap, split, expected)
+    end
+
+    def validate_vert_loss(lap, split, expected)
+      course = course_with_splits
+      allow(course).to receive(:ordered_splits).and_return(splits)
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.vert_loss_from_start).to eq(expected)
     end
   end
 end

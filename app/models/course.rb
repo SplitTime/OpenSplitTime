@@ -35,4 +35,12 @@ class Course < ActiveRecord::Base
   def distance
     ordered_splits.last.distance_from_start if ordered_splits.present?
   end
+
+  def vert_gain
+    ordered_splits.last.vert_gain_from_start if ordered_splits.present?
+  end
+
+  def vert_loss
+    ordered_splits.last.vert_loss_from_start if ordered_splits.present?
+  end
 end

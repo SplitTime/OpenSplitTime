@@ -6,7 +6,7 @@ class NewLiveEffortData
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:event, :params],
-                           exclusive: [:event, :params, :ordered_splits, :effort, :times_container],
+                           exclusive: [:event, :params, :lap_splits, :effort, :times_container],
                            class: self.class)
     @event = args[:event]
     @params = args[:params].symbolize_keys

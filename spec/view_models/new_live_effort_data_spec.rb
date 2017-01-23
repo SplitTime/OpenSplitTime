@@ -4,6 +4,7 @@ include ActionDispatch::TestProcess
 RSpec.describe NewLiveEffortData do
   let(:split_times_4) { FactoryGirl.build_stubbed_list(:split_times_hardrock_36, 30, effort_id: 104) }
   let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
+  let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
   describe '#initialize' do
     it 'initializes with an event and params in an args hash' do
@@ -17,28 +18,29 @@ RSpec.describe NewLiveEffortData do
       expect { NewLiveEffortData.new(params: params) }.to raise_error(/must include event/)
     end
 
-    it 'raises an ArgumentError if any parameter other than event, params, ordered_splits, or times_container is given' do
+    it 'raises an ArgumentError if any parameter other than event, params, lap_splits, or times_container is given' do
       event = FactoryGirl.build_stubbed(:event)
       params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
-      expect { NewLiveEffortData.new(event: event, params: params, random_param: 123) }
+      effort = Effort.new
+      expect { NewLiveEffortData.new(event: event, params: params, lap_splits: [], effort: effort,
+                                     times_container: times_container, random_param: 123) }
           .to raise_error(/may not include random_param/)
     end
   end
 
   describe '#new_split_times' do
-    let(:event) { FactoryGirl.build_stubbed(:event, id: 20, start_time: '2016-07-01 06:00:00') }
-    let(:efforts) { FactoryGirl.build_stubbed_list(:effort, 5, event_id: 20) }
-    let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
+    let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 3, splits_count: 3, efforts_count: 1) }
+    let(:test_effort) { test_event.efforts.first }
 
     context 'for an unstarted effort' do
-      it 'returns a hash of {in: SplitTime, out: SplitTime.null_record} when the split contains only an in sub_split' do
-        ordered_splits = splits
-        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+      it 'returns a hash of {in: SplitTime, out: SplitTime.null_record} when the lap_split contains only an in sub_split' do
+        lap_splits, _ = lap_splits_and_time_points(test_event)
+        effort = test_effort
         split_times = []
-        split = ordered_splits[0]
+        lap_split = lap_splits[0]
         allow(effort).to receive(:split_times).and_return(split_times)
         params = {'splitId' => split.id.to_s, lap: '1', 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
-        effort_data = NewLiveEffortData.new(event: event,
+        effort_data = NewLiveEffortData.new(event: test_event,
                                             params: params,
                                             ordered_splits: ordered_splits,
                                             effort: effort,
@@ -51,7 +53,7 @@ RSpec.describe NewLiveEffortData do
 
       it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do
         ordered_splits = splits
-        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        effort = test_effort
         split_times = []
         split = ordered_splits[1]
         allow(effort).to receive(:split_times).and_return(split_times)
@@ -68,15 +70,15 @@ RSpec.describe NewLiveEffortData do
 
       it 'populates split_times with correct times from start' do
         ordered_splits = splits
-        effort = FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
+        effort = test_effort
         split_times = []
         split = ordered_splits[1]
-        allow(effort).to receive(:split_times).and_return(split_times)
+        allow(test_effort).to receive(:split_times).and_return(split_times)
         params = {'splitId' => split.id.to_s, 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
         effort_data = NewLiveEffortData.new(event: event,
                                             params: params,
                                             ordered_splits: ordered_splits,
-                                            effort: effort,
+                                            effort: test_effort,
                                             times_container: times_container)
         expect(effort_data.new_split_times[:in].time_from_start).to eq(150.minutes)
         expect(effort_data.new_split_times[:out].time_from_start).to eq(170.minutes)
@@ -540,5 +542,12 @@ RSpec.describe NewLiveEffortData do
       expect(effort_data.times_exist[:in]).to eq(true)
       expect(effort_data.times_exist[:out]).to eq(true)
     end
+  end
+
+  def lap_splits_and_time_points(event)
+    allow(event).to receive(:ordered_splits).and_return(event.splits)
+    lap_splits = event.required_lap_splits
+    time_points = lap_splits.map(&:time_points).flatten
+    [lap_splits, time_points]
   end
 end

@@ -6,17 +6,6 @@ RSpec.describe PriorSplitTimeFinder do
   let(:test_effort) { test_event.efforts.first }
   let(:test_split_times) { test_effort.split_times }
 
-  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20,
-                                                         effort_id: 101,
-                                                         data_status: SplitTime::data_statuses[:good]).first(10) }
-  let(:split_ids) { split_times_101.map(&:split_id).uniq }
-  let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
-  let(:split2) { FactoryGirl.build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
-  let(:split3) { FactoryGirl.build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
-  let(:split4) { FactoryGirl.build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
-  let(:split5) { FactoryGirl.build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
-  let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
-
   describe '#initialize' do
     it 'initializes with an effort, a time_point, lap_splits, and split_times in an args hash' do
       lap_splits, time_points = lap_splits_and_time_points(test_event)

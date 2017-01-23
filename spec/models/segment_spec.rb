@@ -18,39 +18,23 @@ RSpec.describe Segment, type: :model do
   let(:lap_2_aid_2) { LapSplit.new(lap_2, aid_2_split) }
   let(:lap_2_aid_3) { LapSplit.new(lap_2, aid_3_split) }
   let(:lap_2_finish) { LapSplit.new(lap_2, finish_split) }
-  let(:lap_1_start_in) { lap_1_start.time_point_in }
-  let(:lap_1_aid_1_in) { lap_1_aid_1.time_point_in }
-  let(:lap_1_aid_1_out) { lap_1_aid_1.time_point_out }
-  let(:lap_1_aid_2_in) { lap_1_aid_2.time_point_in }
-  let(:lap_1_aid_2_out) { lap_1_aid_2.time_point_out }
-  let(:lap_1_aid_3_in) { lap_1_aid_3.time_point_in }
-  let(:lap_1_aid_3_out) { lap_1_aid_3.time_point_out }
-  let(:lap_1_finish_in) { lap_1_finish.time_point_in }
-  let(:lap_2_start_in) { lap_2_start.time_point_in }
-  let(:lap_2_aid_1_in) { lap_2_aid_1.time_point_in }
-  let(:lap_2_aid_1_out) { lap_2_aid_1.time_point_out }
-  let(:lap_2_aid_2_in) { lap_2_aid_2.time_point_in }
-  let(:lap_2_aid_2_out) { lap_2_aid_2.time_point_out }
-  let(:lap_2_aid_3_in) { lap_2_aid_3.time_point_in }
-  let(:lap_2_aid_3_out) { lap_2_aid_3.time_point_out }
-  let(:lap_2_finish_in) { lap_2_finish.time_point_in }
-  let(:lap_1_start_to_lap_1_aid_1) { Segment.new(begin_point: lap_1_start_in, end_point: lap_1_aid_1_in, begin_split: start_split, end_split: aid_1_split) }
-  let(:lap_1_start_to_lap_1_aid_2) { Segment.new(begin_point: lap_1_start_in, end_point: lap_1_aid_2_in, begin_split: start_split, end_split: aid_2_split) }
-  let(:lap_1_start_to_lap_1_aid_3) { Segment.new(begin_point: lap_1_start_in, end_point: lap_1_aid_3_in, begin_split: start_split, end_split: aid_3_split) }
-  let(:lap_1_start_to_lap_1_finish) { Segment.new(begin_point: lap_1_start_in, end_point: lap_1_finish_in, begin_split: start_split, end_split: finish_split) }
-  let(:lap_1_aid_1_to_lap_1_aid_2) { Segment.new(begin_point: lap_1_aid_1_out, end_point: lap_1_aid_2_in, begin_split: aid_1_split, end_split: aid_2_split) }
-  let(:lap_1_aid_2_to_lap_1_aid_3) { Segment.new(begin_point: lap_1_aid_2_out, end_point: lap_1_aid_3_in, begin_split: aid_2_split, end_split: aid_3_split) }
-  let(:lap_1_aid_3_to_lap_1_finish) { Segment.new(begin_point: lap_1_aid_3_out, end_point: lap_1_finish_in, begin_split: aid_3_split, end_split: finish_split) }
-  let(:lap_1_aid_1_to_lap_1_finish) { Segment.new(begin_point: lap_1_aid_1_out, end_point: lap_1_finish_in, begin_split: aid_1_split, end_split: finish_split) }
-  let(:lap_1_aid_2_to_lap_1_finish) { Segment.new(begin_point: lap_1_aid_2_out, end_point: lap_1_finish_in, begin_split: aid_2_split, end_split: finish_split) }
-  let(:lap_1_in_aid_1) { Segment.new(begin_point: lap_1_aid_1_in, end_point: lap_1_aid_1_out, begin_split: aid_1_split, end_split: aid_1_split) }
-  let(:lap_1_in_aid_2) { Segment.new(begin_point: lap_1_aid_2_in, end_point: lap_1_aid_2_out, begin_split: aid_2_split, end_split: aid_2_split) }
-  let(:lap_1_in_aid_3) { Segment.new(begin_point: lap_1_aid_3_in, end_point: lap_1_aid_3_out, begin_split: aid_3_split, end_split: aid_3_split) }
-  let(:lap_1_aid_1_to_lap_1_aid_2_inclusive) { Segment.new(begin_point: lap_1_aid_1_in, end_point: lap_1_aid_2_out, begin_split: aid_1_split, end_split: aid_2_split) }
-  let(:lap_1_start_to_lap_1_start) { Segment.new(begin_point: lap_1_start_in, end_point: lap_1_start_in, begin_split: start_split, end_split: start_split) }
-  let(:aid_1_in_to_aid_1_in) { Segment.new(begin_point: lap_1_aid_1_in, end_point: lap_1_aid_1_in, begin_split: aid_1_split, end_split: aid_1_split) }
-  let(:lap_1_start_to_lap_1_aid_1_duplicate) { Segment.new(begin_point: lap_1_start_in, end_point: lap_1_aid_1_in, begin_split: start_split, end_split: aid_1_split) }
-  let(:lap_2_start_to_lap_2_start) { Segment.new(begin_point: lap_2_start_in, end_point: lap_2_start_in, begin_split: start_split, end_split: start_split) }
+  let(:lap_1_start_to_lap_1_aid_1) { Segment.new(begin_point: lap_1_start.time_point_in, end_point: lap_1_aid_1.time_point_in, begin_split: start_split, end_split: aid_1_split) }
+  let(:lap_1_start_to_lap_1_aid_2) { Segment.new(begin_point: lap_1_start.time_point_in, end_point: lap_1_aid_2.time_point_in, begin_split: start_split, end_split: aid_2_split) }
+  let(:lap_1_start_to_lap_1_aid_3) { Segment.new(begin_point: lap_1_start.time_point_in, end_point: lap_1_aid_3.time_point_in, begin_split: start_split, end_split: aid_3_split) }
+  let(:lap_1_start_to_lap_1_finish) { Segment.new(begin_point: lap_1_start.time_point_in, end_point: lap_1_finish.time_point_in, begin_split: start_split, end_split: finish_split) }
+  let(:lap_1_aid_1_to_lap_1_aid_2) { Segment.new(begin_point: lap_1_aid_1.time_point_out, end_point: lap_1_aid_2.time_point_in, begin_split: aid_1_split, end_split: aid_2_split) }
+  let(:lap_1_aid_2_to_lap_1_aid_3) { Segment.new(begin_point: lap_1_aid_2.time_point_out, end_point: lap_1_aid_3.time_point_in, begin_split: aid_2_split, end_split: aid_3_split) }
+  let(:lap_1_aid_3_to_lap_1_finish) { Segment.new(begin_point: lap_1_aid_3.time_point_out, end_point: lap_1_finish.time_point_in, begin_split: aid_3_split, end_split: finish_split) }
+  let(:lap_1_aid_1_to_lap_1_finish) { Segment.new(begin_point: lap_1_aid_1.time_point_out, end_point: lap_1_finish.time_point_in, begin_split: aid_1_split, end_split: finish_split) }
+  let(:lap_1_aid_2_to_lap_1_finish) { Segment.new(begin_point: lap_1_aid_2.time_point_out, end_point: lap_1_finish.time_point_in, begin_split: aid_2_split, end_split: finish_split) }
+  let(:lap_1_in_aid_1) { Segment.new(begin_point: lap_1_aid_1.time_point_in, end_point: lap_1_aid_1.time_point_out, begin_split: aid_1_split, end_split: aid_1_split) }
+  let(:lap_1_in_aid_2) { Segment.new(begin_point: lap_1_aid_2.time_point_in, end_point: lap_1_aid_2.time_point_out, begin_split: aid_2_split, end_split: aid_2_split) }
+  let(:lap_1_in_aid_3) { Segment.new(begin_point: lap_1_aid_3.time_point_in, end_point: lap_1_aid_3.time_point_out, begin_split: aid_3_split, end_split: aid_3_split) }
+  let(:lap_1_aid_1_to_lap_1_aid_2_inclusive) { Segment.new(begin_point: lap_1_aid_1.time_point_in, end_point: lap_1_aid_2.time_point_out, begin_split: aid_1_split, end_split: aid_2_split) }
+  let(:lap_1_start_to_lap_1_start) { Segment.new(begin_point: lap_1_start.time_point_in, end_point: lap_1_start.time_point_in, begin_split: start_split, end_split: start_split) }
+  let(:aid_1_in_to_aid_1_in) { Segment.new(begin_point: lap_1_aid_1.time_point_in, end_point: lap_1_aid_1.time_point_in, begin_split: aid_1_split, end_split: aid_1_split) }
+  let(:lap_1_start_to_lap_1_aid_1_duplicate) { Segment.new(begin_point: lap_1_start.time_point_in, end_point: lap_1_aid_1.time_point_in, begin_split: start_split, end_split: aid_1_split) }
+  let(:lap_2_start_to_lap_2_start) { Segment.new(begin_point: lap_2_start.time_point_in, end_point: lap_2_start.time_point_in, begin_split: start_split, end_split: start_split) }
 
   describe 'initialization' do
     it 'initializes when given a begin_point and end_point in an args hash' do

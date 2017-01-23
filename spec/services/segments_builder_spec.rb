@@ -66,11 +66,4 @@ RSpec.describe SegmentsBuilder do
       expect(builder.segments_with_zero_start.map(&:end_point)).to eq(time_points)
     end
   end
-
-  def lap_splits_and_time_points(event)
-    allow(event).to receive(:ordered_splits).and_return(event.splits)
-    lap_splits = event.required_lap_splits
-    time_points = lap_splits.map(&:time_points).flatten
-    [lap_splits, time_points]
-  end
 end

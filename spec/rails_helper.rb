@@ -20,7 +20,7 @@ require 'support/factory_girl'
 require 'capybara/rspec'
 require_relative 'support/controller_helpers'
 require 'strip_attributes/matchers'
-
+require 'support/lap_split_methods'
 
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -96,5 +96,4 @@ RSpec.configure do |config|
   config.include StripAttributes::Matchers
 
   config.run_all_when_everything_filtered = true
-
 end

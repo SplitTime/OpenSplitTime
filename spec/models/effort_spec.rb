@@ -89,7 +89,7 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe 'approximate_age_today' do
+  describe '#approximate_age_today' do
     it 'returns nil if age is not present' do
       effort = FactoryGirl.build(:effort)
       expect(effort.approximate_age_today).to be_nil
@@ -114,7 +114,7 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe 'time_in_aid' do
+  describe '#time_in_aid' do
     it 'returns nil when the split has no split_times' do
       split_times = SplitTime.none
       effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
@@ -144,7 +144,7 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe 'total_time_in_aid' do
+  describe '#total_time_in_aid' do
     it 'returns zero when the event has no splits' do
       split_times = []
       effort = FactoryGirl.build(:effort)
@@ -164,6 +164,23 @@ RSpec.describe Effort, type: :model do
       effort = FactoryGirl.build(:effort)
       expect(effort).to receive(:ordered_split_times).and_return(split_times)
       expect(effort.total_time_in_aid).to eq(500)
+    end
+  end
+
+  describe '#dropped_lap_split_key' do
+    it 'returns a LapSplitKey using dropped_split_id and dropped_lap' do
+      effort = FactoryGirl.build_stubbed(:effort, dropped_split_id: 101, dropped_lap: 1)
+      expect(effort.dropped_key).to eq(LapSplitKey.new(1, 101))
+    end
+
+    it 'returns nil if dropped_split_id is not present' do
+      effort = FactoryGirl.build_stubbed(:effort, dropped_split_id: nil, dropped_lap: 1)
+      expect(effort.dropped_key).to be_nil
+    end
+
+    it 'returns nil if dropped_lap is not present' do
+      effort = FactoryGirl.build_stubbed(:effort, dropped_split_id: 101, dropped_lap: nil)
+      expect(effort.dropped_key).to be_nil
     end
   end
 end

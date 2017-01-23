@@ -146,9 +146,10 @@ class Effort < ActiveRecord::Base
     started? && !dropped? && !finished?
   end
 
-  def dropped_time_point
-    TimePoint.new(dropped_lap, dropped_split_id)
+  def dropped_lap_split_key
+    dropped_lap && dropped_split_id && LapSplitKey.new(dropped_lap, dropped_split_id)
   end
+  alias_method :dropped_key, :dropped_lap_split_key
 
   def finish_status
     case

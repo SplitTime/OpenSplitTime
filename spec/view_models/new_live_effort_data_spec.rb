@@ -37,12 +37,13 @@ RSpec.describe NewLiveEffortData do
         lap_splits, _ = lap_splits_and_time_points(test_event)
         effort = test_effort
         split_times = []
-        lap_split = lap_splits[0]
-        allow(effort).to receive(:split_times).and_return(split_times)
-        params = {'splitId' => split.id.to_s, lap: '1', 'bibNumber' => '205', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+        allow(effort).to receive(:ordered_split_times).and_return(split_times)
+        current_lap_split = lap_splits[0]
+        params = {'splitId' => current_lap_split.split_id.to_s, lap: '1', 'bibNumber' => '205',
+                  'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
         effort_data = NewLiveEffortData.new(event: test_event,
                                             params: params,
-                                            ordered_splits: ordered_splits,
+                                            lap_splits: lap_splits,
                                             effort: effort,
                                             times_container: times_container)
         expect(effort_data.new_split_times.size).to eq(2)
@@ -542,12 +543,5 @@ RSpec.describe NewLiveEffortData do
       expect(effort_data.times_exist[:in]).to eq(true)
       expect(effort_data.times_exist[:out]).to eq(true)
     end
-  end
-
-  def lap_splits_and_time_points(event)
-    allow(event).to receive(:ordered_splits).and_return(event.splits)
-    lap_splits = event.required_lap_splits
-    time_points = lap_splits.map(&:time_points).flatten
-    [lap_splits, time_points]
   end
 end

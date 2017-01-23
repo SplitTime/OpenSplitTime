@@ -4,17 +4,16 @@ include ActionDispatch::TestProcess
 RSpec.describe TimePredictor do
 
   let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
-  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort_id: 101).first(10) }
-  let(:split_ids) { split_times_101.map(&:split_id).uniq }
-  let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
-  let(:split2) { FactoryGirl.build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
-  let(:split3) { FactoryGirl.build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
-  let(:split4) { FactoryGirl.build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
-  let(:split5) { FactoryGirl.build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
-  let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
-  let(:ordered_splits) { [split1, split2, split3, split4, split5, split6] }
-  let(:sub_splits) { ordered_splits.map(&:sub_splits).flatten }
-  let(:effort) { FactoryGirl.build_stubbed(:effort, id: 101) }
+  let(:lap_1) { 1 }
+  let(:lap_2) { 2 }
+  let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 3, splits_count: 4, efforts_count: 1) }
+  let(:test_effort) { test_event.efforts.first }
+  let(:test_split_times) { test_effort.split_times }
+  let(:start) { event.splits.first }
+  let(:aid_1) { event.splits.second }
+  let(:aid_2) { event.splits.third }
+  let(:finish) { event.splits.last }
+
   let(:zero_start) { Segment.new(begin_sub_split: split1.sub_split_in, end_sub_split: split1.sub_split_in,
                                  begin_split: split1, end_split: split1) }
   let(:zero_intermediate) { Segment.new(begin_sub_split: split2.sub_split_in, end_sub_split: split2.sub_split_in,
@@ -37,12 +36,21 @@ RSpec.describe TimePredictor do
                                  begin_split: split2, end_split: split2) }
 
   describe '#initialize' do
-    it 'initializes with a segment, ordered_splits and completed_split_time in an args hash' do
-      segment = start_to_split_2_in
+    it 'initializes with a segment, lap_splits, and completed_split_time in an args hash' do
+      segment = build_segment(lap_1, start, 'in', lap_1, aid_2, 'in')
       completed_split_time = split_times_101.last
       expect { TimePredictor.new(segment: segment,
                                  ordered_splits: ordered_splits,
                                  completed_split_time: completed_split_time) }.not_to raise_error
+    end
+
+    def build_segment(begin_lap, begin_split, begin_in_out, end_lap, end_split, end_in_out)
+      begin_point = TimePoint.new(begin_lap, begin_split.id, SubSplit.bitkey(begin_in_out))
+      end_point = TimePoint.new(end_lap, end_split.id, SubSplit.bitkey(end_in_out))
+      begin_lap_split = LapSplit.new(begin_lap, begin_split)
+      end_lap_split = LapSplit.new(end_lap, end_split)
+      Segment.new(begin_point: begin_point, end_point: end_point,
+                  begin_lap_split: begin_lap_split, end_lap_split: end_lap_split)
     end
 
     it 'raises an ArgumentError if no segment is given' do
@@ -68,7 +76,7 @@ RSpec.describe TimePredictor do
 
   describe '#segment_time' do
     context 'for a partially completed effort' do
-      let(:completed_split_time) { split_times_101.first(5).last }
+      let(:completed_split_time) { test_split_times.first(5).last }
 
       it 'predicts zero time for a zero start segment' do
         segment = zero_start
@@ -126,7 +134,7 @@ RSpec.describe TimePredictor do
     end
 
     context 'for an unstarted effort' do
-      let(:completed_split_time) { split_times_101.first }
+      let(:completed_split_time) { test_split_times.first }
 
       it 'predicts zero time for a zero segment' do
         segment = zero_start
@@ -138,8 +146,8 @@ RSpec.describe TimePredictor do
     def verify_segment_time(segment, expected)
       margin = expected * 0.01
       predictor = TimePredictor.new(segment: segment,
-                                    effort: effort,
-                                    ordered_splits: ordered_splits,
+                                    effort: test_effort,
+                                    lap_splits: lap_splits,
                                     completed_split_time: completed_split_time,
                                     calc_model: :terrain)
       expect(predictor.segment_time).to be_within(margin).of(expected)

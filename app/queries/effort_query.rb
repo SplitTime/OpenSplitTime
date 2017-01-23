@@ -31,6 +31,7 @@ class EffortQuery
             END 
             AS finished,
             true AS started,
+            final_lap AS laps_started,
             laps_finished,
             event_start_time
       FROM 

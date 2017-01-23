@@ -127,7 +127,7 @@ class Effort < ActiveRecord::Base
   end
 
   def laps_started
-    start_split_times.size
+    attributes['laps_started'] || ordered_split_times.last.try(:lap) || 0
   end
 
   def finished?
@@ -173,12 +173,16 @@ class Effort < ActiveRecord::Base
                                .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
   end
 
+  def ordered_split_times(split = nil)
+    split ? split_times.where(split: split).order(:sub_split_bitkey) : split_times.ordered
+  end
+
   def ordered_splits
     @ordered_splits ||= event.ordered_splits
   end
 
-  def ordered_split_times(split = nil)
-    split ? split_times.where(split: split).order(:sub_split_bitkey) : split_times.ordered
+  def lap_splits
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(laps_started)
   end
 
   def overall_place

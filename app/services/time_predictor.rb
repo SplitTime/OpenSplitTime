@@ -36,7 +36,7 @@ class TimePredictor
               :calc_model, :similar_effort_ids, :times_container
 
   def limits
-    times_container.limits(segment).transform_values { |limit| limit * pace_factor }
+    times_container.limits(segment).transform_values { |limit| (limit * pace_factor).to_i }
   end
 
   def pace_factor

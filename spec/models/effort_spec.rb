@@ -140,7 +140,7 @@ RSpec.describe Effort, type: :model do
       matching_split_times = split_times.select { |split_time| split_time.split_id == split.id }
       expect(matching_split_times.count).to eq(2)
       expect(effort).to receive(:ordered_split_times).and_return(matching_split_times)
-      expect(effort.time_in_aid(split)).to eq(100)
+      expect(effort.time_in_aid(split)).to eq(600)
     end
   end
 
@@ -163,7 +163,7 @@ RSpec.describe Effort, type: :model do
       split_times = FactoryGirl.build_stubbed_list(:split_times_in_out, 12)
       effort = FactoryGirl.build(:effort)
       expect(effort).to receive(:ordered_split_times).and_return(split_times)
-      expect(effort.total_time_in_aid).to eq(500)
+      expect(effort.total_time_in_aid).to eq(3000)
     end
   end
 

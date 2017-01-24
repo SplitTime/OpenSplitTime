@@ -104,43 +104,43 @@ RSpec.describe TimePredictor do
 
       it 'predicts the correct segment time for a segment beginning with start and ending before the completed split time' do
         segment = lap_1_start_to_lap_1_aid_1
-        expected = 1050
+        expected = 6300
         verify_segment_time(segment, expected)
       end
 
       it 'predicts the correct segment time for a segment beginning with start and ending after the completed split time' do
         segment = lap_1_start_to_lap_1_finish
-        expected = 3150
+        expected = 18900
         verify_segment_time(segment, expected)
       end
 
       it 'functions properly for segments starting before the completed split time and ending at the completed split time' do
         segment = lap_1_aid_1_to_lap_1_aid_2_inclusive
-        expected = 1050
+        expected = 6300
         verify_segment_time(segment, expected)
       end
 
       it 'functions properly for segments starting at the completed split time and ending after the completed split time' do
         segment = lap_1_aid_2_to_lap_1_finish
-        expected = 1050
+        expected = 6300
         verify_segment_time(segment, expected)
       end
 
       it 'functions properly for segments starting before the completed split time and ending after the completed split time' do
         segment = lap_1_aid_1_to_lap_1_finish
-        expected = 2100
+        expected = 12600
         verify_segment_time(segment, expected)
       end
 
       it 'functions properly for segments starting on one lap and ending on another' do
         segment = lap_1_start_to_lap_2_aid_1
-        expected = 4200
+        expected = 25200
         verify_segment_time(segment, expected)
       end
 
       it 'functions properly for segments containing multiple finished laps' do
         segment = lap_1_start_to_lap_3_finish
-        expected = 9450
+        expected = 56700
         verify_segment_time(segment, expected)
       end
     end
@@ -190,7 +190,7 @@ RSpec.describe TimePredictor do
       segment = lap_1_in_aid_2
       typical_time = typical_time_in_aid
       expected = [:low_bad, :low_questionable, :high_questionable, :high_bad]
-                     .map { |limit| [limit, typical_time * limit_factors[:in_aid][limit] * imputed_pace] }
+                     .map { |limit| [limit, (typical_time * limit_factors[:in_aid][limit] * imputed_pace).to_i] }
                      .to_h
       verify_data_status(segment, expected)
     end
@@ -200,7 +200,7 @@ RSpec.describe TimePredictor do
       segment = lap_1_start_to_lap_1_finish
       typical_time = segment.distance * distance_factor + segment.vert_gain * vert_gain_factor
       expected = [:low_bad, :low_questionable, :high_questionable, :high_bad]
-                     .map { |limit| [limit, typical_time * limit_factors[:terrain][limit] * imputed_pace] }
+                     .map { |limit| [limit, (typical_time * limit_factors[:terrain][limit] * imputed_pace).to_i] }
                      .to_h
       verify_data_status(segment, expected)
     end
@@ -210,7 +210,7 @@ RSpec.describe TimePredictor do
       segment = lap_1_start_to_lap_3_finish
       typical_time = segment.distance * distance_factor + segment.vert_gain * vert_gain_factor
       expected = [:low_bad, :low_questionable, :high_questionable, :high_bad]
-                     .map { |limit| [limit, typical_time * limit_factors[:terrain][limit] * imputed_pace] }
+                     .map { |limit| [limit, (typical_time * limit_factors[:terrain][limit] * imputed_pace).to_i] }
                      .to_h
       verify_data_status(segment, expected)
     end

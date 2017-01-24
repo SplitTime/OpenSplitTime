@@ -37,6 +37,6 @@ class DataStatus
     return nil unless typical_time && type
     raise ArgumentError, "type '#{type}' is not recognized" unless LIMIT_TYPE_ARRAY.include?(type.to_sym)
     typical_time += TYPICAL_TIME_IN_AID if type == :in_aid
-    LIMIT_ARRAY.map { |limit| [limit, typical_time * LIMIT_FACTORS[type][limit]] }.to_h
+    LIMIT_ARRAY.map { |limit| [limit, (typical_time * LIMIT_FACTORS[type][limit]).to_i] }.to_h
   end
 end

@@ -61,8 +61,7 @@ Vagrant.configure("2") do |config|
   # Install PostGres
   config.vm.provision "install-postgres", type: "shell", inline: <<-SHELL
     apt-get install postgresql libpq-dev -y
-    su - postgres
-    createuser -s vagrant || true
+    sudo -u postgres createuser -s vagrant || true
   SHELL
 
   # Install Ruby Version Manager

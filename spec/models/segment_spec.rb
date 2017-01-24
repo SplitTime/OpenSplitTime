@@ -44,6 +44,8 @@ RSpec.describe Segment, type: :model do
                                                        end_lap: 2, end_split: aid_1, end_in_out: 'in') }
   let(:lap_1_start_to_lap_2_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                         end_lap: 2, end_split: finish, end_in_out: 'in') }
+  let(:lap_1_finish_to_lap_2_start) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: finish, begin_in_out: 'in',
+                                                        end_lap: 2, end_split: start, end_in_out: 'in') }
 
   describe 'initialization' do
     it 'initializes when given a begin_point and end_point in an args hash' do
@@ -271,6 +273,10 @@ RSpec.describe Segment, type: :model do
 
     it 'returns :in_aid for an in-aid segment' do
       expect(lap_1_in_aid_1.special_limits_type).to eq(:in_aid)
+    end
+
+    it 'returns :in_aid for a segment between laps' do
+      expect(lap_1_finish_to_lap_2_start.special_limits_type).to eq(:in_aid)
     end
 
     it 'returns nil for segments between splits' do

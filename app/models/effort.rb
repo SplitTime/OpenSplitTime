@@ -151,6 +151,13 @@ class Effort < ActiveRecord::Base
   end
   alias_method :dropped_key, :dropped_lap_split_key
 
+  def dropped_lap_split_key=(key)
+    return unless key.present?
+    self.dropped_lap = key.lap
+    self.dropped_split_id = key.split_id
+  end
+  alias_method :dropped_key=, :dropped_lap_split_key=
+
   def finish_status
     case
     when !started?

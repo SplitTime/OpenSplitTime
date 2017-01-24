@@ -2,15 +2,6 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe EffortDataStatusSetter do
-  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort_id: 101).first(10) }
-  let(:split_ids) { split_times_101.map(&:split_id).uniq }
-  let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
-  let(:split2) { FactoryGirl.build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
-  let(:split3) { FactoryGirl.build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
-  let(:split4) { FactoryGirl.build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
-  let(:split5) { FactoryGirl.build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
-  let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
-
   describe '#initialize' do
     it 'initializes with an effort and a times_container in an args hash' do
       effort = FactoryGirl.build_stubbed(:effort)
@@ -46,14 +37,8 @@ RSpec.describe EffortDataStatusSetter do
       end
 
       let(:split_times_100) { FactoryGirl.build_stubbed_list(:split_times_hardrock_45, 10, effort_id: 100) }
-      let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_hardrock_43, 10, effort_id: 101) }
-      let(:split_times_102) { FactoryGirl.build_stubbed_list(:split_times_hardrock_41, 10, effort_id: 102) }
-      let(:split_times_103) { FactoryGirl.build_stubbed_list(:split_times_hardrock_38, 10, effort_id: 103) }
       let(:split_times_104) { FactoryGirl.build_stubbed_list(:split_times_hardrock_36, 10, effort_id: 104) }
       let(:split_times_105) { FactoryGirl.build_stubbed_list(:split_times_hardrock_35, 10, effort_id: 105) }
-      let(:split_times_106) { FactoryGirl.build_stubbed_list(:split_times_hardrock_33, 10, effort_id: 106) }
-      let(:split_times_107) { FactoryGirl.build_stubbed_list(:split_times_hardrock_31, 10, effort_id: 107) }
-      let(:split_times_108) { FactoryGirl.build_stubbed_list(:split_times_hardrock_28, 10, effort_id: 108) }
       let(:split_times_109) { FactoryGirl.build_stubbed_list(:split_times_hardrock_25, 10, effort_id: 109) }
       let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
       let(:efforts) { FactoryGirl.build_stubbed_list(:efforts_hardrock, 10, event_id: 50) }
@@ -357,16 +342,7 @@ RSpec.describe EffortDataStatusSetter do
         FactoryGirl.reload
       end
 
-      let(:split_times_100) { FactoryGirl.build_stubbed_list(:split_times_hardrock_45, 10, effort_id: 100) }
-      let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_hardrock_43, 10, effort_id: 101) }
-      let(:split_times_102) { FactoryGirl.build_stubbed_list(:split_times_hardrock_41, 10, effort_id: 102) }
-      let(:split_times_103) { FactoryGirl.build_stubbed_list(:split_times_hardrock_38, 10, effort_id: 103) }
       let(:split_times_104) { FactoryGirl.build_stubbed_list(:split_times_hardrock_36, 10, effort_id: 104) }
-      let(:split_times_105) { FactoryGirl.build_stubbed_list(:split_times_hardrock_35, 10, effort_id: 105) }
-      let(:split_times_106) { FactoryGirl.build_stubbed_list(:split_times_hardrock_33, 10, effort_id: 106) }
-      let(:split_times_107) { FactoryGirl.build_stubbed_list(:split_times_hardrock_31, 10, effort_id: 107) }
-      let(:split_times_108) { FactoryGirl.build_stubbed_list(:split_times_hardrock_28, 10, effort_id: 108) }
-      let(:split_times_109) { FactoryGirl.build_stubbed_list(:split_times_hardrock_25, 10, effort_id: 109) }
       let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
       let(:efforts) { FactoryGirl.build_stubbed_list(:efforts_hardrock, 10, event_id: 50) }
 

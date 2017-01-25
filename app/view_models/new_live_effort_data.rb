@@ -2,20 +2,23 @@ class NewLiveEffortData
   attr_reader :ordered_splits, :effort, :new_split_times
   delegate :participant_id, to: :effort
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
+  ASSUMED_LAP ||= 1
 
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:event, :params],
-                           exclusive: [:event, :params, :lap_splits, :effort, :times_container],
+                           exclusive: [:event, :params, :ordered_splits, :effort, :times_container],
                            class: self.class)
     @event = args[:event]
     @params = args[:params].symbolize_keys
     @ordered_splits = args[:ordered_splits] || event.ordered_splits.to_a
     @effort = args[:effort] || event.efforts.find_guaranteed(bib_number: params[:bibNumber])
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+    @existing_split_times = indexed_split_times.dup.freeze
     @new_split_times = {}
     create_split_times
     fill_with_null_split_times
+    validate_setup
   end
 
   def response_row
@@ -56,7 +59,7 @@ class NewLiveEffortData
   end
 
   def lap
-    @lap ||= params[:lap].presence.try(:to_i)
+    @lap ||= params[:lap].presence.try(:to_i) || ASSUMED_LAP
   end
 
   def split_id
@@ -87,13 +90,9 @@ class NewLiveEffortData
     new_split_times.values.select(&:time_from_start)
   end
 
-  def existing_split_times
-    @existing_split_times ||= indexed_split_times.dup
-  end
-
   private
 
-  attr_reader :event, :params, :times_container
+  attr_reader :event, :params, :times_container, :existing_split_times
 
   def indexed_split_times
     @indexed_split_times ||= effort.ordered_split_times.index_by(&:time_point)
@@ -127,7 +126,7 @@ class NewLiveEffortData
 
   def time_points
     @time_points ||=
-        lap_split.time_points.map { |time_point| [SubSplit.kind(time_point.bitkey).downcase.to_sym, time_point] }.to_h
+        lap_split.time_points.map { |time_point| [time_point.kind.downcase.to_sym, time_point] }.to_h
   end
 
   def new_split_time(kind)
@@ -152,5 +151,10 @@ class NewLiveEffortData
 
   def camelized_param(base, kind)
     params["#{base}_#{kind}".camelize(:lower).to_sym]
+  end
+
+  def validate_setup
+    warn "DEPRECATION WARNING: params #{params} contain no :lap key; NewLiveEffortData will assume lap: 1 " +
+             "but this is deprecated, and lack of a lap parameter may fail in the future." if params[:lap].nil?
   end
 end

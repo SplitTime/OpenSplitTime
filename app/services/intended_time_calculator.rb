@@ -29,7 +29,7 @@ class IntendedTimeCalculator
 
   def day_and_time
     return nil unless military_time.present?
-    preliminary_day_and_time && (preliminary_day_and_time < prior_day_and_time) ?
+    preliminary_day_and_time && (preliminary_day_and_time < effort.start_time) ?
         preliminary_day_and_time + 1.day : preliminary_day_and_time
   end
 
@@ -38,7 +38,7 @@ class IntendedTimeCalculator
   attr_reader :military_time, :effort, :time_point, :lap_splits, :prior_valid_split_time, :expected_time_from_prior
 
   def preliminary_day_and_time
-    expected_day_and_time && earliest_datetime + days_from_earliest
+    expected_day_and_time && earliest_day_and_time + days_from_earliest
   end
 
   def prior_day_and_time
@@ -49,12 +49,12 @@ class IntendedTimeCalculator
     expected_time_from_prior && prior_day_and_time + expected_time_from_prior
   end
 
-  def earliest_datetime
+  def earliest_day_and_time
     prior_day_and_time.beginning_of_day + seconds_into_day
   end
 
   def days_from_earliest
-    ((expected_day_and_time - earliest_datetime) / 1.day).round(0) * 1.day
+    ((expected_day_and_time - earliest_day_and_time) / 1.day).round(0) * 1.day
   end
 
   def subject_segment

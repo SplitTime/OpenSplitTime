@@ -344,17 +344,17 @@ RSpec.describe NewLiveEffortData do
       event = test_event
       effort = test_effort
       split_times = effort.split_times.first(5)
-      provided_split = event.splits[3]
+      provided_split = event.splits.fourth
       params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
                 'timeIn' => '11:30:00', 'timeOut' => '11:50:00', 'id' => '4'}
       attributes = {in: {data_status: 'good'},
-                    out: {data_status: 'good'}} # 5h30m and 5h50m are reasonable times
+                    out: {data_status: 'good'}} # 5h30m and 5h50m are good times for the fourth split
       validate_new_split_times(event, effort, split_times, params, attributes)
 
-      effort.dropped_split_id = event.splits[2].id # Dropped at third split
+      effort.dropped_split_id = event.splits.third.id # But if effort has dropped at the third split
       effort.dropped_lap = 1
       attributes = {in: {data_status: 'bad'},
-                    out: {data_status: 'bad'}} # All times post-drop are bad
+                    out: {data_status: 'bad'}} # They become bad times
       validate_new_split_times(event, effort, split_times, params, attributes)
     end
 
@@ -435,7 +435,6 @@ RSpec.describe NewLiveEffortData do
       ordered_splits = event.splits
       allow(event).to receive(:ordered_splits).and_return(ordered_splits)
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      allow(effort).to receive(:split_times).and_return(split_times)
       effort_data = NewLiveEffortData.new(event: event,
                                           params: params,
                                           ordered_splits: ordered_splits,

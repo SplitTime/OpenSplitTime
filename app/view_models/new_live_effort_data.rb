@@ -22,12 +22,12 @@ class NewLiveEffortData
   end
 
   def response_row
-    {splitId: split.id,
+    {splitId: subject_split.id,
      lap: lap,
      lapFulfillsRequired: lap == event.laps_required,
      lapBeyondRequired: lap > event.laps_required,
-     splitName: split.base_name,
-     splitDistance: lap_split.distance_from_start,
+     splitName: subject_split.base_name,
+     splitDistance: subject_lap_split.distance_from_start,
      effortId: effort.id,
      bibNumber: effort.bib_number,
      effortName: effort_name,
@@ -43,19 +43,19 @@ class NewLiveEffortData
   end
 
   def valid?
-    split.real_record? && effort.real_record? && lap.present?
+    subject_split.real_record? && effort.real_record? && lap.present?
   end
 
   def clean?
     times_exist.values.none? && proposed_split_times.all?(&:valid_status?)
   end
 
-  def lap_split
-    @lap_split ||= LapSplit.new(lap, split)
+  def subject_lap_split
+    @subject_lap_split ||= LapSplit.new(lap, subject_split)
   end
 
-  def split
-    @split ||= ordered_splits.find { |split| split.id == params[:splitId].to_i } || Split.null_record
+  def subject_split
+    @subject_split ||= ordered_splits.find { |split| split.id == params[:splitId].to_i } || Split.null_record
   end
 
   def lap
@@ -63,7 +63,7 @@ class NewLiveEffortData
   end
 
   def split_id
-    split.id
+    subject_split.id
   end
 
   def effort_name
@@ -79,15 +79,19 @@ class NewLiveEffortData
   end
 
   def ordered_split_times
-    event_lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times[time_point] }.compact
+    effort_lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times[time_point] }.compact
   end
 
   def ordered_existing_split_times
-    event_lap_splits.map(&:time_points).flatten.map { |time_point| existing_split_times[time_point] }.compact
+    effort_lap_splits.map(&:time_points).flatten.map { |time_point| existing_split_times[time_point] }.compact
   end
 
   def proposed_split_times
     new_split_times.values.select(&:time_from_start)
+  end
+
+  def effort_lap_splits
+    @effort_lap_splits ||= event.required_lap_splits.presence || (lap && event.lap_splits_through(lap)) || []
   end
 
   private
@@ -95,7 +99,13 @@ class NewLiveEffortData
   attr_reader :event, :params, :times_container, :existing_split_times
 
   def indexed_split_times
-    @indexed_split_times ||= effort.ordered_split_times.index_by(&:time_point)
+    @indexed_split_times ||= confirmed_good_split_times.index_by(&:time_point)
+  end
+
+  # Temporarily change good split_times to confirmed; this optimizes #create_split_times
+  # by preventing EffortDataStatusSetter from rechecking the status of good times
+  def confirmed_good_split_times
+    effort.ordered_split_times.each { |st| st.data_status = 'confirmed' if st.good? }
   end
 
   def create_split_times
@@ -105,7 +115,7 @@ class NewLiveEffortData
         indexed_split_times[split_time.time_point] = split_time
         EffortDataStatusSetter.new(effort: effort,
                                    ordered_split_times: ordered_split_times,
-                                   lap_splits: event_lap_splits,
+                                   lap_splits: effort_lap_splits,
                                    times_container: times_container).set_data_status
       end
       self.new_split_times[kind] = split_time
@@ -117,16 +127,12 @@ class NewLiveEffortData
   end
 
   def sub_split_kinds # Typically [:in] or [:in, :out]
-    @sub_split_kinds ||= split.bitkeys.map { |bitkey| SubSplit.kind(bitkey).downcase.to_sym }
-  end
-
-  def event_lap_splits
-    @event_lap_splits ||= event.required_lap_splits.presence || (lap && event.lap_splits_through(lap)) || []
+    @sub_split_kinds ||= subject_split.bitkeys.map { |bitkey| SubSplit.kind(bitkey).downcase.to_sym }
   end
 
   def time_points
     @time_points ||=
-        lap_split.time_points.map { |time_point| [time_point.kind.downcase.to_sym, time_point] }.to_h
+        subject_lap_split.time_points.map { |time_point| [time_point.kind.downcase.to_sym, time_point] }.to_h
   end
 
   def new_split_time(kind)
@@ -145,7 +151,7 @@ class NewLiveEffortData
     effort.real_presence && IntendedTimeCalculator.day_and_time(military_time: camelized_param('time', kind),
                                                                 effort: effort,
                                                                 time_point: time_points[kind],
-                                                                lap_splits: event_lap_splits,
+                                                                lap_splits: effort_lap_splits,
                                                                 split_times: ordered_split_times)
   end
 

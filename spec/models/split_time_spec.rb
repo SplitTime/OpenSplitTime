@@ -9,7 +9,7 @@ require 'rails_helper'
 # t.string   "remarks"
 
 RSpec.describe SplitTime, kind: :model do
-  # it_behaves_like 'data_status_methods'
+  it_behaves_like 'data_status_methods'
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
   let(:course) { Course.create!(name: 'Test Course') }

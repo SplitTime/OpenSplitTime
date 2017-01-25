@@ -109,6 +109,10 @@ class SplitTime < ActiveRecord::Base
     @split_name ||= split ? split.name(bitkey) : '[unknown split]'
   end
 
+  def split_name_with_lap
+    @split_name_with_lap ||= split_name + (lap ? " Lap #{lap}" : ' [unknown lap]')
+  end
+
   def effort_name
     @effort_name ||= effort ? effort.full_name : '[unknown effort]'
   end

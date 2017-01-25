@@ -119,16 +119,39 @@ RSpec.describe LapSplit, type: :model do
       expect(lap_split.name).to eq(expected)
     end
 
-    it 'returns nil if lap is not present' do
+    it 'returns "[unknown lap split]" if lap is not present' do
       split = FactoryGirl.build_stubbed(:split, id: 123)
       lap_split = LapSplit.new(nil, split)
-      expect(lap_split.name).to be_nil
+      expect(lap_split.name).to eq('[unknown lap split]')
     end
 
-    it 'returns nil if split is not present' do
+    it 'returns "[unknown lap split]" if split is not present' do
       lap = 1
       lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.name).to be_nil
+      expect(lap_split.name).to eq('[unknown lap split]')
+    end
+  end
+
+  describe '#name_without_lap' do
+    it 'returns a string containing the split name' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      lap_split = LapSplit.new(lap, split)
+      expected = 'Test Aid Station'
+      expect(lap_split.name_without_lap).to eq(expected)
+    end
+
+    it 'returns a string containing the split name even if lap is not present' do
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      lap_split = LapSplit.new(nil, split)
+      expected = 'Test Aid Station'
+      expect(lap_split.name_without_lap).to eq(expected)
+    end
+
+    it 'returns "[unknown split]" if split is not present' do
+      lap = 1
+      lap_split = LapSplit.new(lap, nil)
+      expect(lap_split.name_without_lap).to eq('[unknown split]')
     end
   end
 

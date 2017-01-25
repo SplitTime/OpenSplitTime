@@ -9,8 +9,9 @@ require 'rails_helper'
 # t.string   "remarks"
 
 RSpec.describe SplitTime, kind: :model do
-  it_behaves_like 'data_status_methods'
+  # it_behaves_like 'data_status_methods'
   let(:in_bitkey) { SubSplit::IN_BITKEY }
+  let(:out_bitkey) { SubSplit::OUT_BITKEY }
   let(:course) { Course.create!(name: 'Test Course') }
   let(:event) { Event.create!(course: course, name: 'Test Event 2015', start_time: '2015-07-01 06:00:00', laps_required: 1) }
   let(:effort) { Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0) }
@@ -69,7 +70,7 @@ RSpec.describe SplitTime, kind: :model do
 
   it 'allows within an effort one of a given split_id/lap combination for each sub_split' do
     SplitTime.create!(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 10000, lap: 1)
-    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: SubSplit::OUT_BITKEY, time_from_start: 11000, lap: 1)
+    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: out_bitkey, time_from_start: 11000, lap: 1)
     expect(split_time).to be_valid
   end
 
@@ -348,13 +349,13 @@ RSpec.describe SplitTime, kind: :model do
   describe '#sub_split' do
     it 'returns split_id and sub_split_bitkey as a sub_split hash' do
       split_time = SplitTime.new(split_id: 101, bitkey: in_bitkey)
-      expect(split_time.sub_split).to eq({101=>1})
+      expect(split_time.sub_split).to eq({101 => 1})
     end
   end
 
   describe '#sub_split=' do
     it 'sets both split_id and sub_split_bitkey' do
-      split_time = SplitTime.new(sub_split: {101=>1})
+      split_time = SplitTime.new(sub_split: {101 => 1})
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)
     end
@@ -374,6 +375,93 @@ RSpec.describe SplitTime, kind: :model do
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)
       expect(split_time.lap).to eq(2)
+    end
+  end
+
+  describe '#split_name' do
+    it 'returns an "[unknown split]" indication if the split is not available' do
+      st = SplitTime.new
+      expected = '[unknown split]'
+      expect(st.split_name).to eq(expected)
+    end
+
+    it 'does not indicate the lap even when available' do
+      split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+      st = SplitTime.new(split: split, bitkey: in_bitkey, lap: 1)
+      expected = 'Aid 1'
+      expect(st.split_name).to eq(expected)
+    end
+
+    context 'for a split with multiple sub_splits' do
+      it 'returns the name of the split with sub_split extension' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 65)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1 In'
+        expect(st.split_name).to eq(expected)
+
+        st = SplitTime.new(split: split, bitkey: out_bitkey)
+        expected = 'Aid 1 Out'
+        expect(st.split_name).to eq(expected)
+      end
+    end
+
+    context 'for a split with a single sub_split' do
+      it 'returns the name of the split without any sub_split extension but with a lap indication' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1'
+        expect(st.split_name).to eq(expected)
+      end
+    end
+  end
+
+  describe '#split_name_with_lap' do
+    it 'returns an "[unknown split]" indication if the split is not available' do
+      st = SplitTime.new(lap: 1)
+      expected = '[unknown split] Lap 1'
+      expect(st.split_name_with_lap).to eq(expected)
+    end
+
+    it 'returns an "[unknown split] [unknown lap]" indication if neither lap nor split is available' do
+      st = SplitTime.new
+      expected = '[unknown split] [unknown lap]'
+      expect(st.split_name_with_lap).to eq(expected)
+    end
+
+    context 'for a split with multiple sub_splits' do
+      it 'returns the name of the split with sub_split extension and a lap indication' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 65)
+        st = SplitTime.new(split: split, bitkey: in_bitkey, lap: 1)
+        expected = 'Aid 1 In Lap 1'
+        expect(st.split_name_with_lap).to eq(expected)
+
+        st = SplitTime.new(split: split, bitkey: out_bitkey, lap: 1)
+        expected = 'Aid 1 Out Lap 1'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
+
+      it 'returns an "[unknown lap]" indication if the lap is not available' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 65)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1 In [unknown lap]'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
+    end
+
+    context 'for a split with a single sub_split' do
+      it 'returns the name of the split without any sub_split extension but with a lap indication' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+        st = SplitTime.new(split: split, bitkey: in_bitkey, lap: 1)
+        expected = 'Aid 1 Lap 1'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
+
+      it 'returns an "[unknown lap]" indication if the lap is not available' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1 [unknown lap]'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
     end
   end
 end

@@ -21,7 +21,11 @@ class LapSplit
   end
 
   def name
-    lap && split && "#{split.base_name} Lap #{lap}"
+    (lap && split) ? "#{split.base_name} Lap #{lap}" : '[unknown lap split]'
+  end
+
+  def name_without_lap
+    split.try(:base_name) || '[unknown split]'
   end
 
   def time_points

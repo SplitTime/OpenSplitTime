@@ -155,4 +155,24 @@ RSpec.describe TimePoint, type: :model do
       expect(time_point.lap_split_key).to be_nil
     end
   end
+
+  describe '#kind' do
+    it 'returns "In" or "Out" based on bitkey' do
+      lap = 1
+      split_id = 101
+      bitkey = 64
+      time_point = TimePoint.new(lap, split_id, bitkey)
+      expect(time_point.kind).to eq('Out')
+      time_point.bitkey = 1
+      expect(time_point.kind).to eq('In')
+    end
+
+    it 'returns nil if bitkey is not present' do
+      lap = 1
+      split_id = 101
+      bitkey = nil
+      time_point = TimePoint.new(lap, split_id, bitkey)
+      expect(time_point.kind).to be_nil
+    end
+  end
 end

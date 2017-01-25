@@ -6,4 +6,8 @@ TimePoint = Struct.new(:lap, :split_id, :bitkey) do
   def lap_split_key
     lap && split_id && LapSplitKey.new(lap, split_id)
   end
+
+  def kind
+    bitkey && SubSplit.kind(bitkey)
+  end
 end

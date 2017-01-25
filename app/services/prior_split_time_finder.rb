@@ -57,7 +57,7 @@ class PriorSplitTimeFinder
   end
 
   def validate_setup
-    raise ArgumentError, 'time_point is not contained in the provided splits' unless
+    raise ArgumentError, 'time_point is not contained in the provided lap_splits' unless
         ordered_time_points.include?(time_point)
     raise ArgumentError, 'split_times do not all belong to the same effort' unless
         split_times.map(&:effort_id).uniq.size < 2

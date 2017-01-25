@@ -152,9 +152,8 @@ class Effort < ActiveRecord::Base
   alias_method :dropped_key, :dropped_lap_split_key
 
   def dropped_lap_split_key=(key)
-    return unless key.present?
-    self.dropped_lap = key.lap
-    self.dropped_split_id = key.split_id
+    self.dropped_lap = key.try(:lap)
+    self.dropped_split_id = key.try(:split_id)
   end
   alias_method :dropped_key=, :dropped_lap_split_key=
 
@@ -225,7 +224,8 @@ class Effort < ActiveRecord::Base
   end
 
   def undrop!
-    update(dropped_split_id: nil, dropped_lap: nil)
+    self.dropped_lap_split_key = nil
+    save
   end
 
   def enriched

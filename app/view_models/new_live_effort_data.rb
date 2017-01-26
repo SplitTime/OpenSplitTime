@@ -14,7 +14,7 @@ class NewLiveEffortData
     @ordered_splits = args[:ordered_splits] || event.ordered_splits.to_a
     @effort = args[:effort] || event.efforts.find_guaranteed(bib_number: params[:bibNumber])
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
-    @existing_split_times = indexed_split_times.dup.freeze
+    @existing_split_times = effort.ordered_split_times.to_a.freeze
     @new_split_times = {}
     create_split_times
     fill_with_null_split_times
@@ -26,6 +26,7 @@ class NewLiveEffortData
      lap: lap,
      lapFulfillsRequired: lap == event.laps_required,
      lapBeyondRequired: lap > event.laps_required,
+     expectedLap: expected_lap,
      splitName: subject_split.base_name,
      splitDistance: subject_lap_split.distance_from_start,
      effortId: effort.id,
@@ -62,6 +63,17 @@ class NewLiveEffortData
     @lap ||= params[:lap].presence.try(:to_i) || ASSUMED_LAP
   end
 
+  def expected_lap
+    case
+    when event.laps_required == 1
+      1
+    when subject_split.null_record? || effort.null_record?
+      nil
+    else
+      ExpectedLapFinder.lap(ordered_split_times: ordered_existing_split_times, split: subject_split)
+    end
+  end
+
   def split_id
     subject_split.id
   end
@@ -79,15 +91,15 @@ class NewLiveEffortData
   end
 
   def ordered_split_times
-    effort_lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times[time_point] }.compact
-  end
-
-  def ordered_existing_split_times
-    effort_lap_splits.map(&:time_points).flatten.map { |time_point| existing_split_times[time_point] }.compact
+    effort_time_points.map { |time_point| indexed_split_times[time_point] }.compact
   end
 
   def proposed_split_times
     new_split_times.values.select(&:time_from_start)
+  end
+
+  def ordered_existing_split_times
+    @ordered_existing_split_times ||= effort_time_points.map { |time_point| existing_split_times[time_point] }.compact
   end
 
   def effort_lap_splits
@@ -100,6 +112,10 @@ class NewLiveEffortData
 
   def indexed_split_times
     @indexed_split_times ||= confirmed_good_split_times.index_by(&:time_point)
+  end
+
+  def effort_time_points
+    @effort_time_points ||= effort_lap_splits.map(&:time_points).flatten
   end
 
   # Temporarily change good split_times to confirmed; this optimizes #create_split_times

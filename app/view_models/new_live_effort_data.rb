@@ -1,5 +1,5 @@
 class NewLiveEffortData
-  attr_reader :ordered_splits, :effort, :new_split_times
+  attr_reader :ordered_splits, :effort, :new_split_times, :indexed_existing_split_times
   delegate :participant_id, to: :effort
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
   ASSUMED_LAP ||= 1
@@ -14,7 +14,7 @@ class NewLiveEffortData
     @ordered_splits = args[:ordered_splits] || event.ordered_splits.to_a
     @effort = args[:effort] || event.efforts.find_guaranteed(bib_number: params[:bibNumber])
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
-    @existing_split_times = effort.ordered_split_times.to_a.freeze
+    @indexed_existing_split_times = ordered_existing_split_times.index_by(&:time_point)
     @new_split_times = {}
     create_split_times
     fill_with_null_split_times
@@ -87,7 +87,7 @@ class NewLiveEffortData
   end
 
   def times_exist
-    sub_split_kinds.map { |kind| [kind, existing_split_times[time_points[kind]].present?] }.to_h
+    sub_split_kinds.map { |kind| [kind, indexed_existing_split_times[time_points[kind]].present?] }.to_h
   end
 
   def ordered_split_times
@@ -99,7 +99,7 @@ class NewLiveEffortData
   end
 
   def ordered_existing_split_times
-    @ordered_existing_split_times ||= effort_time_points.map { |time_point| existing_split_times[time_point] }.compact
+    @ordered_existing_split_times ||= effort.ordered_split_times.to_a.freeze
   end
 
   def effort_lap_splits
@@ -108,7 +108,7 @@ class NewLiveEffortData
 
   private
 
-  attr_reader :event, :params, :times_container, :existing_split_times
+  attr_reader :event, :params, :times_container
 
   def indexed_split_times
     @indexed_split_times ||= confirmed_good_split_times.index_by(&:time_point)
@@ -121,7 +121,7 @@ class NewLiveEffortData
   # Temporarily change good split_times to confirmed; this optimizes #create_split_times
   # by preventing EffortDataStatusSetter from rechecking the status of good times
   def confirmed_good_split_times
-    effort.ordered_split_times.each { |st| st.data_status = 'confirmed' if st.good? }
+    ordered_existing_split_times.dup.each { |st| st.data_status = 'confirmed' if st.good? }
   end
 
   def create_split_times

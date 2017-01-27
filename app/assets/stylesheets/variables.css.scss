@@ -1,0 +1,24 @@
+/***********
+Variables
+************/
+$gray: #777;
+$mediumGray: #aaa;
+$lightGray: #eee;
+$darkGray: #222;
+$white: #FFF;
+$red: pink;
+$blue: #2A9FD8;
+
+/* Copied from bootstrap source */
+$state-info-text:                #31708f !default;
+$state-info-bg:                  #d9edf7 !default;
+$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
+
+/***********
+Mixins
+************/
+@mixin transform( $transforms ) {
+	transform: $transforms;
+	-webkit-transform: $transforms;
+	-ms-transform: $transforms;
+}

@@ -1,10 +1,4 @@
-/********
-Variables
-*********/
-$gray: #777;
-$mediumGray: #aaa;
-$lightGray: #eee;
-$red: pink;
+@import "variables";
 
 /***********
 Placeholders
@@ -23,15 +17,6 @@ Globals
 *******/
 .row {
 	margin: 0 auto 25px;
-}
-
-/***********
-Mixins
-************/
-@mixin transform( $transforms ) {
-	transform: $transforms;
-	-webkit-transform: $transforms;
-	-ms-transform: $transforms;
 }
 
 /******* Header ********/

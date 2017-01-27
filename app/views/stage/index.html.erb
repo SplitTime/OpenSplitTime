@@ -1,0 +1,114 @@
+<% @skip_container = true %>
+
+<!-- Vue.js Form Templates-->
+
+<script type="text/x-template" id="event"><div>
+	<aside class="col-xs-12 col-sm-4 full-bg">
+			<h3><strong>Provide More Information About Your Event</strong></h3>
+			<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+			<p><router-link to="/splits" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link></p>
+			<p><span class="brackets"><a>Cancel</a></span></p>
+	</aside>
+	<article class="col-xs-12 col-sm-8">
+	Event Info
+		<div class="form-group">
+			<label for="event-name">What is your event called?</label>
+			<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+		</div>
+		<div class="form-group">
+			<label for="event-description">Description</label>
+			<textarea class="form-control" id="event-description" placeholder="Your event's description"></textarea>
+		</div>
+		<div class="form-horizontal">
+			<label for="event-start-time">Start Time of Race</label>
+			<div class="form-group">
+				<div class="col-xs-9">
+					<input type="text" class="form-control" id="event-start-time" placeholder="mm/dd/yyyy"></input>
+				</div>
+				<div class="col-xs-3 form-time-select">
+					<select class="form-control" id="event-start-time">
+						<option>06 AM</option>
+					</select>:
+					<select class="form-control" id="event-start-time">
+						<option>00</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</article>
+</div></script>
+
+<script type="text/x-template" id="splits"><div>
+	<aside class="col-xs-12 col-sm-4 full-bg">
+		<h3><strong>Provide A List of All The Splits In Your Event</strong></h3>
+		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+		<p>
+			<router-link to="/" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous</router-link>
+			<router-link to="/participants" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+		</p>
+	</aside>
+	<article class="col-xs-12 col-sm-8">
+		Splits
+	</article>
+</div></script>
+
+<script type="text/x-template" id="participants"><div>
+	<aside class="col-xs-12 col-sm-4 full-bg">
+		<h3><strong>Provide A List of Your Participants</strong></h3>
+		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+		<p>
+			<router-link to="/splits" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous</router-link>
+			<router-link to="/confirmation" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+		</p>
+	</aside>
+	<article class="col-xs-12 col-sm-8">
+		Participants
+	</article>
+</div></script>
+
+<script type="text/x-template" id="confirmation"><div>
+	<aside class="col-xs-12 col-sm-4 full-bg">
+		<h3><strong>Confirm Your Race Information</strong></h3>
+		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+		<p>
+			<router-link to="/participants" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous</router-link>
+			<router-link to="/published" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+		</p>
+	</aside>
+	<article class="col-xs-12 col-sm-8">
+		Confirmation
+	</article>
+</div></script>
+
+<script type="text/x-template" id="published"><div>
+	<article class="col-xs-12">
+		Published
+	</article>
+</div></script>
+
+<!-- Vue.js Applet -->
+
+<div id="app">
+	<div class="container-fluid header">
+		<div class="container">
+		  <div class="row">
+		  <h2><strong>Create Race</strong></h2>
+	  		<nav class="progress-bar-nav col-xs-12">
+	  			<ul>
+	  				<li is="router-link" to="/" tag="li" exact><a>Your Event</a></li>
+	  				<li is="router-link" to="/splits" tag="li"><a>Splits</a></li>
+	  				<li is="router-link" to="/participants" tag="li"><a>Participants</a></li>
+	  				<li is="router-link" to="/confirmation" tag="li"><a>Confirmation</a></li>
+	  				<li is="router-link" to="/published" tag="li"><a>Published</a></li>
+	  			</ul>
+	  		</nav>
+		  </div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div is="router-view"></div>
+		</div>
+	</div>
+</div>

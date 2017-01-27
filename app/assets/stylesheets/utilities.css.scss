@@ -1,7 +1,4 @@
-/* Copied from bootstrap source */
-$state-info-text:                #31708f !default;
-$state-info-bg:                  #d9edf7 !default;
-$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
+@import "variables";
 
 /***********
 Efforts Popover
@@ -115,5 +112,167 @@ label.switchery-label {
 
 	.form-control-feedback {
 		color: $state-info-text;
+	}
+}
+
+/***********
+Progress Bar Navigation
+************/
+
+.progress-bar-nav {
+	position: relative;
+
+	$progress-bar-nav: (
+		'bar-margin': 50px,
+		'bar-height': 1em,
+		'indicator-height': 0.4em,
+		'bubble-height': 1.5em
+	);
+
+
+	&:before {
+		display: block;
+		content: '';
+		position: absolute;
+		left: 0;
+		background: $lightGray;
+		width: 100%;
+		height: map-get( $progress-bar-nav, 'bar-height' );
+		border-radius: map-get( $progress-bar-nav, 'bar-height' ) / 2;
+		margin: ( map-get( $progress-bar-nav, 'bubble-height' ) - map-get( $progress-bar-nav, 'bar-height' ) ) / 2 0;
+	}
+
+	ul {
+		list-style: none;
+		display: table;
+		table-layout: fixed;
+		padding: 0 map-get( $progress-bar-nav, 'bar-margin' );
+		margin: 0;
+		width: 100%;
+		margin-bottom: 4em;
+
+		li {
+			position: relative;
+			display: table-cell;
+			text-align: right;
+
+			&:before {
+				display: block;
+				content: '';
+				width: map-get( $progress-bar-nav, 'bubble-height' );
+				height: map-get( $progress-bar-nav, 'bubble-height' );
+				border-radius: map-get( $progress-bar-nav, 'bubble-height' ) / 2;
+				background: $lightGray;
+				position: absolute;
+				top: 0;
+				right: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
+				transition: background 0.6s ease-in-out;
+			}
+
+			&:after {
+				display: block;
+				content: '';
+				position: absolute;
+				height: map-get( $progress-bar-nav, 'indicator-height' );
+				right: 0;
+				width: 100%;
+				top: ( ( map-get( $progress-bar-nav, 'bubble-height' ) - map-get( $progress-bar-nav, 'indicator-height' ) ) / 2 );
+				opacity: 1;
+				background: $blue;
+				transition: all 0.6s ease-in-out;
+				z-index: 2;
+			}
+
+			&:first-child {
+				width: 0;
+
+				&:after {
+					width: map-get( $progress-bar-nav, 'bar-margin' );
+					opacity: 1;
+					border-radius: map-get( $progress-bar-nav, 'indicator-height' );
+				}
+			}
+
+			a {
+				position: absolute;
+				top: 0;
+				left: 100%;
+				padding-top: 2em;
+				min-width: 100px;
+				display: inline-block;
+				text-align: center;
+				color: $blue;
+				text-decoration: none;
+				z-index: 3;
+				@include transform( translateX(-50%) );
+
+				&:before {
+					display: block;
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 50%;
+					width: map-get( $progress-bar-nav, 'bubble-height' );
+					height: map-get( $progress-bar-nav, 'bubble-height' );
+					border-radius: map-get( $progress-bar-nav, 'bubble-height' ) / 2;
+					margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
+					@include transform( scale( 1 ) );
+					background: $blue;
+					transition: transform 0.3s ease-in-out;
+				}
+			}
+		}
+
+		li.active ~ li,
+		li.router-link-active ~ li  {
+
+			&:after {
+				right: 100%;
+				opacity: 0;
+			}
+
+			a {
+				color: $mediumGray;
+
+				&:before {
+					@include transform( scale( 0 ) );
+				}
+			}
+		}
+
+		li.active + li:after,
+		li.router-link-active + li:after {
+			width: 0;
+			right: 100%;
+		}
+	}
+}
+
+/***********
+Full Background
+************/
+
+aside.full-bg {
+	position: relative;
+
+	&:before {
+		display: block;
+		content: '';
+		background: inherit;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 100%;
+		width: 512px; // Fallback
+		width: 50vw;
+	}
+}
+
+span.brackets {
+	&:before { content: '['; }
+	&:after { content: ']'; }
+
+	& > * {
+		margin: 0 0.5em;
 	}
 }

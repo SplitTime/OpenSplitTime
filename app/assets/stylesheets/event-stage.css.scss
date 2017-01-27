@@ -1,0 +1,32 @@
+@import "variables";
+
+.stage.index { // TODO: Increase Specificity
+
+	nav.navbar {
+		margin-bottom: 0;
+	}
+
+	.header {
+		background: #F1F1F1;
+		border: none;
+
+		h2 {
+			margin-top: 40px;
+		}
+	}
+
+	aside {
+		background: $darkGray;
+		color: $white;
+		padding-top: 40px;
+	}
+}
+
+.form-time-select {
+	.form-control.hours {
+		width: 50%;
+	}
+	.form-control.minutes {
+		width: 50%;
+	}
+}

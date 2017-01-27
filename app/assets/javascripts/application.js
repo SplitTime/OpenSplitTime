@@ -19,4 +19,7 @@
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require switchery
+//= require vue
+//= require vue-router
 //= require_tree .
+Vue.use( VueRouter );

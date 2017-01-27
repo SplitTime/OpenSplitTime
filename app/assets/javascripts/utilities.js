@@ -115,7 +115,7 @@
 				} ) );
     		} );
     	}
-    }
+    };
 
     $(document).ready(function () {
         effortsPopover.init();

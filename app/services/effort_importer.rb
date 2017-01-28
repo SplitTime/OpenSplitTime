@@ -9,13 +9,12 @@ class EffortImporter
                            exclusive: [:file_path, :event, :current_user_id, :without_status],
                            class: self.class)
     @errors = ActiveModel::Errors.new(self)
-    @import_file = ImportFile.new(args[:file_path])
+    @import_file ||= ImportFile.new(args[:file_path])
     @event = args[:event]
     @current_user_id = args[:current_user_id]
     @without_status = args[:without_status]
     @effort_failure_array = []
     @effort_id_array = []
-    @effort_schema = EffortSchema.new(header_column_titles)
   end
 
   def effort_import
@@ -77,7 +76,7 @@ class EffortImporter
   private
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
-                :effort_schema, :import_without_times
+                :import_without_times
   attr_reader :event, :current_user_id, :without_status
   attr_writer :effort_import_report, :effort_id_array, :effort_failure_array
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
@@ -115,6 +114,10 @@ class EffortImporter
 
   def prepare_row_effort_data(row_effort_data)
     EffortImportDataPreparer.new(row_effort_data, effort_schema.to_a).output_row
+  end
+
+  def effort_schema
+    @effort_schema ||= EffortSchema.new(header_column_titles)
   end
 
   def required_time_points

@@ -47,16 +47,6 @@ class LiveTimeRowImporter
   attr_reader :event, :time_rows, :times_container
   attr_accessor :unsaved_rows
 
-  def set_dropped_attributes(effort_data)
-    effort = effort_data.effort
-    dropped_here_id = effort_data.dropped_here? ? effort_data.split_id : nil
-    dropped_here_lap = effort_data.dropped_here? ? effort_data.lap : nil
-    if dropped_here_id || (effort.dropped_split_id == effort_data.split_id)
-      effort.update(dropped_split_id: dropped_here_id, dropped_lap: dropped_here_lap)
-      EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
-    end
-  end
-
   # Returns true if all available times (in or out or both) are created/updated.
   # Returns false if any create/update is attempted but rejected
 
@@ -66,12 +56,22 @@ class LiveTimeRowImporter
 
     effort_data.proposed_split_times.each do |proposed_split_time|
       working_split_time = indexed_split_times[proposed_split_time.time_point] || proposed_split_time
-      saved_split_id = create_or_update_split_time(proposed_split_time, working_split_time)
-      split_time_ids << saved_split_id
+      saved_split_time_id = create_or_update_split_time(proposed_split_time, working_split_time)
+      split_time_ids << saved_split_time_id
     end
 
     FollowerMailerService.send_live_effort_mail(effort_data.participant_id, split_time_ids)
     split_time_ids.exclude?(nil)
+  end
+
+  def set_dropped_attributes(effort_data)
+    effort = effort_data.effort
+    dropped_here_key = effort_data.dropped_here? ? effort_data.subject_lap_split.key : nil
+    if dropped_here_key || (effort.dropped_key == effort_data.subject_lap_split.key)
+      effort.dropped_key = dropped_here_key # Undrops the effort if dropped_here_key is nil
+      effort.save if effort.changed?
+      EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
+    end
   end
 
   def create_or_update_split_time(proposed_split_time, working_split_time)

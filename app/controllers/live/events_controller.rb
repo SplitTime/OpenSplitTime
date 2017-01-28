@@ -68,7 +68,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
-      @file_transformer = LiveFileTransformer.new(event: @event, file: params[:file], split_id: params[:splitId])
+      @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:splitId])
       render partial: 'file_effort_data_report.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'

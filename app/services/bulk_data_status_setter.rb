@@ -22,10 +22,10 @@ class BulkDataStatusSetter
 
   def set_data_status
     efforts.each do |effort|
-      effort_setter = effort_setter(effort)
-      effort_setter.set_data_status
-      changed_split_times.push(*effort_setter.changed_split_times)
-      changed_efforts.push(*effort_setter.changed_efforts)
+      setter = effort_setter(effort)
+      setter.set_data_status
+      changed_split_times.push(*setter.changed_split_times)
+      changed_efforts.push(*setter.changed_efforts)
     end
   end
 
@@ -43,7 +43,7 @@ class BulkDataStatusSetter
   def effort_setter(effort)
     EffortDataStatusSetter.new(effort: effort,
                                ordered_split_times: grouped_split_times[effort.id],
-                               ordered_splits: ordered_splits,
+                               lap_splits: lap_splits,
                                times_container: times_container)
   end
 
@@ -63,7 +63,15 @@ class BulkDataStatusSetter
     changed_efforts.map { |effort| [effort.id, {data_status: effort.data_status_numeric}] }.to_h
   end
 
-  def ordered_splits
-    @ordered_splits ||= efforts.first.ordered_splits.to_a
+  def lap_splits
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
+  end
+
+  def event
+    @event ||= efforts.first.event
+  end
+
+  def highest_lap
+    all_split_times.max_by(&:lap).lap
   end
 end

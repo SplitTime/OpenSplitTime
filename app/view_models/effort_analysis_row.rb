@@ -13,7 +13,7 @@ class EffortAnalysisRow
     @prior_split = prior_split
     @prior_split_time = prior_split_time
     @start_time = start_time
-    @time_cluster = TimeCluster.new(split, split_times, prior_time, start_time)
+    @time_cluster = TimeCluster.new(split.finish?, split_times, prior_time, start_time)
     @typical_row = typical_row
   end
 

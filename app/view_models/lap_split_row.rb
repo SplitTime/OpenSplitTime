@@ -27,7 +27,7 @@ class LapSplitRow
   end
 
   def time_cluster
-    @time_cluster ||= TimeCluster.new(split, split_times, prior_time, start_time)
+    @time_cluster ||= TimeCluster.new(split.finish?, split_times, prior_time, start_time)
   end
 
   def split_id

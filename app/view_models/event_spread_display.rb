@@ -1,6 +1,7 @@
 class EventSpreadDisplay
+  STYLES_WITH_START_TIME = %w(ampm military)
 
-  attr_reader :event, :splits, :display_style
+  attr_reader :event, :display_style
   delegate :name, :start_time, :course, :race, :available_live, :beacon_url, :simple?, to: :event
 
   # initialize(event, params = {})
@@ -11,19 +12,17 @@ class EventSpreadDisplay
 
   def initialize(event, params = {})
     @event = event
-    @splits = event.ordered_splits.to_a
     @display_style = params[:style]
-    @split_times_data_by_effort = event.split_times
-                                      .pluck_to_hash(:effort_id, :time_from_start, :split_id, :sub_split_bitkey, :data_status)
-                                      .group_by { |row| row[:effort_id] }
-    @efforts = event.efforts.sorted_with_finish_status
     @sort_method = params[:sort]
+  end
+
+  def relevant_lap_splits
+    @relevant_lap_splits ||= STYLES_WITH_START_TIME.include?(display_style) ? lap_splits : lap_splits_without_start
   end
 
   def effort_times_rows
     @effort_times_rows ||=
-        sorted_efforts.map { |effort| EffortTimesRow.new(effort, relevant_splits, split_times_data_by_effort[effort.id],
-                                                         event_start_time) }
+        sorted_efforts.map { |effort| EffortTimesRow.new(effort, relevant_lap_splits, split_times_data_by_effort[effort.id]) }
   end
 
   def efforts_count
@@ -55,10 +54,6 @@ class EventSpreadDisplay
     end
   end
 
-  def relevant_splits
-    @relevant_splits ||= %w(ampm military).include?(display_style) ? splits : splits_without_start
-  end
-
   def to_csv
     CSV.generate do |csv|
       csv << ['Under construction']
@@ -67,7 +62,26 @@ class EventSpreadDisplay
 
   private
 
-  attr_reader :efforts, :split_times_data_by_effort, :sort_method
+  attr_reader :sort_method
+
+  def lap_splits
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
+  end
+
+  def split_times_data_by_effort
+    @split_times_data_by_effort ||=
+        split_times_data.group_by { |row| row[:effort_id] }
+  end
+
+  def split_times_data
+    @split_times_data ||=
+        event.split_times
+            .pluck_to_hash(:effort_id, :time_from_start, :lap, :split_id, :sub_split_bitkey, :data_status)
+  end
+
+  def efforts
+    @efforts ||= event.efforts.sorted_with_finish_status
+  end
 
   def sorted_efforts
     @sorted_efforts ||=
@@ -83,7 +97,11 @@ class EventSpreadDisplay
         end
   end
 
-  def splits_without_start
-    splits[1..-1]
+  def lap_splits_without_start
+    lap_splits.reject(&:start?)
+  end
+
+  def highest_lap
+    split_times_data.max_by { |row| row[:lap] }[:lap]
   end
 end

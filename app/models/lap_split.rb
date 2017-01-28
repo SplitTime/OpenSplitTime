@@ -1,7 +1,7 @@
 class LapSplit
   include Comparable
   attr_accessor :lap, :split
-  delegate :course, :course_id, to: :split
+  delegate :course, :course_id, :name_extensions, to: :split
 
   def initialize(lap, split)
     @lap = lap

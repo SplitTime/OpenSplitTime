@@ -127,6 +127,15 @@ RSpec.describe LapSplit, type: :model do
       expect(lap_split.name).to eq(expected)
     end
 
+    it 'returns the split name with the related extension and the lap number if a bitkey is provided' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      bitkey = out_bitkey
+      lap_split = LapSplit.new(lap, split)
+      expected = 'Test Aid Station Out Lap 1'
+      expect(lap_split.name(bitkey)).to eq(expected)
+    end
+
     it 'returns the split name plus "[unknown lap]" if lap is not present' do
       lap = nil
       split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
@@ -159,6 +168,15 @@ RSpec.describe LapSplit, type: :model do
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station In / Out'
       expect(lap_split.name_without_lap).to eq(expected)
+    end
+
+    it 'returns the split name with the related extension if a bitkey is provided' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      bitkey = out_bitkey
+      lap_split = LapSplit.new(lap, split)
+      expected = 'Test Aid Station Out'
+      expect(lap_split.name_without_lap(bitkey)).to eq(expected)
     end
 
     it 'returns "[unknown split]" plus the lap number if split is not present' do

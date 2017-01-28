@@ -111,47 +111,107 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#name' do
+    it 'returns the split name and lap number if the split has one sub_split' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      lap_split = LapSplit.new(lap, split)
+      expected = 'Test Start Lap 1'
+      expect(lap_split.name).to eq(expected)
+    end
+
+    it 'returns the split name with extensions and lap number if the split has multiple sub_splits' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      lap_split = LapSplit.new(lap, split)
+      expected = 'Test Aid Station In / Out Lap 1'
+      expect(lap_split.name).to eq(expected)
+    end
+
+    it 'returns the split name plus "[unknown lap]" if lap is not present' do
+      lap = nil
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      lap_split = LapSplit.new(lap, split)
+      expected = 'Test Aid Station In / Out [unknown lap]'
+      expect(lap_split.name).to eq(expected)
+    end
+
+    it 'returns "[unknown split]" plus the lap number if split is not present' do
+      lap = 1
+      split = nil
+      lap_split = LapSplit.new(lap, split)
+      expected = '[unknown split] Lap 1'
+      expect(lap_split.name).to eq(expected)
+    end
+  end
+
+  describe '#name_without_lap' do
+    it 'returns the split name if the split has one sub_split' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      expected = 'Test Start'
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.name_without_lap).to eq(expected)
+    end
+
+    it 'returns the split name with extensions and lap number if the split has multiple sub_splits' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      lap_split = LapSplit.new(lap, split)
+      expected = 'Test Aid Station In / Out'
+      expect(lap_split.name_without_lap).to eq(expected)
+    end
+
+    it 'returns "[unknown split]" plus the lap number if split is not present' do
+      lap = 1
+      split = nil
+      lap_split = LapSplit.new(lap, split)
+      expected = '[unknown split]'
+      expect(lap_split.name_without_lap).to eq(expected)
+    end
+  end
+
+  describe '#base_name' do
     it 'returns a string containing the split name and lap number' do
       lap = 1
       split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station Lap 1'
-      expect(lap_split.name).to eq(expected)
+      expect(lap_split.base_name).to eq(expected)
     end
 
-    it 'returns "[unknown lap split]" if lap is not present' do
-      split = FactoryGirl.build_stubbed(:split, id: 123)
+    it 'returns the split base_name plus "[unknown lap]" if lap is not present' do
+      split = FactoryGirl.build_stubbed(:split, id: 123, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(nil, split)
-      expect(lap_split.name).to eq('[unknown lap split]')
+      expect(lap_split.base_name).to eq('Test Aid Station [unknown lap]')
     end
 
-    it 'returns "[unknown lap split]" if split is not present' do
+    it 'returns "[unknown split]" plus the lap number if split is not present' do
       lap = 1
       lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.name).to eq('[unknown lap split]')
+      expect(lap_split.base_name).to eq('[unknown split] Lap 1')
     end
   end
 
-  describe '#name_without_lap' do
+  describe '#base_name_without_lap' do
     it 'returns a string containing the split name' do
       lap = 1
       split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station'
-      expect(lap_split.name_without_lap).to eq(expected)
+      expect(lap_split.base_name_without_lap).to eq(expected)
     end
 
     it 'returns a string containing the split name even if lap is not present' do
       split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(nil, split)
       expected = 'Test Aid Station'
-      expect(lap_split.name_without_lap).to eq(expected)
+      expect(lap_split.base_name_without_lap).to eq(expected)
     end
 
     it 'returns "[unknown split]" if split is not present' do
       lap = 1
       lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.name_without_lap).to eq('[unknown split]')
+      expect(lap_split.base_name_without_lap).to eq('[unknown split]')
     end
   end
 

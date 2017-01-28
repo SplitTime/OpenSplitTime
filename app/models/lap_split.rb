@@ -24,12 +24,24 @@ class LapSplit
     split.try(:start?) && lap == 1
   end
 
-  def name
-    (lap && split) ? "#{split.base_name} Lap #{lap}" : '[unknown lap split]'
+  def base_name
+    [base_name_without_lap, lap_name].join(' ')
   end
 
-  def name_without_lap
+  def base_name_without_lap
     split.try(:base_name) || '[unknown split]'
+  end
+
+  def name(bitkey = nil)
+    [name_without_lap(bitkey), lap_name].join(' ')
+  end
+
+  def name_without_lap(bitkey = nil)
+    (split && split.name(bitkey)) || '[unknown split]'
+  end
+
+  def lap_name
+    lap ? "Lap #{lap}" : '[unknown lap]'
   end
 
   def time_points

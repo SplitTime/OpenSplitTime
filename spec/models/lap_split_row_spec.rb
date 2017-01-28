@@ -181,7 +181,7 @@ RSpec.describe LapSplitRow, type: :model do
 
     it 'returns the split name with lap if show_laps: true' do
       expect(split_row_21.name).to eq('Starting Line Lap 1')
-      expect(split_row_24.name).to eq('Aid Station 1 Lap 2')
+      expect(split_row_24.name).to eq('Aid Station 1 In / Out Lap 2')
     end
   end
 end

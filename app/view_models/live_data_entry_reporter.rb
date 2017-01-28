@@ -62,7 +62,7 @@ class LiveDataEntryReporter
   end
 
   def lap_split_name(lap_split)
-    report_laps? ? lap_split.name : lap_split.name_without_lap
+    report_laps? ? lap_split.base_name : lap_split.base_name_without_lap
   end
 
   def split_time_name(split_time)

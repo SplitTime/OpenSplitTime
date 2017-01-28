@@ -104,20 +104,21 @@ class EffortAnalysisView
   def create_analysis_rows
     return unless typical_effort.lap_split_rows.present?
     prior_split_time = related_split_times(lap_splits.first).first
-    prior_split = lap_splits.first
+    prior_lap_split = lap_splits.first
     lap_splits.each do |lap_split|
       next if lap_split.start?
-      analysis_row = EffortAnalysisRow.new(lap_split,
-                                           related_split_times(lap_split),
-                                           prior_split,
-                                           prior_split_time,
-                                           effort_start_time,
-                                           indexed_typical_rows[lap_split.key])
+      analysis_row = EffortAnalysisRow.new(lap_split: lap_split,
+                                           split_times: related_split_times(lap_split),
+                                           prior_lap_split: prior_lap_split,
+                                           prior_split_time: prior_split_time,
+                                           start_time: effort_start_time,
+                                           typical_row: indexed_typical_rows[lap_split.key],
+                                           show_laps: false)
       analysis_rows << analysis_row
       prior_split_time = analysis_row.split_times.compact.last if analysis_row.split_times.compact.present?
-      prior_split = lap_splits.find { |lap_split| lap_split.key == prior_split_time.lap_split_key }
+      prior_lap_split = lap_splits.find { |lap_split| lap_split.key == prior_split_time.lap_split_key }
     end
-    self.indexed_analysis_rows = analysis_rows.index_by(&:split_id)
+    self.indexed_analysis_rows = analysis_rows.index_by(&:key)
   end
 
   def related_split_times(lap_split)

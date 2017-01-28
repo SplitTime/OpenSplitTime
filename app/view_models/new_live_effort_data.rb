@@ -4,6 +4,10 @@ class NewLiveEffortData
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
   ASSUMED_LAP ||= 1
 
+  def self.response_row(args)
+    new(args).response_row
+  end
+
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:event, :params],

@@ -112,7 +112,7 @@ class LiveDataEntryReporter
   end
 
   def report_laps?
-    event.laps_required != 1
+    event.multiple_laps?
   end
 
   def subject_split

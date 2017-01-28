@@ -72,8 +72,8 @@ class MockEffort
     prior_time = 0
     result = []
     lap_splits.each do |lap_split|
-      split_row = SplitRow.new(lap_split: lap_split, split_times: related_split_times(lap_split),
-                               prior_time: prior_time, start_time:  start_time)
+      split_row = LapSplitRow.new(lap_split: lap_split, split_times: related_split_times(lap_split),
+                                  prior_time: prior_time, start_time:  start_time)
       result << split_row
       prior_time = split_row.times_from_start.last
     end

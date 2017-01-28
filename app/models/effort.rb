@@ -228,6 +228,11 @@ class Effort < ActiveRecord::Base
     save
   end
 
+  def drop!(lap_split_key)
+    self.dropped_lap_split_key = lap_split_key
+    save
+  end
+
   def enriched
     event.efforts.sorted_with_finish_status.find { |e| e.id == id }
   end

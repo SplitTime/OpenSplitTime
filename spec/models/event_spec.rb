@@ -131,6 +131,37 @@ RSpec.describe Event, type: :model do
       end
     end
 
+    describe '#lap_splits_through' do
+      it 'returns an empty array when parameter passed is zero' do
+        test_event = event
+        lap = 0
+        ordered_splits = splits
+        allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
+        lap_splits = test_event.lap_splits_through(lap)
+        expect(lap_splits).to eq([])
+      end
+
+      it 'returns an array whose size is equal to the lap provided * number of splits' do
+        test_event = event
+        lap = 2
+        ordered_splits = splits
+        allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
+        lap_splits = test_event.lap_splits_through(lap)
+        expect(lap_splits.size).to eq(8)
+      end
+
+      it 'returns an array of LapSplit objects ordered by lap, split distance, and bitkey' do
+        test_event = event
+        lap = 2
+        ordered_splits = splits
+        allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
+        lap_splits = test_event.lap_splits_through(lap)
+        expect(lap_splits.size).to eq(8)
+        expect(lap_splits.map(&:lap)).to eq([1] * 4 + [2] * 4)
+        expect(lap_splits.map(&:split).map(&:id)).to eq([111, 102, 103, 112] * 2)
+      end
+    end
+
     describe '#required_time_points' do
       it 'returns an empty array when laps_required is zero' do
         test_event = event
@@ -158,6 +189,54 @@ RSpec.describe Event, type: :model do
         expect(required_time_points.map(&:split_id)).to eq([111, 102, 102, 103, 103, 112] * 2)
         expect(required_time_points.map(&:bitkey)).to eq([1, 1, 64, 1, 64, 1] * 2)
       end
+    end
+
+    describe '#time_points_through' do
+      it 'returns an empty array when parameter passed is zero' do
+        test_event = event
+        lap = 0
+        ordered_splits = splits
+        allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
+        time_points = test_event.time_points_through(lap)
+        expect(time_points).to eq([])
+      end
+
+      it 'returns an array whose size is equal to the lap provided * number of sub_splits' do
+        test_event = event
+        lap = 2
+        ordered_splits = splits
+        allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
+        time_points = test_event.time_points_through(lap)
+        expect(time_points.size).to eq(12)
+      end
+
+      it 'returns an array of TimePoint objects ordered by lap, split distance, and bitkey' do
+        test_event = event
+        lap = 2
+        ordered_splits = splits
+        allow(test_event).to receive(:ordered_splits).and_return(ordered_splits)
+        time_points = test_event.time_points_through(lap)
+        expect(time_points.map(&:lap)).to eq([1] * 6 + [2] * 6)
+        expect(time_points.map(&:split_id)).to eq([111, 102, 102, 103, 103, 112] * 2)
+        expect(time_points.map(&:bitkey)).to eq([1, 1, 64, 1, 64, 1] * 2)
+      end
+    end
+  end
+
+  describe '#multiple_laps?' do
+    it 'returns false if the event requires exactly one lap' do
+      event = FactoryGirl.build_stubbed(:event, laps_required: 1)
+      expect(event.multiple_laps?).to be_falsey
+    end
+
+    it 'returns true if the event requires more than one lap' do
+      event = FactoryGirl.build_stubbed(:event, laps_required: 2)
+      expect(event.multiple_laps?).to be_truthy
+    end
+
+    it 'returns true if the event requires zero (i.e. unlimited) laps' do
+      event = FactoryGirl.build_stubbed(:event, laps_required: 0)
+      expect(event.multiple_laps?).to be_truthy
     end
   end
 end

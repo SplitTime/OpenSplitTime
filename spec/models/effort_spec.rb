@@ -187,7 +187,7 @@ RSpec.describe Effort, type: :model do
   describe '#dropped_lap_split_key=' do
     it 'sets dropped_lap and dropped_split_id to the attributes of the provided LapSplitKey' do
       lap_split_key = LapSplitKey.new(1, 101)
-      effort = FactoryGirl.build_stubbed(:effort, dropped_split_id: nil, dropped_lap: nil)
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: nil, dropped_split_id: nil)
       effort.dropped_lap_split_key = lap_split_key
       expect(effort.dropped_lap).to eq(1)
       expect(effort.dropped_split_id).to eq(101)
@@ -195,23 +195,43 @@ RSpec.describe Effort, type: :model do
 
     it 'sets dropped_lap and dropped_split_id to nil if the provided LapSplitKey has nil attributes' do
       lap_split_key = LapSplitKey.new(nil, nil)
-      effort = FactoryGirl.build_stubbed(:effort, dropped_split_id: 101, dropped_lap: 1)
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: 1, dropped_split_id: 101)
       effort.dropped_lap_split_key = lap_split_key
       expect(effort.dropped_lap).to eq(nil)
       expect(effort.dropped_split_id).to eq(nil)
     end
 
     it 'sets dropped_lap and dropped_split_id to nil if provided parameter is nil' do
-      effort = FactoryGirl.build_stubbed(:effort, dropped_split_id: 101, dropped_lap: 1)
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: 1, dropped_split_id: 101)
       effort.dropped_lap_split_key = nil
       expect(effort.dropped_lap).to eq(nil)
       expect(effort.dropped_split_id).to eq(nil)
     end
   end
 
+  describe '#drop!' do
+    it 'sets dropped_lap and dropped_split_id to the provided lap_split_key and saves the effort' do
+      effort = FactoryGirl.create(:effort, dropped_lap: nil, dropped_split_id: nil)
+      lap_split_key = LapSplitKey.new(1, 101)
+      effort.drop!(lap_split_key)
+      effort = Effort.last
+      expect(effort.dropped_lap).to eq(1)
+      expect(effort.dropped_split_id).to eq(101)
+    end
+
+    it 'sets dropped_lap and dropped_split_id to nil and saves the effort if the provided parameter is nil' do
+      effort = FactoryGirl.create(:effort, dropped_lap: 1, dropped_split_id: 101)
+      lap_split_key = nil
+      effort.drop!(lap_split_key)
+      effort = Effort.last
+      expect(effort.dropped_lap).to be_nil
+      expect(effort.dropped_split_id).to be_nil
+    end
+  end
+
   describe '#undrop!' do
     it 'sets dropped_lap and dropped_split_id to nil and saves the effort' do
-      effort = FactoryGirl.create(:effort, dropped_split_id: 101, dropped_lap: 1)
+      effort = FactoryGirl.create(:effort, dropped_lap: 1, dropped_split_id: 101)
       effort.undrop!
       effort = Effort.last
       expect(effort.dropped_lap).to be_nil

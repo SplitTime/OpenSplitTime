@@ -73,13 +73,14 @@ class EffortAnalysisView
   attr_accessor :indexed_analysis_rows
 
   def typical_effort
-    @typical_effort ||= mock_finish_time && MockEffort.new(ordered_splits: ordered_splits,
+    @typical_effort ||= mock_finish_time && MockEffort.new(lap_splits: lap_splits,
                                                            expected_time: mock_finish_time,
-                                                           start_time: effort_start_time)
+                                                           start_time: effort_start_time,
+                                                           show_laps: event.multiple_laps?)
   end
 
   def indexed_typical_rows
-    @indexed_typical_rows ||= typical_effort.split_rows.index_by(&:split_id)
+    @indexed_typical_rows ||= typical_effort.lap_split_rows.index_by(&:key)
   end
 
   def mock_finish_time
@@ -87,40 +88,40 @@ class EffortAnalysisView
   end
 
   def focused_predicted_time
-    TimePredictor.segment_time(segment: start_to_finish, effort: effort, ordered_splits: ordered_splits,
+    TimePredictor.segment_time(segment: start_to_finish, effort: effort, lap_splits: lap_splits,
                                calc_model: :focused, similar_effort_ids: similar_effort_ids)
   end
 
   def stats_predicted_time
-    TimePredictor.segment_time(segment: start_to_finish, effort: effort, ordered_splits: ordered_splits,
-                                calc_model: :stats)
+    TimePredictor.segment_time(segment: start_to_finish, effort: effort, lap_splits: lap_splits,
+                               calc_model: :stats)
   end
 
   def similar_effort_ids
-    @similar_effort_ids ||= SimilarEffortFinder.new(split_time: split_times.last).effort_ids
+    @similar_effort_ids ||= SimilarEffortFinder.new(split_time: ordered_split_times.last).effort_ids
   end
 
   def create_analysis_rows
-    return unless typical_effort.split_rows.present?
-    prior_split_time = related_split_times(ordered_splits.first).first
-    prior_split = ordered_splits.first
-    ordered_splits.each do |split|
-      next if split.start?
-      analysis_row = EffortAnalysisRow.new(split,
-                                           related_split_times(split),
+    return unless typical_effort.lap_split_rows.present?
+    prior_split_time = related_split_times(lap_splits.first).first
+    prior_split = lap_splits.first
+    lap_splits.each do |lap_split|
+      next if lap_split.start?
+      analysis_row = EffortAnalysisRow.new(lap_split,
+                                           related_split_times(lap_split),
                                            prior_split,
                                            prior_split_time,
                                            effort_start_time,
-                                           indexed_typical_rows[split.id])
+                                           indexed_typical_rows[lap_split.key])
       analysis_rows << analysis_row
       prior_split_time = analysis_row.split_times.compact.last if analysis_row.split_times.compact.present?
-      prior_split = ordered_splits.find { |s| s.id == prior_split_time.split_id }
+      prior_split = lap_splits.find { |lap_split| lap_split.key == prior_split_time.lap_split_key }
     end
     self.indexed_analysis_rows = analysis_rows.index_by(&:split_id)
   end
 
-  def related_split_times(split)
-    split.sub_splits.map { |sub_split| indexed_split_times[sub_split] }
+  def related_split_times(lap_split)
+    lap_split.time_points.map { |time_point| indexed_split_times[time_point] }
   end
 
   def effort_start_time
@@ -128,19 +129,19 @@ class EffortAnalysisView
   end
 
   def effort_finish_tfs
-    indexed_split_times[finish_sub_split].try(:time_from_start)
+    indexed_split_times[finish_time_point].try(:time_from_start)
   end
 
-  def finish_sub_split
-    ordered_splits.last.sub_split_in
+  def finish_time_point
+    lap_splits.last.time_point_in
   end
 
-  def start_sub_split
-    ordered_splits.first.sub_split_in
+  def start_time_point
+    lap_splits.first.time_point_in
   end
 
   def start_to_finish
-    Segment.new(begin_sub_split: start_sub_split, end_sub_split: finish_sub_split)
+    Segment.new(begin_point: start_time_point, end_point: finish_time_point)
   end
 
   def sorted_analysis_rows
@@ -151,15 +152,19 @@ class EffortAnalysisView
     @course ||= event.course
   end
 
-  def ordered_splits
-    @ordered_splits ||= event.ordered_splits.to_a
-  end
-
-  def split_times
-    @split_times ||= effort.ordered_split_times.to_a
+  def ordered_split_times
+    @ordered_split_times ||= effort.ordered_split_times.to_a
   end
 
   def indexed_split_times
-    @indexed_split_times ||= split_times.index_by(&:sub_split)
+    @indexed_split_times ||= ordered_split_times.index_by(&:time_point)
+  end
+
+  def lap_splits
+    @lap_splits ||= event.lap_splits_through(last_lap)
+  end
+
+  def last_lap
+    ordered_split_times.last.lap
   end
 end

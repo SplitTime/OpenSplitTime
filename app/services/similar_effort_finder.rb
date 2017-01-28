@@ -2,10 +2,10 @@ class SimilarEffortFinder
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required_alternatives: [:split_time, [:sub_split, :time_from_start]],
-                           exclusive: [:split_time, :sub_split, :time_from_start, :min, :max, :finished],
+                           required_alternatives: [:split_time, [:time_point, :time_from_start]],
+                           exclusive: [:split_time, :time_point, :time_from_start, :min, :max, :finished],
                            class: self.class)
-    @sub_split = args[:sub_split] || args[:split_time].sub_split
+    @time_point = args[:time_point] || args[:split_time].time_point
     @time_from_start = args[:time_from_start] || args[:split_time].time_from_start
     @minimum_efforts = args[:min] || 20
     @maximum_efforts = args[:max] || 200
@@ -26,7 +26,7 @@ class SimilarEffortFinder
 
   private
 
-  attr_reader :sub_split, :time_from_start, :minimum_efforts, :maximum_efforts, :finished
+  attr_reader :time_point, :time_from_start, :minimum_efforts, :maximum_efforts, :finished
 
   FACTOR_PAIRS = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30].map { |step| [1 - step, 1 + step] }
   POSSIBLE_EFFORT_FACTOR = 2
@@ -63,8 +63,9 @@ class SimilarEffortFinder
   end
 
   def ranged_split_times
-    SplitTime.valid_status.includes(:effort => :event)
-        .where(split_id: sub_split.split_id, bitkey: sub_split.bitkey, :efforts => {concealed: false})
+    SplitTime.valid_status.includes(effort: :event)
+        .where(lap: time_point.lap, split_id: time_point.split_id, bitkey: time_point.bitkey,
+               efforts: {concealed: false})
         .within_time_range(lowest_time, highest_time)
   end
 

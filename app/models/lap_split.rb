@@ -20,6 +20,10 @@ class LapSplit
     split.try(:id)
   end
 
+  def start?
+    split.try(:start?) && lap == 1
+  end
+
   def name
     (lap && split) ? "#{split.base_name} Lap #{lap}" : '[unknown lap split]'
   end

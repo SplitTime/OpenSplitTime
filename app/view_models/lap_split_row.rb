@@ -1,6 +1,6 @@
 class LapSplitRow
 
-  delegate :distance_from_start, to: :lap_split
+  delegate :distance_from_start, :lap, :split, :key, to: :lap_split
   delegate :id, :kind, :start?, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, :days_and_times, :time_data_statuses,
            :split_time_ids, to: :time_cluster
@@ -28,14 +28,6 @@ class LapSplitRow
 
   def time_cluster
     @time_cluster ||= TimeCluster.new(split, split_times, prior_time, start_time)
-  end
-
-  def lap
-    lap_split.lap
-  end
-
-  def split
-    lap_split.split
   end
 
   def split_id

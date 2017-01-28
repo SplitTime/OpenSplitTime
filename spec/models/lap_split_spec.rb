@@ -383,4 +383,30 @@ RSpec.describe LapSplit, type: :model do
       expect(lap_split.vert_loss_from_start).to eq(expected)
     end
   end
+
+  describe '#start?' do
+    let(:start_split) { FactoryGirl.build_stubbed(:start_split) }
+    let(:intermediate_split) { FactoryGirl.build_stubbed(:split) }
+
+    it 'returns true when split is a start split and lap == 1' do
+      lap = 1
+      split = start_split
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.start?).to be_truthy
+    end
+
+    it 'returns false when split is not a start split even if lap == 1' do
+      lap = 1
+      split = intermediate_split
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.start?).to be_falsey
+    end
+
+    it 'returns false when lap > 1 even if split is a start split' do
+      lap = 2
+      split = start_split
+      lap_split = LapSplit.new(lap, split)
+      expect(lap_split.start?).to be_falsey
+    end
+  end
 end

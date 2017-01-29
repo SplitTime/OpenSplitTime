@@ -21,8 +21,6 @@ class SplitTime < ActiveRecord::Base
   scope :basic_components, -> { select(:id, :split_id, :sub_split_bitkey, :effort_id, :time_from_start, :data_status) }
   scope :from_finished_efforts, -> { joins(:effort => {:split_times => :split}).where(splits: {kind: 1}) }
 
-  attr_accessor :day_and_time_attr
-
   before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?
 
@@ -37,6 +35,12 @@ class SplitTime < ActiveRecord::Base
 
   def self.confirmed!
     all.each { |resource| resource.confirmed! }
+  end
+
+  def self.with_time_point_rank(split_time_fields: '*')
+    return [] if SplitTimeQuery.existing_scope_sql.blank?
+    query = SplitTimeQuery.with_time_point_rank(split_time_fields: split_time_fields)
+    self.find_by_sql(query)
   end
 
   def course_is_consistent
@@ -84,7 +88,8 @@ class SplitTime < ActiveRecord::Base
   end
 
   def day_and_time
-    @day_and_time ||= time_from_start && (event_start_time + effort_start_offset + time_from_start)
+    @day_and_time ||= attributes['day_and_time'].try(:in_time_zone) ||
+        time_from_start && (event_start_time + effort_start_offset + time_from_start)
   end
 
   def day_and_time=(absolute_time)

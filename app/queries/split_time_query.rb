@@ -1,5 +1,34 @@
 class SplitTimeQuery
 
+  def self.typical_segment_time(segment, effort_ids)
+    # Params should all be integers, but convert them to integers
+    # to protect against SQL injection
+
+    begin_lap = segment.begin_lap.to_i
+    begin_id = segment.begin_id.to_i
+    begin_bitkey = segment.begin_bitkey.to_i
+    end_lap = segment.end_lap.to_i
+    end_id = segment.end_id.to_i
+    end_bitkey = segment.end_bitkey.to_i
+
+    query = <<-SQL
+      SELECT AVG(st2.time_from_start - st1.time_from_start) AS segment_time,
+             COUNT(st1.time_from_start) AS effort_count
+      FROM (SELECT st.effort_id, st.time_from_start
+           FROM split_times st 
+           WHERE st.lap = #{begin_lap} AND st.split_id = #{begin_id} AND st.sub_split_bitkey = #{begin_bitkey}) 
+           AS st1,
+           (SELECT st.effort_id, st.time_from_start
+           FROM split_times st 
+           WHERE st.lap = #{end_lap} AND st.split_id = #{end_id} AND st.sub_split_bitkey = #{end_bitkey}) 
+           AS st2
+      WHERE st1.effort_id = st2.effort_id
+    SQL
+
+    query += " AND st1.effort_id IN (#{effort_ids.map(&:to_i).join(',')})" if effort_ids
+    query.squish
+  end
+
   def self.with_time_point_rank(split_time_fields: '*')
     query = <<-SQL
       WITH

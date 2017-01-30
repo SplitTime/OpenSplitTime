@@ -132,7 +132,7 @@ RSpec.describe PriorSplitTimeFinder do
                                         time_point: time_point,
                                         lap_splits: lap_splits,
                                         split_times: split_times)
-      expected = SplitTime.new(time_point: time_points.first, time_from_start: 0, id: nil, effort_id: nil)
+      expected = SplitTime.new(time_point: time_points.first, time_from_start: 0, id: nil, effort_id: test_effort.id)
       expect(finder.guaranteed_split_time.attributes).to eq(expected.attributes)
     end
   end

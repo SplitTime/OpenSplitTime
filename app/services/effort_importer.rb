@@ -22,7 +22,6 @@ class EffortImporter
       self.effort_import_report = 'Column count does not match'
       return
     end
-    start_offset_hash = {}
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0...split_offset - 1])
@@ -33,13 +32,11 @@ class EffortImporter
         creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
                                              current_user_id: current_user_id, event: event)
         creator.create_split_times
-        start_offset_hash[effort.id] = {start_offset: creator.start_offset}
         effort_id_array << effort.id
       else
         effort_failure_array << row
       end
     end
-    BulkUpdateService.update_attributes(:efforts, start_offset_hash)
     DroppedAttributesSetter.set_attributes(efforts: event.efforts.where(id: effort_id_array))
     BulkDataStatusSetter.set_data_status(efforts: event.efforts.where(id: effort_id_array)) unless without_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)

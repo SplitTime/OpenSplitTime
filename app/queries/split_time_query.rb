@@ -26,7 +26,7 @@ class SplitTimeQuery
     SQL
 
     query += " AND st1.effort_id IN (#{effort_ids.map(&:to_i).join(',')})" if effort_ids
-    query.squish
+    SplitTime.connection.execute(query.squish).values.flatten.map(&:to_i)
   end
 
   def self.with_time_point_rank(split_time_fields: '*')

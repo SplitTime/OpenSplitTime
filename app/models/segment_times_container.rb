@@ -2,6 +2,8 @@ class SegmentTimesContainer
 
   VALID_CALC_MODELS = [:terrain, :stats, :focused]
 
+  attr_reader :calc_model
+
   def initialize(args = {})
     ArgsValidator.validate(params: args,
                            exclusive: [:effort_ids, :efforts, :calc_model],
@@ -29,7 +31,7 @@ class SegmentTimesContainer
 
   private
 
-  attr_reader :effort_ids, :calc_model, :segment_times, :limits_hashes
+  attr_reader :effort_ids, :segment_times, :limits_hashes
 
   def limits_type(segment)
     segment.special_limits_type || calc_model

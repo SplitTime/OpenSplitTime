@@ -15,10 +15,10 @@ class TimePredictor
     @effort = args[:effort]
     @lap_splits = args[:lap_splits] || effort.lap_splits
     @completed_split_time = args[:completed_split_time] || effort.valid_split_times.last || mock_start_split_time
-    @calc_model = args[:calc_model] || :terrain
     @similar_effort_ids = args[:similar_effort_ids]
     @times_container = args[:times_container] ||
         SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
+    @calc_model = args[:calc_model] || times_container.calc_model || :terrain
     validate_setup
   end
 

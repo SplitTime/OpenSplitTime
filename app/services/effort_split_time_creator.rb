@@ -1,7 +1,5 @@
 class EffortSplitTimeCreator
 
-  attr_reader :start_offset
-
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:row_time_data, :effort, :current_user_id],
@@ -12,7 +10,7 @@ class EffortSplitTimeCreator
     @current_user_id = args[:current_user_id]
     @event = args[:event] || effort.event
     @military_times = args[:military_times]
-    initialize_return_values unless military_times?
+    set_start_offset
     validate_row_time_data
   end
 
@@ -38,11 +36,16 @@ class EffortSplitTimeCreator
   CUTOVER_YEAR = 1910
 
   attr_reader :row_time_data, :effort, :current_user_id, :event
-  attr_writer :start_offset
 
-  def initialize_return_values
-    self.start_offset = time_to_seconds(row_time_data.first) || 0
-    row_time_data[0] = 0 if row_time_data[0]
+  def set_start_offset
+    if military_times?
+      effort.event_start_time = event.start_time # Avoids a database query to determine event_start_time
+      effort.start_time = military_time_to_day_and_time(row_time_data.first, time_points.first)
+    else
+      effort.start_offset = time_to_seconds(row_time_data.first) || 0
+      row_time_data[0] = 0 if row_time_data[0]
+    end
+    effort.save if effort.changed?
   end
 
   def split_time_build(time_point)
@@ -100,9 +103,12 @@ class EffortSplitTimeCreator
     TimeDifference.between(value, start_time).in_seconds
   end
 
-  def military_time_to_seconds(working_time, time_point)
-    day_and_time = IntendedTimeCalculator.day_and_time(military_time: working_time, effort: effort, time_point: time_point)
-    time_to_seconds(day_and_time)
+  def military_time_to_day_and_time(military_time, time_point)
+    IntendedTimeCalculator.day_and_time(military_time: military_time, effort: effort, time_point: time_point)
+  end
+
+  def military_time_to_seconds(military_time, time_point)
+    military_time_to_day_and_time(military_time, time_point) - effort.start_time
   end
 
   def military_times?

@@ -9,59 +9,6 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
   let(:event_with_multiple_laps) { FactoryGirl.build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 3) }
   let(:event_with_unlimited_laps) { FactoryGirl.build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 0) }
 
-  describe 'initialize (initialize_return_values)' do
-    it 'properly calculates start_offset from empty row data' do
-      row_time_data = Array.new(6)
-      expected = 0
-      event = event_with_one_lap
-      validate_start_offset(row_time_data, expected, event)
-    end
-
-    it 'properly calculates start_offset from a populated row' do
-      row_time_data = [excel_epoch, excel_epoch + 1.hour, excel_epoch + 1.hour, excel_epoch + 3.hours, nil, nil]
-      expected = 0
-      event = event_with_one_lap
-      validate_start_offset(row_time_data, expected, event)
-    end
-
-    it 'properly calculates start_offset from another populated row' do
-      row_time_data = [30.minutes.to_i, 90.minutes.to_i, 95.minutes.to_i,
-                       300.minutes.to_i, 310.minutes.to_i, nil]
-      expected = 30.minutes
-      event = event_with_one_lap
-      validate_start_offset(row_time_data, expected, event)
-    end
-
-    it 'properly calculates negative start_offset from another populated row' do
-      row_time_data = [-30.minutes.to_i, 90.minutes.to_i, nil, nil, nil, nil]
-      expected = -30.minutes
-      event = event_with_one_lap
-      validate_start_offset(row_time_data, expected, event)
-    end
-
-    it 'properly calculates start_offset for a multi-required-lap event' do
-      row_time_data = [30.minutes.to_i] + [nil] * 11
-      expected = 30.minutes
-      event = event_with_multiple_laps
-      validate_start_offset(row_time_data, expected, event)
-    end
-
-    it 'properly calculates start_offset for an unlimited-lap event' do
-      row_time_data = [30.minutes.to_i] + [nil] * 5
-      expected = 30.minutes
-      event = event_with_unlimited_laps
-      validate_start_offset(row_time_data, expected, event)
-    end
-
-    def validate_start_offset(row_time_data, expected, event)
-      allow(event).to receive(:ordered_splits).and_return(event.splits)
-      effort = double(:effort, id: 1001, event: event, full_name: 'John Appleseed')
-      creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
-      expect(creator.start_offset).to eq(expected)
-      expect(row_time_data[0]).to eq(0) if row_time_data[0]
-    end
-  end
-
   describe '#initialize (validate_row_time_data)' do
     it 'for a single-lap event, does not raise an ArgumentError if row_time_data and event time_points count match' do
       row_time_data = [0, 1000, nil, 3000, nil, 5000]
@@ -121,12 +68,14 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
 
     def validate_row_time_validation(row_time_data, error_expected, event)
       allow(event).to receive(:ordered_splits).and_return(event.splits)
-      effort = double(:effort, id: 1001, event: event, full_name: 'John Appleseed')
+      effort = FactoryGirl.build_stubbed(:effort, id: 1001, event: event)
       if error_expected
-        expect { EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event) }
+        expect { EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
+                                            current_user_id: current_user_id, event: event) }
             .to raise_error(ArgumentError)
       else
-        expect { EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event) }
+        expect { EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
+                                            current_user_id: current_user_id, event: event) }
             .not_to raise_error
       end
     end
@@ -330,8 +279,10 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
     def validate_split_time_attribute(row_time_data, attribute, expected, event)
       allow(event).to receive(:ordered_splits).and_return(event.splits)
       allow(event).to receive(:sub_splits).and_return(event.splits.map(&:sub_splits).flatten)
-      effort = double(:effort, id: 1001, event: event, full_name: 'John Appleseed')
-      creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
+      effort = FactoryGirl.build_stubbed(:effort, id: 1001, event: event)
+      allow(effort).to receive(:changed?).and_return(false)
+      creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
+                                           current_user_id: current_user_id, event: event)
       expect(creator.split_times.map(&attribute)).to eq(expected)
     end
   end

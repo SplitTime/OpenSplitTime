@@ -167,6 +167,32 @@ RSpec.describe Effort, type: :model do
     end
   end
 
+  describe '#start_time=' do
+    it 'sets start_offset to the difference between the provided parameter and event start time' do
+      event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')
+      effort = FactoryGirl.build_stubbed(:effort, start_offset: 0)
+      allow(effort).to receive(:event).and_return(event)
+      effort.start_time = event.start_time + 3.hours
+      expect(effort.start_offset).to eq(3.hours)
+    end
+
+    it 'works properly when the effort starts before the event' do
+      event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')
+      effort = FactoryGirl.build_stubbed(:effort, start_offset: 0)
+      allow(effort).to receive(:event).and_return(event)
+      effort.start_time = event.start_time - 3.hours
+      expect(effort.start_offset).to eq(-3.hours)
+    end
+
+    it 'works properly when the offset is large' do
+      event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')
+      effort = FactoryGirl.build_stubbed(:effort, start_offset: 0)
+      allow(effort).to receive(:event).and_return(event)
+      effort.start_time = event.start_time + (24.hours * 365)
+      expect(effort.start_offset).to eq(24.hours * 365)
+    end
+  end
+
   describe '#dropped_lap_split_key' do
     it 'returns a LapSplitKey using dropped_lap and dropped_split_id' do
       effort = FactoryGirl.build_stubbed(:effort, dropped_lap: 1, dropped_split_id: 101)

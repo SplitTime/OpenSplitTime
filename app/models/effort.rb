@@ -77,13 +77,13 @@ class Effort < ActiveRecord::Base
   end
 
   def start_time
-    @start_time ||= event_start_time + start_offset
+    event_start_time + start_offset
   end
 
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    self.start_offset = TimeDifference.from(new_datetime, event_start_time).in_seconds
+    self.start_offset = TimeDifference.from(event_start_time, new_datetime).in_seconds
   end
 
   def event_start_time
@@ -115,7 +115,7 @@ class Effort < ActiveRecord::Base
   end
 
   def finish_split_time
-    @finish_split_time ||= finish_split_times.last if finished?
+    @finish_split_time ||= last_reported_split_time if finished?
   end
 
   def start_split_time
@@ -123,11 +123,14 @@ class Effort < ActiveRecord::Base
   end
 
   def laps_finished
-    attributes['laps_finished'] || finish_split_times.size
+    return attributes['laps_finished'] if attributes['laps_finished'].present?
+    last_split_time = last_reported_split_time
+    return 0 unless last_split_time
+    last_split_time.split.finish? ? last_split_time.lap : last_split_time.lap - 1
   end
 
   def laps_started
-    attributes['laps_started'] || ordered_split_times.last.try(:lap) || 0
+    attributes['laps_started'] || last_reported_split_time.try(:lap) || 0
   end
 
   def finished?
@@ -170,8 +173,8 @@ class Effort < ActiveRecord::Base
     end
   end
 
-  def time_in_aid(split)
-    time_array = ordered_split_times(split).map(&:time_from_start)
+  def time_in_aid(lap_split)
+    time_array = ordered_split_times(lap_split).map(&:time_from_start)
     time_array.size > 1 ? time_array.last - time_array.first : nil
   end
 
@@ -180,8 +183,9 @@ class Effort < ActiveRecord::Base
                                .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
   end
 
-  def ordered_split_times(split = nil)
-    split ? split_times.where(split: split).order(:sub_split_bitkey) : split_times.ordered
+  def ordered_split_times(lap_split = nil)
+    lap_split ? split_times.where(lap: lap_split.lap, split: lap_split.split)
+                    .order(:sub_split_bitkey) : split_times.ordered
   end
 
   def ordered_splits

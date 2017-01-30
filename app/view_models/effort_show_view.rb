@@ -7,7 +7,7 @@ class EffortShowView
   delegate :simple?, to: :event
 
   def initialize(args_effort)
-    @effort = args_effort.enriched || args_effort
+    @effort ||= args_effort.enriched || args_effort
     @split_rows = []
     create_split_rows
   end
@@ -44,15 +44,15 @@ class EffortShowView
   end
 
   def ordered_splits
-    @ordered_splits = effort.ordered_splits.to_a
+    @ordered_splits ||= effort.ordered_splits.to_a
   end
 
   def ordered_split_times
-    @ordered_split_times = effort.ordered_split_times
+    @ordered_split_times ||= effort.ordered_split_times.to_a
   end
 
   def indexed_split_times
-    @indexed_split_times = ordered_split_times.index_by(&:time_point)
+    @indexed_split_times ||= ordered_split_times.index_by(&:time_point)
   end
 
   def lap_splits

@@ -16,7 +16,7 @@
   </div>
 </div>
 <hr>
-<%= form_for(@effort, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
+<%= form_for(@effort, url: update_split_times_effort_path(@effort), method: :put, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
     <div class="row">
       <div class="col-sm-2">
         <h4><%= f.label :bib_number %></h4>
@@ -32,8 +32,8 @@
           <thead>
           </thead>
           <tbody>
-          <% @effort.event.ordered_splits_without_start.each do |split| %>
-              <% data_status = DataStatus.worst(split.split_times.where(effort: @effort).map(&:data_status)) %>
+          <% @effort.lap_splits.each do |lap_split| %>
+              <% data_status = DataStatus.worst(@effort.split_times(lap_split).map(&:data_status)) %>
               <% if data_status == 'bad' %>
                   <tr class="text-danger">
               <% elsif data_status == 'questionable' %>
@@ -41,16 +41,18 @@
               <% else %>
                   <tr>
               <% end %>
-              <td class="text-nowrap"><h4><strong><%= "#{split.name}" %></strong></h4></td>
-              <% split.sub_split_bitkeys.each do |bitkey| %>
+              <td class="text-nowrap"><h4><strong><%= "#{lap_split.name}" %></strong></h4></td>
+              <% lap_split.time_points.each do |time_point| %>
                   <%= f.fields_for :split_times,
-                                   @effort.split_times.find_or_initialize_by(split_id: split.id,
-                                                                             sub_split_bitkey: bitkey,
+                                   @effort.split_times.find_or_initialize_by(lap: time_point.lap,
+                                                                             split_id: time_point.split_id,
+                                                                             sub_split_bitkey: time_point.bitkey,
                                                                              effort_id: @effort.id) do |builder| %>
                       <td>
                         <%= builder.text_field :elapsed_time, class: 'form-control', placeholder: 'hh:mm:ss' %>
-                        <%= builder.hidden_field :split_id, {value: split.id} %>
-                        <%= builder.hidden_field :sub_split_bitkey, {value: bitkey} %>
+                        <%= builder.hidden_field :lap, {value: time_point.lap} %>
+                        <%= builder.hidden_field :split_id, {value: time_point.split_id} %>
+                        <%= builder.hidden_field :sub_split_bitkey, {value: time_point.bitkey} %>
                         <%= builder.hidden_field :effort_id, {value: @effort.id} %>
                       </td>
                   <% end %>

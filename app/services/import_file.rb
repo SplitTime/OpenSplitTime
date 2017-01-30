@@ -5,7 +5,7 @@ class ImportFile
   attr_reader :spreadsheet, :header1, :header2
 
   def initialize(file_url)
-    @spreadsheet = open_spreadsheet(file_url)
+    @spreadsheet ||= open_spreadsheet(file_url)
     return false unless spreadsheet
     @header1 = spreadsheet.row(1)
     @header2 = spreadsheet.row(2)

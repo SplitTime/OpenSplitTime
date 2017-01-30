@@ -107,7 +107,7 @@ RSpec.describe PriorSplitTimeFinder do
       expect(finder.guaranteed_split_time).to eq(expected)
     end
 
-    it 'when all prior split_times are invalid, returns a null record split_time' do
+    it 'when all prior split_times are invalid, returns a mock start split_time associated with the provided effort' do
       lap_splits, time_points = lap_splits_and_time_points(test_event)
       time_point = time_points[4]
       split_times = test_split_times
@@ -120,7 +120,7 @@ RSpec.describe PriorSplitTimeFinder do
                                         time_point: time_point,
                                         lap_splits: lap_splits,
                                         split_times: split_times)
-      expected = SplitTime.new(time_point: time_points.first, time_from_start: 0, id: nil, effort_id: nil)
+      expected = SplitTime.new(time_point: time_points.first, time_from_start: 0, id: nil, effort: test_effort)
       expect(finder.guaranteed_split_time.attributes).to eq(expected.attributes)
     end
 

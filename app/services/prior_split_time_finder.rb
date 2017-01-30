@@ -15,7 +15,7 @@ class PriorSplitTimeFinder
                            class: self.class)
     @time_point = args[:time_point]
     @effort = args[:effort]
-    @lap_splits = args[:lap_splits]
+    @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
     validate_setup
   end
@@ -37,7 +37,7 @@ class PriorSplitTimeFinder
   end
 
   def mock_start_split_time
-    SplitTime.new(time_point: ordered_time_points.first, time_from_start: 0)
+    SplitTime.new(effort: effort, time_point: ordered_time_points.first, time_from_start: 0)
   end
 
   def time_point_index

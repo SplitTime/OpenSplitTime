@@ -30,7 +30,8 @@ class EffortImporter
       if effort
         row_time_data = row[split_offset - 1...row.size]
         row_time_data.unshift(0) if finish_times_only?
-        creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
+        creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
+                                             current_user_id: current_user_id, event: event)
         creator.create_split_times
         start_offset_hash[effort.id] = {start_offset: creator.start_offset}
         effort_id_array << effort.id
@@ -39,6 +40,31 @@ class EffortImporter
       end
     end
     BulkUpdateService.update_attributes(:efforts, start_offset_hash)
+    DroppedAttributesSetter.set_attributes(efforts: event.efforts.where(id: effort_id_array))
+    BulkDataStatusSetter.set_data_status(efforts: event.efforts.where(id: effort_id_array)) unless without_status
+    self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
+  end
+
+  def effort_import_military_times
+    unless column_count_matches?
+      self.effort_import_report = 'Column count does not match'
+      return
+    end
+    (effort_offset..spreadsheet.last_row).each do |i|
+      row = spreadsheet.row(i)
+      row_effort_data = prepare_row_effort_data(row[0...split_offset - 1])
+      effort = create_effort(row_effort_data)
+      if effort
+        row_time_data = row[split_offset - 1...row.size]
+        creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
+                                             current_user_id: current_user_id, event: event,
+                                             military_times: true)
+        creator.create_split_times
+        effort_id_array << effort.id
+      else
+        effort_failure_array << row
+      end
+    end
     DroppedAttributesSetter.set_attributes(efforts: event.efforts.where(id: effort_id_array))
     BulkDataStatusSetter.set_data_status(efforts: event.efforts.where(id: effort_id_array)) unless without_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
@@ -130,5 +156,9 @@ class EffortImporter
 
   def header_column_titles
     import_without_times ? header1 : header1[0...split_offset - 1]
+  end
+
+  def military_times?
+    @military_times
   end
 end

@@ -13,7 +13,7 @@ class IntendedTimeCalculator
     @military_time = args[:military_time]
     @effort = args[:effort]
     @time_point = args[:time_point]
-    @lap_splits = args[:lap_splits]
+    @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
     @prior_valid_split_time = args[:prior_valid_split_time] ||
         PriorSplitTimeFinder.guaranteed_split_time(effort: effort,
                                                    time_point: time_point,
@@ -77,6 +77,7 @@ class IntendedTimeCalculator
   end
 
   def validate_setup
+    raise ArgumentError, "military time must be provided as a string; got #{military_time} (#{military_time.class})" unless military_time.is_a?(String)
     raise RangeError, "#{military_time} is out of range for #{self.class}" if seconds_into_day && ((seconds_into_day >= 1.day) | (seconds_into_day < 0))
   end
 end

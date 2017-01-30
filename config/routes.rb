@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   resources :events do
     member { post :import_splits }
     member { post :import_efforts }
+    member { post :import_efforts_military_times }
     member { post :import_efforts_without_times }
     member { get :splits }
     member { put :associate_split }

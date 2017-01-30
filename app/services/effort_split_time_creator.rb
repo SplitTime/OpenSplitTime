@@ -2,12 +2,17 @@ class EffortSplitTimeCreator
 
   attr_reader :start_offset
 
-  def initialize(row_time_data, effort, current_user_id, event = nil)
-    @row_time_data = row_time_data
-    @effort = effort
-    @current_user_id = current_user_id
-    @event = event || effort.event
-    initialize_return_values
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:row_time_data, :effort, :current_user_id],
+                           exclusive: [:row_time_data, :effort, :current_user_id, :event, :military_times],
+                           class: self.class)
+    @row_time_data = args[:row_time_data]
+    @effort = args[:effort]
+    @current_user_id = args[:current_user_id]
+    @event = args[:event] || effort.event
+    @military_times = args[:military_times]
+    initialize_return_values unless military_times?
     validate_row_time_data
   end
 
@@ -40,17 +45,17 @@ class EffortSplitTimeCreator
     row_time_data[0] = 0 if row_time_data[0]
   end
 
-  def validate_row_time_data
-    raise ArgumentError, "row time data contains #{row_time_data.size} elements but event requires #{time_points_count} elements" if
-        time_points_count != row_time_data.size
-  end
-
   def split_time_build(time_point)
     SplitTime.new(effort_id: effort.id,
                   time_point: time_point,
-                  time_from_start: time_to_seconds(time_points_time_hash[time_point]),
+                  time_from_start: convert_to_seconds(time_point),
                   created_by: current_user_id,
                   updated_by: current_user_id)
+  end
+
+  def convert_to_seconds(time_point)
+    working_time = time_points_time_hash[time_point]
+    military_times? ? military_time_to_seconds(working_time, time_point) : time_to_seconds(working_time)
   end
 
   def populated_time_points
@@ -93,5 +98,18 @@ class EffortSplitTimeCreator
   def datetime_to_seconds(value)
     start_time = value.year < CUTOVER_YEAR ? EXCEL_BASE_DATETIME : event.start_time
     TimeDifference.between(value, start_time).in_seconds
+  end
+
+  def military_time_to_seconds(working_time, time_point)
+    day_and_time = IntendedTimeCalculator.day_and_time(military_time: working_time, effort: effort, time_point: time_point)
+    time_to_seconds(day_and_time)
+  end
+
+  def military_times?
+    @military_times
+  end
+
+  def validate_row_time_data
+    raise ArgumentError, "row time data contains #{row_time_data.size} elements but event requires #{time_points_count} elements" if time_points_count != row_time_data.size
   end
 end

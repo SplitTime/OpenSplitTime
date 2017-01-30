@@ -22,11 +22,10 @@
 	}
 }
 
-.form-time-select {
-	.form-control.hours {
-		width: 50%;
-	}
-	.form-control.minutes {
-		width: 50%;
+/* There has to be a better way */
+.form-control-fill {
+	display: table;
+	& > * {
+		display: table-cell;
 	}
 }

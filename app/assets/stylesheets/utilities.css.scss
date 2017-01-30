@@ -266,6 +266,18 @@ aside.full-bg {
 		width: 512px; // Fallback
 		width: 50vw;
 	}
+
+	&:after {
+		display: block;
+		content: '';
+		background: inherit;
+		position: absolute;
+		top: 100%;
+		right: 0;
+		width: 512px; // Fallback
+		width: 50vw;
+		height: 100vh;
+	}
 }
 
 span.brackets {

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170110053224) do
+ActiveRecord::Schema.define(version: 20170131214021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 20170110053224) do
     t.integer  "lap"
   end
 
+  add_index "split_times", ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true, using: :btree
   add_index "split_times", ["effort_id"], name: "index_split_times_on_effort_id", using: :btree
   add_index "split_times", ["split_id"], name: "index_split_times_on_split_id", using: :btree
   add_index "split_times", ["sub_split_bitkey"], name: "index_split_times_on_sub_split_bitkey", using: :btree

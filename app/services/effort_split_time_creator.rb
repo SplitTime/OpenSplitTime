@@ -116,6 +116,7 @@ class EffortSplitTimeCreator
   end
 
   def validate_row_time_data
-    raise ArgumentError, "row time data contains #{row_time_data.size} elements but event requires #{time_points_count} elements" if time_points_count != row_time_data.size
+    raise ArgumentError, "row time data contains #{row_time_data.size} elements " +
+        "but event requires #{time_points_count} elements" if time_points_count != row_time_data.size
   end
 end

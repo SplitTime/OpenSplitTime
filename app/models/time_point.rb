@@ -10,4 +10,12 @@ TimePoint = Struct.new(:lap, :split_id, :bitkey) do
   def kind
     bitkey && SubSplit.kind(bitkey)
   end
+
+  def in?
+    kind == 'In'
+  end
+
+  def out?
+    kind == 'Out'
+  end
 end

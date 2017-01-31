@@ -4,33 +4,22 @@ module UnitConversions
   module ClassMethods
 
     def entered_distance_to_meters(distance)
-      preferred_distance_in_meters(numericize(distance))
+      preferred_distance_in_meters(distance.numericize)
     end
 
     def entered_elevation_to_meters(elevation)
-      preferred_elevation_in_meters(numericize(elevation))
+      preferred_elevation_in_meters(elevation.numericize)
     end
 
-    def preferred_distance_in_meters(distance_in_pref)
-      case pref_distance_unit
-        when 'miles'
-          distance_in_pref.miles.to.meters.value.round(0)
-        when 'kilometers'
-          distance_in_pref.kilometers.to.meters.value.round(0)
-        else
-          distance_in_pref
-      end
+    def meters_to_preferred_distance(meters)
+      distance_in_preferred_units(meters.numericize)
     end
 
-    def preferred_elevation_in_meters(elevation_in_pref)
-      return nil unless elevation_in_pref
-      case pref_elevation_unit
-        when 'feet'
-          elevation_in_pref.feet.to.meters.value
-        else
-          elevation_in_pref
-      end
+    def meters_to_preferred_elevation(meters)
+      elevation_in_preferred_units(meters.numericize)
     end
+
+    private
 
     def distance_in_preferred_units(distance_in_meters)
       case pref_distance_unit
@@ -53,6 +42,27 @@ module UnitConversions
       end
     end
 
+    def preferred_distance_in_meters(distance_in_pref)
+      case pref_distance_unit
+      when 'miles'
+        distance_in_pref.miles.to.meters.value.round(0)
+      when 'kilometers'
+        distance_in_pref.kilometers.to.meters.value.round(0)
+      else
+        distance_in_pref
+      end
+    end
+
+    def preferred_elevation_in_meters(elevation_in_pref)
+      return nil unless elevation_in_pref
+      case pref_elevation_unit
+      when 'feet'
+        elevation_in_pref.feet.to.meters.value
+      else
+        elevation_in_pref
+      end
+    end
+
     def pref_distance_unit
       (User.current && User.current.pref_distance_unit) || 'miles'
     end
@@ -60,11 +70,5 @@ module UnitConversions
     def pref_elevation_unit
       (User.current && User.current.pref_elevation_unit) || 'feet'
     end
-
-    def numericize(fixnum_or_string)
-      fixnum_or_string.is_a?(String) ? fixnum_or_string.gsub(/[^\d\.]/, '').to_f : fixnum_or_string
-    end
-
   end
-
 end

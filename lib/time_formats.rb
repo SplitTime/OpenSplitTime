@@ -105,13 +105,13 @@ module TimeFormats
   end
 
   def distance_to_preferred(meters)
-    number_with_delimiter(Split.distance_in_preferred_units(meters).round(1))
+    number_with_delimiter(Split.meters_to_preferred_distance(meters).round(1))
   end
 
   alias_method :d, :distance_to_preferred
 
   def elevation_to_preferred(meters)
-    meters && number_with_delimiter(Split.elevation_in_preferred_units(meters).round(0))
+    meters && number_with_delimiter(Split.meters_to_preferred_elevation(meters).round(0))
   end
 
   alias_method :e, :elevation_to_preferred

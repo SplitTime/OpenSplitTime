@@ -50,7 +50,7 @@ class Split < ActiveRecord::Base
   end
 
   def distance_as_entered
-    Split.distance_in_preferred_units(distance_from_start).round(2) if distance_from_start
+    Split.meters_to_preferred_distance(distance_from_start).round(2) if distance_from_start
   end
 
   def distance_as_entered=(number_string)
@@ -58,7 +58,7 @@ class Split < ActiveRecord::Base
   end
 
   def vert_gain_as_entered
-    Split.elevation_in_preferred_units(vert_gain_from_start).round(0) if vert_gain_from_start
+    Split.meters_to_preferred_elevation(vert_gain_from_start).round(0) if vert_gain_from_start
   end
 
   def vert_gain_as_entered=(number_string)
@@ -66,7 +66,7 @@ class Split < ActiveRecord::Base
   end
 
   def vert_loss_as_entered
-    Split.elevation_in_preferred_units(vert_loss_from_start).round(0) if vert_loss_from_start
+    Split.meters_to_preferred_elevation(vert_loss_from_start).round(0) if vert_loss_from_start
   end
 
   def vert_loss_as_entered=(number_string)

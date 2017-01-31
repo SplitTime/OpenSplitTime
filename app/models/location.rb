@@ -15,7 +15,7 @@ class Location < ActiveRecord::Base
   scope :on_course, -> (course) { includes(:splits).where(splits: {course_id: course.id}) }
 
   def elevation_as_entered
-    Location.elevation_in_preferred_units(elevation) if elevation
+    Location.meters_to_preferred_elevation(elevation) if elevation
   end
 
   def elevation_as_entered=(entered_elevation)

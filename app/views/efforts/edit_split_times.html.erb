@@ -16,7 +16,7 @@
   </div>
 </div>
 <hr>
-<%= form_for(@effort, url: update_split_times_effort_path(@effort), method: :put, :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
+<%= form_for(@effort, url: update_split_times_effort_path(@effort), :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
     <div class="row">
       <div class="col-sm-2">
         <h4><%= f.label :bib_number %></h4>

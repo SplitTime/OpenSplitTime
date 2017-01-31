@@ -82,7 +82,7 @@ Rails.application.routes.draw do
   resources :efforts do
     collection { put :associate_participants }
     member { put :edit_split_times }
-    member { put :update_split_times }
+    member { patch :update_split_times }
     member { put :start }
     member { delete :delete_split_times }
     member { put :confirm_split_times }

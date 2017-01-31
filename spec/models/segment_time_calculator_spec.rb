@@ -2,6 +2,7 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe SegmentTimeCalculator do
+  let(:stat_threshold) { SegmentTimeCalculator::STATS_CALC_THRESHOLD }
   let(:start) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
   let(:aid_1) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 1', course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 500) }
   let(:aid_2) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 2', course_id: 10, distance_from_start: 25000, vert_gain_from_start: 2500, vert_loss_from_start: 1250) }
@@ -49,61 +50,137 @@ RSpec.describe SegmentTimeCalculator do
     end
   end
 
-  describe '#typical_time' do
+  describe '#typical_time (terrain)' do
     let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
     let(:vert_gain_factor) { SegmentTimeCalculator::VERT_GAIN_FACTOR }
 
     it 'calculates a segment time in seconds using the specified calc_model' do
       segment = lap_1_start_to_lap_1_aid_1
       expected = 10000 * distance_factor + 1000 * vert_gain_factor
-      validate_typical_time(segment, expected)
+      validate_typical_time_terrain(segment, expected)
     end
 
     it 'returns zero for a segment that begins and ends with the lap 1 start split' do
       segment = lap_1_zero_start
       expected = 0
-      validate_typical_time(segment, expected)
+      validate_typical_time_terrain(segment, expected)
     end
 
     it 'returns typical time in aid for a segment that begins and ends within an intermediate split' do
       segment = lap_1_in_aid_2
       expected = 0
-      validate_typical_time(segment, expected)
+      validate_typical_time_terrain(segment, expected)
     end
 
     it 'returns typical time between splits for a segment that begins and ends with different intermediate splits' do
       segment = lap_1_aid_2_to_lap_1_aid_3
       expected = 20_000 * distance_factor + 2000 * vert_gain_factor
-      validate_typical_time(segment, expected)
+      validate_typical_time_terrain(segment, expected)
     end
 
     it 'returns typical time between splits for a segment made up of a complete lap' do
       segment = lap_1_start_to_lap_1_finish
       expected = 70_000 * distance_factor + 7_000 * vert_gain_factor
-      validate_typical_time(segment, expected)
+      validate_typical_time_terrain(segment, expected)
     end
 
     it 'returns typical time between splits for a segment that spans different laps' do
       segment = lap_1_start_to_lap_2_aid_1
       expected = 80_000 * distance_factor + 8000 * vert_gain_factor
-      validate_typical_time(segment, expected)
+      validate_typical_time_terrain(segment, expected)
     end
 
     it 'returns typical time between splits for a segment made up of multiple complete laps' do
       segment = lap_1_start_to_lap_3_finish
       expected = 210_000 * distance_factor + 21_000 * vert_gain_factor
-      validate_typical_time(segment, expected)
+      validate_typical_time_terrain(segment, expected)
+    end
+
+    def validate_typical_time_terrain(segment, expected)
+      course = FactoryGirl.build_stubbed(:course)
+      allow(course).to receive(:distance).and_return(finish.distance_from_start)
+      allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
+      allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
+      allow(segment.end_lap_split).to receive(:course).and_return(course)
+      allow(segment.begin_lap_split).to receive(:course).and_return(course)
+      calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
+      expect(calculator.typical_time).to eq(expected)
     end
   end
 
-  def validate_typical_time(segment, expected)
-    course = FactoryGirl.build_stubbed(:course)
-    allow(course).to receive(:distance).and_return(finish.distance_from_start)
-    allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
-    allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
-    allow(segment.end_lap_split).to receive(:course).and_return(course)
-    allow(segment.begin_lap_split).to receive(:course).and_return(course)
-    calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
-    expect(calculator.typical_time).to eq(expected)
+  describe '#typical_time (stats)' do
+    it 'sends :typical_segment_time to SplitTimeQuery with segment as a parameter' do
+      segment = lap_1_start_to_lap_1_aid_1
+      time_result = 100
+      count_result = 10
+      typical_time_stats(segment, time_result, count_result)
+      expect(SplitTimeQuery).to have_received(:typical_segment_time).with(segment, nil)
+    end
+
+    it 'returns the time result if count result is at or above the stat threshold' do
+      segment = lap_1_start_to_lap_1_aid_1
+      time_result = 100
+      count_result = stat_threshold
+      time = typical_time_stats(segment, time_result, count_result)
+      expect(time).to eq(time_result)
+    end
+
+    it 'returns nil if count result is below the stat threshold' do
+      segment = lap_1_start_to_lap_1_aid_1
+      time_result = 100
+      count_result = stat_threshold - 1
+      time = typical_time_stats(segment, time_result, count_result)
+      expect(time).to be_nil
+    end
+
+    def typical_time_stats(segment, time_result, count_result)
+      calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :stats)
+      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return([time_result, count_result])
+      calculator.typical_time
+    end
+  end
+
+  describe '#typical_time (focused)' do
+    it 'sends :typical_segment_time to SplitTimeQuery with segment and effort_ids as parameters' do
+      segment = lap_1_start_to_lap_1_aid_1
+      time_result = 100
+      count_result = 10
+      effort_ids = [1, 2, 3]
+      typical_time_focused(segment, time_result, count_result, effort_ids)
+      expect(SplitTimeQuery).to have_received(:typical_segment_time).with(segment, effort_ids)
+    end
+
+    it 'returns the time result if count result is at or above the stat threshold and effort_ids is present' do
+      segment = lap_1_start_to_lap_1_aid_1
+      time_result = 100
+      count_result = stat_threshold
+      effort_ids = [1, 2, 3]
+      time = typical_time_focused(segment, time_result, count_result, effort_ids)
+      expect(time).to eq(time_result)
+    end
+
+    it 'returns nil if count result is below the stat threshold' do
+      segment = lap_1_start_to_lap_1_aid_1
+      time_result = 100
+      count_result = stat_threshold - 1
+      effort_ids = [1, 2, 3]
+      time = typical_time_focused(segment, time_result, count_result, effort_ids)
+      expect(time).to be_nil
+    end
+
+    it 'returns nil if effort_ids are an empty array' do
+      segment = lap_1_start_to_lap_1_aid_1
+      time_result = 100
+      count_result = stat_threshold - 1
+      effort_ids = []
+      time = typical_time_focused(segment, time_result, count_result, effort_ids)
+      expect(time).to be_nil
+    end
+
+    def typical_time_focused(segment, time_result, count_result, effort_ids)
+      calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :focused, effort_ids: effort_ids)
+      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return([time_result, count_result])
+      calculator.typical_time
+    end
   end
 end

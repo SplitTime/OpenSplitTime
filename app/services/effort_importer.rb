@@ -37,8 +37,7 @@ class EffortImporter
         effort_failure_array << row
       end
     end
-    DroppedAttributesSetter.set_attributes(efforts: event.efforts.where(id: effort_id_array))
-    BulkDataStatusSetter.set_data_status(efforts: event.efforts.where(id: effort_id_array)) unless without_status
+    set_drops_and_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 
@@ -62,8 +61,7 @@ class EffortImporter
         effort_failure_array << row
       end
     end
-    DroppedAttributesSetter.set_attributes(efforts: event.efforts.where(id: effort_id_array))
-    BulkDataStatusSetter.set_data_status(efforts: event.efforts.where(id: effort_id_array)) unless without_status
+    set_drops_and_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 
@@ -129,6 +127,21 @@ class EffortImporter
     row_effort_hash(row_effort_data).each { |attribute, data| effort.assign_attributes({attribute => data}) }
     effort.concealed = event.concealed?
     effort if effort.save
+  end
+
+  def set_drops_and_status
+    DroppedAttributesSetter.set_attributes(efforts: imported_efforts)
+
+    # Initial pass sets data_status based on the relaxed standards of the terrain model
+    # Second pass sets data_status on the :stats model, ignoring times flagged as bad or questionable by the first pass
+    unless without_status
+      BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :terrain)
+      BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :stats)
+    end
+  end
+
+  def imported_efforts # Don't memoize--needs to be refreshed before the second pass
+    event.efforts.where(id: effort_id_array)
   end
 
   def row_effort_hash(row_effort_data)

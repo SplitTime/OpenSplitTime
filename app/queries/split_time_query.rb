@@ -16,16 +16,22 @@ class SplitTimeQuery
              COUNT(st1.time_from_start) AS effort_count
       FROM (SELECT st.effort_id, st.time_from_start
            FROM split_times st 
-           WHERE st.lap = #{begin_lap} AND st.split_id = #{begin_id} AND st.sub_split_bitkey = #{begin_bitkey}) 
+           WHERE st.lap = #{begin_lap} 
+             AND st.split_id = #{begin_id} 
+             AND st.sub_split_bitkey = #{begin_bitkey}
+             AND st.data_status IN (#{valid_statuses_list}))
            AS st1,
            (SELECT st.effort_id, st.time_from_start
            FROM split_times st 
-           WHERE st.lap = #{end_lap} AND st.split_id = #{end_id} AND st.sub_split_bitkey = #{end_bitkey}) 
+           WHERE st.lap = #{end_lap} 
+             AND st.split_id = #{end_id} 
+             AND st.sub_split_bitkey = #{end_bitkey}
+             AND st.data_status IN (#{valid_statuses_list}))
            AS st2
       WHERE st1.effort_id = st2.effort_id
     SQL
 
-    query += " AND st1.effort_id IN (#{effort_ids.map(&:to_i).join(',')})" if effort_ids
+    query += " AND st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" if effort_ids
     SplitTime.connection.execute(query.squish).values.flatten.map(&:to_i)
   end
 
@@ -64,5 +70,13 @@ class SplitTimeQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     SplitTime.connection.unprepared_statement { SplitTime.reorder(nil).select("id").to_sql }
+  end
+
+  def self.valid_statuses_list
+    sql_safe_integer_list(SplitTime.valid_statuses)
+  end
+
+  def self.sql_safe_integer_list(array)
+    array.flatten.compact.map(&:to_i).join(',')
   end
 end

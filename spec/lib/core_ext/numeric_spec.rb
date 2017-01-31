@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe Numeric do
+
+  describe '#numericize' do
+    it 'returns self without modification' do
+      n = 123
+      expect(n.numericize).to eq(n)
+    end
+  end
+
   describe '#round_to_nearest' do
     context 'when no argument is provided' do
       it 'returns the same number when called on an Integer' do

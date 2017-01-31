@@ -12,10 +12,10 @@ class BulkDataStatusSetter
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: :efforts,
-                           exclusive: [:efforts, :times_container],
+                           exclusive: [:efforts, :calc_model, :times_container],
                            class: self.class)
     @efforts = args[:efforts]
-    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: args[:calc_model] || :stats)
     @changed_split_times = []
     @changed_efforts = []
   end

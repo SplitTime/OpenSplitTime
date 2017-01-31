@@ -19,7 +19,11 @@ class Location < ActiveRecord::Base
   end
 
   def elevation_as_entered=(entered_elevation)
-    self.elevation = Location.preferred_elevation_in_meters(numericize(entered_elevation)) if entered_elevation.present?
+    if entered_elevation.present?
+      self.elevation = Location.entered_elevation_to_meters(entered_elevation)
+    else
+      self.elevation = nil
+    end
   end
 
   private

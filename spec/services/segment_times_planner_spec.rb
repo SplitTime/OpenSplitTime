@@ -47,11 +47,12 @@ RSpec.describe SegmentTimesPlanner do
     it 'returns a hash containing keys corresponding to the segments generated from lap_splits' do
       expected_time = 4000
       lap_splits, time_points = lap_splits_and_time_points(test_event)
+      splits = lap_splits.map(&:split)
       course = test_event.course
       allow(course).to receive(:distance).and_return(finish.distance_from_start)
       allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
       allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
-      serial_segments = SegmentsBuilder.segments_with_zero_start(lap_splits: lap_splits)
+      serial_segments = SegmentsBuilder.segments_with_zero_start(time_points: time_points, splits: splits)
       serial_segments.each do |segment|
         [segment.begin_lap_split, segment.end_lap_split]
             .each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }
@@ -112,12 +113,13 @@ RSpec.describe SegmentTimesPlanner do
     end
 
     def validate_times_from_start(expected_time, expected, round_to = nil)
-      lap_splits = lap_splits_and_time_points(test_event).first
+      lap_splits, time_points = lap_splits_and_time_points(test_event)
+      splits = lap_splits.map(&:split)
       course = test_event.course
       allow(course).to receive(:distance).and_return(finish.distance_from_start)
       allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
       allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
-      serial_segments = SegmentsBuilder.segments_with_zero_start(lap_splits: lap_splits)
+      serial_segments = SegmentsBuilder.segments_with_zero_start(time_points: time_points, splits: splits)
       serial_segments.each do |segment|
         [segment.begin_lap_split, segment.end_lap_split]
             .each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }
@@ -149,12 +151,13 @@ RSpec.describe SegmentTimesPlanner do
 
     it 'returns a hash containing keys corresponding to the time_points generated from lap_splits' do
       expected_time = 4000
-      lap_splits = lap_splits_and_time_points(test_event).first
+      lap_splits, time_points = lap_splits_and_time_points(test_event)
+      splits = lap_splits.map(&:split)
       course = test_event.course
       allow(course).to receive(:distance).and_return(finish.distance_from_start)
       allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
       allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
-      serial_segments = SegmentsBuilder.segments_with_zero_start(lap_splits: lap_splits)
+      serial_segments = SegmentsBuilder.segments_with_zero_start(time_points: time_points, splits: splits)
       serial_segments.each do |segment|
         [segment.begin_lap_split, segment.end_lap_split]
             .each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }
@@ -201,12 +204,13 @@ RSpec.describe SegmentTimesPlanner do
     end
 
     def validate_segment_times(expected_time, expected, round_to = nil)
-      lap_splits = lap_splits_and_time_points(test_event).first
+      lap_splits, time_points = lap_splits_and_time_points(test_event)
+      splits = lap_splits.map(&:split)
       course = test_event.course
       allow(course).to receive(:distance).and_return(finish.distance_from_start)
       allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
       allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
-      serial_segments = SegmentsBuilder.segments_with_zero_start(lap_splits: lap_splits)
+      serial_segments = SegmentsBuilder.segments_with_zero_start(time_points: time_points, splits: splits)
       serial_segments.each do |segment|
         [segment.begin_lap_split, segment.end_lap_split]
             .each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }

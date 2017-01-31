@@ -13,7 +13,7 @@ class SegmentTimesPlanner
     @times_container = args[:times_container] ||
         SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
     @serial_segments = args[:serial_segments] ||
-        SegmentsBuilder.segments_with_zero_start(lap_splits: lap_splits)
+        SegmentsBuilder.segments_with_zero_start(time_points: time_points, splits: splits)
   end
 
   def segment_times(round_to: 0)
@@ -52,5 +52,13 @@ class SegmentTimesPlanner
 
   def total_segment_time
     indexed_serial_times.sum
+  end
+
+  def time_points
+    lap_splits.map(&:time_points).flatten
+  end
+
+  def splits
+    lap_splits.map(&:split)
   end
 end

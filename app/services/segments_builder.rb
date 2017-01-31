@@ -8,20 +8,22 @@ class SegmentsBuilder
     new(args).segments_with_zero_start
   end
 
+  # If splits are not provided, the resulting segments will be "thin" (without lap_splits)
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: :lap_splits,
-                           exclusive: :lap_splits,
+                           required: :time_points,
+                           exclusive: [:time_points, :splits],
                            class: self.class)
-    @lap_splits = args[:lap_splits] || Split.where(id: args[:sub_splits].map(&:split_id)).ordered.to_a
+    @time_points = args[:time_points]
+    @splits = args[:splits] || []
   end
 
   def segments
     time_points.each_cons(2).map do |begin_point, end_point|
       Segment.new(begin_point: begin_point,
                   end_point: end_point,
-                  begin_lap_split: indexed_lap_splits[begin_point.lap_split_key],
-                  end_lap_split: indexed_lap_splits[end_point.lap_split_key])
+                  begin_lap_split: lap_split_from_time_point(begin_point),
+                  end_lap_split: lap_split_from_time_point(end_point))
     end
   end
 
@@ -31,23 +33,28 @@ class SegmentsBuilder
 
   private
 
-  attr_accessor :lap_splits
+  attr_reader :time_points, :splits
 
-  def time_points
-    @time_points ||= lap_splits.map(&:time_points).flatten
+  def indexed_splits
+    @indexed_splits ||= splits.index_by(&:id)
   end
 
-  def indexed_lap_splits
-    @indexed_lap_splits ||= lap_splits.index_by(&:key)
+  def start_time_point
+    time_points.first
+  end
+
+  def lap_split_from_time_point(time_point)
+    split = indexed_splits[time_point.split_id]
+    split && LapSplit.new(time_point.lap, split)
   end
 
   def start_lap_split
-    @start_lap_split ||= lap_splits.first
+    lap_split_from_time_point(start_time_point)
   end
 
   def zero_start_segment
-    Segment.new(begin_point: start_lap_split.time_point_in,
-                end_point: start_lap_split.time_point_in,
+    Segment.new(begin_point: start_time_point,
+                end_point: start_time_point,
                 begin_lap_split: start_lap_split,
                 end_lap_split: start_lap_split)
   end

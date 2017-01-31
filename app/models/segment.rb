@@ -133,14 +133,14 @@ class Segment
     begin_split.start? && end_split.finish?
   end
 
-  def start?
-    begin_split.start? && end_split.start? && (begin_lap == 1) && (end_lap == 1)
+  def zero_start?
+    begin_lap_split.start? && zero_segment?
   end
 
   def special_limits_type
     case
-    when start?
-      :start
+    when zero_start?
+      :zero_start
     when in_aid?
       :in_aid
     when between_laps?

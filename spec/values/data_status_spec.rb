@@ -74,7 +74,7 @@ RSpec.describe DataStatus do
 
     it 'returns a hash containing zero limits when type is :start' do
       typical_time = 0
-      type = :start
+      type = :zero_start
       expected = {low_bad: 0, low_questionable: 0, high_questionable: 0, high_bad: 0}
       expect(DataStatus.limits(typical_time, type)).to eq(expected)
     end

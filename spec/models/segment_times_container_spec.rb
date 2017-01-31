@@ -95,7 +95,7 @@ RSpec.describe SegmentTimesContainer do
     it 'sends the correct message to DataStatus for a zero_start segment' do
       segment = lap_1_zero_start
       expected_time = 0
-      expected_limits_type = :start
+      expected_limits_type = :zero_start
       validate_limits(segment, expected_time, expected_limits_type, :terrain)
     end
 

@@ -267,8 +267,8 @@ RSpec.describe Segment, type: :model do
 
   describe '#special_limits_type' do
     it 'returns :start for a segment consisting of start split on lap 1 only' do
-      expect(lap_1_zero_start.special_limits_type).to eq(:start)
-      expect(lap_2_zero_start.special_limits_type).not_to eq(:start)
+      expect(lap_1_zero_start.special_limits_type).to eq(:zero_start)
+      expect(lap_2_zero_start.special_limits_type).not_to eq(:zero_start)
     end
 
     it 'returns :in_aid for an in-aid segment' do

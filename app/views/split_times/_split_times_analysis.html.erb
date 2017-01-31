@@ -35,7 +35,7 @@
   <tbody>
   <% @effort_analysis.analysis_rows.each do |analysis_row| %>
       <tr>
-        <td><%= analysis_row.base_name %></td>
+        <td><%= analysis_row.name %></td>
         <td class="text-right"><%= d(analysis_row.distance_from_start) %></td>
         <td class="text-center"><%= [time_format_xxhyym(analysis_row.segment_time), time_format_xxhyym(analysis_row.segment_time_typical)].join(' / ') %></td>
         <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under) %></td>

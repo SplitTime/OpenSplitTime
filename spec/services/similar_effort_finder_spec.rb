@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe SimilarEffortFinder, type: :model do
   describe '#initialize' do
-    it 'initializes when provided with a sub_split and time_from_start' do
-      sub_split = {110 => 1}
+    it 'initializes when provided with a time_point and time_from_start' do
+      time_point = TimePoint.new(1, 110, 1)
       time_from_start = 10000
-      expect { SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start) }.not_to raise_error
+      expect { SimilarEffortFinder.new(time_point: time_point, time_from_start: time_from_start) }.not_to raise_error
     end
 
     it 'initializes when provided with a split_time' do
@@ -30,9 +30,9 @@ RSpec.describe SimilarEffortFinder, type: :model do
                       104 => 20000,
                       105 => 21000,
                       106 => 22000}
-      sub_split = {110 => 1}
+      time_point = TimePoint.new(1, 110, 1)
       time_from_start = 10000
-      finder = SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, min: 3)
+      finder = SimilarEffortFinder.new(time_point: time_point, time_from_start: time_from_start, min: 3)
       allow(finder).to receive(:effort_times).and_return(effort_times)
       expect(finder.effort_ids).to eq([101, 102, 103])
     end
@@ -47,9 +47,9 @@ RSpec.describe SimilarEffortFinder, type: :model do
                       104 => 13000,
                       105 => 14000,
                       106 => 15000}
-      sub_split = {110 => 1}
+      time_point = TimePoint.new(1, 110, 1)
       time_from_start = 10000
-      finder = SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, min: 3)
+      finder = SimilarEffortFinder.new(time_point: time_point, time_from_start: time_from_start, min: 3)
       allow(finder).to receive(:effort_times).and_return(effort_times)
       expect(finder.effort_ids).to eq([101, 102, 103])
     end
@@ -64,9 +64,9 @@ RSpec.describe SimilarEffortFinder, type: :model do
                       104 => 13000,
                       105 => 14000,
                       106 => 15000}
-      sub_split = {110 => 1}
+      time_point = TimePoint.new(1, 110, 1)
       time_from_start = 10000
-      finder = SimilarEffortFinder.new(sub_split: sub_split, time_from_start: time_from_start, min: 4)
+      finder = SimilarEffortFinder.new(time_point: time_point, time_from_start: time_from_start, min: 4)
       allow(finder).to receive(:effort_times).and_return(effort_times)
       expect(finder.effort_ids).to eq([92, 101, 102, 103, 104])
     end

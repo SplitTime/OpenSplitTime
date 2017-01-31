@@ -68,15 +68,15 @@
     <% end %>
     <th>Category</th>
     <th>From</th>
-    <% @spread_display.relevant_splits.each do |split| %>
+    <% @spread_display.relevant_lap_splits.each do |lap_split| %>
         <th class="text-nowrap text-center">
-          <%= split.base_name %><br>
+          <%= lap_split.name %><br>
           <% if @spread_display.display_style == 'segment' %>
-              <%= 'Segment / Aid' if split.name_extensions.size > 1 %>
+              <%= 'Segment / Aid' if lap_split.name_extensions.size > 1 %>
           <% else %>
-              <%= split.name_extensions.join(' / ') if split.name_extensions.size > 1 %>
+              <%= lap_split.name_extensions.join(' / ') if lap_split.name_extensions.size > 1 %>
           <% end %><br/>
-          <%= "(#{pdu('singular').titlecase} #{d(split.distance_from_start)})" %>
+          <%= "(#{pdu('singular').titlecase} #{d(lap_split.distance_from_start)})" %>
         </th>
     <% end %>
     <% if @spread_display.display_style == 'segment' %>

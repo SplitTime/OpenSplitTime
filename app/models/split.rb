@@ -73,10 +73,6 @@ class Split < ActiveRecord::Base
     self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
 
-  def time_hash(bitkey)
-    Hash[SplitTime.where(split_id: id, sub_split_bitkey: bitkey).pluck(:effort_id, :time_from_start)]
-  end
-
   def name(bitkey = nil)
     if bitkey
       name_extensions.size > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name
@@ -101,11 +97,19 @@ class Split < ActiveRecord::Base
   alias_method :bitkeys, :sub_split_bitkeys
 
   def sub_split_in
-    bitkeys.include?(SubSplit::IN_BITKEY) ? {id => SubSplit::IN_BITKEY} : nil
+    {id => in_bitkey} if in_bitkey
+  end
+
+  def in_bitkey
+    bitkeys.find { |bitkey| bitkey == SubSplit::IN_BITKEY }
   end
 
   def sub_split_out
-    bitkeys.include?(SubSplit::OUT_BITKEY) ? {id => SubSplit::OUT_BITKEY} : nil
+    {id => out_bitkey} if out_bitkey
+  end
+
+  def out_bitkey
+    bitkeys.find { |bitkey| bitkey == SubSplit::OUT_BITKEY }
   end
 
   def course_index # Returns an integer representing the split's relative position on the course

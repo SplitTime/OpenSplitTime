@@ -98,7 +98,11 @@
         <strong>Import Efforts With Time Data</strong>
         <%= form_tag({action: :import_efforts}, multipart: true) do %>
             <%= file_field_tag :file, id: 'file-efforts-with-times' %>
-            <%= submit_tag 'Import efforts and times', id: 'submit-efforts-with-times', disabled: true, class: 'btn btn-xs btn-success' %>
+            <%= submit_tag 'Import efforts and elapsed times', id: 'submit-efforts-with-times', disabled: true, class: 'btn btn-xs btn-success' %>
+        <% end %>
+        <%= form_tag({action: :import_efforts_military_times}, multipart: true) do %>
+            <%= file_field_tag :file, id: 'file-efforts-with-military-times' %>
+            <%= submit_tag 'Import efforts and military times', id: 'submit-efforts-with-military-times', disabled: true, class: 'btn btn-xs btn-success' %>
         <% end %>
     <% end %>
   </div>

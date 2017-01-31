@@ -6,11 +6,10 @@ class EffortTimesRow
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset, to: :effort
 
-  def initialize(effort, splits, split_times_data, event_start_time)
-    @effort = effort
-    @splits = splits
-    @split_times_data_by_sub_split = split_times_data.index_by { |row| {row[:split_id] => row[:sub_split_bitkey]} }
-    @event_start_time = event_start_time
+  def initialize(effort, lap_splits, split_times_data)
+    @effort = effort # Use an enriched effort for optimal performance
+    @lap_splits = lap_splits
+    @split_times_data = split_times_data
     @time_clusters = []
     create_time_clusters
   end
@@ -25,32 +24,64 @@ class EffortTimesRow
 
   private
 
-  attr_reader :splits, :split_times_data_by_sub_split, :event_start_time
+  attr_reader :lap_splits, :split_times_data
 
-  def effective_start_time
-    event_start_time + start_offset
+  def indexed_split_times_data
+    @indexed_split_times_data ||=
+        split_times_data.index_by { |row| TimePoint.new(row[:lap], row[:split_id], row[:sub_split_bitkey]) }
   end
 
   def create_time_clusters
     prior_time = 0
-    drop_display_split_id = nil
-    if effort.dropped?
-      ordered_split_ids = splits.map(&:id)
-      drop_split_index = ordered_split_ids.index(effort.dropped_split_id)
-      drop_display_split_id = ordered_split_ids[drop_split_index + 1] if drop_split_index
-    end
-    splits.each do |split|
-      time_cluster = TimeCluster.new(split,
-                                     related_split_times_data(split),
+    lap_splits.each do |lap_split|
+      time_cluster = TimeCluster.new(finish_cluster?(lap_split),
+                                     related_split_times_data(lap_split),
                                      prior_time,
-                                     effective_start_time,
-                                     drop_display_split_id == split.id)
+                                     effort.start_time,
+                                     display_dropped?(lap_split))
       time_clusters << time_cluster
       prior_time = time_cluster.times_from_start.compact.last if time_cluster.times_from_start.compact.present?
     end
   end
 
-  def related_split_times_data(split)
-    split.sub_splits.map { |sub_split| split_times_data_by_sub_split[sub_split] }
+  def finish_cluster?(lap_split)
+    if multiple_laps?
+      cluster_includes_last_data?(lap_split)
+    else
+      lap_split.split.finish?
+    end
+  end
+
+  def cluster_includes_last_data?(lap_split)
+    related_split_times_data(lap_split).compact.include?(last_split_time_data)
+  end
+
+  def related_split_times_data(lap_split)
+    lap_split.time_points.map { |time_point| indexed_split_times_data[time_point] }
+  end
+
+  def last_split_time_data
+    @last_split_time_data ||=
+        lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times_data[time_point] }.compact.last
+  end
+
+  def display_dropped?(lap_split)
+    dropped_display_key && (lap_split.key == dropped_display_key)
+  end
+
+  def dropped_display_key
+    @dropped_display_key ||= lap_split_keys[dropped_key_index + 1] if dropped_key_index
+  end
+
+  def dropped_key_index
+    @dropped_key_index ||= lap_split_keys.index(effort.dropped_key)
+  end
+
+  def lap_split_keys
+    @lap_split_keys ||= lap_splits.map(&:key)
+  end
+
+  def multiple_laps?
+    effort.laps_required != 1
   end
 end

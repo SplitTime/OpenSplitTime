@@ -46,6 +46,10 @@ class EffortPolicy
     current_user.authorized_to_edit?(effort)
   end
 
+  def update_split_times?
+    current_user.authorized_to_edit?(effort)
+  end
+
   def delete_split_times?
     current_user.authorized_to_edit?(effort)
   end

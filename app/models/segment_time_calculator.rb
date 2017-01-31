@@ -39,27 +39,9 @@ class SegmentTimeCalculator
   end
 
   def typical_time_by_stats(effort_ids = nil)
-    return nil if effort_ids == []
-    segment_time, effort_count = SplitTime.connection.execute(typical_time_sql(effort_ids)).values.flatten.map(&:to_i)
-    effort_count > STATS_CALC_THRESHOLD ? segment_time : nil
-  end
-
-  def typical_time_sql(effort_ids)
-    conn = ActiveRecord::Base.connection
-    begin_id = conn.quote(segment.begin_id)
-    begin_bitkey = conn.quote(segment.begin_bitkey)
-    end_id = conn.quote(segment.end_id)
-    end_bitkey = conn.quote(segment.end_bitkey)
-    effort_id_list = conn.quote(effort_ids.join(','))[1..-2] if effort_ids # [1..-2] strips the resulting single quotes
-    query = "SELECT AVG(st2.time_from_start - st1.time_from_start) AS segment_time, " +
-        "COUNT(st1.time_from_start) AS effort_count " +
-        "FROM (SELECT st.effort_id, st.time_from_start, st.split_id, st.sub_split_bitkey " +
-        "FROM split_times st WHERE st.split_id = #{begin_id} AND st.sub_split_bitkey = #{begin_bitkey}) AS st1, " +
-        "(SELECT st.effort_id, st.time_from_start, st.split_id, st.sub_split_bitkey " +
-        "FROM split_times st WHERE st.split_id = #{end_id} AND st.sub_split_bitkey = #{end_bitkey}) AS st2 " +
-        "WHERE st1.effort_id = st2.effort_id"
-    query += " AND st1.effort_id IN (#{effort_id_list})" if effort_ids
-    query
+    return nil if effort_ids == [] # Empty array indicates an attempt for a focused query without any focus efforts
+    segment_time, effort_count = SplitTimeQuery.typical_segment_time(segment, effort_ids)
+    effort_count >= STATS_CALC_THRESHOLD ? segment_time : nil
   end
 
   def validate_setup

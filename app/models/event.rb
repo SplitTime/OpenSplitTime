@@ -64,16 +64,28 @@ class Event < ActiveRecord::Base
     DroppedAttributesSetter.set_attributes(efforts: efforts)
   end
 
+  def lap_splits_through(lap)
+    cycled_lap_splits.first(lap * ordered_splits.size)
+  end
+
   def required_lap_splits
-    @required_lap_splits ||= cycled_lap_splits.first(laps_required * ordered_splits.size)
+    @required_lap_splits ||= lap_splits_through(laps_required)
+  end
+
+  def time_points_through(lap)
+    cycled_time_points.first(lap * sub_splits.size)
   end
 
   def required_time_points
-    @required_time_points ||= cycled_time_points.first(laps_required * sub_splits.size)
+    @required_time_points ||= time_points_through(laps_required)
   end
 
   def laps_unlimited?
     laps_required.zero?
+  end
+
+  def multiple_laps?
+    laps_required != 1
   end
 
   def cycled_lap_splits # For events with unlimited laps, call Event#cycled_lap_splits.first(n)

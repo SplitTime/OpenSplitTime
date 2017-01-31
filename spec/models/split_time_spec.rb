@@ -10,6 +10,8 @@ require 'rails_helper'
 
 RSpec.describe SplitTime, kind: :model do
   it_behaves_like 'data_status_methods'
+  let(:in_bitkey) { SubSplit::IN_BITKEY }
+  let(:out_bitkey) { SubSplit::OUT_BITKEY }
   let(:course) { Course.create!(name: 'Test Course') }
   let(:event) { Event.create!(course: course, name: 'Test Event 2015', start_time: '2015-07-01 06:00:00', laps_required: 1) }
   let(:effort) { Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0) }
@@ -20,23 +22,23 @@ RSpec.describe SplitTime, kind: :model do
   let(:intermediate_split) { Split.create!(course: course, location: location1, base_name: 'Hopeless Outbound', sub_split_bitmap: 3, distance_from_start: 50000, kind: 2) }
 
   it 'is valid when created with an effort, a split, a sub_split, a time_from_start, and a lap' do
-    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 30000, lap: 1)
+    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 30000, lap: 1)
 
     expect(SplitTime.all.count).to eq(1)
     expect(SplitTime.first.effort).to eq(effort)
     expect(SplitTime.first.split).to eq(intermediate_split)
-    expect(SplitTime.first.sub_split_bitkey).to eq(SubSplit::IN_BITKEY)
+    expect(SplitTime.first.sub_split_bitkey).to eq(in_bitkey)
     expect(SplitTime.first.time_from_start).to eq(30000)
   end
 
   it 'is invalid without an effort' do
-    split_time = SplitTime.new(effort: nil, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, lap: 1)
+    split_time = SplitTime.new(effort: nil, split: intermediate_split, bitkey: in_bitkey, time_from_start: 0, lap: 1)
     expect(split_time).not_to be_valid
     expect(split_time.errors[:effort_id]).to include("can't be blank")
   end
 
   it 'is invalid without a split_id' do
-    split_time = SplitTime.new(effort: effort, split: nil, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, lap: 1)
+    split_time = SplitTime.new(effort: effort, split: nil, bitkey: in_bitkey, time_from_start: 0, lap: 1)
     expect(split_time).not_to be_valid
     expect(split_time.errors[:split_id]).to include("can't be blank")
   end
@@ -48,27 +50,27 @@ RSpec.describe SplitTime, kind: :model do
   end
 
   it 'is invalid without a time_from_start' do
-    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: nil, lap: 1)
+    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: nil, lap: 1)
     expect(split_time).not_to be_valid
     expect(split_time.errors[:time_from_start]).to include("can't be blank")
   end
 
   it 'is invalid without a lap' do
-    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 0, lap: nil)
+    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 0, lap: nil)
     expect(split_time).not_to be_valid
     expect(split_time.errors[:lap]).to include("can't be blank")
   end
 
   it 'does not allow more than one of a given split_id/sub_split/lap combination within an effort' do
-    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 10000, lap: 1)
-    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 11000, lap: 1)
+    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 10000, lap: 1)
+    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 11000, lap: 1)
     expect(split_time).not_to be_valid
     expect(split_time.errors[:split_id]).to include('only one of any given split/sub_split/lap combination permitted within an effort')
   end
 
   it 'allows within an effort one of a given split_id/lap combination for each sub_split' do
-    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 10000, lap: 1)
-    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: SubSplit::OUT_BITKEY, time_from_start: 11000, lap: 1)
+    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 10000, lap: 1)
+    split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: out_bitkey, time_from_start: 11000, lap: 1)
     expect(split_time).to be_valid
   end
 
@@ -76,10 +78,10 @@ RSpec.describe SplitTime, kind: :model do
     effort2 = Effort.create!(event: event, first_name: 'Jane', last_name: 'Eyre', gender: 'female', start_offset: 0)
     effort3 = Effort.create!(event: event, first_name: 'Jane', last_name: 'of the Jungle', gender: 'female', start_offset: 0)
     effort4 = Effort.create!(event: event, first_name: 'George', last_name: 'of the Jungle', gender: 'male', start_offset: 0)
-    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 10000, lap: 1)
-    split_time1 = SplitTime.new(effort: effort2, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 11000, lap: 1)
-    split_time2 = SplitTime.new(effort: effort3, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 12000, lap: 1)
-    split_time3 = SplitTime.new(effort: effort4, split: intermediate_split, bitkey: SubSplit::IN_BITKEY, time_from_start: 13000, lap: 1)
+    SplitTime.create!(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 10000, lap: 1)
+    split_time1 = SplitTime.new(effort: effort2, split: intermediate_split, bitkey: in_bitkey, time_from_start: 11000, lap: 1)
+    split_time2 = SplitTime.new(effort: effort3, split: intermediate_split, bitkey: in_bitkey, time_from_start: 12000, lap: 1)
+    split_time3 = SplitTime.new(effort: effort4, split: intermediate_split, bitkey: in_bitkey, time_from_start: 13000, lap: 1)
     expect(split_time1).to be_valid
     expect(split_time2).to be_valid
     expect(split_time3).to be_valid
@@ -180,89 +182,89 @@ RSpec.describe SplitTime, kind: :model do
     end
 
     it 'returns a day and time equal to event start_time if time_from_start and start_offset are zero' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1, time_from_start: 0)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 0)
       expect(split_time.day_and_time).to eq(effort.start_time)
     end
 
     it 'returns a day and time equal to event start_time plus time_from_start when start_offset is zero' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1, time_from_start: 3600)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 3600)
       expect(split_time.day_and_time).to eq(effort.start_time + 1.hour)
     end
 
     it 'returns correct day and time when time_from_start is greater than 24 hours' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1, time_from_start: 100000)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 100000)
       expect(split_time.day_and_time).to eq(effort.start_time + 27.hours + 46.minutes + 40.seconds)
     end
 
     it 'returns correct day and time when time_from_start is greater than 100 hours' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1, time_from_start: 500000)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 500000)
       expect(split_time.day_and_time).to eq(effort.start_time + 138.hours + 53.minutes + 20.seconds)
     end
 
     it 'returns correct day and time when start_offset is greater than zero' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 3600)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1, time_from_start: 7200)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey, time_from_start: 7200)
       expect(split_time.day_and_time).to eq(effort.start_time + 3.hours)
     end
 
     it 'returns correct day and time when start_offset is less than zero' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: -3600)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1, time_from_start: 7200)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey, time_from_start: 7200)
       expect(split_time.day_and_time).to eq(effort.start_time + 1.hour)
     end
   end
 
   describe '#day_and_time=' do
     it 'sets time_from_start to nil if passed a nil value' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1, time_from_start: 1000)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 1000)
       split_time.day_and_time = nil
       expect(split_time.time_from_start).to be_nil
     end
 
     it 'sets time_from_start to zero if passed the event start_time when start_offset is zero' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey)
       split_time.day_and_time = event.start_time
       expect(split_time.time_from_start).to eq(0)
     end
 
     it 'sets time_from_start to zero if passed the event start_time plus the effort start offset' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 3600)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey)
       split_time.day_and_time = event.start_time + 3600
       expect(split_time.time_from_start).to eq(0)
     end
 
     it 'sets time_from_start properly if passed a TimeInZone object' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey)
       split_time.day_and_time = Time.new(2015, 7, 1, 15, 0, 0).in_time_zone
       expect(split_time.time_from_start).to eq(9.hours)
     end
 
     it 'sets time_from_start properly if passed a TimeInZone object that is more than 24 hours ahead' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey)
       split_time.day_and_time = Time.new(2015, 7, 2, 15, 0, 0).in_time_zone
       expect(split_time.time_from_start).to eq(33.hours)
     end
 
     it 'sets time_from_start properly if passed a TimeInZone object that is more than 100 hours ahead' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey)
       split_time.day_and_time = Time.new(2015, 7, 5, 15, 0, 0).in_time_zone
       expect(split_time.time_from_start).to eq(105.hours)
     end
 
     it 'sets time_from_start properly if passed a TimeInZone object and adjust for positive start_offset' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 1800)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey)
       split_time.day_and_time = Time.new(2015, 7, 1, 8, 0, 0).in_time_zone
       expect(split_time.time_from_start).to eq(90.minutes)
     end
 
     it 'sets time_from_start properly if passed a TimeInZone object and adjust for negative start_offset' do
       effort1 = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: -1800)
-      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: 1)
+      split_time = SplitTime.new(effort: effort1, split: intermediate_split, bitkey: in_bitkey)
       split_time.day_and_time = Time.new(2015, 7, 1, 8, 0, 0).in_time_zone
       expect(split_time.time_from_start).to eq(150.minutes)
     end
@@ -319,20 +321,20 @@ RSpec.describe SplitTime, kind: :model do
 
   describe '#military_time=' do
     it 'sets time_from_start to nil if passed a nil value' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1, time_from_start: 1000)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 1000)
       split_time.military_time = nil
       expect(split_time.time_from_start).to be_nil
     end
 
     it 'sets time_from_start to nil if passed an empty string' do
-      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: 1, time_from_start: 1000)
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 1000)
       split_time.military_time = ''
       expect(split_time.time_from_start).to be_nil
     end
 
     it 'calls IntendedTimeCalculator with correct information if passed a present string' do
       split = start_split
-      bitkey = 1
+      bitkey = split.bitkeys.first
       sub_split = {split.id => bitkey}
       military_time = '06:05:00'
       split_time = SplitTime.new(effort: effort, split: split, bitkey: bitkey)
@@ -346,33 +348,120 @@ RSpec.describe SplitTime, kind: :model do
 
   describe '#sub_split' do
     it 'returns split_id and sub_split_bitkey as a sub_split hash' do
-      split_time = SplitTime.new(split_id: 101, bitkey: 1)
-      expect(split_time.sub_split).to eq({101=>1})
+      split_time = SplitTime.new(split_id: 101, bitkey: in_bitkey)
+      expect(split_time.sub_split).to eq({101 => 1})
     end
   end
 
   describe '#sub_split=' do
     it 'sets both split_id and sub_split_bitkey' do
-      split_time = SplitTime.new(sub_split: {101=>1})
+      split_time = SplitTime.new(sub_split: {101 => 1})
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)
     end
   end
 
   describe '#time_point' do
-    it 'returns split_id, sub_split_bitkey, and lap in a TimePoint struct' do
-      split_time = SplitTime.new(split_id: 101, bitkey: 1, lap: 2)
+    it 'returns lap, split_id, and sub_split_bitkey in a TimePoint struct' do
+      split_time = SplitTime.new(lap: 2, split_id: 101, bitkey: in_bitkey)
       expect(split_time.time_point).to eq(TimePoint.new(2, 101, 1))
     end
   end
 
   describe '#time_point=' do
-    it 'sets both split_id and sub_split_bitkey' do
+    it 'sets lap, split_id, and sub_split_bitkey' do
       time_point = TimePoint.new(2, 101, 1)
       split_time = SplitTime.new(time_point: time_point)
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)
       expect(split_time.lap).to eq(2)
+    end
+  end
+
+  describe '#split_name' do
+    it 'returns an "[unknown split]" indication if the split is not available' do
+      st = SplitTime.new
+      expected = '[unknown split]'
+      expect(st.split_name).to eq(expected)
+    end
+
+    it 'does not indicate the lap even when available' do
+      split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+      st = SplitTime.new(split: split, bitkey: in_bitkey, lap: 1)
+      expected = 'Aid 1'
+      expect(st.split_name).to eq(expected)
+    end
+
+    context 'for a split with multiple sub_splits' do
+      it 'returns the name of the split with sub_split extension' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 65)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1 In'
+        expect(st.split_name).to eq(expected)
+
+        st = SplitTime.new(split: split, bitkey: out_bitkey)
+        expected = 'Aid 1 Out'
+        expect(st.split_name).to eq(expected)
+      end
+    end
+
+    context 'for a split with a single sub_split' do
+      it 'returns the name of the split without any sub_split extension but with a lap indication' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1'
+        expect(st.split_name).to eq(expected)
+      end
+    end
+  end
+
+  describe '#split_name_with_lap' do
+    it 'returns an "[unknown split]" indication if the split is not available' do
+      st = SplitTime.new(lap: 1)
+      expected = '[unknown split] Lap 1'
+      expect(st.split_name_with_lap).to eq(expected)
+    end
+
+    it 'returns an "[unknown split] [unknown lap]" indication if neither lap nor split is available' do
+      st = SplitTime.new
+      expected = '[unknown split] [unknown lap]'
+      expect(st.split_name_with_lap).to eq(expected)
+    end
+
+    context 'for a split with multiple sub_splits' do
+      it 'returns the name of the split with sub_split extension and a lap indication' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 65)
+        st = SplitTime.new(split: split, bitkey: in_bitkey, lap: 1)
+        expected = 'Aid 1 In Lap 1'
+        expect(st.split_name_with_lap).to eq(expected)
+
+        st = SplitTime.new(split: split, bitkey: out_bitkey, lap: 1)
+        expected = 'Aid 1 Out Lap 1'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
+
+      it 'returns an "[unknown lap]" indication if the lap is not available' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 65)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1 In [unknown lap]'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
+    end
+
+    context 'for a split with a single sub_split' do
+      it 'returns the name of the split without any sub_split extension but with a lap indication' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+        st = SplitTime.new(split: split, bitkey: in_bitkey, lap: 1)
+        expected = 'Aid 1 Lap 1'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
+
+      it 'returns an "[unknown lap]" indication if the lap is not available' do
+        split = Split.new(base_name: 'Aid 1', sub_split_bitmap: 1)
+        st = SplitTime.new(split: split, bitkey: in_bitkey)
+        expected = 'Aid 1 [unknown lap]'
+        expect(st.split_name_with_lap).to eq(expected)
+      end
     end
   end
 end

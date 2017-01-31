@@ -1,109 +1,94 @@
 class PlaceDetailRow
+  CATEGORIES = [:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid]
 
-  attr_reader :split_times, :split_place_in, :split_place_out, :passed_segment, :passed_in_aid,
-              :passed_by_segment, :passed_by_in_aid, :together_in_aid
-  delegate :base_name, :distance_from_start, to: :split
+  attr_reader :split_times
+  delegate :split, :distance_from_start, to: :lap_split
 
-  # split_times should be an array having size == split.sub_splits.size,
+  # split_times should be an array having size == lap_split.time_points.size,
   # with nil values where no corresponding split_time exists
 
-  def initialize(effort, split, previous_split, split_times, places, efforts)
-    @effort = effort
-    @split = split
-    @previous_split = previous_split
-    @split_times = split_times
-    @split_place_in = places[:split_place_in]
-    @split_place_out = places[:split_place_out]
-    @passed_segment = efforts[:passed_segment]
-    @passed_in_aid = efforts[:passed_in_aid]
-    @passed_by_segment = efforts[:passed_by_segment]
-    @passed_by_in_aid = efforts[:passed_by_in_aid]
-    @together_in_aid = efforts[:together_in_aid]
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:lap_split, :split_times],
+                           exclusive: [:lap_split, :split_times, :previous_lap_split, :show_laps,
+                                       :effort_name, :efforts],
+                           class: self.class)
+    @lap_split = args[:lap_split]
+    @split_times = args[:split_times] || []
+    @previous_lap_split = args[:previous_lap_split]
+    @show_laps = args[:show_laps]
+    @effort_name = args[:effort_name]
+    @efforts = args[:efforts]
+  end
+
+  def name
+    show_laps? ? name_with_lap : name_without_lap
   end
 
   def days_and_times
-    return [] unless split_times
-    split_times.map { |split_time| split_time.present? ? split_time.day_and_time_attr : nil }
+    split_times.map { |st| st.try(:day_and_time) }
   end
 
-  def end_sub_split
-    return [] unless split_times
-    split_times.last.present? ? split_times.last.sub_split : nil
+  def end_time_point
+    split_times.last.try(:time_point)
   end
 
-  def passed_segment_count
-    passed_segment.size
-  end
-  
-  def passed_in_aid_count
-    passed_in_aid.size
+  def encountered_ids # Preserve multiples to enable frequency testing
+    (passed_segment_ids + passed_by_segment_ids + together_in_aid_ids).flatten
   end
 
-  def passed_by_segment_count
-    passed_by_segment.size
+  CATEGORIES.each do |category|
+    define_method("#{category}") do
+      efforts[category]
+    end
   end
 
-  def passed_by_in_aid_count
-    passed_by_in_aid.size
+  CATEGORIES.each do |category|
+    define_method("#{category}_count") do
+      method("#{category}").call.size
+    end
   end
 
-  def together_in_aid_count
-    together_in_aid.size
+  CATEGORIES.each do |category|
+    define_method("#{category}_ids") do
+      method("#{category}").call.map(&:id)
+    end
   end
 
-  def passed_segment_ids
-    passed_segment.map(&:id)
-  end
-
-  def passed_in_aid_ids
-    passed_in_aid.map(&:id)
-  end
-
-  def passed_by_segment_ids
-    passed_by_segment.map(&:id)
-  end
-
-  def passed_by_in_aid_ids
-    passed_by_in_aid.map(&:id)
-  end
-
-  def together_in_aid_ids
-    together_in_aid.map(&:id)
-  end
-
-  def passed_segment_table_title
-    "#{effort_name} passed #{persons(passed_segment_count)} between #{previous_split.base_name} and #{split.base_name}"
-  end
-
-  def passed_in_aid_table_title
-    "#{effort_name} passed #{persons(passed_in_aid_count)} in aid at #{split.base_name}"
-  end
-
-  def passed_by_segment_table_title
-    "#{effort_name} was passed by #{persons(passed_by_segment_count)} between #{previous_split.base_name} and #{split.base_name}"
-  end
-
-  def passed_by_in_aid_table_title
-    "#{effort_name} was passed by #{persons(passed_by_in_aid_count)} while in aid at #{split.base_name}"
-  end
-
-  def together_in_aid_table_title
-    "#{effort_name} was in #{split.base_name} with #{persons(together_in_aid_count)}"
-  end
-
-  def split_id
-    split.id
+  CATEGORIES.each do |category|
+    define_method("#{category}_table_title") do
+      table_titles[category]
+    end
   end
 
   private
 
-  attr_reader :effort, :split, :previous_split
-
-  def effort_name
-    effort.full_name
-  end
+  attr_reader :lap_split, :previous_lap_split, :show_laps, :effort_name, :efforts
 
   def persons(number)
     number == 1 ? "#{number} person" : "#{number} people"
+  end
+
+  def table_titles
+    {passed_segment: "#{effort_name} passed #{persons(passed_segment_count)} between" +
+        " #{previous_lap_split.base_name} and #{lap_split.base_name}",
+     passed_in_aid: "#{effort_name} passed #{persons(passed_in_aid_count)} in aid at #{lap_split.base_name}",
+     passed_by_segment: "#{effort_name} was passed by #{persons(passed_by_segment_count)} between " +
+         "#{previous_lap_split.base_name} and #{lap_split.base_name}",
+     passed_by_in_aid: "#{effort_name} was passed by #{persons(passed_by_in_aid_count)} while in aid at " +
+         "#{lap_split.base_name}",
+     together_in_aid: "#{effort_name} was in #{lap_split.base_name} with #{persons(together_in_aid_count)}"}
+  end
+
+  def show_laps?
+    @show_laps
+  end
+
+  def name_without_lap
+    split.name
+  end
+
+  def name_with_lap
+    lap_split.name
   end
 end

@@ -6,39 +6,39 @@ class IntendedTimeCalculator
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:military_time, :effort, :sub_split],
-                           exclusive: [:military_time, :effort, :sub_split, :prior_valid_split_time,
-                                       :expected_time_from_prior, :ordered_splits, :split_times],
+                           required: [:military_time, :effort, :time_point],
+                           exclusive: [:military_time, :effort, :time_point, :prior_valid_split_time,
+                                       :expected_time_from_prior, :lap_splits, :split_times],
                            class: self.class)
     @military_time = args[:military_time]
     @effort = args[:effort]
-    @sub_split = args[:sub_split]
-    @ordered_splits = args[:ordered_splits]
+    @time_point = args[:time_point]
+    @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
     @prior_valid_split_time = args[:prior_valid_split_time] ||
         PriorSplitTimeFinder.guaranteed_split_time(effort: effort,
-                                                   sub_split: sub_split,
-                                                   ordered_splits: ordered_splits,
+                                                   time_point: time_point,
+                                                   lap_splits: lap_splits,
                                                    split_times: args[:split_times])
     @expected_time_from_prior = args[:expected_time_from_prior] ||
         TimePredictor.segment_time(segment: subject_segment,
                                    effort: effort,
-                                   ordered_splits: ordered_splits,
+                                   lap_splits: lap_splits,
                                    completed_split_time: prior_valid_split_time)
     validate_setup
   end
 
   def day_and_time
     return nil unless military_time.present?
-    preliminary_day_and_time && (preliminary_day_and_time < prior_day_and_time) ?
+    preliminary_day_and_time && (preliminary_day_and_time < effort.start_time) ?
         preliminary_day_and_time + 1.day : preliminary_day_and_time
   end
 
   private
 
-  attr_reader :military_time, :effort, :sub_split, :ordered_splits, :prior_valid_split_time, :expected_time_from_prior
+  attr_reader :military_time, :effort, :time_point, :lap_splits, :prior_valid_split_time, :expected_time_from_prior
 
   def preliminary_day_and_time
-    expected_day_and_time && earliest_datetime + days_from_earliest
+    expected_day_and_time && earliest_day_and_time + days_from_earliest
   end
 
   def prior_day_and_time
@@ -49,27 +49,27 @@ class IntendedTimeCalculator
     expected_time_from_prior && prior_day_and_time + expected_time_from_prior
   end
 
-  def earliest_datetime
+  def earliest_day_and_time
     prior_day_and_time.beginning_of_day + seconds_into_day
   end
 
   def days_from_earliest
-    ((expected_day_and_time - earliest_datetime) / 1.day).round(0) * 1.day
+    ((expected_day_and_time - earliest_day_and_time) / 1.day).round(0) * 1.day
   end
 
   def subject_segment
-    Segment.new(begin_sub_split: prior_valid_split_time.sub_split,
-                end_sub_split: sub_split,
-                begin_split: begin_split,
-                end_split: end_split)
+    Segment.new(begin_point: prior_valid_split_time.time_point,
+                end_point: time_point,
+                begin_lap_split: begin_lap_split,
+                end_lap_split: end_lap_split)
   end
 
-  def begin_split
-    ordered_splits && ordered_splits.find { |split| split.id == prior_valid_split_time.split_id }
+  def begin_lap_split
+    lap_splits && lap_splits.find { |lap_split| lap_split.key == prior_valid_split_time.lap_split_key }
   end
 
-  def end_split
-    ordered_splits && ordered_splits.find { |split| split.id == sub_split.split_id }
+  def end_lap_split
+    lap_splits && lap_splits.find { |lap_split| lap_split.key == time_point.lap_split_key }
   end
 
   def seconds_into_day
@@ -77,6 +77,7 @@ class IntendedTimeCalculator
   end
 
   def validate_setup
+    raise ArgumentError, "military time must be provided as a string; got #{military_time} (#{military_time.class})" unless military_time.is_a?(String)
     raise RangeError, "#{military_time} is out of range for #{self.class}" if seconds_into_day && ((seconds_into_day >= 1.day) | (seconds_into_day < 0))
   end
 end

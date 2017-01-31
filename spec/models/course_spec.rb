@@ -30,17 +30,45 @@ RSpec.describe Course, type: :model do
   describe '#distance' do
     it 'returns a course distance using the distance_from_start of the finish split' do
       course = FactoryGirl.build_stubbed(:course_with_standard_splits)
-      splits = course.splits
-      finish_split_distance = splits.last.distance_from_start
-      expect(finish_split_distance).to be > 0
-      allow(course).to receive(:ordered_splits).and_return(splits)
-      expect(course.distance).to eq(finish_split_distance)
+      course.splits.last.distance_from_start = 200
+      allow(course).to receive(:ordered_splits).and_return(course.splits)
+      expect(course.distance).to eq(200)
     end
 
     it 'returns nil if no finish split exists on the course' do
       course = FactoryGirl.build_stubbed(:course)
       allow(course).to receive(:ordered_splits).and_return([])
       expect(course.distance).to be_nil
+    end
+  end
+
+  describe '#vert_gain' do
+    it 'returns a course vert_gain using the vert_gain_from_start of the finish split' do
+      course = FactoryGirl.build_stubbed(:course_with_standard_splits)
+      course.splits.last.vert_gain_from_start = 100
+      allow(course).to receive(:ordered_splits).and_return(course.splits)
+      expect(course.vert_gain).to eq(100)
+    end
+
+    it 'returns nil if no finish split exists on the course' do
+      course = FactoryGirl.build_stubbed(:course)
+      allow(course).to receive(:ordered_splits).and_return([])
+      expect(course.vert_gain).to be_nil
+    end
+  end
+  
+  describe '#vert_loss' do
+    it 'returns a course vert_loss using the vert_loss_from_start of the finish split' do
+      course = FactoryGirl.build_stubbed(:course_with_standard_splits)
+      course.splits.last.vert_loss_from_start = 50
+      allow(course).to receive(:ordered_splits).and_return(course.splits)
+      expect(course.vert_loss).to eq(50)
+    end
+
+    it 'returns nil if no finish split exists on the course' do
+      course = FactoryGirl.build_stubbed(:course)
+      allow(course).to receive(:ordered_splits).and_return([])
+      expect(course.vert_loss).to be_nil
     end
   end
 end

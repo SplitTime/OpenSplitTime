@@ -3,7 +3,7 @@ class DataStatus
   LIMIT_FACTORS = {terrain: {low_bad: 0.3, low_questionable: 0.4, high_questionable: 2.2, high_bad: 3.0},
                    stats: {low_bad: 0.4, low_questionable: 0.6, high_questionable: 1.7, high_bad: 2.5},
                    focused: {low_bad: 0.5, low_questionable: 0.7, high_questionable: 1.5, high_bad: 2.2},
-                   start: {low_bad: 0, low_questionable: 0, high_questionable: 0, high_bad: 0},
+                   zero_start: {low_bad: 0, low_questionable: 0, high_questionable: 0, high_bad: 0},
                    in_aid: {low_bad: 0, low_questionable: 0, high_questionable: 60, high_bad: 100}}
                       .with_indifferent_access
 
@@ -37,6 +37,6 @@ class DataStatus
     return nil unless typical_time && type
     raise ArgumentError, "type '#{type}' is not recognized" unless LIMIT_TYPE_ARRAY.include?(type.to_sym)
     typical_time += TYPICAL_TIME_IN_AID if type == :in_aid
-    LIMIT_ARRAY.map { |limit| [limit, typical_time * LIMIT_FACTORS[type][limit]] }.to_h
+    LIMIT_ARRAY.map { |limit| [limit, (typical_time * LIMIT_FACTORS[type][limit]).to_i] }.to_h
   end
 end

@@ -34,7 +34,7 @@
               <td class="text-center"><strong><%= time_format_xxhyymzzs(split_row.segment_time) %></strong></td>
               <td class="text-right"><strong><%= time_format_minutes(@effort_show.total_time_in_aid) %></strong></td>
           <% end %>
-      <% elsif split_row.intermediate? %>
+      <% else %>
           <td><%= split_row.name %></td>
           <td class="text-right"><%= d(split_row.distance_from_start) %></td>
           <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>
@@ -44,9 +44,7 @@
               <td class="text-right"><%= time_format_minutes(split_row.time_in_aid) %></td>
           <% end %>
       <% end %>
-      <% unless split_row.start? %>
-          <%= render 'split_times/actions_confirm_delete', split_row: split_row %>
-      <% end %>
+      <%= render 'split_times/actions_confirm_delete', split_row: split_row %>
       </tr>
   <% end %>
   </tbody>

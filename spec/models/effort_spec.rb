@@ -89,7 +89,7 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe 'approximate_age_today' do
+  describe '#approximate_age_today' do
     it 'returns nil if age is not present' do
       effort = FactoryGirl.build(:effort)
       expect(effort.approximate_age_today).to be_nil
@@ -114,7 +114,7 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe 'time_in_aid' do
+  describe '#time_in_aid' do
     it 'returns nil when the split has no split_times' do
       split_times = SplitTime.none
       effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
@@ -140,11 +140,11 @@ RSpec.describe Effort, type: :model do
       matching_split_times = split_times.select { |split_time| split_time.split_id == split.id }
       expect(matching_split_times.count).to eq(2)
       expect(effort).to receive(:ordered_split_times).and_return(matching_split_times)
-      expect(effort.time_in_aid(split)).to eq(100)
+      expect(effort.time_in_aid(split)).to eq(600)
     end
   end
 
-  describe 'total_time_in_aid' do
+  describe '#total_time_in_aid' do
     it 'returns zero when the event has no splits' do
       split_times = []
       effort = FactoryGirl.build(:effort)
@@ -163,7 +163,105 @@ RSpec.describe Effort, type: :model do
       split_times = FactoryGirl.build_stubbed_list(:split_times_in_out, 12)
       effort = FactoryGirl.build(:effort)
       expect(effort).to receive(:ordered_split_times).and_return(split_times)
-      expect(effort.total_time_in_aid).to eq(500)
+      expect(effort.total_time_in_aid).to eq(3000)
+    end
+  end
+
+  describe '#start_time=' do
+    it 'sets start_offset to the difference between the provided parameter and event start time' do
+      event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')
+      effort = FactoryGirl.build_stubbed(:effort, start_offset: 0)
+      allow(effort).to receive(:event).and_return(event)
+      effort.start_time = event.start_time + 3.hours
+      expect(effort.start_offset).to eq(3.hours)
+    end
+
+    it 'works properly when the effort starts before the event' do
+      event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')
+      effort = FactoryGirl.build_stubbed(:effort, start_offset: 0)
+      allow(effort).to receive(:event).and_return(event)
+      effort.start_time = event.start_time - 3.hours
+      expect(effort.start_offset).to eq(-3.hours)
+    end
+
+    it 'works properly when the offset is large' do
+      event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')
+      effort = FactoryGirl.build_stubbed(:effort, start_offset: 0)
+      allow(effort).to receive(:event).and_return(event)
+      effort.start_time = event.start_time + (24.hours * 365)
+      expect(effort.start_offset).to eq(24.hours * 365)
+    end
+  end
+
+  describe '#dropped_lap_split_key' do
+    it 'returns a LapSplitKey using dropped_lap and dropped_split_id' do
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: 1, dropped_split_id: 101)
+      expect(effort.dropped_key).to eq(LapSplitKey.new(1, 101))
+    end
+
+    it 'returns nil if dropped_split_id is not present' do
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: 1, dropped_split_id: nil)
+      expect(effort.dropped_key).to be_nil
+    end
+
+    it 'returns nil if dropped_lap is not present' do
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: nil, dropped_split_id: 101)
+      expect(effort.dropped_key).to be_nil
+    end
+  end
+
+  describe '#dropped_lap_split_key=' do
+    it 'sets dropped_lap and dropped_split_id to the attributes of the provided LapSplitKey' do
+      lap_split_key = LapSplitKey.new(1, 101)
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: nil, dropped_split_id: nil)
+      effort.dropped_lap_split_key = lap_split_key
+      expect(effort.dropped_lap).to eq(1)
+      expect(effort.dropped_split_id).to eq(101)
+    end
+
+    it 'sets dropped_lap and dropped_split_id to nil if the provided LapSplitKey has nil attributes' do
+      lap_split_key = LapSplitKey.new(nil, nil)
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: 1, dropped_split_id: 101)
+      effort.dropped_lap_split_key = lap_split_key
+      expect(effort.dropped_lap).to eq(nil)
+      expect(effort.dropped_split_id).to eq(nil)
+    end
+
+    it 'sets dropped_lap and dropped_split_id to nil if provided parameter is nil' do
+      effort = FactoryGirl.build_stubbed(:effort, dropped_lap: 1, dropped_split_id: 101)
+      effort.dropped_lap_split_key = nil
+      expect(effort.dropped_lap).to eq(nil)
+      expect(effort.dropped_split_id).to eq(nil)
+    end
+  end
+
+  describe '#drop!' do
+    it 'sets dropped_lap and dropped_split_id to the provided lap_split_key and saves the effort' do
+      effort = FactoryGirl.create(:effort, dropped_lap: nil, dropped_split_id: nil)
+      lap_split_key = LapSplitKey.new(1, 101)
+      effort.drop!(lap_split_key)
+      effort = Effort.last
+      expect(effort.dropped_lap).to eq(1)
+      expect(effort.dropped_split_id).to eq(101)
+    end
+
+    it 'sets dropped_lap and dropped_split_id to nil and saves the effort if the provided parameter is nil' do
+      effort = FactoryGirl.create(:effort, dropped_lap: 1, dropped_split_id: 101)
+      lap_split_key = nil
+      effort.drop!(lap_split_key)
+      effort = Effort.last
+      expect(effort.dropped_lap).to be_nil
+      expect(effort.dropped_split_id).to be_nil
+    end
+  end
+
+  describe '#undrop!' do
+    it 'sets dropped_lap and dropped_split_id to nil and saves the effort' do
+      effort = FactoryGirl.create(:effort, dropped_lap: 1, dropped_split_id: 101)
+      effort.undrop!
+      effort = Effort.last
+      expect(effort.dropped_lap).to be_nil
+      expect(effort.dropped_split_id).to be_nil
     end
   end
 end

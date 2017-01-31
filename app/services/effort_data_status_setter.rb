@@ -9,11 +9,11 @@ class EffortDataStatusSetter
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: :effort,
-                           exclusive: [:effort, :ordered_split_times, :ordered_splits, :times_container],
+                           exclusive: [:effort, :ordered_split_times, :lap_splits, :times_container],
                            class: self.class)
     @effort = args[:effort]
     @ordered_split_times = args[:ordered_split_times] || effort.ordered_split_times.to_a
-    @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
+    @lap_splits = args[:lap_splits] || effort.lap_splits
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
   end
 
@@ -31,7 +31,7 @@ class EffortDataStatusSetter
   end
 
   def split_times_status_hash
-    ordered_split_times.map { |st| [st.sub_split, st.data_status] }.to_h
+    ordered_split_times.map { |st| [st.time_point, st.data_status] }.to_h
   end
 
   def save_changes
@@ -43,9 +43,9 @@ class EffortDataStatusSetter
 
   private
 
-  attr_reader :effort, :ordered_splits, :ordered_split_times, :times_container
+  attr_reader :effort, :lap_splits, :ordered_split_times, :times_container
   attr_accessor :subject_split_time, :valid_split_times, :subject_index, :prior_valid_split_time,
-                :subject_begin_split, :subject_end_split, :subject_segment, :subject_segment_time
+                :subject_begin_lap_split, :subject_end_lap_split, :subject_segment, :subject_segment_time
 
   def set_split_time_data_status(split_time)
     set_subject_attributes(split_time)
@@ -54,8 +54,8 @@ class EffortDataStatusSetter
   end
 
   def set_effort_data_status
-    effort.data_status =
-        ordered_split_times.map(&:data_status_numeric).push(Effort.data_statuses['good']).compact.min
+    effort.data_status = ordered_split_times.map(&:data_status_numeric)
+                             .push(Effort.data_statuses['good']).compact.min
   end
 
   def set_subject_attributes(split_time)
@@ -63,36 +63,36 @@ class EffortDataStatusSetter
     self.valid_split_times = ordered_split_times.select { |st| st.valid_status? | (st == subject_split_time) }
     self.subject_index = valid_split_times.index(subject_split_time)
     self.prior_valid_split_time = subject_index == 0 ? mock_start_split_time : valid_split_times[subject_index - 1]
-    self.subject_begin_split = indexed_splits[prior_valid_split_time.split_id]
-    self.subject_end_split = indexed_splits[subject_split_time.split_id]
-    self.subject_segment = Segment.new(begin_sub_split: prior_valid_split_time.sub_split,
-                                       end_sub_split: subject_split_time.sub_split,
-                                       begin_split: subject_begin_split,
-                                       end_split: subject_end_split)
+    self.subject_begin_lap_split = indexed_lap_splits[prior_valid_split_time.lap_split_key]
+    self.subject_end_lap_split = indexed_lap_splits[subject_split_time.lap_split_key]
+    self.subject_segment = Segment.new(begin_point: prior_valid_split_time.time_point,
+                                       end_point: subject_split_time.time_point,
+                                       begin_lap_split: subject_begin_lap_split,
+                                       end_lap_split: subject_end_lap_split)
     self.subject_segment_time = subject_split_time.time_from_start - prior_valid_split_time.time_from_start
   end
 
   def beyond_drop?
-    dropped_split && ordered_splits.index(subject_end_split) > ordered_splits.index(dropped_split)
+    dropped_lap_split && lap_splits.index(subject_end_lap_split) > lap_splits.index(dropped_lap_split)
   end
 
   def time_predictor
     TimePredictor.new(segment: subject_segment,
                       completed_split_time: prior_valid_split_time,
-                      ordered_splits: ordered_splits,
+                      lap_splits: lap_splits,
                       times_container: times_container)
   end
 
   def mock_start_split_time
-    @mock_start_split_time ||= SplitTime.new(sub_split: ordered_split_times.first.sub_split, time_from_start: 0)
+    @mock_start_split_time ||= SplitTime.new(time_point: ordered_split_times.first.time_point, time_from_start: 0)
   end
 
-  def dropped_split
-    @dropped_split ||= indexed_splits[effort.dropped_split_id]
+  def dropped_lap_split
+    @dropped_lap_split ||= indexed_lap_splits[effort.dropped_lap_split_key]
   end
 
-  def indexed_splits
-    @indexed_splits ||= ordered_splits.index_by(&:id)
+  def indexed_lap_splits
+    @indexed_lap_splits ||= lap_splits.index_by(&:key)
   end
 
   def unconfirmed_split_times

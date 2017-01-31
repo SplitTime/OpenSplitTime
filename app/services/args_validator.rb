@@ -1,6 +1,4 @@
 class ArgsValidator
-  include ColorizeText
-
   class << self
     attr_accessor :console_notifications
 
@@ -9,7 +7,7 @@ class ArgsValidator
     end
 
     def exclusive
-      [:params, :required, :required_alternatives, :exclusive, :class]
+      [:params, :required, :required_alternatives, :exclusive, :deprecated, :class]
     end
   end
 
@@ -18,6 +16,7 @@ class ArgsValidator
     @required = Array.wrap(args[:required]) || []
     @required_alternatives = Array.wrap(args[:required_alternatives]) || []
     @exclusive = Array.wrap(args[:exclusive]) || []
+    @deprecated = Array.wrap(args[:deprecated])
     @klass = args[:class]
     @args = args
     validate_setup(args)
@@ -26,6 +25,7 @@ class ArgsValidator
   end
 
   def validate
+    report_deprecations
     validate_hash
     validate_required_params
     validate_required_alternatives
@@ -35,7 +35,16 @@ class ArgsValidator
 
   private
 
-  attr_reader :params, :required, :required_alternatives, :exclusive, :klass, :args
+  attr_reader :params, :required, :required_alternatives, :exclusive, :deprecated, :klass, :args
+
+  def report_deprecations
+    deprecated.each do |deprecation_pair|
+      deprecation_pair.each do |deprecated_arg, replacement_arg|
+        warn "use of '#{deprecated_arg}' #{for_klass}has been deprecated in favor of '#{replacement_arg}'" if
+            params[deprecated_arg]
+      end
+    end
+  end
 
   def validate_hash
     raise ArgumentError, "arguments #{for_klass}must be provided as a hash" unless params.is_a?(Hash)
@@ -79,7 +88,7 @@ class ArgsValidator
   end
 
   def notify_console(args)
-    puts green("ArgsValidator validated arguments for #{klass || 'an unspecified class'}")
+    puts ColorizeText.green("ArgsValidator validated arguments for #{klass || 'an unspecified class'}")
     puts args[:params].transform_values { |value| value.respond_to?(:map) ?
         value.map { |object| object.try(:name) || object.try(:id) || object.to_s } :
         value.try(:name) || value.try(:id) || value.to_s }

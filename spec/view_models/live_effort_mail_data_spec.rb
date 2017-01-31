@@ -50,11 +50,11 @@ RSpec.describe LiveEffortMailData do
       allow(out_split_time).to receive(:split).and_return(split3)
       split_times_data = [{split_id: 103,
                            split_name: 'Split 1 In',
-                           day_and_time: 'Friday, July 1, 2016  6:33AM',
+                           day_and_time: 'Friday, July 1, 2016  9:20AM',
                            pacer: nil},
                           {split_id: 103,
                            split_name: 'Split 1 Out',
-                           day_and_time: 'Friday, July 1, 2016  6:35AM',
+                           day_and_time: 'Friday, July 1, 2016  9:30AM',
                            pacer: nil}]
       mail_data = LiveEffortMailData.new(participant: participant, split_times: split_times)
       expected = {full_name: 'Joe Doe',

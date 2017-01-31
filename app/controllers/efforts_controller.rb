@@ -94,6 +94,15 @@ class EffortsController < ApplicationController
     session[:return_to] = effort_path(@effort)
   end
 
+  def update_split_times
+    authorize @effort
+    if @effort.update(effort_params)
+      redirect_to effort_path(@effort)
+    else
+      render 'edit_split_times'
+    end
+  end
+
   def delete_split_times
     authorize @effort
     @effort.destroy_split_times(params[:split_time_ids])

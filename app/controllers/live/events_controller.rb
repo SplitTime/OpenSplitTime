@@ -14,7 +14,7 @@ class Live::EventsController < Live::BaseController
 
   def progress_report
     authorize @event
-    @progress_display = EventProgressDisplay.new(@event, params[:past_due_threshold])
+    @progress_display = LiveProgressReport.new(event: @event, past_due_threshold: params[:past_due_threshold])
   end
 
   def get_event_data
@@ -68,7 +68,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
-      @file_transformer = LiveFileTransformer.new(event: @event, file: params[:file], split_id: params[:splitId])
+      @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:splitId])
       render partial: 'file_effort_data_report.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'
@@ -77,13 +77,13 @@ class Live::EventsController < Live::BaseController
 
   def set_times_data
 
-    # Each time_row should include splitId, bibNumber, timeIn (military), timeOut (military),
+    # Each time_row should include splitId, lap, bibNumber, timeIn (military), timeOut (military),
     # pacerIn (boolean), pacerOut (boolean), and droppedHere (boolean). This action ingests time_rows, converts and
     # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
     authorize @event
     if @event.available_live
-      @live_importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:timeRows])
+      @returned_rows = LiveTimeRowImporter.import(event: @event, time_rows: params[:timeRows])
       render partial: 'set_times_data_report.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'

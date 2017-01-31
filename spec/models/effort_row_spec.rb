@@ -35,7 +35,7 @@ RSpec.describe EffortRow, type: :model do
       expect(@effort_row4.present?).to eq(true)
     end
 
-    it 'should instantiate a SplitRow if an effort and other options are provided' do
+    it 'should instantiate an EffortRow if an effort and other options are provided' do
       @effort_row5 = EffortRow.new(@effort5, overall_place: 10, gender_place: 5, start_time: "1992-07-01 06:00:00")
       @effort_row6 = EffortRow.new(@effort6, overall_place: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
       @effort_row7 = EffortRow.new(@effort7, finish_status: "DNF at Ridgeline")

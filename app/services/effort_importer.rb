@@ -9,13 +9,12 @@ class EffortImporter
                            exclusive: [:file_path, :event, :current_user_id, :without_status],
                            class: self.class)
     @errors = ActiveModel::Errors.new(self)
-    @import_file = ImportFile.new(args[:file_path])
+    @import_file ||= ImportFile.new(args[:file_path])
     @event = args[:event]
     @current_user_id = args[:current_user_id]
     @without_status = args[:without_status]
     @effort_failure_array = []
     @effort_id_array = []
-    @effort_schema = EffortSchema.new(header_column_titles)
   end
 
   def effort_import
@@ -23,7 +22,6 @@ class EffortImporter
       self.effort_import_report = 'Column count does not match'
       return
     end
-    start_offset_hash = {}
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0...split_offset - 1])
@@ -31,17 +29,39 @@ class EffortImporter
       if effort
         row_time_data = row[split_offset - 1...row.size]
         row_time_data.unshift(0) if finish_times_only?
-        creator = EffortSplitTimeCreator.new(row_time_data, effort, current_user_id, event)
+        creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
+                                             current_user_id: current_user_id, event: event)
         creator.create_split_times
-        start_offset_hash[effort.id] = {start_offset: creator.start_offset}
         effort_id_array << effort.id
       else
         effort_failure_array << row
       end
     end
-    BulkUpdateService.update_attributes(:efforts, start_offset_hash)
-    DroppedAttributesSetter.set_attributes(efforts: event.efforts.where(id: effort_id_array))
-    BulkDataStatusSetter.set_data_status(efforts: event.efforts.where(id: effort_id_array)) unless without_status
+    set_drops_and_status
+    self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
+  end
+
+  def effort_import_military_times
+    unless column_count_matches?
+      self.effort_import_report = 'Column count does not match'
+      return
+    end
+    (effort_offset..spreadsheet.last_row).each do |i|
+      row = spreadsheet.row(i)
+      row_effort_data = prepare_row_effort_data(row[0...split_offset - 1])
+      effort = create_effort(row_effort_data)
+      if effort
+        row_time_data = row[split_offset - 1...row.size]
+        creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
+                                             current_user_id: current_user_id, event: event,
+                                             military_times: true)
+        creator.create_split_times
+        effort_id_array << effort.id
+      else
+        effort_failure_array << row
+      end
+    end
+    set_drops_and_status
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
   end
 
@@ -77,7 +97,7 @@ class EffortImporter
   private
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count,
-                :effort_schema, :import_without_times
+                :import_without_times
   attr_reader :event, :current_user_id, :without_status
   attr_writer :effort_import_report, :effort_id_array, :effort_failure_array
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
@@ -109,12 +129,31 @@ class EffortImporter
     effort if effort.save
   end
 
+  def set_drops_and_status
+    DroppedAttributesSetter.set_attributes(efforts: imported_efforts)
+
+    # Initial pass sets data_status based on the relaxed standards of the terrain model
+    # Second pass sets data_status on the :stats model, ignoring times flagged as bad or questionable by the first pass
+    unless without_status
+      BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :terrain)
+      BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :stats)
+    end
+  end
+
+  def imported_efforts # Don't memoize--needs to be refreshed before the second pass
+    event.efforts.where(id: effort_id_array)
+  end
+
   def row_effort_hash(row_effort_data)
     effort_schema.zip(row_effort_data).select { |title, data| title && data }.to_h
   end
 
   def prepare_row_effort_data(row_effort_data)
     EffortImportDataPreparer.new(row_effort_data, effort_schema.to_a).output_row
+  end
+
+  def effort_schema
+    @effort_schema ||= EffortSchema.new(header_column_titles)
   end
 
   def required_time_points
@@ -127,5 +166,9 @@ class EffortImporter
 
   def header_column_titles
     import_without_times ? header1 : header1[0...split_offset - 1]
+  end
+
+  def military_times?
+    @military_times
   end
 end

@@ -77,13 +77,13 @@ class Effort < ActiveRecord::Base
   end
 
   def start_time
-    @start_time ||= event_start_time + start_offset
+    event_start_time + start_offset
   end
 
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    self.start_offset = TimeDifference.from(new_datetime, event_start_time).in_seconds
+    self.start_offset = TimeDifference.from(event_start_time, new_datetime).in_seconds
   end
 
   def event_start_time
@@ -115,7 +115,7 @@ class Effort < ActiveRecord::Base
   end
 
   def finish_split_time
-    @finish_split_time ||= finish_split_times.last if finished?
+    @finish_split_time ||= last_reported_split_time if finished?
   end
 
   def start_split_time
@@ -123,11 +123,14 @@ class Effort < ActiveRecord::Base
   end
 
   def laps_finished
-    attributes['laps_finished'] || finish_split_times.size
+    return attributes['laps_finished'] if attributes['laps_finished'].present?
+    last_split_time = last_reported_split_time
+    return 0 unless last_split_time
+    last_split_time.split.finish? ? last_split_time.lap : last_split_time.lap - 1
   end
 
   def laps_started
-    start_split_times.size
+    attributes['laps_started'] || last_reported_split_time.try(:lap) || 0
   end
 
   def finished?
@@ -146,9 +149,16 @@ class Effort < ActiveRecord::Base
     started? && !dropped? && !finished?
   end
 
-  def dropped_time_point
-    TimePoint.new(dropped_lap, dropped_split_id)
+  def dropped_lap_split_key
+    dropped_lap && dropped_split_id && LapSplitKey.new(dropped_lap, dropped_split_id)
   end
+  alias_method :dropped_key, :dropped_lap_split_key
+
+  def dropped_lap_split_key=(key)
+    self.dropped_lap = key.try(:lap)
+    self.dropped_split_id = key.try(:split_id)
+  end
+  alias_method :dropped_key=, :dropped_lap_split_key=
 
   def finish_status
     case
@@ -163,8 +173,8 @@ class Effort < ActiveRecord::Base
     end
   end
 
-  def time_in_aid(split)
-    time_array = ordered_split_times(split).map(&:time_from_start)
+  def time_in_aid(lap_split)
+    time_array = ordered_split_times(lap_split).map(&:time_from_start)
     time_array.size > 1 ? time_array.last - time_array.first : nil
   end
 
@@ -173,12 +183,17 @@ class Effort < ActiveRecord::Base
                                .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
   end
 
+  def ordered_split_times(lap_split = nil)
+    lap_split ? split_times.where(lap: lap_split.lap, split: lap_split.split)
+                    .order(:sub_split_bitkey) : split_times.ordered
+  end
+
   def ordered_splits
     @ordered_splits ||= event.ordered_splits
   end
 
-  def ordered_split_times(split = nil)
-    split ? split_times.where(split: split).order(:sub_split_bitkey) : split_times.ordered
+  def lap_splits
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(laps_started)
   end
 
   def overall_place
@@ -213,7 +228,13 @@ class Effort < ActiveRecord::Base
   end
 
   def undrop!
-    update(dropped_split_id: nil, dropped_lap: nil)
+    self.dropped_lap_split_key = nil
+    save
+  end
+
+  def drop!(lap_split_key)
+    self.dropped_lap_split_key = lap_split_key
+    save
   end
 
   def enriched

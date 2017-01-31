@@ -7,18 +7,18 @@ class TimePredictor
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: :segment,
-                           required_alternatives: [:effort, [:ordered_splits, :completed_split_time]],
-                           exclusive: [:segment, :effort, :ordered_splits, :completed_split_time,
+                           required_alternatives: [:effort, [:lap_splits, :completed_split_time]],
+                           exclusive: [:segment, :effort, :lap_splits, :completed_split_time,
                                        :calc_model, :similar_effort_ids, :times_container],
                            class: self.class)
     @segment = args[:segment]
     @effort = args[:effort]
-    @ordered_splits = args[:ordered_splits] || effort.ordered_splits.to_a
+    @lap_splits = args[:lap_splits] || effort.lap_splits
     @completed_split_time = args[:completed_split_time] || effort.valid_split_times.last || mock_start_split_time
-    @calc_model = args[:calc_model] || :terrain
     @similar_effort_ids = args[:similar_effort_ids]
     @times_container = args[:times_container] ||
         SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
+    @calc_model = args[:calc_model] || times_container.calc_model || :terrain
     validate_setup
   end
 
@@ -32,11 +32,11 @@ class TimePredictor
 
   private
 
-  attr_reader :segment, :effort, :ordered_splits, :completed_split_time,
+  attr_reader :segment, :effort, :lap_splits, :completed_split_time,
               :calc_model, :similar_effort_ids, :times_container
 
   def limits
-    times_container.limits(segment).transform_values { |limit| limit * pace_factor }
+    times_container.limits(segment).transform_values { |limit| (limit * pace_factor).to_i }
   end
 
   def pace_factor
@@ -44,7 +44,7 @@ class TimePredictor
   end
 
   def measurable_pace?
-    completed_split.distance_from_start > 0
+    completed_lap_split.distance_from_start > 0
   end
 
   def actual_completed_time
@@ -56,27 +56,27 @@ class TimePredictor
   end
 
   def completed_segment
-    Segment.new(begin_sub_split: start_split.sub_split_in, end_sub_split: completed_sub_split,
-                begin_split: start_split, end_split: completed_split)
+    Segment.new(begin_point: start_lap_split.time_point_in, end_point: completed_time_point,
+                begin_lap_split: start_lap_split, end_lap_split: completed_lap_split)
   end
 
-  def start_split
-    @start_split ||= ordered_splits.first
+  def start_lap_split
+    @start_lap_split ||= lap_splits.first
   end
 
-  def completed_sub_split
-    @completed_sub_split ||= completed_split_time.sub_split
+  def completed_time_point
+    @completed_time_point ||= completed_split_time.time_point
   end
 
-  def completed_split
-    @completed_split ||= ordered_splits.find { |split| split.id == completed_split_time.split_id }
+  def completed_lap_split
+    @completed_lap_split ||= lap_splits.find { |lap_split| lap_split.key == completed_split_time.lap_split_key }
   end
 
   def mock_start_split_time
-    SplitTime.new(sub_split: start_split.sub_split_in, time_from_start: 0)
+    SplitTime.new(time_point: start_lap_split.time_point_in, time_from_start: 0)
   end
 
   def validate_setup
-    raise ArgumentError, 'completed_split_time is not associated with the splits' unless completed_split
+    raise ArgumentError, 'completed_split_time is not associated with the splits' unless completed_lap_split
   end
 end

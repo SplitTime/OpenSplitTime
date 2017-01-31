@@ -1,9 +1,8 @@
-module ColorizeText
+class ColorizeText
 
-  # Use with puts, for example, puts red('Warning!')
-  # or puts bold_cyan('Attention:')
+  # Use with puts, for example, puts ColorizeText.red('Warning!')
+  # or puts ColorizeText.bold_cyan('Attention:')
   # (These methods do not work with p)
-
 
   COLORS ||= {white: "30",
               bold_white: "1;30",
@@ -26,13 +25,15 @@ module ColorizeText
               tan: "33",
               bold_tan: "1;33"}
 
-  COLORS.each_key do |color|
-    define_method("#{color}") do |text|
-      colorize(text, COLORS[color])
+  class << self
+    COLORS.each_key do |color|
+      define_method("#{color}") do |text|
+        colorize(text, COLORS[color])
+      end
     end
-  end
 
-  def colorize(text, color_code)
-    "\e[#{color_code}m#{text}\e[0m"
+    def colorize(text, color_code)
+      "\e[#{color_code}m#{text}\e[0m"
+    end
   end
 end

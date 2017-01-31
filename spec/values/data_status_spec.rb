@@ -74,7 +74,7 @@ RSpec.describe DataStatus do
 
     it 'returns a hash containing zero limits when type is :start' do
       typical_time = 0
-      type = :start
+      type = :zero_start
       expected = {low_bad: 0, low_questionable: 0, high_questionable: 0, high_bad: 0}
       expect(DataStatus.limits(typical_time, type)).to eq(expected)
     end
@@ -82,14 +82,14 @@ RSpec.describe DataStatus do
     it 'returns a hash containing zero lower limits and liberal upper limits when type is :in_aid' do
       typical_time = 5.minutes
       type = :in_aid
-      expected = in_aid_limit_factors.transform_values { |factor| factor * (typical_time + typical_time_in_aid) }
+      expected = in_aid_limit_factors.transform_values { |factor| (factor * (typical_time + typical_time_in_aid)).to_i }
       expect(DataStatus.limits(typical_time, type)).to eq(expected)
     end
 
     it 'returns a hash containing calculated upper and lower limits when type is :terrain' do
       typical_time = 60.minutes
       type = :terrain
-      expected = terrain_limit_factors.transform_values { |factor| factor * typical_time }
+      expected = terrain_limit_factors.transform_values { |factor| (factor * typical_time).to_i }
       expect(DataStatus.limits(typical_time, type)).to eq(expected)
     end
   end

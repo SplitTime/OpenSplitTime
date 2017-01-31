@@ -33,26 +33,25 @@ RSpec.describe BulkDataStatusSetter do
       FactoryGirl.reload
     end
 
-    let(:full_event) { FactoryGirl.build_stubbed(:event_functional, efforts_count: 3) }
-    let(:event_efforts) { full_event.efforts }
+    let(:single_lap_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 1, efforts_count: 1) }
+    let(:event_efforts) { single_lap_event.efforts }
     let(:event_split_times) { event_efforts.map(&:split_times).flatten }
-    let(:ordered_split_times) { event_split_times.sort_by { |st| [st.split.distance_from_start, st.sub_split_bitkey] } }
+    let(:ordered_split_times) { event_split_times.sort_by { |st| [st.lap, st.split.distance_from_start, st.sub_split_bitkey] } }
 
-    it 'sends correct messages to EffortDataStatusSetter' do
+    it 'sends a correct message to EffortDataStatusSetter' do
       split_times = ordered_split_times
       effort = event_efforts.first
       efforts = [effort]
-      ordered_splits = full_event.splits
+      lap_splits = lap_splits_and_time_points(single_lap_event).first
       times_container = SegmentTimesContainer.new(calc_model: :terrain)
       bulk_setter = BulkDataStatusSetter.new(efforts: efforts, times_container: times_container)
       allow(bulk_setter).to receive(:all_split_times).and_return(split_times)
-      allow(bulk_setter).to receive(:ordered_splits).and_return(ordered_splits)
+      allow(bulk_setter).to receive(:lap_splits).and_return(lap_splits)
       allow(EffortDataStatusSetter).to receive(:new)
       bulk_setter.set_data_status
-      allow_any_instance_of(EffortDataStatusSetter).to receive(:set_data_status)
       expect(EffortDataStatusSetter).to have_received(:new).with({effort: effort,
                                                                   ordered_split_times: effort.split_times,
-                                                                  ordered_splits: ordered_splits,
+                                                                  lap_splits: lap_splits,
                                                                   times_container: times_container})
     end
   end

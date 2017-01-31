@@ -1,182 +1,155 @@
 class PlaceDetailView
 
-  attr_reader :effort, :event, :place_detail_rows
+  attr_reader :effort, :place_detail_rows
   delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender,
            :overall_place, :gender_place, to: :effort
 
   def initialize(args_effort)
-    @effort = args_effort.enriched || args_effort
-    @event = effort.event
-    @event_efforts = event.efforts.to_a
-    @indexed_start_offsets = Hash[event_efforts.map { |e| [e.id, e.start_offset] }]
-    @ordered_splits = event.ordered_splits.to_a
-    @event_split_times = event.split_times.to_a
-    set_day_and_time_attrs
-    @indexed_split_times = event_split_times.group_by(&:sub_split)
-    @split_place_columns = {}
-    create_split_place_columns
+    @effort ||= args_effort.enriched || args_effort
     @place_detail_rows = []
     create_place_detail_rows
   end
 
-  def efforts_passed(begin_sub_split, end_sub_split)
-    begin_ids_ahead = effort_ids_ahead(begin_sub_split)
-    end_ids_ahead = effort_ids_ahead(end_sub_split)
-    return [] unless begin_ids_ahead && end_ids_ahead
-    ids_passed = begin_ids_ahead - end_ids_ahead
-    event_efforts.select { |effort| ids_passed.include?(effort.id) }
+  def event
+    @event ||= effort.event
   end
 
-  def efforts_passed_by(begin_sub_split, end_sub_split)
-    begin_ids_ahead = effort_ids_ahead_or_tied(begin_sub_split)
-    end_ids_ahead = effort_ids_ahead(end_sub_split)
-    return [] unless begin_ids_ahead && end_ids_ahead
-    ids_passed_by = end_ids_ahead - begin_ids_ahead
-    event_efforts.select { |effort| ids_passed_by.include?(effort.id) }
+  def efforts_passed(begin_time_point, end_time_point)
+    efforts_moved_ahead(begin_time_point, end_time_point)
   end
 
-  def efforts_together_in_aid(split)
-    result = []
-    begin_sub_split = split.sub_split_in
-    end_sub_split = split.sub_split_out
-    return [] unless begin_sub_split && end_sub_split
-    segment_times = indexed_segment_times(begin_sub_split, end_sub_split)
+  def efforts_passed_by(begin_time_point, end_time_point)
+    efforts_moved_ahead(end_time_point, begin_time_point)
+  end
+
+  def efforts_together_in_aid(lap_split)
+    begin_time_point = lap_split.time_point_in
+    end_time_point = lap_split.time_point_out
+    return [] unless begin_time_point && end_time_point
+    segment_times = indexed_segment_times(begin_time_point, end_time_point)
     return [] unless segment_times[effort.id]
     subject_time_in = segment_times[effort.id][:in]
     subject_time_out = segment_times[effort.id][:out]
     return [] unless subject_time_in && subject_time_out
-    event_efforts.each do |e|
-      if times_overlap?(subject_time_in, subject_time_out, segment_times[e.id][:in], segment_times[e.id][:out])
-        result << e
-      end
+    other_efforts.select do |effort|
+      times_overlap?(subject_time_in, subject_time_out, segment_times[effort.id][:in], segment_times[effort.id][:out])
     end
-    result - [effort]
   end
 
   def peers
-    indexed_efforts = event_efforts.index_by(&:id)
-    frequent_encountered_ids.map { |effort_id| indexed_efforts[effort_id] }
+    @peers ||= efforts_from_ids(frequent_encountered_ids)
   end
 
   private
 
-  attr_reader :ordered_splits, :event_efforts, :event_split_times, :indexed_split_times,
-              :indexed_start_offsets, :split_place_columns
-
-  def set_day_and_time_attrs
-    event_start_time = event.start_time
-    event_split_times.each { |split_time| split_time.day_and_time_attr =
-        event_start_time + split_time.time_from_start + indexed_start_offsets[split_time.effort_id] }
-  end
-
-  def create_split_place_columns
-
-    # Each column element contains a hash with
-    # {effort_id: effort.id, day_and_time: datetime}, sorted by day_and_time
-
-    sub_splits = ordered_splits.map(&:sub_splits).flatten
-    indexed_bib_numbers = Hash[event_efforts.map { |effort| [effort.id, effort.bib_number] }]
-    sub_splits.each do |sub_split|
-      split_times = indexed_split_times[sub_split]
-      next unless split_times
-      split_place_column = split_times.map { |split_time| {effort_id: split_time.effort_id,
-                                                           day_and_time: split_time.day_and_time_attr,
-                                                           bib_number: indexed_bib_numbers[split_time.effort_id]} }
-
-      # Use bib_number for secondary sort to improve consistency when day_and_time are the same between efforts
-
-      split_place_column.sort_by! { |row| [row[:day_and_time], row[:bib_number]] }
-      split_place_columns[sub_split] = split_place_column
-    end
-  end
+  attr_reader :split_place_columns
 
   def create_place_detail_rows
-    prior_sub_split = ordered_splits.first.sub_split_in
-    ordered_splits.each do |split|
-      next if split.start?
-      previous_split = ordered_splits.find { |s| s.id == prior_sub_split.split_id }
-      efforts = {passed_segment: efforts_passed(prior_sub_split, split.sub_split_in),
-                 passed_in_aid: efforts_passed(split.sub_split_in, split.sub_split_out),
-                 passed_by_segment: efforts_passed_by(prior_sub_split, split.sub_split_in),
-                 passed_by_in_aid: efforts_passed_by(split.sub_split_in, split.sub_split_out),
-                 together_in_aid: efforts_together_in_aid(split)}
-      place_detail_row = PlaceDetailRow.new(effort,
-                                            split,
-                                            previous_split,
-                                            related_split_times(split),
-                                            {split_place_in: split_place(split.sub_split_in),
-                                             split_place_out: split_place(split.sub_split_out)},
-                                            efforts)
+    prior_time_point = lap_splits.first.time_point_in
+    lap_splits.each do |lap_split|
+      next if lap_split.start?
+      previous_lap_split = lap_splits.find { |ls| ls.key == prior_time_point.lap_split_key }
+      efforts = {passed_segment: efforts_passed(prior_time_point, lap_split.time_point_in),
+                 passed_in_aid: efforts_passed(lap_split.time_point_in, lap_split.time_point_out),
+                 passed_by_segment: efforts_passed_by(prior_time_point, lap_split.time_point_in),
+                 passed_by_in_aid: efforts_passed_by(lap_split.time_point_in, lap_split.time_point_out),
+                 together_in_aid: efforts_together_in_aid(lap_split)}
+      place_detail_row = PlaceDetailRow.new(effort_name: effort.name,
+                                            lap_split: lap_split,
+                                            previous_lap_split: previous_lap_split,
+                                            split_times: related_split_times(lap_split),
+                                            efforts: efforts,
+                                            show_laps: event.multiple_laps?)
       place_detail_rows << place_detail_row
-      prior_sub_split = place_detail_row.end_sub_split if place_detail_row.end_sub_split
+      prior_time_point = place_detail_row.end_time_point if place_detail_row.end_time_point
     end
   end
 
-  def split_place(sub_split)
-    return nil unless split_place_columns[sub_split]
-    ordered_effort_ids = split_place_columns[sub_split].map { |row| row[:effort_id] }
-    ordered_effort_ids.index(effort.id) ? ordered_effort_ids.index(effort.id) + 1 : nil
+  def efforts_moved_ahead(begin_time_point, end_time_point)
+    ids_ahead = effort_ids_ahead(begin_time_point)
+    ids_behind = effort_ids_ahead(end_time_point)
+    ids_passed = (ids_ahead && ids_behind) ? ids_ahead - ids_behind : []
+    efforts_from_ids(ids_passed)
   end
 
-  def effort_ids_tied(sub_split)
-    return nil unless split_place_columns[sub_split]
-    split_place_column = split_place_columns[sub_split]
-    subject_row = split_place_column.find { |row| row[:effort_id] == effort.id }
-    return nil unless subject_row.present?
-    subject_time = subject_row[:day_and_time]
-    tied_rows = split_place_column.select { |row| row[:day_and_time] == subject_time }
-    tied_rows.map { |row| row[:effort_id] } - [effort.id]
+  def effort_ids_ahead(time_point)
+    rank = effort_rank(time_point)
+    grouped_split_times[time_point].first(rank - 1).map(&:effort_id) if rank
   end
 
-  def effort_ids_ahead(sub_split)
-    return nil unless split_place_columns[sub_split]
-    ordered_effort_ids = split_place_columns[sub_split].map { |row| row[:effort_id] }
-    return [] if split_place(sub_split) == 1
-    return nil unless ordered_effort_ids.include?(effort.id)
-    ordered_effort_ids[0..(ordered_effort_ids.index(effort.id) - 1)] - effort_ids_tied(sub_split)
+  def effort_rank(time_point)
+    indexed_effort_split_times[time_point].try(:time_point_rank)
   end
 
-  def effort_ids_ahead_or_tied(sub_split)
-    ids_ahead = effort_ids_ahead(sub_split)
-    ids_tied = effort_ids_tied(sub_split)
-    return nil if ids_ahead.nil? && ids_tied.nil?
-    (ids_ahead || []) + (ids_tied || [])
-  end
-
-  def indexed_segment_times(begin_sub_split, end_sub_split)
+  def indexed_segment_times(begin_time_point, end_time_point)
     result = {}
-    return {} unless indexed_split_times[begin_sub_split]
-    begin_split_times = indexed_split_times[begin_sub_split].index_by(&:effort_id)
-    end_split_times = indexed_split_times[end_sub_split].index_by(&:effort_id)
+    return {} unless grouped_split_times[begin_time_point].present?
+    begin_split_times = grouped_split_times[begin_time_point].index_by(&:effort_id)
+    end_split_times = grouped_split_times[end_time_point].index_by(&:effort_id)
     event_efforts.each do |effort|
-      day_and_time_begin = begin_split_times[effort.id] ? begin_split_times[effort.id].day_and_time_attr : nil
-      day_and_time_end = end_split_times[effort.id] ? end_split_times[effort.id].day_and_time_attr : nil
+      day_and_time_begin = begin_split_times[effort.id].try(:day_and_time)
+      day_and_time_end = end_split_times[effort.id].try(:day_and_time)
       result[effort.id] = {in: day_and_time_begin, out: day_and_time_end}
     end
     result
   end
 
-  def times_overlap?(subject_time_start, subject_time_end, compare_time_start, compare_time_end)
-    return false unless subject_time_start && subject_time_end && compare_time_start && compare_time_end
-    (subject_time_start <= compare_time_end) && (subject_time_end >= compare_time_start)
+  def times_overlap?(range_1_start, range_1_end, range_2_start, range_2_end)
+    range_1_start && range_1_end && range_2_start && range_2_end &&
+        (range_1_start <= range_2_end) && (range_1_end >= range_2_start)
   end
 
-  def time_within?(subject_time_start, subject_time_end, compare_time)
-    return false unless subject_time_start && subject_time_end && compare_time
-    (subject_time_start <= compare_time) && (subject_time_end >= compare_time)
-  end
-
-  def related_split_times(split)
-    split.sub_splits.collect { |key_hash| indexed_split_times[key_hash] ?
-        indexed_split_times[key_hash].index_by(&:effort_id)[effort.id] : [] }
+  def related_split_times(lap_split)
+    lap_split.time_points
+        .map { |time_point| (grouped_split_times[time_point] || []).find { |st| st.effort_id == effort.id } }
   end
 
   def frequent_encountered_ids
-    encountered_ids = (place_detail_rows.map(&:together_in_aid_ids).flatten +
-        place_detail_rows.map(&:passed_segment_ids).flatten +
-        place_detail_rows.map(&:passed_by_segment_ids).flatten).compact
-    counts = Hash.new(0)
-    encountered_ids.each { |id| counts[id] += 1 }
-    counts.sort_by { |_, count| count }.reverse.first(5).map { |e| e[0] }
+    place_detail_rows.map(&:encountered_ids).flatten.compact
+        .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
+  end
+
+  def efforts_from_ids(effort_ids)
+    effort_ids.map { |effort_id| indexed_efforts[effort_id] }
+  end
+
+  def indexed_efforts
+    @indexed_efforts ||= event_efforts.index_by(&:id)
+  end
+
+  def other_efforts
+    @other_efforts ||= event_efforts - [effort]
+  end
+
+  def event_efforts
+    @event_efforts ||= event.efforts.to_a
+  end
+
+  def grouped_split_times
+    return @grouped_split_times if @grouped_split_times.present?
+    @grouped_split_times = event_split_times.group_by(&:time_point)
+    @grouped_split_times.default = []
+    @grouped_split_times
+  end
+
+  def event_split_times
+    @event_split_times ||=
+        event.split_times.with_time_point_rank(split_time_fields: 'effort_id, lap, split_id, sub_split_bitkey')
+  end
+
+  def indexed_effort_split_times
+    @indexed_effort_split_times ||= effort_split_times.index_by(&:time_point)
+  end
+
+  def effort_split_times
+    @effort_split_times ||= event_split_times.select { |st| st.effort_id == effort.id }
+  end
+
+  def lap_splits
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(last_lap)
+  end
+
+  def last_lap
+    effort_split_times.map(&:lap).max || 1
   end
 end

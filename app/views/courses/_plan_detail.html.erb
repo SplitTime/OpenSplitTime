@@ -10,7 +10,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @plan_display.split_rows.each do |split_row| %>
+  <% @plan_display.lap_split_rows.each do |split_row| %>
       <tr>
         <% if split_row.finish? %>
             <td><strong><%= split_row.name %></strong></td>

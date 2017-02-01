@@ -2,7 +2,7 @@ class PlanDisplay
 
   attr_reader :course
 
-  delegate :relevant_events, :relevant_efforts, :split_rows, :total_segment_time, :total_time_in_aid,
+  delegate :relevant_events, :relevant_efforts, :lap_split_rows, :total_segment_time, :total_time_in_aid,
            :relevant_efforts_count, :event_years_analyzed, to: :mock_effort
 
   def initialize(course, params)
@@ -34,11 +34,11 @@ class PlanDisplay
 
   def mock_effort
     @mock_effort ||=
-        MockEffort.new(ordered_splits: ordered_splits, expected_time: expected_time, start_time: start_time) if expected_time && start_time
+        MockEffort.new(lap_splits: lap_splits, expected_time: expected_time, start_time: start_time) if expected_time && start_time
   end
 
-  def ordered_splits
-    @ordered_splits ||= course.ordered_splits.to_a
+  def lap_splits
+    @lap_splits ||= course.lap_splits_through(1)
   end
 
   def expected_time_from_param(entered_time)

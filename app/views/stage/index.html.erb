@@ -2,7 +2,7 @@
 
 <!-- Vue.js Form Templates-->
 
-<script type="text/x-template" id="event"><div>
+<script type="text/x-template" id="event">
 	<aside class="col-xs-12 col-sm-4 full-bg">
 			<h3><strong>Provide More Information About Your Event</strong></h3>
 			<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
@@ -18,9 +18,9 @@
 			<label for="event-description">Description</label>
 			<textarea class="form-control" id="event-description" placeholder="Your event's description" v-model="eventData.event.description"></textarea>
 		</div>
-		<div class="form-horizontal">
+		<div class="form-group">
 			<label for="event-start-time">Start Time of Race</label>
-			<div class="form-group">
+			<div class="row">
 				<div class="col-xs-5 col-sm-7 col-md-8">
 					<input type="text" class="form-control" id="event-start-time" placeholder="mm/dd/yyyy" v-model="eventData.event.date"></input>
 				</div>
@@ -36,9 +36,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-horizontal">
+		<div class="form-group">
 			<label for="event-start-time">Select Course</label>
-			<div class="form-group">
+			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-8">
 					<select class="form-control" id="event-start-time" :disabled="eventData.course.new">
 						<option selected disabled>Select One</option>
@@ -50,33 +50,37 @@
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm row" v-show="eventData.course.new">
-			<div class="form-group col-xs-12">
-				<label for="event-name">Course Name</label>
-				<input type="text" class="form-control" id="event-name" placeholder="Your event name">
-			</div>
-			<div class="form-group col-xs-12">
-				<label for="event-name">Course Name</label>
-				<input type="text" class="form-control" id="event-name" placeholder="Your event name">
-			</div>
-			<div class="form-group col-xs-6">
-				<label for="event-name">Course Name</label>
-				<input type="text" class="form-control" id="event-name" placeholder="Your event name">
-			</div>
-			<div class="form-group col-xs-6">
-				<label for="event-name">Course Name</label>
-				<input type="text" class="form-control" id="event-name" placeholder="Your event name">
-			</div>
-			<div class="form-group col-xs-12">
-				<label for="event-description">Description</label>
-				<textarea class="form-control" id="event-description" placeholder="Your event's description"></textarea>
+		<div class="well well-sm" v-show="eventData.course.new">
+			<div class="row">
+				<div class="form-group col-xs-12">
+					<label for="event-name">Course Name</label>
+					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+				</div>
+				<div class="form-group col-xs-12">
+					<label for="event-name">Course Name</label>
+					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+				</div>
+				<div class="form-group col-xs-6">
+					<label for="event-name">Course Name</label>
+					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+				</div>
+				<div class="form-group col-xs-6">
+					<label for="event-name">Course Name</label>
+					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+				</div>
+				<div class="form-group col-xs-12">
+					<label for="event-description">Description</label>
+					<textarea class="form-control" id="event-description" placeholder="Your event's description"></textarea>
+				</div>
 			</div>
 		</div>
 		<div class="row">
-			<router-link to="/splits" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+			<div class="col-xs-12">
+				<router-link to="/splits" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+			</div>
 		</div>
 	</article>
-</div></script>
+</script>
 
 <script type="text/x-template" id="splits"><div>
 	<aside class="col-xs-12 col-sm-4 full-bg">
@@ -335,10 +339,6 @@
 		</div>
 	</div>
 
-    <label class="switchery-label">
-      <span>Rapid<br>Mode</span>
-      <input type="checkbox" id="js-rapid-mode" data-toggle="switchery" data-size="small"/>
-    </label>
 	<div class="container">
 		<div class="row">
 			<div is="router-view" v-bind:event-data="eventData"></div>

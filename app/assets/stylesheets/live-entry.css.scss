@@ -15,8 +15,9 @@ Placeholders
 /******
 Globals
 *******/
-.row {
-	margin: 0 auto 25px;
+.row.header,
+.live_entry .row {
+    margin: 0 auto 25px; // Nerfed: Please QA
 }
 
 /******* Header ********/

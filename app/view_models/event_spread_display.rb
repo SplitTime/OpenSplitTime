@@ -1,5 +1,5 @@
 class EventSpreadDisplay
-  STYLES_WITH_START_TIME = %w(ampm military)
+  include MeasurementFormats
 
   attr_reader :event, :display_style
   delegate :name, :start_time, :course, :race, :available_live, :beacon_url, :simple?, to: :event
@@ -16,8 +16,10 @@ class EventSpreadDisplay
     @sort_method = params[:sort]
   end
 
-  def relevant_lap_splits
-    @relevant_lap_splits ||= STYLES_WITH_START_TIME.include?(display_style) ? lap_splits : lap_splits_without_start
+  def table_headers
+    relevant_lap_splits.map { |lap_split| {name: header_name(lap_split),
+                                           extensions: header_extensions(lap_split),
+                                           distance: lap_split.distance_from_start} }
   end
 
   def effort_times_rows
@@ -61,12 +63,10 @@ class EventSpreadDisplay
   end
 
   private
+  STYLES_WITH_START_TIME = %w(ampm military)
 
   attr_reader :sort_method
-
-  def lap_splits
-    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
-  end
+  delegate :multiple_laps?, to: :event
 
   def split_times_data_by_effort
     @split_times_data_by_effort ||=
@@ -97,8 +97,25 @@ class EventSpreadDisplay
         end
   end
 
+  def header_name(lap_split)
+    multiple_laps? ? lap_split.base_name : lap_split.base_name_without_lap
+  end
+
+  def header_extensions(lap_split)
+    extension_components = display_style == 'segment' ? %w(Segment Aid) : lap_split.name_extensions
+    lap_split.name_extensions.size > 1 ? extension_components.join(' / ') : nil
+  end
+
+  def relevant_lap_splits
+    @relevant_lap_splits ||= STYLES_WITH_START_TIME.include?(display_style) ? lap_splits : lap_splits_without_start
+  end
+
   def lap_splits_without_start
     lap_splits.reject(&:start?)
+  end
+
+  def lap_splits
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
   def highest_lap

@@ -52,8 +52,8 @@
   <thead>
   <tr>
     <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
-                                               style: params[:style],
-                                               sort: 'place') %></th>
+                                                       style: params[:style],
+                                                       sort: 'place') %></th>
     <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
                                              style: params[:style],
                                              sort: 'bib') %></th>
@@ -68,15 +68,11 @@
     <% end %>
     <th>Category</th>
     <th>From</th>
-    <% @spread_display.relevant_lap_splits.each do |lap_split| %>
+    <% @spread_display.table_headers.each do |header| %>
         <th class="text-nowrap text-center">
-          <%= lap_split.name %><br>
-          <% if @spread_display.display_style == 'segment' %>
-              <%= 'Segment / Aid' if lap_split.name_extensions.size > 1 %>
-          <% else %>
-              <%= lap_split.name_extensions.join(' / ') if lap_split.name_extensions.size > 1 %>
-          <% end %><br/>
-          <%= "(#{pdu('singular').titlecase} #{d(lap_split.distance_from_start)})" %>
+          <%= header[:name] %><br>
+          <%= header[:extensions] %><br/>
+          <%= "(#{pdu('singular').titlecase} #{d(header[:distance])})" %>
         </th>
     <% end %>
     <% if @spread_display.display_style == 'segment' %>
@@ -98,7 +94,7 @@
                   <strong><==DROPPED</strong>
               <% else %>
                   <% case @spread_display.display_style %>
-                  <% when 'segment' %>
+              <% when 'segment' %>
                       <% if cluster.finish? %>
                           <%= time_format_xxhyymzzs(cluster.segment_time) %>
                       <% else %>

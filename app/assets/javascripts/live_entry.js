@@ -182,7 +182,7 @@
                 // Populate select list with event splits
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
-                for (var i = 1; i < liveEntry.eventLiveEntryData.splits.length; i++) {
+                for (var i = 0; i < liveEntry.eventLiveEntryData.splits.length; i++) {
                     splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].id + '" data-index="' + i + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
                 }
                 $select.html(splitItems);

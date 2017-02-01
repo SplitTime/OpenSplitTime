@@ -94,28 +94,23 @@
 			<google-map :markers="eventData.splits"></google-map>
 		</div>
 		<div class="row">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th colspan="2">Name</th>
-						<th>Dist.</th>
-						<th>V. Gain</th>
-						<th>V. Loss</th>
-						<th colspan="2">Location Info</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="split in eventData.splits">
-						<td></td>
-						<td>{{ split.name }}</td>
-						<td>{{ split.distance }}</td>
-						<td>{{ split.verticalGain }}</td>
-						<td>{{ split.verticalLoss }}</td>
-						<td><a data-toggle="modal" data-target="#js-split-modal" v-on:click="modalSplit = split; modalNew = false">Edit Split</a></td>
-						<td><i class="glyphicon glyphicon-remove-circle"></i></td>
-					</tr>
-				</tbody>
-			</table>
+			<data-tables :rows="eventData.splits" v-on:edit="modalSplit = $event; modalNew = false">
+				<tr slot="header">
+					<th>Name</th>
+					<th>Dist.</th>
+					<th>V. Gain</th>
+					<th>V. Loss</th>
+					<th colspan="2" data-orderable="false">Location Info</th>
+				</tr>
+				<template slot="row" scope="vm">
+					<td>{{ vm.row.name }}</td>
+					<td>{{ vm.row.distance }}</td>
+					<td>{{ vm.row.verticalGain }}</td>
+					<td>{{ vm.row.verticalLoss }}</td>
+					<td><a data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Participant</a></td>
+					<td><a v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
+				</template>
+			</data-tables>
 		</div>
 		<div class="row">
 			<p class="pull-left">
@@ -139,36 +134,32 @@
 	</aside>
 	<article class="col-xs-12 col-sm-8">
 		<div class="row">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th colspan="2">Name</th>
-						<th>Dist.</th>
-						<th>V. Gain</th>
-						<th>V. Loss</th>
-						<th colspan="2">Location Info</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="participant in eventData.participants">
-						<td></td>
-						<td>{{ participant.name }}</td>
-						<td>{{ participant.gender }}</td>
-						<td>{{ participant.birth }}</td>
-						<td>{{ participant.location }}</td>
-						<td>{{ participant.bibnumber }}</td>
-						<td><a data-toggle="modal" data-target="#js-split-modal" v-on:click="modalSplit = split; modalNew = false">Edit Split</a></td>
-						<td><i class="glyphicon glyphicon-remove-circle"></i></td>
-					</tr>
-				</tbody>
-			</table>
+			<data-tables :rows="eventData.participants" v-on:edit="modalData = $event; modalNew = false;">
+				<tr slot="header">
+					<th data-orderable="false">Name</th>
+					<th>M/F</th>
+					<th>DoB.</th>
+					<th>Location</th>
+					<th>Bib&num;</th>
+					<th data-orderable="false">&nbsp;</th>
+				</tr>
+				<template slot="row" scope="vm">
+					<td><input type="text" v-model="vm.row.name"></td></td>
+					<td>{{ vm.row.name }}</td>
+					<td></td>
+					<td></td>
+					<td><a data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">Edit Participant</a></td>
+					<td><a v-on:click="vm.$emit('remove')">Delete</a></td>
+				</template>
+			</data-tables>
 			<p class="pull-left">
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-participant-modal" v-on:click="">Add New Particpant&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-participant-modal" v-on:click="eventData.participants.push( { name: 'Somebody' } )">Add New Particpant&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				<button type="button" class="btn btn-default">Import CSV</button>
 			</p>
 			<router-link to="/splits" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
 		</div>
 	</article>
+	<participant-modal :isNew="modalNew" :participant="modalData" v-on:new=""></participant-modal>
 </div></script>
 
 <script type="text/x-template" id="confirmation"><div>
@@ -246,7 +237,7 @@
 			<div class="modal-content">
 				<div class="modal-body row">
 					<div class="col-xs-6">
-						<h2><template v-if="isNew">Add A New Split</template><template v-else>Edit Split</template></h2>
+						<h2 v-if="isNew">Add A New Split</h2>
 						<div class="form-group col-xs-6">
 							<label for="split-name">Split Name</label>
 							<input type="text" class="form-control" id="split-name" v-model="split.name" placeholder="Name">
@@ -310,6 +301,20 @@
 	</div>
 </script>
 
+<!-- Vue.js Participant Modal -->
+
+<script type="text/x-template" id="participant-modal">
+	<div id="js-participant-modal" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-body row">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
 <!-- Vue.js Applet -->
 
 <div id="event-app">
@@ -330,6 +335,10 @@
 		</div>
 	</div>
 
+    <label class="switchery-label">
+      <span>Rapid<br>Mode</span>
+      <input type="checkbox" id="js-rapid-mode" data-toggle="switchery" data-size="small"/>
+    </label>
 	<div class="container">
 		<div class="row">
 			<div is="router-view" v-bind:event-data="eventData"></div>

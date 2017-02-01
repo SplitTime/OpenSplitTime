@@ -21,8 +21,7 @@
                     new: false,
                     name: '',
                 },
-                participants: [
-                ],
+                participants: [ { name: 'Abram' }, { name: 'Winter' }, { name: 'Daniel' }, { name: 'Mark' }, { name: 'Laura' }, { name: 'Adam' }, { name: 'Steven' }, { name: 'Eric' }, { name: 'Laurel' }, { name: 'Justin' } ],
                 splits: [
                     {
                         name: 'Starting Line',
@@ -44,7 +43,11 @@
 
             // Initialize Custom Components
             this.googleMaps.init();
+            this.dataTables.init();
             Vue.component( 'split-modal', { template: '#split-modal', props: [ 'split', 'isNew' ], methods: { isValid: function() {
+                return false;
+            } } } );
+            Vue.component( 'participant-modal', { template: '#participant-modal', props: [ 'participant', 'isNew' ], methods: { isValid: function() {
                 return false;
             } } } );
 
@@ -60,7 +63,7 @@
                 },
                 { 
                     path: '/participants', 
-                    component: { template: '#participants' }
+                    component: { props: ['eventData'], data: function() { return { modalData: {}, modalNew: false }; }, template: '#participants' }
                 },
                 { 
                     path: '/confirmation', 
@@ -80,6 +83,86 @@
                 el: '#event-app',
                 data: eventStage.data
             });
+        },
+
+        dataTables: {
+            uniqueId: 1,
+            onDataChange: function() {
+                if ( !this.rows || !$.isArray( this.rows ) ) return;
+                var self = this;
+                this.rows.forEach( function( obj, index ) {
+                    if ( !obj._dtid ) {
+                        // New Data: Add Index and Add to Table
+                        obj._dtid = eventStage.dataTables.uniqueId++;
+                        var row = new self._row( { propsData: { row: obj } } ).$mount();
+                        row.$on( 'remove', function() {
+                            self._table.row( this.$el ).remove().draw();
+                            this.$destroy( true );
+                            for ( var i = self.rows.length - 1; i >= 0; i-- ) {
+                                if ( self.rows[i]._dtid === obj._dtid ) {
+                                    self.rows.splice( i, 1 );
+                                    break;
+                                }
+                            }
+                        } );
+                        row.$on( 'edit', function() {
+                            self.$emit( 'edit', this.row );
+                        } );
+                        self._table.row.add( row.$el );
+                    }
+                } );
+                this._table.draw();
+            },
+            onDestroyed: function() {
+                // Erase DataTable IDs
+                this.rows.forEach( function( obj, index ) {
+                    obj._dtid = null;
+                } );
+            },
+            onMounted: function() {
+                this._queue = [];
+                this._table = $( this.$el ).DataTable( {
+                    oLanguage: {
+                        'sSearch': 'Filter:&nbsp;'
+                    }
+                } );
+                // Create render Function for Table Rows
+                var self = this;
+                this._row = Vue.extend( {
+                    props: [ 'row' ],
+                    parent: self,
+                    render: function( createElement ) {
+                        return createElement( 'tr', {}, self.$scopedSlots.row( this ) );
+                    },
+                    watch: {
+                        row: { 
+                            handler: function() {
+                                // TODO: Add Debouncer
+                                this.$nextTick( function() {
+                                    self._table.row( this.$el ).invalidate( 'dom' ).draw();
+                                } );
+                            },
+                            deep: true
+                        }
+                    }
+                } );
+                eventStage.dataTables.onDataChange.call( this );
+            },
+            init: function() {
+                Vue.component( 'data-tables', {
+                    template: '<table class="table table-striped" width="100%"><thead><slot name="header"></slot></thead><tbody><slot></slot></tbody></table>',
+                    props: [ 'rows', 'entries', 'filter' ],
+                    mounted: eventStage.dataTables.onMounted,
+                    destroyed: eventStage.dataTables.onDestroyed,
+                    data: function() { return { row: {} } },
+                    watch: {
+                        rows: {
+                            handler: eventStage.dataTables.onDataChange,
+                            deep: true
+                        }
+                    }
+                } );
+            }
         },
 
         googleMaps: {

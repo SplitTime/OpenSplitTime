@@ -9,8 +9,7 @@
       <% if @best_display.events_count > 0 %>
 
           <%= "Searched #{pluralize(@best_display.events_count, 'event')}
-        from #{@best_display.earliest_event_date.to_date.to_formatted_s(:long)}
-        to #{@best_display.most_recent_event_date.to_date.to_formatted_s(:long)}" %>
+        from #{[@best_display.earliest_event_date, @best_display.most_recent_event_date].compact.join(' to ')}" %>
           <br/>
       <% else %>
           No efforts have been measured on this segment.
@@ -47,11 +46,7 @@
       <% end %>
     </div>
     <div class="page-navigation-text">
-      <% if @best_display.segment_is_full_course? %>
-          <h4> <%= "#{@best_display.gender_text.upcase} • FULL COURSE" %></h4>
-      <% else %>
-          <h4> <%= "#{@best_display.gender_text.upcase} • #{@best_display.segment_name.upcase}" %></h4>
-      <% end %>
+      <h4> <%= @best_display.title_text %></h4>
     </div>
   </div>
 </div>

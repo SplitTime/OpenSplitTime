@@ -2,8 +2,8 @@ class BestEffortsDisplay
 
   attr_reader :course
   delegate :name, to: :course
-  delegate :distance, :vert_gain, :vert_loss, :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
-
+  delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
+           :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
   def initialize(course, params = {})
     @course = course
@@ -23,10 +23,6 @@ class BestEffortsDisplay
         all_efforts
   end
 
-  def filter_ids
-    @filter_ids ||= Effort.where(gender: genders_numeric).search(params[:search]).map(&:id)
-  end
-
   def all_efforts_count
     all_efforts.size
   end
@@ -40,27 +36,35 @@ class BestEffortsDisplay
   end
 
   def segment_name
-    segment.name
+    segment_is_full_course? ? 'Full Course' : segment.name
   end
 
   def events_count
     events.size
   end
 
-  def segment_is_full_course?
-    segment.full_course?
-  end
-
   def earliest_event_date
-    events.last.start_time
+    events.last.start_time.to_date.to_formatted_s(:long)
   end
 
   def latest_event_date
-    events.first.start_time
+    events.first.start_time.to_date.to_formatted_s(:long)
   end
 
   def most_recent_event_date
-    events.find { |event| event.start_time < Time.now }.start_time
+    most_recent_event && most_recent_event.to_date.to_formatted_s(:long)
+  end
+
+  def most_recent_event
+    events.select { |event| event.start_time < Time.now }.sort_by(&:start_time).last
+  end
+
+  def title_text
+    "#{gender_text.upcase} • #{segment_name.upcase}"
+  end
+
+  def time_header_text
+    segment_is_full_course? ? 'Course Time' : 'Segment Time'
   end
 
   def gender_text
@@ -89,24 +93,32 @@ class BestEffortsDisplay
                                end_split: splits.last)
   end
 
+  def filter_ids
+    @filter_ids ||= Effort.where(gender: genders_numeric).search(params[:search]).map(&:id).to_set
+  end
+
   def all_efforts
-    @all_efforts ||= Effort.select('efforts.*, rank() over (order by segment_seconds, gender, -age) as overall_rank, rank() over (partition by gender order by segment_seconds, -age) as gender_rank').from("(#{subquery_segment_seconds.to_sql}) as efforts")
+    @all_efforts ||= Effort.select('efforts.*, lap, rank() over (order by segment_seconds, gender, -age) as overall_rank, rank() over (partition by gender order by segment_seconds, -age) as gender_rank').from("(#{subquery_segment_seconds.to_sql}) as efforts")
                          .visible.order('overall_rank').to_a
+  end
+
+  def segment_is_full_course?
+    segment.full_course?
   end
 
   def subquery_segment_seconds
     Effort.select('e1.*, (tfs_end - tfs_begin) as segment_seconds').from("(#{subquery_base.to_sql}) as e1, (#{subquery_base_join.to_sql}) as e2")
-        .where('e1.effort_id = e2.effort_id')
+        .where('e1.effort_id = e2.effort_id AND e1.lap = e2.lap')
   end
 
   def subquery_base
     Effort.joins(:split_times).joins(:event)
-        .select('efforts.*, events.start_time as query_start_time, split_times.effort_id, split_times.time_from_start as tfs_begin, split_times.split_id, split_times.sub_split_bitkey')
+        .select('efforts.*, events.start_time as query_start_time, split_times.effort_id, split_times.time_from_start as tfs_begin, split_times.lap, split_times.split_id, split_times.sub_split_bitkey')
         .where(split_times: {split_id: begin_id, sub_split_bitkey: begin_bitkey})
   end
 
   def subquery_base_join
-    Effort.joins(:split_times).select('efforts.id, split_times.effort_id, split_times.time_from_start as tfs_end, split_times.split_id, split_times.sub_split_bitkey')
+    Effort.joins(:split_times).select('efforts.id, split_times.effort_id, split_times.time_from_start as tfs_end, split_times.lap, split_times.split_id, split_times.sub_split_bitkey')
         .where(split_times: {split_id: end_id, sub_split_bitkey: end_bitkey})
   end
 end

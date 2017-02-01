@@ -71,7 +71,9 @@
     <% @spread_display.table_headers.each do |header| %>
         <th class="text-nowrap text-center">
           <%= header[:name] %><br>
-          <%= header[:extensions] %><br/>
+          <% if header[:extensions].present? %>
+              <%= header[:extensions] %><br/>
+          <% end %>
           <%= "(#{pdu('singular').titlecase} #{d(header[:distance])})" %>
         </th>
     <% end %>

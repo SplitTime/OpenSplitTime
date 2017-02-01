@@ -1,5 +1,4 @@
 class EventSpreadDisplay
-  include MeasurementFormats
 
   attr_reader :event, :display_style
   delegate :name, :start_time, :course, :race, :available_live, :beacon_url, :simple?, to: :event

@@ -28,6 +28,8 @@ class Event < ActiveRecord::Base
     name_search(search_param)
   end
 
+  delegate :cycled_lap_splits, :cycled_time_points, :lap_splits_through, :time_points_through, to: :course
+
   def reconciled_efforts
     efforts.where.not(participant_id: nil)
   end
@@ -64,16 +66,8 @@ class Event < ActiveRecord::Base
     DroppedAttributesSetter.set_attributes(efforts: efforts)
   end
 
-  def lap_splits_through(lap)
-    cycled_lap_splits.first(lap * ordered_splits.size)
-  end
-
   def required_lap_splits
     @required_lap_splits ||= lap_splits_through(laps_required)
-  end
-
-  def time_points_through(lap)
-    cycled_time_points.first(lap * sub_splits.size)
   end
 
   def required_time_points
@@ -86,14 +80,6 @@ class Event < ActiveRecord::Base
 
   def multiple_laps?
     laps_required != 1
-  end
-
-  def cycled_lap_splits # For events with unlimited laps, call Event#cycled_lap_splits.first(n)
-    ordered_splits.each_with_iteration { |split, i| LapSplit.new(i, split) }
-  end
-
-  def cycled_time_points # For events with unlimited laps, call Event#cycled_time_points.first(n)
-    sub_splits.each_with_iteration { |sub_split, i| TimePoint.new(i, sub_split.split_id, sub_split.bitkey) }
   end
 
   def finished?

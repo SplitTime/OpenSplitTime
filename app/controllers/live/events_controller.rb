@@ -14,7 +14,7 @@ class Live::EventsController < Live::BaseController
 
   def progress_report
     authorize @event
-    @progress_display = LiveProgressReport.new(event: @event, past_due_threshold: params[:past_due_threshold])
+    @progress_display = LiveProgressDisplay.new(event: @event, past_due_threshold: params[:past_due_threshold])
   end
 
   def get_event_data

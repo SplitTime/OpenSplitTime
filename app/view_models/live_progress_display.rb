@@ -1,4 +1,4 @@
-class LiveProgressReport < LiveEventFramework
+class LiveProgressDisplay < LiveEventFramework
 
   attr_reader :past_due_threshold
 

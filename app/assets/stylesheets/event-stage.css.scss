@@ -29,6 +29,11 @@
 		padding-top: 50px;
 		background: $white;
 	}
+
+	.modal-body .modal-section {
+		clear: both;
+		background: $lightGray;
+	}
 }
 
 /* There has to be a better way */

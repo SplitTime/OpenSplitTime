@@ -117,9 +117,13 @@
     	}
     };
 
-    $(document).ready(function () {
+    var init = function () {
         effortsPopover.init();
         staticPopover.init();
         switchery.init();
-    });
+    };
+
+    $(document).ready( init );
+    $(document).bind( 'vue-ready', init );
+
 })(jQuery);

@@ -1,5 +1,7 @@
 class LiveEventFramework
 
+  EFFORT_CATEGORIES = [:started, :dropped, :finished, :in_progress]
+
   attr_reader :times_container
   delegate :multiple_laps?, to: :event
 
@@ -17,20 +19,16 @@ class LiveEventFramework
     event.name
   end
 
-  def efforts_started_count
-    efforts.count(&:started?)
+  EFFORT_CATEGORIES.each do |category|
+    define_method("efforts_#{category}") do
+      efforts.select { |effort| effort.send("#{category}?") }
+    end
   end
 
-  def efforts_dropped_count
-    efforts.count(&:dropped?)
-  end
-
-  def efforts_finished_count
-    efforts.count(&:finished?)
-  end
-
-  def efforts_in_progress_count
-    efforts.count(&:in_progress?)
+  EFFORT_CATEGORIES.each do |category|
+    define_method("efforts_#{category}_count") do
+      efforts.count { |effort| effort.send("#{category}?") }
+    end
   end
 
   def efforts

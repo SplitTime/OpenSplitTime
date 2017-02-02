@@ -19,6 +19,10 @@ class LiveEventFramework
     event.name
   end
 
+  def event_start_time
+    event.start_time
+  end
+
   EFFORT_CATEGORIES.each do |category|
     define_method("efforts_#{category}") do
       efforts.select { |effort| effort.send("#{category}?") }

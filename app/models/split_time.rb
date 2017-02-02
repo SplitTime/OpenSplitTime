@@ -18,8 +18,13 @@ class SplitTime < ActiveRecord::Base
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
   scope :within_time_range, -> (low_time, high_time) { where(time_from_start: low_time..high_time) }
-  scope :basic_components, -> { select(:id, :split_id, :sub_split_bitkey, :effort_id, :time_from_start, :data_status) }
-  scope :from_finished_efforts, -> { joins(:effort => {:split_times => :split}).where(splits: {kind: 1}) }
+  scope :from_finished_efforts, -> { joins(effort: {split_times: :split}).where(splits: {kind: 1}) }
+
+  # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
+  # Otherwise it includes split_times from aid_stations other than the given parameter
+
+  scope :recorded_at_aid, -> (aid_station_id) { includes(split: :aid_stations).includes(:effort)
+                                                    .where(aid_stations: {id: aid_station_id}) }
 
   before_validation :delete_if_blank
   after_update :set_effort_data_status, if: :time_from_start_changed?

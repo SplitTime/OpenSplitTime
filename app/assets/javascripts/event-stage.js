@@ -112,7 +112,7 @@
                                 return $.extend( {}, blanks.split );
                             }
                         },
-                        data: function() { return { modalData: {}, filter: '' }; },
+                        data: function() { return { modalData: {}, filter: '' } },
                         template: '#splits'
                     }
                 },
@@ -136,7 +136,7 @@
                                 return $.extend( {}, blanks.participant );
                             }
                         },
-                        data: function() { return { modalData: {}, filter: '' }; }, 
+                        data: function() { return { modalData: {}, filter: '' } }, 
                         template: '#participants'
                     }
                 },

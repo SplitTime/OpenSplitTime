@@ -54,7 +54,7 @@
                     new: false,
                     name: '',
                 },
-                participants: [ $.extend( blanks.participant, { first: 'Abram', last: 'Early', gender: 'M' } ) ],
+                participants: [ $.extend( {}, blanks.participant, { first: 'Abram', last: 'Early', gender: 'M' } ) ],
                 splits: [
                     {
                         name: 'Starting Line',
@@ -123,6 +123,13 @@
                         methods: {
                             isValid: function( participant ) {
                                 if ( !participant.first ) return false;
+                                if ( !participant.last ) return false;
+                                if ( !participant.gender ) return false;
+                                if ( !participant.bibnumber ) return false;
+                                if ( !participant.email ) return false;
+                                if ( !participant.city ) return false;
+                                if ( !participant.state ) return false;
+                                if ( !participant.country ) return false;
                                 return true;
                             },
                             blank: function() {
@@ -189,6 +196,9 @@
             onFilterChange: function() {
                 this._table.search( this.filter ).draw();
             },
+            onEntriesChange: function() {
+                this._table.page.len( this.entries );
+            },
             onDestroyed: function() {
                 // Erase DataTable IDs
                 this.rows.forEach( function( obj, index ) {
@@ -198,6 +208,7 @@
             onMounted: function() {
                 this._queue = [];
                 this._table = $( this.$el ).DataTable( {
+                    pageLength: this.entries,
                     dom:    "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
                 } );
                 // Create render Function for Table Rows

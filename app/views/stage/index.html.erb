@@ -122,7 +122,7 @@
 				<google-map :markers="eventData.splits" :location="modalData"></google-map>
 			</div>
 			<div class="col-xs-12">
-				<data-tables :rows="eventData.splits" :filter="filter" v-on:edit="modalData = $event">
+				<data-tables :rows="eventData.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event">
 					<tr slot="header">
 						<th></th>
 						<th data-orderable="false">Name</th>
@@ -270,7 +270,7 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<data-tables :rows="eventData.participants" :filter="filter" v-on:edit="modalData = $event; modalNew = false;">
+				<data-tables :rows="eventData.participants" :filter="filter" :entries="30" v-on:edit="modalData = $event;">
 					<tr slot="header">
 						<th>Name</th>
 						<th>M/F</th>
@@ -308,7 +308,7 @@
 				<div class="modal-content">
 					<div class="modal-body clearfix">
 						<div class="form-group col-xs-12">
-							<label>Select Course</label>
+							<label class="required">Name</label>
 							<div class="row">
 								<div class="form-group col-xs-6">
 									<input type="text" class="form-control" v-model="model.first" placeholder="First Name"></input>
@@ -319,7 +319,7 @@
 							</div>
 						</div>
 						<div class="form-group col-xs-6">
-							<label>Gender</label>
+							<label class="required">Gender</label>
 							<label class="radio"><input type="radio" name="gender" value="M" v-model="model.gender">Male</label>
 							<label class="radio"><input type="radio" name="gender" value="F" v-model="model.gender">Female</label>
 						</div>
@@ -328,7 +328,7 @@
 							<input type="text" class="form-control" v-model="model.dob" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
 						</div>
 						<div class="form-group col-xs-6">
-							<label>Bib Number</label>
+							<label class="required">Bib Number</label>
 							<input type="text" class="form-control" v-model="model.bibnumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
 						</div>
 						<div class="form-group col-xs-6">
@@ -336,7 +336,7 @@
 							<input type="text" class="form-control" v-model="model.beacon" placeholder="http://example.com"></input>
 						</div>
 						<div class="form-group col-xs-6">
-							<label>Email</label>
+							<label class="required">Email</label>
 							<input type="text" class="form-control" v-model="model.email" placeholder="example@gmail.com"></input>
 						</div>
 						<div class="form-group col-xs-6">
@@ -344,21 +344,21 @@
 							<input type="text" class="form-control" v-model="model.phone" v-mask="'(999) 999 - 9999'" placeholder="(xxx) xxx - xxxx"></input>
 						</div>
 						<div class="form-group col-xs-6">
-							<label>City</label>
+							<label class="required">City</label>
 							<input type="text" class="form-control" v-model="model.city" placeholder="Louisville"></input>
 						</div>
 						<div class="form-group col-xs-6">
-							<label>State</label>
+							<label class="required">State</label>
 							<input type="text" class="form-control" v-model="model.state" placeholder="Colorado"></input>
 						</div>
 						<div class="form-group col-xs-6">
-							<label>Country</label>
+							<label class="required">Country</label>
 							<input type="text" class="form-control" v-model="model.country" placeholder="United States"></input>
 						</div>
 						<div class="row modal-section">
 							<div class="col-xs-12">
 								<div class="form-group col-xs-7">
-									<label>Participant's Start Time</label>
+									<label class="required">Participant's Start Time</label>
 									<input type="text" class="form-control" v-model="model.startdate" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
 									<select class="form-control" id="event-start-time" v-model="model.starthours">
 										<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>

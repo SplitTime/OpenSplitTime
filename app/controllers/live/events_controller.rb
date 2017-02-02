@@ -90,22 +90,6 @@ class Live::EventsController < Live::BaseController
     end
   end
 
-  def aid_station_degrade
-    authorize @event
-    aid_station = @event.aid_stations.find(params[:aid_station])
-    report = aid_station.degrade_status
-    flash[report[:status]] = report[:text]
-    redirect_to aid_station_report_live_event_path(@event)
-  end
-
-  def aid_station_advance
-    authorize @event
-    aid_station = @event.aid_stations.find(params[:aid_station])
-    report = aid_station.advance_status
-    flash[report[:status]] = report[:text]
-    redirect_to aid_station_report_live_event_path(@event)
-  end
-
   def aid_station_detail
     authorize @event
     aid_station = @event.aid_stations.find(params[:aid_station])
@@ -125,5 +109,4 @@ class Live::EventsController < Live::BaseController
       redirect_to event_path(@event)
     end
   end
-
 end

@@ -118,8 +118,6 @@ Rails.application.routes.draw do
       member { get :get_effort_table }
       member { post :post_file_effort_data }
       member { post :set_times_data }
-      member { put :aid_station_degrade }
-      member { put :aid_station_advance }
       member { get :aid_station_detail }
     end
   end

@@ -27,7 +27,6 @@
         <th class="text-center">Missed</th>
         <th class="text-center">Dropped Here</th>
         <th class="text-center">Expected</th>
-        <th class="text-center">Status</th>
 
       </tr>
       </thead>
@@ -69,11 +68,6 @@
               <% else %>
                   <a data-toggle="efforts-popover" title="<%= row.efforts_expected_table_title %>" data-effort-ids="<%= row.efforts_expected_ids %>"><%= row.efforts_expected_count %></a>
               <% end %>
-            </td>
-            <td class="text-center text-nowrap">
-              <%= link_to '<<', aid_station_degrade_live_event_path(@event, aid_station: row.aid_station), method: :put %>
-              <%= row.aid_station.status.titleize if row.aid_station.status %>
-              <%= link_to '>>', aid_station_advance_live_event_path(@event, aid_station: row.aid_station), method: :put %>
             </td>
           </tr>
       <% end %>

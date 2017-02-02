@@ -136,14 +136,6 @@ class EventPolicy
     current_user.authorized_for_live?(event)
   end
 
-  def aid_station_degrade?
-    current_user.authorized_for_live?(event)
-  end
-
-  def aid_station_advance?
-    current_user.authorized_for_live?(event)
-  end
-
   def aid_station_detail?
     current_user.authorized_for_live?(event)
   end

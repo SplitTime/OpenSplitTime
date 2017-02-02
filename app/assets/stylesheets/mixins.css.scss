@@ -1,0 +1,5 @@
+@mixin breakpoint( $bp, $direction: min ) {
+	@media ( #{ $direction }-width: $bp )  {
+		@content;
+	}
+}

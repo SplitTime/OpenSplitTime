@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 /***********
 Efforts Popover
@@ -251,32 +252,42 @@ Progress Bar Navigation
 /***********
 Full Background
 ************/
-
 aside.full-bg {
 	position: relative;
-
+	
 	&:before {
-		display: block;
-		content: '';
-		background: inherit;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		right: 100%;
-		width: 512px; // Fallback
-		width: 50vw;
+		display: none;
 	}
 
 	&:after {
-		display: block;
-		content: '';
-		background: inherit;
-		position: absolute;
-		top: 100%;
-		right: 0;
-		width: 512px; // Fallback
-		width: 50vw;
-		height: 100vh;
+		display: none;
+	}
+
+	@include breakpoint( $break-medium ) {
+			
+		&:before {
+			display: block;
+			content: '';
+			background: inherit;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 100%;
+			width: 512px; // Fallback
+			width: 50vw;
+		}
+
+		&:after {
+			display: block;
+			content: '';
+			background: inherit;
+			position: absolute;
+			top: 100%;
+			right: 0;
+			width: 512px; // Fallback
+			width: 50vw;
+			height: 100vh;
+		}
 	}
 }
 

@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 .stage.index { // TODO: Increase Specificity
 
@@ -18,7 +19,15 @@
 	aside {
 		background: $darkGray;
 		color: $white;
-		padding-top: 40px;
+		padding: 25px;
+		@include breakpoint( $break-medium ) {
+			padding: 75px 0 0;
+		}
+	}
+
+	article {
+		padding-top: 50px;
+		background: $white;
 	}
 }
 

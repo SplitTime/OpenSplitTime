@@ -17,6 +17,19 @@
             city: '',
             state: '',
             country: ''
+        },
+        split: {
+            name: '',
+            description: '',
+            distance: '',
+            times: '',
+            times: '',
+            verticalGain: '',
+            verticalLoss: '',
+            locationName: '',
+            lat: '',
+            lng: '',
+            elevation: ''
         }
     }
 
@@ -74,12 +87,6 @@
             this.dataTables.init();
             this.editModal.init();
             this.inputMask.init();
-            Vue.component( 'split-modal', { template: '#split-modal', props: [ 'split', 'isNew' ], methods: { isValid: function() {
-                return false;
-            } } } );
-            Vue.component( 'participant-modal', { template: '#participant-modal', props: [ 'participant', 'isNew' ], methods: { isValid: function() {
-                return false;
-            } } } );
 
             // Initialize Vue Router and Vue App
             const routes = [
@@ -89,7 +96,25 @@
                 },
                 { 
                     path: '/splits', 
-                    component: { props: ['eventData'], data: function() { return { modalSplit: {}, modalNew: false }; }, template: '#splits' }
+                    component: {
+                        props: ['eventData'],
+                        methods: {
+                            isValid: function( split ) {
+                                if ( !split.name ) return false;
+                                if ( !split.description ) return false;
+                                if ( !split.distance ) return false;
+                                if ( !split.times ) return false;
+                                if ( !split.verticalGain ) return false;
+                                if ( !split.verticalLoss ) return false;
+                                return true;
+                            },
+                            blank: function() {
+                                return $.extend( {}, blanks.split );
+                            }
+                        },
+                        data: function() { return { modalData: {}, filter: '' }; },
+                        template: '#splits'
+                    }
                 },
                 { 
                     path: '/participants', 
@@ -104,7 +129,7 @@
                                 return $.extend( {}, blanks.participant );
                             }
                         },
-                        data: function() { return { modalData: {}, modalNew: false }; }, 
+                        data: function() { return { modalData: {}, filter: '' }; }, 
                         template: '#participants'
                     }
                 },
@@ -161,6 +186,9 @@
                 } );
                 this._table.draw();
             },
+            onFilterChange: function() {
+                this._table.search( this.filter ).draw();
+            },
             onDestroyed: function() {
                 // Erase DataTable IDs
                 this.rows.forEach( function( obj, index ) {
@@ -170,9 +198,7 @@
             onMounted: function() {
                 this._queue = [];
                 this._table = $( this.$el ).DataTable( {
-                    oLanguage: {
-                        'sSearch': 'Filter:&nbsp;'
-                    }
+                    dom:    "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
                 } );
                 // Create render Function for Table Rows
                 var self = this;
@@ -203,7 +229,8 @@
                     destroyed: eventStage.dataTables.onDestroyed,
                     data: function() { return { row: {} } },
                     watch: {
-                        rows: eventStage.dataTables.onDataChange
+                        rows: eventStage.dataTables.onDataChange,
+                        filter: eventStage.dataTables.onFilterChange
                     }
                 } );
             }
@@ -346,10 +373,12 @@
                         var options = {
                             placeholder: $( el ).attr( 'placeholder' ) || undefined,
                             insertMode: binding.modifiers.insert || false,
+                            rightAlign: binding.modifiers.right || false,
                             clearIncomplete: true,
                             clearMaskOnLostFocus: true,
                             oncomplete: update,
-                            onincomplete: update
+                            onincomplete: update,
+                            oncleared: update
                         };
                         if ( ! $.isPlainObject( binding.value ) )
                             binding.value = { mask: binding.value };

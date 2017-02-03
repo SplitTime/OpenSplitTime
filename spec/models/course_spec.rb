@@ -4,6 +4,7 @@ require 'rails_helper'
 # t.string   "description"
 
 RSpec.describe Course, type: :model do
+  it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 

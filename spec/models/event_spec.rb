@@ -6,6 +6,7 @@ require 'rails_helper'
 # t.datetime "start_time"
 
 RSpec.describe Event, type: :model do
+  it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe 'initialize' do

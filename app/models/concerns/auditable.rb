@@ -17,19 +17,14 @@ module Auditable
     if User.current
       self.created_by ||= User.current.id
       self.updated_by = User.current.id
-    else
-      warn "WARNING: No user id was assigned to #{self.class} #{self.id} " +
-               'because the current User object was not available at the time of creation.'
+    elsif self.created_by.nil? && Rails.env != 'test'
+      warn "WARNING: #{self.class} #{self.id} was created with no user assigned to created_by, and Auditable " +
+               'did not assign one because the current User object was not available at the time of creation.'
     end
   end
 
   # Updates current instance's updated_by if current_user is not nil and is not destroyed.
   def update_updated_by
-    if User.current and not destroyed?
-      self.updated_by = User.current.id
-    else
-      warn "WARNING: No user id was updated for #{self.class} #{self.id} " +
-               'because the current User object was not available at the time of creation.'
-    end
+    self.updated_by = User.current.id if User.current and not destroyed?
   end
 end

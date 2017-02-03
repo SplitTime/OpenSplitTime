@@ -413,7 +413,7 @@ GEM
     unicode-display_width (1.1.0)
     uniform_notifier (1.10.0)
     upsert (2.1.2)
-    vuejs-rails (2.1.6)
+    vuejs-rails (2.1.10)
     warden (1.2.6)
       rack (>= 1.0)
     web-console (2.3.0)

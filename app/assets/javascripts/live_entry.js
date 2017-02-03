@@ -313,6 +313,7 @@
 
                 var data = {
                     splitId: liveEntry.currentSplitId,
+                    lap: $('#js-lap-number').val(),
                     bibNumber: bibNumber,
                     timeIn: $('#js-time-in').val(),
                     timeOut: $('#js-time-out').val()
@@ -321,7 +322,6 @@
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-
                 return $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );

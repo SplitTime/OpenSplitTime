@@ -42,6 +42,8 @@
         router: null,
         app: null,
         data: {
+            isDirty: false,
+            isStaged: false,
             eventData: {
                 race: {
                     name: ''
@@ -87,6 +89,48 @@
             return true;
         },
 
+        onRouteChange: function( to, from, next ) {
+            if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
+                // Event data must be valid
+                next( '/' );
+            } else if ( from.name !== 'home' && !eventStage.data.isStaged ) {
+                // Event must be staged for any page that isn't home
+                next( '/' );
+            } else if ( to.name === 'publish' ) {
+                if ( from.name === 'confirm' ) {
+                    // Perform publish routine
+                    $.post( 'publish-stage', {
+                        data: eventStage.data.eventData
+                    } ).fail( function() {
+                        next();
+                    } ).done( function() {
+                        next( false ); // ABORT!
+                    } );
+                } else {
+                    // Only accessible from confirm form
+                    next( false );
+                }
+            } else {
+                // Perform regular saving routine
+                $.post( 'save-stage', {
+                    data: eventStage.data.eventData
+                } ).fail( function() {
+                    eventStage.data.isStaged = true;
+                    eventStage.data.isDirty = false;
+                    next();
+                } ).done( function() {
+                    // Check failure conditions...
+                    if ( !eventStage.data.isStaged ) {
+                        // Save cannot fail when not staged yet.
+                        next( '/' );
+                    } else {
+                        // Save failed, but assume nothing bad will happen
+                        next(); 
+                    }
+                } );
+            }
+        },
+
         /**
          * This kicks off the full UI
          *
@@ -104,7 +148,8 @@
             // Initialize Vue Router and Vue App
             const routes = [
                 { 
-                    path: '/', 
+                    path: '/',
+                    name: 'home',
                     component: {
                         props: ['eventData'],
                         methods: {
@@ -136,9 +181,7 @@
                         data: function() { return { modalData: {}, filter: '' } },
                         template: '#splits'
                     },
-                    beforeEnter: function( to, from, next ) {
-                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
-                    }
+                    beforeEnter: this.onRouteChange
                 },
                 { 
                     path: '/participants', 
@@ -163,23 +206,19 @@
                         data: function() { return { modalData: {}, filter: '' } }, 
                         template: '#participants'
                     },
-                    beforeEnter: function( to, from, next ) {
-                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
-                    }
+                    beforeEnter: this.onRouteChange
                 },
                 { 
                     path: '/confirmation', 
+                    name: 'confirm',
                     component: { props: ['eventData'], template: '#confirmation' },
-                    beforeEnter: function( to, from, next ) {
-                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
-                    }
+                    beforeEnter: this.onRouteChange
                 },
                 { 
-                    path: '/published', 
+                    path: '/published',
+                    name: 'publish',
                     component: { template: '#published' },
-                    beforeEnter: function( to, from, next ) {
-                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
-                    }
+                    beforeEnter: this.onRouteChange
                 }
             ];
             var router = new VueRouter( {

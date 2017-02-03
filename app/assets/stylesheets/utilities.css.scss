@@ -155,7 +155,9 @@ Progress Bar Navigation
 
 .progress-bar-nav {
 	position: relative;
-
+	width: 100%;
+	padding: 0 3px;
+	
 	$progress-bar-nav: (
 		'bar-margin': 50px,
 		'bar-height': 1em,
@@ -169,7 +171,7 @@ Progress Bar Navigation
 		content: '';
 		position: absolute;
 		left: 0;
-		background: $lightGray;
+		background: $darkerGray;
 		width: 100%;
 		height: map-get( $progress-bar-nav, 'bar-height' );
 		border-radius: map-get( $progress-bar-nav, 'bar-height' ) / 2;
@@ -196,7 +198,7 @@ Progress Bar Navigation
 				width: map-get( $progress-bar-nav, 'bubble-height' );
 				height: map-get( $progress-bar-nav, 'bubble-height' );
 				border-radius: map-get( $progress-bar-nav, 'bubble-height' ) / 2;
-				background: $lightGray;
+				background: $darkerGray;
 				position: absolute;
 				top: 0;
 				right: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
@@ -225,6 +227,48 @@ Progress Bar Navigation
 					opacity: 1;
 					border-radius: map-get( $progress-bar-nav, 'indicator-height' );
 				}
+			}
+
+			&:last-child {
+
+				&:before {
+					display: block;
+					content: '\e013';
+					color: $white;
+					padding-top: 5px;
+					width: map-get( $progress-bar-nav, 'bubble-height' ) * 1.5;
+					height: map-get( $progress-bar-nav, 'bubble-height' ) * 1.5;
+					border-radius: map-get( $progress-bar-nav, 'bubble-height' );
+					background: $darkerGray;
+					position: absolute;
+					font-family: 'Glyphicons Halflings';
+					top: -.35em;
+					transition: background 0.6s ease-in-out;
+					text-align: center;
+				}
+
+				a {
+					&:before {
+						display: block;
+						content: '\e013';
+						color: $white;
+						position: absolute;
+						top: 0;
+						padding-top: 5px;
+						left: 50%;
+						width: map-get( $progress-bar-nav, 'bubble-height' ) * 1.5;
+						height: map-get( $progress-bar-nav, 'bubble-height' ) * 1.5;
+						top: -.35em;
+						border-radius: map-get( $progress-bar-nav, 'bubble-height' );
+						margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) );
+						@include transform( scale( 1 ) );
+						background: $blue;
+						transition: transform 0.3s ease-in-out;
+						text-align: center;
+						font-family: 'Glyphicons Halflings';
+					}
+				}
+
 			}
 
 			a {

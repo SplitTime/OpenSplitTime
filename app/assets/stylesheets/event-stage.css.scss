@@ -12,16 +12,16 @@
 		border: none;
 
 		h2 {
-			margin-top: 40px;
+			margin: 40px 0;
 		}
 	}
 
 	aside {
 		background: $darkGray;
 		color: $white;
-		padding: 25px;
+		padding-top: 25px;
 		@include breakpoint( $break-medium ) {
-			padding: 75px 0 0;
+			padding-top: 75px;
 		}
 	}
 

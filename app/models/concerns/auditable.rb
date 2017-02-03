@@ -14,12 +14,22 @@ module Auditable
   private
 
   def add_created_by_and_updated_by
-    self.created_by ||= User.current.id if User.current
-    self.updated_by = User.current.id if User.current
+    if User.current
+      self.created_by ||= User.current.id
+      self.updated_by = User.current.id
+    else
+      warn "WARNING: No user id was assigned to #{self.class} #{self.id} " +
+               'because the current User object was not available at the time of creation.'
+    end
   end
 
   # Updates current instance's updated_by if current_user is not nil and is not destroyed.
   def update_updated_by
-    self.updated_by = User.current.id if User.current and not destroyed?
+    if User.current and not destroyed?
+      self.updated_by = User.current.id
+    else
+      warn "WARNING: No user id was updated for #{self.class} #{self.id} " +
+               'because the current User object was not available at the time of creation.'
+    end
   end
 end

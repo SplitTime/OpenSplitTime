@@ -342,7 +342,7 @@
             },
             init: function() {
                 Vue.component( 'google-map', {
-                    template: '<div style="min-height: 300px"></div>',
+                    template: '<div class="splits-modal-map-wrap"></div>',
                     props: { markers: { default: null }, location: { default: null } },
                     mounted: eventStage.googleMaps.onMounted,
                     watch: {

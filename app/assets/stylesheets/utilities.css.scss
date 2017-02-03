@@ -176,7 +176,7 @@ Progress Bar Navigation
 		height: map-get( $progress-bar-nav, 'bar-height' );
 		border-radius: map-get( $progress-bar-nav, 'bar-height' ) / 2;
 		margin: ( map-get( $progress-bar-nav, 'bubble-height' ) - map-get( $progress-bar-nav, 'bar-height' ) ) / 2 0;
-		@include breakpoint( $break-medium ) {
+		@include breakpoint( $break-small ) {
 			left: 0;
 		}
 	}
@@ -189,7 +189,7 @@ Progress Bar Navigation
 		margin: 0;
 		width: 100%;
 		margin-bottom: 4em;
-		@include breakpoint( $break-medium ) {
+		@include breakpoint( $break-small ) {
 			padding: 0 map-get( $progress-bar-nav, 'bar-margin' );
 		}
 
@@ -208,7 +208,7 @@ Progress Bar Navigation
 				position: absolute;
 				top: 0;
 				left: 0;
-				@include breakpoint( $break-medium ) {
+				@include breakpoint( $break-small ) {
 					transition: background 0.6s ease-in-out;
 					left: auto;
 					right: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
@@ -226,7 +226,7 @@ Progress Bar Navigation
 				opacity: 1;
 				background: $blue;
 				z-index: 2;
-				@include breakpoint( $break-medium ) {
+				@include breakpoint( $break-small ) {
 					right: 0;
 					transition: all 0.6s ease-in-out;
 				}
@@ -234,12 +234,12 @@ Progress Bar Navigation
 
 			&:first-child {
 				width: auto;
-				@include breakpoint( $break-medium ) {
+				@include breakpoint( $break-small ) {
 					width: 0;
 				}
 				&:after {
 					display: none;
-					@include breakpoint( $break-medium ) {
+					@include breakpoint( $break-small ) {
 						width: map-get( $progress-bar-nav, 'bar-margin' );
 						opacity: 1;
 						border-radius: map-get( $progress-bar-nav, 'indicator-height' );	
@@ -274,7 +274,7 @@ Progress Bar Navigation
 						text-align: center;
 						font-family: 'Glyphicons Halflings';
 						left: 50%;
-						@include breakpoint( $break-medium ) {
+						@include breakpoint( $break-small ) {
 							margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) / 1.5 );
 						}
 					}
@@ -294,7 +294,7 @@ Progress Bar Navigation
 				color: $blue;
 				text-decoration: none;
 				z-index: 3;
-				@include breakpoint( $break-medium ) {
+				@include breakpoint( $break-small ) {
 					left: 100%;
 					min-width: 100px;
 				}
@@ -302,7 +302,7 @@ Progress Bar Navigation
 				span {
 					display: none;
 					
-					@include breakpoint( $break-medium ) {
+					@include breakpoint( $break-small ) {
 						display: block;
 					}
 				}
@@ -318,7 +318,7 @@ Progress Bar Navigation
 					height: map-get( $progress-bar-nav, 'bubble-height' );
 					border-radius: map-get( $progress-bar-nav, 'bubble-height' ) / 2;
 					background: $blue;
-					@include breakpoint( $break-medium ) {
+					@include breakpoint( $break-small ) {
 						transition: transform 0.3s ease-in-out;
 						left: 50%;
 						margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
@@ -366,7 +366,7 @@ aside.full-bg {
 		display: none;
 	}
 
-	@include breakpoint( $break-medium ) {
+	@include breakpoint( $break-small ) {
 			
 		&:before {
 			display: block;
@@ -400,5 +400,11 @@ span.brackets {
 
 	& > * {
 		margin: 0 0.5em;
+	}
+}
+
+.radio {
+	input {
+		background: transparent;
 	}
 }

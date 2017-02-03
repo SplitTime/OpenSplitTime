@@ -34,6 +34,43 @@
 		clear: both;
 		background: $lightGray;
 	}
+
+	.filter-input-group {
+		margin-bottom: 20px;
+	}
+
+	.splits-modal-map-wrap {
+		margin-bottom: 20px;
+		min-height: 300px;
+		@include breakpoint( $break-medium ) {
+			margin-bottom: 0;
+			min-height: 500px;
+		}
+	}
+	
+	.split-time-recording-wrap {
+		.radio {
+			padding-left: 20px;
+		}
+		input {
+			margin-left: 0;
+			left: 0;
+		}
+	}
+
+	.vg-group {
+		position: relative;
+		.help-tooltip {
+			position: absolute;
+			margin-right: 3px;
+		}
+	}
+
+	.split-modal-btn-wrap {
+		button {
+			margin-left: 20px;
+		}
+	}
 }
 
 /* There has to be a better way */

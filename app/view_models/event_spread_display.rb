@@ -23,7 +23,8 @@ class EventSpreadDisplay
 
   def effort_times_rows
     @effort_times_rows ||=
-        sorted_efforts.map { |effort| EffortTimesRow.new(effort, relevant_lap_splits, split_times_data_by_effort[effort.id]) }
+        sorted_efforts
+            .map { |effort| EffortTimesRow.new(effort, relevant_lap_splits, split_times_by_effort[effort.id]) }
   end
 
   def efforts_count
@@ -67,15 +68,14 @@ class EventSpreadDisplay
   attr_reader :sort_method
   delegate :multiple_laps?, to: :event
 
-  def split_times_data_by_effort
-    @split_times_data_by_effort ||=
-        split_times_data.group_by { |row| row[:effort_id] }
+  def split_times_by_effort
+    @split_times_by_effort ||= split_times.group_by(&:effort_id)
   end
 
-  def split_times_data
-    @split_times_data ||=
+  def split_times
+    @split_times ||=
         event.split_times
-            .pluck_to_hash(:effort_id, :time_from_start, :lap, :split_id, :sub_split_bitkey, :data_status)
+            .struct_pluck(:effort_id, :time_from_start, :lap, :split_id, :sub_split_bitkey, :data_status)
   end
 
   def efforts
@@ -118,6 +118,6 @@ class EventSpreadDisplay
   end
 
   def highest_lap
-    split_times_data.max_by { |row| row[:lap] }[:lap]
+    split_times.max_by(&:lap).lap
   end
 end

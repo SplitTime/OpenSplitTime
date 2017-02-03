@@ -8,6 +8,7 @@ class SplitTime < ActiveRecord::Base
   include Auditable
   include DataStatusMethods
   include GuaranteedFindable
+  include Structpluck
   belongs_to :effort
   belongs_to :split
   alias_attribute :bitkey, :sub_split_bitkey

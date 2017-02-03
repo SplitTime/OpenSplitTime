@@ -6,10 +6,10 @@ class EffortTimesRow
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset, to: :effort
 
-  def initialize(effort, lap_splits, split_times_data)
+  def initialize(effort, lap_splits, split_times)
     @effort = effort # Use an enriched effort for optimal performance
     @lap_splits = lap_splits
-    @split_times_data = split_times_data
+    @split_times = split_times
     @time_clusters = []
     create_time_clusters
   end
@@ -24,18 +24,18 @@ class EffortTimesRow
 
   private
 
-  attr_reader :lap_splits, :split_times_data
+  attr_reader :lap_splits, :split_times
 
-  def indexed_split_times_data
-    @indexed_split_times_data ||=
-        split_times_data.index_by { |row| TimePoint.new(row[:lap], row[:split_id], row[:sub_split_bitkey]) }
+  def indexed_split_times
+    @indexed_split_times ||=
+        split_times.index_by { |row| TimePoint.new(row.lap, row.split_id, row.sub_split_bitkey) }
   end
 
   def create_time_clusters
     prior_time = 0
     lap_splits.each do |lap_split|
       time_cluster = TimeCluster.new(finish_cluster?(lap_split),
-                                     related_split_times_data(lap_split),
+                                     related_split_times(lap_split),
                                      prior_time,
                                      effort.start_time,
                                      display_dropped?(lap_split))
@@ -53,16 +53,16 @@ class EffortTimesRow
   end
 
   def cluster_includes_last_data?(lap_split)
-    related_split_times_data(lap_split).compact.include?(last_split_time_data)
+    related_split_times(lap_split).compact.include?(last_split_time_data)
   end
 
-  def related_split_times_data(lap_split)
-    lap_split.time_points.map { |time_point| indexed_split_times_data[time_point] }
+  def related_split_times(lap_split)
+    lap_split.time_points.map { |time_point| indexed_split_times[time_point] }
   end
 
   def last_split_time_data
     @last_split_time_data ||=
-        lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times_data[time_point] }.compact.last
+        lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times[time_point] }.compact.last
   end
 
   def display_dropped?(lap_split)

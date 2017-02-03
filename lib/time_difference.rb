@@ -42,6 +42,11 @@ class TimeDifference
     time_diff
   end
 
+  def in_milliseconds
+    (time_diff * 1000).to_i
+  end
+  alias_method :in_ms, :in_milliseconds
+
   def in_each_component
     Hash[TIME_COMPONENTS.map do |time_component|
       [time_component, public_send("in_#{time_component}")]

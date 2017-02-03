@@ -198,6 +198,24 @@ describe TimeDifference do
         end
       end
     end
+
+    describe '#in_milliseconds' do
+      with_each_class do |clazz|
+        it 'returns time difference in milliseconds based on Wolfram Alpha' do
+          start_time = clazz.new(2011, 1)
+          end_time = clazz.new(2011, 12)
+
+          expect(TimeDifference.between(start_time, end_time).in_milliseconds).to eql(28857600000)
+        end
+
+        it 'returns an absolute difference' do
+          start_time = clazz.new(2011, 12)
+          end_time = clazz.new(2011, 1)
+
+          expect(TimeDifference.between(start_time, end_time).in_milliseconds).to eql(28857600000)
+        end
+      end
+    end
   end
   
   # Added method .from to allow calculation without converting to absolute values

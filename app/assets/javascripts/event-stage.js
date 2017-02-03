@@ -486,7 +486,6 @@
                     data: this.data
                 } ).done( function( a,b,c ) {
                     $( self.$el ).find( 'option:not( .static )' ).remove();
-                    console.log( a,b,c );
                 } );
             },
             init: function() {

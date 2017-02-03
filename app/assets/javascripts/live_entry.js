@@ -212,6 +212,10 @@
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
                 $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
 
+                // Enabled / Disable Laps field
+                $('#js-bib-number').closest('div').toggleClass('col-xs-4', liveEntry.eventLiveEntryData.multiLap || false);
+                $('.lap-only').toggle(liveEntry.eventLiveEntryData.multiLap || false);
+
                 // Styles the Dropped Here button
                 $('#js-dropped').on('change', function (event) {
                     var $root = $(this).parent();
@@ -325,6 +329,9 @@
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
                     $('#js-time-spent').html( response.timeInAid );
+                    if ( !$('#js-lap-number').val() ) {
+                        $('#js-lap-number').val( response.expectedLap );
+                    }
 
                     $('#js-time-in')
                         .removeClass('exists null bad good questionable')
@@ -354,6 +361,7 @@
                 // Build up the timeRow
                 var thisTimeRow = {};
                 thisTimeRow.liveBib = $('#js-live-bib').val();
+                thisTimeRow.lap = $('#js-lap-number').val();
                 thisTimeRow.eventId = liveEntry.currentEventId;
                 thisTimeRow.splitId = $('#split-select').val();
                 thisTimeRow.splitName = $('#split-select option:selected').html();
@@ -376,6 +384,7 @@
                 liveEntry.lastEffortRequest = {};
                 liveEntry.currentEffortData = timeRow;
                 $('#js-bib-number').val(timeRow.bibNumber).focus();
+                $('#js-lap-number').val(timeRow.lap);
                 $('#js-time-in').val(timeRow.timeIn);
                 $('#js-time-out').val(timeRow.timeOut);
                 $('#js-pacer-in').prop('checked', timeRow.pacerIn);
@@ -402,6 +411,7 @@
                 $('#js-time-out').val('');
                 $('#js-live-bib').val('');
                 $('#js-bib-number').val('');
+                $('#js-lap-number').val('');
                 $('#js-pacer-in').prop('checked', false);
                 $('#js-pacer-out').prop('checked', false);
                 $('#js-dropped').prop('checked', false).change();

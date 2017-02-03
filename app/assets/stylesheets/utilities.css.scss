@@ -170,22 +170,28 @@ Progress Bar Navigation
 		display: block;
 		content: '';
 		position: absolute;
-		left: 0;
+		left: auto;
 		background: $darkerGray;
 		width: 100%;
 		height: map-get( $progress-bar-nav, 'bar-height' );
 		border-radius: map-get( $progress-bar-nav, 'bar-height' ) / 2;
 		margin: ( map-get( $progress-bar-nav, 'bubble-height' ) - map-get( $progress-bar-nav, 'bar-height' ) ) / 2 0;
+		@include breakpoint( $break-medium ) {
+			left: 0;
+		}
 	}
 
 	ul {
 		list-style: none;
 		display: table;
 		table-layout: fixed;
-		padding: 0 map-get( $progress-bar-nav, 'bar-margin' );
+		padding: 0;
 		margin: 0;
 		width: 100%;
 		margin-bottom: 4em;
+		@include breakpoint( $break-medium ) {
+			padding: 0 map-get( $progress-bar-nav, 'bar-margin' );
+		}
 
 		li {
 			position: relative;
@@ -201,8 +207,12 @@ Progress Bar Navigation
 				background: $darkerGray;
 				position: absolute;
 				top: 0;
-				right: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
-				transition: background 0.6s ease-in-out;
+				left: 0;
+				@include breakpoint( $break-medium ) {
+					transition: background 0.6s ease-in-out;
+					left: auto;
+					right: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
+				}
 			}
 
 			&:after {
@@ -210,22 +220,30 @@ Progress Bar Navigation
 				content: '';
 				position: absolute;
 				height: map-get( $progress-bar-nav, 'indicator-height' );
-				right: 0;
+				right: 100%;
 				width: 100%;
 				top: ( ( map-get( $progress-bar-nav, 'bubble-height' ) - map-get( $progress-bar-nav, 'indicator-height' ) ) / 2 );
 				opacity: 1;
 				background: $blue;
-				transition: all 0.6s ease-in-out;
 				z-index: 2;
+				@include breakpoint( $break-medium ) {
+					right: 0;
+					transition: all 0.6s ease-in-out;
+				}
 			}
 
 			&:first-child {
-				width: 0;
-
+				width: auto;
+				@include breakpoint( $break-medium ) {
+					width: 0;
+				}
 				&:after {
-					width: map-get( $progress-bar-nav, 'bar-margin' );
-					opacity: 1;
-					border-radius: map-get( $progress-bar-nav, 'indicator-height' );
+					display: none;
+					@include breakpoint( $break-medium ) {
+						width: map-get( $progress-bar-nav, 'bar-margin' );
+						opacity: 1;
+						border-radius: map-get( $progress-bar-nav, 'indicator-height' );	
+					}
 				}
 			}
 
@@ -253,39 +271,58 @@ Progress Bar Navigation
 						height: map-get( $progress-bar-nav, 'bubble-height' ) * 1.5;
 						top: -.35em;
 						border-radius: map-get( $progress-bar-nav, 'bubble-height' );
-						margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) / 1.5 );
 						text-align: center;
 						font-family: 'Glyphicons Halflings';
+						left: 50%;
+						@include breakpoint( $break-medium ) {
+							margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) / 1.5 );
+						}
 					}
 				}
 			}
 
 			a {
+				@include transform( translateX(-50%) );
 				position: absolute;
 				top: 0;
-				left: 100%;
+				left: 0;
 				padding-top: 2em;
-				min-width: 100px;
+				min-width: 0;
+				width: auto;
 				display: inline-block;
 				text-align: center;
 				color: $blue;
 				text-decoration: none;
 				z-index: 3;
-				@include transform( translateX(-50%) );
+				@include breakpoint( $break-medium ) {
+					left: 100%;
+					min-width: 100px;
+				}
+				
+				span {
+					display: none;
+					
+					@include breakpoint( $break-medium ) {
+						display: block;
+					}
+				}
 
 				&:before {
+					@include transform( scale( 1 ) );
 					display: block;
 					content: '';
 					position: absolute;
 					top: 0;
-					left: 50%;
+					left: 0;
 					width: map-get( $progress-bar-nav, 'bubble-height' );
 					height: map-get( $progress-bar-nav, 'bubble-height' );
 					border-radius: map-get( $progress-bar-nav, 'bubble-height' ) / 2;
-					margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
-					@include transform( scale( 1 ) );
 					background: $blue;
-					transition: transform 0.3s ease-in-out;
+					@include breakpoint( $break-medium ) {
+						transition: transform 0.3s ease-in-out;
+						left: 50%;
+						margin-left: -( map-get( $progress-bar-nav, 'bubble-height' ) / 2 );
+					}
 				}
 			}
 		}

@@ -331,6 +331,7 @@
                     $('#js-time-spent').html( response.timeInAid );
                     if ( !$('#js-lap-number').val() ) {
                         $('#js-lap-number').val( response.expectedLap );
+                        $('#js-lap-number:focus').select();
                     }
 
                     $('#js-time-in')
@@ -581,6 +582,7 @@
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
                         <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
+                        <td class="lap-number js-lap-number">' + timeRow.lap + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\

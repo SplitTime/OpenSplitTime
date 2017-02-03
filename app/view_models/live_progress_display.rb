@@ -1,11 +1,12 @@
 class LiveProgressDisplay < LiveEventFramework
 
-  attr_reader :past_due_threshold
+  attr_reader :times_container, :past_due_threshold
 
   def post_initialize(args)
     ArgsValidator.validate(params: args, required: :event,
                            exclusive: [:event, :past_due_threshold, :times_container],
                            class: self.class)
+    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @past_due_threshold = args[:past_due_threshold].presence.try(:to_i) || 30
   end
 

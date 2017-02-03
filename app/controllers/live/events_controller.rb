@@ -9,7 +9,7 @@ class Live::EventsController < Live::BaseController
 
   def aid_station_report
     authorize @event
-    @aid_stations_display = AidStationsDisplay.new(@event)
+    @aid_stations_display = AidStationsDisplay.new(event: @event)
   end
 
   def progress_report

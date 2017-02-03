@@ -111,7 +111,8 @@
     	init: function () {
     		$( '[data-toggle="switchery"]' ).each( function( i, el ) {
 				$( el ).data( 'switchery', new Switchery( el, {
-					size: $( el ).data( 'size' )
+					size: $( el ).data( 'size' ),
+                    color: '#2A9FD8'
 				} ) );
     		} );
     	}

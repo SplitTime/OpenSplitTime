@@ -43,12 +43,16 @@
         app: null,
         data: {
             eventData: {
+                race: {
+                    name: ''
+                },
                 event: {
                     name: '',
                     description: '',
                     date: '',
                     hours: 06,
-                    minutes: 00
+                    minutes: 00,
+                    laps: false
                 },
                 course: {
                     new: false,
@@ -76,6 +80,13 @@
             }
         },
 
+        isEventValid: function( eventData ) {
+            if ( ! eventData.race.name ) return false;
+            if ( ! eventData.event.name ) return false;
+            if ( ! eventData.course.name ) return false;
+            return true;
+        },
+
         /**
          * This kicks off the full UI
          *
@@ -87,12 +98,22 @@
             this.dataTables.init();
             this.editModal.init();
             this.inputMask.init();
+            this.prefill.init();
+            this.ajaxSelect.init();
 
             // Initialize Vue Router and Vue App
             const routes = [
                 { 
                     path: '/', 
-                    component: { props: ['eventData'], template: '#event' }
+                    component: {
+                        props: ['eventData'],
+                        methods: {
+                            isEventValid: function() {
+                                return eventStage.isEventValid( this.eventData );
+                            }
+                        },
+                        template: '#event'
+                    }
                 },
                 { 
                     path: '/splits', 
@@ -114,6 +135,9 @@
                         },
                         data: function() { return { modalData: {}, filter: '' } },
                         template: '#splits'
+                    },
+                    beforeEnter: function( to, from, next ) {
+                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
                     }
                 },
                 { 
@@ -138,15 +162,24 @@
                         },
                         data: function() { return { modalData: {}, filter: '' } }, 
                         template: '#participants'
+                    },
+                    beforeEnter: function( to, from, next ) {
+                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
                     }
                 },
                 { 
                     path: '/confirmation', 
-                    component: { props: ['eventData'], template: '#confirmation' }
+                    component: { props: ['eventData'], template: '#confirmation' },
+                    beforeEnter: function( to, from, next ) {
+                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
+                    }
                 },
                 { 
                     path: '/published', 
-                    component: { template: '#published' }
+                    component: { template: '#published' },
+                    beforeEnter: function( to, from, next ) {
+                        next( eventStage.isEventValid( eventStage.data.eventData ) ? undefined : '/' );
+                    }
                 }
             ];
             var router = new VueRouter( {
@@ -367,7 +400,7 @@
             }
          },
 
-         inputMask: {
+        inputMask: {
             init: function() {
                 Vue.directive( 'mask', {
                     bind: function( el, binding ) {
@@ -396,6 +429,75 @@
                         $.extend( options, binding.value );
                         $( el ).inputmask( options );
                     }
+                } );
+            }
+        },
+
+        /**
+         *  Prefill Directive
+         *
+         *  The value passed to this directive will be applied to its input 
+         *  element until the input is changed manually. The prefill will stay
+         *  deactivated until the input is emptied.
+         */
+        prefill: {
+            init: function() {
+                Vue.directive( 'prefill', {
+                    update: function( el, binding ) {
+                        var update = function( el ) {
+                            /*
+                             * BruceLampson on Dec 31, 2016
+                             * https://github.com/RobinHerbots/Inputmask/issues/1468
+                             */
+                            var event = document.createEvent( 'HTMLEvents' );
+                            event.initEvent( 'input', true, true );
+                            el.dispatchEvent( event );
+                            $( el ).trigger( 'change' );
+                        };
+                        if ( binding.value !== binding.oldValue ) {
+                            if ( !$( el ).val() || $( el ).val() == binding.oldValue ) {
+                                $( el ).val( binding.value );
+                                update( el );
+                            }
+                        }
+                    }
+                } );
+            }
+        },
+
+        /**
+         *  Ajax Select Component
+         *
+         *  Contacts the provided endpoint to retrieve it's values. Surround the component
+         *  with <keep-alive> to prevent the component from requesting data from the server 
+         *  again. Additional data to be sent to the server can be sent using the data property.
+         */
+         ajaxSelect: {
+            onMounted: function( a,b,c ) {
+                var data = $.extend( {}, this.data );
+                var self = this;
+
+                // Mark existing entries
+                $( this.$el ).find( 'option' ).addClass( 'static' );
+
+                // Fetch New Entries
+                $.ajax( this.url, {
+                    method: this.method,
+                    data: this.data
+                } ).done( function( a,b,c ) {
+                    $( self.$el ).find( 'option:not( .static )' ).remove();
+                    console.log( a,b,c );
+                } );
+            },
+            init: function() {
+                Vue.component( 'ajax-select', {
+                    props: {
+                        data: { type: Object, default: function() { return {} } },
+                        method: { type: String, default: 'get' },
+                        url: { type: String, required: true, default: '' }
+                    },
+                    template: '<select><slot></slot></select>',
+                    mounted: eventStage.ajaxSelect.onMounted
                 } );
             }
          }

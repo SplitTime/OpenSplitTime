@@ -9,47 +9,47 @@
 			<strong>Provide More Information About Your Event</strong>
 		</h3>
 		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-		<p><router-link to="/splits" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link></p>
+		<p><router-link to="/splits" class="btn btn-primary" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link></p>
 		<p><span class="brackets"><a>Cancel</a></span></p>
 	</aside>
 	<article class="col-xs-12 col-sm-8">
 		<div class="form-group">
-			<label for="event-name">What is your event called?</label>
+			<label class="required">What is your event called?</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<input type="text" class="form-control" id="event-name" placeholder="Your event name" v-model="eventData.event.name">
+			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.race.name">
 		</div>
 		<div class="form-group">
-			<label for="event-description">Description</label>
-			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<textarea class="form-control" id="event-description" placeholder="Your event's description" v-model="eventData.event.description"></textarea>
-		</div>
-		<div class="form-group">
-			<label for="event-start-time">Start Time of Race</label>
+			<label>Start Time of Race</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-5 col-sm-7 col-md-8">
-					<input type="text" class="form-control" id="event-start-time" v-model="eventData.event.date" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
+					<input type="text" class="form-control" v-model="eventData.event.date" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
 				</div>
 				<div class="col-xs-7 col-sm-5 col-md-4 form-control-fill">
-					<select class="form-control" id="event-start-time" v-model="eventData.event.hours">
+					<select class="form-control" v-model="eventData.event.hours">
 						<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>
 						<option v-for="h in 12" :value="( h + 12 ) % 24">{{ h | padding( 2, '0' ) }} PM</option>
 					</select>
 					<span class="text-center">&nbsp;:&nbsp;</span>
-					<select class="form-control" id="event-start-time" v-model="eventData.event.minutes">
+					<select class="form-control" v-model="eventData.event.minutes">
 						<option v-for="m in 12" :value="( m - 1 ) * 5">{{ ( m - 1 ) * 5 | padding( 2, '0' ) }}</option>
 					</select>
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="required">Event Name</label>
+			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.event.name" v-prefill="eventData.race.name + ' Year'">
+		</div>
+		<div class="form-group">
 			<label for="event-start-time">Select Course</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-8">
-					<select class="form-control" id="event-start-time" :disabled="eventData.course.new">
-						<option selected disabled>Select One</option>
-					</select>
+					<ajax-select class="form-control" :disabled="eventData.course.new" v-model="eventData.course.id" url="get-courses">
+						<option value="" selected disabled>Select One</option>
+					</ajax-select>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-4 form-control-fill">
 					<span class="text-center" style="width: 100%">or</span>
@@ -60,33 +60,56 @@
 		<div class="well well-sm" v-show="eventData.course.new">
 			<div class="row">
 				<div class="form-group col-xs-12">
-					<label for="event-name">Course Name</label>
+					<label class="required">Course Name</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+					<input type="text" class="form-control" placeholder="Your course name" v-model="eventData.course.name" v-prefill="eventData.race.name + ' Course'">
 				</div>
 				<div class="form-group col-xs-12">
-					<label for="event-name">Course Name</label>
+					<label class="required">Course Distance</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+					<input type="text" class="form-control" placeholder="miles" v-model="eventData.course.distance" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-6">
-					<label for="event-name">Course Name</label>
-					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+					<label class="required">Total Vertical Gain</label>
+					<input type="text" class="form-control" placeholder="feet" v-model="eventData.course.verticalGain" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-6">
-					<label for="event-name">Course Name</label>
-					<input type="text" class="form-control" id="event-name" placeholder="Your event name">
+					<label class="required">Total Vertical Loss</label>
+					<input type="text" class="form-control" placeholder="feet" v-model="eventData.course.verticalLoss" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-12">
-					<label for="event-description">Description</label>
+					<label>Description</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<textarea class="form-control" id="event-description" placeholder="Your event's description"></textarea>
+					<textarea class="form-control" placeholder="Course Description" v-model="eventData.course.description"></textarea>
+				</div>
+				<div class="col-xs-12">
+					<span class="brackets" v-on:click="eventData.course.new = false"><a>Cancel</a></span>
 				</div>
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="required">Multiple laps?</label>
+			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+			<div class="form-inline">
+				<label class="switchery-label">
+					<span>No</span>
+					<input type="checkbox" data-toggle="switchery" data-size="small" value="true" v-model="eventData.event.laps"/>
+					<span>Yes</span>
+				</label>
+				<label v-if="eventData.event.laps">
+					How many laps?
+					<input type="text" class="form-control" v-model="eventData.event.lapCount" v-mask="{ alias: 'integer' }" >
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label>Description</label>
+			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+			<textarea class="form-control" placeholder="Your event's description" v-model="eventData.event.description"></textarea>
+		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<router-link to="/splits" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+				<router-link to="/splits" class="btn btn-primary pull-right" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
 			</div>
 		</div>
 	</article>
@@ -208,9 +231,9 @@
 										</div>
 										<div class="col-xs-6 form-control-fill">
 											<span>or</span>
-											<select class="form-control">
-												<option selected disabled>Select One</option>
-											</select>
+											<ajax-select class="form-control" v-model="model.locationId" url="get-locations">
+												<option value="" selected disabled>Select One</option>
+											</ajax-select>
 										</div>
 									</div>
 								</div>
@@ -360,12 +383,12 @@
 								<div class="form-group col-xs-7">
 									<label class="required">Participant's Start Time</label>
 									<input type="text" class="form-control" v-model="model.startdate" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
-									<select class="form-control" id="event-start-time" v-model="model.starthours">
+									<select class="form-control" v-model="model.starthours">
 										<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>
 										<option v-for="h in 12" :value="( h + 12 ) % 24">{{ h | padding( 2, '0' ) }} PM</option>
 									</select>
 									<span class="text-center">&nbsp;:&nbsp;</span>
-									<select class="form-control" id="event-start-time" v-model="model.startminutes">
+									<select class="form-control" v-model="model.startminutes">
 										<option v-for="m in 12" :value="( m - 1 ) * 5">{{ ( m - 1 ) * 5 | padding( 2, '0' ) }}</option>
 									</select>
 								</div>
@@ -455,92 +478,6 @@
 		Published
 	</article>
 </div></script>
-
-<!-- Vue.js Split Modal -->
-
-<script type="text/x-template" id="split-modal">
-	<div id="js-split-modal" class="modal fade" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-body row">
-					<div class="col-xs-6">
-						<h2 v-if="isNew">Add A New Split</h2>
-						<div class="form-group col-xs-6">
-							<label for="split-name">Split Name</label>
-							<input type="text" class="form-control" id="split-name" v-model="split.name" placeholder="Name">
-						</div>
-						<div class="form-group col-xs-6">
-							<label for="split-description">Description</label>
-							<input type="text" class="form-control" id="split-description" v-model="split.description" placeholder="Describe your split">
-						</div>
-						<div class="form-group col-xs-6">
-							<label for="split-name">Distance From Start</label>
-							<input type="text" class="form-control" id="split-name" v-model="split.distance" placeholder="miles">
-						</div>
-						<div class="form-group col-xs-6">
-							<label>Split Type</label>
-							<label class="radio"><input type="radio" name="split-type">Time In</label>
-							<label class="radio"><input type="radio" name="split-type">Time In and Out</label>
-						</div>
-						<div class="form-group col-xs-6">
-							<label for="split-vgain">Vertical Gain From Start</label>
-							<input type="text" class="form-control" id="split-vgain" v-model="split.verticalGain" placeholder="feet">
-						</div>
-						<div class="form-group col-xs-6">
-							<label for="split-vloss">Vertical Loss From Start</label>
-							<input type="text" class="form-control" id="split-vloss" v-model="split.verticalLoss" placeholder="feet">
-						</div>
-						<h3><template v-if="isNew">Add Location</template><template v-else>Edit Location</template></h3>
-						<div class="form-horizontal">
-							<label for="split-loc-name">Name of Location</label>
-							<div class="form-group">
-								<div class="col-xs-12 form-control-fill">
-									<input type="text" class="form-control" id="split-loc-name" placeholder="Create A New Location">
-									<span class="text-center">or</span>
-									<select class="form-control">
-										<option selected disabled>Select An Existing One</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="form-group col-xs-4">
-							<label for="split-lat">Latitude</label>
-							<input type="text" class="form-control" id="split-lat" v-model="split.lat" placeholder="">
-						</div>
-						<div class="form-group col-xs-4">
-							<label for="split-lng">Longitude</label>
-							<input type="text" class="form-control" id="split-lng" v-model="split.lng" placeholder="">
-						</div>
-						<div class="form-group col-xs-4">
-							<label for="split-elevation">Elevation</label>
-							<input type="text" class="form-control" id="split-elevation" placeholder="">
-						</div>
-						<div class="row">
-							<span class="brackets" data-dismiss="modal" v-if="isNew"><a>Cancel</a></span>
-							<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="$emit('new')" :disabled="isValid">
-								<template v-if="isNew">Add Split</template><template v-else>Done</template>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</script>
-
-<!-- Vue.js Participant Modal -->
-
-<script type="text/x-template" id="participant-modal">
-	<div id="js-participant-modal" class="modal fade" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-body row">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-</script>
 
 <!-- Vue.js Applet -->
 

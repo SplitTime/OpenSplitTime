@@ -9,7 +9,7 @@
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '<< Show race', race_path(@race), class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Organization', race_path(@race), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
   </div>
 </div>
@@ -20,7 +20,7 @@
 <% if @race.stewards.present? %>
     <div class="row">
       <div class="col-xs-8">
-        <h4>Stewards associated with this race:</h4>
+        <h4>Stewards of this organization:</h4>
       </div>
     </div>
     <div class="row">
@@ -29,5 +29,5 @@
       </div>
     </div>
 <% else %>
-    <h4>No stewards are associated with this race. Search to find a trusted user and add them.</h4>
+    <h4>This organization has no stewards. Search to find a trusted user.</h4>
 <% end %>

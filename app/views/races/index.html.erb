@@ -1,17 +1,17 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: List organizations" %>
+    <% "OpenSplitTime: List races" %>
 <% end %>
 
 <div class="row header">
   <div class="col-xs-5">
     <h2>
-      <strong>Organizations</strong>
+      <strong>Races</strong>
     </h2>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <% if @current_user %>
-          <%= link_to 'Create a new organization', new_race_path,
+          <%= link_to 'Create a new race', new_race_path,
                       class: 'btn btn-sm btn-success' %>
       <% end %>
     </div>

@@ -8,7 +8,7 @@
             <%= f.label :name %>
           </div>
           <div class="col-sm-8">
-            <%= f.text_field :name, class: "form-control", placeholder: "Organization name", autofocus: true %>
+            <%= f.text_field :name, class: "form-control", placeholder: "Race name", autofocus: true %>
           </div>
         </div>
         <div class="form-group">
@@ -16,7 +16,7 @@
             <%= f.label :description %>
           </div>
           <div class="col-sm-8">
-            <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Say something about your organization" %>
+            <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Race description" %>
           </div>
         </div>
         <% if current_user && current_user.admin? %>
@@ -31,7 +31,7 @@
         <% end %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@race.new_record? ? "Create Organization" : "Update Organization", class: 'btn btn-primary btn-large') %>
+            <%= f.submit(@race.new_record? ? "Create Race" : "Update Race", class: 'btn btn-primary btn-large') %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">

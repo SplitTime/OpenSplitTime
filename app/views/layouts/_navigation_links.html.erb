@@ -1,7 +1,9 @@
 <%# add navigation links to this file %>
-<li><%= link_to 'Participants', participants_path %></li>
 <li><%= link_to 'Events', events_path %></li>
-<li><%= link_to 'Organizations', races_path %></li>
+<li><%= link_to 'Courses', courses_path %></li>
+<li><%= link_to 'Races', races_path %></li>
+<li><%= link_to 'Participants', participants_path %></li>
 <% if current_user && current_user.admin? %>
     <li><%= link_to 'Dashboard', admin_root_path %></li>
 <% end %>
+

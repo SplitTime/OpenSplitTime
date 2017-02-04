@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show organization - #{@race.name}" %>
+    <% "OpenSplitTime: Show race - #{@race.name}" %>
 <% end %>
 <div class="row header">
   <div class="col-xs-7">
@@ -10,8 +10,8 @@
       <% if @current_user && @current_user.authorized_to_edit?(@race) %>
           <%= link_to 'Add/remove stewards', stewards_race_path(@race), class: "btn btn-sm btn-warning" %>
           <%= link_to 'Create New Event', new_event_path(race_id: @race.id), class: "btn btn-sm btn-success" %>
-          <%= link_to 'Edit this organization', edit_race_path(@race), class: "btn btn-sm btn-primary" %>
-          <%= link_to 'Delete this organization',
+          <%= link_to 'Edit this race', edit_race_path(@race), class: "btn btn-sm btn-primary" %>
+          <%= link_to 'Delete this race',
                       race_path(@race, referrer_path: request.referrer ? URI(request.referrer).path : locations_path),
                       method: :delete,
                       data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
@@ -68,6 +68,6 @@
     <% if @race_show.events_count > 0 %>
         <%= render 'events/events', events: @race_show.events %>
     <% else %>
-        <h4>No events are associated with this organization.</h4>
+        <h4>No events are associated with this race.</h4>
     <% end %>
 <% end %>

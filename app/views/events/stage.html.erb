@@ -8,9 +8,9 @@
     <h4>
       <%= "Start Time: #{l(@event_stage.start_time, format: :full_with_weekday)} at #{l(@event_stage.start_time, format: :ampm)}" %>
       <br/>
-      Run on <%= link_to @event_stage.course_name, course_path(@event_stage.course) %>
+      Course: <%= link_to @event_stage.course_name, course_path(@event_stage.course) %>
       <% if @event_stage.race %>
-          <br/>Organized under <%= link_to @event_stage.race_name, race_path(@event_stage.race) %>
+          <br/>Race: <%= link_to @event_stage.race_name, race_path(@event_stage.race) %>
       <% end %>
     </h4>
   </div>

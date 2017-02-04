@@ -19,9 +19,9 @@
   </div>
 
 </div>
-<div class="row form-split-wrapper">
+<div class="row form-split-wrapper lap-disabled">
 
-  <div class="col-xs-12 col-sm-4 live-entry">
+  <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
     <form id="js-add-effort-form">
       <div class="form-group form-group-sm clearfix">
         <label class="col-xs-4" for="split-select">Aid Station</label>
@@ -30,11 +30,12 @@
         </div>
       </div>
       <div class="form-group form-group-sm clearfix">
-        <label class="col-xs-4" for="js-bib-number">Bib # <span class="lap-only">/ Lap</span></label>
+        <label class="col-xs-4" for="js-bib-number">Bib #</label>
         <div class="col-xs-8">
           <input type="text" id="js-bib-number" name="bibNumber" class="form-control" autocomplete="off" value="" style="text-align: left;">
         </div>
-        <div class="col-xs-4 lap-only">
+        <label class="col-xs-2 lap-only" for="js-lap-number">Lap</label>
+        <div class="col-xs-3 lap-only">
           <input type="text" id="js-lap-number" name="lap" class="form-control" autocomplete="off" value="">
         </div>
       </div>
@@ -106,7 +107,7 @@
     </form>
   </div>
 
-  <div class="col-xs-12 col-sm-8 splits-slider">
+  <div class="col-xs-12 col-sm-7 col-md-8 splits-slider">
     <div class="col-xs-12">
       <div id="js-split-slider" class="splits-slider-plotter">
       </div>
@@ -132,7 +133,7 @@
 
 </div>
 
-<div class="row provisional-data">
+<div class="row provisional-data lap-disabled ">
 
   <div class="col-xs-12">
     <h3>Local Data Workspace</h3>
@@ -142,7 +143,7 @@
         <tr>
           <th>Aid Station</th>
           <th>Bib&num;</th>
-          <th>Lap&num;</th>
+          <th class="lap-only">Lap&num;</th>
           <th>Time In</th>
           <th>Time Out</th>
           <th>Pacer In/Out?</th>
@@ -155,7 +156,7 @@
         <tr style="display: none">
           <td data-order="0"></td>
           <td></td>
-          <td></td>
+          <td class="lap-only"></td>
           <td></td>
           <td></td>
           <td></td>

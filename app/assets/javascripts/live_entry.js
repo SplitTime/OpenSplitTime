@@ -213,8 +213,8 @@
                 $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
 
                 // Enabled / Disable Laps field
-                $('#js-bib-number').closest('div').toggleClass('col-xs-4', liveEntry.eventLiveEntryData.multiLap || false);
-                $('.lap-only').toggle(liveEntry.eventLiveEntryData.multiLap || false);
+                $('#js-bib-number').closest('div').toggleClass('col-xs-3', liveEntry.eventLiveEntryData.multiLap || false);
+               liveEntry.eventLiveEntryData.multiLap && $('.lap-disabled').removeClass('lap-disabled');
 
                 // Styles the Dropped Here button
                 $('#js-dropped').on('change', function (event) {
@@ -329,7 +329,7 @@
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
                     $('#js-time-spent').html( response.timeInAid );
-                    if ( !$('#js-lap-number').val() ) {
+                    if ( !$('#js-lap-number').val() || $('#js-bib-number').val() != liveEntry.liveEntryForm.lastBib ) {
                         $('#js-lap-number').val( response.expectedLap );
                         $('#js-lap-number:focus').select();
                     }
@@ -582,7 +582,7 @@
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
                         <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
-                        <td class="lap-number js-lap-number">' + timeRow.lap + '</td>\
+                        <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\

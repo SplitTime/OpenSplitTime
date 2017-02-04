@@ -13,7 +13,7 @@
     <strong>Course:</strong>
     <%= link_to @aid_station.course_name, course_path(@aid_station.course) %>
     <% if @aid_station.race %> |
-        <strong>Race:</strong>
+        <strong>Organization:</strong>
         <%= link_to @aid_station.race_name, race_path(@aid_station.race) %>
     <% end %><br/>
     <strong><%= "Aid Captain: #{@aid_station.captain_name}" %></strong><br/>

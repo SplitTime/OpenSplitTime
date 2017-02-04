@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-10">
-    <% if @aid_station_detail.expected_live_efforts.empty? %>
+    <% if @aid_station_detail.category_efforts[:expected].empty? %>
         <h4><%= "No efforts expected at #{@aid_station_detail.split_name} as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
     <% else %>
         <h4><%= "Efforts expected at #{@aid_station_detail.split_name} as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
@@ -16,15 +16,15 @@
           </tr>
           </thead>
           <tbody>
-          <% @aid_station_detail.expected_live_efforts.each do |live_effort| %>
+          <% @aid_station_detail.expected_effort_rows.each do |row| %>
               <tr>
-                <td class="text-center"><%= live_effort.bib_number %></td>
+                <td class="text-center"><%= row.bib_number %></td>
                 <td class="text-nowrap">
-                  <strong><%= link_to live_effort.full_name, effort_path(live_effort.id) %></strong></td>
-                <td class="text-nowrap"><%= live_effort.bio_historic %></td>
-                <td class="text-center text-nowrap"><%= "#{live_effort.last_reported_split_name}, #{l(live_effort.last_reported_when, format: :day_and_military)}" %></td>
-                <td class="text-center text-nowrap"><%= "#{live_effort.due_next_split_name}, #{l(live_effort.due_next_when, format: :day_and_military)}" %></td>
-                <td class="text-center text-nowrap"><%= l(@aid_station_detail.expected_day_and_time(live_effort, @aid_station_detail.sub_split_in), format: :day_and_military) %></td>
+                  <strong><%= link_to row.full_name, effort_path(row.effort_id) %></strong></td>
+                <td class="text-nowrap"><%= row.bio_historic %></td>
+                <td class="text-center text-nowrap"><%= "#{row.last_reported_name}, #{l(row.last_reported_day_and_time, format: :day_and_military)}" %></td>
+                <td class="text-center text-nowrap"><%= "#{row.due_next_name}, #{row.due_next_day_and_time ? l(row.due_next_day_and_time, format: :day_and_military) : '[unknown time]'}" %></td>
+                <td class="text-center text-nowrap"><%= l(row.expected_here_day_and_time, format: :day_and_military) %></td>
               </tr>
           <% end %>
           </tbody>

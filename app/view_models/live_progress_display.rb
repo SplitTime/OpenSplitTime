@@ -6,7 +6,7 @@ class LiveProgressDisplay < LiveEventFramework
     ArgsValidator.validate(params: args, required: :event,
                            exclusive: [:event, :past_due_threshold, :times_container],
                            class: self.class)
-    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+    @times_container ||= args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @past_due_threshold = args[:past_due_threshold].presence.try(:to_i) || 30
   end
 
@@ -21,7 +21,7 @@ class LiveProgressDisplay < LiveEventFramework
   private
 
   def progress_rows
-    @progress_rows ||= efforts.select(&:in_progress?).map do |effort|
+    @progress_rows ||= event_efforts.select(&:in_progress?).map do |effort|
       EffortProgressRow.new(effort: effort, event_framework: self)
     end
   end

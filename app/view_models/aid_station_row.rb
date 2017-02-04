@@ -5,7 +5,7 @@ class AidStationRow
   delegate :event, :split, :split_id, to: :aid_station
   delegate :expected_day_and_time, :prior_valid_display_data, :next_valid_display_data, to: :live_event
 
-  EFFORT_CATEGORIES = [:recorded_in, :recorded_out, :dropped_here, :in_aid, :missed, :expected]
+  AID_EFFORT_CATEGORIES = [:recorded_in, :recorded_out, :dropped_here, :in_aid, :missed, :expected]
   IN_BITKEY = SubSplit::IN_BITKEY
   OUT_BITKEY = SubSplit::OUT_BITKEY
 
@@ -20,7 +20,8 @@ class AidStationRow
   end
 
   def category_effort_ids
-    @category_effort_ids ||= EFFORT_CATEGORIES.map { |category| [category, method("row_#{category}_ids").call] }.to_h
+    @category_effort_ids ||=
+        AID_EFFORT_CATEGORIES.map { |category| [category, method("row_#{category}_ids").call] }.to_h
   end
 
   def category_sizes
@@ -78,7 +79,7 @@ class AidStationRow
   end
 
   def split_records_in_time_only?
-    split.sub_split_bitmap == 1
+    split.sub_split_bitmap == IN_BITKEY
   end
 
   def recorded_later?(effort)
@@ -94,9 +95,9 @@ class AidStationRow
     when :in_aid
       "#{'is'.pluralize(count)} in aid"
     when :missed
-      "passed through without being recorded"
+      'passed through without being recorded'
     when :dropped_here
-      "dropped"
+      'dropped'
     when :expected
       "#{'is'.pluralize(count)} still expected"
     else

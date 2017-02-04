@@ -20,19 +20,19 @@ class LiveEventFramework
   end
 
   def efforts_started
-    @efforts_started ||= efforts.select(&:started?)
+    @efforts_started ||= event_efforts.select(&:started?)
   end
 
   def efforts_finished
-    @efforts_finished ||= efforts.select(&:finished?)
+    @efforts_finished ||= event_efforts.select(&:finished?)
   end
 
   def efforts_dropped
-    @efforts_dropped ||= efforts.select(&:dropped?)
+    @efforts_dropped ||= event_efforts.select(&:dropped?)
   end
   
   def efforts_in_progress
-    @efforts_in_progress ||= efforts.select(&:in_progress?)
+    @efforts_in_progress ||= event_efforts.select(&:in_progress?)
   end
   
   def efforts_started_count
@@ -67,8 +67,8 @@ class LiveEventFramework
     efforts_in_progress.map(&:id)
   end
 
-  def efforts
-    @efforts ||= event.efforts.sorted_with_finish_status
+  def event_efforts
+    @event_efforts ||= event.efforts.sorted_with_finish_status
   end
 
   def lap_splits
@@ -97,6 +97,6 @@ class LiveEventFramework
   delegate :required_lap_splits, :required_time_points, to: :event
 
   def highest_lap
-    @highest_lap ||= efforts.map(&:final_lap).compact.max
+    @highest_lap ||= event_efforts.map(&:final_lap).compact.max
   end
 end

@@ -16,16 +16,15 @@
           </tr>
           </thead>
           <tbody>
-          <% @aid_station_detail.dropped_here_live_efforts.each do |live_effort| %>
-              <% prior_valid_display_data = @aid_station_detail.prior_valid_display_data(live_effort.effort, @aid_station_detail.sub_split_in) %>
+          <% @aid_station_detail.dropped_effort_rows.each do |row| %>
               <tr>
-                <td class="text-center"><%= live_effort.bib_number %></td>
+                <td class="text-center"><%= row.bib_number %></td>
                 <td class="text-nowrap">
-                  <strong><%= link_to live_effort.full_name, effort_path(live_effort.id) %></strong></td>
-                <td class="text-nowrap"><%= live_effort.bio_historic %></td>
-                <td class="text-nowrap"><%= live_effort.state_and_country %></td>
-                <td class="text-center text-nowrap"><%= prior_valid_display_data.present? ? "#{prior_valid_display_data[:split_name]}, #{l(prior_valid_display_data[:day_and_time], format: :day_and_military)}" : "[None]" %></td>
-                <td class="text-center text-nowrap"><%= [l(@aid_station_detail.recorded_in_day_and_time(live_effort), format: :day_and_military), l(@aid_station_detail.recorded_out_day_and_time(live_effort), format: :day_and_military)].join(' / ') %></td>
+                  <strong><%= link_to row.full_name, effort_path(row.id) %></strong></td>
+                <td class="text-nowrap"><%= row.bio_historic %></td>
+                <td class="text-nowrap"><%= row.state_and_country %></td>
+                <td class="text-center text-nowrap"><%= row.prior_valid_display_data %></td>
+                <td class="text-center text-nowrap"><%= [l(row.recorded_in_day_and_time, format: :day_and_military), l(row.recorded_out_day_and_time, format: :day_and_military)].join(' / ') %></td>
               </tr>
           <% end %>
           </tbody>

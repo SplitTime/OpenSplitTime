@@ -6,9 +6,9 @@
   =require twitter-bootstrap-static/fontawesome
   */
  
- @media (min-width: 992px) {
+ @media ( min-width: 992px ) {
 	.modal-lg {
-	    max-width: 1140px;
+	    max-width: $max-width;
 	    width: 90%;
 	} 	
  }

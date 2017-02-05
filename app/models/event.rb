@@ -83,7 +83,7 @@ class Event < ActiveRecord::Base
   end
 
   def maximum_laps
-    required_laps unless laps_unlimited?
+    laps_required unless laps_unlimited?
   end
 
   def finished?

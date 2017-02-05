@@ -79,6 +79,10 @@ class SplitTime < ActiveRecord::Base
     LapSplitKey.new(lap, split_id)
   end
 
+  def effort_lap_key
+    EffortLapKey.new(effort_id, lap)
+  end
+
   def set_effort_data_status
     effort.set_data_status
   end

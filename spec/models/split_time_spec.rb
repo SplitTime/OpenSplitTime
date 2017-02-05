@@ -379,6 +379,13 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
+  describe '#effort_lap_key' do
+    it 'returns effort_id and lap in an EffortLapKey struct' do
+      split_time = SplitTime.new(effort_id: 101, lap: 2)
+      expect(split_time.effort_lap_key).to eq(EffortLapKey.new(101, 2))
+    end
+  end
+
   describe '#split_name' do
     it 'returns an "[unknown split]" indication if the split is not available' do
       st = SplitTime.new

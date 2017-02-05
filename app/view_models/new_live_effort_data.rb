@@ -31,7 +31,6 @@ class NewLiveEffortData
      lapFulfillsRequired: lap == event.laps_required,
      lapBeyondRequired: lap > event.laps_required,
      expectedLap: expected_lap,
-     maximumLaps: maximum_laps,
      splitName: subject_split.base_name,
      splitDistance: subject_lap_split.distance_from_start,
      effortId: effort.id,
@@ -174,10 +173,6 @@ class NewLiveEffortData
                                                                 time_point: time_points[kind],
                                                                 lap_splits: effort_lap_splits,
                                                                 split_times: ordered_split_times)
-  end
-
-  def maximum_laps
-    event.required_laps unless event.required_laps.zero?
   end
 
   def camelized_param(base, kind)

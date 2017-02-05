@@ -2,6 +2,7 @@
         eventId: @event.id,
         eventName: @event.name,
         multiLap: @event.multiple_laps?,
+        maximumLaps: @event.maximum_laps,
         splits: @event.ordered_splits.map do |split|
             {
                     id: split.id,

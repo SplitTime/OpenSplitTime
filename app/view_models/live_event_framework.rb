@@ -51,6 +51,22 @@ class LiveEventFramework
     efforts_in_progress.size
   end
 
+  def efforts_started_ids
+    efforts_started.map(&:id)
+  end
+
+  def efforts_dropped_ids
+    efforts_dropped.map(&:id)
+  end
+
+  def efforts_finished_ids
+    efforts_finished.map(&:id)
+  end
+
+  def efforts_in_progress_ids
+    efforts_in_progress.map(&:id)
+  end
+
   def efforts
     @efforts ||= event.efforts.sorted_with_finish_status
   end

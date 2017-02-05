@@ -125,7 +125,7 @@ class EffortImporter
   def create_effort(row_effort_data)
     effort = event.efforts.new
     row_effort_hash(row_effort_data).each { |attribute, data| effort.assign_attributes({attribute => data}) }
-    effort.concealed = event.concealed?
+    effort.assign_attributes(created_by: current_user_id, updated_by: current_user_id, concealed: event.concealed?)
     effort if effort.save
   end
 

@@ -15,22 +15,6 @@ class AidStationsDisplay < LiveEventFramework
         end
   end
 
-  def efforts_started_ids
-    efforts_started.map(&:id)
-  end
-
-  def efforts_dropped_ids
-    efforts_dropped.map(&:id)
-  end
-
-  def efforts_finished_ids
-    efforts_finished.map(&:id)
-  end
-
-  def efforts_in_progress_ids
-    efforts_in_progress.map(&:id)
-  end
-
   private
 
   attr_reader :event

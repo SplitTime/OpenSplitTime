@@ -48,11 +48,12 @@ class RacesController < ApplicationController
   def destroy
     authorize @race
     if @race.events.present?
-      flash[:danger] = 'Race cannot be deleted if events are associated with it. Delete the related events individually and then delete the race.'
+      flash[:danger] = 'An organization cannot be deleted so long as any events are associated with it. ' +
+          'Delete the related events individually and then delete the organization.'
       redirect_to race_path(@race)
     else
       @race.destroy
-      flash[:success] = 'Race deleted.'
+      flash[:success] = 'Organization deleted.'
       session[:return_to] = params[:referrer_path] if params[:referrer_path]
       redirect_to session.delete(:return_to) || races_path
     end
@@ -64,7 +65,7 @@ class RacesController < ApplicationController
       user = User.find_by(email: params[:search])
       if user
         if @race.stewards.include?(user)
-          flash[:warning] = 'That user is already a steward of this race.'
+          flash[:warning] = 'That user is already a steward of this organization.'
         else
           @race.add_stewardship(user)
         end

@@ -14,8 +14,13 @@ module Auditable
   private
 
   def add_created_by_and_updated_by
-    self.created_by ||= User.current.id if User.current
-    self.updated_by = User.current.id if User.current
+    if User.current
+      self.created_by ||= User.current.id
+      self.updated_by = User.current.id
+    elsif self.created_by.nil? && Rails.env != 'test'
+      warn "WARNING: #{self.class} #{self.id} was created with no user assigned to created_by, and Auditable " +
+               'did not assign one because the current User object was not available at the time of creation.'
+    end
   end
 
   # Updates current instance's updated_by if current_user is not nil and is not destroyed.

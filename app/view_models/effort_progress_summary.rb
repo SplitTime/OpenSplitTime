@@ -1,4 +1,4 @@
-class EffortProgressSummary < EffortProgressFramework
+class EffortProgressSummary < EffortProgressRow
 
   def post_initialize(args)
     ArgsValidator.validate(params: args,

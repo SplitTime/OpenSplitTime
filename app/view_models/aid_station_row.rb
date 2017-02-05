@@ -19,13 +19,13 @@ class AidStationRow
     @split_times = args[:split_times]
   end
 
-  def category_effort_ids
-    @category_effort_ids ||=
-        AID_EFFORT_CATEGORIES.map { |category| [category, method("row_#{category}_ids").call] }.to_h
+  def category_effort_lap_keys
+    @category_effort_lap_keys ||=
+        AID_EFFORT_CATEGORIES.map { |category| [category, method("row_#{category}_lap_keys").call] }.to_h
   end
 
   def category_sizes
-    @category_sizes ||= category_effort_ids.transform_values(&:size)
+    @category_sizes ||= category_effort_lap_keys.transform_values(&:size)
   end
 
   def category_table_titles
@@ -39,43 +39,49 @@ class AidStationRow
 
   private
 
+  START_LAP = 1
+
   attr_reader :event_data, :split_times
   delegate :ordered_split_ids, :efforts_dropped, :efforts_started,
            :efforts_dropped_ids, :efforts_started_ids, to: :event_data
 
-  def row_recorded_in_ids
-    @efforts_recorded_in_ids ||=
-        split_times.select { |st| st.sub_split_bitkey == IN_BITKEY }.map(&:effort_id)
+  def row_recorded_in_lap_keys
+    @efforts_recorded_in_lap_keys ||=
+        split_times.select { |st| st.sub_split_bitkey == IN_BITKEY }.map(&:effort_lap_key)
   end
 
-  def row_recorded_out_ids
-    @efforts_recorded_out_ids ||=
-        split_times.select { |st| st.sub_split_bitkey == OUT_BITKEY }.map(&:effort_id)
+  def row_recorded_out_lap_keys
+    @efforts_recorded_out_lap_keys ||=
+        split_times.select { |st| st.sub_split_bitkey == OUT_BITKEY }.map(&:effort_lap_key)
   end
 
-  def row_dropped_here_ids
-    @efforts_dropped_here_ids ||=
+  def row_dropped_here_lap_keys
+    @efforts_dropped_here_lap_keys ||=
         efforts_dropped.select { |effort| effort.dropped_split_id == split_id}.map(&:id)
   end
 
-  def row_recorded_later_ids
-    @row_recorded_later_ids ||= efforts_started.select { |effort| recorded_later?(effort) }.map(&:id)
+  def row_recorded_later_lap_keys
+    @row_recorded_later_lap_keys ||= efforts_started.select { |effort| recorded_later?(effort) }.map(&:id)
   end
 
-  def row_in_aid_ids
-    split_records_in_time_only? ? [] : row_recorded_in_ids - row_recorded_out_ids - row_dropped_here_ids
+  def row_in_aid_lap_keys
+    split_records_in_time_only? ? [] : row_recorded_in_lap_keys - row_recorded_out_lap_keys - row_dropped_here_lap_keys
   end
 
-  def row_missed_ids
-    row_not_recorded_ids & row_recorded_later_ids
+  def row_missed_lap_keys
+    row_not_recorded_lap_keys & row_recorded_later_lap_keys
   end
 
-  def row_expected_ids
-    row_not_recorded_ids - row_missed_ids - efforts_dropped_ids
+  def row_expected_lap_keys
+    row_not_recorded_lap_keys - row_missed_lap_keys - efforts_dropped_lap_keys
   end
 
-  def row_not_recorded_ids
-    efforts_started_ids - row_recorded_in_ids - row_recorded_out_ids
+  def row_not_recorded_lap_keys
+    efforts_started_lap_keys - row_recorded_in_lap_keys - row_recorded_out_lap_keys
+  end
+
+  def efforts_started_lap_keys
+    efforts_started_ids.map { |id| EffortLapKey.new(id, START_LAP) }
   end
 
   def split_records_in_time_only?

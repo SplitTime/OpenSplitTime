@@ -238,8 +238,6 @@
 
                 // Listen for keydown on bibNumber
                 $('#js-bib-number').on('blur', function (event) {
-                    liveEntry.liveEntryForm.prefillCurrentTime();
-                    liveEntry.liveEntryForm.lastBib = $(this).val();
                     liveEntry.liveEntryForm.fetchEffortData();
                 });
 
@@ -308,8 +306,11 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function() {
+                liveEntry.liveEntryForm.prefillCurrentTime();
 
                 var bibNumber = $('#js-bib-number').val();
+                var bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
+                liveEntry.liveEntryForm.lastBib = bibNumber;
 
                 var data = {
                     splitId: liveEntry.currentSplitId,
@@ -329,7 +330,7 @@
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
                     $('#js-time-spent').html( response.timeInAid );
-                    if ( !$('#js-lap-number').val() || $('#js-bib-number').val() != liveEntry.liveEntryForm.lastBib ) {
+                    if ( !$('#js-lap-number').val() || bibChanged ) {
                         $('#js-lap-number').val( response.expectedLap );
                         $('#js-lap-number:focus').select();
                     }

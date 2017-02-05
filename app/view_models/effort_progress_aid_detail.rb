@@ -1,19 +1,16 @@
-class EffortProgressAidDetail < EffortProgressFramework
+class EffortProgressAidDetail < EffortProgressRow
 
   def post_initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:effort, :event_framework, :split_times],
-                           exclusive: [:effort, :event_framework, :split_times],
+                           required: [:effort, :event_framework, :split_times, :times_container],
+                           exclusive: [:effort, :event_framework, :split_times, :times_container],
                            class: self.class)
     @split_times = args[:split_times]
+    @times_container = args[:times_container]
   end
 
   def expected_here_day_and_time
     effort.day_and_time(predicted_start_to_aid)
-  end
-
-  def prior_valid_display_data
-    "#{lap_split_name(prior_valid_time_point)} at"
   end
 
   def dropped_days_and_times
@@ -50,25 +47,39 @@ class EffortProgressAidDetail < EffortProgressFramework
     time_points[last_reported_time_point_index + 1..-1]
   end
 
-  def prior_valid_time_point
-    prior_valid_split_time.time_point
-  end
-
-  def prior_valid_split_time
-    PriorSplitTimeFinder.guaranteed_split_time(time_point: aid_station_time_point_in,
-                                               lap_splits: lap_splits,
-                                               split_times: split_times)
-  end
-
-  def split_time_prior_to_drop
-    dropped_split_times
-  end
-
   def dropped_split_times
     split_times.select { |st| st.lap_split_key == dropped_lap_split_key }
   end
 
   def dropped_lap_split_key
     LapSplitKey.new(effort.dropped_lap, effort.dropped_split_id)
+  end
+
+  def prior_valid_display_data(time_point)
+    valid_display_data(prior_valid_time_point(time_point))
+  end
+
+  def prior_valid_time_point(time_point)
+    prior_valid_split_time(time_point).time_point
+  end
+
+  def prior_valid_split_time(time_point)
+    PriorSplitTimeFinder.guaranteed_split_time(time_point: time_point,
+                                               lap_splits: lap_splits,
+                                               split_times: split_times)
+  end
+
+  def next_valid_display_data(time_point)
+    valid_display_data(next_valid_split_time(time_point))
+  end
+
+  def valid_display_data(time_point)
+    split_time = indexed_split_times[time_point]
+    split_time ? {split_name: split_time.split_name, day_and_time: day_and_time(time_point)} : {}
+  end
+
+  def day_and_time(time_point)
+    time_from_start = indexed_split_times[time_point].try(:time_from_start)
+    time_from_start ? effort.day_and_time(time_from_start) : nil
   end
 end

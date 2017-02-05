@@ -14,7 +14,10 @@ RSpec.describe EffortProgressAidDetail do
       effort = event.efforts.first
       aid_station = AidStation.new(event: event, split: split)
       aid_station_detail = AidStationDetail.new(event: event, aid_station: aid_station)
-      aid_detail_row = EffortProgressAidDetail.new(effort: effort, event_framework: aid_station_detail, split_times: [])
+      aid_detail_row = EffortProgressAidDetail.new(effort: effort,
+                                                   event_framework: aid_station_detail,
+                                                   split_times: [],
+                                                   times_container: SegmentTimesContainer.new(calc_model: :terrain))
       actual = aid_detail_row.extract_attributes(:full_name, :bio_historic)
       expected = {full_name: aid_detail_row.full_name, bio_historic: aid_detail_row.bio_historic}
       expect(actual).to eq(expected)

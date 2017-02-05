@@ -57,8 +57,8 @@ class AidStationDetail < LiveEventFramework
   end
 
   def event_split_times
-    @event_split_times ||= event.split_times.ordered.select(:effort_id, :lap, :split_id,
-                                                            :sub_split_bitkey, :time_from_start)
+    @event_split_times ||= event.split_times.ordered
+                               .select(:effort_id, :lap, :split_id, :sub_split_bitkey, :time_from_start)
   end
 
   def split_times_here
@@ -73,6 +73,7 @@ class AidStationDetail < LiveEventFramework
     effort_ids.map { |effort_id| indexed_efforts[effort_id] }
         .map { |effort| EffortProgressAidDetail.new(effort: effort,
                                                     event_framework: self,
-                                                    split_times: split_times_by_effort[effort.id]) }
+                                                    split_times: split_times_by_effort[effort.id],
+                                                    times_container: times_container) }
   end
 end

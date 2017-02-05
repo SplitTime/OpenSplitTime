@@ -198,6 +198,7 @@
          */
         liveEntryForm: {
             lastBib: null,
+            lastSplit: null,
             init: function () {
                 // Apply input masks on time in / out
                 var maskOptions = {
@@ -310,7 +311,9 @@
 
                 var bibNumber = $('#js-bib-number').val();
                 var bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
+                var splitChanged = ( liveEntry.currentSplitId != liveEntry.liveEntryForm.lastSplit );
                 liveEntry.liveEntryForm.lastBib = bibNumber;
+                liveEntry.liveEntryForm.lastSplit = liveEntry.currentSplitId;
 
                 var data = {
                     splitId: liveEntry.currentSplitId,
@@ -330,7 +333,7 @@
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
                     $('#js-time-spent').html( response.timeInAid );
-                    if ( !$('#js-lap-number').val() || bibChanged ) {
+                    if ( !$('#js-lap-number').val() || bibChanged || splitChanged ) {
                         $('#js-lap-number').val( response.expectedLap );
                         $('#js-lap-number:focus').select();
                     }

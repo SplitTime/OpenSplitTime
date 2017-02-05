@@ -32,7 +32,7 @@
           <% else %>
               <td></td>
           <% end %>
-      <% elsif split_row.intermediate? %>
+      <% else %>
           <td><%= split_row.name %></td>
           <td class="text-right"><%= d(split_row.distance_from_start) %></td>
           <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></td>

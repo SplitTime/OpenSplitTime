@@ -82,6 +82,10 @@ class Event < ActiveRecord::Base
     laps_required != 1
   end
 
+  def maximum_laps
+    laps_required unless laps_unlimited?
+  end
+
   def finished?
     efforts_sorted.none?(&:in_progress?)
   end

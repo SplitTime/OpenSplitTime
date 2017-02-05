@@ -445,4 +445,84 @@ RSpec.describe NewLiveEffortData do
       end
     end
   end
+
+  describe '#lap' do
+    it 'returns 1 if no lap is provided' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'splitId' => provided_split.id.to_s, lap: '', 'bibNumber' => '205',
+                'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+      expected = 1
+      validate_lap(event, effort, split_times, params, expected)
+    end
+
+    it 'returns 1 if the provided lap is 0' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'splitId' => provided_split.id.to_s, lap: '0', 'bibNumber' => '205',
+                'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+      expected = 1
+      validate_lap(event, effort, split_times, params, expected)
+    end
+
+    it 'returns 1 if the provided lap is negative' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'splitId' => provided_split.id.to_s, lap: '-1', 'bibNumber' => '205',
+                'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+      expected = 1
+      validate_lap(event, effort, split_times, params, expected)
+    end
+
+    it 'returns 1 if the provided lap is 1' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
+                'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+      expected = 1
+      validate_lap(event, effort, split_times, params, expected)
+    end
+
+    it 'returns the provided lap if it is between 1 and event.laps_required' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'splitId' => provided_split.id.to_s, lap: '3', 'bibNumber' => '205',
+                'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+      expected = 3
+      validate_lap(event, effort, split_times, params, expected)
+    end
+
+    it 'returns event.laps_required if the provided lap is greater than event.laps_required' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'splitId' => provided_split.id.to_s, lap: '4', 'bibNumber' => '205',
+                'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+      expected = 3
+      validate_lap(event, effort, split_times, params, expected)
+    end
+
+    def validate_lap(event, effort, split_times, params, expected)
+      ordered_splits = event.splits
+      allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+      allow(effort).to receive(:ordered_split_times).and_return(split_times)
+      effort_data = NewLiveEffortData.new(event: event,
+                                          params: params,
+                                          ordered_splits: ordered_splits,
+                                          effort: effort,
+                                          times_container: times_container)
+      expect(effort_data.lap).to eq(expected)
+    end
+  end
 end

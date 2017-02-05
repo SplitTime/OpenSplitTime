@@ -65,6 +65,10 @@ Mixins
 	border-bottom: 1px solid $gray;
 	width: 100%;
 
+	&.lap-disabled .lap-only {
+		display: none;
+	}
+
 	.live-entry {
 		margin: 0 auto 25px;
 
@@ -279,6 +283,10 @@ Mixins
 /******* Provisional Data Table ********/
 .provisional-data {
 
+	&.lap-disabled .lap-only {
+		display: none;
+	}
+	
 	.provisional-data-table {
 		th {
 			cursor: pointer;

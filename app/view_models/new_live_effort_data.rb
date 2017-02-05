@@ -64,7 +64,7 @@ class NewLiveEffortData
   end
 
   def lap
-    @lap ||= params[:lap].presence.try(:to_i) || ASSUMED_LAP
+    @lap ||= [[(params[:lap].presence.try(:to_i) || ASSUMED_LAP), 1].max, event.maximum_laps].compact.min
   end
 
   def expected_lap

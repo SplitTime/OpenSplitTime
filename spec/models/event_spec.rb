@@ -139,4 +139,21 @@ RSpec.describe Event, type: :model do
       expect(event.multiple_laps?).to be_truthy
     end
   end
+
+  describe '#maximum_laps' do
+    it 'returns laps_required when laps_required is 1' do
+      event = FactoryGirl.build_stubbed(:event, laps_required: 1)
+      expect(event.maximum_laps).to eq(1)
+    end
+
+    it 'returns laps_required when laps_required is greater than 1' do
+      event = FactoryGirl.build_stubbed(:event, laps_required: 3)
+      expect(event.maximum_laps).to eq(3)
+    end
+
+    it 'returns nil when laps_required is 0' do
+      event = FactoryGirl.build_stubbed(:event, laps_required: 0)
+      expect(event.maximum_laps).to eq(nil)
+    end
+  end
 end

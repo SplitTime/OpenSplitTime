@@ -198,6 +198,7 @@
          */
         liveEntryForm: {
             lastBib: null,
+            lastSplit: null,
             init: function () {
                 // Apply input masks on time in / out
                 var maskOptions = {
@@ -211,6 +212,11 @@
                 $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
                 $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
+                $('#js-lap-number').inputmask("integer", { min: 1, max: liveEntry.eventLiveEntryData.maximumLaps || undefined });
+
+                // Enabled / Disable Laps field
+                $('#js-bib-number').closest('div').toggleClass('col-xs-3', liveEntry.eventLiveEntryData.multiLap || false);
+               liveEntry.eventLiveEntryData.multiLap && $('.lap-disabled').removeClass('lap-disabled');
 
                 // Styles the Dropped Here button
                 $('#js-dropped').on('change', function (event) {
@@ -234,8 +240,6 @@
 
                 // Listen for keydown on bibNumber
                 $('#js-bib-number').on('blur', function (event) {
-                    liveEntry.liveEntryForm.prefillCurrentTime();
-                    liveEntry.liveEntryForm.lastBib = $(this).val();
                     liveEntry.liveEntryForm.fetchEffortData();
                 });
 
@@ -304,11 +308,17 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function() {
+                liveEntry.liveEntryForm.prefillCurrentTime();
 
                 var bibNumber = $('#js-bib-number').val();
+                var bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
+                var splitChanged = ( liveEntry.currentSplitId != liveEntry.liveEntryForm.lastSplit );
+                liveEntry.liveEntryForm.lastBib = bibNumber;
+                liveEntry.liveEntryForm.lastSplit = liveEntry.currentSplitId;
 
                 var data = {
                     splitId: liveEntry.currentSplitId,
+                    lap: $('#js-lap-number').val(),
                     bibNumber: bibNumber,
                     timeIn: $('#js-time-in').val(),
                     timeOut: $('#js-time-out').val()
@@ -317,7 +327,6 @@
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-
                 return $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
@@ -325,6 +334,10 @@
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
                     $('#js-time-spent').html( response.timeInAid );
+                    if ( !$('#js-lap-number').val() || bibChanged || splitChanged ) {
+                        $('#js-lap-number').val( response.expectedLap );
+                        $('#js-lap-number:focus').select();
+                    }
 
                     $('#js-time-in')
                         .removeClass('exists null bad good questionable')
@@ -354,6 +367,7 @@
                 // Build up the timeRow
                 var thisTimeRow = {};
                 thisTimeRow.liveBib = $('#js-live-bib').val();
+                thisTimeRow.lap = $('#js-lap-number').val();
                 thisTimeRow.eventId = liveEntry.currentEventId;
                 thisTimeRow.splitId = $('#split-select').val();
                 thisTimeRow.splitName = $('#split-select option:selected').html();
@@ -376,6 +390,7 @@
                 liveEntry.lastEffortRequest = {};
                 liveEntry.currentEffortData = timeRow;
                 $('#js-bib-number').val(timeRow.bibNumber).focus();
+                $('#js-lap-number').val(timeRow.lap);
                 $('#js-time-in').val(timeRow.timeIn);
                 $('#js-time-out').val(timeRow.timeOut);
                 $('#js-pacer-in').prop('checked', timeRow.pacerIn);
@@ -402,6 +417,7 @@
                 $('#js-time-out').val('');
                 $('#js-live-bib').val('');
                 $('#js-bib-number').val('');
+                $('#js-lap-number').val('');
                 $('#js-pacer-in').prop('checked', false);
                 $('#js-pacer-out').prop('checked', false);
                 $('#js-dropped').prop('checked', false).change();
@@ -571,6 +587,7 @@
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
                         <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
+                        <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\

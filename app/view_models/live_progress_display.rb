@@ -22,7 +22,7 @@ class LiveProgressDisplay < LiveEventFramework
 
   def progress_rows
     @progress_rows ||= event_efforts.select(&:in_progress?).map do |effort|
-      EffortProgressRow.new(effort: effort, event_framework: self)
+      EffortProgressSummary.new(effort: effort, event_framework: self)
     end
   end
 end

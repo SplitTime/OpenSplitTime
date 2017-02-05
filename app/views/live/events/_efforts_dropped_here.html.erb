@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-10">
-    <% if @aid_station_detail.dropped_here_live_efforts.empty? %>
+    <% if @aid_station_detail.dropped_effort_data.empty? %>
         <h4><%= "No efforts dropped at #{@aid_station_detail.split_name} as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
     <% else %>
         <h4><%= "Efforts dropped at #{@aid_station_detail.split_name} as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
@@ -11,20 +11,20 @@
             <th>Name</th>
             <th>Category</th>
             <th>From</th>
-            <th class="text-center">Valid Reported Time<br/><%= "Prior To #{@aid_station_detail.split_name}" %></th>
-            <th class="text-center"><%= "Recorded at #{@aid_station_detail.split_name}" %><br/>In / Out</th>
+            <th class="text-center">Valid Reported Time Prior to Drop</th>
+            <th class="text-center"><%= "Recorded at #{@aid_station_detail.split_name}" %></th>
           </tr>
           </thead>
           <tbody>
-          <% @aid_station_detail.dropped_effort_rows.each do |row| %>
+          <% @aid_station_detail.dropped_effort_data.each do |row| %>
               <tr>
-                <td class="text-center"><%= row.bib_number %></td>
+                <td class="text-center"><%= row[:bib_number] %></td>
                 <td class="text-nowrap">
-                  <strong><%= link_to row.full_name, effort_path(row.id) %></strong></td>
-                <td class="text-nowrap"><%= row.bio_historic %></td>
-                <td class="text-nowrap"><%= row.state_and_country %></td>
-                <td class="text-center text-nowrap"><%= row.prior_valid_display_data %></td>
-                <td class="text-center text-nowrap"><%= [l(row.recorded_in_day_and_time, format: :day_and_military), l(row.recorded_out_day_and_time, format: :day_and_military)].join(' / ') %></td>
+                  <strong><%= link_to row[:full_name], effort_path(row[:effort_id]) %></strong></td>
+                <td class="text-nowrap"><%= row[:bio_historic] %></td>
+                <td class="text-nowrap"><%= row[:state_and_country] %></td>
+                <td class="text-center text-nowrap"><%= row[:prior_valid_display_data] %></td>
+                <td class="text-center text-nowrap"><%= row[:dropped_days_and_times].map { |day_and_time| day_time_military_format(day_and_time) }.join(' / ') %></td>
               </tr>
           <% end %>
           </tbody>

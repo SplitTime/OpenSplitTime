@@ -21,39 +21,31 @@ class AidStationDetail < LiveEventFramework
     @times_container ||= args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
   end
 
-  def recorded_in_day_and_time(effort)
-    recorded_day_and_time(effort, sub_split_in)
+  def expected_effort_data
+    @expected_effort_data ||=
+        category_effort_rows[:expected]
+            .sort_by { |row| row.expected_here_day_and_time }
+            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic,
+                                                :last_reported_name, :last_reported_day_and_time, :due_next_name,
+                                                :due_next_day_and_time, :expected_here_day_and_time) }
   end
 
-  def recorded_out_day_and_time(effort)
-    recorded_day_and_time(effort, sub_split_out)
-  end
-
-  def event_id
-    event.id
-  end
-
-  def expected_effort_rows
-    @expected_effort_rows ||=
-        category_efforts[:expected]
-            .map { |effort| EffortProgressAidDetailRow.new(effort: effort, event_framework: self) }
-            .sort_by { |effort| effort.expected_here_day_and_time }
-  end
-
-  def dropped_effort_rows
-    category_efforts[:dropped_here]
-        .map { |effort| EffortProgressAidDetailRow.new(effort: effort, event_framework: self) }
-        .sort_by { |effort| effort.dropped_here_day_and_time }
+  def dropped_effort_data
+    @dropped_effort_rows ||=
+        category_effort_rows[:dropped_here]
+            .sort_by { |row| row.dropped_days_and_times.first }
+            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic, :state_and_country,
+                                                :prior_valid_display_data, :dropped_days_and_times) }
   end
 
   private
 
   attr_reader :event, :aid_station_row
 
-  def category_efforts
-    @category_efforts ||=
+  def category_effort_rows
+    @category_effort_rows ||=
         AID_EFFORT_CATEGORIES
-            .map { |category| [category, efforts_from_ids(aid_station_row.category_effort_ids[category])] }.to_h
+            .map { |category| [category, rows_from_ids(aid_station_row.category_effort_ids[category])] }.to_h
   end
 
   def split_times_by_effort
@@ -65,7 +57,8 @@ class AidStationDetail < LiveEventFramework
   end
 
   def event_split_times
-    @event_split_times ||= event.split_times.ordered.struct_pluck(:effort_id, :lap, :split_id, :sub_split_bitkey)
+    @event_split_times ||= event.split_times.ordered.select(:effort_id, :lap, :split_id,
+                                                            :sub_split_bitkey, :time_from_start)
   end
 
   def split_times_here
@@ -76,7 +69,10 @@ class AidStationDetail < LiveEventFramework
     @indexed_efforts ||= event_efforts.index_by(&:id)
   end
 
-  def efforts_from_ids(effort_ids)
+  def rows_from_ids(effort_ids)
     effort_ids.map { |effort_id| indexed_efforts[effort_id] }
+        .map { |effort| EffortProgressAidDetail.new(effort: effort,
+                                                    event_framework: self,
+                                                    split_times: split_times_by_effort[effort.id]) }
   end
 end

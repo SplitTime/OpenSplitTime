@@ -25,11 +25,11 @@ class EffortProgressFramework
   end
 
   def last_reported_day_and_time
-    effort.start_time + effort.final_time
+    effort.day_and_time(effort.final_time)
   end
 
   def due_next_day_and_time
-    determine_day_and_time(predicted_time_to_next)
+    effort.day_and_time(time_from_start_to_next)
   end
 
   private
@@ -44,8 +44,12 @@ class EffortProgressFramework
                   time_from_start: effort.final_time)
   end
 
-  def predicted_time_to_next
-    @predicted_time_to_next ||= predicted_segment_time(upcoming_segment)
+  def time_from_start_to_next
+    predicted_upcoming_time && (predicted_upcoming_time + effort.final_time)
+  end
+
+  def predicted_upcoming_time
+    @predicted_upcoming_time ||= predicted_segment_time(upcoming_segment)
   end
 
   def predicted_segment_time(segment)
@@ -76,9 +80,5 @@ class EffortProgressFramework
     lap_split = indexed_lap_splits[time_point.lap_split_key]
     bitkey = time_point.bitkey
     multiple_laps? ? lap_split.name(bitkey) : lap_split.name_without_lap(bitkey)
-  end
-
-  def determine_day_and_time(seconds_after_latest)
-    seconds_after_latest && (effort.start_time + effort.final_time + seconds_after_latest)
   end
 end

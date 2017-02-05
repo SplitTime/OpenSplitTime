@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-10">
-    <% if @aid_station_detail.category_efforts[:recorded_out].empty? %>
+    <% if @aid_station_detail.category_effort_rows[:recorded_out].empty? %>
         <h4><%= "No efforts recorded at #{@aid_station_detail.split_name} as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
     <% else %>
         <h4><%= "Efforts recorded at #{@aid_station_detail.split_name} as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
@@ -16,7 +16,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @aid_station_detail.category_efforts[:recorded_out].each do |live_effort| %>
+          <% @aid_station_detail.category_effort_rows[:recorded_out].each do |live_effort| %>
               <% prior_valid_display_data = @aid_station_detail.prior_valid_display_data(live_effort.effort, @aid_station_detail.sub_split_in) %>
               <% next_valid_display_data = @aid_station_detail.next_valid_display_data(live_effort.effort, @aid_station_detail.sub_split_out) %>
               <tr>

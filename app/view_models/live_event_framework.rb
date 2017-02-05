@@ -15,6 +15,10 @@ class LiveEventFramework
     event.name
   end
 
+  def event_id
+    event.id
+  end
+
   def event_start_time
     event.start_time
   end

@@ -43,7 +43,7 @@ class EffortSplitTimeCreator
       effort.start_time = military_time_to_day_and_time(row_time_data.first, time_points.first)
     else
       effort.start_offset = time_to_seconds(row_time_data.first) || 0
-      row_time_data[0] = 0 if row_time_data[0]
+      row_time_data[0] = 0
     end
     effort.save if effort.changed?
   end

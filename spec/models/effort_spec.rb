@@ -168,6 +168,16 @@ RSpec.describe Effort, type: :model do
     end
   end
 
+  describe '#day_and_time' do
+    it 'returns a day and time based on the effort start plus the provided time_from_start' do
+      event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')
+      effort = FactoryGirl.build_stubbed(:effort, start_offset: 0)
+      allow(effort).to receive(:event).and_return(event)
+      time_from_start = 3.hours
+      expect(effort.day_and_time(time_from_start)).to eq(effort.start_time + 3.hours)
+    end
+  end
+
   describe '#start_time=' do
     it 'sets start_offset to the difference between the provided parameter and event start time' do
       event = FactoryGirl.build_stubbed(:event, start_time: '2017-03-15 06:00:00')

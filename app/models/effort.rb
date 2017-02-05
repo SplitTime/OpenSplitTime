@@ -86,6 +86,10 @@ class Effort < ActiveRecord::Base
     self.start_offset = TimeDifference.from(event_start_time, new_datetime).in_seconds
   end
 
+  def day_and_time(time_from_start)
+    time_from_start && (start_time + time_from_start)
+  end
+
   def event_start_time
     @event_start_time ||= attributes['event_start_time'].try(:in_time_zone) || event.start_time
   end

@@ -40,9 +40,6 @@ class EffortProgressAidDetail < EffortProgressRow
 
   private
 
-  IN_BITKEY = SubSplit::IN_BITKEY
-  OUT_BITKEY = SubSplit::OUT_BITKEY
-
   delegate :aid_station, :split_name, :time_points, :multiple_laps?, to: :event_framework
   delegate :state_and_country, to: :effort
   attr_reader :lap, :split_times

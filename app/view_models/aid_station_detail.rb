@@ -13,12 +13,11 @@ class AidStationDetail < LiveEventFramework
   def post_initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:event, :aid_station],
-                           exclusive: [:event, :aid_station],
+                           exclusive: [:event, :aid_station, :times_container],
                            class: self.class)
     @event = args[:event]
     @aid_station = args[:aid_station]
     @aid_station_row ||= AidStationRow.new(aid_station: aid_station, event_framework: self, split_times: split_times_here)
-    @times_container ||= args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
   end
 
   def expected_effort_data

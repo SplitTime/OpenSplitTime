@@ -4,6 +4,7 @@ class LiveEventFramework
 
   def initialize(args)
     @event = args[:event]
+    @times_container ||= args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     post_initialize(args)
   end
 

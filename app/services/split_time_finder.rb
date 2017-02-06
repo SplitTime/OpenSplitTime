@@ -16,11 +16,13 @@ class SplitTimeFinder
     ArgsValidator.validate(params: args,
                            required: :time_point,
                            required_alternatives: [:effort, [:lap_splits, :split_times]],
+                           exclusive: [:time_point, :effort, :lap_splits, :split_times, :valid],
                            class: self.class)
     @time_point = args[:time_point]
     @effort = args[:effort]
     @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
     @split_times = args[:split_times] || effort.ordered_split_times.to_a
+    @valid = args[:valid].nil? ? true : args[:valid]
     validate_setup
   end
 
@@ -38,7 +40,7 @@ class SplitTimeFinder
 
   private
 
-  attr_reader :effort, :time_point, :lap_splits, :split_times
+  attr_reader :effort, :time_point, :lap_splits, :split_times, :valid
 
   def prior_time_points
     ordered_time_points.elements_before(time_point)
@@ -57,11 +59,11 @@ class SplitTimeFinder
   end
 
   def indexed_split_times
-    @indexed_split_times ||= valid_split_times.index_by(&:time_point)
+    @indexed_split_times ||= scoped_split_times.index_by(&:time_point)
   end
 
-  def valid_split_times
-    split_times.select(&:valid_status?)
+  def scoped_split_times
+    valid ? split_times.select(&:valid_status?) : split_times
   end
 
   def validate_setup

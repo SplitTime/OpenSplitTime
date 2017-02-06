@@ -32,52 +32,74 @@ RSpec.describe SplitTimeFinder do
     before do
       FactoryGirl.reload
     end
+    context 'if args[:valid] is not provided' do
+      it 'when all split_times are valid, returns the split_time that comes immediately prior to the provided time_point' do
+        lap_splits, time_points = lap_splits_and_time_points(test_event)
+        time_point = time_points[5]
+        split_times = test_split_times
+        expected = split_times[4]
+        validate_prior(time_point, lap_splits, split_times, expected)
+      end
 
-    it 'when all split_times are valid, returns the split_time that comes immediately prior to the provided time_point' do
-      lap_splits, time_points = lap_splits_and_time_points(test_event)
-      time_point = time_points[5]
-      split_times = test_split_times
-      expected = split_times[4]
-      validate_prior(time_point, lap_splits, split_times, expected)
+      it 'when some split_times are invalid, returns the latest valid split_time that comes prior to the provided time_point' do
+        lap_splits, time_points = lap_splits_and_time_points(test_event)
+        time_point = time_points[5]
+        split_times = test_split_times
+        split_times[4].data_status = 'questionable'
+        split_times[3].data_status = 'bad'
+        expected = split_times[2]
+        validate_prior(time_point, lap_splits, split_times, expected)
+      end
+
+      it 'when all prior split_times are invalid, returns nil' do
+        lap_splits, time_points = lap_splits_and_time_points(test_event)
+        time_point = time_points[4]
+        split_times = test_split_times
+        split_times[3].data_status = 'questionable'
+        split_times[2].data_status = 'bad'
+        split_times[1].data_status = 'questionable'
+        split_times[0].data_status = 'bad'
+        expected = nil
+        validate_prior(time_point, lap_splits, split_times, expected)
+      end
+
+      it 'when the starting time_point is provided, returns nil' do
+        lap_splits, time_points = lap_splits_and_time_points(test_event)
+        time_point = time_points[0]
+        split_times = test_split_times
+        expected = nil
+        validate_prior(time_point, lap_splits, split_times, expected)
+      end
     end
 
-    it 'when some split_times are invalid, returns the latest valid split_time that comes prior to the provided time_point' do
-      lap_splits, time_points = lap_splits_and_time_points(test_event)
-      time_point = time_points[5]
-      split_times = test_split_times
-      split_times[5].data_status = 'bad'
-      split_times[4].data_status = 'questionable'
-      split_times[3].data_status = 'bad'
-      expected = split_times[2]
-      validate_prior(time_point, lap_splits, split_times, expected)
+    context 'if args[:valid] is false' do
+      it 'when all split_times are valid, returns the split_time that comes immediately prior to the provided time_point' do
+        lap_splits, time_points = lap_splits_and_time_points(test_event)
+        time_point = time_points[5]
+        split_times = test_split_times
+        valid = false
+        expected = split_times[4]
+        validate_prior(time_point, lap_splits, split_times, expected, valid)
+      end
+
+      it 'when some split_times are invalid, returns the latest valid split_time that comes prior to the provided time_point' do
+        lap_splits, time_points = lap_splits_and_time_points(test_event)
+        time_point = time_points[5]
+        split_times = test_split_times
+        split_times[4].data_status = 'questionable'
+        split_times[3].data_status = 'bad'
+        valid = false
+        expected = split_times[4]
+        validate_prior(time_point, lap_splits, split_times, expected, valid)
+      end
     end
 
-    it 'when all prior split_times are invalid, returns nil' do
-      lap_splits, time_points = lap_splits_and_time_points(test_event)
-      time_point = time_points[4]
-      split_times = test_split_times
-      split_times[4].data_status = 'bad'
-      split_times[3].data_status = 'questionable'
-      split_times[2].data_status = 'bad'
-      split_times[1].data_status = 'questionable'
-      split_times[0].data_status = 'bad'
-      expected = nil
-      validate_prior(time_point, lap_splits, split_times, expected)
-    end
-
-    it 'when the starting time_point is provided, returns nil' do
-      lap_splits, time_points = lap_splits_and_time_points(test_event)
-      time_point = time_points[0]
-      split_times = test_split_times
-      expected = nil
-      validate_prior(time_point, lap_splits, split_times, expected)
-    end
-
-    def validate_prior(time_point, lap_splits, split_times, expected)
+    def validate_prior(time_point, lap_splits, split_times, expected, valid = true)
       finder = SplitTimeFinder.new(effort: test_effort,
                                    time_point: time_point,
                                    lap_splits: lap_splits,
-                                   split_times: split_times)
+                                   split_times: split_times,
+                                   valid: valid)
       expect(finder.prior).to eq(expected)
     end
   end

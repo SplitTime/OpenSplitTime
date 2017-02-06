@@ -1,11 +1,15 @@
-class PriorSplitTimeFinder
+class SplitTimeFinder
 
-  def self.split_time(args)
-    new(args).split_time
+  def self.prior(args)
+    new(args).prior
   end
 
-  def self.guaranteed_split_time(args)
-    new(args).guaranteed_split_time
+  def self.guaranteed_prior(args)
+    new(args).guaranteed_prior
+  end
+
+  def self.next(args)
+    new(args).next
   end
 
   def initialize(args)
@@ -20,28 +24,32 @@ class PriorSplitTimeFinder
     validate_setup
   end
 
-  def split_time
-    @split_time ||= relevant_time_points.map { |time_point| indexed_split_times[time_point] }.compact.last
+  def prior
+    @prior ||= prior_time_points.map { |time_point| indexed_split_times[time_point] }.compact.last
   end
 
-  def guaranteed_split_time
-    @guaranteed_split_time ||= split_time || mock_start_split_time
+  def guaranteed_prior
+    @guaranteed_prior ||= prior || mock_start_split_time
+  end
+
+  def next
+    @next ||= later_time_points.map { |time_point| indexed_split_times[time_point] }.compact.first
   end
 
   private
 
   attr_reader :effort, :time_point, :lap_splits, :split_times
 
-  def relevant_time_points
-    time_point_index.zero? ? [] : ordered_time_points[0..time_point_index - 1]
+  def prior_time_points
+    ordered_time_points.elements_before(time_point)
+  end
+
+  def later_time_points
+    ordered_time_points.elements_after(time_point)
   end
 
   def mock_start_split_time
     SplitTime.new(effort: effort, time_point: ordered_time_points.first, time_from_start: 0)
-  end
-
-  def time_point_index
-    ordered_time_points.index(time_point)
   end
 
   def ordered_time_points

@@ -15,10 +15,10 @@ class IntendedTimeCalculator
     @time_point = args[:time_point]
     @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
     @prior_valid_split_time = args[:prior_valid_split_time] ||
-        PriorSplitTimeFinder.guaranteed_split_time(effort: effort,
-                                                   time_point: time_point,
-                                                   lap_splits: lap_splits,
-                                                   split_times: args[:split_times])
+        SplitTimeFinder.guaranteed_prior(effort: effort,
+                                         time_point: time_point,
+                                         lap_splits: lap_splits,
+                                         split_times: args[:split_times])
     @expected_time_from_prior = args[:expected_time_from_prior] ||
         TimePredictor.segment_time(segment: subject_segment,
                                    effort: effort,

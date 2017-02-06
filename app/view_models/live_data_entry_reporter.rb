@@ -105,10 +105,10 @@ class LiveDataEntryReporter
 
   def prior_valid_split_time
     @prior_valid_split_time ||= subject_split.real_presence &&
-        PriorSplitTimeFinder.split_time(effort: effort,
-                                        time_point: subject_lap_split.time_point_in,
-                                        lap_splits: effort_lap_splits,
-                                        split_times: ordered_existing_split_times)
+        SplitTimeFinder.prior(effort: effort,
+                              time_point: subject_lap_split.time_point_in,
+                              lap_splits: effort_lap_splits,
+                              split_times: ordered_existing_split_times)
   end
 
   def report_laps?

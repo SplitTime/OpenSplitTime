@@ -96,6 +96,17 @@
             } else if ( from.name !== 'home' && !eventStage.data.isStaged ) {
                 // Event must be staged for any page that isn't home
                 next( '/' );
+            } else if ( from.name === 'home' && !eventStage.data.isStaged ) {
+                $.post( 'save-stage', {
+                    data: eventStage.data.eventData
+                } ).fail( function() {
+                    eventStage.data.isStaged = true;
+                    eventStage.data.isDirty = false;
+                    next();
+                } ).done( function() {
+                    // Save cannot fail when not staged yet.
+                    next( '/' );
+                } );
             } else if ( to.name === 'publish' ) {
                 if ( from.name === 'confirm' ) {
                     // Perform publish routine
@@ -111,23 +122,7 @@
                     next( false );
                 }
             } else {
-                // Perform regular saving routine
-                $.post( 'save-stage', {
-                    data: eventStage.data.eventData
-                } ).fail( function() {
-                    eventStage.data.isStaged = true;
-                    eventStage.data.isDirty = false;
-                    next();
-                } ).done( function() {
-                    // Check failure conditions...
-                    if ( !eventStage.data.isStaged ) {
-                        // Save cannot fail when not staged yet.
-                        next( '/' );
-                    } else {
-                        // Save failed, but assume nothing bad will happen
-                        next(); 
-                    }
-                } );
+                next();
             }
         },
 
@@ -228,7 +223,25 @@
             eventStage.app = new Vue( {
                 router,
                 el: '#event-app',
-                data: eventStage.data
+                data: eventStage.data,
+                watch: {
+                    eventData: {
+                        handler: function() {
+                            var self = this;
+                            if ( !this.isStaged ) return;
+                            this.isDirty = true;
+                            if ( this._autosave ) {
+                                clearTimeout( this._autosave );
+                            }
+                            console.log( 'You got it dirty!' );
+                            this._autosave = setTimeout( function() {
+                                console.log( 'Do Save!' );
+                                self._autosave = null;
+                            }, 60000 );
+                        },
+                        deep: true
+                    }
+                }
             });
             router.afterEach( function( a, b, c ) {
                 eventStage.app.$nextTick( function() {

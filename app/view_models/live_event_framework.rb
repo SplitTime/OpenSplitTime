@@ -83,6 +83,10 @@ class LiveEventFramework
     @indexed_lap_splits ||= lap_splits.index_by(&:key)
   end
 
+  def lap_split_keys
+    @lap_split_keys ||= lap_splits.map(&:key)
+  end
+
   def time_points
     @time_points ||= lap_splits.map(&:time_points).flatten
   end

@@ -12,10 +12,10 @@ class AidStationRow
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: :aid_station,
-                           exclusive: [:aid_station, :event_data, :split_times],
+                           exclusive: [:aid_station, :event_framework, :split_times],
                            class: self.class)
     @aid_station = args[:aid_station]
-    @event_data = args[:event_data]
+    @event_framework = args[:event_framework]
     @split_times = args[:split_times]
   end
 
@@ -39,11 +39,8 @@ class AidStationRow
 
   private
 
-  START_LAP = 1
-
-  attr_reader :event_data, :split_times
-  delegate :ordered_split_ids, :efforts_dropped, :efforts_started,
-           :efforts_dropped_ids, :efforts_started_ids, to: :event_data
+  attr_reader :event_framework, :split_times
+  delegate :lap_split_keys, :efforts_dropped, :efforts_started, :efforts_in_progress, to: :event_framework
 
   def row_recorded_in_lap_keys
     @efforts_recorded_in_lap_keys ||=
@@ -57,39 +54,53 @@ class AidStationRow
 
   def row_dropped_here_lap_keys
     @efforts_dropped_here_lap_keys ||=
-        efforts_dropped.select { |effort| effort.dropped_split_id == split_id}.map(&:id)
+        efforts_dropped.select { |effort| effort.dropped_split_id == split_id }
+            .map { |effort| EffortLapKey.new(effort.id, effort.dropped_lap) }
   end
 
-  def row_recorded_later_lap_keys
-    @row_recorded_later_lap_keys ||= efforts_started.select { |effort| recorded_later?(effort) }.map(&:id)
+  def row_missed_lap_keys
+    @row_recorded_later_lap_keys ||= efforts_started.map { |effort| effort_lap_keys_missed(effort) }.flatten
   end
 
   def row_in_aid_lap_keys
     split_records_in_time_only? ? [] : row_recorded_in_lap_keys - row_recorded_out_lap_keys - row_dropped_here_lap_keys
   end
 
-  def row_missed_lap_keys
-    row_not_recorded_lap_keys & row_recorded_later_lap_keys
-  end
-
   def row_expected_lap_keys
-    row_not_recorded_lap_keys - row_missed_lap_keys - efforts_dropped_lap_keys
+    efforts_in_progress.map { |effort| effort_lap_key_expected(effort) }.flatten
   end
 
-  def row_not_recorded_lap_keys
-    efforts_started_lap_keys - row_recorded_in_lap_keys - row_recorded_out_lap_keys
+  def effort_lap_keys_missed(effort)
+    lap_split_keys_required(effort)
+        .reject { |lap_split_key| lap_split_keys_recorded(effort).include?(lap_split_key) }
+        .map { |lap_split_key| EffortLapKey.new(effort.id, lap_split_key.lap) }
   end
 
-  def efforts_started_lap_keys
-    efforts_started_ids.map { |id| EffortLapKey.new(id, START_LAP) }
+  def lap_split_keys_recorded(effort)
+    (grouped_split_times[effort.id] || []).map(&:lap_split_key)
+  end
+
+  def effort_lap_key_expected(effort) # Returns a single [effort_lap_key] or []
+    lap_split_keys.elements_after(latest_lap_split_key(effort))
+        .select { |lap_split_key| (lap_split_key.lap == latest_lap_split_key(effort).lap) && (lap_split_key.split_id == split_id) }
+        .map { |lap_split_key| EffortLapKey.new(effort.id, lap_split_key.lap) }
+  end
+
+  def lap_split_keys_required(effort)
+    lap_split_keys.elements_before(latest_lap_split_key(effort))
+        .select { |key| key.split_id == split_id }
+  end
+
+  def latest_lap_split_key(effort)
+    LapSplitKey.new(effort.final_lap, effort.final_split_id)
+  end
+
+  def grouped_split_times
+    @grouped_split_times ||= split_times.group_by(&:effort_id)
   end
 
   def split_records_in_time_only?
     split.sub_split_bitmap == IN_BITKEY
-  end
-
-  def recorded_later?(effort)
-    ordered_split_ids.index(effort.final_split_id) > ordered_split_ids.index(split_id)
   end
 
   def table_title(category, count)

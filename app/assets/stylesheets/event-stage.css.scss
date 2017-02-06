@@ -30,6 +30,10 @@
 		background: $white;
 	}
 
+	.fileinput-button {
+		transition: background 0.3s ease-in-out;
+	}
+
 	.modal-body .modal-section {
 		clear: both;
 		background: $lightGray;

@@ -139,6 +139,7 @@
             this.inputMask.init();
             this.prefill.init();
             this.ajaxSelect.init();
+            this.ajaxImport.init();
 
             // Initialize Vue Router and Vue App
             const routes = [
@@ -524,8 +525,8 @@
          *  with <keep-alive> to prevent the component from requesting data from the server 
          *  again. Additional data to be sent to the server can be sent using the data property.
          */
-         ajaxSelect: {
-            onMounted: function( a,b,c ) {
+        ajaxSelect: {
+            onMounted: function() {
                 var data = $.extend( {}, this.data );
                 var self = this;
 
@@ -551,7 +552,48 @@
                     mounted: eventStage.ajaxSelect.onMounted
                 } );
             }
-         }
+        },
+
+        /**
+         *
+         */
+        ajaxImport: {
+            onMounted: function() {
+                var self = this;
+                $( 'input', this.$el ).fileupload({
+                    dataType: 'json',
+                    url: this.url,
+                    submit: function (e, data) {
+                        self.busy = true;
+                    },
+                    done: function (e, data) {
+                        self.$emit( 'import', 'yay' );
+                    },
+                    fail: function (e, data) {
+                        self.error = true;
+                        setTimeout( function() {
+                            self.error = false;
+                        }, 500 );
+                    },
+                    always: function () {
+                        self.busy = false;
+                    }
+                });
+            },
+            init: function() {
+                Vue.component( 'ajax-import', {
+                    template:   '<button class="btn btn-default fileinput-button" v-bind:class="{ \'btn-danger\': error }" :disabled="busy || error">\
+                                    <slot></slot>\
+                                    <input type="file" name="file"/>\
+                                </button>',
+                    props: {
+                        url: { type: String, required: true, default: '' }
+                    },
+                    data: function() { return { busy: false, error: false } },
+                    mounted: eventStage.ajaxImport.onMounted
+                } );
+            }
+        }
     };
 
     $( 'body.stage' ).ready(function () {

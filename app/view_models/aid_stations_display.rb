@@ -10,7 +10,7 @@ class AidStationsDisplay < LiveEventFramework
     @aid_station_rows ||=
         aid_stations.map do |aid_station|
           AidStationRow.new(aid_station: aid_station,
-                            event_data: self,
+                            event_framework: self,
                             split_times: grouped_split_times[aid_station.split_id])
         end
   end
@@ -21,7 +21,7 @@ class AidStationsDisplay < LiveEventFramework
 
   def grouped_split_times
     @grouped_split_times ||= event.split_times
-                                 .struct_pluck(:effort_id, :lap, :split_id, :sub_split_bitkey)
+                                 .select(:effort_id, :lap, :split_id, :sub_split_bitkey)
                                  .group_by(&:split_id)
   end
 

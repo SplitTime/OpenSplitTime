@@ -16,20 +16,16 @@ class EffortProgressRow
     effort.id
   end
 
-  def last_reported_name
-    lap_split_name(last_reported_time_point)
+  def last_reported_info
+    {split_name: lap_split_name(last_reported_time_point), day_and_time: effort.day_and_time(effort.final_time)}
   end
 
-  def due_next_name
-    lap_split_name(due_next_time_point)
+  def due_next_info
+    {split_name: lap_split_name(due_next_time_point), day_and_time: effort.day_and_time(time_from_start_to_next)}
   end
 
-  def last_reported_day_and_time
-    effort.day_and_time(effort.final_time)
-  end
-
-  def due_next_day_and_time
-    effort.day_and_time(time_from_start_to_next)
+  def extract_attributes(*attributes)
+    attributes.map { |attribute| [attribute, send(attribute)] }.to_h
   end
 
   private
@@ -69,11 +65,7 @@ class EffortProgressRow
   end
 
   def due_next_time_point
-    @due_next_time_point ||= time_points[last_reported_time_point_index + 1]
-  end
-
-  def last_reported_time_point_index
-    time_points.index(last_reported_time_point)
+    @due_next_time_point ||= time_points.elements_after(last_reported_time_point).first
   end
 
   def lap_split_name(time_point)

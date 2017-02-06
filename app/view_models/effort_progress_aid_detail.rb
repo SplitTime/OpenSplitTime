@@ -2,30 +2,50 @@ class EffortProgressAidDetail < EffortProgressRow
 
   def post_initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:effort, :event_framework, :split_times, :times_container],
-                           exclusive: [:effort, :event_framework, :split_times, :times_container],
+                           required: [:effort, :event_framework, :lap, :split_times, :times_container],
+                           exclusive: [:effort, :event_framework, :lap, :split_times, :times_container],
                            class: self.class)
+    @lap = args[:lap]
     @split_times = args[:split_times]
     @times_container = args[:times_container]
   end
 
-  def expected_here_day_and_time
-    effort.day_and_time(predicted_start_to_aid)
+  def expected_here_info
+    {day_and_time: effort.day_and_time(predicted_start_to_aid), split_name: split_name}
+  end
+
+  def prior_to_here_info
+    display_data(prior_valid_split_time(aid_station_time_points.first))
+  end
+
+  def after_here_info
+    display_data(next_split_time(aid_station_time_points.last))
+  end
+
+  def recorded_in_here_info
+    display_data(indexed_split_times[aid_station_time_points.first])
+  end
+
+  def recorded_out_here_info
+    display_data(indexed_split_times[aid_station_time_points.last])
+  end
+
+  def recorded_here_days_and_times
+    recorded_here_split_times.map { |st| effort.day_and_time(st.time_from_start) }
   end
 
   def dropped_days_and_times
-    dropped_split_times.map { |st| effort.start_time + st.time_from_start }
-  end
-
-  def extract_attributes(*attributes)
-    attributes.map { |attribute| [attribute, send(attribute)] }.to_h
+    dropped_split_times.map { |st| effort.day_and_time(st.time_from_start) }
   end
 
   private
 
-  delegate :aid_station, :time_points, to: :event_framework
+  IN_BITKEY = SubSplit::IN_BITKEY
+  OUT_BITKEY = SubSplit::OUT_BITKEY
+
+  delegate :aid_station, :split_name, :time_points, :multiple_laps?, to: :event_framework
   delegate :state_and_country, to: :effort
-  attr_reader :split_times
+  attr_reader :lap, :split_times
 
   def predicted_start_to_aid
     predicted_time_to_aid && (effort.final_time + predicted_time_to_aid)
@@ -36,15 +56,15 @@ class EffortProgressAidDetail < EffortProgressRow
   end
 
   def latest_to_aid_station
-    Segment.new(begin_point: last_reported_time_point, end_point: aid_station_time_point_in)
+    Segment.new(begin_point: last_reported_time_point, end_point: aid_station_time_points.first)
   end
 
-  def aid_station_time_point_in
-    time_points_beyond_last.find { |time_point| time_point.split_id == aid_station.split_id }
+  def aid_station_time_points
+    aid_station.split.bitkeys.map { |bitkey| TimePoint.new(lap, aid_station.split_id, bitkey) }
   end
 
-  def time_points_beyond_last
-    time_points[last_reported_time_point_index + 1..-1]
+  def recorded_here_split_times
+    split_times.select { |st| st.split_id == aid_station.split_id }
   end
 
   def dropped_split_times
@@ -55,31 +75,20 @@ class EffortProgressAidDetail < EffortProgressRow
     LapSplitKey.new(effort.dropped_lap, effort.dropped_split_id)
   end
 
-  def prior_valid_display_data(time_point)
-    valid_display_data(prior_valid_time_point(time_point))
-  end
-
-  def prior_valid_time_point(time_point)
-    prior_valid_split_time(time_point).time_point
-  end
-
   def prior_valid_split_time(time_point)
-    PriorSplitTimeFinder.guaranteed_split_time(time_point: time_point,
-                                               lap_splits: lap_splits,
-                                               split_times: split_times)
+    SplitTimeFinder.guaranteed_prior(time_point: time_point, lap_splits: lap_splits, split_times: split_times)
   end
 
-  def next_valid_display_data(time_point)
-    valid_display_data(next_valid_split_time(time_point))
+  def next_split_time(time_point)
+    SplitTimeFinder.next(time_point: time_point, lap_splits: lap_splits, split_times: split_times, valid: false)
   end
 
-  def valid_display_data(time_point)
-    split_time = indexed_split_times[time_point]
-    split_time ? {split_name: split_time.split_name, day_and_time: day_and_time(time_point)} : {}
+  def display_data(split_time)
+    split_time ?
+        {split_name: split_time.split_name, day_and_time: effort.day_and_time(split_time.time_from_start)} : {}
   end
 
-  def day_and_time(time_point)
-    time_from_start = indexed_split_times[time_point].try(:time_from_start)
-    time_from_start ? effort.day_and_time(time_from_start) : nil
+  def indexed_split_times
+    @indexed_split_times ||= split_times.index_by(&:time_point)
   end
 end

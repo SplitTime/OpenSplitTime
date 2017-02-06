@@ -16,6 +16,7 @@ RSpec.describe EffortProgressAidDetail do
       aid_station_detail = AidStationDetail.new(event: event, aid_station: aid_station)
       aid_detail_row = EffortProgressAidDetail.new(effort: effort,
                                                    event_framework: aid_station_detail,
+                                                   lap: 1,
                                                    split_times: [],
                                                    times_container: SegmentTimesContainer.new(calc_model: :terrain))
       actual = aid_detail_row.extract_attributes(:full_name, :bio_historic)

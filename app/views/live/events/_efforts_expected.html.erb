@@ -22,9 +22,9 @@
                 <td class="text-nowrap">
                   <strong><%= link_to row[:full_name], effort_path(row[:effort_id]) %></strong></td>
                 <td class="text-nowrap"><%= row[:bio_historic] %></td>
-                <td class="text-center text-nowrap"><%= "#{row[:last_reported_name]}, #{l(row[:last_reported_day_and_time], format: :day_and_military)}" %></td>
-                <td class="text-center text-nowrap"><%= "#{row[:due_next_name]}, #{row[:due_next_day_and_time] ? l(row[:due_next_day_and_time], format: :day_and_military) : '[unknown time]'}" %></td>
-                <td class="text-center text-nowrap"><%= l(row[:expected_here_day_and_time], format: :day_and_military) %></td>
+                <td class="text-center text-nowrap"><%= display_progress_info(row[:last_reported_info]) %></td>
+                <td class="text-center text-nowrap"><%= display_progress_info(row[:due_next_info]) %></td>
+                <td class="text-center text-nowrap"><%= display_progress_time_only(row[:expected_here_info]) %></td>
               </tr>
           <% end %>
           </tbody>

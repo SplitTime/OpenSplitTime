@@ -35,7 +35,7 @@ class EffortProgressAidDetail < EffortProgressRow
   end
 
   def dropped_days_and_times
-    dropped_split_times.map { |st| effort.day_and_time(st.time_from_start) }
+    dropped_split_times.map { |st| [effort.dropped_lap, effort.day_and_time(st.time_from_start)] }.to_h
   end
 
   private
@@ -61,11 +61,15 @@ class EffortProgressAidDetail < EffortProgressRow
   end
 
   def recorded_here_split_times
-    split_times.select { |st| st.split_id == aid_station.split_id }
+    split_times.select { |st| st.lap_split_key == aid_station_lap_split_key }
   end
 
   def dropped_split_times
     split_times.select { |st| st.lap_split_key == dropped_lap_split_key }
+  end
+
+  def aid_station_lap_split_key
+    LapSplitKey.new(lap, aid_station.split_id)
   end
 
   def dropped_lap_split_key
@@ -80,9 +84,10 @@ class EffortProgressAidDetail < EffortProgressRow
     SplitTimeFinder.next(time_point: time_point, lap_splits: lap_splits, split_times: split_times, valid: false)
   end
 
-  def display_data(split_time)
-    split_time ?
-        {split_name: split_time.split_name, day_and_time: effort.day_and_time(split_time.time_from_start)} : {}
+  def display_data(split_times)
+    (split_times || []).map { |split_time| {split_name: lap_split_name(split_time.time_point),
+                                            lap: "Lap #{lap}",
+                                            day_and_time: effort.day_and_time(split_time.time_from_start)} }
   end
 
   def indexed_split_times

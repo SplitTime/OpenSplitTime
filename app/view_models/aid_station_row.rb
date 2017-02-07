@@ -43,17 +43,17 @@ class AidStationRow
   delegate :lap_split_keys, :efforts_dropped, :efforts_started, :efforts_in_progress, to: :event_framework
 
   def row_recorded_in_lap_keys
-    @efforts_recorded_in_lap_keys ||=
+    @row_recorded_in_lap_keys ||=
         split_times.select { |st| st.sub_split_bitkey == IN_BITKEY }.map(&:effort_lap_key)
   end
 
   def row_recorded_out_lap_keys
-    @efforts_recorded_out_lap_keys ||=
+    @row_recorded_out_lap_keys ||=
         split_times.select { |st| st.sub_split_bitkey == OUT_BITKEY }.map(&:effort_lap_key)
   end
 
   def row_dropped_here_lap_keys
-    @efforts_dropped_here_lap_keys ||=
+    @row_dropped_here_lap_keys ||=
         efforts_dropped.select { |effort| effort.dropped_split_id == split_id }
             .map { |effort| EffortLapKey.new(effort.id, effort.dropped_lap) }
   end

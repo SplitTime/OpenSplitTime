@@ -96,7 +96,7 @@ class AidStationDetail < LiveEventFramework
       EffortProgressAidDetail.new(effort: indexed_efforts[effort_lap_key.effort_id],
                                   event_framework: self,
                                   lap: effort_lap_key.lap,
-                                  split_times: split_times_by_effort_lap[effort_lap_key],
+                                  effort_lap_split_times: split_times_by_effort_lap[effort_lap_key],
                                   times_container: times_container)
     end
   end

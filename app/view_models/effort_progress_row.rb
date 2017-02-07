@@ -73,4 +73,8 @@ class EffortProgressRow
     bitkey = time_point.bitkey
     multiple_laps? ? lap_split.name(bitkey) : lap_split.name_without_lap(bitkey)
   end
+
+  def lap_name(lap)
+    "Lap #{lap}"
+  end
 end

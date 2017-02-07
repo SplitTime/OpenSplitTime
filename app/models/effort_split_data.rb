@@ -1,0 +1,1 @@
+EffortSplitData = Struct.new(:effort_id, :split_name, :lap_name, :days_and_times)

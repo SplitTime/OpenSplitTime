@@ -48,24 +48,6 @@
 		}
 	}
 	
-	// .split-time-recording-wrap {
-	// 	// .radio {
-	// 	// 	padding-left: 20px;
-	// 	// }
-	// 	input {
-	// 		margin-left: 0;
-	// 		left: 0;
-	// 	}
-	// }
-
-	.vg-group {
-		position: relative;
-		.help-tooltip {
-			position: absolute;
-			margin-right: 3px;
-		}
-	}
-
 	.split-modal-btn-wrap {
 		button {
 			margin-left: 20px;
@@ -78,5 +60,86 @@
 	display: table;
 	& > * {
 		display: table-cell;
+	}
+}
+
+/** Split Modal Styles **/
+.split-modal {
+	position: relative;
+	.or {
+		position: absolute;
+		left: 50%;
+		margin-left: -7px;
+		width: 14px;
+		top: 5px;
+		display: block;
+	}
+}
+
+/** Participant Modal Styles **/
+.participant-modal {
+	.or {
+		position: absolute;
+		top: 50%;
+		margin-left: -5px;
+		margin-top: 8px;
+	}
+
+	.modal-section {
+		padding: 20px 0;
+		position: relative;
+	}
+
+	.p-start-date {
+		float: left;
+		max-width: 140px;
+		margin-right: 20px;
+	}
+
+	.p-start-hour {
+		float: left;
+		max-width: 66px;
+		margin-right: 9px;
+		
+		.placeholder {
+			color: #A9AAAE;
+		}
+	}
+
+	.p-colon {
+		float: left;
+		display: block;
+		margin-right: 9px;
+		margin-top: 5px;
+		
+		.placeholder {
+			color: #A9AAAE;
+		}
+	}
+
+	.p-start-min {
+		float: left;
+		max-width: 66px;
+	}
+	
+	.sto-label {
+		margin-left: 30px;
+	}
+
+	.sto-input-wrap {
+		padding-right: 30px;
+		
+		.sto-or {
+			position: absolute;
+			top: 5px
+		}
+
+		.sto-input {
+			margin-left: 30px;
+		}
+	}
+
+	.p-controls {
+		padding: 15px 0 30px;
 	}
 }

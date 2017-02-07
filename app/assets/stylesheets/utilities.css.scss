@@ -116,12 +116,11 @@ label.switchery-label {
 	}
 }
 
-.form-group {
-	label.required:after {
-		content: ' *';
-		color: $blue;
+/** Required star **/
+label.required:after {
+	content: ' *';
+	color: $blue;
 
-	}
 }
 
 /**********
@@ -131,7 +130,13 @@ Modal Styles
 	.modal-lg {
 		max-width: $max-width;
 		width: 90%;
-	} 	
+	}
+}
+
+@media ( min-width: $break-small ) {
+	.modal-dialog {
+		width: 660px;
+	}
 }
 
 /***********
@@ -141,7 +146,7 @@ Help Tooltip Icon
 	display: inline-block;
 	font-size: 16px;
 	position: relative;
-
+	margin-top: -1px;
 	&:before {
 		display: block;
 		content: '';
@@ -412,7 +417,7 @@ span.brackets {
 	}
 }
 
-/** Radio Buttons */
+/** Radio Buttons **/
 .custom-radio {
 	display: none;
 	
@@ -444,4 +449,17 @@ span.brackets {
 		border-radius: 50%;
 		background-color: #2BADD6;		
 	}
+}
+
+
+/** No Gutter Hack for Bootstrap (https://julienmelissas.com/no-gutter-column-trick-for-bootstrap/) */
+.row.no-gutters {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+	padding-right: 0;
+	padding-left: 0;
 }

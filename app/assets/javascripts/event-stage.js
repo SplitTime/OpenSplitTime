@@ -27,6 +27,7 @@
             verticalGain: '',
             verticalLoss: '',
             locationName: '',
+            locationId: '',
             lat: '',
             lng: '',
             elevation: ''
@@ -546,9 +547,10 @@
                     props: {
                         data: { type: Object, default: function() { return {} } },
                         method: { type: String, default: 'get' },
-                        url: { type: String, required: true, default: '' }
+                        url: { type: String, required: true, default: '' },
+                        value: { default: '' }
                     },
-                    template: '<select><slot></slot></select>',
+                    template: '<select v-bind:value="value" v-on:change="$emit( \'input\', $event.target.value )"><slot></slot></select>',
                     mounted: eventStage.ajaxSelect.onMounted
                 } );
             }

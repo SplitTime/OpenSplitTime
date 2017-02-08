@@ -97,6 +97,56 @@ class EffortQuery
     query.squish
   end
 
+  def self.over_segment(segment)
+    begin_id = segment.begin_id
+    begin_bitkey = segment.begin_bitkey
+    end_id = segment.end_id
+    end_bitkey = segment.end_bitkey
+
+    query = <<-SQL
+      WITH
+        existing_scope AS (#{existing_scope_sql}),
+        efforts_scoped AS (SELECT efforts.*
+                                       FROM efforts
+                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id)
+
+      SELECT *, 
+              lap, 
+              rank() over (order by segment_seconds, gender, -age) as overall_rank, 
+              rank() over (partition by gender order by segment_seconds, -age) as gender_rank 
+      FROM 
+        (SELECT e1.*, (tfs_end - tfs_begin) as segment_seconds 
+        FROM 
+            (SELECT efforts_scoped.*, 
+                    events.start_time as query_start_time, 
+                    split_times.effort_id, 
+                    split_times.time_from_start as tfs_begin, 
+                    split_times.lap, 
+                    split_times.split_id, 
+                    split_times.sub_split_bitkey 
+            FROM efforts_scoped
+              INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
+              INNER JOIN events ON events.id = efforts_scoped.event_id 
+            WHERE split_times.split_id = #{begin_id} AND split_times.sub_split_bitkey = #{begin_bitkey}) 
+        as e1, 
+            (SELECT efforts_scoped.id, 
+                    split_times.effort_id, 
+                    split_times.time_from_start as tfs_end, 
+                    split_times.lap, 
+                    split_times.split_id, 
+                    split_times.sub_split_bitkey 
+            FROM efforts_scoped
+            INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
+            WHERE split_times.split_id = #{end_id} AND split_times.sub_split_bitkey = #{end_bitkey}) 
+        as e2 
+        WHERE (e1.effort_id = e2.effort_id AND e1.lap = e2.lap)) 
+      as efforts 
+      WHERE efforts.concealed = 'f'
+      ORDER BY overall_rank
+    SQL
+    query.squish
+  end
+
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }

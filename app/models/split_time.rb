@@ -32,7 +32,7 @@ class SplitTime < ActiveRecord::Base
 
   validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
-                          message: 'only one of any given split/sub_split/lap combination permitted within an effort'
+                          message: 'only one of any given time_point permitted within an effort'
   validate :course_is_consistent
 
   def self.null_record
@@ -113,7 +113,7 @@ class SplitTime < ActiveRecord::Base
 
   def military_time=(military_time)
     self.day_and_time = military_time.present? ?
-        IntendedTimeCalculator.day_and_time(military_time: military_time, effort: effort, sub_split: sub_split) : nil
+        IntendedTimeCalculator.day_and_time(military_time: military_time, effort: effort, time_point: time_point) : nil
   end
 
   def name

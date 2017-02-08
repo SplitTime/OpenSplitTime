@@ -18,19 +18,19 @@ class EffortProgressAidDetail < EffortProgressRow
   end
 
   def prior_to_here_info
-    effort_split_data(prior_valid_split_time(aid_station_time_points.first))
+    effort_split_data(lap, prior_valid_split_time(aid_station_time_points.first))
   end
 
   def after_here_info
-    effort_split_data(next_split_time(aid_station_time_points.last))
+    effort_split_data(lap, next_split_time(aid_station_time_points.last))
   end
 
   def recorded_here_info
-    effort_split_data(recorded_here_split_times)
+    effort_split_data(lap, recorded_here_split_times)
   end
 
   def dropped_here_info
-    effort_split_data(dropped_here_split_times)
+    effort_split_data(lap, dropped_here_split_times)
   end
 
   private

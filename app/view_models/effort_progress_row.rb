@@ -17,17 +17,17 @@ class EffortProgressRow
   end
 
   def last_reported_info
-    EffortSplitData.new(effort_id: effort_id,
-                        lap: effort.final_lap,
-                        split_name: lap_split_name(last_reported_time_point),
-                        days_and_times: [effort.day_and_time(effort.final_time)])
+    split_time = SplitTime.new(effort_id: effort_id,
+                               time_point: last_reported_time_point,
+                               time_from_start: effort.final_time)
+    effort_split_data(split_time.lap, split_time)
   end
 
   def due_next_info
-    EffortSplitData.new(effort_id: effort_id,
-                        lap: due_next_time_point.lap,
-                        split_name: lap_split_name(due_next_time_point),
-                        days_and_times: [effort.day_and_time(time_from_start_to_next)])
+    split_time = SplitTime.new(effort_id: effort_id,
+                               time_point: due_next_time_point,
+                               time_from_start: time_from_start_to_next)
+    effort_split_data(split_time.lap, split_time)
   end
 
   def extract_attributes(*attributes)
@@ -74,13 +74,13 @@ class EffortProgressRow
     @due_next_time_point ||= time_points.elements_after(last_reported_time_point).first
   end
 
-  def effort_split_data(split_times)
+  def effort_split_data(lap, split_times)
     split_times = Array.wrap(split_times)
     st = split_times.compact.first
-    st.nil? ? {} : EffortSplitData.new(effort_id: effort_id,
-                                       split_name: lap_split_name(st.time_point),
-                                       lap_name: lap_name(st.lap),
-                                       days_and_times: days_and_times(split_times))
+    EffortSplitData.new(effort_id: effort_id,
+                        lap_name: lap_name(lap),
+                        split_name: st && lap_split_name(st.time_point),
+                        days_and_times: days_and_times(split_times))
   end
 
   def lap_split_name(time_point)
@@ -91,7 +91,7 @@ class EffortProgressRow
   end
 
   def lap_name(lap)
-    lap ? "Lap #{lap}" : ''
+    (lap && multiple_laps?) ? "Lap #{lap}" : ''
   end
 
   def days_and_times(split_times)

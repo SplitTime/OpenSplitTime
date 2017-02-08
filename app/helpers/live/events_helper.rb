@@ -6,6 +6,13 @@ module Live::EventsHelper
     split_name ? "#{split_name} at #{join_days_and_times(days_and_times)}" : '[not recorded]'
   end
 
+  def display_progress_lap_and_times(args)
+    lap_name = args[:lap_name]
+    days_and_times = args[:days_and_times]
+
+    [lap_name.presence, join_days_and_times(days_and_times)].compact.join(': ')
+  end
+
   def display_progress_times_only(args)
     join_days_and_times(args[:days_and_times])
   end

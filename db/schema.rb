@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208100736) do
+ActiveRecord::Schema.define(version: 20170208185949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "aid_stations", force: :cascade do |t|
     t.integer  "event_id"
@@ -87,11 +88,11 @@ ActiveRecord::Schema.define(version: 20170208100736) do
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.integer  "course_id",                                  null: false
+    t.integer  "course_id",                                                 null: false
     t.integer  "organization_id"
-    t.string   "name",            limit: 64,                 null: false
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.string   "name",            limit: 64,                                null: false
+    t.datetime "created_at",                                                null: false
+    t.datetime "updated_at",                                                null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "start_time"
@@ -99,6 +100,7 @@ ActiveRecord::Schema.define(version: 20170208100736) do
     t.boolean  "available_live",             default: false
     t.string   "beacon_url"
     t.integer  "laps_required"
+    t.uuid     "staging_id",                 default: "uuid_generate_v4()"
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree

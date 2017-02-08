@@ -113,7 +113,7 @@ class EffortAnalysisView
                                            prior_split_time: prior_split_time,
                                            start_time: effort_start_time,
                                            typical_row: indexed_typical_rows[lap_split.key],
-                                           show_laps: false)
+                                           show_laps: event.multiple_laps?)
       analysis_rows << analysis_row
       prior_split_time = analysis_row.split_times.compact.last if analysis_row.split_times.compact.present?
       prior_lap_split = lap_splits.find { |lap_split| lap_split.key == prior_split_time.lap_split_key }

@@ -36,7 +36,7 @@ class EffortAnalysisRow
   end
 
   def segment_name
-    segment.name
+    show_laps? ? segment.name_with_lap : segment.name
   end
 
   def combined_time

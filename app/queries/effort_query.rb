@@ -8,7 +8,20 @@ class EffortQuery
                                        FROM efforts
                                        INNER JOIN existing_scope ON existing_scope.id = efforts.id)
 
-      SELECT *, CASE when laps_finished >= laps_required then true else false END AS finished
+      SELECT *, 
+            CASE 
+              when laps_required = 0 then 
+                CASE
+                  when dropped_split_id is null then false
+                  else true
+                end  
+              else
+                CASE
+                  when laps_finished >= laps_required then true 
+                  else false 
+                END 
+            END
+            AS finished
       FROM
           (SELECT #{effort_fields}, 
                 rank() over 
@@ -43,9 +56,13 @@ class EffortQuery
                     events.laps_required,
                     events.start_time as event_start_time,
                     CASE 
-                      when efforts_scoped.dropped_split_id is null then false 
-                      else true 
-                    END 
+                      when laps_required = 0 then false
+                      else
+                        CASE
+                          when efforts_scoped.dropped_split_id is null then false 
+                          else true 
+                        END 
+                    END
                     AS dropped, 
                     splits.base_name as final_split_name,
                     splits.distance_from_start as final_lap_distance,
@@ -82,6 +99,6 @@ class EffortQuery
 
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
-    Effort.connection.unprepared_statement { Effort.reorder(nil).select("id").to_sql }
+    Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }
   end
 end

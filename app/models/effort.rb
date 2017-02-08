@@ -31,10 +31,6 @@ class Effort < ActiveRecord::Base
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(participant_id: nil) }
-  scope :finished, -> { select('efforts.*, split_times.lap')
-                            .joins(:event).joins(:split_times => :split)
-                            .where(splits: {kind: 1}).where('split_times.lap >= events.laps_required')
-                            .order('split_times.lap desc').uniq }
   scope :started, -> { joins(split_times: :split).where(splits: {kind: 0}).uniq }
 
   delegate :race, to: :event
@@ -137,16 +133,21 @@ class Effort < ActiveRecord::Base
     attributes['laps_started'] || last_reported_split_time.try(:lap) || 0
   end
 
+  # For an unlimited-lap (time-based) event, an effort is 'finished' when the person decides not to continue.
+  # At that time, the dropped_attributes are set, but the effort is still considered to have finished.
   def finished?
-    attributes['finished'] || (laps_finished >= laps_required)
+    attributes['finished'] ||
+        laps_required.zero? ? dropped_split_id.present? : laps_finished >= laps_required
+  end
+
+  # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'.
+  def dropped?
+    attributes['dropped'] ||
+        laps_required.zero? ? false : dropped_split_id.present?
   end
 
   def started?
     attributes['started'] || start_split_times.present?
-  end
-
-  def dropped?
-    attributes['dropped'] || dropped_split_id.present?
   end
 
   def in_progress?

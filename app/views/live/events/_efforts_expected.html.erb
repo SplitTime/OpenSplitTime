@@ -12,7 +12,7 @@
             <th>Category</th>
             <th class="text-center">Last Reported</th>
             <th class="text-center">Due Next</th>
-            <th class="text-center">Expected Here</th>
+            <th class="text-center"><%= "Expected at #{@aid_station_detail.split_name}" %></th>
           </tr>
           </thead>
           <tbody>
@@ -24,7 +24,7 @@
                 <td class="text-nowrap"><%= row[:bio_historic] %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:last_reported_info]) %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:due_next_info]) %></td>
-                <td class="text-center text-nowrap"><%= display_progress_time_only(row[:expected_here_info]) %></td>
+                <td class="text-center text-nowrap"><%= display_progress_times_only(row[:expected_here_info]) %></td>
               </tr>
           <% end %>
           </tbody>

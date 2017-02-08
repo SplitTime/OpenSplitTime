@@ -30,11 +30,11 @@
     <strong><%= "Issues: #{@aid_station_detail.current_issues || '[None]'}" %></strong><br/>
   </div>
   <div class="col-xs-8">
-    <strong><%= "Of #{pluralize(@aid_station_detail.category_sizes[:started], 'effort')} started:" %></strong><br/>
-    <%= "#{@aid_station_detail.category_sizes[:recorded_in]} reported times into this station" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:recorded_out]} reported times out of this station" %><br/>
+    <strong><%= "#{pluralize(@aid_station_detail.efforts_started_count, 'effort')} started" %></strong><br/>
+    <%= "#{@aid_station_detail.category_sizes[:recorded_in]} times recorded into this station" %><br/>
+    <%= "#{@aid_station_detail.category_sizes[:recorded_out]} times recorded out of this station" %><br/>
     <%= "#{@aid_station_detail.category_sizes[:in_aid]} in aid (reported into but not out of this station)" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:missed]} missed (not recorded here but recorded at a later station)" %>
+    <%= "#{@aid_station_detail.category_sizes[:missed]} times missed (not recorded here but recorded at a later station)" %>
     <br/>
     <%= "#{@aid_station_detail.category_sizes[:dropped_here]} dropped at this station" %><br/>
     <%= "#{@aid_station_detail.category_sizes[:expected]} expected (in progress but not yet here)" %>

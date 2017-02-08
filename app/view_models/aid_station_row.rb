@@ -5,7 +5,7 @@ class AidStationRow
   delegate :event, :split, :split_id, to: :aid_station
   delegate :expected_day_and_time, :prior_valid_display_data, :next_valid_display_data, to: :live_event
 
-  AID_EFFORT_CATEGORIES = [:recorded_in, :recorded_out, :dropped_here, :in_aid, :missed, :expected]
+  AID_EFFORT_CATEGORIES = [:recorded_in, :recorded_out, :recorded_here, :dropped_here, :in_aid, :missed, :expected]
   IN_BITKEY = SubSplit::IN_BITKEY
   OUT_BITKEY = SubSplit::OUT_BITKEY
 
@@ -40,7 +40,7 @@ class AidStationRow
   private
 
   attr_reader :event_framework, :split_times
-  delegate :lap_split_keys, :efforts_dropped, :efforts_started, :efforts_in_progress, to: :event_framework
+  delegate :lap_split_keys, :time_points, :efforts_dropped, :efforts_started, :efforts_in_progress, to: :event_framework
 
   def row_recorded_in_lap_keys
     @row_recorded_in_lap_keys ||=
@@ -50,6 +50,10 @@ class AidStationRow
   def row_recorded_out_lap_keys
     @row_recorded_out_lap_keys ||=
         split_times.select { |st| st.sub_split_bitkey == OUT_BITKEY }.map(&:effort_lap_key)
+  end
+
+  def row_recorded_here_lap_keys
+    row_recorded_in_lap_keys | row_recorded_out_lap_keys
   end
 
   def row_dropped_here_lap_keys
@@ -63,21 +67,12 @@ class AidStationRow
   end
 
   def row_in_aid_lap_keys
-    split_records_in_time_only? ? [] : row_recorded_in_lap_keys - row_recorded_out_lap_keys - row_dropped_here_lap_keys
+    split_records_in_time_only? ? [] :
+        row_recorded_in_lap_keys - row_recorded_out_lap_keys - row_dropped_here_lap_keys - row_missed_lap_keys
   end
 
   def row_expected_lap_keys
     efforts_in_progress.map { |effort| effort_lap_key_expected(effort) }.flatten
-  end
-
-  def effort_lap_keys_missed(effort)
-    lap_split_keys_required(effort)
-        .reject { |lap_split_key| lap_split_keys_recorded(effort).include?(lap_split_key) }
-        .map { |lap_split_key| EffortLapKey.new(effort.id, lap_split_key.lap) }
-  end
-
-  def lap_split_keys_recorded(effort)
-    (grouped_split_times[effort.id] || []).map(&:lap_split_key)
   end
 
   def effort_lap_key_expected(effort) # Returns a single [effort_lap_key] or []
@@ -86,13 +81,29 @@ class AidStationRow
         .map { |lap_split_key| EffortLapKey.new(effort.id, lap_split_key.lap) }
   end
 
-  def lap_split_keys_required(effort)
-    lap_split_keys.elements_before(latest_lap_split_key(effort))
-        .select { |key| key.split_id == split_id }
+  def effort_lap_keys_missed(effort)
+    time_points_recorded = Set.new(time_points_recorded(effort))
+    time_points_required(effort)
+        .reject { |time_point| time_points_recorded.include?(time_point) }
+        .map { |time_point| EffortLapKey.new(effort.id, time_point.lap) }
+        .uniq
+  end
+
+  def time_points_recorded(effort)
+    (grouped_split_times[effort.id] || []).map(&:time_point)
+  end
+
+  def time_points_required(effort)
+    time_points.elements_before(latest_time_point(effort))
+        .select { |time_point| time_point.split_id == split_id }
   end
 
   def latest_lap_split_key(effort)
     LapSplitKey.new(effort.final_lap, effort.final_split_id)
+  end
+
+  def latest_time_point(effort)
+    TimePoint.new(effort.final_lap, effort.final_split_id, effort.final_bitkey)
   end
 
   def grouped_split_times

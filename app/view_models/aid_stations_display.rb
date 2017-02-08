@@ -26,6 +26,6 @@ class AidStationsDisplay < LiveEventFramework
   end
 
   def aid_stations
-    @aid_stations ||= event.aid_stations.ordered.to_a[1..-1]
+    @aid_stations ||= event.aid_stations.ordered.to_a
   end
 end

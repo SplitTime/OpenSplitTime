@@ -17,11 +17,17 @@ class EffortProgressRow
   end
 
   def last_reported_info
-    {split_name: lap_split_name(last_reported_time_point), day_and_time: effort.day_and_time(effort.final_time)}
+    EffortSplitData.new(effort_id: effort_id,
+                        lap: effort.final_lap,
+                        split_name: lap_split_name(last_reported_time_point),
+                        days_and_times: [effort.day_and_time(effort.final_time)])
   end
 
   def due_next_info
-    {split_name: lap_split_name(due_next_time_point), day_and_time: effort.day_and_time(time_from_start_to_next)}
+    EffortSplitData.new(effort_id: effort_id,
+                        lap: due_next_time_point.lap,
+                        split_name: lap_split_name(due_next_time_point),
+                        days_and_times: [effort.day_and_time(time_from_start_to_next)])
   end
 
   def extract_attributes(*attributes)
@@ -68,13 +74,27 @@ class EffortProgressRow
     @due_next_time_point ||= time_points.elements_after(last_reported_time_point).first
   end
 
+  def effort_split_data(split_times)
+    split_times = Array.wrap(split_times)
+    st = split_times.compact.first
+    st.nil? ? {} : EffortSplitData.new(effort_id: effort_id,
+                                       split_name: lap_split_name(st.time_point),
+                                       lap_name: lap_name(st.lap),
+                                       days_and_times: days_and_times(split_times))
+  end
+
   def lap_split_name(time_point)
+    return '' unless time_point
     lap_split = indexed_lap_splits[time_point.lap_split_key]
     bitkey = time_point.bitkey
     multiple_laps? ? lap_split.name(bitkey) : lap_split.name_without_lap(bitkey)
   end
 
   def lap_name(lap)
-    "Lap #{lap}"
+    lap ? "Lap #{lap}" : ''
+  end
+
+  def days_and_times(split_times)
+    split_times.map { |split_time| split_time && effort.day_and_time(split_time.time_from_start) }
   end
 end

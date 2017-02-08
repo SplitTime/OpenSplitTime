@@ -24,7 +24,7 @@
                 <td class="text-nowrap"><%= row[:bio_historic] %></td>
                 <td class="text-nowrap"><%= row[:state_and_country] %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:prior_to_here_info]) %></td>
-                <td class="text-center text-nowrap"><%= display_progress_info(row[:recorded_in_here_info]) %></td>
+                <td class="text-center text-nowrap"><%= display_progress_in_time_only(row[:recorded_here_info]) %></td>
               </tr>
           <% end %>
           </tbody>

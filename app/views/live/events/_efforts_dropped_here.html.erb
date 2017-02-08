@@ -12,7 +12,7 @@
             <th>Category</th>
             <th>From</th>
             <th class="text-center">Valid Reported Time Prior to Drop</th>
-            <th class="text-center"><%= "Recorded at #{@aid_station_detail.split_name}" %></th>
+            <th class="text-center"><%= "Dropped at #{@aid_station_detail.split_name}" %></th>
           </tr>
           </thead>
           <tbody>
@@ -24,7 +24,7 @@
                 <td class="text-nowrap"><%= row[:bio_historic] %></td>
                 <td class="text-nowrap"><%= row[:state_and_country] %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:prior_to_here_info]) %></td>
-                <td class="text-center text-nowrap"><%= join_days_and_times(row[:dropped_days_and_times]) %></td>
+                <td class="text-center text-nowrap"><%= display_progress_times_only(row[:dropped_here_info]) %></td>
               </tr>
           <% end %>
           </tbody>

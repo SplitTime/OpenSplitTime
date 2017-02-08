@@ -66,7 +66,7 @@ RSpec.describe SplitTime, kind: :model do
     SplitTime.create!(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 10000, lap: 1)
     split_time = SplitTime.new(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 11000, lap: 1)
     expect(split_time).not_to be_valid
-    expect(split_time.errors[:split_id]).to include('only one of any given split/sub_split/lap combination permitted within an effort')
+    expect(split_time.errors[:split_id]).to include('only one of any given time_point permitted within an effort')
   end
 
   it 'allows within an effort one of a given split_id/lap combination for each sub_split' do
@@ -334,16 +334,17 @@ RSpec.describe SplitTime, kind: :model do
     end
 
     it 'calls IntendedTimeCalculator with correct information if passed a present string' do
+      lap = 1
       split = start_split
       bitkey = split.bitkeys.first
-      sub_split = {split.id => bitkey}
+      time_point = TimePoint.new(lap, split.id, bitkey)
       military_time = '06:05:00'
-      split_time = SplitTime.new(effort: effort, split: split, bitkey: bitkey)
+      split_time = SplitTime.new(effort: effort, time_point: time_point)
       allow(IntendedTimeCalculator).to receive(:day_and_time)
       split_time.military_time = military_time
       expect(IntendedTimeCalculator).to have_received(:day_and_time).with(military_time: military_time,
                                                                           effort: effort,
-                                                                          sub_split: sub_split)
+                                                                          time_point: time_point)
     end
   end
 

@@ -75,14 +75,14 @@ module TimeFormats
   end
 
   def day_time_military_format(datetime)
-    datetime ? datetime.strftime('%a %H:%M') : '--:--:--'
+    datetime ? datetime.strftime('%a %H:%M') : '--- --:--'
   end
 
   def day_time_military_format_hhmmss(datetime)
-    datetime ? datetime.strftime('%a %H:%M:%S') : '--:--:--'
+    datetime ? datetime.strftime('%a %H:%M:%S') : '--- --:--:--'
   end
 
   def day_time_full_format(datetime)
-    datetime ? datetime.strftime('%B %-d, %Y %l:%M%p') : '--:--:--'
+    datetime ? datetime.strftime('%B %-d, %Y %l:%M%p') : '--- --:--:--'
   end
 end

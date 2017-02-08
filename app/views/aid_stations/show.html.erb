@@ -12,9 +12,9 @@
     <strong><%= "Closes: #{l @aid_station.close_time, format: :day_and_military}" if @aid_station.close_time %></strong><br/>
     <strong>Course:</strong>
     <%= link_to @aid_station.course_name, course_path(@aid_station.course) %>
-    <% if @aid_station.race %> |
+    <% if @aid_station.organization %> |
         <strong>Organization:</strong>
-        <%= link_to @aid_station.race_name, race_path(@aid_station.race) %>
+        <%= link_to @aid_station.organization_name, organization_path(@aid_station.organization) %>
     <% end %><br/>
     <strong><%= "Aid Captain: #{@aid_station.captain_name}" %></strong><br/>
     <strong><%= "Communications Crew: #{@aid_station.comms_crew_names}" %></strong><br/>

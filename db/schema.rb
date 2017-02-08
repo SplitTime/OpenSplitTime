@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170131214021) do
+ActiveRecord::Schema.define(version: 20170208100736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,22 +87,22 @@ ActiveRecord::Schema.define(version: 20170131214021) do
   add_index "efforts", ["participant_id"], name: "index_efforts_on_participant_id", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.integer  "course_id",                                 null: false
-    t.integer  "race_id"
-    t.string   "name",           limit: 64,                 null: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.integer  "course_id",                                  null: false
+    t.integer  "organization_id"
+    t.string   "name",            limit: 64,                 null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "start_time"
-    t.boolean  "concealed",                 default: false
-    t.boolean  "available_live",            default: false
+    t.boolean  "concealed",                  default: false
+    t.boolean  "available_live",             default: false
     t.string   "beacon_url"
     t.integer  "laps_required"
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
-  add_index "events", ["race_id"], name: "index_events_on_race_id", using: :btree
+  add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",        limit: 64,                         null: false
@@ -114,6 +114,16 @@ ActiveRecord::Schema.define(version: 20170131214021) do
     t.datetime "updated_at",                                     null: false
     t.integer  "created_by"
     t.integer  "updated_by"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string   "name",        limit: 64,                 null: false
+    t.text     "description"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.boolean  "concealed",              default: false
   end
 
   create_table "participants", force: :cascade do |t|
@@ -136,16 +146,6 @@ ActiveRecord::Schema.define(version: 20170131214021) do
   end
 
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
-
-  create_table "races", force: :cascade do |t|
-    t.string   "name",        limit: 64,                 null: false
-    t.text     "description"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.boolean  "concealed",              default: false
-  end
 
   create_table "split_times", force: :cascade do |t|
     t.integer  "effort_id",        null: false
@@ -187,15 +187,15 @@ ActiveRecord::Schema.define(version: 20170131214021) do
   add_index "splits", ["location_id"], name: "index_splits_on_location_id", using: :btree
 
   create_table "stewardships", force: :cascade do |t|
-    t.integer  "user_id",                null: false
-    t.integer  "race_id",                null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.integer  "level",      default: 0
+    t.integer  "user_id",                     null: false
+    t.integer  "organization_id",             null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "level",           default: 0
   end
 
-  add_index "stewardships", ["race_id"], name: "index_stewardships_on_race_id", using: :btree
-  add_index "stewardships", ["user_id", "race_id"], name: "index_stewardships_on_user_id_and_race_id", unique: true, using: :btree
+  add_index "stewardships", ["organization_id"], name: "index_stewardships_on_organization_id", using: :btree
+  add_index "stewardships", ["user_id", "organization_id"], name: "index_stewardships_on_user_id_and_organization_id", unique: true, using: :btree
   add_index "stewardships", ["user_id"], name: "index_stewardships_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -235,12 +235,12 @@ ActiveRecord::Schema.define(version: 20170131214021) do
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "participants"
   add_foreign_key "events", "courses"
-  add_foreign_key "events", "races"
+  add_foreign_key "events", "organizations"
   add_foreign_key "participants", "users"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
   add_foreign_key "splits", "courses"
   add_foreign_key "splits", "locations"
-  add_foreign_key "stewardships", "races"
+  add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
 end

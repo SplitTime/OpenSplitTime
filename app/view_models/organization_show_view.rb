@@ -1,13 +1,13 @@
-class RaceShowView
+class OrganizationShowView
 
-  attr_reader :race, :courses, :events
-  delegate :id, :name, :description, :stewards, to: :race
+  attr_reader :organization, :courses, :events
+  delegate :id, :name, :description, :stewards, to: :organization
 
-  def initialize(race, params)
-    @race = race
+  def initialize(organization, params)
+    @organization = organization
     @params = params
-    @events = race.events.select_with_params(@params[:search]).to_a
-    @courses = Course.used_for_race(race)
+    @events = organization.events.select_with_params(@params[:search]).to_a
+    @courses = Course.used_for_organization(organization)
   end
 
   def events_count

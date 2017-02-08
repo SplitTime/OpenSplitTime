@@ -13,8 +13,8 @@
       <%= "Start Time: #{l(@event_preview.start_time, format: :full_with_weekday)} at #{l(@event_preview.start_time, format: :ampm)}" %>
       <br/>
       Run on <%= link_to @event_preview.course_name, course_path(@event_preview.course) %>
-      <% if @event_preview.race %>
-          <br/>Organized under <%= link_to @event_preview.race_name, race_path(@event_preview.race) %>
+      <% if @event_preview.organization %>
+          <br/>Organized under <%= link_to @event_preview.organization_name, organization_path(@event_preview.organization) %>
       <% end %>
     </h4>
   </div>

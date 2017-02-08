@@ -1,7 +1,7 @@
 class EventStageDisplay
 
   attr_reader :event, :associated_splits
-  delegate :id, :name, :start_time, :course, :race, :available_live, :simple?,
+  delegate :id, :name, :start_time, :course, :organization, :available_live, :simple?,
            :unreconciled_efforts, :unreconciled_efforts?, :started?, :beacon_url, to: :event
 
   def initialize(event, params)
@@ -48,8 +48,8 @@ class EventStageDisplay
     course_splits.size
   end
 
-  def race_name
-    race.try(:name)
+  def organization_name
+    organization.try(:name)
   end
 
   def view_text

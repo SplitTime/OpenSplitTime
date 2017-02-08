@@ -1,6 +1,6 @@
 class AidStationsDisplay < LiveEventFramework
 
-  delegate :start_time, :course, :race, to: :event
+  delegate :start_time, :course, :organization, to: :event
 
   def post_initialize(args)
     ArgsValidator.validate(params: args, required: :event, exclusive: [:event, :times_container], class: self.class)

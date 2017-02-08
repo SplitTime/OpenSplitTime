@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :connections, dependent: :destroy
   has_many :interests, through: :connections, source: :participant
   has_many :stewardships, dependent: :destroy
-  has_many :races, through: :stewardships
+  has_many :organizations, through: :stewardships
   has_one :avatar, class_name: 'Participant'
 
   validates_presence_of :first_name, :last_name
@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def steward_of?(resource)
-    resource.race && resource.race.stewards.include?(self)
+    resource.organization && resource.organization.stewards.include?(self)
   end
 
   def full_name

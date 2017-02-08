@@ -1,0 +1,73 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Show organization - #{@organization.name}" %>
+<% end %>
+<div class="row header">
+  <div class="col-xs-7">
+    <h2><strong><%= @organization.name %></strong></h2>
+  </div>
+  <div class="col-xs-5 page-navigation">
+    <div class="row">
+      <% if @current_user && @current_user.authorized_to_edit?(@organization) %>
+          <%= link_to 'Add/remove stewards', stewards_organization_path(@organization), class: "btn btn-sm btn-warning" %>
+          <%= link_to 'Create New Event', new_event_path(organization_id: @organization.id), class: "btn btn-sm btn-success" %>
+          <%= link_to 'Edit this organization', edit_organization_path(@organization), class: "btn btn-sm btn-primary" %>
+          <%= link_to 'Delete this organization',
+                      organization_path(@organization, referrer_path: request.referrer ? URI(request.referrer).path : locations_path),
+                      method: :delete,
+                      data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+    <%= @organization_show.description %>
+  </div>
+</div>
+
+<div class="row header">
+  <div class="col-xs-5">
+    <h3><%= @organization_show.view_text.titleize %></h3>
+  </div>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <div class="btn-group">
+        <%= link_to 'Show courses',
+                    organization_path(@organization_show.organization, view: 'courses'),
+                    disabled: params[:view] == 'courses',
+                    class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Show events',
+                    organization_path(@organization_show.organization, view: 'events'),
+                    disabled: params[:view] == 'events',
+                    class: 'btn btn-sm btn-primary' %>
+        <% if @current_user && @current_user.authorized_to_edit?(@organization_show.organization) %>
+            <%= link_to 'Show stewards',
+                        organization_path(@organization_show.organization, view: 'stewards'),
+                        disabled: params[:view] == 'stewards',
+                        class: 'btn btn-sm btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if params[:view] == 'courses' %>
+    <% if @organization_show.courses_count > 0 %>
+        <%= render 'courses/courses', courses: @organization_show.courses %>
+    <% else %>
+        <h4>No courses are associated with this organization.</h4>
+    <% end %>
+<% elsif params[:view] == 'stewards' %>
+    <% if @organization_show.stewards_count > 0 %>
+        <%= render 'stewards_list', stewards: @organization_show.stewards %>
+    <% else %>
+        <h4>No stewards have been added to this organization.</h4>
+    <% end %>
+<% else %>
+    <% if @organization_show.events_count > 0 %>
+        <%= render 'events/events', events: @organization_show.events %>
+    <% else %>
+        <h4>No events are associated with this organization.</h4>
+    <% end %>
+<% end %>

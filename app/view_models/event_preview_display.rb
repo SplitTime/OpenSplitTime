@@ -2,7 +2,7 @@ class EventPreviewDisplay
 
   attr_accessor :filtered_efforts
   attr_reader :event, :params, :effort_preview_rows
-  delegate :name, :start_time, :course, :race, :simple?, :available_live, :beacon_url, to: :event
+  delegate :name, :start_time, :course, :organization, :simple?, :available_live, :beacon_url, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object
@@ -30,8 +30,8 @@ class EventPreviewDisplay
     course.name
   end
 
-  def race_name
-    race ? race.name : nil
+  def organization_name
+    organization ? organization.name : nil
   end
 
   private

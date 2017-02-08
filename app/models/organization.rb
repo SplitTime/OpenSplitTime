@@ -1,4 +1,4 @@
-class Race < ActiveRecord::Base
+class Organization < ActiveRecord::Base
   include Auditable
   include Concealable
   strip_attributes collapse_spaces: true
@@ -16,5 +16,4 @@ class Race < ActiveRecord::Base
   def remove_stewardship(user)
     stewards.delete(user)
   end
-
 end

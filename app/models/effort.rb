@@ -33,7 +33,7 @@ class Effort < ActiveRecord::Base
   scope :unreconciled, -> { where(participant_id: nil) }
   scope :started, -> { joins(split_times: :split).where(splits: {kind: 0}).uniq }
 
-  delegate :race, to: :event
+  delegate :organization, to: :event
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')

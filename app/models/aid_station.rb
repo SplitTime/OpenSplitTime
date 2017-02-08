@@ -35,11 +35,11 @@ class AidStation < ActiveRecord::Base
     split.course
   end
 
-  def race_name
-    race && race.name
+  def organization_name
+    organization.try(:name)
   end
 
-  def race
-    event.race
+  def organization
+    event.organization
   end
 end

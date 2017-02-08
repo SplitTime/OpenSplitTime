@@ -1,7 +1,7 @@
 class EventSpreadDisplay
 
   attr_reader :event, :display_style
-  delegate :name, :start_time, :course, :race, :available_live, :beacon_url, :simple?, to: :event
+  delegate :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object
@@ -35,8 +35,8 @@ class EventSpreadDisplay
     course.name
   end
 
-  def race_name
-    race.try(:name)
+  def organization_name
+    organization.try(:name)
   end
 
   def event_start_time

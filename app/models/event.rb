@@ -4,7 +4,7 @@ class Event < ActiveRecord::Base
   include SplitMethods
   strip_attributes collapse_spaces: true
   belongs_to :course
-  belongs_to :race
+  belongs_to :organization
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
@@ -19,9 +19,9 @@ class Event < ActiveRecord::Base
   scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) { search(search_param)
                                                      .where(concealed: false)
-                                                     .select("events.*, COUNT(efforts.id) as effort_count")
-                                                     .joins("LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)")
-                                                     .group("events.id").order(start_time: :desc) }
+                                                     .select('events.*, COUNT(efforts.id) as effort_count')
+                                                     .joins('LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)')
+                                                     .group('events.id').order(start_time: :desc) }
 
   def self.search(search_param)
     return all if search_param.blank?
@@ -54,8 +54,8 @@ class Event < ActiveRecord::Base
     course.name
   end
 
-  def race_name
-    race.try(:name)
+  def organization_name
+    organization.try(:name)
   end
 
   def started?

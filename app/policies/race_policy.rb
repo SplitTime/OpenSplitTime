@@ -1,9 +1,9 @@
-class RacePolicy
-  attr_reader :current_user, :race
+class OrganizationPolicy
+  attr_reader :current_user, :organization
 
-  def initialize(current_user, race)
+  def initialize(current_user, organization)
     @current_user = current_user
-    @race = race
+    @organization = organization
   end
 
   def new?
@@ -11,7 +11,7 @@ class RacePolicy
   end
 
   def edit?
-    current_user.authorized_to_edit?(race)
+    current_user.authorized_to_edit?(organization)
   end
 
   def create?
@@ -19,19 +19,19 @@ class RacePolicy
   end
 
   def update?
-    current_user.authorized_to_edit?(race)
+    current_user.authorized_to_edit?(organization)
   end
 
   def destroy?
-    current_user.authorized_to_edit?(race)
+    current_user.authorized_to_edit?(organization)
   end
 
   def stewards?
-    current_user.authorized_to_edit?(race)
+    current_user.authorized_to_edit?(organization)
   end
 
   def remove_steward?
-    current_user.authorized_to_edit?(race)
+    current_user.authorized_to_edit?(organization)
   end
 
 end

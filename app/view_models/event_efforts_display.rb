@@ -2,7 +2,7 @@ class EventEffortsDisplay
   include TimeFormats
 
   attr_reader :event
-  delegate :name, :start_time, :course, :race, :simple?, :beacon_url, :available_live,
+  delegate :name, :start_time, :course, :organization, :simple?, :beacon_url, :available_live,
            :finish_split, :start_split, to: :event
 
   # initialize(event, params = {})
@@ -55,8 +55,8 @@ class EventEffortsDisplay
     course.name
   end
 
-  def race_name
-    race.try(:name)
+  def organization_name
+    organization.try(:name)
   end
 
   def to_ultrasignup_csv

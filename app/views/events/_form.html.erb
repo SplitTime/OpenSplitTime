@@ -31,10 +31,10 @@
         <% end %>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :race_id %>
+            <%= f.label :organization_id %>
           </div>
           <div class="col-sm-8">
-            <%= collection_select(:event, :race_id, Race.all, :id, :name,
+            <%= collection_select(:event, :organization_id, Organization.all, :id, :name,
                                   {prompt: true}, {class: "dropdown-select-field"}) %>
           </div>
         </div>

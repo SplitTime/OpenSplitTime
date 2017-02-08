@@ -11,7 +11,7 @@
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <% if @current_user %>
-          <%= link_to 'Create a new organization', new_race_path,
+          <%= link_to 'Create a new organization', new_organization_path,
                       class: 'btn btn-sm btn-success' %>
       <% end %>
     </div>
@@ -24,7 +24,7 @@
   </div>
 </div>
 
-<%= render 'races', races: @races %>
+<%= render 'organizations', organizations: @organizations %>
 
 <hr>
 <div class="row">

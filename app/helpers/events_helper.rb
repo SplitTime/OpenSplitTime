@@ -42,7 +42,7 @@ module EventsHelper
   end
 
   def link_to_stewards(view_object)
-    link_to 'Stewards', stewards_race_path(view_object.race), class: 'btn btn-sm btn-warning' if view_object.race
+    link_to 'Stewards', stewards_organization_path(view_object.organization), class: 'btn btn-sm btn-warning' if view_object.organization
   end
 
   def link_to_ultrasignup_export(view_object)

@@ -2,7 +2,7 @@ class EventDroppedDisplay
 
   attr_accessor :dropped_efforts
   attr_reader :event, :effort_rows
-  delegate :name, :start_time, :course, :race, :simple?, :beacon_url, :available_live, to: :event
+  delegate :name, :start_time, :course, :organization, :simple?, :beacon_url, :available_live, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object

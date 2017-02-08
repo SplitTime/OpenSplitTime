@@ -1,15 +1,15 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Add or remove stewards - #{@race.name}" %>
+    <% "OpenSplitTime: Add or remove stewards - #{@organization.name}" %>
 <% end %>
 <div class="row">
   <div class="col-xs-8">
-    <h2><%= "#{@race.name}: Add or remove stewards" %></h2>
+    <h2><%= "#{@organization.name}: Add or remove stewards" %></h2>
   </div>
 </div>
 <hr>
 <div class="row">
   <div class="col-xs-6">
-    <%= link_to '<< Show organization', race_path(@race), class: "btn btn-sm btn-default" %>
+    <%= link_to '<< Show organization', organization_path(@organization), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
   </div>
 </div>
@@ -17,7 +17,7 @@
 
 <%= render 'user_lookup' %>
 
-<% if @race.stewards.present? %>
+<% if @organization.stewards.present? %>
     <div class="row">
       <div class="col-xs-8">
         <h4>Stewards associated with this organization:</h4>

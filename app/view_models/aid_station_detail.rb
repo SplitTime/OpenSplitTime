@@ -1,7 +1,7 @@
 class AidStationDetail < LiveEventFramework
 
   attr_reader :aid_station, :times_container
-  delegate :course, :race, to: :event
+  delegate :course, :organization, to: :event
   delegate :event, :split, :split_id, :open_time, :close_time, :status, :captain_name, :comms_crew_names,
            :comms_frequencies, :current_issues, to: :aid_station
   delegate :split_name, :category_sizes, :category_table_titles, to: :aid_station_row

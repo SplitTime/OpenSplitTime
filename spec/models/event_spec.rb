@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 # t.integer  "course_id"
-# t.integer  "race_id"
+# t.integer  "organization_id"
 # t.string   "name"
 # t.datetime "start_time"
 

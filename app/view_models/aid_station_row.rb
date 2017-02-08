@@ -1,7 +1,7 @@
 class AidStationRow
   include ActionView::Helpers::TextHelper
   attr_reader :aid_station
-  delegate :course, :race, to: :event
+  delegate :course, :organization, to: :event
   delegate :event, :split, :split_id, to: :aid_station
   delegate :expected_day_and_time, :prior_valid_display_data, :next_valid_display_data, to: :live_event
 

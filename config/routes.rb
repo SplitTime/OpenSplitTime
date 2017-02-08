@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get 'event_info', to: 'visitors#event_info'
   get 'location_info', to: 'visitors#location_info'
   get 'participant_info', to: 'visitors#participant_info'
-  get 'race_info', to: 'visitors#race_info'
+  get 'organization_info', to: 'visitors#organization_info'
   get 'split_info', to: 'visitors#split_info'
   get 'split_time_info', to: 'visitors#split_time_info'
   get 'split_time_info', to: 'visitors#split_time_info'
@@ -65,7 +65,7 @@ Rails.application.routes.draw do
     member { get :assign_location }
     member { post :create_location }
   end
-  resources :races do
+  resources :organizations do
     member { get :stewards }
     member { put :remove_steward }
   end

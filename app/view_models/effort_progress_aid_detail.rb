@@ -69,7 +69,7 @@ class EffortProgressAidDetail < EffortProgressRow
   end
 
   def prior_valid_split_time(time_point)
-    SplitTimeFinder.guaranteed_prior(time_point: time_point, lap_splits: lap_splits, split_times: effort_split_times)
+    SplitTimeFinder.prior(time_point: time_point, lap_splits: lap_splits, split_times: effort_split_times)
   end
 
   def next_split_time(time_point)

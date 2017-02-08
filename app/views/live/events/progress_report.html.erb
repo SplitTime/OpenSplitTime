@@ -49,7 +49,7 @@
                 <td class="text-nowrap"><%= row.bio_historic %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row.last_reported_info) %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row.due_next_info) %></td>
-                <td class="text-right"><%= time_format_xxhyym(row.minutes_past_due) %></td>
+                <td class="text-right"><%= time_format_xxhyym(row.seconds_past_due) %></td>
               </tr>
           <% end %>
           </tbody>

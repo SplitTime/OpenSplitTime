@@ -7,6 +7,10 @@ class EffortProgressSummary < EffortProgressRow
                            class: self.class)
   end
 
+  def seconds_past_due
+    minutes_past_due * 1.minute
+  end
+
   def minutes_past_due
     @minutes_past_due ||= effort.day_and_time(time_from_start_to_next) && ((Time.current - effort.day_and_time(time_from_start_to_next)) / 1.minute).round
   end

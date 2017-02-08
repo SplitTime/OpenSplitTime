@@ -10,7 +10,7 @@
 		</h3>
 		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
 		<p><router-link to="/splits" class="btn btn-primary" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link></p>
-		<p><span class="brackets"><a>Cancel</a></span></p>
+		<p><span class="brackets"><a href="#">Cancel</a></span></p>
 	</aside>
 	<article class="col-xs-12 col-sm-8">
 		<div class="form-group">
@@ -69,17 +69,20 @@
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.event.name" v-prefill="eventData.organization.name + ' ' + ( new Date( eventData.event.date ).getFullYear() )">
 		</div>
-		<div class="form-group">
+		<div class="form-group event-info-course-row">
 			<label for="event-start-time">Select Course</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-8">
+				<div class="col-xs-12 col-sm-6 col-md-7">
 					<ajax-select class="form-control" :disabled="eventData.course.new" v-model="eventData.course.id" url="get-courses">
 						<option value="" selected disabled>Select One</option>
 					</ajax-select>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4 form-control-fill">
-					<span class="text-center" style="width: 100%">or</span>
+				<div class="col-xs-12 col-sm-1 text-center">
+					<span class="event-info-or">or</span>
+				</div>
+				<div class="col-xs-12 col-sm-5 col-md-4 form-control-fill">
+					
 					<button type="button" class="btn btn-success" v-on:click="eventData.course.new = true">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
@@ -110,7 +113,7 @@
 					<textarea class="form-control" placeholder="Course Description" v-model="eventData.course.description"></textarea>
 				</div>
 				<div class="col-xs-12">
-					<span class="brackets" v-on:click="eventData.course.new = false"><a>Cancel</a></span>
+					<span class="brackets" v-on:click="eventData.course.new = false"><a href="#">Cancel</a></span>
 				</div>
 			</div>
 		</div>
@@ -516,7 +519,7 @@
 						</div>
 						<div class="row p-controls">
 							<div class="col-xs-12">
-								<span class="brackets" data-dismiss="modal"><a>Cancel</a></span>
+								<span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
 								<button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="valid" v-on:click="$emit('done')">
 									<template v-if="!model._dtid">Add Participant</template>
 									<template v-else>Done</template>
@@ -611,11 +614,11 @@
 			<h2><strong>Create Race</strong></h2>
 			<nav class="progress-bar-nav">
 				<ul>
-					<li is="router-link" to="/" tag="li" exact><a><span>Your Event</span></a></li>
-					<li is="router-link" to="/splits" tag="li"><a><span>Splits</span></a></li>
-					<li is="router-link" to="/participants" tag="li"><a><span>Participants</span></a></li>
-					<li is="router-link" to="/confirmation" tag="li"><a><span>Confirmation</span></a></li>
-					<li is="router-link" to="/published" tag="li"><a><span>Published</span></a></li>
+					<li is="router-link" to="/" tag="li" exact><a href="#"><span>Your Event</span></a></li>
+					<li is="router-link" to="/splits" tag="li"><a href="#"><span>Splits</span></a></li>
+					<li is="router-link" to="/participants" tag="li"><a href="#"><span>Participants</span></a></li>
+					<li is="router-link" to="/confirmation" tag="li"><a href="#"><span>Confirmation</span></a></li>
+					<li is="router-link" to="/published" tag="li"><a href="#"><span>Published</span></a></li>
 				</ul>
 			</nav>
 		</div>

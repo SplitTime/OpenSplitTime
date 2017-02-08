@@ -57,6 +57,32 @@
 			margin-left: 20px;
 		}
 	}
+	
+	.well {
+		border: none;
+		border-radius: 0;
+	}
+
+	.well:after {
+					
+	}
+
+	// Event Info Page Styles
+	.event-info-course-row {
+
+		.btn-success {
+			float: right;
+			width: 100%;
+		}
+
+		.event-info-or {
+			display: block;
+			margin: 10px 0;
+			@include breakpoint( $break-small ) {
+				margin: 5px 0 0 0;
+			}
+		}
+	}
 }
 
 /* There has to be a better way */

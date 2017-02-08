@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ActionDispatch::TestProcess
 
-RSpec.describe EffortProgressAidDetail do
+RSpec.describe EffortProgressRow do
   let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 3, splits_count: 4) }
   let(:test_splits) { test_event.splits }
   let(:test_efforts) { test_event.efforts }
@@ -17,7 +17,7 @@ RSpec.describe EffortProgressAidDetail do
       aid_detail_row = EffortProgressAidDetail.new(effort: effort,
                                                    event_framework: aid_station_detail,
                                                    lap: 1,
-                                                   split_times: [],
+                                                   effort_split_times: [],
                                                    times_container: SegmentTimesContainer.new(calc_model: :terrain))
       actual = aid_detail_row.extract_attributes(:full_name, :bio_historic)
       expected = {full_name: aid_detail_row.full_name, bio_historic: aid_detail_row.bio_historic}

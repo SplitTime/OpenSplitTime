@@ -4,15 +4,10 @@
 <div class="row header">
   <div class="col-xs-7">
     <h2><%= "#{@aid_stations_display.event_name}: Aid Station Report" %></h2>
-    <h4><%= "as of #{l(Time.now.in_time_zone, format: :full_with_weekday)} at #{l(Time.now.in_time_zone, format: :military)}" %></h4>
+    <h4><%= "as of #{day_time_current_military_full}" %></h4>
   </div>
   <div class="col-xs-5 page-navigation">
-    <%= link_to 'View Event', event_path(@event), class: 'btn btn-sm btn-primary' %>
-    <div class="btn-group">
-      <%= link_to 'Live entry', live_entry_live_event_path(@event), class: 'btn btn-sm btn-warning' %>
-      <%= link_to 'Progress', progress_report_live_event_path(@event), class: 'btn btn-sm btn-warning' %>
-      <%= link_to 'Aid stations', aid_station_report_live_event_path(@event), disabled: true, class: 'btn btn-sm btn-warning' %>
-    </div>
+    <%= render 'live_entry_button_cluster', page: 'aid_summary' %>
   </div>
 </div>
 <div class="row">

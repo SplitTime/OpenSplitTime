@@ -17,17 +17,11 @@ class EffortProgressRow
   end
 
   def last_reported_info
-    split_time = SplitTime.new(effort_id: effort_id,
-                               time_point: last_reported_time_point,
-                               time_from_start: effort.final_time)
-    effort_split_data(split_time.lap, split_time)
+    effort_split_data(last_reported_split_time.lap, last_reported_split_time)
   end
 
   def due_next_info
-    split_time = SplitTime.new(effort_id: effort_id,
-                               time_point: due_next_time_point,
-                               time_from_start: time_from_start_to_next)
-    effort_split_data(split_time.lap, split_time)
+    effort_split_data(due_next_split_time.lap, due_next_split_time)
   end
 
   def extract_attributes(*attributes)
@@ -41,9 +35,11 @@ class EffortProgressRow
            :times_container, to: :event_framework
 
   def last_reported_split_time
-    SplitTime.new(effort: effort,
-                  time_point: last_reported_time_point,
-                  time_from_start: effort.final_time)
+    SplitTime.new(effort: effort, time_point: last_reported_time_point, time_from_start: effort.final_time)
+  end
+
+  def due_next_split_time
+    SplitTime.new(effort: effort, time_point: due_next_time_point, time_from_start: time_from_start_to_next)
   end
 
   def time_from_start_to_next
@@ -67,11 +63,11 @@ class EffortProgressRow
   end
 
   def last_reported_time_point
-    @last_reported_time_point ||= TimePoint.new(effort.final_lap, effort.final_split_id, effort.final_bitkey)
+    TimePoint.new(effort.final_lap, effort.final_split_id, effort.final_bitkey)
   end
 
   def due_next_time_point
-    @due_next_time_point ||= time_points.elements_after(last_reported_time_point).first
+    time_points.elements_after(last_reported_time_point).first
   end
 
   def effort_split_data(lap, split_times)
@@ -83,15 +79,15 @@ class EffortProgressRow
                         days_and_times: days_and_times(split_times))
   end
 
+  def lap_name(lap)
+    (lap && multiple_laps?) ? "Lap #{lap}" : ''
+  end
+
   def lap_split_name(time_point)
     return '' unless time_point
     lap_split = indexed_lap_splits[time_point.lap_split_key]
     bitkey = time_point.bitkey
     multiple_laps? ? lap_split.name(bitkey) : lap_split.name_without_lap(bitkey)
-  end
-
-  def lap_name(lap)
-    (lap && multiple_laps?) ? "Lap #{lap}" : ''
   end
 
   def days_and_times(split_times)

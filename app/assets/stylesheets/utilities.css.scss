@@ -126,8 +126,8 @@ label.required:after {
 /**********
 Modal Styles
 ***********/
-@media ( min-width: $break-medium ) {
-	.modal-lg {
+@media ( min-width: $break-small ) {
+	.modal-dialog.modal-lg {
 		max-width: $max-width;
 		width: 90%;
 	}

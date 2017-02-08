@@ -77,7 +77,7 @@ class LiveEventFramework
   end
 
   def lap_splits
-    @lap_splits ||= required_lap_splits.presence || event.lap_splits_through(highest_lap)
+    @lap_splits ||= required_lap_splits.presence || event.lap_splits_through(highest_lap + 1)
   end
 
   def indexed_lap_splits

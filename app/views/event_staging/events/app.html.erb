@@ -1,0 +1,4 @@
+<p>[Killer App Here]</p>
+<%= @event ?
+        "Found event id #{@event.id}; using staging id #{@event.staging_id}" :
+        "Event not found; make a new one using staging id #{params[:staging_id]}" %>

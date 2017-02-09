@@ -20,6 +20,11 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_model_serializers (0.10.4)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      case_transform (>= 0.2)
+      jsonapi (= 0.1.1.beta6)
     active_record_query_trace (1.5.4)
     active_record_union (1.2.0)
       activerecord (>= 4.0)
@@ -83,6 +88,8 @@ GEM
     carmen-rails (1.0.1)
       carmen (~> 1.0.0)
       rails
+    case_transform (0.2)
+      activesupport
     choice (0.2.0)
     coderay (1.1.1)
     coffee-rails (4.1.1)
@@ -166,6 +173,11 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.3)
+    jsonapi (0.1.1.beta6)
+      jsonapi-parser (= 0.1.1.beta3)
+      jsonapi-renderer (= 0.1.1.beta1)
+    jsonapi-parser (0.1.1.beta3)
+    jsonapi-renderer (0.1.1.beta1)
     jwt (1.5.1)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
@@ -414,6 +426,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   active_record_query_trace
   active_record_union
   alchemist

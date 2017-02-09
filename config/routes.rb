@@ -122,4 +122,18 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :locations, only: [:show]
+      resources :participants, only: [:show]
+      resource :staging, only: [] do
+        get :get_uuid
+      end
+      resources :stagings, only: [] do
+        member do
+          get :get_locations
+        end
+      end
+    end
+  end
 end

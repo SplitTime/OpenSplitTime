@@ -1,4 +1,4 @@
-class Api::V1::StagingsController < ApiController
+class Api::V1::StagingController < ApiController
   before_action :set_event, except: :get_uuid
 
   def get_uuid
@@ -7,8 +7,8 @@ class Api::V1::StagingsController < ApiController
   end
 
   def get_locations
-    authorize @event
-    locations = Location.bounded_by(params).first(500)
+    authorize :staging, :get_locations?
+    locations = Location.bounded_by(params.transform_values(&:to_f)).first(500)
     render json: locations
   end
 
@@ -17,7 +17,7 @@ class Api::V1::StagingsController < ApiController
       authorize @event
       render json: @event
     else
-      new_event = Event.new(staging_id: params[:id])
+      new_event = Event.new(staging_id: params[:staging_id])
       if new_event.staging_id
         authorize new_event, :new_staging_event?
         render json: new_event
@@ -31,6 +31,6 @@ class Api::V1::StagingsController < ApiController
   private
 
   def set_event
-    @event = Event.find_by(staging_id: params[:id])
+    @event = Event.find_by(staging_id: params[:staging_id])
   end
 end

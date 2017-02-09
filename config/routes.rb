@@ -124,17 +124,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :locations, only: [:show]
-      resources :participants, only: [:show]
-      resource :staging, only: [] do
-        get :get_uuid
-      end
-      resources :stagings, only: [] do
-        member do
-          get :get_locations
-          get :get_event
-        end
-      end
+      get 'staging/get_uuid', to: 'staging#get_uuid'
+      get 'staging/get_locations', to: 'staging#get_locations'
+      get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
     end
   end
 end

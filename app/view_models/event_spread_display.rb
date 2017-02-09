@@ -118,6 +118,6 @@ class EventSpreadDisplay
   end
 
   def highest_lap
-    split_times.max_by(&:lap).lap
+    split_times.map(&:lap).max || 1
   end
 end

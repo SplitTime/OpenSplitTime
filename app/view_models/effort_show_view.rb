@@ -60,6 +60,6 @@ class EffortShowView
   end
 
   def last_lap
-    ordered_split_times.last.try(:lap) || 1
+    ordered_split_times.map(&:lap).last || 1
   end
 end

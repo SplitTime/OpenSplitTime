@@ -166,6 +166,6 @@ class EffortAnalysisView
   end
 
   def last_lap
-    ordered_split_times.last.lap
+    ordered_split_times.map(&:lap).last || 1
   end
 end

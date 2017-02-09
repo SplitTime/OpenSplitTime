@@ -106,6 +106,6 @@ class LiveEventFramework
   delegate :required_lap_splits, :required_time_points, to: :event
 
   def highest_lap
-    @highest_lap ||= event_efforts.map(&:final_lap).compact.max
+    @highest_lap ||= event_efforts.map(&:final_lap).compact.max || 1
   end
 end

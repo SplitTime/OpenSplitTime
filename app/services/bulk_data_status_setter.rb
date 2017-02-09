@@ -72,6 +72,6 @@ class BulkDataStatusSetter
   end
 
   def highest_lap
-    all_split_times.max_by(&:lap).lap
+    all_split_times.map(&:lap).max || 1
   end
 end

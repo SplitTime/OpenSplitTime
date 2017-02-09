@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :spread, :drop_list]
   before_action :set_event, except: [:index, :show, :new, :create, :spread]
-  after_action :verify_authorized, except: [:index, :show, :spread, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :spread, :drop_list, :new_staging, :edit_staging]
 
   def index
     @events = Event.select_with_params(params[:search])
@@ -68,7 +68,7 @@ class EventsController < ApplicationController
 
   def find_problem_effort
     authorize @event
-    @effort = @event.efforts.invalid_status.first
+    @effort = @event.efforts.invalid_status.shuffle.first
     if @effort
       redirect_to effort_path(@effort)
     else

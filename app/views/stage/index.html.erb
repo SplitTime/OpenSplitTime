@@ -14,9 +14,36 @@
 	</aside>
 	<article class="col-xs-12 col-sm-8">
 		<div class="form-group">
-			<label class="required">What is your event called?</label>
+			<label class="required">What is your organization called?</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.race.name">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-8">
+					<ajax-select class="form-control" :disabled="eventData.organization.new" v-model="eventData.organization.id" url="get-courses">
+						<option value="" selected disabled>Select One</option>
+					</ajax-select>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4 form-control-fill">
+					<span class="text-center" style="width: 100%">or</span>
+					<button type="button" class="btn btn-success" v-on:click="eventData.organization.new = true">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+				</div>
+			</div>
+		</div>
+		<div class="well well-sm" v-show="eventData.organization.new">
+			<div class="row">
+				<div class="form-group col-xs-12">
+					<label class="required">Organization Name</label>
+					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+					<input type="text" class="form-control" placeholder="Your organization name" v-model="eventData.organization.name">
+				</div>
+				<div class="form-group col-xs-12">
+					<label>Description</label>
+					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+					<textarea class="form-control" placeholder="Organization Description" v-model="eventData.organization.description"></textarea>
+				</div>
+				<div class="col-xs-12">
+					<span class="brackets" v-on:click="eventData.organization.new = false"><a>Cancel</a></span>
+				</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label>Start Time of Race</label>
@@ -40,7 +67,7 @@
 		<div class="form-group">
 			<label class="required">Event Name</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.event.name" v-prefill="eventData.race.name + ' Year'">
+			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.event.name" v-prefill="eventData.organization.name + ' ' + ( new Date( eventData.event.date ).getFullYear())">
 		</div>
 		<div class="form-group">
 			<label for="event-start-time">Select Course</label>
@@ -62,7 +89,7 @@
 				<div class="form-group col-xs-12">
 					<label class="required">Course Name</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="Your course name" v-model="eventData.course.name" v-prefill="eventData.race.name + ' Course'">
+					<input type="text" class="form-control" placeholder="Your course name" v-model="eventData.course.name" v-prefill="eventData.organization.name + ' Course'">
 				</div>
 				<div class="form-group col-xs-12">
 					<label class="required">Course Distance</label>
@@ -142,14 +169,15 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<google-map :markers="eventData.splits" :location="modalData"></google-map>
+				<google-map editable :markers="eventData.splits" search-url="/api/v1/stage/get_locations" v-model="eventData.temp" :polyline="eventData.splits"></google-map>
+				{{ eventData.temp }}
 			</div>
 			<div class="col-xs-12">
 				<data-tables :rows="eventData.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event">
 					<tr slot="header">
 						<th></th>
 						<th data-orderable="false">Name</th>
-						<th data-orderable="false">
+						<th>
 							Dist.
 							<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 						</th>
@@ -172,7 +200,10 @@
 						<td>{{ vm.row.distance }}</td>
 						<td>{{ vm.row.verticalGain }}</td>
 						<td>{{ vm.row.verticalLoss }}</td>
-						<td><a data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a></td>
+						<td>
+							<span><%= image_tag("icons/dblue.svg", size: '16') %></span>
+							<a data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a>
+						</td>
 						<td><a v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
 					</template>
 				</data-tables>
@@ -196,7 +227,7 @@
 
 						<div class="row">
 							<div class="col-xs-12 col-md-6 col-md-push-6">
-								<google-map :location="model"></google-map>
+								<google-map v-model="model.location" search-url="/api/v1/stage/get_locations"></google-map>
 							</div>
 
 							<div class="col-xs-12 col-md-6 col-md-pull-6">
@@ -264,7 +295,7 @@
 										</span>
 										<div class="row">
 											<div class="col-xs-6">
-												<input type="text" class="form-control" v-model="model.locationName" v-on:input="model.locationId = ''">
+												<input type="text" class="form-control" v-if="model.location" v-model="model.location.name" :disabled="model.location.id">
 											</div>
 											<div class="col-xs-6 form-control-fill">
 												<span>or</span>
@@ -282,21 +313,21 @@
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.lat" v-mask="{ alias: 'decimal' }" :disabled="model.locationId!=''">
+										<input type="text" class="form-control" v-if="model.location" v-model.number="model.location.latitude" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-4">
 										<label>Longitude</label>
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.lng" v-mask="{ alias: 'decimal' }" :disabled="model.locationId!=''">
+										<input type="text" class="form-control" v-if="model.location" v-model.number="model.location.longitude" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-4">
 										<label>Elevation</label>
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.elevation" v-mask="{ alias: 'integer' }" :disabled="model.locationId!=''">
+										<input type="text" class="form-control" v-if="model.location" v-model="model.location.elevation" v-mask="{ alias: 'integer' }">
 									</div>
 								</div>
 								<div class="col-xs-12 split-modal-btn-wrap">
@@ -549,7 +580,11 @@
 				</tr>
 				<tr>
 					<th>Participants<br>{{ eventData.participants.length }}</th>
-					<td></td>
+					<td>
+						<span v-for="participant in eventData.participants">
+							{{ participant.first }} {{ participant.last }},
+						</span>
+					</td>
 					<td><span class="brackets"><router-link to="/participants">Edit</router-link></span></td>
 				</tr>
 			</tbody>

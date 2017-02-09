@@ -111,6 +111,14 @@ Rails.application.routes.draw do
       root :to => :index
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :stage, only: [] do
+        collection { get :get_locations }
+      end
+    end
+  end
+
   namespace :live do
     resources :events, only: [] do
       member { get :live_entry }

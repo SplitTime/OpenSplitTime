@@ -20,17 +20,19 @@
         },
         split: {
             name: '',
-            description: '',
+            description: '', 
             distance: '',
             times: '',
             times: '',
             verticalGain: '',
             verticalLoss: '',
-            locationName: '',
-            locationId: '',
-            lat: '',
-            lng: '',
-            elevation: ''
+            location: {
+                id: null,
+                name: '',
+                latitude: '',
+                longitude: '',
+                elevation: '',
+            }
         }
     }
 
@@ -46,8 +48,17 @@
             isDirty: false,
             isStaged: false,
             eventData: {
-                race: {
-                    name: ''
+                temp: {
+                    id: null,
+                    name: '',
+                    latitude: '',
+                    longitude: '',
+                    elevation: '',
+                },
+                organization: {
+                    name: '',
+                    id: '',
+                    new: false
                 },
                 event: {
                     name: '',
@@ -65,16 +76,44 @@
                 splits: [
                     {
                         name: 'Starting Line',
-                        lat: 39.978915,
-                        lng: -105.131036,
+                        location: {
+                            id: 'a',
+                            latitude: 39.978915,
+                            longitude: -105.131036,
+                        },
+                        distance: 0,
+                        verticalGain: 0,
+                        verticalLoss: 0
+                    },
+                    {
+                        name: 'Test Line',
+                        location: {
+                            id: 'example',
+                            latitude: 39.98060593337897,
+                            longitude: -105.13302326202393
+                        },
+                        distance: 0,
+                        verticalGain: 0,
+                        verticalLoss: 0
+                    },
+                    {
+                        name: 'Test Line',
+                        location: {
+                            id: 'example',
+                            latitude: 39.98060593337897,
+                            longitude: -105.13302326202393
+                        },
                         distance: 0,
                         verticalGain: 0,
                         verticalLoss: 0
                     },
                     {
                         name: 'Endling Line',
-                        lat: 39.982682,
-                        lng: -105.132188,
+                        location: {
+                            id: 'b',
+                            latitude: 39.982682,
+                            longitude: -105.132188,
+                        },
                         distance: 0,
                         verticalGain: 0,
                         verticalLoss: 0
@@ -84,13 +123,14 @@
         },
 
         isEventValid: function( eventData ) {
-            if ( ! eventData.race.name ) return false;
+            if ( ! eventData.organization.name ) return false;
             if ( ! eventData.event.name ) return false;
             if ( ! eventData.course.name ) return false;
             return true;
         },
 
         onRouteChange: function( to, from, next ) {
+            next(); return; // NO!
             if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
                 // Event data must be valid
                 next( '/' );
@@ -175,6 +215,33 @@
                                 return $.extend( {}, blanks.split );
                             }
                         },
+                        watch: {
+                            'eventData.splits': {
+                                handler: function() {
+                                    /**
+                                     * Make sure locations that reference the same database object
+                                     * also use the same javascript object.
+                                     */
+                                    var count = 0;
+                                    var cache = {};
+                                    if ( !this._cache ) this._cache = {};
+                                    for ( var i = this.eventData.splits.length - 1; i >= 0; i-- ) {
+                                        var obj = this.eventData.splits[i].location;
+                                        if ( !obj || !obj.id ) continue;
+                                        if ( !this._cache[ obj.id ] ) {
+                                            this._cache[ obj.id ] = obj;
+                                        } else if ( this._cache[ obj.id ] !== obj ) {
+                                            count++;
+                                            $.extend( this._cache[ obj.id ], obj );
+                                            this.eventData.splits[i].location = this._cache[ obj.id ];
+                                        }
+                                    }
+                                    console.info( 'splits', this._uid, 'Consolidated', count, 'Location Objects' );
+                                },
+                                deep: true,
+                                immediate: true
+                            }
+                        },
                         data: function() { return { modalData: {}, filter: '' } },
                         template: '#splits'
                     },
@@ -252,10 +319,19 @@
             } );
         },
 
+        /**
+         *  Vue.js Data Tables Integration
+         *  
+         *  A component to connect the mighty Vuejs to the strange and mysterious
+         *  DataTables library. Instead of passing static rows, generated Vue elements
+         *  are sent to DataTables which allows item specific update and rendering
+         *  while still letting DataTables handle sorting and filtering.
+         */
         dataTables: {
             uniqueId: 1,
             onDataChange: function() {
                 if ( !this.rows || !$.isArray( this.rows ) ) return;
+                console.info( 'data-tables', this._uid, 'Data Changed: Rebuilding table database' );
                 var self = this;
                 this.rows.forEach( function( obj, index ) {
                     if ( !obj._dtid ) {
@@ -307,12 +383,12 @@
                     },
                     watch: {
                         row: { 
-                            handler: function() {
-                                // TODO: Add Debouncer
+                            handler: _.debounce( function() {
+                                console.info( 'data-tables', this._uid, 'Data Changed: Invalidated table row' );
                                 this.$nextTick( function() {
                                     self._table.row( this.$el ).invalidate( 'dom' ).draw();
                                 } );
-                            },
+                            }, 1000 ),
                             deep: true
                         }
                     }
@@ -334,74 +410,197 @@
             }
         },
 
+        /**
+         *  Vue.js Google Maps Integration
+         *  
+         *  A component to manage a google map using the provided data models.
+         *  Specifically, this component is designed to allow displaying, 
+         *  selecting, and modifying markers for a continuous path.
+         */
         googleMaps: {
-            onMarkerChange: function() {
-                if ( this.markers ) {
-                    // Remove Old Markers/Polyline
-                    if ( this._markers ) {
-                        for ( var i = 0; i < this._markers.length; i++ ) {
-                            this._markers[i].setMap( null );
+            onValueChange: function() {
+                if ( this.value && $.isPlainObject( this.value ) ) {
+                    console.info( 'google-map', this._uid, 'Building Location' );
+
+                    if ( this.value !== this._lastLocation ) {
+                        this._lastLocation = this.value;
+                        if ( this._temp ) this._temp.setVisible( true );
+                        if ( isNaN( parseFloat( this.value.latitude ) ) || isNaN( parseFloat( this.value.longitude ) ) ) {
+                            if ( this._location ) {
+                                this._location.setMap( null );
+                                this._location = null;
+                            }
+                        } else {
+                            this._map.setCenter( { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) } );
                         }
-                        this._markers = [];
                     }
+                    if ( !this._location ) {
+                        // Make new location marker
+                        this._location = new google.maps.Marker( {
+                            position: { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) },
+                            map: this._map,
+                            icon: '<%= asset_path('icons/green.svg') %>',
+                            title: this.value.name,
+                            draggable: true
+                        } );
+                        var self = this;
+                        this._location.addListener( 'dragend', function( e ) {
+                            self.value.latitude = self._location.getPosition().lat();
+                            self.value.longitude = self._location.getPosition().lng();
+                        } );
+                    } else {
+                        this._location.setPosition(
+                            { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) }
+                        );
+                    }
+                }
+            },
+            onRouteChange: function( e ) {
+                if ( this.polyline && $.isArray( this.polyline ) ) {
+                    console.info( 'google-map', this._uid, 'Building Polyline' );
+                    // Destroy existing polyline
                     if ( this._polyline ) {
                         this._polyline.setMap( null );
                         this._polyline = null;
                     }
-
-                    // Add New Markers/Polyline and Resize Map
-                    var bounds = new google.maps.LatLngBounds();
+                    // Build new polyline
                     var path = [];
-                    for ( var i = 0; i < this.markers.length; i++ ) {
-                        if ( isNaN( parseFloat( this.markers[i].lat ) ) || isNaN( parseFloat( this.markers[i].lng ) ) ) continue;
-                        var marker = new google.maps.Marker( {
-                            position: { lat: parseFloat( this.markers[i].lat ) , lng: parseFloat( this.markers[i].lng ) },
-                            map: this._map,
-                            title: this.markers[i].name,
-                            label: i + 1 + ''
-                        } );
-                        this._markers.push( marker );
-                        path.push( { lat: parseFloat( this.markers[i].lat ) , lng: parseFloat( this.markers[i].lng ) } );
-                        bounds.extend( marker.getPosition() );
+                    for ( var i = 0; i < this.polyline.length; i++ ) {
+                        if ( isNaN( parseFloat( this.polyline[i].lat ) ) || isNaN( parseFloat( this.polyline[i].lng ) ) ) continue;
+                        path.push( { lat: parseFloat( this.polyline[i].lat ) , lng: parseFloat( this.polyline[i].lng ) } );
                     }
-                    this._map.fitBounds( bounds );
+                    // Append polyline to map
                     this._polyline = new google.maps.Polyline( {
                         path: path,
                         map: this._map,
                         geodesic: true,
                         strokeColor: '#2A9FD8',
                         strokeOpacity: 1.0,
-                        strokeWeight: 6
+                        strokeWeight: 4
                     } );
                 }
             },
+            onBoundsChange: function( e ) {
+                var self = this;
+                console.info( 'google-map', this._uid, 'Bounds Updated', this._map.getBounds().toJSON() );
+                if ( this.searchUrl ) {
+                    var bounds = this._map.getBounds().toJSON();
+                    $.ajax( this.searchUrl, {
+                        dataType: 'json',
+                        data: bounds
+                    } ).done( function( data ) {
+                        console.info( 'google-map', self._uid, 'Location List Updated', data );
+
+                        // Remove Old Markers/Polyline
+                        if ( self._search ) {
+                            var preserve = null;
+                            for ( var i = 0; i < self._search.length; i++ ) {
+                                if ( self._temp === self._search[i] ) {
+                                    preserve = self._search[i]; // Preserve Selected Marker
+                                } else {
+                                    self._search[i].setMap( null );
+                                }
+                            }
+                            self._search = [];
+                            if ( preserve ) self._search.push( preserve ); // Preserve Selected Marker
+                        }
+
+                        // Load New Markers
+                        console.warn( 'google-maps', self._uid, 'TODO: Need to ignore locations in Route parameter' );
+                        for ( var i = 0; i < data.length; i++ ) {
+                            if ( isNaN( parseFloat( data[i].latitude ) ) || isNaN( parseFloat( data[i].longitude ) ) ) continue;
+                            if ( self._temp && ( self._temp._data.id == data[i].id ) ) continue; // Preserve Selected Marker
+                            var marker = new google.maps.Marker( {
+                                position: { lat: parseFloat( data[i].latitude ) , lng: parseFloat( data[i].longitude ) },
+                                map: self._map,
+                                icon: {
+                                    url: '<%= asset_path( 'icons/lblue.svg' ) %>',
+                                    labelOrigin: new google.maps.Point( 12, 14 )
+                                },
+                                title: data[i].name,
+                            } );
+                            marker._data = data[i];
+                            marker.addListener( 'click', (function( self, marker ) {
+                                return function( e ) { // Need extra context to work properly
+                                    eventStage.googleMaps.onMarkerClick.call( self, e, marker );
+                                }
+                            })( self, marker ) );
+                            self._search.push( marker );
+                        }
+
+                    } );
+                }
+            },
+            onMarkerClick: function( e, marker ) {
+                console.info( 'google-map', this._uid, 'Marker Clicked', marker );
+                if ( this.value ) {
+                    this._temp && this._temp.setVisible( true );
+                    this._temp = marker;
+                    this._temp && this._temp.setVisible( false );
+                    this._lastLocation = {
+                        id: marker._data.id,
+                        name: marker._data.name,
+                        latitude: marker._data.latitude,
+                        longitude: marker._data.longitude
+                    };
+                    this.$emit( 'input', this._lastLocation );
+                }
+            },
             onMapClick: function( e ) {
-                if ( this.location ) {
-                    this.location.lat = e.latLng.lat();
-                    this.location.lng = e.latLng.lng();
+                console.info( 'google-map', this._uid, 'Map Clicked', e.latLng.lat(), e.latLng.lng() );
+                if ( this.value ) {
+                    this._temp && this._temp.setVisible( true );
+                    this._temp = null;
+                    this._lastLocation = {
+                        id: null,
+                        latitude: e.latLng.lat(),
+                        longitude: e.latLng.lng()
+                    };
+                    this.$emit( 'input', this._lastLocation );
                 }
             },
             onMounted: function() {
                 var self = this;
-                this._markers = [];
+                this._search = [];
+                this._route = [];
                 this._polyline = null;
+                this._difference = null;
                 this._map = new google.maps.Map( this.$el, {
-                    center: { lat: -34.397, lng: 150.644 },
-                    zoom: 1
+                    center: { lat: 39.978915, lng: -105.131036 },
+                    zoom: 8
+                } );
+                $( this.$el ).closest( '.modal' ).on( 'shown.bs.modal', function() {
+                    google.maps.event.trigger( self._map, 'resize' );
                 } );
                 this._map.addListener( 'click', function( e ) {
                     eventStage.googleMaps.onMapClick.call( self, e );
                 } );
-                eventStage.googleMaps.onMarkerChange.call( this );
+                this._map.addListener( 'bounds_changed', _.debounce( function( e ) {
+                    eventStage.googleMaps.onBoundsChange.call( self );
+                }, 500 ) );
+                eventStage.googleMaps.onRouteChange.call( this );
             },
             init: function() {
                 Vue.component( 'google-map', {
-                    template: '<div class="splits-modal-map-wrap"></div>',
-                    props: { markers: { default: null }, location: { default: null } },
+                    template: '<div class="splits-modal-map-wrap js-google-maps"></div>',
+                    props: {
+                        editable: {},
+                        searchUrl: { type: String, default: null },
+                        route: { default: null },
+                        value: { default: null }
+                    },
                     mounted: eventStage.googleMaps.onMounted,
                     watch: {
                         markers: {
                             handler: eventStage.googleMaps.onMarkerChange,
+                            deep: true
+                        },
+                        route: {
+                            handler: eventStage.googleMaps.onRouteChange,
+                            deep: true
+                        },
+                        value: {
+                            handler: eventStage.googleMaps.onValueChange,
                             deep: true
                         }
                     }
@@ -411,6 +610,17 @@
 
         /**
          *  Editing Modal Component
+         *  
+         *  Allows a bootstrap modal to be used to conditionally edit the v-model
+         *  object. Before opening the model, a local copy of the provided object
+         *  is made and sent to the inline-template in the component instantiation.
+         *  The original object is not modified until a 'done' event is sent by
+         *  the modal template. 
+         *
+         *  Note: Child objects in the v-model that are object references will 
+         *  not be preserved. A new copy of all child objects is made when the modal
+         *  opens, and any object references are replaced when the 'done' event 
+         *  occurs.
          */
          editModal: {
             init: function() {
@@ -418,9 +628,10 @@
                     template: '<div>No Template</div>',
                     props: {
                         value: { required: true },
+                        extra: { default: function() { return {} } },
                         validator: { 
                             type: Function,
-                            default: function() { return true; }
+                            default: function() { return true }
                         }
                     },
                     watch: {
@@ -435,18 +646,15 @@
                         var self = this;
                         var reset = function() {
                             // Locally clone existing object
-                            self.model = $.extend( {}, self.value );
+                            self.model = $.extend( true, {}, self.value );
+                            console.info( 'edit-modal', self._uid, 'Reseting model data from source' );
                         };
                         $( this.$el ).on( 'show.bs.modal hidden.bs.modal', reset );
                         this.$on( 'cancel', reset );
                         this.$on( 'done', function() {
                             // Copy properties to original object
-                            // for ( var prop in self.model ) {
-                            //     if( self.model.hasOwnProperty( prop ) ) {
-                            //         Vue.set( self.value, prop, self.model[ prop ] );
-                            //     }
-                            // }
                             $.extend( self.value, self.model );
+                            console.info( 'edit-modal', self._uid, 'Cloning changes back to source' );
                         } );
                     },
                     data: function() { return { model: {}, valid: false }; }
@@ -537,6 +745,7 @@
                 // Fetch New Entries
                 $.ajax( this.url, {
                     method: this.method,
+                    dataType: 'json',
                     data: this.data
                 } ).done( function( a,b,c ) {
                     $( self.$el ).find( 'option:not( .static )' ).remove();

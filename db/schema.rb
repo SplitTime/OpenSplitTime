@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208185949) do
+ActiveRecord::Schema.define(version: 20170209100015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20170208185949) do
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
   add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
+  add_index "events", ["staging_id"], name: "index_events_on_staging_id", unique: true, using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",        limit: 64,                         null: false

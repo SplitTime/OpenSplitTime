@@ -1,0 +1,47 @@
+class Api::V1::LocationsController < ApiController
+  before_action :set_location, except: :create
+
+  def show
+    authorize @location
+    render json: @location
+  end
+
+  def create
+    location = Location.new(location_params)
+    authorize location
+
+    if location.save
+      render json: location
+    else
+      render json: {error: "#{location.errors.full_messages}"}
+    end
+  end
+
+  def update
+    authorize @location
+    if @location.update(location_params)
+      render json: @location
+    else
+      render json: {error: "#{@location.errors.full_messages}"}
+    end
+  end
+
+  def destroy
+    authorize @location
+    if @location.destroy
+      render json: @location
+    else
+      render json: {error: "#{@location.errors.full_messages}"}
+    end
+  end
+
+  private
+
+  def set_location
+    @location = Location.find_by(staging_id: params[:staging_id])
+  end
+
+  def location_params
+    params.require(:location).permit(:id, :name, :latitude, :longitude, :elevation, :description)
+  end
+end

@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :spread, :drop_list]
   before_action :set_event, except: [:index, :show, :new, :create, :spread]
-  after_action :verify_authorized, except: [:index, :show, :spread, :drop_list, :new_staging, :edit_staging]
+  after_action :verify_authorized, except: [:index, :show, :spread, :drop_list]
 
   def index
     @events = Event.select_with_params(params[:search])

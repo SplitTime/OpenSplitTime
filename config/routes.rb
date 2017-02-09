@@ -132,6 +132,7 @@ Rails.application.routes.draw do
       resources :stagings, only: [] do
         member do
           get :get_locations
+          get :get_event
         end
       end
     end

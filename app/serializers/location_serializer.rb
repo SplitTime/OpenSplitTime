@@ -1,3 +1,3 @@
 class LocationSerializer < ActiveModel::Serializer
-  attributes :id, :name, :latitude, :longitude, :elevation
+  attributes :id, :name, :latitude, :longitude, :elevation, :description
 end

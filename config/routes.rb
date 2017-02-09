@@ -132,7 +132,7 @@ Rails.application.routes.draw do
   end
 
   namespace :event_staging do
-    get '/:staging_id/app', to: 'events#app', as: 'app'
     get 'new', to: 'events#new'
+    get '/:staging_id/app', to: 'events#app', as: 'app'
   end
 end

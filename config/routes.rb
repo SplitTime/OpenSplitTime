@@ -124,9 +124,15 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get 'staging/get_uuid', to: 'staging#get_uuid'
-      get 'staging/get_locations', to: 'staging#get_locations'
+      resources :locations, only: [:show, :create, :update, :destroy]
+      resources :efforts, only: [:show, :create, :update, :destroy]
+      get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
     end
+  end
+
+  namespace :event_staging do
+    get '/:staging_id/app', to: 'events#app', as: 'app'
+    get 'new', to: 'events#new'
   end
 end

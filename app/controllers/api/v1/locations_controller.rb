@@ -38,7 +38,7 @@ class Api::V1::LocationsController < ApiController
   private
 
   def set_location
-    @location = Location.find_by(staging_id: params[:staging_id])
+    @location = Location.find_by(id: params[:id])
   end
 
   def location_params

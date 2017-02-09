@@ -18,8 +18,13 @@ class Api::V1::StagingsController < ApiController
       render json: @event
     else
       new_event = Event.new(staging_id: params[:id])
-      authorize new_event, :new_staging_event
-      render json: new_event
+      if new_event.staging_id
+        authorize new_event, :new_staging_event?
+        render json: new_event
+      else
+        skip_authorization
+        render json: {error: 'invalid uuid'}
+      end
     end
   end
 

@@ -150,10 +150,6 @@ class EventPolicy
 
   # Policies for staging namespace
 
-  def get_locations?
-    current_user.authorized_for_live?(event)
-  end
-
   def get_event?
     current_user.authorized_for_live?(event)
   end

@@ -6,10 +6,6 @@ class LocationPolicy
     @location = location
   end
 
-  def show?
-    current_user.present?
-  end
-
   def new?
     current_user.present?
   end

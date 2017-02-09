@@ -137,13 +137,13 @@ class Effort < ActiveRecord::Base
   # At that time, the dropped_attributes are set, but the effort is still considered to have finished.
   def finished?
     attributes['finished'] ||
-        laps_required.zero? ? dropped_split_id.present? : laps_finished >= laps_required
+        (laps_required.zero? ? dropped_split_id.present? : (laps_finished >= laps_required))
   end
 
   # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'.
   def dropped?
     attributes['dropped'] ||
-        laps_required.zero? ? false : dropped_split_id.present?
+        (laps_required.zero? ? false : dropped_split_id.present?)
   end
 
   def started?

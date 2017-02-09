@@ -275,4 +275,97 @@ RSpec.describe Effort, type: :model do
       expect(effort.dropped_split_id).to be_nil
     end
   end
+
+  describe '#finished?' do
+    context 'for an event with a fixed lap requirement' do
+      let(:laps_required) { 2 }
+      let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
+      let(:test_effort) { test_event.efforts.first }
+      let(:test_splits) { test_event.splits }
+      let(:test_split_times) { test_effort.split_times }
+
+      it 'returns true when laps_finished is at least equal to laps_required' do
+        effort = test_effort
+        split_times = test_effort.split_times
+        allow(effort).to receive(:ordered_split_times).and_return(split_times)
+        expect(effort.laps_required).to eq(laps_required)
+        expect(effort.laps_finished).to eq(laps_required)
+        expect(effort.finished?).to eq(true)
+      end
+
+      it 'returns false when laps_finished is less than laps_required' do
+        effort = test_effort
+        split_times = test_effort.split_times[0..-2] # all but the last split_time
+        allow(effort).to receive(:ordered_split_times).and_return(split_times)
+        expect(effort.laps_required).to eq(laps_required)
+        expect(effort.laps_finished).to eq(laps_required - 1)
+        expect(effort.finished?).to eq(false)
+      end
+
+      it 'returns false when the effort is not started' do
+        effort = test_effort
+        split_times = []
+        allow(effort).to receive(:ordered_split_times).and_return(split_times)
+        expect(effort.laps_required).to eq(laps_required)
+        expect(effort.laps_finished).to eq(0)
+        expect(effort.finished?).to eq(false)
+      end
+    end
+
+    context 'for an event with unlimited laps' do
+      let(:laps_required) { 0 }
+      let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
+      let(:test_effort) { test_event.efforts.first }
+      let(:test_splits) { test_event.splits }
+      let(:test_split_times) { test_effort.split_times }
+
+      it 'returns false when dropped_id is nil' do
+        effort = test_effort
+        expect(effort.dropped_split_id).to eq(nil)
+        expect(effort.finished?).to eq(false)
+      end
+
+      it 'returns true when dropped_id has a value' do
+        effort = test_effort
+        effort.dropped_split_id = test_splits.first.id
+        expect(effort.finished?).to eq(true)
+      end
+    end
+  end
+
+  describe '#dropped?' do
+    let(:test_effort) { FactoryGirl.build_stubbed(:effort) }
+
+    context 'for an event with a fixed lap requirement' do
+      it 'returns true when dropped_split_id contains a value' do
+        effort = test_effort
+        allow(effort).to receive(:laps_required).and_return(1)
+        effort.dropped_split_id = 101
+        expect(effort.dropped?).to eq(true)
+      end
+
+      it 'returns false when dropped_split_id is nil' do
+        effort = test_effort
+        allow(effort).to receive(:laps_required).and_return(1)
+        effort.dropped_split_id = nil
+        expect(effort.dropped?).to eq(false)
+      end
+    end
+
+    context 'for an event with unlimited laps' do
+      it 'returns false always, including when dropped_split_id contains a value' do
+        effort = test_effort
+        allow(effort).to receive(:laps_required).and_return(0)
+        effort.dropped_split_id = 101
+        expect(effort.dropped?).to eq(false)
+      end
+
+      it 'returns false always, including when dropped_split_id is nil' do
+        effort = test_effort
+        allow(effort).to receive(:laps_required).and_return(0)
+        effort.dropped_split_id = nil
+        expect(effort.dropped?).to eq(false)
+      end
+    end
+  end
 end

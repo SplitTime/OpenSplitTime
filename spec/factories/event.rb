@@ -23,6 +23,7 @@ FactoryGirl.define do
         splits_count 4
         efforts_count 5
         laps_required 1
+        unlimited_laps_generated 3
         start_time '2016-07-01 06:00:00'
       end
 
@@ -32,7 +33,8 @@ FactoryGirl.define do
         sub_splits = splits.map(&:sub_splits).flatten
         event.laps_required = evaluator.laps_required
         event.start_time = evaluator.start_time
-        time_points = sub_splits.each_with_iteration.first(sub_splits.size * event.laps_required)
+        laps_generated = event.laps_required.zero? ? evaluator.unlimited_laps_generated : event.laps_required
+        time_points = sub_splits.each_with_iteration.first(sub_splits.size * laps_generated)
                           .map { |sub_split, iter| TimePoint.new(iter, sub_split.split_id, sub_split.bitkey) }
         efforts = build_stubbed_list(:effort, evaluator.efforts_count)
 

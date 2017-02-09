@@ -4,5 +4,6 @@
 
 <% @effort_data[:split_times_data].each do |split_time_data| %>
     <%= "#{split_time_data[:split_name]} at #{split_time_data[:day_and_time]}" %><%= " with a pacer" if split_time_data[:pacer] %><%= " and dropped there" if @effort_data[:dropped_split_id] == split_time_data[:split_id] %>
-
 <% end %>
+
+Thank you for using OpenSplitTime!

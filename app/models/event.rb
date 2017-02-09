@@ -11,6 +11,7 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :course_id, :name, :start_time, :laps_required
   validates_uniqueness_of :name, case_sensitive: false
+  validates_uniqueness_of :staging_id
 
   scope :recent, -> (max) { where('start_time < ?', Time.now).order(start_time: :desc).limit(max) }
   scope :most_recent, -> { where('start_time < ?', Time.now).order(start_time: :desc).first }

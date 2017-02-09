@@ -67,7 +67,7 @@
 		<div class="form-group">
 			<label class="required">Event Name</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.event.name" v-prefill="eventData.organization.name + ' ' + ( new Date( eventData.event.date ).getFullYear())">
+			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.event.name" v-prefill="eventData.organization.name + ' ' + ( new Date( eventData.event.date ).getFullYear() )">
 		</div>
 		<div class="form-group">
 			<label for="event-start-time">Select Course</label>
@@ -201,7 +201,7 @@
 						<td>{{ vm.row.verticalGain }}</td>
 						<td>{{ vm.row.verticalLoss }}</td>
 						<td>
-							<span><%= image_tag("icons/dblue.svg", size: '16') %></span>
+							<span><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
 							<a data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a>
 						</td>
 						<td><a v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>

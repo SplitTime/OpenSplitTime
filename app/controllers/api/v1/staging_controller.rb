@@ -1,21 +1,18 @@
 class Api::V1::StagingController < ApiController
-  before_action :set_event, except: :get_uuid
+  before_action :set_event
 
-  def get_uuid
-    authorize :staging, :get_uuid?
-    render json: {uuid: SecureRandom.uuid}
-  end
-
+  # GET /api/vi/staging/:uuid/get_locations?west=&east=&south=&north=
   def get_locations
-    authorize :staging, :get_locations?
-    locations = Location.bounded_by(params.transform_values(&:to_f)).first(500)
+    authorize @event
+    locations = Location.bounded_by(get_locations_params.transform_values(&:to_f)).first(500)
     render json: locations
   end
 
+  # GET /api/v1/staging/:uuid/get_event
   def get_event
     if @event
       authorize @event
-      render json: @event
+      render json: @event, included: [:locations]
     else
       new_event = Event.new(staging_id: params[:staging_id])
       if new_event.staging_id
@@ -32,5 +29,9 @@ class Api::V1::StagingController < ApiController
 
   def set_event
     @event = Event.find_by(staging_id: params[:staging_id])
+  end
+
+  def get_locations_params
+    params.permit(:west, :east, :south, :north)
   end
 end

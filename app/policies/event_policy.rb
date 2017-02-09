@@ -102,6 +102,18 @@ class EventPolicy
     current_user.authorized_to_edit?(event)
   end
 
+  def aid_station_detail?
+    current_user.authorized_for_live?(event)
+  end
+
+  def add_beacon?
+    current_user.authorized_to_edit?(event)
+  end
+
+  def find_problem_effort?
+    current_user.authorized_to_edit?(event)
+  end
+
   # Policies for live namespace
 
   def live_entry?
@@ -136,15 +148,9 @@ class EventPolicy
     current_user.authorized_for_live?(event)
   end
 
-  def aid_station_detail?
+  # Policies for staging namespace
+
+  def get_locations?
     current_user.authorized_for_live?(event)
-  end
-
-  def add_beacon?
-    current_user.authorized_to_edit?(event)
-  end
-
-  def find_problem_effort?
-    current_user.authorized_to_edit?(event)
   end
 end

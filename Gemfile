@@ -46,6 +46,7 @@ gem 'sidekiq'
 gem 'aws-sdk'
 gem 'skylight'
 gem 'pusher'
+gem 'active_model_serializers'
 
 group :development do
   gem 'web-console', '~> 2.0'

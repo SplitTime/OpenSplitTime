@@ -439,7 +439,7 @@
                         this._location = new google.maps.Marker( {
                             position: { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) },
                             map: this._map,
-                            icon: '<%= asset_path('icons/green.svg') %>',
+                            //icon: '<%= asset_path('icons/green.svg') %>',
                             title: this.value.name,
                             draggable: true
                         } );
@@ -513,10 +513,10 @@
                             var marker = new google.maps.Marker( {
                                 position: { lat: parseFloat( data[i].latitude ) , lng: parseFloat( data[i].longitude ) },
                                 map: self._map,
-                                icon: {
-                                    url: '<%= asset_path( 'icons/lblue.svg' ) %>',
-                                    labelOrigin: new google.maps.Point( 12, 14 )
-                                },
+                                // icon: {
+                                //     url: '<%= asset_path( 'icons/lblue.svg' ) %>',
+                                //     labelOrigin: new google.maps.Point( 12, 14 )
+                                // },
                                 title: data[i].name,
                             } );
                             marker._data = data[i];

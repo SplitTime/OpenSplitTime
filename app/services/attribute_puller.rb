@@ -14,7 +14,12 @@ class AttributePuller
     puller_attributes.each do |attribute|
       puller.assign_attributes({attribute => target[attribute]}) if puller[attribute].blank?
     end
-    puller.save
+    if puller.save
+      puts "#{puller.class} #{puller.name} updated"
+      true
+    else
+      puts "#{puller.class} #{puller.name} could not be updated: #{puller.errors.full_messages}"
+    end
   end
 
   private

@@ -7,7 +7,8 @@ class EventReconcileService
   def self.assign_participants_to_efforts(id_hash)
     efforts = Effort.find(id_hash.keys).index_by(&:id)
     participants = Participant.find(id_hash.values).index_by(&:id)
-    id_hash.map { |eid, pid| participants[pid].associate_effort(efforts[eid]) }.size
+    result = id_hash.map { |eid, pid| participants[pid].associate_effort(efforts[eid]) }
+    result.select { |e| e }.size
   end
 
   def self.create_participants_from_efforts(effort_ids)

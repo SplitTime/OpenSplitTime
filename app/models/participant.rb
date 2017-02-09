@@ -85,7 +85,14 @@ class Participant < ActiveRecord::Base
 
   def associate_effort(effort)
     if AttributePuller.pull_attributes!(self, effort)
-      effort.update(participant: self)
+      if effort.update(participant: self)
+        puts "Effort #{effort.name} was associated with Participant #{self.name}"
+        true
+      else
+        puts "Effort #{effort.name} could not be associated with Participant #{self.name}: " +
+                 "#{effort.errors.full_messages}, #{self.errors.full_messages}"
+        false
+      end
     end
   end
 

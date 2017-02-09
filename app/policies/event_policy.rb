@@ -153,4 +153,12 @@ class EventPolicy
   def get_locations?
     current_user.authorized_for_live?(event)
   end
+
+  def get_event?
+    current_user.authorized_for_live?(event)
+  end
+
+  def new_staging_event?
+    current_user.present?
+  end
 end

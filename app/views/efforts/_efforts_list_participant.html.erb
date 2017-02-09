@@ -22,7 +22,7 @@
       <% end %>
       <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
       <td><%= effort.state_and_country %></td>
-      <td class="text-right"><%= effort.try(:time) || effort.finish_status %></td>
+      <td class="text-right"><%= effort.finish_status %></td>
       <% if @current_user && @current_user.admin? %>
           <td class="text-right"><%= link_to 'Disassociate',
                                              remove_effort_participant_path(@participant, effort_id: effort.id),

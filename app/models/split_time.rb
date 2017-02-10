@@ -120,12 +120,24 @@ class SplitTime < ActiveRecord::Base
     "#{effort_name}: #{split_name}"
   end
 
+  def base_name
+    @base_name ||= attributes['base_name'] || split.base_name
+  end
+
   def split_name
     @split_name ||= split ? split.name(bitkey) : '[unknown split]'
   end
 
   def split_name_with_lap
     @split_name_with_lap ||= split_name + (lap ? " Lap #{lap}" : ' [unknown lap]')
+  end
+
+  def extension
+    SubSplit.kind(bitkey)
+  end
+
+  def bib_number
+    @bib_number ||= attributes['bib_number'] || effort.bib_number
   end
 
   def effort_name

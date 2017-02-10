@@ -107,10 +107,6 @@ Rails.application.routes.draw do
     put 'set_effort_ages', to: 'dashboard#set_effort_ages'
   end
 
-  namespace :stage do
-      root :to => :index
-  end
-
   namespace :live do
     resources :events, only: [] do
       member { get :live_entry }

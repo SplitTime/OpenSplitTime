@@ -182,6 +182,9 @@
             this.ajaxSelect.init();
             this.ajaxImport.init();
 
+            // Load UUID
+            this.data.eventData.uuid = $( '#event-app' ).data( 'uuid' );
+
             // Initialize Vue Router and Vue App
             const routes = [
                 { 
@@ -807,7 +810,7 @@
         }
     };
 
-    $( 'body.stage' ).ready(function () {
+    $( '.events.app' ).ready(function () {
         eventStage.init();
     });
 

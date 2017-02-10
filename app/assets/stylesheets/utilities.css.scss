@@ -463,3 +463,19 @@ span.brackets {
 	padding-right: 0;
 	padding-left: 0;
 }
+
+.no-padding-right {
+	padding-right: 0;
+}
+
+.no-padding-left {
+	padding-left: 0;
+}
+
+.border-none {
+	border: none;
+	border-radius: initial;
+	-webkit-box-shadow: initial;
+	-moz-box-shadow: initial;
+	box-shadow: initial;
+}

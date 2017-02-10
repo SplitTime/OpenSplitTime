@@ -17,18 +17,20 @@
 			<label class="required">What is your organization called?</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-8">
+				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
 					<ajax-select class="form-control" :disabled="eventData.organization.new" v-model="eventData.organization.id" url="get-courses">
 						<option value="" selected disabled>Select One</option>
 					</ajax-select>
 				</div>
-				<div class="col-xs-12 col-sm-6 col-md-4 form-control-fill">
-					<span class="text-center" style="width: 100%">or</span>
+				<div class="col-xs-12 col-sm-1 text-center middle-or">
+					<span>or</span>
+				</div>
+				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
 					<button type="button" class="btn btn-success" v-on:click="eventData.organization.new = true">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm" v-show="eventData.organization.new">
+		<div class="well well-sm border-none" v-show="eventData.organization.new">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Organization Name</label>
@@ -41,7 +43,7 @@
 					<textarea class="form-control" placeholder="Organization Description" v-model="eventData.organization.description"></textarea>
 				</div>
 				<div class="col-xs-12">
-					<span class="brackets" v-on:click="eventData.organization.new = false"><a>Cancel</a></span>
+					<span class="brackets" v-on:click="eventData.organization.new = false"><a href="#">Cancel</a></span>
 				</div>
 			</div>
 		</div>
@@ -73,21 +75,20 @@
 			<label for="event-start-time">Select Course</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-7">
+				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
 					<ajax-select class="form-control" :disabled="eventData.course.new" v-model="eventData.course.id" url="get-courses">
 						<option value="" selected disabled>Select One</option>
 					</ajax-select>
 				</div>
-				<div class="col-xs-12 col-sm-1 text-center">
-					<span class="event-info-or">or</span>
+				<div class="col-xs-12 col-sm-1 text-center middle-or">
+					<span>or</span>
 				</div>
-				<div class="col-xs-12 col-sm-5 col-md-4 form-control-fill">
-					
+				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
 					<button type="button" class="btn btn-success" v-on:click="eventData.course.new = true">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm" v-show="eventData.course.new">
+		<div class="well well-sm border-none" v-show="eventData.course.new">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Course Name</label>

@@ -28,7 +28,8 @@ class Api::V1::StagingController < ApiController
   # GET /api/v1/staging/get_countries
   def get_countries
     authorize :event_staging, :get_countries?
-    render json: Carmen::Country.all.map { |country| [country.code, country.name] }.to_h
+    render json: Carmen::Country.all.map { |country| [country.code, country.name] }
+                     .sort_by { |code, name| [code == 'US' ? 0 : 1, name] }.to_h
   end
 
   # GET /api/v1/staging/get_subregions?country_code=

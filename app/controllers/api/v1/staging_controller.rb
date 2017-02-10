@@ -25,6 +25,11 @@ class Api::V1::StagingController < ApiController
     end
   end
 
+  def get_countries
+    authorize :event_staging, :get_countries?
+    render json: Carmen::Country.all.map { |country| [country.code, country.name] }.to_h
+  end
+
   private
 
   def set_event

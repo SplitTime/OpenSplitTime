@@ -1,6 +1,6 @@
 class EventStagingPolicy < Struct.new(:current_user, :controller)
 
-  def new?
+  def get_countries?
     current_user.present?
   end
 end

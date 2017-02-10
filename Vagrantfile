@@ -60,7 +60,7 @@ Vagrant.configure("2") do |config|
 
   # Install PostGres
   config.vm.provision "install-postgres", type: "shell", inline: <<-SHELL
-    apt-get install postgresql libpq-dev -y
+    apt-get install postgresql postgresql-contrib libpq-dev -y
     sudo -u postgres createuser -s vagrant || true
   SHELL
 

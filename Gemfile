@@ -47,6 +47,7 @@ gem 'aws-sdk'
 gem 'skylight'
 gem 'pusher'
 gem 'active_model_serializers'
+gem 'olive_branch'
 
 group :development do
   gem 'web-console', '~> 2.0'

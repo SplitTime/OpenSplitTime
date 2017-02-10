@@ -126,6 +126,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :locations, only: [:show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
+      resources :split_times, only: [:show, :create, :update, :destroy]
       get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
     end

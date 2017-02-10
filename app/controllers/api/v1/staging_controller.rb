@@ -12,7 +12,7 @@ class Api::V1::StagingController < ApiController
   def get_event
     if @event
       authorize @event
-      render json: @event, included: [:locations]
+      render json: @event
     else
       new_event = Event.new(staging_id: params[:staging_id])
       if new_event.staging_id

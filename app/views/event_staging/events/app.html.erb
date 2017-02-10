@@ -11,6 +11,7 @@
 		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
 		<p><router-link to="/splits" class="btn btn-primary" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link></p>
 		<p><span class="brackets"><a href="#">Cancel</a></span></p>
+		{{ $route.params }}
 	</aside>
 	<article class="col-xs-12 col-sm-8">
 		<div class="form-group">
@@ -183,7 +184,7 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<google-map editable :markers="eventData.splits" search-url="/api/v1/stage/get_locations" v-model="eventData.temp" :polyline="eventData.splits"></google-map>
+				<google-map editable :markers="eventData.splits" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations" v-model="eventData.temp" :polyline="eventData.splits"></google-map>
 				{{ eventData.temp }}
 			</div>
 			<div class="col-xs-12">
@@ -241,7 +242,7 @@
 
 						<div class="row">
 							<div class="col-xs-12 col-md-6 col-md-push-6">
-								<google-map v-model="model.location" search-url="/api/v1/stage/get_locations"></google-map>
+								<google-map v-model="model.location" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations"></google-map>
 							</div>
 
 							<div class="col-xs-12 col-md-6 col-md-pull-6">

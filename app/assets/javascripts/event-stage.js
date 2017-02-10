@@ -37,6 +37,133 @@
     }
 
     /**
+     * Prototypes
+     */
+
+    var Location = ( function() {
+        function Location() {
+            this.id = null;
+            this.name = '';
+            this.description = '';
+            this.latitude = '';
+            this.longitude = '';
+            this.elevation = '';
+        }
+        Location.prototype.fetch = function() {
+            var dfd = $.Deferred()
+            
+            return dfd.promise();
+        }
+        return Location;
+    } );
+
+    var Split = ( function() {
+        function Split() {
+            this.id = null;
+            this.name = '';
+            this.description = '';
+            this.distance = '';
+            this.times = '';
+            this.times = '';
+            this.verticalGain = '';
+            this.verticalLoss = '';
+            this.location = new Location();
+        }
+        Split.prototype.fetch = function() {
+            var dfd = $.Deferred()
+            
+            return dfd.promise();
+        }
+        return Split;
+    } );
+
+    var Event = ( function() {
+        function Event() {
+            this.id = null;
+            this.stagingId = '';
+            this.name = '';
+            this.concealed = '';
+            this.courseId = null;
+            this.course = {
+
+            };
+            this.organizationId = null,
+            this.organization = {
+
+            };
+            // Intermediate Variables
+            this.date = '2017/03/03';
+            this.hours = 6;
+            this.minutes = 0;
+        }
+        Event.prototype.__defineGetter__( 'startTime', function () {
+            var startTime = Date.parse( this.date );
+            if ( isNaN( startTime ) ) {
+                return null;
+            } else {
+                startTime = new Date( startTime );
+                startTime.setHours( this.hours );
+                startTime.setMinutes( this.minutes );
+            }
+            return startTime;
+        } );
+        Event.prototype.validate = function() {
+            console.warn( 'Event', this.stagingId, 'Validator Not Fully Implemented' );
+            if ( !this.startTime ) return false;
+            return true;
+        }
+        Event.prototype.post = function() {
+            var dfd = $.Deferred()
+            if ( this.validate() ) {
+                $.post( '/api/v1/staging/' + this.stagingId + '/post_event', {
+                    dataType: "json",
+                    data: {
+                        id: this.id,
+                        stagingId: this.stagingId,
+                        name: this.name,
+                        courseId: this.courseId,
+                        course: this.course,
+                        organizationId: this.organizationId,
+                        organization: this.organization,
+                        startTime: this.startTime
+                    },
+                } ).done( function( ) {
+                    dfd.resolve();
+                } ).fail( function() {
+                    dfd.reject();
+                } );
+            } else {
+                dfd.reject( 'Invalid Event' );
+            }
+            return dfd.promise();
+        };
+        Event.prototype.fetch = function() {
+            var dfd = $.Deferred()
+            $.get( '/api/v1/staging/' + this.stagingId + '/get_event', {
+                dataType: "json",
+            } ).done( function( data ) {
+                // Extract Subobjects
+                var efforts = data.efforts;
+                data.efforts = undefined;
+                var splits = data.splits;
+                data.splits = undefined;
+                $.extend( this, data );
+                console.info( 'Event', this.stagingId, 'Fetched Event Data From Server' );
+                dfd.resolve();
+            } ).fail( function () {
+                dfd.reject();
+            } );
+            
+            // Return Test Data
+
+            // dfd.resolve();
+
+            return dfd.promise();
+        }
+        return Event;
+    } )();
+
+    /**
      * UI object for the live event view
      *
      */
@@ -47,6 +174,7 @@
         data: {
             isDirty: false,
             isStaged: false,
+            event: new Event(),
             eventData: {
                 temp: {
                     id: null,
@@ -61,6 +189,7 @@
                     new: false
                 },
                 event: {
+                    stagingId: '',
                     name: '',
                     description: '',
                     date: '',
@@ -130,6 +259,7 @@
         },
 
         onRouteChange: function( to, from, next ) {
+            eventStage.data.event.fetch();
             next(); return; // NO!
             if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
                 // Event data must be valid
@@ -183,7 +313,9 @@
             this.ajaxImport.init();
 
             // Load UUID
-            this.data.eventData.uuid = $( '#event-app' ).data( 'uuid' );
+            this.data.eventData.event.stagingId = $( '#event-app' ).data( 'uuid' );
+            this.data.event.stagingId = $( '#event-app' ).data( 'uuid' );
+            this.data.event.fetch();
 
             // Initialize Vue Router and Vue App
             const routes = [
@@ -422,7 +554,7 @@
          */
         googleMaps: {
             onValueChange: function() {
-                if ( this.value && $.isPlainObject( this.value ) ) {
+                if ( this.value ) {
                     console.info( 'google-map', this._uid, 'Building Location' );
 
                     if ( this.value !== this._lastLocation ) {

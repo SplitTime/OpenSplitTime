@@ -22,6 +22,13 @@ require_relative 'support/controller_helpers'
 require 'strip_attributes/matchers'
 require 'support/lap_split_methods'
 
+require "json"
+require "active_support/core_ext/hash/keys"
+require "active_support/inflector"
+require "rack/test"
+
+require "olive_branch"
+
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

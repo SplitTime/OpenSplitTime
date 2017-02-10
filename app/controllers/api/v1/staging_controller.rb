@@ -30,6 +30,20 @@ class Api::V1::StagingController < ApiController
     render json: Carmen::Country.all.map { |country| [country.code, country.name] }.to_h
   end
 
+  def get_subregions
+    authorize :event_staging, :get_subregions?
+    country = Carmen::Country.coded(params[:country_code])
+    if country
+      render json: country.subregions.map { |subregion| [subregion.code, subregion.name] }.to_h
+    else
+      if params[:country_code].present?
+        render json: {error: "country not found: #{params[:country_code]}"}
+      else
+        render json: {error: 'country code not provided'}
+      end
+    end
+  end
+
   private
 
   def set_event

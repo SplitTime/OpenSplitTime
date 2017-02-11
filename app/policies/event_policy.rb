@@ -158,6 +158,10 @@ class EventPolicy
     current_user.authorized_for_live?(event)
   end
 
+  def new_staging_event?
+    current_user.present?
+  end
+
   def event_staging_app?
     current_user.authorized_for_live?(event)
   end

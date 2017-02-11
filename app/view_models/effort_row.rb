@@ -20,7 +20,7 @@ class EffortRow
   end
 
   def participant
-    Participant.new(id: effort.participant_id)
+    Participant.new(id: effort.participant_id) if effort.participant_id
   end
 
   def effective_start_time

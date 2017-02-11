@@ -9,7 +9,7 @@ class EffortPreviewRow
   end
 
   def participant
-    Participant.new(id: effort.participant_id)
+    Participant.new(id: effort.participant_id) if effort.participant_id
   end
 
   private

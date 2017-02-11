@@ -28,23 +28,7 @@ class Api::V1::StagingController < ApiController
   # GET /api/v1/staging/get_countries
   def get_countries
     authorize :event_staging, :get_countries?
-    render json: Carmen::Country.all.map { |country| [country.code, country.name] }
-                     .sort_by { |code, name| [code == 'US' ? 0 : 1, name] }.to_h
-  end
-
-  # GET /api/v1/staging/get_subregions?country_code=
-  def get_subregions
-    authorize :event_staging, :get_subregions?
-    country = Carmen::Country.coded(params[:country_code])
-    if country
-      render json: country.subregions.map { |subregion| [subregion.code, subregion.name] }.to_h
-    else
-      if params[:country_code].present?
-        render json: {error: "country not found: #{params[:country_code]}"}
-      else
-        render json: {error: 'country code not provided'}
-      end
-    end
+    render json: {countries: Geodata.standard_countries_subregions }
   end
 
   private

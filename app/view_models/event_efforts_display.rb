@@ -23,16 +23,27 @@ class EventEffortsDisplay
                     gender_place: effort.gender_place,
                     finish_status: finish_status(effort),
                     run_status: run_status(effort),
-                    day_and_time: start_time + effort.start_offset + effort.final_time,
-                    participant: indexed_participants[effort.participant_id])
+                    day_and_time: start_time + effort.start_offset + effort.final_time)
     end
+  end
+
+  def effort_preview_rows
+    @effort_preview_rows ||= unstarted_efforts.map { |effort| EffortPreviewRow.new(effort) }
   end
 
   def filtered_efforts
     @filtered_efforts ||= event_efforts
                               .search(params[:search])
                               .sorted_with_finish_status
-                              .paginate(page: params[:page], per_page: params[:per_page] || 25)
+                              .paginate(page: params[:started_page], per_page: params[:per_page] || 25)
+  end
+
+  def unstarted_efforts
+    @unstarted_efforts ||= event_efforts
+                               .search(params[:search])
+                               .where(id: unstarted_effort_ids)
+                               .order(:last_name)
+                               .paginate(page: params[:unstarted_page], per_page: params[:per_page] || 25)
   end
 
   def efforts_count
@@ -49,6 +60,10 @@ class EventEffortsDisplay
 
   def filtered_efforts_count
     filtered_efforts.total_entries
+  end
+
+  def unstarted_filtered_efforts_count
+    unstarted_efforts.total_entries
   end
 
   def course_name
@@ -99,12 +114,12 @@ class EventEffortsDisplay
     event.efforts
   end
 
-  def started_effort_ids
-    @started_effort_ids ||= event_efforts.started.ids
+  def unstarted_effort_ids
+    @unstarted_effort_ids ||= event_efforts.map(&:id) - started_effort_ids
   end
 
-  def indexed_participants
-    @indexed_participants ||= Participant.find(filtered_efforts.map(&:participant_id).compact).index_by(&:id)
+  def started_effort_ids
+    @started_effort_ids ||= event_efforts.started.ids
   end
 
   def finish_status(effort)

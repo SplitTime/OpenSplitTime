@@ -83,7 +83,7 @@ module EventsHelper
   end
 
   def explore_button_disabled?(klass)
-    klass == EventEffortsDisplay || klass == EventPreviewDisplay
+    klass == EventEffortsDisplay
   end
 
   def spread_button_disabled?(klass)

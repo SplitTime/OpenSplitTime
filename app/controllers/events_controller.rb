@@ -11,15 +11,9 @@ class EventsController < ApplicationController
 
   def show
     event = Event.find(params[:id])
-    if event.started?
-      @event_display = EventEffortsDisplay.new(event, params)
-      session[:return_to] = event_path(event)
-      render 'show'
-    else
-      @event_preview = EventPreviewDisplay.new(event, params)
-      session[:return_to] = event_path(event)
-      render 'preview'
-    end
+    @event_display = EventEffortsDisplay.new(event, params)
+    session[:return_to] = event_path(event)
+    render 'show'
   end
 
   def new

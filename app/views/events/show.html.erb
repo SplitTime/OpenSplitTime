@@ -38,12 +38,12 @@
         <hr>
         <div class="row">
           <div class="col-xs-8">
-            <strong><%= "Returned #{@event_display.filtered_efforts_count} of #{@event_display.started_efforts_count} efforts for #{@event_display.name}" %></strong>
+            <strong><%= "Started efforts: Returned #{@event_display.filtered_efforts_count} of #{@event_display.started_efforts_count} for #{@event_display.name}" %></strong>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@event_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.filtered_efforts, param_name: 'started_page', inner_window: 2, outer_window: 0) %>
           </div>
         </div>
 
@@ -51,7 +51,7 @@
 
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@event_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.filtered_efforts, param_name: 'started_page', inner_window: 2, outer_window: 0) %>
           </div>
         </div>
     <% else %>
@@ -60,7 +60,23 @@
     <% end %>
 <% end %>
 <% if @event_display.unstarted_efforts_count > 0 %>
-    <p>
-      <strong><%= @event_display.started_efforts_count > 0 ? "In addition, " : "" %><%= "#{@event_display.unstarted_efforts_count} efforts have been staged but have not yet started." %></strong>
-    </p>
+    <hr>
+    <div class="row">
+      <div class="col-xs-8">
+        <strong><%= "Unstarted efforts: Returned #{@event_display.unstarted_efforts_count} of #{@event_display.unstarted_efforts_count} for #{@event_display.name}" %></strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@event_display.unstarted_efforts, param_name: 'unstarted_page', inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
+    <%= render 'efforts/efforts_not_started' %>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(@event_display.unstarted_efforts, param_name: 'unstarted_page', inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
 <% end %>

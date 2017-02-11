@@ -29,7 +29,7 @@ class IntendedTimeCalculator
 
   def day_and_time
     return nil unless military_time.present?
-    preliminary_day_and_time && (preliminary_day_and_time < effort.start_time) ?
+    preliminary_day_and_time && (preliminary_day_and_time < threshold_day_and_time) ?
         preliminary_day_and_time + 1.day : preliminary_day_and_time
   end
 
@@ -39,6 +39,10 @@ class IntendedTimeCalculator
 
   def preliminary_day_and_time
     expected_day_and_time && earliest_day_and_time + days_from_earliest
+  end
+
+  def threshold_day_and_time
+    time_point_start? ? event.start_time - 6.hours : prior_day_and_time - 3.hours
   end
 
   def prior_day_and_time
@@ -70,6 +74,14 @@ class IntendedTimeCalculator
 
   def end_lap_split
     lap_splits && lap_splits.find { |lap_split| lap_split.key == time_point.lap_split_key }
+  end
+
+  def time_point_start?
+    lap_splits.present? && (time_point == lap_splits.first.time_point_in)
+  end
+
+  def event
+    @event ||= effort.event
   end
 
   def seconds_into_day

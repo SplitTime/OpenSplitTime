@@ -29,6 +29,7 @@ class LiveTimeRowImporter
       # row was submitted, call bulk_create_or_update without force option.
 
       if effort_data.valid? && (effort_data.clean? || force_option?) && create_or_update_times(effort_data)
+        adjust_later_times(effort_data.effort)
         set_dropped_attributes(effort_data)
       else
         unsaved_rows << effort_data.response_row
@@ -62,6 +63,27 @@ class LiveTimeRowImporter
 
     FollowerMailerService.send_live_effort_mail(effort_data.participant_id, split_time_ids)
     split_time_ids.exclude?(nil)
+  end
+
+  # Live time data is entered based on military time, and we should assume the military time
+  # (as opposed to the elapsed time stored in the database) is more likely correct if the
+  # two conflict. Therefore, if an effort.start_offset changes by virtue of entering a
+  # different start split time, assume we need to counter that change in all later split_times
+  # for that effort, if any.
+
+  def adjust_later_times(effort)
+    start_offset_shift = effort.start_offset - effort.start_offset_was
+    return if start_offset_shift.zero?
+    split_times = effort.split_times.to_a.reject { |st| st.time_from_start.zero? }
+    split_times.each do |st|
+      if st.update(time_from_start: st.time_from_start - start_offset_shift)
+        puts "updating split_time #{st.id} time_from_start by #{-start_offset_shift} seconds to counteract " +
+                 "change in start_offset of effort #{effort.id} from #{effort.start_offset_was} to #{effort.start_offset}"
+      else
+        puts "failed to update split_time #{st.id} for the following reasons: #{st.errors.full_messages}"
+      end
+    end
+    effort.save
   end
 
   def set_dropped_attributes(effort_data)

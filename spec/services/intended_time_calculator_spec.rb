@@ -174,12 +174,12 @@ RSpec.describe IntendedTimeCalculator do
         validate_day_and_time(military_time, time_point, expected_time_from_prior, prior_valid_split_time, expected)
       end
 
-      it 'rolls over to the next day if the calculated time is earlier than the effort start time' do
-        military_time = '04:00:00' # Expected time is roughly 08:30 on 7/1, so this would normally be interpreted as 04:00 on 7/1
+      it 'rolls over to the next day if the calculated time is more than three hours before the prior valid time' do
+        military_time = '02:30:00' # Expected time is roughly 08:30 on 7/1, so this would normally be interpreted as 02:30 on 7/1
         time_point = time_points[1] # Cunningham In
         expected_time_from_prior = 150.minutes
         prior_valid_split_time = split_times[0]
-        expected = Time.new(2016, 7, 2, 4, 0, 0)
+        expected = Time.new(2016, 7, 2, 2, 30, 0)
         validate_day_and_time(military_time, time_point, expected_time_from_prior, prior_valid_split_time, expected)
       end
     end

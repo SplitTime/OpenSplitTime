@@ -36,8 +36,7 @@ class LiveDataEntryReporter
   end
 
   def last_split_time_report_text
-    "#{split_time_name(last_reported_split_time)} at #{day_time_military_format(last_reported_split_time.day_and_time)}" +
-        dropped_addendum
+    reported_place_and_time(last_reported_split_time) + dropped_addendum
   end
 
   def dropped_addendum
@@ -57,8 +56,11 @@ class LiveDataEntryReporter
   end
 
   def prior_valid_report_text
-    prior_valid_split_time ?
-        "#{prior_valid_split_time.split_name} at #{day_time_military_format(prior_valid_split_time.day_and_time)}" : 'n/a'
+    prior_valid_split_time ? reported_place_and_time(prior_valid_split_time) : 'n/a'
+  end
+
+  def reported_place_and_time(split_time)
+    "#{split_time_name(split_time)} at #{day_time_military_format(split_time.day_and_time)}"
   end
 
   def lap_split_name(lap_split)

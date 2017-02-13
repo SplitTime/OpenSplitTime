@@ -62,6 +62,7 @@ class LiveDataEntryReporter
   end
 
   def lap_split_name(lap_split)
+    return "[unknown split]" unless lap_split
     report_laps? ? lap_split.base_name : lap_split.base_name_without_lap
   end
 

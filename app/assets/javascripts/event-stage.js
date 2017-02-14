@@ -427,7 +427,12 @@
                                 return $.extend( {}, blanks.participant );
                             }
                         },
-                        data: function() { return { modalData: {}, filter: '' } }, 
+                        data: function() { return { 
+                            countries: locales.countries,
+                            regions: locales.regions,
+                            modalData: {},
+                            filter: ''
+                        } }, 
                         template: '#participants'
                     },
                     beforeEnter: this.onRouteChange

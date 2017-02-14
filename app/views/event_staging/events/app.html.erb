@@ -377,10 +377,10 @@
 					</tr>
 					<template slot="row" scope="vm">
 						<td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
-						<td>{{ vm.row.gender }}</td>
-						<td>{{ vm.row.dob }}</td>
-						<td>{{ vm.row.city }}, {{ vm.row.state }}</td>
-						<td>{{ vm.row.bibnumber }}</td>
+						<td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>
+						<td>{{ vm.row.birthdate }}</td>
+						<td>{{ vm.row.city }}, {{ ( regions[ vm.row.countryCode ] || {} )[ vm.row.stateCode ] }}</td>
+						<td>{{ vm.row.bibNumber }}</td>
 						<td><a href="#" data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">Edit Participant</a></td>
 						<td><a href="#" v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
 					</template>
@@ -423,7 +423,7 @@
 							</div>
 							<div class="form-group col-xs-6">
 								<label>Date of Birth</label>
-								<input type="text" class="form-control" v-model="model.dob" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
+								<input type="text" class="form-control" v-model="model.birthdate" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
 							</div>
 						</div>
 						<div class="row">

@@ -11,7 +11,6 @@
 		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
 		<p><router-link to="/splits" class="btn btn-primary" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link></p>
 		<p><span class="brackets"><a href="#">Cancel</a></span></p>
-		{{ $route.params }}
 	</aside>
 	<article class="col-xs-12 col-sm-8">
 		<div class="form-group">
@@ -473,18 +472,22 @@
 						</div>
 						<div class="row">
 							<div class="form-group col-xs-6">
-								<label class="required">City</label>
-								<input type="text" class="form-control" v-model="model.city" placeholder="Louisville"></input>
+								<label class="required">Country</label>
+								<select id="js-participants-contry" class="form-control" v-model="model.countryID" v-on:change="model.state = ''">
+									<option v-for="(country,index) in countries" :value="index + 1">{{ country }}</option>
+								</select>
 							</div>
 							<div class="form-group col-xs-6">
-								<label class="required">State</label>
-								<input type="text" class="form-control" v-model="model.state" placeholder="Colorado"></input>
+								<label class="required">State / region</label>
+								<select id="js-participants-state" class="form-control" v-model="model.state" :disabled="!model.countryID">
+									<option v-for="region in (regions[ model.countryID ] || '').split('|')" :value="region">{{ region }}</option>
+								</select>
 							</div>
 						</div>
 						<div class="row">
 							<div class="form-group col-xs-6">
-								<label class="required">Country</label>
-								<input type="text" class="form-control" v-model="model.country" placeholder="United States"></input>
+								<label class="required">City</label>
+								<input type="text" class="form-control" v-model="model.city" placeholder="Louisville"></input>
 							</div>
 						</div>
 						<div class="row modal-section">
@@ -502,7 +505,7 @@
 												<input type="text" class="form-control p-start-date" v-model="model.startdate" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
 											
 												<select class="form-control p-start-hour" v-model="model.starthours">
-													<option selected disabled class="placeholder">hh</option>
+													<option disabled class="placeholder" value="">hh</option>
 													<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>
 													<option v-for="h in 12" :value="( h + 12 ) % 24">{{ h | padding( 2, '0' ) }} PM</option>
 												</select>
@@ -510,7 +513,7 @@
 												<span class="p-colon">:</span>
 
 												<select class="form-control p-start-min" v-model="model.startminutes">
-													<option selected disabled class="placeholder">mm</option>
+													<option disabled class="placeholder" value="">mm</option>
 													<option v-for="m in 12" :value="( m - 1 ) * 5">{{ ( m - 1 ) * 5 | padding( 2, '0' ) }}</option>
 												</select>
 

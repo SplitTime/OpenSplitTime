@@ -16,7 +16,10 @@
             beacon: '',
             city: '',
             state: '',
-            country: ''
+            country: '',
+            countryID: 0,
+            starthours: '',
+            startminutes: ''
         },
         split: {
             name: '',
@@ -772,6 +775,7 @@
                     watch: {
                         model: {
                             handler: function () {
+                            	this.model.country = this.countries[ this.model.countryID - 1 ];
                                 this.valid = !this.validator( this.model );
                             },
                             deep: true
@@ -792,7 +796,14 @@
                             console.info( 'edit-modal', self._uid, 'Cloning changes back to source' );
                         } );
                     },
-                    data: function() { return { model: {}, valid: false }; }
+                    data: function() { 
+                    	return {
+                    		countries: country_arr,
+                    		regions: s_a,
+                    		model: {},
+                    		valid: false
+                    	};
+                    }
                 } );
             }
          },

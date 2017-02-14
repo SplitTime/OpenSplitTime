@@ -100,6 +100,65 @@
 	textarea {
 		resize: none;
 	}
+
+	.splits-table {
+
+		.marker {
+			float: left;
+		}
+
+		.edit {
+			float: left;
+			margin-left: 10px;
+			margin-top: 5px;
+		}
+
+		td {
+			vertical-align: middle;
+		}
+	}
+
+	.confirmation-table {
+		
+		th {
+			width: 120px;
+		}
+
+		td:last-of-type {
+			width: 70px;
+			text-align: right;
+		}
+
+		.row-content,
+		.participants-count {
+			color: $mediumGray;
+			font-weight: normal;
+		}
+	}
+
+	.published-page {
+		text-align: center;
+		max-width: 670px;
+		margin: 0 auto;
+		float: none;
+		
+		.large-check {
+			margin: 0 auto;
+		}
+
+		h2 {
+			font-weight: bold;
+			margin: 40px 0 20px;
+		}
+
+		p {
+			color: $mediumGray;
+		}
+
+		.btn-primary {
+			margin-top: 30px;
+		}
+	}
 }
 
 /* There has to be a better way */

@@ -187,7 +187,7 @@
 				{{ eventData.temp }}
 			</div>
 			<div class="col-xs-12">
-				<data-tables :rows="eventData.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event">
+				<data-tables :rows="eventData.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event" class="splits-table">
 					<tr slot="header">
 						<th></th>
 						<th data-orderable="false">Name</th>
@@ -215,10 +215,10 @@
 						<td>{{ vm.row.verticalGain }}</td>
 						<td>{{ vm.row.verticalLoss }}</td>
 						<td>
-							<span><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
-							<a data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a>
+							<span class="marker"><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
+							<a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a>
 						</td>
-						<td><a v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
+						<td><a href="#" v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
 					</template>
 				</data-tables>
 			</div>
@@ -558,7 +558,7 @@
 		</p>
 	</aside>
 	<article class="col-xs-12 col-sm-8">
-		<table class="table">
+		<table class="table confirmation-table">
 			<tbody>
 				<tr>
 					<th>Race Name</th>
@@ -592,14 +592,17 @@
 					<td>NaN</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
-					<th colspan="2">Your Splits<google-map :markers="eventData.splits"></google-map></th>
+					<th ><span>Your Splits</span></th>
+					<td><google-map :markers="eventData.splits"></google-map></td>
 					<td><span class="brackets"><router-link to="/splits">Edit</router-link></span></td>
 				</tr>
 				<tr>
-					<th>Participants<br>{{ eventData.participants.length }}</th>
+					<th>
+						<span>Participants<br><span class="participants-count">({{ eventData.participants.length }})</span></span>
+					</th>
 					<td>
-						<span v-for="participant in eventData.participants">
-							{{ participant.first }} {{ participant.last }},
+						<span class="row-content" v-for="participant in eventData.participants">
+							{{ participant.first }} {{ participant.last }}<span v-if="eventData.participants.length > 1">,</span>
 						</span>
 					</td>
 					<td><span class="brackets"><router-link to="/participants">Edit</router-link></span></td>
@@ -613,8 +616,11 @@
 </div></script>
 
 <script type="text/x-template" id="published"><div>
-	<article class="col-xs-12">
-		Published
+	<article class="col-xs-12 published-page">
+		<span class="large-check"></span>
+		<h2>Your Race Has Been Published</h2>
+		<p>Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean lacinia bibendum nulla sed consectetur.</p>
+		<a href="/" class="btn btn-primary">Return Home</a>
 	</article>
 </div></script>
 

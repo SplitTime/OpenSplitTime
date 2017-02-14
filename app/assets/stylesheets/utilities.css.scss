@@ -1,14 +1,16 @@
 @import "variables";
 @import "mixins";
 
-/***********
-Efforts Popover
-************/
 
+
+
+/**************
+Efforts Popover
+***************/
 .popover.efforts-popover .popover-content {
 	max-height: 400px;
 	overflow-x: visible;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .popover.static-popover {
@@ -20,7 +22,7 @@ Efforts Popover
   .popover-content {
     max-height: 150px;
     overflow-x: visible;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   &.static-popover-dark {
@@ -116,16 +118,12 @@ label.switchery-label {
 	}
 }
 
-/** Required star **/
-label.required:after {
-	content: ' *';
-	color: $blue;
 
-}
 
-/**********
+
+/***********
 Modal Styles
-***********/
+************/
 @media ( min-width: $break-small ) {
 	.modal-dialog.modal-lg {
 		max-width: $max-width;
@@ -139,9 +137,12 @@ Modal Styles
 	}
 }
 
-/***********
+
+
+
+/****************
 Help Tooltip Icon
-************/
+*****************/
 .help-tooltip {
 	display: inline-block;
 	font-size: 16px;
@@ -163,10 +164,12 @@ Help Tooltip Icon
 	}
 }
 
-/***********
-Progress Bar Navigation
-************/
 
+
+
+/**********************
+Progress Bar Navigation
+***********************/
 .progress-bar-nav {
 	position: relative;
 	width: 100%;
@@ -366,9 +369,12 @@ Progress Bar Navigation
 	}
 }
 
-/***********
+
+
+
+/**************
 Full Background
-************/
+***************/
 aside.full-bg {
 	position: relative;
 	
@@ -417,7 +423,12 @@ span.brackets {
 	}
 }
 
-/** Radio Buttons **/
+
+
+
+/************
+Radio Buttons
+*************/
 .custom-radio {
 	display: none;
 	
@@ -480,10 +491,60 @@ span.brackets {
 	box-shadow: initial;
 }
 
+
+
+
+/******
+Floats
+******/
 .float-right {
 	float: right;
 }
 
 .float-left {
 	float: left;
+}
+
+
+
+
+/******
+Colors 
+******/
+.lightGray {
+	color: $lightGray;
+}
+
+.mediumGray {
+	color: $mediumGray;
+}
+
+
+/***
+Misc
+****/
+.large-check {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	background-color: $blue;
+	display: block;
+	text-align: center;
+	&:after {
+		font-family: 'Glyphicons Halflings';
+		position: absolute;
+		content: '\e013';
+		font-size: 40px;
+		line-height: 80px;
+		color: $white;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+}
+
+label.required:after {
+	content: ' *';
+	color: $blue;
 }

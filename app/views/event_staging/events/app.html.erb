@@ -539,17 +539,17 @@
 			<tbody>
 				<tr>
 					<th>Race Name</th>
-					<td>{{ eventModel.event.name }}</td>
+					<td>{{ eventModel.name }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
 				</tr>
 				<tr>
 					<th>Start Date</th>
-					<td>{{ eventModel.event.date }} {{ eventModel.event.hours % 12 }}:{{ eventModel.event.minutes }}</td>
+					<td>{{ eventModel.startTime ? eventModel.startTime.toLocaleString() : 'NaN' }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
 				</tr>
 				<tr>
 					<th>Description</th>
-					<td>{{ eventModel.event.description }}</td>
+					<td>{{ eventModel.description }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
 				</tr>
 				<tr>
@@ -570,16 +570,16 @@
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th ><span>Your Splits</span></th>
-					<td><google-map :markers="eventData.splits"></google-map></td>
+					<td><google-map :markers="eventModel.splits"></google-map></td>
 					<td><span class="brackets"><router-link to="/splits">Edit</router-link></span></td>
 				</tr>
 				<tr>
 					<th>
-						<span>Participants<br><span class="participants-count">({{ eventData.participants.length }})</span></span>
+						<span>Participants<br><span class="participants-count">({{ eventModel.efforts.length }})</span></span>
 					</th>
 					<td>
-						<span class="row-content" v-for="participant in eventData.participants">
-							{{ participant.first }} {{ participant.last }}<span v-if="eventData.participants.length > 1">,</span>
+						<span class="row-content" v-for="participant in eventModel.efforts">
+							{{ participant.firstName }} {{ participant.lastName }}<span v-if="eventModel.efforts.length > 1">,</span>
 						</span>
 					</td>
 					<td><span class="brackets"><router-link to="/participants">Edit</router-link></span></td>

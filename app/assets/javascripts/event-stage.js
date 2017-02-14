@@ -134,24 +134,6 @@
 
     var Event = ( function() {
         function Event( data ) {
-            this.id = null;
-            this.stagingId = '';
-            this.name = '';
-            this.description = '';
-            this.lapsRequired = 1;
-            this.concealed = '';
-            this.courseId = null;
-            this.course = {
-                id: null,
-                name: '',
-                description: ''
-            };
-            this.organizationId = null;
-            this.organization = {
-                id: null,
-                name: '',
-                description: ''
-            };
             // Children
             this.splits = [];
             this.efforts = [];
@@ -172,7 +154,26 @@
             return startTime;
         } );
         Event.prototype.import = function( data ) {
+            // Import Properties
+            this.id = data.id || null;
+            this.stagingId = data.stagingId || null;
+            this.name = data.name || '';
+            this.description = data.description || '';
+            this.lapsRequired = data.lapsRequired || '';
+            this.organizationId = data.organizationId || '';
+            this.organization = $.extend( {
+                id: null,
+                name: '',
+                description: ''
+            }, data.organization || {} );
+            this.courseId = data.courseId || '';
+            this.course = $.extend( {
+                id: null,
+                name: '',
+                description: ''
+            }, data.course || {} );
             // Import Child Objects
+            console.log( data );
             this.splits.splice( 0, this.splits.length );
             for ( var i = 0; i < ( data.splits || [] ).length; i++ ) {
                 this.splits.push( new Split( data.splits[i] ) );
@@ -183,16 +184,15 @@
             }
             // Extract Start Time
             var startTime = Date.parse( data.startTime || null );
-            data.startTime = undefined;
             if ( isNaN( startTime ) ) {
-                self.date = "";
-                self.hours = 6;
-                self.minutes = 0;
+                this.date = "";
+                this.hours = 6;
+                this.minutes = 0;
             } else {
                 startTime = new Date( startTime );
-                self.date = formatDate( startTime );
-                self.hours = startTime.getHours();
-                self.minutes = startTime.getMinutes();
+                this.date = formatDate( startTime );
+                this.hours = startTime.getHours();
+                this.minutes = startTime.getMinutes();
             }
         }
         Event.prototype.validate = function() {
@@ -440,7 +440,7 @@
                 { 
                     path: '/confirmation', 
                     name: 'confirm',
-                    component: { props: ['eventData'], template: '#confirmation' },
+                    component: { props: ['eventModel'], template: '#confirmation' },
                     beforeEnter: this.onRouteChange
                 },
                 { 

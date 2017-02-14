@@ -272,6 +272,7 @@
         			var regions = '';
         			var first = true;
     				for ( var ii in response.countries[i].subregions ) {
+        				//console.log( response.countries[i].subregions[ii] );
         				if ( first !== true ) {
         					regions += '|';
         				}
@@ -280,6 +281,7 @@
         			}
         			locales.regions.push( regions );
         		}
+        		console.log( locales );
         	} );
         },
 

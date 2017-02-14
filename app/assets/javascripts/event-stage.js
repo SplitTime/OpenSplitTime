@@ -40,6 +40,14 @@
     }
 
     /**
+     * This object stores the countries and regions array
+     */
+    var locales = {
+    	countries : [],
+    	regions : []
+    }
+
+    /**
      * Prototypes
      */
 
@@ -254,6 +262,27 @@
             }
         },
 
+        /**
+         * This method is used to populate the locale array
+         */
+        ajaxPopulateLocale: function() {
+        	$.get( '/api/v1/staging/get_countries', function( response ) {
+        		for ( var i in response.countries ) {
+        			locales.countries.push( response.countries[i].name );
+        			var regions = '';
+        			var first = true;
+    				for ( var ii in response.countries[i].subregions ) {
+        				if ( first !== true ) {
+        					regions += '|';
+        				}
+        				first = false;
+        				regions += response.countries[i].subregions[ii];
+        			}
+        			locales.regions.push( regions );
+        		}
+        	} );
+        },
+
         isEventValid: function( eventData ) {
             if ( ! eventData.organization.name ) return false;
             if ( ! eventData.event.name ) return false;
@@ -314,6 +343,7 @@
             this.prefill.init();
             this.ajaxSelect.init();
             this.ajaxImport.init();
+            this.ajaxPopulateLocale();
 
             // Load UUID
             this.data.eventData.event.stagingId = $( '#event-app' ).data( 'uuid' );
@@ -796,10 +826,11 @@
                             console.info( 'edit-modal', self._uid, 'Cloning changes back to source' );
                         } );
                     },
-                    data: function() { 
+                    data: function() {
+
                     	return {
-                    		countries: country_arr,
-                    		regions: s_a,
+                    		countries: locales.countries,
+                    		regions: locales.regions,
                     		model: {},
                     		valid: false
                     	};

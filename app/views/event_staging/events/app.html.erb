@@ -478,8 +478,8 @@
 								</select>
 							</div>
 							<div class="form-group col-xs-6">
-								<label class="required">State / region</label>
-								<select id="js-participants-state" class="form-control" v-model="model.state" :disabled="!model.countryID">
+								<label class="required">State / Region</label>
+								<select id="js-participants-state" class="form-control" v-model="model.state" :disabled="!model.countryID || !regions[ model.countryID ]">
 									<option v-for="region in (regions[ model.countryID ] || '').split('|')" :value="region">{{ region }}</option>
 								</select>
 							</div>

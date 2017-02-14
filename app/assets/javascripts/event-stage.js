@@ -39,6 +39,10 @@
         }
     }
 
+    function formatDate( date ) {
+        return ("0" + (date.getMonth() + 1)).slice(-2) + "/" + ("0" + date.getDate()).slice(-2) + "/" + date.getFullYear();
+    }
+
     /**
      * This object stores the countries and regions array
      */
@@ -50,15 +54,51 @@
     /**
      * Prototypes
      */
+    var Effort = ( function() {
+        function Effort( data ) {
+            this.import( data || {} );
+        }
+        Effort.prototype.import = function( data ) {
+            this.id = data.id || null;
+            this.age = data.age || '';
+            this.bibNumber = data.bibNumber || '';
+            this.birthdate = data.birthdate || '';
+            this.city = data.city || '';
+            this.countryCode = data.countryCode || '';
+            this.stateCode = data.stateCode || '';
+            this.gender = data.gender || '';
+            this.firstName = data.firstName || '';
+            this.lastName = data.lastName || '';
+            this.participantId = data.participantId || '';
+        }
+        Effort.prototype.post = function() {
+            var dfd = $.Deferred()
+            console.warn( 'Effort', this.id, 'POST Not Fully Implemented' );
+            return dfd.promise();
+        }
+        Effort.prototype.validate = function() {
+            console.warn( 'Effort', this.stagingId, 'Validator Not Fully Implemented' );
+            return true;
+        }
+        Effort.prototype.fetch = function() {
+            var dfd = $.Deferred()
+            console.warn( 'Effort', this.id, 'FETCH Not Fully Implemented' );
+            return dfd.promise();
+        }
+        return Effort;
+    } )();
 
     var Location = ( function() {
-        function Location() {
-            this.id = null;
-            this.name = '';
-            this.description = '';
-            this.latitude = '';
-            this.longitude = '';
-            this.elevation = '';
+        function Location( data ) {
+            this.import( data || {} );
+        }
+        Location.prototype.import = function( data ) {
+            this.id = data.id || null;
+            this.name = data.name || '';
+            this.description = data.description || '';
+            this.elevation = data.elevation || null;
+            this.latitude = data.latitude || null;
+            this.longitude = data.longitude || null;
         }
         Location.prototype.fetch = function() {
             var dfd = $.Deferred()
@@ -66,19 +106,23 @@
             return dfd.promise();
         }
         return Location;
-    } );
+    } )();
 
     var Split = ( function() {
-        function Split() {
-            this.id = null;
-            this.name = '';
-            this.description = '';
-            this.distance = '';
-            this.times = '';
-            this.times = '';
-            this.verticalGain = '';
-            this.verticalLoss = '';
+        function Split( data ) {
             this.location = new Location();
+            this.import( data || {} );
+        }
+        Split.prototype.import = function( data ) {
+            this.id = data.id || null;
+            this.baseName = data.baseName || '';
+            this.distanceFromStart = data.distanceFromStart || '';
+            this.vertGainFromStart = data.vertGainFromStart || '';
+            this.vertLossFromStart = data.vertLossFromStart || '';
+            this.nameExtensions = data.nameExtensions || [];
+            this.kind = data.kind || '';
+            this.locationId = data.locationId || null;
+            this.location.import( data.location || {} );
         }
         Split.prototype.fetch = function() {
             var dfd = $.Deferred()
@@ -86,26 +130,35 @@
             return dfd.promise();
         }
         return Split;
-    } );
+    } )();
 
     var Event = ( function() {
-        function Event() {
+        function Event( data ) {
             this.id = null;
             this.stagingId = '';
             this.name = '';
+            this.description = '';
+            this.lapsRequired = 1;
             this.concealed = '';
             this.courseId = null;
             this.course = {
-
+                id: null,
+                name: '',
+                description: ''
             };
-            this.organizationId = null,
+            this.organizationId = null;
             this.organization = {
-
+                id: null,
+                name: '',
+                description: ''
             };
+            // Children
+            this.splits = [];
+            this.efforts = [];
             // Intermediate Variables
-            this.date = '2017/03/03';
-            this.hours = 6;
-            this.minutes = 0;
+            this.courseNew = false;
+            this.organizationNew = false;
+            this.import( data || {} );
         }
         Event.prototype.__defineGetter__( 'startTime', function () {
             var startTime = Date.parse( this.date );
@@ -118,6 +171,30 @@
             }
             return startTime;
         } );
+        Event.prototype.import = function( data ) {
+            // Import Child Objects
+            this.splits.splice( 0, this.splits.length );
+            for ( var i = 0; i < ( data.splits || [] ).length; i++ ) {
+                this.splits.push( new Split( data.splits[i] ) );
+            }
+            this.efforts.splice( 0, this.efforts.length );
+            for ( var i = 0; i < ( data.efforts || [] ).length; i++ ) {
+                this.efforts.push( new Effort( data.efforts[i] ) );
+            }
+            // Extract Start Time
+            var startTime = Date.parse( data.startTime || null );
+            data.startTime = undefined;
+            if ( isNaN( startTime ) ) {
+                self.date = "";
+                self.hours = 6;
+                self.minutes = 0;
+            } else {
+                startTime = new Date( startTime );
+                self.date = formatDate( startTime );
+                self.hours = startTime.getHours();
+                self.minutes = startTime.getMinutes();
+            }
+        }
         Event.prototype.validate = function() {
             console.warn( 'Event', this.stagingId, 'Validator Not Fully Implemented' );
             if ( !this.startTime ) return false;
@@ -150,16 +227,13 @@
         };
         Event.prototype.fetch = function() {
             var dfd = $.Deferred()
+            var self = this;
             $.get( '/api/v1/staging/' + this.stagingId + '/get_event', {
                 dataType: "json",
             } ).done( function( data ) {
-                // Extract Subobjects
-                var efforts = data.efforts;
-                data.efforts = undefined;
-                var splits = data.splits;
-                data.splits = undefined;
-                $.extend( this, data );
-                console.info( 'Event', this.stagingId, 'Fetched Event Data From Server' );
+                console.log( data );
+                console.info( 'Event', self.stagingId, 'Fetched Event Data From Server' );
+                self.import( data );
                 dfd.resolve();
             } ).fail( function () {
                 dfd.reject();
@@ -185,81 +259,7 @@
         data: {
             isDirty: false,
             isStaged: false,
-            event: new Event(),
-            eventData: {
-                temp: {
-                    id: null,
-                    name: '',
-                    latitude: '',
-                    longitude: '',
-                    elevation: '',
-                },
-                organization: {
-                    name: '',
-                    id: '',
-                    new: false
-                },
-                event: {
-                    stagingId: '',
-                    name: '',
-                    description: '',
-                    date: '',
-                    hours: 06,
-                    minutes: 00,
-                    laps: false
-                },
-                course: {
-                    new: false,
-                    name: '',
-                },
-                participants: [ $.extend( {}, blanks.participant, { first: 'Abram', last: 'Early', gender: 'M' } ) ],
-                splits: [
-                    {
-                        name: 'Starting Line',
-                        location: {
-                            id: 'a',
-                            latitude: 39.978915,
-                            longitude: -105.131036,
-                        },
-                        distance: 0,
-                        verticalGain: 0,
-                        verticalLoss: 0
-                    },
-                    {
-                        name: 'Test Line',
-                        location: {
-                            id: 'example',
-                            latitude: 39.98060593337897,
-                            longitude: -105.13302326202393
-                        },
-                        distance: 0,
-                        verticalGain: 0,
-                        verticalLoss: 0
-                    },
-                    {
-                        name: 'Test Line',
-                        location: {
-                            id: 'example',
-                            latitude: 39.98060593337897,
-                            longitude: -105.13302326202393
-                        },
-                        distance: 0,
-                        verticalGain: 0,
-                        verticalLoss: 0
-                    },
-                    {
-                        name: 'Endling Line',
-                        location: {
-                            id: 'b',
-                            latitude: 39.982682,
-                            longitude: -105.132188,
-                        },
-                        distance: 0,
-                        verticalGain: 0,
-                        verticalLoss: 0
-                    }
-                ]
-            }
+            eventModel: new Event()
         },
 
         /**
@@ -293,7 +293,7 @@
         },
 
         onRouteChange: function( to, from, next ) {
-            eventStage.data.event.fetch();
+            eventStage.data.eventModel.fetch();
             next(); return; // NO!
             if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
                 // Event data must be valid
@@ -348,9 +348,8 @@
             this.ajaxPopulateLocale();
 
             // Load UUID
-            this.data.eventData.event.stagingId = $( '#event-app' ).data( 'uuid' );
-            this.data.event.stagingId = $( '#event-app' ).data( 'uuid' );
-            this.data.event.fetch();
+            this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
+            this.data.eventModel.fetch();
 
             // Initialize Vue Router and Vue App
             const routes = [
@@ -358,10 +357,10 @@
                     path: '/',
                     name: 'home',
                     component: {
-                        props: ['eventData'],
+                        props: ['eventModel'],
                         methods: {
                             isEventValid: function() {
-                                return eventStage.isEventValid( this.eventData );
+                                return this.eventModel.validate();
                             }
                         },
                         template: '#event'
@@ -370,7 +369,7 @@
                 { 
                     path: '/splits', 
                     component: {
-                        props: ['eventData'],
+                        props: ['eventModel'],
                         methods: {
                             isValid: function( split ) {
                                 if ( !split.name ) return false;
@@ -386,26 +385,26 @@
                             }
                         },
                         watch: {
-                            'eventData.splits': {
+                            'eventModel.splits': {
                                 handler: function() {
                                     /**
                                      * Make sure locations that reference the same database object
                                      * also use the same javascript object.
                                      */
                                     var count = 0;
-                                    var cache = {};
-                                    if ( !this._cache ) this._cache = {};
-                                    for ( var i = this.eventData.splits.length - 1; i >= 0; i-- ) {
-                                        var obj = this.eventData.splits[i].location;
-                                        if ( !obj || !obj.id ) continue;
-                                        if ( !this._cache[ obj.id ] ) {
-                                            this._cache[ obj.id ] = obj;
-                                        } else if ( this._cache[ obj.id ] !== obj ) {
-                                            count++;
-                                            $.extend( this._cache[ obj.id ], obj );
-                                            this.eventData.splits[i].location = this._cache[ obj.id ];
-                                        }
-                                    }
+                                    // var cache = {};
+                                    // if ( !this._cache ) this._cache = {};
+                                    // for ( var i = this.eventData.splits.length - 1; i >= 0; i-- ) {
+                                    //     var obj = this.eventData.splits[i].location;
+                                    //     if ( !obj || !obj.id ) continue;
+                                    //     if ( !this._cache[ obj.id ] ) {
+                                    //         this._cache[ obj.id ] = obj;
+                                    //     } else if ( this._cache[ obj.id ] !== obj ) {
+                                    //         count++;
+                                    //         $.extend( this._cache[ obj.id ], obj );
+                                    //         this.eventData.splits[i].location = this._cache[ obj.id ];
+                                    //     }
+                                    // }
                                     console.info( 'splits', this._uid, 'Consolidated', count, 'Location Objects' );
                                 },
                                 deep: true,
@@ -420,7 +419,7 @@
                 { 
                     path: '/participants', 
                     component: { 
-                        props: ['eventData'], 
+                        props: ['eventModel'], 
                         methods: {
                             isValid: function( participant ) {
                                 if ( !participant.first ) return false;
@@ -503,11 +502,14 @@
                 if ( !this.rows || !$.isArray( this.rows ) ) return;
                 console.info( 'data-tables', this._uid, 'Data Changed: Rebuilding table database' );
                 var self = this;
+                this._cache = this._cache || [];
+                var cache = [];
                 this.rows.forEach( function( obj, index ) {
                     if ( !obj._dtid ) {
                         // New Data: Add Index and Add to Table
                         obj._dtid = eventStage.dataTables.uniqueId++;
                         var row = new self._row( { data: { row: obj } } ).$mount();
+                        cache[ obj._dtid ] = row;
                         row.$on( 'remove', function() {
                             self._table.row( this.$el ).remove().draw();
                             this.$destroy( true );
@@ -521,9 +523,17 @@
                         row.$on( 'edit', function() {
                             self.$emit( 'edit', this.row );
                         } );
+
                         self._table.row.add( row.$el );
                     }
+                    // Remove row from old cache
+                    delete self._cache[ obj._dtid ];
                 } );
+                // Remove Old and Unused Data
+                this._cache.forEach( function( obj, index ) {
+                    obj.$emit( 'remove' );
+                } );
+                this._cache = cache;
                 this._table.draw();
             },
             onFilterChange: function() {
@@ -661,25 +671,20 @@
                     } ).done( function( data ) {
                         console.info( 'google-map', self._uid, 'Location List Updated', data );
 
-                        // Remove Old Markers/Polyline
-                        if ( self._search ) {
-                            var preserve = null;
-                            for ( var i = 0; i < self._search.length; i++ ) {
-                                if ( self._temp === self._search[i] ) {
-                                    preserve = self._search[i]; // Preserve Selected Marker
-                                } else {
-                                    self._search[i].setMap( null );
-                                }
-                            }
-                            self._search = [];
-                            if ( preserve ) self._search.push( preserve ); // Preserve Selected Marker
-                        }
-
                         // Load New Markers
                         console.warn( 'google-maps', self._uid, 'TODO: Need to ignore locations in Route parameter' );
+                        console.warn( 'google-maps', self._uid, 'TODO: Need to build out marker cache' );
                         for ( var i = 0; i < data.length; i++ ) {
                             if ( isNaN( parseFloat( data[i].latitude ) ) || isNaN( parseFloat( data[i].longitude ) ) ) continue;
                             if ( self._temp && ( self._temp._data.id == data[i].id ) ) continue; // Preserve Selected Marker
+                            var existing = null;
+                            for ( var j = self._search.length - 1; j >= 0; j-- ) {
+                                if ( self._search[j]._data.id == data[i].id ) {
+                                    existing = self._search[j];
+                                    break;
+                                }
+                            }
+                            if ( existing !== null ) continue; // Preserve Existing Markers
                             var marker = new google.maps.Marker( {
                                 position: { lat: parseFloat( data[i].latitude ) , lng: parseFloat( data[i].longitude ) },
                                 map: self._map,
@@ -689,12 +694,18 @@
                                 // },
                                 title: data[i].name,
                             } );
-                            marker._data = data[i];
+                            marker._data = new Location( data[i] );
                             marker.addListener( 'click', (function( self, marker ) {
                                 return function( e ) { // Need extra context to work properly
-                                    eventStage.googleMaps.onMarkerClick.call( self, e, marker );
+                                    // Build out content window
+                                    var node = $( self._infowindow.getContent() );
+                                    node.find( 'h5' ).html( marker._data.name );
+                                    node.find( 'p' ).html( marker._data.description || '<i>No Description</i>' );
+                                    node.data( 'location', marker._data );
+                                    self._infowindow.open( self._map, marker );
+                                    // eventStage.googleMaps.onMarkerClick.call( self, e, marker );
                                 }
-                            })( self, marker ) );
+                            } )( self, marker ) );
                             self._search.push( marker );
                         }
 
@@ -739,9 +750,26 @@
                     center: { lat: 39.978915, lng: -105.131036 },
                     zoom: 8
                 } );
+                // Prepare Info Window
+                var node = $( '<div></div>' );
+                node.append( '<h5><i>No Title</i></h5>' );
+                node.append( '<p><i>No Description</i></p>' );
+                node.append( '<a class="js-use btn-sm btn btn-primary">Use</a>' );
+                node.append( '<a class="js-clone btn-sm btn btn-default">Clone</a>' );
+                this._infowindow = new google.maps.InfoWindow( { content: node[0] } );
+                node.on( 'click', '.js-use', function() {
+                    console.log( 'Use', node.data( 'location' ) );
+                    self._infowindow.close();
+                } );
+                node.on( 'click', '.js-clone', function() {
+                    console.log( 'Clone', node.data( 'location' ) );
+                    self._infowindow.close();
+                } );
+                // Google Maps in Modal Fix
                 $( this.$el ).closest( '.modal' ).on( 'shown.bs.modal', function() {
                     google.maps.event.trigger( self._map, 'resize' );
                 } );
+                // Attach Listeners
                 this._map.addListener( 'click', function( e ) {
                     eventStage.googleMaps.onMapClick.call( self, e );
                 } );
@@ -807,7 +835,7 @@
                     watch: {
                         model: {
                             handler: function () {
-                            	this.model.country = this.countries[ this.model.countryID - 1 ];
+                                this.model.country = this.countries[ this.model.countryID - 1 ];
                                 this.valid = !this.validator( this.model );
                             },
                             deep: true
@@ -818,6 +846,12 @@
                         var reset = function() {
                             // Locally clone existing object
                             self.model = $.extend( true, {}, self.value );
+                            // Remove Function References
+                            for ( var name in self.model ) {
+                                if ( self.model.hasOwnProperty( name ) && $.isFunction( self.model[ name ] ) ) {
+                                    delete self.model[ name ];
+                                }
+                            }
                             console.info( 'edit-modal', self._uid, 'Reseting model data from source' );
                         };
                         $( this.$el ).on( 'show.bs.modal hidden.bs.modal', reset );
@@ -825,11 +859,11 @@
                         this.$on( 'done', function() {
                             // Copy properties to original object
                             $.extend( self.value, self.model );
+                            console.log( self.value, self.model );
                             console.info( 'edit-modal', self._uid, 'Cloning changes back to source' );
                         } );
                     },
                     data: function() {
-
                     	return {
                     		countries: locales.countries,
                     		regions: locales.regions,

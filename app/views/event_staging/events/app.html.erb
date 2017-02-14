@@ -18,7 +18,7 @@
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-					<ajax-select class="form-control" :disabled="eventData.organization.new" v-model="eventData.organization.id" url="get-courses">
+					<ajax-select class="form-control" :disabled="eventModel.organization" v-model="eventModel.organizationId" url="get-courses">
 						<option value="" selected disabled>Select One</option>
 					</ajax-select>
 				</div>
@@ -26,24 +26,7 @@
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventData.organization.new = true">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
-				</div>
-			</div>
-		</div>
-		<div class="well well-sm border-none" v-show="eventData.organization.new">
-			<div class="row">
-				<div class="form-group col-xs-12">
-					<label class="required">Organization Name</label>
-					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="Your organization name" v-model="eventData.organization.name">
-				</div>
-				<div class="form-group col-xs-12">
-					<label>Description</label>
-					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<textarea class="form-control" placeholder="Organization Description" v-model="eventData.organization.description"></textarea>
-				</div>
-				<div class="col-xs-12">
-					<span class="brackets" v-on:click="eventData.organization.new = false"><a href="#">Cancel</a></span>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.organization = {}">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
@@ -52,15 +35,15 @@
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-5 col-sm-7 col-md-8">
-					<input type="text" class="form-control" v-model="eventData.event.date" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
+					<input type="text" class="form-control" v-model="eventModel.date" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
 				</div>
 				<div class="col-xs-7 col-sm-5 col-md-4 form-control-fill">
-					<select class="form-control" v-model="eventData.event.hours">
+					<select class="form-control" v-model="eventModel.hours">
 						<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>
 						<option v-for="h in 12" :value="( h + 12 ) % 24">{{ h | padding( 2, '0' ) }} PM</option>
 					</select>
 					<span class="text-center">&nbsp;:&nbsp;</span>
-					<select class="form-control" v-model="eventData.event.minutes">
+					<select class="form-control" v-model="eventModel.minutes">
 						<option v-for="m in 12" :value="( m - 1 ) * 5">{{ ( m - 1 ) * 5 | padding( 2, '0' ) }}</option>
 					</select>
 				</div>
@@ -69,14 +52,14 @@
 		<div class="form-group">
 			<label class="required">Event Name</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<input type="text" class="form-control" placeholder="Your event name" v-model="eventData.event.name" v-prefill="eventData.organization.name + ' ' + ( new Date( eventData.event.date ).getFullYear() )">
+			<input type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name">
 		</div>
 		<div class="form-group event-info-course-row">
 			<label for="event-start-time">Select Course</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-					<ajax-select class="form-control" :disabled="eventData.course.new" v-model="eventData.course.id" url="get-courses">
+					<ajax-select class="form-control" :disabled="eventModel.course" v-model="eventModel.courseId" url="get-courses">
 						<option value="" selected disabled>Select One</option>
 					</ajax-select>
 				</div>
@@ -84,37 +67,37 @@
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventData.course.new = true">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.course = {}">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm border-none" v-show="eventData.course.new">
+		<div class="well well-sm border-none" v-show="eventModel.course">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Course Name</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="Your course name" v-model="eventData.course.name" v-prefill="eventData.organization.name + ' Course'">
+					<input type="text" class="form-control" placeholder="Your course name" v-model="eventModel.course.name">
 				</div>
 				<div class="form-group col-xs-12">
 					<label class="required">Course Distance</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="miles" v-model="eventData.course.distance" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<input type="text" class="form-control" placeholder="miles" v-model="eventModel.course.distance" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-6">
 					<label class="required">Total Vertical Gain</label>
-					<input type="text" class="form-control" placeholder="feet" v-model="eventData.course.verticalGain" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<input type="text" class="form-control" placeholder="feet" v-model="eventModel.course.verticalGain" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-6">
 					<label class="required">Total Vertical Loss</label>
-					<input type="text" class="form-control" placeholder="feet" v-model="eventData.course.verticalLoss" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<input type="text" class="form-control" placeholder="feet" v-model="eventModel.course.verticalLoss" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-12">
 					<label>Description</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<textarea class="form-control" placeholder="Course Description" v-model="eventData.course.description"></textarea>
+					<textarea class="form-control" placeholder="Course Description" v-model="eventModel.course.description"></textarea>
 				</div>
 				<div class="col-xs-12">
-					<span class="brackets" v-on:click="eventData.course.new = false"><a href="#">Cancel</a></span>
+					<span class="brackets" v-on:click="eventModel.course.new = false"><a href="#">Cancel</a></span>
 				</div>
 			</div>
 		</div>
@@ -127,7 +110,7 @@
 					<div class="form-inline">
 						<label class="switchery-label">
 							<span>No</span>
-							<input type="checkbox" data-toggle="switchery" data-size="small" value="true" v-model="eventData.event.laps"/>
+							<input type="checkbox" data-toggle="switchery" data-size="small" value="true" v-model="eventModel.laps"/>
 							<span>Yes</span>
 						</label>
 						
@@ -135,9 +118,9 @@
 				</div>
 				<div class="col-xs-8">
 					<div class="form-inline float-left">
-						<label v-if="eventData.event.laps">
+						<label v-if="eventModel.laps">
 							How many laps?
-							<input type="text" class="form-control" v-model="eventData.event.lapCount" v-mask="{ alias: 'integer' }" >
+							<input type="text" class="form-control" v-model="eventModel.lapCount" v-mask="{ alias: 'integer' }" >
 						</label>
 					</div>
 				</div>
@@ -146,7 +129,7 @@
 		<div class="form-group">
 			<label>Description</label>
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<textarea class="form-control" placeholder="Your event's description" v-model="eventData.event.description"></textarea>
+			<textarea class="form-control" placeholder="Your event's description" v-model="eventModel.description"></textarea>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
@@ -183,11 +166,11 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<google-map editable :markers="eventData.splits" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations" v-model="eventData.temp" :polyline="eventData.splits"></google-map>
-				{{ eventData.temp }}
+				<google-map editable :markers="eventModel.splits" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations" v-model="eventModel.temp" :polyline="eventModel.splits"></google-map>
+				{{ eventModel.temp }}
 			</div>
 			<div class="col-xs-12">
-				<data-tables :rows="eventData.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event" class="splits-table">
+				<data-tables :rows="eventModel.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event" class="splits-table">
 					<tr slot="header">
 						<th></th>
 						<th data-orderable="false">Name</th>
@@ -209,11 +192,11 @@
 						</th>
 					</tr>
 					<template slot="row" scope="vm">
-						<td><i class="glyphicon glyphicon-flag"></i></td>
-						<td>{{ vm.row.name }}</td>
-						<td>{{ vm.row.distance }}</td>
-						<td>{{ vm.row.verticalGain }}</td>
-						<td>{{ vm.row.verticalLoss }}</td>
+						<td><i class="glyphicon glyphicon-flag"></i>{{ vm.row.kind }}</td>
+						<td>{{ vm.row.baseName }}</td>
+						<td>{{ vm.row.distanceFromStart }}</td>
+						<td>{{ vm.row.vertGainFromStart }}</td>
+						<td>{{ vm.row.vertLossFromStart }}</td>
 						<td>
 							<span class="marker"><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
 							<a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a>
@@ -233,7 +216,7 @@
 			</div>
 		</div>
 	</article>
-	<edit-modal v-model="modalData" :validator="isValid" v-on:done="!( modalData._dtid ) && eventData.splits.push( modalData )" inline-template>
+	<edit-modal v-model="modalData" :validator="isValid" v-on:done="!( modalData._dtid ) && eventModel.splits.push( modalData )" inline-template>
 		<div id="js-split-modal" tabindex="-1" role="dialog" class="modal fade">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
@@ -251,7 +234,7 @@
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.name">
+										<input type="text" class="form-control" v-model="model.baseName">
 									</div>
 									<div class="form-group col-xs-6">
 										<label class="required">Description</label>
@@ -267,7 +250,7 @@
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.distance" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model="model.distanceFromStart" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-6">
 										<label class="required">Time Recording</label>
@@ -276,7 +259,7 @@
 										</span>
 										<div class="split-time-recording-wrap">
 											<input type="radio" name="split-time" value="in" v-model="model.times" id="split-time-in" class="custom-radio"><label for="split-time-in">Time In</label>&nbsp;&nbsp;
-											<input type="radio" name="split-time" value="inandout" v-model="model.times" id="split-time-inout" class="custom-radio"><label for="split-time-inout">Time In and Out</label>
+											<input type="radio" name="split-time" value="inout" v-model="model.times" id="split-time-inout" class="custom-radio"><label for="split-time-inout">Time In and Out</label>
 										</div>
 									</div>
 								</div>
@@ -286,14 +269,14 @@
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.verticalGain" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model="model.vertGainFromStart" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-6 vg-group">
 										<label class="required">Vertical Loss From Start</label>
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.verticalLoss" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model="model.vertLossFromStart" v-mask="{ alias: 'decimal' }">
 									</div>
 								</div>
 								<div class="row">
@@ -307,17 +290,11 @@
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<div class="row">
-											<div class="col-xs-6">
-												<input type="text" class="form-control" v-if="model.location" v-model="model.location.name" :disabled="model.location.id">
-											</div>
-											<div class="col-xs-6 form-control-fill">
-												<span>or</span>
-												<ajax-select class="form-control" v-model="model.locationId" url="get-locations" v-on:input="model.locationName = ''">
-													<option value="" selected disabled>Select One</option>
-													<option value="24">Location A</option>
-												</ajax-select>
-											</div>
+										<div class="input-group">
+											<input type="text" class="form-control" v-if="model.location" v-model="model.location.name" :disabled="model.location.id">
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-warning">Warning</button>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -386,7 +363,7 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<data-tables :rows="eventData.participants" :filter="filter" :entries="30" v-on:edit="modalData = $event;">
+				<data-tables :rows="eventModel.efforts" :filter="filter" :entries="30" v-on:edit="modalData = $event;">
 					<tr slot="header">
 						<th>Name</th>
 						<th>M/F</th>
@@ -399,7 +376,7 @@
 						<th colspan="2" data-orderable="false">&nbsp;</th>
 					</tr>
 					<template slot="row" scope="vm">
-						<td>{{ vm.row.first }} {{ vm.row.last }}</td>
+						<td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
 						<td>{{ vm.row.gender }}</td>
 						<td>{{ vm.row.dob }}</td>
 						<td>{{ vm.row.city }}, {{ vm.row.state }}</td>
@@ -420,7 +397,7 @@
 			</div>
 		</div>
 	</article>
-	<edit-modal v-model="modalData" :validator="isValid" v-on:done="!( modalData._dtid ) && eventData.participants.push( modalData )" inline-template>
+	<edit-modal v-model="modalData" :validator="modalData.validate" v-on:done="!( modalData._dtid ) && eventModel.participants.push( modalData )" inline-template>
 		<div id="js-participant-modal" tabindex="-1" role="dialog" class="modal fade participant-modal">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -432,17 +409,17 @@
 						</div>
 						<div class="row">					
 							<div class="form-group col-xs-6">
-								<input type="text" class="form-control" v-model="model.first" placeholder="First Name"></input>
+								<input type="text" class="form-control" v-model="model.firstName" placeholder="First Name"></input>
 							</div>
 							<div class="form-group col-xs-6">
-								<input type="text" class="form-control" v-model="model.last" placeholder="Last Name"></input>
+								<input type="text" class="form-control" v-model="model.lastName" placeholder="Last Name"></input>
 							</div>
 						</div>
 						<div class="row">
 							<div class="form-group col-xs-6">
 								<label class="required">Gender</label><br />
-								<input type="radio" name="gender" value="M" v-model="model.gender" id="gender-m" class="custom-radio"><label for="gender-m">Male</label>&nbsp;&nbsp;
-								<input type="radio" name="gender" value="F" v-model="model.gender" id="gender-f" class="custom-radio"><label for="gender-f">Female</label>
+								<input type="radio" name="gender" value="male" v-model="model.gender" id="gender-m" class="custom-radio"><label for="gender-m">Male</label>&nbsp;&nbsp;
+								<input type="radio" name="gender" value="female" v-model="model.gender" id="gender-f" class="custom-radio"><label for="gender-f">Female</label>
 							</div>
 							<div class="form-group col-xs-6">
 								<label>Date of Birth</label>
@@ -452,7 +429,7 @@
 						<div class="row">
 							<div class="form-group col-xs-6">
 								<label class="required">Bib Number</label>
-								<input type="text" class="form-control" v-model="model.bibnumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
+								<input type="text" class="form-control" v-model="model.bibNumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
 							</div>
 
 							<div class="form-group col-xs-6">
@@ -562,22 +539,22 @@
 			<tbody>
 				<tr>
 					<th>Race Name</th>
-					<td>{{ eventData.event.name }}</td>
+					<td>{{ eventModel.event.name }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
 				</tr>
 				<tr>
 					<th>Start Date</th>
-					<td>{{ eventData.event.date }} {{ eventData.event.hours % 12 }}:{{ eventData.event.minutes }}</td>
+					<td>{{ eventModel.event.date }} {{ eventModel.event.hours % 12 }}:{{ eventModel.event.minutes }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
 				</tr>
 				<tr>
 					<th>Description</th>
-					<td>{{ eventData.event.description }}</td>
+					<td>{{ eventModel.event.description }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
 				</tr>
 				<tr>
 					<th>Course</th>
-					<td>{{ eventData.course.name }}</td>
+					<td>{{ eventModel.course.name }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th>Distance</th>
@@ -646,7 +623,7 @@
 	
 	<div class="container">
 		<div class="row">
-			<div is="router-view" v-bind:event-data="eventData"></div>
+			<div is="router-view" v-bind:event-model="eventModel"></div>
 		</div>
 	</div>
 </div>

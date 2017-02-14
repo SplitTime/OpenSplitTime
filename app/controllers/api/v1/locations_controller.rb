@@ -2,8 +2,13 @@ class Api::V1::LocationsController < ApiController
   before_action :set_location, except: :create
 
   def show
-    authorize @location
-    render json: @location
+    if @location
+      authorize @location
+      render json: @location
+    else
+      skip_authorization
+      render json: {error: 'not found'}
+    end
   end
 
   def create

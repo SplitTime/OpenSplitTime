@@ -2,8 +2,13 @@ class Api::V1::SplitsController < ApiController
   before_action :set_split, except: :create
 
   def show
-    authorize @split
-    render json: @split
+    if @split
+      authorize @split
+      render json: @split
+    else
+      skip_authorization
+      render json: {error: 'not found'}
+    end
   end
 
   def create

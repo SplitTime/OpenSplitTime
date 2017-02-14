@@ -31,6 +31,24 @@ class Api::V1::StagingController < ApiController
     render json: {countries: Geodata.standard_countries_subregions }
   end
 
+  # POST /api/v1/staging/post_event_split_location
+  def post_event_split_location
+    authorize @event
+    if params[:split_id]
+      # Find and update
+    else
+      # Create new split
+      # Associate with event
+    end
+
+    if params[:location_id]
+      # Find and update
+    else
+      # Create new location
+      # Associate with split
+    end
+  end
+
   private
 
   def set_event

@@ -48,7 +48,7 @@
      */
     var locales = {
     	countries : [],
-    	regions : []
+    	regions : {}
     }
 
     /**
@@ -268,18 +268,9 @@
         ajaxPopulateLocale: function() {
         	$.get( '/api/v1/staging/get_countries', function( response ) {
         		for ( var i in response.countries ) {
-        			locales.countries.push( response.countries[i].name );
-        			var regions = '';
-        			var first = true;
-    				for ( var ii in response.countries[i].subregions ) {
-        				//console.log( response.countries[i].subregions[ii] );
-        				if ( first !== true ) {
-        					regions += '|';
-        				}
-        				first = false;
-        				regions += response.countries[i].subregions[ii];
-        			}
-        			locales.regions.push( regions );
+        			locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
+                    if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
+                    locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
         		}
         		console.log( locales );
         	} );
@@ -835,7 +826,6 @@
                     watch: {
                         model: {
                             handler: function () {
-                                this.model.country = this.countries[ this.model.countryID - 1 ];
                                 this.valid = !this.validator( this.model );
                             },
                             deep: true

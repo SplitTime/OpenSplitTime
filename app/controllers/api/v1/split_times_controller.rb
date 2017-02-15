@@ -2,13 +2,8 @@ class Api::V1::SplitTimesController < ApiController
   before_action :set_split_time, except: :create
 
   def show
-    if @split_time
-      authorize @split_time
-      render json: @split_time, serializer: OstExchangeSerializer
-    else
-      skip_authorization
-      render json: {error: 'not_found'}
-    end
+    authorize @split_time
+    render json: @split_time
   end
 
   def create
@@ -16,27 +11,27 @@ class Api::V1::SplitTimesController < ApiController
     authorize split_time
 
     if split_time.save
-      render json: split_time
+      render json: {message: 'split_time created', split_time: split_time}
     else
-      render json: {error: "#{split_time.errors.full_messages}"}
+      render json: {message: 'split_time not created', error: "#{split_time.errors.full_messages}"}, status: :bad_request
     end
   end
 
   def update
     authorize @split_time
     if @split_time.update(split_time_params)
-      render json: @split_time
+      render json: {message: 'split_time updated', split_time: @split_time}
     else
-      render json: {error: "#{@split_time.errors.full_messages}"}
+      render json: {message: 'split_time not updated', error: "#{@split_time.errors.full_messages}"}, status: :bad_request
     end
   end
 
   def destroy
     authorize @split_time
     if @split_time.destroy
-      render json: @split_time
+      render json: {message: 'split_time destroyed', split_time: @split_time}
     else
-      render json: {error: "#{@split_time.errors.full_messages}"}
+      render json: {message: 'split_time not destroyed', error: "#{@split_time.errors.full_messages}"}, status: :bad_request
     end
   end
 
@@ -44,9 +39,10 @@ class Api::V1::SplitTimesController < ApiController
 
   def set_split_time
     @split_time = SplitTime.find_by(id: params[:id])
+    render json: {message: 'split_time not found'}, status: :not_found unless @split_time
   end
 
   def split_time_params
-    params.require(:split_time).permit(:id, :name, :latitude, :longitude, :elevation, :description)
+    params.require(:split_time).permit(:id, :effort_id, :lap, :split_id, :time_from_start, :sub_split_bitkey)
   end
 end

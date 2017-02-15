@@ -8,18 +8,18 @@ describe Api::V1::EventsController do
 
   describe '#show' do
     it 'returns a successful 200 response' do
-      get :show, id: event
+      get :show, staging_id: event.staging_id
       expect(response).to be_success
     end
 
     it 'returns data of a single event' do
-      get :show, id: event
+      get :show, staging_id: event.staging_id
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['id']).to eq(event.id)
     end
 
     it 'returns an error if the event does not exist' do
-      get :show, id: 0
+      get :show, staging_id: 123
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response).to be_not_found
@@ -36,11 +36,12 @@ describe Api::V1::EventsController do
       expect(response).to be_success
     end
 
-    it 'creates an event record' do
+    it 'creates an event record with a staging_id' do
       expect(Event.all.count).to eq(0)
       post :create, event: {course_id: course.id, name: 'Test Event',
                             start_time: '2017-03-01 06:00:00', laps_required: 1}
       expect(Event.all.count).to eq(1)
+      expect(Event.first.staging_id).not_to be_nil
     end
   end
 
@@ -48,20 +49,20 @@ describe Api::V1::EventsController do
     let(:attributes) { {name: 'Updated Event Name'} }
 
     it 'returns a successful json response with success message' do
-      put :update, id: event, event: attributes
+      put :update, staging_id: event.staging_id, event: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/event updated/)
       expect(response).to be_success
     end
 
     it 'updates the specified fields' do
-      put :update, id: event, event: attributes
+      put :update, staging_id: event.staging_id, event: attributes
       event.reload
       expect(event.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the event does not exist' do
-      put :update, id: 0, event: attributes
+      put :update, staging_id: 123, event: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response).to be_not_found
@@ -70,7 +71,7 @@ describe Api::V1::EventsController do
 
   describe '#destroy' do
     it 'returns a successful json response with success message' do
-      delete :destroy, id: event
+      delete :destroy, staging_id: event.staging_id
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/event destroyed/)
       expect(response).to be_success
@@ -79,12 +80,72 @@ describe Api::V1::EventsController do
     it 'destroys the event record' do
       test_event = event
       expect(Event.all.count).to eq(1)
-      delete :destroy, id: test_event
+      delete :destroy, staging_id: test_event.staging_id
       expect(Event.all.count).to eq(0)
     end
 
     it 'returns an error if the event does not exist' do
-      delete :destroy, id: 0
+      delete :destroy, staging_id: 123
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['message']).to match(/not found/)
+      expect(response).to be_not_found
+    end
+  end
+
+  describe '#associate_splits' do
+    let(:splits_count) { 3 }
+    let(:splits) { FactoryGirl.create_list(:split, splits_count, course: course) }
+    let(:split_ids) { splits.map(&:id) }
+
+    it 'returns a successful json response with success message' do
+      put :associate_splits, staging_id: event.staging_id, split_ids: split_ids
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['message']).to match(/splits associated/)
+      expect(response).to be_success
+    end
+
+    it 'associates the specified splits with the event' do
+      expect(event.splits.ids).to eq([])
+      put :associate_splits, staging_id: event.staging_id, split_ids: split_ids
+      expect(event.splits.size).to eq(splits_count)
+      expect(event.splits.ids).to eq(split_ids)
+    end
+
+    it 'returns an error if the splits do not exist' do
+      put :associate_splits, staging_id: event.staging_id, split_ids: [0]
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['message']).to match(/not found/)
+      expect(response).to be_not_found
+    end
+  end
+
+  describe '#remove_split' do
+    let(:splits_count) { 3 }
+    let(:removed_splits_count) { removed_split_ids.size }
+    let(:splits) { FactoryGirl.create_list(:split, splits_count, course: course) }
+    let(:split_ids) { splits.map(&:id) }
+    let(:removed_split_ids) { split_ids.last(2) }
+    before do
+      event.splits << splits
+    end
+
+    it 'returns a successful json response with success message' do
+      delete :remove_splits, staging_id: event.staging_id, split_ids: removed_split_ids
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['message']).to match(/splits removed/)
+      expect(response).to be_success
+    end
+
+    it 'removes the specified split from the event' do
+      expect(event.splits.ids).to eq(split_ids)
+      expect(event.splits.size).to eq(splits_count)
+      delete :remove_splits, staging_id: event.staging_id, split_ids: removed_split_ids
+      expect(event.splits.size).to eq(splits_count - removed_splits_count)
+      expect(event.splits.ids).to eq(split_ids - removed_split_ids)
+    end
+
+    it 'returns an error if the split does not exist' do
+      delete :remove_splits, staging_id: event.staging_id, split_ids: [0]
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response).to be_not_found

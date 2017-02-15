@@ -43,7 +43,6 @@ Rails.application.routes.draw do
     member { post :import_efforts_military_times }
     member { post :import_efforts_without_times }
     member { get :splits }
-    member { put :associate_split }
     member { put :associate_splits }
     member { put :set_data_status }
     member { put :set_dropped_attributes }
@@ -126,7 +125,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :courses, only: [:show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
-      resources :events, only: [:show, :create, :update, :destroy]
+      resources :events, only: [:show, :create, :update, :destroy], param: :staging_id do
+        member { delete :remove_splits }
+        member { put :associate_splits }
+      end
       resources :locations, only: [:show, :create, :update, :destroy]
       resources :organizations, only: [:show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]

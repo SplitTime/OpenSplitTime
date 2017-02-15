@@ -54,10 +54,6 @@ class EventPolicy
     current_user.authorized_to_edit?(event)
   end
 
-  def associate_split?
-    current_user.authorized_to_edit?(event)
-  end
-
   def associate_splits?
     current_user.authorized_to_edit?(event)
   end

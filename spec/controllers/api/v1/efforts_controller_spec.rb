@@ -32,6 +32,7 @@ describe Api::V1::EffortsController do
       post :create, effort: {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/effort created/)
+      expect(parsed_response['effort']['id']).not_to be_nil
       expect(response).to be_success
     end
 

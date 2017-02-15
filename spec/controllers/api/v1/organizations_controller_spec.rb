@@ -30,6 +30,7 @@ describe Api::V1::OrganizationsController do
       post :create, organization: {name: 'Test Organization'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/organization created/)
+      expect(parsed_response['organization']['id']).not_to be_nil
       expect(response).to be_success
     end
 

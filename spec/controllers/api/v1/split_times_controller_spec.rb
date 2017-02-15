@@ -35,6 +35,7 @@ describe Api::V1::SplitTimesController do
                                  sub_split_bitkey: 1, time_from_start: 100}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/split_time created/)
+      expect(parsed_response['split_time']['id']).not_to be_nil
       expect(response).to be_success
     end
 

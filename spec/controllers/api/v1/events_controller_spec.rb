@@ -32,6 +32,7 @@ describe Api::V1::EventsController do
                             start_time: '2017-03-01 06:00:00', laps_required: 1}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/event created/)
+      expect(parsed_response['event']['id']).not_to be_nil
       expect(response).to be_success
     end
 

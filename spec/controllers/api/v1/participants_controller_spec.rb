@@ -30,6 +30,7 @@ describe Api::V1::ParticipantsController do
       post :create, participant: {first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/participant created/)
+      expect(parsed_response['participant']['id']).not_to be_nil
       expect(response).to be_success
     end
 

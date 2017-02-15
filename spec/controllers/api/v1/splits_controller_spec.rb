@@ -32,6 +32,7 @@ describe Api::V1::SplitsController do
                             kind: 'intermediate', sub_split_bitkey: 1}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/split created/)
+      expect(parsed_response['split']['id']).not_to be_nil
       expect(response).to be_success
     end
 

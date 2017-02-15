@@ -30,6 +30,7 @@ describe Api::V1::CoursesController do
       post :create, course: {name: 'Test Course'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/course created/)
+      expect(parsed_response['course']['id']).not_to be_nil
       expect(response).to be_success
     end
 

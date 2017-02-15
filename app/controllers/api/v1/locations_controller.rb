@@ -2,13 +2,8 @@ class Api::V1::LocationsController < ApiController
   before_action :set_location, except: :create
 
   def show
-    if @location
-      authorize @location
-      render json: @location
-    else
-      skip_authorization
-      render json: {error: 'not found'}
-    end
+    authorize @location
+    render json: @location
   end
 
   def create
@@ -16,27 +11,27 @@ class Api::V1::LocationsController < ApiController
     authorize location
 
     if location.save
-      render json: location
+      render json: {message: 'location created', location: location}
     else
-      render json: {error: "#{location.errors.full_messages}"}
+      render json: {message: 'location not created', error: "#{location.errors.full_messages}"}, status: :bad_request
     end
   end
 
   def update
     authorize @location
     if @location.update(location_params)
-      render json: @location
+      render json: {message: 'location updated', location: @location}
     else
-      render json: {error: "#{@location.errors.full_messages}"}
+      render json: {message: 'location not updated', error: "#{@location.errors.full_messages}"}, status: :bad_request
     end
   end
 
   def destroy
     authorize @location
     if @location.destroy
-      render json: @location
+      render json: {message: 'location destroyed', location: @location}
     else
-      render json: {error: "#{@location.errors.full_messages}"}
+      render json: {message: 'location not destroyed', error: "#{@location.errors.full_messages}"}, status: :bad_request
     end
   end
 
@@ -44,6 +39,7 @@ class Api::V1::LocationsController < ApiController
 
   def set_location
     @location = Location.find_by(id: params[:id])
+    render json: {message: 'location not found'}, status: :not_found unless @location
   end
 
   def location_params

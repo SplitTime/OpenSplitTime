@@ -32,25 +32,6 @@ class Api::V1::StagingController < ApiController
     render json: {countries: Geodata.standard_countries_subregions}
   end
 
-  # POST /api/v1/staging/:staging_id/post_event_split_location
-  def post_event_split_location
-    authorize @event
-
-    Split.transaction do
-      if params[:location].present?
-        @location_id = params[:location][:id]
-        if @location_id.present?
-          redirect_to api_v1_location_path(@location_id), method: :put, params: {location: params[:location]} and return
-        else
-          redirect_to api_v1_locations_path, method: :post, params: {location: params[:location]} and return
-        end
-      end
-
-
-      render json: {message: 'complete'}
-    end
-  end
-
   private
 
   def set_event

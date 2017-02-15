@@ -3,9 +3,6 @@ require 'rails_helper'
 describe Api::V1::StagingController do
   login_admin
 
-  let(:split) { FactoryGirl.create(:split, course: course) }
-  let(:course) { FactoryGirl.create(:course) }
-
   describe '#get_countries' do
     it 'returns a successful 200 response' do
       get :get_countries

@@ -37,6 +37,13 @@ describe Api::V1::SplitTimesController do
       expect(parsed_response['message']).to match(/split_time created/)
       expect(response).to be_success
     end
+
+    it 'creates a split_time record' do
+      expect(SplitTime.all.count).to eq(0)
+      post :create, split_time: {effort_id: effort.id, lap: 1, split_id: split.id,
+                                 sub_split_bitkey: 1, time_from_start: 100}
+      expect(SplitTime.all.count).to eq(1)
+    end
   end
 
   describe '#update' do

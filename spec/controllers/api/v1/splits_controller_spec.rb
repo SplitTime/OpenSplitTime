@@ -34,6 +34,13 @@ describe Api::V1::SplitsController do
       expect(parsed_response['message']).to match(/split created/)
       expect(response).to be_success
     end
+
+    it 'creates a split record' do
+      expect(Split.all.count).to eq(0)
+      post :create, split: {base_name: 'Test Split', course_id: course.id, distance_from_start: 100,
+                            kind: 'intermediate', sub_split_bitkey: 1}
+      expect(Split.all.count).to eq(1)
+    end
   end
 
   describe '#update' do

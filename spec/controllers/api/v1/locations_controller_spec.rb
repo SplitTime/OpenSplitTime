@@ -32,6 +32,12 @@ describe Api::V1::LocationsController do
       expect(parsed_response['message']).to match(/location created/)
       expect(response).to be_success
     end
+
+    it 'creates a location record' do
+      expect(Location.all.count).to eq(0)
+      post :create, location: {name: 'Test Location'}
+      expect(Location.all.count).to eq(1)
+    end
   end
 
   describe '#update' do

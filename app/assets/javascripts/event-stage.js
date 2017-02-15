@@ -615,7 +615,6 @@
                         this._location = new google.maps.Marker( {
                             position: { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) },
                             map: this._map,
-                            //icon: '<%= asset_path('icons/green.svg') %>',
                             title: this.value.name,
                             draggable: true,
                             zIndex: google.maps.Marker.MAX_ZINDEX + 1
@@ -686,7 +685,7 @@
                                 position: { lat: parseFloat( data[i].latitude ) , lng: parseFloat( data[i].longitude ) },
                                 map: self._map,
                                 icon: {
-                                    url: data[i].editable ? '<%= asset_path( 'icons/dot-blue.svg' ) %>' : '<%= asset_path( 'icons/dot-lblue.svg' ) %>',
+                                    url: data[i].editable ? '/assets/icons/dot-blue.svg' : '/assets/icons/dot-lblue.svg',
                                     labelOrigin: new google.maps.Point( 12, 14 ),
                                     anchor: new google.maps.Point( 16, 16 )
                                 },

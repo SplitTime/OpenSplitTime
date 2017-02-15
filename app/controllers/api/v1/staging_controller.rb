@@ -28,25 +28,17 @@ class Api::V1::StagingController < ApiController
   # GET /api/v1/staging/get_countries
   def get_countries
     authorize :event_staging, :get_countries?
-    render json: {countries: Geodata.standard_countries_subregions }
+    render json: {countries: Geodata.standard_countries_subregions}
   end
 
   # POST /api/v1/staging/post_event_split_location
   def post_event_split_location
     authorize @event
-    if params[:split_id]
-      # Find and update
-    else
-      # Create new split
-      # Associate with event
-    end
-
-    if params[:location_id]
-      # Find and update
-    else
-      # Create new location
-      # Associate with split
-    end
+    location = Location.find_by(id: params[:location][:id])
+    authorize location if location
+    split = Split.find_by(id: params[:split][:id])
+    authorize split if split
+    render json: {message: 'complete'}
   end
 
   private

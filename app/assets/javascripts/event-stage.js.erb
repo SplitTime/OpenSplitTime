@@ -617,7 +617,8 @@
                             map: this._map,
                             //icon: '<%= asset_path('icons/green.svg') %>',
                             title: this.value.name,
-                            draggable: true
+                            draggable: true,
+                            zIndex: google.maps.Marker.MAX_ZINDEX + 1
                         } );
                         var self = this;
                         this._location.addListener( 'dragend', function( e ) {
@@ -684,10 +685,11 @@
                             var marker = new google.maps.Marker( {
                                 position: { lat: parseFloat( data[i].latitude ) , lng: parseFloat( data[i].longitude ) },
                                 map: self._map,
-                                // icon: {
-                                //     url: '<%= asset_path( 'icons/lblue.svg' ) %>',
-                                //     labelOrigin: new google.maps.Point( 12, 14 )
-                                // },
+                                icon: {
+                                    url: data[i].editable ? '<%= asset_path( 'icons/dot-blue.svg' ) %>' : '<%= asset_path( 'icons/dot-lblue.svg' ) %>',
+                                    labelOrigin: new google.maps.Point( 12, 14 ),
+                                    anchor: new google.maps.Point( 16, 16 )
+                                },
                                 title: data[i].name,
                             } );
                             marker._data = new Location( data[i] );
@@ -754,12 +756,16 @@
                 node.append( '<a class="js-clone btn-sm btn btn-default">Clone</a>' );
                 this._infowindow = new google.maps.InfoWindow( { content: node[0] } );
                 node.on( 'click', '.js-use', function() {
-                    console.log( 'Use', node.data( 'location' ) );
                     self._infowindow.close();
+                    self.$emit( 'input', new Location( node.data( 'location' ) ) );
                 } );
                 node.on( 'click', '.js-clone', function() {
-                    console.log( 'Clone', node.data( 'location' ) );
                     self._infowindow.close();
+                    self.$emit( 'input', new Location( {
+                        latitude: node.data( 'location' ).latitude,
+                        longitude: node.data( 'location' ).longitude,
+                        elevation: node.data( 'location' ).elevation
+                    } ) );
                 } );
                 // Google Maps in Modal Fix
                 $( this.$el ).closest( '.modal' ).on( 'shown.bs.modal', function() {

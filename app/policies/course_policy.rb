@@ -38,4 +38,7 @@ class CoursePolicy
     current_user.present?
   end
 
+  def post_event_course_org?
+    current_user.authorized_to_edit?(course)
+  end
 end

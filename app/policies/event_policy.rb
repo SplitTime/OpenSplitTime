@@ -165,4 +165,8 @@ class EventPolicy
   def event_staging_app?
     current_user.authorized_for_live?(event)
   end
+
+  def post_event_course_org?
+    current_user.authorized_for_live?(event)
+  end
 end

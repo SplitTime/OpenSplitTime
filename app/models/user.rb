@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   end
 
   def authorized_to_edit?(resource)
-    admin? | (id == resource.created_by)
+    admin? | (id == resource.created_by) | resource.new_record?
   end
 
   def authorized_to_claim?(participant)
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   end
 
   def authorized_for_live?(resource)
-    admin? | (id == resource.created_by) | steward_of?(resource)
+    admin? | (id == resource.created_by) | steward_of?(resource) | resource.new_record?
   end
 
   def authorized_to_edit_personal?(effort)

@@ -38,4 +38,7 @@ class OrganizationPolicy
     current_user.authorized_to_edit?(organization)
   end
 
+  def post_event_course_org?
+    current_user.authorized_to_edit?(organization)
+  end
 end

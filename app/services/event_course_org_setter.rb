@@ -16,10 +16,11 @@ class EventCourseOrgSetter
   end
 
   def set_resources
-    Event.transaction do
+    ActiveRecord::Base.transaction do
       submitted_resources.each do |resource|
         update_resource(resource)
       end
+      raise ActiveRecord::Rollback if status
     end
     self.status ||= :ok
   end

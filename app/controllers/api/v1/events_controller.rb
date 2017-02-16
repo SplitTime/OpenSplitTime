@@ -43,12 +43,17 @@ class Api::V1::EventsController < ApiController
   # PUT /api/v1/events/:staging_id/associate_splits?split_ids=[x, y, ...]
   def associate_splits
     authorize @event
-    splits = Split.where(id: params[:split_ids])
-    if splits.present?
-      if @event.splits << splits
-        render json: {message: 'splits associated with event', splits: splits}
+    proposed_splits = Split.where(id: params[:split_ids])
+    if proposed_splits.present?
+      added_splits = proposed_splits - @event.splits
+      if added_splits.present?
+        if @event.splits << added_splits
+          render json: {message: 'splits associated with event', splits: added_splits}, status: :created
+        else
+          render json: {message: 'splits not associated with event'}, status: :bad_request
+        end
       else
-        render json: {message: 'splits not associated with event'}, status: :bad_request
+        render json: {message: 'splits already associated with event', splits: proposed_splits}
       end
     else
       render json: {message: 'splits not found'}, status: :not_found

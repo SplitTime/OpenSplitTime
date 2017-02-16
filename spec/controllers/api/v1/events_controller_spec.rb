@@ -111,6 +111,15 @@ describe Api::V1::EventsController do
       expect(event.splits.ids).to eq(split_ids)
     end
 
+    it 'does not create a second association for splits already associated' do
+      put :associate_splits, staging_id: event.staging_id, split_ids: split_ids
+      expect(event.splits.size).to eq(splits_count)
+      put :associate_splits, staging_id: event.staging_id, split_ids: split_ids
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['message']).to match(/already associated/)
+      expect(event.splits.size).to eq(splits_count)
+    end
+
     it 'returns an error if the splits do not exist' do
       put :associate_splits, staging_id: event.staging_id, split_ids: [0]
       parsed_response = JSON.parse(response.body)

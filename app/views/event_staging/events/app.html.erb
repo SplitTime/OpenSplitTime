@@ -18,7 +18,7 @@
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-					<ajax-select class="form-control" :disabled="eventModel.organization" v-model="eventModel.organizationId" url="get-courses">
+					<ajax-select class="form-control" v-model="eventModel.organizationId" url="get-courses">
 						<option value="" selected disabled>Select One</option>
 					</ajax-select>
 				</div>
@@ -26,7 +26,19 @@
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventModel.organization = {}">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.organizationNew = true; eventModel.organizationId = null">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+				</div>
+			</div>
+		</div>
+		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.organizationNew }" v-show="eventModel.organizationId || eventModel.organizationNew">
+			<div class="row">
+				<div class="form-group col-xs-12">
+					<label class="required">Organization Name</label>
+					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+					<input type="text" class="form-control" placeholder="Your course name" v-model="eventModel.organization.name">
+				</div>
+				<div class="col-xs-12" v-if="eventModel.organizationNew">
+					<span class="brackets" v-on:click="eventModel.organizationNew = false"><a href="#">Cancel</a></span>
 				</div>
 			</div>
 		</div>
@@ -59,7 +71,7 @@
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-					<ajax-select class="form-control" :disabled="eventModel.course" v-model="eventModel.courseId" url="get-courses">
+					<ajax-select class="form-control" v-model="eventModel.courseId" url="get-courses">
 						<option value="" selected disabled>Select One</option>
 					</ajax-select>
 				</div>
@@ -67,11 +79,11 @@
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventModel.course = {}">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.courseNew = true; eventModel.courseId = null">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm border-none" v-show="eventModel.course">
+		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.courseNew }" v-show="eventModel.courseId || eventModel.courseNew">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Course Name</label>
@@ -96,8 +108,8 @@
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 					<textarea class="form-control" placeholder="Course Description" v-model="eventModel.course.description"></textarea>
 				</div>
-				<div class="col-xs-12">
-					<span class="brackets" v-on:click="eventModel.course.new = false"><a href="#">Cancel</a></span>
+				<div class="col-xs-12" v-if="eventModel.courseNew">
+					<span class="brackets" v-on:click="eventModel.courseNew = false"><a href="#">Cancel</a></span>
 				</div>
 			</div>
 		</div>
@@ -365,6 +377,7 @@
 			<div class="col-xs-12">
 				<data-tables :rows="eventModel.efforts" :filter="filter" :entries="30" v-on:edit="modalData = $event;">
 					<tr slot="header">
+						<th data-orderable="false"></th>
 						<th>Name</th>
 						<th>M/F</th>
 						<th>DoB.</th>
@@ -376,6 +389,7 @@
 						<th colspan="2" data-orderable="false">&nbsp;</th>
 					</tr>
 					<template slot="row" scope="vm">
+						<td><i class="glyphicon glyphicon-ok-sign" v-if="vm.row.participantId"></i><i class="glyphicon glyphicon-question-sign" v-else></i></td>
 						<td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
 						<td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>
 						<td>{{ vm.row.birthdate }}</td>
@@ -397,7 +411,7 @@
 			</div>
 		</div>
 	</article>
-	<edit-modal v-model="modalData" :validator="modalData.validate" v-on:done="!( modalData._dtid ) && eventModel.participants.push( modalData )" inline-template>
+	<edit-modal v-model="modalData" :validator="modalData.validate" v-on:done="saveEffort" inline-template>
 		<div id="js-participant-modal" tabindex="-1" role="dialog" class="modal fade participant-modal">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">

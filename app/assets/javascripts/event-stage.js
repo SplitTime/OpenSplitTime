@@ -1,44 +1,5 @@
 (function ($) {
 
-    /**
-     * Blanks for adding new items to lists. Vuejs 
-     * will not work if these are not defined.
-     */
-    var blanks = {
-        participant: {
-            first: '',
-            last: '',
-            dob: '',
-            email: '',
-            phone: '',
-            gender: '',
-            bibnumber: '',
-            beacon: '',
-            city: '',
-            state: '',
-            country: '',
-            countryID: 0,
-            starthours: '',
-            startminutes: ''
-        },
-        split: {
-            name: '',
-            description: '', 
-            distance: '',
-            times: '',
-            times: '',
-            verticalGain: '',
-            verticalLoss: '',
-            location: {
-                id: null,
-                name: '',
-                latitude: '',
-                longitude: '',
-                elevation: '',
-            }
-        }
-    }
-
     function formatDate( date ) {
         return ("0" + (date.getMonth() + 1)).slice(-2) + "/" + ("0" + date.getDate()).slice(-2) + "/" + date.getFullYear();
     }
@@ -61,6 +22,7 @@
         Effort.prototype.import = function( data ) {
             this.id = data.id || null;
             this.age = data.age || '';
+            this.email = data.email || '';
             this.bibNumber = data.bibNumber || '';
             this.birthdate = data.birthdate || '';
             this.city = data.city || '';
@@ -71,13 +33,69 @@
             this.lastName = data.lastName || '';
             this.participantId = data.participantId || '';
         }
-        Effort.prototype.post = function() {
+        Effort.prototype.post = function( eventModel ) {
             var dfd = $.Deferred()
             console.warn( 'Effort', this.id, 'POST Not Fully Implemented' );
+            var self = this;
+            var data = { effort: {
+                event_id: eventModel.id,
+                first_name: this.firstName,
+                last_name: this.lastName,
+                bib_number: this.bibNumber,
+                birth_date: this.birthdate,
+                gender: this.gender,
+                city: this.city,
+                country_code: this.countryCode,
+                state_code: this.stateCode
+            } };
+            if ( this.id ) {
+                $.ajax( '/api/v1/efforts/' + this.id, {
+                    type: "PUT",
+                    data: data,
+                    dataType: "json",
+                } ).done( function( response ) {
+                    if ( response.effort && response.effort.id ) {
+                        self.import( response.effort );
+                        dfd.resolve();
+                    } else {
+                        console.error( 'Effort', self.id, 'Update failed with error ', response );
+                        dfd.reject();
+                    }
+                } ).fail( function( response ) {
+                    console.error( 'Effort', self.id, 'Update failed with error ', response.responseText || response.status );
+                    dfd.reject();
+                } );
+            } else {
+                $.ajax( '/api/v1/efforts/', {
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                } ).done( function( response ) {
+                    if ( response.effort && response.effort.id ) {
+                        self.import( response.effort );
+                        dfd.resolve();
+                    } else {
+                        console.error( 'Effort', self.id, 'Create failed with error ', response );
+                        dfd.reject();
+                    }
+                } ).fail( function( response ) {
+                    console.error( 'Effort', self.id, 'Create failed with error ', response.responseText || response.status );
+                    dfd.reject();
+                } );
+            }
             return dfd.promise();
         }
-        Effort.prototype.validate = function() {
-            console.warn( 'Effort', this.stagingId, 'Validator Not Fully Implemented' );
+        Effort.prototype.validate = function( context ) {
+            var self = ( context ) ? context : this;
+            console.warn( 'Effort', self.id, 'Validator Not Fully Implemented', ( context ) ? '[ External Context ]' : undefined );
+            if ( !self.firstName || self.firstName.length < 1 ) return false;
+            if ( !self.lastName || self.lastName.length < 1 ) return false;
+            if ( !self.gender ) return false;
+            if ( !self.countryCode ) return false;
+            if ( !self.stateCode ) return false;
+            if ( !self.email || self.city.email < 1 ) return false;
+            if ( !self.city || self.city.length < 1 ) return false;
+            if ( !self.bibNumber || self.bibNumber.length < 1 ) return false;
             return true;
         }
         Effort.prototype.fetch = function() {
@@ -173,7 +191,6 @@
                 description: ''
             }, data.course || {} );
             // Import Child Objects
-            console.log( data );
             this.splits.splice( 0, this.splits.length );
             for ( var i = 0; i < ( data.splits || [] ).length; i++ ) {
                 this.splits.push( new Split( data.splits[i] ) );
@@ -195,9 +212,10 @@
                 this.minutes = startTime.getMinutes();
             }
         }
-        Event.prototype.validate = function() {
-            console.warn( 'Event', this.stagingId, 'Validator Not Fully Implemented' );
-            if ( !this.startTime ) return false;
+        Event.prototype.validate = function( context ) {
+            var self = ( context ) ? context : this;
+            console.warn( 'Event', self.stagingId, 'Validator Not Fully Implemented' );
+            if ( !self.startTime ) return false;
             return true;
         }
         Event.prototype.post = function() {
@@ -231,8 +249,7 @@
             $.get( '/api/v1/staging/' + this.stagingId + '/get_event', {
                 dataType: "json",
             } ).done( function( data ) {
-                console.log( data );
-                console.info( 'Event', self.stagingId, 'Fetched Event Data From Server' );
+                console.info( 'Event', self.stagingId, 'Fetched Event Data From Server', data );
                 self.import( data );
                 dfd.resolve();
             } ).fail( function () {
@@ -372,7 +389,7 @@
                                 return true;
                             },
                             blank: function() {
-                                return $.extend( {}, blanks.split );
+                                return new Split();
                             }
                         },
                         watch: {
@@ -424,7 +441,15 @@
                                 return true;
                             },
                             blank: function() {
-                                return $.extend( {}, blanks.participant );
+                                return new Effort();
+                            },
+                            saveEffort: function() {
+                                if ( !this.modalData._dtid ) {
+                                    this.eventModel.efforts.push( this.modalData );
+                                }
+                                this.$nextTick( function() {
+                                    this.modalData.post( this.eventModel );
+                                } );
                             }
                         },
                         data: function() { return { 

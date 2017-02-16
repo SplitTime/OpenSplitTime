@@ -61,19 +61,23 @@
 	.well {
 		position: relative;
 		margin-top: 40px;
-	}
 
-	.well:after {
-		content: "";
-		width: 0;
-		height: 0; 
-		border-left: 25px solid transparent;
-		border-right: 25px solid transparent;
-		border-bottom: 25px solid #F5F5F5;
-		position: absolute;
-		top: -25px;
-		right: 13%;
-	}
+        &:after {
+    		content: "";
+    		width: 0;
+    		height: 0; 
+    		border-left: 25px solid transparent;
+    		border-right: 25px solid transparent;
+    		border-bottom: 25px solid #F5F5F5;
+    		position: absolute;
+    		top: -25px;
+            left: 25%;
+    	}
+        &.new:after {
+            left: auto;
+            right: 13%;
+        }
+    }
 
 	.middle-or {
 		display: block;

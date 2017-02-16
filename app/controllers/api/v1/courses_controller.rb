@@ -43,6 +43,6 @@ class Api::V1::CoursesController < ApiController
   end
 
   def course_params
-    params.require(:course).permit(:id, :name, :description, :next_start_time)
+    params.require(:course).permit(Course::PERMITTED_PARAMS)
   end
 end

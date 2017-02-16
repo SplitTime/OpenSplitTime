@@ -78,7 +78,6 @@ class Api::V1::EventsController < ApiController
   end
 
   def event_params
-    params.require(:event).permit(:id, :course_id, :organization_id, :name, :start_time, :concealed,
-                                  :available_live, :beacon_url, :laps_required, :staging_id)
+    params.require(:event).permit(Event::PERMITTED_PARAMS)
   end
 end

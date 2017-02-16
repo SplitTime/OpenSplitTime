@@ -43,6 +43,6 @@ class Api::V1::OrganizationsController < ApiController
   end
 
   def organization_params
-    params.require(:organization).permit(:id, :name, :description, :concealed)
+    params.require(:organization).permit(Organization::PERMITTED_PARAMS)
   end
 end

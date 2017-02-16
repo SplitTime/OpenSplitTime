@@ -1,4 +1,6 @@
 class Course < ActiveRecord::Base
+  PERMITTED_PARAMS = [:id, :name, :description, :next_start_time]
+
   include Auditable
   include SplitMethods
   strip_attributes collapse_spaces: true

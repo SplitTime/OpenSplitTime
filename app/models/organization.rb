@@ -1,4 +1,6 @@
 class Organization < ActiveRecord::Base
+  PERMITTED_PARAMS = [:id, :name, :description, :concealed]
+
   include Auditable
   include Concealable
   strip_attributes collapse_spaces: true

@@ -5,6 +5,9 @@
 
 # Convert json parameters, sent from Javascript UI, from camelCase to snake_case.
 # This bridges the gap between javascript and ruby naming conventions.
+
+# Credit to patatepartie http://stackoverflow.com/a/27996031/5961578
+
 module ActionController
   module ParamsNormalizer
     extend ActiveSupport::Concern

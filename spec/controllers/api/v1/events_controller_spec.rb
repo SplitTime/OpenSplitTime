@@ -27,9 +27,10 @@ describe Api::V1::EventsController do
   end
 
   describe '#create' do
+    let(:params) { {course_id: course.id, name: 'Test Event', start_time: '2017-03-01 06:00:00', laps_required: 1} }
+
     it 'returns a successful json response with success message' do
-      post :create, event: {course_id: course.id, name: 'Test Event',
-                            start_time: '2017-03-01 06:00:00', laps_required: 1}
+      post :create, event: params
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/event created/)
       expect(parsed_response['event']['id']).not_to be_nil
@@ -38,8 +39,7 @@ describe Api::V1::EventsController do
 
     it 'creates an event record with a staging_id' do
       expect(Event.all.count).to eq(0)
-      post :create, event: {course_id: course.id, name: 'Test Event',
-                            start_time: '2017-03-01 06:00:00', laps_required: 1}
+      post :create, event: params
       expect(Event.all.count).to eq(1)
       expect(Event.first.staging_id).not_to be_nil
     end

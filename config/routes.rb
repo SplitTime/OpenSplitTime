@@ -136,6 +136,7 @@ Rails.application.routes.draw do
       resources :splits, only: [:show, :create, :update, :destroy]
       get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
+      get 'staging/:staging_id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
       get 'staging/get_countries', to: 'staging#get_countries', as: :staging_get_countries
     end
   end

@@ -213,7 +213,13 @@
 							<span class="marker"><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
 							<a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a>
 						</td>
-						<td><a href="#" v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
+						<td>
+							<a href="#" v-on:click.prevent="vm.row.associated = !vm.row.associated; vm.row.associate( eventModel )">
+								<i class="glyphicon glyphicon-check" v-if="vm.row.associated"></i>
+								<i class="glyphicon glyphicon-unchecked" v-else></i>
+							</a>
+							<a href="#" v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a>
+						</td>
 					</template>
 				</data-tables>
 			</div>

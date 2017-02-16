@@ -13,6 +13,14 @@
     }
 
     /**
+     * Ajax headers to be used for every transaction
+     */
+    var headers = {
+        'X-Key-Inflection': 'dash',
+        'Content-Type': 'application/json; charset=utf-8'   
+    }
+
+    /**
      * Prototypes
      */
     var Effort = ( function() {
@@ -139,8 +147,41 @@
             this.vertLossFromStart = data.vertLossFromStart || '';
             this.nameExtensions = data.nameExtensions || [];
             this.kind = data.kind || '';
+            this.associated = data.associated || false;
             this.locationId = data.locationId || null;
             this.location.import( data.location || {} );
+        }
+        Split.prototype.associate = function( eventModel ) {
+            var dfd = $.Deferred()
+            if ( !this.id ) {
+                console.error( 'Split', this.id, 'Cannot associate a split with no ID' )
+            } else {
+                console.warn( 'Split', this.id, 'ASSOCIATE Not Fully Implemented' );
+                $.ajax( '/api/v1/events/' + eventModel.stagingId + ( this.associated ? '/associate_splits' : '/remove_splits' ), {
+                    type: ( this.associated ? 'PUT' : 'DELETE' ),
+                    data: JSON.stringify( {
+                        'split_ids': this.id
+                    } ),
+                    contentType: 'application/json; charset=utf-8',
+                    headers: headers,
+                    dataType: "json",
+                } ).done( function( response ) {
+                    if ( response.effort && response.effort.id ) {
+                        // self.import( response.effort );
+                        dfd.resolve();
+                    } else {
+                        console.error( 'Effort', self.id, 'Create failed with error ', response );
+                        dfd.reject();
+                    }
+                } ).fail( function( response ) {
+                    console.error( 'Effort', self.id, 'Create failed with error ', response.responseText || response.status );
+                    dfd.reject();
+                } );
+            }
+            return dfd.promise();
+        }
+        Split.prototype.post = function( eventModel ) {
+
         }
         Split.prototype.fetch = function() {
             var dfd = $.Deferred()

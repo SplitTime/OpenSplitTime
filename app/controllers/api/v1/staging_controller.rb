@@ -1,29 +1,33 @@
 class Api::V1::StagingController < ApiController
-  before_action :set_event, except: [:get_event, :post_event_course_org, :get_countries]
+  before_action :set_event, except: [:get_event, :post_event_course_org]
   before_action :find_or_initialize_event, only: [:get_event, :post_event_course_org]
+  before_action :authorize_event
+
+  # This endpoint returns location data for all splits on any course that falls
+  # entirely or partially within the provided boundaries, other than splits on
+  # the course of the provided event.
 
   # GET /api/vi/staging/:staging_id/get_locations?west=&east=&south=&north=
   def get_locations
-    authorize @event
-    locations = Location.bounded_by(get_locations_params.transform_values(&:to_f)).first(500)
-    render json: locations
+    splits = SplitLocationFinder.splits(params).where.not(course_id: @event.course_id)
+    render json: splits, each_serializer: SplitLocationSerializer
   end
 
   # GET /api/v1/staging/:staging_id/get_event
   def get_event
-    authorize @event
     render json: @event, serializer: GetEventSerializer
   end
 
-  # GET /api/v1/staging/get_countries
+  # GET /api/v1/staging/:staging_id/get_countries
   def get_countries
-    authorize :event_staging, :get_countries?
     render json: {countries: Geodata.standard_countries_subregions}
   end
 
+  # This endpoint creates or updates the given event, course, and organization
+  # And associates the event with the course and organization.
+
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
-    authorize @event
     course = Course.find_or_initialize_by(id: params[:course][:id])
     authorize course unless course.new_record?
     organization = Organization.find_or_initialize_by(id: params[:organization][:id])
@@ -47,7 +51,7 @@ class Api::V1::StagingController < ApiController
     end
   end
 
-  def get_locations_params
-    params.permit(:west, :east, :south, :north)
+  def authorize_event
+    authorize @event
   end
 end

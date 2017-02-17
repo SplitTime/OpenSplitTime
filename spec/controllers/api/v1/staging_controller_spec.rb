@@ -1,17 +1,23 @@
 require 'rails_helper'
 
 describe Api::V1::StagingController do
+  let(:existing_event) { FactoryGirl.create(:event, course: existing_course, organization: existing_organization) }
+  let(:existing_course) { FactoryGirl.create(:course) }
+  let(:existing_organization) { FactoryGirl.create(:organization) }
+  let(:existing_staging_id) { existing_event.staging_id }
+  let(:new_staging_id) { SecureRandom.uuid }
+
   login_admin
 
   describe '#get_countries' do
     it 'returns a successful 200 response' do
-      get :get_countries
+      get :get_countries, staging_id: existing_staging_id
       expect(response).to be_success
     end
 
     it 'returns a set of country data that includes all Carmen countries' do
       country_count = Carmen::Country.all.size
-      get :get_countries
+      get :get_countries, staging_id: existing_staging_id
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['countries'].size).to eq(country_count)
     end
@@ -19,7 +25,7 @@ describe Api::V1::StagingController do
     it 'returns subregions for each country that include all Carmen subregions for that country' do
       us = Carmen::Country.coded('US')
       subregion_count = us.subregions.size
-      get :get_countries
+      get :get_countries, staging_id: existing_staging_id
       parsed_response = JSON.parse(response.body)
       us_subregions = parsed_response['countries'].find { |country| country['code'] == 'US' }['subregions']
       expect(us_subregions.size).to eq(subregion_count)
@@ -27,15 +33,11 @@ describe Api::V1::StagingController do
   end
 
   describe '#post_event_course_org' do
-    let(:existing_course) { FactoryGirl.create(:course) }
     let(:existing_course_params) { existing_course.attributes.with_indifferent_access.slice(*Course::PERMITTED_PARAMS) }
-    let(:existing_organization) { FactoryGirl.create(:organization) }
     let(:existing_organization_params) { existing_organization.attributes.with_indifferent_access.slice(*Organization::PERMITTED_PARAMS) }
 
     context 'when an existing staging_id is provided' do
-      let(:existing_event) { FactoryGirl.create(:event, course: existing_course, organization: existing_organization) }
       let(:existing_event_params) { existing_event.attributes.with_indifferent_access.slice(*Event::PERMITTED_PARAMS) }
-      let(:existing_staging_id) { existing_event.staging_id }
 
       it 'returns a successful 200 response' do
         staging_id = existing_staging_id
@@ -94,7 +96,6 @@ describe Api::V1::StagingController do
     end
 
     context 'when a new staging_id is provided' do
-      let(:new_staging_id) { SecureRandom.uuid }
       let(:new_event_params) { {name: 'New Event Name', start_time: '2017-03-01 06:00:00', laps_required: 1} }
       let(:new_course_params) { {name: 'New Course Name', description: 'New course description.'} }
       let(:new_organization_params) { {name: 'New Organization Name'} }

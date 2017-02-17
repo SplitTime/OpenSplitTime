@@ -11,13 +11,13 @@ RSpec.describe LiveDataEntryReporter do
   describe '#initialize' do
     it 'initializes with an event and params and a NewLiveEffortData object in an args hash' do
       event = FactoryGirl.build_stubbed(:event)
-      params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(NewLiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if no event is given' do
-      params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(NewLiveEffortData)
       expect { LiveDataEntryReporter.new(params: params, effort_data: effort_data) }.to raise_error(/must include event/)
     end
@@ -30,7 +30,7 @@ RSpec.describe LiveDataEntryReporter do
 
     it 'raises an ArgumentError if any parameter other than event, params, or effort_data is given' do
       event = FactoryGirl.build_stubbed(:event)
-      params = {'splitId' => '2', 'bibNumber' => '124', 'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(NewLiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data, random_param: 123) }
           .to raise_error(/may not include random_param/)
@@ -43,8 +43,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
       provided_split = ordered_splits[2]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '11:30:00', 'timeOut' => '11:50:00', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '11:30:00', 'time_out' => '11:50:00', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 2
@@ -62,8 +62,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(3) # Through Cunningham out
       provided_split = ordered_splits[2]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '10:30:00', 'timeOut' => '10:50:00', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '10:30:00', 'time_out' => '10:50:00', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 2
@@ -81,8 +81,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
       provided_split = ordered_splits[2]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 2
@@ -100,8 +100,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
       provided_split = ordered_splits[2]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 2
@@ -119,8 +119,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = Effort.null_record
       split_times = []
       provided_split = ordered_splits[2]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 2
@@ -138,8 +138,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = []
       provided_split = ordered_splits[2]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 2
@@ -159,8 +159,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(1)
       provided_split = ordered_splits[1]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '08:30:00', 'timeOut' => '08:50:00', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 0
@@ -178,8 +178,8 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(1)
       provided_split = ordered_splits[1]
-      params = {'splitId' => provided_split.id.to_s, lap: '1', 'bibNumber' => '205',
-                'timeIn' => '', 'timeOut' => '', 'id' => '4'}
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '', 'time_out' => '', 'id' => '4'}
       effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
 
       prior_valid_index = 0

@@ -139,7 +139,7 @@ Rails.application.routes.draw do
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
       get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
       get 'staging/:staging_id/get_organizations', to: 'staging#get_organizations', as: :staging_get_organizations
-      get 'staging/:staging_id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
+      post 'staging/:staging_id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
     end
   end
 

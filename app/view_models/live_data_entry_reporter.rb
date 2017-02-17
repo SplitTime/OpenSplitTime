@@ -12,10 +12,11 @@ class LiveDataEntryReporter
   end
 
   def full_report
-    effort_data.response_row.merge({reportText: report_text,
-                                    priorValidReportText: prior_valid_report_text,
-                                    timeFromPriorValid: time_format_xxhyym(seconds_from_prior_valid),
-                                    timeInAid: time_format_minutes(seconds_in_aid)})
+    effort_data.response_row.merge({report_text: report_text,
+                                    prior_valid_report_text: prior_valid_report_text,
+                                    time_from_prior_valid: time_format_xxhyym(seconds_from_prior_valid),
+                                    time_in_aid: time_format_minutes(seconds_in_aid)})
+        .camelize_keys
   end
 
   private

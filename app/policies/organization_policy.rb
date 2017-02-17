@@ -1,4 +1,23 @@
 class OrganizationPolicy
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        owned_org_ids = scope.where(created_by: user.id).ids
+        steward_org_ids = scope.joins(:stewardships).where(stewardships: {user_id: user.id}).ids
+        scope.where(id: (owned_org_ids + steward_org_ids).uniq)
+      end
+    end
+  end
+
   attr_reader :current_user, :organization
 
   def initialize(current_user, organization)

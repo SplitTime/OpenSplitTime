@@ -3,6 +3,16 @@ class Api::V1::StagingController < ApiController
   before_action :find_or_initialize_event, only: [:get_event, :post_event_course_org]
   before_action :authorize_event
 
+  # GET /api/v1/staging/:staging_id/get_countries
+  def get_countries
+    render json: {countries: Geodata.standard_countries_subregions}
+  end
+
+  # GET /api/v1/staging/:staging_id/get_event
+  def get_event
+    render json: @event, serializer: GetEventSerializer
+  end
+
   # This endpoint returns location data for all splits on any course that falls
   # entirely or partially within the provided boundaries, other than splits on
   # the course of the provided event.
@@ -13,14 +23,9 @@ class Api::V1::StagingController < ApiController
     render json: splits, each_serializer: SplitLocationSerializer
   end
 
-  # GET /api/v1/staging/:staging_id/get_event
-  def get_event
-    render json: @event, serializer: GetEventSerializer
-  end
-
-  # GET /api/v1/staging/:staging_id/get_countries
-  def get_countries
-    render json: {countries: Geodata.standard_countries_subregions}
+  # GET /api/v1/staging/:staging_id/get_organizations
+  def get_organizations
+    render json: policy_scope(Organization)
   end
 
   # This endpoint creates or updates the given event, course, and organization

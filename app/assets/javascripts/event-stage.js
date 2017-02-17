@@ -16,17 +16,39 @@
      * Ajax headers to be used for every transaction
      */
     var headers = {
-        'X-Key-Inflection': 'dash',
-        'Content-Type': 'application/json; charset=utf-8'   
+        'X-Key-Inflection': 'camel' 
+    }
+
+    /**
+     * Object Inheritance Helper
+     */
+    function extend( base, child ) {
+        function surrogate() {}
+        surrogate.prototype = base.prototype;
+        child.prototype = new surrogate();
+        child.prototype.constructor = child;
     }
 
     /**
      * Prototypes
      */
+    var Resource = ( function() {
+        function Resource( parent ) {
+            if ( !( parent instanceof Resource ) ) {
+                parent = null;
+            }
+            // Prepare Common Invisible Properties
+            Object.defineProperty( this, '_parent', { value: parent, enumerable: false } );
+        }
+        return Resource;
+    } )();
+
     var Effort = ( function() {
         function Effort( data ) {
+            Resource.call( this );
             this.import( data || {} );
         }
+        extend( Resource, Effort );
         Effort.prototype.import = function( data ) {
             this.id = data.id || null;
             this.age = data.age || '';
@@ -116,8 +138,10 @@
 
     var Location = ( function() {
         function Location( data ) {
+            Resource.call( this );
             this.import( data || {} );
         }
+        extend( Resource, Location ); 
         Location.prototype.import = function( data ) {
             this.id = data.id || null;
             this.name = data.name || '';
@@ -136,9 +160,11 @@
 
     var Split = ( function() {
         function Split( data ) {
+            Resource.call( this );
             this.location = new Location();
             this.import( data || {} );
         }
+        extend( Resource, Split );
         Split.prototype.import = function( data ) {
             this.id = data.id || null;
             this.baseName = data.baseName || '';
@@ -193,6 +219,7 @@
 
     var Event = ( function() {
         function Event( data ) {
+            Resource.call( this );
             // Children
             this.splits = [];
             this.efforts = [];
@@ -201,6 +228,7 @@
             this.organizationNew = false;
             this.import( data || {} );
         }
+        extend( Resource, Event );
         Event.prototype.__defineGetter__( 'startTime', function () {
             var startTime = Date.parse( this.date );
             if ( isNaN( startTime ) ) {
@@ -238,7 +266,9 @@
             }
             this.efforts.splice( 0, this.efforts.length );
             for ( var i = 0; i < ( data.efforts || [] ).length; i++ ) {
-                this.efforts.push( new Effort( data.efforts[i] ) );
+                var effort = new Effort( data.efforts[i] );
+                effort._parent = this;
+                this.efforts.push( effort );
             }
             // Extract Start Time
             var startTime = Date.parse( data.startTime || null );
@@ -262,21 +292,32 @@
         Event.prototype.post = function() {
             var dfd = $.Deferred()
             if ( this.validate() ) {
-                $.post( '/api/v1/staging/' + this.stagingId + '/post_event', {
+                $.ajax( '/api/v1/staging/' + this.stagingId + '/post_event_course_org', {
+                    headers: headers,
                     dataType: "json",
+                    type: "PUT",
                     data: {
-                        id: this.id,
-                        stagingId: this.stagingId,
-                        name: this.name,
-                        courseId: this.courseId,
-                        course: this.course,
-                        organizationId: this.organizationId,
-                        organization: this.organization,
-                        startTime: this.startTime
+                        event: {
+                            id: this.id,
+                            name: this.name,
+                            description: this.description,
+                            courseId: this.courseId,
+                            organizationId: this.organizationId
+                        },
+                        course: {
+                            id: this.course.id,
+                            name: this.course.name
+                        },
+                        organization: {
+                            id: this.organization.id,
+                            name: this.organization.name
+                        }
                     },
-                } ).done( function( ) {
+                } ).done( function( a,b,c ) {
+                    console.log( a,b,c );
                     dfd.resolve();
-                } ).fail( function() {
+                } ).fail( function( a,b,c ) {
+                    console.log( a,b,c );
                     dfd.reject();
                 } );
             } else {
@@ -342,7 +383,12 @@
         },
 
         onRouteChange: function( to, from, next ) {
-            eventStage.data.eventModel.fetch();
+            console.log( to, from );
+            if ( from.matched.length < 1 ) {
+                eventStage.data.eventModel.fetch();
+            } else {
+                eventStage.data.eventModel.post();
+            }
             next(); return; // NO!
             if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
                 // Event data must be valid
@@ -398,7 +444,7 @@
 
             // Load UUID
             this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
-            this.data.eventModel.fetch();
+            console.log( this.data.eventModel );
 
             // Initialize Vue Router and Vue App
             const routes = [
@@ -413,7 +459,8 @@
                             }
                         },
                         template: '#event'
-                    }
+                    },
+                    beforeEnter: this.onRouteChange
                 },
                 { 
                     path: '/splits', 

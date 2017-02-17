@@ -1,3 +1,3 @@
 class OrganizationSerializer < BaseSerializer
-  attributes :id, :name, :description, :concealed
+  attributes :id, :name, :description, :concealed, :editable
 end

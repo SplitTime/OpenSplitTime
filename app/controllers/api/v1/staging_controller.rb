@@ -12,7 +12,7 @@ class Api::V1::StagingController < ApiController
   # GET /api/v1/staging/:staging_id/get_event
   def get_event
     authorize @event
-    render json: @event
+    render json: @event, serializer: GetEventSerializer
   end
 
   # GET /api/v1/staging/get_countries

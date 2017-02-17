@@ -8,6 +8,11 @@ class Api::V1::StagingController < ApiController
     render json: {countries: Geodata.standard_countries_subregions}
   end
 
+  # GET /api/v1/staging/:staging_id/get_organizations
+  def get_courses
+    render json: policy_scope(Course), include: ''
+  end
+
   # GET /api/v1/staging/:staging_id/get_event
   def get_event
     render json: @event, serializer: GetEventSerializer

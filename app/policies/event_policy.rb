@@ -154,6 +154,10 @@ class EventPolicy
     current_user.authorized_for_live?(event)
   end
 
+  def get_courses?
+    current_user.authorized_for_live?(event)
+  end
+
   def get_event?
     current_user.authorized_for_live?(event)
   end

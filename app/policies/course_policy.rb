@@ -1,4 +1,21 @@
 class CoursePolicy
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.where(created_by: user.id)
+      end
+    end
+  end
+
   attr_reader :current_user, :course
 
   def initialize(current_user, course)

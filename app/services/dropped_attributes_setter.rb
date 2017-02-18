@@ -19,8 +19,9 @@ class DroppedAttributesSetter
 
   def set_attributes
     efforts.each do |effort|
-      effort.dropped_split_id = dropped_split_id(effort)
-      effort.dropped_lap = dropped_lap(effort)
+      unless effort.finished?
+        effort.assign_attributes(dropped_split_id: effort.final_split_id, dropped_lap: effort.final_lap)
+      end
     end
   end
 
@@ -36,14 +37,6 @@ class DroppedAttributesSetter
 
   attr_reader :efforts, :times_container
   attr_writer :report
-
-  def dropped_split_id(effort)
-    effort.final_split_id unless effort.finished?
-  end
-
-  def dropped_lap(effort)
-    effort.final_lap unless effort.finished?
-  end
 
   def changed_effort_attributes
     changed_efforts.map { |effort| [effort.id, {dropped_split_id: effort.dropped_split_id,

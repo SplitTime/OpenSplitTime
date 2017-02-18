@@ -1,5 +1,6 @@
 class Split < ActiveRecord::Base
   include Auditable
+  include Concealable
   include GuaranteedFindable
   include UnitConversions
   strip_attributes collapse_spaces: true

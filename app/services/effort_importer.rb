@@ -25,7 +25,7 @@ class EffortImporter
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0...split_offset - 1])
-      effort = create_effort(row_effort_data)
+      effort = create_or_update_effort(row_effort_data)
       if effort
         row_time_data = row[split_offset - 1...row.size]
         row_time_data.unshift(0) if finish_times_only?
@@ -49,7 +49,7 @@ class EffortImporter
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0...split_offset - 1])
-      effort = create_effort(row_effort_data)
+      effort = create_or_update_effort(row_effort_data)
       if effort
         row_time_data = row[split_offset - 1...row.size]
         creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
@@ -70,7 +70,7 @@ class EffortImporter
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row)
-      effort = create_effort(row_effort_data)
+      effort = create_or_update_effort(row_effort_data)
       if effort
         effort_id_array << effort.id
       else
@@ -122,11 +122,19 @@ class EffortImporter
     end
   end
 
-  def create_effort(row_effort_data)
-    effort = event.efforts.new
-    row_effort_hash(row_effort_data).each { |attribute, data| effort.assign_attributes({attribute => data}) }
+  def create_or_update_effort(row_effort_data)
+    row_hash = row_effort_hash(row_effort_data)
+    effort = Effort.find_or_initialize_by(event_id: event.id,
+                                          bib_number: row_hash[:bib_number],
+                                          first_name: row_hash[:first_name],
+                                          last_name: row_hash[:last_name])
+    row_hash.each { |attribute, data| effort.assign_attributes({attribute => data}) }
     effort.assign_attributes(created_by: current_user_id, updated_by: current_user_id, concealed: event.concealed?)
-    effort if effort.save
+    if effort.save
+      effort
+    else
+      effort.errors.full_messages
+    end
   end
 
   def set_drops_and_status

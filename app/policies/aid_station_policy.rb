@@ -1,17 +1,20 @@
-class AidStationPolicy
-  attr_reader :current_user, :aid_station
+class AidStationPolicy < ApplicationPolicy
+  class Scope < Scope
+    def post_initialize
+    end
+  end
 
-  def initialize(current_user, aid_station)
-    @current_user = current_user
+  attr_reader :aid_station
+
+  def post_initialize(aid_station)
     @aid_station = aid_station
   end
 
   def show?
-    current_user.admin?
+    user.admin?
   end
 
   def destroy?
-    current_user.authorized_to_edit?(aid_station.event)
+    user.authorized_to_edit?(aid_station.event)
   end
-
 end

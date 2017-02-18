@@ -1,9 +1,29 @@
-class UserPolicy
-  attr_reader :current_user, :user
+class UserPolicy < ApplicationPolicy
+  class Scope < Scope
+    attr_reader :current_user
 
-  def initialize(current_user, user)
-    @current_user = current_user
-    @user = user
+    def post_initialize
+      @current_user = self.user
+    end
+
+    def resolve_editable
+      if current_user.admin?
+        scope.all
+      else
+        scope.where(id: current_user.id)
+      end
+    end
+
+    def resolve_viewable
+      resolve_editable
+    end
+  end
+
+  attr_reader :current_user, :user_record
+
+  def post_initialize(user_record)
+    @current_user = self.user
+    @user_record = user_record
   end
 
   def index?
@@ -11,15 +31,7 @@ class UserPolicy
   end
 
   def show?
-    current_user.admin? | (current_user == user)
-  end
-
-  def edit_preferences?
-    current_user.admin? | (current_user == user)
-  end
-
-  def update_preferences?
-    current_user.admin? | (current_user == user)
+    current_user.admin? || (current_user == user_record)
   end
 
   def update?
@@ -27,15 +39,22 @@ class UserPolicy
   end
 
   def destroy?
-    current_user.admin? && (current_user != user)
+    current_user.admin? && (current_user != user_record)
+  end
+
+  def edit_preferences?
+    current_user.admin? || (current_user == user_record)
+  end
+
+  def update_preferences?
+    current_user.admin? || (current_user == user_record)
   end
 
   def add_interest?
-    current_user.admin? | (current_user == user)
+    current_user.admin? || (current_user == user_record)
   end
 
   def remove_interest?
-    current_user.admin? | (current_user == user)
+    current_user.admin? || (current_user == user_record)
   end
-
 end

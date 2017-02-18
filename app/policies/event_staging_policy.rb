@@ -1,6 +1,6 @@
-class EventStagingPolicy < Struct.new(:current_user, :controller)
+class EventStagingPolicy < Struct.new(:user, :controller)
 
   def new?
-    current_user.present?
+    user.present?
   end
 end

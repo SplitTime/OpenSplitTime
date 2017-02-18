@@ -1,5 +1,6 @@
 class Split < ActiveRecord::Base
   include Auditable
+  include Concealable
   include GuaranteedFindable
   include UnitConversions
   strip_attributes collapse_spaces: true
@@ -36,6 +37,11 @@ class Split < ActiveRecord::Base
                             message: 'may not be negative'
 
   scope :ordered, -> { order(:distance_from_start) }
+  scope :with_course_name, -> { select('splits.*, courses.name as course_name').joins(:course) }
+  scope :location_bounded_by, -> (params) { where(latitude: params[:south]..params[:north],
+                                                  longitude: params[:west]..params[:east]) }
+  scope :location_bounded_across_dateline, -> (params) { where(latitude: params[:south]..params[:north])
+                                                             .where.not(longitude: params[:east]..params[:west]) }
 
   def self.null_record
     @null_record ||= Split.new(base_name: '[not found]', description: '', sub_split_bitmap: 0)
@@ -114,6 +120,10 @@ class Split < ActiveRecord::Base
 
   def course_index # Returns an integer representing the split's relative position on the course
     course.ordered_split_ids.index(id)
+  end
+
+  def course_name
+    @course_name ||= attributes['course_name'] || course.name
   end
 
   def earliest_event_date

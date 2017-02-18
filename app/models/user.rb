@@ -41,20 +41,20 @@ class User < ActiveRecord::Base
   end
 
   def authorized_to_edit?(resource)
-    admin? | (id == resource.created_by)
+    admin? || (id == resource.created_by) || resource.new_record?
   end
 
   def authorized_to_claim?(participant)
     return false if self.has_avatar?
-    admin? | (last_name == participant.last_name) | (first_name == participant.first_name)
+    admin? || (last_name == participant.last_name) || (first_name == participant.first_name)
   end
 
   def authorized_for_live?(resource)
-    admin? | (id == resource.created_by) | steward_of?(resource)
+    admin? || (id == resource.created_by) || steward_of?(resource) || resource.new_record?
   end
 
   def authorized_to_edit_personal?(effort)
-    admin? | (effort.participant ? (avatar == effort.participant) : authorized_to_edit?(effort))
+    admin? || (effort.participant ? (avatar == effort.participant) : authorized_to_edit?(effort))
   end
 
   def steward_of?(resource)

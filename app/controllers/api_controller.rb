@@ -6,6 +6,10 @@ class ApiController < ApplicationController
 
   private
 
+  def user_not_authorized
+    render json: {message: 'not authorized'}, status: :unauthorized
+  end
+
   def set_default_format
     request.format = :json
   end

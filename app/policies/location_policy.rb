@@ -1,33 +1,12 @@
-class LocationPolicy
-  attr_reader :current_user, :location
+class LocationPolicy < ApplicationPolicy
+  class Scope < Scope
+    def post_initialize
+    end
+  end
 
-  def initialize(current_user, location)
-    @current_user = current_user
+  attr_reader :location
+
+  def post_initialize(location)
     @location = location
   end
-
-  def show?
-    current_user.present?
-  end
-
-  def new?
-    current_user.present?
-  end
-
-  def edit?
-    current_user.authorized_to_edit?(location)
-  end
-
-  def create?
-    current_user.present?
-  end
-
-  def update?
-    current_user.authorized_to_edit?(location)
-  end
-
-  def destroy?
-    current_user.authorized_to_edit?(location)
-  end
-
 end

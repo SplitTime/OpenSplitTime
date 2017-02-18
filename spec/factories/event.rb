@@ -4,6 +4,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Test Event #{n}" }
     start_time '2016-07-01 06:00:00'
     laps_required 1
+    sequence(:staging_id) { SecureRandom.uuid }
     course
 
     factory :event_with_standard_splits do

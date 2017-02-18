@@ -16,7 +16,7 @@ class NewLiveEffortData
     @event = args[:event]
     @params = args[:params].symbolize_keys
     @ordered_splits = args[:ordered_splits] || event.ordered_splits.to_a
-    @effort = args[:effort] || event.efforts.find_guaranteed(bib_number: params[:bibNumber])
+    @effort = args[:effort] || event.efforts.find_guaranteed(bib_number: params[:bib_number])
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @indexed_existing_split_times = ordered_existing_split_times.index_by(&:time_point)
     @new_split_times = {}
@@ -26,25 +26,24 @@ class NewLiveEffortData
   end
 
   def response_row
-    {splitId: subject_split.id,
+    {split_id: subject_split.id,
      lap: lap,
-     lapFulfillsRequired: lap == event.laps_required,
-     lapBeyondRequired: lap > event.laps_required,
-     expectedLap: expected_lap,
-     splitName: subject_split.base_name,
-     splitDistance: subject_lap_split.distance_from_start,
-     effortId: effort.id,
-     bibNumber: effort.bib_number,
-     effortName: effort_name,
-     droppedHere: dropped_here?,
-     timeIn: new_split_times[:in].military_time,
-     timeOut: new_split_times[:out].military_time,
-     pacerIn: new_split_times[:in].pacer,
-     pacerOut: new_split_times[:out].pacer,
-     timeInStatus: new_split_times[:in].data_status,
-     timeOutStatus: new_split_times[:out].data_status,
-     timeInExists: times_exist[:in],
-     timeOutExists: times_exist[:out]}
+     expected_lap: expected_lap,
+     split_name: subject_split.base_name,
+     split_distance: subject_lap_split.distance_from_start,
+     effort_id: effort.id,
+     bib_number: effort.bib_number,
+     effort_name: effort_name,
+     dropped_here: dropped_here?,
+     time_in: new_split_times[:in].military_time,
+     time_out: new_split_times[:out].military_time,
+     pacer_in: new_split_times[:in].pacer,
+     pacer_out: new_split_times[:out].pacer,
+     time_in_status: new_split_times[:in].data_status,
+     time_out_status: new_split_times[:out].data_status,
+     time_in_exists: times_exist[:in],
+     time_out_exists: times_exist[:out]}
+        .camelize_keys
   end
 
   def valid?
@@ -60,7 +59,7 @@ class NewLiveEffortData
   end
 
   def subject_split
-    @subject_split ||= ordered_splits.find { |split| split.id == params[:splitId].to_i } || Split.null_record
+    @subject_split ||= ordered_splits.find { |split| split.id == params[:split_id].to_i } || Split.null_record
   end
 
   def lap
@@ -83,11 +82,11 @@ class NewLiveEffortData
   end
 
   def effort_name
-    effort.try(:full_name) || (params[:bibNumber].present? ? 'Bib number not located' : 'n/a')
+    effort.try(:full_name) || (params[:bib_number].present? ? 'Bib number not located' : 'n/a')
   end
 
   def dropped_here?
-    params[:droppedHere] == 'true'
+    params[:dropped_here] == 'true'
   end
 
   def times_exist
@@ -159,7 +158,7 @@ class NewLiveEffortData
     SplitTime.new(effort: effort,
                   time_point: time_points[kind],
                   time_from_start: time_from_start(kind),
-                  pacer: camelized_param('pacer', kind) == 'true')
+                  pacer: param_with_kind('pacer', kind) == 'true')
   end
 
   def time_from_start(kind)
@@ -170,15 +169,15 @@ class NewLiveEffortData
   end
 
   def day_and_time(kind)
-    effort.real_presence && IntendedTimeCalculator.day_and_time(military_time: camelized_param('time', kind),
+    effort.real_presence && IntendedTimeCalculator.day_and_time(military_time: param_with_kind('time', kind),
                                                                 effort: effort,
                                                                 time_point: time_points[kind],
                                                                 lap_splits: effort_lap_splits,
                                                                 split_times: ordered_split_times)
   end
 
-  def camelized_param(base, kind)
-    params["#{base}_#{kind}".camelize(:lower).to_sym]
+  def param_with_kind(base, kind)
+    params["#{base}_#{kind}".to_sym]
   end
 
   def validate_setup

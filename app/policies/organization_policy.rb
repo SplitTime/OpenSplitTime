@@ -1,41 +1,30 @@
-class OrganizationPolicy
-  attr_reader :current_user, :organization
+class OrganizationPolicy < ApplicationPolicy
+  class Scope < Scope
+    attr_reader :user, :scope
 
-  def initialize(current_user, organization)
-    @current_user = current_user
+    def post_initialize
+    end
+
+    def delegated_records
+      scope.joins(:stewardships).where(stewardships: {user_id: user.id})
+    end
+  end
+
+  attr_reader :organization
+
+  def post_initialize(organization)
     @organization = organization
   end
 
-  def show?
-    current_user.present?
-  end
-
-  def new?
-    current_user.present?
-  end
-
-  def edit?
-    current_user.authorized_to_edit?(organization)
-  end
-
-  def create?
-    current_user.present?
-  end
-
-  def update?
-    current_user.authorized_to_edit?(organization)
-  end
-
-  def destroy?
-    current_user.authorized_to_edit?(organization)
-  end
-
   def stewards?
-    current_user.authorized_to_edit?(organization)
+    user.authorized_to_edit?(organization)
   end
 
   def remove_steward?
-    current_user.authorized_to_edit?(organization)
+    user.authorized_to_edit?(organization)
   end
 
+  def post_event_course_org?
+    user.authorized_to_edit?(organization)
+  end
 end

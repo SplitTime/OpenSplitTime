@@ -1,41 +1,29 @@
-class CoursePolicy
-  attr_reader :current_user, :course
+class CoursePolicy < ApplicationPolicy
+  class Scope < Scope
+    def post_initialize
+    end
+  end
 
-  def initialize(current_user, course)
-    @current_user = current_user
+  attr_reader :course
+
+  def post_initialize(course)
     @course = course
   end
 
-  def show?
-    current_user.present?
-  end
-
-  def new?
-    current_user.present?
-  end
-
-  def edit?
-    current_user.authorized_to_edit?(course)
-  end
-
-  def create?
-    current_user.present?
-  end
-
-  def update?
-    current_user.authorized_to_edit?(course)
-  end
-
+  # Course destruction could affect events that belong to users other than the course owner
   def destroy?
-    current_user.admin? # Course destruction could affect events that belong to users other than the course owner
+    user.admin?
   end
 
   def segment_picker?
-    current_user.present?
+    user.present?
   end
 
   def plan_effort?
-    current_user.present?
+    user.present?
   end
 
+  def post_event_course_org?
+    user.authorized_to_edit?(course)
+  end
 end

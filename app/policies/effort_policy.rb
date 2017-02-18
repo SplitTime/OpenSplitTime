@@ -1,81 +1,64 @@
-class EffortPolicy
-  attr_reader :current_user, :effort
+class EffortPolicy < ApplicationPolicy
+  class Scope < Scope
+    def post_initialize
+    end
 
-  def initialize(current_user, effort)
-    @current_user = current_user
+    def delegated_records
+      scope.joins(event: {organization: :stewardships}).where(stewardships: {user_id: user.id})
+    end
+  end
+
+  attr_reader :effort
+
+  def post_initialize(effort)
     @effort = effort
   end
 
-  def show?
-    current_user.present?
-  end
-
-  def new?
-    current_user.present?
-  end
-
-  def edit?
-    current_user.authorized_to_edit?(effort)
-  end
-
-  def create?
-    current_user.present?
-  end
-
-  def update?
-    current_user.authorized_to_edit?(effort)
-  end
-
-  def destroy?
-    current_user.authorized_to_edit?(effort)
-  end
-
   def analyze?
-    current_user.present?
+    user.present?
   end
 
   def place?
-    current_user.present?
+    user.present?
   end
 
   def associate_participants?
-    current_user.authorized_to_edit?(effort.event)
+    user.authorized_to_edit?(effort.event)
   end
 
   def start?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
 
   def edit_split_times?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
 
   def update_split_times?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
 
   def delete_split_times?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
 
   def confirm_split_times?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
 
   def set_data_status?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
 
   def add_beacon?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
 
   def add_report?
-    current_user.authorized_to_edit_personal?(effort)
+    user.authorized_to_edit_personal?(effort)
   end
 
   def add_photo?
-    current_user.authorized_to_edit?(effort)
+    user.authorized_to_edit?(effort)
   end
-
 end

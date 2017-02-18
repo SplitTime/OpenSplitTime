@@ -1,61 +1,52 @@
-class ParticipantPolicy
-  attr_reader :current_user, :participant
+class ParticipantPolicy < ApplicationPolicy
+  class Scope < Scope
+    def post_initialize
+    end
+  end
 
-  def initialize(current_user, participant)
-    @current_user = current_user
+  attr_reader :participant
+
+  def post_initialize(participant)
     @participant = participant
   end
 
-  def show?
-    current_user.present?
-  end
-
   def new?
-    current_user.admin?
-  end
-
-  def edit?
-    current_user.authorized_to_edit?(participant)
+    user.admin?
   end
 
   def create?
-    current_user.admin?
-  end
-
-  def update?
-    current_user.authorized_to_edit?(participant)
+    user.admin?
   end
 
   def destroy?
-    current_user.admin?
+    user.admin?
   end
 
   def avatar_claim?
-    current_user.authorized_to_claim?(participant)
+    user.authorized_to_claim?(participant)
   end
 
   def avatar_disclaim?
-    current_user.admin?
+    user.admin?
   end
 
   def merge?
-    current_user.admin?
+    user.admin?
   end
 
   def combine?
-    current_user.admin?
+    user.admin?
   end
 
   def remove_effort?
-    current_user.admin?
+    user.admin?
   end
 
   def current_user_follow?
-    current_user.present?
+    user.present?
   end
 
   def current_user_unfollow?
-    current_user.present?
+    user.present?
   end
-
 end

@@ -55,7 +55,7 @@ class Live::EventsController < Live::BaseController
 
   def get_effort_table
     authorize @event
-    effort = Effort.find(params[:effortId])
+    effort = Effort.find(params[:effort_id])
     @effort_show = EffortShowView.new(effort)
     render partial: 'effort_table'
   end
@@ -68,7 +68,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
-      @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:splitId])
+      @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
       render partial: 'file_effort_data_report.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'
@@ -83,7 +83,7 @@ class Live::EventsController < Live::BaseController
 
     authorize @event
     if @event.available_live
-      @returned_rows = LiveTimeRowImporter.import(event: @event, time_rows: params[:timeRows])
+      @returned_rows = LiveTimeRowImporter.import(event: @event, time_rows: params[:time_rows])
       render partial: 'set_times_data_report.json.ruby'
     else
       render partial: 'live_entry_unavailable.json.ruby'

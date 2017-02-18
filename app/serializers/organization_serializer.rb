@@ -1,3 +1,3 @@
-class OrganizationSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :concealed
+class OrganizationSerializer < BaseSerializer
+  attributes :id, :name, :description, :concealed, :editable
 end

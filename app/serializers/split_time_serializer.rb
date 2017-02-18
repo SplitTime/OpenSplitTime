@@ -1,3 +1,3 @@
-class SplitTimeSerializer < ActiveModel::Serializer
+class SplitTimeSerializer < BaseSerializer
   attributes :id, :effort_id, :lap, :split_id, :bitkey, :time_from_start, :data_status, :pacer, :remarks
 end

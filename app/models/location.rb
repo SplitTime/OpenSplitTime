@@ -13,8 +13,6 @@ class Location < ActiveRecord::Base
   validates_numericality_of :longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true
 
   scope :on_course, -> (course) { includes(:splits).where(splits: {course_id: course.id}) }
-  scope :bounded_by, -> (params) { where(latitude: params[:south]..params[:north],
-                                         longitude: params[:west]..params[:east]) }
 
   def elevation_as_entered
     Location.meters_to_preferred_elevation(elevation) if elevation

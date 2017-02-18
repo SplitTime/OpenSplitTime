@@ -43,7 +43,6 @@ Rails.application.routes.draw do
     member { post :import_efforts_military_times }
     member { post :import_efforts_without_times }
     member { get :splits }
-    member { put :associate_split }
     member { put :associate_splits }
     member { put :set_data_status }
     member { put :set_dropped_attributes }
@@ -126,15 +125,21 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :courses, only: [:show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
-      resources :events, only: [:show, :create, :update, :destroy]
+      resources :events, only: [:show, :create, :update, :destroy], param: :staging_id do
+        member { delete :remove_splits }
+        member { put :associate_splits }
+      end
       resources :locations, only: [:show, :create, :update, :destroy]
       resources :organizations, only: [:show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]
       resources :splits, only: [:show, :create, :update, :destroy]
-      get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
+      get 'staging/:staging_id/get_countries', to: 'staging#get_countries', as: :staging_get_countries
+      get 'staging/:staging_id/get_courses', to: 'staging#get_courses', as: :staging_get_courses
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
-      get 'staging/get_countries', to: 'staging#get_countries', as: :staging_get_countries
+      get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
+      get 'staging/:staging_id/get_organizations', to: 'staging#get_organizations', as: :staging_get_organizations
+      post 'staging/:staging_id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
     end
   end
 

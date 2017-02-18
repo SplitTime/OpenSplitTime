@@ -1,5 +1,5 @@
-class CourseSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description
+class CourseSerializer < BaseSerializer
+  attributes :id, :name, :description, :editable
 
   has_many :splits
 end

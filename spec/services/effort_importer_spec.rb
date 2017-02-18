@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ActionDispatch::TestProcess
 
-RSpec.describe SplitImporter do
+RSpec.describe EffortImporter do
 
   describe 'initialization' do
     let(:course) { Course.create!(name: 'Test Course 100') }

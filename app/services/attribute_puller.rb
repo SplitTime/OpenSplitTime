@@ -15,10 +15,11 @@ class AttributePuller
       puller.assign_attributes({attribute => target[attribute]}) if puller[attribute].blank?
     end
     if puller.save
-      puts "#{puller.class} #{puller.name} updated"
+      Rails.logger.info "#{puller.class} #{puller.name} updated"
       true
     else
-      puts "#{puller.class} #{puller.name} could not be updated: #{puller.errors.full_messages}"
+      Rails.logger.info "#{puller.class} #{puller.name} could not be updated: #{puller.errors.full_messages}"
+      false
     end
   end
 

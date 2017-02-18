@@ -12,7 +12,7 @@ class Api::V1::StagingController < ApiController
 
   # GET /api/v1/staging/:staging_id/get_organizations
   def get_courses
-    render json: policy_scope(Course), include: ''
+    render json: CoursePolicy::Scope.new(current_user, Course).editable, include: ''
   end
 
   # Returns the event and its related organization and efforts,
@@ -39,7 +39,7 @@ class Api::V1::StagingController < ApiController
 
   # GET /api/v1/staging/:staging_id/get_organizations
   def get_organizations
-    render json: policy_scope(Organization)
+    render json: OrganizationPolicy::Scope.new(current_user, Organization).editable
   end
 
   # Creates or updates the given event, course, and organization

@@ -50,10 +50,10 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
-      dropped_index = nil
-      dropped_time_offset = nil
+      stopped_index = nil
+      stopped_time_offset = nil
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00')
     end
 
@@ -69,14 +69,14 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 2.5.hours
-      dropped_index = nil
-      dropped_time_offset = nil
+      stopped_index = nil
+      stopped_time_offset = nil
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Cunningham Out at Fri 08:30')
     end
 
-    it 'adds a dropped addendum when the effort has a dropped_key at the last reported lap_split' do
+    it 'adds a stopped addendum when the effort has a split_time with stopped_here at the last reported lap_split' do
       event, ordered_splits, lap_splits = resources_for_test_event
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
@@ -88,14 +88,14 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
-      dropped_index = -1
-      dropped_time_offset = 7.hours
+      stopped_index = -1
+      stopped_time_offset = 7.hours
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
-      expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 and dropped there')
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
+      expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 and stopped there')
     end
 
-    it 'adds an additional dropped notation when the effort has a dropped_split_id before the last reported split' do
+    it 'adds an additional stopped notation when the effort has a stopped_here split_time before the last reported split' do
       event, ordered_splits, lap_splits = resources_for_test_event
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
@@ -107,11 +107,11 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
-      dropped_index = -3
-      dropped_time_offset = 5.hours
+      stopped_index = -3
+      stopped_time_offset = 5.hours
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
-      expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 but reported dropped at PoleCreek as of Fri 11:00')
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
+      expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 but reported stopped at PoleCreek as of Fri 11:00')
     end
 
     it 'returns "n/a" if effort is not located' do
@@ -126,10 +126,10 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
-      dropped_index = -3
-      dropped_time_offset = 5.hours
+      stopped_index = -3
+      stopped_time_offset = 5.hours
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('n/a')
     end
 
@@ -145,10 +145,10 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
-      dropped_index = -3
-      dropped_time_offset = 5.hours
+      stopped_index = -3
+      stopped_time_offset = 5.hours
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Not yet started')
     end
   end
@@ -166,10 +166,10 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 0
       prior_valid_time_offset = 0.hours
       last_reported_time_offset = 0.hours
-      dropped_index = nil
-      dropped_time_offset = nil
+      stopped_index = nil
+      stopped_time_offset = nil
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:timeInAid]).to eq('20m')
     end
 
@@ -185,10 +185,10 @@ RSpec.describe LiveDataEntryReporter do
       prior_valid_index = 0
       prior_valid_time_offset = 0.hours
       last_reported_time_offset = 0.hours
-      dropped_index = nil
-      dropped_time_offset = nil
+      stopped_index = nil
+      stopped_time_offset = nil
       reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                                last_reported_time_offset, dropped_index, dropped_time_offset)
+                                last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:timeInAid]).to eq('--')
     end
   end
@@ -212,17 +212,17 @@ RSpec.describe LiveDataEntryReporter do
   end
 
   def build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
-                     last_reported_time_offset, dropped_index, dropped_time_offset)
+                     last_reported_time_offset, stopped_index, stopped_time_offset)
     existing_times = effort_data.ordered_existing_split_times
     prior_valid_split_time = existing_times[prior_valid_index]
     last_reported_split_time = existing_times.last
     last_reported_lap_split = lap_splits.find { |lap_split| lap_split.key == last_reported_split_time.try(:lap_split_key) }
-    dropped_split_time = existing_times[dropped_index] if dropped_index
-    dropped_split_time.stopped_here = true if dropped_split_time
+    stopped_split_time = existing_times[stopped_index] if stopped_index
+    stopped_split_time.stopped_here = true if stopped_split_time
     reporter = LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data)
     allow(prior_valid_split_time).to receive(:day_and_time).and_return(event.start_time + prior_valid_time_offset) if prior_valid_split_time
     allow(last_reported_split_time).to receive(:day_and_time).and_return(event.start_time + last_reported_time_offset) if last_reported_split_time
-    allow(dropped_split_time).to receive(:day_and_time).and_return(event.start_time + dropped_time_offset) if dropped_split_time
+    allow(stopped_split_time).to receive(:day_and_time).and_return(event.start_time + stopped_time_offset) if stopped_split_time
     allow(last_reported_split_time).to receive(:split).and_return(last_reported_lap_split.split) if last_reported_split_time
     reporter
   end

@@ -340,7 +340,7 @@ RSpec.describe NewLiveEffortData do
       end
     end
 
-    it 'sets data_status to bad when the effort indicates it has dropped at an earlier split' do
+    it 'sets data_status to bad when the effort split_times have a stopped_here at an earlier point' do
       event = test_event
       effort = test_effort
       split_times = effort.split_times.first(5)
@@ -351,8 +351,7 @@ RSpec.describe NewLiveEffortData do
                     out: {data_status: 'good'}} # 5h30m and 5h50m are good times for the fourth split
       validate_new_split_times(event, effort, split_times, params, attributes)
 
-      effort.dropped_split_id = event.splits.third.id # But if effort has dropped at the third split
-      effort.dropped_lap = 1
+      split_times[2].stopped_here = true # But if effort has stopped at the third split
       attributes = {in: {data_status: 'bad'},
                     out: {data_status: 'bad'}} # They become bad times
       validate_new_split_times(event, effort, split_times, params, attributes)

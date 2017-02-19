@@ -1,6 +1,6 @@
 class EffortShowView
 
-  attr_reader :effort, :split_rows
+  attr_reader :effort, :lap_split_rows
   delegate :full_name, :event_name, :participant, :bib_number, :gender, :split_times,
            :finish_status, :report_url, :beacon_url, :dropped_split_id, :start_time, :photo_url,
            :overall_place, :gender_place, :started?, :finished?, :dropped?, :in_progress?, to: :effort
@@ -8,8 +8,8 @@ class EffortShowView
 
   def initialize(args_effort)
     @effort ||= args_effort.enriched || args_effort
-    @split_rows = []
-    create_split_rows
+    @lap_split_rows = []
+    create_lap_split_rows
   end
 
   def event
@@ -17,7 +17,7 @@ class EffortShowView
   end
 
   def total_time_in_aid
-    split_rows.sum(&:time_in_aid)
+    lap_split_rows.sum(&:time_in_aid)
   end
 
   def not_analyzable?
@@ -28,14 +28,14 @@ class EffortShowView
 
   attr_reader :splits
 
-  def create_split_rows
+  def create_lap_split_rows
     start_time = event.start_time + effort.start_offset
     prior_time = 0
     lap_splits.each do |lap_split|
-      split_row = LapSplitRow.new(lap_split: lap_split, split_times: related_split_times(lap_split),
-                                  prior_time: prior_time, start_time: start_time, show_laps: event.multiple_laps?)
-      split_rows << split_row
-      prior_time = split_row.times_from_start.compact.last if split_row.times_from_start.compact.present?
+      lap_split_row = LapSplitRow.new(lap_split: lap_split, split_times: related_split_times(lap_split),
+                                      prior_time: prior_time, start_time: start_time, show_laps: event.multiple_laps?)
+      lap_split_rows << lap_split_row
+      prior_time = lap_split_row.times_from_start.compact.last if lap_split_row.times_from_start.compact.present?
     end
   end
 

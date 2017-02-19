@@ -44,6 +44,10 @@ class LapSplitRow
     split_times.compact.map { |st| st.remarks }.uniq.join(' / ')
   end
 
+  def stopped_here?
+    split_times.compact.any?(&:stopped_here)
+  end
+
   private
 
   attr_reader :lap_split, :split_times, :prior_time, :start_time

@@ -134,24 +134,30 @@ class Effort < ActiveRecord::Base
   end
 
   # For an unlimited-lap (time-based) event, an effort is 'finished' when the person decides not to continue.
-  # At that time, the dropped_attributes are set, but the effort is still considered to have finished.
+  # At that time, the stopped_here split_time is set, and the effort is considered to have finished.
   def finished?
-    attributes['finished'] ||
-        (laps_required.zero? ? dropped_split_id.present? : (laps_finished >= laps_required))
+    return attributes['finished'] if attributes.has_key?('finished')
+    (laps_required.zero? ? split_times.any?(&:stopped_here) : (laps_finished >= laps_required))
   end
 
-  # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'.
-  def dropped?
-    attributes['dropped'] ||
-        (laps_required.zero? ? false : dropped_split_id.present?)
+  def stopped?
+    return attributes['stopped'] if attributes.has_key?('stopped')
+    finished? || split_times.any?(&:stopped_here)
   end
 
   def started?
-    attributes['started'] || start_split_times.present?
+    return attributes['started'] if attributes.has_key?('started')
+    start_split_times.present?
+  end
+
+  # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'
+  # (the logic cannot return true for that type of event).
+  def dropped?
+    stopped? && !finished?
   end
 
   def in_progress?
-    started? && !dropped? && !finished?
+    started? && !stopped?
   end
 
   def dropped_lap_split_key

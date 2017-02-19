@@ -3,13 +3,13 @@ class EffortSplitTimeCreator
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:row_time_data, :effort, :current_user_id],
-                           exclusive: [:row_time_data, :effort, :current_user_id, :event, :military_times],
+                           exclusive: [:row_time_data, :effort, :current_user_id, :event, :time_format],
                            class: self.class)
     @row_time_data = args[:row_time_data]
     @effort = args[:effort]
     @current_user_id = args[:current_user_id]
     @event = args[:event] || effort.event
-    @military_times = args[:military_times]
+    @time_format = args[:time_format]
     set_start_offset
     validate_row_time_data
   end
@@ -35,7 +35,7 @@ class EffortSplitTimeCreator
   EXCEL_BASE_DATETIME = '1899-12-30'.to_datetime
   CUTOVER_YEAR = 1910
 
-  attr_reader :row_time_data, :effort, :current_user_id, :event
+  attr_reader :row_time_data, :effort, :current_user_id, :event, :time_format
 
   def set_start_offset
     if military_times?
@@ -112,7 +112,7 @@ class EffortSplitTimeCreator
   end
 
   def military_times?
-    @military_times
+    time_format == 'military'
   end
 
   def validate_row_time_data

@@ -147,7 +147,7 @@ class Effort < ActiveRecord::Base
 
   def started?
     return attributes['started'] if attributes.has_key?('started')
-    start_split_times.present?
+    split_times.present?
   end
 
   # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'

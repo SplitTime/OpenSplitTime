@@ -254,4 +254,16 @@ class Effort < ActiveRecord::Base
   def enriched
     event.efforts.sorted_with_finish_status.find { |e| e.id == id }
   end
+
+  # Methods related to stopped split_time
+
+  # Uses a reverse sort in order to get the most recent stopped_here split_time
+  # if more than one exists
+  def stopped_split_time
+    ordered_split_times.reverse.find(&:stopped_here)
+  end
+
+  def stopped_time_point
+    stopped_split_time.try(:time_point)
+  end
 end

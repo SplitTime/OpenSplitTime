@@ -418,8 +418,6 @@ RSpec.describe Effort, type: :model do
       let(:laps_required) { 0 }
       let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
       let(:test_effort) { test_event.efforts.first }
-      let(:test_split_times) { test_effort.split_times }
-      let(:incomplete_split_times) { test_split_times.first(2) }
 
       it 'returns true when any split_time is stopped_here' do
         effort = test_effort
@@ -432,6 +430,51 @@ RSpec.describe Effort, type: :model do
         expect(effort.split_times.none?(&:stopped_here)).to eq(true)
         expect(effort.stopped?).to eq(false)
       end
+    end
+  end
+
+  describe '#stopped_split_time' do
+    let(:laps_required) { 0 }
+    let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
+    let(:test_effort) { test_event.efforts.first }
+
+    it 'returns the split_time for which stopped_here is true' do
+      effort = test_effort
+      split_times = test_effort.split_times
+      stopped_indexes = [5]
+      expected = split_times[5]
+      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+    end
+
+    it 'returns the last split_time for which stopped_here is true if more than one exists' do
+      effort = test_effort
+      split_times = test_effort.split_times
+      stopped_indexes = [2, 5]
+      expected = split_times[5]
+      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+    end
+
+    it 'works properly across laps' do
+      effort = test_effort
+      split_times = test_effort.split_times
+      stopped_indexes = [2, 10]
+      expect(split_times[2].lap).not_to eq(split_times[10].lap)
+      expected = split_times[10]
+      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+    end
+
+    it 'returns nil if no split_time exists with stopped_here = true' do
+      effort = test_effort
+      split_times = test_effort.split_times
+      stopped_indexes = []
+      expected = nil
+      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+    end
+
+    def validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+      stopped_indexes.each { |i| split_times[i].stopped_here = true }
+      allow(effort).to receive(:ordered_split_times).and_return(split_times)
+      expect(effort.stopped_split_time).to eq(expected)
     end
   end
 end

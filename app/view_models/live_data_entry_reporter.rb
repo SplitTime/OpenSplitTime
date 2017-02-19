@@ -107,7 +107,6 @@ class LiveDataEntryReporter
   end
 
   def prior_valid_split_time
-    puts "Subject split is #{subject_split.name}"
     @prior_valid_split_time ||= subject_split.real_presence &&
         SplitTimeFinder.prior(effort: effort,
                               time_point: subject_lap_split.time_point_in,

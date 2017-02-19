@@ -10,7 +10,7 @@
     <p>
       <%= "#{split_time_data[:split_name]} at #{split_time_data[:day_and_time]}" %>
       <%= " with a pacer" if split_time_data[:pacer] %>
-      <%= " and dropped there" if @effort_data[:dropped_split_id] == split_time_data[:split_id] %>
+      <%= " and stopped there" if @effort_data[:stopped_time_point] == split_time_data[:time_point] %>
     </p>
 <% end %>
 <br/>

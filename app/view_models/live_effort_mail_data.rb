@@ -16,7 +16,7 @@ class LiveEffortMailData
   def effort_data
     @effort_data ||= {full_name: full_name,
                       event_name: event_name,
-                      dropped_split_id: dropped_split_id,
+                      stopped_time_point: stopped_time_point,
                       split_times_data: split_times_data,
                       effort_id: effort.id,
                       event_id: effort.event.id}
@@ -26,11 +26,11 @@ class LiveEffortMailData
 
   attr_reader :effort
 
-  delegate :full_name, :event_name, :dropped_split_id, to: :effort
+  delegate :full_name, :event_name, :stopped_time_point, to: :effort
 
   def split_times_data
     split_times.map do |split_time|
-      {split_id: split_time.split_id,
+      {time_point: split_time.time_point,
        split_name: split_time.split_name,
        day_and_time: split_time.day_and_time.strftime("%A, %B %-d, %Y %l:%M%p"),
        pacer: split_time.pacer}

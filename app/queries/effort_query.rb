@@ -70,6 +70,7 @@ class EffortQuery
                     split_times.split_id as final_split_id, 
                     split_times.sub_split_bitkey as final_bitkey,
                     split_times.time_from_start as final_time,
+                    split_times.id as final_split_time_id,
                     CASE
                       when splits.kind = 1 then true 
                       else false 

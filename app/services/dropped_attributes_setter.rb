@@ -12,7 +12,7 @@ class DroppedAttributesSetter
                            required: :efforts,
                            exclusive: :efforts,
                            class: self.class)
-    @efforts = args[:efforts].with_ordered_split_times
+    @efforts = args[:efforts].started.with_ordered_split_times
     @changed_split_times = []
     @reports = []
   end

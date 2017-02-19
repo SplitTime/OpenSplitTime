@@ -319,52 +319,118 @@ RSpec.describe Effort, type: :model do
       let(:test_splits) { test_event.splits }
       let(:test_split_times) { test_effort.split_times }
 
-      it 'returns false when dropped_id is nil' do
+      it 'returns false when no split_time has stopped_here = true' do
         effort = test_effort
-        expect(effort.dropped_split_id).to eq(nil)
+        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
         expect(effort.finished?).to eq(false)
       end
 
-      it 'returns true when dropped_id has a value' do
+      it 'returns true when any split_time has stopped_here = true' do
         effort = test_effort
-        effort.dropped_split_id = test_splits.first.id
+        effort.split_times.last.stopped_here = true
         expect(effort.finished?).to eq(true)
       end
     end
   end
 
   describe '#dropped?' do
-    let(:test_effort) { FactoryGirl.build_stubbed(:effort) }
-
     context 'for an event with a fixed lap requirement' do
-      it 'returns true when dropped_split_id contains a value' do
+      let(:laps_required) { 1 }
+      let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
+      let(:test_effort) { test_event.efforts.first }
+      let(:test_split_times) { test_effort.split_times }
+      let(:incomplete_split_times) { test_split_times.first(2) }
+
+      it 'returns true when a split_time is stopped_here and laps_required are not completed' do
         effort = test_effort
-        allow(effort).to receive(:laps_required).and_return(1)
-        effort.dropped_split_id = 101
+        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
+        incomplete_split_times.last.stopped_here = true
         expect(effort.dropped?).to eq(true)
       end
 
-      it 'returns false when dropped_split_id is nil' do
+      it 'returns false when no split_time is stopped_here although laps_required are not completed' do
         effort = test_effort
-        allow(effort).to receive(:laps_required).and_return(1)
-        effort.dropped_split_id = nil
+        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
+        expect(effort.ordered_split_times.none?(&:stopped_here)).to eq(true)
         expect(effort.dropped?).to eq(false)
       end
     end
 
     context 'for an event with unlimited laps' do
-      it 'returns false always, including when dropped_split_id contains a value' do
+      let(:laps_required) { 0 }
+      let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
+      let(:test_effort) { test_event.efforts.first }
+      let(:test_split_times) { test_effort.split_times }
+
+      it 'returns false always, including when a split_time is stopped_here' do
         effort = test_effort
-        allow(effort).to receive(:laps_required).and_return(0)
-        effort.dropped_split_id = 101
+        effort.split_times.last.stopped_here = true
         expect(effort.dropped?).to eq(false)
       end
 
-      it 'returns false always, including when dropped_split_id is nil' do
+      it 'returns false always, including when no split_time is stopped_here' do
         effort = test_effort
-        allow(effort).to receive(:laps_required).and_return(0)
-        effort.dropped_split_id = nil
+        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
         expect(effort.dropped?).to eq(false)
+      end
+    end
+  end
+
+  describe '#stopped?' do
+    context 'for an event with a fixed lap requirement' do
+      let(:laps_required) { 1 }
+      let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
+      let(:test_effort) { test_event.efforts.first }
+      let(:test_split_times) { test_effort.split_times }
+      let(:incomplete_split_times) { test_split_times.first(2) }
+
+      it 'returns true when the effort is finished and the last split_time is stopped_here' do
+        effort = test_effort
+        effort.split_times.last.stopped_here = true
+        expect(effort.stopped?).to eq(true)
+      end
+
+      it 'returns true when the effort is finished even if no split_time is stopped_here' do
+        effort = test_effort
+        split_times = test_effort.split_times
+        allow(effort).to receive(:ordered_split_times).and_return(split_times)
+        expect(effort.finished?).to eq(true)
+        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
+        expect(effort.stopped?).to eq(true)
+      end
+
+      it 'returns true when the effort is not finished and any split_time is stopped_here' do
+        effort = test_effort
+        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
+        incomplete_split_times.last.stopped_here = true
+        expect(effort.stopped?).to eq(true)
+      end
+
+      it 'returns false when the effort is not finished and no split_time is stopped_here' do
+        effort = test_effort
+        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
+        expect(incomplete_split_times.none?(&:stopped_here)).to eq(true)
+        expect(effort.stopped?).to eq(false)
+      end
+    end
+
+    context 'for an event with unlimited laps' do
+      let(:laps_required) { 0 }
+      let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: laps_required) }
+      let(:test_effort) { test_event.efforts.first }
+      let(:test_split_times) { test_effort.split_times }
+      let(:incomplete_split_times) { test_split_times.first(2) }
+
+      it 'returns true when any split_time is stopped_here' do
+        effort = test_effort
+        effort.split_times.last.stopped_here = true
+        expect(effort.stopped?).to eq(true)
+      end
+
+      it 'returns false when no split_times is stopped_here' do
+        effort = test_effort
+        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
+        expect(effort.stopped?).to eq(false)
       end
     end
   end

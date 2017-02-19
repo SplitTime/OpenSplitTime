@@ -83,6 +83,6 @@ class Api::V1::EventsController < ApiController
   end
 
   def event_params
-    params.require(:event).permit(Event::PERMITTED_PARAMS)
+    params.require(:event).permit(*Event::PERMITTED_PARAMS)
   end
 end

@@ -43,7 +43,6 @@ class Api::V1::ParticipantsController < ApiController
   end
 
   def participant_params
-    params.require(:participant).permit(:id, :city, :state_code, :country_code, :first_name, :last_name, :gender,
-                                        :email, :phone, :birthdate, :concealed)
+    params.require(:participant).permit(*Participant::PERMITTED_PARAMS)
   end
 end

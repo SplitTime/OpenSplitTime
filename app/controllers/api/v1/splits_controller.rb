@@ -43,7 +43,6 @@ class Api::V1::SplitsController < ApiController
   end
 
   def split_params
-    params.require(:split).permit(:id, :course_id, :split_id, :distance_from_start, :vert_gain_from_start,
-                                  :vert_loss_from_start, :kind, :base_name, :description, :sub_split_bitmap)
+    params.require(:split).permit(*Split::PERMITTED_PARAMS)
   end
 end

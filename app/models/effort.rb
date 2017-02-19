@@ -5,6 +5,10 @@ class Effort < ActiveRecord::Base
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]]
+  PERMITTED_PARAMETERS = [:id, :event_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
+                          :city, :state_code, :country_code, :start_time, :finished, :concealed, :start_time, :start_offset,
+                          :beacon_url, :report_url, :photo_url,
+                          split_times_attributes: [*SplitTime::PERMITTED_PARAMS]]
 
   include Auditable
   include Concealable
@@ -166,12 +170,14 @@ class Effort < ActiveRecord::Base
   def dropped_lap_split_key
     dropped_lap && dropped_split_id && LapSplitKey.new(dropped_lap, dropped_split_id)
   end
+
   alias_method :dropped_key, :dropped_lap_split_key
 
   def dropped_lap_split_key=(key)
     self.dropped_lap = key.try(:lap)
     self.dropped_split_id = key.try(:split_id)
   end
+
   alias_method :dropped_key=, :dropped_lap_split_key=
 
   def finish_status

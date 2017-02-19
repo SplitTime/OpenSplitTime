@@ -55,8 +55,7 @@ class SplitTimesController < ApplicationController
   private
 
   def split_time_params
-    params.require(:split_time).permit(:effort_id, :split_id, :bitkey, :sub_split_bitkey, :time_from_start,
-                                       :elapsed_time, :time_of_day, :military_time, :data_status, :lap)
+    params.require(:split_time).permit(*SplitTime::PERMITTED_PARAMS)
   end
 
   def query_params

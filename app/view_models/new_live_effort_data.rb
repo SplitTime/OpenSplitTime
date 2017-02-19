@@ -21,6 +21,7 @@ class NewLiveEffortData
     @indexed_existing_split_times = ordered_existing_split_times.index_by(&:time_point)
     @new_split_times = {}
     create_split_times
+    assign_stopped_here
     fill_with_null_split_times
     validate_setup
   end
@@ -85,7 +86,7 @@ class NewLiveEffortData
     effort.try(:full_name) || (params[:bib_number].present? ? 'Bib number not located' : 'n/a')
   end
 
-  def dropped_here?
+  def stopped_here?
     params[:dropped_here] == 'true'
   end
 
@@ -98,7 +99,7 @@ class NewLiveEffortData
   end
 
   def proposed_split_times
-    new_split_times.values.select(&:time_from_start)
+    new_split_times.values.select(&:real_record?)
   end
 
   def ordered_existing_split_times
@@ -106,7 +107,11 @@ class NewLiveEffortData
   end
 
   def effort_lap_splits
-    @effort_lap_splits ||= event.required_lap_splits.presence || (lap && event.lap_splits_through(lap)) || []
+    @effort_lap_splits ||= event.required_lap_splits.presence || (event.lap_splits_through(lap_for_lap_splits))
+  end
+
+  def lap_for_lap_splits
+    [ordered_existing_split_times.last.try(:lap) || 1, lap].max
   end
 
   private
@@ -139,6 +144,11 @@ class NewLiveEffortData
       end
       self.new_split_times[kind] = split_time
     end
+  end
+
+  def assign_stopped_here
+    last_new_split_time = sub_split_kinds.map { |kind| new_split_times[kind] }.compact.last
+    last_new_split_time.stopped_here = stopped_here? if last_new_split_time
   end
 
   def fill_with_null_split_times

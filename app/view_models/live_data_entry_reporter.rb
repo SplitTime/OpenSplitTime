@@ -23,7 +23,6 @@ class LiveDataEntryReporter
 
   attr_reader :event, :params, :effort_data
   delegate :subject_lap_split, :effort, :new_split_times, :effort_lap_splits, :ordered_existing_split_times, to: :effort_data
-  delegate :dropped_key, to: :effort
 
   def report_text
     case
@@ -37,23 +36,23 @@ class LiveDataEntryReporter
   end
 
   def last_split_time_report_text
-    reported_place_and_time(last_reported_split_time) + dropped_addendum
+    reported_place_and_time(last_reported_split_time) + stopped_addendum
   end
 
-  def dropped_addendum
+  def stopped_addendum
     case
-    when dropped_key && dropped_key == last_reported_split_time.lap_split_key
-      ' and dropped there'
-    when dropped_key
-      drop_conflict_report_text
+    when stopped_split_time && stopped_split_time.lap_split_key == last_reported_split_time.lap_split_key
+      ' and stopped there'
+    when stopped_split_time
+      stop_conflict_report_text
     else
       ''
     end
   end
 
-  def drop_conflict_report_text
-    " but reported dropped at #{lap_split_name(dropped_lap_split)}" +
-        (dropped_split_time ? " as of #{day_time_military_format(dropped_split_time.day_and_time)}" : '')
+  def stop_conflict_report_text
+    " but reported stopped at #{lap_split_name(stopped_lap_split)}" +
+        (stopped_split_time ? " as of #{day_time_military_format(stopped_split_time.day_and_time)}" : '')
   end
 
   def prior_valid_report_text
@@ -77,16 +76,16 @@ class LiveDataEntryReporter
     ordered_existing_split_times.last
   end
 
-  def dropped_split_time
-    dropped_key && ordered_existing_split_times.reverse.find { |st| st.lap_split_key == dropped_key }
+  def stopped_split_time
+    ordered_existing_split_times.reverse.find(&:stopped_here)
   end
 
   def last_reported_lap_split
     find_lap_split(last_reported_split_time.lap_split_key)
   end
 
-  def dropped_lap_split
-    find_lap_split(dropped_key)
+  def stopped_lap_split
+    find_lap_split(stopped_split_time.lap_split_key)
   end
 
   def find_lap_split(lap_split_key)
@@ -108,6 +107,7 @@ class LiveDataEntryReporter
   end
 
   def prior_valid_split_time
+    puts "Subject split is #{subject_split.name}"
     @prior_valid_split_time ||= subject_split.real_presence &&
         SplitTimeFinder.prior(effort: effort,
                               time_point: subject_lap_split.time_point_in,

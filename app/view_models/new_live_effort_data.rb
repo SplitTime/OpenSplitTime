@@ -35,7 +35,7 @@ class NewLiveEffortData
      effort_id: effort.id,
      bib_number: effort.bib_number,
      effort_name: effort_name,
-     dropped_here: dropped_here?,
+     dropped_here: stopped_here?,
      time_in: new_split_times[:in].military_time,
      time_out: new_split_times[:out].military_time,
      pacer_in: new_split_times[:in].pacer,

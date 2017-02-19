@@ -14,6 +14,10 @@ class TimeCluster
     @finish
   end
 
+  def aid_time_recordable?
+    times_from_start.count > 1
+  end
+
   def segment_time
     @segment_time ||=
         times_from_start.compact.first - prior_time if (prior_time && (times_from_start.compact.present?))
@@ -38,6 +42,10 @@ class TimeCluster
 
   def split_time_ids
     @split_time_ids ||= split_times_data.map { |st| st && st[:id] }
+  end
+
+  def stopped_here_flags
+    @stopped_here_flags ||= split_times_data.map { |st| st && st[:stopped_here] }
   end
 
   private

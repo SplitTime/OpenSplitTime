@@ -38,7 +38,7 @@ class EffortTimesRow
                                      related_split_times(lap_split),
                                      prior_time,
                                      effort.start_time,
-                                     display_dropped?(lap_split))
+                                     display_stopped?(lap_split))
       time_clusters << time_cluster
       prior_time = time_cluster.times_from_start.compact.last if time_cluster.times_from_start.compact.present?
     end
@@ -53,28 +53,36 @@ class EffortTimesRow
   end
 
   def cluster_includes_last_data?(lap_split)
-    related_split_times(lap_split).compact.include?(last_split_time_data)
+    related_split_times(lap_split).compact.include?(last_split_time)
   end
 
   def related_split_times(lap_split)
     lap_split.time_points.map { |time_point| indexed_split_times[time_point] }
   end
 
-  def last_split_time_data
-    @last_split_time_data ||=
+  def last_split_time
+    @last_split_time ||=
         lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times[time_point] }.compact.last
   end
 
-  def display_dropped?(lap_split)
-    dropped_display_key && (lap_split.key == dropped_display_key)
+  def display_stopped?(lap_split)
+    stopped_display_key && (lap_split.key == stopped_display_key)
   end
 
-  def dropped_display_key
-    @dropped_display_key ||= lap_split_keys[dropped_key_index + 1] if dropped_key_index
+  def stopped_display_key
+    @stopped_display_key ||= lap_split_keys[stopped_key_index + 1] if stopped_key_index
   end
 
-  def dropped_key_index
-    @dropped_key_index ||= lap_split_keys.index(effort.dropped_key)
+  def stopped_key_index
+    @stopped_key_index ||= lap_split_keys.index(stopped_split_time_key)
+  end
+
+  def stopped_split_time_key
+    LapSplitKey.new(stopped_split_time.lap, stopped_split_time.split_id) if stopped_split_time
+  end
+
+  def stopped_split_time
+    @stopped_split_time ||= split_times.sort_by(&:time_from_start).reverse.find(&:stopped_here)
   end
 
   def lap_split_keys

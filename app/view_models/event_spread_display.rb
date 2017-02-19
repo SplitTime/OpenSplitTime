@@ -73,9 +73,8 @@ class EventSpreadDisplay
   end
 
   def split_times
-    @split_times ||=
-        event.split_times
-            .struct_pluck(:effort_id, :time_from_start, :lap, :split_id, :sub_split_bitkey, :data_status)
+    @split_times ||= event.split_times.struct_pluck(:effort_id, :time_from_start, :lap, :split_id,
+                                                    :sub_split_bitkey, :data_status, :stopped_here)
   end
 
   def efforts

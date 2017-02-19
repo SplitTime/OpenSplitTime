@@ -181,12 +181,13 @@ RSpec.describe EffortDataStatusSetter do
         validate_data_status(split_times, split_times_status, effort_status)
       end
 
-      it 'if effort has a dropped_split_id, sets data_status of all split_times beyond that point to "bad"' do
+      it 'if a split_time has stopped_here = true, sets data_status of all split_times beyond that point to "bad"' do
         n = 10
         split_times = split_times_104.first(n)
+        split_times[4].stopped_here = true
         split_times_status = %w(good good good good good bad bad bad bad bad)
         effort_status = 'bad'
-        validate_data_status(split_times, split_times_status, effort_status, LapSplitKey.new(1, test_splits[2].id))
+        validate_data_status(split_times, split_times_status, effort_status)
       end
 
       it 'if split_times are all confirmed, sets effort data_status to "good"' do
@@ -198,12 +199,11 @@ RSpec.describe EffortDataStatusSetter do
         validate_data_status(split_times, split_times_status, effort_status)
       end
 
-      def validate_data_status(split_times, split_times_status, effort_status, dropped_key = nil)
+      def validate_data_status(split_times, split_times_status, effort_status)
         event = test_event
         allow_any_instance_of(Course).to receive(:ordered_splits).and_return(test_splits)
         lap_splits = event.required_lap_splits
         effort = test_effort
-        effort.dropped_key = dropped_key
         setter = EffortDataStatusSetter.new(effort: effort,
                                             lap_splits: lap_splits,
                                             ordered_split_times: split_times,

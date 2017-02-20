@@ -129,7 +129,7 @@ class EffortsController < ApplicationController
   end
 
   def mini_table
-    @mini_table = EffortsMiniTable.new(params[:effortIds])
+    @mini_table = EffortsMiniTable.new(params[:effort_ids])
     render partial: 'efforts_mini_table'
   end
 

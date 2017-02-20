@@ -104,7 +104,7 @@ class LiveTimeRowImporter
 
   def set_dropped_attributes(effort_data)
     effort = effort_data.effort
-    dropped_here_key = effort_data.dropped_here? ? effort_data.subject_lap_split.key : nil
+    dropped_here_key = effort_data.stopped_here? ? effort_data.subject_lap_split.key : nil
     if dropped_here_key || (effort.dropped_key == effort_data.subject_lap_split.key)
       effort.dropped_key = dropped_here_key # Undrops the effort if dropped_here_key is nil
       effort.save if effort.changed?

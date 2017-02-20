@@ -21,6 +21,7 @@
         <th class="text-center">Recorded<br/>In / Out</th>
         <th class="text-center">In Aid</th>
         <th class="text-center">Missed</th>
+        <th class="text-center">Stopped Here</th>
         <th class="text-center">Dropped Here</th>
         <th class="text-center">Expected</th>
       </tr>
@@ -35,7 +36,7 @@
               /
               <%= render 'link_to_efforts', row: row, category: :recorded_out %>
             </td>
-            <% [:in_aid, :missed, :dropped_here, :expected].each do |category| %>
+            <% [:in_aid, :missed, :stopped_here, :dropped_here, :expected].each do |category| %>
                 <td class="text-center">
                   <%= render 'link_to_efforts', row: row, category: category %>
                 </td>

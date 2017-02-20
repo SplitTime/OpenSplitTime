@@ -169,7 +169,7 @@ class EffortsController < ApplicationController
   private
 
   def effort_params
-    params.require(:effort).permit(*Effort::PERMITTED_PARAMETERS)
+    params.require(:effort).permit(*Effort::PERMITTED_PARAMS)
   end
 
   def query_params

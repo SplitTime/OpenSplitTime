@@ -275,7 +275,7 @@ RSpec.describe EffortDataStatusSetter do
         validate_multi_data_status(split_times, split_times_status, effort_status)
       end
 
-      def validate_multi_data_status(split_times, split_times_status, effort_status, dropped_key = nil)
+      def validate_multi_data_status(split_times, split_times_status, effort_status)
         event = multi_event
         allow_any_instance_of(Course).to receive(:ordered_splits).and_return(multi_splits)
         course = multi_course
@@ -286,7 +286,6 @@ RSpec.describe EffortDataStatusSetter do
         lap_splits = lap_splits_and_time_points(event).first
         lap_splits.each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }
         effort = multi_effort
-        effort.dropped_key = dropped_key
         allow(effort).to receive(:event).and_return(event)
         setter = EffortDataStatusSetter.new(effort: effort,
                                             lap_splits: lap_splits,

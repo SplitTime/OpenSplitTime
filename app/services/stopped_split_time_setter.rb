@@ -1,4 +1,4 @@
-class DroppedAttributesSetter
+class StoppedSplitTimeSetter
 
   def self.set_attributes(args)
     bulk_setter = new(args)

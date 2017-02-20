@@ -28,7 +28,6 @@ class Effort < ActiveRecord::Base
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
-  validate :dropped_attributes_consistent
 
   before_save :reset_age_from_birthdate
 
@@ -68,11 +67,6 @@ class Effort < ActiveRecord::Base
     return [] if EffortQuery.existing_scope_sql.blank?
     query = EffortQuery.with_finish_status(effort_fields: effort_fields)
     self.find_by_sql(query)
-  end
-
-  def dropped_attributes_consistent
-    errors.add(:dropped_split_id, 'a dropped_split_id exists with no dropped_lap') if dropped_split_id && !dropped_lap
-    errors.add(:dropped_lap, 'a dropped_lap exists with no dropped_split_id') if !dropped_split_id && dropped_lap
   end
 
   def reset_age_from_birthdate
@@ -167,19 +161,6 @@ class Effort < ActiveRecord::Base
     started? && !stopped?
   end
 
-  def dropped_lap_split_key
-    dropped_lap && dropped_split_id && LapSplitKey.new(dropped_lap, dropped_split_id)
-  end
-
-  alias_method :dropped_key, :dropped_lap_split_key
-
-  def dropped_lap_split_key=(key)
-    self.dropped_lap = key.try(:lap)
-    self.dropped_split_id = key.try(:split_id)
-  end
-
-  alias_method :dropped_key=, :dropped_lap_split_key=
-
   def finish_status
     case
     when !started?
@@ -234,31 +215,24 @@ class Effort < ActiveRecord::Base
   end
 
   def destroy_split_times(split_time_ids)
+    stop_existed = split_times.any?(&:stopped_here)
     split_times.where(id: split_time_ids).destroy_all
     set_data_status
-    set_dropped_attributes if dropped?
+    if stop_existed && split_times.none?(&:stopped_here)
+      set_stop_to_last
+    end
   end
 
   def set_data_status
     EffortDataStatusSetter.set_data_status(effort: self)
   end
 
-  def set_dropped_attributes
-    DroppedAttributesSetter.set_attributes(efforts: Effort.where(id: id))
-  end
-
-  def undrop!
-    self.dropped_lap_split_key = nil
-    save
-  end
-
-  def drop!(lap_split_key)
-    self.dropped_lap_split_key = lap_split_key
-    save
-  end
-
   def enriched
     event.efforts.sorted_with_finish_status.find { |e| e.id == id }
+  end
+
+  def with_ordered_split_times
+    event.efforts.where { |e| e.id == id }.with_ordered_split_times.first
   end
 
   # Methods related to stopped split_time
@@ -271,5 +245,9 @@ class Effort < ActiveRecord::Base
 
   def stopped_time_point
     stopped_split_time.try(:time_point)
+  end
+
+  def set_stop_to_last
+    StoppedSplitTimeSetter.set_attributes(efforts: Effort.where(id: id))
   end
 end

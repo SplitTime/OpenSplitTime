@@ -90,7 +90,7 @@ class EffortImporter
   end
 
   def set_drops_and_status
-    DroppedAttributesSetter.set_attributes(efforts: imported_efforts)
+    StoppedSplitTimeSetter.set_attributes(efforts: imported_efforts)
 
     # Initial pass sets data_status based on the relaxed standards of the terrain model
     # Second pass sets data_status on the :stats model, ignoring times flagged as bad or questionable by the first pass

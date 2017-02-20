@@ -31,13 +31,12 @@ class LiveTimeRowImporter
 
       if effort_data.valid? && (effort_data.clean? || force_option?) && create_or_update_times(effort_data)
         adjust_later_times(effort_data.effort)
-        set_dropped_attributes(effort_data)
       end
     end
   end
 
   def returned_rows
-    {returnedRows: unsaved_rows}
+    {returned_rows: unsaved_rows}.camelize_keys
   end
 
   private
@@ -100,16 +99,6 @@ class LiveTimeRowImporter
       end
     end
     effort.save
-  end
-
-  def set_dropped_attributes(effort_data)
-    effort = effort_data.effort
-    dropped_here_key = effort_data.stopped_here? ? effort_data.subject_lap_split.key : nil
-    if dropped_here_key || (effort.dropped_key == effort_data.subject_lap_split.key)
-      effort.dropped_key = dropped_here_key # Undrops the effort if dropped_here_key is nil
-      effort.save if effort.changed?
-      EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
-    end
   end
 
   def create_or_update_split_time(proposed_split_time, working_split_time)

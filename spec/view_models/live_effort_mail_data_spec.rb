@@ -51,15 +51,16 @@ RSpec.describe LiveEffortMailData do
       split_times_data = [{time_point: in_split_time.time_point,
                            split_name: in_split_time.split_name,
                            day_and_time: 'Friday, July 1, 2016  7:40AM',
-                           pacer: nil},
+                           pacer: nil,
+                           stopped_here: in_split_time.stopped_here},
                           {time_point: out_split_time.time_point,
                            split_name: out_split_time.split_name,
                            day_and_time: 'Friday, July 1, 2016  7:50AM',
-                           pacer: nil}]
+                           pacer: nil,
+                           stopped_here: out_split_time.stopped_here}]
       mail_data = LiveEffortMailData.new(participant: participant, split_times: split_times)
       expected = {full_name: effort.full_name,
                   event_name: event.name,
-                  stopped_time_point: out_split_time.time_point,
                   split_times_data: split_times_data,
                   effort_id: effort.id,
                   event_id: event.id}

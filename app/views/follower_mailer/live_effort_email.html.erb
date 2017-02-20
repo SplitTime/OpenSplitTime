@@ -8,9 +8,7 @@
 <%= "The following new times were reported for #{@effort_data[:full_name]} at #{@effort_data[:event_name]}:" %>
 <% @effort_data[:split_times_data].each do |split_time_data| %>
     <p>
-      <%= "#{split_time_data[:split_name]} at #{split_time_data[:day_and_time]}" %>
-      <%= " with a pacer" if split_time_data[:pacer] %>
-      <%= " and stopped there" if @effort_data[:stopped_time_point] == split_time_data[:time_point] %>
+      <%= follower_update_body_text(split_time_data) %>
     </p>
 <% end %>
 <br/>

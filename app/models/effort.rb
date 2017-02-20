@@ -34,7 +34,6 @@ class Effort < ActiveRecord::Base
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(participant_id: nil) }
-  scope :started, -> { joins(split_times: :split).where(splits: {kind: 0}).uniq }
   scope :with_ordered_split_times,
         -> { eager_load(:split_times).includes(split_times: :split)
                  .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
@@ -232,7 +231,7 @@ class Effort < ActiveRecord::Base
   end
 
   def with_ordered_split_times
-    event.efforts.where { |e| e.id == id }.with_ordered_split_times.first
+    Effort.where { |e| e.id == id }.with_ordered_split_times.first
   end
 
   # Methods related to stopped split_time

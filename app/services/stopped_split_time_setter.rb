@@ -12,7 +12,7 @@ class StoppedSplitTimeSetter
                            required: :efforts,
                            exclusive: :efforts,
                            class: self.class)
-    @efforts = args[:efforts].started.with_ordered_split_times
+    @efforts = args[:efforts].with_ordered_split_times.select(&:started?)
     @changed_split_times = []
     @reports = []
   end

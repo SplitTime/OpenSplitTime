@@ -93,10 +93,4 @@ module EventsHelper
   def stage_button_disabled?(klass)
     klass == EventStageDisplay
   end
-
-  def spread_segment_total_data(row)
-    row.total_time_in_aid ?
-        [time_format_xxhyymzzs(row.total_segment_time), time_format_xxhyym(row.total_time_in_aid)].join(' / ') :
-        time_format_xxhyymzzs(row.total_segment_time)
-  end
 end

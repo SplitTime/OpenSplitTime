@@ -79,10 +79,7 @@
     <% end %>
     <% if @spread_display.show_segment_totals? %>
         <th class="text-center text-nowrap">
-          <%= @spread_display.segment_total_header[:title] %><br/>
-          <% if @spread_display.segment_total_header[:extensions].present? %>
-              <%= @spread_display.segment_total_header[:extensions] %><br/>
-          <% end %>
+          <%= segment_total_header %>
         </th>
     <% end %>
   </tr>
@@ -105,7 +102,9 @@
             </td>
         <% end %>
         <% if @spread_display.show_segment_totals? %>
-            <td class="text-center text-nowrap"><%= spread_segment_total_data(row) %></td>
+            <td class="text-center text-nowrap">
+              <%= spread_segment_total_data(row) %>
+            </td>
         <% end %>
       </tr>
   <% end %>

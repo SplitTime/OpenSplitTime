@@ -21,6 +21,19 @@ class EventSpreadDisplay
                                            distance: lap_split.distance_from_start} }
   end
 
+  def segment_total_header
+    {title: aid_times_recorded? ? 'Totals' : 'Total',
+     extensions: aid_times_recorded? ? 'Segment / Aid' : nil}
+  end
+
+  def aid_times_recorded?
+    relevant_lap_splits.any? { |lap_split| header_extensions(lap_split) }
+  end
+
+  def show_segment_totals?
+    display_style == 'segment'
+  end
+
   def effort_times_rows
     @effort_times_rows ||=
         sorted_efforts

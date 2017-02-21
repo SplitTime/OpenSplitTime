@@ -77,8 +77,13 @@
           <%= "(#{pdu('singular').titlecase} #{d(header[:distance])})" %>
         </th>
     <% end %>
-    <% if @spread_display.display_style == 'segment' %>
-        <th class="text-center text-nowrap">Totals<br/>Segment / Aid</th>
+    <% if @spread_display.show_segment_totals? %>
+        <th class="text-center text-nowrap">
+          <%= @spread_display.segment_total_header[:title] %><br/>
+          <% if @spread_display.segment_total_header[:extensions].present? %>
+              <%= @spread_display.segment_total_header[:extensions] %><br/>
+          <% end %>
+        </th>
     <% end %>
   </tr>
   </thead>
@@ -99,8 +104,8 @@
               <% end %>
             </td>
         <% end %>
-        <% if @spread_display.display_style == 'segment' %>
-            <td class="text-center text-nowrap"><%= [time_format_xxhyymzzs(row.total_segment_time), time_format_xxhyym(row.total_time_in_aid)].join(' / ') %></td>
+        <% if @spread_display.show_segment_totals? %>
+            <td class="text-center text-nowrap"><%= spread_segment_total_data(row) %></td>
         <% end %>
       </tr>
   <% end %>

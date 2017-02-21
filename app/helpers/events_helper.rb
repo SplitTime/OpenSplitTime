@@ -14,8 +14,8 @@ module EventsHelper
   def link_to_beacon_button(view_object)
     if view_object.available_live && view_object.beacon_url
       link_to event_beacon_button_text(view_object.beacon_url),
-              url_with_protocol(view_object.beacon_url), 
-              class: 'btn btn-sm btn-default', 
+              url_with_protocol(view_object.beacon_url),
+              class: 'btn btn-sm btn-default',
               target: '_blank'
     end
   end
@@ -94,4 +94,9 @@ module EventsHelper
     klass == EventStageDisplay
   end
 
+  def spread_segment_total_data(row)
+    row.total_time_in_aid ?
+        [time_format_xxhyymzzs(row.total_segment_time), time_format_xxhyym(row.total_time_in_aid)].join(' / ') :
+        time_format_xxhyymzzs(row.total_segment_time)
+  end
 end

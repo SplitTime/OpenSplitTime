@@ -15,7 +15,7 @@ class EffortTimesRow
   end
 
   def total_time_in_aid
-    time_clusters.map(&:time_in_aid).sum
+    time_clusters.map(&:time_in_aid).compact.sum
   end
 
   def total_segment_time

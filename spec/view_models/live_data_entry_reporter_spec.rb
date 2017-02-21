@@ -196,7 +196,7 @@ RSpec.describe LiveDataEntryReporter do
   def resources_for_test_event
     event = test_event
     ordered_splits = splits
-    allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+    allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
     lap_splits = event.required_lap_splits
     [event, ordered_splits, lap_splits]
   end

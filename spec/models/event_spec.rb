@@ -68,7 +68,7 @@ RSpec.describe Event, type: :model do
         test_event = event
         test_event.laps_required = 0
         ordered_splits = splits
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
         required_lap_splits = test_event.required_lap_splits
         expect(required_lap_splits).to eq([])
       end
@@ -76,7 +76,7 @@ RSpec.describe Event, type: :model do
       it 'returns an array whose size is equal to laps_required * number of splits' do
         test_event = event
         ordered_splits = splits
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
         required_lap_splits = test_event.required_lap_splits
         expect(required_lap_splits.size).to eq(8)
       end
@@ -84,7 +84,7 @@ RSpec.describe Event, type: :model do
       it 'returns an array of LapSplit objects ordered by lap, split distance, and bitkey' do
         test_event = event
         ordered_splits = splits
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
         required_lap_splits = test_event.required_lap_splits
         expect(required_lap_splits.size).to eq(8)
         expect(required_lap_splits.map(&:lap)).to eq([1] * 4 + [2] * 4)
@@ -98,7 +98,7 @@ RSpec.describe Event, type: :model do
         test_event = event
         test_event.laps_required = 0
         ordered_splits = splits
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
         required_time_points = test_event.required_time_points
         expect(required_time_points).to eq([])
       end
@@ -106,7 +106,7 @@ RSpec.describe Event, type: :model do
       it 'returns an array whose size is equal to laps_required * number of sub_splits' do
         test_event = event
         ordered_splits = splits
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
         required_time_points = test_event.required_time_points
         expect(required_time_points.size).to eq(12)
       end
@@ -114,7 +114,7 @@ RSpec.describe Event, type: :model do
       it 'returns an array of TimePoint objects ordered by lap, split distance, and bitkey' do
         test_event = event
         ordered_splits = splits
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
         required_time_points = test_event.required_time_points
         expect(required_time_points.map(&:lap)).to eq([1] * 6 + [2] * 6)
         expect(required_time_points.map(&:split_id)).to eq([111, 102, 102, 103, 103, 112] * 2)

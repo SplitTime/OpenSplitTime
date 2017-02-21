@@ -201,7 +201,7 @@ RSpec.describe EffortDataStatusSetter do
 
       def validate_data_status(split_times, split_times_status, effort_status)
         event = test_event
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(test_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(test_splits)
         lap_splits = event.required_lap_splits
         effort = test_effort
         setter = EffortDataStatusSetter.new(effort: effort,
@@ -277,7 +277,7 @@ RSpec.describe EffortDataStatusSetter do
 
       def validate_multi_data_status(split_times, split_times_status, effort_status)
         event = multi_event
-        allow_any_instance_of(Course).to receive(:ordered_splits).and_return(multi_splits)
+        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(multi_splits)
         course = multi_course
         course_distance = multi_splits.last.distance_from_start
         course_vert_gain = multi_splits.last.vert_gain_from_start
@@ -309,7 +309,7 @@ RSpec.describe EffortDataStatusSetter do
       course_distance = test_splits.last.distance_from_start
       allow(course).to receive(:distance).and_return(course_distance)
       event = FactoryGirl.build_stubbed(:event, id: 50, laps_required: 1)
-      allow_any_instance_of(Course).to receive(:ordered_splits).and_return(test_splits)
+      allow_any_instance_of(Event).to receive(:ordered_splits).and_return(test_splits)
       lap_splits = event.required_lap_splits
       lap_splits.each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }
       effort = test_effort

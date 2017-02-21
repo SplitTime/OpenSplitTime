@@ -31,9 +31,7 @@ class Event < ActiveRecord::Base
     return all if search_param.blank?
     name_search(search_param)
   end
-
-  delegate :cycled_lap_splits, :cycled_time_points, :lap_splits_through, :time_points_through, to: :course
-
+  
   def reconciled_efforts
     efforts.where.not(participant_id: nil)
   end

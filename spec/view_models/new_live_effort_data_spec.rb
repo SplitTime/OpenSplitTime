@@ -359,7 +359,7 @@ RSpec.describe NewLiveEffortData do
 
     def validate_new_split_times(event, effort, split_times, params, attributes)
       ordered_splits = event.splits
-      allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+      allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
       effort_data = NewLiveEffortData.new(event: event,
                                           params: params,
@@ -432,7 +432,7 @@ RSpec.describe NewLiveEffortData do
 
     def validate_times_exist(event, effort, split_times, params, attributes)
       ordered_splits = event.splits
-      allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
+      allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
       effort_data = NewLiveEffortData.new(event: event,
                                           params: params,
@@ -514,6 +514,7 @@ RSpec.describe NewLiveEffortData do
 
     def validate_lap(event, effort, split_times, params, expected)
       ordered_splits = event.splits
+      allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
       allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
       effort_data = NewLiveEffortData.new(event: event,

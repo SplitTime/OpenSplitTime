@@ -18,26 +18,26 @@
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-					<ajax-select class="form-control" v-model="eventModel.organizationId" url="get-courses">
+					<resource-select class="form-control" v-model="eventModel.organization" source="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_organizations">
 						<option value="" selected disabled>Select One</option>
-					</ajax-select>
+					</resource-select>
 				</div>
 				<div class="col-xs-12 col-sm-1 text-center middle-or">
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventModel.organizationNew = true; eventModel.organizationId = null">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.organization.import( { editable: true }, true ); eventModel.organizationNew = true">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.organizationNew }" v-show="eventModel.organizationId || eventModel.organizationNew">
+		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.organizationNew && !eventModel.organization.id }" v-show="eventModel.organization.id || eventModel.organizationNew">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Organization Name</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="Your course name" v-model="eventModel.organization.name">
+					<input type="text" class="form-control" placeholder="Your course name" v-model="eventModel.organization.name" :disabled="!eventModel.organization.editable">
 				</div>
-				<div class="col-xs-12" v-if="eventModel.organizationNew">
+				<div class="col-xs-12" v-if="eventModel.organizationNew && !eventModel.organization.id">
 					<span class="brackets" v-on:click="eventModel.organizationNew = false"><a href="#">Cancel</a></span>
 				</div>
 			</div>
@@ -71,19 +71,19 @@
 			<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-					<ajax-select class="form-control" v-model="eventModel.courseId" url="get-courses">
+					<resource-select class="form-control" v-model="eventModel.course" source="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_courses">
 						<option value="" selected disabled>Select One</option>
-					</ajax-select>
+					</resource-select>
 				</div>
 				<div class="col-xs-12 col-sm-1 text-center middle-or">
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventModel.courseNew = true; eventModel.courseId = null">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.course.import( { editable: true }, true ); eventModel.courseNew = true">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.courseNew }" v-show="eventModel.courseId || eventModel.courseNew">
+		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.courseNew && !eventModel.course.id }" v-show="eventModel.course.id || eventModel.courseNew">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Course Name</label>
@@ -108,7 +108,7 @@
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 					<textarea class="form-control" placeholder="Course Description" v-model="eventModel.course.description"></textarea>
 				</div>
-				<div class="col-xs-12" v-if="eventModel.courseNew">
+				<div class="col-xs-12" v-if="eventModel.courseNew && !eventModel.course.id">
 					<span class="brackets" v-on:click="eventModel.courseNew = false"><a href="#">Cancel</a></span>
 				</div>
 			</div>
@@ -178,11 +178,11 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<google-map editable :markers="eventModel.splits" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations" v-model="eventModel.temp" :polyline="eventModel.splits"></google-map>
+				<google-map editable :route="eventModel.course.splits" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations" v-model="eventModel.temp"></google-map>
 				{{ eventModel.temp }}
 			</div>
 			<div class="col-xs-12">
-				<data-tables :rows="eventModel.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event" class="splits-table">
+				<data-tables :rows="eventModel.course.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event" class="splits-table">
 					<tr slot="header">
 						<th></th>
 						<th data-orderable="false">Name</th>
@@ -204,22 +204,27 @@
 						</th>
 					</tr>
 					<template slot="row" scope="vm">
-						<td><i class="glyphicon glyphicon-flag"></i>{{ vm.row.kind }}</td>
-						<td>{{ vm.row.baseName }}</td>
-						<td>{{ vm.row.distanceFromStart }}</td>
-						<td>{{ vm.row.vertGainFromStart }}</td>
-						<td>{{ vm.row.vertLossFromStart }}</td>
-						<td>
-							<span class="marker"><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
-							<a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')">Edit Split</a>
-						</td>
-						<td>
-							<a href="#" v-on:click.prevent="vm.row.associated = !vm.row.associated; vm.row.associate( eventModel )">
-								<i class="glyphicon glyphicon-check" v-if="vm.row.associated"></i>
-								<i class="glyphicon glyphicon-unchecked" v-else></i>
-							</a>
-							<a href="#" v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a>
-						</td>
+						<tr :disabled="!vm.row.associated">
+							<td>
+								<i class="glyphicon glyphicon-flag text-success" v-if="vm.row.kind == 'start'"></i>
+								<i class="glyphicon glyphicon-flag text-danger" v-else-if="vm.row.kind == 'finish'"></i>
+							</td>
+							<td>{{ vm.row.baseName }}</td>
+							<td>{{ vm.row.distanceFromStart }}</td>
+							<td>{{ vm.row.vertGainFromStart }}</td>
+							<td>{{ vm.row.vertLossFromStart }}</td>
+							<td>
+								<span class="marker"><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
+								<a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable">Edit Split</a>
+							</td>
+							<td>
+								<a href="#" v-on:click.prevent="vm.row.associate( !vm.row.associated )">
+									<i class="glyphicon glyphicon-check" v-if="vm.row.associated"></i>
+									<i class="glyphicon glyphicon-unchecked" v-else></i>
+								</a>
+								<a href="#" v-promise:click="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a>
+							</td>
+						</tr>
 					</template>
 				</data-tables>
 			</div>
@@ -234,7 +239,7 @@
 			</div>
 		</div>
 	</article>
-	<edit-modal v-model="modalData" :validator="isValid" v-on:done="!( modalData._dtid ) && eventModel.splits.push( modalData )" inline-template>
+	<edit-modal v-model="modalData" :validator="modalData.validate" v-on:change="!( modalData._dtid ) && eventModel.course.splits.push( modalData );" inline-template>
 		<div id="js-split-modal" tabindex="-1" role="dialog" class="modal fade">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
@@ -303,45 +308,32 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="form-group col-xs-12">
-										<label>Name of Location</label>
-										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
-											<i class="glyphicon glyphicon-question-sign"></i>
-										</span>
-										<div class="input-group">
-											<input type="text" class="form-control" v-if="model.location" v-model="model.location.name" :disabled="model.location.id">
-											<span class="input-group-btn">
-												<button type="button" class="btn btn-warning">Warning</button>
-											</span>
-										</div>
-									</div>
-								</div>
-								<div class="row">
 									<div class="form-group col-xs-4">
 										<label>Latitude</label>
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-if="model.location" v-model.number="model.location.latitude" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model.number="model.latitude" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-4">
 										<label>Longitude</label>
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-if="model.location" v-model.number="model.location.longitude" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model.number="model.longitude" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-4">
 										<label>Elevation</label>
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-if="model.location" v-model="model.location.elevation" v-mask="{ alias: 'integer' }">
+										<input type="text" class="form-control" v-model="model.elevation" v-mask="{ alias: 'integer' }">
 									</div>
 								</div>
 								<div class="col-xs-12 split-modal-btn-wrap">
-									<span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="valid" v-on:click="$emit('done')">
+									<p v-for="err in error">{{ err }}</p>
+									<span class="brackets" data-dismiss="modal" v-on:click="model.fetch()"><a href="#">Cancel</a></span>
+									<button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="valid" v-promise:click="[value.post, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
 										<template v-if="!model._dtid">Add Split</template>
 										<template v-else>Done</template>
 									</button>
@@ -402,7 +394,7 @@
 						<td>{{ vm.row.city }}, {{ ( regions[ vm.row.countryCode ] || {} )[ vm.row.stateCode ] }}</td>
 						<td>{{ vm.row.bibNumber }}</td>
 						<td><a href="#" data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">Edit Participant</a></td>
-						<td><a href="#" v-on:click="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
+						<td><a href="#" v-promise:click="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
 					</template>
 				</data-tables>
 			</div>
@@ -499,9 +491,9 @@
 										<div class="row no-gutters">
 											<div class="col-xs-12">
 
-												<input type="text" class="form-control p-start-date" v-model="model.startdate" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
+												<input type="text" class="form-control p-start-date" v-model="model.startDate" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
 											
-												<select class="form-control p-start-hour" v-model="model.starthours">
+												<select class="form-control p-start-hour" v-model="model.startHours">
 													<option disabled class="placeholder" value="">hh</option>
 													<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>
 													<option v-for="h in 12" :value="( h + 12 ) % 24">{{ h | padding( 2, '0' ) }} PM</option>
@@ -509,8 +501,9 @@
 
 												<span class="p-colon">:</span>
 
-												<select class="form-control p-start-min" v-model="model.startminutes">
+												<select class="form-control p-start-min" v-model="model.startMinutes">
 													<option disabled class="placeholder" value="">mm</option>
+													<option disabled class="placeholder" :value="model.startMinutes">{{ model.startMinutes | padding( 2, '0' ) }}</option>
 													<option v-for="m in 12" :value="( m - 1 ) * 5">{{ ( m - 1 ) * 5 | padding( 2, '0' ) }}</option>
 												</select>
 
@@ -523,7 +516,7 @@
 										</div>
 										<div class="col-xs-12 sto-input-wrap">
 											<span class="sto-or">or</span>
-											<input type="text" class="form-control sto-input" v-model="model.startoffset" v-mask="{ alias: 'hh:mm', placeholder: 'hh:mm' }" placeholder="Offset Amount"></input>
+											<input type="text" class="form-control sto-input" v-model="model.startOffset" v-mask.insert="{ alias: 'integer', placeholder: '', integerDigits: 7 }" placeholder="Offset Amount"></input>
 										</div>
 									</div>
 								</div>
@@ -531,8 +524,9 @@
 						</div>
 						<div class="row p-controls">
 							<div class="col-xs-12">
-								<span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
-								<button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="valid" v-on:click="$emit('done')">
+								<p v-for="err in error">{{ err }}</p>
+								<span class="brackets" data-dismiss="modal" v-on:click="model.fetch()"><a href="#">Cancel</a></span>
+								<button type="button" class="btn btn-primary" v-bind:disabled="valid" v-promise:click="[value.post, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
 									<template v-if="!model._dtid">Add Participant</template>
 									<template v-else>Done</template>
 								</button>

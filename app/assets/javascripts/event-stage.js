@@ -37,8 +37,60 @@
             if ( !( parent instanceof Resource ) ) {
                 parent = null;
             }
-            // Prepare Common Invisible Properties
-            Object.defineProperty( this, '_parent', { value: parent, enumerable: false } );
+            // Prepare Invisible Parent / Busy Attributes
+            Object.defineProperty( this, 'parent', {
+                value: parent,
+                enumerable: false,
+                writable: true,
+                configurable: false
+            } );
+            Object.defineProperty( this, 'busy', {
+                value: false,
+                enumerable: false,
+                writable: true,
+                configurable: false
+            } );
+        }
+        /**
+         * Copies the specified properties to the Resource if available,
+         * otherwise the property is assigned the provided default if unpopulated.
+         */
+        Resource.prototype.copy = function( defaults, data, reset ) {
+            for ( var property in defaults ) {
+                if ( data[ property ] !== undefined ) {
+                    this[ property ] = data[ property ];
+                } else if ( this[ property ] === undefined || reset ) {
+                    this[ property ] = defaults[ property ];
+                }
+            }
+        }
+        /**
+         *
+         */
+        Resource.prototype.isBusy = function() {
+            if ( this.busy ) console.warn( 'Resource', this.id, 'Model is Busy!' );
+            return this.busy;
+        }
+        /**
+         * Manages the busy attribute of the model to prevent ajax calls from 
+         * stacking and messing up the data.
+         */
+        Resource.prototype.waitFor = function( deferred ) {
+            var self = this;
+            this.busy = true;
+            console.info( 'Resource', this.id, 'Model Busy...' );
+            deferred.fail( function( response ) {
+                if ( response.responseJSON && response.responseJSON.error ) {
+                    try {
+                        response.errors = JSON.parse( response.responseJSON.error ) || [];
+                    } catch( err ) {}
+                }
+            } );
+            deferred.always( function() {
+                self.busy = false;
+                console.info( 'Resource', self.id, 'Model Ready' );
+            } );
+            return deferred;
         }
         return Resource;
     } )();
@@ -46,29 +98,89 @@
     var Effort = ( function() {
         function Effort( data ) {
             Resource.call( this );
+            // Calculated Properties
+            var self = this;
+            function getStartTime() {
+                return new Date( self.parent.startTime.getTime() + ( self.startOffset * 1000 ) );
+            }
+            function setStartOffset( date ) {
+                self.startOffset = ( date.getTime() - self.parent.startTime.getTime() ) / 1000;
+            }
+            var startTime = new Date();
+            Object.defineProperty( this, 'startMinutes', {
+                enumerable: true,
+                configurable: true,
+                get: function() {
+                    try {
+                        return getStartTime().getMinutes();
+                    } catch( err ) { return 0; }
+                },
+                set: function( value ) {
+                    if ( !value && value !== 0 ) return;
+                    var date = getStartTime();
+                    date.setMinutes( value );
+                    setStartOffset( date );
+                }
+            } );
+            Object.defineProperty( this, 'startHours', {
+                enumerable: true,
+                configurable: true,
+                get: function() {
+                    try {
+                        return getStartTime().getHours();
+                    } catch( err ) { return 0; }
+                },
+                set: function( value ) {
+                    if ( !value && value !== 0 ) return;
+                    var date = getStartTime();
+                    date.setHours( value );
+                    setStartOffset( date );
+                }
+            } );
+            Object.defineProperty( this, 'startDate', {
+                enumerable: true,
+                configurable: true,
+                get: function() {
+                    try {
+                        return formatDate( getStartTime() );
+                    } catch( err ) { return ''; }
+                },
+                set: function( value ) {
+                    var value = Date.parse( value );
+                    if ( isNaN( value ) ) return;
+                    value = new Date( value );
+                    var date = getStartTime();
+                    date.setDate( value.getDate() );
+                    date.setMonth( value.getMonth() );
+                    date.setFullYear( value.getFullYear() );
+                    setStartOffset( date );
+                }
+            } );
             this.import( data || {} );
         }
         extend( Resource, Effort );
         Effort.prototype.import = function( data ) {
-            this.id = data.id || null;
-            this.age = data.age || '';
-            this.email = data.email || '';
-            this.bibNumber = data.bibNumber || '';
-            this.birthdate = data.birthdate || '';
-            this.city = data.city || '';
-            this.countryCode = data.countryCode || '';
-            this.stateCode = data.stateCode || '';
-            this.gender = data.gender || '';
-            this.firstName = data.firstName || '';
-            this.lastName = data.lastName || '';
-            this.participantId = data.participantId || '';
+            this.copy( {
+                id: null,
+                age: null,
+                email: '',
+                bibNumber: '',
+                birthdate: '',
+                city: '',
+                countryCode: '',
+                stateCode: '',
+                gender: null,
+                firstName: '',
+                lastName: '',
+                participantId: null,
+                startOffset: 0
+            }, data );
         }
-        Effort.prototype.post = function( eventModel ) {
-            var dfd = $.Deferred()
-            console.warn( 'Effort', this.id, 'POST Not Fully Implemented' );
+        Effort.prototype.post = function() {
+            var dfd = $.Deferred();
             var self = this;
             var data = { effort: {
-                event_id: eventModel.id,
+                event_id: this.parent.id,
                 first_name: this.firstName,
                 last_name: this.lastName,
                 bib_number: this.bibNumber,
@@ -79,41 +191,22 @@
                 state_code: this.stateCode
             } };
             if ( this.id ) {
-                $.ajax( '/api/v1/efforts/' + this.id, {
+                dfd = $.ajax( '/api/v1/efforts/' + this.id, {
                     type: "PUT",
                     data: data,
                     dataType: "json",
-                } ).done( function( response ) {
-                    if ( response.effort && response.effort.id ) {
-                        self.import( response.effort );
-                        dfd.resolve();
-                    } else {
-                        console.error( 'Effort', self.id, 'Update failed with error ', response );
-                        dfd.reject();
-                    }
-                } ).fail( function( response ) {
-                    console.error( 'Effort', self.id, 'Update failed with error ', response.responseText || response.status );
-                    dfd.reject();
                 } );
             } else {
-                $.ajax( '/api/v1/efforts/', {
+                dfd = $.ajax( '/api/v1/efforts/', {
                     type: "POST",
                     data: data,
                     dataType: "json",
-                } ).done( function( response ) {
-                    if ( response.effort && response.effort.id ) {
-                        self.import( response.effort );
-                        dfd.resolve();
-                    } else {
-                        console.error( 'Effort', self.id, 'Create failed with error ', response );
-                        dfd.reject();
-                    }
-                } ).fail( function( response ) {
-                    console.error( 'Effort', self.id, 'Create failed with error ', response.responseText || response.status );
-                    dfd.reject();
                 } );
             }
-            return dfd.promise();
+            dfd = dfd.then( function( data ) {
+                self.import( data.effort );
+            } );
+            return this.waitFor( dfd.promise() );
         }
         Effort.prototype.validate = function( context ) {
             var self = ( context ) ? context : this;
@@ -129,99 +222,236 @@
             return true;
         }
         Effort.prototype.fetch = function() {
-            var dfd = $.Deferred()
-            console.warn( 'Effort', this.id, 'FETCH Not Fully Implemented' );
-            return dfd.promise();
+            var dfd = $.Deferred();
+            var self = this;
+            if ( this.id && this.id !== null ) {
+                dfd = $.ajax( '/api/v1/efforts/' + this.id, {
+                    type: "GET",
+                    headers: headers,
+                    dataType: "json"
+                } ).done( function( data ) {
+                    console.info( 'Effort', self.id, 'Fetched Effort Data From Server', data );
+                    self.import( data );
+                } );
+            } else {
+                console.warn( 'Course', this.id, 'Tried to Fetch Effort without ID' );
+                dfd.reject();
+            }
+            return this.waitFor( dfd.promise() );
+        }
+        Effort.prototype.delete = function() {
+            var dfd = $.Deferred();
+            var self = this;
+            if ( this.id && this.id !== null ) {
+                dfd = $.ajax( '/api/v1/efforts/' + this.id, {
+                    type: "DELETE",
+                    headers: headers,
+                    dataType: "json"
+                } ).done( function( data ) {
+                    console.info( 'Effort', self.id, 'Deleted Effort From Server', data );
+                } );
+            } else {
+                console.warn( 'Course', this.id, 'Tried to Delete Effort without ID' );
+                dfd.reject();
+            }
+            return this.waitFor( dfd.promise() );
         }
         return Effort;
-    } )();
-
-    var Location = ( function() {
-        function Location( data ) {
-            Resource.call( this );
-            this.import( data || {} );
-        }
-        extend( Resource, Location ); 
-        Location.prototype.import = function( data ) {
-            this.id = data.id || null;
-            this.name = data.name || '';
-            this.description = data.description || '';
-            this.elevation = data.elevation || null;
-            this.latitude = data.latitude || null;
-            this.longitude = data.longitude || null;
-        }
-        Location.prototype.fetch = function() {
-            var dfd = $.Deferred()
-            
-            return dfd.promise();
-        }
-        return Location;
     } )();
 
     var Split = ( function() {
         function Split( data ) {
             Resource.call( this );
-            this.location = new Location();
             this.import( data || {} );
         }
         extend( Resource, Split );
         Split.prototype.import = function( data ) {
-            this.id = data.id || null;
-            this.baseName = data.baseName || '';
-            this.distanceFromStart = data.distanceFromStart || '';
-            this.vertGainFromStart = data.vertGainFromStart || '';
-            this.vertLossFromStart = data.vertLossFromStart || '';
             this.nameExtensions = data.nameExtensions || [];
-            this.kind = data.kind || '';
-            this.associated = data.associated || false;
-            this.locationId = data.locationId || null;
-            this.location.import( data.location || {} );
+            this.copy( {
+                id: null,
+                editable: true,
+                baseName: '',
+                distanceFromStart: '',
+                vertGainFromStart: '',
+                vertLossFromStart: '',
+                kind: 'intermediate',
+                associated: '',
+                elevation: null,
+                latitude: null,
+                longitude: null
+            }, data );
         }
-        Split.prototype.associate = function( eventModel ) {
-            var dfd = $.Deferred()
-            if ( !this.id ) {
-                console.error( 'Split', this.id, 'Cannot associate a split with no ID' )
+        Split.prototype.associate = function( associated ) {
+            var dfd = $.Deferred();
+            if ( this.isBusy() ) return dfd.reject();
+            if ( !this.id || !this.parent || !this.parent.parent ) {
+                console.error( 'Split', this.id, 'Cannot associate a split with no ID or Parents' )
+                dfd.reject();
             } else {
-                console.warn( 'Split', this.id, 'ASSOCIATE Not Fully Implemented' );
-                $.ajax( '/api/v1/events/' + eventModel.stagingId + ( this.associated ? '/associate_splits' : '/remove_splits' ), {
-                    type: ( this.associated ? 'PUT' : 'DELETE' ),
-                    data: JSON.stringify( {
-                        'split_ids': this.id
-                    } ),
-                    contentType: 'application/json; charset=utf-8',
+                dfd = $.ajax( '/api/v1/events/' + this.parent.parent.stagingId + ( associated ? '/associate_splits' : '/remove_splits' ), {
+                    type: ( associated ? 'PUT' : 'DELETE' ),
+                    data: {
+                        'splitIds': this.id
+                    },
                     headers: headers,
                     dataType: "json",
-                } ).done( function( response ) {
-                    if ( response.effort && response.effort.id ) {
-                        // self.import( response.effort );
-                        dfd.resolve();
+                } );
+                var self = this;
+                dfd = dfd.then( function( data ) {
+                    if ( data.message == 'splits removed from event' ) {
+                        self.associated = false;
+                    } else if ( data.message == 'splits associated with event' ) {
+                        self.associated = true;
                     } else {
-                        console.error( 'Effort', self.id, 'Create failed with error ', response );
-                        dfd.reject();
+                        return $.Deferred().reject();
                     }
-                } ).fail( function( response ) {
-                    console.error( 'Effort', self.id, 'Create failed with error ', response.responseText || response.status );
-                    dfd.reject();
                 } );
             }
-            return dfd.promise();
+            return this.waitFor( dfd.promise() );
         }
-        Split.prototype.post = function( eventModel ) {
-
+        Split.prototype.validate = function( context ) {
+            var self = ( context ) ? context : this;
+            if ( !self.baseName || self.baseName.length < 1 ) return false;
+            if ( !$.isNumeric( self.distanceFromStart ) ) return false;
+            if ( !$.isNumeric( self.vertGainFromStart ) ) return false;
+            if ( !$.isNumeric( self.vertLossFromStart ) ) return false;
+            return true;
+        }
+        Split.prototype.post = function() {
+            var dfd = $.Deferred();
+            if ( this.isBusy() ) return dfd.reject();
+            var data = {
+                baseName: this.baseName,
+                courseId: this.parent.id,
+                kind: this.kind,
+                distanceFromStart: this.distanceFromStart,
+                vertGainFromStart: this.vertGainFromStart,
+                vertLossFromStart: this.vertLossFromStart,
+                description: this.description,
+                elevation: this.elevation,
+                latitude: this.latitude,
+                longitude: this.longitude
+            };
+            var self = this;
+            if ( !this.id ) {
+                dfd = $.ajax( '/api/v1/splits/', {
+                    type: 'POST',
+                    data: { split: data },
+                    headers: headers,
+                    dataType: "json",
+                } ).then( function( data ) {
+                    self.import( data.split );
+                    self.busy = false; // Allow Operation to continue
+                    return self.associate( true );
+                } );
+            } else {
+                dfd = $.ajax( '/api/v1/splits/' + this.id, {
+                    type: 'PUT',
+                    data: { split: data },
+                    headers: headers,
+                    dataType: "json",
+                } ).then( function( data ) {
+                    self.import( data.split );
+                } );
+            }
+            return this.waitFor( dfd.promise() );
         }
         Split.prototype.fetch = function() {
             var dfd = $.Deferred()
             
             return dfd.promise();
         }
+        Split.prototype.delete = function() {
+            var dfd = $.Deferred();
+            var self = this;
+            if ( this.id && this.id !== null ) {
+                dfd = $.ajax( '/api/v1/splits/' + this.id, {
+                    type: "DELETE",
+                    headers: headers,
+                    dataType: "json"
+                } );
+            } else {
+                console.warn( 'Course', this.id, 'Tried to Delete Effort without ID' );
+                dfd.reject();
+            }
+            return this.waitFor( dfd.promise() );
+        }
         return Split;
+    } )();
+
+    var Organization = ( function() {
+        function Organization( data ) {
+            Resource.call( this );
+            this.import( data || {} );
+        }
+        extend( Resource, Organization );
+        Organization.prototype.import = function( data, reset ) {
+            this.copy( {
+                id: null,
+                name: '',
+                editable: false
+            }, data, reset && true );
+        }
+        return Organization;
+    } )();
+
+    var Course = ( function() {
+        function Course( data ) {
+            Resource.call( this );
+            this.id = null;
+            this.splits = [];
+            this.import( data || {} );
+        }
+        extend( Resource, Course );
+        Course.prototype.import = function( data, reset ) {
+            this.copy( {
+                id: null,
+                name: '',
+                description: '',
+                editable: false
+            }, data, reset );
+            this.splits.splice( 0, this.splits.length );
+            for ( var i = 0; i < ( data.splits || [] ).length; i++ ) {
+                var split = new Split( data.splits[i] );
+                split.parent = this;
+                this.splits.push( split );
+            }
+            // Mark Associated Courses
+            if ( this.parent instanceof Event ) {
+                for ( var i = 0; i < this.splits.length; i++ ) {
+                    // Splits are associated if their id is included in Event.splitIds
+                    this.splits[i].associated = 
+                        ( this.parent.splitIds.indexOf( this.splits[i].id ) !== -1 );
+                }
+            }
+        }
+        Course.prototype.fetch = function() {
+            var self = this;
+            if ( this.id !== null ) {
+                return $.ajax( '/api/v1/courses/' + this.id, {
+                    type: "GET",
+                    headers: headers,
+                    dataType: "json"
+                } ).done( function( data ) {
+                    console.info( 'Course', self.id, 'Fetched Course Data From Server', data );
+                    self.import( data );
+                } );
+            } else {
+                console.warn( 'Course', this.id, 'Tried to Fetch Course without ID' );
+                return $.Deferred().resolve().promise();
+            }
+        };
+        return Course;
     } )();
 
     var Event = ( function() {
         function Event( data ) {
             Resource.call( this );
             // Children
-            this.splits = [];
+            this.course = new Course();
+            this.course.parent = this;
+            this.organization = new Organization();
+            this.organization.parent = this;
             this.efforts = [];
             // Intermediate Variables
             this.courseNew = false;
@@ -240,35 +470,26 @@
             }
             return startTime;
         } );
-        Event.prototype.import = function( data ) {
+        Event.prototype.import = function( data, reset ) {
             // Import Properties
-            this.id = data.id || null;
-            this.stagingId = data.stagingId || null;
-            this.name = data.name || '';
-            this.description = data.description || '';
-            this.lapsRequired = data.lapsRequired || '';
-            this.organizationId = data.organizationId || '';
-            this.organization = $.extend( {
+            this.organization.id = data.organizationId || null;
+            this.course.id = data.courseId || null;
+            this.copy( {
                 id: null,
+                stagingId: null,
                 name: '',
-                description: ''
-            }, data.organization || {} );
-            this.courseId = data.courseId || '';
-            this.course = $.extend( {
-                id: null,
-                name: '',
-                description: ''
-            }, data.course || {} );
-            // Import Child Objects
-            this.splits.splice( 0, this.splits.length );
-            for ( var i = 0; i < ( data.splits || [] ).length; i++ ) {
-                this.splits.push( new Split( data.splits[i] ) );
-            }
-            this.efforts.splice( 0, this.efforts.length );
-            for ( var i = 0; i < ( data.efforts || [] ).length; i++ ) {
-                var effort = new Effort( data.efforts[i] );
-                effort._parent = this;
-                this.efforts.push( effort );
+                description: '',
+                lapsRequired: null,
+                editable: false,
+                splitIds: []
+            }, data, reset );
+            if ( data.efforts ) {
+                this.efforts.splice( 0, this.efforts.length );
+                for ( var i = 0; i < data.efforts.length; i++ ) {
+                    var effort = new Effort( data.efforts[i] );
+                    effort.parent = this;
+                    this.efforts.push( effort );
+                }
             }
             // Extract Start Time
             var startTime = Date.parse( data.startTime || null );
@@ -286,23 +507,25 @@
         Event.prototype.validate = function( context ) {
             var self = ( context ) ? context : this;
             console.warn( 'Event', self.stagingId, 'Validator Not Fully Implemented' );
+            if ( !( self.organization.id || self.organizationNew ) ) return false;
             if ( !self.startTime ) return false;
             return true;
         }
         Event.prototype.post = function() {
+            var self = this;
             var dfd = $.Deferred()
             if ( this.validate() ) {
-                $.ajax( '/api/v1/staging/' + this.stagingId + '/post_event_course_org', {
+                var dfd = $.ajax( '/api/v1/staging/' + this.stagingId + '/post_event_course_org', {
                     headers: headers,
                     dataType: "json",
-                    type: "PUT",
+                    type: "POST",
                     data: {
                         event: {
                             id: this.id,
                             name: this.name,
                             description: this.description,
-                            courseId: this.courseId,
-                            organizationId: this.organizationId
+                            courseId: this.course.id,
+                            organizationId: this.organization.id
                         },
                         course: {
                             id: this.course.id,
@@ -313,12 +536,12 @@
                             name: this.organization.name
                         }
                     },
-                } ).done( function( a,b,c ) {
-                    console.log( a,b,c );
-                    dfd.resolve();
-                } ).fail( function( a,b,c ) {
-                    console.log( a,b,c );
-                    dfd.reject();
+                } );
+                dfd = dfd.then( function( data ) {
+                console.info( 'Event', self.stagingId, 'Posted Event Data To Server', data );
+                    self.import( data.event );
+                    self.organization.import( data.organization || {} );
+                    return self.course.fetch();
                 } );
             } else {
                 dfd.reject( 'Invalid Event' );
@@ -326,21 +549,16 @@
             return dfd.promise();
         };
         Event.prototype.fetch = function() {
-            var dfd = $.Deferred()
             var self = this;
-            $.get( '/api/v1/staging/' + this.stagingId + '/get_event', {
+            var dfd = $.get( '/api/v1/staging/' + this.stagingId + '/get_event', {
                 dataType: "json",
-            } ).done( function( data ) {
+            } );
+            dfd = dfd.then( function( data ) {
                 console.info( 'Event', self.stagingId, 'Fetched Event Data From Server', data );
                 self.import( data );
-                dfd.resolve();
-            } ).fail( function () {
-                dfd.reject();
-            } );
-            
-            // Return Test Data
-
-            // dfd.resolve();
+                self.organization.import( data.organization || {} );
+                return self.course.fetch();
+            } ).done( function() { console.log( self ); } );
 
             return dfd.promise();
         }
@@ -365,7 +583,7 @@
          * This method is used to populate the locale array
          */
         ajaxPopulateLocale: function() {
-        	$.get( '/api/v1/staging/get_countries', function( response ) {
+        	$.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
         		for ( var i in response.countries ) {
         			locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
@@ -383,11 +601,10 @@
         },
 
         onRouteChange: function( to, from, next ) {
-            console.log( to, from );
-            if ( from.matched.length < 1 ) {
-                eventStage.data.eventModel.fetch();
-            } else {
+            if ( from.name === 'home' ) {
                 eventStage.data.eventModel.post();
+            } else {
+                eventStage.data.eventModel.fetch();
             }
             next(); return; // NO!
             if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
@@ -438,13 +655,13 @@
             this.editModal.init();
             this.inputMask.init();
             this.prefill.init();
-            this.ajaxSelect.init();
+            this.promise.init();
+            this.resourceSelect.init();
             this.ajaxImport.init();
-            this.ajaxPopulateLocale();
 
             // Load UUID
             this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
-            console.log( this.data.eventModel );
+            this.ajaxPopulateLocale();
 
             // Initialize Vue Router and Vue App
             const routes = [
@@ -477,7 +694,9 @@
                                 return true;
                             },
                             blank: function() {
-                                return new Split();
+                                var split = new Split();
+                                split.parent = this.eventModel.course;
+                                return split;
                             }
                         },
                         watch: {
@@ -529,15 +748,14 @@
                                 return true;
                             },
                             blank: function() {
-                                return new Effort();
+                                var effort = new Effort();
+                                effort.parent = this.eventModel;
+                                return effort;
                             },
                             saveEffort: function() {
                                 if ( !this.modalData._dtid ) {
                                     this.eventModel.efforts.push( this.modalData );
                                 }
-                                this.$nextTick( function() {
-                                    this.modalData.post( this.eventModel );
-                                } );
                             }
                         },
                         data: function() { return { 
@@ -653,9 +871,11 @@
             },
             onDestroyed: function() {
                 // Erase DataTable IDs
-                this.rows.forEach( function( obj, index ) {
-                    obj._dtid = null;
-                } );
+                if ( $.isArray( this.rows ) ) {
+                    this.rows.forEach( function( obj, index ) {
+                        obj._dtid = null;
+                    } );
+                }
             },
             onMounted: function() {
                 this._queue = [];
@@ -668,7 +888,12 @@
                 this._row = Vue.extend( {
                     parent: self,
                     render: function( createElement ) {
-                        return createElement( 'tr', {}, self.$scopedSlots.row( this ) );
+                        var vnode = self.$scopedSlots.row.call( this, this );
+                        if ( vnode.length == 1 && vnode[0].tag === 'tr' ) {
+                            return vnode[0];
+                        } else {
+                            return createElement( 'tr', {}, vnode );
+                        }
                     },
                     watch: {
                         row: { 
@@ -745,20 +970,29 @@
                 }
             },
             onRouteChange: function( e ) {
-                if ( this.polyline && $.isArray( this.polyline ) ) {
-                    console.info( 'google-map', this._uid, 'Building Polyline' );
-                    // Destroy existing polyline
-                    if ( this._polyline ) {
-                        this._polyline.setMap( null );
-                        this._polyline = null;
+                if ( this.route && $.isArray( this.route ) ) {
+                    console.info( 'google-map', this._uid, 'Building route' );
+                    // Destroy existing route
+                    if ( this._route ) {
+                        for ( var i = this._route.length - 1; i >= 0; i-- ) {
+                            this._route[i].setMap( null );
+                        }
+                        this._route.splice( 0, this._route.length );
                     }
-                    // Build new polyline
+                    // Build new route
                     var path = [];
-                    for ( var i = 0; i < this.polyline.length; i++ ) {
-                        if ( isNaN( parseFloat( this.polyline[i].lat ) ) || isNaN( parseFloat( this.polyline[i].lng ) ) ) continue;
-                        path.push( { lat: parseFloat( this.polyline[i].lat ) , lng: parseFloat( this.polyline[i].lng ) } );
+                    for ( var i = 0; i < this.route.length; i++ ) {
+                        if ( isNaN( parseFloat( this.route[i].latitude ) ) || isNaN( parseFloat( this.route[i].longitude ) ) ) continue;
+                        var latlng = { latitude: parseFloat( this.route[i].latitude ) , longitude: parseFloat( this.route[i].longitude ) };
+                        path.push( latlng );
+                        var marker = new google.maps.Marker( {
+                            position: latlng,
+                            map: this._map
+                        } );
+                        marker._data = this.route[i];
+                        this._route.push( marker );
                     }
-                    // Append polyline to map
+                    // Append route to map
                     this._polyline = new google.maps.Polyline( {
                         path: path,
                         map: this._map,
@@ -958,22 +1192,15 @@
                         var self = this;
                         var reset = function() {
                             // Locally clone existing object
-                            self.model = $.extend( true, {}, self.value );
-                            // Remove Function References
-                            for ( var name in self.model ) {
-                                if ( self.model.hasOwnProperty( name ) && $.isFunction( self.model[ name ] ) ) {
-                                    delete self.model[ name ];
-                                }
-                            }
-                            console.info( 'edit-modal', self._uid, 'Reseting model data from source' );
+                            self.model = self.value;
+                            self.error = null;
+                            $( self.$el ).modal( 'hide' );
                         };
                         $( this.$el ).on( 'show.bs.modal hidden.bs.modal', reset );
                         this.$on( 'cancel', reset );
                         this.$on( 'done', function() {
-                            // Copy properties to original object
-                            $.extend( self.value, self.model );
-                            console.log( self.value, self.model );
-                            console.info( 'edit-modal', self._uid, 'Cloning changes back to source' );
+                            self.$emit( 'change' );
+                            $( this.$el ).modal( 'hide' );
                         } );
                     },
                     data: function() {
@@ -981,7 +1208,8 @@
                     		countries: locales.countries,
                     		regions: locales.regions,
                     		model: {},
-                    		valid: false
+                    		valid: false,
+                            error: null
                     	};
                     }
                 } );
@@ -1054,39 +1282,125 @@
         },
 
         /**
-         *  Ajax Select Component
+         *  Promise Directive
+         *
+         *  The promise directive will call the passed function when the specified event occurs.
+         *  If the function returns a Promise, 'done', 'fail', and 'always' events will be fired
+         *  on the element when the promise either resolves or is rejected.
+         *
+         *  NOTE: Limitations occasionally prevent the correct context from passing to the directive.
+         *  To specify context for the function, the passed value must be an array of length two 
+         *  where the first element is the function, and the second element is the context.
+         */
+        promise: {
+            init: function() {
+                Vue.directive( 'promise', {
+                    update: function( el, binding ) {
+                        var fn = binding.value;
+                        if ( $.isArray( fn ) && fn.length === 2 ) {
+                            if ( $.isFunction( fn[0] ) && !$.isFunction( fn[1] ) ) {
+                                var target = fn[0];
+                                var context = fn[1];
+                                fn = function() { return target.call( context ) }
+                            }
+                        }
+                        if ( !$.isFunction( fn ) ) {
+                            console.error( 'v-promise Directive Must Be Passed a Function!' );
+                            return;
+                        }
+                        $( el ).data( 'v-promise' )[ binding.arg ] = fn;
+                    },
+                    bind: function( el, binding, vnode, c ) {
+                        var $el = $( el );
+                        $el.data( 'v-promise', {} );
+                        binding.def.update( el, binding );
+                        // Native Event Helper
+                        function fireEvent( name ) {
+                            return function( response ) {
+                                var event = document.createEvent( 'HTMLEvents' );
+                                event.initEvent( name, true, true );
+                                event.data = response;
+                                el.dispatchEvent( event );
+                            }
+                        }
+                        // Bind requested event
+                        $el.on( binding.arg, function( $event ) {
+                            // Prevent Any Defaults
+                            $event.preventDefault();
+                            $event.stopPropagation();
+                            // Fire on next tick to allow data to update completely
+                            Vue.nextTick( function() {
+                                // Fire Function
+                                var promise = $el.data( 'v-promise' )[ binding.arg ]();
+
+                                try {
+                                    promise.done( fireEvent( 'done' ) );
+                                    promise.fail( fireEvent( 'fail' ) );
+                                    promise.always( fireEvent( 'always' ) );
+                                } catch( err ) {
+                                    console.error( 'v-promise Functions Must Return a Promise!' );
+                                }
+                            } );
+                        } );
+                    } 
+                } );
+            }
+        },
+
+        /**
+         *  Resource Select Component
          *
          *  Contacts the provided endpoint to retrieve it's values. Surround the component
          *  with <keep-alive> to prevent the component from requesting data from the server 
          *  again. Additional data to be sent to the server can be sent using the data property.
          */
-        ajaxSelect: {
+        resourceSelect: {
             onMounted: function() {
                 var data = $.extend( {}, this.data );
                 var self = this;
 
-                // Mark existing entries
-                $( this.$el ).find( 'option' ).addClass( 'static' );
-
                 // Fetch New Entries
-                $.ajax( this.url, {
-                    method: this.method,
+                $.ajax( this.source, {
+                    type: 'GET',
                     dataType: 'json',
                     data: this.data
-                } ).done( function( a,b,c ) {
-                    $( self.$el ).find( 'option:not( .static )' ).remove();
+                } ).done( function( data ) {
+                    self.ajaxed = data;
+                    // Force update after list is rendered
+                    self.$nextTick( function() {
+                        self.$forceUpdate();
+                    });
                 } );
             },
+            onChanged: function( id ) {
+                var model = null;
+                for ( var i = this.ajaxed.length - 1; i >= 0; i-- ) {
+                    if ( this.ajaxed[i].id == id ) {
+                        model = this.ajaxed[i];
+                    }
+                }
+                if ( this.value instanceof Resource ) {
+                    this.value.import( model );
+                }
+            },
             init: function() {
-                Vue.component( 'ajax-select', {
+                Vue.component( 'resource-select', {
                     props: {
                         data: { type: Object, default: function() { return {} } },
-                        method: { type: String, default: 'get' },
-                        url: { type: String, required: true, default: '' },
-                        value: { default: '' }
+                        source: { type: String, required: true, default: '' },
+                        value: { type: Object, required: true, default: {} }
                     },
-                    template: '<select v-bind:value="value" v-on:change="$emit( \'input\', $event.target.value )"><slot></slot></select>',
-                    mounted: eventStage.ajaxSelect.onMounted
+                    methods: {
+                        onChanged: eventStage.resourceSelect.onChanged
+                    },
+                    data: function() { return { ajaxed: null } },
+                    template: 
+                        '<select v-bind:value="value.id" v-on:change="onChanged( $event.target.value )">\
+                            <slot></slot>\
+                            <option v-if="ajaxed === null" :value="value.id">{{ value.name }}</option>\
+                            <option v-else v-for="obj in ajaxed" :value="obj.id">{{ obj.name }}</option>\
+                        </select>',
+                    mounted: eventStage.resourceSelect.onMounted
                 } );
             }
         },

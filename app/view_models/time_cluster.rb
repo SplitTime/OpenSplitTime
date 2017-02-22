@@ -2,12 +2,16 @@ class TimeCluster
 
   attr_reader :drop_display
 
-  def initialize(finish, split_times_data, prior_time, start_time, drop_display = false)
-    @finish = finish
-    @split_times_data = split_times_data
-    @prior_time = prior_time
-    @start_time = start_time
-    @drop_display = drop_display
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:finish, :split_times_data, :start_time],
+                           exclusive: [:finish, :split_times_data, :prior_time, :start_time, :drop_display],
+                           class: self.class)
+    @finish = args[:finish]
+    @split_times_data = args[:split_times_data]
+    @prior_time = args[:prior_time]
+    @start_time = args[:start_time]
+    @drop_display = args[:drop_display] || false
   end
 
   def finish?

@@ -8,10 +8,14 @@ class EffortTimesRow
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset, to: :effort
 
-  def initialize(effort, lap_splits, split_times)
-    @effort = effort # Use an enriched effort for optimal performance
-    @lap_splits = lap_splits
-    @split_times = split_times
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:effort, :lap_splits, :split_times],
+                           exclusive: [:effort, :lap_splits, :split_times],
+                           class: self.class)
+    @effort = args[:effort] # Use an enriched effort for optimal performance
+    @lap_splits = args[:lap_splits]
+    @split_times = args[:split_times]
     @time_clusters = []
     create_time_clusters
   end
@@ -40,11 +44,11 @@ class EffortTimesRow
   def create_time_clusters
     prior_time = 0
     lap_splits.each do |lap_split|
-      time_cluster = TimeCluster.new(finish_cluster?(lap_split),
-                                     related_split_times(lap_split),
-                                     prior_time,
-                                     effort.start_time,
-                                     display_stopped?(lap_split))
+      time_cluster = TimeCluster.new(finish: finish_cluster?(lap_split),
+                                     split_times_data: related_split_times(lap_split),
+                                     prior_time: prior_time,
+                                     start_time: effort.start_time,
+                                     drop_display: display_stopped?(lap_split))
       time_clusters << time_cluster
       prior_time = time_cluster.times_from_start.compact.last if time_cluster.times_from_start.compact.present?
     end

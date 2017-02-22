@@ -37,7 +37,8 @@ class EventSpreadDisplay
   def effort_times_rows
     @effort_times_rows ||=
         sorted_efforts
-            .map { |effort| EffortTimesRow.new(effort, relevant_lap_splits, split_times_by_effort[effort.id]) }
+            .map { |effort| EffortTimesRow.new(effort: effort, lap_splits: relevant_lap_splits,
+                                               split_times: split_times_by_effort[effort.id]) }
   end
 
   def efforts_count

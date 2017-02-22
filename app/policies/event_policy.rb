@@ -10,6 +10,10 @@ class EventPolicy < ApplicationPolicy
 
   attr_reader :event
 
+  def spread?
+    user.present?
+  end
+
   def post_initialize(event)
     @event = event
   end

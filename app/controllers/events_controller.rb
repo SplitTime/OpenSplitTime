@@ -147,9 +147,11 @@ class EventsController < ApplicationController
     file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
     if file_url
       ImportEffortsWithoutTimesJob.perform_later(file_url, @event, current_user.id)
-      flash[:success] = 'Import in progress. Reload the page in a minute or two (depending on file size) and your import should be complete.'
+      flash[:success] = 'Import in progress. Reload the page in a minute or two ' +
+          '(depending on file size) and your import should be complete.'
     else
-      flash[:danger] = 'The import file is too large. Delete extraneous data and if it is still too large, divide the file and import in multiple steps.'
+      flash[:danger] = 'The import file is too large. Delete extraneous data and ' +
+          'if it is still too large, divide the file and import in multiple steps.'
     end
     redirect_to stage_event_path(@event)
   end
@@ -163,11 +165,11 @@ class EventsController < ApplicationController
       format.html
       format.csv do
         authorize event
-        send_data(@spread_display.to_csv, filename: "ost-spread-#{event.name}-#{Date.today}.csv")
+        csv_stream = render_to_string(partial: 'spread.csv.ruby')
+        send_data(csv_stream, type: 'text/csv', filename: "#{event.name} - elapsed - #{Date.today}.csv")
       end
     end
   end
-
 
 # Actions related to the event/split relationship
 

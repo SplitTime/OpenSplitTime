@@ -1,4 +1,6 @@
 class EffortTimesRow
+  include TimeFormats
+  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :full_name, :gender, :age, :state_code, :country_code]
 
   include PersonalInfo
 
@@ -20,6 +22,10 @@ class EffortTimesRow
 
   def total_segment_time
     time_clusters.map(&:segment_time).sum
+  end
+
+  def export_row
+    EXPORT_ATTRIBUTES.map { |attr| effort.send(attr) } + time_clusters.map { |tc| tc.times_from_start.map { |tfs| time_format_hhmmss(tfs) } }.flatten
   end
 
   private

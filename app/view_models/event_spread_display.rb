@@ -69,10 +69,12 @@ class EventSpreadDisplay
     end
   end
 
-  def to_csv
-    CSV.generate do |csv|
-      csv << ['Under construction']
-    end
+  def export_headers
+    EffortTimesRow::EXPORT_ATTRIBUTES.map { |attr| attr.to_s.humanize } + export_split_names.flatten
+  end
+
+  def export_split_names
+    multiple_laps? ? relevant_lap_splits.map(&:names) : relevant_lap_splits.map(&:names_without_laps)
   end
 
   private

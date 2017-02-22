@@ -11,8 +11,8 @@ require 'rails_helper'
 # t.integer  "sub_split_bitmap"
 
 RSpec.describe Split, kind: :model do
-  it_behaves_like 'unit_conversions'
-  it_behaves_like 'auditable'
+  # it_behaves_like 'unit_conversions'
+  # it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 
@@ -123,6 +123,13 @@ RSpec.describe Split, kind: :model do
     split = Split.new(course: course1, base_name: 'Test', distance_from_start: 6000, vert_loss_from_start: -100, kind: 2)
     expect(split).not_to be_valid
     expect(split.errors[:vert_loss_from_start]).to include('may not be negative')
+  end
+
+  it 'does not allow an intermediate split with distance_from_start great than the finish split distance_from_start' do
+    Split.create!(course: persisted_course, base_name: 'Ending point', distance_from_start: 100, kind: 1)
+    split = Split.new(course: persisted_course, base_name: 'Aid Station', distance_from_start: 200, kind: 2)
+    expect(split).not_to be_valid
+    expect(split.errors[:distance_from_start]).to include('must be less than the finish split distance_from_start')
   end
 
   describe 'sub_splits' do

@@ -38,6 +38,7 @@ class Split < ActiveRecord::Base
                             message: 'may not be negative'
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: 'may not be negative'
+  validate :no_splits_beyond_finish
 
   scope :ordered, -> { order(:distance_from_start) }
   scope :with_course_name, -> { select('splits.*, courses.name as course_name').joins(:course) }
@@ -56,6 +57,15 @@ class Split < ActiveRecord::Base
 
   def is_finish?
     self.finish?
+  end
+
+  def no_splits_beyond_finish
+    if intermediate?
+      finish_split = course.splits.find(&:finish?)
+      if distance_from_start >= finish_split.distance_from_start
+        errors.add(:distance_from_start, 'must be less than the finish split distance_from_start')
+      end
+    end
   end
 
   def distance_as_entered

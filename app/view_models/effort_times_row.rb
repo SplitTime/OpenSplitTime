@@ -42,15 +42,15 @@ class EffortTimesRow
   end
 
   def create_time_clusters
-    prior_time = 0
+    prior_split_time = nil
     lap_splits.each do |lap_split|
       time_cluster = TimeCluster.new(finish: finish_cluster?(lap_split),
                                      split_times_data: related_split_times(lap_split),
-                                     prior_time: prior_time,
+                                     prior_split_time: prior_split_time,
                                      start_time: effort.start_time,
                                      drop_display: display_stopped?(lap_split))
       time_clusters << time_cluster
-      prior_time = time_cluster.times_from_start.compact.last if time_cluster.times_from_start.compact.present?
+      prior_split_time = related_split_times(lap_split).compact.last if related_split_times(lap_split).compact.present?
     end
   end
 

@@ -71,13 +71,13 @@ class MockEffort
   end
 
   def create_lap_split_rows
-    prior_time = 0
+    prior_split_time = nil
     result = []
     lap_splits.each do |lap_split|
       lap_split_row = LapSplitRow.new(lap_split: lap_split, split_times: related_split_times(lap_split),
-                                  prior_time: prior_time, start_time: start_time, show_laps: show_laps)
+                                  prior_split_time: prior_split_time, start_time: start_time, show_laps: show_laps)
       result << lap_split_row
-      prior_time = lap_split_row.times_from_start.last
+      prior_split_time = related_split_times(lap_split).last
     end
     result
   end

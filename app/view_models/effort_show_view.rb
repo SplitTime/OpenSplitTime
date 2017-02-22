@@ -30,12 +30,12 @@ class EffortShowView
 
   def create_lap_split_rows
     start_time = event.start_time + effort.start_offset
-    prior_time = 0
+    prior_split_time = nil
     lap_splits.each do |lap_split|
       lap_split_row = LapSplitRow.new(lap_split: lap_split, split_times: related_split_times(lap_split),
-                                      prior_time: prior_time, start_time: start_time, show_laps: event.multiple_laps?)
+                                      prior_split_time: prior_split_time, start_time: start_time, show_laps: event.multiple_laps?)
       lap_split_rows << lap_split_row
-      prior_time = lap_split_row.times_from_start.compact.last if lap_split_row.times_from_start.compact.present?
+      prior_split_time = related_split_times(lap_split).compact.last if related_split_times(lap_split).compact.present?
     end
   end
 

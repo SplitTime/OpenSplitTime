@@ -29,7 +29,7 @@ class EffortAnalysisRow
 
   def time_cluster
     @time_cluster ||= TimeCluster.new(finish: split.finish?, split_times_data: split_times,
-                                      prior_time: prior_time, start_time: start_time)
+                                      prior_split_time: prior_split_time, start_time: start_time)
   end
 
   def split_id
@@ -75,10 +75,6 @@ class EffortAnalysisRow
   private
 
   attr_reader :lap_split, :prior_lap_split, :prior_split_time, :start_time, :typical_row
-
-  def prior_time
-    @prior_time ||= prior_split_time.time_from_start
-  end
 
   def segment
     @segment ||= end_time_point && Segment.new(begin_point: prior_split_time.time_point,

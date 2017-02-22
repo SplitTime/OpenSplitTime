@@ -63,9 +63,9 @@ class Effort < ActiveRecord::Base
     end
   end
 
-  def self.sorted_with_finish_status(effort_fields: '*')
+  def self.ranked_with_finish_status(effort_fields: '*')
     return [] if EffortQuery.existing_scope_sql.blank?
-    query = EffortQuery.with_finish_status(effort_fields: effort_fields)
+    query = EffortQuery.rank_and_finish_status(effort_fields: effort_fields)
     self.find_by_sql(query)
   end
 
@@ -228,7 +228,7 @@ class Effort < ActiveRecord::Base
   end
 
   def enriched
-    event.efforts.sorted_with_finish_status.find { |e| e.id == id }
+    event.efforts.ranked_with_finish_status.find { |e| e.id == id }
   end
 
   def with_ordered_split_times

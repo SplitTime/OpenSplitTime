@@ -1,6 +1,6 @@
 class EffortQuery
 
-  def self.with_finish_status(effort_fields: '*')
+  def self.rank_and_finish_status(effort_fields: '*')
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),

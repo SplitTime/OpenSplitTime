@@ -34,7 +34,7 @@ class EventEffortsDisplay
   def filtered_efforts
     @filtered_efforts ||= event_efforts
                               .search(params[:search])
-                              .sorted_with_finish_status
+                              .ranked_with_finish_status
                               .paginate(page: params[:started_page], per_page: params[:per_page] || 25)
   end
 

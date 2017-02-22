@@ -32,7 +32,7 @@ class EventDroppedDisplay
 
   def get_efforts
     self.event_efforts = event.efforts
-    self.started_efforts = event_efforts.sorted_with_finish_status # This method ignores efforts having no split_times.
+    self.started_efforts = event_efforts.ranked_with_finish_status # This method ignores efforts having no split_times.
     self.dropped_efforts = started_efforts.select(&:dropped?)
   end
 

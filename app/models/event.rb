@@ -89,12 +89,10 @@ class Event < ActiveRecord::Base
   end
 
   def finished?
-    efforts_sorted.none?(&:in_progress?)
+    efforts_ranked.none?(&:in_progress?)
   end
 
-  private
-
-  def efforts_sorted
-    @efforts_sorted ||= efforts.sorted_with_finish_status
+  def efforts_ranked
+    @efforts_ranked ||= efforts.ranked_with_finish_status
   end
 end

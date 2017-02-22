@@ -93,7 +93,7 @@ class EventSpreadDisplay
   end
 
   def efforts
-    @efforts ||= event.efforts.sorted_with_finish_status
+    @efforts ||= event.efforts.ranked_with_finish_status
   end
 
   def sorted_efforts

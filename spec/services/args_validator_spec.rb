@@ -144,6 +144,15 @@ RSpec.describe ArgsValidator do
           .to raise_error(/must include effort_id/)
     end
 
+    it 'properly recognizes false as being present for purposes of required params' do
+      args = {time_from_start: 123, finished: false}
+      required = [:time_from_start, :finished]
+      expect { ArgsValidator.new(params: args, required: required).validate }
+          .not_to raise_error
+      expect { ArgsValidator.validate(params: args, required: required) }
+          .not_to raise_error
+    end
+
     it 'invalidates a populated args hash that does not include any required_alternative param' do
       args = {time_from_start: 123, effort_id: 456}
       required_alternatives = [:other_param, :yet_another_param]
@@ -151,6 +160,24 @@ RSpec.describe ArgsValidator do
           .to raise_error(/must include one of/)
       expect { ArgsValidator.validate(params: args, required_alternatives: required_alternatives) }
           .to raise_error(/must include one of/)
+    end
+
+    it 'invalidates a populated args hash that if the only required_alternative param is nil' do
+      args = {time_from_start: 123, other_param: nil}
+      required_alternatives = [:other_param, :yet_another_param]
+      expect { ArgsValidator.new(params: args, required_alternatives: required_alternatives).validate }
+          .to raise_error(/must include one of/)
+      expect { ArgsValidator.validate(params: args, required_alternatives: required_alternatives) }
+          .to raise_error(/must include one of/)
+    end
+
+    it 'properly recognizes false as being present for purposes of required alternatives' do
+      args = {time_from_start: 123, finished: false}
+      required_alternatives = [:finished, :other_param]
+      expect { ArgsValidator.new(params: args, required_alternatives: required_alternatives).validate }
+          .not_to raise_error
+      expect { ArgsValidator.validate(params: args, required_alternatives: required_alternatives) }
+          .not_to raise_error
     end
 
     it 'validates a populated args hash if the single given param is the same as the single exclusive param' do

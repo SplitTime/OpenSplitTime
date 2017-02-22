@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
-  PERMITTED_PARAMS = [:id, :name, :description, :next_start_time]
+  PERMITTED_PARAMS = [:id, :name, :description, :next_start_time, splits_attributes: Split::PERMITTED_PARAMS]
 
   include Auditable
   include Concealable

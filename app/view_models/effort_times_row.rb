@@ -43,14 +43,16 @@ class EffortTimesRow
 
   def create_time_clusters
     prior_split_time = nil
+    immediate_prior_split_time = nil
     lap_splits.each do |lap_split|
       time_cluster = TimeCluster.new(finish: finish_cluster?(lap_split),
                                      split_times_data: related_split_times(lap_split),
                                      prior_split_time: prior_split_time,
-                                     start_time: effort.start_time,
-                                     drop_display: display_stopped?(lap_split))
+                                     immediate_prior_split_time: immediate_prior_split_time,
+                                     start_time: effort.start_time)
       time_clusters << time_cluster
-      prior_split_time = related_split_times(lap_split).compact.last if related_split_times(lap_split).compact.present?
+      prior_split_time = time_cluster.split_times_data.compact.last if time_cluster.split_times_data.compact.present?
+      immediate_prior_split_time = time_cluster.split_times_data.compact.last
     end
   end
 
@@ -73,26 +75,6 @@ class EffortTimesRow
   def last_split_time
     @last_split_time ||=
         lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times[time_point] }.compact.last
-  end
-
-  def display_stopped?(lap_split)
-    stopped_display_key && (lap_split.key == stopped_display_key)
-  end
-
-  def stopped_display_key
-    @stopped_display_key ||= lap_split_keys[stopped_key_index + 1] if stopped_key_index
-  end
-
-  def stopped_key_index
-    @stopped_key_index ||= lap_split_keys.index(stopped_split_time_key)
-  end
-
-  def stopped_split_time_key
-    LapSplitKey.new(stopped_split_time.lap, stopped_split_time.split_id) if stopped_split_time
-  end
-
-  def stopped_split_time
-    @stopped_split_time ||= split_times.sort_by(&:time_from_start).reverse.find(&:stopped_here)
   end
 
   def lap_split_keys

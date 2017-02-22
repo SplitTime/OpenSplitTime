@@ -1,18 +1,21 @@
 class TimeCluster
+  attr_reader :split_times_data
 
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:finish, :split_times_data, :start_time],
-                           exclusive: [:finish, :split_times_data, :prior_split_time, :prior_time, :start_time, :drop_display],
+                           exclusive: [:finish, :split_times_data, :prior_split_time,
+                                       :immediate_prior_split_time, :start_time],
                            class: self.class)
     @finish = args[:finish]
     @split_times_data = args[:split_times_data]
     @prior_split_time = args[:prior_split_time]
+    @immediate_prior_split_time = args[:immediate_prior_split_time]
     @start_time = args[:start_time]
   end
 
   def drop_display
-    prior_split_time.try(:stopped_here)
+    immediate_prior_split_time.try(:stopped_here)
   end
 
   def finish?
@@ -55,7 +58,7 @@ class TimeCluster
 
   private
 
-  attr_reader :split, :split_times_data, :start_time, :prior_split_time
+  attr_reader :split, :start_time, :prior_split_time, :immediate_prior_split_time
 
   def prior_time
     prior_split_time.try(:time_from_start)

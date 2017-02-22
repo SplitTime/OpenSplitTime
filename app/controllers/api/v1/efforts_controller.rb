@@ -11,7 +11,7 @@ class Api::V1::EffortsController < ApiController
     authorize effort
 
     if effort.save
-      render json: {message: 'effort created', effort: effort}
+      render json: effort
     else
       render json: {message: 'effort not created', error: "#{effort.errors.full_messages}"}, status: :bad_request
     end
@@ -20,7 +20,7 @@ class Api::V1::EffortsController < ApiController
   def update
     authorize @effort
     if @effort.update(effort_params)
-      render json: {message: 'effort updated', effort: @effort}
+      render json: @effort
     else
       render json: {message: 'effort not updated', error: "#{@effort.errors.full_messages}"}, status: :bad_request
     end
@@ -29,7 +29,7 @@ class Api::V1::EffortsController < ApiController
   def destroy
     authorize @effort
     if @effort.destroy
-      render json: {message: 'effort destroyed', effort: @effort}
+      render json: @effort
     else
       render json: {message: 'effort not destroyed', error: "#{@effort.errors.full_messages}"}, status: :bad_request
     end

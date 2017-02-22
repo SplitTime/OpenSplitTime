@@ -11,7 +11,7 @@ class Api::V1::CoursesController < ApiController
     authorize course
 
     if course.save
-      render json: {message: 'course created', course: course}
+      render json: course
     else
       render json: {message: 'course not created', error: "#{course.errors.full_messages}"}, status: :bad_request
     end
@@ -20,7 +20,7 @@ class Api::V1::CoursesController < ApiController
   def update
     authorize @course
     if @course.update(course_params)
-      render json: {message: 'course updated', course: @course}
+      render json: @course
     else
       render json: {message: 'course not updated', error: "#{@course.errors.full_messages}"}, status: :bad_request
     end
@@ -29,7 +29,7 @@ class Api::V1::CoursesController < ApiController
   def destroy
     authorize @course
     if @course.destroy
-      render json: {message: 'course destroyed', course: @course}
+      render json: @course
     else
       render json: {message: 'course not destroyed', error: "#{@course.errors.full_messages}"}, status: :bad_request
     end

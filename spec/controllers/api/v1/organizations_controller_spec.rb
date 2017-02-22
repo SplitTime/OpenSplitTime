@@ -26,11 +26,10 @@ describe Api::V1::OrganizationsController do
   end
 
   describe '#create' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       post :create, organization: {name: 'Test Organization'}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/organization created/)
-      expect(parsed_response['organization']['id']).not_to be_nil
+      expect(parsed_response['id']).not_to be_nil
       expect(response).to be_success
     end
 
@@ -44,10 +43,8 @@ describe Api::V1::OrganizationsController do
   describe '#update' do
     let(:attributes) { {name: 'Updated Organization Name'} }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :update, id: organization, organization: attributes
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/organization updated/)
       expect(response).to be_success
     end
 
@@ -66,10 +63,8 @@ describe Api::V1::OrganizationsController do
   end
 
   describe '#destroy' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :destroy, id: organization
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/organization destroyed/)
       expect(response).to be_success
     end
 

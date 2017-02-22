@@ -26,11 +26,10 @@ describe Api::V1::LocationsController do
   end
 
   describe '#create' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       post :create, location: {name: 'Test Location'}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/location created/)
-      expect(parsed_response['location']['id']).not_to be_nil
+      expect(parsed_response['id']).not_to be_nil
       expect(response).to be_success
     end
 
@@ -44,10 +43,8 @@ describe Api::V1::LocationsController do
   describe '#update' do
     let(:attributes) { {name: 'Updated Location Name'} }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :update, id: location, location: attributes
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/location updated/)
       expect(response).to be_success
     end
 
@@ -66,10 +63,8 @@ describe Api::V1::LocationsController do
   end
 
   describe '#destroy' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :destroy, id: location
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/location destroyed/)
       expect(response).to be_success
     end
 

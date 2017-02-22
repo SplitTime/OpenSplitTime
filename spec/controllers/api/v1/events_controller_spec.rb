@@ -29,11 +29,10 @@ describe Api::V1::EventsController do
   describe '#create' do
     let(:params) { {course_id: course.id, name: 'Test Event', start_time: '2017-03-01 06:00:00', laps_required: 1} }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       post :create, event: params
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/event created/)
-      expect(parsed_response['event']['id']).not_to be_nil
+      expect(parsed_response['id']).not_to be_nil
       expect(response).to be_success
     end
 
@@ -48,10 +47,8 @@ describe Api::V1::EventsController do
   describe '#update' do
     let(:attributes) { {name: 'Updated Event Name'} }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :update, staging_id: event.staging_id, event: attributes
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/event updated/)
       expect(response).to be_success
     end
 
@@ -70,10 +67,8 @@ describe Api::V1::EventsController do
   end
 
   describe '#destroy' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :destroy, staging_id: event.staging_id
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/event destroyed/)
       expect(response).to be_success
     end
 
@@ -97,7 +92,7 @@ describe Api::V1::EventsController do
     let(:splits) { FactoryGirl.create_list(:split, splits_count, course: course) }
     let(:split_ids) { splits.map(&:id) }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :associate_splits, staging_id: event.staging_id, split_ids: split_ids
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/splits associated/)
@@ -138,7 +133,7 @@ describe Api::V1::EventsController do
       event.splits << splits
     end
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :remove_splits, staging_id: event.staging_id, split_ids: removed_split_ids
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/splits removed/)

@@ -11,7 +11,7 @@ class Api::V1::ParticipantsController < ApiController
     authorize participant
 
     if participant.save
-      render json: {message: 'participant created', participant: participant}
+      render json: participant
     else
       render json: {message: 'participant not created', error: "#{participant.errors.full_messages}"}, status: :bad_request
     end
@@ -20,7 +20,7 @@ class Api::V1::ParticipantsController < ApiController
   def update
     authorize @participant
     if @participant.update(participant_params)
-      render json: {message: 'participant updated', participant: @participant}
+      render json: @participant
     else
       render json: {message: 'participant not updated', error: "#{@participant.errors.full_messages}"}, status: :bad_request
     end
@@ -29,7 +29,7 @@ class Api::V1::ParticipantsController < ApiController
   def destroy
     authorize @participant
     if @participant.destroy
-      render json: {message: 'participant destroyed', participant: @participant}
+      render json: @participant
     else
       render json: {message: 'participant not destroyed', error: "#{@participant.errors.full_messages}"}, status: :bad_request
     end

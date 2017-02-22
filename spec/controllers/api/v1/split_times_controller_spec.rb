@@ -30,12 +30,11 @@ describe Api::V1::SplitTimesController do
   end
 
   describe '#create' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       post :create, split_time: {effort_id: effort.id, lap: 1, split_id: split.id,
                                  sub_split_bitkey: 1, time_from_start: 100}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/split_time created/)
-      expect(parsed_response['split_time']['id']).not_to be_nil
+      expect(parsed_response['id']).not_to be_nil
       expect(response).to be_success
     end
 
@@ -50,10 +49,8 @@ describe Api::V1::SplitTimesController do
   describe '#update' do
     let(:attributes) { {time_from_start: 12345} }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :update, id: split_time, split_time: attributes
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/split_time updated/)
       expect(response).to be_success
     end
 
@@ -72,10 +69,8 @@ describe Api::V1::SplitTimesController do
   end
 
   describe '#destroy' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :destroy, id: split_time
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/split_time destroyed/)
       expect(response).to be_success
     end
 

@@ -11,7 +11,7 @@ class Api::V1::SplitsController < ApiController
     authorize split
 
     if split.save
-      render json: {message: 'split created', split: split}
+      render json: split
     else
       render json: {message: 'split not created', error: "#{split.errors.full_messages}"}, status: :bad_request
     end
@@ -20,7 +20,7 @@ class Api::V1::SplitsController < ApiController
   def update
     authorize @split
     if @split.update(split_params)
-      render json: {message: 'split updated', split: @split}
+      render json: @split
     else
       render json: {message: 'split not updated', error: "#{@split.errors.full_messages}"}, status: :bad_request
     end
@@ -29,7 +29,7 @@ class Api::V1::SplitsController < ApiController
   def destroy
     authorize @split
     if @split.destroy
-      render json: {message: 'split destroyed', split: @split}
+      render json: @split
     else
       render json: {message: 'split not destroyed', error: "#{@split.errors.full_messages}"}, status: :bad_request
     end

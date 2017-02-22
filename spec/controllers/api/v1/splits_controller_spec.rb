@@ -27,12 +27,11 @@ describe Api::V1::SplitsController do
   end
 
   describe '#create' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       post :create, split: {base_name: 'Test Split', course_id: course.id, distance_from_start: 100,
                             kind: 'intermediate', sub_split_bitkey: 1}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/split created/)
-      expect(parsed_response['split']['id']).not_to be_nil
+      expect(parsed_response['id']).not_to be_nil
       expect(response).to be_success
     end
 
@@ -45,12 +44,10 @@ describe Api::V1::SplitsController do
   end
 
   describe '#update' do
-    let(:attributes) { {base_name: 'Updated Split Name'} }
+    let(:attributes) { {base_name: 'Updated Split Name', latitude: 40, longitude: -105, elevation: 2000 } }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :update, id: split, split: attributes
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/split updated/)
       expect(response).to be_success
     end
 
@@ -69,10 +66,8 @@ describe Api::V1::SplitsController do
   end
 
   describe '#destroy' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :destroy, id: split
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/split destroyed/)
       expect(response).to be_success
     end
 

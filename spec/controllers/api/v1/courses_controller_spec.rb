@@ -26,11 +26,10 @@ describe Api::V1::CoursesController do
   end
 
   describe '#create' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       post :create, course: {name: 'Test Course'}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/course created/)
-      expect(parsed_response['course']['id']).not_to be_nil
+      expect(parsed_response['id']).not_to be_nil
       expect(response).to be_success
     end
 
@@ -44,10 +43,8 @@ describe Api::V1::CoursesController do
   describe '#update' do
     let(:attributes) { {name: 'Updated Course Name'} }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :update, id: course, course: attributes
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/course updated/)
       expect(response).to be_success
     end
 
@@ -66,10 +63,8 @@ describe Api::V1::CoursesController do
   end
 
   describe '#destroy' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :destroy, id: course
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/course destroyed/)
       expect(response).to be_success
     end
 

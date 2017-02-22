@@ -14,7 +14,7 @@ class Api::V1::EventsController < ApiController
 
     if event.save
       event.reload
-      render json: {message: 'event created', event: event}
+      render json: event
     else
       render json: {message: 'event not created', error: "#{event.errors.full_messages}"}, status: :bad_request
     end
@@ -24,7 +24,7 @@ class Api::V1::EventsController < ApiController
   def update
     authorize @event
     if @event.update(event_params)
-      render json: {message: 'event updated', event: @event}
+      render json: @event
     else
       render json: {message: 'event not updated', error: "#{@event.errors.full_messages}"}, status: :bad_request
     end
@@ -34,7 +34,7 @@ class Api::V1::EventsController < ApiController
   def destroy
     authorize @event
     if @event.destroy
-      render json: {message: 'event destroyed', event: @event}
+      render json: @event
     else
       render json: {message: 'event not destroyed', error: "#{@event.errors.full_messages}"}, status: :bad_request
     end

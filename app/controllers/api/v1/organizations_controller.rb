@@ -11,7 +11,7 @@ class Api::V1::OrganizationsController < ApiController
     authorize organization
 
     if organization.save
-      render json: {message: 'organization created', organization: organization}
+      render json: organization
     else
       render json: {message: 'organization not created', error: "#{organization.errors.full_messages}"}, status: :bad_request
     end
@@ -20,7 +20,7 @@ class Api::V1::OrganizationsController < ApiController
   def update
     authorize @organization
     if @organization.update(organization_params)
-      render json: {message: 'organization updated', organization: @organization}
+      render json: @organization
     else
       render json: {message: 'organization not updated', error: "#{@organization.errors.full_messages}"}, status: :bad_request
     end
@@ -29,7 +29,7 @@ class Api::V1::OrganizationsController < ApiController
   def destroy
     authorize @organization
     if @organization.destroy
-      render json: {message: 'organization destroyed', organization: @organization}
+      render json: @organization
     else
       render json: {message: 'organization not destroyed', error: "#{@organization.errors.full_messages}"}, status: :bad_request
     end

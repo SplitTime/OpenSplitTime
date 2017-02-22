@@ -26,11 +26,10 @@ describe Api::V1::ParticipantsController do
   end
 
   describe '#create' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       post :create, participant: {first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/participant created/)
-      expect(parsed_response['participant']['id']).not_to be_nil
+      expect(parsed_response['id']).not_to be_nil
       expect(response).to be_success
     end
 
@@ -44,10 +43,8 @@ describe Api::V1::ParticipantsController do
   describe '#update' do
     let(:attributes) { {last_name: 'Updated Last Name'} }
 
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       put :update, id: participant, participant: attributes
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/participant updated/)
       expect(response).to be_success
     end
 
@@ -66,10 +63,8 @@ describe Api::V1::ParticipantsController do
   end
 
   describe '#destroy' do
-    it 'returns a successful json response with success message' do
+    it 'returns a successful json response' do
       delete :destroy, id: participant
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/participant destroyed/)
       expect(response).to be_success
     end
 

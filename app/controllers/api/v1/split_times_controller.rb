@@ -11,7 +11,7 @@ class Api::V1::SplitTimesController < ApiController
     authorize split_time
 
     if split_time.save
-      render json: {message: 'split_time created', split_time: split_time}
+      render json: split_time
     else
       render json: {message: 'split_time not created', error: "#{split_time.errors.full_messages}"}, status: :bad_request
     end
@@ -20,7 +20,7 @@ class Api::V1::SplitTimesController < ApiController
   def update
     authorize @split_time
     if @split_time.update(split_time_params)
-      render json: {message: 'split_time updated', split_time: @split_time}
+      render json: @split_time
     else
       render json: {message: 'split_time not updated', error: "#{@split_time.errors.full_messages}"}, status: :bad_request
     end
@@ -29,7 +29,7 @@ class Api::V1::SplitTimesController < ApiController
   def destroy
     authorize @split_time
     if @split_time.destroy
-      render json: {message: 'split_time destroyed', split_time: @split_time}
+      render json: @split_time
     else
       render json: {message: 'split_time not destroyed', error: "#{@split_time.errors.full_messages}"}, status: :bad_request
     end

@@ -11,7 +11,7 @@ class Api::V1::LocationsController < ApiController
     authorize location
 
     if location.save
-      render json: {message: 'location created', location: location}
+      render json: location
     else
       render json: {message: 'location not created', error: "#{location.errors.full_messages}"}, status: :bad_request
     end
@@ -20,7 +20,7 @@ class Api::V1::LocationsController < ApiController
   def update
     authorize @location
     if @location.update(location_params)
-      render json: {message: 'location updated', location: @location}
+      render json: @location
     else
       render json: {message: 'location not updated', error: "#{@location.errors.full_messages}"}, status: :bad_request
     end
@@ -29,7 +29,7 @@ class Api::V1::LocationsController < ApiController
   def destroy
     authorize @location
     if @location.destroy
-      render json: {message: 'location destroyed', location: @location}
+      render json: @location
     else
       render json: {message: 'location not destroyed', error: "#{@location.errors.full_messages}"}, status: :bad_request
     end

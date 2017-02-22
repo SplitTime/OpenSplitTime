@@ -94,7 +94,7 @@
         <td class="text-nowrap"><%= row.state_and_country %></td>
         <% row.time_clusters.each do |cluster| %>
             <td class="text-nowrap text-center">
-              <% if cluster.drop_display %>
+              <% if cluster.drop_display? %>
                   <strong><==DONE</strong>
               <% else %>
                   <%= display_cluster(cluster, @spread_display.display_style) %>

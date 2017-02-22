@@ -14,7 +14,7 @@ class TimeCluster
     @start_time = args[:start_time]
   end
 
-  def drop_display
+  def drop_display?
     immediate_prior_split_time.try(:stopped_here)
   end
 

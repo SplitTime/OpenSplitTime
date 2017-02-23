@@ -102,6 +102,8 @@ Rails.application.routes.draw do
   get '/signout' => 'sessions#destroy', :as => :signout
   get '/auth/failure' => 'sessions#failure'
 
+  get '/races/:id' => 'organizations#show'
+
   namespace :admin do
     root 'dashboard#dashboard'
     put 'set_effort_ages', to: 'dashboard#set_effort_ages'

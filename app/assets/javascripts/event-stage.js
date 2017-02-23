@@ -602,11 +602,17 @@
 
         onRouteChange: function( to, from, next ) {
             if ( from.name === 'home' ) {
-                eventStage.data.eventModel.post();
+                eventStage.data.eventModel.post().done( function() {
+                    next();
+                } ).fail( function() {
+                    next( '/' );
+                } );
             } else {
-                eventStage.data.eventModel.fetch();
+                eventStage.data.eventModel.fetch().always( function() {
+                    next();
+                } );
             }
-            next(); return; // NO!
+            return;
             if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
                 // Event data must be valid
                 next( '/' );
@@ -979,13 +985,22 @@
                         }
                         this._route.splice( 0, this._route.length );
                     }
+                    if ( this._polyline ) {
+                        this._polyline.setMap( null );
+                    }
                     // Build new route
                     var path = [];
                     for ( var i = 0; i < this.route.length; i++ ) {
                         if ( isNaN( parseFloat( this.route[i].latitude ) ) || isNaN( parseFloat( this.route[i].longitude ) ) ) continue;
-                        var latlng = { latitude: parseFloat( this.route[i].latitude ) , longitude: parseFloat( this.route[i].longitude ) };
+                        var latlng = { lat: parseFloat( this.route[i].latitude ) , lng: parseFloat( this.route[i].longitude ) };
                         path.push( latlng );
                         var marker = new google.maps.Marker( {
+                            icon: {
+                                url: '/assets/icons/dot-green.svg',
+                                labelOrigin: new google.maps.Point( 12, 14 ),
+                                anchor: new google.maps.Point( 16, 16 )
+                            },
+                            opacity: this.route[i].associated ? 1.0 : 0.5,
                             position: latlng,
                             map: this._map
                         } );

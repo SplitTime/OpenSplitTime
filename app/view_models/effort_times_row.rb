@@ -5,7 +5,7 @@ class EffortTimesRow
   include PersonalInfo
 
   attr_reader :effort, :time_clusters
-  delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
+  delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset, to: :effort
 
   def initialize(args)
@@ -26,10 +26,6 @@ class EffortTimesRow
 
   def total_segment_time
     time_clusters.map(&:segment_time).sum
-  end
-
-  def export_row
-    EXPORT_ATTRIBUTES.map { |attr| effort.send(attr) } + time_clusters.map { |tc| tc.times_from_start.map { |tfs| time_format_hhmmss(tfs) } }.flatten
   end
 
   private

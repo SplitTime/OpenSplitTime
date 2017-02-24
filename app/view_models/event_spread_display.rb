@@ -5,29 +5,29 @@ class EventSpreadDisplay
 
   # initialize(event, params = {})
   # event is an ordinary event object
-  # params should include
+  # params may include
   # params[:style] (elapsed / ampm / military / segment) and
-  # params[:sort] (place / bib / first / last)
+  # params[:sort] (overall_rank, gender_rank, bib_number, first_name, last_name, or any other sortable attribute)
 
   def initialize(event, params = {})
     @event = event
-    @display_style = params[:style]
-    @sort_method = params[:sort]
+    @display_style = params[:style].presence || (event.available_live ? 'ampm' : 'elapsed')
+    @sort_columns = params[:sort].to_s.split(',')
   end
 
-  def table_headers
-    relevant_lap_splits.map { |lap_split| {name: header_name(lap_split),
-                                           extensions: header_extensions(lap_split),
-                                           distance: lap_split.distance_from_start} }
+  def split_header_data
+    lap_splits.map { |lap_split| {title: header_name(lap_split),
+                                  extensions: header_extensions(lap_split),
+                                  distance: lap_split.distance_from_start} }
   end
 
-  def segment_total_header
+  def segment_total_header_data
     {title: aid_times_recorded? ? 'Totals' : 'Total',
-     extensions: aid_times_recorded? ? 'Segment / Aid' : nil}
+     extensions: aid_times_recorded? ? %w(Segment Aid) : []}
   end
 
   def aid_times_recorded?
-    relevant_lap_splits.any? { |lap_split| header_extensions(lap_split) }
+    lap_splits.any? { |lap_split| lap_split.name_extensions.size > 1 }
   end
 
   def show_segment_totals?
@@ -36,9 +36,8 @@ class EventSpreadDisplay
 
   def effort_times_rows
     @effort_times_rows ||=
-        sorted_efforts
-            .map { |effort| EffortTimesRow.new(effort: effort, lap_splits: relevant_lap_splits,
-                                               split_times: split_times_by_effort[effort.id]) }
+        efforts.map { |effort| EffortTimesRow.new(effort: effort, lap_splits: lap_splits,
+                                                  split_times: split_times_by_effort[effort.id]) }
   end
 
   def efforts_count
@@ -57,31 +56,13 @@ class EventSpreadDisplay
     @event_start_time ||= event.start_time
   end
 
-  def display_style_text
-    case display_style
-    when 'segment'
-      'Segment times'
-    when 'ampm'
-      'Time of day'
-    when 'military'
-      'Military time'
-    else
-      'Elapsed times'
-    end
-  end
-
-  def export_headers
-    EffortTimesRow::EXPORT_ATTRIBUTES.map { |attr| attr.to_s.humanize } + export_split_names.flatten
-  end
-
-  def export_split_names
-    multiple_laps? ? relevant_lap_splits.map(&:names) : relevant_lap_splits.map(&:names_without_laps)
+  def lap_splits
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
   private
-  STYLES_WITH_START_TIME = %w(ampm military)
 
-  attr_reader :sort_method
+  attr_reader :sort_columns
   delegate :multiple_laps?, to: :event
 
   def split_times_by_effort
@@ -89,26 +70,12 @@ class EventSpreadDisplay
   end
 
   def split_times
-    @split_times ||= event.split_times.struct_pluck(:effort_id, :time_from_start, :lap, :split_id,
-                                                    :sub_split_bitkey, :data_status, :stopped_here)
+    @split_times ||=
+        event.split_times.struct_pluck(:effort_id, :lap, :split_id, :sub_split_bitkey, :time_from_start, :stopped_here)
   end
 
   def efforts
-    @efforts ||= event.efforts.ranked_with_finish_status
-  end
-
-  def sorted_efforts
-    @sorted_efforts ||=
-        case sort_method
-        when 'bib'
-          efforts.sort_by(&:bib_number)
-        when 'last'
-          efforts.sort_by(&:last_name)
-        when 'first'
-          efforts.sort_by(&:first_name)
-        else
-          efforts
-        end
+    @efforts ||= event.efforts.ranked_with_finish_status(order_by: sort_columns)
   end
 
   def header_name(lap_split)
@@ -117,19 +84,7 @@ class EventSpreadDisplay
 
   def header_extensions(lap_split)
     extension_components = display_style == 'segment' ? %w(Segment Aid) : lap_split.name_extensions
-    lap_split.name_extensions.size > 1 ? extension_components.join(' / ') : nil
-  end
-
-  def relevant_lap_splits
-    @relevant_lap_splits ||= STYLES_WITH_START_TIME.include?(display_style) ? lap_splits : lap_splits_without_start
-  end
-
-  def lap_splits_without_start
-    lap_splits.reject(&:start?)
-  end
-
-  def lap_splits
-    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
+    lap_split.name_extensions.size > 1 ? extension_components : []
   end
 
   def highest_lap

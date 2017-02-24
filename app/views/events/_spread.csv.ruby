@@ -1,6 +1,6 @@
 CSV.generate do |csv|
-  csv << @spread_display.export_headers
+  csv << spread_export_headers
   @spread_display.effort_times_rows.each do |row|
-    csv << row.export_row
+    csv << time_row_export_row(row)
   end
 end

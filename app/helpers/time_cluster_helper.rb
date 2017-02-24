@@ -1,50 +1,36 @@
 module TimeClusterHelper
 
-  def display_cluster(cluster, display_style)
+  def time_cluster_display_data(cluster, display_style)
+    time_cluster_export_data(cluster, display_style).join(' / ')
+  end
+
+  def time_cluster_export_data(cluster, display_style)
+    time_cluster_data(cluster, display_style).map { |time| cluster_formatted_time(time, cluster, display_style) }
+  end
+
+  def time_cluster_data(cluster, display_style)
     case display_style
     when 'segment'
-      display_segment_cluster(cluster)
+      cluster.aid_time_recordable? ? [cluster.segment_time, cluster.time_in_aid] : [cluster.segment_time]
     when 'ampm'
-      display_ampm_cluster(cluster)
+      cluster.days_and_times
     when 'military'
-      display_military_cluster(cluster)
+      cluster.days_and_times
     else
-      display_elapsed_cluster(cluster)
+      cluster.times_from_start
     end
   end
 
-  def display_segment_cluster(cluster)
-    case
-    when cluster.finish?
-      time_format_xxhyymzzs(cluster.segment_time)
-    when cluster.aid_time_recordable?
-      [time_format_xxhyym(cluster.segment_time), time_format_minutes(cluster.time_in_aid)].join(' / ')
+  def cluster_formatted_time(time, cluster, display_style)
+    case display_style
+    when 'segment'
+      cluster.finish? ? time_format_xxhyymzzs(time) : time_format_xxhyym(time)
+    when 'ampm'
+      cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
+    when 'military'
+      cluster.finish? ? day_time_military_format_hhmmss(time) : day_time_military_format(time)
     else
-      time_format_xxhyym(cluster.segment_time)
-    end
-  end
-
-  def display_ampm_cluster(cluster)
-    if cluster.finish?
-      cluster.days_and_times.map { |time| day_time_format_hhmmss(time) }.join(' / ')
-    else
-      cluster.days_and_times.map { |time| day_time_format(time) }.join(' / ')
-    end
-  end
-
-  def display_military_cluster(cluster)
-    if cluster.finish?
-      cluster.days_and_times.map { |time| day_time_military_format_hhmmss(time) }.join(' / ')
-    else
-      cluster.days_and_times.map { |time| day_time_military_format(time) }.join(' / ')
-    end
-  end
-
-  def display_elapsed_cluster(cluster)
-    if cluster.finish?
-      cluster.times_from_start.map { |time| time_format_hhmmss(time) }.join(' / ')
-    else
-      cluster.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ')
+      cluster.finish? ? time_format_hhmmss(time) : time_format_hhmm(time)
     end
   end
 end

@@ -25,22 +25,22 @@
         <%= link_to 'Elapsed time', spread_event_path(@spread_display.event,
                                                       style: 'elapsed',
                                                       sort: params[:sort]),
-                    disabled: params[:style] == 'elapsed',
+                    disabled: @spread_display.display_style == 'elapsed',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'AM / PM', spread_event_path(@spread_display.event,
                                                  style: 'ampm',
                                                  sort: params[:sort]),
-                    disabled: params[:style] == 'ampm',
+                    disabled: @spread_display.display_style == 'ampm',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to '24-hour time', spread_event_path(@spread_display.event,
                                                       style: 'military',
                                                       sort: params[:sort]),
-                    disabled: params[:style] == 'military',
+                    disabled: @spread_display.display_style == 'military',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Segment time', spread_event_path(@spread_display.event,
                                                       style: 'segment',
                                                       sort: params[:sort]),
-                    disabled: params[:style] == 'segment',
+                    disabled: @spread_display.display_style == 'segment',
                     class: 'btn btn-sm btn-primary' %>
       </div>
 
@@ -53,33 +53,23 @@
   <tr>
     <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
                                                        style: params[:style],
-                                                       sort: 'place') %></th>
+                                                       sort: 'overall_rank') %></th>
     <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
                                              style: params[:style],
-                                             sort: 'bib') %></th>
-    <% if params[:sort] == 'last' %>
-        <th><%= link_to 'Name', spread_event_path(@spread_display.event,
-                                                  style: params[:style],
-                                                  sort: 'first') %></th>
-    <% else %>
-        <th><%= link_to 'Name', spread_event_path(@spread_display.event,
-                                                  style: params[:style],
-                                                  sort: 'last') %></th>
-    <% end %>
+                                             sort: 'bib_number') %></th>
+    <th><%= link_to 'Name', spread_event_path(@spread_display.event,
+                                              style: params[:style],
+                                              sort: params[:sort] == 'last_name' ? 'first_name' : 'last_name') %></th>
     <th>Category</th>
     <th>From</th>
-    <% @spread_display.table_headers.each do |header| %>
+    <% spread_relevant_elements(@spread_display.split_header_data).each do |header| %>
         <th class="text-nowrap text-center">
-          <%= header[:name] %><br>
-          <% if header[:extensions].present? %>
-              <%= header[:extensions] %><br/>
-          <% end %>
-          <%= "(#{pdu('singular').titlecase} #{d(header[:distance])})" %>
+          <%= clustered_header(header) %>
         </th>
     <% end %>
     <% if @spread_display.show_segment_totals? %>
         <th class="text-center text-nowrap">
-          <%= segment_total_header %>
+          <%= clustered_segment_total_header %>
         </th>
     <% end %>
   </tr>
@@ -92,18 +82,18 @@
         <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
         <td class="text-nowrap"><%= row.bio_historic %></td>
         <td class="text-nowrap"><%= row.state_and_country %></td>
-        <% row.time_clusters.each do |cluster| %>
+        <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
             <td class="text-nowrap text-center">
               <% if cluster.drop_display? %>
                   <strong><==DONE</strong>
               <% else %>
-                  <%= display_cluster(cluster, @spread_display.display_style) %>
+                  <%= time_cluster_display_data(cluster, @spread_display.display_style) %>
               <% end %>
             </td>
         <% end %>
         <% if @spread_display.show_segment_totals? %>
             <td class="text-center text-nowrap">
-              <%= spread_segment_total_data(row) %>
+              <%= clustered_segment_total_data(row) %>
             </td>
         <% end %>
       </tr>

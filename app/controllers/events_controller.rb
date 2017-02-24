@@ -158,15 +158,14 @@ class EventsController < ApplicationController
 
   def spread
     event = Event.find(params[:id])
-    params[:style] ||= event.available_live ? 'ampm' : 'elapsed'
-    params[:sort] ||= 'place'
     @spread_display = EventSpreadDisplay.new(event, params)
     respond_to do |format|
       format.html
       format.csv do
         authorize event
         csv_stream = render_to_string(partial: 'spread.csv.ruby')
-        send_data(csv_stream, type: 'text/csv', filename: "#{event.name} - elapsed - #{Date.today}.csv")
+        send_data(csv_stream, type: 'text/csv',
+                  filename: "#{event.name} - #{@spread_display.display_style} - #{Date.today}.csv")
       end
     end
   end

@@ -10,12 +10,12 @@ class EventPolicy < ApplicationPolicy
 
   attr_reader :event
 
-  def spread?
-    user.present?
-  end
-
   def post_initialize(event)
     @event = event
+  end
+
+  def spread?
+    user.authorized_for_live?(event)
   end
 
   def import_splits?

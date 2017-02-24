@@ -7,7 +7,8 @@ module EventsHelper
   def link_to_delete_event(view_object)
     link_to 'Delete event', event_path(view_object.event, referrer_path: events_path),
             method: :delete,
-            data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. This action cannot be undone. Are you sure you want to go ahead?'},
+            data: {confirm: 'NOTE: This will delete the event and all associated efforts and split times. ' +
+                'This action cannot be undone. Are you sure you want to go ahead?'},
             class: 'btn btn-sm btn-danger'
   end
 
@@ -26,11 +27,20 @@ module EventsHelper
     end
   end
 
+  def link_to_download_spread_csv(view_object, current_user)
+    if current_user && current_user.authorized_for_live?(view_object.event) && view_object.event_finished?
+      link_to 'Export spreadsheet',
+              spread_event_path(view_object.event, format: :csv, style: params[:style], sort: params[:sort]),
+              method: :get, class: 'btn btn-sm btn-success'
+    end
+  end
+
   def link_to_toggle_live_entry(view_object)
     if view_object.available_live
       link_to 'Disable live',
               live_disable_event_path(view_object.event),
-              data: {confirm: "NOTE: This will suspend all live entry actions for #{view_object.name}, including any that may be in process. Are you sure you want to proceed?"},
+              data: {confirm: "NOTE: This will suspend all live entry actions for #{view_object.name}, " +
+                  "including any that may be in process. Are you sure you want to proceed?"},
               method: :put,
               class: 'btn btn-sm btn-warning'
     else
@@ -53,7 +63,8 @@ module EventsHelper
   def link_to_set_dropped_attributes(view_object)
     link_to 'Establish drops', set_dropped_attributes_event_path(view_object.event),
             method: :put,
-            data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having dropped at the last aid station for which times are available. Are you sure you want to proceed?'},
+            data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
+                'at the last aid station for which times are available. Are you sure you want to proceed?'},
             class: 'btn btn-sm btn-success'
   end
 
@@ -66,7 +77,8 @@ module EventsHelper
   def link_to_start_all_efforts(view_object)
     link_to 'Start all efforts', start_all_efforts_event_path(view_object.event),
             method: :put,
-            data: {confirm: "NOTE: This will create a starting split time for all efforts associated with #{view_object.name}. Are you sure you want to proceed?"},
+            data: {confirm: "NOTE: This will create a starting split time for all efforts associated with " +
+                "#{view_object.name}. Are you sure you want to proceed?"},
             class: 'btn btn-sm btn-success'
   end
 

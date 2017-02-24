@@ -60,6 +60,10 @@ class EventSpreadDisplay
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
+  def event_finished?
+    event.finished?
+  end
+
   private
 
   attr_reader :sort_columns

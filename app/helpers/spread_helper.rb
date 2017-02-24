@@ -21,7 +21,7 @@ module SpreadHelper
   def individual_headers(header_data)
     title = header_data[:title]
     extensions = header_data[:extensions]
-    extensions.present? ? extensions.map { |extension| [title, extension].join(' ') } : title
+    extensions.present? ? extensions.map { |extension| [title, extension].join(' ') } : [title]
   end
 
   def individual_segment_total_headers
@@ -31,7 +31,7 @@ module SpreadHelper
   def individual_segment_total_data(row)
     row.total_time_in_aid ?
         [time_format_xxhyymzzs(row.total_segment_time), time_format_xxhyym(row.total_time_in_aid)] :
-        time_format_xxhyymzzs(row.total_segment_time)
+        [time_format_xxhyymzzs(row.total_segment_time)]
   end
 
   def spread_relevant_elements(array)

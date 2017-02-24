@@ -30,8 +30,8 @@ module SpreadHelper
 
   def individual_segment_total_data(row)
     row.total_time_in_aid ?
-        [time_format_xxhyymzzs(row.total_segment_time), time_format_xxhyym(row.total_time_in_aid)] :
-        [time_format_xxhyymzzs(row.total_segment_time)]
+        [time_format_hhmmss(row.total_segment_time), time_format_hhmmss(row.total_time_in_aid)] :
+        [time_format_hhmmss(row.total_segment_time)]
   end
 
   def spread_relevant_elements(array)

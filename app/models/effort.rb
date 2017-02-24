@@ -63,9 +63,10 @@ class Effort < ActiveRecord::Base
     end
   end
 
-  def self.ranked_with_finish_status(effort_fields: '*')
+  def self.ranked_with_finish_status(args = {})
     return [] if EffortQuery.existing_scope_sql.blank?
-    query = EffortQuery.rank_and_finish_status(effort_fields: effort_fields)
+    query = EffortQuery.rank_and_finish_status(effort_fields: (args[:effort_fields]),
+                                               order_by: args[:order_by])
     self.find_by_sql(query)
   end
 

@@ -1,6 +1,16 @@
 class EffortQuery
+  SANITIZE_COLUMN_NAMES = %w(id event_id participant_id wave bib_number city state_code age created_at updated_at
+created_by updated_by first_name last_name gender country_code birthdate data_status start_offset dropped_split_id
+concealed beacon_url report_url photo_url dropped_lap laps_required event_start_time final_split_name final_lap_distance
+final_lap final_split_id final_bitkey final_time final_split_time_id stopped_split_time_id stopped_lap stopped_split_id
+stopped_bitkey stopped_time final_lap_complete course_distance started laps_started laps_finished final_distance finished
+stopped dropped overall_rank gender_rank)
 
-  def self.rank_and_finish_status(effort_fields: '*')
+  def self.rank_and_finish_status(args)
+    effort_fields = Array.wrap(args[:effort_fields])
+    order_by = Array.wrap(args[:order_by])
+    select_sql = sanitize_and_join(effort_fields) || '*'
+    order_sql = sanitize_and_join(order_by) || 'overall_rank'
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),
@@ -8,7 +18,7 @@ class EffortQuery
                                        FROM efforts
                                        INNER JOIN existing_scope ON existing_scope.id = efforts.id)
 
-      SELECT *,
+      SELECT #{select_sql},
           rank() over 
             (ORDER BY dropped, 
                       final_lap desc, 
@@ -48,7 +58,7 @@ class EffortQuery
                 END
                 AS finished
             FROM
-              (SELECT #{effort_fields}, 
+              (SELECT *, 
                   true AS started,
                   final_lap AS laps_started,
                   CASE
@@ -109,7 +119,7 @@ class EffortQuery
             AS finished_subquery)
           AS stopped_subquery)
         AS dropped_subquery
-      ORDER BY overall_rank
+      ORDER BY #{order_sql}
     SQL
     query.squish
   end
@@ -167,5 +177,9 @@ class EffortQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }
+  end
+
+  def self.sanitize_and_join(column_names)
+    (column_names || []).select { |column_name| SANITIZE_COLUMN_NAMES.include?(column_name.to_s) }.join(', ').presence
   end
 end

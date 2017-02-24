@@ -1,6 +1,6 @@
 class EffortTimesRow
   include TimeFormats
-  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :full_name, :gender, :age, :state_code, :country_code]
+  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code]
 
   include PersonalInfo
 

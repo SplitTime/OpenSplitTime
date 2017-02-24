@@ -6,7 +6,7 @@ class EffortImporter
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:file_path, :event, :current_user_id],
-                           exclusive: [:file_path, :event, :current_user_id, :without_status, :time_format],
+                           exclusive: [:file_path, :event, :current_user_id, :without_status, :with_times, :time_format],
                            class: self.class)
     @errors = ActiveModel::Errors.new(self)
     @import_file ||= ImportFile.new(args[:file_path])

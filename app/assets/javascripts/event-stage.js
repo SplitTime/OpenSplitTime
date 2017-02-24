@@ -55,12 +55,15 @@
          * Copies the specified properties to the Resource if available,
          * otherwise the property is assigned the provided default if unpopulated.
          */
-        Resource.prototype.copy = function( defaults, data, reset ) {
+        Resource.prototype.copy = function( dest, src, defaults, reset ) {
+            // Enforce Default Values
+            defaults = defaults || Object.keys( src );
+            reset = reset || false;
             for ( var property in defaults ) {
-                if ( data[ property ] !== undefined ) {
-                    this[ property ] = data[ property ];
-                } else if ( this[ property ] === undefined || reset ) {
-                    this[ property ] = defaults[ property ];
+                if ( src[ property ] !== undefined ) {
+                    dest[ property ] = src[ property ];
+                } else if ( dest[ property ] === undefined || reset ) {
+                    dest[ property ] = $.isPlainObject( defaults ) ? defaults[ property ] : null;
                 }
             }
         }
@@ -77,8 +80,7 @@
          */
         Resource.prototype.waitFor = function( deferred ) {
             var self = this;
-            this.busy = true;
-            console.info( 'Resource', this.id, 'Model Busy...' );
+            this.busy = true;            
             deferred.fail( function( response ) {
                 if ( response.responseJSON && response.responseJSON.error ) {
                     try {
@@ -87,8 +89,7 @@
                 }
             } );
             deferred.always( function() {
-                self.busy = false;
-                console.info( 'Resource', self.id, 'Model Ready' );
+                self.busy = false;                
             } );
             return deferred;
         }
@@ -107,6 +108,7 @@
                 self.startOffset = ( date.getTime() - self.parent.startTime.getTime() ) / 1000;
             }
             var startTime = new Date();
+            var startOffset = 0;
             Object.defineProperty( this, 'startMinutes', {
                 enumerable: true,
                 configurable: true,
@@ -156,11 +158,33 @@
                     setStartOffset( date );
                 }
             } );
+            Object.defineProperty( this, 'offsetTime', {
+                get: function() {
+                    var offset = Math.abs( this.startOffset / 60 );
+                    var minutes = offset % 60;
+                    var hours = ( offset - minutes ) / 60;
+                    return ( this.startOffset < 0 ? '-' : '' ) + hours + ':' + ( '0' + minutes ).slice( -2 );
+                },
+                set: function( value ) {
+                    if ( value == '' ) {
+                        this.startOffset = 0;
+                    } else {
+                        var val = value.split( ':' );
+                        var hours = Math.abs( parseInt( val[0] ) );
+                        var minutes = Math.abs( parseInt( val[1] ) );
+                        var offset = ( ( hours * 60 ) + minutes ) * 60;
+                        if ( value.startsWith( '-' ) ) {
+                            offset = -offset;
+                        }
+                        this.startOffset = offset;
+                    }
+                }
+            } );
             this.import( data || {} );
         }
         extend( Resource, Effort );
         Effort.prototype.import = function( data ) {
-            this.copy( {
+            this.copy( this, data, {
                 id: null,
                 age: null,
                 email: '',
@@ -174,7 +198,7 @@
                 lastName: '',
                 participantId: null,
                 startOffset: 0
-            }, data );
+            } );
         }
         Effort.prototype.post = function() {
             var dfd = $.Deferred();
@@ -204,13 +228,12 @@
                 } );
             }
             dfd = dfd.then( function( data ) {
-                self.import( data.effort );
+                self.import( data );
             } );
             return this.waitFor( dfd.promise() );
         }
         Effort.prototype.validate = function( context ) {
             var self = ( context ) ? context : this;
-            console.warn( 'Effort', self.id, 'Validator Not Fully Implemented', ( context ) ? '[ External Context ]' : undefined );
             if ( !self.firstName || self.firstName.length < 1 ) return false;
             if ( !self.lastName || self.lastName.length < 1 ) return false;
             if ( !self.gender ) return false;
@@ -229,8 +252,7 @@
                     type: "GET",
                     headers: headers,
                     dataType: "json"
-                } ).done( function( data ) {
-                    console.info( 'Effort', self.id, 'Fetched Effort Data From Server', data );
+                } ).done( function( data ) {                    
                     self.import( data );
                 } );
             } else {
@@ -247,8 +269,7 @@
                     type: "DELETE",
                     headers: headers,
                     dataType: "json"
-                } ).done( function( data ) {
-                    console.info( 'Effort', self.id, 'Deleted Effort From Server', data );
+                } ).done( function( data ) {                    
                 } );
             } else {
                 console.warn( 'Course', this.id, 'Tried to Delete Effort without ID' );
@@ -260,26 +281,44 @@
     } )();
 
     var Split = ( function() {
-        function Split( data ) {
-            Resource.call( this );
+        function Split( parent, data ) {
+            Resource.call( this, parent );
             this.import( data || {} );
         }
         extend( Resource, Split );
-        Split.prototype.import = function( data ) {
-            this.nameExtensions = data.nameExtensions || [];
-            this.copy( {
+        Split.prototype.export = function( data ) {
+            var data = {};
+            this.copy( data, this, {
                 id: null,
-                editable: true,
-                baseName: '',
-                distanceFromStart: '',
-                vertGainFromStart: '',
-                vertLossFromStart: '',
-                kind: 'intermediate',
-                associated: '',
+                baseName: null,
+                course_id: this.parent.id,
+                kind: null,
+                distanceFromStart: null,
+                vertGainFromStart: null,
+                vertLossFromStart: null,
+                description: null,
+                nameExtensions: [],
                 elevation: null,
                 latitude: null,
                 longitude: null
-            }, data );
+            } );
+            return data;
+        }
+        Split.prototype.import = function( data ) {
+            this.nameExtensions = data.nameExtensions || [];
+            this.copy( this, data, {
+                id: null,
+                editable: true,
+                baseName: '',
+                distanceFromStart: null,
+                vertGainFromStart: null,
+                vertLossFromStart: null,
+                kind: 'intermediate',
+                associated: false,
+                elevation: null,
+                latitude: null,
+                longitude: null
+            } );
         }
         Split.prototype.associate = function( associated ) {
             var dfd = $.Deferred();
@@ -320,23 +359,11 @@
         Split.prototype.post = function() {
             var dfd = $.Deferred();
             if ( this.isBusy() ) return dfd.reject();
-            var data = {
-                baseName: this.baseName,
-                courseId: this.parent.id,
-                kind: this.kind,
-                distanceFromStart: this.distanceFromStart,
-                vertGainFromStart: this.vertGainFromStart,
-                vertLossFromStart: this.vertLossFromStart,
-                description: this.description,
-                elevation: this.elevation,
-                latitude: this.latitude,
-                longitude: this.longitude
-            };
             var self = this;
             if ( !this.id ) {
                 dfd = $.ajax( '/api/v1/splits/', {
                     type: 'POST',
-                    data: { split: data },
+                    data: { split: this.export() },
                     headers: headers,
                     dataType: "json",
                 } ).then( function( data ) {
@@ -347,19 +374,34 @@
             } else {
                 dfd = $.ajax( '/api/v1/splits/' + this.id, {
                     type: 'PUT',
-                    data: { split: data },
+                    data: { split: this.export() },
                     headers: headers,
                     dataType: "json",
                 } ).then( function( data ) {
-                    self.import( data.split );
+                    self.import( data );
                 } );
             }
+            dfd.then( function() { self.parent.normalize(); } );
             return this.waitFor( dfd.promise() );
         }
         Split.prototype.fetch = function() {
-            var dfd = $.Deferred()
-            
-            return dfd.promise();
+            var dfd = $.Deferred();
+            var self = this;
+            if ( this.isBusy() ) return dfd.reject();
+            if ( this.id && this.id !== null ) {
+                dfd = $.ajax( '/api/v1/splits/' + this.id, {
+                    type: "GET",
+                    headers: headers,
+                    dataType: "json"
+                } ).then( function( data ) {
+                    self.import( data );
+                } );
+            } else {
+                console.warn( 'Course', this.id, 'Tried to Fetch Split without ID' );
+                dfd.reject();
+            }
+            dfd.then( function() { self.parent.normalize(); } );
+            return this.waitFor( dfd.promise() );
         }
         Split.prototype.delete = function() {
             var dfd = $.Deferred();
@@ -371,9 +413,10 @@
                     dataType: "json"
                 } );
             } else {
-                console.warn( 'Course', this.id, 'Tried to Delete Effort without ID' );
+                console.warn( 'Course', this.id, 'Tried to Delete Split without ID' );
                 dfd.reject();
             }
+            dfd.then( function() { self.parent.normalize(); } );
             return this.waitFor( dfd.promise() );
         }
         return Split;
@@ -385,12 +428,42 @@
             this.import( data || {} );
         }
         extend( Resource, Organization );
+        Organization.prototype.export = function() {
+            var data = {};
+            this.copy( data, this, {
+                id: null,
+                name: ''
+            } );
+            return data;
+        }
+        Organization.prototype.validate = function() {
+            if ( !this.name ||this.name.length < 1 ) return false;
+            return true;
+        }
         Organization.prototype.import = function( data, reset ) {
-            this.copy( {
+            this.copy( this, data, {
                 id: null,
                 name: '',
                 editable: false
-            }, data, reset && true );
+            }, reset && true );
+        }
+        Organization.prototype.fetch = function() {
+            var dfd = $.Deferred();
+            if ( this.isBusy() ) return dfd.reject();
+            if ( !this.id || !this.parent ) {
+                dfd.reject();
+            } else {
+                dfd = $.ajax( '/api/v1/organizations/' + this.id, {
+                    type: "GET",
+                    headers: headers,
+                    dataType: "json",
+                } );
+                var self = this;
+                dfd = dfd.then( function( data ) {
+                    self.import( data );
+                } );
+            }
+            return this.waitFor( dfd.promise() );
         }
         return Organization;
     } )();
@@ -400,21 +473,59 @@
             Resource.call( this );
             this.id = null;
             this.splits = [];
-            this.import( data || {} );
+            this.import( data || {} );            
         }
         extend( Resource, Course );
+        Course.prototype.endSplit = function( kind ) {
+            for ( var i = this.splits.length - 1; i >= 0; i-- ) {
+                if ( this.splits[i].kind === kind ) {
+                    return this.splits[i];
+                }
+            }
+            return null;
+        }
+        Course.prototype.normalize = function( ) {
+            // Verify Existence of End Splits
+            if ( this.endSplit( 'start' ) === null ) {
+                this.splits.push( new Split( this, { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
+                this.normalize();
+            }
+            if ( this.endSplit( 'finish' ) === null ) {
+                this.splits.push( new Split( this, { kind: 'finish', baseName: 'Finish' } ) );
+                this.normalize();
+            }
+            this.splits.sort( function( a, b ) {
+                return a.distanceFromStart - b.distanceFromStart;
+            } );
+        }
+        Course.prototype.export = function() {
+            var data = {};
+            this.copy( data, this, {
+                id: null,
+                name: '',
+                description: '',
+                splits_attributes: []
+            } );
+            for ( var i = this.splits.length - 1; i >= 0; i-- ) {
+                if ( this.splits[i].kind === 'start' || 
+                        this.splits[i].kind === 'finish' ) {
+                    data.splits_attributes.push( this.splits[i].export() );
+                }
+            }
+            return data;
+        }
         Course.prototype.import = function( data, reset ) {
-            this.copy( {
+            this.copy( this, data, {
                 id: null,
                 name: '',
                 description: '',
                 editable: false
-            }, data, reset );
-            this.splits.splice( 0, this.splits.length );
-            for ( var i = 0; i < ( data.splits || [] ).length; i++ ) {
-                var split = new Split( data.splits[i] );
-                split.parent = this;
-                this.splits.push( split );
+            }, reset );
+            if ( data.splits || reset ) {
+                this.splits.splice( 0, this.splits.length );
+                for ( var i = 0; i < ( data.splits || [] ).length; i++ ) {
+                    this.splits.push( new Split( this, data.splits[i] ) );
+                }
             }
             // Mark Associated Courses
             if ( this.parent instanceof Event ) {
@@ -424,6 +535,13 @@
                         ( this.parent.splitIds.indexOf( this.splits[i].id ) !== -1 );
                 }
             }
+            this.normalize();
+        }
+        Course.prototype.validate = function( context ) {
+            var self = ( context ) ? context : this;
+            if ( !self.name || self.name.length < 1 ) return false;
+            if ( !self.endSplit( 'finish' ).validate() ) return false;
+            return true;
         }
         Course.prototype.fetch = function() {
             var self = this;
@@ -432,8 +550,7 @@
                     type: "GET",
                     headers: headers,
                     dataType: "json"
-                } ).done( function( data ) {
-                    console.info( 'Course', self.id, 'Fetched Course Data From Server', data );
+                } ).done( function( data ) {                    
                     self.import( data );
                 } );
             } else {
@@ -454,6 +571,7 @@
             this.organization.parent = this;
             this.efforts = [];
             // Intermediate Variables
+            this.laps = false;
             this.courseNew = false;
             this.organizationNew = false;
             this.import( data || {} );
@@ -470,19 +588,34 @@
             }
             return startTime;
         } );
+        Event.prototype.export = function() {
+            var data = { event: {} };
+            this.copy( data.event, this, {
+                id: null,
+                name: '',
+                description: '',
+                lapsRequired: 1,
+                courseId: this.course.id,
+                organizationId: this.organization.id
+            } );
+            data.course = this.course.export();
+            data.organization = this.organization.export();
+            return data;
+        }
         Event.prototype.import = function( data, reset ) {
             // Import Properties
             this.organization.id = data.organizationId || null;
             this.course.id = data.courseId || null;
-            this.copy( {
+            this.copy( this, data, {
                 id: null,
                 stagingId: null,
                 name: '',
                 description: '',
-                lapsRequired: null,
+                lapsRequired: 1,
                 editable: false,
                 splitIds: []
-            }, data, reset );
+            }, reset );
+            this.laps = this.lapsRequired !== 1;
             if ( data.efforts ) {
                 this.efforts.splice( 0, this.efforts.length );
                 for ( var i = 0; i < data.efforts.length; i++ ) {
@@ -506,8 +639,10 @@
         }
         Event.prototype.validate = function( context ) {
             var self = ( context ) ? context : this;
-            console.warn( 'Event', self.stagingId, 'Validator Not Fully Implemented' );
+            if ( !self.name || self.name.length < 1 ) return false;
             if ( !( self.organization.id || self.organizationNew ) ) return false;
+            if ( !self.organization.validate() ) return false;
+            if ( !self.course.validate() ) return false;
             if ( !self.startTime ) return false;
             return true;
         }
@@ -519,26 +654,9 @@
                     headers: headers,
                     dataType: "json",
                     type: "POST",
-                    data: {
-                        event: {
-                            id: this.id,
-                            name: this.name,
-                            description: this.description,
-                            courseId: this.course.id,
-                            organizationId: this.organization.id
-                        },
-                        course: {
-                            id: this.course.id,
-                            name: this.course.name
-                        },
-                        organization: {
-                            id: this.organization.id,
-                            name: this.organization.name
-                        }
-                    },
+                    data: this.export()
                 } );
-                dfd = dfd.then( function( data ) {
-                console.info( 'Event', self.stagingId, 'Posted Event Data To Server', data );
+                dfd = dfd.then( function( data ) {                
                     self.import( data.event );
                     self.organization.import( data.organization || {} );
                     return self.course.fetch();
@@ -553,13 +671,11 @@
             var dfd = $.get( '/api/v1/staging/' + this.stagingId + '/get_event', {
                 dataType: "json",
             } );
-            dfd = dfd.then( function( data ) {
-                console.info( 'Event', self.stagingId, 'Fetched Event Data From Server', data );
+            dfd = dfd.then( function( data ) {                
                 self.import( data );
                 self.organization.import( data.organization || {} );
                 return self.course.fetch();
-            } ).done( function() { console.log( self ); } );
-
+            } );
             return dfd.promise();
         }
         return Event;
@@ -588,8 +704,7 @@
         			locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
-        		}
-        		console.log( locales );
+        		}        		
         	} );
         },
 
@@ -601,51 +716,22 @@
         },
 
         onRouteChange: function( to, from, next ) {
-            if ( from.name === 'home' ) {
+            if ( to.name === 'publish' && from.name !== 'confirm' ) {
+                next( false );
+            } else if ( from.name === 'home' ) {
                 eventStage.data.eventModel.post().done( function() {
                     next();
-                } ).fail( function() {
+                } ).fail( function( e ) {                    
                     next( '/' );
                 } );
             } else {
                 eventStage.data.eventModel.fetch().always( function() {
-                    next();
-                } );
-            }
-            return;
-            if ( !eventStage.isEventValid( eventStage.data.eventData ) /* || <other forms> */ ) {
-                // Event data must be valid
-                next( '/' );
-            } else if ( from.name !== 'home' && !eventStage.data.isStaged ) {
-                // Event must be staged for any page that isn't home
-                next( '/' );
-            } else if ( from.name === 'home' && !eventStage.data.isStaged ) {
-                $.post( 'save-stage', {
-                    data: eventStage.data.eventData
-                } ).fail( function() {
-                    eventStage.data.isStaged = true;
-                    eventStage.data.isDirty = false;
-                    next();
-                } ).done( function() {
-                    // Save cannot fail when not staged yet.
-                    next( '/' );
-                } );
-            } else if ( to.name === 'publish' ) {
-                if ( from.name === 'confirm' ) {
-                    // Perform publish routine
-                    $.post( 'publish-stage', {
-                        data: eventStage.data.eventData
-                    } ).fail( function() {
+                    if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
+                        next( '/' );
+                    } else {
                         next();
-                    } ).done( function() {
-                        next( false ); // ABORT!
-                    } );
-                } else {
-                    // Only accessible from confirm form
-                    next( false );
-                }
-            } else {
-                next();
+                    }
+                } );
             }
         },
 
@@ -700,8 +786,7 @@
                                 return true;
                             },
                             blank: function() {
-                                var split = new Split();
-                                split.parent = this.eventModel.course;
+                                var split = new Split( this.eventModel.course );
                                 return split;
                             }
                         },
@@ -725,8 +810,7 @@
                                     //         $.extend( this._cache[ obj.id ], obj );
                                     //         this.eventData.splits[i].location = this._cache[ obj.id ];
                                     //     }
-                                    // }
-                                    console.info( 'splits', this._uid, 'Consolidated', count, 'Location Objects' );
+                                    // }                                    
                                 },
                                 deep: true,
                                 immediate: true
@@ -803,10 +887,8 @@
                             this.isDirty = true;
                             if ( this._autosave ) {
                                 clearTimeout( this._autosave );
-                            }
-                            console.log( 'You got it dirty!' );
-                            this._autosave = setTimeout( function() {
-                                console.log( 'Do Save!' );
+                            }                            
+                            this._autosave = setTimeout( function() {                                
                                 self._autosave = null;
                             }, 60000 );
                         },
@@ -832,8 +914,7 @@
         dataTables: {
             uniqueId: 1,
             onDataChange: function() {
-                if ( !this.rows || !$.isArray( this.rows ) ) return;
-                console.info( 'data-tables', this._uid, 'Data Changed: Rebuilding table database' );
+                if ( !this.rows || !$.isArray( this.rows ) ) return;                
                 var self = this;
                 this._cache = this._cache || [];
                 var cache = [];
@@ -903,8 +984,7 @@
                     },
                     watch: {
                         row: { 
-                            handler: _.debounce( function() {
-                                console.info( 'data-tables', this._uid, 'Data Changed: Invalidated table row' );
+                            handler: _.debounce( function() {                                
                                 this.$nextTick( function() {
                                     self._table.row( this.$el ).invalidate( 'dom' ).draw();
                                 } );
@@ -938,26 +1018,16 @@
          *  selecting, and modifying markers for a continuous path.
          */
         googleMaps: {
+            uniqueId: 1,
             onValueChange: function() {
                 if ( this.value ) {
-                    console.info( 'google-map', this._uid, 'Building Location' );
-
-                    if ( this.value !== this._lastLocation ) {
-                        this._lastLocation = this.value;
-                        if ( this._temp ) this._temp.setVisible( true );
-                        if ( isNaN( parseFloat( this.value.latitude ) ) || isNaN( parseFloat( this.value.longitude ) ) ) {
-                            if ( this._location ) {
-                                this._location.setMap( null );
-                                this._location = null;
-                            }
-                        } else {
-                            this._map.setCenter( { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) } );
-                        }
-                    }
                     if ( !this._location ) {
                         // Make new location marker
                         this._location = new google.maps.Marker( {
                             position: { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) },
+                            icon: {
+                                url: '/assets/icons/green.svg'
+                            },
                             map: this._map,
                             title: this.value.name,
                             draggable: true,
@@ -973,39 +1043,76 @@
                             { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) }
                         );
                     }
+                    eventStage.googleMaps.onRouteChange.call( this );
                 }
             },
             onRouteChange: function( e ) {
-                if ( this.route && $.isArray( this.route ) ) {
-                    console.info( 'google-map', this._uid, 'Building route' );
-                    // Destroy existing route
-                    if ( this._route ) {
-                        for ( var i = this._route.length - 1; i >= 0; i-- ) {
-                            this._route[i].setMap( null );
-                        }
-                        this._route.splice( 0, this._route.length );
-                    }
+                if ( this.route && $.isArray( this.route ) ) {                    
+                    // Destroy existing polyline
                     if ( this._polyline ) {
                         this._polyline.setMap( null );
                     }
+                    var value = this.value || {}; // Empty object allows following statement to fail safely.
+                    if ( isNaN( parseFloat( value.latitude ) ) || isNaN( parseFloat( value.longitude ) ) ) {
+                        value = null;
+                    }
                     // Build new route
                     var path = [];
-                    for ( var i = 0; i < this.route.length; i++ ) {
-                        if ( isNaN( parseFloat( this.route[i].latitude ) ) || isNaN( parseFloat( this.route[i].longitude ) ) ) continue;
-                        var latlng = { lat: parseFloat( this.route[i].latitude ) , lng: parseFloat( this.route[i].longitude ) };
-                        path.push( latlng );
-                        var marker = new google.maps.Marker( {
-                            icon: {
-                                url: '/assets/icons/dot-green.svg',
-                                labelOrigin: new google.maps.Point( 12, 14 ),
-                                anchor: new google.maps.Point( 16, 16 )
-                            },
-                            opacity: this.route[i].associated ? 1.0 : 0.5,
-                            position: latlng,
-                            map: this._map
+                    var gmids = [];
+                    var bounds = new google.maps.LatLngBounds();
+                    // Enforce a Sorted Array
+                    e = this.route.slice(0).sort( function( a, b ) {
+                        return a.distanceFromStart - b.distanceFromStart;
+                    } );
+                    for ( var i = 0; i < e.length; i++ ) {
+                        if ( value ) {
+                            if ( value._gmid == e[i]._gmid ) {
+                                value = null;
+                            } else if ( e[i].distanceFromStart > value.distanceFromStart ) {
+                                // Inject Value into Polyline
+                                path.push( { lat: parseFloat( value.latitude ) , lng: parseFloat( value.longitude ) } );
+                                value = null;
+                            }
+                        }
+                        if ( isNaN( parseFloat( e[i].latitude ) ) || isNaN( parseFloat( e[i].longitude ) ) ) continue;
+                        var latlng = { lat: parseFloat( e[i].latitude ) , lng: parseFloat( e[i].longitude ) };
+                        bounds.extend( latlng );
+                        var marker = null;
+                        if ( !e[i]._gmid || !this._route[ e[i]._gmid ] ) {
+                            // No Unique Google Map ID or Not In Cache
+                            if ( !e[i]._gmid ) {
+                                e[i]._gmid = eventStage.googleMaps.uniqueId++;
+                            }
+                            marker = new google.maps.Marker( {
+                                map: this._map
+                            } );
+                            marker._data = e[i];
+                            this._route[ e[i]._gmid ] = marker;
+                        }
+                        // Update Marker
+                        marker = this._route[ e[i]._gmid ];
+                        marker.setIcon( {
+                            url: '/assets/icons/dot-blue.svg',
+                            labelOrigin: new google.maps.Point( 12, 14 ),
+                            anchor: new google.maps.Point( 16, 16 )
                         } );
-                        marker._data = this.route[i];
-                        this._route.push( marker );
+                        marker.setPosition( latlng );
+                        marker.setOpacity( e[i].associated ? 1.0 : 0.5 );
+                        path.push( latlng );
+                        // Update Cache
+                        gmids.push( e[i]._gmid );
+                    }
+                    // Append Value to Polyline
+                    if ( value ) {
+                        // Inject Value into Polyline
+                        path.push( { lat: parseFloat( value.latitude ) , lng: parseFloat( value.longitude ) } );
+                    }
+                    // Remove Unused Markers
+                    for ( var _gmid in this._route ) {
+                        if ( gmids.indexOf( Number.parseInt( _gmid ) ) === -1 ) {
+                            this._route[ _gmid ].setMap( null );
+                            delete this._route[ _gmid ];
+                        } 
                     }
                     // Append route to map
                     this._polyline = new google.maps.Polyline( {
@@ -1016,22 +1123,22 @@
                         strokeOpacity: 1.0,
                         strokeWeight: 4
                     } );
+                    // Fit Map
+                    if ( this.locked !== undefined ) {
+                        this._map.fitBounds( bounds );
+                    }
                 }
             },
             onBoundsChange: function( e ) {
-                var self = this;
-                console.info( 'google-map', this._uid, 'Bounds Updated', this._map.getBounds().toJSON() );
+                var self = this;                
                 if ( this.searchUrl ) {
                     var bounds = this._map.getBounds().toJSON();
                     $.ajax( this.searchUrl, {
                         dataType: 'json',
                         data: bounds
-                    } ).done( function( data ) {
-                        console.info( 'google-map', self._uid, 'Location List Updated', data );
+                    } ).done( function( data ) {                        
 
                         // Load New Markers
-                        console.warn( 'google-maps', self._uid, 'TODO: Need to ignore locations in Route parameter' );
-                        console.warn( 'google-maps', self._uid, 'TODO: Need to build out marker cache' );
                         for ( var i = 0; i < data.length; i++ ) {
                             if ( isNaN( parseFloat( data[i].latitude ) ) || isNaN( parseFloat( data[i].longitude ) ) ) continue;
                             if ( self._temp && ( self._temp._data.id == data[i].id ) ) continue; // Preserve Selected Marker
@@ -1053,13 +1160,13 @@
                                 },
                                 title: data[i].name,
                             } );
-                            marker._data = new Location( data[i] );
+                            marker._data = data[i];
                             marker.addListener( 'click', (function( self, marker ) {
                                 return function( e ) { // Need extra context to work properly
                                     // Build out content window
                                     var node = $( self._infowindow.getContent() );
-                                    node.find( 'h5' ).html( marker._data.name );
-                                    node.find( 'p' ).html( marker._data.description || '<i>No Description</i>' );
+                                    node.find( 'h5' ).html( marker._data.baseName );
+                                    node.find( 'p' ).html( marker._data.courseName || '<i>No Course</i>' );
                                     node.data( 'location', marker._data );
                                     self._infowindow.open( self._map, marker );
                                     // eventStage.googleMaps.onMarkerClick.call( self, e, marker );
@@ -1071,51 +1178,46 @@
                     } );
                 }
             },
-            onMarkerClick: function( e, marker ) {
-                console.info( 'google-map', this._uid, 'Marker Clicked', marker );
+            onMarkerClick: function( e, marker ) {                
                 if ( this.value ) {
                     this._temp && this._temp.setVisible( true );
                     this._temp = marker;
                     this._temp && this._temp.setVisible( false );
-                    this._lastLocation = {
-                        id: marker._data.id,
-                        name: marker._data.name,
-                        latitude: marker._data.latitude,
-                        longitude: marker._data.longitude
-                    };
-                    this.$emit( 'input', this._lastLocation );
+                    this.value.latitude = marker._data.latitude;
+                    this.value.longitude = marker._data.longitude;
+                    this.$emit( 'input', this.value );
                 }
             },
-            onMapClick: function( e ) {
-                console.info( 'google-map', this._uid, 'Map Clicked', e.latLng.lat(), e.latLng.lng() );
+            onMapClick: function( e ) {                
                 if ( this.value ) {
                     this._temp && this._temp.setVisible( true );
                     this._temp = null;
-                    this._lastLocation = {
-                        id: null,
-                        latitude: e.latLng.lat(),
-                        longitude: e.latLng.lng()
-                    };
-                    this.$emit( 'input', this._lastLocation );
+                    this.value.latitude = e.latLng.lat();
+                    this.value.longitude = e.latLng.lng();
+                    this.$emit( 'input', this.value );
                 }
             },
             onMounted: function() {
                 var self = this;
                 this._search = [];
-                this._route = [];
+                this._route = {};
                 this._polyline = null;
                 this._difference = null;
                 this._map = new google.maps.Map( this.$el, {
                     center: { lat: 39.978915, lng: -105.131036 },
-                    zoom: 8
+                    zoom: 8,
+                    zoomControl: this.locked == undefined,
+                    draggable: this.locked == undefined,
+                    scrollwheel: this.locked == undefined,
+                    navigationControl: this.locked == undefined,
+                    mapTypeControl: this.locked == undefined,
+                    scaleControl: this.locked == undefined
                 } );
                 // Prepare Info Window
                 var node = $( '<div></div>' );
                 node.append( '<h5><i>No Title</i></h5>' );
                 node.append( '<p><i>No Description</i></p>' );
-                node.append( '<a class="js-use btn-sm btn btn-primary">Use</a>' );
-                node.append( '<a class="js-clone btn-sm btn btn-default">Clone</a>' );
-                this._infowindow = new google.maps.InfoWindow( { content: node[0] } );
+                node.append( '<a class="js-clone btn-sm btn btn-primary">Clone Location</a>' );                
                 node.on( 'click', '.js-use', function() {
                     self._infowindow.close();
                     self.$emit( 'input', new Location( node.data( 'location' ) ) );
@@ -1131,6 +1233,9 @@
                 // Google Maps in Modal Fix
                 $( this.$el ).closest( '.modal' ).on( 'shown.bs.modal', function() {
                     google.maps.event.trigger( self._map, 'resize' );
+                    if ( self.value ) {
+                        self._map.setCenter( { lat: parseFloat( self.value.latitude ) , lng: parseFloat( self.value.longitude ) } );
+                    }
                 } );
                 // Attach Listeners
                 this._map.addListener( 'click', function( e ) {
@@ -1145,7 +1250,7 @@
                 Vue.component( 'google-map', {
                     template: '<div class="splits-modal-map-wrap js-google-maps"></div>',
                     props: {
-                        editable: {},
+                        locked: {},
                         searchUrl: { type: String, default: null },
                         route: { default: null },
                         value: { default: null }
@@ -1160,10 +1265,9 @@
                             handler: eventStage.googleMaps.onRouteChange,
                             deep: true
                         },
-                        value: {
-                            handler: eventStage.googleMaps.onValueChange,
-                            deep: true
-                        }
+                        'value.latitude': eventStage.googleMaps.onValueChange,
+                        'value.longitude': eventStage.googleMaps.onValueChange,
+                        'value.distanceFromStart': eventStage.googleMaps.onValueChange
                     }
                 } );
             }
@@ -1396,6 +1500,7 @@
                 }
                 if ( this.value instanceof Resource ) {
                     this.value.import( model );
+                    this.value.fetch();
                 }
             },
             init: function() {

@@ -93,15 +93,15 @@
 				<div class="form-group col-xs-12">
 					<label class="required">Course Distance</label>
 					<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="miles" v-model="eventModel.course.distance" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<input type="text" class="form-control" placeholder="miles" v-model.number="eventModel.course.endSplit('finish').distanceFromStart" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-6">
 					<label class="required">Total Vertical Gain</label>
-					<input type="text" class="form-control" placeholder="feet" v-model="eventModel.course.verticalGain" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<input type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-6">
 					<label class="required">Total Vertical Loss</label>
-					<input type="text" class="form-control" placeholder="feet" v-model="eventModel.course.verticalLoss" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<input type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '' }">
 				</div>
 				<div class="form-group col-xs-12">
 					<label>Description</label>
@@ -122,7 +122,7 @@
 					<div class="form-inline">
 						<label class="switchery-label">
 							<span>No</span>
-							<input type="checkbox" data-toggle="switchery" data-size="small" value="true" v-model="eventModel.laps"/>
+							<input type="checkbox" data-toggle="switchery" data-size="small" value="true" v-model="eventModel.laps" v-on:change="eventModel.lapsRequired = 1"/>
 							<span>Yes</span>
 						</label>
 						
@@ -132,7 +132,7 @@
 					<div class="form-inline float-left">
 						<label v-if="eventModel.laps">
 							How many laps?
-							<input type="text" class="form-control" v-model="eventModel.lapCount" v-mask="{ alias: 'integer' }" >
+							<input type="text" class="form-control" v-model.number="eventModel.lapsRequired" v-mask="{ alias: 'integer' }" >
 						</label>
 					</div>
 				</div>
@@ -178,7 +178,7 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<google-map editable :route="eventModel.course.splits" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations" v-model="eventModel.temp"></google-map>
+				<google-map locked :route="eventModel.course.splits"></google-map>
 				{{ eventModel.temp }}
 			</div>
 			<div class="col-xs-12">
@@ -218,11 +218,13 @@
 								<a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable">Edit Split</a>
 							</td>
 							<td>
-								<a href="#" v-on:click.prevent="vm.row.associate( !vm.row.associated )">
-									<i class="glyphicon glyphicon-check" v-if="vm.row.associated"></i>
-									<i class="glyphicon glyphicon-unchecked" v-else></i>
-								</a>
-								<a href="#" v-promise:click="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a>
+								<template v-if="vm.row.kind === 'intermediate'">
+									<a href="#" v-on:click.prevent="vm.row.associate( !vm.row.associated )">
+										<i class="glyphicon glyphicon-check" v-if="vm.row.associated"></i>
+										<i class="glyphicon glyphicon-unchecked" v-else></i>
+									</a>
+									<a href="#" v-promise:click="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')"><i class="glyphicon glyphicon-remove-circle"></i></a>
+								</template>
 							</td>
 						</tr>
 					</template>
@@ -239,7 +241,7 @@
 			</div>
 		</div>
 	</article>
-	<edit-modal v-model="modalData" :validator="modalData.validate" v-on:change="!( modalData._dtid ) && eventModel.course.splits.push( modalData );" inline-template>
+	<edit-modal v-model="modalData" :validator="modalData.validate" :extra="eventModel" v-on:change="!( modalData._dtid ) && eventModel.course.splits.push( modalData );" inline-template>
 		<div id="js-split-modal" tabindex="-1" role="dialog" class="modal fade">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
@@ -247,7 +249,7 @@
 
 						<div class="row">
 							<div class="col-xs-12 col-md-6 col-md-push-6">
-								<google-map v-model="model.location" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations"></google-map>
+								<google-map v-model="model" :route="extra.course.splits" search-url="/api/v1/staging/<%= @event ? @event.staging_id : params[:staging_id] %>/get_locations"></google-map>
 							</div>
 
 							<div class="col-xs-12 col-md-6 col-md-pull-6">
@@ -273,7 +275,7 @@
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.distanceFromStart" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model.number="model.distanceFromStart" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-6">
 										<label class="required">Time Recording</label>
@@ -281,8 +283,8 @@
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
 										<div class="split-time-recording-wrap">
-											<input type="radio" name="split-time" value="in" v-model="model.times" id="split-time-in" class="custom-radio"><label for="split-time-in">Time In</label>&nbsp;&nbsp;
-											<input type="radio" name="split-time" value="inout" v-model="model.times" id="split-time-inout" class="custom-radio"><label for="split-time-inout">Time In and Out</label>
+											<input type="radio" name="split-time" :value="['In']" v-model="model.nameExtensions" id="split-time-in" class="custom-radio"><label for="split-time-in">Time In</label>&nbsp;&nbsp;
+											<input type="radio" name="split-time" :value="['In','Out']" v-model="model.nameExtensions" id="split-time-inout" class="custom-radio"><label for="split-time-inout">Time In and Out</label>
 										</div>
 									</div>
 								</div>
@@ -292,14 +294,14 @@
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.vertGainFromStart" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model.number="model.vertGainFromStart" v-mask="{ alias: 'decimal' }">
 									</div>
 									<div class="form-group col-xs-6 vg-group">
 										<label class="required">Vertical Loss From Start</label>
 										<span class="help-tooltip" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.vertLossFromStart" v-mask="{ alias: 'decimal' }">
+										<input type="text" class="form-control" v-model.number="model.vertLossFromStart" v-mask="{ alias: 'decimal' }">
 									</div>
 								</div>
 								<div class="row">
@@ -516,7 +518,7 @@
 										</div>
 										<div class="col-xs-12 sto-input-wrap">
 											<span class="sto-or">or</span>
-											<input type="text" class="form-control sto-input" v-model="model.startOffset" v-mask.insert="{ alias: 'integer', placeholder: '', integerDigits: 7 }" placeholder="Offset Amount"></input>
+											<input type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '-?([1-9][0-9]*|0):[0-5][0-9]', placeholder: '' }" placeholder="hh:mm"></input>
 										</div>
 									</div>
 								</div>
@@ -572,19 +574,19 @@
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th>Distance</th>
-					<td>NaN</td>
+					<td>{{ eventModel.course.endSplit( 'finish' ).distanceFromStart }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th>Vertical Gain</th>
-					<td>NaN</td>
+					<td>{{ eventModel.course.endSplit( 'finish' ).vertGainFromStart }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th>Vertical Loss</th>
-					<td>NaN</td>
+					<td>{{ eventModel.course.endSplit( 'finish' ).vertLossFromStart }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th ><span>Your Splits</span></th>
-					<td><google-map :markers="eventModel.splits"></google-map></td>
+					<td><google-map locked :route="eventModel.course.splits"></google-map></td>
 					<td><span class="brackets"><router-link to="/splits">Edit</router-link></span></td>
 				</tr>
 				<tr>

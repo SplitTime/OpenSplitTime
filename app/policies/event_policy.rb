@@ -26,14 +26,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def import_efforts_military_times?
-    user.authorized_to_edit?(event)
-  end
-
-  def import_efforts_without_times?
-    user.authorized_to_edit?(event)
-  end
-
   def stage?
     user.authorized_to_edit?(event)
   end

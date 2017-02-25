@@ -6,9 +6,9 @@ class Effort < ActiveRecord::Base
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]]
   PERMITTED_PARAMS = [:id, :event_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
-                          :city, :state_code, :country_code, :start_time, :finished, :concealed, :start_time, :start_offset,
-                          :beacon_url, :report_url, :photo_url,
-                          split_times_attributes: [*SplitTime::PERMITTED_PARAMS]]
+                      :city, :state_code, :country_code, :start_time, :finished, :concealed, :start_time, :start_offset,
+                      :beacon_url, :report_url, :photo_url,
+                      split_times_attributes: [*SplitTime::PERMITTED_PARAMS]]
 
   include Auditable
   include Concealable
@@ -216,11 +216,11 @@ class Effort < ActiveRecord::Base
   end
 
   def destroy_split_times(split_time_ids)
-    stop_existed = split_times.any?(&:stopped_here)
+    stop_existed = stopped_split_time.present?
     split_times.where(id: split_time_ids).destroy_all
     set_data_status
-    if stop_existed && split_times.none?(&:stopped_here)
-      set_stop_to_last
+    if stop_existed && stopped_split_time.blank?
+      stop
     end
   end
 
@@ -248,7 +248,14 @@ class Effort < ActiveRecord::Base
     stopped_split_time.try(:time_point)
   end
 
-  def set_stop_to_last
-    StoppedSplitTimeSetter.set_attributes(efforts: Effort.where(id: id))
+  def stop
+    StoppedSplitTimeSetter.stop(efforts: Effort.where(id: id))
+  end
+
+  def unstop
+    split_times.each do |split_time|
+      split_time.stopped_here = false
+      split_time.save if split_time.changed?
+    end
   end
 end

@@ -65,7 +65,7 @@ class Event < ActiveRecord::Base
   end
 
   def set_dropped_attributes
-    StoppedSplitTimeSetter.set_attributes(efforts: efforts)
+    StoppedSplitTimeSetter.stop(efforts: efforts)
   end
 
   def required_lap_splits

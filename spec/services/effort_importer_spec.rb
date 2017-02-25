@@ -31,7 +31,7 @@ RSpec.describe EffortImporter do
       let(:split_finish) { Split.find_by(base_name: 'Finish') }
 
 
-      let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, without_status: true) }
+      let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, with_status: false) }
       before do
         split_importer.split_import
         effort_importer.effort_import

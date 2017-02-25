@@ -122,31 +122,7 @@ class EventsController < ApplicationController
     authorize @event
     file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
     if file_url
-      ImportEffortsJob.perform_later(file_url, @event, current_user.id)
-      flash[:success] = 'Import in progress. Reload the page in a minute or two (depending on file size) and your import should be complete.'
-    else
-      flash[:danger] = 'Import file too large.'
-    end
-    redirect_to stage_event_path(@event)
-  end
-
-  def import_efforts_military_times
-    authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
-    if file_url
-      ImportEffortsMilitaryTimesJob.perform_later(file_url, @event, current_user.id)
-      flash[:success] = 'Import in progress. Reload the page in a minute or two (depending on file size) and your import should be complete.'
-    else
-      flash[:danger] = 'Import file too large.'
-    end
-    redirect_to stage_event_path(@event)
-  end
-
-  def import_efforts_without_times
-    authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
-    if file_url
-      ImportEffortsWithoutTimesJob.perform_later(file_url, @event, current_user.id)
+      ImportEffortsJob.perform_now(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
       flash[:success] = 'Import in progress. Reload the page in a minute or two ' +
           '(depending on file size) and your import should be complete.'
     else

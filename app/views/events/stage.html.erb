@@ -97,10 +97,16 @@
     <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
         <strong>Import Efforts With Time Data</strong>
         <%= form_tag({action: :import_efforts}, multipart: true) do %>
+            <%= hidden_field_tag 'time_format', 'elapsed' %>
+            <%= hidden_field_tag 'with_status', true %>
+            <%= hidden_field_tag 'with_times', true %>
             <%= file_field_tag :file, id: 'file-efforts-with-times' %>
             <%= submit_tag 'Import efforts and elapsed times', id: 'submit-efforts-with-times', disabled: true, class: 'btn btn-xs btn-success' %>
         <% end %>
-        <%= form_tag({action: :import_efforts_military_times}, multipart: true) do %>
+        <%= form_tag({action: :import_efforts}, multipart: true) do %>
+            <%= hidden_field_tag 'time_format', 'military' %>
+            <%= hidden_field_tag 'with_status', true %>
+            <%= hidden_field_tag 'with_times', true %>
             <%= file_field_tag :file, id: 'file-efforts-with-military-times' %>
             <%= submit_tag 'Import efforts and military times', id: 'submit-efforts-with-military-times', disabled: true, class: 'btn btn-xs btn-success' %>
         <% end %>
@@ -109,7 +115,9 @@
   <div class="col-xs-4">
     <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
         <strong>Import Efforts Without Time Data</strong>
-        <%= form_tag({action: :import_efforts_without_times}, multipart: true) do %>
+        <%= form_tag({action: :import_efforts}, multipart: true) do %>
+            <%= hidden_field_tag 'with_status', true %>
+            <%= hidden_field_tag 'with_times', false %>
             <%= file_field_tag :file, id: 'file-efforts-without-times' %>
             <%= submit_tag 'Import efforts (no times)', id: 'submit-efforts-without-times', disabled: true, class: 'btn btn-xs btn-success' %>
         <% end %>

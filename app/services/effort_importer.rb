@@ -6,15 +6,15 @@ class EffortImporter
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:file_path, :event, :current_user_id],
-                           exclusive: [:file_path, :event, :current_user_id, :without_status, :with_times, :time_format],
+                           exclusive: [:file_path, :event, :current_user_id, :with_status, :with_times, :time_format],
                            class: self.class)
     @errors = ActiveModel::Errors.new(self)
     @import_file ||= ImportFile.new(args[:file_path])
     @event = args[:event]
     @current_user_id = args[:current_user_id]
-    @without_status = args[:without_status]
-    @with_times = args[:with_times] || true
-    @time_format = args[:time_format] || 'elapsed'
+    @with_status ||= (args[:with_status] || 'true').to_boolean
+    @with_times ||= (args[:with_times] || 'true').to_boolean
+    @time_format ||= args[:time_format] || 'elapsed'
     @effort_failure_array = []
     @effort_id_array = []
   end
@@ -44,7 +44,7 @@ class EffortImporter
   private
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count
-  attr_reader :event, :current_user_id, :without_status, :with_times, :time_format
+  attr_reader :event, :current_user_id, :with_status, :with_times, :time_format
   attr_writer :effort_import_report
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
            :header1_downcase, to: :import_file
@@ -94,7 +94,7 @@ class EffortImporter
 
     # Initial pass sets data_status based on the relaxed standards of the terrain model
     # Second pass sets data_status on the :stats model, ignoring times flagged as bad or questionable by the first pass
-    unless without_status
+    if with_status
       BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :terrain)
       BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :stats)
     end
@@ -129,7 +129,11 @@ class EffortImporter
   end
 
   def non_time_data(row)
-    with_times ? row[0...split_offset - 1] : row
+    if with_times
+      row[0...split_offset - 1]
+    else
+      row
+    end
   end
 
   def military_times?

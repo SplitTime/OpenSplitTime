@@ -62,7 +62,7 @@ class Split < ActiveRecord::Base
   def no_splits_beyond_finish
     if intermediate?
       finish_split = course.splits.find(&:finish?)
-      if distance_from_start >= finish_split.distance_from_start
+      if finish_split && distance_from_start >= finish_split.distance_from_start
         errors.add(:distance_from_start, 'must be less than the finish split distance_from_start')
       end
     end

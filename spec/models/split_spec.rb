@@ -11,8 +11,8 @@ require 'rails_helper'
 # t.integer  "sub_split_bitmap"
 
 RSpec.describe Split, kind: :model do
-  # it_behaves_like 'unit_conversions'
-  # it_behaves_like 'auditable'
+  it_behaves_like 'unit_conversions'
+  it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 
@@ -132,48 +132,23 @@ RSpec.describe Split, kind: :model do
     expect(split.errors[:distance_from_start]).to include('must be less than the finish split distance_from_start')
   end
 
-  describe 'sub_splits' do
-    let(:course) { Course.create!(name: 'split test') }
-    let(:event) { Event.create!(name: 'Waypoint Event', course: course, start_time: Time.current, laps_required: 1) }
-    let(:event_same_course) { Event.create!(name: 'Waypoint Event on same course', course: course, start_time: Time.current, laps_required: 1) }
-    let(:event_same_course2) { Event.create!(name: 'Waypoint Event 2 on same course', course: course, start_time: Time.current, laps_required: 1) }
-
-    before do
-      event.splits.create!(course: course, base_name: 'Start Point', distance_from_start: 0, sub_split_bitmap: 1, kind: :start)
-      event.splits.create!(course: course, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_bitmap: 65, kind: :intermediate)
-      event.splits.create!(course: course, base_name: 'Finish Point', distance_from_start: 50000, sub_split_bitmap: 1, kind: :finish)
-
-      event_same_course.splits.create!(course: course, base_name: 'Monarch Pass pre 2000', distance_from_start: 4400, sub_split_bitmap: 65, kind: :intermediate)
-      event_same_course2.splits.create!(course: course, base_name: 'Monarch Pass 2012 flood', distance_from_start: 4500, sub_split_bitmap: 65, kind: :intermediate)
-
-      other_course = Course.create!(name: 'some other course')
-      Event.create!(name: 'Event on some other course', course: other_course, start_time: Time.current, laps_required: 1)
-      Split.create!(course: other_course, base_name: 'Start Point', distance_from_start: 0, sub_split_bitmap: 1, kind: :start)
-      Split.create!(course: other_course, base_name: 'Monarch Pass', distance_from_start: 5000, sub_split_bitmap: 65, kind: :intermediate)
-      Split.create!(course: other_course, base_name: 'Finish Point', distance_from_start: 50000, sub_split_bitmap: 1, kind: :finish)
-      Event.create!(name: 'Other Waypoint Event', course: other_course, start_time: Time.current, laps_required: 1)
-    end
-
-    it 'sets up the data correctly' do
-      expect(Split.count).to eq(8)
-      expect(event.splits.count).to eq(3)
-      expect(event_same_course.splits.count).to eq(1)
-      expect(event_same_course2.splits.count).to eq(1)
-    end
-
-    it 'returns a single key_hash for a start' do
-      first_split = course.splits.first
-      expect(first_split.sub_splits.count).to eq(1)
+  describe '#sub_splits' do
+    it 'returns a single key_hash for a start split' do
+      split = FactoryGirl.build_stubbed(:start_split)
+      expect(split.sub_splits.size).to eq(1)
+      expect(split.sub_splits.first).to eq({split.id => in_bitkey})
     end
 
     it 'returns two key_hashes for an intermediate split' do
-      first_split = course.splits.second
-      expect(first_split.sub_splits.count).to eq(2)
+      split = FactoryGirl.build_stubbed(:split)
+      expect(split.sub_splits.size).to eq(2)
+      expect(split.sub_splits).to eq([{split.id => in_bitkey}, {split.id => out_bitkey}])
     end
 
-    it 'returns all of the key_hashes for a given split' do
-      first_split = event_same_course.splits.first
-      expect(first_split.sub_splits.count).to eq(2)
+    it 'returns a single key_hash for a finish split' do
+      split = FactoryGirl.build_stubbed(:finish_split)
+      expect(split.sub_splits.size).to eq(1)
+      expect(split.sub_splits.first).to eq({split.id => in_bitkey})
     end
   end
 

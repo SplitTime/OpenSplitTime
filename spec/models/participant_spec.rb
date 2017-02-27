@@ -12,7 +12,7 @@ require 'rails_helper'
 # t.integer  "user_id"
 
 RSpec.describe Participant, type: :model do
-  # it_behaves_like 'auditable'
+  it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:first_name).collapse_spaces }
   it { is_expected.to strip_attribute(:last_name).collapse_spaces }
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }

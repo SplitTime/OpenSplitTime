@@ -26,7 +26,7 @@ class EffortImporter
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(row[0...split_offset - 1])
       effort = create_or_update_effort(row_effort_data)
-      if effort
+      if effort.errors.none?
         row_time_data = row[split_offset - 1...row.size]
         row_time_data.unshift(0) if finish_times_only?
         creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
@@ -130,11 +130,8 @@ class EffortImporter
                                           last_name: row_hash[:last_name])
     row_hash.each { |attribute, data| effort.assign_attributes({attribute => data}) }
     effort.assign_attributes(created_by: current_user_id, updated_by: current_user_id, concealed: event.concealed?)
-    if effort.save
-      effort
-    else
-      effort.errors.full_messages
-    end
+    effort.save
+    effort
   end
 
   def set_drops_and_status

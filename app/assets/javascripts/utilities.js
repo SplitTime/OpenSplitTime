@@ -111,15 +111,20 @@
     	init: function () {
     		$( '[data-toggle="switchery"]' ).each( function( i, el ) {
 				$( el ).data( 'switchery', new Switchery( el, {
-					size: $( el ).data( 'size' )
+					size: $( el ).data( 'size' ),
+                    color: '#2A9FD8'
 				} ) );
     		} );
     	}
-    }
+    };
 
-    $(document).ready(function () {
+    var init = function () {
         effortsPopover.init();
         staticPopover.init();
         switchery.init();
-    });
+    };
+
+    $(document).ready( init );
+    $(document).bind( 'vue-ready', init );
+
 })(jQuery);

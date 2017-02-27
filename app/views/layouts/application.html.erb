@@ -14,9 +14,9 @@
 <body class="<%= controller_name %> <%= action_name %>">
 <%= render 'layouts/navigation' %>
 <%= render 'layouts/messages' %>
-<div class="container">
+<% unless @skip_container %><div class="container"><% end %>
   <%= yield %>
-</div>
+<% unless @skip_container %></div><% end %>
 <%= render 'layouts/footer' unless @skip_footer %>
 </body>
 </html>

@@ -15,6 +15,9 @@
 /vendor/bundle/
 /vendor/ruby/
 
+# Vagrant
+/.vagrant
+
 # minimal Rails specific artifacts
 db/*.sqlite3
 # Ignore all .idea files

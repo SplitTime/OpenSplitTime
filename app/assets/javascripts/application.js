@@ -19,4 +19,15 @@
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require switchery
+//= require vue
+//= require vue-router
 //= require_tree .
+
+Vue.use( VueRouter );
+Vue.filter( 'padding', function( value, length, character ) {
+	var strlen = ( value + '' ).length;
+	for ( strlen; strlen < length; strlen++ ) {
+		value = ( character ).concat( value );
+	}
+	return value;
+} );

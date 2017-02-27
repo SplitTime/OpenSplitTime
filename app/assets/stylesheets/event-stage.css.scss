@@ -1,0 +1,269 @@
+@import "variables";
+@import "mixins";
+
+.events.app { // TODO: Increase Specificity
+
+	nav.navbar {
+		margin-bottom: 0;
+	}
+
+	.header {
+		background: #F1F1F1;
+		border: none;
+
+		h2 {
+			margin: 40px 0;
+		}
+	}
+
+	aside {
+		background: $darkGray;
+		color: $white;
+		padding-top: 25px;
+		@include breakpoint( $break-medium ) {
+			padding-top: 75px;
+		}
+	}
+
+	article {
+		padding-top: 50px;
+		background: $white;
+	}
+
+	.fileinput-button {
+		transition: background 0.3s ease-in-out;
+	}
+
+	.modal-body .modal-section {
+		clear: both;
+		background: $lightGray;
+	}
+
+	.filter-input-group {
+		margin-bottom: 20px;
+	}
+
+	.splits-modal-map-wrap {
+		margin-bottom: 20px;
+		min-height: 300px;
+		@include breakpoint( $break-medium ) {
+			margin-bottom: 0;
+			min-height: 500px;
+		}
+	}
+	
+	.split-modal-btn-wrap {
+		button {
+			margin-left: 20px;
+		}
+	}
+
+	.well {
+		position: relative;
+		margin-top: 40px;
+
+        &:after {
+    		content: "";
+    		width: 0;
+    		height: 0; 
+    		border-left: 25px solid transparent;
+    		border-right: 25px solid transparent;
+    		border-bottom: 25px solid #F5F5F5;
+    		position: absolute;
+    		top: -25px;
+            left: 25%;
+    	}
+        &.new:after {
+            left: auto;
+            right: 13%;
+        }
+    }
+
+	.middle-or {
+		display: block;
+		margin: 10px 0;
+		@include breakpoint( $break-small ) {
+			margin: 5px 0 0 0;
+		}
+	}
+	
+	.no-padding-left {
+		padding: 0 15px;
+		@include breakpoint( $break-small ) {
+			padding: 0 15px 0 0;
+		}
+	}
+
+	.no-padding-right {
+		padding: 0 15px;
+		@include breakpoint( $break-small ) {
+			padding: 0 0 0 15px;
+		}
+	}
+
+	textarea {
+		resize: none;
+	}
+
+	.splits-table {
+
+		.marker {
+			float: left;
+		}
+
+		.edit {
+			float: left;
+			margin-left: 10px;
+			margin-top: 5px;
+		}
+
+        tr[disabled] {
+            color: $gray;
+        }
+
+		td {
+			vertical-align: middle;
+		}
+	}
+
+	.confirmation-table {
+		
+		th {
+			width: 120px;
+		}
+
+		td:last-of-type {
+			width: 70px;
+			text-align: right;
+		}
+
+		.row-content,
+		.participants-count {
+			color: $mediumGray;
+			font-weight: normal;
+		}
+	}
+
+	.published-page {
+		text-align: center;
+		max-width: 670px;
+		margin: 0 auto;
+		float: none;
+		
+		.large-check {
+			margin: 0 auto;
+		}
+
+		h2 {
+			font-weight: bold;
+			margin: 40px 0 20px;
+		}
+
+		p {
+			color: $mediumGray;
+		}
+
+		.btn-primary {
+			margin-top: 30px;
+		}
+	}
+}
+
+/* There has to be a better way */
+.form-control-fill {
+	display: table;
+	& > * {
+		display: table-cell;
+	}
+	button {
+		width: 100%;
+	}
+}
+
+/** Split Modal Styles **/
+.split-modal {
+	position: relative;
+	
+	.or {
+		position: absolute;
+		left: 50%;
+		margin-left: -7px;
+		width: 14px;
+		top: 5px;
+		display: block;
+	}
+}
+
+/** Participant Modal Styles **/
+.participant-modal {
+	.or {
+		position: absolute;
+		top: 50%;
+		margin-left: -5px;
+		margin-top: 8px;
+	}
+
+	.modal-section {
+		padding: 20px 0;
+		position: relative;
+	}
+
+	.p-start-date {
+		float: left;
+		max-width: 140px;
+		margin-right: 20px;
+	}
+
+    .p-start-days {
+        float: left;
+        max-width: 60px;
+        margin-right: 20px;
+    }
+
+	.p-start-hour {
+		float: left;
+		max-width: 66px;
+		margin-right: 9px;
+		
+		.placeholder {
+			color: #A9AAAE;
+		}
+	}
+
+	.p-colon {
+		float: left;
+		display: block;
+		margin-right: 9px;
+		margin-top: 5px;
+		
+		.placeholder {
+			color: #A9AAAE;
+		}
+	}
+
+	.p-start-min {
+		float: left;
+		max-width: 66px;
+	}
+	
+	.sto-label {
+		margin-left: 30px;
+	}
+
+	.sto-input-wrap {
+		padding-right: 30px;
+		
+		.sto-or {
+			position: absolute;
+			top: 5px
+		}
+
+		.sto-input {
+			margin-left: 30px;
+		}
+	}
+
+	.p-controls {
+		padding: 15px 0 30px;
+	}
+}

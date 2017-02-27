@@ -141,7 +141,7 @@ class EventsController < ApplicationController
         authorize event
         csv_stream = render_to_string(partial: 'spread.csv.ruby')
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{event.name} - #{@spread_display.display_style} - #{Date.today}.csv")
+                  filename: "#{event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
       end
     end
   end
@@ -226,7 +226,11 @@ class EventsController < ApplicationController
     @event_display = EventEffortsDisplay.new(@event, params)
     respond_to do |format|
       format.html { redirect_to stage_event_path(@event) }
-      format.csv { send_data @event_display.to_ultrasignup_csv, filename: "#{@event.name}-ultrasignup-report-#{Date.today}.csv" }
+      format.csv do
+        csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby')
+        send_data(csv_stream, type: 'text/csv',
+                  filename: "#{@event.name}-for-ultrasignup-#{Date.today}.csv")
+      end
     end
   end
 

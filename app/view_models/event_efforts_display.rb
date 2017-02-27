@@ -74,33 +74,13 @@ class EventEffortsDisplay
     organization.try(:name)
   end
 
-  def to_ultrasignup_csv
-    return 'One or more efforts is in progress. Set drops before exporting.' unless event_finished?
-    CSV.generate do |csv|
-      csv << %w(place time first last age gender city state dob bib status)
-      effort_rows.each do |row|
-        csv << [row.overall_place,
-                row.finish_time && time_format_hhmmss(row.finish_time),
-                row.first_name,
-                row.last_name,
-                row.age,
-                row.gender,
-                row.city,
-                row.state_code,
-                row.birthdate,
-                row.bib_number,
-                row.ultrasignup_finish_status]
-      end
-    end
+  def event_finished?
+    event.finished?
   end
 
   private
 
   attr_reader :params
-
-  def event_finished?
-    event.finished?
-  end
 
   def event_final_split_id
     @event_final_split_id ||= finish_split.try(:id)

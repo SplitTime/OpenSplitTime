@@ -1,10 +1,10 @@
 class StoppedSplitTimeSetter
 
-  def self.set_attributes(args)
-    bulk_setter = new(args)
-    bulk_setter.set_attributes
-    bulk_setter.save_changes
-    bulk_setter.report
+  def self.stop(args)
+    setter = new(args)
+    setter.stop
+    setter.save_changes
+    setter.report
   end
 
   def initialize(args)
@@ -17,8 +17,9 @@ class StoppedSplitTimeSetter
     @reports = []
   end
 
-  def set_attributes
+  def stop
     efforts.each do |effort|
+      next unless effort.split_times.present?
       effort.split_times.each { |st| st.assign_attributes(stopped_here: false) }
       effort.split_times.last.assign_attributes(stopped_here: true)
       changed_split_times << effort.split_times.select(&:changed?)

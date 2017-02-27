@@ -56,6 +56,12 @@ class Api::V1::StagingController < ApiController
     render json: setter.response, status: setter.status
   end
 
+  def make_event_public
+    setter = EventConcealedSetter.new(event: @event)
+    setter.make_public
+    render json: setter.response, status: setter.status
+  end
+
   private
 
   def set_event

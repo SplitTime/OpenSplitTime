@@ -77,6 +77,10 @@ class Participant < ActiveRecord::Base
     followers.delete(user)
   end
 
+  def should_be_concealed?
+    !efforts.visible.present?
+  end
+
   # Methods related to matching and merging efforts with participants
 
   def most_likely_duplicate

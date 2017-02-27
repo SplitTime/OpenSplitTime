@@ -11,7 +11,6 @@ class EventCourseOrgSetter
     @course = args[:course]
     @organization = args[:organization]
     @params = args[:params]
-    @staging_id = args[:staging_id]
     @response = {errors: {}, relationships: {}}
   end
 

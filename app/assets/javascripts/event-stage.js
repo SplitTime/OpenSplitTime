@@ -82,7 +82,7 @@
             var self = this;
             this.busy = true;            
             deferred.fail( function( response ) {
-                if ( response.responseJSON && response.responseJSON.error ) {
+                if ( response && response.responseJSON && response.responseJSON.error ) {
                     try {
                         response.errors = JSON.parse( response.responseJSON.error ) || [];
                     } catch( err ) {}
@@ -596,7 +596,8 @@
                 description: '',
                 lapsRequired: 1,
                 courseId: this.course.id,
-                organizationId: this.organization.id
+                organizationId: this.organization.id,
+                startTime: null
             } );
             data.course = this.course.export();
             data.organization = this.organization.export();
@@ -677,6 +678,25 @@
                 return self.course.fetch();
             } );
             return dfd.promise();
+        };
+        Event.prototype.visibility = function( visibility ) {
+            var dfd = $.Deferred();
+            if ( this.isBusy() ) return dfd.reject();
+            if ( !this.id ) {
+                dfd.reject();
+            } else {
+                dfd = $.ajax( '/api/v1/staging/' + this.stagingId + '/update_event_visibility', {
+                    type: "PATCH",
+                    headers: headers,
+                    data: { status: visibility ? 'public' : 'private' },
+                    dataType: "json"
+                } );
+                var self = this;
+                dfd = dfd.then( function( data ) {
+                    self.import( data );
+                } );
+            };
+            return this.waitFor( dfd.promise() );
         }
         return Event;
     } )();
@@ -716,8 +736,17 @@
         },
 
         onRouteChange: function( to, from, next ) {
-            if ( to.name === 'publish' && from.name !== 'confirm' ) {
-                next( false );
+            if ( to.name === 'publish' ) {
+                if ( from.name !== 'confirm' ) {
+                    next( false );
+                } else {
+                    eventStage.data.eventModel.visibility( true )
+                        .done( function() {
+                            next();
+                        } ).fail( function() {
+                            next( false );
+                        } );
+                }
             } else if ( from.name === 'home' ) {
                 eventStage.data.eventModel.post().done( function() {
                     next();
@@ -841,7 +870,7 @@
                 { 
                     path: '/published',
                     name: 'publish',
-                    component: { template: '#published' },
+                    component: { props: ['eventModel'], template: '#published' },
                     beforeEnter: this.onRouteChange
                 }
             ];

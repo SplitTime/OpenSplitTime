@@ -1,15 +1,15 @@
 (function ($) {
 
     function formatDate( date ) {
-        return ("0" + (date.getMonth() + 1)).slice(-2) + "/" + ("0" + date.getDate()).slice(-2) + "/" + date.getFullYear();
+        return ( "0" + ( date.getMonth() + 1 ) ).slice( -2 ) + "/" + ( "0" + date.getDate() ).slice( -2 ) + "/" + date.getFullYear();
     }
 
     /**
      * This object stores the countries and regions array
      */
     var locales = {
-    	countries : [],
-    	regions : {}
+        countries : [],
+        regions : {}
     }
 
     /**
@@ -699,13 +699,13 @@
          * This method is used to populate the locale array
          */
         ajaxPopulateLocale: function() {
-        	$.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
-        		for ( var i in response.countries ) {
-        			locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
+            $.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
+                for ( var i in response.countries ) {
+                    locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
-        		}        		
-        	} );
+                }               
+            } );
         },
 
         isEventValid: function( eventData ) {
@@ -788,32 +788,6 @@
                             blank: function() {
                                 var split = new Split( this.eventModel.course );
                                 return split;
-                            }
-                        },
-                        watch: {
-                            'eventModel.splits': {
-                                handler: function() {
-                                    /**
-                                     * Make sure locations that reference the same database object
-                                     * also use the same javascript object.
-                                     */
-                                    var count = 0;
-                                    // var cache = {};
-                                    // if ( !this._cache ) this._cache = {};
-                                    // for ( var i = this.eventData.splits.length - 1; i >= 0; i-- ) {
-                                    //     var obj = this.eventData.splits[i].location;
-                                    //     if ( !obj || !obj.id ) continue;
-                                    //     if ( !this._cache[ obj.id ] ) {
-                                    //         this._cache[ obj.id ] = obj;
-                                    //     } else if ( this._cache[ obj.id ] !== obj ) {
-                                    //         count++;
-                                    //         $.extend( this._cache[ obj.id ], obj );
-                                    //         this.eventData.splits[i].location = this._cache[ obj.id ];
-                                    //     }
-                                    // }                                    
-                                },
-                                deep: true,
-                                immediate: true
                             }
                         },
                         data: function() { return { modalData: {}, filter: '' } },
@@ -1323,13 +1297,13 @@
                         } );
                     },
                     data: function() {
-                    	return {
-                    		countries: locales.countries,
-                    		regions: locales.regions,
-                    		model: {},
-                    		valid: false,
+                        return {
+                            countries: locales.countries,
+                            regions: locales.regions,
+                            model: {},
+                            valid: false,
                             error: null
-                    	};
+                        };
                     }
                 } );
             }
@@ -1488,7 +1462,7 @@
                     // Force update after list is rendered
                     self.$nextTick( function() {
                         self.$forceUpdate();
-                    });
+                    } );
                 } );
             },
             onChanged: function( id ) {

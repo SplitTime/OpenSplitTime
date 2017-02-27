@@ -161,4 +161,8 @@ class EventPolicy < ApplicationPolicy
   def post_event_course_org?
     user.authorized_for_live?(event)
   end
+
+  def update_event_visibility?
+    user.authorized_for_live?(event)
+  end
 end

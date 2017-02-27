@@ -56,9 +56,15 @@ class Api::V1::StagingController < ApiController
     render json: setter.response, status: setter.status
   end
 
-  def make_event_public
+  def update_event_visibility
     setter = EventConcealedSetter.new(event: @event)
-    setter.make_public
+    if params[:status] == 'public'
+      setter.make_public
+    elsif params[:status] == 'private'
+      setter.make_private
+    else
+      render json: {message: 'request must include status: public or status: private'}, status: :bad_request and return
+    end
     render json: setter.response, status: setter.status
   end
 

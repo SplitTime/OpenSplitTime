@@ -30,6 +30,11 @@ describe Api::V1::StagingController do
       us_subregions = parsed_response['countries'].find { |country| country['code'] == 'US' }['subregions']
       expect(us_subregions.size).to eq(subregion_count)
     end
+
+    it 'returns not found when the staging_id does not exist' do
+      get :get_countries, staging_id: 123
+      expect(response).to be_not_found
+    end
   end
 
   describe '#post_event_course_org' do
@@ -255,6 +260,104 @@ describe Api::V1::StagingController do
           expect(parsed_response[class_name.to_s][attribute.to_s])
               .to eq(params[class_name][attribute])
         end
+      end
+    end
+  end
+
+  describe '#update_event_visibility' do
+    context 'when params[:status] == "public"' do
+      let(:status) { 'public' }
+
+      it 'returns a successful 200 response' do
+        event = existing_event
+        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        expect(response).to be_success
+      end
+
+      it 'sets concealed status of the event and its related organization, efforts, and participants to false' do
+        event = existing_event
+        organization = existing_organization
+        event.update(concealed: true)
+        organization.update(concealed: true)
+        efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: true)
+        efforts.each { |effort| effort.participant.update(concealed: true) }
+        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        event.reload
+        organization.reload
+        expect(event.concealed).to eq(false)
+        expect(organization.concealed).to eq(false)
+        event.efforts.each do |effort|
+          expect(effort.concealed).to eq(false)
+          expect(effort.participant.concealed).to eq(false)
+        end
+      end
+    end
+
+    context 'when params[:status] == "private"' do
+      let(:status) { 'private' }
+
+      it 'returns a successful 200 response' do
+        event = existing_event
+        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        expect(response).to be_success
+      end
+
+      it 'sets concealed status of the event and its related organization, efforts, and participants to true' do
+        event = existing_event
+        organization = existing_organization
+        event.update(concealed: false)
+        organization.update(concealed: false)
+        efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
+        efforts.each { |effort| effort.participant.update(concealed: false) }
+        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        event.reload
+        organization.reload
+        expect(event.concealed).to eq(true)
+        expect(organization.concealed).to eq(true)
+        event.efforts.each do |effort|
+          expect(effort.concealed).to eq(true)
+          expect(effort.participant.concealed).to eq(true)
+        end
+      end
+
+      it 'does not make a participant private if that participant has other public efforts' do
+        event = existing_event
+        organization = existing_organization
+        event.update(concealed: false)
+        organization.update(concealed: false)
+        efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
+        efforts.each { |effort| effort.participant.update(concealed: false) }
+        p_with_other_effort = efforts.first.participant
+        FactoryGirl.create(:effort, participant: p_with_other_effort, concealed: false)
+        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        event.reload
+        organization.reload
+        expect(event.concealed).to eq(true)
+        expect(organization.concealed).to eq(true)
+        event.efforts.each do |effort|
+          expect(effort.concealed).to eq(true)
+          participant = effort.participant
+          if participant == p_with_other_effort
+            expect(effort.participant.concealed).to eq(false)
+          else
+            expect(effort.participant.concealed).to eq(true)
+          end
+        end
+      end
+    end
+
+    context 'when params[:status] is not "public" or "private"' do
+      it 'returns a bad request response' do
+        event = existing_event
+        patch :update_event_visibility, staging_id: event.staging_id, status: 'random'
+        expect(response).to be_bad_request
+      end
+    end
+
+    context 'when the staging_id does not exist' do
+      it 'returns a not found response' do
+        patch :update_event_visibility, staging_id: 123, status: 'public'
+        expect(response).to be_not_found
       end
     end
   end

@@ -129,11 +129,7 @@ class EffortImporter
   end
 
   def non_time_data(row)
-    if with_times
-      row[0...split_offset - 1]
-    else
-      row
-    end
+    with_times ? row[0...split_offset - 1] : row
   end
 
   def military_times?

@@ -43,7 +43,7 @@ class Api::V1::StagingController < ApiController
   end
 
   # Creates or updates the given event, course, and organization
-  # And associates the event with the course and organization.
+  # and associates the event with the course and organization.
 
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
@@ -56,6 +56,10 @@ class Api::V1::StagingController < ApiController
     render json: setter.response, status: setter.status
   end
 
+  # Sets the concealed status of the event and related organization, efforts, and participants.
+  # param :status must be set to 'public' or 'private'
+
+  # PATCH /api/v1/staging/:staging_id/update_event_visibility
   def update_event_visibility
     setter = EventConcealedSetter.new(event: @event)
     if params[:status] == 'public'

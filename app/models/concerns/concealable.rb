@@ -18,4 +18,9 @@ module Concealable
   def visible?
     attributes.has_key?('concealed') ? !attributes['concealed'] : true
   end
+
+  # May be overridden in models
+  def should_be_concealed?
+    false
+  end
 end

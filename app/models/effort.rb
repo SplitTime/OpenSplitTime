@@ -245,4 +245,8 @@ class Effort < ActiveRecord::Base
   def enriched
     event.efforts.sorted_with_finish_status.find { |e| e.id == id }
   end
+
+  def should_be_concealed?
+    event.concealed
+  end
 end

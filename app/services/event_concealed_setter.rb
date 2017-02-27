@@ -23,7 +23,8 @@ class EventConcealedSetter
   def set_resources_concealed(boolean)
     ActiveRecord::Base.transaction do
       set_resource_concealed(event, boolean)
-      set_resource_concealed(event.organization, boolean) if event.organization
+      organization = event.organization
+      set_resource_concealed(organization, organization.should_be_concealed?) if organization
       event.efforts.each do |effort|
         set_resource_concealed(effort, boolean)
         participant = effort.participant

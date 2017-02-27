@@ -18,4 +18,8 @@ class Organization < ActiveRecord::Base
   def remove_stewardship(user)
     stewards.delete(user)
   end
+
+  def should_be_concealed?
+    !events.visible.present?
+  end
 end

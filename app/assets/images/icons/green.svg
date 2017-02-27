@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="43px" viewBox="0 0 24 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="14.7235184%" x2="50%" y2="97.2601589%" id="linearGradient-1">
+            <stop stop-color="#1BBA32" offset="0%"></stop>
+            <stop stop-color="#10A125" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3" transform="translate(1.000000, 1.000000)">
+            <path d="M20.219,18.187 C22.094,15.187 22.313,13.405 22.313,11 C22.313,4.925 17.125,0 11.125,0 C5.05,0 0,4.925 0,11 C0,13.405 0.188,15.187 2.063,18.187 C2.898,19.525 11.125,28.25 11.125,41.625 C11.125,28.25 19.383,19.525 20.219,18.187 Z" id="Imported-Layers-Copy-2" stroke="#037E15" stroke-linecap="round" stroke-linejoin="round" fill="url(#linearGradient-1)"></path>
+            <circle id="Oval-5-Copy-2" fill="#3E1411" cx="11" cy="11" r="3"></circle>
+        </g>
+    </g>
+</svg>

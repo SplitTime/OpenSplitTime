@@ -36,7 +36,8 @@ class EffortSplitTimeCreator
       effort.event_start_time = event.start_time # Avoids a database query to determine event_start_time
       effort.start_time = military_time_to_day_and_time(row_time_data.first, time_points.first)
     else
-      effort.start_offset = time_to_seconds(row_time_data.first) || 0
+      proposed_offset = time_to_seconds(row_time_data.first) || 0
+      effort.start_offset = proposed_offset unless proposed_offset == 0 # Avoid inadvertently destroying existing offsets
       row_time_data[0] = 0 unless row_time_data[1..-1].compact.empty?
     end
     effort.save if effort.changed?

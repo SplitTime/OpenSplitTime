@@ -34,7 +34,7 @@ class PlanDisplay
 
   def mock_effort
     @mock_effort ||=
-        MockEffort.new(lap_splits: lap_splits, expected_time: expected_time, start_time: start_time) if expected_time && start_time
+        MockEffort.new(event: event, expected_time: expected_time, start_time: start_time) if expected_time && start_time
   end
 
   def lap_splits

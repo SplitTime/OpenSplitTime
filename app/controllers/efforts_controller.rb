@@ -13,7 +13,7 @@ class EffortsController < ApplicationController
   end
 
   def show
-    @effort_show = EffortShowView.new(@effort)
+    @effort_show = EffortShowView.new(effort: @effort)
     session[:return_to] = effort_path(@effort)
   end
 

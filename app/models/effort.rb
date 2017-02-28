@@ -233,7 +233,7 @@ class Effort < ActiveRecord::Base
   end
 
   def with_ordered_split_times
-    Effort.where { |e| e.id == id }.with_ordered_split_times.first
+    Effort.where(id: id).with_ordered_split_times.first
   end
 
   # Methods related to stopped split_time
@@ -249,7 +249,7 @@ class Effort < ActiveRecord::Base
   end
 
   def stop
-    StoppedSplitTimeSetter.stop(efforts: Effort.where(id: id))
+    EffortStopper.stop(effort: self)
   end
 
   def unstop

@@ -33,7 +33,7 @@ RSpec.describe LiveEffortMailData do
 
   describe '#effort_data' do
     let(:participant) { FactoryGirl.build_stubbed(:participant) }
-    let(:event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 1, splits_count: 3, efforts_count: 1) }
+    let(:event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
     let(:test_effort) { event.efforts.first }
     let(:split_times) { test_effort.split_times }
 
@@ -47,18 +47,33 @@ RSpec.describe LiveEffortMailData do
       in_split_time = split_times[1]
       out_split_time = split_times[2]
       out_split_time.stopped_here = true
+      multi_lap = false
+      validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
+    end
+
+    it 'returns a hash containing effort and split_time data' do
+      effort = test_effort
+      allow(effort).to receive(:ordered_split_times).and_return(split_times)
+      in_split_time = split_times[1]
+      out_split_time = split_times[2]
+      out_split_time.stopped_here = true
+      multi_lap = true
+      validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
+    end
+
+    def validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
       split_times = [in_split_time, out_split_time]
-      split_times_data = [{time_point: in_split_time.time_point,
-                           split_name: in_split_time.split_name,
-                           day_and_time: 'Friday, July 1, 2016  7:40AM',
+      in_split_name = multi_lap ? in_split_time.split_name_with_lap : in_split_time.split_name
+      out_split_name = multi_lap ? out_split_time.split_name_with_lap : out_split_time.split_name
+      split_times_data = [{split_name: in_split_name,
+                           day_and_time: in_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
                            pacer: nil,
                            stopped_here: in_split_time.stopped_here},
-                          {time_point: out_split_time.time_point,
-                           split_name: out_split_time.split_name,
-                           day_and_time: 'Friday, July 1, 2016  7:50AM',
+                          {split_name: out_split_name,
+                           day_and_time: out_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
                            pacer: nil,
                            stopped_here: out_split_time.stopped_here}]
-      mail_data = LiveEffortMailData.new(participant: participant, split_times: split_times)
+      mail_data = LiveEffortMailData.new(participant: participant, split_times: split_times, multi_lap: multi_lap)
       expected = {full_name: effort.full_name,
                   event_name: event.name,
                   split_times_data: split_times_data,

@@ -6,7 +6,7 @@ class EffortOffsetTimeAdjuster
   # (other than the start split_time) to remain the same, we need to counter that change
   # by subtracting a like amount in all later split_times for that effort.
 
-  attr_reader :report
+  attr_reader :reports
 
   def self.adjust(args)
     adjuster = new(args)
@@ -21,7 +21,7 @@ class EffortOffsetTimeAdjuster
                            class: self.class)
     @effort = args[:effort]
     @split_times = args[:split_times] || effort.split_times.to_a
-    @report = []
+    @reports = []
   end
 
   def assign_adjustments
@@ -30,20 +30,27 @@ class EffortOffsetTimeAdjuster
   end
 
   def save_changes
-    ActiveRecord::Base.transaction do
-      effort.save if effort.changed?
-      report << effort.errors if effort.errors.present?
-      non_start_split_times.select(&:changed?).each do |st|
-        st.save
-        report << st.errors if st.errors.present?
-      end
-      raise ActiveRecord::Rollback if report.present?
+    reports << BulkUpdateService.update_attributes(:split_times, changed_split_time_attributes)
+    if effort.changed? && no_errors?
+      reports << effort.errors.full_messages unless effort.save
     end
   end
 
   private
 
   attr_reader :effort, :split_times
+
+  def no_errors?
+    reports.none? { |report| report =~ /error/ }
+  end
+
+  def changed_split_times
+    non_start_split_times.select(&:changed?)
+  end
+
+  def changed_split_time_attributes
+    changed_split_times.map { |st| [st.id, {time_from_start: st.time_from_start}] }
+  end
 
   def non_start_split_times
     @non_start_split_times ||= split_times.reject { |st| st.time_from_start.zero? }

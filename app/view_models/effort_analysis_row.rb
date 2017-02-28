@@ -92,10 +92,10 @@ class EffortAnalysisRow
   end
 
   def name_without_lap
-    split.name
+    lap_split.base_name_without_lap
   end
 
   def name_with_lap
-    lap_split.name
+    lap_split.base_name
   end
 end

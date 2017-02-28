@@ -31,9 +31,7 @@ class Event < ActiveRecord::Base
     return all if search_param.blank?
     name_search(search_param)
   end
-
-  delegate :cycled_lap_splits, :cycled_time_points, :lap_splits_through, :time_points_through, to: :course
-
+  
   def reconciled_efforts
     efforts.where.not(participant_id: nil)
   end
@@ -67,7 +65,7 @@ class Event < ActiveRecord::Base
   end
 
   def set_dropped_attributes
-    DroppedAttributesSetter.set_attributes(efforts: efforts)
+    BulkEffortsStopper.stop(efforts: efforts)
   end
 
   def required_lap_splits
@@ -91,12 +89,10 @@ class Event < ActiveRecord::Base
   end
 
   def finished?
-    efforts_sorted.none?(&:in_progress?)
+    efforts_ranked.present? && efforts_ranked.none?(&:in_progress?)
   end
 
-  private
-
-  def efforts_sorted
-    @efforts_sorted ||= efforts.sorted_with_finish_status
+  def efforts_ranked
+    @efforts_ranked ||= efforts.ranked_with_finish_status
   end
 end

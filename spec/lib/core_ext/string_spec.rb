@@ -16,4 +16,29 @@ describe String do
       expect('hello'.numericize).to eq(0.0)
     end
   end
+
+  describe '#to_boolean' do
+    it 'returns the TrueClass object when called on a true-ish string value' do
+      true_strings = %w(1 t T true TRUE on ON).to_set
+      true_strings.each do |string|
+        expect(string.to_boolean).to eq(true)
+      end
+    end
+
+    it 'returns the FalseClass object when called on a false-ish string value' do
+      false_strings = %w(0 f F false FALSE off OFF).to_set
+      false_strings.each do |string|
+        expect(string.to_boolean).to eq(false)
+      end
+    end
+
+    it 'returns nil when called on an empty string' do
+      expect(''.to_boolean).to eq(nil)
+    end
+
+    # This is deprecated and will return true in Rails 5
+    it 'returns false when called on an unknown string value' do
+      expect('hello'.to_boolean).to eq(false)
+    end
+  end
 end

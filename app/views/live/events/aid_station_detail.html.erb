@@ -29,8 +29,8 @@
     <%= "#{@aid_station_detail.category_sizes[:recorded_in]} times recorded into this station" %><br/>
     <%= "#{@aid_station_detail.category_sizes[:recorded_out]} times recorded out of this station" %><br/>
     <%= "#{@aid_station_detail.category_sizes[:in_aid]} in aid (reported into but not out of this station)" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:missed]} times missed (not recorded here but recorded at a later station)" %>
-    <br/>
+    <%= "#{@aid_station_detail.category_sizes[:missed]} times missed (not recorded here but recorded at a later station)" %><br/>
+    <%= "#{@aid_station_detail.category_sizes[:stopped_here]} stopped at this station" %><br/>
     <%= "#{@aid_station_detail.category_sizes[:dropped_here]} dropped at this station" %><br/>
     <%= "#{@aid_station_detail.category_sizes[:expected]} expected (in progress but not yet here)" %>
   </div>
@@ -61,6 +61,12 @@
                                                        efforts: 'missed'),
                     disabled: params[:efforts] == 'missed',
                     class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Stopped here',
+                    aid_station_detail_live_event_path(@aid_station_detail.event_id,
+                                                       aid_station: @aid_station_detail.aid_station,
+                                                       efforts: 'stopped'),
+                    disabled: params[:efforts] == 'stopped',
+                    class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Dropped here',
                     aid_station_detail_live_event_path(@aid_station_detail.event_id,
                                                        aid_station: @aid_station_detail.aid_station,
@@ -86,6 +92,8 @@
       <%= render 'efforts_recorded' %>
   <% when 'in_aid' %>
       <%= render 'efforts_in_aid' %>
+  <% when 'stopped' %>
+      <%= render 'efforts_stopped_here' %>
   <% when 'dropped' %>
       <%= render 'efforts_dropped_here' %>
   <% when 'missed' %>

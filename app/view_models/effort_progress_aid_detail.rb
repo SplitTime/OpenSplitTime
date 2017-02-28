@@ -29,6 +29,10 @@ class EffortProgressAidDetail < EffortProgressRow
     effort_split_data(lap, recorded_here_split_times)
   end
 
+  def stopped_here_info
+    effort_split_data(lap, stopped_here_split_times)
+  end
+
   def dropped_here_info
     effort_split_data(lap, dropped_here_split_times)
   end
@@ -56,16 +60,20 @@ class EffortProgressAidDetail < EffortProgressRow
     split.bitkeys.map { |bitkey| TimePoint.new(lap, split.id, bitkey) }
   end
 
-  def dropped_time_points
-    indexed_lap_splits[LapSplitKey.new(effort.dropped_lap, effort.dropped_split_id)].time_points
+  def stopped_time_points
+    indexed_lap_splits[LapSplitKey.new(effort.stopped_lap, effort.stopped_split_id)].time_points
   end
 
   def recorded_here_split_times
     aid_station_time_points.map { |time_point| indexed_split_times[time_point] }
   end
 
+  def stopped_here_split_times
+    stopped_time_points.map { |time_point| indexed_split_times[time_point] }
+  end
+
   def dropped_here_split_times
-    dropped_time_points.map { |time_point| indexed_split_times[time_point] }
+    stopped_time_points.map { |time_point| indexed_split_times[time_point] }
   end
 
   def prior_valid_split_time(time_point)

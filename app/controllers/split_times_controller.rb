@@ -27,6 +27,7 @@ class SplitTimesController < ApplicationController
     authorize @split_time
 
     if @split_time.save
+      @split_time.set_effort_data_status
       redirect_to session.delete(:return_to) || edit_split_times_effort_path(@split_time.effort)
     else
       redirect_to session.delete(:return_to) || edit_split_times_effort_path(@split_time.effort)
@@ -37,6 +38,7 @@ class SplitTimesController < ApplicationController
     authorize @split_time
 
     if @split_time.update(split_time_params)
+      @split_time.set_effort_data_status
       redirect_to session.delete(:return_to) || edit_split_times_effort_path(@split_time.effort)
     else
       @effort = Effort.find(@split_time.effort_id) if @split_time.effort_id
@@ -47,7 +49,7 @@ class SplitTimesController < ApplicationController
   def destroy
     authorize @split_time
     @split_time.destroy
-    EffortDataStatusSetter.set_data_status(effort: @split_time.effort)
+    @split_time.set_effort_data_status
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || split_times_path
   end
@@ -55,8 +57,7 @@ class SplitTimesController < ApplicationController
   private
 
   def split_time_params
-    params.require(:split_time).permit(:effort_id, :split_id, :bitkey, :sub_split_bitkey, :time_from_start,
-                                       :elapsed_time, :time_of_day, :military_time, :data_status, :lap)
+    params.require(:split_time).permit(*SplitTime::PERMITTED_PARAMS)
   end
 
   def query_params

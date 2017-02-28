@@ -8,16 +8,14 @@
 <%= "The following new times were reported for #{@effort_data[:full_name]} at #{@effort_data[:event_name]}:" %>
 <% @effort_data[:split_times_data].each do |split_time_data| %>
     <p>
-      <%= "#{split_time_data[:split_name]} at #{split_time_data[:day_and_time]}" %>
-      <%= " with a pacer" if split_time_data[:pacer] %>
-      <%= " and dropped there" if @effort_data[:dropped_split_id] == split_time_data[:split_id] %>
+      <%= follower_update_body_text(split_time_data) %>
     </p>
 <% end %>
 <br/>
-<%= link_to "To see full effort click here", effort_url(@effort_data[:effort_id]) %>
+<%= link_to 'To see full effort click here', effort_url(@effort_data[:effort_id]) %>
 <br/>
 <br/>
-<%= link_to "To see all results click here", spread_event_url(@effort_data[:event_id]) %>
+<%= link_to 'To see all results click here', spread_event_url(@effort_data[:event_id]) %>
 <br/>
 <br/>
 <p><strong>Thank you for using OpenSplitTime!</strong></p>

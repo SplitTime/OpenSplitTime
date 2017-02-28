@@ -43,6 +43,6 @@ class Api::V1::SplitTimesController < ApiController
   end
 
   def split_time_params
-    params.require(:split_time).permit(:id, :effort_id, :lap, :split_id, :time_from_start, :sub_split_bitkey)
+    params.require(:split_time).permit(*SplitTime::PERMITTED_PARAMS)
   end
 end

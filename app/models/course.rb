@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
-  PERMITTED_PARAMS = [:id, :name, :description, :next_start_time, splits_attributes: Split::PERMITTED_PARAMS]
+  PERMITTED_PARAMS = [:id, :name, :description, :next_start_time, splits_attributes: [*Split::PERMITTED_PARAMS]]
 
   include Auditable
   include Concealable
@@ -33,22 +33,6 @@ class Course < ActiveRecord::Base
 
   def visible_events
     events.visible
-  end
-
-  def lap_splits_through(lap)
-    cycled_lap_splits.first(lap * ordered_splits.size)
-  end
-
-  def cycled_lap_splits # For events with unlimited laps, call #cycled_lap_splits.first(n)
-    ordered_splits.each_with_iteration { |split, i| LapSplit.new(i, split) }
-  end
-
-  def time_points_through(lap)
-    cycled_time_points.first(lap * sub_splits.size)
-  end
-
-  def cycled_time_points # For events with unlimited laps, call #cycled_time_points.first(n)
-    sub_splits.each_with_iteration { |sub_split, i| TimePoint.new(i, sub_split.split_id, sub_split.bitkey) }
   end
 
   def distance

@@ -31,7 +31,7 @@ RSpec.describe EffortImporter do
       let(:split_finish) { Split.find_by(base_name: 'Finish') }
 
 
-      let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, without_status: true) }
+      let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, with_status: false) }
       before do
         split_importer.split_import
         effort_importer.effort_import
@@ -64,8 +64,10 @@ RSpec.describe EffortImporter do
         expect(effort_135.age).to be_nil
         expect(effort_135.birthdate).to be_nil
         expect(effort_importer.effort_failure_array.count).to eq(2)
-        expect(effort_importer.effort_failure_array.first[0]).to eq('NoLastName')
-        expect(effort_importer.effort_failure_array.last[1]).to eq('NoFirstName')
+        expect(effort_importer.effort_failure_array.first[:data]).to include('NoLastName')
+        expect(effort_importer.effort_failure_array.last[:data]).to include('NoFirstName')
+        expect(effort_importer.effort_failure_array.first[:errors]).to include(/Last name can't be blank/)
+        expect(effort_importer.effort_failure_array.last[:errors]).to include(/First name can't be blank/)
       # end
 
       # it 'correctly sets start_offsets, including where start split is omitted' do

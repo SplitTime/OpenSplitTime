@@ -2,7 +2,7 @@ class PlaceDetailRow
   CATEGORIES = [:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid]
 
   attr_reader :split_times
-  delegate :split, :distance_from_start, to: :lap_split
+  delegate :distance_from_start, to: :lap_split
 
   # split_times should be an array having size == lap_split.time_points.size,
   # with nil values where no corresponding split_time exists
@@ -71,21 +71,25 @@ class PlaceDetailRow
 
   def table_titles
     {passed_segment: "#{effort_name} passed #{persons(passed_segment_count)} between" +
-        " #{previous_lap_split.base_name} and #{lap_split.base_name}",
-     passed_in_aid: "#{effort_name} passed #{persons(passed_in_aid_count)} in aid at #{lap_split.base_name}",
+        " #{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
+     passed_in_aid: "#{effort_name} passed #{persons(passed_in_aid_count)} in aid at #{split_base_name(lap_split)}",
      passed_by_segment: "#{effort_name} was passed by #{persons(passed_by_segment_count)} between " +
-         "#{previous_lap_split.base_name} and #{lap_split.base_name}",
+         "#{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
      passed_by_in_aid: "#{effort_name} was passed by #{persons(passed_by_in_aid_count)} while in aid at " +
-         "#{lap_split.base_name}",
-     together_in_aid: "#{effort_name} was in #{lap_split.base_name} with #{persons(together_in_aid_count)}"}
+         "#{split_base_name(lap_split)}",
+     together_in_aid: "#{effort_name} was in #{split_base_name(lap_split)} with #{persons(together_in_aid_count)}"}
   end
 
   def show_laps?
     @show_laps
   end
+  
+  def split_base_name(lap_split)
+    show_laps? ? lap_split.base_name : lap_split.base_name_without_lap
+  end
 
   def name_without_lap
-    split.name
+    lap_split.name_without_lap
   end
 
   def name_with_lap

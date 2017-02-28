@@ -11,39 +11,39 @@
   </tr>
   </thead>
   <tbody>
-  <% @effort_show.split_rows.each do |split_row| %>
-      <% if split_row.data_status == 'bad' %>
+  <% @effort_show.lap_split_rows.each do |row| %>
+      <% if row.data_status == 'bad' %>
           <tr class="text-danger">
-      <% elsif split_row.data_status == 'questionable' %>
+      <% elsif row.data_status == 'questionable' %>
           <tr class="text-warning">
       <% else %>
           <tr>
       <% end %>
-      <% if split_row.finish? %>
-          <td><strong><%= split_row.name %></strong></td>
-          <td class="text-right"><strong><%= d(split_row.distance_from_start) %></strong></td>
+      <% if row.finish? %>
+          <td><strong><%= row.name %></strong></td>
+          <td class="text-right"><strong><%= d(row.distance_from_start) %></strong></td>
           <td class="text-center">
-            <strong><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></strong>
+            <strong><%= row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></strong>
           </td>
-          <td class="text-center"><strong><%= composite_time_zzs(split_row) %></strong></td>
-          <td class="text-center"><strong><%= split_row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></strong></td>
-          <% if @effort_show.dropped_split_id == split_row.id %>
+          <td class="text-center"><strong><%= composite_time_zzs(row) %></strong></td>
+          <td class="text-center"><strong><%= row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></strong></td>
+          <% if row.stopped_here? %>
               <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
           <% else %>
               <td></td>
           <% end %>
       <% else %>
-          <td><%= split_row.name %></td>
-          <td class="text-right"><%= d(split_row.distance_from_start) %></td>
-          <td class="text-center"><%= split_row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></td>
-          <td class="text-center"><%= composite_time(split_row) %></td>
-          <td class="text-center"><%= split_row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></td>
-          <% if @effort_show.dropped_split_id == split_row.id %>
+          <td><%= row.name %></td>
+          <td class="text-right"><%= d(row.distance_from_start) %></td>
+          <td class="text-center"><%= row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></td>
+          <td class="text-center"><%= composite_time(row) %></td>
+          <td class="text-center"><%= row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></td>
+          <% if row.stopped_here? %>
               <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
           <% else %>
               <td></td>
           <% end %>
-          <td class="text-center"><%= split_row.remarks %></td>
+          <td class="text-center"><%= row.remarks %></td>
       <% end %>
       </tr>
   <% end %>

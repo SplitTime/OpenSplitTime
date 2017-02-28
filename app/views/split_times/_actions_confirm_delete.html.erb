@@ -1,17 +1,17 @@
-<% if current_user && current_user.authorized_to_edit?(@effort_show.effort) && split_row.times_from_start.compact.present? %>
+<% if current_user && current_user.authorized_to_edit?(@effort_show.effort) && lap_split_row.times_from_start.compact.present? %>
     <td class="text-right">
-      <% split_row.time_data_statuses.each_with_index do |data_status, i| %>
+      <% lap_split_row.time_data_statuses.each_with_index do |data_status, i| %>
           <%= link_to "#{(data_status == 'confirmed') ? 'Unconfirm' : 'Confirm'}",
                       confirm_split_times_effort_path(@effort_show.effort,
-                                                      split_time_ids: [split_row.split_time_ids[i]],
+                                                      split_time_ids: [lap_split_row.split_time_ids[i]],
                                                       status: data_status == 'confirmed' ? 'nil' : 'confirmed'),
                       method: :put,
-                      disabled: split_row.split_time_ids[i].blank?,
+                      disabled: lap_split_row.split_time_ids[i].blank?,
                       class: 'btn btn-xs btn-success' %>
       <% end %>
     </td>
     <td class="text-right">
-      <% split_row.split_time_ids.each do |id| %>
+      <% lap_split_row.split_time_ids.each do |id| %>
           <%= link_to 'Delete',
                       delete_split_times_effort_path(@effort_show.effort, split_time_ids: [id]),
                       method: :delete,

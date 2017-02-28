@@ -13,7 +13,7 @@ class EffortsController < ApplicationController
   end
 
   def show
-    @effort_show = EffortShowView.new(@effort)
+    @effort_show = EffortShowView.new(effort: @effort)
     session[:return_to] = effort_path(@effort)
   end
 
@@ -97,6 +97,7 @@ class EffortsController < ApplicationController
   def update_split_times
     authorize @effort
     if @effort.update(effort_params)
+      @effort.set_data_status
       redirect_to effort_path(@effort)
     else
       flash[:danger] = "Effort failed to update for the following reasons: #{@effort.errors.full_messages}"
@@ -118,18 +119,18 @@ class EffortsController < ApplicationController
     else
       split_times.good!
     end
-    EffortDataStatusSetter.set_data_status(effort: @effort)
+    @effort.set_data_status
     redirect_to effort_path(@effort)
   end
 
   def set_data_status
     authorize @effort
-    EffortDataStatusSetter.set_data_status(effort: @effort)
+    @effort.set_data_status
     redirect_to effort_path(@effort)
   end
 
   def mini_table
-    @mini_table = EffortsMiniTable.new(params[:effortIds])
+    @mini_table = EffortsMiniTable.new(params[:effort_ids])
     render partial: 'efforts_mini_table'
   end
 
@@ -169,11 +170,7 @@ class EffortsController < ApplicationController
   private
 
   def effort_params
-    params.require(:effort).permit(:event_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
-                                   :city, :state_code, :country_code, :start_time, :finished, :concealed, :start_time,
-                                   split_times_attributes: [:id, :split_id, :bitkey, :sub_split_bitkey, :effort_id,
-                                                            :time_from_start, :elapsed_time, :time_of_day, :military_time,
-                                                            :data_status, :lap])
+    params.require(:effort).permit(*Effort::PERMITTED_PARAMS)
   end
 
   def query_params

@@ -1,7 +1,7 @@
 class LapSplit
   include Comparable
   attr_accessor :lap, :split
-  delegate :course, :course_id, :name_extensions, to: :split
+  delegate :course, :course_id, :name_extensions, :bitkeys, to: :split
 
   def initialize(lap, split)
     @lap = lap
@@ -22,6 +22,14 @@ class LapSplit
 
   def start?
     split.try(:start?) && lap == 1
+  end
+
+  def names
+    bitkeys.map { |bitkey| name(bitkey) }
+  end
+
+  def names_without_laps
+    bitkeys.map { |bitkey| name_without_lap(bitkey) }
   end
 
   def base_name

@@ -3,13 +3,13 @@ class EffortSplitTimeCreator
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:row_time_data, :effort, :current_user_id],
-                           exclusive: [:row_time_data, :effort, :current_user_id, :event, :military_times],
+                           exclusive: [:row_time_data, :effort, :current_user_id, :event, :time_format],
                            class: self.class)
     @row_time_data = args[:row_time_data]
     @effort = args[:effort]
     @current_user_id = args[:current_user_id]
     @event = args[:event] || effort.event
-    @military_times = args[:military_times]
+    @time_format = args[:time_format]
     set_start_offset
     validate_row_time_data
   end
@@ -19,15 +19,9 @@ class EffortSplitTimeCreator
   end
 
   def create_split_times
-    SplitTime.bulk_insert do |worker|
-      split_times.each do |split_time|
-        worker.add(bulk_insert_attributes(split_time))
-      end
+    split_times.each do |split_time|
+      split_time.save if split_time.changed?
     end
-  end
-
-  def bulk_insert_attributes(split_time)
-    split_time.attributes.symbolize_keys.reject { |attr, _| [:id, :created_at, :updated_at].include?(attr) }
   end
 
   private
@@ -35,25 +29,27 @@ class EffortSplitTimeCreator
   EXCEL_BASE_DATETIME = '1899-12-30'.to_datetime
   CUTOVER_YEAR = 1910
 
-  attr_reader :row_time_data, :effort, :current_user_id, :event
+  attr_reader :row_time_data, :effort, :current_user_id, :event, :time_format
 
   def set_start_offset
     if military_times?
       effort.event_start_time = event.start_time # Avoids a database query to determine event_start_time
       effort.start_time = military_time_to_day_and_time(row_time_data.first, time_points.first)
     else
-      effort.start_offset = time_to_seconds(row_time_data.first) || 0
+      proposed_offset = time_to_seconds(row_time_data.first) || 0
+      effort.start_offset = proposed_offset unless proposed_offset == 0 # Avoid inadvertently destroying existing offsets
       row_time_data[0] = 0 unless row_time_data[1..-1].compact.empty?
     end
     effort.save if effort.changed?
   end
 
   def split_time_build(time_point)
-    SplitTime.new(effort_id: effort.id,
-                  time_point: time_point,
-                  time_from_start: convert_to_seconds(time_point),
-                  created_by: current_user_id,
-                  updated_by: current_user_id)
+    split_time = SplitTime.find_or_initialize_by(effort_id: effort.id,
+                                                 lap: time_point.lap,
+                                                 split_id: time_point.split_id,
+                                                 sub_split_bitkey: time_point.bitkey)
+    split_time.time_from_start = convert_to_seconds(time_point)
+    split_time
   end
 
   def convert_to_seconds(time_point)
@@ -112,7 +108,7 @@ class EffortSplitTimeCreator
   end
 
   def military_times?
-    @military_times
+    time_format == 'military'
   end
 
   def validate_row_time_data

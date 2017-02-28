@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-xs-10">
+    <% if @aid_station_detail.stopped_effort_data.empty? %>
+        <h4><%= "No efforts stopped at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
+    <% else %>
+        <h4><%= "Efforts stopped at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th class="text-center">Bib</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>From</th>
+            <th class="text-center">Valid Reported Time Prior to Stop</th>
+            <th class="text-center"><%= "Stopped at #{@aid_station_detail.split_name}" %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @aid_station_detail.stopped_effort_data.each do |row| %>
+              <tr>
+                <td class="text-center"><%= row[:bib_number] %></td>
+                <td class="text-nowrap">
+                  <strong><%= link_to row[:full_name], effort_path(row[:effort_id]) %></strong></td>
+                <td class="text-nowrap"><%= row[:bio_historic] %></td>
+                <td class="text-nowrap"><%= row[:state_and_country] %></td>
+                <td class="text-center text-nowrap"><%= display_progress_info(row[:prior_to_here_info]) %></td>
+                <td class="text-center text-nowrap"><%= display_progress_times_only(row[:stopped_here_info]) %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% end %>
+  </div>
+</div>

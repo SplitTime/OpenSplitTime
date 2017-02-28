@@ -110,6 +110,42 @@ RSpec.describe LapSplit, type: :model do
     end
   end
 
+  describe '#names' do
+    it 'returns the split name and lap number in an array if the split has one sub_split' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      lap_split = LapSplit.new(lap, split)
+      expected = ['Test Start Lap 1']
+      expect(lap_split.names).to eq(expected)
+    end
+
+    it 'returns the split names with extensions and lap number in an array if the split has multiple sub_splits' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      lap_split = LapSplit.new(lap, split)
+      expected = ['Test Aid Station In Lap 1', 'Test Aid Station Out Lap 1']
+      expect(lap_split.names).to eq(expected)
+    end
+  end
+
+  describe '#names_without_laps' do
+    it 'returns the split name in an array if the split has one sub_split' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      lap_split = LapSplit.new(lap, split)
+      expected = ['Test Start']
+      expect(lap_split.names_without_laps).to eq(expected)
+    end
+
+    it 'returns the split names with extensions in an array if the split has multiple sub_splits' do
+      lap = 1
+      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      lap_split = LapSplit.new(lap, split)
+      expected = ['Test Aid Station In', 'Test Aid Station Out']
+      expect(lap_split.names_without_laps).to eq(expected)
+    end
+  end
+
   describe '#name' do
     it 'returns the split name and lap number if the split has one sub_split' do
       lap = 1

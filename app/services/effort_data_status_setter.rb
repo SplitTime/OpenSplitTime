@@ -73,7 +73,7 @@ class EffortDataStatusSetter
   end
 
   def beyond_drop?
-    dropped_lap_split && lap_splits.index(subject_end_lap_split) > lap_splits.index(dropped_lap_split)
+    ordered_split_times.included_after?(first_dropped_split_time, subject_split_time)
   end
 
   def time_predictor
@@ -87,8 +87,8 @@ class EffortDataStatusSetter
     @mock_start_split_time ||= SplitTime.new(time_point: ordered_split_times.first.time_point, time_from_start: 0)
   end
 
-  def dropped_lap_split
-    @dropped_lap_split ||= indexed_lap_splits[effort.dropped_lap_split_key]
+  def first_dropped_split_time
+    ordered_split_times.find(&:stopped_here)
   end
 
   def indexed_lap_splits

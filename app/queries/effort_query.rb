@@ -1,6 +1,16 @@
 class EffortQuery
+  SANITIZE_COLUMN_NAMES = %w(id event_id participant_id wave bib_number city state_code age created_at updated_at
+created_by updated_by first_name last_name gender country_code birthdate data_status start_offset dropped_split_id
+concealed beacon_url report_url photo_url dropped_lap laps_required event_start_time final_split_name final_lap_distance
+final_lap final_split_id final_bitkey final_time final_split_time_id stopped_split_time_id stopped_lap stopped_split_id
+stopped_bitkey stopped_time final_lap_complete course_distance started laps_started laps_finished final_distance finished
+stopped dropped overall_rank gender_rank)
 
-  def self.with_finish_status(effort_fields: '*')
+  def self.rank_and_finish_status(args)
+    effort_fields = Array.wrap(args[:effort_fields])
+    order_by = Array.wrap(args[:order_by])
+    select_sql = sanitize_and_join(effort_fields) || '*'
+    order_sql = sanitize_and_join(order_by) || 'overall_rank'
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),
@@ -8,74 +18,79 @@ class EffortQuery
                                        FROM efforts
                                        INNER JOIN existing_scope ON existing_scope.id = efforts.id)
 
-      SELECT *, 
-            CASE 
-              when laps_required = 0 then 
-                CASE
-                  when dropped_split_id is null then false
-                  else true
-                end  
-              else
-                CASE
-                  when laps_finished >= laps_required then true 
-                  else false 
-                END 
-            END
-            AS finished
+      SELECT #{select_sql},
+          rank() over 
+            (ORDER BY dropped, 
+                      final_lap desc, 
+                      final_lap_distance desc, 
+                      final_time, 
+                      gender desc, 
+                      age desc) 
+          AS overall_rank, 
+          rank() over 
+            (PARTITION BY gender 
+             ORDER BY dropped, 
+                      final_lap desc, 
+                      final_lap_distance desc, 
+                      final_time, 
+                      gender desc, 
+                      age desc) 
+          AS gender_rank
       FROM
-          (SELECT #{effort_fields}, 
-                rank() over 
-                  (ORDER BY dropped, 
-                            final_lap desc, 
-                            final_lap_distance desc, 
-                            final_time, 
-                            gender desc, 
-                            age desc) 
-                AS overall_rank, 
-                rank() over 
-                  (PARTITION BY gender 
-                   ORDER BY dropped, 
-                            final_lap desc, 
-                            final_lap_distance desc, 
-                            final_time, 
-                            gender desc, 
-                            age desc) 
-                AS gender_rank,
-                true AS started,
-                final_lap AS laps_started,
-                CASE
-                  when final_lap_complete is true then final_lap 
-                  else final_lap - 1 
-                end 
-                AS laps_finished,
-                (final_lap - 1) * course_distance + final_lap_distance AS final_distance,
-                event_start_time
-          FROM 
+        (SELECT *,
+          CASE
+            when stopped and not finished then true else false
+          END
+          AS dropped
+        FROM
+          (SELECT *,
+              CASE
+                when finished or stopped_split_time_id is not null then true else false 
+              end 
+              AS stopped
+          FROM
+            (SELECT *,
+                CASE 
+                when laps_required = 0 then
+                  CASE when stopped_split_time_id is null then false else true END  
+                else
+                  CASE when laps_finished >= laps_required then true else false END 
+                END
+                AS finished
+            FROM
+              (SELECT *, 
+                  true AS started,
+                  final_lap AS laps_started,
+                  CASE
+                    when final_lap_complete is true then final_lap 
+                    else final_lap - 1 
+                  end 
+                  AS laps_finished,
+                  (final_lap - 1) * course_distance + final_lap_distance AS final_distance,
+                  event_start_time
+              FROM 
                 (SELECT DISTINCT ON(efforts_scoped.id) 
                     efforts_scoped.*,
                     events.laps_required,
                     events.start_time as event_start_time,
-                    CASE 
-                      when laps_required = 0 then false
-                      else
-                        CASE
-                          when efforts_scoped.dropped_split_id is null then false 
-                          else true 
-                        END 
-                    END
-                    AS dropped, 
                     splits.base_name as final_split_name,
                     splits.distance_from_start as final_lap_distance,
                     split_times.lap as final_lap,
                     split_times.split_id as final_split_id, 
                     split_times.sub_split_bitkey as final_bitkey,
                     split_times.time_from_start as final_time,
+                    split_times.id as final_split_time_id,
+                    stopped_split_time_id,
+                    stopped_lap,
+                    stopped_split_id,
+                    stopped_bitkey,
+                    stopped_time,
                     CASE
-                      when splits.kind = 1 then true 
-                      else false 
-                      end 
-                    AS final_lap_complete,
-                    course_distance
+                        when splits.kind = 1 then true 
+                        else false 
+                        end 
+                      AS final_lap_complete,
+                      course_distance
                 FROM efforts_scoped
                     INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
                     INNER JOIN splits ON splits.id = split_times.split_id
@@ -84,15 +99,27 @@ class EffortQuery
                         FROM courses
                         INNER JOIN splits ON splits.course_id = courses.id
                         WHERE splits.kind = 1)
-                AS course_subquery ON events.course_id = course_subquery.course_id
-                
-                ORDER BY efforts_scoped.id, 
-                         final_lap desc,
-                         final_lap_distance desc, 
-                         final_bitkey desc) 
-                AS subquery)
-          AS all_but_finished
-      ORDER BY overall_rank
+                  AS course_subquery ON events.course_id = course_subquery.course_id
+                  LEFT OUTER JOIN (SELECT split_times.id as stopped_split_time_id, 
+                             split_times.lap as stopped_lap, 
+                             split_times.split_id as stopped_split_id, 
+                             split_times.sub_split_bitkey as stopped_bitkey, 
+                             split_times.time_from_start as stopped_time, 
+                             split_times.effort_id
+                        FROM split_times
+                        WHERE split_times.stopped_here = true)
+                  AS stopped_subquery ON split_times.effort_id = stopped_subquery.effort_id
+                ORDER BY  efforts_scoped.id, 
+                      final_lap desc,
+                          final_lap_distance desc, 
+                          final_bitkey desc,
+                          stopped_time desc)
+                AS base_subquery)
+              AS distance_subquery)
+            AS finished_subquery)
+          AS stopped_subquery)
+        AS dropped_subquery
+      ORDER BY #{order_sql}
     SQL
     query.squish
   end
@@ -150,5 +177,9 @@ class EffortQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }
+  end
+
+  def self.sanitize_and_join(column_names)
+    (column_names || []).select { |column_name| SANITIZE_COLUMN_NAMES.include?(column_name.to_s) }.join(', ').presence
   end
 end

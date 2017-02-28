@@ -1,5 +1,6 @@
 class EventSerializer < BaseSerializer
   attributes :id, :course_id, :organization_id, :name, :start_time, :concealed, :laps_required, :staging_id
+  link(:self) { api_v1_event_path(object.staging_id) }
 
   has_many :efforts
   has_many :splits

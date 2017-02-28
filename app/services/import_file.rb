@@ -7,12 +7,13 @@ class ImportFile
   def initialize(file_url)
     @spreadsheet ||= open_spreadsheet(file_url)
     return false unless spreadsheet
-    @header1 = spreadsheet.row(1)
-    @header2 = spreadsheet.row(2)
+    @header1 ||= spreadsheet.row(1)
+    @header2 ||= spreadsheet.row(2)
   end
 
   def split_offset
-    start_column_index = header1_downcase.index("start")
+    start_column_header = header1_downcase.find { |heading| heading =~ /start/ }
+    start_column_index = header1_downcase.index(start_column_header)
     start_column_index ? start_column_index + 1 : header1.size
   end
 

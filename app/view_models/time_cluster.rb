@@ -1,17 +1,29 @@
 class TimeCluster
+  attr_reader :split_times_data
 
-  attr_reader :drop_display
+  def initialize(args)
+    ArgsValidator.validate(params: args,
+                           required: [:finish, :split_times_data, :start_time],
+                           exclusive: [:finish, :split_times_data, :prior_split_time,
+                                       :immediate_prior_split_time, :start_time],
+                           class: self.class)
+    @finish = args[:finish]
+    @split_times_data = args[:split_times_data]
+    @prior_split_time = args[:prior_split_time]
+    @immediate_prior_split_time = args[:immediate_prior_split_time]
+    @start_time = args[:start_time]
+  end
 
-  def initialize(finish, split_times_data, prior_time, start_time, drop_display = false)
-    @finish = finish
-    @split_times_data = split_times_data
-    @prior_time = prior_time
-    @start_time = start_time
-    @drop_display = drop_display
+  def drop_display?
+    immediate_prior_split_time.try(:stopped_here)
   end
 
   def finish?
     @finish
+  end
+
+  def aid_time_recordable?
+    times_from_start.count > 1
   end
 
   def segment_time
@@ -40,7 +52,15 @@ class TimeCluster
     @split_time_ids ||= split_times_data.map { |st| st && st[:id] }
   end
 
+  def stopped_here_flags
+    @stopped_here_flags ||= split_times_data.map { |st| st && st[:stopped_here] }
+  end
+
   private
 
-  attr_reader :split, :split_times_data, :start_time, :prior_time
+  attr_reader :split, :start_time, :prior_split_time, :immediate_prior_split_time
+
+  def prior_time
+    prior_split_time.try(:time_from_start)
+  end
 end

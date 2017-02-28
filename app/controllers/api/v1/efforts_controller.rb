@@ -43,8 +43,6 @@ class Api::V1::EffortsController < ApiController
   end
 
   def effort_params
-    params.require(:effort).permit(:id, :event_id, :participant_id, :wave, :bib_number, :city, :state_code, :country_code,
-                                   :age, :first_name, :last_name, :gender, :birthdate, :start_offset, :dropped_split_id,
-                                   :dropped_lap, :concealed, :beacon_url, :report_url, :photo_url)
+    params.require(:effort).permit(*Effort::PERMITTED_PARAMS)
   end
 end

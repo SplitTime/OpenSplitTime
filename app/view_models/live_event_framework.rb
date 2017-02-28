@@ -32,6 +32,10 @@ class LiveEventFramework
     @efforts_finished ||= event_efforts.select(&:finished?)
   end
 
+  def efforts_stopped
+    @efforts_stopped ||= event_efforts.select(&:stopped?)
+  end
+
   def efforts_dropped
     @efforts_dropped ||= event_efforts.select(&:dropped?)
   end
@@ -48,6 +52,10 @@ class LiveEventFramework
     efforts_finished.size
   end
 
+  def efforts_stopped_count
+    efforts_stopped.size
+  end
+
   def efforts_dropped_count
     efforts_dropped.size
   end
@@ -60,12 +68,16 @@ class LiveEventFramework
     efforts_started.map(&:id)
   end
 
-  def efforts_dropped_ids
-    efforts_dropped.map(&:id)
-  end
-
   def efforts_finished_ids
     efforts_finished.map(&:id)
+  end
+
+  def efforts_stopped_ids
+    efforts_stopped.map(&:id)
+  end
+
+  def efforts_dropped_ids
+    efforts_dropped.map(&:id)
   end
 
   def efforts_in_progress_ids
@@ -73,7 +85,7 @@ class LiveEventFramework
   end
 
   def event_efforts
-    @event_efforts ||= event.efforts.sorted_with_finish_status
+    @event_efforts ||= event.efforts.ranked_with_finish_status
   end
 
   def lap_splits

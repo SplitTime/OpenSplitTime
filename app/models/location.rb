@@ -1,4 +1,6 @@
 class Location < ActiveRecord::Base
+  PERMITTED_PARAMS = [:id, :name, :latitude, :longitude, :elevation, :elevation_as_entered, :description]
+
   include Auditable
   include UnitConversions
   strip_attributes collapse_spaces: true

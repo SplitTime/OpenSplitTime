@@ -5,6 +5,10 @@ class Effort < ActiveRecord::Base
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]]
+  PERMITTED_PARAMS = [:id, :event_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
+                      :city, :state_code, :country_code, :start_time, :finished, :concealed, :start_time, :start_offset,
+                      :beacon_url, :report_url, :photo_url,
+                      split_times_attributes: [*SplitTime::PERMITTED_PARAMS]]
 
   include Auditable
   include Concealable
@@ -24,14 +28,16 @@ class Effort < ActiveRecord::Base
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
-  validate :dropped_attributes_consistent
 
   before_save :reset_age_from_birthdate
 
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(participant_id: nil) }
-  scope :started, -> { joins(split_times: :split).where(splits: {kind: 0}).uniq }
+  scope :started, -> { joins(:split_times).uniq }
+  scope :with_ordered_split_times,
+        -> { eager_load(:split_times).includes(split_times: :split)
+                 .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
 
   delegate :organization, to: :event
 
@@ -57,15 +63,11 @@ class Effort < ActiveRecord::Base
     end
   end
 
-  def self.sorted_with_finish_status(effort_fields: '*')
+  def self.ranked_with_finish_status(args = {})
     return [] if EffortQuery.existing_scope_sql.blank?
-    query = EffortQuery.with_finish_status(effort_fields: effort_fields)
+    query = EffortQuery.rank_and_finish_status(effort_fields: (args[:effort_fields]),
+                                               order_by: args[:order_by])
     self.find_by_sql(query)
-  end
-
-  def dropped_attributes_consistent
-    errors.add(:dropped_split_id, 'a dropped_split_id exists with no dropped_lap') if dropped_split_id && !dropped_lap
-    errors.add(:dropped_lap, 'a dropped_lap exists with no dropped_split_id') if !dropped_split_id && dropped_lap
   end
 
   def reset_age_from_birthdate
@@ -134,36 +136,31 @@ class Effort < ActiveRecord::Base
   end
 
   # For an unlimited-lap (time-based) event, an effort is 'finished' when the person decides not to continue.
-  # At that time, the dropped_attributes are set, but the effort is still considered to have finished.
+  # At that time, the stopped_here split_time is set, and the effort is considered to have finished.
   def finished?
-    attributes['finished'] ||
-        (laps_required.zero? ? dropped_split_id.present? : (laps_finished >= laps_required))
+    return attributes['finished'] if attributes.has_key?('finished')
+    (laps_required.zero? ? split_times.any?(&:stopped_here) : (laps_finished >= laps_required))
   end
 
-  # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'.
-  def dropped?
-    attributes['dropped'] ||
-        (laps_required.zero? ? false : dropped_split_id.present?)
+  def stopped?
+    return attributes['stopped'] if attributes.has_key?('stopped')
+    finished? || split_times.any?(&:stopped_here)
   end
 
   def started?
-    attributes['started'] || start_split_times.present?
+    return attributes['started'] if attributes.has_key?('started')
+    split_times.present?
+  end
+
+  # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'
+  # (the logic cannot return true for that type of event).
+  def dropped?
+    stopped? && !finished?
   end
 
   def in_progress?
-    started? && !dropped? && !finished?
+    started? && !stopped?
   end
-
-  def dropped_lap_split_key
-    dropped_lap && dropped_split_id && LapSplitKey.new(dropped_lap, dropped_split_id)
-  end
-  alias_method :dropped_key, :dropped_lap_split_key
-
-  def dropped_lap_split_key=(key)
-    self.dropped_lap = key.try(:lap)
-    self.dropped_split_id = key.try(:split_id)
-  end
-  alias_method :dropped_key=, :dropped_lap_split_key=
 
   def finish_status
     case
@@ -219,31 +216,47 @@ class Effort < ActiveRecord::Base
   end
 
   def destroy_split_times(split_time_ids)
+    stop_existed = stopped_split_time.present?
     split_times.where(id: split_time_ids).destroy_all
     set_data_status
-    set_dropped_attributes if dropped?
+    if stop_existed && stopped_split_time.blank?
+      stop
+    end
   end
 
   def set_data_status
     EffortDataStatusSetter.set_data_status(effort: self)
   end
 
-  def set_dropped_attributes
-    DroppedAttributesSetter.set_attributes(efforts: Effort.where(id: id))
-  end
-
-  def undrop!
-    self.dropped_lap_split_key = nil
-    save
-  end
-
-  def drop!(lap_split_key)
-    self.dropped_lap_split_key = lap_split_key
-    save
-  end
-
   def enriched
-    event.efforts.sorted_with_finish_status.find { |e| e.id == id }
+    event.efforts.ranked_with_finish_status.find { |e| e.id == id }
+  end
+
+  def with_ordered_split_times
+    Effort.where(id: id).with_ordered_split_times.first
+  end
+
+  # Methods related to stopped split_time
+
+  # Uses a reverse sort in order to get the most recent stopped_here split_time
+  # if more than one exists
+  def stopped_split_time
+    ordered_split_times.reverse.find(&:stopped_here)
+  end
+
+  def stopped_time_point
+    stopped_split_time.try(:time_point)
+  end
+
+  def stop
+    EffortStopper.stop(effort: self)
+  end
+
+  def unstop
+    split_times.each do |split_time|
+      split_time.stopped_here = false
+      split_time.save if split_time.changed?
+    end
   end
 
   def should_be_concealed?

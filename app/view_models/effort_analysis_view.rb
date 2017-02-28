@@ -1,13 +1,11 @@
-class EffortAnalysisView
+class EffortAnalysisView < EffortWithLapSplitRows
 
-  attr_reader :effort, :analysis_rows
+  attr_reader :effort
   delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender,
            :overall_place, :gender_place, to: :effort
 
-  def initialize(args_effort)
+  def post_initialize(args_effort)
     @effort = args_effort.enriched || args_effort
-    @analysis_rows = []
-    create_analysis_rows
   end
 
   def total_segment_time
@@ -64,19 +62,26 @@ class EffortAnalysisView
     effort.final_split_name
   end
 
-  def event
-    @event ||= effort.event
+  def analysis_rows
+    @analysis_rows ||= typical_effort.lap_split_rows.blank? ? nil :
+        lap_splits.reject(&:start?)
+            .map { |lap_split| EffortAnalysisRow.new(lap_split: lap_split,
+                                                     split_times: related_split_times(lap_split),
+                                                     prior_lap_split: lap_splits.elements_before(lap_split).last,
+                                                     prior_split_time: prior_split_time(lap_split),
+                                                     start_time: effort_start_time,
+                                                     typical_row: indexed_typical_rows[lap_split.key],
+                                                     show_laps: event.multiple_laps?) }
   end
 
   private
 
-  attr_accessor :indexed_analysis_rows
-
   def typical_effort
-    @typical_effort ||= mock_finish_time && MockEffort.new(lap_splits: lap_splits,
-                                                           expected_time: mock_finish_time,
-                                                           start_time: effort_start_time,
-                                                           show_laps: event.multiple_laps?)
+    @typical_effort ||= mock_finish_time &&
+        MockEffort.new(event: event,
+                       expected_time: mock_finish_time,
+                       start_time: effort_start_time,
+                       comparison_time_points: ordered_split_times.map(&:time_point))
   end
 
   def indexed_typical_rows
@@ -99,30 +104,6 @@ class EffortAnalysisView
 
   def similar_effort_ids
     @similar_effort_ids ||= SimilarEffortFinder.new(split_time: ordered_split_times.last).effort_ids
-  end
-
-  def create_analysis_rows
-    return unless typical_effort.lap_split_rows.present?
-    prior_split_time = related_split_times(lap_splits.first).first
-    prior_lap_split = lap_splits.first
-    lap_splits.each do |lap_split|
-      next if lap_split.start?
-      analysis_row = EffortAnalysisRow.new(lap_split: lap_split,
-                                           split_times: related_split_times(lap_split),
-                                           prior_lap_split: prior_lap_split,
-                                           prior_split_time: prior_split_time,
-                                           start_time: effort_start_time,
-                                           typical_row: indexed_typical_rows[lap_split.key],
-                                           show_laps: event.multiple_laps?)
-      analysis_rows << analysis_row
-      prior_split_time = analysis_row.split_times.compact.last if analysis_row.split_times.compact.present?
-      prior_lap_split = lap_splits.find { |lap_split| lap_split.key == prior_split_time.lap_split_key }
-    end
-    self.indexed_analysis_rows = analysis_rows.index_by(&:key)
-  end
-
-  def related_split_times(lap_split)
-    lap_split.time_points.map { |time_point| indexed_split_times[time_point] }
   end
 
   def effort_start_time
@@ -151,21 +132,5 @@ class EffortAnalysisView
 
   def course
     @course ||= event.course
-  end
-
-  def ordered_split_times
-    @ordered_split_times ||= effort.ordered_split_times.to_a
-  end
-
-  def indexed_split_times
-    @indexed_split_times ||= ordered_split_times.index_by(&:time_point)
-  end
-
-  def lap_splits
-    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(last_lap)
-  end
-
-  def last_lap
-    ordered_split_times.map(&:lap).last || 1
   end
 end

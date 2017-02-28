@@ -43,6 +43,6 @@ class Api::V1::CoursesController < ApiController
   end
 
   def course_params
-    params.require(:course).permit(Course::PERMITTED_PARAMS)
+    params.require(:course).permit(*Course::PERMITTED_PARAMS)
   end
 end

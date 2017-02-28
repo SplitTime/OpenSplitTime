@@ -60,7 +60,7 @@ class LocationsController < ApplicationController
   private
 
   def location_params
-    params.require(:location).permit(:name, :description, :elevation, :elevation_as_entered, :latitude, :longitude)
+    params.require(:location).permit(*Location::PERMITTED_PARAMS)
   end
 
   def query_params

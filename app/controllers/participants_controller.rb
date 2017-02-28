@@ -116,8 +116,7 @@ class ParticipantsController < ApplicationController
   private
 
   def participant_params
-    params.require(:participant).permit(:search, :first_name, :last_name, :gender, :birthdate,
-                                        :city, :state_code, :country_code, :email, :phone, :concealed)
+    params.require(:participant).permit(*Participant::PERMITTED_PARAMS)
   end
 
   def query_params

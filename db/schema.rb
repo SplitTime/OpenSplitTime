@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217093406) do
+ActiveRecord::Schema.define(version: 20170218233003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,18 +151,19 @@ ActiveRecord::Schema.define(version: 20170217093406) do
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "split_times", force: :cascade do |t|
-    t.integer  "effort_id",        null: false
-    t.integer  "split_id",         null: false
-    t.float    "time_from_start",  null: false
+    t.integer  "effort_id",                        null: false
+    t.integer  "split_id",                         null: false
+    t.float    "time_from_start",                  null: false
     t.integer  "data_status"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.integer  "sub_split_bitkey"
     t.boolean  "pacer"
     t.string   "remarks"
     t.integer  "lap"
+    t.boolean  "stopped_here",     default: false
   end
 
   add_index "split_times", ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true, using: :btree

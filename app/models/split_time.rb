@@ -4,6 +4,8 @@ class SplitTime < ActiveRecord::Base
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
+  PERMITTED_PARAMS = [:id, :effort_id, :lap, :split_id, :time_from_start, :bitkey, :sub_split_bitkey,
+                      :stopped_here, :elapsed_time, :time_of_day, :military_time, :data_status]
 
   include Auditable
   include Concealable
@@ -29,7 +31,6 @@ class SplitTime < ActiveRecord::Base
                                                     .where(aid_stations: {id: aid_station_id}) }
 
   before_validation :delete_if_blank
-  after_update :set_effort_data_status, if: :time_from_start_changed?
 
   validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],

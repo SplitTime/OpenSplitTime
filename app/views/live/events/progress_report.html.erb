@@ -15,6 +15,7 @@
     <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>
     <%= "Finished: #{@progress_display.efforts_finished_count}" %><br/>
     <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
+    <%= "Stopped: #{@progress_display.efforts_stopped_count}" %><br/>
     <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
   </div>
   <div class="col-xs-6">

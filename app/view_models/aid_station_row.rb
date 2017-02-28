@@ -5,7 +5,8 @@ class AidStationRow
   delegate :event, :split, :split_id, to: :aid_station
   delegate :expected_day_and_time, :prior_valid_display_data, :next_valid_display_data, to: :live_event
 
-  AID_EFFORT_CATEGORIES = [:recorded_in, :recorded_out, :recorded_here, :dropped_here, :in_aid, :missed, :expected]
+  AID_EFFORT_CATEGORIES = [:recorded_in, :recorded_out, :recorded_here, :stopped_here,
+                           :dropped_here, :in_aid, :missed, :expected]
   IN_BITKEY = SubSplit::IN_BITKEY
   OUT_BITKEY = SubSplit::OUT_BITKEY
 
@@ -40,7 +41,8 @@ class AidStationRow
   private
 
   attr_reader :event_framework, :split_times
-  delegate :lap_split_keys, :time_points, :efforts_dropped, :efforts_started, :efforts_in_progress, to: :event_framework
+  delegate :lap_split_keys, :time_points, :efforts_stopped, :efforts_dropped, :efforts_started,
+           :efforts_in_progress, to: :event_framework
 
   def row_recorded_in_lap_keys
     @row_recorded_in_lap_keys ||=
@@ -56,10 +58,16 @@ class AidStationRow
     row_recorded_in_lap_keys | row_recorded_out_lap_keys
   end
 
+  def row_stopped_here_lap_keys
+    @row_stopped_here_lap_keys ||=
+        efforts_stopped.select { |effort| effort.stopped_split_id == split_id }
+            .map { |effort| EffortLapKey.new(effort.id, effort.stopped_lap) }
+  end
+
   def row_dropped_here_lap_keys
     @row_dropped_here_lap_keys ||=
-        efforts_dropped.select { |effort| effort.dropped_split_id == split_id }
-            .map { |effort| EffortLapKey.new(effort.id, effort.dropped_lap) }
+        efforts_dropped.select { |effort| effort.stopped_split_id == split_id }
+            .map { |effort| EffortLapKey.new(effort.id, effort.stopped_lap) }
   end
 
   def row_missed_lap_keys
@@ -124,6 +132,8 @@ class AidStationRow
       "#{'is'.pluralize(count)} in aid"
     when :missed
       'passed through without being recorded'
+    when :stopped_here
+      'stopped'
     when :dropped_here
       'dropped'
     when :expected

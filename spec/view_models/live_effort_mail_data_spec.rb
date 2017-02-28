@@ -32,37 +32,53 @@ RSpec.describe LiveEffortMailData do
   end
 
   describe '#effort_data' do
+    let(:participant) { FactoryGirl.build_stubbed(:participant) }
+    let(:event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
+    let(:test_effort) { event.efforts.first }
+    let(:split_times) { test_effort.split_times }
+
     before do
       FactoryGirl.reload
     end
 
     it 'returns a hash containing effort and split_time data' do
-      participant = FactoryGirl.build_stubbed(:participant)
-      effort = FactoryGirl.build_stubbed(:effort, id: 101, first_name: 'Joe', last_name: 'Doe', dropped_split_id: 303)
-      event = FactoryGirl.build_stubbed(:event, id: 202, name: 'Testrock 100')
-      allow(effort).to receive(:event).and_return(event)
-      in_split_time = split_times_101[3]
-      out_split_time = split_times_101[4]
+      effort = test_effort
+      allow(effort).to receive(:ordered_split_times).and_return(split_times)
+      in_split_time = split_times[1]
+      out_split_time = split_times[2]
+      out_split_time.stopped_here = true
+      multi_lap = false
+      validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
+    end
+
+    it 'returns a hash containing effort and split_time data' do
+      effort = test_effort
+      allow(effort).to receive(:ordered_split_times).and_return(split_times)
+      in_split_time = split_times[1]
+      out_split_time = split_times[2]
+      out_split_time.stopped_here = true
+      multi_lap = true
+      validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
+    end
+
+    def validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
       split_times = [in_split_time, out_split_time]
-      allow(in_split_time).to receive(:effort).and_return(effort)
-      allow(in_split_time).to receive(:split).and_return(split3)
-      allow(out_split_time).to receive(:effort).and_return(effort)
-      allow(out_split_time).to receive(:split).and_return(split3)
-      split_times_data = [{split_id: 103,
-                           split_name: 'Split 1 In',
-                           day_and_time: 'Friday, July 1, 2016  9:20AM',
-                           pacer: nil},
-                          {split_id: 103,
-                           split_name: 'Split 1 Out',
-                           day_and_time: 'Friday, July 1, 2016  9:30AM',
-                           pacer: nil}]
-      mail_data = LiveEffortMailData.new(participant: participant, split_times: split_times)
-      expected = {full_name: 'Joe Doe',
-                  event_name: 'Testrock 100',
-                  dropped_split_id: 303,
+      in_split_name = multi_lap ? in_split_time.split_name_with_lap : in_split_time.split_name
+      out_split_name = multi_lap ? out_split_time.split_name_with_lap : out_split_time.split_name
+      split_times_data = [{split_name: in_split_name,
+                           day_and_time: in_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+                           pacer: nil,
+                           stopped_here: in_split_time.stopped_here},
+                          {split_name: out_split_name,
+                           day_and_time: out_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+                           pacer: nil,
+                           stopped_here: out_split_time.stopped_here}]
+      mail_data = LiveEffortMailData.new(participant: participant, split_times: split_times, multi_lap: multi_lap)
+      expected = {full_name: effort.full_name,
+                  event_name: event.name,
                   split_times_data: split_times_data,
-                  effort_id: 101,
-                  event_id: 202}
+                  effort_id: effort.id,
+                  event_id: event.id}
       expect(mail_data.effort_data).to eq(expected)
     end
   end

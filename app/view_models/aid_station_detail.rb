@@ -28,6 +28,14 @@ class AidStationDetail < LiveEventFramework
                                                 :last_reported_info, :due_next_info, :expected_here_info) }
   end
 
+  def stopped_effort_data
+    @stopped_effort_data ||=
+        category_effort_rows[:stopped_here]
+            .sort_by { |row| guaranteed_sortable(row.stopped_here_info) }
+            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic, :state_and_country,
+                                                :prior_to_here_info, :stopped_here_info) }
+  end
+
   def dropped_effort_data
     @dropped_effort_data ||=
         category_effort_rows[:dropped_here]

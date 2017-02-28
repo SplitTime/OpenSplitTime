@@ -40,8 +40,7 @@ class ArgsValidator
   def report_deprecations
     deprecated.each do |deprecation_pair|
       deprecation_pair.each do |deprecated_arg, replacement_arg|
-        warn "use of '#{deprecated_arg}' #{for_klass}has been deprecated in favor of '#{replacement_arg}'" if
-            params[deprecated_arg]
+        warn "use of '#{deprecated_arg}' #{for_klass}has been deprecated in favor of '#{replacement_arg}'" if params[deprecated_arg]
       end
     end
   end
@@ -52,18 +51,17 @@ class ArgsValidator
 
   def validate_required_params
     required.each do |required_arg|
-      raise ArgumentError, "arguments #{for_klass}must include #{required_arg}" unless params[required_arg]
+      raise ArgumentError, "arguments #{for_klass}must include #{required_arg}" if params[required_arg].nil?
     end
   end
 
   def validate_required_alternatives
     if required_alternatives.present?
       required_groups = required_alternatives.map { |alternative| Array.wrap(alternative) }
-      unless required_groups.any? { |group| group.all? { |arg| params.keys.include?(arg) } }
-        raise ArgumentError,
-              "arguments #{for_klass}must include one of #{required_groups
-                                                               .map(&:to_sentence)
-                                                               .to_sentence(two_words_connector: ' or ', last_word_connector: ', or ')}"
+      unless required_groups.any? { |group| group.none? { |arg| params[arg].nil? } }
+        raise ArgumentError, "arguments #{for_klass}must include one of " +
+            "#{required_groups.map(&:to_sentence)
+                   .to_sentence(two_words_connector: ' or ', last_word_connector: ', or ')}"
       end
     end
   end

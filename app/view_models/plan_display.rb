@@ -4,6 +4,7 @@ class PlanDisplay
 
   delegate :relevant_events, :relevant_efforts, :lap_split_rows, :total_segment_time, :total_time_in_aid,
            :relevant_efforts_count, :event_years_analyzed, to: :mock_effort
+  delegate :multiple_laps?, to: :event
 
   def initialize(course, params)
     @course = course
@@ -24,6 +25,10 @@ class PlanDisplay
     @expected_time = expected_time_from_param(params[:expected_time])
   end
 
+  def expected_laps
+    params[:expected_laps].present? ? [params[:expected_laps].to_i, 20].min : 1
+  end
+
   def course_name
     course.name
   end
@@ -34,11 +39,12 @@ class PlanDisplay
 
   def mock_effort
     @mock_effort ||=
-        MockEffort.new(event: event, expected_time: expected_time, start_time: start_time) if expected_time && start_time
+        MockEffort.new(event: event, expected_time: expected_time,
+                       expected_laps: expected_laps, start_time: start_time) if expected_time && start_time
   end
 
   def lap_splits
-    @lap_splits ||= course.lap_splits_through(1)
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(expected_laps)
   end
 
   def expected_time_from_param(entered_time)

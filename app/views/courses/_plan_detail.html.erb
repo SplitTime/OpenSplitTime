@@ -20,7 +20,7 @@
             <td class="text-center"><strong><%= time_format_hhmm(row.segment_time) %></strong>
             </td>
             <td class="text-right"><strong><%= time_format_minutes(@plan_display.total_time_in_aid) %></strong></td>
-        <% elsif row.intermediate? %>
+        <% else %>
             <td><%= row.name %></td>
             <td class="text-right"><%= d(row.distance_from_start) %></td>
             <td class="text-center"><%= row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>

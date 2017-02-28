@@ -6,13 +6,13 @@ class MockEffort < EffortWithLapSplitRows
     ArgsValidator.validate(params: args,
                            required: [:event, :expected_time, :start_time],
                            exclusive: [:event, :expected_time, :start_time, :comparison_time_points,
-                                       :plan_laps, :effort_finder, :times_planner],
+                                       :expected_laps, :effort_finder, :times_planner],
                            class: self.class)
     @event = args[:event]
     @expected_time = args[:expected_time]
     @start_time = args[:start_time]
     @comparison_time_points = args[:comparison_time_points]
-    @plan_laps = args[:plan_laps]
+    @expected_laps = args[:expected_laps]
     @effort_finder = args[:effort_finder] || SimilarEffortFinder.new(time_point: finish_time_point,
                                                               time_from_start: expected_time,
                                                               finished: true)
@@ -56,7 +56,7 @@ class MockEffort < EffortWithLapSplitRows
 
   private
 
-  attr_reader :comparison_time_points, :plan_laps, :effort_finder, :times_planner
+  attr_reader :comparison_time_points, :expected_laps, :effort_finder, :times_planner
 
   def ordered_split_times
     @ordered_split_times ||= comparison_time_points.present? ?
@@ -88,6 +88,6 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def last_lap
-    plan_laps || comparison_time_points.map(&:lap).last || 1
+    expected_laps || (comparison_time_points && comparison_time_points.map(&:lap).last) || 1
   end
 end

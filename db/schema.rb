@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170218233003) do
+ActiveRecord::Schema.define(version: 20170228155217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,8 @@ ActiveRecord::Schema.define(version: 20170218233003) do
     t.string   "report_url"
     t.string   "photo_url"
     t.integer  "dropped_lap"
+    t.string   "phone",            limit: 15
+    t.string   "email"
   end
 
   add_index "efforts", ["event_id"], name: "index_efforts_on_event_id", using: :btree

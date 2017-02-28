@@ -11,7 +11,11 @@ class Geodata
   def self.serialize_country(country)
     {code: country.code,
      name: country.name,
-     subregions: country.subregions.map { |subregion| [subregion.code, subregion.name] }.to_h}
+     subregions: included_subregions(country).sort_by(&:name).map { |subregion| [subregion.code, subregion.name] }.to_h}
+  end
+
+  def self.included_subregions(country)
+    country.code == 'US' ? country.subregions.reject { |subregion| subregion.type == 'apo' } : country.subregions
   end
 
   def self.sorted_countries(priority = [])

@@ -89,7 +89,7 @@ class Event < ActiveRecord::Base
   end
 
   def finished?
-    efforts_ranked.none?(&:in_progress?)
+    efforts_ranked.present? && efforts_ranked.none?(&:in_progress?)
   end
 
   def efforts_ranked

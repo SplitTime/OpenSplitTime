@@ -15,7 +15,12 @@ class Geodata
   end
 
   def self.included_subregions(country)
-    country.code == 'US' ? country.subregions.reject { |subregion| subregion.type == 'apo' } : country.subregions
+    case country.code
+    when 'US'
+      country.subregions.reject { |subregion| subregion.type == 'apo' }
+    else
+      country.subregions
+    end
   end
 
   def self.sorted_countries(priority = [])

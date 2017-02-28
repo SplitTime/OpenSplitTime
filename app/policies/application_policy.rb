@@ -48,6 +48,10 @@ class ApplicationPolicy
     post_initialize(record)
   end
 
+  def index?
+    user.present?
+  end
+
   def show?
     user.present?
   end

@@ -5,6 +5,22 @@ describe Api::V1::CoursesController do
 
   let(:course) { FactoryGirl.create(:course) }
 
+  describe '#index' do
+    it 'returns a successful 200 response' do
+      get :index
+      expect(response).to be_success
+    end
+
+    it 'returns each course that the current_user is authorized to edit' do
+      FactoryGirl.create_list(:course, 3)
+      get :index
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response.size).to eq(3)
+      expect(parsed_response.map { |item| item['id'] }).to eq(Course.all.map(&:id))
+      expect(response).to be_success
+    end
+  end
+
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, id: course

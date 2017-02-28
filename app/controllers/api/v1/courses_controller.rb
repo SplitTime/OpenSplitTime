@@ -1,5 +1,11 @@
 class Api::V1::CoursesController < ApiController
-  before_action :set_course, except: :create
+  before_action :set_course, except: [:index, :create]
+
+  # Returns only those courses that the user is authorized to edit.
+  def index
+    authorize Course
+    render json: CoursePolicy::Scope.new(current_user, Course).editable
+  end
 
   def show
     authorize @course

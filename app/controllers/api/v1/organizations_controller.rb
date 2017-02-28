@@ -1,5 +1,11 @@
 class Api::V1::OrganizationsController < ApiController
-  before_action :set_organization, except: :create
+  before_action :set_organization, except: [:index, :create]
+
+  # Returns only those organizations that the user is authorized to edit.
+  def index
+    authorize Organization
+    render json: OrganizationPolicy::Scope.new(current_user, Organization).editable
+  end
 
   def show
     authorize @organization

@@ -123,7 +123,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :courses, only: [:show, :create, :update, :destroy]
+      resources :courses, only: [:index, :show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
       resources :events, only: [:show, :create, :update, :destroy], param: :staging_id do
         member { delete :remove_splits }
@@ -132,7 +132,7 @@ Rails.application.routes.draw do
         member { post :import_efforts }
       end
       resources :locations, only: [:show, :create, :update, :destroy]
-      resources :organizations, only: [:show, :create, :update, :destroy]
+      resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]
       resources :splits, only: [:show, :create, :update, :destroy]

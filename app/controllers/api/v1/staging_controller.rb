@@ -8,13 +8,6 @@ class Api::V1::StagingController < ApiController
     render json: {countries: Geodata.standard_countries_subregions}
   end
 
-  # Returns only those courses that the user is authorized to edit.
-
-  # GET /api/v1/staging/:staging_id/get_organizations
-  def get_courses
-    render json: CoursePolicy::Scope.new(current_user, Course).editable, include: ''
-  end
-
   # Returns the event and its related organization and efforts,
   # together with a course id and a list of split ids.
   # To get course and split information, use
@@ -33,13 +26,6 @@ class Api::V1::StagingController < ApiController
   def get_locations
     splits = SplitLocationFinder.splits(params).where.not(course_id: @event.course_id)
     render json: splits, each_serializer: SplitLocationSerializer
-  end
-
-  # Returns only those organizations that the user is authorized to edit.
-
-  # GET /api/v1/staging/:staging_id/get_organizations
-  def get_organizations
-    render json: OrganizationPolicy::Scope.new(current_user, Organization).editable
   end
 
   # Creates or updates the given event, course, and organization

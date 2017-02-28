@@ -97,6 +97,7 @@ class EffortsController < ApplicationController
   def update_split_times
     authorize @effort
     if @effort.update(effort_params)
+      @effort.set_data_status
       redirect_to effort_path(@effort)
     else
       flash[:danger] = "Effort failed to update for the following reasons: #{@effort.errors.full_messages}"
@@ -118,13 +119,13 @@ class EffortsController < ApplicationController
     else
       split_times.good!
     end
-    EffortDataStatusSetter.set_data_status(effort: @effort)
+    @effort.set_data_status
     redirect_to effort_path(@effort)
   end
 
   def set_data_status
     authorize @effort
-    EffortDataStatusSetter.set_data_status(effort: @effort)
+    @effort.set_data_status
     redirect_to effort_path(@effort)
   end
 

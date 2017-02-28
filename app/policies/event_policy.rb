@@ -15,11 +15,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def import_splits?
-    user.authorized_to_edit?(event)
+    user.authorized_for_live?(event)
   end
 
   def import_efforts?
-    user.authorized_to_edit?(event)
+    user.authorized_for_live?(event)
   end
 
   def import_efforts_military_times?

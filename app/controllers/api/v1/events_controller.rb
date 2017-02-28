@@ -75,6 +75,27 @@ class Api::V1::EventsController < ApiController
     end
   end
 
+  # Send 'with_times' => 'false' to ignore split_time data
+  # Send 'time_format' => 'elapsed' or 'military' depending on time data format
+  # Send 'with_status' => 'false' to skip setting data status for imported split_times
+
+  # POST /api/v1/events/:staging_id/import_efforts
+  def import_efforts
+    authorize @event
+    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    if file_url
+      if (Rails.env == 'development') || (Rails.env == 'test')
+        ImportEffortsJob.perform_now(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
+        render json: {message: 'Import complete.'}
+      else
+        ImportEffortsJob.perform_later(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
+        render json: {message: 'Import in progress.'}
+      end
+    else
+      render json: {message: 'Import file too large.'}, status: :bad_request
+    end
+  end
+
   private
 
   def set_event

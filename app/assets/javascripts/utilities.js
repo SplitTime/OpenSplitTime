@@ -80,14 +80,15 @@
 
     var staticPopover = {
         init: function () {
-            $('[data-toggle="static-popover"],[data-toggle="static-popover-dark"]')
-                .attr('tabindex', '0')
+            $('[data-toggle="static-popover"],[data-toggle="static-popover-dark"]').each( function( i, el ) {
+                $( el ).attr( 'tabindex', $( el ).attr( 'tabindex' ) || '0' )
                 .attr('role', 'button')
                 .popover({
                     'html': 'append',
                     'trigger': 'focus',
                     'container': 'body'
                 }).on('show.bs.popover', staticPopover.onShowPopover);
+            } );
             if ( utilities.isMobileSafari() ) {
                 $( 'body' ).css( 'cursor', 'pointer' );
             }

@@ -136,6 +136,9 @@ Rails.application.routes.draw do
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]
       resources :splits, only: [:show, :create, :update, :destroy]
+      resources :users, only: [:show, :create, :update, :destroy] do
+        collection { get :current }
+      end
       get 'staging/:staging_id/get_countries', to: 'staging#get_countries', as: :staging_get_countries
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
       get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations

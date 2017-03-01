@@ -42,6 +42,10 @@ class UserPolicy < ApplicationPolicy
     current_user.admin? && (current_user != user_record)
   end
 
+  def current?
+    current_user.present?
+  end
+
   def edit_preferences?
     current_user.admin? || (current_user == user_record)
   end

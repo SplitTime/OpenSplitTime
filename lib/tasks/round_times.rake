@@ -1,3 +1,7 @@
+# When events are imported from an .xls or .xlsx file, time_from_start for some split_times
+# may be off by :01 in either direction as a result of rounding problems in Excel.
+# The following rake tasks are designed to correct for these rounding errors.
+
 namespace :round do
   desc 'For a given event_id, rounds intermediate times_from_start that end in :59 or :01 to :00'
   task :hardrock_style, [:event_id] => :environment do |_, args|

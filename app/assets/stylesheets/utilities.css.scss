@@ -438,7 +438,6 @@ span.brackets {
 Radio Buttons
 *************/
 .custom-radio {
-	// display: none;
 	position: relative;
 	padding-left: 25px;
 	cursor: pointer;
@@ -483,14 +482,6 @@ Radio Buttons
             } 
         }
     }
-
-    // &:disabled + label {
-    //     color: #D6D6D6;
-    // }
-
-    // &:disabled:checked + label:after {
-    //     background-color: #D6D6D6;
-    // }
 }
 
 

@@ -180,6 +180,11 @@
 	}
 }
 
+.form-control-clickable {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
 /** Split Modal Styles **/
 .split-modal {
 	position: relative;

@@ -183,6 +183,21 @@
             this.import( data || {} );
         }
         extend( Resource, Effort );
+        Effort.prototype.export = function() {
+            var data = {};
+            this.copy( data, this, {
+                eventId: this.parent.id,
+                id: null,
+                firstName: '',
+                lastName: '',
+                bibNumber: '',
+                gender: '',
+                city: '',
+                countryCode: '',
+                stateCode: ''
+            } );
+            return data;
+        }
         Effort.prototype.import = function( data ) {
             this.copy( this, data, {
                 id: null,
@@ -203,27 +218,16 @@
         Effort.prototype.post = function() {
             var dfd = $.Deferred();
             var self = this;
-            var data = { effort: {
-                event_id: this.parent.id,
-                first_name: this.firstName,
-                last_name: this.lastName,
-                bib_number: this.bibNumber,
-                birth_date: this.birthdate,
-                gender: this.gender,
-                city: this.city,
-                country_code: this.countryCode,
-                state_code: this.stateCode
-            } };
             if ( this.id ) {
                 dfd = $.ajax( '/api/v1/efforts/' + this.id, {
                     type: "PUT",
-                    data: data,
+                    data: { effort: this.export() },
                     dataType: "json",
                 } );
             } else {
                 dfd = $.ajax( '/api/v1/efforts/', {
                     type: "POST",
-                    data: data,
+                    data: { effort: this.export() },
                     dataType: "json",
                 } );
             }
@@ -367,7 +371,7 @@
                     headers: headers,
                     dataType: "json",
                 } ).then( function( data ) {
-                    self.import( data.split );
+                    self.import( data );
                     self.busy = false; // Allow Operation to continue
                     return self.associate( true );
                 } );
@@ -486,13 +490,19 @@
         }
         Course.prototype.normalize = function( ) {
             // Verify Existence of End Splits
-            if ( this.endSplit( 'start' ) === null ) {
+            var start = this.endSplit( 'start' );
+            var finish = this.endSplit( 'finish' );
+            if ( start === null ) {
                 this.splits.push( new Split( this, { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
                 this.normalize();
+            } else if ( start.id && start.associated === false ) {
+                start.associate( true );
             }
-            if ( this.endSplit( 'finish' ) === null ) {
+            if ( finish === null ) {
                 this.splits.push( new Split( this, { kind: 'finish', baseName: 'Finish' } ) );
                 this.normalize();
+            } else if ( finish.id && finish.associated === false ) {
+                finish.associate( true );
             }
             this.splits.sort( function( a, b ) {
                 return a.distanceFromStart - b.distanceFromStart;
@@ -607,6 +617,7 @@
             // Import Properties
             this.organization.id = data.organizationId || null;
             this.course.id = data.courseId || null;
+            data.lapsRequired = ( data.lapsRequired === null ) ? 1 : data.lapsRequired;
             this.copy( this, data, {
                 id: null,
                 stagingId: null,
@@ -657,7 +668,7 @@
                     type: "POST",
                     data: this.export()
                 } );
-                dfd = dfd.then( function( data ) {                
+                dfd = dfd.then( function( data ) {
                     self.import( data.event );
                     self.organization.import( data.organization || {} );
                     return self.course.fetch();
@@ -776,6 +787,7 @@
             this.editModal.init();
             this.inputMask.init();
             this.prefill.init();
+            this.confirm.init();
             this.promise.init();
             this.resourceSelect.init();
             this.ajaxImport.init();
@@ -1020,37 +1032,57 @@
          *  Specifically, this component is designed to allow displaying, 
          *  selecting, and modifying markers for a continuous path.
          */
-        googleMaps: {
-            uniqueId: 1,
-            onValueChange: function() {
+
+        googleMaps: ( function() {
+            var uniqueId = 1;
+
+            // Default Map Bounds
+            var defaultBounds = null;
+            $( function() {
+                defaultBounds = new google.maps.LatLngBounds(
+                    { lat: 24.846, lng: -126.826 },
+                    { lat: 49.038, lng: -65.478 }
+                );
+            } );
+
+            function onValueChange() {
+                var self = this;
                 if ( this.value ) {
-                    if ( !this._location ) {
-                        // Make new location marker
-                        this._location = new google.maps.Marker( {
-                            position: { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) },
-                            icon: {
-                                url: '/assets/icons/green.svg'
-                            },
-                            map: this._map,
-                            title: this.value.name,
-                            draggable: true,
-                            zIndex: google.maps.Marker.MAX_ZINDEX + 1
-                        } );
-                        var self = this;
-                        this._location.addListener( 'dragend', function( e ) {
-                            self.value.latitude = self._location.getPosition().lat();
-                            self.value.longitude = self._location.getPosition().lng();
-                        } );
-                    } else {
-                        this._location.setPosition(
-                            { lat: parseFloat( this.value.latitude ) , lng: parseFloat( this.value.longitude ) }
-                        );
+                    lastValue = this._lastValue || { lat: 0, lng: 0 };
+                    var latlng = { lat: parseFloat( this.value.latitude ), lng: parseFloat( this.value.longitude ) };
+                    if ( lastValue.lat != latlng.lat || lastValue.lng != latlng.lng ) {
+                        this._lastValue = latlng;
+                        if ( isNaN( latlng.lat ) || isNaN( latlng.lng ) ) {
+                            this._location && this._location.setMap( null );
+                        } else if ( !this._location ) {
+                            // Make new location marker
+                            this._location = new google.maps.Marker( {
+                                position: latlng,
+                                icon: {
+                                    url: '/assets/icons/green.svg'
+                                },
+                                map: this._map,
+                                title: this.value.name,
+                                draggable: true,
+                                zIndex: google.maps.Marker.MAX_ZINDEX + 1
+                            } );
+                            var self = this;
+                            this._location.addListener( 'dragend', function( e ) {
+                                var latlng = self._location.getPosition();
+                                updateValue.call( self, latlng.lat(), latlng.lng() );
+                            } );
+                        } else {
+                            this._location.setMap( this._map );
+                            this._location.setPosition( latlng );
+                        }
                     }
-                    eventStage.googleMaps.onRouteChange.call( this );
+                    onRouteChange.call( this );
                 }
-            },
-            onRouteChange: function( e ) {
-                if ( this.route && $.isArray( this.route ) ) {                    
+            }
+
+            function onRouteChange() {
+                if ( this.route ) {
+                    this._route = this._route || {};
                     // Destroy existing polyline
                     if ( this._polyline ) {
                         this._polyline.setMap( null );
@@ -1080,20 +1112,23 @@
                         if ( isNaN( parseFloat( e[i].latitude ) ) || isNaN( parseFloat( e[i].longitude ) ) ) continue;
                         var latlng = { lat: parseFloat( e[i].latitude ) , lng: parseFloat( e[i].longitude ) };
                         bounds.extend( latlng );
+                        path.push( latlng );
+                        // Make Marker
                         var marker = null;
                         if ( !e[i]._gmid || !this._route[ e[i]._gmid ] ) {
-                            // No Unique Google Map ID or Not In Cache
                             if ( !e[i]._gmid ) {
-                                e[i]._gmid = eventStage.googleMaps.uniqueId++;
+                                e[i]._gmid = uniqueId++;
                             }
                             marker = new google.maps.Marker( {
-                                map: this._map
+                                map: this._map,
+                                zIndex: google.maps.Marker.MAX_ZINDEX - 1
                             } );
                             marker._data = e[i];
                             this._route[ e[i]._gmid ] = marker;
+                        } else {
+                            marker = this._route[ e[i]._gmid ];
                         }
                         // Update Marker
-                        marker = this._route[ e[i]._gmid ];
                         marker.setIcon( {
                             url: '/assets/icons/dot-blue.svg',
                             labelOrigin: new google.maps.Point( 12, 14 ),
@@ -1101,180 +1136,189 @@
                         } );
                         marker.setPosition( latlng );
                         marker.setOpacity( e[i].associated ? 1.0 : 0.5 );
-                        path.push( latlng );
                         // Update Cache
                         gmids.push( e[i]._gmid );
                     }
                     // Append Value to Polyline
                     if ( value ) {
-                        // Inject Value into Polyline
                         path.push( { lat: parseFloat( value.latitude ) , lng: parseFloat( value.longitude ) } );
                     }
                     // Remove Unused Markers
                     for ( var _gmid in this._route ) {
-                        if ( gmids.indexOf( Number.parseInt( _gmid ) ) === -1 ) {
+                        if ( gmids.indexOf( parseInt( _gmid ) ) === -1 ) {
                             this._route[ _gmid ].setMap( null );
                             delete this._route[ _gmid ];
                         } 
                     }
-                    // Append route to map
-                    this._polyline = new google.maps.Polyline( {
-                        path: path,
-                        map: this._map,
-                        geodesic: true,
-                        strokeColor: '#2A9FD8',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 4
-                    } );
-                    // Fit Map
+                    if ( path.length >= 1 ) {
+                        // Append polyline to map
+                        this._polyline = new google.maps.Polyline( {
+                            path: path,
+                            map: this._map,
+                            geodesic: true,
+                            strokeColor: '#2A9FD8',
+                            strokeOpacity: 1.0,
+                            strokeWeight: 4
+                        } );
+                        this._routeBounds = bounds;
+                    } else {
+                        this._routeBounds = null;
+                    }
+                    // Reset bounds when map is Locked
                     if ( this.locked !== undefined ) {
-                        this._map.fitBounds( bounds );
+                        this._map.fitBounds( this._routeBounds || defaultBounds );
                     }
                 }
-            },
-            onBoundsChange: function( e ) {
-                var self = this;                
+            }
+
+            function onBoundsChange() {
+                var self = this;
                 if ( this.searchUrl ) {
+                    this._search = this._search || {};
                     var bounds = this._map.getBounds().toJSON();
                     $.ajax( this.searchUrl, {
                         dataType: 'json',
                         data: bounds
-                    } ).done( function( data ) {                        
-
-                        // Load New Markers
-                        for ( var i = 0; i < data.length; i++ ) {
-                            if ( isNaN( parseFloat( data[i].latitude ) ) || isNaN( parseFloat( data[i].longitude ) ) ) continue;
-                            if ( self._temp && ( self._temp._data.id == data[i].id ) ) continue; // Preserve Selected Marker
-                            var existing = null;
-                            for ( var j = self._search.length - 1; j >= 0; j-- ) {
-                                if ( self._search[j]._data.id == data[i].id ) {
-                                    existing = self._search[j];
-                                    break;
-                                }
+                    } ).done( function( result ) {
+                        var ids = [];
+                        for ( var i = result.length - 1; i >= 0; i-- ) {
+                            var latlng = { lat: parseFloat( result[i].latitude ), lng: parseFloat( result[i].longitude ) };
+                            if ( isNaN( latlng.lat ) || isNaN( latlng.lng ) ) continue;
+                            if ( !result[i].id ) continue;
+                            result[i].id = parseInt( result[i].id );
+                            if ( self._search[ result[i].id ] === undefined ) {
+                                marker = new google.maps.Marker( {
+                                    position: latlng,
+                                    map: self._map,
+                                    icon: {
+                                        url: result[i].editable ? '/assets/icons/dot-blue.svg' : '/assets/icons/dot-lblue.svg',
+                                        labelOrigin: new google.maps.Point( 12, 14 ),
+                                        anchor: new google.maps.Point( 16, 16 )
+                                    },
+                                    title: result[i].name,
+                                    zIndex: google.maps.Marker.MAX_ZINDEX - 10
+                                } );
+                                marker._data = result[i];
+                                marker.addListener( 'click', onMarkerClick.bind( self, marker ) );
+                                self._search[ result[i].id ] = marker;
                             }
-                            if ( existing !== null ) continue; // Preserve Existing Markers
-                            var marker = new google.maps.Marker( {
-                                position: { lat: parseFloat( data[i].latitude ) , lng: parseFloat( data[i].longitude ) },
-                                map: self._map,
-                                icon: {
-                                    url: data[i].editable ? '/assets/icons/dot-blue.svg' : '/assets/icons/dot-lblue.svg',
-                                    labelOrigin: new google.maps.Point( 12, 14 ),
-                                    anchor: new google.maps.Point( 16, 16 )
-                                },
-                                title: data[i].name,
-                            } );
-                            marker._data = data[i];
-                            marker.addListener( 'click', (function( self, marker ) {
-                                return function( e ) { // Need extra context to work properly
-                                    // Build out content window
-                                    var node = $( self._infowindow.getContent() );
-                                    node.find( 'h5' ).html( marker._data.baseName );
-                                    node.find( 'p' ).html( marker._data.courseName || '<i>No Course</i>' );
-                                    node.data( 'location', marker._data );
-                                    self._infowindow.open( self._map, marker );
-                                    // eventStage.googleMaps.onMarkerClick.call( self, e, marker );
-                                }
-                            } )( self, marker ) );
-                            self._search.push( marker );
+                            ids.push( result[i].id );
                         }
-
+                        // Remove Unused Markers
+                        for ( var id in self._search ) {
+                            if ( ids.indexOf( parseInt( id ) ) === -1 ) {
+                                self._search[ id ].setMap( null );
+                                delete self._search[ id ];
+                            }  
+                        }
+                    } ).fail( function() {
+                        console.error( 'Google Maps', 'Failed to Search Bounds' );
                     } );
                 }
-            },
-            onMarkerClick: function( e, marker ) {                
-                if ( this.value ) {
-                    this._temp && this._temp.setVisible( true );
-                    this._temp = marker;
-                    this._temp && this._temp.setVisible( false );
-                    this.value.latitude = marker._data.latitude;
-                    this.value.longitude = marker._data.longitude;
-                    this.$emit( 'input', this.value );
-                }
-            },
-            onMapClick: function( e ) {                
-                if ( this.value ) {
-                    this._temp && this._temp.setVisible( true );
-                    this._temp = null;
-                    this.value.latitude = e.latLng.lat();
-                    this.value.longitude = e.latLng.lng();
-                    this.$emit( 'input', this.value );
-                }
-            },
-            onMounted: function() {
+            }
+
+            function fetchElevation() {
                 var self = this;
-                this._search = [];
-                this._route = {};
+                if ( !this.value ) return;
+                var latlng = { lat: parseFloat( this.value.latitude ), lng: parseFloat( this.value.longitude ) };
+                this._elevator.getElevationForLocations( {
+                    locations: [ latlng ]
+                }, function( results, status ) {
+                    if ( status === 'OK' && results[0] ) {
+                        self.value.elevation = results[0].elevation;
+                    } else {
+                        console.error( 'Google Maps', 'Failed to Fetch Elevation' );
+                    }
+                } );
+            }
+
+            function updateValue( lat, lng ) {
+                var latlng = { lat: parseFloat( lat ), lng: parseFloat( lng ) };
+                if ( isNaN( latlng.lat ) || isNaN( latlng.lng ) ) return;
+                if ( !this.value ) return;
+                this.value.latitude = latlng.lat;
+                this.value.longitude = latlng.lng;
+                fetchElevation.call( this );
+                this.$emit( 'input', this.value );
+            }
+
+            function onMarkerClick( marker ) {
+                var node = $( this._infowindow.getContent() );
+                node.find( 'h5' ).html( marker._data.baseName );
+                node.find( 'p' ).html( marker._data.courseName || '<i>No Course</i>' );
+                node.data( 'location', marker._data );
+                this._infowindow.open( this._map, marker );
+            }
+
+            function onMapClick( e ) {
+                updateValue.call( this, e.latLng.lat(), e.latLng.lng() );
+            }
+
+            function onMounted() {
+                var self = this;
+                this._search = {};
                 this._polyline = null;
-                this._difference = null;
+                // Construct Google Maps Objects
+                this._elevator = new google.maps.ElevationService();
                 this._map = new google.maps.Map( this.$el, {
-                    center: { lat: 39.978915, lng: -105.131036 },
-                    zoom: 8,
+                    center: defaultBounds.getCenter(),
+                    zoom: 4,
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,
-                    navigationControl: this.locked == undefined,
-                    mapTypeControl: this.locked == undefined,
-                    scaleControl: this.locked == undefined
+                    streetViewControl: false,
+                    scaleControl: this.locked == undefined,
+                    disableDoubleClickZoom: this.locked != undefined,
+                    gestureHandling: ( this.locked == undefined ) ? 'auto' : 'none'
                 } );
-                // Prepare Info Window
+                // Attach Listeners
+                this._map.addListener( 'click', onMapClick.bind( self ) );
+                this._map.addListener( 'bounds_changed', _.debounce( onBoundsChange.bind( this ), 500 ) );
+                // Construct Info Window
                 var node = $( '<div></div>' );
                 node.append( '<h5><i>No Title</i></h5>' );
                 node.append( '<p><i>No Description</i></p>' );
-                node.append( '<a class="js-clone btn-sm btn btn-primary">Clone Location</a>' );                
-                node.on( 'click', '.js-use', function() {
-                    self._infowindow.close();
-                    self.$emit( 'input', new Location( node.data( 'location' ) ) );
-                } );
+                node.append( '<a class="js-clone btn-sm btn btn-primary">Clone Location</a>' );
                 node.on( 'click', '.js-clone', function() {
                     self._infowindow.close();
-                    self.$emit( 'input', new Location( {
-                        latitude: node.data( 'location' ).latitude,
-                        longitude: node.data( 'location' ).longitude,
-                        elevation: node.data( 'location' ).elevation
-                    } ) );
+                    updateValue.call( self, node.data( 'location' ).latitude, node.data( 'location' ).longitude );
+                } );
+                this._infowindow = new google.maps.InfoWindow( {
+                    content: node[0]
                 } );
                 // Google Maps in Modal Fix
                 $( this.$el ).closest( '.modal' ).on( 'shown.bs.modal', function() {
                     google.maps.event.trigger( self._map, 'resize' );
-                    if ( self.value ) {
-                        self._map.setCenter( { lat: parseFloat( self.value.latitude ) , lng: parseFloat( self.value.longitude ) } );
-                    }
+                    self._map.fitBounds( self._routeBounds || defaultBounds );
                 } );
-                // Attach Listeners
-                this._map.addListener( 'click', function( e ) {
-                    eventStage.googleMaps.onMapClick.call( self, e );
-                } );
-                this._map.addListener( 'bounds_changed', _.debounce( function( e ) {
-                    eventStage.googleMaps.onBoundsChange.call( self );
-                }, 500 ) );
-                eventStage.googleMaps.onRouteChange.call( this );
-            },
-            init: function() {
-                Vue.component( 'google-map', {
-                    template: '<div class="splits-modal-map-wrap js-google-maps"></div>',
-                    props: {
-                        locked: {},
-                        searchUrl: { type: String, default: null },
-                        route: { default: null },
-                        value: { default: null }
-                    },
-                    mounted: eventStage.googleMaps.onMounted,
-                    watch: {
-                        markers: {
-                            handler: eventStage.googleMaps.onMarkerChange,
-                            deep: true
-                        },
-                        route: {
-                            handler: eventStage.googleMaps.onRouteChange,
-                            deep: true
-                        },
-                        'value.latitude': eventStage.googleMaps.onValueChange,
-                        'value.longitude': eventStage.googleMaps.onValueChange,
-                        'value.distanceFromStart': eventStage.googleMaps.onValueChange
-                    }
-                } );
+                onRouteChange.call( self );
+                onValueChange.call( self );
             }
-        },
+
+            return {
+                init: function() {
+                    Vue.component( 'google-map', {
+                        template: '<div class="splits-modal-map-wrap js-google-maps"></div>',
+                        props: {
+                            locked: {},
+                            searchUrl: { type: String, default: null },
+                            route: { type: Array, default: null },
+                            value: { type: Object, default: null }
+                        },
+                        mounted: onMounted,
+                        watch: {
+                            route: {
+                                handler: onRouteChange,
+                                deep: true
+                            },
+                            'value.latitude': onValueChange,
+                            'value.longitude': onValueChange,
+                            'value.distanceFromStart': onValueChange
+                        }
+                    } );
+                }
+            }
+        } )(),
 
         /**
          *  Editing Modal Component
@@ -1403,6 +1447,55 @@
             }
         },
 
+        confirm: {
+            init: function() {
+                Vue.directive( 'confirm', {
+                    update: function( el, binding ) {
+                        var $el = $( el );
+                        $el.data( 'v-confirm' )[ binding.arg ] = binding.value;
+                    },
+                    bind: function( el, binding, vnode, c ) {
+                        var $el = $( el );
+                        $el.data( 'v-confirm', {} );
+                        binding.def.update( el, binding );
+                        // Native Event Helper
+                        function fireEvent( name ) {
+                            return function( response ) {
+                                var event = document.createEvent( 'HTMLEvents' );
+                                event.initEvent( name, true, true );
+                                event.data = response;
+                                el.dispatchEvent( event );
+                            }
+                        }
+                        // Bind requested event
+                        $el.on( binding.arg, function( $event ) {
+                            // Prevent Any Defaults
+                            $event.preventDefault();
+                            $event.stopPropagation();
+                            // Fire on next tick to allow data to update completely
+                            Vue.nextTick( function() {
+                                // Generate Button
+                                var button = $( '<button class="btn btn-danger"></button>' );
+                                button.text( $el.data( 'v-confirm' )[ binding.arg ] );
+                                // Generate Popover
+                                $el.popover( {
+                                    trigger: 'manual',
+                                    container: 'body',
+                                    content: button,
+                                    html: true
+                                } );
+                                $el.popover( 'show' );
+                                // Hide on next click
+                                $( document ).one( 'click', $el.popover.bind( $el, 'destroy' ) );
+                                // Fire Confirm If Button is Clicked
+                                button.one( 'click', fireEvent( 'confirm' ) );
+                            } );
+                        } );
+                    }
+                } );
+            }
+        },
+
         /**
          *  Promise Directive
          *
@@ -1426,10 +1519,7 @@
                                 fn = function() { return target.call( context ) }
                             }
                         }
-                        if ( !$.isFunction( fn ) ) {
-                            console.error( 'v-promise Directive Must Be Passed a Function!' );
-                            return;
-                        }
+                        if ( !$.isFunction( fn ) ) return;
                         $( el ).data( 'v-promise' )[ binding.arg ] = fn;
                     },
                     bind: function( el, binding, vnode, c ) {
@@ -1518,9 +1608,9 @@
                     },
                     data: function() { return { ajaxed: null } },
                     template: 
-                        '<select v-bind:value="value.id" v-on:change="onChanged( $event.target.value )">\
+                        '<select v-bind:value="value.id" v-on:change="onChanged( $event.target.value )" :disabled="!ajaxed || ajaxed.length <= 0">\
                             <slot></slot>\
-                            <option v-if="ajaxed === null" :value="value.id">{{ value.name }}</option>\
+                            <option v-if="ajaxed === null && value.id !== null" :value="value.id">{{ value.name }}</option>\
                             <option v-else v-for="obj in ajaxed" :value="obj.id">{{ obj.name }}</option>\
                         </select>',
                     mounted: eventStage.resourceSelect.onMounted

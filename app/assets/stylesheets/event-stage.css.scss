@@ -144,6 +144,56 @@
 		}
 	}
 
+    .dataTables_wrapper {
+        th {
+            cursor: pointer;
+
+            @media (min-width: 992px) {
+                &.sorting,
+                &.sorting_asc,
+                &.sorting_desc {
+                    position: relative;
+
+                    &:before,
+                    &:after {
+                        display: block;
+                        position: absolute;
+                        right: 10px;
+                        font-size: 10px;
+                        line-height: 12px;
+                        color: $mediumGray;
+                    }
+
+                    &:before {
+                        content: '\25B2';
+                        bottom: 50%;
+                    }
+                    
+                    &:after {
+                        content: '\25BC';
+                        top: 50%;
+                    }
+                }
+
+                &.sorting_asc:before {
+                    color: inherit;
+                }
+
+                &.sorting_desc:after {
+                    color: inherit;
+                }
+            }
+        }
+
+        .dataTables_paginate {
+            text-align: right;
+
+            .pagination {
+                margin: 0 0 10px;
+            }
+        }
+    }
+
 	.published-page {
 		text-align: center;
 		max-width: 670px;

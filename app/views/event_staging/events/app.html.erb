@@ -93,15 +93,24 @@
 				<div class="form-group col-xs-12">
 					<label class="required">Course Distance</label>
 					<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="miles" v-model.number="eventModel.course.endSplit('finish').distanceFromStart" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<div class="input-group">
+						<input-units type="text" class="form-control" placeholder="miles" v-model.number="eventModel.course.endSplit('finish').distanceFromStart" v-mask="{ alias: 'decimal', placeholder: '' }" :scale="units.forDistance()"/>
+						<span class="input-group-addon">{{ units.distance }}</span>
+					</div>
 				</div>
 				<div class="form-group col-xs-6">
 					<label class="required">Total Vertical Gain</label>
-					<input type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<div class="input-group">
+						<input-units type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '' }" :scale="units.forElevation()"/>
+						<span class="input-group-addon">{{ units.elevation }}</span>
+					</div>
 				</div>
 				<div class="form-group col-xs-6">
 					<label class="required">Total Vertical Loss</label>
-					<input type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '' }">
+					<div class="input-group">
+						<input-units type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '' }" :scale="units.forElevation()"/>
+						<span class="input-group-addon">{{ units.elevation }}</span>
+					</div>
 				</div>
 				<div class="form-group col-xs-12">
 					<label>Description</label>
@@ -184,17 +193,17 @@
 			<div class="col-xs-12">
 				<data-tables :rows="eventModel.course.splits" :filter="filter" :entries="30" v-on:edit="modalData = $event" class="splits-table">
 					<tr slot="header">
-						<th></th>
-						<th data-orderable="false">Name</th>
-						<th>
+						<th data-orderable="false"></th>
+						<th>Name</th>
+						<th data-order="asc">
 							Dist.
 							<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 						</th>
-						<th data-orderable="false">
+						<th>
 							V. Gain
 							<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 						</th>
-						<th data-orderable="false">
+						<th>
 							V. Loss
 							<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 						</th>
@@ -210,9 +219,9 @@
 								<i class="glyphicon glyphicon-flag text-danger" v-else-if="vm.row.kind == 'finish'"></i>
 							</td>
 							<td>{{ vm.row.baseName }}</td>
-							<td>{{ vm.row.distanceFromStart }}</td>
-							<td>{{ vm.row.vertGainFromStart }}</td>
-							<td>{{ vm.row.vertLossFromStart }}</td>
+							<td>{{ vm.row.distanceFromStart * units.forDistance() }}</td>
+							<td>{{ vm.row.vertGainFromStart * units.forElevation() }}</td>
+							<td>{{ vm.row.vertLossFromStart * units.forElevation()}}</td>
 							<td>
 								<span class="marker"><%= image_tag( "icons/dblue.svg", size: '16' ) %></span>
 								<a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable">Edit Split</a>
@@ -259,7 +268,7 @@
 										<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model="model.baseName">
+										<input type="text" class="form-control" v-model="model.baseName" autofocus>
 									</div>
 									<div class="form-group col-xs-6">
 										<label class="required">Description</label>
@@ -275,7 +284,10 @@
 										<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model.number="model.distanceFromStart" v-mask="{ alias: 'decimal' }" :disabled="model.kind === 'start'">
+										<div class="input-group">
+											<input-units type="text" class="form-control" v-model.number="model.distanceFromStart" v-mask="{ alias: 'decimal' }" :disabled="model.kind === 'start'" :scale="units.forDistance()"/>
+											<span class="input-group-addon">{{ units.distance }}</span>
+										</div>
 									</div>
 									<div class="form-group col-xs-6">
 										<label class="required">Time Recording</label>
@@ -302,14 +314,20 @@
 										<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model.number="model.vertGainFromStart" v-mask="{ alias: 'decimal' }" :disabled="model.kind === 'start'">
+										<div class="input-group">
+											<input-units type="text" class="form-control" v-model.number="model.vertGainFromStart" v-mask="{ alias: 'decimal' }" :disabled="model.kind === 'start'" :scale="units.forElevation()"/>
+											<span class="input-group-addon">{{ units.elevation }}</span>
+										</div>
 									</div>
 									<div class="form-group col-xs-6 vg-group">
 										<label class="required">Vertical Loss From Start</label>
 										<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
-										<input type="text" class="form-control" v-model.number="model.vertLossFromStart" v-mask="{ alias: 'decimal' }" :disabled="model.kind === 'start'">
+										<div class="input-group">
+											<input-units type="text" class="form-control" v-model.number="model.vertLossFromStart" v-mask="{ alias: 'decimal' }" :disabled="model.kind === 'start'" :scale="units.forElevation()"/>
+											<span class="input-group-addon">{{ units.elevation }}</span>
+										</div>
 									</div>
 								</div>
 								<div class="row">
@@ -431,7 +449,7 @@
 						</div>
 						<div class="row">					
 							<div class="form-group col-xs-6">
-								<input type="text" class="form-control" v-model="model.firstName" placeholder="First Name"></input>
+								<input type="text" class="form-control" v-model="model.firstName" placeholder="First Name" autofocus></input>
 							</div>
 							<div class="form-group col-xs-6">
 								<input type="text" class="form-control" v-model="model.lastName" placeholder="Last Name"></input>
@@ -590,15 +608,15 @@
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th>Distance</th>
-					<td>{{ eventModel.course.endSplit( 'finish' ).distanceFromStart }}</td>
+					<td>{{ eventModel.course.endSplit( 'finish' ).distanceFromStart * units.forDistance() }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th>Vertical Gain</th>
-					<td>{{ eventModel.course.endSplit( 'finish' ).vertGainFromStart }}</td>
+					<td>{{ eventModel.course.endSplit( 'finish' ).vertGainFromStart * units.forElevation() }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th>Vertical Loss</th>
-					<td>{{ eventModel.course.endSplit( 'finish' ).vertLossFromStart }}</td>
+					<td>{{ eventModel.course.endSplit( 'finish' ).vertLossFromStart * units.forElevation()}}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
 				<tr>
 					<th ><span>Your Splits</span></th>

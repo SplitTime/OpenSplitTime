@@ -13,10 +13,31 @@
     }
 
     /**
+     *  Units in terms of meters
+     */
+    var units = {
+        table: {
+            "kilometers": 0.001,
+            "miles": 0.000621371,
+            "feet": 3.28084,
+            "meters": 1.0
+        },
+        distance: "kilometers",
+        elevation: "meters",
+        forDistance: function() {
+            return this.table[ this.distance ] || 1.0;
+        },
+        forElevation: function() {
+            return this.table[ this.elevation ] || 1.0;
+        }
+    }
+
+    /**
      * Ajax headers to be used for every transaction
      */
     var headers = {
-        'X-Key-Inflection': 'camel' 
+        'X-Key-Inflection': 'camel',
+        'Content-Type': 'application/json'
     }
 
     /**
@@ -327,7 +348,7 @@
         Split.prototype.associate = function( associated ) {
             var dfd = $.Deferred();
             if ( this.isBusy() ) return dfd.reject();
-            if ( !this.id || !this.parent || !this.parent.parent ) {
+            if ( !this.id || !this.parent || !this.parent.parent || !this.parent.parent.id ) {
                 console.error( 'Split', this.id, 'Cannot associate a split with no ID or Parents' )
                 dfd.reject();
             } else {
@@ -495,13 +516,13 @@
             if ( start === null ) {
                 this.splits.push( new Split( this, { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
                 this.normalize();
-            } else if ( start.id && start.associated === false ) {
+            } else if ( start.id && this.parent.id && start.associated === false ) {
                 start.associate( true );
             }
             if ( finish === null ) {
                 this.splits.push( new Split( this, { kind: 'finish', baseName: 'Finish' } ) );
                 this.normalize();
-            } else if ( finish.id && finish.associated === false ) {
+            } else if ( finish.id && this.parent.id && finish.associated === false ) {
                 finish.associate( true );
             }
             this.splits.sort( function( a, b ) {
@@ -739,6 +760,13 @@
             } );
         },
 
+        ajaxPopulateUnits: function() {
+            $.get( '/api/v1/users/current/', function( response ) {
+                units.distance = response.prefDistanceUnit || "kilometers";
+                units.elevation = response.prefElevationUnit || "meters";
+            } );
+        },
+
         isEventValid: function( eventData ) {
             if ( ! eventData.organization.name ) return false;
             if ( ! eventData.event.name ) return false;
@@ -791,10 +819,12 @@
             this.promise.init();
             this.resourceSelect.init();
             this.ajaxImport.init();
+            this.inputUnits.init();
 
             // Load UUID
             this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
             this.ajaxPopulateLocale();
+            this.ajaxPopulateUnits();
 
             // Initialize Vue Router and Vue App
             const routes = [
@@ -808,6 +838,7 @@
                                 return this.eventModel.validate();
                             }
                         },
+                        data: function() { return { units: units } },
                         template: '#event'
                     },
                     beforeEnter: this.onRouteChange
@@ -831,7 +862,7 @@
                                 return split;
                             }
                         },
-                        data: function() { return { modalData: {}, filter: '' } },
+                        data: function() { return { modalData: {}, filter: '', units: units } },
                         template: '#splits'
                     },
                     beforeEnter: this.onRouteChange
@@ -866,6 +897,7 @@
                         data: function() { return { 
                             countries: locales.countries,
                             regions: locales.regions,
+                            units: units,
                             modalData: {},
                             filter: ''
                         } }, 
@@ -876,13 +908,21 @@
                 { 
                     path: '/confirmation', 
                     name: 'confirm',
-                    component: { props: ['eventModel'], template: '#confirmation' },
+                    component: {
+                        props: ['eventModel'], 
+                        data: function() { return { units: units } },
+                        template: '#confirmation'
+                    },
                     beforeEnter: this.onRouteChange
                 },
                 { 
                     path: '/published',
                     name: 'publish',
-                    component: { props: ['eventModel'], template: '#published' },
+                    component: {
+                        props: ['eventModel'], 
+                        data: function() { return { units: units } },
+                        template: '#published'
+                    },
                     beforeEnter: this.onRouteChange
                 }
             ];
@@ -981,8 +1021,16 @@
             },
             onMounted: function() {
                 this._queue = [];
+                // Find Default Sort Settings
+                var order = [];
+                $( 'th:visible', this.$el ).each( function( i, el ) {
+                    if ( $( el ).data( 'order' ) ) {
+                        order.push( [ $( el ).index(), $( el ).data( 'order' ) ] );
+                    }
+                } );
                 this._table = $( this.$el ).DataTable( {
                     pageLength: this.entries,
+                    order: order,
                     dom:    "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
                 } );
                 // Create render Function for Table Rows
@@ -1263,6 +1311,7 @@
                 this._map = new google.maps.Map( this.$el, {
                     center: defaultBounds.getCenter(),
                     zoom: 4,
+                    maxZoom: 18,
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,
@@ -1368,11 +1417,15 @@
                             self.$emit( 'change' );
                             $( this.$el ).modal( 'hide' );
                         } );
+                        $( this.$el ).on( 'shown.bs.modal' , function() {
+                            $( '[autofocus]', this.$el ).focus();
+                        } );
                     },
                     data: function() {
                         return {
                             countries: locales.countries,
                             regions: locales.regions,
+                            units: units,
                             model: {},
                             valid: false,
                             error: null
@@ -1657,7 +1710,32 @@
                     mounted: eventStage.ajaxImport.onMounted
                 } );
             }
-        }
+        },
+
+        inputUnits: ( function() {
+            return {
+                init: function() {
+                    Vue.component( 'input-units', {
+                        template: '<input v-model="normalized"></input>',
+                        props: {
+                            value: { required: true },
+                            scale: { type: Number, default: 1.0 }
+                        },
+                        computed: {
+                            normalized: {
+                                get: function() {
+                                    return $.isNumeric( this.value ) ? this.value * this.scale : '';
+                                },
+                                set: function( newValue ) {
+                                    var val = $.isNumeric( newValue ) ? newValue / this.scale : '';
+                                    this.$emit( 'input', val );
+                                }
+                            }
+                        }
+                    } );
+                }
+            };
+        } )()
     };
 
     $( '.events.app' ).ready(function () {

@@ -18,13 +18,7 @@
   </thead>
   <tbody>
   <% @event_display.effort_rows.each do |effort_row| %>
-      <% if effort_row.bad? %>
-          <tr class="text-danger">
-      <% elsif effort_row.questionable? %>
-          <tr class="text-warning">
-      <% else %>
-          <tr>
-      <% end %>
+      <%= data_status_tag(effort_row) %>
       <td><%= effort_row.overall_place %></td>
       <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
       <% if @event_display.available_live %>
@@ -38,7 +32,6 @@
           <td class="text-right"><%= effort_row.finish_status.is_a?(Numeric) ? time_format_xxhyymzzs(effort_row.finish_status) : "#{effort_row.finish_status}" %></td>
       <% end %>
       <td>
-        <% # TODO: Optimize to avoid n + 1 search query for effort.participant %>
         <%= div_for(effort_row.participant) do %>
             <%= link_to_toggle_interest(effort_row.participant) %>
         <% end %>

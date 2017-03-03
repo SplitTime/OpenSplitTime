@@ -148,7 +148,7 @@
         th {
             cursor: pointer;
 
-            @media (min-width: 992px) {
+            @include breakpoint( $break-medium ) {
                 &.sorting,
                 &.sorting_asc,
                 &.sorting_desc {

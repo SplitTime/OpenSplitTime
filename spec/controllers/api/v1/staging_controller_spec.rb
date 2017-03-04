@@ -24,7 +24,7 @@ describe Api::V1::StagingController do
 
     it 'returns subregions for each country that include all Carmen subregions for that country' do
       us = Carmen::Country.coded('US')
-      subregion_count = us.subregions.size
+      subregion_count = us.subregions.reject { |subregion| subregion.type == 'apo' }.size
       get :get_countries, staging_id: existing_staging_id
       parsed_response = JSON.parse(response.body)
       us_subregions = parsed_response['countries'].find { |country| country['code'] == 'US' }['subregions']

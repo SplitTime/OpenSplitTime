@@ -1,7 +1,7 @@
 class Split < ActiveRecord::Base
   PERMITTED_PARAMS = [:id, :course_id, :split_id, :distance_from_start, :distance_as_entered, :vert_gain_from_start,
                       :vert_gain_as_entered, :vert_loss_from_start, :vert_loss_as_entered, :kind, :base_name,
-                      :description, :sub_split_bitmap, :latitude, :longitude, :elevation]
+                      :description, :sub_split_bitmap, :latitude, :longitude, :elevation, :name_extensions]
 
   include Auditable
   include Concealable
@@ -120,6 +120,15 @@ class Split < ActiveRecord::Base
 
   def out_bitkey
     bitkeys.find { |bitkey| bitkey == SubSplit::OUT_BITKEY }
+  end
+
+  def name_extensions=(name_extension_array)
+    if name_extension_array
+      bitkeys = name_extension_array.map { |name_extension| SubSplit.bitkey(name_extension) }
+      self.sub_split_bitmap = bitkeys.compact.inject(:|)
+    else
+      self.sub_split_bitmap = SubSplit::IN_BITKEY
+    end
   end
 
   def course_index # Returns an integer representing the split's relative position on the course

@@ -170,6 +170,26 @@ RSpec.describe Split, kind: :model do
     end
   end
 
+  describe '#name_extensions=' do
+    it 'sets sub_split_bitmap to 1 if provided with ["In"]' do
+      split = Split.new
+      split.name_extensions = %w(In)
+      expect(split.sub_split_bitmap).to eq(1)
+    end
+
+    it 'sets sub_split_bitmap to 65 if provided with ["In", "Out"]' do
+      split = Split.new
+      split.name_extensions = %w(In Out)
+      expect(split.sub_split_bitmap).to eq(65)
+    end
+
+    it 'is unaffacted by different cases in the parameters' do
+      split = Split.new
+      split.name_extensions = %w(IN out)
+      expect(split.sub_split_bitmap).to eq(65)
+    end
+  end
+
   context 'when there is no current user (therefore no preferred distance or elevation units)' do
     describe '#distance_as_entered' do
       it 'returns nil if passed an empty string' do

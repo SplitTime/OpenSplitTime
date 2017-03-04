@@ -29,6 +29,6 @@ module OpenSplitTime
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.middleware.use "OliveBranch::Middleware"
+    # config.middleware.use "OliveBranch::Middleware"
   end
 end

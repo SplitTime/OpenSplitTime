@@ -125,7 +125,7 @@ class ParticipantsController < ApplicationController
   end
 
   def set_participant
-    @participant = Participant.find(params[:id])
+    @participant = Participant.friendly.find(params[:id])
   end
 
 end

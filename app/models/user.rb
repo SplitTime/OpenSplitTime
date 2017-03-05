@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def slug_candidates
-    [:full_name, [:full_name, :current_date_for_slug], [:full_name, :current_date_for_slug, :current_time_for_slug]]
+    [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime('%H:%M:%S')]]
   end
 
   def authorized_to_edit?(resource)
@@ -117,15 +117,5 @@ class User < ActiveRecord::Base
       else
         order('users.confirmed_at DESC')
     end
-  end
-
-  private
-
-  def current_date_for_slug
-    Time.current.strftime('%Y-%m-%d')
-  end
-
-  def current_time_for_slug
-    Time.current.strftime('%H:%M:%S')
   end
 end

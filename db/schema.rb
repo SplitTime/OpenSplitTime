@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305021855) do
+ActiveRecord::Schema.define(version: 20170305040637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,8 +148,10 @@ ActiveRecord::Schema.define(version: 20170305021855) do
     t.integer  "user_id"
     t.boolean  "concealed",               default: false
     t.string   "photo_url"
+    t.string   "slug",                                    null: false
   end
 
+  add_index "participants", ["slug"], name: "index_participants_on_slug", unique: true, using: :btree
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "split_times", force: :cascade do |t|

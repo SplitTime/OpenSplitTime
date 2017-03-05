@@ -38,8 +38,7 @@ class Api::V1::OrganizationsController < ApiController
   private
 
   def set_organization
-    @organization = Organization.find_by(id: params[:id])
-    render json: {message: 'organization not found'}, status: :not_found unless @organization
+    @organization = Organization.find(params[:id])
   end
 
   def organization_params

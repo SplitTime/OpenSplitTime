@@ -86,12 +86,9 @@ class Api::V1::EventsController < ApiController
   private
 
   def set_event
-    @event = if params[:staging_id].numeric?
-               Event.find_by(id: params[:staging_id])
-             elsif params[:staging_id].uuid?
-               Event.find_by(staging_id: params[:staging_id])
-             end
-    render json: {message: 'event not found'}, status: :not_found unless @event
+    @event = params[:staging_id].uuid? ?
+        Event.find_by!(staging_id: params[:staging_id]) :
+        Event.find(params[:staging_id])
   end
 
   def event_params

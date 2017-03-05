@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305040637) do
+ActiveRecord::Schema.define(version: 20170305043652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,7 +129,10 @@ ActiveRecord::Schema.define(version: 20170305040637) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.boolean  "concealed",              default: false
+    t.string   "slug",                                   null: false
   end
+
+  add_index "organizations", ["slug"], name: "index_organizations_on_slug", unique: true, using: :btree
 
   create_table "participants", force: :cascade do |t|
     t.string   "first_name",   limit: 32,                 null: false

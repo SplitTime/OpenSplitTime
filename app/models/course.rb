@@ -4,6 +4,8 @@ class Course < ActiveRecord::Base
   include Auditable
   include Concealable
   include SplitMethods
+  extend FriendlyId
+  friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
   has_many :splits, dependent: :destroy
   has_many :events

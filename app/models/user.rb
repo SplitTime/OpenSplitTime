@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
   include Searchable
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
 
   has_many :connections, dependent: :destroy
   has_many :interests, through: :connections, source: :participant
@@ -38,6 +40,10 @@ class User < ActiveRecord::Base
         user.last_name = auth['info']['name'] || "" # TODO: figure out how to use oath with first_name/last_name model
       end
     end
+  end
+
+  def slug_candidates
+    [:full_name, [:full_name, :current_date_for_slug], [:full_name, :current_date_for_slug, :current_time_for_slug]]
   end
 
   def authorized_to_edit?(resource)
@@ -113,15 +119,13 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.to_csv
-    attributes = %w{email first_name last_name confirmed_at}
+  private
 
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
+  def current_date_for_slug
+    Time.current.strftime('%Y-%m-%d')
+  end
 
-      all.each do |user|
-        csv << attributes.map{ |attr| user.send(attr) }
-      end
-    end
+  def current_time_for_slug
+    Time.current.strftime('%H:%M:%S')
   end
 end

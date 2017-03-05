@@ -139,7 +139,7 @@ class EventsController < ApplicationController
         authorize @event
         csv_stream = render_to_string(partial: 'spread.csv.ruby')
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
+                  filename: "#{@event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
       end
     end
   end

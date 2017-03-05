@@ -38,7 +38,7 @@ class Api::V1::EffortsController < ApiController
   private
 
   def set_effort
-    @effort = Effort.find(params[:id])
+    @effort = Effort.friendly.find(params[:id])
   end
 
   def effort_params

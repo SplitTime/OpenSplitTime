@@ -26,7 +26,7 @@
           <tr>
       <% end %>
       <td><%= effort_row.overall_place %></td>
-      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.id) %></strong></td>
+      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.effort) %></strong></td>
       <% if @event_display.available_live %>
           <td><%= effort_row.bib_number %></td>
       <% end %>

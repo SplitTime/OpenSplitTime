@@ -95,7 +95,7 @@ class ParticipantsController < ApplicationController
 
   def remove_effort
     authorize @participant
-    @effort = Effort.find(params[:effort_id])
+    @effort = Effort.friendly.find(params[:effort_id])
     @effort.participant = nil
     @effort.save
     redirect_to participant_path(@participant)

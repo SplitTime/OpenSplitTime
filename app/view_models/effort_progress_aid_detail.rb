@@ -11,7 +11,7 @@ class EffortProgressAidDetail < EffortProgressRow
   end
 
   def expected_here_info
-    EffortSplitData.new(effort_id: effort_id,
+    EffortSplitData.new(effort_param: effort_param,
                         lap_name: lap_name(lap),
                         split_name: lap_split_name(aid_station_time_points.first),
                         days_and_times: [effort.day_and_time(predicted_start_to_aid)])

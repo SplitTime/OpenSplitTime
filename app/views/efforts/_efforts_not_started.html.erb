@@ -10,7 +10,7 @@
   </thead>
   <tbody>
   <% @event_display.effort_preview_rows.each do |effort_preview_row| %>
-      <td><strong><%= link_to effort_preview_row.full_name, effort_path(effort_preview_row.id) %></strong></td>
+      <td><strong><%= link_to effort_preview_row.full_name, effort_path(effort_preview_row.effort) %></strong></td>
       <td><%= effort_preview_row.bib_number %></td>
       <td><%= effort_preview_row.bio_historic %></td>
       <td><%= effort_preview_row.state_and_country %></td>

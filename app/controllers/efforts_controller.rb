@@ -178,7 +178,7 @@ class EffortsController < ApplicationController
   end
 
   def set_effort
-    @effort = Effort.find(params[:id])
+    @effort = Effort.friendly.find(params[:id])
   end
 
   def update_beacon_url(url)

@@ -17,7 +17,7 @@ class AidStationRow
                            class: self.class)
     @aid_station = args[:aid_station]
     @event_framework = args[:event_framework]
-    @split_times = args[:split_times]
+    @split_times = args[:split_times] || []
   end
 
   def category_effort_lap_keys

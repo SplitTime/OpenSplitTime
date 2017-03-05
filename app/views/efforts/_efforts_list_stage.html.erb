@@ -11,7 +11,7 @@
   <tbody>
   <% @event_stage.filtered_efforts.each do |effort| %>
       <tr>
-        <td><strong><%= link_to effort.full_name, effort_path(effort.id) %></strong></td>
+        <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
         <td><%= effort.bib_number %></td>
         <td><%= effort.bio_historic %></td>
         <td><%= effort.state_and_country %></td>

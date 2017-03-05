@@ -20,7 +20,7 @@
               <tr>
                 <td class="text-center"><%= row[:bib_number] %></td>
                 <td class="text-nowrap">
-                  <strong><%= link_to row[:full_name], effort_path(row[:effort_param]) %></strong></td>
+                  <strong><%= link_to row[:full_name], effort_path(row[:effort_slug]) %></strong></td>
                 <td class="text-nowrap"><%= row[:bio_historic] %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:last_reported_info]) %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:due_next_info]) %></td>

@@ -13,8 +13,8 @@ class EffortProgressRow
     nil
   end
 
-  def effort_param
-    effort.to_param
+  def effort_slug
+    effort.slug
   end
 
   def last_reported_info
@@ -74,7 +74,7 @@ class EffortProgressRow
   def effort_split_data(lap, split_times)
     split_times = Array.wrap(split_times)
     st = split_times.compact.first
-    EffortSplitData.new(effort_param: effort_param,
+    EffortSplitData.new(effort_slug: effort_slug,
                         lap_name: lap_name(lap),
                         split_name: st && lap_split_name(st.time_point),
                         days_and_times: days_and_times(split_times))

@@ -88,7 +88,7 @@ class Api::V1::EventsController < ApiController
   def set_event
     @event = params[:staging_id].uuid? ?
         Event.find_by!(staging_id: params[:staging_id]) :
-        Event.find(params[:staging_id])
+        Event.friendly.find(params[:staging_id])
   end
 
   def event_params

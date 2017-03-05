@@ -32,7 +32,7 @@ class SplitsController < ApplicationController
         session[:return_to] = edit_split_path(@split, event_id: params[:event_id])
         redirect_to create_location_split_path(id: @split.id, event_id: params[:event_id]), method: :post
       elsif params[:event_id]
-        @event = Event.find(params[:event_id])
+        @event = Event.friendly.find(params[:event_id])
         @event.splits << @split
         @event.save
         redirect_to stage_event_path(@event)
@@ -55,20 +55,20 @@ class SplitsController < ApplicationController
 
     if @split.update(split_params)
       if params[:event_id]
-        @event = Event.find(params[:event_id])
+        @event = Event.friendly.find(params[:event_id])
         @event.splits << @split
         @event.save
       end
       redirect_to session.delete(:return_to) || @split.course
     else
-      @course = Course.find(@split.course_id) if @split.course_id
+      @course = Course.friendly.find(@split.course_id) if @split.course_id
       render 'edit'
     end
   end
 
   def destroy
     authorize @split
-    course = Course.find(@split.course)
+    course = Course.friendly.find(@split.course)
     @split.destroy
 
     redirect_to course_path(course)

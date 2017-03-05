@@ -16,7 +16,7 @@ class EventTimeRounder
                            required_alternatives: [:event, :event_id],
                            exclusive: [:event, :event_id],
                            class: self.class)
-    @event = args[:event] || Event.find(args[:event_id])
+    @event = args[:event] || Event.friendly.find(args[:event_id])
     @finish_times = args[:finish_times]
     @reports = []
   end

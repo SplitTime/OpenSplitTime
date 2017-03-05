@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305044825) do
+ActiveRecord::Schema.define(version: 20170305045743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,10 +106,12 @@ ActiveRecord::Schema.define(version: 20170305044825) do
     t.string   "beacon_url"
     t.integer  "laps_required"
     t.uuid     "staging_id",                 default: "uuid_generate_v4()"
+    t.string   "slug",                                                      null: false
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
   add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
+  add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
   add_index "events", ["staging_id"], name: "index_events_on_staging_id", unique: true, using: :btree
 
   create_table "locations", force: :cascade do |t|

@@ -38,7 +38,7 @@ class Api::V1::SplitsController < ApiController
   private
 
   def set_split
-    @split = Split.find(params[:id])
+    @split = Split.friendly.find(params[:id])
   end
 
   def split_params

@@ -100,7 +100,7 @@ class Effort < ActiveRecord::Base
   end
 
   def event_name
-    @event_name ||= event.name
+    @event_name ||= event.try(:name)
   end
 
   def laps_required

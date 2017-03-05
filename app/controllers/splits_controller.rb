@@ -97,7 +97,7 @@ class SplitsController < ApplicationController
   end
 
   def set_split
-    @split = Split.find(params[:id])
+    @split = Split.friendly.find(params[:id])
   end
 
 end

@@ -79,7 +79,7 @@ class OrganizationsController < ApplicationController
 
   def remove_steward
     authorize @organization
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     @organization.remove_stewardship(user)
     redirect_to stewards_organization_path
   end

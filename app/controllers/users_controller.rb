@@ -54,14 +54,14 @@ class UsersController < ApplicationController
 
   def add_interest
     authorize @user
-    participant = Participant.find(params[:participant])
+    participant = Participant.friendly.find(params[:participant])
     @user.add_interest(participant)
     redirect_to participants_path(search: params[:search], page: params[:page])
   end
 
   def remove_interest
     authorize @user
-    participant = Participant.find(params[:participant])
+    participant = Participant.friendly.find(params[:participant])
     @user.remove_interest(participant)
     redirect_to participants_path(search: params[:search], page: params[:page])
   end

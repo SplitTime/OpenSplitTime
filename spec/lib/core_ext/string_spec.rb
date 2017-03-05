@@ -41,4 +41,14 @@ describe String do
       expect('hello'.to_boolean).to eq(false)
     end
   end
+
+  describe '#uuid?' do
+    it 'returns true when the object is a valid UUID v4' do
+      expect(SecureRandom.uuid.uuid?).to eq(true)
+    end
+
+    it 'returns false when the object is not a valid UUID v4' do
+      expect('Hello'.uuid?).to eq(false)
+    end
+  end
 end

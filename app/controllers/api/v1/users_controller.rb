@@ -43,8 +43,7 @@ class Api::V1::UsersController < ApiController
   private
 
   def set_user
-    @user = User.find_by(id: params[:id])
-    render json: {message: 'user not found'}, status: :not_found unless @user
+    @user = User.friendly.find(params[:id])
   end
 
   def user_params

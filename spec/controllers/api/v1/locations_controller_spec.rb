@@ -14,7 +14,7 @@ describe Api::V1::LocationsController do
     it 'returns data of a single location' do
       get :show, id: location
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(location.id)
+      expect(parsed_response['data']['id'].to_i).to eq(location.id)
     end
 
     it 'returns an error if the location does not exist' do

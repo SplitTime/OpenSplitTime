@@ -14,7 +14,7 @@ describe Api::V1::OrganizationsController do
     it 'returns data of a single organization' do
       get :show, id: organization
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(organization.id)
+      expect(parsed_response['data']['id'].to_i).to eq(organization.id)
     end
 
     it 'returns an error if the organization does not exist' do

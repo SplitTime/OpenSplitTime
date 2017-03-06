@@ -1,7 +1,7 @@
 class EffortTimesRow
   include ActiveModel::Serialization
   include TimeFormats
-  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code]
+  EXPORT_ATTRIBUTES = [:id, :overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code]
 
   include PersonalInfo
 

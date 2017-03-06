@@ -14,7 +14,7 @@ describe Api::V1::ParticipantsController do
     it 'returns data of a single participant' do
       get :show, id: participant
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(participant.id)
+      expect(parsed_response['data']['id'].to_i).to eq(participant.id)
     end
 
     it 'returns an error if the participant does not exist' do

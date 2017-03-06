@@ -45,7 +45,7 @@ class Api::V1::EventsController < ApiController
     authorize @event
     params[:style] ||= 'absolute'
     spread_display = EventSpreadDisplay.new(@event, params.slice(:style, :sort))
-    render json: spread_display, serializer: EventSpreadSerializer
+    render json: spread_display, serializer: EventSpreadSerializer, include: 'effort_times_rows'
   end
 
   # PUT /api/v1/events/:staging_id/associate_splits?split_ids=[x, y, ...]

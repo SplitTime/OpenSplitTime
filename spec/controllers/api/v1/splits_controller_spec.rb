@@ -15,7 +15,7 @@ describe Api::V1::SplitsController do
     it 'returns data of a single split' do
       get :show, id: split
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(split.id)
+      expect(parsed_response['data']['id'].to_i).to eq(split.id)
     end
 
     it 'returns an error if the split does not exist' do

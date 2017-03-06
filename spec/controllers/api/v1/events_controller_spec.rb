@@ -15,7 +15,7 @@ describe Api::V1::EventsController do
     it 'returns data of a single event' do
       get :show, staging_id: event.staging_id
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(event.id)
+      expect(parsed_response['data']['id'].to_i).to eq(event.id)
     end
 
     it 'returns an error if the event does not exist' do

@@ -22,7 +22,8 @@ class Api::V1::StagingController < ApiController
 
   # GET /api/v1/staging/:staging_id/get_event
   def get_event
-    render json: @event, serializer: GetEventSerializer
+    @event.course.splits.load
+    render json: @event, serializer: EventSerializer, include: %w(course efforts)
   end
 
   # Returns location data for all splits on any course that falls

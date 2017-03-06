@@ -47,7 +47,6 @@ gem 'aws-sdk'
 gem 'skylight'
 gem 'pusher'
 gem 'active_model_serializers'
-gem 'olive_branch'
 gem 'friendly_id', '~> 5.1.0'
 
 group :development do

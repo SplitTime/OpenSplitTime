@@ -2,7 +2,7 @@ class EventSpreadDisplay
   include ActiveModel::Serialization
 
   attr_reader :event, :display_style
-  delegate :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
+  delegate :id, :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object

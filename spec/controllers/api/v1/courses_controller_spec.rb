@@ -30,7 +30,7 @@ describe Api::V1::CoursesController do
     it 'returns data of a single course' do
       get :show, id: course
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(course.id)
+      expect(parsed_response['data']['id'].to_i).to eq(course.id)
     end
 
     it 'returns an error if the course does not exist' do

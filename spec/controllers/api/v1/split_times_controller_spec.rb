@@ -18,7 +18,7 @@ describe Api::V1::SplitTimesController do
     it 'returns data of a single split_time' do
       get :show, id: split_time
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(split_time.id)
+      expect(parsed_response['data']['id'].to_i).to eq(split_time.id)
     end
 
     it 'returns an error if the split_time does not exist' do

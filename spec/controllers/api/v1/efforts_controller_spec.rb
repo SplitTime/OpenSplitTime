@@ -16,7 +16,7 @@ describe Api::V1::EffortsController do
     it 'returns data of a single effort' do
       get :show, id: effort
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(effort.id)
+      expect(parsed_response['data']['id'].to_i).to eq(effort.id)
     end
 
     it 'returns an error if the effort does not exist' do

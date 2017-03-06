@@ -28,7 +28,5 @@ module OpenSplitTime
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
 
     config.active_job.queue_adapter = :sidekiq
-
-    # config.middleware.use "OliveBranch::Middleware"
   end
 end

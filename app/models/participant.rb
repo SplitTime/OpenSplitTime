@@ -8,6 +8,8 @@ class Participant < ActiveRecord::Base
   include Searchable
   include SetOperations
   include Matchable
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
   strip_attributes collapse_spaces: true
   enum gender: [:male, :female]
   has_many :connections, dependent: :destroy
@@ -58,6 +60,11 @@ class Participant < ActiveRecord::Base
   end
 
   private_class_method :approximate_ages_today
+
+  def slug_candidates
+    [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Date.today.to_s],
+     [:full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
+  end
 
   def approximate_age_today
     average = efforts.joins(:event).average(SQL[:ages_from_events]).to_f

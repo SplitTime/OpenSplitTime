@@ -61,8 +61,7 @@ class Api::V1::StagingController < ApiController
   private
 
   def set_event
-    @event = Event.find_by(staging_id: params[:staging_id])
-    render json: {message: 'event not found'}, status: :not_found unless @event
+    @event = Event.find_by!(staging_id: params[:staging_id])
   end
 
   def find_or_initialize_event

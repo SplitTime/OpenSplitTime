@@ -55,7 +55,7 @@ class Live::EventsController < Live::BaseController
 
   def get_effort_table
     authorize @event
-    effort = Effort.find(params[:effort_id])
+    effort = Effort.friendly.find(params[:effort_id])
     @effort_show = EffortShowView.new(effort: effort)
     render partial: 'effort_table'
   end
@@ -100,7 +100,7 @@ class Live::EventsController < Live::BaseController
   private
 
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.friendly.find(params[:id])
   end
 
   def verify_available_live

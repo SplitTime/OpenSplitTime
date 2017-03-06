@@ -7,6 +7,8 @@ class Split < ActiveRecord::Base
   include Concealable
   include GuaranteedFindable
   include UnitConversions
+  extend FriendlyId
+  friendly_id :course_split_name, use: :slugged
   strip_attributes collapse_spaces: true
   enum kind: [:start, :finish, :intermediate]
   belongs_to :course
@@ -83,6 +85,10 @@ class Split < ActiveRecord::Base
     self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
 
+  def course_split_name
+    "#{course_name} #{base_name}"
+  end
+
   def name(bitkey = nil)
     if bitkey
       name_extensions.size > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name
@@ -136,7 +142,7 @@ class Split < ActiveRecord::Base
   end
 
   def course_name
-    @course_name ||= attributes['course_name'] || course.name
+    @course_name ||= attributes['course_name'] || course.try(:name)
   end
 
   def earliest_event_date

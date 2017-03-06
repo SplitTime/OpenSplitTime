@@ -38,8 +38,7 @@ class Api::V1::ParticipantsController < ApiController
   private
 
   def set_participant
-    @participant = Participant.find_by(id: params[:id])
-    render json: {message: 'participant not found'}, status: :not_found unless @participant
+    @participant = Participant.friendly.find(params[:id])
   end
 
   def participant_params

@@ -40,6 +40,14 @@ class Api::V1::EventsController < ApiController
     end
   end
 
+  # GET /api/v1/events/:staging_id/spread
+  def spread
+    authorize @event
+    params[:style] ||= 'absolute'
+    spread_display = EventSpreadDisplay.new(@event, params.slice(:style, :sort))
+    render json: spread_display, serializer: EventSpreadSerializer
+  end
+
   # PUT /api/v1/events/:staging_id/associate_splits?split_ids=[x, y, ...]
   def associate_splits
     authorize @event
@@ -99,8 +107,9 @@ class Api::V1::EventsController < ApiController
   private
 
   def set_event
-    @event = Event.find_by(staging_id: params[:staging_id])
-    render json: {message: 'event not found'}, status: :not_found unless @event
+    @event = params[:staging_id].uuid? ?
+        Event.find_by!(staging_id: params[:staging_id]) :
+        Event.friendly.find(params[:staging_id])
   end
 
   def event_params

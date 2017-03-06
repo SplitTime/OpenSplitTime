@@ -1,21 +1,23 @@
 class EffortTimesRow
+  include ActiveModel::Serialization
   include TimeFormats
   EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code]
 
   include PersonalInfo
 
-  attr_reader :effort, :time_clusters
+  attr_reader :effort, :display_style, :time_clusters
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:effort, :lap_splits, :split_times],
-                           exclusive: [:effort, :lap_splits, :split_times],
+                           exclusive: [:effort, :lap_splits, :split_times, :display_style],
                            class: self.class)
     @effort = args[:effort] # Use an enriched effort for optimal performance
     @lap_splits = args[:lap_splits]
     @split_times = args[:split_times]
+    @display_style = args[:display_style]
     @time_clusters = []
     create_time_clusters
   end

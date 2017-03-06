@@ -130,6 +130,7 @@ Rails.application.routes.draw do
         member { put :associate_splits }
         member { post :import_splits }
         member { post :import_efforts }
+        member { get :spread }
       end
       resources :locations, only: [:show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]

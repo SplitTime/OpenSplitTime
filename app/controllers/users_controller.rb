@@ -14,7 +14,8 @@ class UsersController < ApplicationController
       end
       format.csv do
         @users = User.all
-        send_data @users.to_csv, filename: "users-#{Date.today}.csv"
+        csv_stream = render_to_string(partial: 'users.csv.ruby')
+        send_data(csv_stream, type: 'text/csv', filename: "users-#{Date.today}.csv")
       end
     end
   end
@@ -53,14 +54,14 @@ class UsersController < ApplicationController
 
   def add_interest
     authorize @user
-    participant = Participant.find(params[:participant])
+    participant = Participant.friendly.find(params[:participant])
     @user.add_interest(participant)
     redirect_to participants_path(search: params[:search], page: params[:page])
   end
 
   def remove_interest
     authorize @user
-    participant = Participant.find(params[:participant])
+    participant = Participant.friendly.find(params[:participant])
     @user.remove_interest(participant)
     redirect_to participants_path(search: params[:search], page: params[:page])
   end
@@ -76,7 +77,7 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
   end
 
 end

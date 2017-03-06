@@ -17,6 +17,8 @@ class SplitTime < ActiveRecord::Base
   alias_attribute :bitkey, :sub_split_bitkey
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
+  scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }
+  scope :intermediate, -> { includes(:split).where(splits: {kind: Split.kinds[:intermediate]}) }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }

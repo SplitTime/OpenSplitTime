@@ -1,4 +1,5 @@
 class EventSpreadDisplay
+  include ActiveModel::Serialization
 
   attr_reader :event, :display_style
   delegate :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
@@ -37,7 +38,8 @@ class EventSpreadDisplay
   def effort_times_rows
     @effort_times_rows ||=
         efforts.map { |effort| EffortTimesRow.new(effort: effort, lap_splits: lap_splits,
-                                                  split_times: split_times_by_effort[effort.id]) }
+                                                  split_times: split_times_by_effort[effort.id],
+                                                  display_style: display_style) }
   end
 
   def efforts_count

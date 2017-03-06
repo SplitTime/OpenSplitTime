@@ -7,7 +7,7 @@ class LiveEffortMailData
                            required_alternatives: [:participant, :participant_id],
                            exclusive: [:participant, :participant_id, :split_times, :split_time_ids, :multi_lap],
                            class: self.class)
-    @participant = args[:participant] || Participant.find(args[:participant_id])
+    @participant = args[:participant] || Participant.friendly.find(args[:participant_id])
     @split_times = args[:split_times] || SplitTime.find(args[:split_time_ids])
     @multi_lap = args[:multi_lap] || false
   end

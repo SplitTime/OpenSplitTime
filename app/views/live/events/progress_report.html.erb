@@ -46,7 +46,7 @@
           <% @progress_display.past_due_progress_rows.each do |row| %>
               <tr>
                 <td><%= row.bib_number %></td>
-                <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.effort_id) %></td>
+                <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.effort) %></td>
                 <td class="text-nowrap"><%= row.bio_historic %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row.last_reported_info) %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row.due_next_info) %></td>

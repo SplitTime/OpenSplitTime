@@ -27,5 +27,4 @@ RSpec.describe Organization, type: :model do
     expect(organization).not_to be_valid
     expect(organization.errors[:name]).to include('has already been taken')
   end
-
 end

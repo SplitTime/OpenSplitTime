@@ -3,6 +3,8 @@ class Organization < ActiveRecord::Base
 
   include Auditable
   include Concealable
+  extend FriendlyId
+  friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
   has_many :events
   has_many :stewardships, dependent: :destroy

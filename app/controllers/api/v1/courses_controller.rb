@@ -38,8 +38,7 @@ class Api::V1::CoursesController < ApiController
   private
 
   def set_course
-    @course = Course.find_by(id: params[:id])
-    render json: {message: 'course not found'}, status: :not_found unless @course
+    @course = Course.friendly.find(params[:id])
   end
 
   def course_params

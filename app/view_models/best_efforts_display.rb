@@ -83,8 +83,8 @@ class BestEffortsDisplay
 
   def segment
     return @segment if defined?(@segment)
-    split1 = params[:split1].present? ? Split.find(params[:split1]) : course.start_split
-    split2 = params[:split2].present? ? Split.find(params[:split2]) : course.finish_split
+    split1 = params[:split1].present? ? Split.friendly.find(params[:split1]) : course.start_split
+    split2 = params[:split2].present? ? Split.friendly.find(params[:split2]) : course.finish_split
     splits = [split1, split2].sort_by(&:course_index)
     @segment = Segment.new(begin_point: TimePoint.new(1, splits.first.id, splits.first.bitkeys.last),
                            end_point: TimePoint.new(1, splits.last.id, splits.last.bitkeys.first))

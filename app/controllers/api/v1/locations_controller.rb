@@ -38,8 +38,7 @@ class Api::V1::LocationsController < ApiController
   private
 
   def set_location
-    @location = Location.find_by(id: params[:id])
-    render json: {message: 'location not found'}, status: :not_found unless @location
+    @location = Location.find(params[:id])
   end
 
   def location_params

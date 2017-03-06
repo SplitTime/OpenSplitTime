@@ -20,14 +20,14 @@ class EffortsController < ApplicationController
   def new
     @effort = Effort.new
     if params[:event_id]
-      @event = Event.find(params[:event_id])
+      @event = Event.friendly.find(params[:event_id])
       @effort.event = @event
     end
     authorize @effort
   end
 
   def edit
-    @event = Event.find(@effort.event_id)
+    @event = Event.friendly.find(@effort.event_id)
     authorize @effort
   end
 
@@ -72,7 +72,7 @@ class EffortsController < ApplicationController
   end
 
   def associate_participants
-    @event = Event.find(params[:event_id])
+    @event = Event.friendly.find(params[:event_id])
     authorize @event
     if params[:ids].nil?
       redirect_to reconcile_event_path(@event)
@@ -178,7 +178,7 @@ class EffortsController < ApplicationController
   end
 
   def set_effort
-    @effort = Effort.find(params[:id])
+    @effort = Effort.friendly.find(params[:id])
   end
 
   def update_beacon_url(url)

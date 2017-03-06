@@ -58,7 +58,7 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
-    course = Course.find(params[:id])
+    course = Course.friendly.find(params[:id])
     if course.visible_events.empty?
       flash[:danger] = "No events yet held on this course"
       redirect_to course_path(course)
@@ -76,7 +76,7 @@ class CoursesController < ApplicationController
   end
 
   def plan_effort
-    course = Course.find(params[:id])
+    course = Course.friendly.find(params[:id])
     authorize course
     unless course.events
       flash[:danger] = "No events yet held on this course"
@@ -97,7 +97,7 @@ class CoursesController < ApplicationController
   end
 
   def set_course
-    @course = Course.find(params[:id])
+    @course = Course.friendly.find(params[:id])
   end
 
 end

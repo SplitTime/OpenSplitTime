@@ -38,8 +38,7 @@ class Api::V1::SplitTimesController < ApiController
   private
 
   def set_split_time
-    @split_time = SplitTime.find_by(id: params[:id])
-    render json: {message: 'split_time not found'}, status: :not_found unless @split_time
+    @split_time = SplitTime.find(params[:id])
   end
 
   def split_time_params

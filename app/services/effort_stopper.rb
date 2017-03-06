@@ -44,8 +44,8 @@ class EffortStopper
   end
 
   def validate_setup
-    raise ArgumentError, 'stopped_split_time is not contained within the ordered_split_times' unless
-        ordered_split_times.include?(stopped_split_time)
+    raise ArgumentError, 'stopped_split_time is not contained within the ordered_split_times' if
+        ordered_split_times.present? && ordered_split_times.exclude?(stopped_split_time)
     raise ArgumentError, 'one or more ordered_split_times is not associated with the provided effort' if
         ordered_split_times.any? { |st| st.effort_id != effort.id }
   end

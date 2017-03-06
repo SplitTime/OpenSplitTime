@@ -2,7 +2,7 @@ class ColorizeText
 
   # Use with puts, for example, puts ColorizeText.red('Warning!')
   # or puts ColorizeText.bold_cyan('Attention:')
-  # (These methods do not work with p)
+  # or print (These methods do not work with p)
 
   COLORS ||= {white: "30",
               bold_white: "1;30",

@@ -17,6 +17,8 @@ class Effort < ActiveRecord::Base
   include PersonalInfo
   include Searchable
   include Matchable
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
   belongs_to :event
   belongs_to :participant
   has_many :split_times, dependent: :destroy
@@ -70,6 +72,11 @@ class Effort < ActiveRecord::Base
     self.find_by_sql(query)
   end
 
+  def slug_candidates
+    [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
+     [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
+  end
+
   def reset_age_from_birthdate
     assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
   end
@@ -93,7 +100,7 @@ class Effort < ActiveRecord::Base
   end
 
   def event_name
-    @event_name ||= event.name
+    @event_name ||= event.try(:name)
   end
 
   def laps_required

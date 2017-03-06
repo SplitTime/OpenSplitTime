@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :spread, :drop_list]
-  before_action :set_event, except: [:index, :show, :new, :create, :spread]
+  before_action :set_event, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show, :spread, :drop_list]
 
   def index
@@ -10,16 +10,15 @@ class EventsController < ApplicationController
   end
 
   def show
-    event = Event.find(params[:id])
-    @event_display = EventEffortsDisplay.new(event, params)
-    session[:return_to] = event_path(event)
+    @event_display = EventEffortsDisplay.new(@event, params)
+    session[:return_to] = event_path(@event)
     render 'show'
   end
 
   def new
     if params[:course_id]
       @event = Event.new(course_id: params[:course_id], laps_required: 1)
-      @course = Course.find(params[:course_id])
+      @course = Course.friendly.find(params[:course_id])
     else
       @event = Event.new(laps_required: 1)
     end
@@ -133,15 +132,14 @@ class EventsController < ApplicationController
   end
 
   def spread
-    event = Event.find(params[:id])
-    @spread_display = EventSpreadDisplay.new(event, params)
+    @spread_display = EventSpreadDisplay.new(@event, params)
     respond_to do |format|
       format.html
       format.csv do
-        authorize event
+        authorize @event
         csv_stream = render_to_string(partial: 'spread.csv.ruby')
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
+                  filename: "#{@event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
       end
     end
   end
@@ -245,7 +243,7 @@ class EventsController < ApplicationController
   end
 
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.friendly.find(params[:id])
   end
 
   def update_beacon_url(url)

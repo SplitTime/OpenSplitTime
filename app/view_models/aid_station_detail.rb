@@ -24,7 +24,7 @@ class AidStationDetail < LiveEventFramework
     @expected_effort_data ||=
         category_effort_rows[:expected]
             .sort_by { |row| guaranteed_sortable(row.expected_here_info) }
-            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic,
+            .map { |row| row.extract_attributes(:effort_slug, :bib_number, :full_name, :bio_historic,
                                                 :last_reported_info, :due_next_info, :expected_here_info) }
   end
 
@@ -32,7 +32,7 @@ class AidStationDetail < LiveEventFramework
     @stopped_effort_data ||=
         category_effort_rows[:stopped_here]
             .sort_by { |row| guaranteed_sortable(row.stopped_here_info) }
-            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic, :state_and_country,
+            .map { |row| row.extract_attributes(:effort_slug, :bib_number, :full_name, :bio_historic, :state_and_country,
                                                 :prior_to_here_info, :stopped_here_info) }
   end
 
@@ -40,7 +40,7 @@ class AidStationDetail < LiveEventFramework
     @dropped_effort_data ||=
         category_effort_rows[:dropped_here]
             .sort_by { |row| guaranteed_sortable(row.dropped_here_info) }
-            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic, :state_and_country,
+            .map { |row| row.extract_attributes(:effort_slug, :bib_number, :full_name, :bio_historic, :state_and_country,
                                                 :prior_to_here_info, :dropped_here_info) }
   end
 
@@ -48,7 +48,7 @@ class AidStationDetail < LiveEventFramework
     @missed_effort_data ||=
         category_effort_rows[:missed]
             .sort_by { |row| [row.bib_number || 0, -guaranteed_sortable(row.after_here_info)] }
-            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic, :state_and_country,
+            .map { |row| row.extract_attributes(:effort_slug, :bib_number, :full_name, :bio_historic, :state_and_country,
                                                 :prior_to_here_info, :recorded_here_info, :after_here_info) }
   end
 
@@ -56,7 +56,7 @@ class AidStationDetail < LiveEventFramework
     @in_aid_effort_data ||=
         category_effort_rows[:in_aid]
             .sort_by { |row| guaranteed_sortable(row.recorded_here_info) }
-            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic, :state_and_country,
+            .map { |row| row.extract_attributes(:effort_slug, :bib_number, :full_name, :bio_historic, :state_and_country,
                                                 :prior_to_here_info, :recorded_here_info) }
   end
 
@@ -64,7 +64,7 @@ class AidStationDetail < LiveEventFramework
     @recorded_here_effort_data ||=
         category_effort_rows[:recorded_here]
             .sort_by { |row| -guaranteed_sortable(row.recorded_here_info) }
-            .map { |row| row.extract_attributes(:effort_id, :bib_number, :full_name, :bio_historic, :state_and_country,
+            .map { |row| row.extract_attributes(:effort_slug, :bib_number, :full_name, :bio_historic, :state_and_country,
                                                 :prior_to_here_info, :recorded_here_info, :after_here_info) }
   end
 

@@ -5,6 +5,8 @@ class Event < ActiveRecord::Base
   include Auditable
   include Concealable
   include SplitMethods
+  extend FriendlyId
+  friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
   belongs_to :course
   belongs_to :organization

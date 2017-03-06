@@ -6,10 +6,6 @@ module ApplicationHelper
     "#{l(Time.current, format: :full_with_weekday)} at #{l(Time.current, format: :military)}"
   end
 
-  def base_name(split_id)
-    Split.find(split_id).base_name
-  end
-
   def humanize_boolean(boolean)
     case boolean
     when false

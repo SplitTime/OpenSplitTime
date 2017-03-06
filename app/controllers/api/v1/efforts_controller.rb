@@ -38,8 +38,7 @@ class Api::V1::EffortsController < ApiController
   private
 
   def set_effort
-    @effort = Effort.find_by(id: params[:id])
-    render json: {message: 'effort not found'}, status: :not_found unless @effort
+    @effort = Effort.friendly.find(params[:id])
   end
 
   def effort_params

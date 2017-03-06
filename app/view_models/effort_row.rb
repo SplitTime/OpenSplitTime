@@ -1,7 +1,7 @@
 class EffortRow
   include PersonalInfo
 
-  attr_reader :overall_place, :gender_place, :finish_status, :run_status, :dropped_split_name, :day_and_time,
+  attr_reader :effort, :overall_place, :gender_place, :finish_status, :run_status, :dropped_split_name, :day_and_time,
               :start_time_from_params, :segment_seconds
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :segment_seconds, :overall_rank, :gender_rank,
@@ -53,9 +53,4 @@ class EffortRow
       "Problem with finish status for effort id #{effort_id}"
     end
   end
-
-  private
-
-  attr_reader :effort
-
 end

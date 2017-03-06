@@ -13,7 +13,7 @@ class SplitTimesController < ApplicationController
 
   def new
     @split_time = SplitTime.new
-    @effort = Effort.find(params[:effort_id]) if params[:effort_id]
+    @effort = Effort.friendly.find(params[:effort_id]) if params[:effort_id]
     authorize @split_time
   end
 

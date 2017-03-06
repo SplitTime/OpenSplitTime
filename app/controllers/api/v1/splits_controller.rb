@@ -38,8 +38,7 @@ class Api::V1::SplitsController < ApiController
   private
 
   def set_split
-    @split = Split.find_by(id: params[:id])
-    render json: {message: 'split not found'}, status: :not_found unless @split
+    @split = Split.friendly.find(params[:id])
   end
 
   def split_params

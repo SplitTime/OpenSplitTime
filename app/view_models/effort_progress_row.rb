@@ -1,5 +1,6 @@
 class EffortProgressRow
 
+  attr_reader :effort
   delegate :bib_number, :full_name, :bio_historic, to: :effort
 
   def initialize(args)
@@ -12,8 +13,8 @@ class EffortProgressRow
     nil
   end
 
-  def effort_id
-    effort.id
+  def effort_slug
+    effort.slug
   end
 
   def last_reported_info
@@ -30,7 +31,7 @@ class EffortProgressRow
 
   private
 
-  attr_reader :effort, :event_framework
+  attr_reader :event_framework
   delegate :lap_splits, :indexed_lap_splits, :multiple_laps?, :time_points,
            :times_container, to: :event_framework
 
@@ -73,7 +74,7 @@ class EffortProgressRow
   def effort_split_data(lap, split_times)
     split_times = Array.wrap(split_times)
     st = split_times.compact.first
-    EffortSplitData.new(effort_id: effort_id,
+    EffortSplitData.new(effort_slug: effort_slug,
                         lap_name: lap_name(lap),
                         split_name: st && lap_split_name(st.time_point),
                         days_and_times: days_and_times(split_times))

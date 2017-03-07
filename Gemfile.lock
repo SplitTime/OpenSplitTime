@@ -413,6 +413,7 @@ GEM
     upsert (2.1.2)
     vuejs-rails (2.1.10)
     warden (1.2.7)
+    warden (1.2.7)
       rack (>= 1.0)
     web-console (2.3.0)
       activemodel (>= 4.0)
@@ -456,6 +457,7 @@ DEPENDENCIES
   jquery-fileupload-rails
   jquery-rails
   jquery-ui-rails
+  jwt
   kaminari
   launchy
   oj

@@ -249,7 +249,8 @@ Devise.setup do |config|
   # change the failure app, you can configure them inside the config.warden block.
   #
   config.warden do |manager|
-    manager.failure_app = ApiFailureApp
+    manager.strategies.add :jwt_strategy, Devise::Strategies::JwtStrategy
+    manager.default_strategies(scope: :user).unshift :jwt_strategy
   end
 
   # ==> Mountable engine configurations

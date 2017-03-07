@@ -140,6 +140,7 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :create, :update, :destroy] do
         collection { get :current }
       end
+      post 'auth', to: 'authentication#create'
       get 'staging/:staging_id/get_countries', to: 'staging#get_countries', as: :staging_get_countries
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event
       get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations

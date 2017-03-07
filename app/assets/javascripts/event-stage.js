@@ -927,11 +927,11 @@
                 }
             ];
             var router = new VueRouter( {
-                routes
+                routes: routes
             } );
             eventStage.router = router;
             eventStage.app = new Vue( {
-                router,
+                router: router,
                 el: '#event-app',
                 data: eventStage.data,
                 watch: {

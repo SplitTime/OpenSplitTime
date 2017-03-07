@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  attr_accessor :has_json_web_token
+
   def slug_candidates
     [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime('%H:%M:%S')]]
   end

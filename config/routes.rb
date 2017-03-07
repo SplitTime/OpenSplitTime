@@ -135,6 +135,7 @@ Rails.application.routes.draw do
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]
       resources :splits, only: [:show, :create, :update, :destroy]
+      post 'auth', to: 'authentication#create'
       get 'staging/:staging_id/get_countries', to: 'staging#get_countries', as: :staging_get_countries
       get 'staging/:staging_id/get_courses', to: 'staging#get_courses', as: :staging_get_courses
       get 'staging/:staging_id/get_event', to: 'staging#get_event', as: :staging_get_event

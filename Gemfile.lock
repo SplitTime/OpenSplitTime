@@ -455,6 +455,7 @@ DEPENDENCIES
   jquery-fileupload-rails
   jquery-rails
   jquery-ui-rails
+  jwt
   kaminari
   launchy
   oj

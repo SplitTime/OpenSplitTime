@@ -48,6 +48,7 @@ gem 'skylight'
 gem 'pusher'
 gem 'active_model_serializers'
 gem 'friendly_id', '~> 5.1.0'
+gem 'jwt'
 
 group :development do
   gem 'web-console', '~> 2.0'

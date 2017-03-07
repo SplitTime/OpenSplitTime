@@ -151,10 +151,18 @@ class EventPolicy < ApplicationPolicy
   end
 
   def event_staging_app?
-    user.authorized_for_live?(event)
+    Rails.env == 'production' ?
+        user.admin? :
+        user.authorized_for_live?(event)
   end
 
   def post_event_course_org?
     user.authorized_for_live?(event)
+  end
+
+  def new_staging?
+    Rails.env == 'production' ?
+        user.admin? :
+        user.present?
   end
 end

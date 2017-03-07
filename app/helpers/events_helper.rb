@@ -30,7 +30,7 @@ module EventsHelper
   def link_to_download_spread_csv(view_object, current_user)
     if current_user && current_user.authorized_for_live?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',
-              spread_event_path(view_object.event, format: :csv, style: params[:style], sort: params[:sort]),
+              spread_event_path(view_object.event, format: :csv, display_style: params[:display_style], sort: params[:sort]),
               method: :get, class: 'btn btn-sm btn-success'
     end
   end

@@ -17,7 +17,7 @@ class Api::V1::CoursesController < ApiController
     authorize course
 
     if course.save
-      render json: course
+      render json: course, status: :created
     else
       render json: {message: 'course not created', error: "#{course.errors.full_messages}"}, status: :bad_request
     end

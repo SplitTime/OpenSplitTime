@@ -11,7 +11,7 @@ class Api::V1::EffortsController < ApiController
     authorize effort
 
     if effort.save
-      render json: effort
+      render json: effort, status: :created
     else
       render json: {message: 'effort not created', error: "#{effort.errors.full_messages}"}, status: :bad_request
     end

@@ -9,7 +9,7 @@ describe Api::V1::EventsController do
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, staging_id: event.staging_id
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns data of a single event' do
@@ -22,7 +22,7 @@ describe Api::V1::EventsController do
       get :show, staging_id: 123
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -32,8 +32,8 @@ describe Api::V1::EventsController do
     it 'returns a successful json response' do
       post :create, event: params
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).not_to be_nil
-      expect(response).to be_success
+      expect(parsed_response['data']['id']).not_to be_nil
+      expect(response.status).to eq(201)
     end
 
     it 'creates an event record with a staging_id' do
@@ -49,7 +49,7 @@ describe Api::V1::EventsController do
 
     it 'returns a successful json response' do
       put :update, staging_id: event.staging_id, event: attributes
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
@@ -62,14 +62,14 @@ describe Api::V1::EventsController do
       put :update, staging_id: 123, event: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
   describe '#destroy' do
     it 'returns a successful json response' do
       delete :destroy, staging_id: event.staging_id
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'destroys the event record' do
@@ -83,7 +83,7 @@ describe Api::V1::EventsController do
       delete :destroy, staging_id: 123
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -96,7 +96,7 @@ describe Api::V1::EventsController do
       put :associate_splits, staging_id: event.staging_id, split_ids: split_ids
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/splits associated/)
-      expect(response).to be_success
+      expect(response.status).to eq(201)
     end
 
     it 'associates the specified splits with the event' do
@@ -119,7 +119,7 @@ describe Api::V1::EventsController do
       put :associate_splits, staging_id: event.staging_id, split_ids: [0]
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -137,7 +137,7 @@ describe Api::V1::EventsController do
       delete :remove_splits, staging_id: event.staging_id, split_ids: removed_split_ids
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/splits removed/)
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'removes the specified split from the event' do
@@ -152,7 +152,7 @@ describe Api::V1::EventsController do
       delete :remove_splits, staging_id: event.staging_id, split_ids: [0]
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 end

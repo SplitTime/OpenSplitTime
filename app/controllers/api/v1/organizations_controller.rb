@@ -17,7 +17,7 @@ class Api::V1::OrganizationsController < ApiController
     authorize organization
 
     if organization.save
-      render json: organization
+      render json: organization, status: :created
     else
       render json: {message: 'organization not created', error: "#{organization.errors.full_messages}"}, status: :bad_request
     end

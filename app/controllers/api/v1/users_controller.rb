@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApiController
     authorize user
 
     if user.save
-      render json: user
+      render json: user, status: :created
     else
       render json: {message: 'user not created', error: "#{user.errors.full_messages}"}, status: :bad_request
     end

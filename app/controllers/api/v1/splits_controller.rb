@@ -11,7 +11,7 @@ class Api::V1::SplitsController < ApiController
     authorize split
 
     if split.save
-      render json: split
+      render json: split, status: :created
     else
       render json: {message: 'split not created', error: "#{split.errors.full_messages}"}, status: :bad_request
     end

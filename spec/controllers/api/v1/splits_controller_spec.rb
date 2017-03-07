@@ -9,7 +9,7 @@ describe Api::V1::SplitsController do
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, id: split
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns data of a single split' do
@@ -22,7 +22,7 @@ describe Api::V1::SplitsController do
       get :show, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -31,8 +31,8 @@ describe Api::V1::SplitsController do
       post :create, split: {base_name: 'Test Split', course_id: course.id, distance_from_start: 100,
                             kind: 'intermediate', sub_split_bitkey: 1}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).not_to be_nil
-      expect(response).to be_success
+      expect(parsed_response['data']['id']).not_to be_nil
+      expect(response.status).to eq(201)
     end
 
     it 'creates a split record' do
@@ -48,7 +48,7 @@ describe Api::V1::SplitsController do
 
     it 'returns a successful json response' do
       put :update, id: split, split: attributes
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
@@ -61,14 +61,14 @@ describe Api::V1::SplitsController do
       put :update, id: 0, split: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
   describe '#destroy' do
     it 'returns a successful json response' do
       delete :destroy, id: split
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'destroys the split record' do
@@ -82,7 +82,7 @@ describe Api::V1::SplitsController do
       delete :destroy, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 end

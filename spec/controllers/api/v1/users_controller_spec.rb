@@ -8,20 +8,20 @@ describe Api::V1::UsersController do
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, id: user
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns data of a single user' do
       get :show, id: user
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(user.id)
+      expect(parsed_response['data']['id'].to_i).to eq(user.id)
     end
 
     it 'returns an error if the user does not exist' do
       get :show, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -29,8 +29,8 @@ describe Api::V1::UsersController do
     it 'returns a successful json response' do
       post :create, user: {first_name: 'Test', last_name: 'User', email: 'test_user@example.com', password: 'password'}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).not_to be_nil
-      expect(response).to be_success
+      expect(parsed_response['data']['id']).not_to be_nil
+      expect(response.status).to eq(201)
     end
 
     it 'creates a user record' do
@@ -45,7 +45,7 @@ describe Api::V1::UsersController do
 
     it 'returns a successful json response' do
       put :update, id: user, user: attributes
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
@@ -60,14 +60,14 @@ describe Api::V1::UsersController do
       put :update, id: 0, user: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
   describe '#destroy' do
     it 'returns a successful json response' do
       delete :destroy, id: user
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'destroys the user record' do
@@ -81,20 +81,20 @@ describe Api::V1::UsersController do
       delete :destroy, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
   describe '#current' do
     it 'returns a successful json response' do
       get :current
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns data of the current user' do
       get :current
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).to eq(subject.current_user.id)
+      expect(parsed_response['data']['id'].to_i).to eq(subject.current_user.id)
     end
   end
 end

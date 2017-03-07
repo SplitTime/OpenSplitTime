@@ -8,23 +8,23 @@ describe Api::V1::CoursesController do
   describe '#index' do
     it 'returns a successful 200 response' do
       get :index
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns each course that the current_user is authorized to edit' do
       FactoryGirl.create_list(:course, 3)
       get :index
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response.size).to eq(3)
-      expect(parsed_response.map { |item| item['id'] }).to eq(Course.all.map(&:id))
-      expect(response).to be_success
+      expect(parsed_response['data'].size).to eq(3)
+      expect(parsed_response['data'].map { |item| item['id'].to_i }).to eq(Course.all.map(&:id))
+      expect(response.status).to eq(200)
     end
   end
 
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, id: course
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns data of a single course' do
@@ -37,7 +37,7 @@ describe Api::V1::CoursesController do
       get :show, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -45,8 +45,8 @@ describe Api::V1::CoursesController do
     it 'returns a successful json response' do
       post :create, course: {name: 'Test Course'}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).not_to be_nil
-      expect(response).to be_success
+      expect(parsed_response['data']['id']).not_to be_nil
+      expect(response.status).to eq(201)
     end
 
     it 'creates a course record' do
@@ -61,7 +61,7 @@ describe Api::V1::CoursesController do
 
     it 'returns a successful json response' do
       put :update, id: course, course: attributes
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
@@ -74,14 +74,14 @@ describe Api::V1::CoursesController do
       put :update, id: 0, course: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
   describe '#destroy' do
     it 'returns a successful json response' do
       delete :destroy, id: course
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'destroys the course record' do
@@ -95,7 +95,7 @@ describe Api::V1::CoursesController do
       delete :destroy, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 end

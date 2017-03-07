@@ -14,7 +14,7 @@ class Api::V1::EventsController < ApiController
 
     if event.save
       event.reload
-      render json: event
+      render json: event, status: :created
     else
       render json: {message: 'event not created', error: "#{event.errors.full_messages}"}, status: :bad_request
     end

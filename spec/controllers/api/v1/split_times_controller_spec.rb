@@ -12,7 +12,7 @@ describe Api::V1::SplitTimesController do
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, id: split_time
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns data of a single split_time' do
@@ -25,7 +25,7 @@ describe Api::V1::SplitTimesController do
       get :show, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -34,8 +34,8 @@ describe Api::V1::SplitTimesController do
       post :create, split_time: {effort_id: effort.id, lap: 1, split_id: split.id,
                                  sub_split_bitkey: 1, time_from_start: 100}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).not_to be_nil
-      expect(response).to be_success
+      expect(parsed_response['data']['id']).not_to be_nil
+      expect(response.status).to eq(201)
     end
 
     it 'creates a split_time record' do
@@ -54,7 +54,7 @@ describe Api::V1::SplitTimesController do
 
     it 'returns a successful json response' do
       put :update, id: split_time, split_time: attributes
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
@@ -67,14 +67,14 @@ describe Api::V1::SplitTimesController do
       put :update, id: 0, split_time: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
   describe '#destroy' do
     it 'returns a successful json response' do
       delete :destroy, id: split_time
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'destroys the split_time record' do
@@ -88,7 +88,7 @@ describe Api::V1::SplitTimesController do
       delete :destroy, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 end

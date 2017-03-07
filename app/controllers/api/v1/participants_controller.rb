@@ -11,7 +11,7 @@ class Api::V1::ParticipantsController < ApiController
     authorize participant
 
     if participant.save
-      render json: participant
+      render json: participant, status: :created
     else
       render json: {message: 'participant not created', error: "#{participant.errors.full_messages}"}, status: :bad_request
     end

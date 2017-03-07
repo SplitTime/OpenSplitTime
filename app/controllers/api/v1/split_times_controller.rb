@@ -11,7 +11,7 @@ class Api::V1::SplitTimesController < ApiController
     authorize split_time
 
     if split_time.save
-      render json: split_time
+      render json: split_time, status: :created
     else
       render json: {message: 'split_time not created', error: "#{split_time.errors.full_messages}"}, status: :bad_request
     end

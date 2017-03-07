@@ -8,7 +8,7 @@ describe Api::V1::ParticipantsController do
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, id: participant
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'returns data of a single participant' do
@@ -21,7 +21,7 @@ describe Api::V1::ParticipantsController do
       get :show, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -29,8 +29,8 @@ describe Api::V1::ParticipantsController do
     it 'returns a successful json response' do
       post :create, participant: {first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['id']).not_to be_nil
-      expect(response).to be_success
+      expect(parsed_response['data']['id']).not_to be_nil
+      expect(response.status).to eq(201)
     end
 
     it 'creates a participant record' do
@@ -45,7 +45,7 @@ describe Api::V1::ParticipantsController do
 
     it 'returns a successful json response' do
       put :update, id: participant, participant: attributes
-      expect(response).to be_success
+      expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
@@ -58,7 +58,7 @@ describe Api::V1::ParticipantsController do
       put :update, id: 0, participant: attributes
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 
@@ -79,7 +79,7 @@ describe Api::V1::ParticipantsController do
       delete :destroy, id: 0
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
-      expect(response).to be_not_found
+      expect(response.status).to eq(404)
     end
   end
 end

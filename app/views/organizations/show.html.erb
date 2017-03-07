@@ -12,7 +12,7 @@
           <%= link_to 'Create New Event', new_event_path(organization_id: @organization.id), class: "btn btn-sm btn-success" %>
           <%= link_to 'Edit this organization', edit_organization_path(@organization), class: "btn btn-sm btn-primary" %>
           <%= link_to 'Delete this organization',
-                      organization_path(@organization, referrer_path: request.referrer ? URI(request.referrer).path : locations_path),
+                      organization_path(@organization),
                       method: :delete,
                       data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
       <% end %>

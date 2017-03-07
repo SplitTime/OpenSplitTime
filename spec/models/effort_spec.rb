@@ -27,8 +27,6 @@ RSpec.describe Effort, type: :model do
   describe 'validations' do
     let(:course) { Course.create!(name: 'Test Course') }
     let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
-    let(:location1) { Location.create!(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105) }
-    let(:location2) { Location.create!(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05) }
     let(:participant) { Participant.create!(first_name: 'Joe', last_name: 'Hardman',
                                             gender: 'male', birthdate: '1989-12-15',
                                             city: 'Boulder', state_code: 'CO', country_code: 'US') }

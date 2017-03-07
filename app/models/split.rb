@@ -1,7 +1,8 @@
 class Split < ActiveRecord::Base
   PERMITTED_PARAMS = [:id, :course_id, :split_id, :distance_from_start, :distance_as_entered, :vert_gain_from_start,
                       :vert_gain_as_entered, :vert_loss_from_start, :vert_loss_as_entered, :kind, :base_name,
-                      :description, :sub_split_bitmap, :latitude, :longitude, :elevation, :name_extensions]
+                      :description, :sub_split_bitmap, :latitude, :longitude, :elevation, :elevation_as_entered,
+                      :name_extensions]
 
   include Auditable
   include Concealable
@@ -12,12 +13,9 @@ class Split < ActiveRecord::Base
   strip_attributes collapse_spaces: true
   enum kind: [:start, :finish, :intermediate]
   belongs_to :course
-  belongs_to :location
   has_many :split_times, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
-
-  accepts_nested_attributes_for :location, allow_destroy: true
 
   validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
@@ -41,6 +39,9 @@ class Split < ActiveRecord::Base
                             message: 'may not be negative'
   validates_numericality_of :vert_loss_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: 'may not be negative'
+  validates_numericality_of :elevation, greater_than_or_equal_to: -1000, less_than_or_equal_to: 10000, allow_nil: true
+  validates_numericality_of :latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true
+  validates_numericality_of :longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true
 
   scope :ordered, -> { order(:distance_from_start) }
   scope :with_course_name, -> { select('splits.*, courses.name as course_name').joins(:course) }
@@ -83,6 +84,18 @@ class Split < ActiveRecord::Base
 
   def vert_loss_as_entered=(number_string)
     self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
+  end
+
+  def elevation_as_entered
+    Split.meters_to_preferred_elevation(elevation) if elevation
+  end
+
+  def elevation_as_entered=(entered_elevation)
+    if entered_elevation.present?
+      self.elevation = Split.entered_elevation_to_meters(entered_elevation)
+    else
+      self.elevation = nil
+    end
   end
 
   def course_split_name
@@ -155,9 +168,5 @@ class Split < ActiveRecord::Base
 
   def most_recent_event_date
     events.where(concealed: false).most_recent.start_time
-  end
-
-  def random_location_name
-    "#{name} Location #{(rand * 1000).to_i} (please change me)"
   end
 end

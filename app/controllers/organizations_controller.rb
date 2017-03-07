@@ -54,8 +54,7 @@ class OrganizationsController < ApplicationController
     else
       @organization.destroy
       flash[:success] = 'Organization deleted.'
-      session[:return_to] = params[:referrer_path] if params[:referrer_path]
-      redirect_to session.delete(:return_to) || organizations_path
+      redirect_to organizations_path
     end
   end
 

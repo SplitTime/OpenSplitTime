@@ -17,12 +17,4 @@ class SplitPolicy < ApplicationPolicy
   def import?
     user.present?
   end
-
-  def create_location?
-    user.authorized_to_edit?(split)
-  end
-
-  def assign_location?
-    user.authorized_to_edit?(split)
-  end
 end

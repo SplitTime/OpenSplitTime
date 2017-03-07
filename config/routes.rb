@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   get 'course_info', to: 'visitors#course_info'
   get 'effort_info', to: 'visitors#effort_info'
   get 'event_info', to: 'visitors#event_info'
-  get 'location_info', to: 'visitors#location_info'
   get 'participant_info', to: 'visitors#participant_info'
   get 'organization_info', to: 'visitors#organization_info'
   get 'split_info', to: 'visitors#split_info'
@@ -31,7 +30,6 @@ Rails.application.routes.draw do
     member { get :edit_preferences }
     member { put :update_preferences }
   end
-  resources :locations
   resources :courses do
     member { get :best_efforts }
     member { get :plan_effort }
@@ -58,10 +56,7 @@ Rails.application.routes.draw do
     member { get :export_to_ultrasignup }
     member { get :find_problem_effort }
   end
-  resources :splits do
-    member { get :assign_location }
-    member { post :create_location }
-  end
+  resources :splits
   resources :organizations do
     member { get :stewards }
     member { put :remove_steward }
@@ -132,7 +127,6 @@ Rails.application.routes.draw do
         member { post :import_efforts }
         member { get :spread }
       end
-      resources :locations, only: [:show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]

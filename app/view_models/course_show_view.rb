@@ -1,14 +1,16 @@
 class CourseShowView
 
-  attr_reader :course, :locations, :events, :ordered_splits
+  attr_reader :course, :events
   delegate :name, :description, to: :course
 
   def initialize(course, params)
     @course = course
     @params = params
-    @locations = Location.on_course(course)
     @events = course.events.select_with_params(params[:search]).to_a
-    @ordered_splits = @course.splits.includes(:course, :location).ordered
+  end
+
+  def ordered_splits
+    @ordered_splits ||= course.ordered_splits
   end
 
   def course_id
@@ -24,19 +26,19 @@ class CourseShowView
   end
 
   def latitude_center
-    locations.pluck(:latitude).mean
+    ordered_splits.pluck(:latitude).compact.mean
   end
 
   def longitude_center
-    locations.pluck(:longitude).mean
+    ordered_splits.pluck(:longitude).compact.mean
   end
 
   def zoom
     9
   end
 
-  def course_has_locations?
-    locations.present?
+  def course_has_location_data?
+    ordered_splits.where.not(latitude: nil).where.not(longitude: nil).present?
   end
 
   def view_text

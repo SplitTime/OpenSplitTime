@@ -16,11 +16,8 @@ RSpec.describe SplitTime, kind: :model do
   let(:course) { Course.create!(name: 'Test Course') }
   let(:event) { Event.create!(course: course, name: 'Test Event 2015', start_time: '2015-07-01 06:00:00', laps_required: 1) }
   let(:effort) { Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', start_offset: 0) }
-  let(:location1) { Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105) }
-  let(:location2) { Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05) }
-  let(:location3) { Location.create(name: 'Mountain Getaway', elevation: 2950, latitude: 40.3, longitude: -105.15) }
-  let(:start_split) { Split.create!(course: course, location: location1, base_name: 'Start', sub_split_bitmap: 1, distance_from_start: 0, kind: 0) }
-  let(:intermediate_split) { Split.create!(course: course, location: location1, base_name: 'Hopeless Outbound', sub_split_bitmap: 3, distance_from_start: 50000, kind: 2) }
+  let(:start_split) { Split.create!(course: course, base_name: 'Start', sub_split_bitmap: 1, distance_from_start: 0, kind: 0) }
+  let(:intermediate_split) { Split.create!(course: course, base_name: 'Hopeless Outbound', sub_split_bitmap: 3, distance_from_start: 50000, kind: 2) }
 
   it 'is valid when created with an effort, a split, a sub_split, a time_from_start, and a lap' do
     SplitTime.create!(effort: effort, split: intermediate_split, bitkey: in_bitkey, time_from_start: 30000, lap: 1)
@@ -93,7 +90,7 @@ RSpec.describe SplitTime, kind: :model do
     course2 = Course.create!(name: 'Hiking Course CCW')
     event = Event.create!(course: course1, name: 'Fast Times 100 2015', start_time: "2015-07-01 06:00:00", laps_required: 1)
     effort = Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male')
-    split = Split.create!(course: course2, location: location1, base_name: 'Hiking Aid 1', distance_from_start: 50000, kind: 2)
+    split = Split.create!(course: course2, base_name: 'Hiking Aid 1', distance_from_start: 50000, kind: 2)
     split_time = SplitTime.new(effort: effort, split: split, time_from_start: 30000, lap: 1)
     expect(split_time).not_to be_valid
     expect(split_time.errors[:effort_id]).to include('the effort.event.course_id does not resolve with the split.course_id')

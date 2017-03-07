@@ -36,28 +36,18 @@
     <% end %>
   </div>
   <hr>
-  <% if @split.location_id? %>
-      <strong>Location:</strong>
-      <%= link_to @split.location.name, location_path(@split.location) %> |
-      <%= "Elevation: #{elevation_format(@split.location.elevation)}" %>
+  <% if @split.latitude && @split.longitude %>
+      <%= "Elevation: #{elevation_format(@split.elevation)}" %>
       <hr>
       <div id="map" style="width: 550px; height: 350px;"></div>
 
       <script>
         $(document).ready(function () {
-          var locations = <%= Location.on_course(@split.course).unshift(@split.location).uniq.to_json.html_safe %>;    // pass ruby variable to javascript
+          var locations = <%= @split.course.splits.unshift(@split).uniq.to_json.html_safe %>;    // pass ruby variable to javascript
 
               gmap_show(locations, {latitude: locations[0].latitude, longitude: locations[0].longitude, zoom: 12});    // init show map
         });
       </script>
-  <% else %>
-      <%= link_to "Create Location", create_location_split_path(id: @split.id),
-                  method: :post,
-                  class: "btn btn-sm btn-success" %>
-      <%= link_to "Select Location", assign_location_split_path(split: @split.id),
-                  class: "btn btn-sm btn-success",
-                  referrer_path: split_path(@split) %>
-
   <% end %>
 
 </div>

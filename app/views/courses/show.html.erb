@@ -29,13 +29,13 @@
         <%= @course_view.description %>
       </div>
   <% end %>
-  <% if @course_view.course_has_locations? %>
+  <% if @course_view.course_has_location_data? %>
       <div class="col-md-8">
         <div id="map" style="width: 550px; height: 350px;"></div>
 
         <script>
           $(document).ready(function () {
-            var locations = <%= @course_view.locations.to_json.html_safe %>; // pass ruby variables to javascript
+            var locations = <%= @course_view.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
             var latitude_center = <%= @course_view.latitude_center %>;
             var longitude_center = <%= @course_view.longitude_center %>;
             var zoom = <%= @course_view.zoom %>;

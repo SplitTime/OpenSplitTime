@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 # t.integer  "course_id"
-# t.integer  "location_id"
 # t.string   "base_name"
 # t.integer  "distance_from_start"
 # t.integer  "vert_gain_from_start"
@@ -21,7 +20,6 @@ RSpec.describe Split, kind: :model do
   let(:persisted_course) { FactoryGirl.create(:course) }
   let(:course1) { FactoryGirl.build_stubbed(:course, name: 'Test Course') }
   let(:course2) { FactoryGirl.build_stubbed(:course, name: 'Test Course 2') }
-  let(:location1) { FactoryGirl.build_stubbed(:location, name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105) }
 
   it 'is valid when created with a course, a name, a distance_from_start, and a kind' do
     Split.create!(course: persisted_course,
@@ -37,25 +35,25 @@ RSpec.describe Split, kind: :model do
   end
 
   it 'is invalid without a base_name' do
-    split = Split.new(course: course1, location: location1, base_name: nil, distance_from_start: 2000, kind: 2)
+    split = Split.new(course: course1, base_name: nil, distance_from_start: 2000, kind: 2)
     expect(split).not_to be_valid
     expect(split.errors[:base_name]).to include("can't be blank")
   end
 
   it 'is invalid without a distance_from_start' do
-    split = Split.new(course: course1, location: location1, base_name: 'Test', distance_from_start: nil, kind: 2)
+    split = Split.new(course: course1, base_name: 'Test', distance_from_start: nil, kind: 2)
     expect(split).not_to be_valid
     expect(split.errors[:distance_from_start]).to include("can't be blank")
   end
 
   it 'is invalid without a sub_split_bitmap' do
-    split = Split.new(course: course1, location: location1, base_name: 'Test', distance_from_start: 3000, sub_split_bitmap: nil, kind: 2)
+    split = Split.new(course: course1, base_name: 'Test', distance_from_start: 3000, sub_split_bitmap: nil, kind: 2)
     expect(split).not_to be_valid
     expect(split.errors[:sub_split_bitmap]).to include("can't be blank")
   end
 
   it 'is invalid without a kind' do
-    split = Split.new(course: course1, location: location1, base_name: 'Test', distance_from_start: 6000, kind: nil)
+    split = Split.new(course: course1, base_name: 'Test', distance_from_start: 6000, kind: nil)
     expect(split).not_to be_valid
     expect(split.errors[:kind]).to include("can't be blank")
   end

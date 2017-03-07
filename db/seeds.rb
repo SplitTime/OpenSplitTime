@@ -22,11 +22,6 @@ Organization.create(name: 'Frozen Lips 100')
 Organization.create(name: 'Hardly Rocker 100')
 Organization.create(name: 'Hardrock 100')
 
-Location.create(name: 'Mountain Town', elevation: 2400, latitude: 40.1, longitude: -105)
-Location.create(name: 'British Ghetto', elevation: 50, latitude: 55, longitude: 0)
-Location.create(name: 'Typical Outback', elevation: 200, latitude: -43, longitude: 146.3)
-Location.create(name: 'Mountain Hideout', elevation: 2900, latitude: 40.3, longitude: -105.05)
-
 Event.create(course_id: 2, organization_id: 3, name: 'Hardly Rocker 2010', start_time: "2010-08-10 06:00:00", laps_required: 1)
 Event.create(course_id: 2, organization_id: 2, name: 'Frozen Lips 2015', start_time: "2015-05-31 07:00:00", laps_required: 1)
 Event.create(course_id: 1, organization_id: nil, name: 'Test Event', start_time: "2012-08-08 05:00:00", laps_required: 1)
@@ -44,9 +39,13 @@ Effort.create(event_id: 2, participant_id: 3, wave: nil, bib_number: 44, city: '
 Effort.create(event_id: 1, participant_id: 3, wave: nil, bib_number: 66, city: 'Cranleigh', state_code: 'SRY', country_code: 'GB', age: 15, start_time: "2010-08-10 06:00:00", first_name: 'Basil', last_name: 'Smith', gender: 'male')
 Effort.create(event_id: 3, participant_id: 2, wave: nil, bib_number: 150, city: 'Nantucket', state_code: 'MA', country_code: 'US', age: 26, start_time: "2012-08-08 05:00:00", first_name: 'Jane', last_name: 'Rockstar', gender: 'female')
 
-Split.create(course_id: 1, location_id: 1, base_name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0)
-Split.create(course_id: 1, location_id: 4, base_name: 'Test Aid Station', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2)
-Split.create(course_id: 1, location_id: 1, base_name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1)
+Split.create(course_id: 1, base_name: 'Test Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0, elevation: 2400, latitude: 40.1, longitude: -105)
+Split.create(course_id: 1, base_name: 'Test Aid Station 1', distance_from_start: 4000, sub_split_bitmap: 65, vert_gain_from_start: 400, vert_loss_from_start: 0, kind: 2, elevation: 3000, latitude: 40.2, longitude: -105.4)
+Split.create(course_id: 1, base_name: 'Test Aid Station 2', distance_from_start: 7000, sub_split_bitmap: 65, vert_gain_from_start: 700, vert_loss_from_start: 0, kind: 2, elevation: 3000, latitude: 40.2, longitude: -105.4)
+Split.create(course_id: 1, base_name: 'Test Finish Line', distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 1000, kind: 1, elevation: 2800, latitude: 40.05, longitude: -105.2)
+Split.create(course_id: 2, base_name: 'Another Starting Line', distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0, elevation: 200, latitude: -43, longitude: 146.3)
+Split.create(course_id: 2, base_name: 'Another Aid Station', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2, elevation: 250, latitude: -43.1, longitude: 146.4)
+Split.create(course_id: 2, base_name: 'Another Finish Line', distance_from_start: 10000, vert_gain_from_start: 700, vert_loss_from_start: 700, kind: 1, elevation: 300, latitude: -43.2, longitude: 146.2)
 
 SplitTime.create(effort_id: 1, split_id: 1, lap: 1, time_from_start: 0)
 SplitTime.create(effort_id: 1, split_id: 2, lap: 1, time_from_start: 4000)

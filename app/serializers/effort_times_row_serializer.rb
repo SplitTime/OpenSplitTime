@@ -1,7 +1,7 @@
 class EffortTimesRowSerializer < BaseSerializer
   attributes *EffortTimesRow::EXPORT_ATTRIBUTES, :display_style
   attribute :elapsed_times, if: :show_elapsed_times
-  attribute :days_and_times, if: :show_absolute_times
+  attribute :absolute_times, if: :show_absolute_times
   attribute :segment_times, if: :show_segment_times
 
   def show_elapsed_times
@@ -20,7 +20,7 @@ class EffortTimesRowSerializer < BaseSerializer
     object.time_clusters.map(&:times_from_start)
   end
 
-  def days_and_times
+  def absolute_times
     object.time_clusters.map(&:days_and_times)
   end
 

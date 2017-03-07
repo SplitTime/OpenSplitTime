@@ -4,8 +4,12 @@
   <thead>
   <tr>
     <th>Name</th>
-    <th>Details</th>
-    <th>Location</th>
+    <th>Distance</th>
+    <th>Gain From Start</th>
+    <th>Loss From Start</th>
+    <th>Elevation</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
     <th></th>
   </tr>
   </thead>
@@ -13,26 +17,12 @@
   <% splits.each do |split| %>
       <tr>
         <td><strong><%= link_to split.base_name, split_path(split) %></strong></td>
-        <td>
-          <% unless split.start? %>
-              <%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %>
-              <% if split.vert_gain_from_start.present? %>
-                  <%= "• #{e(split.vert_gain_from_start)} #{peu} gain / #{e(split.vert_loss_from_start)} #{peu} loss from start" %>
-              <% end %>
-          <% end %>
-        </td>
-        <% if split.location %>
-            <td><%= link_to split.location.name, location_path(split.location) %></td>
-        <% else %>
-            <td>
-              <% if @current_user && @current_user.authorized_to_edit?(split.course) %>
-                  <%= link_to "Create", create_location_split_path(id: split.id), method: :post, class: "btn btn-xs btn-success" %>
-                  <%= link_to "Select", assign_location_split_path(id: split.id, referrer_path: referred_by),
-                              class: "btn btn-xs btn-success" %>
-              <% end %>
-            </td>
-        <% end %>
-
+        <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>
+        <td><%= "#{e(split.vert_gain_from_start)} #{peu}" %></td>
+        <td><%= "#{e(split.vert_loss_from_start)} #{peu}" %></td>
+        <td><%= "#{e(split.elevation)} #{peu}" %></td>
+        <td><%= split.latitude %></td>
+        <td><%= split.longitude %></td>
       </tr>
   <% end %>
   </tbody>

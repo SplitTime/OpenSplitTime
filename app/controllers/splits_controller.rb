@@ -28,10 +28,7 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.save
-      if params[:commit] == 'Create Location'
-        session[:return_to] = edit_split_path(@split, event_id: params[:event_id])
-        redirect_to create_location_split_path(id: @split.id, event_id: params[:event_id]), method: :post
-      elsif params[:event_id]
+      if params[:event_id]
         @event = Event.friendly.find(params[:event_id])
         @event.splits << @split
         @event.save
@@ -72,22 +69,6 @@ class SplitsController < ApplicationController
     @split.destroy
 
     redirect_to course_path(course)
-  end
-
-  def create_location
-    authorize @split
-    @split.location = Location.create(name: @split.random_location_name)
-      session[:return_to] = params[:referrer_path] || split_path(@split)
-    if @split.save
-      redirect_to edit_location_path(@split.location, created_by_split: true)
-    else
-      flash[:danger] = "Could not create location."
-      redirect_to session.delete(:return_to) || split_path(@split)
-    end
-  end
-
-  def assign_location
-    authorize @split
   end
 
   private

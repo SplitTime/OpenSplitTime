@@ -9,5 +9,7 @@ class Api::V1::AuthenticationController < ApiController
     else
       render json: {errors: ['Invalid email or password']}, status: :bad_request
     end
+  rescue
+    render json: {errors: ['Invalid request']}, status: :bad_request
   end
 end

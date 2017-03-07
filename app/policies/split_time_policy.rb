@@ -6,6 +6,13 @@ class SplitTimePolicy < ApplicationPolicy
 
   attr_reader :split_time
 
+  # SplitTime will almost always be created via event effort import, live entry, or effort update split times.
+  # Requiring admin authority to create a split_time via SplitTimesController#create avoids the possibility
+  # for vandalism by the creation of confusing data.
+  def create?
+    user.admin?
+  end
+
   def post_initialize(split_time)
     @split_time = split_time
   end

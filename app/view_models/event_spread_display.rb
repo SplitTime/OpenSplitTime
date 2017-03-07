@@ -7,12 +7,12 @@ class EventSpreadDisplay
   # initialize(event, params = {})
   # event is an ordinary event object
   # params may include
-  # params[:style] (elapsed / ampm / military / segment) and
+  # params[:display_style] (elapsed / ampm / military / segment) and
   # params[:sort] (overall_rank, gender_rank, bib_number, first_name, last_name, or any other sortable attribute)
 
   def initialize(event, params = {})
     @event = event
-    @display_style = params[:style].presence || (event.available_live ? 'ampm' : 'elapsed')
+    @display_style = params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
     @sort_columns = params[:sort].to_s.split(',')
   end
 

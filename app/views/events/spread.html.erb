@@ -24,22 +24,22 @@
     <div class="row">
       <div class="btn-group">
         <%= link_to 'Elapsed time', spread_event_path(@spread_display.event,
-                                                      style: 'elapsed',
+                                                      display_style: 'elapsed',
                                                       sort: params[:sort]),
                     disabled: @spread_display.display_style == 'elapsed',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'AM / PM', spread_event_path(@spread_display.event,
-                                                 style: 'ampm',
+                                                 display_style: 'ampm',
                                                  sort: params[:sort]),
                     disabled: @spread_display.display_style == 'ampm',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to '24-hour time', spread_event_path(@spread_display.event,
-                                                      style: 'military',
+                                                      display_style: 'military',
                                                       sort: params[:sort]),
                     disabled: @spread_display.display_style == 'military',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Segment time', spread_event_path(@spread_display.event,
-                                                      style: 'segment',
+                                                      display_style: 'segment',
                                                       sort: params[:sort]),
                     disabled: @spread_display.display_style == 'segment',
                     class: 'btn btn-sm btn-primary' %>
@@ -53,13 +53,13 @@
   <thead>
   <tr>
     <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
-                                                       style: params[:style],
+                                                       display_style: params[:display_style],
                                                        sort: 'overall_rank') %></th>
     <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
-                                             style: params[:style],
+                                             display_style: params[:display_style],
                                              sort: 'bib_number') %></th>
     <th><%= link_to 'Name', spread_event_path(@spread_display.event,
-                                              style: params[:style],
+                                              display_style: params[:display_style],
                                               sort: params[:sort] == 'last_name' ? 'first_name' : 'last_name') %></th>
     <th>Category</th>
     <th>From</th>

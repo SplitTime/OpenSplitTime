@@ -12,7 +12,7 @@ RSpec.describe EventSpreadDisplay do
   let(:split_names_with_start) { split_names_without_start.unshift('Start') }
 
   context 'when display_style is ampm' do
-    let(:test_params) { {style: 'ampm'} }
+    let(:test_params) { {display_style: 'ampm'} }
 
     describe '#split_header_names' do
       before do

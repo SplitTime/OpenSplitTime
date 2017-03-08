@@ -9,7 +9,7 @@ class Api::V1::OrganizationsController < ApiController
 
   def show
     authorize @organization
-    render json: @organization
+    render json: @organization, include: params[:include]
   end
 
   def create

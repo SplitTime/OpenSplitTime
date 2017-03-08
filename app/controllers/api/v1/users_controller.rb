@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApiController
 
   def show
     authorize @user
-    render json: @user
+    render json: @user, include: params[:include]
   end
 
   def create

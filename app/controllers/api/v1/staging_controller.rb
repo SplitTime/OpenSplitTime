@@ -19,7 +19,8 @@ class Api::V1::StagingController < ApiController
   end
 
   # Creates or updates the given event, course, and organization
-  # and associates the event with the course and organization.
+  # and associates the event with the course and organization,
+  # all in a single transaction.
 
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org

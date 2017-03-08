@@ -9,7 +9,7 @@ class Api::V1::CoursesController < ApiController
 
   def show
     authorize @course
-    render json: @course
+    render json: @course, include: params[:include]
   end
 
   def create

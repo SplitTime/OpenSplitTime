@@ -4,7 +4,7 @@ class Api::V1::EventsController < ApiController
   # GET /api/v1/events/:staging_id
   def show
     authorize @event
-    render json: @event, include: (params[:include] || '').split(',')
+    render json: @event, include: params[:include]
   end
 
   # POST /api/v1/events

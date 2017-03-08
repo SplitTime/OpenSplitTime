@@ -3,7 +3,7 @@ class Api::V1::SplitsController < ApiController
 
   def show
     authorize @split
-    render json: @split
+    render json: @split, include: params[:include]
   end
 
   def create

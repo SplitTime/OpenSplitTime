@@ -3,6 +3,7 @@ class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token, if: :json_web_token_present?
   before_action :set_default_format
   before_action :authenticate_user!
+  before_action :underscore_include_param
   after_action :verify_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -22,5 +23,9 @@ class ApiController < ApplicationController
 
   def json_web_token_present?
     current_user.try(:has_json_web_token)
+  end
+
+  def underscore_include_param
+    params[:include] = (params[:include] || '').underscore
   end
 end

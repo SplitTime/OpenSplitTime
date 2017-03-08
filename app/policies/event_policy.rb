@@ -134,10 +134,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
-  def get_event?
-    user.authorized_for_live?(event)
-  end
-
   def get_locations?
     user.authorized_for_live?(event)
   end

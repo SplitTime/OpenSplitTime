@@ -1,22 +1,11 @@
 class Api::V1::StagingController < ApiController
-  before_action :set_event, except: [:get_event, :post_event_course_org]
-  before_action :find_or_initialize_event, only: [:get_event, :post_event_course_org]
+  before_action :set_event, except: [:post_event_course_org]
+  before_action :find_or_initialize_event, only: [:post_event_course_org]
   before_action :authorize_event
 
   # GET /api/v1/staging/:staging_id/get_countries
   def get_countries
     render json: {countries: Geodata.standard_countries_subregions}
-  end
-
-  # Returns the event and its related organization and efforts,
-  # together with a course id and a list of split ids.
-  # To get course and split information, use
-  # GET /api/v1/courses/:id
-
-  # GET /api/v1/staging/:staging_id/get_event
-  def get_event
-    @event.course.splits.load
-    render json: @event, serializer: EventSerializer, include: %w(course efforts course.splits)
   end
 
   # Returns location data for all splits on any course that falls

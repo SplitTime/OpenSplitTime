@@ -38,7 +38,9 @@ class ApiController < ApplicationController
                    cid: 555,
                    ec: controller_name,
                    ea: action_name,
-                   el: params[:id]}
+                   el: params[:id],
+                   uip: request.remote_ip,
+                   ua: request.user_agent}
       ReportAnalyticsJob.perform_later(ga_params)
     end
   end

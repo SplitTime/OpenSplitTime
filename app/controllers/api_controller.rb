@@ -5,6 +5,7 @@ class ApiController < ApplicationController
   before_action :authenticate_user!
   before_action :underscore_include_param
   after_action :verify_authorized
+  after_action :report_to_ga
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   private
@@ -27,5 +28,18 @@ class ApiController < ApplicationController
 
   def underscore_include_param
     params[:include] = (params[:include] || '').underscore
+  end
+
+  def report_to_ga
+    if Rails.env.production?
+      ga_params = {v: 1,
+                   t: 'event',
+                   tid: Rails.application.secrets.google_analytics_id,
+                   cid: 555,
+                   ec: controller_name,
+                   ea: action_name,
+                   el: params[:id]}
+      ReportAnalyticsJob.perform_later(ga_params)
+    end
   end
 end

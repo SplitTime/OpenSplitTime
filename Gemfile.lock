@@ -121,6 +121,8 @@ GEM
       warden (~> 1.2.3)
     devise-bootstrap-views (0.0.8)
     diff-lcs (1.2.5)
+    domain_name (0.5.20170223)
+      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
     factory_girl (4.7.0)
@@ -157,6 +159,8 @@ GEM
     hashie (3.4.4)
     heapy (0.1.2)
     high_voltage (3.0.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     httpclient (2.8.3)
     i18n (0.8.1)
     interception (0.5)
@@ -213,6 +217,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nenv (0.3.0)
+    netrc (0.11.0)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     notiffany (0.1.0)
@@ -312,6 +317,10 @@ GEM
     redis (3.3.1)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
+    rest-client (2.0.1)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     roo (2.4.0)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
@@ -403,6 +412,9 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
     unicode-display_width (1.1.0)
     uniform_notifier (1.10.0)
     upsert (2.1.2)
@@ -472,6 +484,7 @@ DEPENDENCIES
   rails_layout
   rb-fsevent
   responders (~> 2.0)
+  rest-client
   roo
   roo-xls
   rspec (~> 3.4)

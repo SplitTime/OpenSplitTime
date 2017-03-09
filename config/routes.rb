@@ -101,7 +101,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root 'dashboard#dashboard'
-    put 'set_effort_ages', to: 'dashboard#set_effort_ages'
   end
 
   namespace :live do

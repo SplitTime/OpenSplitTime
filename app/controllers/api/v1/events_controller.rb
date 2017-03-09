@@ -92,12 +92,12 @@ class Api::V1::EventsController < ApiController
     authorize @event
     file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
     if file_url
-      if (Rails.env == 'development') || (Rails.env == 'test')
-        ImportEffortsJob.perform_now(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
-        render json: {message: 'Import complete.'}
-      else
+      if Rails.env.production?
         ImportEffortsJob.perform_later(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
         render json: {message: 'Import in progress.'}
+      else
+        ImportEffortsJob.perform_now(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
+        render json: {message: 'Import complete.'}
       end
     else
       render json: {message: 'Import file too large.'}, status: :bad_request

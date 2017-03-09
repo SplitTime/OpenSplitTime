@@ -10,10 +10,8 @@ class AnalyticsReporter
   end
 
   def report_to_ga
-    response = http_client.post('https://google-analytics.com/debug/collect', ga_params)
-    filtered_ga_params = ga_params.dup
-    filtered_ga_params[:tid] = '[FILTERED]'
-    Rails.logger.info "GA responded to #{filtered_ga_params} with #{response.code} #{response.body}"
+    response = http_client.post('https://google-analytics.com/collect', ga_params)
+    Rails.logger.info "GA responded to #{ga_params} with #{response.code} #{response.body}"
   end
 
   private

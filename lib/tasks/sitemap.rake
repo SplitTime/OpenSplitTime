@@ -1,3 +1,6 @@
+# Based on a strategy described in
+# https://www.cookieshq.co.uk/posts/creating-a-sitemap-with-ruby-on-rails-and-upload-it-to-amazon-s3
+
 require 'aws-sdk'
 
 namespace :sitemap do

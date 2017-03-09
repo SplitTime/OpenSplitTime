@@ -97,6 +97,8 @@ Rails.application.routes.draw do
 
   get '/races/:id' => 'organizations#show'
 
+  get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
+
   namespace :admin do
     root 'dashboard#dashboard'
     put 'set_effort_ages', to: 'dashboard#set_effort_ages'

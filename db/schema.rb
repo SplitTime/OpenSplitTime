@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305063830) do
+ActiveRecord::Schema.define(version: 20170316001131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,18 +34,6 @@ ActiveRecord::Schema.define(version: 20170305063830) do
 
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
-
-  create_table "connections", force: :cascade do |t|
-    t.integer  "user_id",                    null: false
-    t.integer  "participant_id",             null: false
-    t.integer  "kind",           default: 0, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
-  add_index "connections", ["participant_id"], name: "index_connections_on_participant_id", using: :btree
-  add_index "connections", ["user_id", "participant_id"], name: "index_connections_on_user_id_and_participant_id", unique: true, using: :btree
-  add_index "connections", ["user_id"], name: "index_connections_on_user_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",            limit: 64, null: false
@@ -142,26 +130,28 @@ ActiveRecord::Schema.define(version: 20170305063830) do
   add_index "organizations", ["slug"], name: "index_organizations_on_slug", unique: true, using: :btree
 
   create_table "participants", force: :cascade do |t|
-    t.string   "first_name",   limit: 32,                 null: false
-    t.string   "last_name",    limit: 64,                 null: false
-    t.integer  "gender",                                  null: false
+    t.string   "first_name",         limit: 32,                 null: false
+    t.string   "last_name",          limit: 64,                 null: false
+    t.integer  "gender",                                        null: false
     t.date     "birthdate"
     t.string   "city"
     t.string   "state_code"
     t.string   "email"
     t.string   "phone"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.string   "country_code", limit: 2
+    t.string   "country_code",       limit: 2
     t.integer  "user_id"
-    t.boolean  "concealed",               default: false
+    t.boolean  "concealed",                     default: false
     t.string   "photo_url"
-    t.string   "slug",                                    null: false
+    t.string   "slug",                                          null: false
+    t.string   "topic_resource_key"
   end
 
   add_index "participants", ["slug"], name: "index_participants_on_slug", unique: true, using: :btree
+  add_index "participants", ["topic_resource_key"], name: "index_participants_on_topic_resource_key", unique: true, using: :btree
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "split_times", force: :cascade do |t|
@@ -221,6 +211,20 @@ ActiveRecord::Schema.define(version: 20170305063830) do
   add_index "stewardships", ["user_id", "organization_id"], name: "index_stewardships_on_user_id_and_organization_id", unique: true, using: :btree
   add_index "stewardships", ["user_id"], name: "index_stewardships_on_user_id", using: :btree
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id",                    null: false
+    t.integer  "participant_id",             null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "protocol",       default: 0, null: false
+    t.string   "resource_key"
+  end
+
+  add_index "subscriptions", ["participant_id"], name: "index_subscriptions_on_participant_id", using: :btree
+  add_index "subscriptions", ["resource_key"], name: "index_subscriptions_on_resource_key", unique: true, using: :btree
+  add_index "subscriptions", ["user_id", "participant_id", "protocol"], name: "index_subscriptions_on_user_id_and_participant_id_and_protocol", unique: true, using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             limit: 32,              null: false
     t.string   "last_name",              limit: 64,              null: false
@@ -246,6 +250,9 @@ ActiveRecord::Schema.define(version: 20170305063830) do
     t.integer  "pref_distance_unit",                default: 0,  null: false
     t.integer  "pref_elevation_unit",               default: 0,  null: false
     t.string   "slug",                                           null: false
+    t.string   "phone"
+    t.string   "http_endpoint"
+    t.string   "https_endpoint"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -255,8 +262,6 @@ ActiveRecord::Schema.define(version: 20170305063830) do
 
   add_foreign_key "aid_stations", "events"
   add_foreign_key "aid_stations", "splits"
-  add_foreign_key "connections", "participants"
-  add_foreign_key "connections", "users"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "participants"
   add_foreign_key "events", "courses"
@@ -268,4 +273,6 @@ ActiveRecord::Schema.define(version: 20170305063830) do
   add_foreign_key "splits", "locations"
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
+  add_foreign_key "subscriptions", "participants"
+  add_foreign_key "subscriptions", "users"
 end

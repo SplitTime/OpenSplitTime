@@ -12,8 +12,8 @@ class Participant < ActiveRecord::Base
   friendly_id :slug_candidates, use: :slugged
   strip_attributes collapse_spaces: true
   enum gender: [:male, :female]
-  has_many :connections, dependent: :destroy
-  has_many :followers, through: :connections, source: :user
+  has_many :subscriptions, dependent: :destroy
+  has_many :followers, through: :subscriptions, source: :user
   has_many :efforts
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
 
@@ -29,6 +29,8 @@ class Participant < ActiveRecord::Base
   SQL = {age_and_effort_count: 'participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as participant_age',
          ages_from_events: '((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)'}
 
+  before_validation :set_topic_resource
+  before_destroy :delete_topic_resource
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
             uniqueness: {case_sensitive: false},
@@ -64,6 +66,17 @@ class Participant < ActiveRecord::Base
   def slug_candidates
     [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Date.today.to_s],
      [:full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
+  end
+
+  def set_topic_resource
+    self.topic_resource_key = SnsTopicManager.generate(participant: self) if generate_new_topic_resource?
+  end
+
+  def delete_topic_resource
+    if topic_resource_key.present?
+      SnsTopicManager.delete(participant: self)
+      self.topic_resource_key = nil
+    end
   end
 
   def approximate_age_today
@@ -104,7 +117,7 @@ class Participant < ActiveRecord::Base
         true
       else
         logger.info "Effort #{effort.name} could not be associated with Participant #{self.name}: " +
-                 "#{effort.errors.full_messages}, #{self.errors.full_messages}"
+                        "#{effort.errors.full_messages}, #{self.errors.full_messages}"
         false
       end
     end
@@ -116,5 +129,11 @@ class Participant < ActiveRecord::Base
       efforts << target.efforts
       target.destroy
     end
+  end
+
+  private
+
+  def generate_new_topic_resource?
+    topic_resource_key.nil? && slug.present?
   end
 end

@@ -12,11 +12,14 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
-  has_many :connections, dependent: :destroy
-  has_many :interests, through: :connections, source: :participant
+  has_many :subscriptions, dependent: :destroy
+  has_many :interests, through: :subscriptions, source: :participant
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships
   has_one :avatar, class_name: 'Participant'
+  alias_attribute :sms, :phone
+  alias_attribute :http, :http_endpoint
+  alias_attribute :https, :https_endpoint
 
   validates_presence_of :first_name, :last_name
 

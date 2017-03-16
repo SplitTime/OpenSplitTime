@@ -17,6 +17,7 @@
       <td>
         <%= div_for(effort_preview_row.participant) do %>
             <%= link_to_toggle_email_subscription(effort_preview_row.participant) %>
+            <%= link_to_toggle_sms_subscription(effort_preview_row.participant) %>
         <% end %>
       </td>
       </tr>

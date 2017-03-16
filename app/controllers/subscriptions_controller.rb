@@ -14,9 +14,9 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     if @subscription.save
-      logger.info "Subscription saved"
+      logger.info "Subscription #{@subscription} saved"
     else
-      logger.warn "Subscription not saved"
+      logger.warn "Subscription #{@subscription} not saved"
     end
     render :toggle_email_subscription
   end
@@ -26,9 +26,9 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     if @subscription.destroy
-      logger.info "Subscription destroyed"
+      logger.info "Subscription #{@subscription} destroyed"
     else
-      logger.warn "Subscription not destroyed" and return
+      logger.warn "Subscription #{@subscription} not destroyed" and return
     end
     render :toggle_email_subscription
   end

@@ -45,21 +45,7 @@
 		<div class="form-group">
 			<label>Start Time of Race</label>
 			<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<div class="row">
-				<div class="col-xs-5 col-sm-7 col-md-8">
-					<input type="text" class="form-control" v-model="eventModel.date" v-mask="'m/d/y'" placeholder="mm/dd/yyyy" data-toggle="datepicker"></input>
-				</div>
-				<div class="col-xs-7 col-sm-5 col-md-4 form-control-fill">
-					<select class="form-control" v-model="eventModel.hours">
-						<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>
-						<option v-for="h in 12" :value="( h + 12 ) % 24">{{ h | padding( 2, '0' ) }} PM</option>
-					</select>
-					<span class="text-center">&nbsp;:&nbsp;</span>
-					<select class="form-control" v-model="eventModel.minutes">
-						<option v-for="m in 12" :value="( m - 1 ) * 5">{{ ( m - 1 ) * 5 | padding( 2, '0' ) }}</option>
-					</select>
-				</div>
-			</div>
+			<input-datetime v-model="eventModel.startTime">
 		</div>
 		<div class="form-group">
 			<label class="required">Event Name</label>
@@ -524,27 +510,7 @@
 												<label class="required">Participant's Start Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 											</div>
 										</div>
-										<div class="row no-gutters">
-											<div class="col-xs-12">
-
-												<input type="text" class="form-control p-start-date" v-model="model.startDate" v-mask="'m/d/y'" placeholder="mm/dd/yyyy"></input>
-											
-												<select class="form-control p-start-hour" v-model="model.startHours">
-													<option disabled class="placeholder" value="">hh</option>
-													<option v-for="h in 12" :value="h">{{ h | padding( 2, '0' ) }} AM</option>
-													<option v-for="h in 12" :value="( h + 12 ) % 24">{{ h | padding( 2, '0' ) }} PM</option>
-												</select>
-
-												<span class="p-colon">:</span>
-
-												<select class="form-control p-start-min" v-model="model.startMinutes">
-													<option disabled class="placeholder" value="">mm</option>
-													<option disabled class="placeholder" :value="model.startMinutes">{{ model.startMinutes | padding( 2, '0' ) }}</option>
-													<option v-for="m in 12" :value="( m - 1 ) * 5">{{ ( m - 1 ) * 5 | padding( 2, '0' ) }}</option>
-												</select>
-
-											</div>
-										</div>
+										<input-datetime v-model="model.startDate" class="no-gutters">
 									</div>
 									<div class="col-xs-6">
 										<div class="form-group col-xs-12">

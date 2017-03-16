@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/datepicker
 //= require jquery-ui/effect-highlight
 //= require twitter/bootstrap
 // require turbolinks
@@ -20,6 +19,8 @@
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require switchery
+//= require moment
+//= require bootstrap-datetimepicker
 //= require vue
 //= require vue-router
 //= require_tree .

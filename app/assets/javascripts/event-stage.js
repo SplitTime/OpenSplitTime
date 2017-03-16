@@ -90,7 +90,26 @@
             age: Number,
             city: String,
             stateCode: String,
-            countryCode: String
+            countryCode: String,
+            startOffset: { type: Number, default: 0 },
+            startDate: {
+                get: function() {
+                    var startTime = eventStage.data.eventModel.startTime;
+                    if ( startTime instanceof Date ) {
+                        return moment( startTime ).add( this.startOffset, 'minutes' ).toDate();
+                    } else {
+                        return this.date;
+                    }
+                },
+                set: function( value ) {
+                    var startTime = eventStage.data.eventModel.startTime;
+                    if ( startTime instanceof Date ) {
+                        this.startOffset = moment( value ).diff( startTime, 'minutes' );
+                    } else {
+                        this.date = value;
+                    }
+                }
+            }
         }
     } );
     api.define( 'courses', {
@@ -106,14 +125,14 @@
             normalize: function() {
                 // Verify Existence of End Splits
                 var start = this.endSplit( 'start' );
-                if ( start === null ) {
+                if ( !( start instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
                     this.normalize();
                 } else if ( start.id && start.associated === false ) {
                     start.associate( true );
                 }
                 var finish = this.endSplit( 'finish' );
-                if ( finish === null ) {
+                if ( !( finish instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'finish', baseName: 'Finish' } ) );
                     this.normalize();
                 } else if ( finish.id && finish.associated === false ) {
@@ -131,7 +150,7 @@
                         return this.splits[i];
                     }
                 }
-                return null;
+                return {};
             },
             validate: function() {
                 return true;
@@ -157,7 +176,7 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             stagingId: String,
-            startTime: Date,
+            startTime: { type: Date, default: new Date() },
             organizationNew: Boolean,
             courseNew: Boolean
         },
@@ -167,7 +186,7 @@
             course: 'courses',
             organization: 'organizations'
         },
-        includes: [ 'course', 'courses.splits', 'splits', 'efforts', 'organization' ],
+        includes: [ 'course', 'course.splits', 'splits', 'efforts', 'organization' ],
         methods: {
             normalize: function() {
                 console.log( this, 'It Worked!' );
@@ -274,6 +293,7 @@
             this.dataTables.init();
             this.editModal.init();
             this.inputMask.init();
+            this.datetime.init();
             this.prefill.init();
             this.confirm.init();
             this.promise.init();
@@ -320,8 +340,7 @@
                                 return true;
                             },
                             blank: function() {
-                                var split = new Split( this.eventModel.course );
-                                return split;
+                                return api.create( 'splits' );
                             }
                         },
                         data: function() { return { modalData: {}, filter: '', units: units } },
@@ -346,8 +365,8 @@
                                 return true;
                             },
                             blank: function() {
-                                var effort = new Effort();
-                                effort.parent = this.eventModel;
+                                var effort = api.create( 'efforts' )
+                                console.log( effort );
                                 return effort;
                             },
                             saveEffort: function() {
@@ -926,6 +945,78 @@
                             binding.value = { mask: binding.value };
                         $.extend( options, binding.value );
                         $( el ).inputmask( options );
+                    }
+                } );
+            }
+        },
+
+        datetime: {
+            init: function() {
+                Vue.component( 'input-datetime', {
+                    template: '<div class="row">\
+                        <div class="col-xs-6">\
+                            <div class="input-group">\
+                                <input type="text" class="js-date form-control"/>\
+                                <span class="input-group-addon">\
+                                    <span class="glyphicon glyphicon-calendar"></span>\
+                                </span>\
+                            </div>\
+                        </div>\
+                        <div class="col-xs-6">\
+                            <div class="input-group">\
+                                <input type="text" class="js-time form-control"/>\
+                                <span class="input-group-addon">\
+                                    <span class="glyphicon glyphicon-time"></span>\
+                                </span>\
+                            </div>\
+                        </div>\
+                    </div>',
+                    props: {
+                        value: { required: true, type: Date, default: null }
+                    },
+                    mounted: function() {
+                        // Shared Variables
+                        var self = this;
+                        var datestamp = null;
+                        var timestamp = null;
+                        // Mount Value Watcher
+                        this.$watch( 'value', function() {
+                            if ( this.value instanceof Date ) {
+                                date = moment( this.value );
+                                datestamp = date.format( 'MM/DD/YYYY' );
+                                timestamp = date.format( 'hh:mm a' );
+                            } else {
+                                // Enforce Default Values
+                                datestamp = null;
+                                timestamp = '06:00 am';
+                                self.$emit( 'input', null );
+                            }
+                            $( '.js-date', this.$el ).val( datestamp );
+                            $( '.js-time', this.$el ).val( timestamp );
+                        }, { immediate: true } );
+                        // Prepare Transform Function
+                        function update() {
+                            if ( datestamp == null || timestamp == null ) return;
+                            date = moment( datestamp + ' ' + timestamp, 'MM/DD/YYYY hh:mm a' );
+                            self.$emit( 'input', date.toDate() );
+                        }
+                        // Mount Datepickers
+                        $( '.js-date', this.$el )
+                            .datetimepicker( {
+                                format: 'MM/DD/YYYY'
+                            } )
+                            .on( 'dp.change', function( e ) {
+                                datestamp = e.date.format( 'MM/DD/YYYY' );
+                                update();
+                            } );
+                        $( '.js-time', this.$el )
+                            .datetimepicker( {
+                                format: 'hh:mm a'
+                            } )
+                            .on( 'dp.change', function( e ) {
+                                timestamp = e.date.format( 'hh:mm a' );
+                                update();
+                            } );
                     }
                 } );
             }

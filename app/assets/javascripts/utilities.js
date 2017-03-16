@@ -122,8 +122,8 @@
 
     var datepicker = {
         init: function () {
-            $( '[data-toggle="datepicker"]' ).each( function( i, el ) {
-                $( el ).datepicker();
+            $( '[data-toggle="datetimepicker"]' ).each( function( i, el ) {
+                $( el ).datetimepicker();
             } );
         }
     };

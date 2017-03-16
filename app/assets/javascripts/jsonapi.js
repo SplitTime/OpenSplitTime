@@ -112,8 +112,7 @@ var JSONAPI = (function ($) {
                             }
                         }
                     }
-
-                    for ( var i = cache.length - 1; i >= 0; i-- ) {
+                    for ( var i = 0; i < cache.length; i++ ) {
                         if ( cache[i] === self ) continue;
                         var data = cache[i].in( json.included );
                         if ( data !== false ) {
@@ -160,7 +159,7 @@ var JSONAPI = (function ($) {
                             } );
                         } else {
                             Object.defineProperty( this, name, {
-                                value: property.default || null,
+                                value: ( property.default === undefined ? null : property.default ),
                                 enumerable: !( property.hidden || false ),
                                 configurable: true,
                                 writable: true
@@ -397,7 +396,9 @@ var JSONAPI = (function ($) {
         }
 
         this.all = function( name ) {
-            return request( name, 'get' );
+            var model = this.create( name );
+            if ( model === null ) return $.Deferred().reject();
+            return request( name, 'get', model.__includes__ );
         }
     }
     return JSONAPI;

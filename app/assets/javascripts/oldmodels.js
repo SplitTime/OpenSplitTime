@@ -1,4 +1,4 @@
-{
+function old() {
 /**
  * Object Inheritance Helper
  */

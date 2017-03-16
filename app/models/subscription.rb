@@ -2,6 +2,7 @@ class Subscription < ActiveRecord::Base
   enum protocol: [:email, :sms, :http, :https]
   belongs_to :user
   belongs_to :participant
+  PERMITTED_PARAMS = [:id, :user_id, :participant_id, :protocol, :resource_key]
 
   before_validation :set_resource_key
   before_destroy :delete_resource_key
@@ -19,6 +20,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def delete_resource_key
+    self.resource_key = SnsSubscriptionManager.locate(subscription: self) if should_locate_resource?
     if confirmed?
       SnsSubscriptionManager.delete(subscription: self)
       self.resource_key = nil
@@ -31,6 +33,10 @@ class Subscription < ActiveRecord::Base
 
   def confirmed?
     resource_key && resource_key.include?('arn:aws:sns')
+  end
+
+  def to_s
+    "SNS subscription for #{user.slug} following #{participant.slug} by #{protocol}"
   end
 
   private

@@ -15,9 +15,8 @@
       <td><%= effort_preview_row.bio_historic %></td>
       <td><%= effort_preview_row.state_and_country %></td>
       <td>
-        <% # TODO: Optimize to avoid n + 1 search query for effort.participant %>
         <%= div_for(effort_preview_row.participant) do %>
-            <%= link_to_toggle_interest(effort_preview_row.participant) %>
+            <%= link_to_toggle_email_subscription(effort_preview_row.participant) %>
         <% end %>
       </td>
       </tr>

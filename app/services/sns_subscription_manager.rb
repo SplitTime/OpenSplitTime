@@ -28,11 +28,11 @@ class SnsSubscriptionManager
                                     endpoint: endpoint)
     if response.successful?
       print '.'
-      Rails.logger.info "Generated #{text_description}"
+      Rails.logger.info "Generated #{subscription}"
       response.subscription_arn.downcase.include?('pending') ? "pending:#{SecureRandom.uuid}" : response.subscription_arn
     else
       print 'X'
-      Rails.logger.info "Unable to generate #{text_description}"
+      Rails.logger.info "Unable to generate #{subscription}"
       nil
     end
   end
@@ -46,12 +46,12 @@ class SnsSubscriptionManager
         subscription_arn
       else
         print 'X'
-        Rails.logger.info "Unable to delete #{text_description}"
+        Rails.logger.info "Unable to delete #{subscription}"
         nil
       end
     else
       print '-'
-      Rails.logger.info "Subscription for #{text_description} is unconfirmed or does not exist"
+      Rails.logger.info "Subscription for #{subscription} is unconfirmed or does not exist"
     end
   end
 
@@ -82,10 +82,6 @@ class SnsSubscriptionManager
 
   attr_reader :subscription, :sns_client
   delegate :participant, :user, :protocol, :resource_key, to: :subscription
-
-  def text_description
-    "SNS subscription for #{user.slug} following #{participant.slug} by #{protocol}"
-  end
 
   def endpoint
     @endpoint ||= user.send(protocol)

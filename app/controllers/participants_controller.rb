@@ -104,13 +104,11 @@ class ParticipantsController < ApplicationController
   def current_user_follow
     authorize @participant
     @participant.add_follower(@current_user)
-    sleep(0.5) if Rails.env.development?
   end
 
   def current_user_unfollow
     authorize @participant
     @participant.remove_follower(@current_user)
-    sleep(0.5) if Rails.env.development?
   end
 
   private

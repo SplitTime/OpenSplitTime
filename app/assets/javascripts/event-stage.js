@@ -55,19 +55,27 @@
             latitude: Number,
             longitude: Number,
             elevation: Number,
-            editable: Boolean,
+            editable: { type: Boolean, default: true },
             associated: {
                 get: function() {
                     var splits = eventStage.data.eventModel.splits;
-                    for ( var i = splits.length - 1; i >= 0; i-- ) {
-                        if ( splits[i] === this ) return true;
-                    }
-                    return false;
+                    return this.in( splits );
                 }
             }
         },
-        relationships: {
-            course: 'courses'
+        methods: {
+            associate: function( associated ) {
+                if ( this.associated !== associated ) {
+                    if ( !eventStage.data.eventModel.__new__ ) {
+                        if ( associated ) {
+                            eventStage.data.eventModel.splits.push( this );
+                        } else {
+                            console.warn( 'Deassociate Not Yet Implemented' );
+                        }
+                        eventStage.data.eventModel.update();
+                    }
+                }
+            }
         }
     } );
     api.define( 'efforts', {
@@ -96,29 +104,27 @@
         },
         methods: {
             normalize: function() {
-                console.log( 'normalize' );
                 // Verify Existence of End Splits
                 var start = this.endSplit( 'start' );
-                var finish = this.endSplit( 'finish' );
                 if ( start === null ) {
                     this.splits.push( api.create( 'splits', { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
                     this.normalize();
-                } else if ( start.id && this.parent.id && start.associated === false ) {
+                } else if ( start.id && start.associated === false ) {
                     start.associate( true );
                 }
+                var finish = this.endSplit( 'finish' );
                 if ( finish === null ) {
                     this.splits.push( api.create( 'splits', { kind: 'finish', baseName: 'Finish' } ) );
                     this.normalize();
-                } else if ( finish.id && this.parent.id && finish.associated === false ) {
+                } else if ( finish.id && finish.associated === false ) {
                     finish.associate( true );
                 }
                 this.splits.sort( function( a, b ) {
                     return a.distanceFromStart - b.distanceFromStart;
                 } );
             },
-            afterRequest: function() {
-                this.normalize();
-            },
+            afterRequest: function() { this.normalize(); },
+            afterCreate: function() { this.normalize(); },
             endSplit: function( kind ) {
                 for ( var i = this.splits.length - 1; i >= 0; i-- ) {
                     if ( this.splits[i].kind === kind ) {
@@ -126,21 +132,34 @@
                     }
                 }
                 return null;
+            },
+            validate: function() {
+                return true;
             }
-        }
+        },
+        includes: [ 'splits' ],
     } );
     api.define( 'organizations', {
         attributes: {
-            name: String
+            name: String,
+            editable: { type: Boolean, default: true }
+        },
+        methods: {
+            validate: function() {
+                return true;
+            }
         }
     } );
     api.define( 'events', {
         attributes: {
             name: { type: String, default: '' },
-            concealed: { type: Boolean, default: false },
+            concealed: { type: Boolean, default: true },
+            laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             stagingId: String,
-            startTime: Date
+            startTime: Date,
+            organizationNew: Boolean,
+            courseNew: Boolean
         },
         relationships: {
             efforts: ['efforts'],
@@ -153,9 +172,6 @@
             normalize: function() {
                 console.log( this, 'It Worked!' );
             },
-            fetch: function() {
-                return this.request( 'events/' + this.stagingId + '/', 'get' );
-            },
             validate: function( context ) {
                 var self = ( context ) ? context : this;
                 if ( !self.name || self.name.length < 1 ) return false;
@@ -165,6 +181,15 @@
                 if ( !self.startTime ) return false;
                 return true;
             }
+        }
+    } );
+    api.define( 'users', {
+        attributes: {
+            email: String,
+            firstName: String,
+            lastName: String,
+            prefDistanceUnit: { type: String, default: 'kilometers' },
+            prefElevationUnit: { type: String, default: 'meters' },
         }
     } );
 
@@ -196,9 +221,9 @@
         },
 
         ajaxPopulateUnits: function() {
-            $.get( '/api/v1/users/current/', function( response ) {
-                units.distance = response.prefDistanceUnit || "kilometers";
-                units.elevation = response.prefElevationUnit || "meters";
+            api.find( 'users', 'current' ).always( function( model ) {
+                units.distance = model.prefDistanceUnit;
+                units.elevation = model.prefElevationUnit;
             } );
         },
 
@@ -257,7 +282,8 @@
             this.inputUnits.init();
 
             // Load UUID
-            this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
+            this.data.eventModel.id = $( '#event-app' ).data( 'uuid' );
+            this.data.eventModel.stagingId = this.data.eventModel.id;
             console.log( this.data.eventModel );
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
@@ -468,6 +494,7 @@
                     pageLength: this.entries,
                     order: order,
                     dom:    "<'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    autoWidth: false
                 } );
                 // Create render Function for Table Rows
                 var self = this;
@@ -1061,11 +1088,7 @@
                 var self = this;
 
                 // Fetch New Entries
-                $.ajax( this.source, {
-                    type: 'GET',
-                    dataType: 'json',
-                    data: this.data
-                } ).done( function( data ) {
+                api.all( self.source ).done( function( data ) {
                     self.ajaxed = data;
                     // Force update after list is rendered
                     self.$nextTick( function() {
@@ -1080,7 +1103,7 @@
                         model = this.ajaxed[i];
                     }
                 }
-                if ( this.value instanceof Resource ) {
+                if ( this.value instanceof api.Model ) {
                     this.value.import( model );
                     this.value.fetch();
                 }

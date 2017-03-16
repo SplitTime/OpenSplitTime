@@ -119,10 +119,20 @@
     	}
     };
 
+
+    var datepicker = {
+        init: function () {
+            $( '[data-toggle="datepicker"]' ).each( function( i, el ) {
+                $( el ).datepicker();
+            } );
+        }
+    };
+
     var init = function () {
         effortsPopover.init();
         staticPopover.init();
         switchery.init();
+        datepicker.init();
     };
 
     $(document).ready( init );

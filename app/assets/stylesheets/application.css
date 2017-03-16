@@ -11,10 +11,12 @@
  * file per style scope.
  *
  *= stub ./variables
+ *= stub ./mixins
  *= require switchery
  *= require devise_bootstrap_views
  *= require_tree .
  *= require_self
  *= require jquery.fileupload
  *= require jquery.fileupload-ui
+ *= require jquery-ui/datepicker
  */

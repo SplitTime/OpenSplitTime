@@ -56,10 +56,94 @@ var JSONAPI = (function ($) {
         var API = this;
         var registrar = {};
 
+        function request( url, type, includes ) {
+            var self = this;
+            type = type.toLowerCase();
+            if ( $.inArray( type, [ 'get', 'put', 'post', 'patch', 'delete' ] ) === -1 ) {
+                if ( this instanceof API.Model ) {
+                    console.error( 'JSONAPI', 'Invalid request type \'' + type + ' \'for \' ' + this.__type__ + '\' model.' );
+                }
+                return $.Deferred().reject();
+            }
+            var data = null;
+            if ( this instanceof API.Model && type !== 'get' ) {
+                data = JSON.stringify( this.jsonify() );
+            } else {
+                data = $.isArray( includes ) ? { include: includes.join( ',' ) } : null;
+            }
+            return $.ajax( apiurl + '/' + url, {
+                    type: type,
+                    headers: {
+                        'Accepted': 'application/vnd.api+json',
+                        'Content-Type': ( type !== 'get' ) ? 'application/vnd.api+json' : undefined
+                    },
+                    data: data
+                } )
+                .then( function( json ) {
+                    var cache = [];
+                    var models = [];
+                    if ( self instanceof API.Model ) {
+                        if ( json.data === null ) {
+                            console.warn( 'JSONAPI', 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
+                            return $.Deferred().reject();
+                        }
+                        // Server must return a single object of the correct type
+                        if ( !$.isPlainObject( json.data ) || json.data.type !== self.__type__ ) {
+                            console.error( 'JSONAPI', 'Invalid JSON API response for \'' + self.__type__ + '\' model.' );
+                            return $.Deferred().reject();
+                        }
+                        cache = self.parse( json.data, [ self ] );
+                    } else {
+                        if ( !$.isArray( json.data ) ) {
+                            console.error( 'JSONAPI', 'Invalid JSON API response from \'' + url + '\'' );
+                            return $.Deferred().reject();
+                        }
+                        for ( var i = 0; i < json.data.length; i++ ) {
+                            var model = API.create( json.data[i].type, { id: json.data[i].id } );
+                            if ( model instanceof API.Model ) {
+                                var data = model.in( cache );
+                                if ( data !== false ) {
+                                    model = data;
+                                } else {
+                                    cache.push( model );
+                                }
+                                model.parse( json.data[i], cache );
+                                models.push( model );
+                            }
+                        }
+                    }
+
+                    for ( var i = cache.length - 1; i >= 0; i-- ) {
+                        if ( cache[i] === self ) continue;
+                        var data = cache[i].in( json.included );
+                        if ( data !== false ) {
+                            cache[i].parse( data, cache );
+                        }
+                    }
+
+                    if ( self instanceof API.Model ) {
+                        console.info( 'JSONAPI', 'Parsed JSON API response for \'' + self.__type__ + '\' model.' );
+                    } else {
+                        console.info( 'JSONAPI', 'Parsed JSON API response from \'' + url + '\'' );
+                    }
+
+                    if ( self.afterRequest ) self.afterRequest();
+                    return ( self instanceof API.Model ) ? self : models;
+                } , function( a,b,c ) {
+                    if ( a.status === 404 ) {
+                        console.warn( 'JSONAPI', 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
+                    } else if ( a.status === 400 ) {
+                        console.error( 'JSONAPI', 'Server reported a protocol violation on \'' + self.__type__ + '\' model.' )
+                    }
+                    return ( self instanceof API.Model ) ? self : [];
+                } ).promise();
+        }
+
         /** Default Resource Model **/
         this.Model = (function() {
             function Model( type, attributes, relationships, hooks, includes ) {
                 Object.defineProperty( this, '__type__', { value: type } );
+                Object.defineProperty( this, '__new__', { value: true, writable: true } );
                 Object.defineProperty( this, '__attributes__', { value: attributes } );
                 Object.defineProperty( this, '__relationships__', { value: relationships } );
                 Object.defineProperty( this, '__includes__', { value: includes } );
@@ -95,6 +179,7 @@ var JSONAPI = (function ($) {
                         } );
                     }
                 }
+                if ( this.afterCreate ) this.afterCreate();
             }
 
             Model.prototype.parse = function( json, cache ) {
@@ -178,56 +263,15 @@ var JSONAPI = (function ($) {
             }
 
             Model.prototype.request = function( url, type ) {
-                type = type.toLowerCase();
-                if ( $.inArray( type, [ 'get', 'put', 'post', 'patch', 'delete' ] ) === -1 ) {
-                    console.error( 'JSONAPI', 'Invalid request type \'' + type + ' \'for \' ' + this.__type__ + '\' model.' );
-                    return $.Deferred().reject();
-                }
                 var self = this;
-                var getData = $.isArray( this.__includes__ ) ? { include: this.__includes__.join( ',' ) } : null;
-                return $.ajax( apiurl + '/' + url, {
-                        type: type,
-                        headers: {
-                            'Accepted': 'application/vnd.api+json',
-                            'Content-Type': ( type !== 'get' ) ? 'application/vnd.api+json' : undefined
-                        },
-                        data: ( type !== 'get' ) ? JSON.stringify( this.jsonify() ) : getData
-                    } )
-                    .done( function( json ) {
-                        console.log( json );
-                        if ( json.data === null ) {
-                            console.warn( 'JSONAPI', 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
-                            return;
-                        }
-                        // Server must return a single object of the correct type
-                        if ( !$.isPlainObject( json.data ) || json.data.type !== self.__type__ ) {
-                            console.error( 'JSONAPI', 'Invalid JSON API response for \'' + self.__type__ + '\' model.' );
-                            return $.Deferred().reject();
-                        }
-                        var cache = self.parse( json.data, [ self ] );
-                        for ( var i = cache.length - 1; i >= 0; i-- ) {
-                            if ( cache[i] === self ) continue;
-                            var data = cache[i].in( json.included );
-                            if ( data !== false ) {
-                                cache[i].parse( data, cache );
-                            }
-                        }
-                        console.info( 'JSONAPI', 'Parsed JSON API respone for \'' + self.__type__ + '\' model.' );
-
-                        if ( self.afterRequest ) this.afterRequest();
-                    } )
-                    .fail( function( a,b,c ) {
-                        if ( a.status === 404 ) {
-                            console.warn( 'JSONAPI', 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
-                        } else if ( a.status === 400 ) {
-                            console.error( 'JSONAPI', 'Server reported a protocol violation on \'' + self.__type__ + '\' model.' )
-                        }
-                    } );
+                return request.call( this, url, type, this.__includes__ ).done( function() {
+                    self.__new__ == false;
+                } );
             }
 
             Model.prototype.fetch = function( deep ) {
                 if ( this.id === null || this.id === undefined ) {
-                    console.warn( 'JSONAPI', 'Tried to fetch \'' + this.__type + '\' without ID' );
+                    console.warn( 'JSONAPI', 'Tried to fetch \'' + this.__type__ + '\' without ID' );
                     return $.Deferred().reject();
                 }
                 if ( deep ) console.warn( 'JSONAPI', 'Deep Fetch NOT IMPLEMENTED' );
@@ -236,7 +280,7 @@ var JSONAPI = (function ($) {
 
             Model.prototype.post = function() {
                 if ( this.id === null || this.id === undefined ) {
-                    console.warn( 'JSONAPI', 'Tried to post \'' + this.__type + '\' without ID' );
+                    console.warn( 'JSONAPI', 'Tried to post \'' + this.__type__ + '\' without ID' );
                     return $.Deferred().reject();
                 }
                 console.warn( 'JSONAPI', 'Post not implemented.' );
@@ -245,7 +289,7 @@ var JSONAPI = (function ($) {
 
             Model.prototype.update = function() {
                 if ( this.id === null || this.id === undefined ) {
-                    console.warn( 'JSONAPI', 'Tried to update \'' + this.__type + '\' without ID' );
+                    console.warn( 'JSONAPI', 'Tried to update \'' + this.__type__ + '\' without ID' );
                     return $.Deferred().reject();
                 }
                 console.warn( 'JSONAPI', 'Update not implemented.' );
@@ -255,7 +299,7 @@ var JSONAPI = (function ($) {
 
             Model.prototype.delete = function() {
                 if ( this.id === null || this.id === undefined ) {
-                    console.warn( 'JSONAPI', 'Tried to delete \'' + this.__type + '\' without ID' );
+                    console.warn( 'JSONAPI', 'Tried to delete \'' + this.__type__ + '\' without ID' );
                     return $.Deferred().reject();
                 }
                 console.warn( 'JSONAPI', 'Delete not implemented.' );
@@ -264,8 +308,9 @@ var JSONAPI = (function ($) {
             }
 
             Model.prototype.import = function( data ) {
-                for ( var name in data ) {
-                    if ( this.__attributes__[ name ] !== undefined ) {
+                if ( !data ) return;
+                for ( var name in this.__attributes__ ) {
+                    if ( data[ name ] !== undefined ) {
                         // TODO: Add validation and type checking
                         if ( this.__attributes__[ name ].type === Date ) {
                             this[ name ] = new Date( data[ name ] );
@@ -274,6 +319,20 @@ var JSONAPI = (function ($) {
                         }
                     }
                 }
+            }
+
+            Model.prototype.reset = function() {
+                for ( var name in this.__attributes__ ) {
+                    this[ name ] = this.__attributes__[ name ].default;
+                }
+                for ( var name in this.__relationships__ ) {
+                    if ( $.isArray( this.__relationships__[ name ] ) ) {
+                        this[ name ].splice( 0, this[ name ].length );
+                    } else {
+                        this[ name ] = API.create( this.__relationships__[ name ] );
+                    }
+                }
+                if ( this.afterCreate ) this.afterCreate();
             }
 
             Model.prototype.in = function( array ) {
@@ -330,6 +389,15 @@ var JSONAPI = (function ($) {
                 return null;
             }
             return new registrar[ name ]( data );
+        }
+
+        this.find = function( name, id ) {
+            var model = this.create( name, { id: id } );
+            return ( model instanceof API.Model ) ? model.fetch() : $.Deferred().reject();
+        }
+
+        this.all = function( name ) {
+            return request( name, 'get' );
         }
     }
     return JSONAPI;

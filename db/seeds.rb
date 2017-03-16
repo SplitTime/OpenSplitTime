@@ -60,15 +60,6 @@ SplitTime.create(effort_id: 6, split_id: 2, lap: 1, time_from_start: 3000)
 SplitTime.create(effort_id: 6, split_id: 3, lap: 1, time_from_start: 3100)
 SplitTime.create(effort_id: 6, split_id: 4, lap: 1, time_from_start: 7500)
 
-Subscription.create(user_id: 2, participant_id: 1, kind: :active)
-Subscription.create(user_id: 2, participant_id: 3, kind: :casual)
-Subscription.create(user_id: 2, participant_id: 4, kind: :casual)
-Subscription.create(user_id: 3, participant_id: 1, kind: :pending_active)
-Subscription.create(user_id: 3, participant_id: 2, kind: 0)
-Subscription.create(user_id: 4, participant_id: 2, kind: 1)
-Subscription.create(user_id: 4, participant_id: 3, kind: 0)
-Subscription.create(user_id: 4, participant_id: 4, kind: 2)
-
 Stewardship.create(user_id: 3, organization_id: 2)
 Stewardship.create(user_id: 4, organization_id: 3)
 

@@ -11,7 +11,7 @@ class SnsTopicManager
   def initialize(args)
     ArgsValidator.validate(params: args, required: :participant, exclusive: [:participant, :sns_client], class: self.class)
     @participant = args[:participant]
-    @sns_client = args[:sns_client] || Aws::SNS::Client.new
+    @sns_client = args[:sns_client] || SnsClientFactory.client
   end
 
   def generate
@@ -19,7 +19,7 @@ class SnsTopicManager
     if response.successful?
       print '.'
       Rails.logger.info "Generated SNS topic for #{participant.slug}"
-      response.topic_arn
+      response.topic_arn.include?('arn:aws:sns') ? response.topic_arn : "#{response.topic_arn}:#{SecureRandom.uuid}"
     else
       print 'X'
       Rails.logger.info "Unable to generate SNS topic for #{participant.slug}"

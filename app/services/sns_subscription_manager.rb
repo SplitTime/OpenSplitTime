@@ -19,7 +19,7 @@ class SnsSubscriptionManager
   def initialize(args)
     ArgsValidator.validate(params: args, required: :subscription, exclusive: [:subscription, :sns_client], class: self.class)
     @subscription = args[:subscription]
-    @sns_client = args[:sns_client] || Aws::SNS::Client.new
+    @sns_client = args[:sns_client] || SnsClientFactory.client
   end
 
   def generate
@@ -29,7 +29,7 @@ class SnsSubscriptionManager
     if response.successful?
       print '.'
       Rails.logger.info "Generated #{subscription}"
-      response.subscription_arn.downcase.include?('pending') ? "pending:#{SecureRandom.uuid}" : response.subscription_arn
+      response.subscription_arn.include?('arn:aws:sns') ? response.subscription_arn : "#{response.subscription_arn}:#{SecureRandom.uuid}"
     else
       print 'X'
       Rails.logger.info "Unable to generate #{subscription}"

@@ -31,9 +31,6 @@ class LiveTimeRowImporter
 
       if effort_data.valid? && (effort_data.clean? || force_option?) && create_or_update_times(effort_data)
         EffortOffsetTimeAdjuster.adjust(effort: effort_data.effort)
-        # FollowerMailerService.send_live_effort_mail(participant_id: effort_data.participant_id,
-        #                                             split_time_ids: saved_split_times.map(&:id),
-        #                                             multi_lap: event.multiple_laps?)
         NotifyFollowersJob.perform_later(participant_id: effort_data.participant_id,
                                          split_time_ids: saved_split_times.map(&:id),
                                          multi_lap: event.multiple_laps?)

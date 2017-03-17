@@ -567,38 +567,3 @@ label.required:after {
 	content: ' *';
 	color: $blue;
 }
-
-/******
-Datepicker Widget
-******/
-
-.ui-datepicker {
-    .ui-datepicker-header {
-        width: 100%;
-        background: $well-bg;
-        border: 1px solid $well-border;
-    }
-
-    td a {
-        &.ui-state-default {
-            background: $btn-default-bg;
-            border: 1px solid $btn-default-border;
-        }
-
-        &.ui-state-highlight {
-            background-color: darken( $btn-default-bg, 10% );
-            border-color: darken( $btn-default-border, 25% )
-        }
-
-        &.ui-state-hover {
-            background-color: darken( $btn-default-bg, 10% );
-            border-color: darken( $btn-default-border, 12% )
-        }
-
-        &.ui-state-active {
-            color: $btn-primary-color;
-            background-color: $btn-primary-bg;
-            border-color: $btn-primary-border;
-        }
-    }
-}

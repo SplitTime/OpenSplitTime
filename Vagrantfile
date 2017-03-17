@@ -54,6 +54,7 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "bootstrap", type: "shell", inline: <<-SHELL
     apt-get update
+    apt-get install build-essential -y
     apt-get upgrade -y
     apt-get autoremove -y
   SHELL

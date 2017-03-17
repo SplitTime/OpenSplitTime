@@ -1,3 +1,5 @@
+@import "bootstrap/variables";
+
 /***********
 Variables
 ************/
@@ -12,17 +14,10 @@ $red: pink;
 $blue: #2A9FD8;
 
 // Boostrap breakpoints
-$break-small: 768px;
-$break-medium: 992px;
-$break-large: 1200px;
-
+$break-small: $screen-sm-min;
+$break-medium: $screen-md-min;
+$break-large: $screen-lg-min;
 $max-width: 1200px;
-
-
-/* Copied from bootstrap source */
-$state-info-text:                #31708f !default;
-$state-info-bg:                  #d9edf7 !default;
-$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
 
 /***********
 Mixins

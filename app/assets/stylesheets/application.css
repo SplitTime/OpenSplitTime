@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= stub ./variables
+ *= stub ./mixins
  *= require switchery
  *= require devise_bootstrap_views
  *= require_tree .

@@ -58,6 +58,7 @@
             editable: { type: Boolean, default: true },
             associated: {
                 get: function() {
+                    if ( !eventStage ) return false;
                     var splits = eventStage.data.eventModel.splits;
                     return this.in( splits );
                 }
@@ -66,6 +67,7 @@
         methods: {
             associate: function( associated ) {
                 if ( this.associated !== associated ) {
+                    debugger;
                     if ( !eventStage.data.eventModel.__new__ ) {
                         if ( associated ) {
                             eventStage.data.eventModel.splits.push( this );
@@ -127,23 +129,24 @@
                 var start = this.endSplit( 'start' );
                 if ( !( start instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
-                    this.normalize();
-                } else if ( start.id && start.associated === false ) {
+                } else if ( start.__new__ && !this.__new__ && start.associated === false ) {
                     start.associate( true );
                 }
                 var finish = this.endSplit( 'finish' );
                 if ( !( finish instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'finish', baseName: 'Finish' } ) );
-                    this.normalize();
-                } else if ( finish.id && finish.associated === false ) {
+                } else if ( finish.__new__ && !this.__new__ && finish.associated === false ) {
                     finish.associate( true );
                 }
                 this.splits.sort( function( a, b ) {
                     return a.distanceFromStart - b.distanceFromStart;
                 } );
+                if ( !( start instanceof api.Model ) || !( finish instanceof api.Model ) ) {
+                    this.normalize();
+                }
             },
-            afterRequest: function() { this.normalize(); },
             afterCreate: function() { this.normalize(); },
+            afterParse: function() { this.normalize(); },
             endSplit: function( kind ) {
                 for ( var i = this.splits.length - 1; i >= 0; i-- ) {
                     if ( this.splits[i].kind === kind ) {
@@ -170,6 +173,7 @@
         }
     } );
     api.define( 'events', {
+        slug: 'stagingId',
         attributes: {
             name: { type: String, default: '' },
             concealed: { type: Boolean, default: true },
@@ -199,6 +203,21 @@
                 if ( !self.course.validate() ) return false;
                 if ( !self.startTime ) return false;
                 return true;
+            },
+            jsonify: function () {
+                var data = {
+                    event: this.attributes(),
+                    organization: this.organization.attributes(),
+                    course: this.course.attributes()
+                };
+                return data;
+            },
+            post: function() {
+                if ( this.id === null || this.id === undefined ) {
+                    return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST' );
+                } else {
+                    return this.update();
+                }
             }
         }
     } );
@@ -302,8 +321,7 @@
             this.inputUnits.init();
 
             // Load UUID
-            this.data.eventModel.id = $( '#event-app' ).data( 'uuid' );
-            this.data.eventModel.stagingId = this.data.eventModel.id;
+            this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
             console.log( this.data.eventModel );
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();

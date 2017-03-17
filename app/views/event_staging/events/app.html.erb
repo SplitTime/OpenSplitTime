@@ -140,7 +140,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<router-link to="/splits" class="btn btn-primary pull-right" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+				<router-link to="/splits" class="btn btn-primary pull-right" :disabled="!eventModel.validate()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
 			</div>
 		</div>
 	</article>

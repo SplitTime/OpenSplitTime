@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   phony_normalize :phone, default_country_code: 'US'
+  strip_attributes collapse_spaces: true
 
   has_many :subscriptions, dependent: :destroy
   has_many :interests, through: :subscriptions, source: :participant

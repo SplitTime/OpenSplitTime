@@ -51,7 +51,7 @@ class SnsSubscriptionManager
       end
     else
       print '-'
-      Rails.logger.info "Subscription for #{subscription} is unconfirmed or does not exist"
+      Rails.logger.info "#{subscription} is unconfirmed or does not exist"
     end
   end
 

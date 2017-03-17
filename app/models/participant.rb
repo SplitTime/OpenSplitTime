@@ -11,6 +11,8 @@ class Participant < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   strip_attributes collapse_spaces: true
+  phony_normalize :phone, default_country_code: 'US'
+
   enum gender: [:male, :female]
   has_many :subscriptions, dependent: :destroy
   has_many :followers, through: :subscriptions, source: :user
@@ -35,6 +37,7 @@ class Participant < ActiveRecord::Base
   validates :email, allow_blank: true, length: {maximum: 105},
             uniqueness: {case_sensitive: false},
             format: {with: VALID_EMAIL_REGEX}
+  validates :phone, phony_plausible: true
 
   def self.search(param)
     return none if param.blank? || (param.length < 3)

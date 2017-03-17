@@ -51,6 +51,7 @@ gem 'friendly_id', '~> 5.1.0'
 gem 'jwt'
 gem 'rest-client'
 gem 'sitemap_generator'
+gem 'phony_rails'
 
 group :development do
   gem 'web-console', '~> 2.0'

@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  PERMITTED_PARAMS = [:id, :first_name, :last_name, :email, :password, :pref_distance_unit, :pref_elevation_unit]
+  PERMITTED_PARAMS = [:id, :first_name, :last_name, :email, :phone, :password, :pref_distance_unit, :pref_elevation_unit]
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   include Searchable
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
+  phony_normalize :phone, default_country_code: 'US'
 
   has_many :subscriptions, dependent: :destroy
   has_many :interests, through: :subscriptions, source: :participant
@@ -22,6 +23,7 @@ class User < ActiveRecord::Base
   alias_attribute :https, :https_endpoint
 
   validates_presence_of :first_name, :last_name
+  validates :phone, phony_plausible: true
 
   after_initialize :set_default_role, if: :new_record?
 

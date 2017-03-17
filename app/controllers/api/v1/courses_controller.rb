@@ -4,7 +4,7 @@ class Api::V1::CoursesController < ApiController
   # Returns only those courses that the user is authorized to edit.
   def index
     authorize Course
-    render json: CoursePolicy::Scope.new(current_user, Course).editable
+    render json: CoursePolicy::Scope.new(current_user, Course).editable, include: params[:include]
   end
 
   def show

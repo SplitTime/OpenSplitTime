@@ -19,6 +19,8 @@
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require switchery
+//= require moment
+//= require bootstrap-datetimepicker
 //= require vue
 //= require vue-router
 //= require_tree .

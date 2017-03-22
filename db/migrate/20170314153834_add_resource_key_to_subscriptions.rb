@@ -11,6 +11,8 @@ class AddResourceKeyToSubscriptions < ActiveRecord::Migration
   def self.down
     remove_index :subscriptions, column: [:user_id, :participant_id, :protocol]
     remove_index :subscriptions, column: :resource_key
+    subs = Subscription.where.not(protocol: 0)
+    subs.delete_all
     add_index :subscriptions, [:user_id, :participant_id], unique: true
     remove_column :subscriptions, :resource_key
     remove_column :subscriptions, :protocol

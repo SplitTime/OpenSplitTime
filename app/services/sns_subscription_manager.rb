@@ -29,7 +29,7 @@ class SnsSubscriptionManager
     if response.successful?
       print '.'
       Rails.logger.info "Generated #{subscription}"
-      response.subscription_arn.include?('arn:aws:sns') ? response.subscription_arn : "#{response.subscription_arn}:#{SecureRandom.uuid}"
+      confirmed_arn?(response.subscription_arn) ? response.subscription_arn : "#{response.subscription_arn}:#{SecureRandom.uuid}"
     else
       print 'X'
       Rails.logger.info "Unable to generate #{subscription}"
@@ -64,7 +64,8 @@ class SnsSubscriptionManager
       next_token = response.next_token
       found_subscription = subs_by_topic.find { |sub| sub.endpoint == endpoint }
     end
-    found_subscription && found_subscription.subscription_arn
+    (found_subscription && confirmed_arn?(found_subscription.subscription_arn)) ?
+        found_subscription.subscription_arn : nil
   end
 
   def update
@@ -93,5 +94,9 @@ class SnsSubscriptionManager
 
   def subscription_arn
     @subscription_arn ||= resource_key
+  end
+
+  def confirmed_arn?(string)
+    string.include?('arn:aws:sns')
   end
 end

@@ -13,7 +13,8 @@ class Subscription < ActiveRecord::Base
     if should_generate_resource?
       self.resource_key = SnsSubscriptionManager.generate(subscription: self)
     elsif should_locate_resource?
-      self.resource_key = SnsSubscriptionManager.locate(subscription: self)
+      key = SnsSubscriptionManager.locate(subscription: self)
+      self.resource_key = key if key
     elsif should_update_resource?
       self.resource_key = SnsSubscriptionManager.update(subscription: self)
     end

@@ -67,7 +67,6 @@
         methods: {
             associate: function( associated ) {
                 if ( this.associated !== associated ) {
-                    debugger;
                     if ( !eventStage.data.eventModel.__new__ ) {
                         if ( associated ) {
                             eventStage.data.eventModel.splits.push( this );
@@ -285,19 +284,21 @@
                         } );
                 }
             } else if ( from.name === 'home' ) {
-                eventStage.data.eventModel.post().done( function() {
-                    next();
-                } ).fail( function( e ) {                    
-                    next( '/' );
-                } );
+                next();
+                // eventStage.data.eventModel.post().done( function() {
+                //     next();
+                // } ).fail( function( e ) {                    
+                //     next( '/' );
+                // } );
             } else {
-                eventStage.data.eventModel.fetch().always( function() {
-                    if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
-                        next( '/' );
-                    } else {
-                        next();
-                    }
-                } );
+                next();
+                // eventStage.data.eventModel.fetch().always( function() {
+                //     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
+                //         next( '/' );
+                //     } else {
+                //         next();
+                //     }
+                // } );
             }
         },
 

@@ -225,7 +225,7 @@ var JSONAPI = (function ($) {
                             }
                         } else {
                             if ( $.isPlainObject( data ) ) {
-                                if ( this[ name ].id != data.id ) {
+                                if ( this[ name ] === null || this[ name ].id != data.id ) {
                                     var model = API.create( data.type, { id: data.id } );
                                     model.__new__ = false;
                                     this[ name ] = model.in( cache ) || model;

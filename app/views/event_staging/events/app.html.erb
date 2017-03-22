@@ -401,7 +401,10 @@
 						<th colspan="2" data-orderable="false">&nbsp;</th>
 					</tr>
 					<template slot="row" scope="vm">
-						<td><i class="glyphicon glyphicon-ok-sign" v-if="vm.row.participantId"></i><i class="glyphicon glyphicon-question-sign" v-else></i></td>
+						<td>
+							<i class="glyphicon glyphicon-ok-sign" v-show="vm.row.participantId" data-toggle="tooltip" title="Reconciled"></i>
+							<i class="glyphicon glyphicon-question-sign" v-show="!vm.row.participantId" data-toggle="tooltip" title="Not reconciled"></i>
+						</td>
 						<td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
 						<td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>
 						<td>{{ vm.row.birthdate }}</td>

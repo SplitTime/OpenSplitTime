@@ -133,6 +133,10 @@ var JSONAPI = (function ($) {
                         }
                     }
 
+                    for ( var i = 0; i < cache.length; i++ ) {
+                        if ( cache[i].afterParse ) cache[i].afterParse();
+                    }
+
                     if ( self instanceof API.Model ) {
                         console.info( 'JSONAPI', 'Parsed JSON API response for \'' + self.__type__ + '\' model.' );
                         self.errors = [];
@@ -233,8 +237,6 @@ var JSONAPI = (function ($) {
                         }
                     }
                 }
-                
-                if ( this.afterParse ) this.afterParse();
 
                 return cache;
             }

@@ -124,14 +124,17 @@
         },
         methods: {
             normalize: function() {
+                console.log( 'normalize' );
                 // Verify Existence of End Splits
                 var start = this.endSplit( 'start' );
+                console.log( 'start', start, start instanceof api.Model  );
                 if ( !( start instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
                 } else if ( start.__new__ && !this.__new__ && start.associated === false ) {
                     start.associate( true );
                 }
                 var finish = this.endSplit( 'finish' );
+                console.log( 'finish', finish, finish instanceof api.Model  );
                 if ( !( finish instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'finish', baseName: 'Finish' } ) );
                 } else if ( finish.__new__ && !this.__new__ && finish.associated === false ) {
@@ -140,9 +143,6 @@
                 this.splits.sort( function( a, b ) {
                     return a.distanceFromStart - b.distanceFromStart;
                 } );
-                if ( !( start instanceof api.Model ) || !( finish instanceof api.Model ) ) {
-                    this.normalize();
-                }
             },
             afterCreate: function() { this.normalize(); },
             afterParse: function() { this.normalize(); },
@@ -337,6 +337,15 @@
                         methods: {
                             isEventValid: function() {
                                 return this.eventModel.validate();
+                            }
+                        },
+                        watch: {
+                            'eventModel.course.splits': {
+                                handler: function( val ) {
+                                    console.log( 'Changed', val );
+                                    debugger;
+                                },
+                                deep: true
                             }
                         },
                         data: function() { return { units: units } },

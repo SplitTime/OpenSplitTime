@@ -19,26 +19,26 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
 					<resource-select class="form-control" v-model="eventModel.organization" source="organizations">
-						<option value="" selected disabled>Select One</option>
+						<option :value="null" selected disabled>Select One</option>
 					</resource-select>
 				</div>
 				<div class="col-xs-12 col-sm-1 text-center middle-or">
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventModel.organization.reset(); eventModel.organizationNew = true">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.organization = newOrganization()">Add New Organization&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.organizationNew && !eventModel.organization.id }" v-show="eventModel.organization.id || eventModel.organizationNew">
+		<div class="well well-sm border-none" v-if="eventModel.organization" v-bind:class="{ 'new' : !eventModel.organization.id }">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Organization Name</label>
 					<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 					<input type="text" class="form-control" placeholder="Your organization name" v-model="eventModel.organization.name" :disabled="!eventModel.organization.editable">
 				</div>
-				<div class="col-xs-12" v-if="eventModel.organizationNew && !eventModel.organization.id">
-					<span class="brackets" v-on:click="eventModel.organizationNew = false"><a href="#">Cancel</a></span>
+				<div class="col-xs-12" v-if="!eventModel.organization.id">
+					<span class="brackets" v-on:click="eventModel.organization = null"><a href="#">Cancel</a></span>
 				</div>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 		<div class="form-group">
 			<label class="required">Event Name</label>
 			<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-			<input type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="eventModel.organization.name + ' ' + (eventModel.startTime && eventModel.startTime.getFullYear())">
+			<input type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' ' + (eventModel.startTime && eventModel.startTime.getFullYear()) : ''">
 		</div>
 		<div class="form-group event-info-course-row">
 			<label for="event-start-time">Select Course</label>
@@ -58,23 +58,23 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
 					<resource-select class="form-control" v-model="eventModel.course" source="courses">
-						<option value="" selected disabled>Select One</option>
+						<option :value="null" selected disabled>Select One</option>
 					</resource-select>
 				</div>
 				<div class="col-xs-12 col-sm-1 text-center middle-or">
 					<span>or</span>
 				</div>
 				<div class="col-xs-12 col-sm-5 col-lg-4 form-control-fill no-padding-left">
-					<button type="button" class="btn btn-success" v-on:click="eventModel.course.reset(); eventModel.courseNew = true">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
+					<button type="button" class="btn btn-success" v-on:click="eventModel.course = newCourse()">Add New Course&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 				</div>
 			</div>
 		</div>
-		<div class="well well-sm border-none" v-bind:class="{ 'new' : eventModel.courseNew && !eventModel.course.id }" v-show="eventModel.course.id || eventModel.courseNew">
+		<div class="well well-sm border-none" v-if="eventModel.course" v-bind:class="{ 'new' : !eventModel.course.id }">
 			<div class="row">
 				<div class="form-group col-xs-12">
 					<label class="required">Course Name</label>
 					<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
-					<input type="text" class="form-control" placeholder="Your course name" v-model="eventModel.course.name" v-prefill="eventModel.organization.name + ' Course'">
+					<input type="text" class="form-control" placeholder="Your course name" v-model="eventModel.course.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' Course' : ''">
 				</div>
 				<div class="form-group col-xs-12">
 					<label class="required">Course Distance</label>
@@ -103,8 +103,8 @@
 					<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
 					<textarea class="form-control" placeholder="Course Description" v-model="eventModel.course.description"></textarea>
 				</div>
-				<div class="col-xs-12" v-if="eventModel.courseNew && !eventModel.course.id">
-					<span class="brackets" v-on:click="eventModel.courseNew = false"><a href="#">Cancel</a></span>
+				<div class="col-xs-12" v-if="!eventModel.course.id">
+					<span class="brackets" v-on:click="eventModel.course = null"><a href="#">Cancel</a></span>
 				</div>
 			</div>
 		</div>
@@ -158,7 +158,7 @@
 			<router-link to="/participants" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
 		</p>
 	</aside>
-	<article class="col-xs-12 col-sm-8">
+	<article class="col-xs-12 col-sm-8" v-if="eventModel.course">
 		<div class="row">
 			<div class="col-xs-12 col-sm-7">
 				<h5>
@@ -236,7 +236,7 @@
 			</div>
 		</div>
 	</article>
-	<edit-modal v-model="modalData" :validator="modalData.validate" :extra="eventModel" v-on:change="!( modalData._dtid ) && eventModel.course.splits.push( modalData );" inline-template>
+	<edit-modal v-if="eventModel.course" v-model="modalData" :validator="modalData.validate" :extra="eventModel" v-on:change="!( modalData._dtid ) && eventModel.course.splits.push( modalData );" inline-template>
 		<div id="js-split-modal" tabindex="-1" role="dialog" class="modal fade">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
@@ -568,23 +568,23 @@
 					<td>{{ eventModel.description }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
 				</tr>
-				<tr>
+				<tr v-if="eventModel.course">
 					<th>Course</th>
 					<td>{{ eventModel.course.name }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
-				<tr>
+				<tr v-if="eventModel.course">
 					<th>Distance</th>
 					<td>{{ eventModel.course.endSplit( 'finish' ).distanceFromStart * units.forDistance() }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
-				<tr>
+				<tr v-if="eventModel.course">
 					<th>Vertical Gain</th>
 					<td>{{ eventModel.course.endSplit( 'finish' ).vertGainFromStart * units.forElevation() }}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
-				<tr>
+				<tr v-if="eventModel.course">
 					<th>Vertical Loss</th>
 					<td>{{ eventModel.course.endSplit( 'finish' ).vertLossFromStart * units.forElevation()}}</td>
 					<td><span class="brackets"><router-link to="/">Edit</router-link></span></td></tr>
-				<tr>
+				<tr v-if="eventModel.course">
 					<th ><span>Your Splits</span></th>
 					<td><google-map locked :route="eventModel.course.splits"></google-map></td>
 					<td><span class="brackets"><router-link to="/splits">Edit</router-link></span></td>

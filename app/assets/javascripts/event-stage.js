@@ -180,7 +180,6 @@
             lapsRequired: { type: Number, default: 1 },
             stagingId: String,
             startTime: { type: Date, default: new Date() },
-            organizationNew: Boolean,
             courseNew: Boolean
         },
         relationships: {
@@ -197,9 +196,8 @@
             validate: function( context ) {
                 var self = ( context ) ? context : this;
                 if ( !self.name || self.name.length < 1 ) return false;
-                if ( !( self.organization.id || self.organizationNew ) ) return false;
-                if ( !self.organization.validate() ) return false;
-                if ( !self.course.validate() ) return false;
+                if ( !self.organization || !self.organization.validate() ) return false;
+                if ( !self.course || !self.course.validate() ) return false;
                 if ( !self.startTime ) return false;
                 return true;
             },
@@ -337,15 +335,12 @@
                         methods: {
                             isEventValid: function() {
                                 return this.eventModel.validate();
-                            }
-                        },
-                        watch: {
-                            'eventModel.course.splits': {
-                                handler: function( val ) {
-                                    console.log( 'Changed', val );
-                                    debugger;
-                                },
-                                deep: true
+                            },
+                            newOrganization: function() {
+                                return api.create( 'organizations' );
+                            },
+                            newCourse: function() {
+                                return api.create( 'courses' );
                             }
                         },
                         data: function() { return { units: units } },
@@ -1215,33 +1210,36 @@
                     } );
                 } );
             },
-            onChanged: function( id ) {
-                var model = null;
-                for ( var i = this.ajaxed.length - 1; i >= 0; i-- ) {
-                    if ( this.ajaxed[i].id == id ) {
-                        model = this.ajaxed[i];
-                    }
-                }
-                if ( this.value instanceof api.Model ) {
-                    this.value.import( model );
-                    this.value.fetch();
-                }
-            },
             init: function() {
                 Vue.component( 'resource-select', {
                     props: {
                         data: { type: Object, default: function() { return {} } },
                         source: { type: String, required: true, default: '' },
-                        value: { type: Object, required: true, default: {} }
+                        value: { default: {} }
                     },
-                    methods: {
-                        onChanged: eventStage.resourceSelect.onChanged
+                    computed: {
+                        id: { 
+                            get: function() {
+                                return ( this.value ) ? this.value.id : null;
+                            },
+                            set: function( id ) {
+                                var model = null;
+                                for ( var i = this.ajaxed.length - 1; i >= 0; i-- ) {
+                                    if ( this.ajaxed[i].id == id ) {
+                                        model = this.ajaxed[i];
+                                    }
+                                }
+                                if ( model !== null ) {
+                                    this.$emit( 'input', model );
+                                }
+                            }
+                        }
                     },
                     data: function() { return { ajaxed: null } },
                     template: 
-                        '<select v-bind:value="value.id" v-on:change="onChanged( $event.target.value )" :disabled="!ajaxed || ajaxed.length <= 0">\
+                        '<select v-model="id" :disabled="!ajaxed || ajaxed.length <= 0">\
                             <slot></slot>\
-                            <option v-if="ajaxed === null && value.id !== null" :value="value.id">{{ value.name }}</option>\
+                            <option v-if="ajaxed === null && id !== null" :value="id">{{ value.name }}</option>\
                             <option v-else v-for="obj in ajaxed" :value="obj.id">{{ obj.name }}</option>\
                         </select>',
                     mounted: eventStage.resourceSelect.onMounted

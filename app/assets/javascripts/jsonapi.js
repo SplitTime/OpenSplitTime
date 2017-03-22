@@ -191,7 +191,7 @@ var JSONAPI = (function ($) {
                     // Generate relationship list
                     for ( var name in relationships ) {
                         Object.defineProperty( this, name, {
-                            value: $.isArray( relationships[ name ] ) ? [] : API.create( relationships[ name ] ),
+                            value: $.isArray( relationships[ name ] ) ? [] : null,
                             enumerable: true,
                             configurable: true,
                             writable: true
@@ -232,7 +232,7 @@ var JSONAPI = (function ($) {
                                 }
                                 this[ name ].in( cache ) || cache.push( this[ name ] );
                             } else {
-                                this[ name ] = API.create( this.__relationships__[ name ] );
+                                this[ name ] = null;
                             }
                         }
                     }

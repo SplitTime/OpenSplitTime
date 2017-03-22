@@ -1,6 +1,7 @@
 class LiveEffortMailData
 
   attr_reader :participant, :split_times
+  delegate :topic_resource_key, to: :participant
 
   def initialize(args)
     ArgsValidator.validate(params: args,

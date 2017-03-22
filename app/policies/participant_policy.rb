@@ -41,12 +41,4 @@ class ParticipantPolicy < ApplicationPolicy
   def remove_effort?
     user.admin?
   end
-
-  def current_user_follow?
-    user.present?
-  end
-
-  def current_user_unfollow?
-    user.present?
-  end
 end

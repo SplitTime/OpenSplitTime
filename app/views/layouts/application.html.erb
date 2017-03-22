@@ -9,7 +9,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGMCB8fvvGJzp_aR0Hp_YUyopUiAgGoCE"></script>
   <%= csrf_meta_tags %>
   <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>
-  <%= render 'layouts/google_analytics' if Rails.env == 'production' %>
+  <%= render 'layouts/google_analytics' if Rails.env.production? %>
 </head>
 <body class="<%= controller_name %> <%= action_name %>">
 <%= render 'layouts/navigation' %>

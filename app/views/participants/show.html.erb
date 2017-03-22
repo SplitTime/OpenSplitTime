@@ -25,7 +25,8 @@
     <div class="row">
       <% if @current_user %>
           <%= div_for(@participant) do %>
-              <%= link_to_toggle_interest(@participant) %>
+              <%= link_to_toggle_email_subscription(@participant) %>
+              <%= link_to_toggle_sms_subscription(@participant) %>
           <% end %>
           <% if @participant.unclaimed? && @current_user.authorized_to_claim?(@participant) %>
               <%= link_to 'This is me', avatar_claim_participant_path(@participant),

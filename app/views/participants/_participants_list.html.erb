@@ -17,7 +17,8 @@
         <td><%= pluralize(participant.effort_count, 'effort') %></td>
         <td>
           <%= div_for(participant) do %>
-              <%= link_to_toggle_interest(participant) %>
+              <%= link_to_toggle_email_subscription(participant) %>
+              <%= link_to_toggle_sms_subscription(participant) %>
           <% end %>
         </td>
       </tr>

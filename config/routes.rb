@@ -68,8 +68,6 @@ Rails.application.routes.draw do
     member { get :merge }
     member { put :combine }
     member { delete :remove_effort }
-    member { post :current_user_follow }
-    member { post :current_user_unfollow }
   end
   resources :efforts do
     collection { put :associate_participants }
@@ -90,6 +88,7 @@ Rails.application.routes.draw do
   end
   resources :split_times
   resources :aid_stations, except: [:index, :new, :create]
+  resources :subscriptions, only: [:create, :destroy]
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout
@@ -97,9 +96,10 @@ Rails.application.routes.draw do
 
   get '/races/:id' => 'organizations#show'
 
+  get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
+
   namespace :admin do
     root 'dashboard#dashboard'
-    put 'set_effort_ages', to: 'dashboard#set_effort_ages'
   end
 
   namespace :live do

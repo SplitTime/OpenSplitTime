@@ -179,7 +179,7 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             stagingId: String,
-            startTime: { type: Date, default: new Date() },
+            startTime: { type: Date, default: null },
             courseNew: Boolean
         },
         relationships: {
@@ -289,14 +289,14 @@
                 //     next( '/' );
                 // } );
             } else {
-                next();
-                // eventStage.data.eventModel.fetch().always( function() {
-                //     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
-                //         next( '/' );
-                //     } else {
-                //         next();
-                //     }
-                // } );
+                eventStage.data.eventModel.fetch().always( function() {
+                    if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
+                        // next( '/' );
+                        next();
+                    } else {
+                        next();
+                    }
+                } );
             }
         },
 

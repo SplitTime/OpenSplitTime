@@ -1,0 +1,2 @@
+$('#participant_<%= @subscription.participant_id %> .email-sub').replaceWith("<%=j link_to_toggle_email_subscription(@subscription.participant) %>");
+$('#participant_<%= @subscription.participant_id %> .sms-sub').replaceWith("<%=j link_to_toggle_sms_subscription(@subscription.participant) %>");

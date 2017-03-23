@@ -2,7 +2,7 @@ class EffortRow
   include PersonalInfo
 
   attr_reader :effort, :overall_place, :gender_place, :finish_status, :run_status, :dropped_split_name, :day_and_time,
-              :start_time_from_params, :segment_seconds
+              :start_time_from_params, :segment_seconds, :participant
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :segment_seconds, :overall_rank, :gender_rank,
            :bio, :birthdate, to: :effort
@@ -17,10 +17,7 @@ class EffortRow
     @day_and_time = options[:day_and_time]
     @start_time_from_params = options[:start_time]
     @segment_seconds = options[:segment_seconds]
-  end
-
-  def participant
-    Participant.new(id: effort.participant_id) if effort.participant_id
+    @participant = options[:participant]
   end
 
   def effective_start_time

@@ -23,7 +23,8 @@ class EventEffortsDisplay
                     gender_place: effort.gender_place,
                     finish_status: finish_status(effort),
                     run_status: run_status(effort),
-                    day_and_time: start_time + effort.start_offset + effort.final_time)
+                    day_and_time: start_time + effort.start_offset + effort.final_time,
+                    participant: indexed_participants[effort.participant_id])
     end
   end
 
@@ -40,6 +41,7 @@ class EventEffortsDisplay
 
   def unstarted_efforts
     @unstarted_efforts ||= event_efforts
+                               .eager_load(:participant)
                                .search(params[:search])
                                .where(id: unstarted_effort_ids)
                                .order(:last_name)
@@ -81,6 +83,14 @@ class EventEffortsDisplay
   private
 
   attr_reader :params
+
+  def indexed_participants
+    @indexed_participants ||= Participant.where(id: participant_ids).index_by(&:id)
+  end
+
+  def participant_ids
+    @participant_ids ||= (filtered_efforts.map(&:participant_id) + unstarted_efforts.map(&:participant_id)).compact
+  end
 
   def event_final_split_id
     @event_final_split_id ||= finish_split.try(:id)

@@ -46,10 +46,8 @@ class Effort < ActiveRecord::Base
   end
 
   def self.attributes_for_import
-    id = ['id']
-    foreign_keys = Effort.column_names.find_all { |x| x.include?('_id') }
-    stamps = Effort.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
-    (column_names - (id + foreign_keys + stamps)).map(&:to_sym)
+    [:first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate, :city, :state_code, :country_code,
+     :start_time, :start_offset, :beacon_url, :report_url, :photo_url, :phone, :email]
   end
 
   def self.search(param)

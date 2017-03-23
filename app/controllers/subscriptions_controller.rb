@@ -41,7 +41,7 @@ class SubscriptionsController < ApplicationController
   private
 
   def flash_protocol_warning
-    case subscription_params[:protocol]
+    case permitted_params[:protocol]
     when 'sms'
       flash[:warning] = 'Please add a mobile phone number to receive sms text notifications.'
     when 'http'

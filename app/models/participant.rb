@@ -51,11 +51,7 @@ class Participant < ActiveRecord::Base
   end
 
   def self.columns_to_pull_from_model
-    id = ['id']
-    foreign_keys = Participant.column_names.find_all { |x| x.include?('_id') }
-    stamps = Participant.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
-    geographic = %w(country_code state_code city)
-    (column_names - (id + foreign_keys + stamps + geographic)).map(&:to_sym)
+    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo_url]
   end
 
   def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}

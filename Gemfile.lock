@@ -245,7 +245,7 @@ GEM
     orm_adapter (0.5.0)
     parser (2.3.1.2)
       ast (~> 2.2)
-    pg (0.18.4)
+    pg (0.20.0)
     phony (2.15.41)
     phony_rails (0.14.5)
       activesupport (>= 3.0)
@@ -480,7 +480,7 @@ DEPENDENCIES
   oj
   omniauth
   omniauth-facebook
-  pg
+  pg (~> 0.20.0)
   phony_rails
   pry-byebug
   pry-rails

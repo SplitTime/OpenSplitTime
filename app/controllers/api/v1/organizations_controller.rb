@@ -13,7 +13,7 @@ class Api::V1::OrganizationsController < ApiController
   end
 
   def create
-    organization = Organization.new(organization_params)
+    organization = Organization.new(permitted_params)
     authorize organization
 
     if organization.save
@@ -25,7 +25,7 @@ class Api::V1::OrganizationsController < ApiController
 
   def update
     authorize @organization
-    if @organization.update(organization_params)
+    if @organization.update(permitted_params)
       render json: @organization
     else
       render json: {message: 'organization not updated', error: "#{@organization.errors.full_messages}"}, status: :bad_request
@@ -45,9 +45,5 @@ class Api::V1::OrganizationsController < ApiController
 
   def set_organization
     @organization = Organization.friendly.find(params[:id])
-  end
-
-  def organization_params
-    params.require(:organization).permit(*Organization::PERMITTED_PARAMS)
   end
 end

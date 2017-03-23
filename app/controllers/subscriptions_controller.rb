@@ -7,13 +7,13 @@ class SubscriptionsController < ApplicationController
 
   def create
     # Raise an error if either participant or user does not exist
-    Participant.friendly.find(subscription_params[:participant_id])
-    user = User.friendly.find(subscription_params[:user_id])
+    Participant.friendly.find(permitted_params[:participant_id])
+    user = User.friendly.find(permitted_params[:user_id])
 
-    @subscription = Subscription.new(subscription_params)
+    @subscription = Subscription.new(permitted_params)
     authorize @subscription
 
-    if user.send(subscription_params[:protocol])
+    if user.send(permitted_params[:protocol])
       if @subscription.save
         logger.info "#{@subscription} saved"
       else
@@ -39,10 +39,6 @@ class SubscriptionsController < ApplicationController
   end
 
   private
-
-  def subscription_params
-    params.require(:subscription).permit(*Subscription::PERMITTED_PARAMS)
-  end
 
   def flash_protocol_warning
     case subscription_params[:protocol]

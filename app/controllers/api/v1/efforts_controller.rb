@@ -8,7 +8,7 @@ class Api::V1::EffortsController < ApiController
   end
 
   def create
-    effort = Effort.new(effort_params)
+    effort = Effort.new(permitted_params)
     authorize effort
 
     if effort.save
@@ -20,7 +20,7 @@ class Api::V1::EffortsController < ApiController
 
   def update
     authorize @effort
-    if @effort.update(effort_params)
+    if @effort.update(permitted_params)
       render json: @effort
     else
       render json: {message: 'effort not updated', error: "#{@effort.errors.full_messages}"}, status: :bad_request
@@ -40,9 +40,5 @@ class Api::V1::EffortsController < ApiController
 
   def set_effort
     @effort = Effort.friendly.find(params[:id])
-  end
-
-  def effort_params
-    params.require(:effort).permit(*Effort::PERMITTED_PARAMS)
   end
 end

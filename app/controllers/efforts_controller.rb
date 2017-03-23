@@ -32,7 +32,7 @@ class EffortsController < ApplicationController
   end
 
   def create
-    @effort = Effort.new(effort_params)
+    @effort = Effort.new(permitted_params)
     authorize @effort
 
     if @effort.save
@@ -45,7 +45,7 @@ class EffortsController < ApplicationController
   def update
     authorize @effort
 
-    if @effort.update(effort_params)
+    if @effort.update(permitted_params)
       redirect_to stage_event_path(@effort.event)
     else
       render 'edit'
@@ -96,7 +96,7 @@ class EffortsController < ApplicationController
 
   def update_split_times
     authorize @effort
-    if @effort.update(effort_params)
+    if @effort.update(permitted_params)
       @effort.set_data_status
       redirect_to effort_path(@effort)
     else
@@ -168,14 +168,6 @@ class EffortsController < ApplicationController
   end
 
   private
-
-  def effort_params
-    params.require(:effort).permit(*Effort::PERMITTED_PARAMS)
-  end
-
-  def query_params
-    params.permit(:name)
-  end
 
   def set_effort
     @effort = Effort.friendly.find(params[:id])

@@ -26,8 +26,10 @@ describe Api::V1::UsersController do
   end
 
   describe '#create' do
+    let(:attributes) { {first_name: 'Test', last_name: 'User', email: 'test_user@example.com', password: 'password'} }
+
     it 'returns a successful json response' do
-      post :create, user: {first_name: 'Test', last_name: 'User', email: 'test_user@example.com', password: 'password'}
+      post :create, data: {type: 'user', attributes: attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
       expect(response.status).to eq(201)
@@ -35,7 +37,7 @@ describe Api::V1::UsersController do
 
     it 'creates a user record' do
       expect(User.all.count).to eq(1)
-      post :create, user: {first_name: 'Test', last_name: 'User', email: 'test_user@example.com', password: 'password'}
+      post :create, data: {type: 'user', attributes: attributes}
       expect(User.all.count).to eq(2)
     end
   end
@@ -44,12 +46,12 @@ describe Api::V1::UsersController do
     let(:attributes) { {first_name: 'Updated First Name', pref_distance_unit: 'kilometers', pref_elevation_unit: 'meters'} }
 
     it 'returns a successful json response' do
-      put :update, id: user, user: attributes
+      put :update, id: user, data: {type: 'user', attributes: attributes}
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: user, user: attributes
+      put :update, id: user, data: {type: 'user', attributes: attributes}
       user.reload
       expect(user.first_name).to eq(attributes[:first_name])
       expect(user.pref_distance_unit).to eq(attributes[:pref_distance_unit])
@@ -57,7 +59,7 @@ describe Api::V1::UsersController do
     end
 
     it 'returns an error if the user does not exist' do
-      put :update, id: 0, user: attributes
+      put :update, id: 0, data: {type: 'user', attributes: attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

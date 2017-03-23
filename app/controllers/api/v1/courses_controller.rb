@@ -13,7 +13,7 @@ class Api::V1::CoursesController < ApiController
   end
 
   def create
-    course = Course.new(course_params)
+    course = Course.new(permitted_params)
     authorize course
 
     if course.save
@@ -25,7 +25,7 @@ class Api::V1::CoursesController < ApiController
 
   def update
     authorize @course
-    if @course.update(course_params)
+    if @course.update(permitted_params)
       render json: @course
     else
       render json: {message: 'course not updated', error: "#{@course.errors.full_messages}"}, status: :bad_request
@@ -45,9 +45,5 @@ class Api::V1::CoursesController < ApiController
 
   def set_course
     @course = Course.friendly.find(params[:id])
-  end
-
-  def course_params
-    params.require(:course).permit(*Course::PERMITTED_PARAMS)
   end
 end

@@ -1,5 +1,4 @@
 class Organization < ActiveRecord::Base
-  PERMITTED_PARAMS = [:id, :name, :description, :concealed]
 
   include Auditable
   include Concealable

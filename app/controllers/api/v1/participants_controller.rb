@@ -7,7 +7,7 @@ class Api::V1::ParticipantsController < ApiController
   end
 
   def create
-    participant = Participant.new(participant_params)
+    participant = Participant.new(permitted_params)
     authorize participant
 
     if participant.save
@@ -19,7 +19,7 @@ class Api::V1::ParticipantsController < ApiController
 
   def update
     authorize @participant
-    if @participant.update(participant_params)
+    if @participant.update(permitted_params)
       render json: @participant
     else
       render json: {message: 'participant not updated', error: "#{@participant.errors.full_messages}"}, status: :bad_request
@@ -39,9 +39,5 @@ class Api::V1::ParticipantsController < ApiController
 
   def set_participant
     @participant = Participant.friendly.find(params[:id])
-  end
-
-  def participant_params
-    params.require(:participant).permit(*Participant::PERMITTED_PARAMS)
   end
 end

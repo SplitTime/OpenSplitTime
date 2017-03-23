@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  PERMITTED_PARAMS = [:id, :first_name, :last_name, :email, :phone, :password, :pref_distance_unit, :pref_elevation_unit]
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable

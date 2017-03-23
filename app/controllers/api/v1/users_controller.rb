@@ -7,7 +7,7 @@ class Api::V1::UsersController < ApiController
   end
 
   def create
-    user = User.new(user_params)
+    user = User.new(permitted_params)
     authorize user
 
     if user.save
@@ -19,7 +19,7 @@ class Api::V1::UsersController < ApiController
 
   def update
     authorize @user
-    if @user.update(user_params)
+    if @user.update(permitted_params)
       render json: @user
     else
       render json: {message: 'user not updated', error: "#{@user.errors.full_messages}"}, status: :bad_request
@@ -44,9 +44,5 @@ class Api::V1::UsersController < ApiController
 
   def set_user
     @user = User.friendly.find(params[:id])
-  end
-
-  def user_params
-    params.require(:user).permit(*User::PERMITTED_PARAMS)
   end
 end

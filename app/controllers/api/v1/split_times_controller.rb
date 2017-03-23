@@ -7,7 +7,7 @@ class Api::V1::SplitTimesController < ApiController
   end
 
   def create
-    split_time = SplitTime.new(split_time_params)
+    split_time = SplitTime.new(permitted_params)
     authorize split_time
 
     if split_time.save
@@ -19,7 +19,7 @@ class Api::V1::SplitTimesController < ApiController
 
   def update
     authorize @split_time
-    if @split_time.update(split_time_params)
+    if @split_time.update(permitted_params)
       render json: @split_time
     else
       render json: {message: 'split_time not updated', error: "#{@split_time.errors.full_messages}"}, status: :bad_request
@@ -39,9 +39,5 @@ class Api::V1::SplitTimesController < ApiController
 
   def set_split_time
     @split_time = SplitTime.find(params[:id])
-  end
-
-  def split_time_params
-    params.require(:split_time).permit(*SplitTime::PERMITTED_PARAMS)
   end
 end

@@ -27,7 +27,7 @@ describe Api::V1::ParticipantsController do
 
   describe '#create' do
     it 'returns a successful json response' do
-      post :create, participant: {first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
+      post :create, data: {type: 'participant', attributes: {first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
       expect(response.status).to eq(201)
@@ -35,7 +35,7 @@ describe Api::V1::ParticipantsController do
 
     it 'creates a participant record' do
       expect(Participant.all.count).to eq(0)
-      post :create, participant: {first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
+      post :create, data: {type: 'participant', attributes: {first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}}
       expect(Participant.all.count).to eq(1)
     end
   end
@@ -44,18 +44,18 @@ describe Api::V1::ParticipantsController do
     let(:attributes) { {last_name: 'Updated Last Name'} }
 
     it 'returns a successful json response' do
-      put :update, id: participant, participant: attributes
+      put :update, id: participant, data: {type: 'participant', attributes: attributes}
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: participant, participant: attributes
+      put :update, id: participant, data: {type: 'participant', attributes: attributes}
       participant.reload
       expect(participant.last_name).to eq(attributes[:last_name])
     end
 
     it 'returns an error if the participant does not exist' do
-      put :update, id: 0, participant: attributes
+      put :update, id: 0, data: {type: 'participant', attributes: attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

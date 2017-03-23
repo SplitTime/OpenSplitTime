@@ -6,10 +6,6 @@ class Effort < ActiveRecord::Base
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]]
-  PERMITTED_PARAMS = [:id, :event_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
-                      :city, :state_code, :country_code, :start_time, :finished, :concealed, :start_time, :start_offset,
-                      :beacon_url, :report_url, :photo_url, :phone, :email,
-                      split_times_attributes: [*SplitTime::PERMITTED_PARAMS]]
 
   include Auditable
   include Concealable

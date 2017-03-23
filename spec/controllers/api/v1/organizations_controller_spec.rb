@@ -43,7 +43,7 @@ describe Api::V1::OrganizationsController do
 
   describe '#create' do
     it 'returns a successful json response' do
-      post :create, organization: {name: 'Test Organization'}
+      post :create, data: {type: 'organization', attributes: {name: 'Test Organization'} }
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
       expect(response.status).to eq(201)
@@ -51,7 +51,7 @@ describe Api::V1::OrganizationsController do
 
     it 'creates a organization record' do
       expect(Organization.all.count).to eq(0)
-      post :create, organization: {name: 'Test Organization'}
+      post :create, data: {type: 'organization', attributes: {name: 'Test Organization'} }
       expect(Organization.all.count).to eq(1)
     end
   end
@@ -60,18 +60,18 @@ describe Api::V1::OrganizationsController do
     let(:attributes) { {name: 'Updated Organization Name'} }
 
     it 'returns a successful json response' do
-      put :update, id: organization, organization: attributes
+      put :update, id: organization, data: {type: 'organization', attributes: attributes }
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: organization, organization: attributes
+      put :update, id: organization, data: {type: 'organization', attributes: attributes }
       organization.reload
       expect(organization.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the organization does not exist' do
-      put :update, id: 0, organization: attributes
+      put :update, id: 0, data: {type: 'organization', attributes: attributes }
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

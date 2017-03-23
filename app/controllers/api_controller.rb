@@ -10,6 +10,10 @@ class ApiController < ApplicationController
 
   private
 
+  def permitted_params
+    @permitted_params ||= permitted_params_class.api_params(params)
+  end
+
   def user_not_authorized
     render json: {message: 'not authorized'}, status: :unauthorized
   end

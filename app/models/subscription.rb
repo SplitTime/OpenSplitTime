@@ -2,7 +2,6 @@ class Subscription < ActiveRecord::Base
   enum protocol: [:email, :sms, :http, :https]
   belongs_to :user
   belongs_to :participant
-  PERMITTED_PARAMS = [:id, :user_id, :participant_id, :protocol, :resource_key]
 
   before_validation :set_resource_key
   before_destroy :delete_resource_key

@@ -1,6 +1,4 @@
 class Participant < ActiveRecord::Base
-  PERMITTED_PARAMS = [:id, :city, :state_code, :country_code, :first_name, :last_name, :gender,
-                      :email, :phone, :birthdate, :concealed]
 
   include Auditable
   include Concealable

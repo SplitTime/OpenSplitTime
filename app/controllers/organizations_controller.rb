@@ -25,7 +25,7 @@ class OrganizationsController < ApplicationController
   end
 
   def create
-    @organization = Organization.new(organization_params)
+    @organization = Organization.new(permitted_params)
     authorize @organization
 
     if @organization.save
@@ -38,7 +38,7 @@ class OrganizationsController < ApplicationController
   def update
     authorize @organization
 
-    if @organization.update(organization_params)
+    if @organization.update(permitted_params)
       redirect_to @organization
     else
       render 'edit'
@@ -84,14 +84,6 @@ class OrganizationsController < ApplicationController
   end
 
   private
-
-  def organization_params
-    params.require(:organization).permit(*Organization::PERMITTED_PARAMS)
-  end
-
-  def query_params
-    params.permit(:name)
-  end
 
   def set_organization
     @organization = Organization.friendly.find(params[:id])

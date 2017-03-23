@@ -7,7 +7,7 @@ class Api::V1::SplitsController < ApiController
   end
 
   def create
-    split = Split.new(split_params)
+    split = Split.new(permitted_params)
     authorize split
 
     if split.save
@@ -19,7 +19,7 @@ class Api::V1::SplitsController < ApiController
 
   def update
     authorize @split
-    if @split.update(split_params)
+    if @split.update(permitted_params)
       render json: @split
     else
       render json: {message: 'split not updated', error: "#{@split.errors.full_messages}"}, status: :bad_request
@@ -39,9 +39,5 @@ class Api::V1::SplitsController < ApiController
 
   def set_split
     @split = Split.friendly.find(params[:id])
-  end
-
-  def split_params
-    params.require(:split).permit(*Split::PERMITTED_PARAMS)
   end
 end

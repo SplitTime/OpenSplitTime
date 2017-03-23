@@ -43,7 +43,7 @@ describe Api::V1::CoursesController do
 
   describe '#create' do
     it 'returns a successful json response' do
-      post :create, course: {name: 'Test Course'}
+      post :create, data: {type: 'course', attributes: {name: 'Test Course'} }
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
       expect(response.status).to eq(201)
@@ -51,7 +51,7 @@ describe Api::V1::CoursesController do
 
     it 'creates a course record' do
       expect(Course.all.count).to eq(0)
-      post :create, course: {name: 'Test Course'}
+      post :create, data: {type: 'course', attributes: {name: 'Test Course'} }
       expect(Course.all.count).to eq(1)
     end
   end
@@ -60,18 +60,18 @@ describe Api::V1::CoursesController do
     let(:attributes) { {name: 'Updated Course Name'} }
 
     it 'returns a successful json response' do
-      put :update, id: course, course: attributes
+      put :update, id: course, data: {type: 'course', attributes: attributes }
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: course, course: attributes
+      put :update, id: course, data: {type: 'course', attributes: attributes }
       course.reload
       expect(course.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the course does not exist' do
-      put :update, id: 0, course: attributes
+      put :update, id: 0, data: {type: 'course', attributes: attributes }
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

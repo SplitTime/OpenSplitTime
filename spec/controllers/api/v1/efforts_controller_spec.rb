@@ -29,7 +29,7 @@ describe Api::V1::EffortsController do
 
   describe '#create' do
     it 'returns a successful json response' do
-      post :create, effort: {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
+      post :create, data: {type: 'effort', attributes: {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
       expect(response.status).to eq(201)
@@ -37,7 +37,7 @@ describe Api::V1::EffortsController do
 
     it 'creates an effort record' do
       expect(Effort.all.count).to eq(0)
-      post :create, effort: {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}
+      post :create, data: {type: 'effort', attributes: {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}}
       expect(Effort.all.count).to eq(1)
     end
   end
@@ -46,18 +46,18 @@ describe Api::V1::EffortsController do
     let(:attributes) { {last_name: 'Updated Last Name'} }
 
     it 'returns a successful json response' do
-      put :update, id: effort, effort: attributes
+      put :update, id: effort, data: {type: 'effort', attributes: attributes}
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: effort, effort: attributes
+      put :update, id: effort, data: {type: 'effort', attributes: attributes}
       effort.reload
       expect(effort.last_name).to eq(attributes[:last_name])
     end
 
     it 'returns an error if the effort does not exist' do
-      put :update, id: 0, effort: attributes
+      put :update, id: 0, data: {type: 'effort', attributes: attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

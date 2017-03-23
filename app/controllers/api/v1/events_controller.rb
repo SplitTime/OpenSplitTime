@@ -9,7 +9,7 @@ class Api::V1::EventsController < ApiController
 
   # POST /api/v1/events
   def create
-    event = Event.new(event_params)
+    event = Event.new(permitted_params)
     authorize event
 
     if event.save
@@ -23,7 +23,7 @@ class Api::V1::EventsController < ApiController
   # PUT /api/v1/events/:staging_id
   def update
     authorize @event
-    if @event.update(event_params)
+    if @event.update(permitted_params)
       render json: @event
     else
       render json: {message: 'event not updated', error: "#{@event.errors.full_messages}"}, status: :bad_request
@@ -110,9 +110,5 @@ class Api::V1::EventsController < ApiController
     @event = params[:staging_id].uuid? ?
         Event.find_by!(staging_id: params[:staging_id]) :
         Event.friendly.find(params[:staging_id])
-  end
-
-  def event_params
-    params.require(:event).permit(*Event::PERMITTED_PARAMS)
   end
 end

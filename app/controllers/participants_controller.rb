@@ -35,7 +35,7 @@ class ParticipantsController < ApplicationController
   end
 
   def create
-    @participant = Participant.new(participant_params)
+    @participant = Participant.new(permitted_params)
     authorize @participant
 
     if @participant.save
@@ -48,7 +48,7 @@ class ParticipantsController < ApplicationController
   def update
     authorize @participant
 
-    if @participant.update(participant_params)
+    if @participant.update(permitted_params)
       redirect_to session.delete(:return_to) || @participant
     else
       render 'edit'
@@ -113,17 +113,7 @@ class ParticipantsController < ApplicationController
 
   private
 
-  def participant_params
-    params.require(:participant).permit(*Participant::PERMITTED_PARAMS)
-  end
-
-  def query_params
-    params.permit(:search, :first_name, :last_name, :gender, :birthdate,
-                  :city, :state_code, :country_code, :email, :phone)
-  end
-
   def set_participant
     @participant = Participant.friendly.find(params[:id])
   end
-
 end

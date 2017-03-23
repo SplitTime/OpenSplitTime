@@ -4,8 +4,6 @@ class SplitTime < ActiveRecord::Base
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
-  PERMITTED_PARAMS = [:id, :effort_id, :lap, :split_id, :time_from_start, :bitkey, :sub_split_bitkey,
-                      :stopped_here, :elapsed_time, :time_of_day, :military_time, :data_status]
 
   include Auditable
   include Concealable

@@ -1,23 +1,21 @@
 class EffortRow
   include PersonalInfo
 
-  attr_reader :effort, :overall_place, :gender_place, :finish_status, :run_status, :dropped_split_name, :day_and_time,
+  attr_reader :effort, :finish_status, :run_status, :dropped_split_name, :day_and_time,
               :start_time_from_params, :segment_seconds, :participant
   delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :segment_seconds, :overall_rank, :gender_rank,
            :bio, :birthdate, to: :effort
 
-  def initialize(effort, options = {})
-    @effort = effort
-    @overall_place = options[:overall_place]
-    @gender_place = options[:gender_place]
-    @finish_status = options[:finish_status]
-    @run_status = options[:run_status]
-    @dropped_split_name = options[:dropped_split_name]
-    @day_and_time = options[:day_and_time]
-    @start_time_from_params = options[:start_time]
-    @segment_seconds = options[:segment_seconds]
-    @participant = options[:participant]
+  def initialize(args)
+    @effort = args[:effort]
+    @finish_status = args[:finish_status]
+    @run_status = args[:run_status]
+    @dropped_split_name = args[:dropped_split_name]
+    @day_and_time = args[:day_and_time]
+    @start_time_from_params = args[:start_time]
+    @segment_seconds = args[:segment_seconds]
+    @participant = args[:participant]
   end
 
   def effective_start_time

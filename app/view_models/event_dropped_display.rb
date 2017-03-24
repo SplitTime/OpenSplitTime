@@ -32,7 +32,7 @@ class EventDroppedDisplay
 
   def get_efforts
     self.event_efforts = event.efforts
-    self.started_efforts = event_efforts.ranked_with_finish_status # This method ignores efforts having no split_times.
+    self.started_efforts = event_efforts.ranked_with_finish_status # This scope ignores efforts having no split_times.
     self.dropped_efforts = started_efforts.select(&:dropped?)
   end
 
@@ -49,7 +49,7 @@ class EventDroppedDisplay
 
   def create_effort_rows
     dropped_efforts.each do |effort|
-      effort_row = EffortRow.new(effort,
+      effort_row = EffortRow.new(effort: effort,
                                  dropped_split_name: effort.final_split_name,
                                  day_and_time: start_time + effort.start_offset + effort.final_time)
       effort_rows << effort_row

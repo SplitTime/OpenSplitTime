@@ -2,7 +2,7 @@ if @event_display.event_finished?
     CSV.generate do |csv|
         csv << %w(place time first last age gender city state dob bib status)
         @event_display.effort_rows.each do |row|
-            csv << [row.overall_place,
+            csv << [row.overall_rank,
                     row.finish_time && time_format_hhmmss(row.finish_time),
                     row.first_name,
                     row.last_name,
@@ -16,5 +16,5 @@ if @event_display.event_finished?
         end
     end
 else
-    'OpenSplitTime thinks that one or more efforts is still in progress. You need to set drops before exporting.'
+    'OpenSplitTime thinks that one or more efforts is still in progress. You need to establish drops/stops before exporting.'
 end

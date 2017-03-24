@@ -22,7 +22,7 @@ class Effort < ActiveRecord::Base
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :segment_time
-  attr_writer :overall_place, :gender_place, :last_reported_split_time, :event_start_time
+  attr_writer :last_reported_split_time, :event_start_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
@@ -201,11 +201,11 @@ class Effort < ActiveRecord::Base
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(laps_started)
   end
 
-  def overall_place
+  def overall_rank
     (attributes['overall_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
-  def gender_place
+  def gender_rank
     (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 

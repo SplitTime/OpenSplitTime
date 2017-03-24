@@ -36,10 +36,10 @@ RSpec.describe EffortRow, type: :model do
     end
 
     it 'should instantiate an EffortRow if an effort and other options are provided' do
-      @effort_row5 = EffortRow.new(@effort5, overall_place: 10, gender_place: 5, start_time: "1992-07-01 06:00:00")
-      @effort_row6 = EffortRow.new(@effort6, overall_place: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
-      @effort_row7 = EffortRow.new(@effort7, finish_status: "DNF at Ridgeline")
-      @effort_row8 = EffortRow.new(@effort8, gender_place: 3)
+      @effort_row5 = EffortRow.new(effort: @effort5, overall_rank: 10, gender_rank: 5, start_time: "1992-07-01 06:00:00")
+      @effort_row6 = EffortRow.new(effort: @effort6, overall_rank: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
+      @effort_row7 = EffortRow.new(effort: @effort7, finish_status: "DNF at Ridgeline")
+      @effort_row8 = EffortRow.new(effort: @effort8, gender_rank: 3)
 
       expect(@effort_row5.present?).to eq(true)
       expect(@effort_row6.present?).to eq(true)
@@ -50,16 +50,16 @@ RSpec.describe EffortRow, type: :model do
 
   describe 'year' do
     it 'should return the year of start_time if provided' do
-      @effort_row5 = EffortRow.new(@effort5, overall_place: 10, gender_place: 5, start_time: "1992-02-01 00:00:00")
-      @effort_row6 = EffortRow.new(@effort6, overall_place: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
+      @effort_row5 = EffortRow.new(effort: @effort5, overall_rank: 10, gender_rank: 5, start_time: "1992-02-01 00:00:00")
+      @effort_row6 = EffortRow.new(effort: @effort6, overall_rank: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
 
       expect(@effort_row5.year).to eq(1992)
       expect(@effort_row6.year).to eq(2015)
     end
 
     it 'should return the year of the effort.event_start_time if available' do
-      @effort_row2 = EffortRow.new(@effort2, overall_place: 10, gender_place: 5)
-      @effort_row5 = EffortRow.new(@effort5, overall_place: 10, finish_status: 50000)
+      @effort_row2 = EffortRow.new(effort: @effort2, overall_rank: 10, gender_rank: 5)
+      @effort_row5 = EffortRow.new(effort: @effort5, overall_rank: 10, finish_status: 50000)
 
       expect(@effort_row2.year).to eq(2012)
       expect(@effort_row5.year).to eq(2014)
@@ -68,16 +68,16 @@ RSpec.describe EffortRow, type: :model do
 
   describe 'finish_time' do
     it 'should return nil if no finish_status is provided or if finish_status is a string' do
-      @effort_row7 = EffortRow.new(@effort7, finish_status: "DNF at Ridgeline")
-      @effort_row8 = EffortRow.new(@effort8, gender_place: 3)
+      @effort_row7 = EffortRow.new(effort: @effort7, finish_status: "DNF at Ridgeline")
+      @effort_row8 = EffortRow.new(effort: @effort8, gender_rank: 3)
 
       expect(@effort_row7.finish_time).to be_nil
       expect(@effort_row8.finish_time).to be_nil
     end
 
     it 'should return finish_status if finish_status is numeric' do
-      @effort_row4 = EffortRow.new(@effort4, finish_status: 25000)
-      @effort_row6 = EffortRow.new(@effort6, overall_place: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
+      @effort_row4 = EffortRow.new(effort: @effort4, finish_status: 25000)
+      @effort_row6 = EffortRow.new(effort: @effort6, overall_rank: 10, finish_status: 50000, start_time: "2015-07-01 06:00:00")
 
       expect(@effort_row4.finish_time).to eq(25000)
       expect(@effort_row6.finish_time).to eq(50000)
@@ -86,10 +86,10 @@ RSpec.describe EffortRow, type: :model do
 
   describe 'effort_attributes' do
     it 'should return delegated effort attributes' do
-      @effort_row1 = EffortRow.new(@effort1)
-      @effort_row2 = EffortRow.new(@effort2)
-      @effort_row3 = EffortRow.new(@effort3)
-      @effort_row4 = EffortRow.new(@effort4)
+      @effort_row1 = EffortRow.new(effort: @effort1)
+      @effort_row2 = EffortRow.new(effort: @effort2)
+      @effort_row3 = EffortRow.new(effort: @effort3)
+      @effort_row4 = EffortRow.new(effort: @effort4)
 
       expect(@effort_row1.first_name).to eq('Jen')
       expect(@effort_row2.last_name).to eq('Hardman')
@@ -99,10 +99,10 @@ RSpec.describe EffortRow, type: :model do
     end
 
     it 'should properly return attributes from PersonalInfo module' do
-      @effort_row5 = EffortRow.new(@effort5)
-      @effort_row6 = EffortRow.new(@effort6)
-      @effort_row7 = EffortRow.new(@effort7)
-      @effort_row8 = EffortRow.new(@effort8)
+      @effort_row5 = EffortRow.new(effort: @effort5)
+      @effort_row6 = EffortRow.new(effort: @effort6)
+      @effort_row7 = EffortRow.new(effort: @effort7)
+      @effort_row8 = EffortRow.new(effort: @effort8)
 
       expect(@effort_row5.full_name).to eq('James Walker')
       expect(@effort_row6.bio_historic).to eq('Male, 27')

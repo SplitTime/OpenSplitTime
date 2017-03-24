@@ -18,9 +18,7 @@ class EventEffortsDisplay
 
   def effort_rows
     @effort_rows ||= filtered_efforts.map do |effort|
-      EffortRow.new(effort,
-                    overall_place: effort.overall_place,
-                    gender_place: effort.gender_place,
+      EffortRow.new(effort: effort,
                     finish_status: finish_status(effort),
                     run_status: run_status(effort),
                     day_and_time: start_time + effort.start_offset + effort.final_time,

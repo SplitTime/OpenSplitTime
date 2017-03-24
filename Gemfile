@@ -54,6 +54,7 @@ gem 'bootstrap3-datetimepicker-rails'
 gem 'rest-client'
 gem 'sitemap_generator'
 gem 'phony_rails'
+gem 'font-awesome-rails'
 
 group :development do
   gem 'web-console', '~> 2.0'

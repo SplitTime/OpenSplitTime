@@ -84,6 +84,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'rb-fsevent'
   gem 'pry-byebug'
+  gem 'dotenv-rails'
 end
 
 group :production do

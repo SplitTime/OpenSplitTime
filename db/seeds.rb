@@ -29,7 +29,7 @@ Event.create(course_id: 4, organization_id: 4, name: 'Hardrock 100 2015', start_
 
 Participant.create(first_name: 'Joe', last_name: 'Hardman', gender: 'male', birthdate: "1989-12-15", city: 'Boulder', state_code: 'CO', country_code: 'US', email: 'hardman@gmail.com', phone: nil)
 Participant.create(first_name: 'Jane', last_name: 'Rockstar', gender: 'female', birthdate: "1985-09-20", city: 'Seattle', state_code: 'WA', country_code: 'US', email: nil, phone: '206-977-9777')
-Participant.create(first_name: 'Basil', last_name: 'Smith', gender: 'male', birthdate: "1995-04-31", city: 'Guildford', state_code: 'SRY', country_code: 'GB', email: 'basil@uk.gov', phone: '02-998-33-55')
+Participant.create(first_name: 'Basil', last_name: 'Smith', gender: 'male', birthdate: "1995-04-31", city: 'Guildford', state_code: 'SRY', country_code: 'GB', email: 'basil@uk.gov')
 Participant.create(first_name: 'Jen', last_name: 'Huckster', gender: 'female', birthdate: nil, city: 'Vancouver', state_code: 'BC', country_code: 'CA', email: 'jane@canuck.com', phone: '804-888-5555')
 
 Effort.create(event_id: 3, participant_id: 4, wave: nil, bib_number: 99, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, start_time: "2012-08-08 05:00:00", first_name: 'Jen', last_name: 'Huckster', gender: 'female')

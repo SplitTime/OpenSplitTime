@@ -27,12 +27,12 @@ class SnsSubscriptionManager
                                     protocol: protocol,
                                     endpoint: endpoint)
     if response.successful?
-      print '.'
+      print '.' unless Rails.env.test?
       Rails.logger.info "Generated #{subscription}"
       confirmed_arn?(response.subscription_arn) ? response.subscription_arn : "#{response.subscription_arn}:#{SecureRandom.uuid}"
     else
-      print 'X'
-      Rails.logger.info "Unable to generate #{subscription}"
+      print 'X' unless Rails.env.test?
+      warn "Unable to generate #{subscription}"
       nil
     end
   end
@@ -41,17 +41,17 @@ class SnsSubscriptionManager
     if subscription.confirmed?
       response = sns_client.unsubscribe(subscription_arn: subscription_arn)
       if response.successful?
-        print '.'
+        print '.' unless Rails.env.test?
         Rails.logger.info "Deleted SNS subscription #{subscription_arn}"
         subscription_arn
       else
-        print 'X'
-        Rails.logger.info "Unable to delete #{subscription}"
+        print 'X' unless Rails.env.test?
+        warn "Unable to delete #{subscription}"
         nil
       end
     else
-      print '-'
-      Rails.logger.info "#{subscription} is unconfirmed or does not exist"
+      print '-' unless Rails.env.test?
+      warn "#{subscription} is unconfirmed or does not exist"
     end
   end
 

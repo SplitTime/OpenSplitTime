@@ -1,7 +1,7 @@
 class PopulateSubscriptionsSubscriptionResource < ActiveRecord::Migration
   def self.up
     print "Generating subscription resources for all #{Subscription.count} subscriptions in the database.\n"
-    sns_client = Aws::SNS::Client.new
+    sns_client = SnsClientFactory.client
     Subscription.all.each do |subscription|
       subscription.resource_key = SnsSubscriptionManager.generate(subscription: subscription, sns_client: sns_client)
       subscription.save
@@ -11,7 +11,7 @@ class PopulateSubscriptionsSubscriptionResource < ActiveRecord::Migration
 
   def self.down
     print "Deleting subscription resources for all #{Subscription.count} subscriptions in the database.\n"
-    sns_client = Aws::SNS::Client.new
+    sns_client = SnsClientFactory.client
     Subscription.all.each do |subscription|
       SnsSubscriptionManager.delete(subscription: subscription, sns_client: sns_client)
     end

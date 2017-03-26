@@ -10,8 +10,8 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= stub ./variables
- *= stub ./mixins
+ *= stub variables
+ *= stub mixins
  *= require switchery
  *= require devise_bootstrap_views
  *= require_tree .

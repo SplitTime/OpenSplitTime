@@ -1,51 +1,41 @@
 class EffortRow
+  ULTRASIGNUP_STATUS_TABLE = {'Finished' => 1, 'Dropped' => 2, 'Not Started' => 3}
   include PersonalInfo
 
-  attr_reader :effort, :finish_status, :run_status, :dropped_split_name, :day_and_time,
-              :start_time_from_params, :segment_seconds, :participant
-  delegate :id, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :segment_seconds, :overall_rank, :gender_rank,
-           :bio, :birthdate, to: :effort
+  attr_reader :effort, :participant
+  delegate :id, :name, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code,
+           :bad?, :questionable?, :segment_seconds, :overall_rank, :gender_rank, :birthdate, :start_time,
+           :final_distance, :final_split_name, :final_time, :final_lap, :multiple_laps?, to: :effort
 
   def initialize(args)
+    ArgsValidator.validate(params: args, required: :effort,
+                           exclusive: [:effort, :participant, :multi_lap], class: self.class)
     @effort = args[:effort]
-    @finish_status = args[:finish_status]
-    @run_status = args[:run_status]
-    @dropped_split_name = args[:dropped_split_name]
-    @day_and_time = args[:day_and_time]
-    @start_time_from_params = args[:start_time]
-    @segment_seconds = args[:segment_seconds]
     @participant = args[:participant]
   end
 
-  def effective_start_time
-    start_time_from_params.try(:to_datetime) || effort.try(:query_start_time) || effort.start_time
+  def final_lap_split_name
+    multiple_laps? ? "#{final_split_name} Lap #{final_lap}" : final_split_name
   end
 
-  def year
-    effective_start_time.try(:year)
+  def final_day_and_time
+    start_time + final_time
   end
 
-  def finish_time
-    (finish_status && finish_status.is_a?(Numeric)) ? finish_status : nil
-  end
-
-  def effort_id
-    effort.id
+  def run_status
+    case
+    when effort.finished?
+      'Finished'
+    when effort.dropped?
+      'Dropped'
+    when effort.in_progress?
+      'In Progress'
+    else
+      'Not Started'
+    end
   end
 
   def ultrasignup_finish_status
-    case
-    when finish_status.is_a?(Numeric)
-      1
-    when finish_status.include?('Dropped')
-      2
-    when finish_status.include?('DNS')
-      3
-    when finish_status.include?('In progress')
-      "#{effort.name} (id: #{effort_id}, bib: #{bib_number}) is in progress"
-    else
-      "Problem with finish status for effort id #{effort_id}"
-    end
+    ULTRASIGNUP_STATUS_TABLE[run_status] || "#{name} (id: #{id}, bib: #{bib_number}) is in progress"
   end
 end

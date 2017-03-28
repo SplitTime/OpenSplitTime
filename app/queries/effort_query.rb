@@ -131,18 +131,19 @@ class EffortQuery
 
       SELECT *, 
               lap, 
-              rank() over (order by segment_seconds, gender, -age) as overall_rank, 
+              rank() over (order by segment_seconds, gender, -age, lap) as overall_rank, 
               rank() over (partition by gender order by segment_seconds, -age) as gender_rank 
       FROM 
         (SELECT e1.*, (tfs_end - tfs_begin) as segment_seconds 
         FROM 
             (SELECT efforts_scoped.*, 
-                    events.start_time as query_start_time, 
+                    events.start_time as event_start_time, 
                     split_times.effort_id, 
                     split_times.time_from_start as tfs_begin, 
                     split_times.lap, 
                     split_times.split_id, 
-                    split_times.sub_split_bitkey 
+                    split_times.sub_split_bitkey,
+                    events.laps_required
             FROM efforts_scoped
               INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
               INNER JOIN events ON events.id = efforts_scoped.event_id 

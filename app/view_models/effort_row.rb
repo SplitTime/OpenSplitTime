@@ -5,7 +5,7 @@ class EffortRow
   attr_reader :effort, :participant
   delegate :id, :name, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code,
            :bad?, :questionable?, :segment_seconds, :overall_rank, :gender_rank, :birthdate, :start_time,
-           :final_distance, :final_split_name, :final_time, :final_lap, :multiple_laps?, to: :effort
+           :final_distance, :final_split_name, :final_time, :final_lap, :multiple_laps?, :lap, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args, required: :effort,
@@ -20,6 +20,10 @@ class EffortRow
 
   def final_day_and_time
     start_time + final_time
+  end
+
+  def year_and_lap
+    multiple_laps? ? "#{start_time.year} / Lap #{lap}" : "#{start_time.year}"
   end
 
   def run_status

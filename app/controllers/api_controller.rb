@@ -43,7 +43,7 @@ class ApiController < ApplicationController
   end
 
   def prepare_params
-    params[:include] = params[:include].to_s.underscore
+    params[:include] = IncludeParams.prepare(params[:include])
     params[:fields] = FieldParams.prepare(params[:fields])
   end
 

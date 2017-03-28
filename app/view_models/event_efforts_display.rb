@@ -3,7 +3,7 @@ class EventEffortsDisplay
 
   attr_reader :event
   delegate :name, :start_time, :course, :organization, :simple?, :beacon_url, :available_live,
-           :finish_split, :start_split, to: :event
+           :finish_split, :start_split, :multiple_laps?, to: :event
 
   # initialize(event, params = {})
   # event is an ordinary event object
@@ -19,15 +19,8 @@ class EventEffortsDisplay
   def effort_rows
     @effort_rows ||= filtered_efforts.map do |effort|
       EffortRow.new(effort: effort,
-                    finish_status: finish_status(effort),
-                    run_status: run_status(effort),
-                    day_and_time: start_time + effort.start_offset + effort.final_time,
                     participant: indexed_participants[effort.participant_id])
     end
-  end
-
-  def effort_preview_rows
-    @effort_preview_rows ||= unstarted_efforts.map { |effort| EffortPreviewRow.new(effort) }
   end
 
   def filtered_efforts
@@ -108,20 +101,5 @@ class EventEffortsDisplay
 
   def started_effort_ids
     @started_effort_ids ||= event_efforts.started.ids
-  end
-
-  def finish_status(effort)
-    return effort.final_time if effort.finished?
-    return 'DNS' unless started_effort_ids.include?(effort.id)
-    return "Dropped at #{effort.final_split_name}" if effort.dropped?
-    'In progress'
-  end
-
-  def run_status(effort)
-    return 'DNS' unless started_effort_ids.include?(effort.id)
-    return 'Started' if effort.final_split_id == event_start_split_id
-    return "Dropped at #{effort.final_split_name}" if effort.dropped?
-    return 'Finished' if effort.finished?
-    "Reported through #{effort.final_split_name}"
   end
 end

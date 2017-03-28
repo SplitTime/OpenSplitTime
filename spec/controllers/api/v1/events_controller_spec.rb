@@ -16,6 +16,7 @@ describe Api::V1::EventsController do
       get :show, staging_id: event.staging_id
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(event.id)
+      expect(response.body).to be_jsonapi_response_for('events')
     end
 
     it 'returns an error if the event does not exist' do
@@ -30,7 +31,8 @@ describe Api::V1::EventsController do
     let(:params) { {course_id: course.id, name: 'Test Event', start_time: '2017-03-01 06:00:00', laps_required: 1} }
 
     it 'returns a successful json response' do
-      post :create, data: {type: 'event', attributes: params }
+      post :create, data: {type: 'events', attributes: params }
+      expect(response.body).to be_jsonapi_response_for('events')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
       expect(response.status).to eq(201)
@@ -38,7 +40,7 @@ describe Api::V1::EventsController do
 
     it 'creates an event record with a staging_id' do
       expect(Event.all.count).to eq(0)
-      post :create, data: {type: 'event', attributes: params }
+      post :create, data: {type: 'events', attributes: params }
       expect(Event.all.count).to eq(1)
       expect(Event.first.staging_id).not_to be_nil
     end
@@ -48,18 +50,19 @@ describe Api::V1::EventsController do
     let(:attributes) { {name: 'Updated Event Name'} }
 
     it 'returns a successful json response' do
-      put :update, staging_id: event.staging_id, data: {type: 'event', attributes: attributes }
+      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes }
+      expect(response.body).to be_jsonapi_response_for('events')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, staging_id: event.staging_id, data: {type: 'event', attributes: attributes }
+      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes }
       event.reload
       expect(event.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the event does not exist' do
-      put :update, staging_id: 123, data: {type: 'event', attributes: attributes }
+      put :update, staging_id: 123, data: {type: 'events', attributes: attributes }
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

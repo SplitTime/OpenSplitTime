@@ -1,36 +1,16 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <% if params[:sort] == 'bib_asc' %>
-        <th><%= link_to 'Bib', drop_list_event_path(@event_dropped_display.event,
-                                                    sort: 'bib_desc') %></th>
-    <% else %>
-        <th><%= link_to 'Bib', drop_list_event_path(@event_dropped_display.event,
-                                                    sort: 'bib_asc') %></th>
-    <% end %>
-    <% if params[:sort] == 'last' %>
-        <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event,
-                                                     sort: 'first') %></th>
-    <% else %>
-        <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event,
-                                                     sort: 'last') %></th>
-    <% end %>
+    <th><%= link_to 'Bib', drop_list_event_path(@event_dropped_display.event,
+                                                sort: params[:sort]&.include?('-bib_number') ? 'bib_number' : '-bib_number') %></th>
+    <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event,
+                                                 sort: params[:sort]&.include?('first_name') ? 'last_name' : 'first_name') %></th>
     <th>Category</th>
     <th>From</th>
-    <% if params[:sort] == 'distance_asc' %>
-        <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event,
-                                                              sort: 'distance_desc') %></th>
-    <% else %>
-        <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event,
-                                                              sort: 'distance_asc') %></th>
-    <% end %>
-    <% if params[:sort] == 'time_asc' %>
-        <th class="text-right"><%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event,
-                                                                                sort: 'time_desc') %></th>
-    <% else %>
-        <th class="text-right"><%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event,
-                                                                                sort: 'time_asc') %></th>
-    <% end %>
+    <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event,
+                                                          sort: params[:sort]&.include?('-final_distance') ? 'final_distance' : '-final_distance') %></th>
+    <th class="text-right"><%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event,
+                                                                            sort: params[:sort]&.include?('-final_time') ? 'final_time' : '-final_time') %></th>
   </tr>
   </thead>
   <tbody>
@@ -39,8 +19,8 @@
       <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.effort) %></strong></td>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
-      <td><%= effort_row.dropped_split_name %></td>
-      <td class="text-right"><%= day_time_format(effort_row.day_and_time) %></td>
+      <td><%= effort_row.final_split_name %></td>
+      <td class="text-right"><%= day_time_format(effort_row.final_day_and_time) %></td>
       </tr>
   <% end %>
   </tbody>

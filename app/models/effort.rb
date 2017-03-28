@@ -11,6 +11,7 @@ class Effort < ActiveRecord::Base
   include Concealable
   include DataStatusMethods
   include GuaranteedFindable
+  include LapsRequiredMethods
   include PersonalInfo
   include Searchable
   include Matchable
@@ -21,7 +22,7 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
-  attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :segment_time
+  attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
@@ -92,15 +93,15 @@ class Effort < ActiveRecord::Base
   end
 
   def event_start_time
-    @event_start_time ||= attributes['event_start_time'].try(:in_time_zone) || event.start_time
+    @event_start_time ||= attributes['event_start_time']&.in_time_zone || event&.start_time
   end
 
   def event_name
-    @event_name ||= event.try(:name)
+    @event_name ||= event&.name
   end
 
   def laps_required
-    attributes['laps_required'] || event.laps_required
+    @laps_required ||= attributes['laps_required'] || event.laps_required
   end
 
   def last_reported_split_time
@@ -135,7 +136,7 @@ class Effort < ActiveRecord::Base
   end
 
   def laps_started
-    attributes['laps_started'] || last_reported_split_time.try(:lap) || 0
+    attributes['laps_started'] || last_reported_split_time&.lap || 0
   end
 
   # For an unlimited-lap (time-based) event, an effort is 'finished' when the person decides not to continue.
@@ -248,7 +249,7 @@ class Effort < ActiveRecord::Base
   end
 
   def stopped_time_point
-    stopped_split_time.try(:time_point)
+    stopped_split_time&.time_point
   end
 
   def stop

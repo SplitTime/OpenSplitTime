@@ -1,16 +1,8 @@
 class EffortQuery
-  SANITIZE_COLUMN_NAMES = %w(id event_id participant_id wave bib_number city state_code age created_at updated_at
-created_by updated_by first_name last_name gender country_code birthdate data_status start_offset dropped_split_id
-concealed beacon_url report_url photo_url dropped_lap laps_required event_start_time final_split_name final_lap_distance
-final_lap final_split_id final_bitkey final_time final_split_time_id stopped_split_time_id stopped_lap stopped_split_id
-stopped_bitkey stopped_time final_lap_complete course_distance started laps_started laps_finished final_distance finished
-stopped dropped overall_rank gender_rank)
 
   def self.rank_and_finish_status(args)
-    effort_fields = Array.wrap(args[:effort_fields])
-    order_by = Array.wrap(args[:order_by])
-    select_sql = sanitize_and_join(effort_fields) || '*'
-    order_sql = sanitize_and_join(order_by) || 'overall_rank'
+    select_sql = sanitize_and_join(args[:effort_fields]) || '*'
+    order_sql = SortParams.sql_string(args[:order_by], permitted_column_names, {overall_rank: :asc})
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),
@@ -180,6 +172,10 @@ stopped dropped overall_rank gender_rank)
   end
 
   def self.sanitize_and_join(column_names)
-    (column_names || []).select { |column_name| SANITIZE_COLUMN_NAMES.include?(column_name.to_s) }.join(', ').presence
+    (column_names.to_s.split(',') & permitted_column_names).join(', ').presence
+  end
+
+  def self.permitted_column_names
+    EffortParameters::ENRICHED_COLUMN_NAMES
   end
 end

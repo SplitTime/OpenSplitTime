@@ -13,7 +13,7 @@ class EventSpreadDisplay
   def initialize(event, params = {})
     @event = event
     @display_style = params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
-    @sort_columns = params[:sort].to_s.split(',')
+    @sort = params[:sort]
   end
 
   def split_header_data
@@ -68,7 +68,7 @@ class EventSpreadDisplay
 
   private
 
-  attr_reader :sort_columns
+  attr_reader :sort
   delegate :multiple_laps?, to: :event
 
   def split_times_by_effort
@@ -81,7 +81,7 @@ class EventSpreadDisplay
   end
 
   def efforts
-    @efforts ||= event.efforts.ranked_with_finish_status(order_by: sort_columns)
+    @efforts ||= event.efforts.ranked_with_finish_status(order_by: sort)
   end
 
   def header_name(lap_split)

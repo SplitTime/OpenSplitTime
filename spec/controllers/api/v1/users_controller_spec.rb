@@ -13,6 +13,7 @@ describe Api::V1::UsersController do
 
     it 'returns data of a single user' do
       get :show, id: user
+      expect(response.body).to be_jsonapi_response_for('users')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(user.id)
     end
@@ -29,7 +30,8 @@ describe Api::V1::UsersController do
     let(:attributes) { {first_name: 'Test', last_name: 'User', email: 'test_user@example.com', password: 'password'} }
 
     it 'returns a successful json response' do
-      post :create, data: {type: 'user', attributes: attributes}
+      post :create, data: {type: 'users', attributes: attributes}
+      expect(response.body).to be_jsonapi_response_for('users')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
       expect(response.status).to eq(201)
@@ -37,7 +39,7 @@ describe Api::V1::UsersController do
 
     it 'creates a user record' do
       expect(User.all.count).to eq(1)
-      post :create, data: {type: 'user', attributes: attributes}
+      post :create, data: {type: 'users', attributes: attributes}
       expect(User.all.count).to eq(2)
     end
   end
@@ -46,12 +48,13 @@ describe Api::V1::UsersController do
     let(:attributes) { {first_name: 'Updated First Name', pref_distance_unit: 'kilometers', pref_elevation_unit: 'meters'} }
 
     it 'returns a successful json response' do
-      put :update, id: user, data: {type: 'user', attributes: attributes}
+      put :update, id: user, data: {type: 'users', attributes: attributes}
+      expect(response.body).to be_jsonapi_response_for('users')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: user, data: {type: 'user', attributes: attributes}
+      put :update, id: user, data: {type: 'users', attributes: attributes}
       user.reload
       expect(user.first_name).to eq(attributes[:first_name])
       expect(user.pref_distance_unit).to eq(attributes[:pref_distance_unit])
@@ -59,7 +62,7 @@ describe Api::V1::UsersController do
     end
 
     it 'returns an error if the user does not exist' do
-      put :update, id: 0, data: {type: 'user', attributes: attributes}
+      put :update, id: 0, data: {type: 'users', attributes: attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

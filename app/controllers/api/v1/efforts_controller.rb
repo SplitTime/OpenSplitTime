@@ -3,8 +3,8 @@ class Api::V1::EffortsController < ApiController
 
   def show
     authorize @effort
-    @effort.split_times.load.to_a if params[:include].include?('split_times')
-    render json: @effort, include: params[:include]
+    @effort.split_times.load.to_a if params[:include]&.include?('split_times')
+    render json: @effort, include: params[:include], fields: params[:fields]
   end
 
   def create

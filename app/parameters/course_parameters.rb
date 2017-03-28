@@ -1,12 +1,6 @@
-class CourseParameters < Struct.new(:params)
+class CourseParameters < BaseParameters
 
-  PERMITTED = [:id, :name, :description, :next_start_time, splits_attributes: [*SplitParameters::PERMITTED]]
-
-  def self.strong_params(params)
-    params.require(:course).permit(*PERMITTED)
-  end
-
-  def self.api_params(params)
-    ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: PERMITTED)
+  def self.permitted
+    [:id, :name, :description, :next_start_time, splits_attributes: [*SplitParameters.permitted]]
   end
 end

@@ -54,7 +54,7 @@ class EventCourseOrgSetter
 
   def class_params(klass)
     ActionController::Parameters.new(params[symbolized_name(klass)])
-        .permit(*"#{klass}Parameters".constantize::PERMITTED)
+        .permit(*"#{klass}Parameters".constantize.permitted)
         .merge(relationships[symbolized_name(klass)])
   end
 

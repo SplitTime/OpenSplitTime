@@ -1,12 +1,6 @@
-class OrganizationParameters < Struct.new(:params)
+class OrganizationParameters < BaseParameters
 
-  PERMITTED = [:id, :name, :description, :concealed]
-
-  def self.strong_params(params)
-    params.require(:organization).permit(*PERMITTED)
-  end
-
-  def self.api_params(params)
-    ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: PERMITTED)
+  def self.permitted
+    [:id, :name, :description, :concealed]
   end
 end

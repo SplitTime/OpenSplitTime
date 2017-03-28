@@ -4,7 +4,7 @@ class Api::V1::EventsController < ApiController
   # GET /api/v1/events/:staging_id
   def show
     authorize @event
-    render json: @event, include: params[:include]
+    render json: @event, include: params[:include], fields: params[:fields]
   end
 
   # POST /api/v1/events
@@ -44,7 +44,8 @@ class Api::V1::EventsController < ApiController
   def spread
     authorize @event
     params[:display_style] ||= 'absolute'
-    spread_display = EventSpreadDisplay.new(@event, params.slice(:display_style, :sort))
+    params[:sort] = EffortParameters.enriched_sort_fields(params[:sort])
+    spread_display = EventSpreadDisplay.new(@event, params)
     render json: spread_display, serializer: EventSpreadSerializer, include: 'effort_times_rows'
   end
 

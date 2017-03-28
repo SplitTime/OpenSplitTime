@@ -1,5 +1,5 @@
 module SortParams
-  def self.sorted_fields(sort, allowed, default)
+  def self.sort_fields(sort, allowed, default)
     allowed = allowed.map(&:to_s)
     fields = sort.to_s.split(',')
 
@@ -9,8 +9,8 @@ module SortParams
     filtered_fields.present? ? filtered_fields.symbolize_keys : default
   end
 
-  def self.sql_string(sort, allowed, default)
-    sorted_fields(sort, allowed, default).map { |k, v| "#{k} #{v}"}.join(', ')
+  def self.sql_string(sort_fields)
+    sort_fields.to_h.map { |field, direction| "#{field} #{direction}"}.join(', ')
   end
 
   def self.convert_to_ordered_hash(fields)

@@ -2,15 +2,15 @@
   <thead>
   <tr>
     <th><%= link_to 'Bib', drop_list_event_path(@event_dropped_display.event,
-                                                sort: params[:sort]&.include?('bib_asc') ? 'bib_desc' : 'bib_asc') %></th>
+                                                sort: params[:sort]&.include?('-bib_number') ? 'bib_number' : '-bib_number') %></th>
     <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event,
-                                                 sort: params[:sort]&.include?('first') ? 'last' : 'first') %></th>
+                                                 sort: params[:sort]&.include?('first_name') ? 'last_name' : 'first_name') %></th>
     <th>Category</th>
     <th>From</th>
     <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event,
-                                                          sort: params[:sort]&.include?('distance_asc') ? 'distance_desc' : 'distance_asc') %></th>
+                                                          sort: params[:sort]&.include?('-final_distance') ? 'final_distance' : '-final_distance') %></th>
     <th class="text-right"><%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event,
-                                                                            sort: params[:sort]&.include?('time_asc') ? 'time_desc' : 'time_asc') %></th>
+                                                                            sort: params[:sort]&.include?('-final_time') ? 'final_time' : '-final_time') %></th>
   </tr>
   </thead>
   <tbody>

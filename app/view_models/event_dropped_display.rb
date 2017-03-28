@@ -14,7 +14,7 @@ class EventDroppedDisplay
   end
 
   def effort_rows
-    sorted_efforts.map { |effort| EffortRow.new(effort: effort) }
+    dropped_efforts.map { |effort| EffortRow.new(effort: effort) }
   end
 
   def efforts_count
@@ -30,35 +30,10 @@ class EventDroppedDisplay
   attr_reader :params
 
   def started_efforts
-    @started_efforts ||= event.efforts.ranked_with_finish_status # This scope ignores efforts having no split_times.
+    @started_efforts ||= event.efforts.ranked_with_finish_status(order_by: params[:sort]) # This scope ignores efforts having no split_times.
   end
 
   def dropped_efforts
     @dropped_efforts ||= started_efforts.select(&:dropped?)
-  end
-
-  def sort_by
-    params[:sort]
-  end
-
-  def sorted_efforts
-    case sort_by
-    when 'bib_asc'
-      dropped_efforts.sort_by!(&:bib_number)
-    when 'bib_desc'
-      dropped_efforts.sort_by!(&:bib_number).reverse!
-    when 'last'
-      dropped_efforts.sort_by!(&:last_name)
-    when 'first'
-      dropped_efforts.sort_by!(&:first_name)
-    when 'distance_asc'
-      dropped_efforts.sort_by!(&:final_distance)
-    when 'distance_desc'
-      dropped_efforts.sort_by!(&:final_distance).reverse!
-    when 'time_asc'
-      dropped_efforts.sort_by!(&:final_time)
-    else
-      dropped_efforts.sort_by!(&:final_time).reverse!
-    end
   end
 end

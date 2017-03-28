@@ -1,11 +1,8 @@
 class EffortQuery
-  SANITIZE_COLUMN_NAMES ||= EffortParameters::ENRICHED_COLUMN_NAMES
 
   def self.rank_and_finish_status(args)
-    effort_fields = Array.wrap(args[:effort_fields])
-    order_by = Array.wrap(args[:order_by])
-    select_sql = sanitize_and_join(effort_fields) || '*'
-    order_sql = sanitize_and_join(order_by) || 'overall_rank'
+    select_sql = sanitize_and_join(args[:effort_fields]) || '*'
+    order_sql = SortParams.sql_string(args[:order_by], permitted_column_names, {overall_rank: :asc})
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),
@@ -175,6 +172,10 @@ class EffortQuery
   end
 
   def self.sanitize_and_join(column_names)
-    (column_names || []).select { |column_name| SANITIZE_COLUMN_NAMES.include?(column_name.to_s) }.join(', ').presence
+    (column_names.to_s.split(',') & permitted_column_names).join(', ').presence
+  end
+
+  def self.permitted_column_names
+    EffortParameters::ENRICHED_COLUMN_NAMES
   end
 end

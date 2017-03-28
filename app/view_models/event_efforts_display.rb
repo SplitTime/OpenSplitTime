@@ -23,10 +23,6 @@ class EventEffortsDisplay
     end
   end
 
-  def effort_preview_rows
-    @effort_preview_rows ||= unstarted_efforts.map { |effort| EffortPreviewRow.new(effort) }
-  end
-
   def filtered_efforts
     @filtered_efforts ||= event_efforts
                               .search(params[:search])

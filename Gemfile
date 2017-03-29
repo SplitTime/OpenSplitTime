@@ -55,6 +55,7 @@ gem 'rest-client'
 gem 'sitemap_generator'
 gem 'phony_rails'
 gem 'font-awesome-rails'
+gem 'pg_search'
 
 group :development do
   gem 'web-console', '~> 2.0'

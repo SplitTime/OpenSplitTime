@@ -252,6 +252,10 @@ GEM
     parser (2.3.1.2)
       ast (~> 2.2)
     pg (0.20.0)
+    pg_search (2.0.1)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
+      arel (>= 6)
     phony (2.15.41)
     phony_rails (0.14.5)
       activesupport (>= 3.0)
@@ -489,6 +493,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   pg (~> 0.20.0)
+  pg_search
   phony_rails
   pry-byebug
   pry-rails

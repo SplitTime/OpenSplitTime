@@ -32,6 +32,8 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
+  pg_search_scope :search_bib, against: :bib_number, using: {tsearch: {any_word: true}}
+  scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(participant_id: nil) }
@@ -52,14 +54,10 @@ class Effort < ActiveRecord::Base
   end
 
   def self.search(param)
-    case
-    when param.blank?
-      all
-    when param.numeric?
-      where(bib_number: param.to_i)
-    else
-      flexible_search(param)
-    end
+    return all unless param.present?
+    parser = SearchStringParser.new(param)
+    country_state_name_search(parser)
+        .bib_number_among(parser.number_component)
   end
 
   def self.ranked_with_finish_status(args = {})

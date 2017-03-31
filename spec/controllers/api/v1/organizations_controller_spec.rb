@@ -6,18 +6,45 @@ describe Api::V1::OrganizationsController do
   let(:organization) { FactoryGirl.create(:organization) }
 
   describe '#index' do
+    before do
+      create(:organization, name: 'Bravo', description: 'Fabulous')
+      create(:organization, name: 'Charlie', description: 'Beautiful')
+      create(:organization, name: 'Alpha', description: 'Beautiful')
+      create(:organization, name: 'Delta', description: 'Gorgeous')
+    end
+
     it 'returns a successful 200 response' do
       get :index
       expect(response.status).to eq(200)
     end
 
     it 'returns each organization that the current_user is authorized to edit' do
-      FactoryGirl.create_list(:organization, 3)
       get :index
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data'].size).to eq(3)
-      expect(parsed_response['data'].map { |item| item['id'].to_i }).to eq(Organization.all.map(&:id))
       expect(response.status).to eq(200)
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].size).to eq(4)
+      expect(parsed_response['data'].map { |item| item['id'].to_i }).to eq(Organization.all.map(&:id))
+    end
+
+    it 'sorts properly in ascending order based on a provided sort parameter' do
+      expected = %w(Alpha Bravo Charlie Delta)
+      get :index, sort: 'name'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+    end
+
+    it 'sorts properly in descending order based on a provided sort parameter with a minus sign' do
+      expected = %w(Delta Charlie Bravo Alpha)
+      get :index, sort: '-name'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+    end
+
+    it 'sorts properly on multiple fields' do
+      expected = %w(Alpha Charlie Bravo Delta)
+      get :index, sort: 'description,name'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
     end
   end
 

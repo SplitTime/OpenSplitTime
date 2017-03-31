@@ -73,7 +73,7 @@
                         } else {
                             console.warn( 'Deassociate Not Yet Implemented' );
                         }
-                        eventStage.data.eventModel.update();
+                        // eventStage.data.eventModel.update();
                     }
                 }
             }
@@ -124,17 +124,14 @@
         },
         methods: {
             normalize: function() {
-                console.log( 'normalize' );
                 // Verify Existence of End Splits
                 var start = this.endSplit( 'start' );
-                console.log( 'start', start, start instanceof api.Model  );
                 if ( !( start instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
                 } else if ( start.__new__ && !this.__new__ && start.associated === false ) {
                     start.associate( true );
                 }
                 var finish = this.endSplit( 'finish' );
-                console.log( 'finish', finish, finish instanceof api.Model  );
                 if ( !( finish instanceof api.Model ) ) {
                     this.splits.push( api.create( 'splits', { kind: 'finish', baseName: 'Finish' } ) );
                 } else if ( finish.__new__ && !this.__new__ && finish.associated === false ) {
@@ -282,17 +279,17 @@
                         } );
                 }
             } else if ( from.name === 'home' ) {
-                next();
-                // eventStage.data.eventModel.post().done( function() {
-                //     next();
-                // } ).fail( function( e ) {                    
-                //     next( '/' );
-                // } );
+                // next();
+                eventStage.data.eventModel.post().done( function() {
+                    next();
+                } ).fail( function( e ) {                    
+                    next( '/' );
+                } );
             } else {
                 eventStage.data.eventModel.fetch().always( function() {
                     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
-                        // next( '/' );
-                        next();
+                        next( '/' );
+                        // next();
                     } else {
                         next();
                     }

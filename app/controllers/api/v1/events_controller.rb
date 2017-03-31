@@ -44,7 +44,6 @@ class Api::V1::EventsController < ApiController
   def spread
     authorize @event
     params[:display_style] ||= 'absolute'
-    params[:sort] = EffortParameters.enriched_sort_fields(params[:sort])
     spread_display = EventSpreadDisplay.new(@event, params)
     render json: spread_display, serializer: EventSpreadSerializer, include: 'effort_times_rows'
   end

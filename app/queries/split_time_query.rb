@@ -1,4 +1,4 @@
-class SplitTimeQuery
+class SplitTimeQuery < BaseQuery
 
   def self.typical_segment_time(segment, effort_ids)
     # Params should all be integers, but convert them to integers
@@ -74,9 +74,5 @@ class SplitTimeQuery
 
   def self.valid_statuses_list
     sql_safe_integer_list(SplitTime.valid_statuses)
-  end
-
-  def self.sql_safe_integer_list(array)
-    array.flatten.compact.map(&:to_i).join(',')
   end
 end

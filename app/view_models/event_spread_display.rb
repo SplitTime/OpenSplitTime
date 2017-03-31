@@ -7,7 +7,7 @@ class EventSpreadDisplay
   def initialize(event, params = {})
     @event = event
     @display_style = params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
-    @sort = params[:sort].to_unsafe_hash
+    @sort = params[:sort]&.to_unsafe_hash.to_h
   end
 
   def split_header_data

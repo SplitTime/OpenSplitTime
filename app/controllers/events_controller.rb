@@ -132,7 +132,6 @@ class EventsController < ApplicationController
   end
 
   def spread
-    params[:sort] = EffortParameters.enriched_sort_fields(params[:sort])
     @spread_display = EventSpreadDisplay.new(@event, params)
     respond_to do |format|
       format.html

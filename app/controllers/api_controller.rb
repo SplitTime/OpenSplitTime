@@ -3,7 +3,6 @@ class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token, if: :json_web_token_present?
   before_action :set_default_format
   before_action :authenticate_user!
-  before_action :prepare_params
   after_action :verify_authorized
   after_action :report_to_ga
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -11,8 +10,7 @@ class ApiController < ApplicationController
   # Returns only those resources that the user is authorized to edit.
   def index
     authorize controller_class
-    render json: policy_class::Scope.new(current_user, controller_class).editable
-                     .order(params_class.sort_fields(params[:sort])),
+    render json: policy_class::Scope.new(current_user, controller_class).editable.order(params[:sort]),
            include: params[:include], fields: params[:fields]
   end
 
@@ -45,6 +43,7 @@ class ApiController < ApplicationController
   def prepare_params
     params[:include] = IncludeParams.prepare(params[:include])
     params[:fields] = FieldParams.prepare(params[:fields])
+    params[:sort] = SortParams.prepare(params[:sort])
   end
 
   def report_to_ga

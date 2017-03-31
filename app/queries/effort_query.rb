@@ -1,8 +1,8 @@
-class EffortQuery
+class EffortQuery < BaseQuery
 
   def self.rank_and_finish_status(args)
-    select_sql = sanitize_and_join(args[:effort_fields]).presence || '*'
-    order_sql = SortParams.sql_string(args[:order_by]).presence || 'overall_rank'
+    select_sql = sql_select_from_string(args[:effort_fields], permitted_column_names, '*')
+    order_sql = sql_order_from_hash(args[:order_by], permitted_column_names, 'overall_rank')
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),
@@ -170,10 +170,6 @@ class EffortQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }
-  end
-
-  def self.sanitize_and_join(column_names)
-    (column_names.to_s.split(',') & permitted_column_names).join(', ')
   end
 
   def self.permitted_column_names

@@ -17,8 +17,4 @@ class EffortParameters < BaseParameters
      :beacon_url, :report_url, :photo_url, :phone, :email,
      split_times_attributes: [*SplitTimeParameters.permitted]]
   end
-
-  def self.enriched_sort_fields(params)
-    SortParams.sort_fields(params, enriched_query, {overall_rank: :asc})
-  end
 end

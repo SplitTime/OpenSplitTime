@@ -13,13 +13,19 @@ class ApplicationController < ActionController::Base
   private
 
   def permitted_params
-    @permitted_params ||= permitted_params_class.strong_params(params)
+    @permitted_params ||= params_class.strong_params(controller_class_name, params)
   end
 
-  def permitted_params_class
-    class_name = params[:controller].split('/').last
-    formatted_class_name = class_name.to_s.singularize.camelcase
-    @permitted_params_class ||= "#{formatted_class_name}Parameters".constantize
+  def params_class
+    @params_class ||= "#{controller_class}Parameters".constantize
+  end
+
+  def controller_class
+    controller_class_name.camelcase.constantize
+  end
+
+  def controller_class_name
+    params[:controller].split('/').last.to_s.singularize
   end
 
   def user_not_authorized

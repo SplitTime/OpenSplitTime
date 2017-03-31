@@ -37,9 +37,13 @@ class Participant < ActiveRecord::Base
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, phony_plausible: true
 
+  # This method needs to extract ids and run a new search to remain compatible
+  # with the scope `.with_age_and_effort_count`.
   def self.search(param)
-    return none if param.blank? || (param.length < 3)
-    flexible_search(param)
+    return none unless param && param.size > 2
+    parser = SearchStringParser.new(param)
+    ids = country_state_name_search(parser).ids
+    Participant.where(id: ids)
   end
 
   def self.age_matches(age_param)

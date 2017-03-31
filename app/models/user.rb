@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   enum role: [:user, :admin]
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
-  include Searchable
+  include PgSearch
+  pg_search_scope :search_name_email, against: [:first_name, :last_name, :email], using: {tsearch: {any_word: true, prefix: true}}
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   phony_normalize :phone, default_country_code: 'US'
@@ -46,6 +47,29 @@ class User < ActiveRecord::Base
       if auth['info']
         user.last_name = auth['info']['name'] || "" # TODO: figure out how to use oath with first_name/last_name model
       end
+    end
+  end
+
+  def self.search(search_param)
+    search_param.present? ? search_name_email(search_param) : all
+  end
+
+  def self.sort(sort_param)
+    case sort_param
+    when 'first'
+      order(:first_name)
+    when 'last'
+      order(:last_name)
+    when 'email'
+      order(:email)
+    when 'avatar_desc'
+      includes(:participants).order('participants.last_name DESC')
+    when 'avatar_asc'
+      includes(:participants).order('participants.last_name')
+    when 'date_asc'
+      order(:confirmed_at)
+    else
+      order('users.confirmed_at DESC')
     end
   end
 
@@ -102,29 +126,5 @@ class User < ActiveRecord::Base
 
   def except_current_user(participants)
     participants.reject { |participant| participant.claimant == self }
-  end
-
-  def self.search(search_param)
-    return all if search_param.blank?
-    name_email_search(search_param)
-  end
-
-  def self.sort(sort_param)
-    case sort_param
-      when 'first'
-        order(:first_name)
-      when 'last'
-        order(:last_name)
-      when 'email'
-        order(:email)
-      when 'avatar_desc'
-        includes(:participants).order('participants.last_name DESC')
-      when 'avatar_asc'
-        includes(:participants).order('participants.last_name')
-      when 'date_asc'
-        order(:confirmed_at)
-      else
-        order('users.confirmed_at DESC')
-    end
   end
 end

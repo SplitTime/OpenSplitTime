@@ -54,6 +54,8 @@ gem 'bootstrap3-datetimepicker-rails'
 gem 'rest-client'
 gem 'sitemap_generator'
 gem 'phony_rails'
+gem 'font-awesome-rails'
+gem 'pg_search'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -83,6 +85,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'rb-fsevent'
   gem 'pry-byebug'
+  gem 'dotenv-rails'
 end
 
 group :production do

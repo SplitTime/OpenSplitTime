@@ -38,11 +38,11 @@ describe Api::V1::StagingController do
   end
 
   describe '#post_event_course_org' do
-    let(:existing_course_params) { existing_course.attributes.with_indifferent_access.slice(*CourseParameters::PERMITTED) }
-    let(:existing_organization_params) { existing_organization.attributes.with_indifferent_access.slice(*OrganizationParameters::PERMITTED) }
+    let(:existing_course_params) { existing_course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
+    let(:existing_organization_params) { existing_organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
 
     context 'when an existing staging_id is provided' do
-      let(:existing_event_params) { existing_event.attributes.with_indifferent_access.slice(*EventParameters::PERMITTED) }
+      let(:existing_event_params) { existing_event.attributes.with_indifferent_access.slice(*EventParameters.permitted) }
 
       it 'returns a successful 200 response' do
         staging_id = existing_staging_id

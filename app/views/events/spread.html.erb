@@ -60,7 +60,7 @@
                                              sort: 'bib_number') %></th>
     <th><%= link_to 'Name', spread_event_path(@spread_display.event,
                                               display_style: params[:display_style],
-                                              sort: params[:sort] == 'last_name' ? 'first_name' : 'last_name') %></th>
+                                              sort: params[:sort].keys.include?('last_name') ? 'first_name' : 'last_name') %></th>
     <th>Category</th>
     <th>From</th>
     <% spread_relevant_elements(@spread_display.split_header_data).each do |header| %>

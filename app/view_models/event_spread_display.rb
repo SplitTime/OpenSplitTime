@@ -4,16 +4,10 @@ class EventSpreadDisplay
   attr_reader :event, :display_style
   delegate :id, :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
 
-  # initialize(event, params = {})
-  # event is an ordinary event object
-  # params may include
-  # params[:display_style] (elapsed / ampm / military / segment) and
-  # params[:sort] (overall_rank, gender_rank, bib_number, first_name, last_name, or any other sortable attribute)
-
   def initialize(event, params = {})
     @event = event
     @display_style = params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
-    @sort_columns = params[:sort].to_s.split(',')
+    @sort = params[:sort].to_unsafe_hash
   end
 
   def split_header_data
@@ -68,7 +62,7 @@ class EventSpreadDisplay
 
   private
 
-  attr_reader :sort_columns
+  attr_reader :sort
   delegate :multiple_laps?, to: :event
 
   def split_times_by_effort
@@ -81,7 +75,7 @@ class EventSpreadDisplay
   end
 
   def efforts
-    @efforts ||= event.efforts.ranked_with_finish_status(order_by: sort_columns)
+    @efforts ||= event.efforts.ranked_with_finish_status(order_by: sort)
   end
 
   def header_name(lap_split)

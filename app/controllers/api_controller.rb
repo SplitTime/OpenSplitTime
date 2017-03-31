@@ -3,15 +3,27 @@ class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token, if: :json_web_token_present?
   before_action :set_default_format
   before_action :authenticate_user!
-  before_action :underscore_include_param
+  before_action :prepare_params
   after_action :verify_authorized
   after_action :report_to_ga
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
+  # Returns only those resources that the user is authorized to edit.
+  def index
+    authorize controller_class
+    render json: policy_class::Scope.new(current_user, controller_class).editable
+                     .order(params_class.sort_fields(params[:sort])),
+           include: params[:include], fields: params[:fields]
+  end
+
   private
 
+  def policy_class
+    @policy_class ||= "#{controller_class}Policy".constantize
+  end
+
   def permitted_params
-    @permitted_params ||= permitted_params_class.api_params(params)
+    @permitted_params ||= params_class.api_params(params)
   end
 
   def user_not_authorized
@@ -30,8 +42,9 @@ class ApiController < ApplicationController
     current_user.try(:has_json_web_token)
   end
 
-  def underscore_include_param
-    params[:include] = (params[:include] || '').underscore
+  def prepare_params
+    params[:include] = IncludeParams.prepare(params[:include])
+    params[:fields] = FieldParams.prepare(params[:fields])
   end
 
   def report_to_ga

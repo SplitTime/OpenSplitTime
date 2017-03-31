@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   include Auditable
   include Concealable
   include SplitMethods
+  include LapsRequiredMethods
   extend FriendlyId
   friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
@@ -74,18 +75,6 @@ class Event < ActiveRecord::Base
 
   def required_time_points
     @required_time_points ||= time_points_through(laps_required)
-  end
-
-  def laps_unlimited?
-    laps_required.zero?
-  end
-
-  def multiple_laps?
-    laps_required != 1
-  end
-
-  def maximum_laps
-    laps_required unless laps_unlimited?
   end
 
   def finished?

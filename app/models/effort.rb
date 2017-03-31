@@ -11,6 +11,7 @@ class Effort < ActiveRecord::Base
   include Concealable
   include DataStatusMethods
   include GuaranteedFindable
+  include LapsRequiredMethods
   include PersonalInfo
   include Searchable
   include Matchable
@@ -21,8 +22,8 @@ class Effort < ActiveRecord::Base
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
 
-  attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :segment_time
-  attr_writer :overall_place, :gender_place, :last_reported_split_time, :event_start_time
+  attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
+  attr_writer :last_reported_split_time, :event_start_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
@@ -31,6 +32,8 @@ class Effort < ActiveRecord::Base
 
   before_save :reset_age_from_birthdate
 
+  pg_search_scope :search_bib, against: :bib_number, using: {tsearch: {any_word: true}}
+  scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(participant_id: nil) }
@@ -51,14 +54,10 @@ class Effort < ActiveRecord::Base
   end
 
   def self.search(param)
-    case
-    when param.blank?
-      all
-    when param.numeric?
-      where(bib_number: param.to_i)
-    else
-      flexible_search(param)
-    end
+    return all unless param.present?
+    parser = SearchStringParser.new(param)
+    country_state_name_search(parser)
+        .bib_number_among(parser.number_component)
   end
 
   def self.ranked_with_finish_status(args = {})
@@ -92,15 +91,15 @@ class Effort < ActiveRecord::Base
   end
 
   def event_start_time
-    @event_start_time ||= attributes['event_start_time'].try(:in_time_zone) || event.start_time
+    @event_start_time ||= attributes['event_start_time']&.in_time_zone || event&.start_time
   end
 
   def event_name
-    @event_name ||= event.try(:name)
+    @event_name ||= event&.name
   end
 
   def laps_required
-    attributes['laps_required'] || event.laps_required
+    @laps_required ||= attributes['laps_required'] || event.laps_required
   end
 
   def last_reported_split_time
@@ -135,7 +134,7 @@ class Effort < ActiveRecord::Base
   end
 
   def laps_started
-    attributes['laps_started'] || last_reported_split_time.try(:lap) || 0
+    attributes['laps_started'] || last_reported_split_time&.lap || 0
   end
 
   # For an unlimited-lap (time-based) event, an effort is 'finished' when the person decides not to continue.
@@ -201,11 +200,11 @@ class Effort < ActiveRecord::Base
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(laps_started)
   end
 
-  def overall_place
+  def overall_rank
     (attributes['overall_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
-  def gender_place
+  def gender_rank
     (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
@@ -248,7 +247,7 @@ class Effort < ActiveRecord::Base
   end
 
   def stopped_time_point
-    stopped_split_time.try(:time_point)
+    stopped_split_time&.time_point
   end
 
   def stop

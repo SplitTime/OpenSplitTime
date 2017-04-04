@@ -31,6 +31,16 @@
         },
         forElevation: function() {
             return this.table[ this.elevation ] || 1.0;
+        },
+        import: function( type ) {
+            return function( val ) {
+                return val * units[type]();
+            }
+        },
+        export: function( type ) {
+            return function( val ) {
+                return val / units[type]();
+            }
         }
     }
 
@@ -49,7 +59,7 @@
             distanceFromStart: { type: Number, default: 0 },
             vertGainFromStart: { type: Number, default: 0 },
             vertLossFromStart: { type: Number, default: 0 },
-            kind: String,
+            kind: { type: String, default: 'intermediate' },
             nameExtensions: Array,
             description: String,
             latitude: Number,
@@ -60,14 +70,15 @@
                 get: function() {
                     if ( !eventStage ) return false;
                     var splits = eventStage.data.eventModel.splits;
-                    return this.in( splits );
+                    return this.in( splits ) !== false;
                 }
-            }
+            },
+            // Course ID Polyfill
+            course_id: { get: function() { return eventStage.data.eventModel.course ? eventStage.data.eventModel.course.id: null; } }
         },
         methods: {
             associate: function( associated ) {
                 if ( this.associated !== associated ) {
-                    debugger;
                     if ( !eventStage.data.eventModel.__new__ ) {
                         if ( associated ) {
                             eventStage.data.eventModel.splits.push( this );
@@ -111,7 +122,9 @@
                         this.date = value;
                     }
                 }
-            }
+            },
+            // Event ID Polyfill
+            event_id: { get: function() { return eventStage.data.eventModel ? eventStage.data.eventModel.id: null; } }
         }
     } );
     api.define( 'courses', {
@@ -141,9 +154,6 @@
                 this.splits.sort( function( a, b ) {
                     return a.distanceFromStart - b.distanceFromStart;
                 } );
-                if ( !( start instanceof api.Model ) || !( finish instanceof api.Model ) ) {
-                    this.normalize();
-                }
             },
             afterCreate: function() { this.normalize(); },
             afterParse: function() { this.normalize(); },
@@ -180,8 +190,7 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             stagingId: String,
-            startTime: { type: Date, default: new Date() },
-            organizationNew: Boolean,
+            startTime: { type: Date, default: null },
             courseNew: Boolean
         },
         relationships: {
@@ -198,23 +207,37 @@
             validate: function( context ) {
                 var self = ( context ) ? context : this;
                 if ( !self.name || self.name.length < 1 ) return false;
-                if ( !( self.organization.id || self.organizationNew ) ) return false;
-                if ( !self.organization.validate() ) return false;
-                if ( !self.course.validate() ) return false;
+                if ( !self.organization || !self.organization.validate() ) return false;
+                if ( !self.course || !self.course.validate() ) return false;
                 if ( !self.startTime ) return false;
                 return true;
             },
             jsonify: function () {
-                var data = {
-                    event: this.attributes(),
-                    organization: this.organization.attributes(),
-                    course: this.course.attributes()
-                };
-                return data;
+                if ( this.id === null || this.id === undefined ) {
+                    var data = {
+                        event: this.attributes(),
+                        organization: this.organization.attributes(),
+                        course: this.course.attributes(),
+                        splits: [
+                            this.course.endSplit( 'start' ),
+                            this.course.endSplit( 'finish' ),
+                        ]
+                    };
+                    data.course.splits_attributes = [
+                        this.course.endSplit( 'start' ).attributes(),
+                        this.course.endSplit( 'finish' ).attributes()
+                    ];
+                    return data;
+                } else {
+                    return this._jsonify();
+                }
             },
             post: function() {
+                var self = this;
                 if ( this.id === null || this.id === undefined ) {
-                    return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST' );
+                    return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST', 'application/json' ).then( function() {
+                        return self.fetch();
+                    })
                 } else {
                     return this.update();
                 }
@@ -227,7 +250,7 @@
             firstName: String,
             lastName: String,
             prefDistanceUnit: { type: String, default: 'kilometers' },
-            prefElevationUnit: { type: String, default: 'meters' },
+            prefElevationUnit: { type: String, default: 'meters' }
         }
     } );
 
@@ -259,7 +282,7 @@
         },
 
         ajaxPopulateUnits: function() {
-            api.find( 'users', 'current' ).always( function( model ) {
+            return api.find( 'users', 'current' ).always( function( model ) {
                 units.distance = model.prefDistanceUnit;
                 units.elevation = model.prefElevationUnit;
             } );
@@ -285,6 +308,7 @@
                         } );
                 }
             } else if ( from.name === 'home' ) {
+                // next();
                 eventStage.data.eventModel.post().done( function() {
                     next();
                 } ).fail( function( e ) {                    
@@ -294,6 +318,7 @@
                 eventStage.data.eventModel.fetch().always( function() {
                     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
                         next( '/' );
+                        // next();
                     } else {
                         next();
                     }
@@ -322,7 +347,6 @@
 
             // Load UUID
             this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
-            console.log( this.data.eventModel );
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
 
@@ -336,6 +360,12 @@
                         methods: {
                             isEventValid: function() {
                                 return this.eventModel.validate();
+                            },
+                            newOrganization: function() {
+                                return api.create( 'organizations' );
+                            },
+                            newCourse: function() {
+                                return api.create( 'courses' );
                             }
                         },
                         data: function() { return { units: units } },
@@ -557,6 +587,9 @@
                     }
                 } );
                 eventStage.dataTables.onDataChange.call( this );
+                $( this.$el ).on( 'mouseover', '[data-toggle="tooltip"]', function() {
+                    $( this ).tooltip( 'show' );
+                } );
             },
             init: function() {
                 Vue.component( 'data-tables', {
@@ -1205,33 +1238,36 @@
                     } );
                 } );
             },
-            onChanged: function( id ) {
-                var model = null;
-                for ( var i = this.ajaxed.length - 1; i >= 0; i-- ) {
-                    if ( this.ajaxed[i].id == id ) {
-                        model = this.ajaxed[i];
-                    }
-                }
-                if ( this.value instanceof api.Model ) {
-                    this.value.import( model );
-                    this.value.fetch();
-                }
-            },
             init: function() {
                 Vue.component( 'resource-select', {
                     props: {
                         data: { type: Object, default: function() { return {} } },
                         source: { type: String, required: true, default: '' },
-                        value: { type: Object, required: true, default: {} }
+                        value: { default: {} }
                     },
-                    methods: {
-                        onChanged: eventStage.resourceSelect.onChanged
+                    computed: {
+                        id: { 
+                            get: function() {
+                                return ( this.value ) ? this.value.id : null;
+                            },
+                            set: function( id ) {
+                                var model = null;
+                                for ( var i = this.ajaxed.length - 1; i >= 0; i-- ) {
+                                    if ( this.ajaxed[i].id == id ) {
+                                        model = this.ajaxed[i];
+                                    }
+                                }
+                                if ( model !== null ) {
+                                    this.$emit( 'input', model );
+                                }
+                            }
+                        }
                     },
                     data: function() { return { ajaxed: null } },
                     template: 
-                        '<select v-bind:value="value.id" v-on:change="onChanged( $event.target.value )" :disabled="!ajaxed || ajaxed.length <= 0">\
+                        '<select v-model="id" :disabled="!ajaxed || ajaxed.length <= 0">\
                             <slot></slot>\
-                            <option v-if="ajaxed === null && value.id !== null" :value="value.id">{{ value.name }}</option>\
+                            <option v-if="ajaxed === null && id !== null" :value="id">{{ value.name }}</option>\
                             <option v-else v-for="obj in ajaxed" :value="obj.id">{{ obj.name }}</option>\
                         </select>',
                     mounted: eventStage.resourceSelect.onMounted
@@ -1289,15 +1325,32 @@
                             value: { required: true },
                             scale: { type: Number, default: 1.0 }
                         },
+                        data: function() {
+                            return {
+                                lastValue: null,
+                                lastInput: ''
+                            };
+                        },
                         computed: {
                             normalized: {
                                 get: function() {
-                                    return $.isNumeric( this.value ) ? this.value * this.scale : '';
+                                    // Return the last input if the source value hasn't changed
+                                    if ( this.lastValue !== this.value ) {
+                                        this.lastValue = this.value;
+                                        this.lastInput = $.isNumeric( this.value ) ? this.round( this.value * this.scale ) : '';
+                                    }
+                                    return this.lastInput;
                                 },
                                 set: function( newValue ) {
-                                    var val = $.isNumeric( newValue ) ? newValue / this.scale : '';
-                                    this.$emit( 'input', val );
+                                    this.lastInput = newValue;
+                                    this.lastValue = $.isNumeric( newValue ) ? newValue / this.scale : '';
+                                    this.$emit( 'input', this.lastValue );
                                 }
+                            }
+                        },
+                        methods: {
+                            round: function( val ) {
+                                return Math.round( val * 100.0 ) / 100.0;
                             }
                         }
                     } );

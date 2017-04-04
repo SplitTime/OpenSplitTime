@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 
   def update_preferences
     authorize @user
-    if @user.update(prefs_secure_params)
+    if @user.update(permitted_params)
       redirect_to params[:referrer_path] || user_path(@user), :notice => "Preferencs updated."
     else
       redirect_to params[:referrer_path] || user_path(@user), :alert => "Unable to update preferences."
@@ -72,12 +72,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:role)
   end
 
-  def prefs_secure_params
-    params.require(:user).permit(:pref_distance_unit, :pref_elevation_unit)
-  end
-
   def set_user
     @user = User.friendly.find(params[:id])
   end
-
 end

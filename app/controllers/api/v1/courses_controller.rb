@@ -1,19 +1,13 @@
 class Api::V1::CoursesController < ApiController
   before_action :set_course, except: [:index, :create]
 
-  # Returns only those courses that the user is authorized to edit.
-  def index
-    authorize Course
-    render json: CoursePolicy::Scope.new(current_user, Course).editable, include: params[:include]
-  end
-
   def show
     authorize @course
-    render json: @course, include: params[:include]
+    render json: @course, include: params[:include], fields: params[:fields]
   end
 
   def create
-    course = Course.new(course_params)
+    course = Course.new(permitted_params)
     authorize course
 
     if course.save
@@ -25,7 +19,7 @@ class Api::V1::CoursesController < ApiController
 
   def update
     authorize @course
-    if @course.update(course_params)
+    if @course.update(permitted_params)
       render json: @course
     else
       render json: {message: 'course not updated', error: "#{@course.errors.full_messages}"}, status: :bad_request
@@ -45,9 +39,5 @@ class Api::V1::CoursesController < ApiController
 
   def set_course
     @course = Course.friendly.find(params[:id])
-  end
-
-  def course_params
-    params.require(:course).permit(*Course::PERMITTED_PARAMS)
   end
 end

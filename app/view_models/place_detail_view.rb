@@ -2,7 +2,7 @@ class PlaceDetailView
 
   attr_reader :effort, :place_detail_rows
   delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender,
-           :overall_place, :gender_place, to: :effort
+           :overall_rank, :gender_rank, to: :effort
 
   def initialize(args_effort)
     @effort ||= args_effort.enriched || args_effort

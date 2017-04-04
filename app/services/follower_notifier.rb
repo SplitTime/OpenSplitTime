@@ -8,7 +8,7 @@ class FollowerNotifier
   def initialize(args)
     @topic_arn = args[:topic_arn]
     @effort_data = args[:effort_data]
-    @sns_client = args[:sns_client] || Aws::SNS::Client.new
+    @sns_client = args[:sns_client] || SnsClientFactory.client
   end
 
   def publish

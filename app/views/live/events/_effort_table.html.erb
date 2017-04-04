@@ -7,8 +7,8 @@
     </h3>
     <h4>
       <%= @effort_show.finish_status %>
-      <%= "• #{@effort_show.overall_place.ordinalize} Place " if @effort_show.overall_place %>
-      <%= "• #{@effort_show.gender_place.ordinalize} #{@effort_show.gender.titleize}" if @effort_show.gender_place %>
+      <%= "• #{@effort_show.overall_rank.ordinalize} Place " if @effort_show.overall_rank %>
+      <%= "• #{@effort_show.gender_rank.ordinalize} #{@effort_show.gender.titleize}" if @effort_show.gender_rank %>
       <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
     </h4>
   </div>

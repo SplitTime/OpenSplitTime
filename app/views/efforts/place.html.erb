@@ -12,7 +12,7 @@
       <br/><%= link_to @effort_place.event_name, event_path(@effort_place.event) %></strong>
     </h2>
     <h4>
-      <%= "#{@effort_place.finish_status} • #{@effort_place.overall_place.ordinalize} Place • #{@effort_place.gender_place.ordinalize} #{@effort_place.gender.titleize}" %>
+      <%= "#{@effort_place.finish_status} • #{@effort_place.overall_rank.ordinalize} Place • #{@effort_place.gender_rank.ordinalize} #{@effort_place.gender.titleize}" %>
       <%= "• Bib ##{@effort_place.bib_number}" if @effort_place.bib_number %>
     </h4>
   </div>

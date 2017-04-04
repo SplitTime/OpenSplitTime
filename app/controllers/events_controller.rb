@@ -30,7 +30,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(event_params)
+    @event = Event.new(permitted_params)
     authorize @event
 
     if @event.save
@@ -44,7 +44,7 @@ class EventsController < ApplicationController
   def update
     authorize @event
 
-    if @event.update(event_params)
+    if @event.update(permitted_params)
       redirect_to session.delete(:return_to) || @event
     else
       render 'edit'
@@ -132,6 +132,7 @@ class EventsController < ApplicationController
   end
 
   def spread
+    params[:sort] = EffortParameters.enriched_sort_fields(params[:sort])
     @spread_display = EventSpreadDisplay.new(@event, params)
     respond_to do |format|
       format.html
@@ -234,14 +235,6 @@ class EventsController < ApplicationController
 
   private
 
-  def event_params
-    params.require(:event).permit(*Event::PERMITTED_PARAMS)
-  end
-
-  def query_params
-    params.permit(:name)
-  end
-
   def set_event
     @event = Event.friendly.find(params[:id])
   end
@@ -249,5 +242,4 @@ class EventsController < ApplicationController
   def update_beacon_url(url)
     @event.update(beacon_url: url)
   end
-
 end

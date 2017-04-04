@@ -1,6 +1,4 @@
 class Participant < ActiveRecord::Base
-  PERMITTED_PARAMS = [:id, :city, :state_code, :country_code, :first_name, :last_name, :gender,
-                      :email, :phone, :birthdate, :concealed]
 
   include Auditable
   include Concealable
@@ -39,9 +37,13 @@ class Participant < ActiveRecord::Base
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, phony_plausible: true
 
+  # This method needs to extract ids and run a new search to remain compatible
+  # with the scope `.with_age_and_effort_count`.
   def self.search(param)
-    return none if param.blank? || (param.length < 3)
-    flexible_search(param)
+    return none unless param && param.size > 2
+    parser = SearchStringParser.new(param)
+    ids = country_state_name_search(parser).ids
+    Participant.where(id: ids)
   end
 
   def self.age_matches(age_param)
@@ -53,11 +55,7 @@ class Participant < ActiveRecord::Base
   end
 
   def self.columns_to_pull_from_model
-    id = ['id']
-    foreign_keys = Participant.column_names.find_all { |x| x.include?('_id') }
-    stamps = Participant.column_names.find_all { |x| x.include?('_at') | x.include?('_by') }
-    geographic = %w(country_code state_code city)
-    (column_names - (id + foreign_keys + stamps + geographic)).map(&:to_sym)
+    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo_url]
   end
 
   def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}

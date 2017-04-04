@@ -9,28 +9,32 @@
     <th>Category</th>
     <th>From</th>
     <% if @event_display.available_live %>
-        <th class="text-right">Status</th>
+        <th>Status</th>
     <% else %>
-        <th class="text-right">Result</th>
+        <th>Result</th>
     <% end %>
+    <th>Last Recorded</th>
+    <th>Distance</th>
     <th>Get Notifications</th>
   </tr>
   </thead>
   <tbody>
   <% @event_display.effort_rows.each do |effort_row| %>
       <%= data_status_tag(effort_row) %>
-      <td><%= effort_row.overall_place %></td>
+      <td><%= effort_row.overall_rank %></td>
       <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.effort) %></strong></td>
       <% if @event_display.available_live %>
           <td><%= effort_row.bib_number %></td>
       <% end %>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
+      <td><%= effort_row.run_status %></td>
       <% if @event_display.available_live %>
-          <td class="text-right"><%= "#{effort_row.run_status} #{day_time_format_hhmmss(effort_row.day_and_time)}" %></td>
+          <td><%= "#{effort_row.final_lap_split_name} as of #{day_time_format_hhmmss(effort_row.final_day_and_time)}" %></td>
       <% else %>
-          <td class="text-right"><%= effort_row.finish_status.is_a?(Numeric) ? time_format_xxhyymzzs(effort_row.finish_status) : "#{effort_row.finish_status}" %></td>
+          <td><%= "#{effort_row.final_lap_split_name} at #{time_format_xxhyymzzs(effort_row.final_time)}" %></td>
       <% end %>
+      <td><%= "#{d(effort_row.final_distance)} #{pdu}" %></td>
       <td>
         <%= div_for(effort_row.participant) do %>
             <%= link_to_toggle_email_subscription(effort_row.participant) %>

@@ -12,6 +12,22 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def permitted_params
+    @permitted_params ||= params_class.strong_params(controller_class_name, params)
+  end
+
+  def params_class
+    @params_class ||= "#{controller_class}Parameters".constantize
+  end
+
+  def controller_class
+    controller_class_name.camelcase.constantize
+  end
+
+  def controller_class_name
+    params[:controller].split('/').last.to_s.singularize
+  end
+
   def user_not_authorized
     flash[:alert] = "Access denied."
     redirect_to (request.referrer || root_path)

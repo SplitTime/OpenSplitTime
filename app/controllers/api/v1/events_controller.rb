@@ -4,12 +4,12 @@ class Api::V1::EventsController < ApiController
   # GET /api/v1/events/:staging_id
   def show
     authorize @event
-    render json: @event, include: params[:include]
+    render json: @event, include: params[:include], fields: params[:fields]
   end
 
   # POST /api/v1/events
   def create
-    event = Event.new(event_params)
+    event = Event.new(permitted_params)
     authorize event
 
     if event.save
@@ -23,7 +23,7 @@ class Api::V1::EventsController < ApiController
   # PUT /api/v1/events/:staging_id
   def update
     authorize @event
-    if @event.update(event_params)
+    if @event.update(permitted_params)
       render json: @event
     else
       render json: {message: 'event not updated', error: "#{@event.errors.full_messages}"}, status: :bad_request
@@ -44,7 +44,8 @@ class Api::V1::EventsController < ApiController
   def spread
     authorize @event
     params[:display_style] ||= 'absolute'
-    spread_display = EventSpreadDisplay.new(@event, params.slice(:display_style, :sort))
+    params[:sort] = EffortParameters.enriched_sort_fields(params[:sort])
+    spread_display = EventSpreadDisplay.new(@event, params)
     render json: spread_display, serializer: EventSpreadSerializer, include: 'effort_times_rows'
   end
 
@@ -110,9 +111,5 @@ class Api::V1::EventsController < ApiController
     @event = params[:staging_id].uuid? ?
         Event.find_by!(staging_id: params[:staging_id]) :
         Event.friendly.find(params[:staging_id])
-  end
-
-  def event_params
-    params.require(:event).permit(*Event::PERMITTED_PARAMS)
   end
 end

@@ -9,15 +9,15 @@
   </tr>
   </thead>
   <tbody>
-  <% @event_display.effort_preview_rows.each do |effort_preview_row| %>
-      <td><strong><%= link_to effort_preview_row.full_name, effort_path(effort_preview_row.effort) %></strong></td>
-      <td><%= effort_preview_row.bib_number %></td>
-      <td><%= effort_preview_row.bio_historic %></td>
-      <td><%= effort_preview_row.state_and_country %></td>
+  <% @event_display.unstarted_efforts.each do |effort| %>
+      <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+      <td><%= effort.bib_number %></td>
+      <td><%= effort.bio_historic %></td>
+      <td><%= effort.state_and_country %></td>
       <td>
-        <%= div_for(effort_preview_row.participant) do %>
-            <%= link_to_toggle_email_subscription(effort_preview_row.participant) %>
-            <%= link_to_toggle_sms_subscription(effort_preview_row.participant) %>
+        <%= div_for(effort.participant) do %>
+            <%= link_to_toggle_email_subscription(effort.participant) %>
+            <%= link_to_toggle_sms_subscription(effort.participant) %>
         <% end %>
       </td>
       </tr>

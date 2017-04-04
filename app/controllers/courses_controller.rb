@@ -23,7 +23,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = Course.new(course_params)
+    @course = Course.new(permitted_params)
     authorize @course
 
     if @course.save
@@ -37,7 +37,7 @@ class CoursesController < ApplicationController
   def update
     authorize @course
 
-    if @course.update(course_params)
+    if @course.update(permitted_params)
       redirect_to session.delete(:return_to) || @course
     else
       render 'edit'
@@ -87,14 +87,6 @@ class CoursesController < ApplicationController
   end
 
   private
-
-  def course_params
-    params.require(:course).permit(*Course::PERMITTED_PARAMS)
-  end
-
-  def query_params
-    params.permit(:name)
-  end
 
   def set_course
     @course = Course.friendly.find(params[:id])

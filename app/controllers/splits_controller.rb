@@ -1,5 +1,4 @@
 class SplitsController < ApplicationController
-  include UnitConversions
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_split, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show]
@@ -24,7 +23,7 @@ class SplitsController < ApplicationController
   end
 
   def create
-    @split = Split.new(split_params)
+    @split = Split.new(permitted_params)
     authorize @split
 
     if @split.save
@@ -50,7 +49,7 @@ class SplitsController < ApplicationController
   def update
     authorize @split
 
-    if @split.update(split_params)
+    if @split.update(permitted_params)
       if params[:event_id]
         @event = Event.friendly.find(params[:event_id])
         @event.splits << @split
@@ -73,12 +72,7 @@ class SplitsController < ApplicationController
 
   private
 
-  def split_params
-    params.require(:split).permit(*Split::PERMITTED_PARAMS)
-  end
-
   def set_split
     @split = Split.friendly.find(params[:id])
   end
-
 end

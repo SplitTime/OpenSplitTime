@@ -23,7 +23,7 @@ class SplitTimesController < ApplicationController
   end
 
   def create
-    @split_time = SplitTime.new(split_time_params)
+    @split_time = SplitTime.new(permitted_params)
     authorize @split_time
 
     if @split_time.save
@@ -37,7 +37,7 @@ class SplitTimesController < ApplicationController
   def update
     authorize @split_time
 
-    if @split_time.update(split_time_params)
+    if @split_time.update(permitted_params)
       @split_time.set_effort_data_status
       redirect_to session.delete(:return_to) || edit_split_times_effort_path(@split_time.effort)
     else
@@ -55,14 +55,6 @@ class SplitTimesController < ApplicationController
   end
 
   private
-
-  def split_time_params
-    params.require(:split_time).permit(*SplitTime::PERMITTED_PARAMS)
-  end
-
-  def query_params
-    params.permit(:effort_id, :split_id)
-  end
 
   def set_split_time
     @split_time = SplitTime.find(params[:id])

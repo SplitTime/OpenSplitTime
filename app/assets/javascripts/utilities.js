@@ -123,7 +123,9 @@
     var datepicker = {
         init: function () {
             $( '[data-toggle="datetimepicker"]' ).each( function( i, el ) {
-                $( el ).datetimepicker();
+                $( el ).datetimepicker( {
+                    format: $( el ).data( 'format' ) || false
+                } );
             } );
         }
     };

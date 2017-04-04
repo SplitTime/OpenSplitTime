@@ -38,7 +38,7 @@ RSpec.describe EventSpreadDisplay do
         params = test_params
         allow(event).to receive(:ordered_splits).and_return(splits)
         allow(event).to receive(:efforts).and_return(efforts)
-        spread_display = EventSpreadDisplay.new(event, params)
+        spread_display = EventSpreadDisplay.new(event: event, params: params)
         allow(spread_display).to receive(:efforts).and_return(efforts)
         actual = spread_display.split_header_names
         expected = split_names_without_start

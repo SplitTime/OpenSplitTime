@@ -2,15 +2,9 @@ class EventDroppedDisplay
   attr_reader :event
   delegate :name, :start_time, :course, :organization, :simple?, :beacon_url, :available_live, to: :event
 
-  # initialize(event, params = {})
-  # event is an ordinary event object
-  # params is passed from the controller and may include
-  # params[:search] (from user search input)
-  # and params[:page] (for will_paginate)
-
-  def initialize(event, params)
-    @event = event
-    @params = params
+  def initialize(args)
+    @event = args[:event]
+    @params = args[:params] || {}
   end
 
   def effort_rows

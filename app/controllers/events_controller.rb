@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event_display = EventEffortsDisplay.new(@event, params)
+    @event_display = EventEffortsDisplay.new(event: @event, params: params)
     session[:return_to] = event_path(@event)
     render 'show'
   end
@@ -75,7 +75,7 @@ class EventsController < ApplicationController
 
   def stage
     authorize @event
-    @event_stage = EventStageDisplay.new(@event, params)
+    @event_stage = EventStageDisplay.new(event: @event, params: params)
     params[:view] ||= 'efforts'
     session[:return_to] = stage_event_path(@event)
   end
@@ -132,7 +132,7 @@ class EventsController < ApplicationController
   end
 
   def spread
-    @spread_display = EventSpreadDisplay.new(@event, params)
+    @spread_display = EventSpreadDisplay.new(event: @event, params: params)
     respond_to do |format|
       format.html
       format.csv do
@@ -214,14 +214,14 @@ class EventsController < ApplicationController
   end
 
   def drop_list
-    @event_dropped_display = EventDroppedDisplay.new(@event, params)
+    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: params)
     session[:return_to] = event_path(@event)
   end
 
   def export_to_ultrasignup
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @event_display = EventEffortsDisplay.new(@event, params)
+    @event_display = EventEffortsDisplay.new(event: @event, params: params)
     respond_to do |format|
       format.html { redirect_to stage_event_path(@event) }
       format.csv do

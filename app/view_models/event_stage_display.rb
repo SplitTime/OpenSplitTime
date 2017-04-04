@@ -4,9 +4,9 @@ class EventStageDisplay
   delegate :id, :name, :start_time, :course, :organization, :available_live, :simple?,
            :unreconciled_efforts, :unreconciled_efforts?, :started?, :beacon_url, to: :event
 
-  def initialize(event, params)
-    @event = event
-    @params = params
+  def initialize(args)
+    @event = args[:event]
+    @params = args[:params] || {}
     @associated_splits = event.ordered_splits
   end
 

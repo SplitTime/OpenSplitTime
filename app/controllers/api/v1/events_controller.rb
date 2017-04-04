@@ -44,7 +44,7 @@ class Api::V1::EventsController < ApiController
   def spread
     authorize @event
     params[:display_style] ||= 'absolute'
-    spread_display = EventSpreadDisplay.new(@event, params)
+    spread_display = EventSpreadDisplay.new(event: @event, params: params)
     render json: spread_display, serializer: EventSpreadSerializer, include: 'effort_times_rows'
   end
 

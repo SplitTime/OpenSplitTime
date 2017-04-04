@@ -4,9 +4,9 @@ class EventSpreadDisplay
   attr_reader :event
   delegate :id, :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
 
-  def initialize(event, params = {})
-    @event = event
-    @params = params
+  def initialize(args)
+    @event = args[:event]
+    @params = args[:params] || {}
     @efforts = event.efforts_ranked(sort: sort_fields)
   end
 

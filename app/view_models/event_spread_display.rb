@@ -1,13 +1,17 @@
 class EventSpreadDisplay
   include ActiveModel::Serialization
 
-  attr_reader :event, :display_style
+  attr_reader :event
   delegate :id, :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
 
   def initialize(event, params = {})
     @event = event
-    @display_style = params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
-    @sort = params[:sort]&.to_unsafe_hash.to_h
+    @params = params
+    @efforts = event.efforts_ranked(sort: sort_fields)
+  end
+
+  def display_style
+    @display_style ||= params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
   end
 
   def split_header_data
@@ -30,10 +34,10 @@ class EventSpreadDisplay
   end
 
   def effort_times_rows
-    @effort_times_rows ||=
-        efforts.map { |effort| EffortTimesRow.new(effort: effort, lap_splits: lap_splits,
-                                                  split_times: split_times_by_effort[effort.id],
-                                                  display_style: display_style) }
+    @effort_times_rows ||= efforts.map { |effort| EffortTimesRow.new(effort: effort,
+                                                                     lap_splits: lap_splits,
+                                                                     split_times: split_times_by_effort[effort.id],
+                                                                     display_style: display_style) }
   end
 
   def efforts_count
@@ -62,8 +66,12 @@ class EventSpreadDisplay
 
   private
 
-  attr_reader :sort
+  attr_reader :params, :efforts
   delegate :multiple_laps?, to: :event
+  
+  def sort_fields
+    params[:sort]&.to_unsafe_hash || {}
+  end
 
   def split_times_by_effort
     @split_times_by_effort ||= split_times.group_by(&:effort_id)
@@ -72,10 +80,6 @@ class EventSpreadDisplay
   def split_times
     @split_times ||=
         event.split_times.struct_pluck(:effort_id, :lap, :split_id, :sub_split_bitkey, :time_from_start, :stopped_here)
-  end
-
-  def efforts
-    @efforts ||= event.efforts.ranked_with_finish_status(order_by: sort)
   end
 
   def header_name(lap_split)

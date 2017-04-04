@@ -9,8 +9,9 @@ class BaseQuery
   end
 
   def self.sql_order_from_hash(sort_fields, allowed, default)
+    sort_fields = sort_fields&.symbolize_keys || {}
     allowed = allowed.map(&:to_sym).to_set
-    filtered_fields = sort_fields.to_h.reject { |field, _| allowed.exclude?(field) }
+    filtered_fields = sort_fields.reject { |field, _| allowed.exclude?(field) }
     filtered_string = filtered_fields.map { |field, direction| "#{field} #{direction}"}.join(', ')
     filtered_string.present? ? filtered_string : default
   end

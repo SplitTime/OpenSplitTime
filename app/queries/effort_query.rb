@@ -1,8 +1,8 @@
 class EffortQuery < BaseQuery
 
-  def self.rank_and_finish_status(args)
-    select_sql = sql_select_from_string(args[:effort_fields], permitted_column_names, '*')
-    order_sql = sql_order_from_hash(args[:order_by], permitted_column_names, 'overall_rank')
+  def self.rank_and_finish_status(args = {})
+    select_sql = sql_select_from_string(args[:fields], permitted_column_names, '*')
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'overall_rank')
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),

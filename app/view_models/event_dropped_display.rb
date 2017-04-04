@@ -29,8 +29,12 @@ class EventDroppedDisplay
 
   attr_reader :params
 
+  def sort_fields
+    params[:sort]&.to_unsafe_hash || {}
+  end
+
   def started_efforts
-    @started_efforts ||= event.efforts.ranked_with_finish_status(order_by: params[:sort]) # This scope ignores efforts having no split_times.
+    @started_efforts ||= event.efforts.ranked_with_finish_status(sort: sort_fields) # This scope ignores efforts having no split_times.
   end
 
   def dropped_efforts

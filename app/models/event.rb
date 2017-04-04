@@ -81,7 +81,7 @@ class Event < ActiveRecord::Base
     efforts_ranked.present? && efforts_ranked.none?(&:in_progress?)
   end
 
-  def efforts_ranked
-    @efforts_ranked ||= efforts.ranked_with_finish_status
+  def efforts_ranked(args = {})
+    efforts.ranked_with_finish_status(args)
   end
 end

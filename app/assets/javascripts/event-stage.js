@@ -31,6 +31,16 @@
         },
         forElevation: function() {
             return this.table[ this.elevation ] || 1.0;
+        },
+        import: function( type ) {
+            return function( val ) {
+                return val * units[type]();
+            }
+        },
+        export: function( type ) {
+            return function( val ) {
+                return val / units[type]();
+            }
         }
     }
 
@@ -272,7 +282,7 @@
         },
 
         ajaxPopulateUnits: function() {
-            api.find( 'users', 'current' ).always( function( model ) {
+            return api.find( 'users', 'current' ).always( function( model ) {
                 units.distance = model.prefDistanceUnit;
                 units.elevation = model.prefElevationUnit;
             } );
@@ -337,7 +347,6 @@
 
             // Load UUID
             this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
-            console.log( this.data.eventModel );
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
 
@@ -1316,15 +1325,32 @@
                             value: { required: true },
                             scale: { type: Number, default: 1.0 }
                         },
+                        data: function() {
+                            return {
+                                lastValue: null,
+                                lastInput: ''
+                            };
+                        },
                         computed: {
                             normalized: {
                                 get: function() {
-                                    return $.isNumeric( this.value ) ? this.value * this.scale : '';
+                                    // Return the last input if the source value hasn't changed
+                                    if ( this.lastValue !== this.value ) {
+                                        this.lastValue = this.value;
+                                        this.lastInput = $.isNumeric( this.value ) ? this.round( this.value * this.scale ) : '';
+                                    }
+                                    return this.lastInput;
                                 },
                                 set: function( newValue ) {
-                                    var val = $.isNumeric( newValue ) ? newValue / this.scale : '';
-                                    this.$emit( 'input', val );
+                                    this.lastInput = newValue;
+                                    this.lastValue = $.isNumeric( newValue ) ? newValue / this.scale : '';
+                                    this.$emit( 'input', this.lastValue );
                                 }
+                            }
+                        },
+                        methods: {
+                            round: function( val ) {
+                                return Math.round( val * 100.0 ) / 100.0;
                             }
                         }
                     } );

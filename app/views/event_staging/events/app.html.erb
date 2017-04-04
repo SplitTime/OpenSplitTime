@@ -214,7 +214,7 @@
 							</td>
 							<td>
 								<template v-if="vm.row.kind === 'intermediate'">
-									<a href="#" v-on:click.prevent="vm.row.associate( !vm.row.associated )">
+									<a v-on:click.prevent="vm.row.associate( !vm.row.associated )">
 										<i class="glyphicon glyphicon-check" v-if="vm.row.associated"></i>
 										<i class="glyphicon glyphicon-unchecked" v-else></i>
 									</a>

@@ -19,6 +19,7 @@ class Api::V1::SplitsController < ApiController
 
   def update
     authorize @split
+    print( permitted_params )
     if @split.update(permitted_params)
       render json: @split
     else

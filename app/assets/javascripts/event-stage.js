@@ -49,7 +49,7 @@
             distanceFromStart: { type: Number, default: 0 },
             vertGainFromStart: { type: Number, default: 0 },
             vertLossFromStart: { type: Number, default: 0 },
-            kind: String,
+            kind: { type: String, default: 'intermediate' },
             nameExtensions: Array,
             description: String,
             latitude: Number,
@@ -60,9 +60,11 @@
                 get: function() {
                     if ( !eventStage ) return false;
                     var splits = eventStage.data.eventModel.splits;
-                    return this.in( splits );
+                    return this.in( splits ) !== false;
                 }
-            }
+            },
+            // Course ID Polyfill
+            course_id: { get: function() { return eventStage.data.eventModel.course ? eventStage.data.eventModel.course.id: null; } }
         },
         methods: {
             associate: function( associated ) {
@@ -73,7 +75,7 @@
                         } else {
                             console.warn( 'Deassociate Not Yet Implemented' );
                         }
-                        // eventStage.data.eventModel.update();
+                        eventStage.data.eventModel.update();
                     }
                 }
             }
@@ -110,7 +112,9 @@
                         this.date = value;
                     }
                 }
-            }
+            },
+            // Event ID Polyfill
+            event_id: { get: function() { return eventStage.data.eventModel ? eventStage.data.eventModel.id: null; } }
         }
     } );
     api.define( 'courses', {
@@ -199,16 +203,31 @@
                 return true;
             },
             jsonify: function () {
-                var data = {
-                    event: this.attributes(),
-                    organization: this.organization.attributes(),
-                    course: this.course.attributes()
-                };
-                return data;
+                if ( this.id === null || this.id === undefined ) {
+                    var data = {
+                        event: this.attributes(),
+                        organization: this.organization.attributes(),
+                        course: this.course.attributes(),
+                        splits: [
+                            this.course.endSplit( 'start' ),
+                            this.course.endSplit( 'finish' ),
+                        ]
+                    };
+                    data.course.splits_attributes = [
+                        this.course.endSplit( 'start' ).attributes(),
+                        this.course.endSplit( 'finish' ).attributes()
+                    ];
+                    return data;
+                } else {
+                    return this._jsonify();
+                }
             },
             post: function() {
+                var self = this;
                 if ( this.id === null || this.id === undefined ) {
-                    return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST' );
+                    return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST', 'application/json' ).then( function() {
+                        return self.fetch();
+                    })
                 } else {
                     return this.update();
                 }
@@ -221,7 +240,7 @@
             firstName: String,
             lastName: String,
             prefDistanceUnit: { type: String, default: 'kilometers' },
-            prefElevationUnit: { type: String, default: 'meters' },
+            prefElevationUnit: { type: String, default: 'meters' }
         }
     } );
 

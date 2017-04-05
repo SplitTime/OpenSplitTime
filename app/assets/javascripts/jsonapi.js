@@ -69,7 +69,7 @@ var JSONAPI = (function ($) {
             }
         }
 
-        function request( url, type, includes ) {
+        function request( url, type, includes, contentType ) {
             var self = this;
             type = type.toLowerCase();
             if ( $.inArray( type, [ 'get', 'put', 'post', 'patch', 'delete' ] ) === -1 ) {
@@ -82,17 +82,49 @@ var JSONAPI = (function ($) {
             } else {
                 data = $.isArray( includes ) ? { include: includes.join( ',' ) } : null;
             }
+            contentType = contentType || 'application/vnd.api+json';
             return $.ajax( apiurl + '/' + url, {
                     type: type,
                     headers: {
                         'Accepted': 'application/vnd.api+json',
-                        'Content-Type': ( type !== 'get' ) ? 'application/vnd.api+json' : undefined
+                        'Content-Type': ( type !== 'get' ) ? 'application/json' : undefined
                     },
                     data: data
                 } )
                 .then( function( json ) {
                     var cache = [];
                     var models = [];
+                    /* OST Specific Transform */
+                    if ( json.event && json.course && json.organization ) {
+                        json.data = {
+                            id: json.event.id,
+                            type: 'events',
+                            attributes: json.event,
+                            relationships: {
+                                course: {
+                                    id: json.course.id,
+                                    type: 'courses'
+                                },
+                                organization: {
+                                    id: json.organization.id,
+                                    type: 'organizations'
+                                }
+                            }
+                        };
+                        json.includes = [
+                            {
+                                id: json.course.id,
+                                type: 'courses',
+                                attributes: json.course
+                            },
+                            {
+                                id: json.organization.id,
+                                type: 'organizations',
+                                attributes: json.organization
+                            }
+                        ];
+                    }
+                    /* OST Specific Transform */
                     if ( self instanceof API.Model ) {
                         if ( json.data === null ) {
                             console.warn( 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
@@ -133,6 +165,10 @@ var JSONAPI = (function ($) {
                         }
                     }
 
+                    for ( var i = 0; i < cache.length; i++ ) {
+                        if ( cache[i].afterParse ) cache[i].afterParse();
+                    }
+
                     if ( self instanceof API.Model ) {
                         console.info( 'JSONAPI', 'Parsed JSON API response for \'' + self.__type__ + '\' model.' );
                         self.errors = [];
@@ -147,7 +183,11 @@ var JSONAPI = (function ($) {
                         return error( self, 'Unknown Model ID' );
                     } else if ( a.status === 400 ) {
                         console.error( 'JSONAPI', 'Server reported a protocol violation on \'' + self.__type__ + '\' model.' )
-                        return error( self, 'Protocol Violation' );
+                        var errors = 'Protocol Violation';
+                        try {
+                            errors = JSON.stringify( a.responseJSON.error );
+                        } catch( e ) {}
+                        return error( self, errors );
                     } else {
                         return error( self, 'Unknown Error' );
                     }
@@ -187,7 +227,7 @@ var JSONAPI = (function ($) {
                     // Generate relationship list
                     for ( var name in relationships ) {
                         Object.defineProperty( this, name, {
-                            value: $.isArray( relationships[ name ] ) ? [] : API.create( relationships[ name ] ),
+                            value: $.isArray( relationships[ name ] ) ? [] : null,
                             enumerable: true,
                             configurable: true,
                             writable: true
@@ -221,20 +261,18 @@ var JSONAPI = (function ($) {
                             }
                         } else {
                             if ( $.isPlainObject( data ) ) {
-                                if ( this[ name ].id != data.id ) {
+                                if ( this[ name ] === null || this[ name ].id != data.id ) {
                                     var model = API.create( data.type, { id: data.id } );
                                     model.__new__ = false;
                                     this[ name ] = model.in( cache ) || model;
                                 }
                                 this[ name ].in( cache ) || cache.push( this[ name ] );
                             } else {
-                                this[ name ] = API.create( this.__relationships__[ name ] );
+                                this[ name ] = null;
                             }
                         }
                     }
                 }
-                
-                if ( this.afterParse ) this.afterParse();
 
                 return cache;
             }
@@ -255,7 +293,7 @@ var JSONAPI = (function ($) {
                 return data;
             }
 
-            Model.prototype.jsonify = function() {
+            Model.prototype._jsonify = function() {
                 var json = {
                      data: {
                         type: this.__type__,
@@ -293,9 +331,13 @@ var JSONAPI = (function ($) {
                 return json;
             }
 
-            Model.prototype.request = function( url, type ) {
+            Model.prototype.jsonify = function() {
+                return this._jsonify();
+            }
+
+            Model.prototype.request = function( url, type, contentType ) {
                 var self = this;
-                return request.call( this, url, type, this.__includes__ );
+                return request.call( this, url, type, this.__includes__, contentType );
             }
 
             Model.prototype.fetch = function( deep ) {

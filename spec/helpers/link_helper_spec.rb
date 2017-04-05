@@ -22,6 +22,24 @@ RSpec.describe LinkHelper do
       end
     end
 
+    context 'when the field value does not exist and default is set to :asc' do
+      it 'returns the field name in string format' do
+        field = :height
+        default = :asc
+        expected = 'height'
+        expect(helper.reversed_sort_param(field, default)).to eq(expected)
+      end
+    end
+
+    context 'when the field value does not exist and default is set to :desc' do
+      it 'returns the field name in string format with a minus sign' do
+        field = :height
+        default = :desc
+        expected = '-height'
+        expect(helper.reversed_sort_param(field, default)).to eq(expected)
+      end
+    end
+
     it 'works properly if passed a string' do
       field = 'name'
       expected = '-name'

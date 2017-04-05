@@ -6,7 +6,7 @@
     <h2><strong><%= "#{@spread_display.name}: Full results" %></strong>
     </h2>
     <h4>
-      <%= "Start Time: #{l(@spread_display.start_time, format: :full_with_weekday)} at #{l(@spread_display.start_time, format: :ampm)}" %>
+      <%= "Start Time: #{l(@spread_display.event_start_time, format: :full_with_weekday)} at #{l(@spread_display.event_start_time, format: :ampm)}" %>
       <br/>
       Run on <%= link_to @spread_display.course_name, course_path(@spread_display.course) %>
       <% if @spread_display.organization %>

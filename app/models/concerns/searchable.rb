@@ -34,8 +34,9 @@ module Searchable
 
     def union_sql(param, field_name)
       return nil unless param.present?
+      klass = self.name.underscore.pluralize
       terms = param.split
-      terms.map { |term| "#{field_name} = '#{term}'" }.join(' OR ')
+      terms.map { |term| "#{klass}.#{field_name} = '#{term}'" }.join(' OR ')
     end
 
     def gender_int(param)

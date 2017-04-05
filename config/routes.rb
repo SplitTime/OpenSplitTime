@@ -118,6 +118,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :aid_stations, only: [:show, :create, :update, :destroy]
       resources :courses, only: [:index, :show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
       resources :events, only: [:show, :create, :update, :destroy], param: :staging_id do

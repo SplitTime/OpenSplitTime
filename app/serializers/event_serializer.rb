@@ -4,6 +4,7 @@ class EventSerializer < BaseSerializer
 
   has_many :efforts
   has_many :splits
+  has_many :aid_stations
   belongs_to :course
   belongs_to :organization
 end

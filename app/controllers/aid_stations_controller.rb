@@ -15,7 +15,7 @@ class AidStationsController < ApplicationController
   def update
     authorize @aid_station
 
-    if @aid_station.update(aid_station_params)
+    if @aid_station.update(permitted_params)
       redirect_to session.delete(:return_to) || @aid_station
     else
       render 'edit'
@@ -25,7 +25,8 @@ class AidStationsController < ApplicationController
   def destroy
     authorize @aid_station
     if @aid_station.events.present?
-      flash[:danger] = 'Aid_station cannot be deleted if events are present on the aid_station. Delete the related events individually and then delete the aid_station.'
+      flash[:danger] = 'Aid_station cannot be deleted if events are present on the aid_station. ' +
+          'Delete the related events individually and then delete the aid_station.'
     else
       @aid_station.destroy
       flash[:success] = 'Aid_station deleted.'
@@ -38,14 +39,7 @@ class AidStationsController < ApplicationController
 
   private
 
-  def aid_station_params
-    params.require(:aid_station).permit(:event_id, :split_id, :status, :open_time, :close_time,
-                                        :captain_name, :comms_crew_names, :comms_frequencies)
-  end
-  
   def set_aid_station
     @aid_station = AidStation.find(params[:id])
   end
-
-
 end

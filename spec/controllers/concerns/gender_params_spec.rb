@@ -31,6 +31,15 @@ describe GenderParams do
       end
     end
 
+    context 'when provided with combined' do
+      let(:params) { ActionController::Parameters.new(gender: 'combined') }
+
+      it 'returns an array containing numeric values for both genders' do
+        expected = [0, 1]
+        validate_prepare(gender, expected)
+      end
+    end
+
     context 'when provided with params[:gender] = "0"' do
       let(:params) { ActionController::Parameters.new(gender: '0') }
 

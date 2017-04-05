@@ -86,7 +86,7 @@ class EventWithEffortsPresenter
   end
 
   def filtered_ids
-    @filtered_ids ||= event_efforts.search(params[:search]).ids.to_set
+    @filtered_ids ||= event_efforts.where(gender: params[:gender]).search(params[:search]).ids.to_set
   end
 
   def indexed_participants

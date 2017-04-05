@@ -24,21 +24,21 @@
                                                          split2: @best_display.end_id,
                                                          gender: 'combined',
                                                          search: params[:search]),
-                    disabled: params[:gender] == 'combined',
+                    disabled: @best_display.gender_text == 'combined',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Male', best_efforts_course_path(@best_display.course,
                                                      split1: @best_display.begin_id,
                                                      split2: @best_display.end_id,
                                                      gender: 'male',
                                                      search: params[:search]),
-                    disabled: params[:gender] == 'male',
+                    disabled: @best_display.gender_text == 'male',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Female', best_efforts_course_path(@best_display.course,
                                                        split1: @best_display.begin_id,
                                                        split2: @best_display.end_id,
                                                        gender: 'female',
                                                        search: params[:search]),
-                    disabled: params[:gender] == 'female',
+                    disabled: @best_display.gender_text == 'female',
                     class: 'btn btn-sm btn-primary' %>
       </div>
       <% unless @best_display.course.simple? %>

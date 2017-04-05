@@ -1,6 +1,10 @@
 class EventSpreadDisplay < EventWithEffortsPresenter
   include ActiveModel::Serialization
 
+  def post_initialize(args)
+    @params[:per_page] ||= ranked_efforts.size
+  end
+
   def display_style
     @display_style ||= params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
   end
@@ -25,10 +29,11 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def effort_times_rows
-    @effort_times_rows ||= ranked_efforts.map { |effort| EffortTimesRow.new(effort: effort,
-                                                                            lap_splits: lap_splits,
-                                                                            split_times: split_times_by_effort[effort.id],
-                                                                            display_style: display_style) }
+    @effort_times_rows ||=
+        filtered_ranked_efforts.map { |effort| EffortTimesRow.new(effort: effort,
+                                                                  lap_splits: lap_splits,
+                                                                  split_times: split_times_by_effort[effort.id],
+                                                                  display_style: display_style) }
   end
 
   def lap_splits

@@ -44,6 +44,7 @@ class ApiController < ApplicationController
     params[:include] = IncludeParams.prepare(params[:include])
     params[:fields] = FieldParams.prepare(params[:fields])
     params[:sort] = SortParams.prepare(params[:sort])
+    params[:gender] = GenderParams.prepare(params[:gender])
   end
 
   def report_to_ga

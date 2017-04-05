@@ -9,7 +9,6 @@ class BestEffortsDisplay
     @course = course
     @params = params
     @events = Event.where(id: all_efforts.map(&:event_id).uniq, concealed: false).order(start_time: :desc).to_a
-    @genders_numeric = Effort.genders[params[:gender]] || Effort.genders.values
   end
 
   def filtered_efforts
@@ -17,7 +16,7 @@ class BestEffortsDisplay
   end
 
   def selected_efforts
-    (params[:gender] != 'combined') | params[:search].present? ?
+    (gender_text != 'combined') || params[:search].present? ?
         all_efforts.select { |effort| filter_ids.include?(effort.id) } :
         all_efforts
   end
@@ -67,7 +66,7 @@ class BestEffortsDisplay
   end
 
   def gender_text
-    case Array.wrap(genders_numeric)
+    case params[:gender]
     when [0]
       'male'
     when [1]
@@ -79,7 +78,7 @@ class BestEffortsDisplay
 
   private
 
-  attr_reader :events, :genders_numeric, :params
+  attr_reader :events, :params
 
   def segment
     return @segment if defined?(@segment)
@@ -95,7 +94,7 @@ class BestEffortsDisplay
   end
 
   def filter_ids
-    @filter_ids ||= Effort.where(gender: genders_numeric).search(params[:search]).ids.to_set
+    @filter_ids ||= Effort.where(gender: params[:gender]).search(params[:search]).ids.to_set
   end
 
   def all_efforts

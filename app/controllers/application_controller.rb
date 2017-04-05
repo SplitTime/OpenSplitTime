@@ -40,5 +40,6 @@ class ApplicationController < ActionController::Base
 
   def prepare_params
     params[:sort] = SortParams.prepare(params[:sort])
+    params[:gender] = GenderParams.prepare(params[:gender])
   end
 end

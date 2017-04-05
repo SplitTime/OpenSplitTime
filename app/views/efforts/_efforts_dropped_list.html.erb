@@ -12,9 +12,9 @@
   </tr>
   </thead>
   <tbody>
-  <% @event_dropped_display.effort_rows.each do |effort_row| %>
+  <% @event_dropped_display.dropped_effort_rows.each do |effort_row| %>
       <td><%= effort_row.bib_number %></td>
-      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.effort) %></strong></td>
+      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.state_and_country %></td>
       <td><%= effort_row.final_split_name %></td>

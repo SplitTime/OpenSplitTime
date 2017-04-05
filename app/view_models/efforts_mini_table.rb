@@ -6,7 +6,7 @@ class EffortsMiniTable
   end
 
   def effort_rows
-    @effort_rows ||= efforts.map { |effort| EffortRow.new(effort: effort) }
+    @effort_rows ||= efforts.map { |effort| EffortRow.new(effort) }
   end
 
   private

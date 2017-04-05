@@ -31,7 +31,7 @@ class BestEffortsDisplay
   end
 
   def effort_rows
-    @effort_rows ||= filtered_efforts.map { |effort| EffortRow.new(effort: effort) }
+    @effort_rows ||= filtered_efforts.map { |effort| EffortRow.new(effort) }
   end
 
   def segment_name

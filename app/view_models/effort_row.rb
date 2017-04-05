@@ -1,18 +1,5 @@
-class EffortRow
+class EffortRow < SimpleDelegator
   ULTRASIGNUP_STATUS_TABLE = {'Finished' => 1, 'Dropped' => 2, 'Not Started' => 3}
-  include PersonalInfo
-
-  attr_reader :effort, :participant
-  delegate :id, :name, :first_name, :last_name, :gender, :bib_number, :age, :city, :state_code, :country_code,
-           :bad?, :questionable?, :segment_seconds, :overall_rank, :gender_rank, :birthdate, :start_time,
-           :final_distance, :final_split_name, :final_time, :final_lap, :multiple_laps?, :lap, to: :effort
-
-  def initialize(args)
-    ArgsValidator.validate(params: args, required: :effort,
-                           exclusive: [:effort, :participant, :multi_lap], class: self.class)
-    @effort = args[:effort]
-    @participant = args[:participant]
-  end
 
   def final_lap_split_name
     multiple_laps? ? "#{final_split_name} Lap #{final_lap}" : final_split_name
@@ -28,11 +15,11 @@ class EffortRow
 
   def run_status
     case
-    when effort.finished?
+    when finished?
       'Finished'
-    when effort.dropped?
+    when dropped?
       'Dropped'
-    when effort.in_progress?
+    when in_progress?
       'In Progress'
     else
       'Not Started'

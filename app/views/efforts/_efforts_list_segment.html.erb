@@ -12,12 +12,12 @@
   </tr>
   </thead>
   <tbody>
-  <% @best_display.effort_rows.each do |effort_row| %>
+  <% @best_display.ranked_effort_rows.each do |effort_row| %>
       <tr>
         <td>
           <%= "#{effort_row.overall_rank}/#{effort_row.gender_rank}" %>
         </td>
-        <td><strong><%= link_to effort_row.full_name, effort_path(effort_row.effort) %></strong></td>
+        <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
         <td><%= effort_row.bio_historic %></td>
         <td><%= effort_row.state_and_country %></td>
         <td><%= effort_row.year_and_lap %></td>

@@ -7,22 +7,12 @@ RSpec.describe EffortRow, type: :model do
 
   describe '#initializate' do
     it 'instantiates an EffortRow if provided an effort' do
-      expect { EffortRow.new(effort: test_effort) }.not_to raise_error
-    end
-
-    it 'instantiates an EffortRow if an effort, participant, and multi_lap are provided' do
-      expect { EffortRow.new(effort: test_effort, participant: test_participant, multi_lap: true) }
-          .not_to raise_error
-    end
-
-    it 'raises an error if any argument other than effort, participant, or multi_lap is provided' do
-      expect { EffortRow.new(effort: test_effort, participant: test_participant, multi_lap: true, random_param: 123) }
-          .to raise_error(/may not include random_param/)
+      expect { EffortRow.new(test_effort) }.not_to raise_error
     end
   end
 
   describe 'effort_attributes' do
-    subject { EffortRow.new(effort: test_effort) }
+    subject { EffortRow.new(test_effort) }
 
     it 'returns delegated effort attributes' do
       expect(subject.first_name).to eq(test_effort.first_name)
@@ -39,7 +29,7 @@ RSpec.describe EffortRow, type: :model do
   end
 
   describe '#run_status' do
-    subject { EffortRow.new(effort: test_effort) }
+    subject { EffortRow.new(test_effort) }
     it 'returns "Finished" when the run is finished' do
       allow(test_effort).to receive(:finished?).and_return(true)
       expect(subject.run_status).to eq('Finished')
@@ -64,7 +54,7 @@ RSpec.describe EffortRow, type: :model do
   end
 
   describe '#ultrasignup_finish_status' do
-    subject { EffortRow.new(effort: test_effort) }
+    subject { EffortRow.new(test_effort) }
     it 'returns 1 when the run is finished' do
       allow(test_effort).to receive(:finished?).and_return(true)
       expect(subject.ultrasignup_finish_status).to eq(1)

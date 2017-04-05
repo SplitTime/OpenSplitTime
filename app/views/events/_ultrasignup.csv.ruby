@@ -1,7 +1,7 @@
 if @event_display.event_finished?
     CSV.generate do |csv|
         csv << %w(place time first last age gender city state dob bib status)
-        @event_display.effort_rows.each do |row|
+        @event_display.ranked_effort_rows.each do |row|
             csv << [row.overall_rank,
                     row.finish_time && time_format_hhmmss(row.finish_time),
                     row.first_name,

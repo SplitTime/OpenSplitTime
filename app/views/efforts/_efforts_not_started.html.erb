@@ -9,7 +9,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @event_display.unstarted_efforts.each do |effort| %>
+  <% @event_display.filtered_unstarted_efforts.each do |effort| %>
       <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
       <td><%= effort.bib_number %></td>
       <td><%= effort.bio_historic %></td>

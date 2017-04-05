@@ -1,14 +1,5 @@
-class EventSpreadDisplay
+class EventSpreadDisplay < EventWithEffortsPresenter
   include ActiveModel::Serialization
-
-  attr_reader :event
-  delegate :id, :name, :start_time, :course, :organization, :available_live, :beacon_url, :simple?, to: :event
-
-  def initialize(args)
-    @event = args[:event]
-    @params = args[:params] || {}
-    @efforts = event.efforts_ranked(sort: sort_fields)
-  end
 
   def display_style
     @display_style ||= params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
@@ -34,41 +25,20 @@ class EventSpreadDisplay
   end
 
   def effort_times_rows
-    @effort_times_rows ||= efforts.map { |effort| EffortTimesRow.new(effort: effort,
-                                                                     lap_splits: lap_splits,
-                                                                     split_times: split_times_by_effort[effort.id],
-                                                                     display_style: display_style) }
-  end
-
-  def efforts_count
-    efforts.size
-  end
-
-  def course_name
-    course.name
-  end
-
-  def organization_name
-    organization.try(:name)
-  end
-
-  def event_start_time
-    @event_start_time ||= event.start_time
+    @effort_times_rows ||= ranked_efforts.map { |effort| EffortTimesRow.new(effort: effort,
+                                                                            lap_splits: lap_splits,
+                                                                            split_times: split_times_by_effort[effort.id],
+                                                                            display_style: display_style) }
   end
 
   def lap_splits
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
-  def event_finished?
-    event.finished?
-  end
-
   private
 
-  attr_reader :params, :efforts
   delegate :multiple_laps?, to: :event
-  
+
   def sort_fields
     params[:sort]&.to_unsafe_hash || {}
   end

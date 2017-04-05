@@ -1,17 +1,10 @@
-class EventStageDisplay
+class EventStageDisplay < EventWithEffortsPresenter
 
-  attr_reader :event, :associated_splits
-  delegate :id, :name, :start_time, :course, :organization, :available_live, :simple?,
-           :unreconciled_efforts, :unreconciled_efforts?, :started?, :beacon_url, to: :event
+  attr_reader :associated_splits
+  delegate :id, :unreconciled_efforts, :unreconciled_efforts?, :started?, to: :event
 
-  def initialize(args)
-    @event = args[:event]
-    @params = args[:params] || {}
+  def post_initialize(args)
     @associated_splits = event.ordered_splits
-  end
-
-  def event_efforts
-    @event_efforts ||= event.efforts
   end
 
   def filtered_efforts
@@ -20,20 +13,8 @@ class EventStageDisplay
                               .paginate(page: params[:page], per_page: 25)
   end
 
-  def scoped_efforts
-    params[:view] == 'problems' ? event_efforts.invalid_status : event_efforts
-  end
-
-  def efforts_count
-    event_efforts.size
-  end
-
   def filtered_efforts_count
     filtered_efforts.total_entries
-  end
-
-  def course_name
-    course.name
   end
 
   def event_splits_count
@@ -48,15 +29,13 @@ class EventStageDisplay
     course_splits.size
   end
 
-  def organization_name
-    organization.try(:name)
-  end
-
   def view_text
     %w(splits efforts problems).include?(params[:view]) ? params[:view] : 'efforts'
   end
 
   private
 
-  attr_reader :params
+  def scoped_efforts
+    params[:view] == 'problems' ? event_efforts.invalid_status : event_efforts
+  end
 end

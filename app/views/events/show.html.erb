@@ -10,7 +10,7 @@
     <h2><strong><%= "#{@event_display.name}: Results" %></strong>
     </h2>
     <h4>
-      <%= "Start Time: #{l(@event_display.start_time, format: :full_with_weekday)} #{l(@event_display.start_time, format: :ampm)}" %>
+      <%= "Start Time: #{l(@event_display.event_start_time, format: :full_with_weekday)} #{l(@event_display.event_start_time, format: :ampm)}" %>
       <br/>
       Run on <%= link_to @event_display.course_name, course_path(@event_display.course) %>
       <% if @event_display.organization %>
@@ -34,16 +34,16 @@
     <strong>No efforts have started yet.</strong>
 <% else %>
     <%= render 'effort_lookup', event: @event_display.event %>
-    <% if @event_display.filtered_efforts_count > 0 %>
+    <% if @event_display.filtered_ranked_efforts_count > 0 %>
         <hr>
         <div class="row">
           <div class="col-xs-8">
-            <strong><%= "Started efforts: Returned #{@event_display.filtered_efforts_count} of #{@event_display.started_efforts_count} for #{@event_display.name}" %></strong>
+            <strong><%= "Started efforts: Returned #{@event_display.filtered_ranked_efforts_count} of #{@event_display.started_efforts_count} for #{@event_display.name}" %></strong>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@event_display.filtered_efforts, param_name: 'started_page', inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.filtered_ranked_efforts, param_name: 'started_page', inner_window: 2, outer_window: 0) %>
           </div>
         </div>
 
@@ -51,7 +51,7 @@
 
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@event_display.filtered_efforts, param_name: 'started_page', inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@event_display.filtered_ranked_efforts, param_name: 'started_page', inner_window: 2, outer_window: 0) %>
           </div>
         </div>
     <% else %>
@@ -63,12 +63,12 @@
     <hr>
     <div class="row">
       <div class="col-xs-8">
-        <strong><%= "Unstarted efforts: Returned #{@event_display.unstarted_filtered_efforts_count} of #{@event_display.unstarted_efforts_count} for #{@event_display.name}" %></strong>
+        <strong><%= "Unstarted efforts: Returned #{@event_display.filtered_unstarted_efforts_count} of #{@event_display.unstarted_efforts_count} for #{@event_display.name}" %></strong>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-8">
-        <%= will_paginate(@event_display.unstarted_efforts, param_name: 'unstarted_page', inner_window: 2, outer_window: 0) %>
+        <%= will_paginate(@event_display.filtered_unstarted_efforts, param_name: 'unstarted_page', inner_window: 2, outer_window: 0) %>
       </div>
     </div>
 
@@ -76,7 +76,7 @@
 
     <div class="row">
       <div class="col-xs-8">
-        <%= will_paginate(@event_display.unstarted_efforts, param_name: 'unstarted_page', inner_window: 2, outer_window: 0) %>
+        <%= will_paginate(@event_display.filtered_unstarted_efforts, param_name: 'unstarted_page', inner_window: 2, outer_window: 0) %>
       </div>
     </div>
 <% end %>

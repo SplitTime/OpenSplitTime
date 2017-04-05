@@ -132,7 +132,8 @@ class EffortQuery < BaseQuery
       SELECT *, 
               lap, 
               rank() over (order by segment_seconds, gender, -age, lap) as overall_rank, 
-              rank() over (partition by gender order by segment_seconds, -age) as gender_rank 
+              rank() over (partition by gender order by segment_seconds, -age) as gender_rank,
+              true as started
       FROM 
         (SELECT e1.*, (tfs_end - tfs_begin) as segment_seconds 
         FROM 

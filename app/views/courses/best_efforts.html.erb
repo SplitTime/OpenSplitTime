@@ -3,7 +3,7 @@
 <% end %>
 <div class="row header">
   <div class="col-xs-7">
-    <h2><strong><%= link_to @best_display.name, course_path(@best_display.course) -%>: All-time best</strong></h2>
+    <h2><strong><%= link_to @best_display.name, course_path(@best_display) -%>: All-time best</strong></h2>
     <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %>
       <br/>
       <% if @best_display.events_count > 0 %>
@@ -19,21 +19,21 @@
   <div class="col-xs-5 page-navigation">
     <div class="row">
       <div class="btn-group">
-        <%= link_to 'Combined', best_efforts_course_path(@best_display.course,
+        <%= link_to 'Combined', best_efforts_course_path(@best_display,
                                                          split1: @best_display.begin_id,
                                                          split2: @best_display.end_id,
                                                          gender: 'combined',
                                                          search: params[:search]),
                     disabled: @best_display.gender_text == 'combined',
                     class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Male', best_efforts_course_path(@best_display.course,
+        <%= link_to 'Male', best_efforts_course_path(@best_display,
                                                      split1: @best_display.begin_id,
                                                      split2: @best_display.end_id,
                                                      gender: 'male',
                                                      search: params[:search]),
                     disabled: @best_display.gender_text == 'male',
                     class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Female', best_efforts_course_path(@best_display.course,
+        <%= link_to 'Female', best_efforts_course_path(@best_display,
                                                        split1: @best_display.begin_id,
                                                        split2: @best_display.end_id,
                                                        gender: 'female',
@@ -41,8 +41,8 @@
                     disabled: @best_display.gender_text == 'female',
                     class: 'btn btn-sm btn-primary' %>
       </div>
-      <% unless @best_display.course.simple? %>
-          <%= link_to 'Choose a segment', segment_picker_course_path(@best_display.course), class: "btn btn-sm btn-primary" %>
+      <% unless @best_display.simple? %>
+          <%= link_to 'Choose a segment', segment_picker_course_path(@best_display), class: "btn btn-sm btn-primary" %>
       <% end %>
     </div>
     <div class="page-navigation-text">

@@ -1,4 +1,4 @@
-<%= form_tag best_efforts_course_path(@best_display.course), method: :get do %>
+<%= form_tag best_efforts_course_path(@best_display), method: :get do %>
     <%= hidden_field_tag 'split1', @best_display.begin_id %>
     <%= hidden_field_tag 'split2', @best_display.end_id %>
     <%= hidden_field_tag 'gender', @best_display.gender_text %>

@@ -1,7 +1,6 @@
 class BestEffortsDisplay
 
-  attr_reader :course
-  delegate :name, to: :course
+  delegate :name, :simple?, :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
            :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
@@ -78,15 +77,21 @@ class BestEffortsDisplay
 
   private
 
-  attr_reader :events, :params
+  attr_reader :course, :events, :params
+
+  def ordered_splits
+    @ordered_splits ||= course.ordered_splits
+  end
 
   def segment
     return @segment if defined?(@segment)
-    split1 = params[:split1].present? ? Split.friendly.find(params[:split1]) : course.start_split
-    split2 = params[:split2].present? ? Split.friendly.find(params[:split2]) : course.finish_split
-    splits = [split1, split2].sort_by(&:course_index)
-    @segment = Segment.new(begin_point: TimePoint.new(1, splits.first.id, splits.first.bitkeys.last),
-                           end_point: TimePoint.new(1, splits.last.id, splits.last.bitkeys.first))
+    split1 = ordered_splits.find { |split| [split.id, split.slug].compact.include?(params[:split1]) } || ordered_splits.first
+    split2 = ordered_splits.find { |split| [split.id, split.slug].compact.include?(params[:split1]) } || ordered_splits.last
+    begin_split, end_split = [split1, split2].sort_by { |split| ordered_splits.index(split) }
+    @segment = Segment.new(begin_point: TimePoint.new(1, begin_split.id, begin_split.bitkeys.last),
+                           end_point: TimePoint.new(1, end_split.id, end_split.bitkeys.first),
+                           begin_lap_split: LapSplit.new(1, begin_split),
+                           end_lap_split: LapSplit.new(1, end_split))
   end
 
   def segment_is_full_course?

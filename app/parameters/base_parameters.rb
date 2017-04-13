@@ -4,6 +4,10 @@ class BaseParameters
     []
   end
 
+  def self.permitted_query
+    permitted
+  end
+
   def self.strong_params(class_name, params)
     params.require(class_name).permit(*permitted)
   end

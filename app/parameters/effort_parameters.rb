@@ -1,5 +1,9 @@
 class EffortParameters < BaseParameters
 
+  def self.permitted_query
+    enriched_query
+  end
+
   def self.enriched_query
     [:id, :event_id, :participant_id, :wave, :bib_number, :city, :state_code, :age,
      :created_at, :updated_at, :created_by, :updated_by, :first_name, :last_name, :gender,

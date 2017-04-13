@@ -10,8 +10,8 @@ class ApiController < ApplicationController
   # Returns only those resources that the user is authorized to edit.
   def index
     authorize controller_class
-    render json: policy_class::Scope.new(current_user, controller_class).editable.order(params[:sort]),
-           include: params[:include], fields: params[:fields]
+    render json: policy_class::Scope.new(current_user, controller_class).editable.order(prepared_params[:sort]),
+           include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
   private
@@ -21,7 +21,7 @@ class ApiController < ApplicationController
   end
 
   def permitted_params
-    @permitted_params ||= params_class.api_params(params)
+    @permitted_params ||= prepared_params[:data]
   end
 
   def user_not_authorized
@@ -38,13 +38,6 @@ class ApiController < ApplicationController
 
   def json_web_token_present?
     current_user.try(:has_json_web_token)
-  end
-
-  def prepare_params
-    params[:include] = IncludeParams.prepare(params[:include])
-    params[:fields] = FieldParams.prepare(params[:fields])
-    params[:sort] = SortParams.prepare(params[:sort])
-    params[:gender] = GenderParams.prepare(params[:gender])
   end
 
   def report_to_ga

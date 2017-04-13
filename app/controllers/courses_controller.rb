@@ -66,7 +66,7 @@ class CoursesController < ApplicationController
       flash[:danger] = "No efforts yet run on this course"
       redirect_to course_path(course)
     end
-    params[:gender] ||= 'combined'
+    prepared_params[:filter][:gender] ||= 'combined'
     @best_display = BestEffortsDisplay.new(course, params)
     session[:return_to] = best_efforts_course_path(course)
   end

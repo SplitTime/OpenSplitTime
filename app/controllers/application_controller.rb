@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :set_current_user
-  before_action :prepare_params
+  helper_method :prepared_params
 
   if Rails.env.development? | Rails.env.test?
     # https://github.com/RailsApps/rails-devise-pundit/issues/10
@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def prepared_params
+    @prepared_params ||= PreparedParams.new(params, params_class.permitted, params_class.permitted_query)
+  end
 
   def permitted_params
     @permitted_params ||= params_class.strong_params(controller_class_name, params)
@@ -36,10 +40,5 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     User.current = current_user
-  end
-
-  def prepare_params
-    params[:sort] = SortParams.prepare(params[:sort])
-    params[:gender] = GenderParams.prepare(params[:gender])
   end
 end

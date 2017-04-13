@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event_display = EventEffortsDisplay.new(event: @event, params: params)
+    @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
     session[:return_to] = event_path(@event)
     render 'show'
   end
@@ -75,7 +75,7 @@ class EventsController < ApplicationController
 
   def stage
     authorize @event
-    @event_stage = EventStageDisplay.new(event: @event, params: params)
+    @event_stage = EventStageDisplay.new(event: @event, params: prepared_params)
     params[:view] ||= 'efforts'
     session[:return_to] = stage_event_path(@event)
   end
@@ -132,7 +132,7 @@ class EventsController < ApplicationController
   end
 
   def spread
-    @spread_display = EventSpreadDisplay.new(event: @event, params: params)
+    @spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
     respond_to do |format|
       format.html
       format.csv do
@@ -214,7 +214,7 @@ class EventsController < ApplicationController
   end
 
   def drop_list
-    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: params)
+    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params)
     session[:return_to] = event_path(@event)
   end
 

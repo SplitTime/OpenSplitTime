@@ -9,9 +9,10 @@ class EventStageDisplay < EventWithEffortsPresenter
 
   def filtered_efforts
     @filtered_efforts ||= scoped_efforts
-                              .search(params[:search])
-                              .order(params[:sort])
-                              .paginate(page: params[:page], per_page: 25)
+                              .search(search_text)
+                              .where(filter_hash)
+                              .order(sort_hash)
+                              .paginate(page: page, per_page: per_page)
   end
 
   def filtered_efforts_count

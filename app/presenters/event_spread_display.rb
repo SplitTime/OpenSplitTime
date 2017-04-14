@@ -1,10 +1,6 @@
 class EventSpreadDisplay < EventWithEffortsPresenter
   include ActiveModel::Serialization
 
-  def post_initialize(args)
-    @params[:per_page] ||= ranked_efforts.size
-  end
-
   def display_style
     @display_style ||= params[:display_style].presence || (event.available_live ? 'ampm' : 'elapsed')
   end
@@ -44,10 +40,6 @@ class EventSpreadDisplay < EventWithEffortsPresenter
 
   delegate :multiple_laps?, to: :event
 
-  def sort_fields
-    params[:sort]&.to_unsafe_hash || {}
-  end
-
   def split_times_by_effort
     @split_times_by_effort ||= split_times.group_by(&:effort_id)
   end
@@ -68,5 +60,9 @@ class EventSpreadDisplay < EventWithEffortsPresenter
 
   def highest_lap
     split_times.map(&:lap).max || 1
+  end
+
+  def per_page
+    params[:per_page] || ranked_efforts.size
   end
 end

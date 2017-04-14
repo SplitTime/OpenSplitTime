@@ -22,22 +22,22 @@
         <%= link_to 'Combined', best_efforts_course_path(@best_display,
                                                          split1: @best_display.begin_id,
                                                          split2: @best_display.end_id,
-                                                         gender: 'combined',
-                                                         search: params[:search]),
+                                                         'filter[gender]' => 'combined',
+                                                         'filter[search]' => @best_display.search_text),
                     disabled: @best_display.gender_text == 'combined',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Male', best_efforts_course_path(@best_display,
                                                      split1: @best_display.begin_id,
                                                      split2: @best_display.end_id,
-                                                     gender: 'male',
-                                                     search: params[:search]),
+                                                     'filter[gender]' => 'male',
+                                                     'filter[search]' => @best_display.search_text),
                     disabled: @best_display.gender_text == 'male',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Female', best_efforts_course_path(@best_display,
                                                        split1: @best_display.begin_id,
                                                        split2: @best_display.end_id,
-                                                       gender: 'female',
-                                                       search: params[:search]),
+                                                       'filter[gender]' => 'female',
+                                                       'filter[search]' => @best_display.search_text),
                     disabled: @best_display.gender_text == 'female',
                     class: 'btn btn-sm btn-primary' %>
       </div>

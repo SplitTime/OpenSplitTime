@@ -1,4 +1,4 @@
-class EventWithEffortsPresenter
+class EventWithEffortsPresenter < BasePresenter
 
   attr_reader :event
   delegate :id, :name, :course, :organization, :simple?, :beacon_url, :available_live,
@@ -11,11 +11,7 @@ class EventWithEffortsPresenter
   end
 
   def post_initialize(args)
-    nil
-  end
-
-  def event_efforts
-    event.efforts
+    ArgsValidator.validate(params: args, required: [:event, :params], exclusive: [:event, :params], class: self.class)
   end
 
   def ranked_effort_rows
@@ -30,7 +26,11 @@ class EventWithEffortsPresenter
     @filtered_ranked_efforts ||=
         ranked_efforts
             .select { |effort| filtered_ids.include?(effort.id) }
-            .paginate(page: params[:started_page], per_page: params[:per_page] || 25)
+            .paginate(page: started_page, per_page: per_page)
+  end
+
+  def event_efforts
+    event.efforts
   end
 
   def efforts_count
@@ -70,7 +70,7 @@ class EventWithEffortsPresenter
   attr_reader :params
 
   def ranked_efforts
-    @ranked_efforts ||= event_efforts.ranked_with_finish_status(sort: params[:sort])
+    @ranked_efforts ||= event_efforts.ranked_with_finish_status(sort: sort_hash)
   end
 
   def unstarted_efforts
@@ -86,7 +86,7 @@ class EventWithEffortsPresenter
   end
 
   def filtered_ids
-    @filtered_ids ||= event_efforts.where(gender: params[:gender]).search(params[:search]).ids.to_set
+    @filtered_ids ||= event_efforts.where(filter_hash).search(search_text).ids.to_set
   end
 
   def indexed_participants
@@ -96,5 +96,9 @@ class EventWithEffortsPresenter
   def participant_ids
     @participant_ids ||=
         (filtered_ranked_efforts.map(&:participant_id) + filtered_unstarted_efforts.map(&:participant_id)).compact
+  end
+
+  def started_page
+    params[:started_page]
   end
 end

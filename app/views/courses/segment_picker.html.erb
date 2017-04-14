@@ -26,13 +26,13 @@
       <div class="col-sm-3">
         <strong>From </strong>
         <%= select_tag(:split1,
-                       options_from_collection_for_select(@course.ordered_splits_without_finish, :id, :base_name),
+                       options_from_collection_for_select(@course.ordered_splits_without_finish, :to_param, :base_name),
                        {class: "dropdown-select-field"}) %>
       </div>
       <div class="col-sm-3">
         <strong>To </strong>
         <%= select_tag(:split2,
-                       options_from_collection_for_select(@course.ordered_splits_without_start, :id, :base_name),
+                       options_from_collection_for_select(@course.ordered_splits_without_start, :to_param, :base_name),
                        {class: "dropdown-select-field"}) %>
       </div>
     </div>

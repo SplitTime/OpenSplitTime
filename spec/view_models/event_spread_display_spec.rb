@@ -12,7 +12,7 @@ RSpec.describe EventSpreadDisplay do
   let(:split_names_with_start) { split_names_without_start.unshift('Start') }
 
   context 'when display_style is ampm' do
-    let(:test_params) { {display_style: 'ampm'} }
+    let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
 
     describe '#split_header_names' do
       before do
@@ -35,10 +35,9 @@ RSpec.describe EventSpreadDisplay do
       it 'returns correct split names with extensions for all splits other than the start_split' do
         skip
         event = test_event
-        params = test_params
         allow(event).to receive(:ordered_splits).and_return(splits)
         allow(event).to receive(:efforts).and_return(efforts)
-        spread_display = EventSpreadDisplay.new(event: event, params: params)
+        spread_display = EventSpreadDisplay.new(event: event, params: prepared_params)
         allow(spread_display).to receive(:efforts).and_return(efforts)
         actual = spread_display.split_header_names
         expected = split_names_without_start

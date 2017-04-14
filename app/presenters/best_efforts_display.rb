@@ -1,4 +1,4 @@
-class BestEffortsDisplay
+class BestEffortsDisplay < BasePresenter
 
   delegate :name, :simple?, :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
@@ -11,11 +11,11 @@ class BestEffortsDisplay
   end
 
   def filtered_efforts
-    selected_efforts.paginate(page: params[:page], per_page: 25)
+    selected_efforts.paginate(page: page, per_page: per_page)
   end
 
   def selected_efforts
-    (gender_text != 'combined') || params[:search].present? ?
+    (gender_text != 'combined') || search_text.present? ?
         all_efforts.select { |effort| filter_ids.include?(effort.id) } :
         all_efforts
   end
@@ -65,7 +65,7 @@ class BestEffortsDisplay
   end
 
   def gender_text
-    case params[:gender]
+    case genders
     when [0]
       'male'
     when [1]
@@ -85,8 +85,8 @@ class BestEffortsDisplay
 
   def segment
     return @segment if defined?(@segment)
-    split1 = ordered_splits.find { |split| [split.id, split.slug].compact.include?(params[:split1]) } || ordered_splits.first
-    split2 = ordered_splits.find { |split| [split.id, split.slug].compact.include?(params[:split1]) } || ordered_splits.last
+    split1 = ordered_splits.find { |split| [split.id.to_s, split.slug].compact.include?(split_1_id) } || ordered_splits.first
+    split2 = ordered_splits.find { |split| [split.id.to_s, split.slug].compact.include?(split_2_id) } || ordered_splits.last
     begin_split, end_split = [split1, split2].sort_by { |split| ordered_splits.index(split) }
     @segment = Segment.new(begin_point: TimePoint.new(1, begin_split.id, begin_split.bitkeys.last),
                            end_point: TimePoint.new(1, end_split.id, end_split.bitkeys.first),
@@ -94,12 +94,20 @@ class BestEffortsDisplay
                            end_lap_split: LapSplit.new(1, end_split))
   end
 
+  def split_1_id
+    params[:split1]
+  end
+
+  def split_2_id
+    params[:split2]
+  end
+
   def segment_is_full_course?
     segment.full_course?
   end
 
   def filter_ids
-    @filter_ids ||= Effort.where(gender: params[:gender]).search(params[:search]).ids.to_set
+    @filter_ids ||= Effort.where(filter_hash).search(search_text).ids.to_set
   end
 
   def all_efforts

@@ -20,7 +20,7 @@ describe PreparedParams do
       let(:data_params) { {id: 123, attributes: {name: 'John Doe', age: 50}} }
 
       it 'returns a hash containing the id and attributes in a single hash' do
-        expected = {id: 123, name: 'John Doe', age: 50}
+        expected = {'id' => 123, 'name' => 'John Doe', 'age' => 50}
         validate_param('data', expected)
       end
 
@@ -35,7 +35,7 @@ describe PreparedParams do
       let(:data_params) { {id: 123, attributes: {name: 'John Doe', age: 50, role: 'admin'}} }
 
       it 'returns a hash containing only the permitted attributes' do
-        expected = {id: 123, name: 'John Doe', age: 50}
+        expected = {'id' => 123, 'name' => 'John Doe', 'age' => 50}
         validate_param('data', expected)
       end
     end
@@ -62,7 +62,7 @@ describe PreparedParams do
   describe '#sort' do
     let(:params) { ActionController::Parameters.new(sort: sort_string) }
     let(:permitted) { [] }
-    let(:permitted_query) { [:name, :age, :data_status] }
+    let(:permitted_query) { [:name, :age, :country_code] }
 
     context 'when provided with params[:sort] in jsonapi format' do
       let(:sort_string) { 'name,-age' }
@@ -86,10 +86,10 @@ describe PreparedParams do
     end
 
     context 'when provided with params[:sort] fields in camelCase' do
-      let(:sort_string) { 'name,-dataStatus' }
+      let(:sort_string) { 'name,-countryCode' }
 
       it 'returns a hash containing the given data' do
-        expected = {'name' => :asc, 'data_status' => :desc}
+        expected = {'name' => :asc, 'country_code' => :desc}
         validate_param('sort', expected)
       end
     end
@@ -143,10 +143,10 @@ describe PreparedParams do
     end
 
     context 'when provided with camelCased field names in jsonapi format' do
-      let(:field_params) { {'split_times' => 'subSplitBitkey,dataStatus'} }
+      let(:field_params) { {'split_times' => 'subSplitBitkey,countryCode'} }
 
       it 'returns a hash with the model name as the key and an array of fields as the value' do
-        expected = {'split_times' => [:sub_split_bitkey, :data_status]}
+        expected = {'split_times' => [:sub_split_bitkey, :country_code]}
         validate_param('fields', expected)
       end
     end
@@ -274,19 +274,19 @@ describe PreparedParams do
     end
 
     context 'when provided with a field having an empty string for its value' do
-      let(:filter_params) { {'state_code' => '', 'data_status' => 'bad'} }
+      let(:filter_params) { {'state_code' => '', 'country_code' => 'US'} }
 
       it 'returns the field with nil as its value' do
-        expected = {'state_code' => nil, 'data_status' => 'bad'}
+        expected = {'state_code' => nil, 'country_code' => 'US'}
         validate_param('filter', expected)
       end
     end
 
     context 'when provided with a field having nil as its value' do
-      let(:filter_params) { {'state_code' => nil, 'data_status' => 'bad'} }
+      let(:filter_params) { {'state_code' => nil, 'country_code' => 'US'} }
 
       it 'returns the field with nil as its value' do
-        expected = {'state_code' => nil, 'data_status' => 'bad'}
+        expected = {'state_code' => nil, 'country_code' => 'US'}
         validate_param('filter', expected)
       end
     end

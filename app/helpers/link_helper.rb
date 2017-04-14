@@ -1,14 +1,14 @@
 module LinkHelper
 
-  def reversed_sort_param(field, default = :asc)
+  def reversed_sort_param(presenter, field, default = :asc)
     if default == :desc
-      prepared_params[:sort][field] == :desc ? "#{field}" : "-#{field}"
+      presenter.sort_hash[field] == :desc ? "#{field}" : "-#{field}"
     else
-      prepared_params[:sort][field] == :asc ? "-#{field}" : "#{field}"
+      presenter.sort_hash[field] == :asc ? "-#{field}" : "#{field}"
     end
   end
 
-  def toggled_sort_param(field_1, field_2)
-    prepared_params[:sort].has_key?(field_1) ? field_2 : field_1
+  def toggled_sort_param(presenter, field_1, field_2)
+    presenter.sort_hash.has_key?(field_1) ? field_2 : field_1
   end
 end

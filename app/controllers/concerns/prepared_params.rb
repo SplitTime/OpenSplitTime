@@ -11,31 +11,32 @@ class PreparedParams
   end
 
   def data
-    ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: permitted).with_indifferent_access
+    @data ||= ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: permitted).with_indifferent_access
   end
 
   def sort
-    sort_hash.reject { |field, _| permitted_query.exclude?(field) }.with_indifferent_access
+    @sort ||= sort_hash.reject {|field, _| permitted_query.exclude?(field)}.with_indifferent_access
   end
 
   def fields
-    (params[:fields] || {})
-        .map { |resource, fields| {resource => fields.split(',').map { |field| field.underscore.to_sym }} }
-        .reduce({}, :merge).with_indifferent_access
+    @fields ||= (params[:fields] || {})
+                    .map {|resource, fields| {resource => fields.split(',').map {|field| field.underscore.to_sym}}}
+                    .reduce({}, :merge).with_indifferent_access
   end
 
   def include
-    params[:include].to_s.underscore
+    @include ||= params[:include].to_s.underscore
   end
 
   def filter
+    return @filter if defined?(@filter)
     filter_params = transformed_filter_values
     filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
-    filter_params.with_indifferent_access
+    @filter = filter_params.with_indifferent_access
   end
 
   def search
-    (params[:filter] || {})[:search].to_s.presence
+    @search ||= (params[:filter] || {})[:search].to_s.presence
   end
 
   def method_missing(method)

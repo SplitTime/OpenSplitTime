@@ -13,7 +13,7 @@ class ParticipantsController < ApplicationController
   end
 
   def index
-    @participants = Participant.search(params[:search])
+    @participants = Participant.search(prepared_params[:search])
                         .where(concealed: false)
                         .with_age_and_effort_count
                         .ordered_by_name

@@ -3,8 +3,8 @@
       <div class="col-xs-8">
         <div class="input-group">
           <span class="input-group-btn">
-            <%= text_field_tag :search,
-                               params[:search],
+            <%= text_field_tag 'filter[search]',
+                               @event_display.search_text,
                                placeholder: 'Bib #, first name, last name, state, or country',
                                autofocus: true,
                                class: 'form-control search-box input-sm' %>

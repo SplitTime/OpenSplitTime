@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :best_efforts]
+  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :segment_picker]
   before_action :set_course, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :best_efforts]
+  after_action :verify_authorized, except: [:index, :show, :best_efforts, :segment_picker]
 
   def index
     @courses = Course.paginate(page: params[:page], per_page: 25).order(:name)
@@ -66,13 +66,11 @@ class CoursesController < ApplicationController
       flash[:danger] = "No efforts yet run on this course"
       redirect_to course_path(course)
     end
-    prepared_params[:filter][:gender] ||= 'combined'
-    @best_display = BestEffortsDisplay.new(course, params)
+    @best_display = BestEffortsDisplay.new(course, prepared_params)
     session[:return_to] = best_efforts_course_path(course)
   end
 
   def segment_picker
-    authorize @course
   end
 
   def plan_effort

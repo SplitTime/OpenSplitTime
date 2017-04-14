@@ -3,7 +3,7 @@ class Api::V1::OrganizationsController < ApiController
 
   def show
     authorize @organization
-    render json: @organization, include: params[:include], fields: params[:fields]
+    render json: @organization, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
   def create

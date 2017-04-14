@@ -3,7 +3,7 @@ class Api::V1::AidStationsController < ApiController
 
   def show
     authorize @aid_station
-    render json: @aid_station, include: params[:include], fields: params[:fields]
+    render json: @aid_station, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
   def create

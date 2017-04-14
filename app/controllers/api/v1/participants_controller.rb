@@ -3,7 +3,7 @@ class Api::V1::ParticipantsController < ApiController
 
   def show
     authorize @participant
-    render json: @participant, include: params[:include], fields: params[:fields]
+    render json: @participant, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
   def create

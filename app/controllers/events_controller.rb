@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :spread, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :spread, :place, :analyze, :drop_list]
   before_action :set_event, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :spread, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :spread, :place, :analyze, :drop_list]
 
   def index
     @events = Event.select_with_params(params[:search])
@@ -221,7 +221,7 @@ class EventsController < ApplicationController
   def export_to_ultrasignup
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @event_display = EventEffortsDisplay.new(event: @event, params: params)
+    @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
     respond_to do |format|
       format.html { redirect_to stage_event_path(@event) }
       format.csv do

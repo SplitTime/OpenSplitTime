@@ -3,7 +3,7 @@ class Api::V1::SplitTimesController < ApiController
 
   def show
     authorize @split_time
-    render json: @split_time, include: params[:include], fields: params[:fields]
+    render json: @split_time, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
   def create

@@ -4,7 +4,7 @@ class LiveRowNormalizer
   end
 
   def initialize(csv_row)
-    @row = csv_row.to_hash.symbolize_keys
+    @row = csv_row.to_hash.underscore_keys
   end
 
   def normalize
@@ -18,12 +18,12 @@ class LiveRowNormalizer
 
   attr_reader :row
 
-  TIME_PARAMS = [:timeIn, :timeOut]
-  BOOLEAN_PARAMS = [:pacerIn, :pacerOut, :droppedHere]
+  TIME_PARAMS = [:time_in, :time_out]
+  BOOLEAN_PARAMS = [:pacer_in, :pacer_out, :dropped_here]
   AFFIRMATIVE_LETTERS = %w(t y)
 
   def strip_white_space
-    row.transform_values! { |v| v.try(:strip).presence || v.presence }
+    row.transform_values! { |v| v&.strip.presence || v.presence }
   end
 
   def normalize_times

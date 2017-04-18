@@ -37,7 +37,7 @@ class LiveFileTransformer
     CSV.foreach(file.path, headers: true) do |row|
       next if row.empty?
       file_row = LiveRowNormalizer.normalize(row)
-      file_row[:splitId] = split_id
+      file_row[:split_id] = split_id
       file_row[:lap] ||= 1
       file_rows << file_row
     end

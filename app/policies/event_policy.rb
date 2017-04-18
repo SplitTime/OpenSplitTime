@@ -108,11 +108,11 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
-  def get_event_data?
+  def event_data?
     user.authorized_for_live?(event)
   end
 
-  def get_live_effort_data?
+  def live_effort_data?
     user.authorized_for_live?(event)
   end
 

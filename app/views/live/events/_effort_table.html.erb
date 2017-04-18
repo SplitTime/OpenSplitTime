@@ -1,29 +1,29 @@
 <div class="row">
   <div class="col-xs-9">
     <h3>
-      <%= @effort_show.full_name %>
-      <%= "(#{@effort_show.bib_number})" if @effort_show.bib_number %>
-      • <%= @effort_show.event_name %>
+      <%= @presenter.full_name %>
+      <%= "(#{@presenter.bib_number})" if @presenter.bib_number %>
+      • <%= @presenter.event_name %>
     </h3>
     <h4>
-      <%= @effort_show.finish_status %>
-      <%= "• #{@effort_show.overall_rank.ordinalize} Place " if @effort_show.overall_rank %>
-      <%= "• #{@effort_show.gender_rank.ordinalize} #{@effort_show.gender.titleize}" if @effort_show.gender_rank %>
-      <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
+      <%= @presenter.finish_status %>
+      <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
+      <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
+      <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
     </h4>
   </div>
   <div class="col-xs-2">
-    <% if @effort_show.beacon_url %>
-        <%= link_to effort_beacon_button_text(@effort_show.beacon_url),
-                    url_with_protocol(@effort_show.beacon_url),
-                    class: "btn btn-sm btn-default btn-margin-top",
-                    target: "_blank" %>
+    <% if @presenter.beacon_url %>
+        <%= link_to effort_beacon_button_text(@presenter.beacon_url),
+                    url_with_protocol(@presenter.beacon_url),
+                    class: 'btn btn-sm btn-default btn-margin-top',
+                    target: '_blank' %>
     <% end %>
   </div>
 </div>
 
 <hr>
 
-<% if @effort_show.lap_split_rows.present? %>
+<% if @presenter.lap_split_rows.present? %>
     <%= render 'split_times/split_times_list_compact' %>
 <% end %>

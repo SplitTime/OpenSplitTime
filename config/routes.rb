@@ -107,11 +107,7 @@ Rails.application.routes.draw do
       member { get :live_entry }
       member { get :progress_report }
       member { get :aid_station_report }
-      member { get :get_event_data }
-      member { get :get_live_effort_data }
       member { get :get_effort_table }
-      member { post :post_file_effort_data }
-      member { post :set_times_data }
       member { get :aid_station_detail }
     end
   end
@@ -127,6 +123,10 @@ Rails.application.routes.draw do
         member { post :import_splits }
         member { post :import_efforts }
         member { get :spread }
+        member { get :event_data }
+        member { get :live_effort_data }
+        member { post :set_times_data }
+        member { post :post_file_effort_data }
       end
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]

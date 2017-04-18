@@ -104,6 +104,76 @@ class Api::V1::EventsController < ApiController
     end
   end
 
+  # This legacy endpoint requires only an event_id, which is passed via the URL as params[:id]
+  # It returns a json containing eventId, eventName, and detailed split info
+  # for all splits associated with the event.
+  #
+  # This endpoint should be replaced by EventsController#show
+  # and live_entry.js should be updated to parse the jsonapi response.
+
+  #GET /api/v1/events/:staging_id/event_data
+  def event_data
+
+    authorize @event
+    if @event.available_live
+      render partial: 'live/events/event_data.json.ruby'
+    else
+      render partial: 'live/events/live_entry_unavailable.json.ruby'
+    end
+  end
+
+  # This endpoint is called on any of the following conditions:
+  # - split selector is changed
+  # - bib # field is changed
+  # - time in or time out field is changed
+
+  def live_effort_data
+
+    # Params should include at least splitId and bibNumber. Params may also include timeIn and timeOut.
+    # This endpoint returns as many of the following as it can determine:
+    # { effortId (integer), name (string), reportedText (string), dropped (bool), finished (bool),
+    # timeFromLastReported ("hh:mm"), timeInAid ("mm minutes"), timeInExists (bool), timeOutExists (bool),
+    # timeInStatus ('good', 'questionable', 'bad'), timeOutStatus ('good', 'questionable', 'bad') }
+
+    authorize @event
+    if @event.available_live
+      @live_data_entry_reporter = LiveDataEntryReporter.new(event: @event, params: params)
+      render partial: 'live/events/live_effort_data.json.ruby'
+    else
+      render partial: 'live/events/live_entry_unavailable.json.ruby'
+    end
+  end
+
+  def set_times_data
+
+    # Each time_row should include splitId, lap, bibNumber, timeIn (military), timeOut (military),
+    # pacerIn (boolean), pacerOut (boolean), and droppedHere (boolean). This action ingests time_rows, converts and
+    # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
+
+    authorize @event
+    if @event.available_live
+      @returned_rows = LiveTimeRowImporter.import(event: @event, time_rows: params[:time_rows])
+      render partial: 'live/events/set_times_data_report.json.ruby'
+    else
+      render partial: 'live/events/live_entry_unavailable.json.ruby'
+    end
+  end
+
+  def post_file_effort_data
+
+    # Params should be an unaltered CSV file and a splitId.
+    # This endpoint interprets and verifies rows from the file and returns
+    # return_rows containing all data necessary to populate the local data workspace.
+
+    authorize @event
+    if @event.available_live
+      @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
+      render partial: 'live/events/file_effort_data_report.json.ruby'
+    else
+      render partial: 'live/events/live_entry_unavailable.json.ruby'
+    end
+  end
+
   private
 
   def set_event

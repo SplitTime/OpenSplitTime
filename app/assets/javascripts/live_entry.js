@@ -29,7 +29,7 @@
         currentSplitId: null,
 
         getEventLiveEntryData: function () {
-            return $.get('/live/events/' + liveEntry.currentEventId + '/get_event_data', function (response) {
+            return $.get('/api/v1/events/' + liveEntry.currentEventId + '/event_data', function (response) {
                 liveEntry.eventLiveEntryData = response
 
             })
@@ -327,7 +327,7 @@
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-                return $.get('/live/events/' + liveEntry.currentEventId + '/get_live_effort_data', data, function (response) {
+                return $.get('/api/v1/events/' + liveEntry.currentEventId + '/live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
                     $('#js-effort-last-reported').html( response.reportText );
@@ -634,7 +634,7 @@
                     var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
                     data.timeRows.push(timeRow);
                 });
-                $.post('/live/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
+                $.post('/api/v1/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
                     liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
                     for (var i = 0; i < response.returnedRows.length; i++) {
@@ -719,7 +719,7 @@
                     liveEntry.timeRowsTable.submitTimeRows( $(this) );
                 });
 
-                
+
                 $('#js-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.timeRowsTable.toggleDiscardAll(true);
@@ -735,7 +735,7 @@
 
                 $('#js-file-upload').fileupload({
                     dataType: 'json',
-                    url: '/live/events/' + liveEntry.currentEventId + '/post_file_effort_data',
+                    url: '/api/v1/events/' + liveEntry.currentEventId + '/post_file_effort_data',
                     submit: function (e, data) {
                         data.formData = {splitId: liveEntry.currentSplitId};
                         liveEntry.timeRowsTable.busy = true;

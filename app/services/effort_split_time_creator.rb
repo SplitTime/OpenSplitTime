@@ -47,7 +47,8 @@ class EffortSplitTimeCreator
     split_time = SplitTime.find_or_initialize_by(effort_id: effort.id,
                                                  lap: time_point.lap,
                                                  split_id: time_point.split_id,
-                                                 sub_split_bitkey: time_point.bitkey)
+                                                 sub_split_bitkey: time_point.bitkey,
+                                                 created_by: current_user_id)
     split_time.time_from_start = convert_to_seconds(time_point)
     split_time
   end

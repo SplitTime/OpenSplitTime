@@ -122,9 +122,9 @@ class EventsController < ApplicationController
     file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
     if file_url
       uid = 1
-      progress_channel = "import_progress_#{uid}"
+      background_channel = "import_progress_#{uid}"
       ImportEffortsJob.perform_later(file_url, @event, current_user.id,
-                                     params.slice(:time_format, :with_times, :with_status), progress_channel)
+                                     params.slice(:time_format, :with_times, :with_status), background_channel)
       flash[:success] = 'Import in progress. Reload the page in a minute or two ' +
           '(depending on file size) and your import should be complete.'
     else

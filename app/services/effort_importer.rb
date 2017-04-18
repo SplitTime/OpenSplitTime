@@ -6,7 +6,8 @@ class EffortImporter
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:file_path, :event, :current_user_id],
-                           exclusive: [:file_path, :event, :current_user_id, :with_status, :with_times, :time_format],
+                           exclusive: [:file_path, :event, :current_user_id, :with_status,
+                                       :with_times, :time_format, :progress_channel],
                            class: self.class)
     @errors = ActiveModel::Errors.new(self)
     @import_file ||= ImportFile.new(args[:file_path])
@@ -15,6 +16,7 @@ class EffortImporter
     @with_status ||= (args[:with_status] || 'true').to_boolean
     @with_times ||= (args[:with_times] || 'true').to_boolean
     @time_format ||= args[:time_format] || 'elapsed'
+    @progress_channel = args[:progress_channel]
     @effort_failure_array = []
     @effort_id_array = []
   end
@@ -23,9 +25,11 @@ class EffortImporter
     if with_times
       unless column_count_matches?
         self.effort_import_report = 'Column count does not match'
+        Pusher.trigger(progress_channel, 'error', {message: errors.full_messages})
         return
       end
     end
+    Pusher.trigger(progress_channel, 'update', {message: 'Importing efforts', progress: 0})
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(non_time_data(row))
@@ -36,15 +40,19 @@ class EffortImporter
       else
         effort_failure_array << {data: row, errors: effort.errors.full_messages}
       end
+      percent_complete = i / spreadsheet.last_row * 50
+      Pusher.trigger(progress_channel, 'update', {message: 'Importing efforts', progress: percent_complete})
     end
     set_drops_and_status
+    Pusher.trigger(progress_channel, 'update', {message: 'Reconciling efforts with the participant database', progress: 90})
     self.effort_import_report = EventReconcileService.auto_reconcile_efforts(event)
+    Pusher.trigger(progress_channel, 'update', {message: 'Finished importing efforts', progress: 100})
   end
 
   private
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count
-  attr_reader :event, :current_user_id, :with_status, :with_times, :time_format
+  attr_reader :event, :current_user_id, :with_status, :with_times, :time_format, :progress_channel
   attr_writer :effort_import_report
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,
            :header1_downcase, to: :import_file
@@ -90,12 +98,15 @@ class EffortImporter
   end
 
   def set_drops_and_status
+    Pusher.trigger(progress_channel, 'update', {message: 'Setting stopped positions', progress: 60})
     BulkEffortsStopper.stop(efforts: imported_efforts)
 
     # Initial pass sets data_status based on the relaxed standards of the terrain model
     # Second pass sets data_status on the :stats model, ignoring times flagged as bad or questionable by the first pass
     if with_status
+      Pusher.trigger(progress_channel, 'update', {message: 'Setting data status (first pass)', progress: 70})
       BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :terrain)
+      Pusher.trigger(progress_channel, 'update', {message: 'Setting data status (second pass)', progress: 80})
       BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :stats)
     end
   end

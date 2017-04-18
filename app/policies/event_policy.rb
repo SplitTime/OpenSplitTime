@@ -116,7 +116,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
-  def get_effort_table?
+  def effort_table?
     user.authorized_for_live?(event)
   end
 

@@ -107,7 +107,7 @@ Rails.application.routes.draw do
       member { get :live_entry }
       member { get :progress_report }
       member { get :aid_station_report }
-      member { get :get_effort_table }
+      member { get :effort_table }
       member { get :aid_station_detail }
     end
   end

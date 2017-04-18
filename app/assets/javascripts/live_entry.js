@@ -294,7 +294,7 @@
                         var data = {
                             'effortId': $source.attr('data-effort-id')
                         }
-                        $.get('/live/events/' + liveEntry.currentEventId + '/get_effort_table', data)
+                        $.get('/live/events/' + liveEntry.currentEventId + '/effort_table', data)
                             .done( function(a,b,c) {
                                 $body.html(a);
                             });

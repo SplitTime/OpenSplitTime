@@ -17,7 +17,7 @@ class Live::EventsController < Live::BaseController
     @progress_display = LiveProgressDisplay.new(event: @event, past_due_threshold: params[:past_due_threshold])
   end
 
-  def get_effort_table
+  def effort_table
     authorize @event
     effort = Effort.friendly.find(params[:effort_id])
     @presenter = EffortShowView.new(effort: effort)

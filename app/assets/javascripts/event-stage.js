@@ -518,7 +518,6 @@
                         obj._dtid = eventStage.dataTables.uniqueId++;
                         var row = new self._row( { data: { row: obj } } ).$mount();
                         cache[ obj._dtid ] = row;
-                        debugger;
                         row.$on( 'remove', function() {
                             self._table.row( this.$el ).remove().draw();
                             this.$destroy( true );

@@ -1,6 +1,10 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Stage/administer event - #{@event_stage.name}" %>
 <% end %>
+<div class="progress progress-striped active hide">
+  <div class="progress-bar progress-bar-info" id='realtime-progress-bar' role="progressbar" style="width: 0%"></div>
+</div>
+<p class="messages"></p>
 <div class="row header">
   <div class="col-xs-5">
     <h2><strong><%= @event_stage.name %></strong>
@@ -10,7 +14,8 @@
       <br/>
       Run on <%= link_to @event_stage.course_name, course_path(@event_stage.course) %>
       <% if @event_stage.organization %>
-          <br/>Organized under <%= link_to @event_stage.organization_name, organization_path(@event_stage.organization) %>
+          <br/>Organized
+          under <%= link_to @event_stage.organization_name, organization_path(@event_stage.organization) %>
       <% end %>
     </h4>
   </div>
@@ -56,7 +61,8 @@
           <% if @event_stage.efforts_count > 0 %>
               <%= link_to 'Delete all efforts', delete_all_efforts_event_path,
                           method: :delete,
-                          data: {confirm: 'NOTE: This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to go ahead?'},
+                          data: {confirm: 'NOTE: This will delete all efforts and split times for this event. ' +
+                              'This action cannot be undone. Are you sure you want to go ahead?'},
                           class: 'btn btn-sm btn-danger' %>
           <% end %>
         </div>
@@ -199,4 +205,22 @@
             dataType: 'script'
         }
     });
+</script>
+
+<script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var uID = 1;
+    var pusher = new Pusher('<%= ENV['PUSHER_KEY'] %>');
+    var channel = pusher.subscribe('import_progress_' + uID);
+
+    channel.bind('update', function (data) {
+        progressBar.width(data.progress + "%");
+        messageBox.html(data.message)
+    });
+
+    var messageBox = $('#create-account-form-with-realtime').children('.messages');
+    var progressBar = $('#realtime-progress-bar');
+
 </script>

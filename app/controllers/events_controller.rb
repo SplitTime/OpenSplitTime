@@ -86,7 +86,7 @@ class EventsController < ApplicationController
     if @unreconciled_batch.empty?
       redirect_to stage_event_path(@event)
     else
-      @unreconciled_batch.each { |effort| effort.suggest_close_match }
+      @unreconciled_batch.each {|effort| effort.suggest_close_match}
     end
   end
 
@@ -121,7 +121,10 @@ class EventsController < ApplicationController
     authorize @event
     file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
     if file_url
-      ImportEffortsJob.perform_now(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
+      uid = 1
+      background_channel = "import_progress_#{uid}"
+      ImportEffortsJob.perform_later(file_url, @event, current_user.id,
+                                     params.slice(:time_format, :with_times, :with_status), background_channel)
       flash[:success] = 'Import in progress. Reload the page in a minute or two ' +
           '(depending on file size) and your import should be complete.'
     else
@@ -165,7 +168,7 @@ class EventsController < ApplicationController
 
   def remove_splits
     authorize @event
-    params[:split_ids].each { |split_id| @event.splits.delete(split_id) }
+    params[:split_ids].each {|split_id| @event.splits.delete(split_id)}
     redirect_to splits_event_path(@event)
   end
 
@@ -208,8 +211,8 @@ class EventsController < ApplicationController
     authorize @event
     update_beacon_url(params[:value])
     respond_to do |format|
-      format.html { redirect_to stage_event_path(@event) }
-      format.js { render inline: 'location.reload();' }
+      format.html {redirect_to stage_event_path(@event)}
+      format.js {render inline: 'location.reload();'}
     end
   end
 
@@ -223,7 +226,7 @@ class EventsController < ApplicationController
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
     @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
     respond_to do |format|
-      format.html { redirect_to stage_event_path(@event) }
+      format.html {redirect_to stage_event_path(@event)}
       format.csv do
         csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby')
         send_data(csv_stream, type: 'text/csv',

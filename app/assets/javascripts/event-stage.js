@@ -24,6 +24,12 @@
             "feet": 3.28084,
             "meters": 1.0
         },
+        shorthand: {
+            "kilometers": 'km',
+            "miles": 'mi',
+            "feet": 'ft',
+            "meters": 'm'
+        },
         distance: "kilometers",
         elevation: "meters",
         forDistance: function() {
@@ -41,6 +47,10 @@
             return function( val ) {
                 return val / units[type]();
             }
+        },
+        round: function( value, places ) {
+            var scalar = Math.pow( 10, places );
+            return Math.round( value * scalar ) / scalar;
         }
     }
 
@@ -522,7 +532,7 @@
                             self.$emit( 'edit', this.row );
                         } );
 
-                        self._table.row.add( row.$el );
+                        self._table.row.add( row.$el )
                     }
                     // Remove row from old cache
                     delete self._cache[ obj._dtid ];
@@ -843,6 +853,7 @@
                 this._elevator = new google.maps.ElevationService();
                 this._map = new google.maps.Map( this.$el, {
                     center: defaultBounds.getCenter(),
+                    mapTypeId: 'satellite',
                     zoom: 4,
                     maxZoom: 18,
                     zoomControl: this.locked == undefined,
@@ -1323,7 +1334,8 @@
                         template: '<input v-model="normalized"></input>',
                         props: {
                             value: { required: true },
-                            scale: { type: Number, default: 1.0 }
+                            scale: { type: Number, default: 1.0 },
+                            places: { type: Number, default: 2 }
                         },
                         data: function() {
                             return {
@@ -1350,7 +1362,8 @@
                         },
                         methods: {
                             round: function( val ) {
-                                return Math.round( val * 100.0 ) / 100.0;
+                                var scalar = Math.pow( 10, Math.round( this.places ) );
+                                return Math.round( val * scalar ) / scalar;
                             }
                         }
                     } );

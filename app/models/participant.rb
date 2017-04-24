@@ -55,7 +55,7 @@ class Participant < ActiveRecord::Base
   end
 
   def self.columns_to_pull_from_model
-    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo_url]
+    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo_url, :created_by]
   end
 
   def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}

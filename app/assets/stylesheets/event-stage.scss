@@ -101,6 +101,11 @@
 		}
 	}
 
+    .unit-miles:after { content: ' mi'; }
+    .unit-feet:after { content: ' ft'; }
+    .unit-kilometers:after { content: ' km'; }
+    .unit-meters:after { content: ' m'; }
+
 	textarea {
 		resize: none;
 	}

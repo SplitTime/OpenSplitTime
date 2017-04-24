@@ -78,7 +78,7 @@ class ParticipantsController < ApplicationController
     authorize @participant
     @participant_merge = ParticipantMergeView.new(@participant, params[:proposed_match])
     if @participant_merge.proposed_match.nil?
-      flash[:success] = "No potential matches detected."
+      flash[:success] = 'No potential matches detected.'
       redirect_to participant_path(@participant)
     end
   end
@@ -86,9 +86,9 @@ class ParticipantsController < ApplicationController
   def combine
     authorize @participant
     if @participant.merge_with(Participant.find(params[:target_id]))
-      flash[:success] = "Merge was successful. "
+      flash[:success] = 'Merge was successful. '
     else
-      flash[:danger] = "Merge could not be completed."
+      flash[:danger] = 'Merge could not be completed.'
     end
     redirect_to merge_participant_path(@participant)
   end

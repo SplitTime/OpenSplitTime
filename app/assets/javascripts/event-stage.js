@@ -24,12 +24,6 @@
             "feet": 3.28084,
             "meters": 1.0
         },
-        shorthand: {
-            "kilometers": 'km',
-            "miles": 'mi',
-            "feet": 'ft',
-            "meters": 'm'
-        },
         distance: "kilometers",
         elevation: "meters",
         forDistance: function() {
@@ -909,7 +903,7 @@
                 this._elevator = new google.maps.ElevationService();
                 this._map = new google.maps.Map( this.$el, {
                     center: defaultBounds.getCenter(),
-                    mapTypeId: 'satellite',
+                    mapTypeId: 'terrain',
                     zoom: 4,
                     maxZoom: 18,
                     zoomControl: this.locked == undefined,

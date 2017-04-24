@@ -347,12 +347,13 @@ var JSONAPI = (function ($) {
                     return $.Deferred().reject();
                 }
                 if ( deep ) console.warn( 'JSONAPI', 'Deep Fetch NOT IMPLEMENTED' );
-                return this.request( this.__type__ + '/' + id, 'GET' );
+                return this.request( this.__url__ + '/' + id, 'GET' );
             }
 
             Model.prototype.post = function() {
                 if ( this.id === null || this.id === undefined ) {
-                    return this.request( this.__type__ + '/', 'POST' );
+                    if ( this.beforeUpdate ) this.beforeUpdate();
+                    return this.request( this.__url__ + '/', 'POST' );
                 } else {
                     return this.update();
                 }
@@ -367,7 +368,8 @@ var JSONAPI = (function ($) {
                         return error( this, 'No Model ID' );
                     }
                 }
-                return this.request( this.__type__ + '/' + ( this[ this.__slug__ ] || this.id ), 'PUT' );
+                if ( this.beforeUpdate ) this.beforeUpdate();
+                return this.request( this.__url__ + '/' + ( this[ this.__slug__ ] || this.id ), 'PUT' );
             }
 
             Model.prototype.delete = function() {
@@ -375,9 +377,8 @@ var JSONAPI = (function ($) {
                     console.error( 'JSONAPI', 'Tried to delete \'' + this.__type__ + '\' without ID' );
                     return error( this, 'No Model ID' );
                 }
-                console.warn( 'JSONAPI', 'Delete not implemented.' );
-                return error( this, 'Delete not implemented' );
-                // return this.request( this.__type__ + '/' + ( this[ this.__slug__ ] || this.id ), 'DELETE' );
+                // return error( this, 'Delete not implemented' );
+                return this.request( this.__url__ + '/' + ( this[ this.__slug__ ] || this.id ), 'DELETE' );
             }
 
             Model.prototype.import = function( data ) {
@@ -441,6 +442,7 @@ var JSONAPI = (function ($) {
             // Create a submodel that extends Model
             function DefinedModel( data ) {
                 API.Model.call( this, name, options.attributes, options.relationships, options.hooks, options.includes );
+                Object.defineProperty( this, '__url__', { value: options.url || name } );
                 Object.defineProperty( this, '__slug__', { value: options.slug || 'id' } );
                 this.import( data );
             }

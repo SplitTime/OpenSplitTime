@@ -24,12 +24,6 @@
             "feet": 3.28084,
             "meters": 1.0
         },
-        shorthand: {
-            "kilometers": 'km',
-            "miles": 'mi',
-            "feet": 'ft',
-            "meters": 'm'
-        },
         distance: "kilometers",
         elevation: "meters",
         forDistance: function() {

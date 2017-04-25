@@ -84,6 +84,16 @@
             course_id: { get: function() { return eventStage.data.eventModel.course ? eventStage.data.eventModel.course.id: null; } }
         },
         methods: {
+            submit: function() {
+                var self = this;
+                if ( self.__new__ ) {
+                    return self.post().then( function() {
+                        return self.associate( true );
+                    })
+                } else {
+                    return self.posT();
+                }
+            },
             associate: function( associated ) {
                 if ( this.associated !== associated ) {
                     if ( !eventStage.data.eventModel.__new__ ) {
@@ -106,6 +116,15 @@
                         }
                     }
                 }
+            },
+            validate: function() {
+                if ( !this.baseName ) return false;
+                if ( !this.description ) return false;
+                if ( !this.nameExtensions ) return false;
+                if ( !$.isNumeric( this.distanceFromStart ) ) return false;
+                if ( !$.isNumeric( this.vertGainFromStart ) ) return false;
+                if ( !$.isNumeric( this.vertLossFromStart ) ) return false;
+                return true;
             }
         }
     } );
@@ -118,6 +137,7 @@
             fullName: String,
             gender: String,
             birthdate: null,
+            email: String,
             age: Number,
             city: String,
             stateCode: String,
@@ -141,8 +161,43 @@
                     }
                 }
             },
+            offsetTime: {
+                get: function() {
+                    if ( this.offset === '' ) return '';
+                    var hours = Math.floor( Math.abs( this.startOffset ) / 60 );
+                    if ( this.startOffset < 0 ) hours = "-" + hours;
+                    var minutes = ( ( "0" + Math.abs( this.startOffset % 60 ) ).slice( -2 ) );
+                    return ( hours != 0 ) ? hours + ":" + minutes : this.startOffset % 60;
+                },
+                set: function( value ) {
+                    this.offset = value;
+                    if ( value === '' ) return;
+                    var time = value.split( ':' );
+                    if ( time.length > 1 ) {
+                        var hours = time[0] * 60;
+                        time = hours + ( hours < 0 ? 0 - time[1] : time[1] - 0 );
+                    } else {
+                        time = time[0] - 0;
+                    }
+                    if ( $.isNumeric( time ) )
+                        this.startOffset = time;
+                }
+            },
             // Event ID Polyfill
             event_id: { get: function() { return eventStage.data.eventModel ? eventStage.data.eventModel.id: null; } }
+        },
+        methods: {
+            validate: function() {
+                if ( !this.firstName ) return false;
+                if ( !this.lastName ) return false;
+                if ( !this.gender ) return false;
+                if ( !this.bibNumber ) return false;
+                if ( !this.email ) return false;
+                if ( !this.city ) return false;
+                if ( !this.stateCode ) return false;
+                if ( !this.countryCode ) return false;
+                return true;
+            }
         }
     } );
     api.define( 'courses', {
@@ -260,39 +315,44 @@
                 return true;
             },
             jsonify: function () {
-                // if ( this.id === null || this.id === undefined ) {
-                    var data = {
-                        event: this.attributes(),
-                        organization: this.organization.attributes(),
-                        course: this.course.attributes(),
-                        splits: [
-                            this.course.endSplit( 'start' ),
-                            this.course.endSplit( 'finish' ),
-                        ]
-                    };
-                    data.course.splits_attributes = [
-                        this.course.endSplit( 'start' ).attributes(),
-                        this.course.endSplit( 'finish' ).attributes()
-                    ];
-                    return data;
-                // } else {
-                //     var json = this._jsonify();
-                //     json.data.attributes.organizationId = this.organization.id;
-                //     json.data.attributes.courseId = this.course.id;
-                //     return json;
-                // }
+                var data = {
+                    event: this.attributes(),
+                    organization: this.organization.attributes(),
+                    course: this.course.attributes(),
+                    splits: [
+                        this.course.endSplit( 'start' ),
+                        this.course.endSplit( 'finish' ),
+                    ]
+                };
+                data.course.splits_attributes = [
+                    this.course.endSplit( 'start' ).attributes(),
+                    this.course.endSplit( 'finish' ).attributes()
+                ];
+                return data;
             },
             post: function() {
                 var self = this;
-                // if ( this.id === null || this.id === undefined ) {
-                    return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST', 'application/json' ).then( function() {
-                        return self.fetch().then( function() {
+                var creating = this.__new__;
+                return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST', 'application/json' )
+                .then( function() {
+                    if ( creating ) {
+                        return self.visibility( false ).then( function() {
                             self.normalize();
                         });
-                    })
-                // } else {
-                //     return this.update();
-                // }
+                    } else {
+                        self.normalize();
+                    }
+                });
+            },
+            visibility: function( visible ) {
+                var self = this;
+                return $.ajax( '/api/v1/staging/' + this.stagingId + '/update_event_visibility', {
+                    type: "PATCH",
+                    data: { status: visible ? 'public' : 'private' },
+                    dataType: "json"
+                } ).then( function() {
+                    return self.fetch();
+                } );
             }
         }
     } );
@@ -438,15 +498,6 @@
                     component: {
                         props: ['eventModel'],
                         methods: {
-                            isValid: function( split ) {
-                                if ( !split.name ) return false;
-                                if ( !split.description ) return false;
-                                if ( !split.distance ) return false;
-                                if ( !split.times ) return false;
-                                if ( !split.verticalGain ) return false;
-                                if ( !split.verticalLoss ) return false;
-                                return true;
-                            },
                             blank: function() {
                                 return api.create( 'splits' );
                             }
@@ -457,24 +508,12 @@
                     beforeEnter: this.onRouteChange
                 },
                 { 
-                    path: '/participants', 
+                    path: '/entrants', 
                     component: { 
                         props: ['eventModel'], 
                         methods: {
-                            isValid: function( participant ) {
-                                if ( !participant.first ) return false;
-                                if ( !participant.last ) return false;
-                                if ( !participant.gender ) return false;
-                                if ( !participant.bibnumber ) return false;
-                                if ( !participant.email ) return false;
-                                if ( !participant.city ) return false;
-                                if ( !participant.state ) return false;
-                                if ( !participant.country ) return false;
-                                return true;
-                            },
                             blank: function() {
                                 var effort = api.create( 'efforts' )
-                                console.log( effort );
                                 return effort;
                             },
                             saveEffort: function() {
@@ -490,7 +529,7 @@
                             modalData: {},
                             filter: ''
                         } }, 
-                        template: '#participants'
+                        template: '#entrants'
                     },
                     beforeEnter: this.onRouteChange
                 },
@@ -700,7 +739,7 @@
                             this._location = new google.maps.Marker( {
                                 position: latlng,
                                 icon: {
-                                    url: '/assets/icons/green.svg'
+                                    url: window._rails_assets.marker
                                 },
                                 map: this._map,
                                 title: this.value.name,
@@ -771,7 +810,7 @@
                         }
                         // Update Marker
                         marker.setIcon( {
-                            url: '/assets/icons/dot-blue.svg',
+                            url: e[i].kind === 'start' ? window._rails_assets.dotGreen : window._rails_assets.dotBlue,
                             labelOrigin: new google.maps.Point( 12, 14 ),
                             anchor: new google.maps.Point( 16, 16 )
                         } );
@@ -821,29 +860,34 @@
                         dataType: 'json',
                         data: bounds
                     } ).done( function( result ) {
+                        var splits = api.parse( result );
+                        console.log( splits );
                         var ids = [];
-                        for ( var i = result.length - 1; i >= 0; i-- ) {
-                            var latlng = { lat: parseFloat( result[i].latitude ), lng: parseFloat( result[i].longitude ) };
+                        for ( var i = splits.length - 1; i >= 0; i-- ) {
+                            var latlng = {
+                                lat: parseFloat( splits[i].latitude ),
+                                lng: parseFloat( splits[i].longitude )
+                            };
                             if ( isNaN( latlng.lat ) || isNaN( latlng.lng ) ) continue;
-                            if ( !result[i].id ) continue;
-                            result[i].id = parseInt( result[i].id );
-                            if ( self._search[ result[i].id ] === undefined ) {
+                            if ( !splits[i].id ) continue;
+                            splits[i].id = parseInt( splits[i].id );
+                            if ( self._search[ splits[i].id ] === undefined ) {
                                 marker = new google.maps.Marker( {
                                     position: latlng,
                                     map: self._map,
                                     icon: {
-                                        url: result[i].editable ? '/assets/icons/dot-blue.svg' : '/assets/icons/dot-lblue.svg',
+                                        url: window._rails_assets.dotLBlue,
                                         labelOrigin: new google.maps.Point( 12, 14 ),
                                         anchor: new google.maps.Point( 16, 16 )
                                     },
-                                    title: result[i].name,
+                                    title: splits[i].name,
                                     zIndex: google.maps.Marker.MAX_ZINDEX - 10
                                 } );
-                                marker._data = result[i];
+                                marker._data = splits[i];
                                 marker.addListener( 'click', onMarkerClick.bind( self, marker ) );
-                                self._search[ result[i].id ] = marker;
+                                self._search[ splits[i].id ] = marker;
                             }
-                            ids.push( result[i].id );
+                            ids.push( splits[i].id );
                         }
                         // Remove Unused Markers
                         for ( var id in self._search ) {
@@ -984,15 +1028,11 @@
                     props: {
                         value: { required: true },
                         extra: { default: function() { return {} } },
-                        validator: { 
-                            type: Function,
-                            default: function() { return true }
-                        }
                     },
                     watch: {
                         model: {
-                            handler: function () {
-                                this.valid = !this.validator( this.model );
+                            handler: function( model ) {
+                                this.invalid = !( model.validate && model.validate() )
                             },
                             deep: true
                         }
@@ -1021,7 +1061,7 @@
                             regions: locales.regions,
                             units: units,
                             model: {},
-                            valid: false,
+                            invalid: true,
                             error: null
                         };
                     }

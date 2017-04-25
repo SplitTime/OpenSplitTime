@@ -274,7 +274,6 @@
         includes: [ 'course', 'course.splits', 'splits', 'efforts', 'organization', 'aidStations' ],
         methods: {
             normalize: function() {
-                console.log( this, 'Event Normalizing' );
                 this.course.normalize();
                 /* Remove Unused Aid Stations */
                 // NOTE: Let's leave this dissabled for now.
@@ -861,7 +860,6 @@
                         data: bounds
                     } ).done( function( result ) {
                         var splits = api.parse( result );
-                        console.log( splits );
                         var ids = [];
                         for ( var i = splits.length - 1; i >= 0; i-- ) {
                             var latlng = {

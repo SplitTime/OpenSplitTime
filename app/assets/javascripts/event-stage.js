@@ -91,7 +91,7 @@
                         return self.associate( true );
                     })
                 } else {
-                    return self.posT();
+                    return self.post();
                 }
             },
             associate: function( associated ) {

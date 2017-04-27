@@ -24,12 +24,6 @@
             "feet": 3.28084,
             "meters": 1.0
         },
-        shorthand: {
-            "kilometers": 'km',
-            "miles": 'mi',
-            "feet": 'ft',
-            "meters": 'm'
-        },
         distance: "kilometers",
         elevation: "meters",
         forDistance: function() {
@@ -79,8 +73,11 @@
             associated: {
                 get: function() {
                     if ( !eventStage ) return false;
-                    var splits = eventStage.data.eventModel.splits;
-                    return this.in( splits ) !== false;
+                    var aidStations = eventStage.data.eventModel.aidStations;
+                    for ( var i = aidStations.length - 1; i >= 0; i-- ) {
+                        if ( aidStations[i].splitId == this.id ) return true;
+                    }
+                    return false;
                 }
             },
             // Course ID Polyfill
@@ -90,12 +87,23 @@
             associate: function( associated ) {
                 if ( this.associated !== associated ) {
                     if ( !eventStage.data.eventModel.__new__ ) {
-                        if ( associated ) {
-                            eventStage.data.eventModel.splits.push( this );
-                        } else {
-                            console.warn( 'Deassociate Not Yet Implemented' );
+                        if ( associated && !this.associated ) {
+                            var station = api.create( 'aidStations', {
+                                eventId: eventStage.data.eventModel.id,
+                                splitId: this.id
+                            } );
+                            station.post().then( function() {
+                                eventStage.data.eventModel.aidStations.push( station );
+                            } );
+                        } else if ( !associated && this.associated ) {
+                            var aidStations = eventStage.data.eventModel.aidStations;
+                            for ( var i = aidStations.length - 1; i >= 0; i-- ) {
+                                if ( aidStations[i].splitId == this.id ) {
+                                    aidStations[i].delete();
+                                    aidStations.splice( i, 1 );
+                                }
+                            }
                         }
-                        eventStage.data.eventModel.update();
                     }
                 }
             }
@@ -151,15 +159,13 @@
                 // Verify Existence of End Splits
                 var start = this.endSplit( 'start' );
                 if ( !( start instanceof api.Model ) ) {
-                    this.splits.push( api.create( 'splits', { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } ) );
-                } else if ( start.__new__ && !this.__new__ && start.associated === false ) {
-                    start.associate( true );
+                    var split = api.create( 'splits', { kind: 'start', baseName: 'Start', distanceFromStart: 0, vertGainFromStart: 0, vertLossFromStart: 0 } );
+                    this.splits.push( split );
                 }
                 var finish = this.endSplit( 'finish' );
                 if ( !( finish instanceof api.Model ) ) {
-                    this.splits.push( api.create( 'splits', { kind: 'finish', baseName: 'Finish' } ) );
-                } else if ( finish.__new__ && !this.__new__ && finish.associated === false ) {
-                    finish.associate( true );
+                    var split = api.create( 'splits', { kind: 'finish', baseName: 'Finish' } );
+                    this.splits.push( split );
                 }
                 this.splits.sort( function( a, b ) {
                     return a.distanceFromStart - b.distanceFromStart;
@@ -206,24 +212,55 @@
         relationships: {
             efforts: ['efforts'],
             splits: ['splits'],
+            aidStations: ['aidStations'],
             course: 'courses',
             organization: 'organizations'
         },
-        includes: [ 'course', 'course.splits', 'splits', 'efforts', 'organization' ],
+        includes: [ 'course', 'course.splits', 'splits', 'efforts', 'organization', 'aidStations' ],
         methods: {
             normalize: function() {
-                console.log( this, 'It Worked!' );
+                console.log( this, 'Event Normalizing' );
+                this.course.normalize();
+                /* Remove Unused Aid Stations */
+                // NOTE: Let's leave this dissabled for now.
+                /* var splits = [];
+                for ( var i = this.aidStations.length - 1; i >= 0; i-- ) {
+                    var splitId = this.aidStations[i].splitId;
+                    if ( splitId === null ) break; // Unnecessary
+                    for ( var j = this.course.splits.length - 1; j >= 0; j-- ) {
+                        if ( this.course.splits[j].id == splitId ) {
+                            id = null;
+                            break;
+                        }
+                    }
+                    debugger;
+                    if ( id !== null || splits[ this.aidStations[i].splitId ] != this.aidStations[i].id ) {
+                        console.log( this, this.aidStations[i] );
+                        this.aidStations[i].delete();
+                        this.aidStations.splice( i, 1 );
+                    } else {
+                        splits[ this.aidStations[i].splitId ] = this.aidStations[i].id;
+                    }
+                } */
+                /* Attach Current Splits */
+                var start = this.course.endSplit( 'start' );
+                if ( start.__new__ ) start.post().then( function() { start.associate( true ); } )
+                else if ( !start.associated ) start.associate( true );
+                var finish = this.course.endSplit( 'finish' );
+                if ( finish.__new__ ) finish.post().then( function() { finish.associate( true ); } )
+                else if ( !finish.associated ) finish.associate( true );
             },
             validate: function( context ) {
                 var self = ( context ) ? context : this;
                 if ( !self.name || self.name.length < 1 ) return false;
                 if ( !self.organization || !self.organization.validate() ) return false;
                 if ( !self.course || !self.course.validate() ) return false;
+
                 if ( !self.startTime ) return false;
                 return true;
             },
             jsonify: function () {
-                if ( this.id === null || this.id === undefined ) {
+                // if ( this.id === null || this.id === undefined ) {
                     var data = {
                         event: this.attributes(),
                         organization: this.organization.attributes(),
@@ -238,19 +275,24 @@
                         this.course.endSplit( 'finish' ).attributes()
                     ];
                     return data;
-                } else {
-                    return this._jsonify();
-                }
+                // } else {
+                //     var json = this._jsonify();
+                //     json.data.attributes.organizationId = this.organization.id;
+                //     json.data.attributes.courseId = this.course.id;
+                //     return json;
+                // }
             },
             post: function() {
                 var self = this;
-                if ( this.id === null || this.id === undefined ) {
+                // if ( this.id === null || this.id === undefined ) {
                     return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST', 'application/json' ).then( function() {
-                        return self.fetch();
+                        return self.fetch().then( function() {
+                            self.normalize();
+                        });
                     })
-                } else {
-                    return this.update();
-                }
+                // } else {
+                //     return this.update();
+                // }
             }
         }
     } );
@@ -261,6 +303,14 @@
             lastName: String,
             prefDistanceUnit: { type: String, default: 'kilometers' },
             prefElevationUnit: { type: String, default: 'meters' }
+        }
+    } );
+    api.define( 'aidStations', {
+        url: 'aid_stations',
+        attributes: {
+            eventId: Number,
+            splitId: Number,
+            status: String
         }
     } );
 
@@ -853,7 +903,7 @@
                 this._elevator = new google.maps.ElevationService();
                 this._map = new google.maps.Map( this.$el, {
                     center: defaultBounds.getCenter(),
-                    mapTypeId: 'satellite',
+                    mapTypeId: 'terrain',
                     zoom: 4,
                     maxZoom: 18,
                     zoomControl: this.locked == undefined,

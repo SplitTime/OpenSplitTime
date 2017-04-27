@@ -101,6 +101,11 @@
 		}
 	}
 
+    .unit-miles:after { content: ' mi'; }
+    .unit-feet:after { content: ' ft'; }
+    .unit-kilometers:after { content: ' km'; }
+    .unit-meters:after { content: ' m'; }
+
 	textarea {
 		resize: none;
 	}
@@ -115,9 +120,9 @@
             }
 		}
 
-        .state,
-		.edit {
-            width: 4em;
+        .edit {
+            width: 6em;
+            font-size: 1.1em;
 		}
 
         tr[disabled] {

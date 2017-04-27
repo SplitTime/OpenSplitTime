@@ -47,7 +47,8 @@ class CoursesController < ApplicationController
   def destroy
     authorize @course
     if @course.events.present?
-      flash[:danger] = 'Course cannot be deleted if events are present on the course. Delete the related events individually and then delete the course.'
+      flash[:danger] = 'Course cannot be deleted if events are present on the course. ' +
+          'Delete the related events individually and then delete the course.'
     else
       @course.destroy
       flash[:success] = 'Course deleted.'
@@ -89,5 +90,4 @@ class CoursesController < ApplicationController
   def set_course
     @course = Course.friendly.find(params[:id])
   end
-
 end

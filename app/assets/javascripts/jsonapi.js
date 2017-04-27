@@ -69,6 +69,95 @@ var JSONAPI = (function ($) {
             }
         }
 
+        function parse( json, url ) {
+            var self = this;
+            var cache = [];
+            var models = [];
+            /* OST Specific Transform */
+            if ( json.event && json.course && json.organization ) {
+                json.data = {
+                    id: json.event.id,
+                    type: 'events',
+                    attributes: json.event,
+                    relationships: {
+                        course: {
+                            id: json.course.id,
+                            type: 'courses'
+                        },
+                        organization: {
+                            id: json.organization.id,
+                            type: 'organizations'
+                        }
+                    }
+                };
+                json.includes = [
+                    {
+                        id: json.course.id,
+                        type: 'courses',
+                        attributes: json.course
+                    },
+                    {
+                        id: json.organization.id,
+                        type: 'organizations',
+                        attributes: json.organization
+                    }
+                ];
+            }
+            /* OST Specific Transform */
+            if ( self instanceof API.Model ) {
+                if ( json.data === null ) {
+                    console.warn( 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
+                    return error( self, 'Unknown Model ID' );
+                }
+                // Server must return a single object of the correct type
+                if ( !$.isPlainObject( json.data ) || json.data.type !== self.__type__ ) {
+                    console.error( 'Invalid JSON API response for \'' + self.__type__ + '\' model.' );
+                    return error( self, 'Invalid Response' );
+                }
+                self.__new__ = false;
+                cache = self.parse( json.data, [ self ] );
+            } else {
+                if ( !$.isArray( json.data ) ) {
+                    console.error( 'Invalid JSON API response from \'' + url + '\'' );
+                    return error( self, 'Invalid Response' );
+                }
+                for ( var i = 0; i < json.data.length; i++ ) {
+                    var model = API.create( json.data[i].type, { id: json.data[i].id } );
+                    model.__new__ = false;
+                    if ( model instanceof API.Model ) {
+                        var data = model.in( cache );
+                        if ( data !== false ) {
+                            model = data;
+                        } else {
+                            cache.push( model );
+                        }
+                        model.parse( json.data[i], cache );
+                        models.push( model );
+                    }
+                }
+            }
+            for ( var i = 0; i < cache.length; i++ ) {
+                if ( cache[i] === self ) continue;
+                var data = cache[i].in( json.included );
+                if ( data !== false ) {
+                    cache[i].parse( data, cache );
+                }
+            }
+
+            for ( var i = 0; i < cache.length; i++ ) {
+                if ( cache[i].afterParse ) cache[i].afterParse();
+            }
+
+            if ( self instanceof API.Model ) {
+                console.info( 'JSONAPI', 'Parsed JSON API response for \'' + self.__type__ + '\' model.' );
+                self.errors = [];
+            } else {
+                console.info( 'JSONAPI', 'Parsed JSON API response from \'' + url + '\'' );
+            }
+
+            return ( self instanceof API.Model ) ? self : models;
+        }
+
         function request( url, type, includes, contentType ) {
             var self = this;
             type = type.toLowerCase();
@@ -92,91 +181,7 @@ var JSONAPI = (function ($) {
                     data: data
                 } )
                 .then( function( json ) {
-                    var cache = [];
-                    var models = [];
-                    /* OST Specific Transform */
-                    if ( json.event && json.course && json.organization ) {
-                        json.data = {
-                            id: json.event.id,
-                            type: 'events',
-                            attributes: json.event,
-                            relationships: {
-                                course: {
-                                    id: json.course.id,
-                                    type: 'courses'
-                                },
-                                organization: {
-                                    id: json.organization.id,
-                                    type: 'organizations'
-                                }
-                            }
-                        };
-                        json.includes = [
-                            {
-                                id: json.course.id,
-                                type: 'courses',
-                                attributes: json.course
-                            },
-                            {
-                                id: json.organization.id,
-                                type: 'organizations',
-                                attributes: json.organization
-                            }
-                        ];
-                    }
-                    /* OST Specific Transform */
-                    if ( self instanceof API.Model ) {
-                        if ( json.data === null ) {
-                            console.warn( 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
-                            return error( self, 'Unknown Model ID' );
-                        }
-                        // Server must return a single object of the correct type
-                        if ( !$.isPlainObject( json.data ) || json.data.type !== self.__type__ ) {
-                            console.error( 'Invalid JSON API response for \'' + self.__type__ + '\' model.' );
-                            return error( self, 'Invalid Response' );
-                        }
-                        self.__new__ = false;
-                        cache = self.parse( json.data, [ self ] );
-                    } else {
-                        if ( !$.isArray( json.data ) ) {
-                            console.error( 'Invalid JSON API response from \'' + url + '\'' );
-                            return error( self, 'Invalid Response' );
-                        }
-                        for ( var i = 0; i < json.data.length; i++ ) {
-                            var model = API.create( json.data[i].type, { id: json.data[i].id } );
-                            model.__new__ = false;
-                            if ( model instanceof API.Model ) {
-                                var data = model.in( cache );
-                                if ( data !== false ) {
-                                    model = data;
-                                } else {
-                                    cache.push( model );
-                                }
-                                model.parse( json.data[i], cache );
-                                models.push( model );
-                            }
-                        }
-                    }
-                    for ( var i = 0; i < cache.length; i++ ) {
-                        if ( cache[i] === self ) continue;
-                        var data = cache[i].in( json.included );
-                        if ( data !== false ) {
-                            cache[i].parse( data, cache );
-                        }
-                    }
-
-                    for ( var i = 0; i < cache.length; i++ ) {
-                        if ( cache[i].afterParse ) cache[i].afterParse();
-                    }
-
-                    if ( self instanceof API.Model ) {
-                        console.info( 'JSONAPI', 'Parsed JSON API response for \'' + self.__type__ + '\' model.' );
-                        self.errors = [];
-                    } else {
-                        console.info( 'JSONAPI', 'Parsed JSON API response from \'' + url + '\'' );
-                    }
-
-                    return ( self instanceof API.Model ) ? self : models;
+                    return parse.call( self, json, url );
                 } , function( a,b,c ) {
                     if ( a.status === 404 ) {
                         console.warn( 'JSONAPI', 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
@@ -470,6 +475,10 @@ var JSONAPI = (function ($) {
         this.find = function( name, id ) {
             var model = this.create( name, { id: id } );
             return ( model instanceof API.Model ) ? model.fetch() : $.Deferred().reject();
+        }
+
+        this.parse = function( json ) {
+            return parse( json || {} );
         }
 
         this.all = function( name ) {

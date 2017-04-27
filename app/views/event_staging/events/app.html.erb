@@ -155,7 +155,7 @@
 		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
 		<p>
 			<router-link to="/" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous</router-link>
-			<router-link to="/participants" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+			<router-link to="/entrants" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
 		</p>
 	</aside>
 	<article class="col-xs-12 col-sm-8" v-if="eventModel.course">
@@ -234,11 +234,11 @@
 						<span>Import GPX File</span>
 					</ajax-import>
 				</p>
-				<router-link to="/participants" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
+				<router-link to="/entrants" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
 			</div>
 		</div>
 	</article>
-	<edit-modal v-if="eventModel.course" v-model="modalData" :validator="modalData.validate" :extra="eventModel" v-on:change="!( modalData._dtid ) && eventModel.course.splits.push( modalData );" inline-template>
+	<edit-modal v-if="eventModel.course" v-model="modalData" :extra="eventModel" v-on:change="!( modalData._dtid ) && eventModel.course.splits.push( modalData );" inline-template>
 		<div id="js-split-modal" tabindex="-1" role="dialog" class="modal fade">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
@@ -352,7 +352,7 @@
 								<div class="col-xs-12 split-modal-btn-wrap">
 									<p v-for="err in error">{{ err }}</p>
 									<span class="brackets" data-dismiss="modal" v-on:click="model.fetch()"><a href="#">Cancel</a></span>
-									<button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="valid" v-promise:click="[value.post, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
+									<button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done'); value.__new__ || value.associate( true )" v-on:fail="error = $event.data.errors">
 										<template v-if="!model._dtid">Add Split</template>
 										<template v-else>Done</template>
 									</button>
@@ -368,7 +368,7 @@
 	</edit-modal>
 </div></script>
 
-<script type="text/x-template" id="participants"><div>
+<script type="text/x-template" id="entrants"><div>
 	<aside class="col-xs-12 col-sm-4 full-bg">
 		<h3>
 			<span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
@@ -431,7 +431,7 @@
 			</div>
 		</div>
 	</article>
-	<edit-modal v-model="modalData" :validator="modalData.validate" v-on:done="saveEffort" inline-template>
+	<edit-modal v-model="modalData" v-on:done="saveEffort" inline-template>
 		<div id="js-participant-modal" tabindex="-1" role="dialog" class="modal fade participant-modal">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -526,7 +526,7 @@
 										</div>
 										<div class="col-xs-12 sto-input-wrap">
 											<span class="sto-or">or</span>
-											<input type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '-?([1-9][0-9]*|0):[0-5][0-9]', placeholder: '' }" placeholder="hh:mm"></input>
+											<input type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^-?([0-9]*:[0-5]|[0-5]?)[0-9]$', placeholder: '' }" placeholder="hh:mm"></input>
 										</div>
 									</div>
 								</div>
@@ -536,7 +536,7 @@
 							<div class="col-xs-12">
 								<p v-for="err in error">{{ err }}</p>
 								<span class="brackets" data-dismiss="modal" v-on:click="model.fetch()"><a href="#">Cancel</a></span>
-								<button type="button" class="btn btn-primary" v-bind:disabled="valid" v-promise:click="[value.post, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
+								<button type="button" class="btn btn-primary" v-bind:disabled="invalid" v-promise:click="[value.post, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
 									<template v-if="!model._dtid">Add Entrant</template>
 									<template v-else>Done</template>
 								</button>
@@ -554,7 +554,7 @@
 		<h3><strong>Confirm Your Race Information</strong></h3>
 		<p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
 		<p>
-			<router-link to="/participants" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous</router-link>
+			<router-link to="/entrants" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous</router-link>
 			<router-link to="/published" class="btn btn-primary">Publish&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
 		</p>
 	</aside>
@@ -599,14 +599,14 @@
 				</tr>
 				<tr>
 					<th>
-						<span>Participants<br><span class="participants-count">({{ eventModel.efforts.length }})</span></span>
+						<span>Entrants<br><span class="participants-count">({{ eventModel.efforts.length }})</span></span>
 					</th>
 					<td>
 						<span class="row-content" v-for="participant in eventModel.efforts">
 							{{ participant.firstName }} {{ participant.lastName }}<span v-if="eventModel.efforts.length > 1">,</span>
 						</span>
 					</td>
-					<td><span class="brackets"><router-link to="/participants">Edit</router-link></span></td>
+					<td><span class="brackets"><router-link to="/entrants">Edit</router-link></span></td>
 				</tr>
 			</tbody>
 		</table>
@@ -627,10 +627,14 @@
 </div></script>
 
 <!-- Vue.js Applet -->
-
+<script>
+	window._rails_assets || ( window._rails_assets = {} )
+	window._rails_assets.dotGreen = "<%= asset_path( '/assets/icons/dot-green.svg' ) %>";
+	window._rails_assets.dotBlue = "<%= asset_path( '/assets/icons/dot-blue.svg' ) %>";
+	window._rails_assets.dotLBlue = "<%= asset_path( '/assets/icons/dot-lblue.svg' ) %>";
+	window._rails_assets.marker = "<%= asset_path( '/assets/icons/dblue.svg' ) %>";
+</script>
 <div id="event-app" data-uuid="<%= @event ? @event.staging_id : params[:staging_id] %>">
-	<script id="event-app-data" type="text/json"></script>
-
 	<div class="container-fluid header">
 		<div class="container">
 			<h2><strong>Create Race</strong></h2>
@@ -638,7 +642,7 @@
 				<ul>
 					<li is="router-link" to="/" tag="li" exact><a href="#"><span>Your Event</span></a></li>
 					<li is="router-link" to="/splits" tag="li"><a href="#"><span>Splits</span></a></li>
-					<li is="router-link" to="/participants" tag="li"><a href="#"><span>Entrants</span></a></li>
+					<li is="router-link" to="/entrants" tag="li"><a href="#"><span>Entrants</span></a></li>
 					<li is="router-link" to="/confirmation" tag="li"><a href="#"><span>Confirmation</span></a></li>
 					<li is="router-link" to="/published" tag="li"><a href="#"><span>Published</span></a></li>
 				</ul>

@@ -186,6 +186,42 @@ RSpec.describe Split, kind: :model do
       split.name_extensions = %w(IN out)
       expect(split.sub_split_bitmap).to eq(65)
     end
+
+    it 'functions correctly if passed a single extension as a string' do
+      split = Split.new
+      split.name_extensions = 'Out'
+      expect(split.sub_split_bitmap).to eq(64)
+    end
+
+    it 'functions correctly if passed two extensions as a string separated by a space' do
+      split = Split.new
+      split.name_extensions = 'In Out'
+      expect(split.sub_split_bitmap).to eq(65)
+    end
+
+    it 'ignores unrecognized extensions' do
+      split = Split.new
+      split.name_extensions = 'In Hello Out'
+      expect(split.sub_split_bitmap).to eq(65)
+    end
+
+    it 'sets sub_split_bitmap to 1 if provided with no recognized extensions' do
+      split = Split.new
+      split.name_extensions = 'Hello There'
+      expect(split.sub_split_bitmap).to eq(1)
+    end
+
+    it 'sets sub_split_bitmap to 1 if provided with an empty string' do
+      split = Split.new
+      split.name_extensions = ''
+      expect(split.sub_split_bitmap).to eq(1)
+    end
+
+    it 'sets sub_split_bitmap to 1 if provided with nil' do
+      split = Split.new
+      split.name_extensions = nil
+      expect(split.sub_split_bitmap).to eq(1)
+    end
   end
 
   context 'when there is no current user (therefore no preferred distance or elevation units)' do

@@ -111,6 +111,16 @@ class Split < ActiveRecord::Base
     sub_split_bitkeys.map { |bitkey| SubSplit.kind(bitkey) }
   end
 
+  def name_extensions=(extensions)
+    name_extension_array = extensions.respond_to?(:map) ? extensions : extensions.to_s.split
+    bitkeys = name_extension_array.map { |name_extension| SubSplit.bitkey(name_extension) }.compact
+    if bitkeys.present?
+      self.sub_split_bitmap = bitkeys.inject(:|)
+    else
+      self.sub_split_bitmap = SubSplit::IN_BITKEY
+    end
+  end
+
   def sub_splits
     sub_split_bitkeys.map { |bitkey| {id => bitkey} }
   end
@@ -135,15 +145,6 @@ class Split < ActiveRecord::Base
 
   def out_bitkey
     bitkeys.find { |bitkey| bitkey == SubSplit::OUT_BITKEY }
-  end
-
-  def name_extensions=(name_extension_array)
-    if name_extension_array
-      bitkeys = name_extension_array.map { |name_extension| SubSplit.bitkey(name_extension) }
-      self.sub_split_bitmap = bitkeys.compact.inject(:|)
-    else
-      self.sub_split_bitmap = SubSplit::IN_BITKEY
-    end
   end
 
   def course_index # Returns an integer representing the split's relative position on the course

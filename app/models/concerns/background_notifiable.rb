@@ -13,11 +13,11 @@ module BackgroundNotifiable
   end
 
   def report_status(args)
-    notifier.publish(channel: background_channel, event: 'update', message: args[:message])
+    notifier.publish(channel: background_channel, event: 'update', message: args[:message]) if background_channel
   end
 
   def report_error(args)
-    notifier.publish(channel: background_channel, event: 'error', message: args[:message])
+    notifier.publish(channel: background_channel, event: 'error', message: args[:message]) if background_channel
   end
 
   private

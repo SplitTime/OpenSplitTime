@@ -1243,20 +1243,25 @@
                             // Fire on next tick to allow data to update completely
                             Vue.nextTick( function() {
                                 // Generate Button
-                                var button = $( '<button class="btn btn-danger"></button>' );
-                                button.text( $el.data( 'v-confirm' )[ binding.arg ] );
+                                var button = $( '<p></p><button class="btn btn-danger">Confirm</button>' );
+                                button.filter( 'p' )
+                                    .text( $el.data( 'v-confirm' )[ binding.arg ] )
+                                    .css( 'max-width', '150px' );
+                                button.filter( 'button' )
+                                    .css( 'margin', '0 auto' )
+                                    .css( 'display', 'block' )
+                                    .one( 'click', fireEvent( 'confirm' ) );
                                 // Generate Popover
                                 $el.popover( {
                                     trigger: 'manual',
                                     container: 'body',
+                                    placement: 'left',
                                     content: button,
                                     html: true
                                 } );
                                 $el.popover( 'show' );
                                 // Hide on next click
                                 $( document ).one( 'click', $el.popover.bind( $el, 'destroy' ) );
-                                // Fire Confirm If Button is Clicked
-                                button.one( 'click', fireEvent( 'confirm' ) );
                             } );
                         } );
                     }

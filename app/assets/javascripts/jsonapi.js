@@ -81,12 +81,16 @@ var JSONAPI = (function ($) {
                     attributes: json.event,
                     relationships: {
                         course: {
-                            id: json.course.id,
-                            type: 'courses'
+                            data: {
+                                id: json.course.id,
+                                type: 'courses'
+                            }
                         },
                         organization: {
-                            id: json.organization.id,
-                            type: 'organizations'
+                            data: {
+                                id: json.organization.id,
+                                type: 'organizations'
+                            }
                         }
                     }
                 };

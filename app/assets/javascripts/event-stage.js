@@ -807,9 +807,20 @@
                         } else {
                             marker = this._route[ e[i]._gmid ];
                         }
+                        var icon;
+                        switch( e[i].kind ) {
+                            case 'start':
+                                icon = window._rails_assets.dotGreen;
+                                break;
+                            case 'finish':
+                                icon = window._rails_assets.dotCheckered;
+                                break;
+                            default:
+                                icon = window._rails_assets.dotBlue;
+                        }
                         // Update Marker
                         marker.setIcon( {
-                            url: e[i].kind === 'start' ? window._rails_assets.dotGreen : window._rails_assets.dotBlue,
+                            url: icon,
                             labelOrigin: new google.maps.Point( 12, 14 ),
                             anchor: new google.maps.Point( 16, 16 )
                         } );

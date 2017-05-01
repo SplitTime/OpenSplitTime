@@ -36,9 +36,8 @@ describe String do
       expect(''.to_boolean).to eq(nil)
     end
 
-    # This is deprecated and will return true in Rails 5
     it 'returns false when called on an unknown string value' do
-      expect('hello'.to_boolean).to eq(false)
+      expect('hello'.to_boolean).to eq(true)
     end
   end
 

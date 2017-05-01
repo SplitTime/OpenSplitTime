@@ -28,21 +28,21 @@ describe Api::V1::OrganizationsController do
 
     it 'sorts properly in ascending order based on a provided sort parameter' do
       expected = %w(Alpha Bravo Charlie Delta)
-      get :index, sort: 'name'
+      get :index, params: {sort: 'name'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
     end
 
     it 'sorts properly in descending order based on a provided sort parameter with a minus sign' do
       expected = %w(Delta Charlie Bravo Alpha)
-      get :index, sort: '-name'
+      get :index, params: {sort: '-name'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
     end
 
     it 'sorts properly on multiple fields' do
       expected = %w(Alpha Charlie Bravo Delta)
-      get :index, sort: 'description,name'
+      get :index, params: {sort: 'description,name'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
     end
@@ -50,19 +50,19 @@ describe Api::V1::OrganizationsController do
 
   describe '#show' do
     it 'returns a successful 200 response' do
-      get :show, id: organization
+      get :show, params: {id: organization}
       expect(response.status).to eq(200)
     end
 
     it 'returns data of a single organization' do
-      get :show, id: organization
+      get :show, params: {id: organization}
       expect(response.body).to be_jsonapi_response_for('organizations')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(organization.id)
     end
 
     it 'returns an error if the organization does not exist' do
-      get :show, id: 0
+      get :show, params: {id: 0}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)
@@ -71,7 +71,7 @@ describe Api::V1::OrganizationsController do
 
   describe '#create' do
     it 'returns a successful json response' do
-      post :create, data: {type: 'organizations', attributes: {name: 'Test Organization'} }
+      post :create, params: {data: {type: 'organizations', attributes: {name: 'Test Organization'} }}
       expect(response.body).to be_jsonapi_response_for('organizations')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
@@ -80,7 +80,7 @@ describe Api::V1::OrganizationsController do
 
     it 'creates a organization record' do
       expect(Organization.all.count).to eq(0)
-      post :create, data: {type: 'organizations', attributes: {name: 'Test Organization'} }
+      post :create, params: {data: {type: 'organizations', attributes: {name: 'Test Organization'} }}
       expect(Organization.all.count).to eq(1)
     end
   end
@@ -89,19 +89,19 @@ describe Api::V1::OrganizationsController do
     let(:attributes) { {name: 'Updated Organization Name'} }
 
     it 'returns a successful json response' do
-      put :update, id: organization, data: {type: 'organizations', attributes: attributes }
+      put :update, params: {id: organization, data: {type: 'organizations', attributes: attributes }}
       expect(response.body).to be_jsonapi_response_for('organizations')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: organization, data: {type: 'organizations', attributes: attributes }
+      put :update, params: {id: organization, data: {type: 'organizations', attributes: attributes }}
       organization.reload
       expect(organization.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the organization does not exist' do
-      put :update, id: 0, data: {type: 'organizations', attributes: attributes }
+      put :update, params: {id: 0, data: {type: 'organizations', attributes: attributes }}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)
@@ -110,19 +110,19 @@ describe Api::V1::OrganizationsController do
 
   describe '#destroy' do
     it 'returns a successful json response' do
-      delete :destroy, id: organization
+      delete :destroy, params: {id: organization}
       expect(response.status).to eq(200)
     end
 
     it 'destroys the organization record' do
       test_organization = organization
       expect(Organization.all.count).to eq(1)
-      delete :destroy, id: test_organization
+      delete :destroy, {id: test_organization}
       expect(Organization.all.count).to eq(0)
     end
 
     it 'returns an error if the organization does not exist' do
-      delete :destroy, id: 0
+      delete :destroy, params: {id: 0}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

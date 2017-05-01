@@ -3,7 +3,7 @@ class ParticipantsController < ApplicationController
   before_action :set_participant, except: [:index, :new, :create, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :subregion_options]
 
-  before_filter do
+  before_action do
     locale = params[:locale]
     Carmen.i18n_backend.locale = locale if locale
   end

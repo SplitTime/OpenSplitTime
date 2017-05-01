@@ -3,7 +3,7 @@ class EffortsController < ApplicationController
   before_action :set_effort, except: [:index, :new, :create, :associate_participants, :mini_table, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options]
 
-  before_filter do
+  before_action do
     locale = params[:locale]
     Carmen.i18n_backend.locale = locale if locale
   end

@@ -24,10 +24,14 @@ class Api::V1::StagingController < ApiController
 
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
-    course = Course.find_or_initialize_by(id: params[:course][:id])
+    course_id = params[:course] && params[:course][:id]
+    course = Course.find_or_initialize_by(id: course_id)
     authorize course unless course.new_record?
-    organization = Organization.find_or_initialize_by(id: params[:organization][:id])
+
+    org_id = params[:organization] && params[:organization][:id]
+    organization = Organization.find_or_initialize_by(id: org_id)
     authorize organization unless organization.new_record?
+
     setter = EventCourseOrgSetter.new(event: @event, course: course, organization: organization, params: params)
     setter.set_resources
     render json: setter.response, status: setter.status

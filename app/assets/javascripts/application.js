@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/effect-highlight
+//= require jquery-ui/effects/effect-highlight
 //= require twitter/bootstrap
 // require turbolinks
 //= require gmaps/google

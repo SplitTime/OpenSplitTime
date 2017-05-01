@@ -127,7 +127,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def split_name
-    @split_name ||= split ? split.name(bitkey) : '[unknown split]'
+    split ? split.name(bitkey) : '[unknown split]'
   end
 
   def split_name_with_lap

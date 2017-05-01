@@ -20,10 +20,10 @@ class LiveTimeRowImporter
 
   def import
     time_rows.each do |time_row|
-      effort_data = NewLiveEffortData.new(event: event,
-                                          params: time_row,
-                                          ordered_splits: ordered_splits,
-                                          times_container: times_container)
+      effort_data = LiveEffortData.new(event: event,
+                                       params: time_row,
+                                       ordered_splits: ordered_splits,
+                                       times_container: times_container)
 
       # If just one row was submitted, assume the user has noticed if data status is bad or questionable,
       # or if times will be overwritten, so call bulk_create_or_update with force option. If more than one

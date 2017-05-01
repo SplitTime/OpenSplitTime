@@ -21,10 +21,10 @@ class LiveFileTransformer
 
   def returned_rows
     @returned_rows ||= file_rows.map do |file_row|
-      NewLiveEffortData.response_row(event: event,
-                                     params: file_row,
-                                     times_container: times_container,
-                                     ordered_splits: ordered_splits)
+      LiveEffortData.response_row(event: event,
+                                  params: file_row,
+                                  times_container: times_container,
+                                  ordered_splits: ordered_splits)
     end
   end
 

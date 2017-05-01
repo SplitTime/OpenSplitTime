@@ -9,29 +9,29 @@ RSpec.describe LiveDataEntryReporter do
   let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
   describe '#initialize' do
-    it 'initializes with an event and params and a NewLiveEffortData object in an args hash' do
+    it 'initializes with an event and params and a LiveEffortData object in an args hash' do
       event = FactoryGirl.build_stubbed(:event)
       params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = instance_double(NewLiveEffortData)
+      effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if no event is given' do
       params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = instance_double(NewLiveEffortData)
+      effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(params: params, effort_data: effort_data) }.to raise_error(/must include event/)
     end
 
     it 'raises an ArgumentError if no params are given' do
       event = FactoryGirl.build_stubbed(:event)
-      effort_data = instance_double(NewLiveEffortData)
+      effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, effort_data: effort_data) }.to raise_error(/must include params/)
     end
 
     it 'raises an ArgumentError if any parameter other than event, params, or effort_data is given' do
       event = FactoryGirl.build_stubbed(:event)
       params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = instance_double(NewLiveEffortData)
+      effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data, random_param: 123) }
           .to raise_error(/may not include random_param/)
     end
@@ -204,11 +204,11 @@ RSpec.describe LiveDataEntryReporter do
   def build_live_effort_data(event, effort, split_times, ordered_splits, params)
     allow(event).to receive(:ordered_splits).and_return(ordered_splits)
     allow(effort).to receive(:ordered_split_times).and_return(split_times)
-    NewLiveEffortData.new(event: event,
-                          params: params,
-                          ordered_splits: ordered_splits,
-                          effort: effort,
-                          times_container: times_container)
+    LiveEffortData.new(event: event,
+                       params: params,
+                       ordered_splits: ordered_splits,
+                       effort: effort,
+                       times_container: times_container)
   end
 
   def build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,

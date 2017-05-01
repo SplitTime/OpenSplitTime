@@ -8,7 +8,7 @@ class LiveDataEntryReporter
                            class: self.class)
     @event = args[:event]
     @params = args[:params].symbolize_keys
-    @effort_data = args[:effort_data] || NewLiveEffortData.new(event: event, params: params)
+    @effort_data = args[:effort_data] || LiveEffortData.new(event: event, params: params)
   end
 
   def full_report

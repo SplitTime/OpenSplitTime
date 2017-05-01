@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ActionDispatch::TestProcess
 
-RSpec.describe NewLiveEffortData do
+RSpec.describe LiveEffortData do
   before do
     FactoryGirl.reload
   end
@@ -13,20 +13,20 @@ RSpec.describe NewLiveEffortData do
     it 'initializes with an event and params in an args hash' do
       event = FactoryGirl.build_stubbed(:event)
       params = {'split_id' => '2', 'lap' => '1', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      expect { NewLiveEffortData.new(event: event, params: params) }.not_to raise_error
+      expect { LiveEffortData.new(event: event, params: params) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if no event is given' do
       params = {'split_id' => '2', 'lap' => '1', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      expect { NewLiveEffortData.new(params: params) }.to raise_error(/must include event/)
+      expect { LiveEffortData.new(params: params) }.to raise_error(/must include event/)
     end
 
     it 'raises an ArgumentError if any parameter other than event, params, lap_splits, or times_container is given' do
       event = FactoryGirl.build_stubbed(:event)
       params = {'split_id' => '2', 'lap' => '1', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort = Effort.new
-      expect { NewLiveEffortData.new(event: event, params: params, ordered_splits: [], effort: effort,
-                                     times_container: times_container, random_param: 123) }
+      expect { LiveEffortData.new(event: event, params: params, ordered_splits: [], effort: effort,
+                                  times_container: times_container, random_param: 123) }
           .to raise_error(/may not include random_param/)
     end
   end
@@ -361,11 +361,11 @@ RSpec.describe NewLiveEffortData do
       ordered_splits = event.splits
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      effort_data = NewLiveEffortData.new(event: event,
-                                          params: params,
-                                          ordered_splits: ordered_splits,
-                                          effort: effort,
-                                          times_container: times_container)
+      effort_data = LiveEffortData.new(event: event,
+                                       params: params,
+                                       ordered_splits: ordered_splits,
+                                       effort: effort,
+                                       times_container: times_container)
       attributes.each do |in_out, pairs|
         pairs.each do |attribute, expected|
           expect(effort_data.new_split_times[in_out].send(attribute)).to eq(expected)
@@ -434,11 +434,11 @@ RSpec.describe NewLiveEffortData do
       ordered_splits = event.splits
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      effort_data = NewLiveEffortData.new(event: event,
-                                          params: params,
-                                          ordered_splits: ordered_splits,
-                                          effort: effort,
-                                          times_container: times_container)
+      effort_data = LiveEffortData.new(event: event,
+                                       params: params,
+                                       ordered_splits: ordered_splits,
+                                       effort: effort,
+                                       times_container: times_container)
       attributes.each do |in_out, expected|
         expect(effort_data.times_exist[in_out]).to eq(expected)
       end
@@ -517,11 +517,11 @@ RSpec.describe NewLiveEffortData do
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
       allow_any_instance_of(Course).to receive(:ordered_splits).and_return(ordered_splits)
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      effort_data = NewLiveEffortData.new(event: event,
-                                          params: params,
-                                          ordered_splits: ordered_splits,
-                                          effort: effort,
-                                          times_container: times_container)
+      effort_data = LiveEffortData.new(event: event,
+                                       params: params,
+                                       ordered_splits: ordered_splits,
+                                       effort: effort,
+                                       times_container: times_container)
       expect(effort_data.lap).to eq(expected)
     end
   end

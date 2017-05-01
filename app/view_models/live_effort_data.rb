@@ -1,4 +1,4 @@
-class NewLiveEffortData
+class LiveEffortData
   attr_reader :ordered_splits, :effort, :new_split_times, :indexed_existing_split_times
   delegate :participant_id, to: :effort
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
@@ -191,7 +191,7 @@ class NewLiveEffortData
   end
 
   def validate_setup
-    warn "DEPRECATION WARNING: params #{params} contain no :lap key; NewLiveEffortData will assume lap: 1 " +
+    warn "DEPRECATION WARNING: params #{params} contain no :lap key; LiveEffortData will assume lap: 1 " +
              'but this is deprecated. Lack of a lap parameter may fail in the future.' if params[:lap].nil?
   end
 end

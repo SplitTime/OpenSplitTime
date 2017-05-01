@@ -179,7 +179,7 @@ class NewLiveEffortData
   end
 
   def day_and_time(kind)
-    effort.real_presence && IntendedTimeCalculator.day_and_time(military_time: param_with_kind('time', kind),
+    effort.real_presence && IntendedTimeCalculator.day_and_time(military_time: param_with_kind('time', kind) || '',
                                                                 effort: effort,
                                                                 time_point: time_points[kind],
                                                                 lap_splits: effort_lap_splits,
@@ -192,6 +192,6 @@ class NewLiveEffortData
 
   def validate_setup
     warn "DEPRECATION WARNING: params #{params} contain no :lap key; NewLiveEffortData will assume lap: 1 " +
-             "but this is deprecated, and lack of a lap parameter may fail in the future." if params[:lap].nil?
+             'but this is deprecated. Lack of a lap parameter may fail in the future.' if params[:lap].nil?
   end
 end

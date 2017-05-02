@@ -193,7 +193,6 @@
                 if ( !this.lastName ) return false;
                 if ( !this.gender ) return false;
                 if ( !this.bibNumber ) return false;
-                if ( !this.email ) return false;
                 return true;
             }
         }
@@ -1050,10 +1049,10 @@
                         var reset = function() {
                             // Locally clone existing object
                             self.model = self.value;
+                            self.model.fetch();
                             self.error = null;
-                            $( self.$el ).modal( 'hide' );
                         };
-                        $( this.$el ).on( 'show.bs.modal hidden.bs.modal', reset );
+                        $( this.$el ).on( 'show.bs.modal hide.bs.modal', reset );
                         this.$on( 'cancel', reset );
                         this.$on( 'done', function() {
                             self.$emit( 'change' );

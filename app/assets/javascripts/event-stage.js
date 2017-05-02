@@ -11,6 +11,7 @@
      */
     var locales = {
         countries : [],
+        countryNames : {},
         regions : {}
     }
 
@@ -182,6 +183,24 @@
                     }
                     if ( $.isNumeric( time ) )
                         this.startOffset = time;
+                }
+            },
+            location: {
+                get: function() {
+                    var location = '';
+                    if ( this.city ) {
+                        location += this.city;
+                    }
+                    if ( this.stateCode ) {
+                        location += ( location == '' ) ? '' : ', ';
+                        location += locales.regions[ this.countryCode ][ this.stateCode ];
+                    }
+                    if ( location == '' || !this.stateCode ) {
+                        location += ' ' + locales.countryNames[ this.countryCode ];
+                    } else {
+                        location += ' ' + this.countryCode;
+                    }
+                    return location;
                 }
             },
             // Event ID Polyfill
@@ -391,6 +410,7 @@
             $.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
                 for ( var i in response.countries ) {
                     locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
+                    locales.countryNames[ response.countries[i].code ] = response.countries[i].name;
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
                 }               

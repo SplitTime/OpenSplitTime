@@ -291,7 +291,7 @@
 												<span class="custom-radio-label">Time In</span>
 											</label>&nbsp;&nbsp;
 											<label class="custom-radio">
-												<input type="radio" name="split-time" :value="['In','Out']" v-model="model.nameExtensions" :disabled="model.kind === 'finish'">
+												<input type="radio" name="split-time" :value="['In','Out']" v-model="model.nameExtensions" :disabled="model.kind !== 'intermediate'">
 												<span class="custom-radio-indicator"></span>
 												<span class="custom-radio-label">Time In and Out</span>
 											</label>

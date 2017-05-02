@@ -957,7 +957,7 @@
                     center: defaultBounds.getCenter(),
                     mapTypeId: 'terrain',
                     zoom: 4,
-                    maxZoom: 18,
+                    maxZoom: 16,
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,

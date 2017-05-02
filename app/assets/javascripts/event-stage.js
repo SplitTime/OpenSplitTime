@@ -11,6 +11,7 @@
      */
     var locales = {
         countries : [],
+        countryNames : {},
         regions : {}
     }
 
@@ -119,7 +120,6 @@
             },
             validate: function() {
                 if ( !this.baseName ) return false;
-                if ( !this.description ) return false;
                 if ( !this.nameExtensions ) return false;
                 if ( !$.isNumeric( this.distanceFromStart ) ) return false;
                 if ( !$.isNumeric( this.vertGainFromStart ) ) return false;
@@ -142,7 +142,7 @@
             city: String,
             stateCode: String,
             countryCode: String,
-            startOffset: { type: Number, default: 0 },
+            startOffset: { type: Number, default: null },
             startDate: {
                 get: function() {
                     var startTime = eventStage.data.eventModel.startTime;
@@ -163,15 +163,17 @@
             },
             offsetTime: {
                 get: function() {
-                    if ( this.offset === '' ) return '';
+                    if ( this.startOffset === null ) return '';
                     var hours = Math.floor( Math.abs( this.startOffset ) / 60 );
                     if ( this.startOffset < 0 ) hours = "-" + hours;
                     var minutes = ( ( "0" + Math.abs( this.startOffset % 60 ) ).slice( -2 ) );
                     return ( hours != 0 ) ? hours + ":" + minutes : this.startOffset % 60;
                 },
                 set: function( value ) {
-                    this.offset = value;
-                    if ( value === '' ) return;
+                    if ( value === '' ) {
+                        this.startOffset = null; 
+                        return;
+                    }
                     var time = value.split( ':' );
                     if ( time.length > 1 ) {
                         var hours = time[0] * 60;
@@ -183,6 +185,24 @@
                         this.startOffset = time;
                 }
             },
+            location: {
+                get: function() {
+                    var location = '';
+                    if ( this.city ) {
+                        location += this.city;
+                    }
+                    if ( this.stateCode ) {
+                        location += ( location == '' ) ? '' : ', ';
+                        location += locales.regions[ this.countryCode ][ this.stateCode ];
+                    }
+                    if ( location == '' || !this.stateCode ) {
+                        location += ' ' + locales.countryNames[ this.countryCode ];
+                    } else {
+                        location += ' ' + this.countryCode;
+                    }
+                    return location;
+                }
+            },
             // Event ID Polyfill
             event_id: { get: function() { return eventStage.data.eventModel ? eventStage.data.eventModel.id: null; } }
         },
@@ -192,10 +212,6 @@
                 if ( !this.lastName ) return false;
                 if ( !this.gender ) return false;
                 if ( !this.bibNumber ) return false;
-                if ( !this.email ) return false;
-                if ( !this.city ) return false;
-                if ( !this.stateCode ) return false;
-                if ( !this.countryCode ) return false;
                 return true;
             }
         }
@@ -394,6 +410,7 @@
             $.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
                 for ( var i in response.countries ) {
                     locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
+                    locales.countryNames[ response.countries[i].code ] = response.countries[i].name;
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
                 }               
@@ -791,7 +808,7 @@
                         if ( isNaN( parseFloat( e[i].latitude ) ) || isNaN( parseFloat( e[i].longitude ) ) ) continue;
                         var latlng = { lat: parseFloat( e[i].latitude ) , lng: parseFloat( e[i].longitude ) };
                         bounds.extend( latlng );
-                        path.push( latlng );
+                        if ( e[i].associated ) path.push( latlng );
                         // Make Marker
                         var marker = null;
                         if ( !e[i]._gmid || !this._route[ e[i]._gmid ] ) {
@@ -958,7 +975,8 @@
                     center: defaultBounds.getCenter(),
                     mapTypeId: 'terrain',
                     zoom: 4,
-                    maxZoom: 18,
+                    maxZoom: 16,
+                    draggableCursor: 'crosshair',
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,
@@ -1051,10 +1069,10 @@
                         var reset = function() {
                             // Locally clone existing object
                             self.model = self.value;
+                            self.model.fetch();
                             self.error = null;
-                            $( self.$el ).modal( 'hide' );
                         };
-                        $( this.$el ).on( 'show.bs.modal hidden.bs.modal', reset );
+                        $( this.$el ).on( 'show.bs.modal hide.bs.modal', reset );
                         this.$on( 'cancel', reset );
                         this.$on( 'done', function() {
                             self.$emit( 'change' );

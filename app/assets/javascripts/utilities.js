@@ -122,9 +122,21 @@
 
     var datepicker = {
         init: function () {
+            var update = function( e ) {
+                /*
+                 * BruceLampson on Dec 31, 2016
+                 * https://github.com/RobinHerbots/Inputmask/issues/1468
+                 */
+                var event = document.createEvent( 'HTMLEvents' );
+                event.initEvent( 'input', true, true );
+                e.currentTarget.dispatchEvent( event );
+                $( this ).trigger( 'change' );
+            };
             $( '[data-toggle="datetimepicker"]' ).each( function( i, el ) {
                 $( el ).datetimepicker( {
                     format: $( el ).data( 'format' ) || false
+                } ).on( 'dp.change', function( e ) {
+                    update( e );
                 } );
             } );
         }

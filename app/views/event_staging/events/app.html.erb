@@ -642,7 +642,11 @@
 		<div class="container">
 			<h2>
 				<strong v-if="eventModel.__new__">Create Race</strong>
-				<strong v-else>{{ eventModel.name }}</strong>
+				<strong v-else>
+					{{ eventModel.name }}
+					<i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close"></i>
+					<i v-else class="glyphicon glyphicon-eye-open"></i>
+				</strong>
 			</h2>
 			<nav class="progress-bar-nav">
 				<ul>

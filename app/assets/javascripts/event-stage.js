@@ -192,9 +192,6 @@
                 if ( !this.gender ) return false;
                 if ( !this.bibNumber ) return false;
                 if ( !this.email ) return false;
-                if ( !this.city ) return false;
-                if ( !this.stateCode ) return false;
-                if ( !this.countryCode ) return false;
                 return true;
             }
         }

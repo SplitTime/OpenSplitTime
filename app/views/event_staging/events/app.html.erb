@@ -493,21 +493,25 @@
 						</div>
 						<div class="row">
 							<div class="form-group col-xs-6">
-								<label class="required">Country</label>
-								<select id="js-participants-contry" class="form-control" v-model="model.countryCode" v-on:change="model.stateCode = Object.keys( regions[ model.countryCode ] || 'N/A' )[0]">
+								<label>Country</label>
+								<select class="form-control" v-model="model.countryCode" v-on:change="model.stateCode = null">
+									<option :value="null"></option>
 									<option v-for="country in countries" :value="country.code">{{ country.name }}</option>
 								</select>
 							</div>
 							<div class="form-group col-xs-6">
-								<label class="required">State / Region</label>
-								<select id="js-participants-state" class="form-control" v-model="model.stateCode" :disabled="!model.countryCode">
-									<option v-for="( region, index ) in ( regions[ model.countryCode ] || [ 'N/A' ] )" :value="index" >{{ region }}</option>
+								<label>State / Region</label>
+								<select class="form-control" v-model="model.stateCode" :disabled="!model.countryCode">
+									<option :value="null">
+										<template v-if="Object.keys( regions[ model.countryCode ] || [] ).length == 0">N/A</template>
+									</option>
+									<option v-for="( region, index ) in ( regions[ model.countryCode ] || [] )" :value="index" >{{ region }}</option>
 								</select>
 							</div>
 						</div>
 						<div class="row">
 							<div class="form-group col-xs-6">
-								<label class="required">City</label>
+								<label>City</label>
 								<input type="text" class="form-control" v-model="model.city" placeholder="City name"></input>
 							</div>
 						</div>

@@ -119,7 +119,6 @@
             },
             validate: function() {
                 if ( !this.baseName ) return false;
-                if ( !this.description ) return false;
                 if ( !this.nameExtensions ) return false;
                 if ( !$.isNumeric( this.distanceFromStart ) ) return false;
                 if ( !$.isNumeric( this.vertGainFromStart ) ) return false;

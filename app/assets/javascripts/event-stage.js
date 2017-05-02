@@ -141,7 +141,7 @@
             city: String,
             stateCode: String,
             countryCode: String,
-            startOffset: { type: Number, default: 0 },
+            startOffset: { type: Number, default: null },
             startDate: {
                 get: function() {
                     var startTime = eventStage.data.eventModel.startTime;
@@ -162,15 +162,17 @@
             },
             offsetTime: {
                 get: function() {
-                    if ( this.offset === '' ) return '';
+                    if ( this.startOffset === null ) return '';
                     var hours = Math.floor( Math.abs( this.startOffset ) / 60 );
                     if ( this.startOffset < 0 ) hours = "-" + hours;
                     var minutes = ( ( "0" + Math.abs( this.startOffset % 60 ) ).slice( -2 ) );
                     return ( hours != 0 ) ? hours + ":" + minutes : this.startOffset % 60;
                 },
                 set: function( value ) {
-                    this.offset = value;
-                    if ( value === '' ) return;
+                    if ( value === '' ) {
+                        this.startOffset = null; 
+                        return;
+                    }
                     var time = value.split( ':' );
                     if ( time.length > 1 ) {
                         var hours = time[0] * 60;

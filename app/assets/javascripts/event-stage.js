@@ -790,7 +790,7 @@
                         if ( isNaN( parseFloat( e[i].latitude ) ) || isNaN( parseFloat( e[i].longitude ) ) ) continue;
                         var latlng = { lat: parseFloat( e[i].latitude ) , lng: parseFloat( e[i].longitude ) };
                         bounds.extend( latlng );
-                        path.push( latlng );
+                        if ( e[i].associated ) path.push( latlng );
                         // Make Marker
                         var marker = null;
                         if ( !e[i]._gmid || !this._route[ e[i]._gmid ] ) {
@@ -958,6 +958,7 @@
                     mapTypeId: 'terrain',
                     zoom: 4,
                     maxZoom: 16,
+                    draggableCursor: 'crosshair',
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,

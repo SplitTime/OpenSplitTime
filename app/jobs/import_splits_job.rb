@@ -1,4 +1,4 @@
-class ImportSplitsJob < ActiveJob::Base
+class ImportSplitsJob < ApplicationJob
 
   queue_as :default
 
@@ -7,5 +7,4 @@ class ImportSplitsJob < ActiveJob::Base
     importer.split_import
     importer.split_import_report
   end
-
 end

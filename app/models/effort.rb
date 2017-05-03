@@ -1,4 +1,4 @@
-class Effort < ActiveRecord::Base
+class Effort < ApplicationRecord
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   enum gender: [:male, :female]
   strip_attributes collapse_spaces: true

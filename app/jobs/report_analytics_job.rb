@@ -1,4 +1,4 @@
-class ReportAnalyticsJob < ActiveJob::Base
+class ReportAnalyticsJob < ApplicationJob
 
   queue_as :default
 

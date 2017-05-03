@@ -1,4 +1,4 @@
-class Stewardship < ActiveRecord::Base
+class Stewardship < ApplicationRecord
   belongs_to :user
   belongs_to :organization
   enum level: [:volunteer, :manager, :owner]

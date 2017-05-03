@@ -1,4 +1,4 @@
-class Participant < ActiveRecord::Base
+class Participant < ApplicationRecord
 
   include Auditable
   include Concealable

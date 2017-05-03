@@ -1,4 +1,4 @@
-class SplitTime < ActiveRecord::Base
+class SplitTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good, :confirmed]
   strip_attributes collapse_spaces: true
 

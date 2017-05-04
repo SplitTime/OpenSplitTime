@@ -233,7 +233,7 @@
 				<p class="pull-left">
 					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i></button>
 					<ajax-import url="import_splits_vertical" v-on:import="eventModel.fetch()">
-						<span>Import GPX File</span>
+						<span>Import Splits</span>
 					</ajax-import>
 				</p>
 				<router-link to="/entrants" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i></router-link>
@@ -476,12 +476,12 @@
 						<div class="row">
 							<div class="form-group col-xs-6">
 								<label class="required">Bib Number</label>
-								<input type="text" class="form-control" v-model="model.bibNumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
+								<input type="text" class="form-control" v-model.number="model.bibNumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
 							</div>
 
 							<div class="form-group col-xs-6">
-								<label>Beacon URL</label>
-								<input type="text" class="form-control" v-model="model.beacon" placeholder="http://example.com"></input>
+								<label>Age</label>
+								<input type="text" class="form-control" v-model.number="model.age" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder=""></input>
 							</div>
 						</div>
 						<div class="row">
@@ -516,6 +516,11 @@
 							<div class="form-group col-xs-6">
 								<label>City</label>
 								<input type="text" class="form-control" v-model="model.city" placeholder="City name"></input>
+							</div>
+
+							<div class="form-group col-xs-6">
+								<label>Beacon URL</label>
+								<input type="text" class="form-control" v-model="model.beacon" placeholder="http://example.com"></input>
 							</div>
 						</div>
 						<div class="row modal-section">
@@ -651,8 +656,8 @@
 				<strong v-if="eventModel.__new__">Create Race</strong>
 				<strong v-else>
 					{{ eventModel.name }}
-					<i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close"></i>
-					<i v-else class="glyphicon glyphicon-eye-open"></i>
+					<i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."></i>
+					<i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."></i>
 				</strong>
 			</h2>
 			<nav class="progress-bar-nav">

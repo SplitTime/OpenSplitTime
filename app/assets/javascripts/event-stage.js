@@ -193,7 +193,7 @@
                     }
                     if ( this.stateCode ) {
                         location += ( location == '' ) ? '' : ', ';
-                        location += ( locales.regions[ this.countryCode ][ this.stateCode ] || this.stateCode );
+                        location += ( ( locales.regions[ this.countryCode ] || {} )[ this.stateCode ] || this.stateCode );
                     }
                     if ( this.countryCode ) {
                         if ( location == '' || !this.stateCode ) {

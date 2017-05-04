@@ -193,12 +193,14 @@
                     }
                     if ( this.stateCode ) {
                         location += ( location == '' ) ? '' : ', ';
-                        location += locales.regions[ this.countryCode ][ this.stateCode ];
+                        location += ( locales.regions[ this.countryCode ][ this.stateCode ] || this.stateCode );
                     }
-                    if ( location == '' || !this.stateCode ) {
-                        location += ' ' + locales.countryNames[ this.countryCode ];
-                    } else {
-                        location += ' ' + this.countryCode;
+                    if ( this.countryCode ) {
+                        if ( location == '' || !this.stateCode ) {
+                            location += ' ' + ( locales.countryNames[ this.countryCode ] || this.countryCode );
+                        } else {
+                            location += ' ' + this.countryCode;
+                        }
                     }
                     return location;
                 }

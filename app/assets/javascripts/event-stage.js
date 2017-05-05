@@ -520,7 +520,7 @@
                                 return api.create( 'splits' );
                             }
                         },
-                        data: function() { return { modalData: {}, filter: '', units: units } },
+                        data: function() { return { modalData: {}, filter: '', units: units, highlight: null } },
                         template: '#splits'
                     },
                     beforeEnter: this.onRouteChange
@@ -710,7 +710,10 @@
             },
             init: function() {
                 Vue.component( 'data-tables', {
-                    template: '<table class="table table-striped" width="100%"><thead><slot name="header"></slot></thead><tbody><slot></slot></tbody></table>',
+                    template: '<table class="table table-striped" width="100%">\
+                                    <thead><slot name="header"></slot></thead>\
+                                    <tbody v-on:mouseleave="$emit(\'mouseleave\')"><slot></slot></tbody>\
+                                </table>',
                     props: [ 'rows', 'entries', 'filter' ],
                     mounted: eventStage.dataTables.onMounted,
                     destroyed: eventStage.dataTables.onDestroyed,
@@ -746,7 +749,7 @@
             function onValueChange() {
                 var self = this;
                 if ( this.value ) {
-                    lastValue = this._lastValue || { lat: 0, lng: 0 };
+                    var lastValue = this._lastValue || { lat: 0, lng: 0 };
                     var latlng = { lat: parseFloat( this.value.latitude ), lng: parseFloat( this.value.longitude ) };
                     if ( lastValue.lat != latlng.lat || lastValue.lng != latlng.lng ) {
                         this._lastValue = latlng;
@@ -774,7 +777,12 @@
                             this._location.setPosition( latlng );
                         }
                     }
-                    onRouteChange.call( this );
+                    if ( this.editable !== undefined ) {
+                        onRouteChange.call( this );
+                    }
+                } else if ( this._location ) {
+                    this._location.setMap( null );
+                    this._lastValue = { lat: 0, lng: 0 };
                 }
             }
 
@@ -873,8 +881,8 @@
                     } else {
                         this._routeBounds = null;
                     }
-                    // Reset bounds when map is Locked
-                    if ( this.locked !== undefined ) {
+                    // Reset bounds when map is fitted
+                    if ( this.fit !== undefined ) {
                         this._map.fitBounds( this._routeBounds || defaultBounds );
                     }
                 }
@@ -946,6 +954,7 @@
             }
 
             function updateValue( lat, lng ) {
+                if ( this.editable == undefined ) return;
                 var latlng = { lat: parseFloat( lat ), lng: parseFloat( lng ) };
                 if ( isNaN( latlng.lat ) || isNaN( latlng.lng ) ) return;
                 if ( !this.value ) return;
@@ -978,7 +987,7 @@
                     mapTypeId: 'terrain',
                     zoom: 4,
                     maxZoom: 16,
-                    draggableCursor: 'crosshair',
+                    draggableCursor: ( this.editable == undefined ) ? null : 'crosshair',
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,
@@ -1017,6 +1026,8 @@
                         template: '<div class="splits-modal-map-wrap js-google-maps"></div>',
                         props: {
                             locked: {},
+                            fit: {},
+                            editable: {},
                             searchUrl: { type: String, default: null },
                             route: { type: Array, default: null },
                             value: { type: Object, default: null }
@@ -1027,6 +1038,7 @@
                                 handler: onRouteChange,
                                 deep: true
                             },
+                            'value': onValueChange,
                             'value.latitude': onValueChange,
                             'value.longitude': onValueChange,
                             'value.distanceFromStart': onValueChange

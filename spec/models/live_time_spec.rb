@@ -62,4 +62,52 @@ RSpec.describe LiveTime, type: :model do
       expect(LiveTime.count).to eq(1)
     end
   end
+
+  describe '#event_slug' do
+    let!(:event) { create(:event, slug: 'test-event') }
+
+    it 'returns the slug of the associated event' do
+      live_time = LiveTime.new(event: event)
+      expect(live_time.event_slug).to eq(event.slug)
+    end
+  end
+
+  describe '#event_slug=' do
+    let!(:event) { create(:event, slug: 'test-event') }
+    let(:live_time) { LiveTime.new }
+
+    it 'finds the event having a slug equal to the provided param and sets event_id' do
+      live_time.event_slug = 'test-event'
+      expect(live_time.event).to eq(event)
+    end
+
+    it 'sets the event to nil if the slug is not found' do
+      live_time.event_slug = 'nonexistent-event'
+      expect(live_time.event_id).to be_nil
+    end
+  end
+
+  describe '#split_slug' do
+    let!(:split) { create(:split, slug: 'test-split') }
+
+    it 'returns the slug of the associated split' do
+      live_time = LiveTime.new(split: split)
+      expect(live_time.split_slug).to eq(split.slug)
+    end
+  end
+
+  describe '#split_slug=' do
+    let!(:split) { create(:split, slug: 'test-split') }
+    let(:live_time) { LiveTime.new }
+
+    it 'finds the split having a slug equal to the provided param and sets split_id' do
+      live_time.split_slug = 'test-split'
+      expect(live_time.split).to eq(split)
+    end
+
+    it 'sets the split to nil if the slug is not found' do
+      live_time.split_slug = 'nonexistent-split'
+      expect(live_time.split_id).to be_nil
+    end
+  end
 end

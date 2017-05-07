@@ -30,35 +30,48 @@ RSpec.describe LiveTime, type: :model do
     it 'is invalid when no event is provided' do
       live_time = LiveTime.new(split: split, bib_number: 101, absolute_time: time_string, batch: '1', recorded_at: recorded_at)
       expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include("Event can't be blank")
     end
 
     it 'is invalid when no split is provided' do
       live_time = LiveTime.new(event: event, bib_number: 101, absolute_time: time_string, batch: '1', recorded_at: recorded_at)
       expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include("Split can't be blank")
     end
 
     it 'is invalid when no bib_number is provided' do
       live_time = LiveTime.new(event: event, split: split, absolute_time: time_string, batch: '1', recorded_at: recorded_at)
       expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include("Bib number can't be blank")
     end
 
     it 'is invalid when no absolute_time is provided' do
       live_time = LiveTime.new(event: event, split: split, bib_number: 101, batch: '1', recorded_at: recorded_at)
       expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include("Absolute time can't be blank")
     end
 
     it 'is invalid when no batch is provided' do
       live_time = LiveTime.new(event: event, split: split, bib_number: 101, absolute_time: time_string, recorded_at: recorded_at)
       expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include("Batch can't be blank")
     end
 
     it 'is invalid when no recorded_at is provided' do
       live_time = LiveTime.new(event: event, split: split, bib_number: 101, absolute_time: time_string, batch: '1')
       expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include("Recorded at can't be blank")
+    end
+
+    it 'is invalid when the event.course is not the same as the split.course' do
+      new_split = create(:split)
+      live_time = LiveTime.new(event: event, split: new_split, bib_number: 101, absolute_time: time_string, batch: '1', recorded_at: recorded_at)
+      expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include('Effort the event.course_id does not resolve with the split.course_id')
     end
 
     it 'saves properly to the database' do
-      create(:live_time)
+      create(:live_time, event: event, split: split)
       expect(LiveTime.count).to eq(1)
     end
   end

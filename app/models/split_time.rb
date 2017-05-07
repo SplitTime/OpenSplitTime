@@ -12,6 +12,7 @@ class SplitTime < ActiveRecord::Base
   include Structpluck
   belongs_to :effort
   belongs_to :split
+  has_many :live_times
   alias_attribute :bitkey, :sub_split_bitkey
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }

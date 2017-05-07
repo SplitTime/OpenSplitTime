@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170507161530) do
+ActiveRecord::Schema.define(version: 20170507173716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,15 +119,17 @@ ActiveRecord::Schema.define(version: 20170507161530) do
     t.string   "remarks"
     t.integer  "source"
     t.string   "batch",           null: false
-    t.datetime "recorded_at",     null: false
+    t.datetime "recorded_at"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.integer  "split_time_id"
   end
 
   add_index "live_times", ["event_id"], name: "index_live_times_on_event_id", using: :btree
   add_index "live_times", ["split_id"], name: "index_live_times_on_split_id", using: :btree
+  add_index "live_times", ["split_time_id"], name: "index_live_times_on_split_time_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",        limit: 64,                         null: false
@@ -292,6 +294,7 @@ ActiveRecord::Schema.define(version: 20170507161530) do
   add_foreign_key "events", "courses"
   add_foreign_key "events", "organizations"
   add_foreign_key "live_times", "events"
+  add_foreign_key "live_times", "split_times"
   add_foreign_key "live_times", "splits"
   add_foreign_key "participants", "users"
   add_foreign_key "split_times", "efforts"

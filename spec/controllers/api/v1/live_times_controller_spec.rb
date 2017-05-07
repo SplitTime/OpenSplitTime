@@ -31,7 +31,7 @@ describe Api::V1::LiveTimesController do
 
   describe '#create' do
     let(:attributes) { {event_id: event.id, lap: 1, split_id: split.id, split_extension: 'in', bib_number: '101',
-                        absolute_time: '08:00:00', batch: '1', recorded_at: Time.now} }
+                        absolute_time: '08:00:00', batch: '1'} }
 
     it 'returns a successful json response' do
       post :create, data: {type: 'live_times', attributes: attributes}

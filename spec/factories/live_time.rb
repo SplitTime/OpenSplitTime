@@ -4,7 +4,5 @@ FactoryGirl.define do
     split
     sequence(:bib_number, 101)
     absolute_time '08:00:00'
-    sequence(:batch)
-    recorded_at Time.now
   end
 end

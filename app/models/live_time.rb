@@ -5,7 +5,7 @@ class LiveTime < ActiveRecord::Base
   belongs_to :event
   belongs_to :split
   belongs_to :split_time
-  validates_presence_of :event, :split, :bib_number, :absolute_time, :batch, :recorded_at
+  validates_presence_of :event, :split, :bib_number, :absolute_time
   validate :course_is_consistent
 
   def course_is_consistent

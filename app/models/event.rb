@@ -12,6 +12,7 @@ class Event < ActiveRecord::Base
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
+  has_many :live_times
 
   validates_presence_of :course_id, :name, :start_time, :laps_required
   validates_uniqueness_of :name, case_sensitive: false

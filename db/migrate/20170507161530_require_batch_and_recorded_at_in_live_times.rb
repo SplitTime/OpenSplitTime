@@ -1,6 +1,11 @@
 class RequireBatchAndRecordedAtInLiveTimes < ActiveRecord::Migration
-  def change
-    change_column :live_times, :batch, :string, null: false
-    change_column :live_times, :recorded_at, :datetime, null: false
+  def up
+    change_column_null :live_times, :batch, false
+    change_column_null :live_times, :recorded_at, false
+  end
+
+  def down
+    change_column_null :live_times, :batch, true
+    change_column_null :live_times, :recorded_at, true
   end
 end

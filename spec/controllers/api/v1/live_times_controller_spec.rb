@@ -30,9 +30,11 @@ describe Api::V1::LiveTimesController do
   end
 
   describe '#create' do
+    let(:attributes) { {event_id: event.id, lap: 1, split_id: split.id, split_extension: 'in', bib_number: '101',
+                        absolute_time: '08:00:00', batch: '1', recorded_at: Time.now} }
+
     it 'returns a successful json response' do
-      post :create, data: {type: 'live_times', attributes: {event_id: event.id, lap: 1, split_id: split.id,
-                                 split_extension: 'in', bib_number: '101', absolute_time: '08:00:00'} }
+      post :create, data: {type: 'live_times', attributes: attributes}
       expect(response.body).to be_jsonapi_response_for('live_times')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
@@ -41,29 +43,28 @@ describe Api::V1::LiveTimesController do
 
     it 'creates a live_time record' do
       expect(LiveTime.all.count).to eq(0)
-      post :create, data: {type: 'live_times', attributes: {event_id: event.id, lap: 1, split_id: split.id,
-                                                            split_extension: 'in', bib_number: '101', absolute_time: '08:00:00'} }
+      post :create, data: {type: 'live_times', attributes: attributes}
       expect(LiveTime.all.count).to eq(1)
     end
   end
 
   describe '#update' do
-    let(:attributes) { {bib_number: 0} }
+    let(:updated_attributes) { {bib_number: 0} }
 
     it 'returns a successful json response' do
-      put :update, id: live_time, data: {type: 'live_times', attributes: attributes}
+      put :update, id: live_time, data: {type: 'live_times', attributes: updated_attributes}
       expect(response.body).to be_jsonapi_response_for('live_times')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: live_time, data: {type: 'live_times', attributes: attributes}
+      put :update, id: live_time, data: {type: 'live_times', attributes: updated_attributes}
       live_time.reload
-      expect(live_time.bib_number).to eq(attributes[:bib_number])
+      expect(live_time.bib_number).to eq(updated_attributes[:bib_number])
     end
 
     it 'returns an error if the live_time does not exist' do
-      put :update, id: 0, data: {type: 'live_times', attributes: attributes}
+      put :update, id: 0, data: {type: 'live_times', attributes: updated_attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/not found/)
       expect(response.status).to eq(404)

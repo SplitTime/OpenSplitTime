@@ -15,6 +15,7 @@ require 'rails_helper'
 # t.integer  "split_time_id"
 
 RSpec.describe LiveTime, type: :model do
+  let(:effort) { create(:effort, event: event) }
   let(:event) { create(:event, course: course) }
   let(:split) { create(:split, course: course) }
   let(:course) { create(:course) }
@@ -58,6 +59,14 @@ RSpec.describe LiveTime, type: :model do
       expect(live_time.errors.full_messages).to include('Effort the event.course_id does not resolve with the split.course_id')
     end
 
+    it 'is invalid when the split is not the same as the split_time.split' do
+      new_split = create(:split)
+      split_time = SplitTime.create(effort: effort, split: new_split)
+      live_time = LiveTime.new(event: event, split: split, bib_number: 101, absolute_time: time_string, split_time: split_time)
+      expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include('Split time the split_id is not the same as the split_time.split_id')
+    end
+
     it 'saves a valid record to the database' do
       create(:live_time, event: event, split: split)
       expect(LiveTime.count).to eq(1)
@@ -65,7 +74,6 @@ RSpec.describe LiveTime, type: :model do
   end
 
   describe '#split_time' do
-    let(:effort) { create(:effort, event: event) }
     let(:split_time) { create(:split_time, effort: effort, split: split) }
 
     it 'when related split_time is deleted, sets live_time.split_time to nil' do

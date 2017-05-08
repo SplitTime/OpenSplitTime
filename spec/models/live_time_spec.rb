@@ -15,10 +15,11 @@ require 'rails_helper'
 # t.integer  "split_time_id"
 
 RSpec.describe LiveTime, type: :model do
+  let(:event) { create(:event, course: course) }
+  let(:split) { create(:split, course: course) }
+  let(:course) { create(:course) }
+
   describe '#initialize' do
-    let(:event) { create(:event, course: course) }
-    let(:split) { create(:split, course: course) }
-    let(:course) { create(:course) }
     let(:time_string) { '08:00:00' }
 
     it 'is valid when created with an event, split, bib_number, and absolute_time' do
@@ -60,6 +61,19 @@ RSpec.describe LiveTime, type: :model do
     it 'saves a valid record to the database' do
       create(:live_time, event: event, split: split)
       expect(LiveTime.count).to eq(1)
+    end
+  end
+
+  describe '#split_time' do
+    let(:effort) { create(:effort, event: event) }
+    let(:split_time) { create(:split_time, effort: effort, split: split) }
+
+    it 'when related split_time is deleted, sets live_time.split_time to nil' do
+      live_time = create(:live_time, event: event, split: split, split_time: split_time)
+      expect(live_time.split_time).to eq(split_time)
+      SplitTime.last.destroy
+      live_time.reload
+      expect(live_time.split_time).to be_nil
     end
   end
 

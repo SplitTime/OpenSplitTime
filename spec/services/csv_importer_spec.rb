@@ -3,7 +3,7 @@ include ActionDispatch::TestProcess
 
 RSpec.describe CsvImporter do
   let(:file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts.csv' }
-  let(:bad_records_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_bad.csv' }
+  let(:mixed_records_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_bad.csv' }
   let(:header_test_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_header_formats.csv' }
   let(:event) { create(:event) }
   let(:global_attributes) { {event_id: event.id} }
@@ -27,12 +27,17 @@ RSpec.describe CsvImporter do
   end
 
   describe '#import' do
-    it 'reads the specified file and for valid rows creates records of the model type specified' do
-      expect(Effort.count).to eq(0)
+    it 'reads the specified file and creates records of the model type specified when all rows are valid' do
       importer = CsvImporter.new(file_path: file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
       expect(Effort.count).to eq(3)
       expect(Effort.all.pluck(:first_name)).to eq(%w(Bjorn Charlie Lucy))
+    end
+
+    it 'does not create any records if any row is invalid' do
+      importer = CsvImporter.new(file_path: mixed_records_file_path, model: :efforts, global_attributes: global_attributes)
+      importer.import
+      expect(Effort.count).to eq(0)
     end
 
     it 'maps header keys as specified in class parameters file' do
@@ -60,7 +65,7 @@ RSpec.describe CsvImporter do
 
   describe '#errors' do
     it 'returns the attributes of the rejected records' do
-      importer = CsvImporter.new(file_path: bad_records_file_path, model: :efforts, global_attributes: global_attributes)
+      importer = CsvImporter.new(file_path: mixed_records_file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
       errors = importer.errors
       expect(errors.count).to eq(2)
@@ -77,7 +82,7 @@ RSpec.describe CsvImporter do
     end
 
     it 'returns :unprocessable_entity when any record is invalid' do
-      importer = CsvImporter.new(file_path: bad_records_file_path, model: :efforts, global_attributes: global_attributes)
+      importer = CsvImporter.new(file_path: mixed_records_file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
       expect(importer.response_status).to eq(:unprocessable_entity)
     end

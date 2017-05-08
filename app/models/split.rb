@@ -9,7 +9,7 @@ class Split < ActiveRecord::Base
   strip_attributes collapse_spaces: true
   enum kind: [:start, :finish, :intermediate]
   belongs_to :course
-  has_many :split_times, dependent: :destroy
+  has_many :split_times
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
 

@@ -3,6 +3,8 @@ include ActionDispatch::TestProcess
 
 RSpec.describe CsvImporter do
   let(:file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts.csv' }
+  let(:bad_records_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_bad.csv' }
+  let(:header_test_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_header_formats.csv' }
   let(:event) { create(:event) }
   let(:global_attributes) { {event_id: event.id} }
 
@@ -32,6 +34,18 @@ RSpec.describe CsvImporter do
       expect(Effort.count).to eq(3)
       expect(Effort.all.pluck(:first_name)).to eq(%w(Bjorn Charlie Lucy))
     end
+
+    it 'maps header keys as specified in class parameters file' do
+      importer = CsvImporter.new(file_path: header_test_file_path, model: :efforts, global_attributes: global_attributes)
+      importer.import
+      expect(importer.saved_records.size).to eq(1)
+      effort = importer.saved_records.first
+      expect(effort.first_name).to eq('Lucy')
+      expect(effort.last_name).to eq('Pendergrast')
+      expect(effort.gender).to eq('female')
+      expect(effort.state_code).to eq('OH')
+      expect(effort.country_code).to eq('US')
+    end
   end
 
   describe '#saved_records' do
@@ -44,14 +58,28 @@ RSpec.describe CsvImporter do
     end
   end
 
-  describe '#rejected_records' do
-    let(:bad_records_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_bad.csv' }
-    it 'returns the rejected records' do
+  describe '#errors' do
+    it 'returns the attributes of the rejected records' do
       importer = CsvImporter.new(file_path: bad_records_file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
-      rejected = importer.rejected_records
-      expect(rejected.count).to eq(3)
-      expect(rejected.map(&:bib_number)).to eq([101, 202, 303])
+      errors = importer.errors
+      expect(errors.count).to eq(2)
+      expect(errors.first.last).to include("Last name can't be blank")
+      expect(errors.second.last).to include("Gender can't be blank")
+    end
+  end
+
+  describe 'response_status' do
+    it 'returns :created when all records are valid' do
+      importer = CsvImporter.new(file_path: file_path, model: :efforts, global_attributes: global_attributes)
+      importer.import
+      expect(importer.response_status).to eq(:created)
+    end
+
+    it 'returns :unprocessable_entity when any record is invalid' do
+      importer = CsvImporter.new(file_path: bad_records_file_path, model: :efforts, global_attributes: global_attributes)
+      importer.import
+      expect(importer.response_status).to eq(:unprocessable_entity)
     end
   end
 end

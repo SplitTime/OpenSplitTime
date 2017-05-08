@@ -127,6 +127,7 @@ class EventsController < ApplicationController
       importer.import
       respond_to do |format|
         if importer.errors.empty?
+          @event.splits << importer.saved_records
           format.html { flash[:success] = "Imported #{importer.saved_records.size} splits." and redirect_to :back }
           format.json { render json: importer.saved_records, status: importer.response_status }
         else
@@ -135,7 +136,10 @@ class EventsController < ApplicationController
         end
       end
     else
-      flash[:danger] = 'Import file too large.'
+      respond_to do |format|
+        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
+        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
+      end
     end
   end
 

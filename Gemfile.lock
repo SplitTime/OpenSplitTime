@@ -400,6 +400,7 @@ GEM
     skylight (1.0.1)
       activesupport (>= 3.0.0)
     slop (3.6.0)
+    smarter_csv (1.1.4)
     spreadsheet (1.1.2)
       ruby-ole (>= 1.0)
     spring (1.7.1)
@@ -520,6 +521,7 @@ DEPENDENCIES
   sidekiq
   sitemap_generator
   skylight
+  smarter_csv
   spring
   spring-commands-rspec
   strip_attributes

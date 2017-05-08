@@ -86,7 +86,7 @@ class EventsController < ApplicationController
     if @unreconciled_batch.empty?
       redirect_to stage_event_path(@event)
     else
-      @unreconciled_batch.each {|effort| effort.suggest_close_match}
+      @unreconciled_batch.each { |effort| effort.suggest_close_match }
     end
   end
 
@@ -117,6 +117,32 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
+  def import_splits_csv
+    authorize @event
+    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    if file_url
+      importer = CsvImporter.new(file_path: file_url,
+                                 model: :splits,
+                                 global_attributes: {course: @event.course, created_by: current_user.id})
+      importer.import
+      respond_to do |format|
+        if importer.errors.empty?
+          @event.splits << importer.saved_records
+          format.html { flash[:success] = "Imported #{importer.saved_records.size} splits." and redirect_to :back }
+          format.json { render json: importer.saved_records, status: importer.response_status }
+        else
+          format.html { flash[:warning] = "The following errors were found: #{importer.errors}" and redirect_to :back }
+          format.json { render json: {errors: importer.errors}, status: importer.response_status }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
+        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def import_efforts
     authorize @event
     file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
@@ -132,6 +158,31 @@ class EventsController < ApplicationController
           'if it is still too large, divide the file and import in multiple steps.'
     end
     redirect_to stage_event_path(@event)
+  end
+
+  def import_efforts_csv
+    authorize @event
+    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    if file_url
+      importer = CsvImporter.new(file_path: file_url,
+                                 model: :efforts,
+                                 global_attributes: {event: @event, created_by: current_user.id})
+      importer.import
+      respond_to do |format|
+        if importer.errors.empty?
+          format.html { flash[:success] = "Imported #{importer.saved_records.size} splits." and redirect_to :back }
+          format.json { render json: importer.saved_records, status: importer.response_status }
+        else
+          format.html { flash[:warning] = "The following errors were found: #{importer.errors}" and redirect_to :back }
+          format.json { render json: {errors: importer.errors}, status: importer.response_status }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
+        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
+      end
+    end
   end
 
   def spread
@@ -168,7 +219,7 @@ class EventsController < ApplicationController
 
   def remove_splits
     authorize @event
-    params[:split_ids].each {|split_id| @event.splits.delete(split_id)}
+    params[:split_ids].each { |split_id| @event.splits.delete(split_id) }
     redirect_to splits_event_path(@event)
   end
 
@@ -211,8 +262,8 @@ class EventsController < ApplicationController
     authorize @event
     update_beacon_url(params[:value])
     respond_to do |format|
-      format.html {redirect_to stage_event_path(@event)}
-      format.js {render inline: 'location.reload();'}
+      format.html { redirect_to stage_event_path(@event) }
+      format.js { render inline: 'location.reload();' }
     end
   end
 
@@ -226,7 +277,7 @@ class EventsController < ApplicationController
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
     @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
     respond_to do |format|
-      format.html {redirect_to stage_event_path(@event)}
+      format.html { redirect_to stage_event_path(@event) }
       format.csv do
         csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby')
         send_data(csv_stream, type: 'text/csv',

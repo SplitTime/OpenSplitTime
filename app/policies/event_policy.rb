@@ -22,7 +22,15 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
+  def import_splits_csv?
+    user.authorized_for_live?(event)
+  end
+
   def import_efforts?
+    user.authorized_for_live?(event)
+  end
+
+  def import_efforts_csv?
     user.authorized_for_live?(event)
   end
 

@@ -21,4 +21,8 @@ class EffortParameters < BaseParameters
      :beacon_url, :report_url, :photo_url, :phone, :email,
      split_times_attributes: [*SplitTimeParameters.permitted]]
   end
+
+  def self.key_mapping
+    {first: :first_name, last: :last_name, state: :state_code, country: :country_code, sex: :gender}
+  end
 end

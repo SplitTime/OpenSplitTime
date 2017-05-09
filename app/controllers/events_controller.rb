@@ -261,7 +261,7 @@ class EventsController < ApplicationController
 
   def import_csv(model, global_attributes)
     authorize @event
-    file_url = FileStore.upload('imports', params[:file], current_user.id)
+    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
       importer = CsvImporter.new(file_path: file_url,
                                  model: model,

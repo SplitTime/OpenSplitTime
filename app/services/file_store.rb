@@ -1,8 +1,8 @@
-class BucketStoreService
+class FileStore
 
   MAX_FILESIZE = 500.megabytes
 
-  def self.upload_to_bucket(directory, file, id)
+  def self.public_upload(directory, file, id)
     if Rails.env.test?
       file.path
     elsif file_size_ok(file)

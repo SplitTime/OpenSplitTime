@@ -18,7 +18,7 @@ class FileStore
   def self.read(path_or_url)
     case
     when uri?(path_or_url)
-      key = URI.parse(url).path[1..-1]
+      key = URI.parse(path_or_url).path[1..-1]
       S3FileManager.read(key)
     when local_path?(path_or_url)
       full_path = "#{Rails.root}#{path_or_url}"

@@ -1,6 +1,6 @@
 class FileStore
 
-  MAX_FILESIZE = 500.megabytes
+  MAX_FILESIZE = 50.megabytes
 
   def self.public_upload(directory, file, id)
     if Rails.env.test?

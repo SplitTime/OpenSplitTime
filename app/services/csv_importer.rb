@@ -6,7 +6,7 @@ class CsvImporter
                            required: [:file_path, :model],
                            exclusive: [:file_path, :model, :global_attributes],
                            class: self.class)
-    @file_path = args[:file_path]
+    @file = FileStore.read(args[:file_path])
     @model = args[:model]
     @global_attributes = args[:global_attributes] || {}
     @saved_records = []
@@ -30,7 +30,7 @@ class CsvImporter
 
   private
 
-  attr_reader :file_path, :model, :global_attributes
+  attr_reader :file, :model, :global_attributes
   attr_writer :response_status
 
   def records
@@ -38,8 +38,7 @@ class CsvImporter
   end
 
   def processed_attributes
-    warn "SmarterCSV is attempting to process #{file_path}"
-    @processed_attributes ||= SmarterCSV.process(file_path, key_mapping: key_mapping)
+    @processed_attributes ||= SmarterCSV.process(file, key_mapping: key_mapping)
   end
 
   def key_mapping

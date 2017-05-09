@@ -3,7 +3,6 @@ class S3FileManager
   def self.public_upload(key, file)
     obj = Aws::S3::Resource.new.bucket(ENV['S3_BUCKET']).object(key)
     obj.upload_file(file.path, acl: 'public-read')
-    warn "Uploaded file available at #{obj.public_url}"
     obj.public_url
   end
 

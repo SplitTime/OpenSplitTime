@@ -118,29 +118,9 @@ class EventsController < ApplicationController
   end
 
   def import_splits_csv
-    authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
-    if file_url
-      importer = CsvImporter.new(file_path: file_url,
-                                 model: :splits,
-                                 global_attributes: {course: @event.course, created_by: current_user.id})
-      importer.import
-      respond_to do |format|
-        if importer.errors.empty?
-          @event.splits << importer.saved_records
-          format.html { flash[:success] = "Imported #{importer.saved_records.size} splits." and redirect_to :back }
-          format.json { render json: importer.saved_records, status: importer.response_status }
-        else
-          format.html { flash[:warning] = "The following errors were found: #{importer.errors}" and redirect_to :back }
-          format.json { render json: {errors: importer.errors}, status: importer.response_status }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
-        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
-      end
-    end
+    model = :splits
+    global_attributes = {course: @event.course, created_by: current_user.id}
+    import_csv(model, global_attributes)
   end
 
   def import_efforts
@@ -161,28 +141,9 @@ class EventsController < ApplicationController
   end
 
   def import_efforts_csv
-    authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
-    if file_url
-      importer = CsvImporter.new(file_path: file_url,
-                                 model: :efforts,
-                                 global_attributes: {event: @event, created_by: current_user.id})
-      importer.import
-      respond_to do |format|
-        if importer.errors.empty?
-          format.html { flash[:success] = "Imported #{importer.saved_records.size} splits." and redirect_to :back }
-          format.json { render json: importer.saved_records, status: importer.response_status }
-        else
-          format.html { flash[:warning] = "The following errors were found: #{importer.errors}" and redirect_to :back }
-          format.json { render json: {errors: importer.errors}, status: importer.response_status }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
-        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
-      end
-    end
+    model = :efforts
+    global_attributes = {event: @event, created_by: current_user.id}
+    import_csv(model, global_attributes)
   end
 
   def spread
@@ -289,10 +250,39 @@ class EventsController < ApplicationController
   private
 
   def set_event
-    @event = Event.friendly.find(params[:id])
+    @event = params[:id].uuid? ?
+        Event.find_by!(staging_id: params[:id]) :
+        Event.friendly.find(params[:id])
   end
 
   def update_beacon_url(url)
     @event.update(beacon_url: url)
+  end
+
+  def import_csv(model, global_attributes)
+    authorize @event
+    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    if file_url
+      importer = CsvImporter.new(file_path: file_url,
+                                 model: model,
+                                 global_attributes: global_attributes)
+      importer.import
+      respond_to do |format|
+        if importer.errors.empty?
+          @event.splits << importer.saved_records if model == :splits
+          format.html { flash[:success] = "Imported #{importer.saved_records.size} splits." and redirect_to :back }
+          format.json { render json: importer.saved_records, status: importer.response_status }
+        else
+          format.html { flash[:warning] = "The following errors were found: #{importer.errors}" and redirect_to :back }
+          format.json { render json: {errors: importer.errors}, status: importer.response_status }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
+        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
+      end
+    end
+
   end
 end

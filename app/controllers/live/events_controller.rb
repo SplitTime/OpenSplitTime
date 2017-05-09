@@ -34,7 +34,9 @@ class Live::EventsController < Live::BaseController
   private
 
   def set_event
-    @event = Event.friendly.find(params[:id])
+    @event = params[:id].uuid? ?
+        Event.find_by!(staging_id: params[:id]) :
+        Event.friendly.find(params[:id])
   end
 
   def verify_available_live

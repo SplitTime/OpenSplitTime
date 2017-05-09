@@ -156,11 +156,11 @@
   <div>
     <aside class="col-xs-12 col-sm-4 full-bg">
       <h3>
-        <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+        <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="From this screen you can create new Splits, delete unused Splits, and associate or disassociate Course Splits with your Event."><i class="glyphicon glyphicon-question-sign"></i></span>
         <strong>Create Splits For Your Event</strong>
       </h3>
       <p>Start and Finish splits have been created for you. Edit them to add location and elevation data. Add
-        intermediate splits where times will be recorded.</p>
+        intermediate splits at points where intermediate times will be recorded.</p>
       <p>
         <router-link to="/" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
         </router-link>
@@ -173,7 +173,7 @@
         <div class="col-xs-12 col-sm-7">
           <h5>
             <strong>Your Splits:</strong>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Splits having latitude and longitude will appear on this map. Click in the table below to add or edit Splits."><i class="glyphicon glyphicon-question-sign"></i></span>
           </h5>
         </div>
         <div class="col-xs-12 col-sm-5">
@@ -192,19 +192,19 @@
               <th>Name</th>
               <th data-order="asc">
                 Dist.
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative distance from start"><i class="glyphicon glyphicon-question-sign"></i></span>
               </th>
               <th>
                 V. Gain
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical gain from start"><i class="glyphicon glyphicon-question-sign"></i></span>
               </th>
               <th>
                 V. Loss
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical loss from start"><i class="glyphicon glyphicon-question-sign"></i></span>
               </th>
               <th data-orderable="false">
                 Manage
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Edit, associate or disassociate, and delete. Note that a Split cannot be deleted if any times are associated with it."><i class="glyphicon glyphicon-question-sign"></i></span>
               </th>
             </tr>
             <template slot="row" scope="vm">
@@ -272,14 +272,14 @@
                   <div class="row">
                     <div class="form-group col-xs-6">
                       <label class="required">Split Name</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Name of the split or aid station.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <input type="text" class="form-control" v-model="model.baseName" autofocus>
                     </div>
                     <div class="form-group col-xs-6">
                       <label>Description</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Add a helpful description of this place.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <input type="text" class="form-control" v-model="model.description">
@@ -288,7 +288,7 @@
                   <div class="row">
                     <div class="form-group col-xs-6">
                       <label class="required">Distance From Start</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative distance from the start of the course.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <div class="input-group">
@@ -298,7 +298,7 @@
                     </div>
                     <div class="form-group col-xs-6">
                       <label class="required">Time Recording</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out..">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <div class="split-time-recording-wrap">
@@ -318,7 +318,7 @@
                   <div class="row">
                     <div class="form-group col-xs-6 vg-group">
                       <label class="required">Vertical Gain From Start</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical gain from the start of the course.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <div class="input-group">
@@ -328,7 +328,7 @@
                     </div>
                     <div class="form-group col-xs-6 vg-group">
                       <label class="required">Vertical Loss From Start</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical loss from the start of the course.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <div class="input-group">
@@ -345,21 +345,21 @@
                   <div class="row">
                     <div class="form-group col-xs-4">
                       <label>Latitude</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Enter latitude or pick a point on the map.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <input type="text" class="form-control" v-model.number="model.latitude" v-mask="{ alias: 'decimal', digits: 6 }">
                     </div>
                     <div class="form-group col-xs-4">
                       <label>Longitude</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Enter longitude or pick a point on the map.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <input type="text" class="form-control" v-model.number="model.longitude" v-mask="{ alias: 'decimal', digits: 6 }">
                     </div>
                     <div class="form-group col-xs-4">
                       <label>Elevation</label>
-                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. ">
+                      <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Enter elevation or pick a point on the map.">
 											<i class="glyphicon glyphicon-question-sign"></i>
 										</span>
                       <div class="input-group">
@@ -392,11 +392,10 @@
   <div>
     <aside class="col-xs-12 col-sm-4 full-bg">
       <h3>
-        <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+        <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Entrants are all those people competing in the Event."><i class="glyphicon glyphicon-question-sign"></i></span>
         <strong>Provide A List of Your Entrants</strong>
       </h3>
-      <p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac
-        facilisis in, egestas eget quam.</p>
+      <p>Create each Entrant on this screen or import them from a standard CSV file.</p>
       <p>
         <router-link to="/splits" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
         </router-link>
@@ -425,14 +424,14 @@
               <th>Location</th>
               <th>
                 Bib&num;
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bib numbers are not strictly required, but entrants must have bib numbers for their times to be entered in the live time entry screen."><i class="glyphicon glyphicon-question-sign"></i></span>
               </th>
               <th data-orderable="false">&nbsp;</th>
             </tr>
             <template slot="row" scope="vm">
               <td>
-                <i class="glyphicon glyphicon-ok-sign" v-show="vm.row.participantId" data-toggle="tooltip" title="Reconciled"></i>
-                <i class="glyphicon glyphicon-question-sign" v-show="!vm.row.participantId" data-toggle="tooltip" title="Not reconciled"></i>
+                <i class="glyphicon glyphicon-ok-sign" v-show="vm.row.participantId" data-toggle="tooltip" title="This effort has been reconciled"></i>
+                <i class="glyphicon glyphicon-question-sign" v-show="!vm.row.participantId" data-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
               </td>
               <td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
               <td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>
@@ -555,8 +554,8 @@
                     <div class="col-xs-6">
                       <div class="row">
                         <div class="form-group col-xs-12">
-                          <label class="required">Participant's Start
-                            Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."><i class="glyphicon glyphicon-question-sign"></i></span>
+                          <label class="required">Entrant's Start
+                            Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If any Entrant will start at a time other than the Event start time, use these fields to indicate start time."><i class="glyphicon glyphicon-question-sign"></i></span>
                         </div>
                       </div>
                       <input-datetime v-model="model.startDate" class="no-gutters">
@@ -594,9 +593,8 @@
 <script type="text/x-template" id="confirmation">
   <div>
     <aside class="col-xs-12 col-sm-4 full-bg">
-      <h3><strong>Confirm Your Race Information</strong></h3>
-      <p>Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac
-        facilisis in, egestas eget quam.</p>
+      <h3><strong>Confirm Your Event Information</strong></h3>
+      <p>Take a moment to make sure everything is right before you make your Event public.</p>
       <p>
         <router-link to="/entrants" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
         </router-link>
@@ -608,7 +606,7 @@
       <table class="table confirmation-table">
         <tbody>
         <tr>
-          <th>Race Name</th>
+          <th>Event Name</th>
           <td>{{ eventModel.name }}</td>
           <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
         </tr>
@@ -680,11 +678,8 @@
   <div>
     <article class="col-xs-12 published-page">
       <span class="large-check"></span>
-      <h2>Your Race Has Been Published</h2>
-      <p>Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor
-        ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-        Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque
-        nisl consectetur et. Aenean lacinia bibendum nulla sed consectetur.</p>
+      <h2>Your Event Has Been Published</h2>
+      <p>Congratulations! Your Event is now available for the world to see. If this step was premature, click 'Make Private Again' to hold off for now. </p>
       <a href="/" class="btn btn-primary">Return Home</a><br>
       <a href="#" v-promise:click="[eventModel.visibility, eventModel]" v-on:done="$router.push( '/confirmation' )">Make
         Private Again</a>
@@ -705,11 +700,11 @@
   <div class="container-fluid header">
     <div class="container">
       <h2>
-        <strong v-if="eventModel.__new__">Create Race</strong>
+        <strong v-if="eventModel.__new__">Create Event</strong>
         <strong v-else>
           {{ eventModel.name }}
-          <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."></i>
-          <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bacon ipsum dolor amet spare ribs cow prosciutto beef ribs venison. Sirloin bacon kielbasa chuck hamburger ball tip venison strip steak bresaola pork chop kevin."></i>
+          <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
+          <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
         </strong>
       </h2>
       <nav class="progress-bar-nav">

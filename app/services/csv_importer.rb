@@ -38,6 +38,7 @@ class CsvImporter
   end
 
   def processed_attributes
+    warn "SmarterCSV is attempting to process #{file_path}"
     @processed_attributes ||= SmarterCSV.process(file_path, key_mapping: key_mapping)
   end
 

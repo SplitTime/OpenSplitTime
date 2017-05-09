@@ -60,6 +60,7 @@ class ImportFile
     spreadsheet_format = file_url.split('.').last
     filename = file_url.split('/').last
     if VALID_EXTENSIONS.include?(spreadsheet_format)
+      warn "Roo is attempting to open #{file_url}"
       Roo::Spreadsheet.open(file_url)
     else
       raise ArgumentError, "Unknown file type: #{filename}"

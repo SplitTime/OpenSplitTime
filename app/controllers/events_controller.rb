@@ -263,7 +263,6 @@ class EventsController < ApplicationController
     authorize @event
     file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
     if file_url
-      warn "File saved to #{file_url}"
       importer = CsvImporter.new(file_path: file_url,
                                  model: model,
                                  global_attributes: global_attributes)

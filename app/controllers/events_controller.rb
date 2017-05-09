@@ -142,7 +142,7 @@ class EventsController < ApplicationController
 
   def import_efforts_csv
     model = :efforts
-    global_attributes = {event: @event, created_by: current_user.id}
+    global_attributes = {event: @event, concealed: @event.concealed, created_by: current_user.id}
     import_csv(model, global_attributes)
   end
 

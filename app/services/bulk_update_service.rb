@@ -26,8 +26,9 @@ class BulkUpdateService
     end
   end
 
-  def self.start_all_efforts(event, current_user_id)
-    start_efforts(event.efforts, current_user_id)
+  def self.start_ready_efforts(event, current_user_id)
+    efforts = event.efforts.ready_to_start
+    start_efforts(efforts, current_user_id)
   end
 
   def self.start_efforts(efforts, current_user_id)

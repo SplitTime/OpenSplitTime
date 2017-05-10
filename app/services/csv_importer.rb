@@ -11,9 +11,14 @@ class CsvImporter
     @global_attributes = args[:global_attributes] || {}
     @saved_records = []
     @errors = []
+    validate_setup
   end
 
   def import
+    if errors.present?
+      self.response_status = :unprocessable_entity
+      return
+    end
     ActiveRecord::Base.transaction do
       records.each do |record|
         if record.save
@@ -38,7 +43,11 @@ class CsvImporter
   end
 
   def processed_attributes
-    @processed_attributes ||= SmarterCSV.process(file_path, key_mapping: key_mapping)
+    @processed_attributes ||= SmarterCSV.process(file, key_mapping: key_mapping)
+  end
+
+  def file
+    @file ||= FileStore.read(file_path)
   end
 
   def key_mapping
@@ -55,5 +64,9 @@ class CsvImporter
 
   def humanized_class
     model.to_s.humanize(capitalize: false)
+  end
+
+  def validate_setup
+    errors << "File #{file_path} could not be read" unless file.present?
   end
 end

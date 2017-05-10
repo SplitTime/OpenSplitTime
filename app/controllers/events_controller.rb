@@ -107,7 +107,7 @@ class EventsController < ApplicationController
 
   def import_splits
     authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
       ImportSplitsJob.perform_later(file_url, @event, current_user.id)
       flash[:success] = 'Import in progress. Reload page for results.'
@@ -125,7 +125,7 @@ class EventsController < ApplicationController
 
   def import_efforts
     authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
       uid = 1
       background_channel = "import_progress_#{uid}"
@@ -261,7 +261,7 @@ class EventsController < ApplicationController
 
   def import_csv(model, global_attributes)
     authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
       importer = CsvImporter.new(file_path: file_url,
                                  model: model,

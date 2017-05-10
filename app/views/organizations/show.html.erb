@@ -9,7 +9,7 @@
     <div class="row">
       <% if @current_user && @current_user.authorized_to_edit?(@organization) %>
           <%= link_to 'Add/remove stewards', stewards_organization_path(@organization), class: "btn btn-sm btn-warning" %>
-          <%= link_to 'Create New Event', new_event_path(organization_id: @organization.id), class: "btn btn-sm btn-success" %>
+          <%= link_to 'Create New Event', event_staging_new_path, class: "btn btn-sm btn-success" %>
           <%= link_to 'Edit this organization', edit_organization_path(@organization), class: "btn btn-sm btn-primary" %>
           <%= link_to 'Delete this organization',
                       organization_path(@organization),

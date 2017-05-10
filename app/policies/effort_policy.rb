@@ -15,11 +15,11 @@ class EffortPolicy < ApplicationPolicy
   end
 
   def analyze?
-    user.present?
+    true
   end
 
   def place?
-    user.present?
+    true
   end
 
   def associate_participants?

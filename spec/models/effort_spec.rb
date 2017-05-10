@@ -180,28 +180,38 @@ RSpec.describe Effort, type: :model do
   end
 
   describe '#start_time=' do
+    let(:event_start_time) { '2017-03-15 06:00:00' }
+
     it 'sets start_offset to the difference between the provided parameter and event start time' do
-      event = build_stubbed(:event, start_time: '2017-03-15 06:00:00')
-      effort = build_stubbed(:effort, start_offset: 0)
-      allow(effort).to receive(:event).and_return(event)
-      effort.start_time = event.start_time + 3.hours
-      expect(effort.start_offset).to eq(3.hours)
+      expected_offset = 3.hours
+      effort_start_time = Time.parse(event_start_time) + expected_offset
+      verify_start_time(effort_start_time, expected_offset)
     end
 
     it 'works properly when the effort starts before the event' do
-      event = build_stubbed(:event, start_time: '2017-03-15 06:00:00')
-      effort = build_stubbed(:effort, start_offset: 0)
-      allow(effort).to receive(:event).and_return(event)
-      effort.start_time = event.start_time - 3.hours
-      expect(effort.start_offset).to eq(-3.hours)
+      expected_offset = -3.hours
+      effort_start_time = Time.parse(event_start_time) + expected_offset
+      verify_start_time(effort_start_time, expected_offset)
     end
 
     it 'works properly when the offset is large' do
+      expected_offset = 24.hours * 365
+      effort_start_time = Time.parse(event_start_time) + expected_offset
+      verify_start_time(effort_start_time, expected_offset)
+    end
+
+    it 'works properly when the start_time is provided as a string' do
+      expected_offset = 3.hours
+      effort_start_time = '2017-03-15 09:00:00'
+      verify_start_time(effort_start_time, expected_offset)
+    end
+
+    def verify_start_time(effort_start_time, expected_offset)
       event = build_stubbed(:event, start_time: '2017-03-15 06:00:00')
       effort = build_stubbed(:effort, start_offset: 0)
       allow(effort).to receive(:event).and_return(event)
-      effort.start_time = event.start_time + (24.hours * 365)
-      expect(effort.start_offset).to eq(24.hours * 365)
+      effort.start_time = effort_start_time
+      expect(effort.start_offset).to eq(expected_offset)
     end
   end
   

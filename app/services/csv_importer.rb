@@ -39,7 +39,7 @@ class CsvImporter
   attr_writer :response_status
 
   def records
-    @records ||= processed_attributes.map { |attributes| klass.new(attributes.merge(global_attributes)) }
+    @records ||= processed_attributes.map { |attributes| klass.new(global_attributes.merge(attributes)) }
   end
 
   def processed_attributes

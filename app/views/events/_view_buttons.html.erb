@@ -10,8 +10,10 @@
   <% end %>
 
   <% if @current_user && @current_user.authorized_to_edit?(view_object.event) %>
-      <%= link_to 'Admin', stage_event_path(view_object.event),
+      <%= link_to 'Classic Admin', stage_event_path(view_object.event),
                   disabled: stage_button_disabled?(view_object.class),
+                  class: 'btn btn-sm btn-primary' %>
+      <%= link_to 'Event Staging', event_staging_app_path(view_object.event),
                   class: 'btn btn-sm btn-primary' %>
   <% end %>
 

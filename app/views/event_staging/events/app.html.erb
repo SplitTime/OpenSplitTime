@@ -679,7 +679,8 @@
     <article class="col-xs-12 published-page">
       <span class="large-check"></span>
       <h2>Your Event Has Been Published</h2>
-      <p>Congratulations! Your Event is now available for the world to see. If this step was premature, click 'Make Private Again' to hold off for now. </p>
+      <p>Congratulations! Your Event is now available for the world to see. You can return and edit the Event, Splits,
+        or Entrants at any time. If this step was premature, click 'Make Private Again' to hold off for now. </p>
       <a href="/" class="btn btn-primary">Return Home</a><br>
       <a href="#" v-promise:click="[eventModel.visibility, eventModel]" v-on:done="$router.push( '/confirmation' )">Make
         Private Again</a>
@@ -705,6 +706,13 @@
           {{ eventModel.name }}
           <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
           <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
+        </strong>
+        <strong v-if="eventModel.__new__"><%= link_to 'Classic Admin', '#',
+                                                      disabled: true,
+                                                      class: 'btn btn-sm btn-primary pull-right' %>
+        </strong>
+        <strong v-else><%= link_to 'Classic Admin', stage_event_path(params[:staging_id]),
+                                   class: 'btn btn-sm btn-primary pull-right' %>
         </strong>
       </h2>
       <nav class="progress-bar-nav">

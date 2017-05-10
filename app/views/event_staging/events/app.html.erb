@@ -647,9 +647,9 @@
           <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
         </tr>
         <tr v-if="eventModel.course">
-          <th><span>Your Splits</span></th>
+          <th><span>Your Course and Splits</span></th>
           <td>
-            <google-map locked :route="eventModel.course.splits"></google-map>
+            <google-map fit :route="eventModel.course.splits"></google-map>
           </td>
           <td><span class="brackets"><router-link to="/splits">Edit</router-link></span></td>
         </tr>

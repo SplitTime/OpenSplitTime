@@ -2,9 +2,9 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe CsvImporter do
-  let(:file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts.csv' }
-  let(:mixed_records_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_bad.csv' }
-  let(:header_test_file_path) { "#{Rails.root}" + '/spec/fixtures/files/test_efforts_header_formats.csv' }
+  let(:file_path) { '/spec/fixtures/files/test_efforts.csv' }
+  let(:mixed_records_file_path) { '/spec/fixtures/files/test_efforts_mixed.csv' }
+  let(:header_test_file_path) { '/spec/fixtures/files/test_efforts_header_formats.csv' }
   let(:event) { create(:event) }
   let(:global_attributes) { {event_id: event.id} }
 

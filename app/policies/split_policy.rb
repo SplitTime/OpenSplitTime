@@ -10,10 +10,6 @@ class SplitPolicy < ApplicationPolicy
     @split = split
   end
 
-  def destroy?
-    user.admin?
-  end
-
   def import?
     user.present?
   end

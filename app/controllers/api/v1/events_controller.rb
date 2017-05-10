@@ -90,7 +90,7 @@ class Api::V1::EventsController < ApiController
   # POST /api/v1/events/:staging_id/import_efforts
   def import_efforts
     authorize @event
-    file_url = BucketStoreService.upload_to_bucket('imports', params[:file], current_user.id)
+    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
       if Rails.env.production?
         ImportEffortsJob.perform_later(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))

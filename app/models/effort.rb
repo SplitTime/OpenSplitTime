@@ -25,7 +25,7 @@ class Effort < ActiveRecord::Base
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender
+  validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
   validates :phone, phony_plausible: true

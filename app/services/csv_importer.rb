@@ -1,4 +1,5 @@
 class CsvImporter
+  BYTE_ORDER_MARK = "\xEF\xBB\xBF".force_encoding("UTF-8")
   attr_reader :saved_records, :errors, :response_status
 
   def initialize(args)
@@ -43,7 +44,8 @@ class CsvImporter
   end
 
   def processed_attributes
-    @processed_attributes ||= SmarterCSV.process(file, key_mapping: key_mapping, row_sep: :auto)
+    @processed_attributes ||= SmarterCSV.process(file, key_mapping: key_mapping, row_sep: :auto,
+                                                 strip_chars_from_headers: BYTE_ORDER_MARK)
   end
 
   def file

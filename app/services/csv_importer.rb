@@ -43,7 +43,7 @@ class CsvImporter
   end
 
   def processed_attributes
-    @processed_attributes ||= SmarterCSV.process(file, key_mapping: key_mapping)
+    @processed_attributes ||= SmarterCSV.process(file, key_mapping: key_mapping, row_sep: :auto)
   end
 
   def file

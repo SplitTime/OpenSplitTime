@@ -46,6 +46,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.4.0)
     alchemist (0.1.7)
+    american_date (1.1.1)
     arel (6.0.4)
     ast (2.3.0)
     autoprefixer-rails (6.3.6.2)
@@ -458,6 +459,7 @@ DEPENDENCIES
   active_record_query_trace
   active_record_union
   alchemist
+  american_date
   aws-sdk
   better_errors
   bootstrap-sass

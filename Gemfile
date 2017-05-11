@@ -57,6 +57,7 @@ gem 'phony_rails'
 gem 'font-awesome-rails'
 gem 'pg_search'
 gem 'smarter_csv'
+gem 'american_date'
 
 group :development do
   gem 'web-console', '~> 2.0'

@@ -6,7 +6,7 @@ RSpec.describe CsvImporter do
   let(:mixed_records_file_path) { '/spec/fixtures/files/test_efforts_mixed.csv' }
   let(:header_test_file_path) { '/spec/fixtures/files/test_efforts_header_formats.csv' }
   let(:event) { create(:event) }
-  let(:global_attributes) { {event_id: event.id} }
+  let(:global_attributes) { {event: event} }
 
   describe '#initialization' do
     it 'initializes when provided with a file_path and a model' do

@@ -169,7 +169,9 @@ Help Tooltip Icon
 	}
 }
 
-
+.loading-icon {
+    display: inline;
+}
 
 
 /**********************
@@ -428,7 +430,17 @@ span.brackets {
 	}
 }
 
-
+/*
+Global Alerts
+*/
+#global-alerts {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: none;
+    z-index: 100;
+}
 
 
 /************

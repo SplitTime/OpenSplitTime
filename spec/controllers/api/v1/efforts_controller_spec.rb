@@ -48,14 +48,20 @@ describe Api::V1::EffortsController do
     end
 
     context 'when provided with invalid attributes' do
-      let(:invalid_attributes) { {event_id: event.id, first_name: 'Johnny', gender: 'unknown'} }
+      let(:invalid_attributes) { {event_id: event.id, first_name: 'Johnny', gender: 'male'} }
 
-      it 'returns unprocessable entity' do
+      it 'returns a jsonapi error object and status code unprocessable entity' do
         post :create, data: {type: 'efforts', attributes: invalid_attributes}
         expect(response.body).to be_jsonapi_errors
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns the attributes of the object' do
+        post :create, data: {type: 'efforts', attributes: invalid_attributes}
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data']['id']).not_to be_nil
-        expect(response.status).to eq(201)
+        error_object = parsed_response['errors'].first
+        expect(error_object['title']).to match(/could not be created/)
+        expect(error_object['detail']['attributes']).to be_nil
       end
     end
   end

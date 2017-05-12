@@ -47,9 +47,18 @@ class ApplicationController < ActionController::Base
      detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
   end
 
+  # This should really be a helper method
   def past_tense
-    {create: :created,
-     update: :updated,
-     destroy: :destroyed}.with_indifferent_access
+    result = {
+        create: :created,
+        update: :updated,
+        destroy: :destroyed,
+        import_efforts_csv: :imported,
+        import_splits_csv: :imported,
+        import_efforts: :imported,
+        import_splits: :imported
+    }.with_indifferent_access
+    result.default = :saved
+    result
   end
 end

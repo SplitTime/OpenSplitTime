@@ -731,6 +731,9 @@
   </div>
 
   <div class="container">
+    <div class="row" v-if="!isReady" style="padding: 150px;">
+      <%= image_tag("icons/loading.gif", alt: 'Loading', size: '30') %>
+    </div>
     <div class="row">
       <div is="router-view" v-bind:event-model="eventModel"></div>
     </div>

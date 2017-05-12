@@ -416,6 +416,7 @@
         app: null,
         data: {
             isDirty: false,
+            isReady: false,
             isStaged: false,
             eventModel: api.create( 'events' )
         },
@@ -481,7 +482,6 @@
                 eventStage.data.eventModel.fetch().always( function() {
                     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
                         next( '/' );
-                        // next();
                     } else {
                         next();
                     }
@@ -600,6 +600,9 @@
             ];
             var router = new VueRouter( {
                 routes: routes
+            } );
+            router.afterEach( function( to, from ) {
+                eventStage.data.isReady = true;
             } );
             eventStage.router = router;
             eventStage.app = new Vue( {

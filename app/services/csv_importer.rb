@@ -44,7 +44,7 @@ class CsvImporter
   end
 
   def processed_attributes
-    @processed_attributes ||= SmarterCSV.process(file, key_mapping: key_mapping, row_sep: :auto,
+    @processed_attributes ||= SmarterCSV.process(file, key_mapping: params_map, row_sep: :auto, force_utf8: true,
                                                  strip_chars_from_headers: BYTE_ORDER_MARK)
   end
 
@@ -52,8 +52,8 @@ class CsvImporter
     @file ||= FileStore.read(file_path)
   end
 
-  def key_mapping
-    params_class.key_mapping
+  def params_map
+    params_class.mapping
   end
 
   def params_class

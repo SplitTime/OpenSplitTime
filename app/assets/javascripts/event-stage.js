@@ -380,6 +380,10 @@
                     dataType: "json"
                 } ).then( function() {
                     return self.fetch();
+                } ).fail( function( e ) {
+                    if ( e.responseJSON && e.responseJSON.errors ) {
+                        $( document ).trigger( 'global-error', [ e.responseJSON.errors ] );
+                    }
                 } );
             }
         }
@@ -427,6 +431,11 @@
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
                 }               
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load Locale Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -434,6 +443,11 @@
             return api.find( 'users', 'current' ).always( function( model ) {
                 units.distance = model.prefDistanceUnit;
                 units.elevation = model.prefElevationUnit;
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load User Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -1449,11 +1463,12 @@
                     done: function (e, data) {
                         self.$emit( 'import', 'yay' );
                     },
-                    fail: function (e, data) {
+                    fail: function (e, data, a,b) {
                         self.error = true;
                         setTimeout( function() {
                             self.error = false;
                         }, 500 );
+                        $( document ).trigger( 'global-error', [ data.jqXHR.responseJSON.errors ] );
                     },
                     always: function () {
                         self.busy = false;

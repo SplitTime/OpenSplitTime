@@ -23,6 +23,7 @@ class EffortParameters < BaseParameters
   end
 
   def self.mapping
-    {first: :first_name, last: :last_name, state: :state_code, country: :country_code, sex: :gender, bib: :bib_number}
+    {first: :first_name, firstname: :first_name, last: :last_name, lastname: :last_name, state: :state_code,
+     country: :country_code, sex: :gender, bib: :bib_number}
   end
 end

@@ -1,6 +1,6 @@
 class CsvImporter
-  BYTE_ORDER_MARK = "\xEF\xBB\xBF".force_encoding("UTF-8")
-  attr_reader :saved_records, :errors, :response_status
+  BYTE_ORDER_MARK = "\xEF\xBB\xBF".force_encoding('UTF-8')
+  attr_reader :saved_records, :unsaved_records, :errors, :response_status
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -11,6 +11,7 @@ class CsvImporter
     @model = args[:model]
     @global_attributes = args[:global_attributes] || {}
     @saved_records = []
+    @unsaved_records = []
     @errors = []
     validate_setup
   end
@@ -25,7 +26,7 @@ class CsvImporter
         if record.save
           saved_records << record
         else
-          errors << [record.attributes.compact, record.errors.full_messages]
+          unsaved_records << record
           self.response_status = :unprocessable_entity
         end
       end

@@ -8,13 +8,13 @@ class Api::V1::EffortsController < ApiController
   end
 
   def create
-    effort = Effort.new(permitted_params)
-    authorize effort
+    @effort = Effort.new(permitted_params)
+    authorize @effort
 
-    if effort.save
-      render json: effort, status: :created
+    if @effort.save
+      render json: @effort, status: :created
     else
-      render json: {errors: ['effort not created'], detail: "#{effort.errors.full_messages}"}, status: :unprocessable_entity
+      render json: {errors: [jsonapi_error_object(@effort)]}, status: :unprocessable_entity
     end
   end
 
@@ -23,7 +23,7 @@ class Api::V1::EffortsController < ApiController
     if @effort.update(permitted_params)
       render json: @effort
     else
-      render json: {errors: ['effort not updated'], detail: "#{@effort.errors.full_messages}"}, status: :unprocessable_entity
+      render json: {errors: [jsonapi_error_object(@effort)]}, status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class Api::V1::EffortsController < ApiController
     if @effort.destroy
       render json: @effort
     else
-      render json: {errors: ['effort not destroyed'], detail: "#{@effort.errors.full_messages}"}, status: :unprocessable_entity
+      render json: {errors: [jsonapi_error_object(@effort)]}, status: :unprocessable_entity
     end
   end
 

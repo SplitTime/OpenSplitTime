@@ -3,6 +3,7 @@ class LiveEffortData
   delegate :participant_id, to: :effort
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
   ASSUMED_LAP ||= 1
+  COMPARISON_KEYS ||= %w(time_from_start pacer stopped_here)
 
   def self.response_row(args)
     new(args).response_row
@@ -102,12 +103,8 @@ class LiveEffortData
   def identical_split_time_exists?(kind)
     existing_split_time = indexed_existing_split_times[time_points[kind]]
     new_split_time = new_split_times[kind]
-    existing_split_time && new_split_time &&
-        comparison_keys.all? { |key| existing_split_time[key].presence == new_split_time[key].presence }
-  end
-
-  def comparison_keys
-    %w(time_from_start pacer stopped_here)
+    start_offset_unchanged? && existing_split_time && new_split_time &&
+        COMPARISON_KEYS.all? { |key| existing_split_time[key].presence == new_split_time[key].presence }
   end
 
   def ordered_split_times
@@ -200,6 +197,10 @@ class LiveEffortData
                                                                 time_point: time_points[kind],
                                                                 lap_splits: effort_lap_splits,
                                                                 split_times: ordered_split_times)
+  end
+
+  def start_offset_unchanged?
+    !effort.changed_attributes.key?('start_offset')
   end
 
   def param_with_kind(base, kind)

@@ -191,16 +191,13 @@
               <th data-orderable="false"></th>
               <th>Name</th>
               <th data-order="asc">
-                Dist.
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative distance from start"><i class="glyphicon glyphicon-question-sign"></i></span>
+                Distance
               </th>
               <th>
-                V. Gain
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical gain from start"><i class="glyphicon glyphicon-question-sign"></i></span>
+                Vert. Gain
               </th>
               <th>
-                V. Loss
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical loss from start"><i class="glyphicon glyphicon-question-sign"></i></span>
+                Vert. Loss
               </th>
               <th data-orderable="false">
                 Manage
@@ -422,8 +419,7 @@
               <th>Birthdate</th>
               <th>Location</th>
               <th>
-                Bib&num;
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bib numbers are not strictly required, but entrants must have bib numbers for their times to be entered in the live time entry screen."><i class="glyphicon glyphicon-question-sign"></i></span>
+                Bib
               </th>
               <th data-orderable="false">&nbsp;</th>
             </tr>
@@ -498,6 +494,7 @@
               <div class="row">
                 <div class="form-group col-xs-6">
                   <label class="required">Bib Number</label>
+                  <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bib numbers are not strictly required, but entrants must have bib numbers for their times to be entered in the live time entry screen."><i class="glyphicon glyphicon-question-sign"></i></span>
                   <input type="text" class="form-control" v-model.number="model.bibNumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
                 </div>
 

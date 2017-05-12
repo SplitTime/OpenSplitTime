@@ -22,7 +22,7 @@ describe Api::V1::EventsController do
     it 'returns an error if the event does not exist' do
       get :show, staging_id: 123
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -64,7 +64,7 @@ describe Api::V1::EventsController do
     it 'returns an error if the event does not exist' do
       put :update, staging_id: 123, data: {type: 'events', attributes: attributes }
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -85,7 +85,7 @@ describe Api::V1::EventsController do
     it 'returns an error if the event does not exist' do
       delete :destroy, staging_id: 123
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -106,7 +106,7 @@ describe Api::V1::EventsController do
     it 'returns an error if the event does not exist' do
       get :spread, staging_id: 123
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
 

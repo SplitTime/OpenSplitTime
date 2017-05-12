@@ -13,7 +13,7 @@ class Api::V1::SplitTimesController < ApiController
     if split_time.save
       render json: split_time, status: :created
     else
-      render json: {message: 'split_time not created', error: "#{split_time.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['split_time not created'], detail: "#{split_time.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::SplitTimesController < ApiController
     if @split_time.update(permitted_params)
       render json: @split_time
     else
-      render json: {message: 'split_time not updated', error: "#{@split_time.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['split_time not updated'], detail: "#{@split_time.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class Api::V1::SplitTimesController < ApiController
     if @split_time.destroy
       render json: @split_time
     else
-      render json: {message: 'split_time not destroyed', error: "#{@split_time.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['split_time not destroyed'], detail: "#{@split_time.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 

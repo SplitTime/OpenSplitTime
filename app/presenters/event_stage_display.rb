@@ -31,6 +31,14 @@ class EventStageDisplay < EventWithEffortsPresenter
     course_splits.size
   end
 
+  def ready_efforts_count
+    ready_efforts.size
+  end
+
+  def ready_efforts
+    @ready_efforts ||= event_efforts.ready_to_start
+  end
+
   def view_text
     %w(splits efforts problems).include?(params[:view]) ? params[:view] : 'efforts'
   end

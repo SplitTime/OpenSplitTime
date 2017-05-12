@@ -13,7 +13,7 @@ class Api::V1::UsersController < ApiController
     if user.save
       render json: user, status: :created
     else
-      render json: {message: 'user not created', error: "#{user.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['user not created'], detail: "#{user.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::UsersController < ApiController
     if @user.update(permitted_params)
       render json: @user
     else
-      render json: {message: 'user not updated', error: "#{@user.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['user not updated'], detail: "#{@user.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class Api::V1::UsersController < ApiController
     if @user.destroy
       render json: @user
     else
-      render json: {message: 'user not destroyed', error: "#{@user.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['user not destroyed'], detail: "#{@user.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 

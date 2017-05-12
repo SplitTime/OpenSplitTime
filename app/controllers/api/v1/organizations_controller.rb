@@ -13,7 +13,7 @@ class Api::V1::OrganizationsController < ApiController
     if organization.save
       render json: organization, status: :created
     else
-      render json: {message: 'organization not created', error: "#{organization.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['organization not created'], detail: "#{organization.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::OrganizationsController < ApiController
     if @organization.update(permitted_params)
       render json: @organization
     else
-      render json: {message: 'organization not updated', error: "#{@organization.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['organization not updated'], detail: "#{@organization.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class Api::V1::OrganizationsController < ApiController
     if @organization.destroy
       render json: @organization
     else
-      render json: {message: 'organization not destroyed', error: "#{@organization.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['organization not destroyed'], detail: "#{@organization.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 

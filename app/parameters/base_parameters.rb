@@ -16,7 +16,7 @@ class BaseParameters
     ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: permitted)
   end
 
-  def self.key_mapping
+  def self.mapping
     {}
   end
 end

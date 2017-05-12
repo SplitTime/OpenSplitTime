@@ -25,7 +25,7 @@ class ApiController < ApplicationController
   end
 
   def user_not_authorized
-    render json: {message: 'not authorized'}, status: :unauthorized
+    render json: {errors: ['not authorized']}, status: :unauthorized
   end
 
   def set_default_format
@@ -33,7 +33,7 @@ class ApiController < ApplicationController
   end
 
   def record_not_found
-    render json: {message: 'record not found'}, status: :not_found
+    render json: {errors: ['record not found']}, status: :not_found
   end
 
   def json_web_token_present?

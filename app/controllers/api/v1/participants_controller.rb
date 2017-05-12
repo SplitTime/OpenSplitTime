@@ -13,7 +13,7 @@ class Api::V1::ParticipantsController < ApiController
     if participant.save
       render json: participant, status: :created
     else
-      render json: {message: 'participant not created', error: "#{participant.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['participant not created'], detail: "#{participant.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::ParticipantsController < ApiController
     if @participant.update(permitted_params)
       render json: @participant
     else
-      render json: {message: 'participant not updated', error: "#{@participant.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['participant not updated'], detail: "#{@participant.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class Api::V1::ParticipantsController < ApiController
     if @participant.destroy
       render json: @participant
     else
-      render json: {message: 'participant not destroyed', error: "#{@participant.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['participant not destroyed'], detail: "#{@participant.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 

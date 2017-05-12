@@ -16,7 +16,7 @@ class Api::V1::EventsController < ApiController
       event.reload
       render json: event, status: :created
     else
-      render json: {message: 'event not created', error: "#{event.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['event not created'], detail: "#{event.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -26,7 +26,7 @@ class Api::V1::EventsController < ApiController
     if @event.update(permitted_params)
       render json: @event
     else
-      render json: {message: 'event not updated', error: "#{@event.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['event not updated'], detail: "#{@event.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -36,7 +36,7 @@ class Api::V1::EventsController < ApiController
     if @event.destroy
       render json: @event
     else
-      render json: {message: 'event not destroyed', error: "#{@event.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['event not destroyed'], detail: "#{@event.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -46,41 +46,6 @@ class Api::V1::EventsController < ApiController
     params[:display_style] ||= 'absolute'
     spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
     render json: spread_display, serializer: EventSpreadSerializer, include: 'effort_times_rows'
-  end
-
-  # PUT /api/v1/events/:staging_id/associate_splits?split_ids=[x, y, ...]
-  def associate_splits
-    authorize @event
-    proposed_splits = Split.where(id: params[:split_ids])
-    if proposed_splits.present?
-      added_splits = proposed_splits - @event.splits
-      if added_splits.present?
-        if @event.splits << added_splits
-          render json: {message: 'splits associated with event', splits: added_splits}, status: :created
-        else
-          render json: {message: 'splits not associated with event'}, status: :bad_request
-        end
-      else
-        render json: {message: 'splits already associated with event', splits: proposed_splits}
-      end
-    else
-      render json: {message: 'splits not found'}, status: :not_found
-    end
-  end
-
-  # DELETE /api/v1/events/:staging_id/remove_splits?split_ids=[x, y, ...]
-  def remove_splits
-    authorize @event
-    splits = Split.where(id: params[:split_ids])
-    if splits.present?
-      if @event.splits.delete(splits)
-        render json: {message: 'splits removed from event', splits: splits}
-      else
-        render json: {message: 'splits not removed from event', splits: splits}, status: :bad_request
-      end
-    else
-      render json: {message: 'splits not found'}, status: :not_found
-    end
   end
 
   # Send 'with_times' => 'false' to ignore split_time data
@@ -100,7 +65,7 @@ class Api::V1::EventsController < ApiController
         render json: {message: 'Import complete.'}
       end
     else
-      render json: {message: 'Import file too large.'}, status: :bad_request
+      render json: {errors: ['Import file too large.']}, status: :bad_request
     end
   end
 

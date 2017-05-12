@@ -13,7 +13,7 @@ class Api::V1::SplitsController < ApiController
     if split.save
       render json: split, status: :created
     else
-      render json: {message: 'split not created', error: "#{split.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['split not created'], detail: "#{split.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::SplitsController < ApiController
     if @split.update(permitted_params)
       render json: @split
     else
-      render json: {message: 'split not updated', error: "#{@split.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['split not updated'], detail: "#{@split.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class Api::V1::SplitsController < ApiController
     if @split.destroy
       render json: @split
     else
-      render json: {message: 'split not destroyed', error: "#{@split.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['split not destroyed'], detail: "#{@split.errors.full_messages}"}, status: :unprocessable_entity
     end
   end
 

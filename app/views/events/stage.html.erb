@@ -35,9 +35,8 @@
                   <%= link_to_set_dropped_attributes(@event_stage) %>
                   <%= link_to_ultrasignup_export(@event_stage) %>
               <% end %>
-          <% else %>
-              <%= link_to_start_all_efforts(@event_stage) %>
           <% end %>
+          <%= link_to_start_ready_efforts(@event_stage) %>
           <%= link_to_delete_event(@event_stage) %>
       <% end %>
     </div>

@@ -22,7 +22,7 @@ class EffortParameters < BaseParameters
      split_times_attributes: [*SplitTimeParameters.permitted]]
   end
 
-  def self.key_mapping
-    {first: :first_name, last: :last_name, state: :state_code, country: :country_code, sex: :gender}
+  def self.mapping
+    {first: :first_name, last: :last_name, state: :state_code, country: :country_code, sex: :gender, bib: :bib_number}
   end
 end

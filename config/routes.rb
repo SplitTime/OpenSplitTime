@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     member { put :associate_splits }
     member { put :set_data_status }
     member { put :set_dropped_attributes }
-    member { put :start_all_efforts }
+    member { put :start_ready_efforts }
     member { delete :remove_splits }
     member { delete :delete_all_efforts }
     member { get :reconcile }

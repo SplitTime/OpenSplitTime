@@ -46,7 +46,7 @@ class Api::V1::StagingController < ApiController
     elsif params[:status] == 'private'
       setter.make_private
     else
-      render json: {message: 'request must include status: public or status: private'}, status: :bad_request and return
+      render json: {errors: ['invalid status'], detail: 'request must include status: public or status: private'}, status: :bad_request and return
     end
     render json: setter.response, status: setter.status
   end
@@ -62,7 +62,7 @@ class Api::V1::StagingController < ApiController
   def find_or_initialize_event
     @event = Event.find_or_initialize_by(staging_id: params[:staging_id])
     unless @event.staging_id
-      render json: {message: 'invalid uuid', error: 'provided staging_id is not a valid uuid'}, status: :bad_request
+      render json: {errors: ['invalid uuid'], detail: 'provided staging_id is not a valid uuid'}, status: :bad_request
     end
   end
 

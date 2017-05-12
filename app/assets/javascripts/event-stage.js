@@ -380,6 +380,10 @@
                     dataType: "json"
                 } ).then( function() {
                     return self.fetch();
+                } ).fail( function( e ) {
+                    if ( e.responseJSON && e.responseJSON.errors ) {
+                        $( document ).trigger( 'global-error', [ e.responseJSON.errors ] );
+                    }
                 } );
             }
         }
@@ -412,6 +416,7 @@
         app: null,
         data: {
             isDirty: false,
+            isReady: false,
             isStaged: false,
             eventModel: api.create( 'events' )
         },
@@ -427,6 +432,11 @@
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
                 }               
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load Locale Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -434,6 +444,11 @@
             return api.find( 'users', 'current' ).always( function( model ) {
                 units.distance = model.prefDistanceUnit;
                 units.elevation = model.prefElevationUnit;
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load User Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -467,7 +482,6 @@
                 eventStage.data.eventModel.fetch().always( function() {
                     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
                         next( '/' );
-                        // next();
                     } else {
                         next();
                     }
@@ -586,6 +600,9 @@
             ];
             var router = new VueRouter( {
                 routes: routes
+            } );
+            router.afterEach( function( to, from ) {
+                eventStage.data.isReady = true;
             } );
             eventStage.router = router;
             eventStage.app = new Vue( {
@@ -1449,11 +1466,23 @@
                     done: function (e, data) {
                         self.$emit( 'import', 'yay' );
                     },
-                    fail: function (e, data) {
+                    fail: function (e, data, a,b) {
                         self.error = true;
                         setTimeout( function() {
                             self.error = false;
                         }, 500 );
+                        if ( data.jqXHR.responseJSON && data.jqXHR.responseJSON.errors ) {
+                            var errors = data.jqXHR.responseJSON.errors;
+                            for ( var i = 0; i < errors.length; i++ ) {
+                                errors[i].dump = errors[i].detail.attributes;
+                            }
+                            $( document ).trigger( 'global-error', [ errors ] );
+                        } else {
+                            $( document ).trigger( 'global-error', [ [ {
+                                title: 'Failed to Upload File',
+                                detail: 'Unknown Server Error'
+                            } ] ] );
+                        }
                     },
                     always: function () {
                         self.busy = false;

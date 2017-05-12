@@ -117,11 +117,15 @@
                 var title = errors[i].title || 'Unknown Error';
                 var detail = errors[i].detail;
                 if ( $.isPlainObject( detail ) && detail.messages ) {
-                    detail = '<br>' + detail.messages.join( '<br>' );
+                    detail = detail.messages.join( ',&nbsp;' );
                 } else if ( !detail instanceof String ) {
                     detail = '';
                 }
-                $contents += '<strong>' + title + '</strong>' + detail;
+                $contents += ( $contents === '' ) ? '' : '<br>';
+                $contents += '<strong>' + title + '</strong>&nbsp;' + detail;
+                if ( errors[i].dump ) {
+                    $contents += '<br>' + JSON.stringify( errors[i].dump, null, ' ' );
+                }
             }
             return $( '<span>' + $contents + '</span>' );
         }
@@ -135,7 +139,7 @@
                         $alert = buildJSONAPIErrors( errors );
                     } else {
                         // Interpret as array of string errors
-                        // TODO: Implement
+                        $alert = $( '<span>' + errors.join( ',&nbsp;' ) + '</span>' );
                     }
                 }
                 if ( $alert ) {
@@ -152,29 +156,6 @@
                     $container = $container.find( 'div' );
                     $( document ).bind( 'global-error', errorAlert.error );
                 }
-                setTimeout( function() {
-                $( document ).trigger( 'global-error', [ [
-                    {
-                        "title": "Effort could not be created",
-                        "detail": {
-                            "attributes": {
-                                "event_id": 17,
-                                "city": "Louisville",
-                                "age": 49,
-                                "created_by": 1,
-                                "updated_by": 1,
-                                "first_name": "Mark",
-                                "start_offset": 0,
-                                "concealed": false,
-                                "slug": "hardrock-100-2014-mark"
-                            },
-                            "messages": [
-                                "Last name can't be blank",
-                                "Gender can't be blank"
-                            ]
-                        }
-                    }
-                ] ] ); }, 2000 );
             },
         };
     })();

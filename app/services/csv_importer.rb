@@ -1,6 +1,6 @@
 class CsvImporter
-  BYTE_ORDER_MARK = "\xEF\xBB\xBF".force_encoding("UTF-8")
-  attr_reader :saved_records, :errors, :response_status
+  BYTE_ORDER_MARK = "\xEF\xBB\xBF".force_encoding('UTF-8')
+  attr_reader :valid_records, :invalid_records, :errors, :response_status
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -10,7 +10,8 @@ class CsvImporter
     @file_path = args[:file_path]
     @model = args[:model]
     @global_attributes = args[:global_attributes] || {}
-    @saved_records = []
+    @valid_records = []
+    @invalid_records = []
     @errors = []
     validate_setup
   end
@@ -23,9 +24,9 @@ class CsvImporter
     ActiveRecord::Base.transaction do
       records.each do |record|
         if record.save
-          saved_records << record
+          valid_records << record
         else
-          errors << [record.attributes.compact, record.errors.full_messages]
+          invalid_records << record
           self.response_status = :unprocessable_entity
         end
       end

@@ -14,7 +14,47 @@ class ApiController < ApplicationController
            include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
+  def show
+    authorize @resource
+    render json: @resource, include: prepared_params[:include], fields: prepared_params[:fields]
+  end
+
+  def create
+    @resource = controller_class.new(permitted_params)
+    authorize @resource
+
+    if @resource.save
+      render json: @resource, status: :created
+    else
+      render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize @resource
+    if @resource.update(permitted_params)
+      render json: @resource
+    else
+      render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize @resource
+    if @resource.destroy
+      render json: @resource
+    else
+      render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_entity
+    end
+  end
+
   private
+
+  def set_resource
+    @resource = controller_class.respond_to?(:friendly) ?
+        controller_class.friendly.find(params[:id]) :
+        controller_class.find(params[:id])
+  end
 
   def policy_class
     @policy_class ||= "#{controller_class}Policy".constantize

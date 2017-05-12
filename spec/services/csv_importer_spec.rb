@@ -43,8 +43,8 @@ RSpec.describe CsvImporter do
     it 'maps header keys as specified in class parameters file' do
       importer = CsvImporter.new(file_path: header_test_file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
-      expect(importer.saved_records.size).to eq(1)
-      effort = importer.saved_records.first
+      expect(importer.valid_records.size).to eq(1)
+      effort = importer.valid_records.first
       expect(effort.first_name).to eq('Lucy')
       expect(effort.last_name).to eq('Pendergrast')
       expect(effort.gender).to eq('female')
@@ -53,24 +53,21 @@ RSpec.describe CsvImporter do
     end
   end
 
-  describe '#saved_records' do
+  describe '#valid_records' do
     it 'returns the saved records' do
       importer = CsvImporter.new(file_path: file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
-      saved = importer.saved_records
+      saved = importer.valid_records
       expect(saved.count).to eq(3)
       expect(saved.map(&:first_name)).to eq(%w(Bjorn Charlie Lucy))
     end
   end
 
-  describe '#errors' do
+  describe '#invalid_records' do
     it 'returns the attributes of the rejected records' do
       importer = CsvImporter.new(file_path: mixed_records_file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
-      errors = importer.errors
-      expect(errors.count).to eq(2)
-      expect(errors.first.last).to include("Last name can't be blank")
-      expect(errors.second.last).to include("Gender can't be blank")
+      expect(importer.invalid_records.count).to eq(2)
     end
   end
 

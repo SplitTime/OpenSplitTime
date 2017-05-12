@@ -51,10 +51,7 @@ describe Api::V1::StagingController do
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {}
-        expected_errors = {}
-        expected_return_values = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       end
 
       it 'updates provided attributes for an existing organization' do
@@ -65,10 +62,7 @@ describe Api::V1::StagingController do
                   organization: existing_organization_params.merge(new_params)}
         expected_response = 200
         expected_attributes = {organization: [:name, :description]}
-        expected_errors = {}
-        expected_return_values = {organization: [:name, :description]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       end
 
       it 'updates provided attributes for an existing course' do
@@ -79,10 +73,7 @@ describe Api::V1::StagingController do
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {course: [:name, :description]}
-        expected_errors = {}
-        expected_return_values = {course: [:name, :description]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       end
 
       it 'updates provided attributes for an existing event' do
@@ -93,10 +84,7 @@ describe Api::V1::StagingController do
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
-        expected_errors = {}
-        expected_return_values = {event: [:name, :laps_required]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       end
     end
 
@@ -112,10 +100,7 @@ describe Api::V1::StagingController do
                   organization: new_organization_params}
         expected_response = 200
         expected_attributes = {}
-        expected_errors = {}
-        expected_return_values = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       end
 
       it 'creates an event using provided parameters and associates existing course and organization' do
@@ -125,10 +110,7 @@ describe Api::V1::StagingController do
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
-        expected_errors = {}
-        expected_return_values = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       end
 
       it 'creates an event using provided parameters and associates newly created course and organization' do
@@ -138,10 +120,7 @@ describe Api::V1::StagingController do
                   organization: new_organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
-        expected_errors = {}
-        expected_return_values = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       end
 
       it 'returns a bad request message with descriptive errors and provided data if the event cannot be created' do
@@ -149,12 +128,9 @@ describe Api::V1::StagingController do
         params = {event: new_event_params.except(:start_time),
                   course: new_course_params,
                   organization: new_organization_params}
-        expected_response = 400
-        expected_attributes = {}
-        expected_errors = {event: /Start time can't be blank/}
-        expected_return_values = {event: [:name, :laps_required]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        expected_response = 422
+        expected_errors = [/Start time can't be blank/]
+        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
       end
 
       it 'returns a bad request message with descriptive errors and provided data if the course cannot be created' do
@@ -162,12 +138,9 @@ describe Api::V1::StagingController do
         params = {event: new_event_params,
                   course: new_course_params.except(:name),
                   organization: new_organization_params}
-        expected_response = 400
-        expected_attributes = {}
-        expected_errors = {course: /Name can't be blank/}
-        expected_return_values = {course: [:description]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        expected_response = 422
+        expected_errors = [/Name can't be blank/]
+        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
       end
 
       it 'returns a bad request message with descriptive errors and provided data if the organization cannot be created' do
@@ -175,12 +148,9 @@ describe Api::V1::StagingController do
         params = {event: new_event_params,
                   course: new_course_params,
                   organization: new_organization_params.except(:name)}
-        expected_response = 400
-        expected_attributes = {}
-        expected_errors = {organization: /Name can't be blank/}
-        expected_return_values = {organization: [:description]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        expected_response = 422
+        expected_errors = [/Name can't be blank/]
+        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
       end
 
       it 'does not create any resources if the organization cannot be created' do
@@ -188,12 +158,9 @@ describe Api::V1::StagingController do
         params = {event: new_event_params,
                   course: new_course_params,
                   organization: new_organization_params.except(:name)}
-        expected_response = 400
-        expected_attributes = {}
-        expected_errors = {}
-        expected_return_values = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        expected_response = 422
+        expected_errors = []
+        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
         expect(Event.all.size).to eq(0)
         expect(Course.all.size).to eq(0)
         expect(Organization.all.size).to eq(0)
@@ -204,12 +171,9 @@ describe Api::V1::StagingController do
         params = {event: new_event_params,
                   course: new_course_params.except(:name),
                   organization: new_organization_params}
-        expected_response = 400
-        expected_attributes = {}
+        expected_response = 422
         expected_errors = {}
-        expected_return_values = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
         expect(Event.all.size).to eq(0)
         expect(Course.all.size).to eq(0)
         expect(Organization.all.size).to eq(0)
@@ -220,20 +184,16 @@ describe Api::V1::StagingController do
         params = {event: new_event_params.except(:start_time),
                   course: new_course_params,
                   organization: new_organization_params}
-        expected_response = 400
-        expected_attributes = {}
+        expected_response = 422
         expected_errors = {}
-        expected_return_values = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
         expect(Event.all.size).to eq(0)
         expect(Course.all.size).to eq(0)
         expect(Organization.all.size).to eq(0)
       end
     end
 
-    def post_and_validate_response(staging_id, params, expected_response, expected_attributes,
-                                   expected_errors, expected_return_values)
+    def post_and_validate_response(staging_id, params, expected_response, expected_attributes)
       post :post_event_course_org, staging_id: staging_id,
            event: params[:event], course: params[:course], organization: params[:organization]
 
@@ -250,16 +210,19 @@ describe Api::V1::StagingController do
               .to eq(params[class_name][attribute])
         end
       end
+    end
 
-      expected_errors.each do |class_name, error_text|
-        expect(parsed_response['errors'][class_name.to_s]).to include(error_text)
-      end
+    def post_and_validate_errors(staging_id, params, expected_response, expected_errors)
+      post :post_event_course_org, staging_id: staging_id,
+           event: params[:event], course: params[:course], organization: params[:organization]
 
-      expected_return_values.each do |class_name, attributes|
-        attributes.each do |attribute|
-          expect(parsed_response[class_name.to_s][attribute.to_s])
-              .to eq(params[class_name][attribute])
-        end
+      expect(response.status).to eq(expected_response)
+
+      parsed_response = JSON.parse(response.body)
+      message_array = parsed_response['errors'].map { |error| error['detail']['messages'] }.flatten
+
+      expected_errors.each do |error_text|
+        expect(message_array).to include(error_text)
       end
     end
   end

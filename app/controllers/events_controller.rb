@@ -268,13 +268,14 @@ class EventsController < ApplicationController
                                  global_attributes: global_attributes)
       importer.import
       respond_to do |format|
-        if importer.errors.empty?
-          @event.splits << importer.saved_records if model == :splits
-          format.html { flash[:success] = "Imported #{importer.saved_records.size} splits." and redirect_to :back }
-          format.json { render json: importer.saved_records, status: importer.response_status }
+        if importer.response_status == :created
+          @event.splits << importer.valid_records if model == :splits
+          format.html { flash[:success] = "Imported #{importer.valid_records.size} splits." and redirect_to :back }
+          format.json { render json: importer.valid_records, status: importer.response_status }
         else
-          format.html { flash[:warning] = "The following errors were found: #{importer.errors}" and redirect_to :back }
-          format.json { render json: {errors: importer.errors}, status: importer.response_status }
+          format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
+          format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
+                               status: importer.response_status }
         end
       end
     else

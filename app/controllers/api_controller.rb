@@ -54,15 +54,4 @@ class ApiController < ApplicationController
       ReportAnalyticsJob.perform_later(ga_params)
     end
   end
-
-  def jsonapi_error_object(record)
-    {title: "#{record.class} could not be #{past_tense[action_name]}",
-     detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
-  end
-
-  def past_tense
-    {create: :created,
-     update: :updated,
-     destroy: :destroyed}.with_indifferent_access
-  end
 end

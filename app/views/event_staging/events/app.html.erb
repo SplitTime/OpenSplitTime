@@ -704,7 +704,8 @@
   <div class="container-fluid header">
     <div class="container">
       <h2>
-        <strong v-if="eventModel.__new__">Create Event</strong>
+        <strong v-if="!isReady">Loading...</strong>
+        <strong v-else-if="eventModel.__new__">Create Event</strong>
         <strong v-else>
           {{ eventModel.name }}
           <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>

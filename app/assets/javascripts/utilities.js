@@ -117,11 +117,15 @@
                 var title = errors[i].title || 'Unknown Error';
                 var detail = errors[i].detail;
                 if ( $.isPlainObject( detail ) && detail.messages ) {
-                    detail = '<br>' + detail.messages.join( '<br>' );
+                    detail = detail.messages.join( ',&nbsp;' );
                 } else if ( !detail instanceof String ) {
                     detail = '';
                 }
-                $contents += '<strong>' + title + '</strong>' + detail;
+                $contents += ( $contents === '' ) ? '' : '<br>';
+                $contents += '<strong>' + title + '</strong>&nbsp;' + detail;
+                if ( errors[i].dump ) {
+                    $contents += '<br>' + JSON.stringify( errors[i].dump, null, ' ' );
+                }
             }
             return $( '<span>' + $contents + '</span>' );
         }

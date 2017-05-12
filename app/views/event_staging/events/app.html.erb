@@ -144,6 +144,9 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
+          <error-alert :errors="eventModel.errors" ></error-alert>
+        </div>
+        <div class="col-xs-12">
           <router-link to="/splits" class="btn btn-primary pull-right" :disabled="!eventModel.validate()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>
         </div>
@@ -243,6 +246,9 @@
               </tr>
             </template>
           </data-tables>
+        </div>
+        <div class="col-xs-12">
+          <error-alert :errors="eventModel.errors" ></error-alert>
         </div>
         <div class="col-xs-12">
           <p class="pull-left">
@@ -368,8 +374,10 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col-xs-12">
+                    <error-alert :errors="model.errors" ></error-alert>
+                  </div>
                   <div class="col-xs-12 split-modal-btn-wrap">
-                    <p v-for="err in error">{{ err }}</p>
                     <span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done'); value.__new__ || value.associate( true )" v-on:fail="error = $event.data.errors">
                       <template v-if="!model._dtid">Add Split</template>
@@ -445,6 +453,9 @@
               </td>
             </template>
           </data-tables>
+        </div>
+        <div class="col-xs-12">
+          <error-alert :errors="eventModel.errors" ></error-alert>
         </div>
         <div class="col-xs-12">
           <p class="pull-left">
@@ -545,7 +556,7 @@
 
                 <div class="form-group col-xs-6">
                   <label>Beacon URL</label>
-                  <input type="text" class="form-control" v-model="model.beacon" placeholder="http://example.com"></input>
+                  <input type="text" class="form-control" v-model="model.beaconUrl" placeholder="http://example.com"></input>
                 </div>
               </div>
               <div class="row modal-section">
@@ -574,7 +585,9 @@
               </div>
               <div class="row p-controls">
                 <div class="col-xs-12">
-                  <p v-for="err in error">{{ err }}</p>
+                  <error-alert :errors="model.errors" ></error-alert>
+                </div>
+                <div class="col-xs-12">
                   <span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
                   <button type="button" class="btn btn-primary" v-bind:disabled="invalid" v-promise:click="[value.post, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
                     <template v-if="!model._dtid">Add Entrant</template>
@@ -667,8 +680,13 @@
         </tbody>
       </table>
       <div class="row">
-        <router-link to="/published" class="btn btn-primary pull-right">Publish&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
-        </router-link>
+        <div class="col-xs-12">
+          <error-alert :errors="eventModel.errors" ></error-alert>
+        </div>
+        <div class="col-xs-12">
+          <router-link to="/published" class="btn btn-primary pull-right">Publish&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+          </router-link>
+        </div>
       </div>
     </article>
   </div>

@@ -142,12 +142,22 @@
             city: String,
             stateCode: String,
             countryCode: String,
+            beaconUrl: String,
+            concealed: { type: Boolean, default: true },
             startOffset: { type: Number, default: null },
+            startMinutes: {
+                get: function() {
+                    return Math.round( this.startOffset / 60 );
+                },
+                set: function( value ) {
+                    this.startOffset = value * 60;
+                }
+            },
             startDate: {
                 get: function() {
                     var startTime = eventStage.data.eventModel.startTime;
                     if ( startTime instanceof Date ) {
-                        return moment( startTime ).add( this.startOffset, 'minutes' ).toDate();
+                        return moment( startTime ).add( this.startMinutes, 'minutes' ).toDate();
                     } else {
                         return this.date;
                     }
@@ -155,7 +165,7 @@
                 set: function( value ) {
                     var startTime = eventStage.data.eventModel.startTime;
                     if ( startTime instanceof Date ) {
-                        this.startOffset = moment( value ).diff( startTime, 'minutes' );
+                        this.startMinutes = moment( value ).diff( startTime, 'minutes' );
                     } else {
                         this.date = value;
                     }
@@ -163,15 +173,15 @@
             },
             offsetTime: {
                 get: function() {
-                    if ( this.startOffset === null ) return '';
-                    var hours = Math.floor( Math.abs( this.startOffset ) / 60 );
-                    if ( this.startOffset < 0 ) hours = "-" + hours;
-                    var minutes = ( ( "0" + Math.abs( this.startOffset % 60 ) ).slice( -2 ) );
-                    return ( hours != 0 ) ? hours + ":" + minutes : this.startOffset % 60;
+                    if ( this.startMinutes === null ) return '';
+                    var hours = Math.floor( Math.abs( this.startMinutes ) / 60 );
+                    if ( this.startMinutes < 0 ) hours = "-" + hours;
+                    var minutes = ( ( "0" + Math.abs( this.startMinutes % 60 ) ).slice( -2 ) );
+                    return ( hours != 0 ) ? hours + ":" + minutes : this.startMinutes % 60;
                 },
                 set: function( value ) {
                     if ( value === '' ) {
-                        this.startOffset = null; 
+                        this.startMinutes = null;
                         return;
                     }
                     var time = value.split( ':' );
@@ -182,7 +192,7 @@
                         time = time[0] - 0;
                     }
                     if ( $.isNumeric( time ) )
-                        this.startOffset = time;
+                        this.startMinutes = time;
                 }
             },
             location: {
@@ -209,6 +219,7 @@
             event_id: { get: function() { return eventStage.data.eventModel ? eventStage.data.eventModel.id: null; } }
         },
         methods: {
+            afterCreate: function() { this.concealed = eventStage.data.eventModel.concealed; },
             validate: function() {
                 if ( !this.firstName ) return false;
                 if ( !this.lastName ) return false;
@@ -482,6 +493,7 @@
             this.resourceSelect.init();
             this.ajaxImport.init();
             this.inputUnits.init();
+            this.errorAlert.init();
 
             // Load UUID
             this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
@@ -1462,6 +1474,23 @@
                 } );
             }
         },
+
+        errorAlert: ( function() {
+            return {
+                init: function() {
+                    Vue.component( 'error-alert', {
+                        template: '<div class="alert alert-danger" role="alert" v-if="errors && errors.length > 0">\
+                            <template v-for="error in errors" v-if="typeof error == \'object\'">\
+                                <strong>{{ error.title }}</strong> {{ error.details }}\
+                            </template>\
+                        </div>',
+                        props: {
+                            errors: { type: Array, default: null }
+                        }
+                    } );
+                }
+            };
+        } )(),
 
         inputUnits: ( function() {
             return {

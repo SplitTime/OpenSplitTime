@@ -64,7 +64,7 @@ describe Api::V1::CoursesController do
     it 'returns an error if the course does not exist' do
       get :show, id: 0
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to match(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -103,7 +103,7 @@ describe Api::V1::CoursesController do
     it 'returns an error if the course does not exist' do
       put :update, id: 0, data: {type: 'courses', attributes: attributes }
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to match(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -124,7 +124,7 @@ describe Api::V1::CoursesController do
     it 'returns an error if the course does not exist' do
       delete :destroy, id: 0
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to match(/not found/)
       expect(response.status).to eq(404)
     end
   end

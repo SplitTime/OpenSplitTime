@@ -13,7 +13,7 @@ class Api::V1::CoursesController < ApiController
     if course.save
       render json: course, status: :created
     else
-      render json: {message: 'course not created', error: "#{course.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['course not created'], detail: course.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::CoursesController < ApiController
     if @course.update(permitted_params)
       render json: @course
     else
-      render json: {message: 'course not updated', error: "#{@course.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['course not updated'], detail: @course.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,7 @@ class Api::V1::CoursesController < ApiController
     if @course.destroy
       render json: @course
     else
-      render json: {message: 'course not destroyed', error: "#{@course.errors.full_messages}"}, status: :bad_request
+      render json: {errors: ['course not destroyed'], detail: @course.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

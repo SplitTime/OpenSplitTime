@@ -34,11 +34,31 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:alert] = "Access denied."
+    flash[:alert] = 'Access denied.'
     redirect_to (request.referrer || root_path)
   end
 
   def set_current_user
     User.current = current_user
+  end
+
+  def jsonapi_error_object(record)
+    {title: "#{record.class} could not be #{past_tense[action_name]}",
+     detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
+  end
+
+  # This should really be a helper method
+  def past_tense
+    result = {
+        create: :created,
+        update: :updated,
+        destroy: :destroyed,
+        import_efforts_csv: :imported,
+        import_splits_csv: :imported,
+        import_efforts: :imported,
+        import_splits: :imported
+    }.with_indifferent_access
+    result.default = :saved
+    result
   end
 end

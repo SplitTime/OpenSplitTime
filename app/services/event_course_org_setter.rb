@@ -1,6 +1,6 @@
 class EventCourseOrgSetter
 
-  attr_reader :response, :status
+  attr_reader :resources, :status
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -11,7 +11,7 @@ class EventCourseOrgSetter
     @course = args[:course]
     @organization = args[:organization]
     @params = args[:params]
-    @response = {errors: {}, relationships: {}}
+    @resources = []
   end
 
   def set_resources
@@ -34,16 +34,12 @@ class EventCourseOrgSetter
   end
 
   def update_resource(resource)
-    class_name = symbolized_class_name(resource)
     if resource.update(class_params(resource.class))
       resource.reload
     else
-      self.response[:errors][class_name] = resource.errors.full_messages
-      self.status = :bad_request
+      self.status = :unprocessable_entity
     end
-    self.response[class_name] = resource
-    self.response[:relationships][class_name] =
-        relationships[class_name].transform_values(&:id) if relationships[class_name].present?
+    self.resources << resource
   end
 
   def relationships

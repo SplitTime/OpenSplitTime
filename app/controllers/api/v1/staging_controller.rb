@@ -33,7 +33,7 @@ class Api::V1::StagingController < ApiController
     setter = EventCourseOrgSetter.new(event: @event, course: course, organization: organization, params: params)
     setter.set_resources
     if setter.status == :ok
-      render json: setter.resources.map { |resource| [resource.class.to_s.underscore, resource.to_json] }.to_h, status: setter.status
+      render json: setter.resources.map { |resource| [resource.class.to_s.underscore, resource] }.to_h, status: setter.status
     else
       render json: {errors: setter.resources.map { |resource| jsonapi_error_object(resource) }}, status: setter.status
     end

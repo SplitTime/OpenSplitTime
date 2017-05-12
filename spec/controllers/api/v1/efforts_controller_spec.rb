@@ -30,7 +30,7 @@ describe Api::V1::EffortsController do
 
   describe '#create' do
     context 'when provided with valid attributes' do
-      let(:valid_attributes) { {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'} }
+      let(:valid_attributes) { {'event_id' => event.id, 'first_name' => 'Johnny', 'last_name' => 'Appleseed', 'gender' => 'male'} }
 
       it 'returns a successful json response' do
         post :create, data: {type: 'efforts', attributes: valid_attributes}
@@ -48,7 +48,7 @@ describe Api::V1::EffortsController do
     end
 
     context 'when provided with invalid attributes' do
-      let(:invalid_attributes) { {event_id: event.id, first_name: 'Johnny', gender: 'male'} }
+      let(:invalid_attributes) { {'event_id' => event.id, 'first_name' => 'Johnny'} }
 
       it 'returns a jsonapi error object and status code unprocessable entity' do
         post :create, data: {type: 'efforts', attributes: invalid_attributes}
@@ -61,7 +61,7 @@ describe Api::V1::EffortsController do
         parsed_response = JSON.parse(response.body)
         error_object = parsed_response['errors'].first
         expect(error_object['title']).to match(/could not be created/)
-        expect(error_object['detail']['attributes']).to be_nil
+        expect(error_object['detail']['attributes']).to include(invalid_attributes)
       end
     end
   end

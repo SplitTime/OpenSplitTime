@@ -440,6 +440,12 @@ Global Alerts
     right: 0;
     background: none;
     z-index: 2000;
+
+    .alert {
+        max-height: 600px;
+        max-height: 90vh;
+        overflow-y: scroll;
+    }
 }
 
 

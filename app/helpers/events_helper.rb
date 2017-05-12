@@ -27,6 +27,21 @@ module EventsHelper
     end
   end
 
+  def link_to_classic_admin(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object)
+      link_to 'Classic Admin', stage_event_path(view_object),
+              disabled: stage_button_disabled?(view_object.class),
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
+  def link_to_event_staging(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object)
+      link_to 'Event Staging (beta)', "#{event_staging_app_path(view_object)}#/#{event_staging_app_page(view_object)}",
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
   def link_to_download_spread_csv(view_object, current_user)
     if current_user && current_user.authorized_for_live?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',
@@ -76,13 +91,13 @@ module EventsHelper
 
   def link_to_start_ready_efforts(view_object)
     if view_object.ready_efforts.present?
-    link_to "Start #{pluralize(view_object.ready_efforts_count, 'effort')}",
-            start_ready_efforts_event_path(view_object.event),
-            method: :put,
-            data: {confirm: 'NOTE: This will create a starting split time for the ' +
-                "#{pluralize(view_object.ready_efforts_count, 'unstarted effort')} " +
-                'scheduled to start before the current time. Are you sure you want to proceed?'},
-            class: 'btn btn-sm btn-success'
+      link_to "Start #{pluralize(view_object.ready_efforts_count, 'effort')}",
+              start_ready_efforts_event_path(view_object.event),
+              method: :put,
+              data: {confirm: 'NOTE: This will create a starting split time for the ' +
+                  "#{pluralize(view_object.ready_efforts_count, 'unstarted effort')} " +
+                  'scheduled to start before the current time. Are you sure you want to proceed?'},
+              class: 'btn btn-sm btn-success'
     else
       link_to 'Nothing to start', '#', disabled: true,
               data: {confirm: 'No efforts are ready to start. Reload the page to check again.'},
@@ -112,5 +127,9 @@ module EventsHelper
 
   def stage_button_disabled?(klass)
     klass == EventStageDisplay
+  end
+
+  def event_staging_app_page(view_object)
+    (view_object.respond_to?(:view_text)) && (view_object.view_text == 'splits') ? 'splits' : 'entrants'
   end
 end

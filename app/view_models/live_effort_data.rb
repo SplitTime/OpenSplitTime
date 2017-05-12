@@ -36,14 +36,15 @@ class LiveEffortData
      bib_number: effort.bib_number,
      effort_name: effort_name,
      dropped_here: stopped_here?,
-     time_in: new_split_times[:in].military_time,
-     time_out: new_split_times[:out].military_time,
+     time_in: new_split_times[:in].military_time || params[:time_in],
+     time_out: new_split_times[:out].military_time || params[:time_out],
      pacer_in: new_split_times[:in].pacer,
      pacer_out: new_split_times[:out].pacer,
      time_in_status: new_split_times[:in].data_status,
      time_out_status: new_split_times[:out].data_status,
      time_in_exists: times_exist[:in],
-     time_out_exists: times_exist[:out]}
+     time_out_exists: times_exist[:out],
+     identical: identical_row_exists?}
         .camelize_keys
   end
 
@@ -92,6 +93,20 @@ class LiveEffortData
 
   def times_exist
     sub_split_kinds.map { |kind| [kind, indexed_existing_split_times[time_points[kind]].present?] }.to_h
+  end
+
+  def identical_row_exists?
+    sub_split_kinds.all? { |kind| identical_split_time_exists?(kind) }
+  end
+
+  def identical_split_time_exists?(kind)
+    existing_split_time = indexed_existing_split_times[time_points[kind]]
+    new_split_time = new_split_times[kind]
+    comparison_keys.all? { |key| existing_split_time[key].presence == new_split_time[key].presence }
+  end
+
+  def comparison_keys
+    %w(time_from_start pacer stopped_here)
   end
 
   def ordered_split_times

@@ -102,7 +102,8 @@ class LiveEffortData
   def identical_split_time_exists?(kind)
     existing_split_time = indexed_existing_split_times[time_points[kind]]
     new_split_time = new_split_times[kind]
-    comparison_keys.all? { |key| existing_split_time[key].presence == new_split_time[key].presence }
+    existing_split_time && new_split_time &&
+        comparison_keys.all? { |key| existing_split_time[key].presence == new_split_time[key].presence }
   end
 
   def comparison_keys

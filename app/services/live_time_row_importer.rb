@@ -29,11 +29,15 @@ class LiveTimeRowImporter
       # or if times will be overwritten, so call bulk_create_or_update with force option. If more than one
       # row was submitted, call bulk_create_or_update without force option.
 
-      if effort_data.valid? && (effort_data.clean? || force_option?) && create_or_update_times(effort_data)
-        EffortOffsetTimeAdjuster.adjust(effort: effort_data.effort)
-        NotifyFollowersJob.perform_later(participant_id: effort_data.participant_id,
-                                         split_time_ids: saved_split_times.map(&:id),
-                                         multi_lap: event.multiple_laps?)
+      if effort_data.valid? && (effort_data.clean? || force_option?)
+        if create_or_update_times(effort_data)
+          EffortOffsetTimeAdjuster.adjust(effort: effort_data.effort)
+          NotifyFollowersJob.perform_later(participant_id: effort_data.participant_id,
+                                           split_time_ids: saved_split_times.map(&:id),
+                                           multi_lap: event.multiple_laps?)
+        end
+      else
+        unsaved_rows << effort_data.response_row
       end
       EffortDataStatusSetter.set_data_status(effort: effort_data.effort, times_container: times_container)
     end

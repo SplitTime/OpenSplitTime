@@ -51,7 +51,9 @@ class ApiController < ApplicationController
   private
 
   def set_resource
-    @resource = controller_class.friendly.find(params[:id])
+    @resource = controller_class.respond_to?(:friendly) ?
+        controller_class.friendly.find(params[:id]) :
+        controller_class.find(params[:id])
   end
 
   def policy_class

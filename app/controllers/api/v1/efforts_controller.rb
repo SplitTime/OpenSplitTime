@@ -1,5 +1,5 @@
 class Api::V1::EffortsController < ApiController
-  before_action :set_resource, except: :create
+  before_action :set_resource, except: [:index, :create]
 
   def show
     @resource.split_times.load.to_a if prepared_params[:include]&.include?('split_times')

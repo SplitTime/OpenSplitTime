@@ -50,7 +50,7 @@ class CsvImporter
   end
 
   def allowed_attributes(attributes)
-    global_attributes.merge(attributes).slice(*params_class.permitted)
+    global_attributes.merge(attributes.slice(*params_class.permitted))
   end
 
   def file

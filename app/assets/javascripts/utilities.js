@@ -121,7 +121,7 @@
                 } else if ( !detail instanceof String ) {
                     detail = '';
                 }
-                $contents += '<strong>' + title + '</strong>' + detail;
+                $contents += '<strong>' + title + '</strong>&nbsp;' + detail;
             }
             return $( '<span>' + $contents + '</span>' );
         }

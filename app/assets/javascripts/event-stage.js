@@ -1471,7 +1471,14 @@
                         setTimeout( function() {
                             self.error = false;
                         }, 500 );
-                        $( document ).trigger( 'global-error', [ data.jqXHR.responseJSON.errors ] );
+                        if ( data.jqXHR.responseJSON && data.jqXHR.responseJSON.errors ) {
+                            $( document ).trigger( 'global-error', [ data.jqXHR.responseJSON.errors ] );
+                        } else {
+                            $( document ).trigger( 'global-error', [ [ {
+                                title: 'Failed to Upload File',
+                                detail: 'Unknown Server Error'
+                            } ] ] );
+                        }
                     },
                     always: function () {
                         self.busy = false;

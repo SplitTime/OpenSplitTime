@@ -16,15 +16,11 @@ class Course < ActiveRecord::Base
   validates_uniqueness_of :name, case_sensitive: false
 
   def earliest_event_date
-    events.earliest.start_time
-  end
-
-  def latest_event_date
-    events.latest.start_time
+    events.earliest&.start_time
   end
 
   def most_recent_event_date
-    events.most_recent.start_time
+    events.most_recent&.start_time
   end
 
   def update_initial_splits

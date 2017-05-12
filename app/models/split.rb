@@ -156,14 +156,10 @@ class Split < ActiveRecord::Base
   end
 
   def earliest_event_date
-    events.where(concealed: false).earliest.start_time
-  end
-
-  def latest_event_date
-    events.where(concealed: false).latest.start_time
+    events.visible.earliest&.start_time
   end
 
   def most_recent_event_date
-    events.where(concealed: false).most_recent.start_time
+    events.visible.most_recent&.start_time
   end
 end

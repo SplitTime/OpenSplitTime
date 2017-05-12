@@ -12,7 +12,7 @@ class PlanDisplay
   end
 
   def event
-    @event ||= course.events.where(concealed: false).latest
+    @event ||= course.events.visible.latest
   end
 
   def start_time

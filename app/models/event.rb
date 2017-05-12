@@ -18,9 +18,6 @@ class Event < ActiveRecord::Base
   validates_uniqueness_of :staging_id
 
   scope :recent, -> (max) { where('start_time < ?', Time.now).order(start_time: :desc).limit(max) }
-  scope :most_recent, -> { where('start_time < ?', Time.now).order(start_time: :desc).first }
-  scope :latest, -> { order(start_time: :desc).first }
-  scope :earliest, -> { order(:start_time).first }
   scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) { search(search_param)
                                                      .where(concealed: false)
@@ -32,7 +29,19 @@ class Event < ActiveRecord::Base
     return all if search_param.blank?
     name_search(search_param)
   end
-  
+
+  def self.latest
+    order(start_time: :desc).first
+  end
+
+  def self.earliest
+    order(:start_time).first
+  end
+
+  def self.most_recent
+    where('start_time < ?', Time.now).order(start_time: :desc).first
+  end
+
   def reconciled_efforts
     efforts.where.not(participant_id: nil)
   end

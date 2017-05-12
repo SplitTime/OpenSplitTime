@@ -135,7 +135,7 @@
                         $alert = buildJSONAPIErrors( errors );
                     } else {
                         // Interpret as array of string errors
-                        // TODO: Implement
+                        $alert = $( '<span>' + errors.join( ',&nbsp;' ) + '</span>' );
                     }
                 }
                 if ( $alert ) {
@@ -152,29 +152,6 @@
                     $container = $container.find( 'div' );
                     $( document ).bind( 'global-error', errorAlert.error );
                 }
-                setTimeout( function() {
-                $( document ).trigger( 'global-error', [ [
-                    {
-                        "title": "Effort could not be created",
-                        "detail": {
-                            "attributes": {
-                                "event_id": 17,
-                                "city": "Louisville",
-                                "age": 49,
-                                "created_by": 1,
-                                "updated_by": 1,
-                                "first_name": "Mark",
-                                "start_offset": 0,
-                                "concealed": false,
-                                "slug": "hardrock-100-2014-mark"
-                            },
-                            "messages": [
-                                "Last name can't be blank",
-                                "Gender can't be blank"
-                            ]
-                        }
-                    }
-                ] ] ); }, 2000 );
             },
         };
     })();

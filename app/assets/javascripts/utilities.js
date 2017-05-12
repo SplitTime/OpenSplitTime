@@ -101,6 +101,84 @@
         }
     };
 
+    var errorAlert = (function(){
+        var $container = null;
+
+        var buildAlert = function( $contents ) {
+            var $alert = $( '<div class="alert alert-danger" role="alert"></div>' );
+            $alert.append( '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' );
+            $alert.append( $contents );
+            return $alert;
+        }
+
+        var buildJSONAPIErrors = function( errors ) {
+            var $contents = '';
+            for ( var i = 0; i < errors.length; i++ ) {
+                var title = errors[i].title || 'Unknown Error';
+                var detail = errors[i].detail;
+                if ( $.isPlainObject( detail ) && detail.messages ) {
+                    detail = '<br>' + detail.messages.join( '<br>' );
+                } else if ( !detail instanceof String ) {
+                    detail = '';
+                }
+                $contents += '<strong>' + title + '</strong>' + detail;
+            }
+            return $( '<span>' + $contents + '</span>' );
+        }
+
+        return {
+            error: function( event, errors ) {
+                var $alert;
+                if ( $.isArray( errors ) && errors.length > 0 ) {
+                    if ( $.isPlainObject( errors[0] ) ) {
+                        // Interpret as JSONAPI errors
+                        $alert = buildJSONAPIErrors( errors );
+                    } else {
+                        // Interpret as array of string errors
+                        // TODO: Implement
+                    }
+                }
+                if ( $alert ) {
+                    $alert = buildAlert( $alert );
+                    $alert.hide();
+                    $container.append( $alert );
+                    $alert.slideDown();
+                }
+            },
+            init: function () {
+                if ( $container === null ) {
+                    $container = $( '<aside id="global-alerts"><div class="container"></div></aside>' );
+                    $( 'body' ).append( $container );
+                    $container = $container.find( 'div' );
+                    $( document ).bind( 'global-error', errorAlert.error );
+                }
+                setTimeout( function() {
+                $( document ).trigger( 'global-error', [ [
+                    {
+                        "title": "Effort could not be created",
+                        "detail": {
+                            "attributes": {
+                                "event_id": 17,
+                                "city": "Louisville",
+                                "age": 49,
+                                "created_by": 1,
+                                "updated_by": 1,
+                                "first_name": "Mark",
+                                "start_offset": 0,
+                                "concealed": false,
+                                "slug": "hardrock-100-2014-mark"
+                            },
+                            "messages": [
+                                "Last name can't be blank",
+                                "Gender can't be blank"
+                            ]
+                        }
+                    }
+                ] ] ); }, 2000 );
+            },
+        };
+    })();
+
     /*
     <label class="switchery-label">
       <span>Rapid<br>Mode</span>
@@ -147,6 +225,7 @@
         staticPopover.init();
         switchery.init();
         datepicker.init();
+        errorAlert.init();
     };
 
     $(document).ready( init );

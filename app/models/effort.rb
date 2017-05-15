@@ -85,7 +85,7 @@ class Effort < ActiveRecord::Base
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    self.start_offset = TimeDifference.from(event_start_time, new_datetime).in_seconds
+    self.start_offset = TimeDifference.from(event.start_time, new_datetime).in_seconds
   end
 
   def day_and_time(time_from_start)

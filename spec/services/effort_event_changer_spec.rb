@@ -61,7 +61,7 @@ RSpec.describe EffortEventChanger do
       end
     end
 
-    context 'when the new event has different splits from the old and distances coincide' do
+    context 'when the new event has different splits from the old' do
       let(:new_event) { create(:event, course: new_course) }
       let(:new_course) { create(:course_with_standard_splits, splits_count: 4) }
 
@@ -87,6 +87,27 @@ RSpec.describe EffortEventChanger do
         changer.assign_event
         effort.reload
         expect(effort.split_times.map(&:time_point)).to eq(time_points)
+      end
+
+      it 'raises an error if distances do not coincide' do
+        split = new_event.splits.find_by(distance_from_start: 10000)
+        split.update(distance_from_start: 9999)
+        expect { EffortEventChanger.new(effort: effort, event: new_event) }
+            .to raise_error(/distances do not coincide/)
+      end
+
+      it 'raises an error if sub_splits do not coincide' do
+        split = new_event.splits.find_by(distance_from_start: 10000)
+        split.update(sub_split_bitmap: 1)
+        expect { EffortEventChanger.new(effort: effort, event: new_event) }
+            .to raise_error(/sub splits do not coincide/)
+      end
+
+      it 'raises an error if laps are out of range' do
+        split_time = effort.split_times.last
+        split_time.update(lap: 2)
+        expect { EffortEventChanger.new(effort: effort, event: new_event) }
+            .to raise_error(/laps exceed maximum required/)
       end
     end
 

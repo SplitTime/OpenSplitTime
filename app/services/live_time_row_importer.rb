@@ -15,7 +15,7 @@ class LiveTimeRowImporter
     @time_rows = args[:time_rows].map(&:last) # time_row.first is a unneeded id; time_row.last contains all needed data
     @times_container ||= SegmentTimesContainer.new(calc_model: :stats)
     @unsaved_rows = []
-    @saved_split_times = []
+    @saved_split_times = {}
   end
 
   def import
@@ -32,15 +32,13 @@ class LiveTimeRowImporter
       if effort_data.valid? && (effort_data.clean? || force_option?)
         if create_or_update_times(effort_data)
           EffortOffsetTimeAdjuster.adjust(effort: effort_data.effort)
-          NotifyFollowersJob.perform_later(participant_id: effort_data.participant_id,
-                                           split_time_ids: saved_split_times.map(&:id),
-                                           multi_lap: event.multiple_laps?)
         end
       else
         unsaved_rows << effort_data.response_row
       end
       EffortDataStatusSetter.set_data_status(effort: effort_data.effort, times_container: times_container)
     end
+    notify_followers
   end
 
   def returned_rows
@@ -61,13 +59,15 @@ class LiveTimeRowImporter
     effort = effort_data.effort
     indexed_split_times = effort_data.indexed_existing_split_times
     row_success = true
+    participant_id = effort_data.participant_id || 0
+    saved_split_times[participant_id] ||= []
 
     effort_data.proposed_split_times.each do |proposed_split_time|
       working_split_time = indexed_split_times[proposed_split_time.time_point] || proposed_split_time
       saved_split_time = create_or_update_split_time(proposed_split_time, working_split_time)
       if saved_split_time
         EffortStopper.stop(effort: effort, stopped_split_time: saved_split_time) if saved_split_time.stopped_here
-        saved_split_times << saved_split_time
+        saved_split_times[participant_id] << saved_split_time
       else
         unsaved_rows << effort_data.response_row
         row_success = false
@@ -91,5 +91,13 @@ class LiveTimeRowImporter
 
   def force_option?
     time_rows.size == 1
+  end
+
+  def notify_followers
+    saved_split_times.each do |participant_id, split_times|
+      NotifyFollowersJob.perform_later(participant_id: participant_id,
+                                       split_time_ids: split_times.map(&:id),
+                                       multi_lap: event.multiple_laps?) unless participant_id.zero?
+    end
   end
 end

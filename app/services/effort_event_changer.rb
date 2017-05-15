@@ -1,9 +1,7 @@
 class EffortEventChanger
 
   def update(args)
-    changer = new(args)
-    changer.assign_event
-    changer.save_changes
+    new(args).assign_event
   end
 
   def initialize(args)
@@ -16,10 +14,16 @@ class EffortEventChanger
 
   def assign_event
     verify_compatibility
+    existing_start_time = effort.start_time
     effort.event = event
+    effort.start_time = existing_start_time
     split_times.each { |st| st.split = splits_by_distance[st.distance_from_start] }
     save_changes
   end
+
+  private
+
+  attr_reader :effort, :event, :split_times
 
   def save_changes
     ActiveRecord::Base.transaction do
@@ -27,10 +31,6 @@ class EffortEventChanger
       split_times.each { |st| st.save! if st.changed? }
     end
   end
-
-  private
-
-  attr_reader :effort, :event, :split_times
 
   def maximum_lap
     @maximum_lap ||= event.laps_required == 0 ? Float::INFINITY : event.laps_required

@@ -3,7 +3,7 @@ include ActionDispatch::TestProcess
 
 RSpec.describe EffortEventChanger do
   let(:effort) { create(:effort, event: old_event) }
-  let(:old_event) { create(:event, course: old_course) }
+  let(:old_event) { create(:event, course: old_course, start_time: '2017-07-01 06:00:00') }
   let(:old_course) { create(:course_with_standard_splits, splits_count: 3) }
 
   describe '#initialization' do
@@ -28,7 +28,7 @@ RSpec.describe EffortEventChanger do
 
   describe '#assign_event' do
     context 'when the new event has the same splits as the old' do
-      let(:new_event) { create(:event, course: old_course) }
+      let(:new_event) { create(:event, course: old_course, start_time: '2017-07-01 08:00:00') }
 
       before do
         old_event.splits << old_course.splits
@@ -49,6 +49,15 @@ RSpec.describe EffortEventChanger do
         changer = EffortEventChanger.new(effort: effort, event: new_event)
         changer.assign_event
         expect(split_times.none?(&:changed?)).to be_truthy
+      end
+
+      it 'updates the effort start offset such that the absolute effort start_time does not change' do
+        existing_start_time = effort.start_time
+        puts existing_start_time
+        changer = EffortEventChanger.new(effort: effort, event: new_event)
+        changer.assign_event
+        reloaded_effort = Effort.find(effort.id)
+        expect(reloaded_effort.start_time).to eq(existing_start_time)
       end
     end
 

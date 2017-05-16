@@ -36,7 +36,6 @@ class LiveTimeRowImporter
       else
         unsaved_rows << effort_data.response_row
       end
-      EffortDataStatusSetter.set_data_status(effort: effort_data.effort, times_container: times_container)
     end
     notify_followers
   end
@@ -66,7 +65,8 @@ class LiveTimeRowImporter
       working_split_time = indexed_split_times[proposed_split_time.time_point] || proposed_split_time
       saved_split_time = create_or_update_split_time(proposed_split_time, working_split_time)
       if saved_split_time
-        EffortStopper.stop(effort: effort, stopped_split_time: saved_split_time) if saved_split_time.stopped_here
+        effort.stop(saved_split_time) if saved_split_time.stopped_here
+        EffortDataStatusSetter.set_data_status(effort: effort_data.effort, times_container: times_container)
         saved_split_times[participant_id] << saved_split_time
       else
         unsaved_rows << effort_data.response_row

@@ -252,8 +252,8 @@ class Effort < ActiveRecord::Base
     stopped_split_time&.time_point
   end
 
-  def stop
-    EffortStopper.stop(effort: self)
+  def stop(split_time = nil)
+    EffortStopper.stop(effort: self, stopped_split_time: split_time)
   end
 
   def unstop

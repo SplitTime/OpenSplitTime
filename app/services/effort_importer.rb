@@ -30,7 +30,7 @@ class EffortImporter
         return
       end
     end
-    total_efforts = spreadsheet.last_row - effort_offset
+    total_efforts = spreadsheet.last_row - effort_offset + 1
     (effort_offset..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
       row_effort_data = prepare_row_effort_data(non_time_data(row))
@@ -41,7 +41,7 @@ class EffortImporter
       else
         effort_failure_array << {data: row, errors: effort.errors.full_messages}
       end
-      current_effort = i - effort_offset
+      current_effort = i - effort_offset + 1
       report_progress(action: 'imported', resource: 'effort', current: current_effort, total: total_efforts)
     end
     set_drops_and_status

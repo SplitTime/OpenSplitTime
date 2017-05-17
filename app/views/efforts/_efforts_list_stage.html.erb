@@ -16,7 +16,7 @@
         <td><%= effort.bib_number %></td>
         <td><%= effort.bio_historic %></td>
         <td><%= effort.state_and_country %></td>
-        <td><%= "#{day_time_format_hhmmss(effort.start_time)} (#{offset_format_xxhyym(effort.start_offset)})" %></td>
+        <td><%= "#{day_time_format(effort.start_time)} (#{offset_format_xxhyym(effort.start_offset)})" %></td>
         <td><%= effort.data_status %></td>
       </tr>
   <% end %>

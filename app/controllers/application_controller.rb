@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
     @params_class ||= "#{controller_class}Parameters".constantize
   end
 
+  def policy_class
+    @policy_class ||= "#{controller_class}Policy".constantize
+  end
+
   def controller_class
     controller_class_name.camelcase.constantize
   end

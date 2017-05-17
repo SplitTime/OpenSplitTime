@@ -4,7 +4,7 @@ class EffortPolicy < ApplicationPolicy
     end
 
     def delegated_records
-      scope.joins(event: {organization: :stewardships}).where(stewardships: {user_id: user.id})
+      user ? scope.joins(event: {organization: :stewardships}).where(stewardships: {user_id: user.id}) : scope.none
     end
   end
 

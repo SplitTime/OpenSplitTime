@@ -157,6 +157,9 @@
 <% if @event_stage.view_text == 'splits' %>
     <% if @event_stage.event_splits_count > 0 %>
         <%= render 'splits/splits', splits: @event_stage.associated_splits, referred_by: stage_event_path(@event_stage.event) %>
+        <%= link_to 'Export splits', splits_path(format: :csv, params: {filter: {id: @event_stage.associated_splits.map(&:id)},
+                                                                        sort: :distance_from_start}),
+                    class: 'btn btn-sm btn-primary' %>
     <% else %>
         <h4>No splits are associated with this event.</h4>
     <% end %>

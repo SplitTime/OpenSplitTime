@@ -13,11 +13,11 @@ class CsvBuilder
   end
 
   def export_attributes
-    params_class.csv_attributes
+    @export_attributes ||= params_class.csv_attributes
   end
 
   def model_class_name
-    model_class&.name&.underscore&.pluralize || 'unknown_class'
+    @model_class_name ||= model_class&.name&.underscore&.pluralize || 'unknown_class'
   end
 
   private
@@ -25,10 +25,10 @@ class CsvBuilder
   attr_reader :model, :params
 
   def model_class
-    resources.first&.class
+    @model_class ||= resources.first&.class
   end
 
   def params_class
-    model_class ? "#{model_class}Parameters".constantize : BaseParameters
+    @params_class ||= model_class ? "#{model_class}Parameters".constantize : BaseParameters
   end
 end

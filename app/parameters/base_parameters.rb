@@ -19,4 +19,8 @@ class BaseParameters
   def self.mapping
     {}
   end
+
+  def self.csv_attributes
+    []
+  end
 end

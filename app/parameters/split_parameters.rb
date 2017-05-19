@@ -6,4 +6,8 @@ class SplitParameters < BaseParameters
      :description, :sub_split_bitmap, :latitude, :longitude, :elevation, :elevation_as_entered,
      :name_extensions]
   end
+
+  def self.csv_attributes
+    %w(base_name name_extensions distance_from_start vert_gain_from_start vert_loss_from_start latitude longitude elevation)
+  end
 end

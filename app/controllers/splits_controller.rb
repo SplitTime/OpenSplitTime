@@ -4,8 +4,19 @@ class SplitsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @splits = Split.paginate(page: params[:page], per_page: 25).order(:course_id, :distance_from_start)
-    session[:return_to] = splits_path
+    respond_to do |format|
+      format.html do
+        @splits = Split.paginate(page: params[:page], per_page: params[:per_page] || 25)
+                      .order(:course_id, :distance_from_start)
+        session[:return_to] = splits_path
+      end
+      format.csv do
+        @presenter = CsvPresenter.new(model: controller_class_name.underscore, params: prepared_params)
+        csv_stream = render_to_string(partial: 'shared/index.csv.ruby')
+        send_data(csv_stream, type: 'text/csv',
+                  filename: "#{controller_class_name.underscore}-#{Time.now}.csv")
+      end
+    end
   end
 
   def show

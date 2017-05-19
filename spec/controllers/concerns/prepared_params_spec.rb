@@ -431,6 +431,99 @@ describe PreparedParams do
     end
   end
 
+  describe '#page' do
+    let(:params) { ActionController::Parameters.new(page_param) }
+    let(:permitted) { [] }
+    let(:permitted_query) { [] }
+
+    context 'when page param contains a number key' do
+      let(:page_param) { {page: {number: 2}} }
+
+      it 'returns the number' do
+        expected = 2
+        validate_param('page', expected)
+      end
+    end
+
+    context 'when page param contains a number key with no value' do
+      let(:page_param) { {page: {number: nil}} }
+
+      it 'returns nil' do
+        expected = nil
+        validate_param('page', expected)
+      end
+    end
+
+    context 'when page param is not a hash but includes only a number' do
+      let(:page_param) { {page: 2} }
+
+      it 'returns the number' do
+        expected = 2
+        validate_param('page', expected)
+      end
+    end
+
+    context 'when no page param exists' do
+      let(:page_param) { {} }
+
+      it 'returns nil' do
+        expected = nil
+        validate_param('page', expected)
+      end
+    end
+  end
+
+  describe '#per_page' do
+    let(:params) { ActionController::Parameters.new(page_param) }
+    let(:permitted) { [] }
+    let(:permitted_query) { [] }
+
+    context 'when page param contains a size key' do
+      let(:page_param) { {page: {size: 100}} }
+
+      it 'returns the number' do
+        expected = 100
+        validate_param('per_page', expected)
+      end
+    end
+
+    context 'when page param contains a size key with no value' do
+      let(:page_param) { {page: {size: nil}} }
+
+      it 'returns nil' do
+        expected = nil
+        validate_param('per_page', expected)
+      end
+    end
+
+    context 'when page param is not a hash' do
+      let(:page_param) { {page: 2, per_page: 100} }
+
+      it 'returns the number' do
+        expected = 100
+        validate_param('per_page', expected)
+      end
+    end
+
+    context 'when page param has a size key and per_page param also exists' do
+      let(:page_param) { {page: {size: 50}, per_page: 100} }
+
+      it 'returns the value in page[:size]' do
+        expected = 50
+        validate_param('per_page', expected)
+      end
+    end
+
+    context 'when no page param or per_page param exists' do
+      let(:page_param) { {} }
+
+      it 'returns nil' do
+        expected = nil
+        validate_param('per_page', expected)
+      end
+    end
+  end
+
   def validate_param(method, expected)
     prepared_params = PreparedParams.new(params, permitted, permitted_query)
     expect(prepared_params.send(method)).to eq(expected)

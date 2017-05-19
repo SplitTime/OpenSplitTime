@@ -39,6 +39,14 @@ class PreparedParams
     @search ||= (params[:filter] || {})[:search].to_s.presence
   end
 
+  def page
+    params[:page].is_a?(Hash) ? params[:page][:number] : params[:page]
+  end
+
+  def per_page
+    params[:page].is_a?(Hash) ? params[:page][:size] : params[:per_page]
+  end
+
   def method_missing(method)
     params[method]
   end

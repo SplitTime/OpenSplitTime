@@ -49,7 +49,7 @@ class PreparedParams
 
   def transformed_filter_values
     permitted_filter_params.transform_values do |list|
-      items = list.to_s.split(',')
+      items = list.is_a?(Array) ? list : list.to_s.split(',')
       items.size > 1 ? items : items.first.presence
     end
   end

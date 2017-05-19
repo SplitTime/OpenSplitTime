@@ -257,6 +257,15 @@ describe PreparedParams do
       end
     end
 
+    context 'when provided with a single field and an array of values' do
+      let(:filter_params) { {'state_code' => %w(NM AZ NY)} }
+
+      it 'returns the array' do
+        expected = {'state_code' => %w(NM AZ NY)}
+        validate_param('filter', expected)
+      end
+    end
+
     context 'when provided with multiple fields and lists of values' do
       let(:filter_params) { {'state_code' => 'NM,AZ,BC', 'country_code' => 'US,CA'} }
 

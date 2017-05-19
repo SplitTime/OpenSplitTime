@@ -17,7 +17,7 @@ class CsvBuilder
   end
 
   def model_class_name
-    model_class.name.underscore.pluralize
+    model_class&.name&.underscore&.pluralize || 'unknown_class'
   end
 
   private

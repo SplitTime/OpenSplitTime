@@ -2,7 +2,7 @@ class EffortImporter
   extend ActiveModel::Naming
   include BackgroundNotifiable
 
-  attr_reader :errors, :effort_import_report, :effort_id_array, :effort_failure_array
+  attr_reader :effort_import_report, :effort_id_array, :effort_failure_array
 
   def initialize(args)
     ArgsValidator.validate(params: args,
@@ -10,7 +10,6 @@ class EffortImporter
                            exclusive: [:file_path, :event, :current_user_id, :with_status,
                                        :with_times, :time_format, :background_channel],
                            class: self.class)
-    @errors = ActiveModel::Errors.new(self)
     @import_file ||= ImportFile.new(args[:file_path])
     @event = args[:event]
     @current_user_id = args[:current_user_id]
@@ -26,7 +25,7 @@ class EffortImporter
     if with_times
       unless column_count_matches?
         self.effort_import_report = 'Column count does not match'
-        report_error(message: errors.full_messages)
+        report_error(message: event.errors.full_messages)
         return
       end
     end
@@ -50,6 +49,10 @@ class EffortImporter
     report_status(message: "Reconciling #{total_efforts} efforts...done")
   end
 
+  def errors
+    event.errors
+  end
+
   private
 
   attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count
@@ -63,12 +66,12 @@ class EffortImporter
     if laps_unlimited?
       true
     elsif (required_time_points_count == 2) && ((split_title_array.size < 1) | (split_title_array.size > 2))
-      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
+      event.errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
           'but this event expects only a finish time column with an optional start time column. ' +
           'Please check your import file or create, remove, or associate splits as needed.')
       false
     elsif (required_time_points_count > 2) && (split_title_array.size != required_time_points_count)
-      errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
+      event.errors.add(:effort_importer, "Your import file contains #{split_title_array.size} split time columns, " +
           "but this event expects #{required_time_points_count} columns. " +
           'Please check your import file or create, remove, or associate splits as needed.')
       false

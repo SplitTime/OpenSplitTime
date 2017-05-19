@@ -5,11 +5,12 @@ class CsvImporter
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:file_path, :model],
-                           exclusive: [:file_path, :model, :global_attributes],
+                           exclusive: [:file_path, :model, :global_attributes, :unique_key],
                            class: self.class)
     @file_path = args[:file_path]
     @model = args[:model]
     @global_attributes = args[:global_attributes] || {}
+    @unique_key = args[:unique_key]
     @valid_records = []
     @invalid_records = []
     @errors = []
@@ -37,11 +38,15 @@ class CsvImporter
 
   private
 
-  attr_reader :file_path, :model, :global_attributes
+  attr_reader :file_path, :model, :global_attributes, :unique_key
   attr_writer :response_status
 
   def records
-    @records ||= processed_attributes.map { |attributes| klass.new(allowed_attributes(attributes)) }
+    @records ||= processed_attributes.map do |attributes|
+      record = unique_key.present? ? klass.find_or_initialize_by(unique_key => attributes[unique_key]) : klass.new
+      record.assign_attributes(allowed_attributes(attributes))
+      record
+    end
   end
 
   def processed_attributes
@@ -50,7 +55,7 @@ class CsvImporter
   end
 
   def allowed_attributes(attributes)
-    global_attributes.merge(attributes.slice(*params_class.permitted))
+    global_attributes.merge(attributes.slice(*permitted_params))
   end
 
   def file
@@ -59,6 +64,10 @@ class CsvImporter
 
   def params_map
     params_class.mapping
+  end
+
+  def permitted_params
+    params_class.permitted
   end
 
   def params_class
@@ -75,5 +84,6 @@ class CsvImporter
 
   def validate_setup
     errors << "File #{file_path} could not be read" unless file.present?
+    errors << "Unique key #{unique_key} is not allowed" if unique_key.present? && permitted_params.exclude?(unique_key)
   end
 end

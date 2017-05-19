@@ -119,9 +119,9 @@ class EventsController < ApplicationController
   end
 
   def import_splits_csv
-    model = :splits
     global_attributes = {course: @event.course, created_by: current_user.id}
-    import_csv(model, global_attributes)
+    unique_key = :distance_from_start
+    import_csv(:splits, global_attributes, unique_key)
   end
 
   def import_efforts
@@ -142,9 +142,9 @@ class EventsController < ApplicationController
   end
 
   def import_efforts_csv
-    model = :efforts
     global_attributes = {event: @event, concealed: @event.concealed, created_by: current_user.id}
-    import_csv(model, global_attributes)
+    unique_key = :bib_number
+    import_csv(:efforts, global_attributes, unique_key)
   end
 
   def spread
@@ -260,13 +260,12 @@ class EventsController < ApplicationController
     @event.update(beacon_url: url)
   end
 
-  def import_csv(model, global_attributes)
+  def import_csv(model, global_attributes, unique_key = nil)
     authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
-      importer = CsvImporter.new(file_path: file_url,
-                                 model: model,
-                                 global_attributes: global_attributes)
+      importer = CsvImporter.new(file_path: file_url, model: model,
+                                 global_attributes: global_attributes, unique_key: unique_key)
       importer.import
       respond_to do |format|
         if importer.response_status == :created

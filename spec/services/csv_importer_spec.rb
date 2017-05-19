@@ -34,6 +34,13 @@ RSpec.describe CsvImporter do
       expect(Effort.all.pluck(:first_name)).to eq(%w(Bjorn Charlie Lucy))
     end
 
+    it 'reads the specified file and creates records of the model type specified when all rows are valid' do
+      importer = CsvImporter.new(file_path: file_path, model: :efforts, global_attributes: global_attributes)
+      importer.import
+      expect(Effort.count).to eq(3)
+      expect(Effort.all.pluck(:first_name)).to eq(%w(Bjorn Charlie Lucy))
+    end
+
     it 'does not create any records if any row is invalid' do
       importer = CsvImporter.new(file_path: mixed_records_file_path, model: :efforts, global_attributes: global_attributes)
       importer.import
@@ -50,6 +57,20 @@ RSpec.describe CsvImporter do
       expect(effort.gender).to eq('female')
       expect(effort.state_code).to eq('OH')
       expect(effort.country_code).to eq('US')
+    end
+
+    context 'when provided with a unique key' do
+      it 'updates matched records and creates unmatched records' do
+        create(:effort, bib_number: 101, event: event)
+        expected_first_names = %w(Bjorn Charlie Lucy)
+        expect(Effort.count).to eq(1)
+        expect(expected_first_names).not_to include(Effort.last.first_name)
+        importer = CsvImporter.new(file_path: file_path, model: :efforts,
+                                   global_attributes: global_attributes, unique_key: :bib_number)
+        importer.import
+        expect(Effort.count).to eq(3)
+        expect(Effort.all.pluck(:first_name).sort).to eq(expected_first_names)
+      end
     end
   end
 

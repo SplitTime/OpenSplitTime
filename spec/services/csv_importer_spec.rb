@@ -60,16 +60,21 @@ RSpec.describe CsvImporter do
     end
 
     context 'when provided with a unique key' do
+      let(:importer_params) { {file_path: file_path, model: :efforts, global_attributes: global_attributes,
+                               unique_key: [:event_id, :bib_number]} }
+
       it 'updates matched records and creates unmatched records' do
-        create(:effort, bib_number: 101, event: event)
+        effort_same_event = create(:effort, bib_number: 101, event: event)
+        effort_different_event = create(:effort, bib_number: 101)
+        expect(Effort.count).to eq(2)
         expected_first_names = %w(Bjorn Charlie Lucy)
-        expect(Effort.count).to eq(1)
-        expect(expected_first_names).not_to include(Effort.last.first_name)
-        importer = CsvImporter.new(file_path: file_path, model: :efforts,
-                                   global_attributes: global_attributes, unique_key: :bib_number)
+        expect(expected_first_names).not_to include(effort_same_event.first_name)
+        importer = CsvImporter.new(importer_params)
         importer.import
-        expect(Effort.count).to eq(3)
-        expect(Effort.all.pluck(:first_name).sort).to eq(expected_first_names)
+        effort_different_event.reload
+        expect(effort_different_event.changed?).to be_falsey
+        expect(event.efforts.count).to eq(3)
+        expect(event.efforts.pluck(:first_name).sort).to eq(expected_first_names)
       end
     end
   end

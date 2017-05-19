@@ -10,7 +10,7 @@ class CsvImporter
     @file_path = args[:file_path]
     @model = args[:model]
     @global_attributes = args[:global_attributes] || {}
-    @unique_key = args[:unique_key]
+    @unique_key = Array.wrap(args[:unique_key]) || []
     @valid_records = []
     @invalid_records = []
     @errors = []
@@ -43,10 +43,21 @@ class CsvImporter
 
   def records
     @records ||= processed_attributes.map do |attributes|
-      record = unique_key.present? ? klass.find_or_initialize_by(unique_key => attributes[unique_key]) : klass.new
-      record.assign_attributes(allowed_attributes(attributes))
+      allowed_attributes = allowed_attributes(attributes)
+      temp_record = klass.new(allowed_attributes)
+      updated_attributes = temp_record.attributes.compact.with_indifferent_access
+      record = new_or_existing_record(updated_attributes)
+      record.assign_attributes(updated_attributes)
       record
     end
+  end
+
+  def new_or_existing_record(updated_attributes)
+    unique_key.present? ? klass.find_or_initialize_by(unique_key_pairs(updated_attributes)) : klass.new
+  end
+
+  def unique_key_pairs(attributes)
+    unique_key.map { |field_name| [field_name, attributes[field_name]] }.to_h
   end
 
   def processed_attributes
@@ -84,6 +95,7 @@ class CsvImporter
 
   def validate_setup
     errors << "File #{file_path} could not be read" unless file.present?
-    errors << "Unique key #{unique_key} is not allowed" if unique_key.present? && permitted_params.exclude?(unique_key)
+    errors << "Unique key #{unique_key} is not allowed" if unique_key.present? &&
+        unique_key.any? { |field_name| permitted_params.exclude?(field_name) }
   end
 end

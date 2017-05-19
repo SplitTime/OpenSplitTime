@@ -1,4 +1,6 @@
 CSV.generate do |csv|
-    csv << @presenter.headers
-    @presenter.resources.each { |resource| csv << resource.attributes.map { |attribute| resource.send(attribute) } }
+  csv << @builder.headers
+  @builder.resources.each do |resource|
+    csv << @builder.export_attributes.map { |attribute| resource.send(attribute) }
+  end
 end

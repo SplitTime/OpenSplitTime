@@ -11,14 +11,14 @@ module Matchable
   end
 
   def exact_matching_participant # Suitable for automated matcher
-    possible_matching_participants = Participant.last_name_matches_exact(last_name)
+    potential_matches = Participant.last_name_matches_exact(last_name)
                                          .first_name_matches_exact(first_name)
                                          .gender_matches(gender)
                                          .where.not(id: self.id)
-    name_gender_age_match = possible_matching_participants.age_matches(age_today)
+    name_gender_age_match = potential_matches.age_matches(current_age)
     exact_match = name_gender_age_match.present? ?
         name_gender_age_match :
-        possible_matching_participants.state_matches(state_code)
+        potential_matches.state_matches(state_code)
     exact_match.one? ? exact_match.first : nil # Convert single match to object; return nil if more than one match
   end
 
@@ -31,11 +31,12 @@ module Matchable
   end
 
   def participants_changed_first_name # To pick up discrepancies in first names #TODO use levensthein alagorithm
-    Participant.last_name_matches_exact(last_name).gender_matches(gender).age_matches(age_today)
+    Participant.last_name_matches_exact(last_name).gender_matches(gender).age_matches(current_age)
   end
 
   def participants_changed_last_name # To find women who may have changed their last names
-    Participant.female.first_name_matches_exact(first_name).state_matches(state_code).age_matches(age_today)
+    return Participant.none if male?
+    Participant.female.first_name_matches_exact(first_name).state_matches(state_code).age_matches(current_age)
   end
 
   def participants_with_nickname # Need to find a good nickname gem
@@ -45,5 +46,4 @@ module Matchable
   def participants_with_same_name
     Participant.last_name_matches(last_name).first_name_matches(first_name)
   end
-
 end

@@ -210,8 +210,8 @@ class Effort < ActiveRecord::Base
     (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
-  def approximate_age_today
-    @approximate_age_today ||=
+  def current_age_approximate
+    @current_age_approximate ||=
         age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
   end
 

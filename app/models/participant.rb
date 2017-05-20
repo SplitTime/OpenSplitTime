@@ -26,7 +26,8 @@ class Participant < ActiveRecord::Base
                                              .group('participants.id') }
   scope :ordered_by_name, -> { order(:last_name, :first_name) }
 
-  SQL = {age_and_effort_count: 'participants.*, COUNT(efforts.id) as effort_count, ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as participant_age',
+  SQL = {age_and_effort_count: 'participants.*, COUNT(efforts.id) as effort_count, ' +
+      'ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as current_age_from_efforts',
          ages_from_events: '((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)'}
 
   before_validation :set_topic_resource
@@ -43,26 +44,20 @@ class Participant < ActiveRecord::Base
     return none unless param && param.size > 2
     parser = SearchStringParser.new(param)
     ids = country_state_name_search(parser).ids
-    Participant.where(id: ids)
+    where(id: ids)
   end
 
-  def self.age_matches(age_param)
-    return none unless age_param.is_a?(Numeric)
-    threshold = 2 # Allow for some inaccuracy in reporting, rounding errors, etc.
-    age_hash = approximate_ages_today.merge(exact_ages_today)
-                   .reject { |_, age| (age - age_param).abs > threshold }
-    self.where(id: age_hash.keys)
+  def self.age_matches(age_param, threshold = 2)
+    return none unless age_param
+    ids = with_age_and_effort_count
+              .select { |participant| participant.current_age && ((participant.current_age - age_param).abs < threshold) }
+              .map(&:id)
+    where(id: ids)
   end
 
   def self.columns_to_pull_from_model
     [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo_url, :created_by]
   end
-
-  def self.approximate_ages_today # Returns a hash of {participant_id => approximate age}
-    joins(:efforts => :event).group('participants.id').average(SQL[:ages_from_events]).transform_values(&:to_f)
-  end
-
-  private_class_method :approximate_ages_today
 
   def slug_candidates
     [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Date.today.to_s],
@@ -80,9 +75,8 @@ class Participant < ActiveRecord::Base
     end
   end
 
-  def approximate_age_today
-    average = efforts.joins(:event).average(SQL[:ages_from_events]).to_f
-    average == 0 ? nil : average
+  def current_age_approximate
+    Participant.where(id: id).with_age_and_effort_count.first.current_age_from_efforts
   end
 
   def unclaimed?

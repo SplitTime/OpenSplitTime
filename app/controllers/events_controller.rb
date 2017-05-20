@@ -120,7 +120,7 @@ class EventsController < ApplicationController
 
   def import_splits_csv
     global_attributes = {course: @event.course, created_by: current_user.id}
-    unique_key = :distance_from_start
+    unique_key = [:course_id, :distance_from_start]
     import_csv(:splits, global_attributes, unique_key)
   end
 
@@ -143,7 +143,7 @@ class EventsController < ApplicationController
 
   def import_efforts_csv
     global_attributes = {event: @event, concealed: @event.concealed, created_by: current_user.id}
-    unique_key = :bib_number
+    unique_key = [:event_id, :bib_number]
     import_csv(:efforts, global_attributes, unique_key)
   end
 
@@ -269,7 +269,10 @@ class EventsController < ApplicationController
       importer.import
       respond_to do |format|
         if importer.response_status == :created
-          @event.splits << importer.valid_records if model == :splits
+          if model == :splits
+            splits = @event.splits.to_set
+            importer.valid_records.each { |record| @event.splits << record unless splits.include?(record) }
+          end
           format.html { flash[:success] = "Imported #{importer.valid_records.size} splits." and redirect_to :back }
           format.json { render json: importer.valid_records, status: importer.response_status }
         else

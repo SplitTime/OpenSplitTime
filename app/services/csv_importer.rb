@@ -43,8 +43,8 @@ class CsvImporter
 
   def records
     @records ||= processed_attributes.map do |attributes|
-      allowed_attributes = allowed_attributes(attributes)
-      temp_record = klass.new(allowed_attributes)
+      # The temp_record assignment allows, for example, effort.event = event to result in effort.event_id == event.id
+      temp_record = klass.new(allowed_attributes(attributes))
       updated_attributes = temp_record.attributes.compact.with_indifferent_access
       record = new_or_existing_record(updated_attributes)
       record.assign_attributes(updated_attributes)
@@ -53,7 +53,10 @@ class CsvImporter
   end
 
   def new_or_existing_record(updated_attributes)
-    unique_key.present? ? klass.find_or_initialize_by(unique_key_pairs(updated_attributes)) : klass.new
+    unique_key_pairs = unique_key_pairs(updated_attributes)
+    (unique_key.present? && unique_key_pairs.values.all?(&:present?)) ?
+        klass.find_or_initialize_by(unique_key_pairs) :
+        klass.new
   end
 
   def unique_key_pairs(attributes)

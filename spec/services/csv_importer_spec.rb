@@ -59,7 +59,8 @@ RSpec.describe CsvImporter do
       expect(effort.country_code).to eq('US')
     end
 
-    context 'when provided with a unique key' do
+    context 'when provided with a unique key with existing data' do
+      let(:file_path) { '/spec/fixtures/files/test_efforts_with_bib_numbers.csv' }
       let(:importer_params) { {file_path: file_path, model: :efforts, global_attributes: global_attributes,
                                unique_key: [:event_id, :bib_number]} }
 
@@ -74,6 +75,24 @@ RSpec.describe CsvImporter do
         effort_different_event.reload
         expect(effort_different_event.changed?).to be_falsey
         expect(event.efforts.count).to eq(3)
+        expect(event.efforts.pluck(:first_name).sort).to eq(expected_first_names)
+      end
+    end
+
+    context 'when provided with a unique key where at least one field has no data' do
+      let(:file_path) { '/spec/fixtures/files/test_efforts.csv' }
+      let(:importer_params) { {file_path: file_path, model: :efforts, global_attributes: global_attributes,
+                               unique_key: [:event_id, :bib_number]} }
+
+      it 'does not match records but instead creates new records' do
+        effort_same_event = create(:effort, bib_number: nil, event: event)
+        expect(event.efforts.count).to eq(1)
+        expected_first_names = %w(Bjorn Charlie Joe Lucy)
+        importer = CsvImporter.new(importer_params)
+        importer.import
+        effort_same_event.reload
+        expect(effort_same_event.changed?).to be_falsey
+        expect(event.efforts.count).to eq(4)
         expect(event.efforts.pluck(:first_name).sort).to eq(expected_first_names)
       end
     end

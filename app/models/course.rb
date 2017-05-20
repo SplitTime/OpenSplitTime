@@ -8,7 +8,7 @@ class Course < ActiveRecord::Base
   strip_attributes collapse_spaces: true
   has_many :splits, dependent: :destroy
   has_many :events
-  accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_as_entered].blank? }
+  accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
   scope :used_for_organization, -> (organization) { joins(:events).where(events: {organization_id: organization.id}).uniq }
 

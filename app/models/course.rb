@@ -15,6 +15,10 @@ class Course < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
 
+  def to_s
+    slug
+  end
+
   def earliest_event_date
     events.earliest&.start_time
   end

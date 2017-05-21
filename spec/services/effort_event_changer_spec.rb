@@ -66,6 +66,7 @@ RSpec.describe EffortEventChanger do
       let(:new_course) { create(:course_with_standard_splits, splits_count: 4) }
 
       before do
+        FactoryGirl.reload
         normalize_distances(old_course.splits)
         normalize_distances(new_course.splits)
         old_event.splits << old_course.splits

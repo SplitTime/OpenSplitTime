@@ -59,6 +59,10 @@ class Participant < ActiveRecord::Base
     [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo_url, :created_by]
   end
 
+  def to_s
+    slug
+  end
+
   def slug_candidates
     [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Date.today.to_s],
      [:full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]

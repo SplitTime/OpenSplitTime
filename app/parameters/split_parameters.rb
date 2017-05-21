@@ -8,6 +8,10 @@ class SplitParameters < BaseParameters
   end
 
   def self.csv_attributes
-    %w(base_name distance_from_start kind vert_gain_from_start vert_loss_from_start latitude longitude elevation)
+    %w(base_name distance kind vert_gain vert_loss latitude longitude elevation)
+  end
+
+  def self.mapping
+    {name: :base_name}
   end
 end

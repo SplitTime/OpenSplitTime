@@ -69,6 +69,10 @@ class Effort < ActiveRecord::Base
     self.find_by_sql(query)
   end
 
+  def to_s
+    slug
+  end
+
   def slug_candidates
     [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
      [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]

@@ -41,6 +41,10 @@ class Event < ActiveRecord::Base
     where('start_time < ?', Time.now).order(start_time: :desc).first
   end
 
+  def to_s
+    slug
+  end
+
   def reconciled_efforts
     efforts.where.not(participant_id: nil)
   end

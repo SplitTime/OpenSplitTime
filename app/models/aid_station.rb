@@ -20,6 +20,10 @@ class AidStation < ActiveRecord::Base
     end
   end
 
+  def to_s
+    "#{event.slug} at #{split.slug}"
+  end
+
   def split_name
     split.base_name
   end

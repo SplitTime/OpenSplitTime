@@ -58,29 +58,39 @@ class Split < ActiveRecord::Base
     self.finish?
   end
 
+  def to_s
+    slug
+  end
+
   def distance_in_preferred_units
     Split.meters_to_preferred_distance(distance_from_start).round(2) if distance_from_start
   end
+  alias_method :distance, :distance_in_preferred_units
 
   def distance_in_preferred_units=(number_string)
     self.distance_from_start = Split.entered_distance_to_meters(number_string) if number_string.present?
   end
+  alias_method :distance=, :distance_in_preferred_units=
 
   def vert_gain_in_preferred_units
     Split.meters_to_preferred_elevation(vert_gain_from_start).round(0) if vert_gain_from_start
   end
+  alias_method :vert_gain, :vert_gain_in_preferred_units
 
   def vert_gain_in_preferred_units=(number_string)
     self.vert_gain_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
+  alias_method :vert_gain=, :vert_gain_in_preferred_units=
 
   def vert_loss_in_preferred_units
     Split.meters_to_preferred_elevation(vert_loss_from_start).round(0) if vert_loss_from_start
   end
+  alias_method :vert_loss, :vert_loss_in_preferred_units
 
   def vert_loss_in_preferred_units=(number_string)
     self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
+  alias_method :vert_loss=, :vert_loss_in_preferred_units=
 
   def elevation_as_entered
     Split.meters_to_preferred_elevation(elevation) if elevation

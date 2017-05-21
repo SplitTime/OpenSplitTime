@@ -43,7 +43,8 @@ class CsvImporter
 
   def records
     @records ||= processed_attributes.map do |attributes|
-      # The temp_record assignment allows, for example, effort.event = event to result in effort.event_id == event.id
+      # Assigning to a temp_record allows the model to assign virtual attributes to real attributes
+      # For example, effort.event = event results in effort.event_id == event.id
       temp_record = klass.new(allowed_attributes(attributes))
       updated_attributes = temp_record.attributes.compact.with_indifferent_access
       record = new_or_existing_record(updated_attributes)

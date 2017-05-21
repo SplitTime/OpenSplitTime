@@ -92,11 +92,11 @@ class Split < ActiveRecord::Base
   end
   alias_method :vert_loss=, :vert_loss_in_preferred_units=
 
-  def elevation_as_entered
+  def elevation_in_preferred_units
     Split.meters_to_preferred_elevation(elevation) if elevation
   end
 
-  def elevation_as_entered=(entered_elevation)
+  def elevation_in_preferred_units=(entered_elevation)
     if entered_elevation.present?
       self.elevation = Split.entered_elevation_to_meters(entered_elevation)
     else

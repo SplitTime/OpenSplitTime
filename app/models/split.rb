@@ -9,7 +9,7 @@ class Split < ActiveRecord::Base
   strip_attributes collapse_spaces: true
   enum kind: [:start, :finish, :intermediate]
   belongs_to :course
-  has_many :split_times, dependent: :destroy
+  has_many :split_times
   has_many :live_times
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
@@ -59,35 +59,45 @@ class Split < ActiveRecord::Base
     self.finish?
   end
 
-  def distance_as_entered
+  def to_s
+    slug
+  end
+
+  def distance_in_preferred_units
     Split.meters_to_preferred_distance(distance_from_start).round(2) if distance_from_start
   end
+  alias_method :distance, :distance_in_preferred_units
 
-  def distance_as_entered=(number_string)
+  def distance_in_preferred_units=(number_string)
     self.distance_from_start = Split.entered_distance_to_meters(number_string) if number_string.present?
   end
+  alias_method :distance=, :distance_in_preferred_units=
 
-  def vert_gain_as_entered
+  def vert_gain_in_preferred_units
     Split.meters_to_preferred_elevation(vert_gain_from_start).round(0) if vert_gain_from_start
   end
+  alias_method :vert_gain, :vert_gain_in_preferred_units
 
-  def vert_gain_as_entered=(number_string)
+  def vert_gain_in_preferred_units=(number_string)
     self.vert_gain_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
+  alias_method :vert_gain=, :vert_gain_in_preferred_units=
 
-  def vert_loss_as_entered
+  def vert_loss_in_preferred_units
     Split.meters_to_preferred_elevation(vert_loss_from_start).round(0) if vert_loss_from_start
   end
+  alias_method :vert_loss, :vert_loss_in_preferred_units
 
-  def vert_loss_as_entered=(number_string)
+  def vert_loss_in_preferred_units=(number_string)
     self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
+  alias_method :vert_loss=, :vert_loss_in_preferred_units=
 
-  def elevation_as_entered
+  def elevation_in_preferred_units
     Split.meters_to_preferred_elevation(elevation) if elevation
   end
 
-  def elevation_as_entered=(entered_elevation)
+  def elevation_in_preferred_units=(entered_elevation)
     if entered_elevation.present?
       self.elevation = Split.entered_elevation_to_meters(entered_elevation)
     else
@@ -157,14 +167,10 @@ class Split < ActiveRecord::Base
   end
 
   def earliest_event_date
-    events.where(concealed: false).earliest.start_time
-  end
-
-  def latest_event_date
-    events.where(concealed: false).latest.start_time
+    events.visible.earliest&.start_time
   end
 
   def most_recent_event_date
-    events.where(concealed: false).most_recent.start_time
+    events.visible.most_recent&.start_time
   end
 end

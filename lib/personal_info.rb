@@ -34,8 +34,7 @@ module PersonalInfo
   end
 
   def bio
-    current_age = try(:participant_age) || age_today
-    [gender.try(:titlecase), current_age.try(:to_i)].compact.join(', ')
+    [gender&.titlecase, current_age&.to_i].compact.join(', ')
   end
 
   def bio_historic
@@ -47,11 +46,12 @@ module PersonalInfo
   end
   alias_method :name, :full_name
 
-  def age_today
-    birthdate ? exact_age_today : approximate_age_today
+  def current_age
+    current_age_from_birthdate || (has_attribute?('current_age_from_efforts') ?
+        attributes['current_age_from_efforts']&.round(0) : current_age_approximate)
   end
 
-  def exact_age_today
+  def current_age_from_birthdate
     birthdate && TimeDifference.between(birthdate, Time.now.utc.to_date).in_years.round(0)
   end
 

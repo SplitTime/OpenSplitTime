@@ -142,12 +142,22 @@
             city: String,
             stateCode: String,
             countryCode: String,
+            beaconUrl: String,
+            concealed: { type: Boolean, default: true },
             startOffset: { type: Number, default: null },
+            startMinutes: {
+                get: function() {
+                    return Math.round( this.startOffset / 60 );
+                },
+                set: function( value ) {
+                    this.startOffset = value * 60;
+                }
+            },
             startDate: {
                 get: function() {
                     var startTime = eventStage.data.eventModel.startTime;
                     if ( startTime instanceof Date ) {
-                        return moment( startTime ).add( this.startOffset, 'minutes' ).toDate();
+                        return moment( startTime ).add( this.startMinutes, 'minutes' ).toDate();
                     } else {
                         return this.date;
                     }
@@ -155,7 +165,7 @@
                 set: function( value ) {
                     var startTime = eventStage.data.eventModel.startTime;
                     if ( startTime instanceof Date ) {
-                        this.startOffset = moment( value ).diff( startTime, 'minutes' );
+                        this.startMinutes = moment( value ).diff( startTime, 'minutes' );
                     } else {
                         this.date = value;
                     }
@@ -163,15 +173,15 @@
             },
             offsetTime: {
                 get: function() {
-                    if ( this.startOffset === null ) return '';
-                    var hours = Math.floor( Math.abs( this.startOffset ) / 60 );
-                    if ( this.startOffset < 0 ) hours = "-" + hours;
-                    var minutes = ( ( "0" + Math.abs( this.startOffset % 60 ) ).slice( -2 ) );
-                    return ( hours != 0 ) ? hours + ":" + minutes : this.startOffset % 60;
+                    if ( this.startMinutes === null ) return '';
+                    var hours = Math.floor( Math.abs( this.startMinutes ) / 60 );
+                    if ( this.startMinutes < 0 ) hours = "-" + hours;
+                    var minutes = ( ( "0" + Math.abs( this.startMinutes % 60 ) ).slice( -2 ) );
+                    return ( hours != 0 ) ? hours + ":" + minutes : this.startMinutes % 60;
                 },
                 set: function( value ) {
                     if ( value === '' ) {
-                        this.startOffset = null; 
+                        this.startMinutes = null;
                         return;
                     }
                     var time = value.split( ':' );
@@ -182,7 +192,7 @@
                         time = time[0] - 0;
                     }
                     if ( $.isNumeric( time ) )
-                        this.startOffset = time;
+                        this.startMinutes = time;
                 }
             },
             location: {
@@ -209,6 +219,7 @@
             event_id: { get: function() { return eventStage.data.eventModel ? eventStage.data.eventModel.id: null; } }
         },
         methods: {
+            afterCreate: function() { this.concealed = eventStage.data.eventModel.concealed; },
             validate: function() {
                 if ( !this.firstName ) return false;
                 if ( !this.lastName ) return false;
@@ -369,6 +380,10 @@
                     dataType: "json"
                 } ).then( function() {
                     return self.fetch();
+                } ).fail( function( e ) {
+                    if ( e.responseJSON && e.responseJSON.errors ) {
+                        $( document ).trigger( 'global-error', [ e.responseJSON.errors ] );
+                    }
                 } );
             }
         }
@@ -401,6 +416,7 @@
         app: null,
         data: {
             isDirty: false,
+            isReady: false,
             isStaged: false,
             eventModel: api.create( 'events' )
         },
@@ -416,6 +432,11 @@
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
                 }               
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load Locale Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -423,6 +444,11 @@
             return api.find( 'users', 'current' ).always( function( model ) {
                 units.distance = model.prefDistanceUnit;
                 units.elevation = model.prefElevationUnit;
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load User Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -456,7 +482,6 @@
                 eventStage.data.eventModel.fetch().always( function() {
                     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
                         next( '/' );
-                        // next();
                     } else {
                         next();
                     }
@@ -482,6 +507,7 @@
             this.resourceSelect.init();
             this.ajaxImport.init();
             this.inputUnits.init();
+            this.errorAlert.init();
 
             // Load UUID
             this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
@@ -520,7 +546,7 @@
                                 return api.create( 'splits' );
                             }
                         },
-                        data: function() { return { modalData: {}, filter: '', units: units } },
+                        data: function() { return { modalData: {}, filter: '', units: units, highlight: null } },
                         template: '#splits'
                     },
                     beforeEnter: this.onRouteChange
@@ -574,6 +600,9 @@
             ];
             var router = new VueRouter( {
                 routes: routes
+            } );
+            router.afterEach( function( to, from ) {
+                eventStage.data.isReady = true;
             } );
             eventStage.router = router;
             eventStage.app = new Vue( {
@@ -710,7 +739,10 @@
             },
             init: function() {
                 Vue.component( 'data-tables', {
-                    template: '<table class="table table-striped" width="100%"><thead><slot name="header"></slot></thead><tbody><slot></slot></tbody></table>',
+                    template: '<table class="table table-striped" width="100%">\
+                                    <thead><slot name="header"></slot></thead>\
+                                    <tbody v-on:mouseleave="$emit(\'mouseleave\')"><slot></slot></tbody>\
+                                </table>',
                     props: [ 'rows', 'entries', 'filter' ],
                     mounted: eventStage.dataTables.onMounted,
                     destroyed: eventStage.dataTables.onDestroyed,
@@ -746,7 +778,7 @@
             function onValueChange() {
                 var self = this;
                 if ( this.value ) {
-                    lastValue = this._lastValue || { lat: 0, lng: 0 };
+                    var lastValue = this._lastValue || { lat: 0, lng: 0 };
                     var latlng = { lat: parseFloat( this.value.latitude ), lng: parseFloat( this.value.longitude ) };
                     if ( lastValue.lat != latlng.lat || lastValue.lng != latlng.lng ) {
                         this._lastValue = latlng;
@@ -774,7 +806,12 @@
                             this._location.setPosition( latlng );
                         }
                     }
-                    onRouteChange.call( this );
+                    if ( this.editable !== undefined ) {
+                        onRouteChange.call( this );
+                    }
+                } else if ( this._location ) {
+                    this._location.setMap( null );
+                    this._lastValue = { lat: 0, lng: 0 };
                 }
             }
 
@@ -873,8 +910,8 @@
                     } else {
                         this._routeBounds = null;
                     }
-                    // Reset bounds when map is Locked
-                    if ( this.locked !== undefined ) {
+                    // Reset bounds when map is fitted
+                    if ( this.fit !== undefined ) {
                         this._map.fitBounds( this._routeBounds || defaultBounds );
                     }
                 }
@@ -946,6 +983,7 @@
             }
 
             function updateValue( lat, lng ) {
+                if ( this.editable == undefined ) return;
                 var latlng = { lat: parseFloat( lat ), lng: parseFloat( lng ) };
                 if ( isNaN( latlng.lat ) || isNaN( latlng.lng ) ) return;
                 if ( !this.value ) return;
@@ -978,7 +1016,7 @@
                     mapTypeId: 'terrain',
                     zoom: 4,
                     maxZoom: 16,
-                    draggableCursor: 'crosshair',
+                    draggableCursor: ( this.editable == undefined ) ? null : 'crosshair',
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,
@@ -1017,6 +1055,8 @@
                         template: '<div class="splits-modal-map-wrap js-google-maps"></div>',
                         props: {
                             locked: {},
+                            fit: {},
+                            editable: {},
                             searchUrl: { type: String, default: null },
                             route: { type: Array, default: null },
                             value: { type: Object, default: null }
@@ -1027,6 +1067,7 @@
                                 handler: onRouteChange,
                                 deep: true
                             },
+                            'value': onValueChange,
                             'value.latitude': onValueChange,
                             'value.longitude': onValueChange,
                             'value.distanceFromStart': onValueChange
@@ -1425,11 +1466,23 @@
                     done: function (e, data) {
                         self.$emit( 'import', 'yay' );
                     },
-                    fail: function (e, data) {
+                    fail: function (e, data, a,b) {
                         self.error = true;
                         setTimeout( function() {
                             self.error = false;
                         }, 500 );
+                        if ( data.jqXHR.responseJSON && data.jqXHR.responseJSON.errors ) {
+                            var errors = data.jqXHR.responseJSON.errors;
+                            for ( var i = 0; i < errors.length; i++ ) {
+                                errors[i].dump = errors[i].detail.attributes;
+                            }
+                            $( document ).trigger( 'global-error', [ errors ] );
+                        } else {
+                            $( document ).trigger( 'global-error', [ [ {
+                                title: 'Failed to Upload File',
+                                detail: 'Unknown Server Error'
+                            } ] ] );
+                        }
                     },
                     always: function () {
                         self.busy = false;
@@ -1450,6 +1503,23 @@
                 } );
             }
         },
+
+        errorAlert: ( function() {
+            return {
+                init: function() {
+                    Vue.component( 'error-alert', {
+                        template: '<div class="alert alert-danger" role="alert" v-if="errors && errors.length > 0">\
+                            <template v-for="error in errors" v-if="typeof error == \'object\'">\
+                                <strong>{{ error.title }}</strong> {{ error.details }}\
+                            </template>\
+                        </div>',
+                        props: {
+                            errors: { type: Array, default: null }
+                        }
+                    } );
+                }
+            };
+        } )(),
 
         inputUnits: ( function() {
             return {

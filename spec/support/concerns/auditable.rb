@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 shared_examples_for 'auditable' do
   let(:model) { described_class }
   let(:model_name) { model.name.underscore.to_sym }

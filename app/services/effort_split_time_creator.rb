@@ -38,7 +38,7 @@ class EffortSplitTimeCreator
     else
       proposed_offset = time_to_seconds(row_time_data.first) || 0
       effort.start_offset = proposed_offset unless proposed_offset == 0 # Avoid inadvertently destroying existing offsets
-      row_time_data[0] = 0 unless row_time_data[1..-1].compact.empty?
+      row_time_data[0] = 0 unless start_time_only?
     end
     effort.save if effort.changed?
   end
@@ -110,6 +110,10 @@ class EffortSplitTimeCreator
 
   def military_times?
     time_format == 'military'
+  end
+
+  def start_time_only?
+    row_time_data[1..-1].compact.empty?
   end
 
   def validate_row_time_data

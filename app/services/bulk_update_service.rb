@@ -26,22 +26,25 @@ class BulkUpdateService
     end
   end
 
-  def self.start_all_efforts(event, current_user_id)
-    start_efforts(event.efforts, current_user_id)
+  def self.start_ready_efforts(event, current_user_id)
+    efforts = event.efforts.ready_to_start
+    start_efforts(efforts, current_user_id)
   end
 
   def self.start_efforts(efforts, current_user_id)
     start_split_id = efforts.first.event.start_split.id
-    SplitTime.bulk_insert(:effort_id, :split_id, :sub_split_bitkey, :time_from_start, :created_at, :updated_at, :created_by, :updated_by) do |worker|
+    errors = []
+    SplitTime.transaction do
       efforts.each do |effort|
-        worker.add(effort_id: effort.id,
-                   time_point: TimePoint.new(1, start_split_id, SubSplit::IN_BITKEY),
-                   time_from_start: 0,
-                   created_by: current_user_id,
-                   updated_by: current_user_id)
+        split_time = SplitTime.new(effort_id: effort.id,
+                                   time_point: TimePoint.new(1, start_split_id, SubSplit::IN_BITKEY),
+                                   time_from_start: 0,
+                                   created_by: current_user_id,
+                                   updated_by: current_user_id)
+        errors << [split_time.attributes, split_time.errors.full_messages] unless split_time.save
       end
+      raise ActiveRecord::Rollback if errors.present?
     end
-    # TODO determine if split_times were actually added before returning this report
-    "Added start times for #{efforts.size} efforts."
+    errors.present? ? errors : "Added start times for #{efforts.size} efforts."
   end
 end

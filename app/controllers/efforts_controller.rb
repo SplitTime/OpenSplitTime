@@ -1,7 +1,7 @@
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :analyze, :place]
   before_action :set_effort, except: [:index, :new, :create, :associate_participants, :mini_table, :subregion_options]
-  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options]
+  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :analyze, :place]
 
   before_filter do
     locale = params[:locale]
@@ -60,13 +60,11 @@ class EffortsController < ApplicationController
   end
 
   def analyze
-    authorize @effort
     @effort_analysis = EffortAnalysisView.new(@effort)
     session[:return_to] = analyze_effort_path(@effort)
   end
 
   def place
-    authorize @effort
     @effort_place = PlaceDetailView.new(@effort)
     session[:return_to] = place_effort_path(@effort)
   end
@@ -158,7 +156,7 @@ class EffortsController < ApplicationController
 
   def add_photo
     authorize @effort
-    file_url = BucketStoreService.upload_to_bucket("effort-photos/#{@effort.event_name}", params[:file], @effort.id)
+    file_url = FileStore.public_upload("effort-photos/#{@effort.event_name}", params[:file], @effort.id)
     @effort.update(photo_url: file_url) if file_url
     redirect_to effort_path(@effort)
   end

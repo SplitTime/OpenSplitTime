@@ -1,0 +1,4 @@
+first_name,last_name,gender,age,city,state_code,country_code,start_time
+Bill,Bradley,male,22,Louisville,KY,US,2017-05-10 06:00:00
+Camille,Edwards,female,33,Superior,CA,US,2017-05-10 07:30:00
+Melissa,Holden,female,44,Snyderville,UT,US,2017-05-10 04:00:00

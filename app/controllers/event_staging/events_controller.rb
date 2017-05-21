@@ -1,4 +1,5 @@
 class EventStaging::EventsController < EventStaging::BaseController
+  before_action :set_event, except: :new
 
   def new
     skip_authorization
@@ -7,11 +8,18 @@ class EventStaging::EventsController < EventStaging::BaseController
   end
 
   def app
-    @event = Event.find_by(staging_id: params[:staging_id])
     if @event
       authorize @event, :event_staging_app?
     else
       authorize Event, :new_staging?
     end
+  end
+
+  private
+
+  def set_event
+    @event = params[:staging_id].uuid? ?
+        Event.find_by(staging_id: params[:staging_id]) :
+        Event.friendly.find(params[:staging_id])
   end
 end

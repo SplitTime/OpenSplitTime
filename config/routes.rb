@@ -37,12 +37,14 @@ Rails.application.routes.draw do
   end
   resources :events do
     member { post :import_splits }
+    member { post :import_splits_csv }
     member { post :import_efforts }
+    member { post :import_efforts_csv }
     member { get :splits }
     member { put :associate_splits }
     member { put :set_data_status }
     member { put :set_dropped_attributes }
-    member { put :start_all_efforts }
+    member { put :start_ready_efforts }
     member { delete :remove_splits }
     member { delete :delete_all_efforts }
     member { get :reconcile }

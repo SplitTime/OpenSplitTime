@@ -19,6 +19,7 @@ require 'rails_helper'
 RSpec.describe Effort, type: :model do
   it_behaves_like 'data_status_methods'
   it_behaves_like 'auditable'
+  it_behaves_like 'matchable'
   it { is_expected.to strip_attribute(:first_name).collapse_spaces }
   it { is_expected.to strip_attribute(:last_name).collapse_spaces }
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
@@ -91,7 +92,7 @@ RSpec.describe Effort, type: :model do
   describe '#approximate_age_today' do
     it 'returns nil if age is not present' do
       effort = build(:effort)
-      expect(effort.approximate_age_today).to be_nil
+      expect(effort.current_age_approximate).to be_nil
     end
 
     it 'calculates approximate age at the current time based on age at time of effort' do
@@ -100,7 +101,7 @@ RSpec.describe Effort, type: :model do
       years_since_effort = Time.now.year - event_start_time.year
       effort = build(:effort, age: age)
       expect(effort).to receive(:event_start_time).and_return(event_start_time)
-      expect(effort.approximate_age_today).to eq(age + years_since_effort)
+      expect(effort.current_age_approximate).to eq(age + years_since_effort)
     end
 
     it 'functions properly for future events' do
@@ -109,7 +110,7 @@ RSpec.describe Effort, type: :model do
       years_since_effort = Time.now.year - event_start_time.year
       effort = build(:effort, age: age)
       expect(effort).to receive(:event_start_time).and_return(event_start_time)
-      expect(effort.approximate_age_today).to eq(age + years_since_effort)
+      expect(effort.current_age_approximate).to eq(age + years_since_effort)
     end
   end
 
@@ -180,28 +181,38 @@ RSpec.describe Effort, type: :model do
   end
 
   describe '#start_time=' do
+    let(:event_start_time) { '2017-03-15 06:00:00' }
+
     it 'sets start_offset to the difference between the provided parameter and event start time' do
-      event = build_stubbed(:event, start_time: '2017-03-15 06:00:00')
-      effort = build_stubbed(:effort, start_offset: 0)
-      allow(effort).to receive(:event).and_return(event)
-      effort.start_time = event.start_time + 3.hours
-      expect(effort.start_offset).to eq(3.hours)
+      expected_offset = 3.hours
+      effort_start_time = Time.parse(event_start_time) + expected_offset
+      verify_start_time(effort_start_time, expected_offset)
     end
 
     it 'works properly when the effort starts before the event' do
-      event = build_stubbed(:event, start_time: '2017-03-15 06:00:00')
-      effort = build_stubbed(:effort, start_offset: 0)
-      allow(effort).to receive(:event).and_return(event)
-      effort.start_time = event.start_time - 3.hours
-      expect(effort.start_offset).to eq(-3.hours)
+      expected_offset = -3.hours
+      effort_start_time = Time.parse(event_start_time) + expected_offset
+      verify_start_time(effort_start_time, expected_offset)
     end
 
     it 'works properly when the offset is large' do
+      expected_offset = 24.hours * 365
+      effort_start_time = Time.parse(event_start_time) + expected_offset
+      verify_start_time(effort_start_time, expected_offset)
+    end
+
+    it 'works properly when the start_time is provided as a string' do
+      expected_offset = 3.hours
+      effort_start_time = '2017-03-15 09:00:00'
+      verify_start_time(effort_start_time, expected_offset)
+    end
+
+    def verify_start_time(effort_start_time, expected_offset)
       event = build_stubbed(:event, start_time: '2017-03-15 06:00:00')
       effort = build_stubbed(:effort, start_offset: 0)
       allow(effort).to receive(:event).and_return(event)
-      effort.start_time = event.start_time + (24.hours * 365)
-      expect(effort.start_offset).to eq(24.hours * 365)
+      effort.start_time = effort_start_time
+      expect(effort.start_offset).to eq(expected_offset)
     end
   end
   

@@ -4,7 +4,7 @@ class EffortPolicy < ApplicationPolicy
     end
 
     def delegated_records
-      scope.joins(event: {organization: :stewardships}).where(stewardships: {user_id: user.id})
+      user ? scope.joins(event: {organization: :stewardships}).where(stewardships: {user_id: user.id}) : scope.none
     end
   end
 
@@ -12,14 +12,6 @@ class EffortPolicy < ApplicationPolicy
 
   def post_initialize(effort)
     @effort = effort
-  end
-
-  def analyze?
-    user.present?
-  end
-
-  def place?
-    user.present?
   end
 
   def associate_participants?

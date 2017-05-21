@@ -3,7 +3,8 @@ class AidStation < ActiveRecord::Base
   belongs_to :split
   enum status: [:pre_open, :open, :closed, :released]
 
-
+  validates_uniqueness_of :split_id, scope: :event_id,
+                          message: 'only one of any given split permitted within an event'
   validates_presence_of :event_id, :split_id
   validate :course_is_consistent
 
@@ -17,6 +18,10 @@ class AidStation < ActiveRecord::Base
       errors.add(:event_id, "event's course is not the same as split's course")
       errors.add(:split_id, "event's course is not the same as split's course")
     end
+  end
+
+  def to_s
+    "#{event.slug} at #{split.slug}"
   end
 
   def split_name

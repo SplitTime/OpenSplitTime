@@ -83,7 +83,5 @@ RSpec.describe SplitBuilder, type: :model do
       expect(splits.third.sub_split_bitmap).to eq(SubSplit::IN_BITKEY | SubSplit::OUT_BITKEY)
       expect(splits.last.sub_split_bitmap).to eq(SubSplit::IN_BITKEY)
     end
-
   end
-
 end

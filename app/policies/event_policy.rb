@@ -4,7 +4,7 @@ class EventPolicy < ApplicationPolicy
     end
 
     def delegated_records
-      scope.joins(organization: :stewardships).where(stewardships: {user_id: user.id})
+      user ? scope.joins(organization: :stewardships).where(stewardships: {user_id: user.id}) : scope.none
     end
   end
 
@@ -22,7 +22,15 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
+  def import_splits_csv?
+    user.authorized_for_live?(event)
+  end
+
   def import_efforts?
+    user.authorized_for_live?(event)
+  end
+
+  def import_efforts_csv?
     user.authorized_for_live?(event)
   end
 
@@ -66,7 +74,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def start_all_efforts?
+  def start_ready_efforts?
     user.authorized_to_edit?(event)
   end
 
@@ -139,9 +147,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def event_staging_app?
-    Rails.env.production? ?
-        user.admin? :
-        user.authorized_for_live?(event)
+    user.authorized_for_live?(event)
   end
 
   def post_event_course_org?
@@ -153,8 +159,6 @@ class EventPolicy < ApplicationPolicy
   end
 
   def new_staging?
-    Rails.env.production? ?
-        user.admin? :
-        user.present?
+    user.present?
   end
 end

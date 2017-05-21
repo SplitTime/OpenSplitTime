@@ -9,7 +9,7 @@ class ApplicationPolicy
     end
 
     def resolve_editable
-      if user.admin?
+      if user&.admin?
         scope.all
       else
         scope.where(id: (owned_records.ids + delegated_records.ids).uniq)
@@ -18,20 +18,20 @@ class ApplicationPolicy
     alias_method :editable, :resolve_editable
 
     def resolve_viewable
-      if user.admin?
+      if user&.admin?
         scope.all
       else
         scope.where(id: (visible_records.ids + owned_records.ids + delegated_records.ids).uniq)
       end
     end
-    alias_method :resolve, :resolve_viewable
+    alias_method :viewable, :resolve_viewable
 
     def visible_records
       scope.visible
     end
 
     def owned_records
-      scope.where(created_by: user.id)
+      user ? scope.where(created_by: user.id) : scope.none
     end
 
     # May be overridden by model policies

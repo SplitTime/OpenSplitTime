@@ -20,7 +20,11 @@ class LiveFileTransformer
   end
 
   def returned_rows
-    @returned_rows ||= file_rows.map do |file_row|
+    transformed_rows.reject { |row| row[:identical] }
+  end
+
+  def transformed_rows
+    @transformed_rows ||= file_rows.map do |file_row|
       LiveEffortData.response_row(event: event,
                                   params: file_row,
                                   times_container: times_container,

@@ -25,7 +25,7 @@ class Effort < ActiveRecord::Base
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender
+  validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
   validates :phone, phony_plausible: true
@@ -38,6 +38,9 @@ class Effort < ActiveRecord::Base
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(participant_id: nil) }
   scope :started, -> { joins(:split_times).uniq }
+  scope :unstarted, -> { includes(:split_times).where(:split_times => {:id => nil}) }
+  scope :ready_to_start,
+        -> { joins(:event).unstarted.where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now) }
   scope :with_ordered_split_times,
         -> { eager_load(:split_times).includes(split_times: :split)
                  .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
@@ -66,6 +69,10 @@ class Effort < ActiveRecord::Base
     self.find_by_sql(query)
   end
 
+  def to_s
+    slug
+  end
+
   def slug_candidates
     [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
      [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
@@ -82,7 +89,7 @@ class Effort < ActiveRecord::Base
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    self.start_offset = TimeDifference.from(event_start_time, new_datetime).in_seconds
+    self.start_offset = TimeDifference.from(event.start_time, new_datetime).in_seconds
   end
 
   def day_and_time(time_from_start)
@@ -207,8 +214,8 @@ class Effort < ActiveRecord::Base
     (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
-  def approximate_age_today
-    @approximate_age_today ||=
+  def current_age_approximate
+    @current_age_approximate ||=
         age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
   end
 
@@ -249,8 +256,8 @@ class Effort < ActiveRecord::Base
     stopped_split_time&.time_point
   end
 
-  def stop
-    EffortStopper.stop(effort: self)
+  def stop(split_time = nil)
+    EffortStopper.stop(effort: self, stopped_split_time: split_time)
   end
 
   def unstop

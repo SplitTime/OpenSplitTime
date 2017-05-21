@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 shared_examples_for 'data_status_methods' do
   let (:model) { described_class }
   let (:model_name) { model.to_s.underscore.to_sym }

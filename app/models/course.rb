@@ -8,23 +8,23 @@ class Course < ActiveRecord::Base
   strip_attributes collapse_spaces: true
   has_many :splits, dependent: :destroy
   has_many :events
-  accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_as_entered].blank? }
+  accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
   scope :used_for_organization, -> (organization) { joins(:events).where(events: {organization_id: organization.id}).uniq }
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
 
-  def earliest_event_date
-    events.earliest.start_time
+  def to_s
+    slug
   end
 
-  def latest_event_date
-    events.latest.start_time
+  def earliest_event_date
+    events.earliest&.start_time
   end
 
   def most_recent_event_date
-    events.most_recent.start_time
+    events.most_recent&.start_time
   end
 
   def update_initial_splits

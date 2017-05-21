@@ -51,26 +51,26 @@
                 <%= builder.hidden_field :kind, value: :finish %>
                 <div class="form-group">
                   <div class="control-label col-sm-2">
-                    <%= builder.label :distance_as_entered, 'Course distance' %>
+                    <%= builder.label :distance_in_preferred_units, 'Course distance' %>
                   </div>
                   <div class="col-sm-8">
-                    <%= builder.text_field :distance_as_entered, class: "form-control", placeholder: pdu %>
+                    <%= builder.text_field :distance_in_preferred_units, class: "form-control", placeholder: pdu %>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="control-label col-sm-2">
-                    <%= builder.label :vert_gain_as_entered, 'Total vertical gain' %>
+                    <%= builder.label :vert_gain_in_preferred_units, 'Total vertical gain' %>
                   </div>
                   <div class="col-sm-8">
-                    <%= builder.text_field :vert_gain_as_entered, class: "form-control", placeholder: peu %>
+                    <%= builder.text_field :vert_gain_in_preferred_units, class: "form-control", placeholder: peu %>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="control-label col-sm-2">
-                    <%= builder.label :vert_loss_as_entered, 'Total vertical loss' %>
+                    <%= builder.label :vert_loss_in_preferred_units, 'Total vertical loss' %>
                   </div>
                   <div class="col-sm-8">
-                    <%= builder.text_field :vert_loss_as_entered, class: "form-control", placeholder: peu %>
+                    <%= builder.text_field :vert_loss_in_preferred_units, class: "form-control", placeholder: peu %>
                   </div>
                 </div>
             <% end %>

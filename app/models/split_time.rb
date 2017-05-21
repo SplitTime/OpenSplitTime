@@ -51,6 +51,10 @@ class SplitTime < ActiveRecord::Base
     self.find_by_sql(query)
   end
 
+  def to_s
+    "#{effort.slug} at #{split.slug}"
+  end
+
   def course_is_consistent
     if effort && effort.event && split && (effort.event.course_id != split.course_id)
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')

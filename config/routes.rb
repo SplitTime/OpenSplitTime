@@ -130,7 +130,7 @@ Rails.application.routes.draw do
         member { post :set_times_data }
         member { post :post_file_effort_data }
       end
-      resources :live_times, only: [:show, :create, :update, :destroy]
+      resources :live_times, only: [:index, :show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]

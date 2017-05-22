@@ -49,6 +49,11 @@ describe TimeConversion do
       hms_elapsed = '105:30:40'
       expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(105.hours + 30.minutes + 40.seconds)
     end
+
+    it 'preserves milliseconds when present' do
+      hms_elapsed = '12:30:40.55'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(12.hours + 30.minutes + 40.55.seconds)
+    end
   end
 
   describe '.seconds_to_hms' do

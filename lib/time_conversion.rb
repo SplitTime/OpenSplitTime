@@ -3,11 +3,13 @@ class TimeConversion
   MILITARY_TIME_LIMITS = {hours: 23, minutes: 59, seconds: 59}
 
   def self.hms_to_seconds(hms)
+    return nil unless hms.present?
+    components = hms.split(':')
+    milliseconds_present = components.last.include?('.')
+    numeric_method = milliseconds_present ? :to_f : :to_i
     units = %w(hours minutes seconds)
-    hms.present? ?
-        hms.split(':')
-            .map.with_index { |x, i| x.to_i.send(units[i]) }
-            .reduce(:+).to_i : nil
+    components.map.with_index { |x, i| x.send(numeric_method).send(units[i]) }
+        .sum.send(numeric_method)
   end
 
   def self.seconds_to_hms(seconds_elapsed)

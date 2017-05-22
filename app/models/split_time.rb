@@ -94,8 +94,10 @@ class SplitTime < ActiveRecord::Base
     effort.set_data_status
   end
 
-  def elapsed_time
-    time_from_start && TimeConversion.seconds_to_hms(time_from_start)
+  def elapsed_time(options = {})
+    return nil unless time_from_start
+    time = options[:with_fractionals] ? time_from_start : time_from_start.round(0)
+    TimeConversion.seconds_to_hms(time)
   end
 
   alias_method :formatted_time_hhmmss, :elapsed_time

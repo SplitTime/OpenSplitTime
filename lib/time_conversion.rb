@@ -37,7 +37,10 @@ class TimeConversion
   end
 
   def self.to_hms(hours, minutes, seconds)
-    format('%02d:%02d:%02d', hours, minutes, seconds)
+    hundredths = (seconds % 1 * 100).to_i
+    seconds.is_a?(Integer) ?
+        format('%02d:%02d:%02d', hours, minutes, seconds) :
+        format('%02d:%02d:%02d.%02d', hours, minutes, seconds, hundredths)
   end
 
   def self.file_to_military(time_string)

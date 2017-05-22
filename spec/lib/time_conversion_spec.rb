@@ -50,7 +50,7 @@ describe TimeConversion do
       expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(105.hours + 30.minutes + 40.seconds)
     end
 
-    it 'preserves milliseconds when present' do
+    it 'preserves fractional seconds to two decimal places when present' do
       hms_elapsed = '12:30:40.55'
       expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(12.hours + 30.minutes + 40.55.seconds)
     end
@@ -80,6 +80,11 @@ describe TimeConversion do
     it 'functions properly for times in excess of 100 hours' do
       seconds = 500000
       expect(TimeConversion.seconds_to_hms(seconds)).to eq('138:53:20')
+    end
+
+    it 'preserves fractional seconds to two decimal places when present' do
+      seconds = 4545.67
+      expect(TimeConversion.seconds_to_hms(seconds)).to eq('01:15:45.67')
     end
   end
 

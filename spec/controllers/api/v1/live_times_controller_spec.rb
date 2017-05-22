@@ -24,7 +24,7 @@ describe Api::V1::LiveTimesController do
     it 'returns an error if the live_time does not exist' do
       get :show, id: 0
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -66,7 +66,7 @@ describe Api::V1::LiveTimesController do
     it 'returns an error if the live_time does not exist' do
       put :update, id: 0, data: {type: 'live_times', attributes: updated_attributes}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -87,7 +87,7 @@ describe Api::V1::LiveTimesController do
     it 'returns an error if the live_time does not exist' do
       delete :destroy, id: 0
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end

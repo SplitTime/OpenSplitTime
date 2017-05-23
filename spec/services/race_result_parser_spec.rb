@@ -110,6 +110,16 @@ RSpec.describe RaceResultParser do
           .to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
     end
 
+    it 'returns nil for times with no data present' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      expect(parser.parsed_effort_data.fourth.elapsed_time_data.values)
+          .to eq([0.0, 4916.63, 14398.48, nil, nil, nil, nil])
+      expect(parser.parsed_effort_data.last.elapsed_time_data.values)
+          .to eq([nil, nil, nil, nil, nil, nil, nil])
+    end
+
     it 'includes full_name, age, bib_number, and gender' do
       test_event = event
       _, time_points = lap_splits_and_time_points(test_event)

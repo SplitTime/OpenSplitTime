@@ -25,7 +25,7 @@ class RaceResultParser
 
   def elapsed_times(row)
     times_in_seconds = segment_times_in_seconds(row)
-    (0...times_in_seconds.size).map { |i| times_in_seconds[0..i].sum.round(2) }
+    times_in_seconds.map.with_index { |time, i| times_in_seconds[0..i].sum.round(2) if time.present? }
   end
 
   def segment_times_in_seconds(row)
@@ -33,7 +33,9 @@ class RaceResultParser
   end
 
   def segment_times_with_start(row)
-    row[split_index_range].unshift('0:00:00.00')
+    times = row[split_index_range]
+    start_time = times.any?(&:present?) ? '0:00:00.00' : ''
+    times.unshift(start_time)
   end
 
   def time_points_count

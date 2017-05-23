@@ -65,6 +65,36 @@ RSpec.describe RaceResultParser do
       parser = RaceResultParser.new(event: test_event, json_response: json_response)
       expect(parser.errors).to be_empty
     end
+
+    it 'exists if the json_response contains no ["list"] key' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      json_response['list'] = nil
+      parser = RaceResultParser.new(event: test_event, json_response: json_response)
+      expect(parser.errors).to be_one
+      expect(parser.errors.first[:title]).to eq('Malformed response error')
+    end
+
+    it 'exists if the json_response contains no ["list"]["Fields]" key' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      json_response['list']['Fields'] = nil
+      parser = RaceResultParser.new(event: test_event, json_response: json_response)
+      expect(parser.errors).to be_one
+      expect(parser.errors.first[:title]).to eq('Malformed response error')
+    end
+
+    it 'exists if the json_response contains no ["data"] key' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      json_response['data'] = nil
+      parser = RaceResultParser.new(event: test_event, json_response: json_response)
+      expect(parser.errors).to be_one
+      expect(parser.errors.first[:title]).to eq('Malformed response error')
+    end
   end
 
   describe '#parsed_effort_data' do

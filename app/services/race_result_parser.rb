@@ -12,6 +12,7 @@ class RaceResultParser
   end
 
   def parsed_effort_data
+    return [] if errors.present?
     @parsed_effort_data ||= response_data.map do |row|
       OpenStruct.new(bib_number: row[bib_index], full_name: row[name_index], gender: row[sex_index], age: row[age_index],
                      elapsed_time_data: time_points.zip(elapsed_times(row)).to_h)
@@ -47,8 +48,9 @@ class RaceResultParser
     json_response['data'].values.first
   end
 
-  def response_fields
-    json_response['list']['Fields'].map.with_index { |field, i| {expression: field['Expression'], label: field['Label'], index: i + 1} }
+  def response_fields_with_index
+    @response_fields_with_index ||=
+        json_response['list']['Fields'].map.with_index { |field, i| {expression: field['Expression'], label: field['Label'], index: i + 1} }
   end
 
   def split_index_range
@@ -56,32 +58,41 @@ class RaceResultParser
   end
 
   def split_fields
-    response_fields.select { |field| field[:expression].starts_with?('Section') }
+    response_fields_with_index.select { |field| field[:expression].starts_with?('Section') }
   end
 
   def bib_index
-    @bib_index ||= response_fields.find { |field| field[:label] == 'Bib' }[:index]
+    @bib_index ||= response_fields_with_index.find { |field| field[:label] == 'Bib' }[:index]
   end
 
   def name_index
-    @name_index ||= response_fields.find { |field| field[:label] == 'Name' }[:index]
+    @name_index ||= response_fields_with_index.find { |field| field[:label] == 'Name' }[:index]
   end
 
   def sex_index
-    @sex_index ||= response_fields.find { |field| field[:label] == 'Sex' }[:index]
+    @sex_index ||= response_fields_with_index.find { |field| field[:label] == 'Sex' }[:index]
   end
 
   def age_index
-    @age_index ||= response_fields.find { |field| field[:label] == 'Age' }[:index]
+    @age_index ||= response_fields_with_index.find { |field| field[:label] == 'Age' }[:index]
   end
 
   def validate_setup
-    (errors << split_mismatch_error) if !event.laps_unlimited? && (split_fields.size != time_points_count - 1)
+    (errors << malformed_response_error) unless json_response['data']&.values.present? &&
+        json_response['list'].is_a?(Hash) && json_response['list']['Fields'].present? && split_fields.present? &&
+        split_index_range && bib_index
+    (errors << split_mismatch_error) if errors.empty? && !event.laps_unlimited? &&
+        (split_fields.size != time_points_count - 1)
   end
 
   def split_mismatch_error
     {title: 'Split mismatch error',
      detail: {messages: ["#{event} expects #{time_points_count - 1} time points (excluding the start split) " +
                              "but the json response contemplates #{split_fields.size} time points."]}}
+  end
+
+  def malformed_response_error
+    {title: 'Malformed response error',
+    detail: {messages: ["The response is not properly formed: #{json_response}"]}}
   end
 end

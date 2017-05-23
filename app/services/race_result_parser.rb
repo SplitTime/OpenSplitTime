@@ -12,9 +12,9 @@ class RaceResultParser
   end
 
   def parsed_effort_data
-    @parsed_time_data ||= response_data.map do |row|
-      OpenStruct.new(bib_number: row[bib_index], name: row[name_index], gender: row[sex_index], age: row[age_index],
-                     segment_times: time_points.zip(elapsed_times(row)).to_h)
+    @parsed_effort_data ||= response_data.map do |row|
+      OpenStruct.new(bib_number: row[bib_index], full_name: row[name_index], gender: row[sex_index], age: row[age_index],
+                     elapsed_time_data: time_points.zip(elapsed_times(row)).to_h)
     end
   end
 

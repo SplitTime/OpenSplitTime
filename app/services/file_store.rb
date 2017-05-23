@@ -22,7 +22,7 @@ class FileStore
       S3FileManager.read(key)
     when local_path?(path_or_url)
       full_path = "#{Rails.root}#{path_or_url}"
-      File.new(full_path)
+      File.exists?(full_path) ? File.new(full_path) : nil
     else # Assume it is an s3 key
       S3FileManager.read(path_or_url)
     end

@@ -46,6 +46,14 @@ module PersonalInfo
   end
   alias_method :name, :full_name
 
+  def full_name=(full_name)
+    names = full_name.to_s.split
+    first = names.size < 2 ? names.first : names[0..-2].join(' ')
+    last = names.size < 2 ? nil : names.last
+    self.first_name, self.last_name = first, last
+  end
+  alias_method :name=, :full_name=
+
   def current_age
     current_age_from_birthdate || (has_attribute?('current_age_from_efforts') ?
         attributes['current_age_from_efforts']&.round(0) : current_age_approximate)

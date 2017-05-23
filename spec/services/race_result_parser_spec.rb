@@ -2,7 +2,7 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe RaceResultParser do
-  let(:event) { create(:event) }
+  let(:event) { build_stubbed(:event_with_standard_splits, splits_count: 7, in_sub_splits_only: true) }
   let(:json_response) {
     {'list' => {'LastChange' => '2016-06-04 21:58:25',
                 'Orders' => [],
@@ -23,14 +23,11 @@ RSpec.describe RaceResultParser do
                     {'Expression' => 'TimeOrStatus([ChipTime])', 'Label' => 'Time'},
                     {'Expression' => "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")", 'Label' => 'Pace'}
                 ]},
-     'data' => {'#1_50k' => [['8', '1', '8', 'Chris Vargo', 'M', '35', '0:37:40.16', '0:55:44.38', '0:50:34.79', '0:58:55.84', '0:51:19.62', '0:16:33.35', '4:30:48.12', '4:30:48.12', '08:42'],
-                             ['1', '2', '1', 'Joshua Arthur', 'M', '30', '0:43:03.86', '1:02:25.16', '0:50:47.26', '1:07:33.59', '0:50:36.63', '0:19:41.11', '4:54:07.59', '4:54:07.59', '09:28'],
-                             ['5', '3', '5', 'Jason Schlarb', 'M', '39', '0:43:01.36', '1:02:07.50', '0:52:34.70', '1:08:27.81', '0:51:23.93', '0:18:01.15', '4:55:36.43', '4:55:36.43', '09:30'],
+     'data' => {'#1_50k' => [['5', '3', '5', 'Jason Schlarb', 'M', '39', '0:43:01.36', '1:02:07.50', '0:52:34.70', '1:08:27.81', '0:51:23.93', '0:18:01.15', '4:55:36.43', '4:55:36.43', '09:30'],
                              ['656', '28', '656', 'Taylor Nowlin', 'F', '26', '0:50:20.33', '1:14:15.40', '1:08:08.92', '1:18:06.69', '', '', '5:58:12.86', '5:58:12.86', '11:31'],
                              ['324', '31', '324', 'Justin Riederer', 'M', '26', '0:50:06.26', '1:15:46.73', '1:07:10.94', '1:22:20.34', '1:05:15.36', '0:20:29.76', '6:01:09.37', '6:01:09.37', '11:37'],
                              ['661', '*', '661', 'Casandra Perez', 'F', '31', '1:21:56.63', '2:38:01.85', '', '', '', '', '3:59:58.48', 'DNF', '*'],
-                             ['633', '*', '633', 'Michele Hiner', 'F', '35', '', '', '', '', '', '', '', 'DNS', '*'],
-                             ['630', '*', '630', 'Michael Hall', 'M', '37', '', '', '', '', '', '', '', 'DNS', '*']]}
+                             ['633', '*', '633', 'Michele Hiner', 'F', '35', '', '', '', '', '', '', '', 'DNS', '*']]}
     } }
 
   describe '#initialize' do
@@ -50,9 +47,47 @@ RSpec.describe RaceResultParser do
     end
   end
 
-  describe '#parse' do
-    it 'interprets effort data and sends messages to a builder' do
-      parser = RaceResultParser.new(event: event, json_response: json_response)
+  describe '#errors' do
+    it 'exists if the event splits do not match the json_response splits' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      time_points.delete_at(2) # Remove a time_point to cause a mismatch
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      parser = RaceResultParser.new(event: test_event, json_response: json_response)
+      expect(parser.errors).to be_one
+      expect(parser.errors.first[:title]).to eq('Split mismatch error')
+    end
+
+    it 'is empty if the event splits match the json_response splits' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      parser = RaceResultParser.new(event: test_event, json_response: json_response)
+      expect(parser.errors).to be_empty
+    end
+  end
+
+  describe '#parsed_effort_data' do
+    let(:parser) { RaceResultParser.new(event: event, json_response: json_response) }
+
+    it 'returns response data in the form of an array of structs with segment_times' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      expect(parser.parsed_effort_data.size).to eq(5)
+      expect(parser.parsed_effort_data.first.segment_times.keys).to eq(time_points)
+      expect(parser.parsed_effort_data.first.segment_times.values)
+          .to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
+    end
+
+    it 'includes name, age, bib_number, and gender' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      expect(parser.parsed_effort_data.map(&:bib_number)).to eq(%w(5 656 324 661 633))
+      expect(parser.parsed_effort_data.map(&:name)).to eq(['Jason Schlarb', 'Taylor Nowlin', 'Justin Riederer', 'Casandra Perez', 'Michele Hiner'])
+      expect(parser.parsed_effort_data.map(&:gender)).to eq(%w(M F M F F))
+      expect(parser.parsed_effort_data.map(&:age)).to eq(%w(39 26 26 31 35))
     end
   end
 end

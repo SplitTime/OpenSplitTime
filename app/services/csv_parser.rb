@@ -11,8 +11,10 @@ class CsvParser
     validate_setup
   end
 
-  def rows
-    @rows ||= unfiltered_rows.map { |attributes| OpenStruct.new(allowed_attributes(attributes)) }
+  def attribute_rows
+    @attribute_rows ||= unsafe_rows.map do |attributes|
+      {model.to_s.singularize.to_sym => allowed_attributes(attributes)}.with_indifferent_access
+    end
   end
 
   private
@@ -20,8 +22,8 @@ class CsvParser
   attr_reader :file_path, :model, :global_attributes, :unique_key
   attr_writer :response_status
 
-  def unfiltered_rows
-    @unfiltered_rows ||= SmarterCSV.process(file, key_mapping: params_map, row_sep: :auto, force_utf8: true,
+  def unsafe_rows
+    @unsafe_rows ||= SmarterCSV.process(file, key_mapping: params_map, row_sep: :auto, force_utf8: true,
                                                  strip_chars_from_headers: BYTE_ORDER_MARK)
   end
 
@@ -30,7 +32,7 @@ class CsvParser
   end
 
   def file
-    @file ||= FileStore.read(file_path)
+    @file ||= FileStore.get(file_path)
   end
 
   def params_map

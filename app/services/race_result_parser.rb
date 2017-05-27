@@ -14,9 +14,14 @@ class RaceResultParser
   def parsed_effort_data
     return [] if errors.present?
     @parsed_effort_data ||= response_data.map do |row|
-      OpenStruct.new(bib_number: row[bib_index], full_name: row[name_index], gender: row[sex_index], age: row[age_index],
-                     elapsed_time_data: time_points.zip(elapsed_times(row)).to_h)
+      OpenStruct.new(effort: OpenStruct.new(event_id: event.id, bib_number: row[bib_index], full_name: row[name_index],
+                                            gender: row[sex_index], age: row[age_index],
+                                            split_times_attributes: split_times_attributes(row)))
     end
+  end
+
+  def split_times_attributes(row)
+    time_points.zip(elapsed_times(row)).map { |time_point, seconds| {time_point: time_point, time_from_start: seconds} }
   end
 
   private

@@ -100,6 +100,20 @@ RSpec.describe RaceResultParser do
   describe '#parsed_effort_data' do
     let(:parser) { RaceResultParser.new(event: event, json_response: json_response) }
 
+    it 'includes full_name, age, bib_number, and gender within an [:effort] key' do
+      test_event = event
+      _, time_points = lap_splits_and_time_points(test_event)
+      allow(test_event).to receive(:required_time_points).and_return(time_points)
+      p parser.parsed_effort_data.first
+      expect(parser.parsed_effort_data.first).to be_nil
+      expect(parser.parsed_effort_data.first).to be_nil
+      expect(parser.parsed_effort_data.map(&:bib_number)).to eq(%w(5 656 324 661 633))
+      expect(parser.parsed_effort_data.map(&:full_name))
+          .to eq(['Jatest Schtest', 'Tatest Notest', 'Justest Rietest', 'Castest Pertest', 'Mictest Hintest'])
+      expect(parser.parsed_effort_data.map(&:gender)).to eq(%w(M F M F F))
+      expect(parser.parsed_effort_data.map(&:age)).to eq(%w(39 26 26 31 35))
+    end
+
     it 'returns response data in the form of an array of structs with elapsed_time_data' do
       test_event = event
       _, time_points = lap_splits_and_time_points(test_event)
@@ -118,17 +132,6 @@ RSpec.describe RaceResultParser do
           .to eq([0.0, 4916.63, 14398.48, nil, nil, nil, nil])
       expect(parser.parsed_effort_data.last.elapsed_time_data.values)
           .to eq([nil, nil, nil, nil, nil, nil, nil])
-    end
-
-    it 'includes full_name, age, bib_number, and gender' do
-      test_event = event
-      _, time_points = lap_splits_and_time_points(test_event)
-      allow(test_event).to receive(:required_time_points).and_return(time_points)
-      expect(parser.parsed_effort_data.map(&:bib_number)).to eq(%w(5 656 324 661 633))
-      expect(parser.parsed_effort_data.map(&:full_name))
-          .to eq(['Jatest Schtest', 'Tatest Notest', 'Justest Rietest', 'Castest Pertest', 'Mictest Hintest'])
-      expect(parser.parsed_effort_data.map(&:gender)).to eq(%w(M F M F F))
-      expect(parser.parsed_effort_data.map(&:age)).to eq(%w(39 26 26 31 35))
     end
   end
 end

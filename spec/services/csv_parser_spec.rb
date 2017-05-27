@@ -23,22 +23,20 @@ RSpec.describe CsvParser do
     end
   end
 
-  describe '#rows' do
-    it 'returns an array of Structs having attributes contained in the file' do
+  describe '#attribute_rows' do
+    it 'returns an array of objects having attributes contained in the file' do
       parser = CsvParser.new(file_path: file_path, model: :efforts)
-      expect(parser.rows.size).to eq(3)
-      expect(parser.rows.map(&:first_name)).to eq(%w(Bjorn Charlie Lucy))
+      expect(parser.attribute_rows.size).to eq(3)
+      expect(parser.attribute_rows.map { |row| row[:effort][:first_name]}).to eq(%w(Bjorn Charlie Lucy))
     end
 
-    it 'maps header keys as specified in class parameters file' do
+    it 'maps header keys as specified in the class parameters file' do
       parser = CsvParser.new(file_path: header_test_file_path, model: :efforts)
-      expect(parser.rows.size).to eq(1)
-      row = parser.rows.first
-      expect(row.first_name).to eq('Lucy')
-      expect(row.last_name).to eq('Pendergrast')
-      expect(row.gender).to eq('female')
-      expect(row.state_code).to eq('OH')
-      expect(row.country_code).to eq('US')
+      expect(parser.attribute_rows.size).to eq(1)
+      row = parser.attribute_rows.first
+      expected = {effort: {first_name: 'Lucy', last_name: 'Pendergrast', gender: 'female', age: 13,
+                       city: 'Psych', state_code: 'OH', country_code: 'US'}}.with_indifferent_access
+      expect(row).to eq(expected)
     end
 
     describe '#errors' do

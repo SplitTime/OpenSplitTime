@@ -1,13 +1,13 @@
 module DataImport::RaceResult
   class TransformStrategy
-    include Transformations
+    include Transformable
     attr_reader :errors
 
-    def initialize(parsed_data, options)
-      @parsed_data = parsed_data
+    def initialize(parsed_structs, options)
+      @parsed_structs = parsed_structs
       @options = options
       @errors = []
-      validate_parsed_data
+      validate_parsed_structs
     end
 
     def transform
@@ -22,13 +22,13 @@ module DataImport::RaceResult
 
     private
 
-    attr_reader :parsed_data, :options
+    attr_reader :parsed_structs, :options
 
     def transform_time_data!
-      parsed_data.each do |struct|
+      parsed_structs.each do |struct|
         extract_times!(struct)
         transform_times!(struct)
-        create_child_records!(struct)
+        create_child_structs!(struct)
       end
     end
 
@@ -46,17 +46,17 @@ module DataImport::RaceResult
       end
     end
 
-    def create_child_records!(struct)
+    def create_child_structs!(struct)
       split_time_attributes = time_points.zip(struct.times_from_start).map do |time_point, time|
-        {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, bitkey: time_point.bitkey, time_from_start: time}
+        {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
       end
-      struct.child_records = split_time_attributes.map { |attributes| OpenStruct.new(attributes) }
+      struct.child_structs = split_time_attributes.map { |attributes| OpenStruct.new(attributes) }
     end
 
     # Because of the way they are built, keys for all structs are identical,
     # so use the first as a template for all.
     def time_keys
-      @time_keys ||= parsed_data.first.to_h.keys
+      @time_keys ||= parsed_structs.first.to_h.keys
                          .select { |key| key.to_s.start_with?('section') }
                          .sort_by { |key| key[/\d+/].to_i }
     end
@@ -74,10 +74,10 @@ module DataImport::RaceResult
     end
 
     def permitted_params
-      EffortParameters.permitted.to_set << :child_records
+      EffortParameters.permitted.to_set << :child_structs
     end
 
-    def validate_parsed_data
+    def validate_parsed_structs
       errors << missing_event_error unless event.present?
       (errors << split_mismatch_error) if event.present? && !event.laps_unlimited? &&
           (time_keys.size != time_points.size - 1)

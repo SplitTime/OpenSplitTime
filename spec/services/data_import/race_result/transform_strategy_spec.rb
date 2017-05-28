@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe DataImport::RaceResult::TransformStrategy do
+  it_behaves_like 'data_status/transformable'
+
   let(:parsed_data) { [
       OpenStruct.new({rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
                       section1_split: '0:43:01.36', section4_split: '1:08:27.81', section5_split: '0:51:23.93',
@@ -45,7 +47,7 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
 
     it 'returns rows with effort headers transformed to match the database' do
       expect(first_row.to_h.keys.sort)
-          .to eq(%i(age bib_number child_records concealed event_id first_name gender last_name record_type))
+          .to eq(%i(age bib_number child_structs concealed event_id first_name gender last_name record_type))
     end
 
     it 'returns genders transformed to "male" or "female"' do
@@ -60,6 +62,34 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
     it 'assigns event.id and event.concealed to :event_id and :concealed keys' do
       expect(transformed_rows.map(&:event_id)).to eq([event.id] * parsed_data.size)
       expect(transformed_rows.map(&:concealed)).to eq([event.concealed] * parsed_data.size)
+    end
+
+    it 'sorts split headers and returns an array of child_structs' do
+      p last_row.to_h
+      records = first_row.child_structs
+      time_points = event.required_time_points
+      expect(records.size).to eq(7)
+      expect(records.map(&:record_type)).to eq([:split_time] * records.size)
+      expect(records.map(&:lap)).to eq(time_points.map(&:lap))
+      expect(records.map(&:split_id)).to eq(time_points.map(&:split_id))
+      expect(records.map(&:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+      expect(records.map(&:time_from_start)).to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
+    end
+
+    it 'returns expected times_from_start array when some times are not present' do
+      records = fourth_row.child_structs
+      expect(records.map(&:time_from_start)).to eq([0.0, 4916.63, 14398.48, nil, nil, nil, nil])
+    end
+
+    it 'returns expected times_from_start array when no times are present' do
+      records = last_row.child_structs
+      expect(records.map(&:time_from_start)).to eq([nil] * records.size)
+    end
+
+    it 'returns expected split_id array when no times are present' do
+      records = last_row.child_structs
+      time_points = event.required_time_points
+      expect(records.map(&:split_id)).to eq(time_points.map(&:split_id))
     end
 
     context 'when an event is not provided' do
@@ -79,35 +109,6 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
         expect(transformed_rows).to be_nil
         expect(subject.errors.size).to eq(1)
         expect(subject.errors.first[:title]).to match(/Split mismatch error/)
-      end
-    end
-
-    context 'for the child_records attribute' do
-      it 'sorts split headers and returns an array of child_records' do
-        records = first_row.child_records
-        time_points = event.required_time_points
-        expect(records.size).to eq(7)
-        expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-        expect(records.map(&:lap)).to eq(time_points.map(&:lap))
-        expect(records.map(&:split_id)).to eq(time_points.map(&:split_id))
-        expect(records.map(&:bitkey)).to eq(time_points.map(&:bitkey))
-        expect(records.map(&:time_from_start)).to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
-      end
-
-      it 'returns expected times_from_start array when some times are not present' do
-        records = fourth_row.child_records
-        expect(records.map(&:time_from_start)).to eq([0.0, 4916.63, 14398.48, nil, nil, nil, nil])
-      end
-
-      it 'returns expected times_from_start array when no times are present' do
-        records = last_row.child_records
-        expect(records.map(&:time_from_start)).to eq([nil] * records.size)
-      end
-
-      it 'returns expected split_id array when no times are present' do
-        records = last_row.child_records
-        time_points = event.required_time_points
-        expect(records.map(&:split_id)).to eq(time_points.map(&:split_id))
       end
     end
   end

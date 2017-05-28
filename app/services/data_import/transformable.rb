@@ -1,6 +1,7 @@
-module DataImport::Transformations
+module DataImport::Transformable
+
   def map_keys!(model_name)
-    parsed_data.each do |struct|
+    parsed_structs.each do |struct|
       params_class(model_name).mapping.each do |old_key, new_key|
         struct[new_key] = struct.delete_field(old_key) if struct.respond_to?(old_key)
       end
@@ -8,13 +9,13 @@ module DataImport::Transformations
   end
 
   def merge_global_attributes!
-    parsed_data.each do |struct|
+    parsed_structs.each do |struct|
       global_attributes.each { |key, value| struct[key] = value }
     end
   end
 
   def normalize_gender!
-    parsed_data.each do |struct|
+    parsed_structs.each do |struct|
       if struct.gender.present?
         struct.gender = struct.gender.downcase.start_with?('m') ? 'male' : 'female'
       end
@@ -26,7 +27,7 @@ module DataImport::Transformations
   end
 
   def split_full_name!
-    parsed_data.each do |struct|
+    parsed_structs.each do |struct|
       full_name = struct.delete_field(:full_name)
       names = full_name.to_s.split
       first = names.size < 2 ? names.first : names[0..-2].join(' ')
@@ -36,7 +37,7 @@ module DataImport::Transformations
   end
 
   def permit!(permitted_params)
-    parsed_data.each do |struct|
+    parsed_structs.each do |struct|
       struct.to_h.keys.each do |key|
         struct.delete_field(key) unless permitted_params.include?(key)
       end

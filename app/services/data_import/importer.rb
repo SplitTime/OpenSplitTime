@@ -17,18 +17,13 @@ module DataImport
       raw_data = reader.read_file
       return reader.errors if reader.errors.present?
       parser = DataImport::Parser.new(raw_data, parse_strategy, options)
-      parsed_data = parser.parse
+      parsed_structs = parser.parse
       return parser.errors if parser.errors.present?
-      transformer = DataImport::Transformer.new(parsed_data, transform_strategy, options)
-      records = transformer.transform
+      transformer = DataImport::Transformer.new(parsed_structs, transform_strategy, options)
+      transformed_structs = transformer.transform
       return transformer.errors if transformer.errors.present?
-      persist(records)
-    end
-
-    private
-
-    def persist(records)
-      puts records
+      loader = DataImport::Loader.new(transformed_structs, options)
+      loader.load_records
     end
   end
 end

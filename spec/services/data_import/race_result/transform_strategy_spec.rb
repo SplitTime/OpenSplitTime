@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe DataImport::RaceResult::TransformStrategy do
-  it_behaves_like 'data_status/transformable'
 
   let(:parsed_data) { [
       OpenStruct.new({rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
@@ -35,14 +34,14 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
       allow(event).to receive(:required_time_points).and_return(time_points)
     end
 
-    let(:first_row) { transformed_rows.first }
-    let(:fourth_row) { transformed_rows.fourth }
-    let(:last_row) { transformed_rows.last }
-    let(:transformed_rows) { subject.transform }
+    let(:first_row) { proto_records.first }
+    let(:fourth_row) { proto_records.fourth }
+    let(:last_row) { proto_records.last }
+    let(:proto_records) { subject.transform }
 
-    it 'returns the same number of OpenStructs as it is given' do
-      expect(transformed_rows.count).to eq(5)
-      expect(transformed_rows.all? { |row| row.is_a?(OpenStruct) }).to eq(true)
+    it 'returns the same number of ProtoRecords as it is given OpenStructs' do
+      expect(proto_records.count).to eq(5)
+      expect(proto_records.all? { |row| row.is_a?(ProtoRecord) }).to eq(true)
     end
 
     it 'returns rows with effort headers transformed to match the database' do
@@ -51,17 +50,17 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
     end
 
     it 'returns genders transformed to "male" or "female"' do
-      expect(transformed_rows.map(&:gender)).to eq(%w(male female male female female))
+      expect(proto_records.map(&:gender)).to eq(%w(male female male female female))
     end
 
     it 'splits full names into first names and last names' do
-      expect(transformed_rows.map(&:first_name)).to eq(%w(Jatest Tatest Justest Castest Mictest))
-      expect(transformed_rows.map(&:last_name)).to eq(%w(Schtest Notest Rietest Pertest Hintest))
+      expect(proto_records.map(&:first_name)).to eq(%w(Jatest Tatest Justest Castest Mictest))
+      expect(proto_records.map(&:last_name)).to eq(%w(Schtest Notest Rietest Pertest Hintest))
     end
 
     it 'assigns event.id and event.concealed to :event_id and :concealed keys' do
-      expect(transformed_rows.map(&:event_id)).to eq([event.id] * parsed_data.size)
-      expect(transformed_rows.map(&:concealed)).to eq([event.concealed] * parsed_data.size)
+      expect(proto_records.map(&:event_id)).to eq([event.id] * parsed_data.size)
+      expect(proto_records.map(&:concealed)).to eq([event.concealed] * parsed_data.size)
     end
 
     it 'sorts split headers and returns an array of child_structs' do
@@ -96,7 +95,7 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
       let(:options) { {} }
 
       it 'returns nil and adds an error' do
-        expect(transformed_rows).to be_nil
+        expect(proto_records).to be_nil
         expect(subject.errors.size).to eq(1)
         expect(subject.errors.first[:title]).to match(/Event is missing/)
       end
@@ -106,7 +105,7 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
       let(:event) { build_stubbed(:event_with_standard_splits, id: 1, concealed: true, in_sub_splits_only: true, splits_count: 6) }
 
       it 'returns nil and adds an error' do
-        expect(transformed_rows).to be_nil
+        expect(proto_records).to be_nil
         expect(subject.errors.size).to eq(1)
         expect(subject.errors.first[:title]).to match(/Split mismatch error/)
       end

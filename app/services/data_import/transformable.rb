@@ -1,24 +1,19 @@
 module DataImport::Transformable
 
-  def map_keys!(model_name)
-    parsed_structs.each do |struct|
-      params_class(model_name).mapping.each do |old_key, new_key|
-        struct[new_key] = struct.delete_field(old_key) if struct.respond_to?(old_key)
-      end
+  def map_keys!(map)
+    map.each do |old_key, new_key|
+      attributes[new_key] = attributes.delete_field(old_key) if attributes.respond_to?(old_key)
     end
   end
 
-  def merge_global_attributes!
-    parsed_structs.each do |struct|
-      global_attributes.each { |key, value| struct[key] = value }
-    end
+  def merge_attributes!(merging_attributes)
+    merging_attributes.each { |key, value| attributes[key] = value }
   end
 
   def normalize_gender!
-    parsed_structs.each do |struct|
-      if struct.gender.present?
-        struct.gender = struct.gender.downcase.start_with?('m') ? 'male' : 'female'
-      end
+    gender = attributes.gender
+    if gender.present?
+      attributes.gender = gender.downcase.start_with?('m') ? 'male' : 'female'
     end
   end
 
@@ -26,21 +21,17 @@ module DataImport::Transformable
     "#{model_name.to_s.classify}Parameters".constantize
   end
 
-  def split_full_name!
-    parsed_structs.each do |struct|
-      full_name = struct.delete_field(:full_name)
-      names = full_name.to_s.split
-      first = names.size < 2 ? names.first : names[0..-2].join(' ')
-      last = names.size < 2 ? nil : names.last
-      struct.first_name, struct.last_name = first, last
-    end
+  def split_field!(old_field, first_field, second_field, split_char = ' ')
+    old_value = attributes.delete_field(old_field)
+    values = old_value.to_s.split(split_char)
+    first_value = values.size < 2 ? values.first : values[0..-2].join(split_char)
+    second_value = values.size < 2 ? nil : values.last
+    attributes[first_field], attributes[second_field] = first_value, second_value
   end
 
   def permit!(permitted_params)
-    parsed_structs.each do |struct|
-      struct.to_h.keys.each do |key|
-        struct.delete_field(key) unless permitted_params.include?(key)
-      end
+    attributes.to_h.keys.each do |key|
+      attributes.delete_field(key) unless permitted_params.include?(key)
     end
   end
 end

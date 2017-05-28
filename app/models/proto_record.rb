@@ -1,24 +1,18 @@
 class ProtoRecord
-  attr_reader :attributes, :children
+  include DataImport::Transformable
+
   attr_accessor :record_type, :record_action
+  attr_reader :children, :attributes
 
   def initialize(args = {})
-    ArgsValidator.validate(params: args, exclusive: [:record_type, :record_action, :attributes, :children],
-                           class: self.class)
     @record_type = args[:record_type]&.to_sym
     @record_action = args[:record_action]&.to_sym
-    @attributes = OpenStruct.new(args[:attributes])
     @children = Array.wrap(args[:children]) || []
+    @attributes = OpenStruct.new(args.except(:record_type, :record_action, :children))
     validate_setup
   end
 
-  def [](method)
-    send(method)
-  end
-
-  def []=(method, value)
-    send("#{method}=", value)
-  end
+  delegate :[], :[]=, :to_h, :delete_field, to: :attributes
 
   private
 

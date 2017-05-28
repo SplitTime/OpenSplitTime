@@ -8,23 +8,19 @@ class ProtoRecord
     @record_type = args[:record_type]&.to_sym
     @record_action = args[:record_action]&.to_sym
     @children = Array.wrap(args[:children]) || []
-    @attributes = OpenStruct.new(args.except(:record_type, :record_action, :children))
+    @attributes = OpenStruct.new(args.to_h.except(:record_type, :record_action, :children))
     validate_setup
   end
 
   delegate :[], :[]=, :to_h, :delete_field, to: :attributes
 
+  def record_class
+    record_type&.to_s&.classify&.constantize
+  end
+
   private
 
   def validate_setup
-    raise ArgumentError, 'children of a ProtoRecord must be of type ProtoRecord' unless
-        children.all? { |child| child.is_a?(ProtoRecord) }
-  end
-
-  def method_missing(method, value = nil)
-    if /^(\w+)=$/ =~ method
-      attributes["#{$1}"] = value
-    end
-    attributes[method]
+    raise ArgumentError, 'children of a ProtoRecord must be of type ProtoRecord' unless children.all? { |child| child.is_a?(ProtoRecord) }
   end
 end

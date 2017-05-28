@@ -10,20 +10,18 @@ RSpec.describe ProtoRecord, type: :model do
       expect(attributes).to eq(OpenStruct.new({first_name: 'Joe', age: 21, gender: 'male'}))
     end
 
-    it 'receives and responds to missing methods' do
+    it 'responds to symbols or strings as keys indifferently' do
       pr = ProtoRecord.new(first_name: 'Joe', age: 21, gender: 'male')
-      expect(pr.first_name).to eq('Joe')
+      expect(pr[:first_name]).to eq('Joe')
+      expect(pr['first_name']).to eq('Joe')
     end
 
-    it 'responds with nil if the attribute is not set' do
-      pr = ProtoRecord.new(first_name: 'Joe', age: 21, gender: 'male')
-      expect(pr.favorite_color).to eq(nil)
-    end
-
-    it 'sets attributes for any method not otherwise defined' do
+    it 'sets attributes using symbols or strings indifferently' do
       pr = ProtoRecord.new
-      pr.first_name = 'Joe'
-      expect(pr.first_name).to eq('Joe')
+      pr[:first_name] = 'Joe'
+      expect(pr['first_name']).to eq('Joe')
+      pr['first_name'] = 'Joe'
+      expect(pr[:first_name]).to eq('Joe')
     end
   end
 
@@ -52,6 +50,18 @@ RSpec.describe ProtoRecord, type: :model do
       expect(pr.children).to eq([child])
       expect(pr.attributes).not_to respond_to(:children)
       expect(pr.to_h).to eq({favorite_color: 'Red'})
+    end
+  end
+
+  describe '#record_class' do
+    it 'returns the class of the record_type' do
+      pr = ProtoRecord.new(record_type: :effort)
+      expect(pr.record_class).to eq(Effort)
+    end
+
+    it 'returns nil when record_type is nil' do
+      pr = ProtoRecord.new
+      expect(pr.record_class).to be_nil
     end
   end
 end

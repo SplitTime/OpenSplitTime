@@ -1,31 +1,34 @@
 module DataImport
   class Importer
 
-    def self.import(file_path, source)
+    def self.import(file_path, source, options = {})
       case source
       when :race_result
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy)
+        new.import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, options)
       when :csv_efforts
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::Efforts::TransformStrategy, model: :effort)
+        new.import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::Efforts::TransformStrategy, options.merge(model: :effort))
       when :csv_splits
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::Splits::TransformStrategy, model: :split)
+        new.import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::Splits::TransformStrategy, options.merge(model: :split))
       end
     end
 
-    def import_with(file_path, read_strategy, parse_strategy, transform_strategy, options = {})
-      reader = Reader.new(file_path, read_strategy)
+    def import_with(file_path, read_strategy, parse_strategy, transform_strategy, options)
+      reader = DataImport::Reader.new(file_path, read_strategy)
       raw_data = reader.read_file
-      parser = Parser.new(raw_data, parse_strategy, options)
-      parsed_data = parser.attribute_rows
-      transformer = Transformer.new(parsed_data, transform_strategy, options)
-      records = transformer.records
+      return reader.errors if reader.errors.present?
+      parser = DataImport::Parser.new(raw_data, parse_strategy, options)
+      parsed_data = parser.parse
+      return parser.errors if parser.errors.present?
+      transformer = DataImport::Transformer.new(parsed_data, transform_strategy, options)
+      records = transformer.transform
+      return transformer.errors if transformer.errors.present?
       persist(records)
     end
 
     private
 
     def persist(records)
-
+      puts records
     end
   end
 end

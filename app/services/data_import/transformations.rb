@@ -7,6 +7,12 @@ module DataImport::Transformations
     end
   end
 
+  def merge_global_attributes!
+    parsed_data.each do |struct|
+      global_attributes.each { |key, value| struct[key] = value }
+    end
+  end
+
   def normalize_gender!
     parsed_data.each do |struct|
       if struct.gender.present?
@@ -26,6 +32,14 @@ module DataImport::Transformations
       first = names.size < 2 ? names.first : names[0..-2].join(' ')
       last = names.size < 2 ? nil : names.last
       struct.first_name, struct.last_name = first, last
+    end
+  end
+
+  def permit!(permitted_params)
+    parsed_data.each do |struct|
+      struct.to_h.keys.each do |key|
+        struct.delete_field(key) unless permitted_params.include?(key)
+      end
     end
   end
 end

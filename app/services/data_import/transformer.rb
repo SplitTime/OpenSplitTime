@@ -1,18 +1,20 @@
 module DataImport
   class Transformer
 
-    def initialize(parsed_data, strategy, options)
+    def initialize(parsed_data, transform_strategy_class, options)
       @parsed_data = parsed_data
-      @strategy = strategy
+      @transform_strategy_class = transform_strategy_class
       @options = options || {}
     end
 
-    def transform
-      strategy.new(parsed_data, options).transform
+    delegate :transform, :errors, to: :transform_strategy
+
+    def transform_strategy
+      @transform_strategy ||= transform_strategy_class.new(parsed_data, options)
     end
 
     private
 
-    attr_reader :parsed_data, :strategy, :options
+    attr_reader :parsed_data, :transform_strategy_class, :options
   end
 end

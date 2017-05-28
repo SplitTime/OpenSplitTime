@@ -16,7 +16,7 @@ RSpec.describe DataImport::RaceResult::ReadStrategy do
     end
 
     context 'when file_path is not a Hash (and so assumed to be a file path)' do
-      let(:file_path) { "/spec/fixtures/files/test_rr_response.json" }
+      let(:file_path) { '/spec/fixtures/files/test_rr_response.json' }
 
       it 'reads the file and returns a parsed version in Hash format' do
         raw_data = subject.read_file
@@ -25,7 +25,7 @@ RSpec.describe DataImport::RaceResult::ReadStrategy do
     end
 
     context 'when file_path is not a Hash and references a non-existent file' do
-      let(:file_path) { "/non/existent/file" }
+      let(:file_path) { '/non/existent/file' }
 
       it 'returns nil' do
         raw_data = subject.read_file

@@ -1,18 +1,20 @@
 module DataImport
   class Parser
 
-    def initialize(raw_data, strategy, options)
+    def initialize(raw_data, parse_strategy_class, options)
       @raw_data = raw_data
-      @strategy = strategy
+      @parse_strategy_class = parse_strategy_class
       @options = options || {}
     end
 
-    def parse
-      strategy.new(raw_data, options).parse
+    delegate :parse, :errors, to: :parse_strategy
+
+    def parse_strategy
+      @parse_strategy ||= parse_strategy_class.new(raw_data, options)
     end
 
     private
 
-    attr_reader :raw_data, :strategy, :options
+    attr_reader :raw_data, :parse_strategy_class, :options
   end
 end

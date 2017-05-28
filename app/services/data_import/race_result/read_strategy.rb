@@ -8,8 +8,7 @@ module DataImport::RaceResult
     end
 
     def read_file
-      case
-      when file_path.is_a?(Hash)
+      if file_path.is_a?(Hash)
         file_path
       else # Assume a real file path
         if file

@@ -35,8 +35,34 @@ RSpec.describe DataImport::RaceResult::ParseStrategy do
       expect(attribute_rows.size).to eq(5)
       expect(attribute_rows.all? { |row| row.is_a?(OpenStruct) }).to eq(true)
       expect(attribute_rows.first[:name]).to eq('Jatest Schtest')
-      expect(attribute_rows.first[:aid1]).to eq('0:43:01.36')
-      expect(attribute_rows.last[:aid1]).to eq('')
+      expect(attribute_rows.first[:section1_split]).to eq('0:43:01.36')
+      expect(attribute_rows.last[:section1_split]).to eq('')
+    end
+  end
+
+  describe '#errors' do
+    it 'exists if the provided hash does not include a ["list"] key' do
+      test_data = raw_data
+      test_data['list'] = nil
+      subject.parse
+      expect(subject.errors).to be_present
+      expect(subject.errors.first[:title]).to match(/Invalid fields/)
+    end
+
+    it 'exists if the provided hash does not include a ["list"]["Fields"] key' do
+      test_data = raw_data
+      test_data['list']['Fields'] = nil
+      subject.parse
+      expect(subject.errors).to be_present
+      expect(subject.errors.first[:title]).to match(/Invalid fields/)
+    end
+
+    it 'exists if the provided hash does not include a ["data"] key' do
+      test_data = raw_data
+      test_data['data'] = nil
+      subject.parse
+      expect(subject.errors).to be_present
+      expect(subject.errors.first[:title]).to match(/Invalid data/)
     end
   end
 end

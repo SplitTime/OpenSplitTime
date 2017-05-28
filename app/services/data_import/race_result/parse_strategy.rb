@@ -1,14 +1,16 @@
 module DataImport::RaceResult
-class ParseStrategy
+  class ParseStrategy
+    attr_reader :errors
 
     def initialize(raw_data, options)
       @raw_data = raw_data
       @options = options
+      @errors = []
+      validate_raw_data
     end
 
     def parse
-      extract_rows.each { |row| p row }
-      extract_rows.map { |row| OpenStruct.new(row) }
+      errors.empty? ? extract_rows.map { |row| OpenStruct.new(row) } : nil
     end
 
     private
@@ -16,7 +18,7 @@ class ParseStrategy
     attr_reader :raw_data, :options
 
     def extract_rows
-      raw_data['data'].values.first.map { |data_row| attribute_pairs(data_row) }
+      data_rows.map { |data_row| attribute_pairs(data_row) }
     end
 
     def attribute_pairs(data_row)
@@ -24,9 +26,38 @@ class ParseStrategy
     end
 
     def extract_headers
-      array = raw_data['list']['Fields'].map { |header| header['Label'].downcase }
+      array = data_fields.map { |header| expression_or_section(header) }
       array.unshift('rr_id')
       array
+    end
+
+    def expression_or_section(header)
+      expression, label = [header['Expression'], header['Label']].map(&:underscore)
+      expression.start_with?('section') ? expression : label
+    end
+
+    def data_rows
+      @data_rows ||= raw_data['data']&.values&.first
+    end
+
+    def data_fields
+      @data_fields ||= raw_data['list'] && raw_data['list']['Fields']
+    end
+
+    def validate_raw_data
+      errors << missing_data_error unless data_rows.present?
+      errors << missing_fields_error unless data_fields.present?
+    end
+
+    def missing_data_error
+      {title: 'Invalid data',
+       detail: {messages: ["The provided file #{raw_data} has a problem with the ['data'] key or its values"]}}
+    end
+
+    def missing_fields_error
+      {title: 'Invalid fields',
+       detail: {messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +
+                               "or the ['list']['Fields'] key or its values"]}}
     end
   end
 end

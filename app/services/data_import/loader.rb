@@ -29,6 +29,7 @@ module DataImport
         end
         raise ActiveRecord::Rollback if invalid_records.present?
       end
+      invalid_records.present? ? errors : valid_records
     end
 
     private
@@ -64,10 +65,11 @@ module DataImport
     end
 
     def attempt_to_save(record)
-      if record.save
-        valid_records << record
-      else
+      if record.changed? && !record.save
         invalid_records << record
+        errors << jsonapi_error_object(record)
+      else
+        valid_records << record
       end
     end
 
@@ -96,6 +98,11 @@ module DataImport
 
     def invalid_proto_record_error(proto_record)
       {title: 'Invalid proto record', detail: {messages: ["#{proto_record} is invalid"]}}
+    end
+
+    def jsonapi_error_object(record)
+      {title: "#{record.class} could not be saved",
+       detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
     end
   end
 end

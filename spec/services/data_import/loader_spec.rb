@@ -32,6 +32,15 @@ RSpec.describe DataImport::Loader do
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], bitkey: 1, time_from_start: nil)]),
+      ProtoRecord.new(record_type: :effort, age: '0', gender: '', bib_number: '62',
+                      first_name: 'N.n.', last_name: '62', event_id: event.id, concealed: true,
+                      children: [ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[0], bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[1], bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[2], bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], bitkey: 1, time_from_start: nil)])
   ]}
   let(:options) { {event: event} }

@@ -1,26 +1,29 @@
 module DataImport
   class Loader
-    attr_reader :valid_records, :invalid_records, :destroyed_records, :discarded_records
+    attr_reader :valid_records, :invalid_records, :destroyed_records, :discarded_records, :errors
 
-    def initialize(transformed_structs, options)
-      @transformed_structs = transformed_structs
+    def initialize(proto_records, options)
+      @proto_records = proto_records
       @options = options
       @valid_records = []
       @invalid_records = []
       @destroyed_records = []
       @discarded_records = []
+      @errors = []
+      validate_setup
     end
 
     def load_records
+      return if errors.present?
       ActiveRecord::Base.transaction do
-        transformed_structs.each do |struct|
-          record = record_from_struct(struct)
-          save_discard_or_destroy(record, struct)
+        proto_records.each do |proto_record|
+          record = record_from_proto(proto_record)
+          save_discard_or_destroy(record, proto_record)
           if valid_records.include?(record)
-            struct.child_structs.each do |child_struct|
-              child_struct["#{struct.record_type}_id"] = record.id
-              child_record = record_from_struct(child_struct)
-              save_discard_or_destroy(child_record, child_struct)
+            proto_record.children.each do |child_proto_record|
+              child_proto_record["#{proto_record.record_type}_id"] = record.id
+              child_record = record_from_proto(child_proto_record)
+              save_discard_or_destroy(child_record, child_proto_record)
             end
           end
         end
@@ -30,11 +33,11 @@ module DataImport
 
     private
 
-    attr_reader :transformed_structs, :options
+    attr_reader :proto_records, :options
 
-    def record_from_struct(struct)
-      model_class = struct[:record_type].to_s.classify.constantize
-      attributes = struct.to_h.except(:record_type, :record_action, :child_structs)
+    def record_from_proto(proto_record)
+      model_class = proto_record.record_class
+      attributes = proto_record.to_h
       new_or_existing_record(attributes, model_class)
     end
 
@@ -52,15 +55,15 @@ module DataImport
       unique_key.present? && unique_key.size == unique_attributes.size && unique_attributes.values.all?(&:present?)
     end
 
-    def save_discard_or_destroy(record, struct)
-      if struct.record_action == :destroy
+    def save_discard_or_destroy(record, proto_record)
+      if proto_record.record_action == :destroy
         discard_or_destroy(record)
       else
-        save(record)
+        attempt_to_save(record)
       end
     end
 
-    def save(record)
+    def attempt_to_save(record)
       if record.save
         valid_records << record
       else
@@ -83,6 +86,16 @@ module DataImport
 
     def params_class(model_name)
       "#{model_name.to_s.classify}Parameters".constantize
+    end
+
+    def validate_setup
+      proto_records.each do |proto_record|
+        errors << invalid_proto_record_error(proto_record) unless proto_record.record_class
+      end
+    end
+
+    def invalid_proto_record_error(proto_record)
+      {title: 'Invalid proto record', detail: {messages: ["#{proto_record} is invalid"]}}
     end
   end
 end

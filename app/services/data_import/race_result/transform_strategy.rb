@@ -1,68 +1,76 @@
 module DataImport::RaceResult
   class TransformStrategy
-    include Transformable
     attr_reader :errors
 
     def initialize(parsed_structs, options)
-      @parsed_structs = parsed_structs
+      @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options
       @errors = []
-      validate_parsed_structs
+      validate_setup
     end
 
     def transform
       return if errors.present?
-      map_keys!(:effort)
-      normalize_gender!
-      split_full_name!
-      transform_time_data!
-      permit!(permitted_params)
-      merge_global_attributes!
+      proto_records.each do |proto_record|
+        transform_time_data!(proto_record)
+        proto_record.record_type = :effort
+        proto_record.map_keys!(EffortParameters.mapping)
+        proto_record.normalize_gender!
+        proto_record.split_field!(:full_name, :first_name, :last_name)
+        proto_record.permit!(permitted_params)
+        proto_record.merge_attributes!(global_attributes)
+      end
+      proto_records
     end
 
     private
 
-    attr_reader :parsed_structs, :options
+    attr_reader :proto_records, :options
 
-    def transform_time_data!
-      parsed_structs.each do |struct|
-        extract_times!(struct)
-        transform_times!(struct)
-        create_child_structs!(struct)
-      end
+    def transform_time_data!(proto_record)
+      extract_times!(proto_record)
+      transform_times!(proto_record)
+      create_children!(proto_record)
+      mark_for_destruction!(proto_record)
     end
 
-    def extract_times!(struct)
-      times = time_keys.map { |key| struct.delete_field(key) }
+    def extract_times!(proto_record)
+      times = time_keys.map { |key| proto_record.delete_field(key) }
       start_time = times.any?(&:present?) ? '0:00:00.00' : ''
       times.unshift(start_time) # RR does not include a start time with its data so we need to add one
-      struct.segment_times = times
+      proto_record[:segment_times] = times
     end
 
-    def transform_times!(struct)
-      segment_seconds = struct.segment_times.map { |hms_time| TimeConversion.hms_to_seconds(hms_time) }
-      struct.times_from_start = segment_seconds.map.with_index do |time, i|
-        segment_seconds[0..i].sum.round(2) if time.present?
+    def transform_times!(proto_record)
+      segment_seconds = proto_record[:segment_times].map { |hms_time| TimeConversion.hms_to_seconds(hms_time) }
+      proto_record[:times_from_start] = segment_seconds.map.with_index do |time, i|
+        segment_seconds[0..i].compact.sum.round(2) if time.present?
       end
     end
 
-    def create_child_structs!(struct)
-      split_time_attributes = time_points.zip(struct.times_from_start).map do |time_point, time|
+    def create_children!(proto_record)
+      split_time_attributes = time_points.zip(proto_record[:times_from_start]).map do |time_point, time|
         {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
       end
-      struct.child_structs = split_time_attributes.map { |attributes| OpenStruct.new(attributes) }
+      split_time_attributes.each { |attributes| proto_record.children << ProtoRecord.new(attributes) }
+    end
+
+    def mark_for_destruction!(proto_record)
+      proto_record.children.each do |child_record|
+        child_record.record_action = :destroy if child_record[:time_from_start].blank?
+      end
     end
 
     # Because of the way they are built, keys for all structs are identical,
     # so use the first as a template for all.
     def time_keys
-      @time_keys ||= parsed_structs.first.to_h.keys
+      @time_keys ||= proto_records.first.to_h.keys
                          .select { |key| key.to_s.start_with?('section') }
                          .sort_by { |key| key[/\d+/].to_i }
     end
 
     def global_attributes
-      {record_type: :effort, event_id: event.id, concealed: event.concealed}
+      {event_id: event.id, concealed: event.concealed}
     end
 
     def event
@@ -74,10 +82,10 @@ module DataImport::RaceResult
     end
 
     def permitted_params
-      EffortParameters.permitted.to_set << :child_structs
+      EffortParameters.permitted.to_set
     end
 
-    def validate_parsed_structs
+    def validate_setup
       errors << missing_event_error unless event.present?
       (errors << split_mismatch_error) if event.present? && !event.laps_unlimited? &&
           (time_keys.size != time_points.size - 1)

@@ -21,6 +21,16 @@ shared_examples_for 'transformable' do
         expect(subject.to_h.keys.sort).to eq([:age, :full_name])
       end
     end
+
+    context 'when mapped keys have nil values' do
+      let(:attributes) { {name: nil, age: 29} }
+      let(:map) { {name: :full_name} }
+
+      it 'maps the headings correctly' do
+        subject.map_keys!(map)
+        expect(subject.to_h.keys.sort).to eq([:age, :full_name])
+      end
+    end
   end
 
   describe '#merge_attributes!' do
@@ -51,7 +61,7 @@ shared_examples_for 'transformable' do
 
       it 'changes the value to "male"' do
         subject.normalize_gender!
-        expect(subject.gender).to eq('male')
+        expect(subject[:gender]).to eq('male')
       end
     end
 
@@ -60,7 +70,7 @@ shared_examples_for 'transformable' do
 
       it 'changes the value to "female"' do
         subject.normalize_gender!
-        expect(subject.gender).to eq('female')
+        expect(subject[:gender]).to eq('female')
       end
     end
 
@@ -69,7 +79,7 @@ shared_examples_for 'transformable' do
 
       it 'does not set a value' do
         subject.normalize_gender!
-        expect(subject.gender).to eq(nil)
+        expect(subject[:gender]).to eq(nil)
       end
     end
   end
@@ -139,8 +149,8 @@ shared_examples_for 'transformable' do
 
     def verify_split(expected_first_name, expected_last_name)
       subject.split_field!(:full_name, :first_name, :last_name)
-      expect(subject.first_name).to eq(expected_first_name)
-      expect(subject.last_name).to eq(expected_last_name)
+      expect(subject[:first_name]).to eq(expected_first_name)
+      expect(subject[:last_name]).to eq(expected_last_name)
     end
   end
 end

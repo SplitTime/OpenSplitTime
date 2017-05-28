@@ -2,18 +2,18 @@ module DataImport::Transformable
 
   def map_keys!(map)
     map.each do |old_key, new_key|
-      attributes[new_key] = attributes.delete_field(old_key) if attributes.respond_to?(old_key)
+      self[new_key] = delete_field(old_key) if attributes.respond_to?(old_key)
     end
   end
 
   def merge_attributes!(merging_attributes)
-    merging_attributes.each { |key, value| attributes[key] = value }
+    merging_attributes.each { |key, value| self[key] = value }
   end
 
   def normalize_gender!
-    gender = attributes.gender
+    gender = self[:gender]
     if gender.present?
-      attributes.gender = gender.downcase.start_with?('m') ? 'male' : 'female'
+      self[:gender] = gender.downcase.start_with?('m') ? 'male' : 'female'
     end
   end
 
@@ -22,16 +22,16 @@ module DataImport::Transformable
   end
 
   def split_field!(old_field, first_field, second_field, split_char = ' ')
-    old_value = attributes.delete_field(old_field)
+    old_value = delete_field(old_field)
     values = old_value.to_s.split(split_char)
     first_value = values.size < 2 ? values.first : values[0..-2].join(split_char)
     second_value = values.size < 2 ? nil : values.last
-    attributes[first_field], attributes[second_field] = first_value, second_value
+    self[first_field], self[second_field] = first_value, second_value
   end
 
   def permit!(permitted_params)
-    attributes.to_h.keys.each do |key|
-      attributes.delete_field(key) unless permitted_params.include?(key)
+    to_h.keys.each do |key|
+      delete_field(key) unless permitted_params.include?(key)
     end
   end
 end

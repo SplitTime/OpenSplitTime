@@ -18,6 +18,13 @@ FactoryGirl.define do
         assign_fg_stub_relations(event, {course: course, splits: course.splits})
         assign_fg_stub_relations(course, {events: [event]})
       end
+
+      after(:create) do |event, evaluator|
+        course = create(:course_with_standard_splits, splits_count: evaluator.splits_count,
+                        in_sub_splits_only: evaluator.in_sub_splits_only)
+        event.update(course: course)
+        event.splits << course.splits
+      end
     end
 
     factory :event_functional do

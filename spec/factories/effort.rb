@@ -12,6 +12,7 @@ FactoryGirl.define do
 
   factory :efforts_hardrock, class: Effort do
     sequence(:id, (100..109).cycle)
+    sequence(:bib_number)
     first_name 'Joe'
     sequence(:last_name) { |n| "LastName #{n}" }
     gender 'male'

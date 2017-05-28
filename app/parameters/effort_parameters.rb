@@ -26,4 +26,8 @@ class EffortParameters < BaseParameters
     {first: :first_name, firstname: :first_name, last: :last_name, lastname: :last_name, name: :full_name, state: :state_code,
      country: :country_code, sex: :gender, bib: :bib_number}
   end
+
+  def self.unique_key
+    [:event_id, :bib_number]
+  end
 end

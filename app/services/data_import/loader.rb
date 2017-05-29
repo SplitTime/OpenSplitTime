@@ -16,9 +16,11 @@ module DataImport
     def load_records
       return if errors.present?
       ActiveRecord::Base.transaction do
+
         proto_records.each do |proto_record|
           record = record_from_proto(proto_record)
           save_discard_or_destroy(record, proto_record)
+
           if valid_records.include?(record)
             proto_record.children.each do |child_proto_record|
               child_proto_record["#{proto_record.record_type}_id"] = record.id
@@ -27,6 +29,7 @@ module DataImport
             end
           end
         end
+
         raise ActiveRecord::Rollback if invalid_records.present?
       end
       invalid_records.present? ? errors : valid_records

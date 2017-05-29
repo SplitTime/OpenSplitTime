@@ -23,5 +23,10 @@ RSpec.describe PersonalInfo, type: :module do
       effort = FactoryGirl.build_stubbed(:effort, country_code: nil, state_code: 'Atlantis')
       expect(effort.state_and_country).to eq('Atlantis')
     end
+
+    it 'works properly when the country has no subregions' do
+      effort = FactoryGirl.build_stubbed(:effort, country_code: 'HK', state_code: 'Hong Kong')
+      expect(effort.state_and_country).to eq('Hong Kong, Hong Kong')
+    end
   end
 end

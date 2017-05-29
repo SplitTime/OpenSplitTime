@@ -35,17 +35,35 @@ module DataImport::RaceResult
     end
 
     def extract_times!(proto_record)
-      times = time_keys.map { |key| proto_record.delete_field(key) }
-      start_time = times.any?(&:present?) ? '0:00:00.00' : ''
-      times.unshift(start_time) # RR does not include a start time with its data so we need to add one
-      proto_record[:segment_times] = times
+      proto_record[:segment_times] = time_keys.map { |key| proto_record.delete_field(key) }
     end
 
     def transform_times!(proto_record)
       segment_seconds = proto_record[:segment_times].map { |hms_time| TimeConversion.hms_to_seconds(hms_time) }
-      proto_record[:times_from_start] = segment_seconds.map.with_index do |time, i|
-        segment_seconds[0..i].compact.sum.round(2) if time.present?
+      start_seconds = segment_seconds.any?(&:present?) ? 0.0 : nil
+      finish_time = TimeConversion.hms_to_seconds(proto_record[:time])
+      finish_seconds = finish_time == 0 ? nil : finish_time
+      start_calcs = calcs_from_start(segment_seconds, start_seconds)
+      finish_calcs = calcs_from_finish(segment_seconds, finish_seconds)
+      proto_record[:times_from_start] = start_calcs.zip(finish_calcs).map { |pair| pair.compact.first }
+    end
+
+    def calcs_from_start(segment_seconds, start_seconds)
+      calcs = segment_seconds.each_index.map do |i|
+        left_partial_array = segment_seconds[0..i]
+        (start_seconds + left_partial_array.sum).round(2) if start_seconds && left_partial_array.all?(&:present?)
       end
+      calcs[-1] = nil
+      calcs.unshift(start_seconds)
+    end
+
+    def calcs_from_finish(segment_seconds, finish_seconds)
+      calcs = segment_seconds.each_index.map do |i|
+        right_partial_array = segment_seconds[i..-1]
+        (finish_seconds - right_partial_array.sum).round(2) if finish_seconds && right_partial_array.all?(&:present?)
+      end
+      calcs[0] = nil
+      calcs.push(finish_seconds)
     end
 
     def create_children!(proto_record)

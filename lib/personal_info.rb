@@ -22,7 +22,7 @@ module PersonalInfo
   end
 
   def state
-    @state ||= country && country.subregions.coded(state_code)
+    @state ||= country && country.subregions.presence&.coded(state_code)
   end
 
   def state_name

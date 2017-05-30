@@ -1,5 +1,8 @@
 class EffortSplitTimeCreator
 
+  EXCEL_1900_BASE_DATETIME = '1899-12-30'.to_datetime
+  EXCEL_1904_BASE_DATETIME = '1904-01-01'.to_datetime
+
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:row_time_data, :effort, :current_user_id],
@@ -25,9 +28,6 @@ class EffortSplitTimeCreator
   end
 
   private
-
-  EXCEL_BASE_DATETIME = '1899-12-30'.to_datetime
-  CUTOVER_YEAR = 1910
 
   attr_reader :row_time_data, :effort, :current_user_id, :event, :time_format
 
@@ -95,9 +95,16 @@ class EffortSplitTimeCreator
     end
   end
 
-  def datetime_to_seconds(value)
-    start_time = value.year < CUTOVER_YEAR ? EXCEL_BASE_DATETIME : event.start_time
-    TimeDifference.between(value, start_time).in_seconds
+  def datetime_to_seconds(datetime)
+    start_time = case
+                 when datetime.year < 1903
+                   EXCEL_1900_BASE_DATETIME
+                 when datetime.year < 1907
+                   EXCEL_1904_BASE_DATETIME
+                 else
+                   event.start_time
+                 end
+    TimeDifference.between(datetime, start_time).in_seconds
   end
 
   def military_time_to_day_and_time(military_time, time_point)

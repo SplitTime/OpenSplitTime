@@ -18,13 +18,13 @@ RSpec.describe CsvBuilder do
     describe '#headers' do
       it 'returns an array of humanized headers for the provided model' do
         expect(subject.headers).to eq(['Base name', 'Distance', 'Kind', 'Vert gain',
-                                       'Vert loss', 'Latitude', 'Longitude', 'Elevation'])
+                                       'Vert loss', 'Latitude', 'Longitude', 'Elevation', 'Sub split bitmap'])
       end
     end
 
     describe '#export_attributes' do
       it 'returns an array of attributes for the provided model' do
-        expect(subject.export_attributes).to eq(%w(base_name distance kind vert_gain vert_loss latitude longitude elevation))
+        expect(subject.export_attributes).to eq(%w(base_name distance kind vert_gain vert_loss latitude longitude elevation sub_split_bitmap))
       end
     end
 

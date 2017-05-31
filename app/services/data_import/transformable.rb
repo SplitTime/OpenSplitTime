@@ -17,8 +17,25 @@ module DataImport::Transformable
     end
   end
 
-  def params_class(model_name)
-    "#{model_name.to_s.classify}Parameters".constantize
+  def normalize_country_code!
+    country_data = self[:country_code].to_s.downcase.strip
+    country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
+    self[:country_code] = country ? country.code : find_country_code_by_nickname(country_data)
+  end
+
+  def normalize_state_code!
+    state_data = self[:state_code].to_s.strip
+    country = Carmen::Country.coded(self[:country_code])
+    self[:state_code] =
+        case
+        when state_data.blank?
+          nil
+        when country.blank? || country.subregions.blank?
+          state_data
+        else
+          subregion = country.subregions.coded(state_data) || country.subregions.named(state_data)
+          subregion ? subregion.code : state_data
+        end
   end
 
   def split_field!(old_field, first_field, second_field, split_char = ' ')
@@ -33,5 +50,17 @@ module DataImport::Transformable
     to_h.keys.each do |key|
       delete_field(key) unless permitted_params.include?(key)
     end
+  end
+
+  private
+
+  def find_country_code_by_nickname(country_string)
+    return nil if country_string.blank?
+    country_code = I18n.t("nicknames.#{country_string}")
+    country_code.include?('translation missing') ? nil : country_code
+  end
+
+  def params_class(model_name)
+    "#{model_name.to_s.classify}Parameters".constantize
   end
 end

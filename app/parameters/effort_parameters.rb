@@ -24,7 +24,7 @@ class EffortParameters < BaseParameters
 
   def self.mapping
     {first: :first_name, firstname: :first_name, last: :last_name, lastname: :last_name, name: :full_name, state: :state_code,
-     country: :country_code, sex: :gender, bib: :bib_number}
+     country: :country_code, sex: :gender, bib: :bib_number, :"bib_#" => :bib_number, dob: :birthdate}
   end
 
   def self.unique_key

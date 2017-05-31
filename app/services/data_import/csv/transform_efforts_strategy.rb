@@ -15,6 +15,9 @@ module DataImport::Csv
       proto_records.each do |proto_record|
         proto_record.record_type = :effort
         proto_record.map_keys!(EffortParameters.mapping)
+        proto_record.normalize_gender!
+        proto_record.normalize_country_code!
+        proto_record.normalize_state_code!
         proto_record.permit!(EffortParameters.permitted.to_set)
         proto_record.merge_attributes!(global_attributes)
       end

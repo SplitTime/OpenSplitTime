@@ -84,6 +84,91 @@ shared_examples_for 'transformable' do
     end
   end
 
+  describe '#normalize_country_code!' do
+    context 'when provided with ISO 3166 2-character code' do
+      let(:attributes) { {country_code: 'US'} }
+
+      it 'does nothing to the value' do
+        subject.normalize_country_code!
+        expect(subject[:country_code]).to eq('US')
+      end
+    end
+
+    context 'when provided with ISO 3166 3-character country codes' do
+      let(:attributes) { {country_code: 'JPN'} }
+
+      it 'converts it to ISO 3166 2-character codes' do
+        subject.normalize_country_code!
+        expect(subject[:country_code]).to eq('JP')
+      end
+    end
+
+    context 'when provided with an official name' do
+      let(:attributes) { {country_code: 'United States'} }
+
+      it 'converts it to ISO 3166 2-character codes' do
+        subject.normalize_country_code!
+        expect(subject[:country_code]).to eq('US')
+      end
+    end
+
+    context 'when provided with a nickname listed in /config/locales/en.yml:en:nicknames' do
+      let(:attributes) { {country_code: 'England'} }
+
+      it 'converts it to ISO 3166 2-character codes' do
+        subject.normalize_country_code!
+        expect(subject[:country_code]).to eq('GB')
+      end
+    end
+
+    context 'when provided with invalid country data' do
+      let(:attributes) { {country_code: 'Neverland'} }
+
+      it 'sets the value to nil' do
+        subject.normalize_country_code!
+        expect(subject[:country_code]).to eq(nil)
+      end
+    end
+  end
+
+  describe '#normalize_state_code' do
+    context 'when no country is provided for context' do
+      let(:attributes) { {state_code: 'State Of Confusion'} }
+
+      it 'does nothing to the value' do
+        subject.normalize_state_code!
+        expect(subject[:state_code]).to eq('State Of Confusion')
+      end
+    end
+
+    context 'when provided with a country and an ISO 3166 2-character code' do
+      let(:attributes) { {country_code: 'CA', state_code: 'BC'} }
+
+      it 'does nothing to the value' do
+        subject.normalize_state_code!
+        expect(subject[:state_code]).to eq('BC')
+      end
+    end
+
+    context 'when provided with a country and a named state within that country' do
+      let(:attributes) { {country_code: 'US', state_code: 'Colorado'} }
+
+      it 'converts the value to a 2-character ISO 3166 code' do
+        subject.normalize_state_code!
+        expect(subject[:state_code]).to eq('CO')
+      end
+    end
+
+    context 'when provided with a country that has subregions but the state_code does not resolve' do
+      let(:attributes) { {country_code: 'US', state_code: 'Private Island of Joe'} }
+
+      it 'does nothing to the value' do
+        subject.normalize_state_code!
+        expect(subject[:state_code]).to eq('Private Island of Joe')
+      end
+    end
+  end
+
   describe '#permit!' do
     let(:attributes) { {first_name: 'Joe', age: 55, role: 'admin'} }
     let(:permitted) { [:first_name, :last_name, :age] }

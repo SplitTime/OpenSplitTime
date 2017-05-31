@@ -28,6 +28,8 @@ class Effort < ActiveRecord::Base
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
+  validates :email, allow_blank: true, length: {maximum: 105},
+            format: {with: VALID_EMAIL_REGEX}
   validates :phone, phony_plausible: true
 
   before_save :reset_age_from_birthdate

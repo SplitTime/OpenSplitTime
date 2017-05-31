@@ -34,7 +34,6 @@ class Participant < ActiveRecord::Base
   before_destroy :delete_topic_resource
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
-            uniqueness: {case_sensitive: false},
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, phony_plausible: true
 

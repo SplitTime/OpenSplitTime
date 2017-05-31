@@ -14,4 +14,8 @@ class SplitParameters < BaseParameters
   def self.mapping
     {name: :base_name}
   end
+
+  def self.unique_key
+    [:course_id, :distance_from_start]
+  end
 end

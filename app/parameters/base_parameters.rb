@@ -23,4 +23,8 @@ class BaseParameters
   def self.csv_attributes
     []
   end
+
+  def self.unique_key
+    []
+  end
 end

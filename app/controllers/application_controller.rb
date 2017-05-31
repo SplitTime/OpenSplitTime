@@ -67,8 +67,7 @@ class ApplicationController < ActionController::Base
         create: :created,
         update: :updated,
         destroy: :destroyed,
-        import_efforts_csv: :imported,
-        import_splits_csv: :imported,
+        import_csv: :imported,
         import_efforts: :imported,
         import_splits: :imported
     }.with_indifferent_access

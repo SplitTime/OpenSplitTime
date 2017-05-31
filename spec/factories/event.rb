@@ -10,11 +10,20 @@ FactoryGirl.define do
     factory :event_with_standard_splits do
 
       transient { splits_count 4 }
+      transient { in_sub_splits_only false }
 
       after(:stub) do |event, evaluator|
-        course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count)
+        course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count,
+                               in_sub_splits_only: evaluator.in_sub_splits_only)
         assign_fg_stub_relations(event, {course: course, splits: course.splits})
         assign_fg_stub_relations(course, {events: [event]})
+      end
+
+      after(:create) do |event, evaluator|
+        course = create(:course_with_standard_splits, splits_count: evaluator.splits_count,
+                        in_sub_splits_only: evaluator.in_sub_splits_only)
+        event.update(course: course)
+        event.splits << course.splits
       end
     end
 

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 # t.integer  "effort_id"
 # t.integer  "split_id"
-# t.float    "time_from_start" (stored as seconds.milliseconds elapsed)
+# t.float    "time_from_start" (stored as seconds.fractions of a second elapsed)
 # t.integer  "data_status"
 # t.integer  "sub_split_bitkey"
 # t.boolean  "pacer"
@@ -126,6 +126,16 @@ RSpec.describe SplitTime, kind: :model do
     it 'returns time in hh:mm:ss format when time_from_start is greater than 100 hours' do
       split_time = SplitTime.new(effort: effort, split: intermediate_split, time_from_start: 500000)
       expect(split_time.elapsed_time).to eq('138:53:20')
+    end
+
+    it 'returns time in hh:mm:ss.xx format when with_fractionals: true is used' do
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, time_from_start: 4530.55)
+      expect(split_time.elapsed_time(with_fractionals: true)).to eq('01:15:30.55')
+    end
+
+    it 'rounds fractional seconds when with_fractionals: is not true' do
+      split_time = SplitTime.new(effort: effort, split: intermediate_split, time_from_start: 4530.55)
+      expect(split_time.elapsed_time).to eq('01:15:31')
     end
   end
 

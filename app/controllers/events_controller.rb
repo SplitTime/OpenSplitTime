@@ -106,6 +106,36 @@ class EventsController < ApplicationController
 
 # Import actions
 
+  def import_csv
+    authorize @event
+    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
+    model = params[:model]
+    source = "csv_#{model}".to_sym
+    if file_url
+      importer = DataImport::Importer.new(file_url, source, event: @event, current_user_id: current_user.id, strict: true)
+      importer.import
+      respond_to do |format|
+        if importer.errors.present?
+          format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
+          format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
+                               status: :unprocessable_entity }
+        else
+          if model == :splits
+            splits = @event.splits.to_set
+            importer.valid_records.each { |record| @event.splits << record unless splits.include?(record) }
+          end
+          format.html { flash[:success] = "Imported #{importer.valid_records.size} #{model}." and redirect_to :back }
+          format.json { render json: importer.valid_records, status: :created }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
+        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def import_splits
     authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)
@@ -116,12 +146,6 @@ class EventsController < ApplicationController
       flash[:danger] = 'Import file too large.'
     end
     redirect_to stage_event_path(@event)
-  end
-
-  def import_splits_csv
-    global_attributes = {course: @event.course, created_by: current_user.id}
-    unique_key = [:course_id, :distance_from_start]
-    import_csv(:splits, global_attributes, unique_key)
   end
 
   def import_efforts
@@ -139,12 +163,6 @@ class EventsController < ApplicationController
           'if it is still too large, divide the file and import in multiple steps.'
     end
     redirect_to stage_event_path(@event)
-  end
-
-  def import_efforts_csv
-    global_attributes = {event: @event, concealed: @event.concealed, created_by: current_user.id}
-    unique_key = [:event_id, :bib_number]
-    import_csv(:efforts, global_attributes, unique_key)
   end
 
   def spread
@@ -258,35 +276,5 @@ class EventsController < ApplicationController
 
   def update_beacon_url(url)
     @event.update(beacon_url: url)
-  end
-
-  def import_csv(model, global_attributes, unique_key = nil)
-    authorize @event
-    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
-    if file_url
-      importer = CsvImporter.new(file_path: file_url, model: model,
-                                 global_attributes: global_attributes, unique_key: unique_key)
-      importer.import
-      respond_to do |format|
-        if importer.response_status == :created
-          if model == :splits
-            splits = @event.splits.to_set
-            importer.valid_records.each { |record| @event.splits << record unless splits.include?(record) }
-          end
-          format.html { flash[:success] = "Imported #{importer.valid_records.size} splits." and redirect_to :back }
-          format.json { render json: importer.valid_records, status: importer.response_status }
-        else
-          format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
-          format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
-                               status: importer.response_status }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
-        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
-      end
-    end
-
   end
 end

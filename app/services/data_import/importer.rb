@@ -1,5 +1,6 @@
 module DataImport
   class Importer
+    include DataImport::Errors
 
     REPORT_ARRAYS = [:valid_records, :invalid_records, :destroyed_records, :discarded_records, :errors]
     attr_reader *REPORT_ARRAYS
@@ -20,15 +21,18 @@ module DataImport
       when :race_result
         import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, options)
       when :csv_efforts
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::Efforts::TransformStrategy, options.merge(model: :effort))
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, options)
       when :csv_splits
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::Splits::TransformStrategy, options.merge(model: :split))
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, options)
+      else
+        self.errors << source_not_recognized_error(source)
       end
     end
 
     private
 
     attr_reader :file_path, :source, :options
+    attr_writer *REPORT_ARRAYS
 
     def import_with(file_path, read_strategy, parse_strategy, transform_strategy, options)
       reader = DataImport::Reader.new(file_path, read_strategy)

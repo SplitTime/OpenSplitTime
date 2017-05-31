@@ -1,5 +1,6 @@
 module DataImport
   class Loader
+    include DataImport::Errors
     attr_reader :valid_records, :invalid_records, :destroyed_records, :discarded_records, :errors
 
     def initialize(proto_records, options)
@@ -42,15 +43,18 @@ module DataImport
     def record_from_proto(proto_record)
       model_class = proto_record.record_class
       attributes = proto_record.to_h
-      new_or_existing_record(attributes, model_class)
+      record = new_or_existing_record(attributes, model_class)
+      audit_attributes = record.new_record? ? [:created_by, :updated_by] : [:updated_by]
+      audit_attributes.each { |attribute| record.assign_attributes(attribute => current_user_id) }
+      record
     end
 
     def new_or_existing_record(attributes, model_class)
       unique_key = params_class(model_class).unique_key
       unique_attributes = attributes.slice(*unique_key)
       record = (unique_key_valid?(unique_key, unique_attributes)) ?
-          model_class.find_or_initialize_by(unique_attributes) :
-          model_class.new
+                   model_class.find_or_initialize_by(unique_attributes) :
+                   model_class.new
       record.assign_attributes(attributes)
       record
     end
@@ -93,19 +97,15 @@ module DataImport
       "#{model_name.to_s.classify}Parameters".constantize
     end
 
+    def current_user_id
+      options[:current_user_id]
+    end
+
     def validate_setup
+      errors << missing_current_user_error unless current_user_id
       proto_records.each do |proto_record|
         errors << invalid_proto_record_error(proto_record) unless proto_record.record_class
       end
-    end
-
-    def invalid_proto_record_error(proto_record)
-      {title: 'Invalid proto record', detail: {messages: ["#{proto_record} is invalid"]}}
-    end
-
-    def jsonapi_error_object(record)
-      {title: "#{record.class} could not be saved",
-       detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
     end
   end
 end

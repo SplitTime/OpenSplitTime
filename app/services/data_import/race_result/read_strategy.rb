@@ -1,5 +1,6 @@
 module DataImport::RaceResult
   class ReadStrategy
+    include DataImport::Errors
     attr_reader :errors
 
     def initialize(file_path)
@@ -14,7 +15,7 @@ module DataImport::RaceResult
         if file
           JSON.parse(File.read(file))
         else
-          errors << file_not_found_error
+          errors << file_not_found_error(file_path)
           nil
         end
       end
@@ -26,10 +27,6 @@ module DataImport::RaceResult
 
     def file
       @file ||= FileStore.get(file_path)
-    end
-
-    def file_not_found_error
-      {title: 'File not found', detail: {messages: ["File #{file_path} could not be read"]}}
     end
   end
 end

@@ -1,5 +1,6 @@
 module DataImport::RaceResult
   class TransformStrategy
+    include DataImport::Errors
     attr_reader :errors
 
     def initialize(parsed_structs, options)
@@ -105,19 +106,8 @@ module DataImport::RaceResult
 
     def validate_setup
       errors << missing_event_error unless event.present?
-      (errors << split_mismatch_error) if event.present? && !event.laps_unlimited? &&
+      (errors << split_mismatch_error(event, time_points, time_keys)) if event.present? && !event.laps_unlimited? &&
           (time_keys.size != time_points.size - 1)
-    end
-
-    def missing_event_error
-      {title: 'Event is missing',
-       detail: {messages: ['This import requires that an event be provided']}}
-    end
-
-    def split_mismatch_error
-      {title: 'Split mismatch error',
-       detail: {messages: ["#{event} expects #{time_points.size - 1} time points (excluding the start split) " +
-                               "but the json response contemplates #{time_keys.size} time points."]}}
     end
   end
 end

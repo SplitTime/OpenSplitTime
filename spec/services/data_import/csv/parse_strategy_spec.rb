@@ -7,12 +7,12 @@ RSpec.describe DataImport::Csv::ParseStrategy do
   let(:options) { {model: :effort} }
   subject { DataImport::Csv::ParseStrategy.new(raw_data, options) }
 
-  describe '#read_file' do
+  describe '#parse' do
     it 'returns an array of attribute rows in OpenStruct format' do
       attribute_rows = subject.parse
       expect(attribute_rows.size).to eq(3)
       expect(attribute_rows.all? { |row| row.is_a?(OpenStruct) }).to eq(true)
-      expect(attribute_rows.first[:first_name]).to eq('Bjorn')
+      expect(attribute_rows.map { |row| row[:first_name] }).to eq(%w(Bjorn Charlie Lucy))
     end
   end
 end

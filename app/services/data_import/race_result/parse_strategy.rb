@@ -1,5 +1,6 @@
 module DataImport::RaceResult
   class ParseStrategy
+    include DataImport::Errors
     attr_reader :errors
 
     def initialize(raw_data, options)
@@ -10,7 +11,7 @@ module DataImport::RaceResult
     end
 
     def parse
-      errors.empty? ? extract_rows.map { |row| OpenStruct.new(row) } : nil
+      extract_rows.map { |row| OpenStruct.new(row) } if errors.empty?
     end
 
     private
@@ -45,19 +46,8 @@ module DataImport::RaceResult
     end
 
     def validate_raw_data
-      errors << missing_data_error unless data_rows.present?
-      errors << missing_fields_error unless data_fields.present?
-    end
-
-    def missing_data_error
-      {title: 'Invalid data',
-       detail: {messages: ["The provided file #{raw_data} has a problem with the ['data'] key or its values"]}}
-    end
-
-    def missing_fields_error
-      {title: 'Invalid fields',
-       detail: {messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +
-                               "or the ['list']['Fields'] key or its values"]}}
+      errors << missing_data_error(raw_data) unless data_rows.present?
+      errors << missing_fields_error(raw_data) unless data_fields.present?
     end
   end
 end

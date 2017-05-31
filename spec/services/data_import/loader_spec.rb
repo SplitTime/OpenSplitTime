@@ -47,7 +47,7 @@ RSpec.describe DataImport::Loader do
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, time_from_start: nil)])
   ] }
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
-  let(:options) { {event: event} }
+  let(:options) { {event: event, current_user_id: 111} }
 
   describe '#load_records' do
     context 'when all provided records are valid and none previously exists' do
@@ -74,9 +74,10 @@ RSpec.describe DataImport::Loader do
         expect(split_times.map(&:effort_id)).to eq([Effort.first.id] * 7 + [Effort.second.id] * 3)
       end
 
-      it 'returns saved records in the valid_records array' do
+      it 'returns saved records in the valid_records array and assigns a current user id to created_by' do
         subject.load_records
         expect(subject.valid_records.size).to eq(13)
+        expect(subject.valid_records.map(&:created_by)).to eq([options[:current_user_id]] * subject.valid_records.size)
       end
     end
 
@@ -85,11 +86,11 @@ RSpec.describe DataImport::Loader do
       let(:second_child) { valid_proto_records.first.children.second }
 
       before do
-        existing_effort = create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number])
+        existing_effort = create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number], created_by: 222)
         create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
-               bitkey: first_child[:sub_split_bitkey], time_from_start: 0)
+               bitkey: first_child[:sub_split_bitkey], time_from_start: 0, created_by: 222)
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
-               bitkey: second_child[:sub_split_bitkey], time_from_start: 1000)
+               bitkey: second_child[:sub_split_bitkey], time_from_start: 1000, created_by: 222)
       end
 
       subject { DataImport::Loader.new(valid_proto_records, options) }
@@ -102,6 +103,25 @@ RSpec.describe DataImport::Loader do
         expect(SplitTime.all.size).to eq(10)
         expect(Effort.first.split_times.pluck(:time_from_start))
             .to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
+      end
+
+      it 'assigns current_user_id to created_by in the newly created efforts and to updated_by in the existing records' do
+        user_id = options[:current_user_id]
+        existing_effort = Effort.all.first
+        existing_split_times = SplitTime.all.first(2)
+        subject.load_records
+        new_efforts = Effort.all.where.not(id: existing_effort.id)
+        new_split_times = SplitTime.all.where.not(id: existing_split_times.map(&:id))
+        existing_effort.reload
+        existing_split_times.each { |st| st.reload }
+        expect(existing_effort.created_by).not_to eq(user_id)
+        expect(existing_effort.updated_by).to eq(user_id)
+        expect(existing_split_times.map(&:created_by)).not_to include(user_id)
+        expect(existing_split_times.map(&:updated_by)).to eq([user_id] * new_efforts.size)
+        expect(new_efforts.map(&:created_by)).to eq([user_id] * new_efforts.size)
+        expect(new_efforts.map(&:updated_by)).to eq([user_id] * new_efforts.size)
+        expect(new_split_times.map(&:created_by)).to eq([user_id] * new_split_times.size)
+        expect(new_split_times.map(&:updated_by)).to eq([user_id] * new_split_times.size)
       end
     end
 

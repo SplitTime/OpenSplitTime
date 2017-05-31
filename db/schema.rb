@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170507203955) do
+ActiveRecord::Schema.define(version: 20170531160913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20170507203955) do
     t.string   "country_code",     limit: 2
     t.date     "birthdate"
     t.integer  "data_status"
-    t.integer  "start_offset",                default: 0
+    t.integer  "start_offset",                default: 0,     null: false
     t.integer  "dropped_split_id"
     t.boolean  "concealed",                   default: false
     t.string   "beacon_url"

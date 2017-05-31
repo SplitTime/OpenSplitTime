@@ -8,7 +8,7 @@ namespace :pull_event do
     puts "Located event: #{event.name}"
 
     uri = DataImport::RaceResult::UriBuilder.new(args[:rr_event_id], args[:rr_contest_id]).full_uri
-    importer = DataImport::Importer.new(uri, :race_result, event: event, strict: false)
+    importer = DataImport::Importer.new(uri, :race_result, event: event, strict: false, current_user_id: 1)
     abort("Importer could not be created") unless importer
     importer.import
     if importer.errors

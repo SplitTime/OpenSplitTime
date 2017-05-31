@@ -36,6 +36,7 @@ class SplitTime < ActiveRecord::Base
   validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
                           message: 'only one of any given time_point permitted within an effort'
+  validates :time_from_start, numericality: {greater_than_or_equal_to: 0}
   validate :course_is_consistent
 
   def self.null_record

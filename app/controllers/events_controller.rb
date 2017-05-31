@@ -112,20 +112,20 @@ class EventsController < ApplicationController
     model = params[:model]
     source = "csv_#{model}".to_sym
     if file_url
-      importer = DataImport::Importer.new(file_url, source, event: @event, current_user_id: current_user.id)
+      importer = DataImport::Importer.new(file_url, source, event: @event, current_user_id: current_user.id, strict: true)
       importer.import
       respond_to do |format|
-        if importer.valid_records.present?
+        if importer.errors.present?
+          format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
+          format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
+                               status: :unprocessable_entity }
+        else
           if model == :splits
             splits = @event.splits.to_set
             importer.valid_records.each { |record| @event.splits << record unless splits.include?(record) }
           end
           format.html { flash[:success] = "Imported #{importer.valid_records.size} #{model}." and redirect_to :back }
           format.json { render json: importer.valid_records, status: :created }
-        else
-          format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
-          format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
-                               status: :unprocessable_entity }
         end
       end
     else

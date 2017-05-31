@@ -47,7 +47,7 @@ module DataImport
       proto_records = transformer.transform
       self.errors += transformer.errors and return if transformer.errors.present?
 
-      proto_record_groups = options[:strict] ? proto_records : proto_records.map { |record| [record] }
+      proto_record_groups = options[:strict] ? [proto_records] : proto_records.map { |record| [record] }
       proto_record_groups.each do |proto_record_group|
         loader = DataImport::Loader.new(proto_record_group, options)
         loader.load_records

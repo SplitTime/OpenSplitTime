@@ -1,9 +1,19 @@
 class EffortAutoReconciler
+
+  def self.reconcile(event)
+    reconciler = new(event)
+    reconciler.reconcile
+    reconciler.report
+  end
+
   def initialize(event)
     @event = event
     @unreconciled_efforts = event.unreconciled_efforts.to_a
-    @auto_matched_count = EventReconcileService.assign_participants_to_efforts(matched_hash)
-    @auto_created_count = EventReconcileService.create_participants_from_efforts(not_matched_array)
+  end
+
+  def reconcile
+    self.auto_matched_count = EventReconcileService.assign_participants_to_efforts(matched_hash)
+    self.auto_created_count = EventReconcileService.create_participants_from_efforts(not_matched_array)
   end
 
   def report
@@ -12,7 +22,8 @@ class EffortAutoReconciler
 
   private
 
-  attr_reader :event, :unreconciled_efforts, :auto_matched_count, :auto_created_count
+  attr_reader :event, :unreconciled_efforts
+  attr_accessor :auto_matched_count, :auto_created_count
 
   def matched_hash
     @matched_hash ||= exact_matches.map { |effort, participant| [effort.id, participant.id] }.to_h

@@ -35,7 +35,7 @@ RSpec.describe CsvParser do
       expect(parser.attribute_rows.size).to eq(1)
       row = parser.attribute_rows.first
       expected = {effort: {first_name: 'Lucy', last_name: 'Pendergrast', gender: 'female', age: 13,
-                       city: 'Psych', state_code: 'OH', country_code: 'US'}}.with_indifferent_access
+                           city: 'Psych', state_code: 'OH', country_code: 'US', bib_number: 101}}.with_indifferent_access
       expect(row).to eq(expected)
     end
 

@@ -1,6 +1,58 @@
 shared_examples_for 'transformable' do
   subject { described_class.new(attributes) }
 
+  describe '#align_split_distance!' do
+    let!(:course_distances) { [0, 3000, 6000, 9000] }
+
+    context 'when distance_from_start attribute aligns exactly with a provided distance' do
+      let(:attributes) { {distance_from_start: 3000} }
+
+      it 'makes no change to distance_from_start attribute' do
+        subject.align_split_distance!(course_distances)
+        expect(subject[:distance_from_start]).to eq(3000)
+      end
+    end
+
+    context 'when distance_from_start attribute is within 10 meters of a provided distance' do
+      let(:attributes) { {distance_from_start: 2991} }
+
+      it 'changes the distance_from_start attribute to that distance' do
+        subject.align_split_distance!(course_distances)
+        expect(subject[:distance_from_start]).to eq(3000)
+      end
+    end
+
+    context 'when distance_from_start attribute is not within 10 meters of a provided distance' do
+      let(:attributes) { {distance_from_start: 2900} }
+
+      it 'makes no change to distance_from_start attribute' do
+        subject.align_split_distance!(course_distances)
+        expect(subject[:distance_from_start]).to eq(2900)
+      end
+    end
+  end
+
+  describe '#convert_split_distance!' do
+    context 'when the provided attributes include distance' do
+      let(:attributes) { {distance: 10} }
+
+      it 'converts to meters, deletes the distance field, and creates a distance_from_start field' do
+        subject.convert_split_distance!
+        expect(subject[:distance_from_start]).to eq(16093)
+        expect(subject[:distance]).to be_nil
+      end
+    end
+
+    context 'when the provided attributes do not include distance' do
+      let(:attributes) { {distance_from_start: 5000} }
+
+      it 'makes no change to the distance_from_start field' do
+        subject.convert_split_distance!
+        expect(subject[:distance_from_start]).to eq(5000)
+      end
+    end
+  end
+
   describe '#map_keys!' do
     context 'when all keys are in the object' do
       let(:attributes) { {name: 'Joe Hardman', sex: 'male'} }
@@ -55,35 +107,6 @@ shared_examples_for 'transformable' do
     end
   end
 
-  describe '#normalize_gender!' do
-    context 'when existing gender starts with "M"' do
-      let(:attributes) { {first_name: 'Joe', gender: 'M'} }
-
-      it 'changes the value to "male"' do
-        subject.normalize_gender!
-        expect(subject[:gender]).to eq('male')
-      end
-    end
-
-    context 'when existing gender does not start with "M"' do
-      let(:attributes) { {first_name: 'Joe', gender: 'F'} }
-
-      it 'changes the value to "female"' do
-        subject.normalize_gender!
-        expect(subject[:gender]).to eq('female')
-      end
-    end
-
-    context 'when existing gender does not exist' do
-      let(:attributes) { {first_name: 'Joe', age: 55} }
-
-      it 'does not set a value' do
-        subject.normalize_gender!
-        expect(subject[:gender]).to eq(nil)
-      end
-    end
-  end
-
   describe '#normalize_country_code!' do
     context 'when provided with ISO 3166 2-character code' do
       let(:attributes) { {country_code: 'US'} }
@@ -127,6 +150,35 @@ shared_examples_for 'transformable' do
       it 'sets the value to nil' do
         subject.normalize_country_code!
         expect(subject[:country_code]).to eq(nil)
+      end
+    end
+  end
+
+  describe '#normalize_gender!' do
+    context 'when existing gender starts with "M"' do
+      let(:attributes) { {first_name: 'Joe', gender: 'M'} }
+
+      it 'changes the value to "male"' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq('male')
+      end
+    end
+
+    context 'when existing gender does not start with "M"' do
+      let(:attributes) { {first_name: 'Joe', gender: 'F'} }
+
+      it 'changes the value to "female"' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq('female')
+      end
+    end
+
+    context 'when existing gender does not exist' do
+      let(:attributes) { {first_name: 'Joe', age: 55} }
+
+      it 'does not set a value' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq(nil)
       end
     end
   end

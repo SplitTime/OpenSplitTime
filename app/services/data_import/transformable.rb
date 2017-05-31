@@ -1,5 +1,20 @@
 module DataImport::Transformable
 
+  def align_split_distance!(split_distances)
+    match_threshold = 10
+    matching_distance = split_distances.find do |distance|
+      (distance - self[:distance_from_start]).abs < match_threshold
+    end
+    self[:distance_from_start] = matching_distance if matching_distance
+  end
+
+  def convert_split_distance!
+    return unless self[:distance].present?
+    temp_split = Split.new
+    temp_split.distance = delete_field(:distance)
+    self[:distance_from_start] = temp_split.distance_from_start
+  end
+
   def map_keys!(map)
     map.each do |old_key, new_key|
       self[new_key] = delete_field(old_key) if attributes.respond_to?(old_key)
@@ -10,17 +25,17 @@ module DataImport::Transformable
     merging_attributes.each { |key, value| self[key] = value }
   end
 
+  def normalize_country_code!
+    country_data = self[:country_code].to_s.downcase.strip
+    country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
+    self[:country_code] = country ? country.code : find_country_code_by_nickname(country_data)
+  end
+
   def normalize_gender!
     gender = self[:gender]
     if gender.present?
       self[:gender] = gender.downcase.start_with?('m') ? 'male' : 'female'
     end
-  end
-
-  def normalize_country_code!
-    country_data = self[:country_code].to_s.downcase.strip
-    country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
-    self[:country_code] = country ? country.code : find_country_code_by_nickname(country_data)
   end
 
   def normalize_state_code!

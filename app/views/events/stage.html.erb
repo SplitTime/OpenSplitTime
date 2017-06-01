@@ -1,10 +1,6 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Stage/administer event - #{@event_stage.name}" %>
 <% end %>
-<div class="progress progress-striped active hide">
-  <div class="progress-bar progress-bar-info" id='realtime-progress-bar' role="progressbar" style="width: 0%"></div>
-</div>
-<p class="messages"></p>
 <div class="row header">
   <div class="col-xs-5">
     <h2><strong><%= @event_stage.name %></strong>
@@ -210,19 +206,21 @@
 </script>
 
 <script>
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+    $(document).ready(function () {
 
-    var uID = 1;
-    var pusher = new Pusher('<%= ENV['PUSHER_KEY'] %>');
-    var channel = pusher.subscribe('import_progress_' + uID);
+        Pusher.logToConsole = false;
 
-    channel.bind('update', function (data) {
-        progressBar.width(data.progress + "%");
-        messageBox.html(data.message)
-    });
+        var uID = '<%= session.id %>';
+        var pusher = new Pusher('<%= ENV['PUSHER_KEY'] %>');
+        var channel = pusher.subscribe('import_progress_' + uID);
 
-    var messageBox = $('#create-account-form-with-realtime').children('.messages');
-    var progressBar = $('#realtime-progress-bar');
+        channel.bind('update', function (data) {
+            progressBar.width(data.progress + "%");
+            messageBox.html(data.message);
+        });
+
+        var messageBox = $('#progress-bar-with-messages').children('.progress-bar-title');
+        var progressBar = $('#realtime-progress-bar');
+    })
 
 </script>

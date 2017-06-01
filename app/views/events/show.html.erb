@@ -14,7 +14,8 @@
       <br/>
       Run on <%= link_to @event_display.course_name, course_path(@event_display.course) %>
       <% if @event_display.organization %>
-          <br/>Organized under <%= link_to @event_display.organization_name, organization_path(@event_display.organization) %>
+          <br/>Organized
+          under <%= link_to @event_display.organization_name, organization_path(@event_display.organization) %>
       <% end %>
     </h4>
   </div>
@@ -30,10 +31,13 @@
   </div>
 </div>
 
+<% unless (@event_display.started_efforts_count < 1) && (@event_display.unstarted_efforts_count < 1) %>
+    <%= render 'effort_lookup', event: @event_display.event %>
+<% end %>
+
 <% if @event_display.started_efforts_count < 1 %>
     <strong>No efforts have started yet.</strong>
 <% else %>
-    <%= render 'effort_lookup', event: @event_display.event %>
     <% if @event_display.filtered_ranked_efforts_count > 0 %>
         <hr>
         <div class="row">

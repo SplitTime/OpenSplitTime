@@ -120,9 +120,12 @@ class EventsController < ApplicationController
           format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
                                status: :unprocessable_entity }
         else
-          if model == :splits
+          case model
+          when :splits
             splits = @event.splits.to_set
             importer.valid_records.each { |record| @event.splits << record unless splits.include?(record) }
+          when :efforts
+            EffortsAutoReconcileJob.perform_later(event: @event)
           end
           format.html { flash[:success] = "Imported #{importer.valid_records.size} #{model}." and redirect_to :back }
           format.json { render json: importer.valid_records, status: :created }
@@ -152,12 +155,10 @@ class EventsController < ApplicationController
     authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
-      uid = 1
-      background_channel = "import_progress_#{uid}"
+      uid = session.id
+      background_channel = "progress_#{uid}"
       ImportEffortsJob.perform_later(file_url, @event, current_user.id,
                                      params.slice(:time_format, :with_times, :with_status), background_channel)
-      flash[:success] = 'Import in progress. Reload the page in a minute or two ' +
-          '(depending on file size) and your import should be complete.'
     else
       flash[:danger] = 'The import file is too large. Delete extraneous data and ' +
           'if it is still too large, divide the file and import in multiple steps.'

@@ -1,13 +1,14 @@
 class EffortAutoReconciler
 
-  def self.reconcile(event)
-    reconciler = new(event)
+  def self.reconcile(args)
+    reconciler = new(args)
     reconciler.reconcile
     reconciler.report
   end
 
-  def initialize(event)
-    @event = event
+  def initialize(args)
+    @event = args[:event]
+    @background_channel = args[:background_channel]
     @unreconciled_efforts = event.unreconciled_efforts.to_a
   end
 
@@ -22,7 +23,7 @@ class EffortAutoReconciler
 
   private
 
-  attr_reader :event, :unreconciled_efforts
+  attr_reader :event, :background_channel, :unreconciled_efforts
   attr_accessor :auto_matched_count, :auto_created_count
 
   def matched_hash

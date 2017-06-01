@@ -19,7 +19,7 @@ RSpec.describe EffortAutoReconciler do
   let!(:participant4) { Participant.create!(first_name: 'Janey', last_name: 'Danielson', gender: 'female') }
   let!(:participant5) { Participant.create!(first_name: 'Joel', last_name: 'Eagleston', gender: 'male') }
 
-  subject { EffortAutoReconciler.new(event) }
+  subject { EffortAutoReconciler.new(event: event) }
 
   describe '#reconcile' do
     it 'creates new participants for unmatched efforts' do

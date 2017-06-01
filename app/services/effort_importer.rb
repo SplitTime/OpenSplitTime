@@ -45,7 +45,7 @@ class EffortImporter
     end
     set_drops_and_status
     report_status(message: "Reconciling #{total_efforts} efforts...")
-    self.effort_import_report = EffortAutoReconciler.reconcile(event)
+    self.effort_import_report = EffortAutoReconciler.reconcile(event: event)
     report_status(message: "Reconciling #{total_efforts} efforts...done")
   end
 

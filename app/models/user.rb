@@ -63,9 +63,9 @@ class User < ActiveRecord::Base
     when 'email'
       order(:email)
     when 'avatar_desc'
-      includes(:participants).order('participants.last_name DESC')
+      includes(:avatar).order('participants.last_name DESC')
     when 'avatar_asc'
-      includes(:participants).order('participants.last_name')
+      includes(:avatar).order('participants.last_name')
     when 'date_asc'
       order(:confirmed_at)
     else

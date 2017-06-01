@@ -36,6 +36,7 @@ class Participant < ActiveRecord::Base
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, phony_plausible: true
+  validates_with BirthdateValidator
 
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.

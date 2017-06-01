@@ -31,6 +31,7 @@ class Effort < ActiveRecord::Base
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, phony_plausible: true
+  validates_with BirthdateValidator
 
   before_save :reset_age_from_birthdate
 

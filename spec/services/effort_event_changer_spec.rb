@@ -105,7 +105,7 @@ RSpec.describe EffortEventChanger do
       end
 
       it 'raises an error if laps are out of range' do
-        split_time = effort.split_times.last
+        split_time = effort.ordered_split_times.last
         split_time.update(lap: 2)
         expect { EffortEventChanger.new(effort: effort, event: new_event) }
             .to raise_error(/laps exceed maximum required/)

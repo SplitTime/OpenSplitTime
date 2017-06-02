@@ -2,7 +2,7 @@ module DataImport
   class Importer
     include DataImport::Errors
 
-    REPORT_ARRAYS = [:valid_records, :invalid_records, :destroyed_records, :discarded_records, :errors]
+    REPORT_ARRAYS = [:saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors]
     attr_reader *REPORT_ARRAYS
 
     def initialize(file_path, source, options = {})
@@ -18,12 +18,14 @@ module DataImport
 
     def import
       case source
-      when :race_result
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, options)
+      when :race_result_full
+        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, InsertLoadStrategy, options)
+      when :race_result_times
+        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, SplitTimeUpsertLoadStrategy, options)
       when :csv_efforts
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, options)
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, UpsertLoadStrategy, options)
       when :csv_splits
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, options)
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, UpsertLoadStrategy, options)
       else
         self.errors << source_not_recognized_error(source)
       end
@@ -34,7 +36,7 @@ module DataImport
     attr_reader :file_path, :source, :options
     attr_writer *REPORT_ARRAYS
 
-    def import_with(file_path, read_strategy, parse_strategy, transform_strategy, options)
+    def import_with(file_path, read_strategy, parse_strategy, transform_strategy, load_strategy, options)
       reader = DataImport::Reader.new(file_path, read_strategy)
       raw_data = reader.read_file
       self.errors += reader.errors and return if reader.errors.present?
@@ -49,7 +51,7 @@ module DataImport
 
       proto_record_groups = options[:strict] ? [proto_records] : proto_records.map { |record| [record] }
       proto_record_groups.each do |proto_record_group|
-        loader = DataImport::Loader.new(proto_record_group, options)
+        loader = DataImport::Loader.new(proto_record_group, load_strategy, options)
         loader.load_records
         REPORT_ARRAYS.each do |report_array|
           loader.send(report_array).each { |element| send(report_array) << element }

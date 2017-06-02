@@ -1,15 +1,19 @@
 require 'rails_helper'
 
-# t.string   "first_name"
-# t.string   "last_name"
-# t.string   "gender"
+# t.string   "first_name",         limit: 32,                 null: false
+# t.string   "last_name",          limit: 64,                 null: false
+# t.integer  "gender",                                        null: false
 # t.date     "birthdate"
 # t.string   "city"
 # t.string   "state_code"
-# t.string  "country_code"
 # t.string   "email"
 # t.string   "phone"
+# t.string   "country_code",       limit: 2
 # t.integer  "user_id"
+# t.boolean  "concealed",                     default: false
+# t.string   "photo_url"
+# t.string   "slug",                                          null: false
+# t.string   "topic_resource_key"
 
 RSpec.describe Participant, type: :model do
   it_behaves_like 'auditable'
@@ -56,6 +60,20 @@ RSpec.describe Participant, type: :model do
     expect(participant2).not_to be_valid
     expect(participant3).not_to be_valid
     expect(participant4).not_to be_valid
+  end
+
+  it 'rejects implausible birthdates' do
+    participant_1 = build_stubbed(:participant, birthdate: '1880-01-01')
+    expect(participant_1).not_to be_valid
+    expect(participant_1.errors[:birthdate]).to include("can't be before 1900")
+    participant_2 = build_stubbed(:participant, birthdate: 1.day.from_now)
+    expect(participant_2).not_to be_valid
+    expect(participant_2.errors[:birthdate]).to include("can't be in the future")
+  end
+
+  it 'permits plausible birthdates' do
+    participant = build_stubbed(:participant, birthdate: '1977-01-01')
+    expect(participant).to be_valid
   end
 
   describe '#merge_with' do

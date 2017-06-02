@@ -1,9 +1,5 @@
 class EventReconcileService
 
-  def self.auto_reconcile_efforts(event)
-    EffortAutoReconciler.new(event).report
-  end
-
   def self.assign_participants_to_efforts(id_hash)
     efforts = Effort.find(id_hash.keys).index_by(&:id)
     participants = Participant.find(id_hash.values).index_by(&:id)

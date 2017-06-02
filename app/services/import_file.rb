@@ -40,7 +40,7 @@ class ImportFile
 
   def split_distance_array
     header2[split_offset - 1...header2.size]
-        .map { |distance| distance * distance_conversion_factor }
+        .map { |distance| distance.to_f * distance_conversion_factor }
   end
 
   def split_header_map

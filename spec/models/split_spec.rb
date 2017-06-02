@@ -225,110 +225,110 @@ RSpec.describe Split, kind: :model do
   end
 
   context 'when there is no current user (therefore no preferred distance or elevation units)' do
-    describe '#distance_as_entered' do
+    describe '#distance_in_preferred_units' do
       it 'returns nil if passed an empty string' do
         split = Split.new(base_name: 'Test Split')
-        split.distance_as_entered = ''
+        split.distance_in_preferred_units = ''
         expect(split.distance_from_start).to be_nil
       end
 
       it 'returns nil if passed nil' do
         split = Split.new(base_name: 'Test Split')
-        split.distance_as_entered = nil
+        split.distance_in_preferred_units = nil
         expect(split.distance_from_start).to be_nil
       end
 
       it 'takes a number in miles and store it as meters (rounded to 0) in the correct attribute' do
         split = Split.new(base_name: 'Test Split')
-        split.distance_as_entered = 5.5
+        split.distance_in_preferred_units = 5.5
         expect(split.distance_from_start).to eq(8851)
       end
 
       it 'takes a number string in miles and store it as meters in the correct attribute' do
         split = Split.new(base_name: 'Test Split')
-        split.distance_as_entered = '5'
+        split.distance_in_preferred_units = '5'
         expect(split.distance_from_start).to eq(8047)
       end
 
       it 'ignores commas' do
         split = Split.new(base_name: 'Test Split')
-        split.distance_as_entered = '1,000'
+        split.distance_in_preferred_units = '1,000'
         expect(split.distance_from_start).to eq(1609344)
       end
 
       it 'ignores non-numeric characters' do
         split = Split.new(base_name: 'Test Split')
-        split.distance_as_entered = '5 meters'
+        split.distance_in_preferred_units = '5 meters'
         expect(split.distance_from_start).to eq(8047)
       end
 
       it 'does not ignore decimals' do
         split = Split.new(base_name: 'Test Split')
-        split.distance_as_entered = '5.5'
+        split.distance_in_preferred_units = '5.5'
         expect(split.distance_from_start).to eq(8851)
       end
 
       it 'properly reports values in miles when queried' do
         split = Split.new(base_name: 'Test Split', distance_from_start: 8851)
-        expect(split.distance_as_entered).to eq(5.5)
+        expect(split.distance_in_preferred_units).to eq(5.5)
       end
     end
 
-    describe 'vert_gain_as_entered and vert_loss_as_entered' do
+    describe 'vert_gain_in_preferred_units and vert_loss_in_preferred_units' do
       it 'returns nil if passed an empty string' do
         split = Split.new(base_name: 'Test Split')
-        split.vert_gain_as_entered = ''
-        split.vert_loss_as_entered = ''
+        split.vert_gain_in_preferred_units = ''
+        split.vert_loss_in_preferred_units = ''
         expect(split.vert_gain_from_start).to be_nil
         expect(split.vert_loss_from_start).to be_nil
       end
 
       it 'returns nil if passed nil' do
         split = Split.new(base_name: 'Test Split')
-        split.vert_gain_as_entered = nil
-        split.vert_loss_as_entered = nil
+        split.vert_gain_in_preferred_units = nil
+        split.vert_loss_in_preferred_units = nil
         expect(split.vert_gain_from_start).to be_nil
         expect(split.vert_loss_from_start).to be_nil
       end
 
       it 'takes a number in feet and store it as meters in the correct attribute' do
         split = Split.new(base_name: 'Test Split')
-        split.vert_gain_as_entered = 13500
-        split.vert_loss_as_entered = 12000
+        split.vert_gain_in_preferred_units = 13500
+        split.vert_loss_in_preferred_units = 12000
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
         expect(split.vert_loss_from_start.round(1)).to eq(3657.6)
       end
 
       it 'takes a number string in feet and store it as meters in the correct attribute' do
         split = Split.new(base_name: 'Test Split')
-        split.vert_gain_as_entered = '13500'
-        split.vert_loss_as_entered = '12000'
+        split.vert_gain_in_preferred_units = '13500'
+        split.vert_loss_in_preferred_units = '12000'
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
         expect(split.vert_loss_from_start.round(1)).to eq(3657.6)
       end
 
       it 'ignores commas' do
         split = Split.new(base_name: 'Test Split')
-        split.vert_gain_as_entered = '13,500'
+        split.vert_gain_in_preferred_units = '13,500'
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
       end
 
       it 'ignores non-numeric characters' do
         split = Split.new(base_name: 'Test Split')
-        split.vert_gain_as_entered = '13500 meters'
+        split.vert_gain_in_preferred_units = '13500 meters'
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
       end
 
       it 'does not ignore decimals' do
         split = Split.new(base_name: 'Test Split')
-        split.vert_gain_as_entered = '13,500.5'
+        split.vert_gain_in_preferred_units = '13,500.5'
         expect(split.vert_gain_from_start.round(1)).to eq(4115.0)
       end
 
       it 'properly reports values in feet when queried' do
         split = Split.new(base_name: 'Test Split', vert_gain_from_start: 4114.8, vert_loss_from_start: 3657.6)
-        expect(split.vert_gain_as_entered).to eq(13500)
-        expect(split.vert_loss_as_entered).to eq(12000)
+        expect(split.vert_gain_in_preferred_units).to eq(13500)
+        expect(split.vert_loss_in_preferred_units).to eq(12000)
       end
     end
   end

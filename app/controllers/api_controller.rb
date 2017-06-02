@@ -56,10 +56,6 @@ class ApiController < ApplicationController
         controller_class.find(params[:id])
   end
 
-  def policy_class
-    @policy_class ||= "#{controller_class}Policy".constantize
-  end
-
   def permitted_params
     @permitted_params ||= prepared_params[:data]
   end

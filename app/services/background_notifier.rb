@@ -14,6 +14,7 @@ class BackgroundNotifier
     @channel = args[:channel]
     @event = args[:event]
     @message_data = args.except(:channel, :event).with_indifferent_access
+    validate_setup
   end
 
   def publish
@@ -50,6 +51,7 @@ class BackgroundNotifier
   end
 
   def progress
+    return 100 if total_objects&.zero?
     current_object && total_objects && (current_object / total_objects.to_f * 100).to_i
   end
 
@@ -57,5 +59,11 @@ class BackgroundNotifier
     define_method(attribute) do
       message_data[attribute]
     end
+  end
+
+  def validate_setup
+    raise ArgumentError, "Current object provided was #{current_object}, " + "which is less than total objects provided " +
+        "#{total_objects}" if current_object && total_objects && current_object > total_objects
+    raise ArgumentError, "Current object cannot be a negative number (#{current_object})" if current_object && current_object < 0
   end
 end

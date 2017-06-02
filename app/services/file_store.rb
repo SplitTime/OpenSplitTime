@@ -1,4 +1,5 @@
 class FileStore
+  require 'open-uri'
 
   MAX_FILESIZE = 50.megabytes
 
@@ -15,16 +16,24 @@ class FileStore
     end
   end
 
-  def self.read(path_or_url)
+  # Returns a File or StringIO object in memory
+  def self.get(path_or_url)
     case
     when uri?(path_or_url)
-      key = URI.parse(path_or_url).path[1..-1]
-      S3FileManager.read(key)
+      begin
+        open(path_or_url)
+      rescue OpenURI::HTTPError
+        nil
+      end
     when local_path?(path_or_url)
       full_path = "#{Rails.root}#{path_or_url}"
-      File.new(full_path)
+      File.exists?(full_path) ? File.new(full_path) : nil
     else # Assume it is an s3 key
-      S3FileManager.read(path_or_url)
+      begin
+        S3FileManager.read(path_or_url)
+      rescue Aws::S3::Errors::NoSuchKey
+        nil
+      end
     end
   end
 

@@ -4,7 +4,8 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :spread, :place, :analyze, :drop_list]
 
   def index
-    @events = Event.select_with_params(params[:search])
+    @events = policy_class::Scope.new(current_user, controller_class).viewable
+                  .select_with_params(params[:search])
                   .paginate(page: params[:page], per_page: 25)
     session[:return_to] = events_path
   end
@@ -105,6 +106,39 @@ class EventsController < ApplicationController
 
 # Import actions
 
+  def import_csv
+    authorize @event
+    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
+    model = params[:model]
+    source = "csv_#{model}".to_sym
+    if file_url
+      importer = DataImport::Importer.new(file_url, source, event: @event, current_user_id: current_user.id, strict: true)
+      importer.import
+      respond_to do |format|
+        if importer.errors.present?
+          format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
+          format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
+                               status: :unprocessable_entity }
+        else
+          case model
+          when :splits
+            splits = @event.splits.to_set
+            importer.valid_records.each { |record| @event.splits << record unless splits.include?(record) }
+          when :efforts
+            EffortsAutoReconcileJob.perform_later(event: @event)
+          end
+          format.html { flash[:success] = "Imported #{importer.valid_records.size} #{model}." and redirect_to :back }
+          format.json { render json: importer.valid_records, status: :created }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
+        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def import_splits
     authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)
@@ -117,33 +151,19 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-  def import_splits_csv
-    model = :splits
-    global_attributes = {course: @event.course, created_by: current_user.id}
-    import_csv(model, global_attributes)
-  end
-
   def import_efforts
     authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
-      uid = 1
-      background_channel = "import_progress_#{uid}"
+      uid = session.id
+      background_channel = "progress_#{uid}"
       ImportEffortsJob.perform_later(file_url, @event, current_user.id,
                                      params.slice(:time_format, :with_times, :with_status), background_channel)
-      flash[:success] = 'Import in progress. Reload the page in a minute or two ' +
-          '(depending on file size) and your import should be complete.'
     else
       flash[:danger] = 'The import file is too large. Delete extraneous data and ' +
           'if it is still too large, divide the file and import in multiple steps.'
     end
     redirect_to stage_event_path(@event)
-  end
-
-  def import_efforts_csv
-    model = :efforts
-    global_attributes = {event: @event, concealed: @event.concealed, created_by: current_user.id}
-    import_csv(model, global_attributes)
   end
 
   def spread
@@ -257,33 +277,5 @@ class EventsController < ApplicationController
 
   def update_beacon_url(url)
     @event.update(beacon_url: url)
-  end
-
-  def import_csv(model, global_attributes)
-    authorize @event
-    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
-    if file_url
-      importer = CsvImporter.new(file_path: file_url,
-                                 model: model,
-                                 global_attributes: global_attributes)
-      importer.import
-      respond_to do |format|
-        if importer.response_status == :created
-          @event.splits << importer.valid_records if model == :splits
-          format.html { flash[:success] = "Imported #{importer.valid_records.size} splits." and redirect_to :back }
-          format.json { render json: importer.valid_records, status: importer.response_status }
-        else
-          format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
-          format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
-                               status: importer.response_status }
-        end
-      end
-    else
-      respond_to do |format|
-        format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
-        format.json { render json: {errors: 'Import file too large.'}, status: :unprocessable_entity }
-      end
-    end
-
   end
 end

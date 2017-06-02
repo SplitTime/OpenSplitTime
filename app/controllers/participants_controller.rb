@@ -13,8 +13,8 @@ class ParticipantsController < ApplicationController
   end
 
   def index
-    @participants = Participant.search(prepared_params[:search])
-                        .where(concealed: false)
+    @participants = policy_class::Scope.new(current_user, controller_class).viewable
+                        .search(prepared_params[:search])
                         .with_age_and_effort_count
                         .ordered_by_name
                         .paginate(page: params[:page], per_page: 25)

@@ -12,6 +12,7 @@ class SplitTime < ActiveRecord::Base
   include Structpluck
   belongs_to :effort
   belongs_to :split
+  has_many :live_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
@@ -35,6 +36,7 @@ class SplitTime < ActiveRecord::Base
   validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
                           message: 'only one of any given time_point permitted within an effort'
+  validates :time_from_start, numericality: {greater_than_or_equal_to: 0}
   validate :course_is_consistent
 
   def self.null_record
@@ -49,6 +51,10 @@ class SplitTime < ActiveRecord::Base
     return [] if SplitTimeQuery.existing_scope_sql.blank?
     query = SplitTimeQuery.with_time_point_rank(split_time_fields: split_time_fields)
     self.find_by_sql(query)
+  end
+
+  def to_s
+    "#{effort.slug} at #{split.slug}"
   end
 
   def course_is_consistent
@@ -89,8 +95,10 @@ class SplitTime < ActiveRecord::Base
     effort.set_data_status
   end
 
-  def elapsed_time
-    time_from_start && TimeConversion.seconds_to_hms(time_from_start)
+  def elapsed_time(options = {})
+    return nil unless time_from_start
+    time = options[:with_fractionals] ? time_from_start : time_from_start.round(0)
+    TimeConversion.seconds_to_hms(time)
   end
 
   alias_method :formatted_time_hhmmss, :elapsed_time

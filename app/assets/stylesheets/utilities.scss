@@ -2,6 +2,25 @@
 @import "mixins";
 
 /**************
+Live Progress Bar
+***************/
+
+.progress {
+  position: relative;
+}
+
+.progress-bar-title {
+  position: absolute;
+  text-align: center;
+  line-height: 20px; /* line-height should be equal to bar height */
+  overflow: hidden;
+  color: #bbbb00;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+/**************
 Efforts Popover
 ***************/
 .popover.efforts-popover .popover-content {

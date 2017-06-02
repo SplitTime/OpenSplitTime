@@ -19,14 +19,14 @@ class SplitTimeQuery < BaseQuery
            WHERE st.lap = #{begin_lap} 
              AND st.split_id = #{begin_id} 
              AND st.sub_split_bitkey = #{begin_bitkey}
-             AND st.data_status IN (#{valid_statuses_list}))
+             AND (st.data_status IN (#{valid_statuses_list}) OR st.data_status IS NULL))
            AS st1,
            (SELECT st.effort_id, st.time_from_start
            FROM split_times st 
            WHERE st.lap = #{end_lap} 
              AND st.split_id = #{end_id} 
              AND st.sub_split_bitkey = #{end_bitkey}
-             AND st.data_status IN (#{valid_statuses_list}))
+             AND (st.data_status IN (#{valid_statuses_list}) OR st.data_status IS NULL))
            AS st2
       WHERE st1.effort_id = st2.effort_id
     SQL

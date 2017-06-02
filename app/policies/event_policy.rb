@@ -4,7 +4,7 @@ class EventPolicy < ApplicationPolicy
     end
 
     def delegated_records
-      scope.joins(organization: :stewardships).where(stewardships: {user_id: user.id})
+      user ? scope.joins(organization: :stewardships).where(stewardships: {user_id: user.id}) : scope.none
     end
   end
 
@@ -22,15 +22,11 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
-  def import_splits_csv?
+  def import_csv?
     user.authorized_for_live?(event)
   end
 
   def import_efforts?
-    user.authorized_for_live?(event)
-  end
-
-  def import_efforts_csv?
     user.authorized_for_live?(event)
   end
 

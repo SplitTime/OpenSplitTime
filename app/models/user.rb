@@ -63,9 +63,9 @@ class User < ActiveRecord::Base
     when 'email'
       order(:email)
     when 'avatar_desc'
-      includes(:participants).order('participants.last_name DESC')
+      includes(:avatar).order('participants.last_name DESC')
     when 'avatar_asc'
-      includes(:participants).order('participants.last_name')
+      includes(:avatar).order('participants.last_name')
     when 'date_asc'
       order(:confirmed_at)
     else
@@ -74,6 +74,10 @@ class User < ActiveRecord::Base
   end
 
   attr_accessor :has_json_web_token
+
+  def to_s
+    slug
+  end
 
   def slug_candidates
     [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime('%H:%M:%S')]]

@@ -219,6 +219,7 @@ RSpec.describe LiveDataEntryReporter do
     last_reported_lap_split = lap_splits.find { |lap_split| lap_split.key == last_reported_split_time.try(:lap_split_key) }
     stopped_split_time = existing_times[stopped_index] if stopped_index
     stopped_split_time.stopped_here = true if stopped_split_time
+    allow(effort_data).to receive(:response_row).and_return({})
     reporter = LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data)
     allow(prior_valid_split_time).to receive(:day_and_time).and_return(event.start_time + prior_valid_time_offset) if prior_valid_split_time
     allow(last_reported_split_time).to receive(:day_and_time).and_return(event.start_time + last_reported_time_offset) if last_reported_split_time

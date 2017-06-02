@@ -22,7 +22,7 @@ module EventsHelper
   end
 
   def link_to_enter_live_entry(view_object, current_user)
-    if current_user && current_user.authorized_for_live?(view_object.event) && view_object.available_live
+    if current_user && current_user.authorized_for_live?(view_object) && view_object.available_live
       link_to 'Live Data Entry', live_entry_live_event_path(view_object.event), method: :get, class: 'btn btn-sm btn-warning'
     end
   end
@@ -43,7 +43,7 @@ module EventsHelper
   end
 
   def link_to_download_spread_csv(view_object, current_user)
-    if current_user && current_user.authorized_for_live?(view_object.event) && view_object.event_finished?
+    if current_user && current_user.authorized_for_live?(view_object) && view_object.event_finished?
       link_to 'Export spreadsheet',
               spread_event_path(view_object.event, format: :csv, display_style: view_object.display_style, sort: view_object.sort_hash),
               method: :get, class: 'btn btn-sm btn-success'

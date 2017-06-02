@@ -36,10 +36,9 @@ Rails.application.routes.draw do
     member { get :segment_picker }
   end
   resources :events do
+    member { post :import_csv }
     member { post :import_splits }
-    member { post :import_splits_csv }
     member { post :import_efforts }
-    member { post :import_efforts_csv }
     member { get :splits }
     member { put :associate_splits }
     member { put :set_data_status }
@@ -130,6 +129,7 @@ Rails.application.routes.draw do
         member { post :set_times_data }
         member { post :post_file_effort_data }
       end
+      resources :live_times, only: [:index, :show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]

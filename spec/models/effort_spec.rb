@@ -19,6 +19,7 @@ require 'rails_helper'
 RSpec.describe Effort, type: :model do
   it_behaves_like 'data_status_methods'
   it_behaves_like 'auditable'
+  it_behaves_like 'matchable'
   it { is_expected.to strip_attribute(:first_name).collapse_spaces }
   it { is_expected.to strip_attribute(:last_name).collapse_spaces }
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
@@ -91,7 +92,7 @@ RSpec.describe Effort, type: :model do
   describe '#approximate_age_today' do
     it 'returns nil if age is not present' do
       effort = build(:effort)
-      expect(effort.approximate_age_today).to be_nil
+      expect(effort.current_age_approximate).to be_nil
     end
 
     it 'calculates approximate age at the current time based on age at time of effort' do
@@ -100,7 +101,7 @@ RSpec.describe Effort, type: :model do
       years_since_effort = Time.now.year - event_start_time.year
       effort = build(:effort, age: age)
       expect(effort).to receive(:event_start_time).and_return(event_start_time)
-      expect(effort.approximate_age_today).to eq(age + years_since_effort)
+      expect(effort.current_age_approximate).to eq(age + years_since_effort)
     end
 
     it 'functions properly for future events' do
@@ -109,7 +110,7 @@ RSpec.describe Effort, type: :model do
       years_since_effort = Time.now.year - event_start_time.year
       effort = build(:effort, age: age)
       expect(effort).to receive(:event_start_time).and_return(event_start_time)
-      expect(effort.approximate_age_today).to eq(age + years_since_effort)
+      expect(effort.current_age_approximate).to eq(age + years_since_effort)
     end
   end
 

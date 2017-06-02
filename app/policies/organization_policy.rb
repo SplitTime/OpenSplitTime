@@ -6,7 +6,7 @@ class OrganizationPolicy < ApplicationPolicy
     end
 
     def delegated_records
-      scope.joins(:stewardships).where(stewardships: {user_id: user.id})
+      user ? scope.joins(:stewardships).where(stewardships: {user_id: user.id}) : scope.none
     end
   end
 

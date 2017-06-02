@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
     @params_class ||= "#{controller_class}Parameters".constantize
   end
 
+  def policy_class
+    @policy_class ||= "#{controller_class}Policy".constantize
+  end
+
   def controller_class
     controller_class_name.camelcase.constantize
   end
@@ -47,14 +51,23 @@ class ApplicationController < ActionController::Base
      detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
   end
 
+  def child_records_error_object(record, child_record_model)
+    klass = record.class
+    child_records = record.send(child_record_model)
+    human_child_model_name = child_record_model.to_s.humanize(capitalize: false)
+    {title: "#{klass} could not be #{past_tense[action_name]}",
+     detail: {messages: ["A #{klass} can be deleted only if it has no associated #{human_child_model_name}. " +
+                             "This #{klass} has #{child_records.size} associated #{human_child_model_name}, including " +
+                             "#{child_records.first(20).map(&:to_s).join(', ')}"]}}
+  end
+
   # This should really be a helper method
   def past_tense
     result = {
         create: :created,
         update: :updated,
         destroy: :destroyed,
-        import_efforts_csv: :imported,
-        import_splits_csv: :imported,
+        import_csv: :imported,
         import_efforts: :imported,
         import_splits: :imported
     }.with_indifferent_access

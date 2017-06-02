@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330001838) do
+ActiveRecord::Schema.define(version: 20170531160913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20170330001838) do
     t.string   "country_code",     limit: 2
     t.date     "birthdate"
     t.integer  "data_status"
-    t.integer  "start_offset",                default: 0
+    t.integer  "start_offset",                default: 0,     null: false
     t.integer  "dropped_split_id"
     t.boolean  "concealed",                   default: false
     t.string   "beacon_url"
@@ -105,6 +105,30 @@ ActiveRecord::Schema.define(version: 20170330001838) do
   add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
   add_index "events", ["staging_id"], name: "index_events_on_staging_id", unique: true, using: :btree
+
+  create_table "live_times", force: :cascade do |t|
+    t.integer  "event_id",        null: false
+    t.integer  "lap"
+    t.integer  "split_id",        null: false
+    t.string   "split_extension"
+    t.string   "wave"
+    t.integer  "bib_number",      null: false
+    t.string   "absolute_time",   null: false
+    t.boolean  "with_pacer"
+    t.boolean  "stopped_here"
+    t.string   "remarks"
+    t.integer  "source"
+    t.string   "batch"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.integer  "split_time_id"
+  end
+
+  add_index "live_times", ["event_id"], name: "index_live_times_on_event_id", using: :btree
+  add_index "live_times", ["split_id"], name: "index_live_times_on_split_id", using: :btree
+  add_index "live_times", ["split_time_id"], name: "index_live_times_on_split_time_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",        limit: 64,                         null: false
@@ -268,6 +292,9 @@ ActiveRecord::Schema.define(version: 20170330001838) do
   add_foreign_key "efforts", "participants"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "organizations"
+  add_foreign_key "live_times", "events"
+  add_foreign_key "live_times", "split_times"
+  add_foreign_key "live_times", "splits"
   add_foreign_key "participants", "users"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"

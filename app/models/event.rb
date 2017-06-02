@@ -12,18 +12,15 @@ class Event < ActiveRecord::Base
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
+  has_many :live_times
 
   validates_presence_of :course_id, :name, :start_time, :laps_required
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :staging_id
 
   scope :recent, -> (max) { where('start_time < ?', Time.now).order(start_time: :desc).limit(max) }
-  scope :most_recent, -> { where('start_time < ?', Time.now).order(start_time: :desc).first }
-  scope :latest, -> { order(start_time: :desc).first }
-  scope :earliest, -> { order(:start_time).first }
   scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) { search(search_param)
-                                                     .where(concealed: false)
                                                      .select('events.*, COUNT(efforts.id) as effort_count')
                                                      .joins('LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)')
                                                      .group('events.id').order(start_time: :desc) }
@@ -32,7 +29,23 @@ class Event < ActiveRecord::Base
     return all if search_param.blank?
     name_search(search_param)
   end
-  
+
+  def self.latest
+    order(start_time: :desc).first
+  end
+
+  def self.earliest
+    order(:start_time).first
+  end
+
+  def self.most_recent
+    where('start_time < ?', Time.now).order(start_time: :desc).first
+  end
+
+  def to_s
+    slug
+  end
+
   def reconciled_efforts
     efforts.where.not(participant_id: nil)
   end

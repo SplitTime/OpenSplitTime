@@ -28,7 +28,10 @@ class Effort < ActiveRecord::Base
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
+  validates :email, allow_blank: true, length: {maximum: 105},
+            format: {with: VALID_EMAIL_REGEX}
   validates :phone, phony_plausible: true
+  validates_with BirthdateValidator
 
   before_save :reset_age_from_birthdate
 
@@ -69,6 +72,10 @@ class Effort < ActiveRecord::Base
     self.find_by_sql(query)
   end
 
+  def to_s
+    slug
+  end
+
   def slug_candidates
     [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
      [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
@@ -85,7 +92,7 @@ class Effort < ActiveRecord::Base
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    self.start_offset = TimeDifference.from(event_start_time, new_datetime).in_seconds
+    self.start_offset = TimeDifference.from(event.start_time, new_datetime).in_seconds
   end
 
   def day_and_time(time_from_start)
@@ -210,8 +217,8 @@ class Effort < ActiveRecord::Base
     (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
-  def approximate_age_today
-    @approximate_age_today ||=
+  def current_age_approximate
+    @current_age_approximate ||=
         age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
   end
 
@@ -252,8 +259,8 @@ class Effort < ActiveRecord::Base
     stopped_split_time&.time_point
   end
 
-  def stop
-    EffortStopper.stop(effort: self)
+  def stop(split_time = nil)
+    EffortStopper.stop(effort: self, stopped_split_time: split_time)
   end
 
   def unstop

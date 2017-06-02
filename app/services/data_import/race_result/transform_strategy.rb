@@ -15,7 +15,7 @@ module DataImport::RaceResult
       proto_records.each do |proto_record|
         transform_time_data!(proto_record)
         proto_record.record_type = :effort
-        proto_record.map_keys!(EffortParameters.mapping)
+        proto_record.map_keys!({name: :full_name, sex: :gender, bib: :bib_number})
         proto_record.normalize_gender!
         proto_record.split_field!(:full_name, :first_name, :last_name)
         proto_record.permit!(permitted_params)

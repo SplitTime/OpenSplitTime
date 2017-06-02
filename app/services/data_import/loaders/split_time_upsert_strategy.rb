@@ -1,47 +1,31 @@
 module DataImport::Loaders
-  class SplitTimeUpsertStrategy
-    include DataImport::Errors
-    attr_reader :saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors
+  class SplitTimeUpsertStrategy < BaseLoader
 
-    def initialize(proto_records, options)
-      @proto_records = proto_records
-      @options = options
+    def post_initialize(options)
       @parent_model = Effort
       @child_model = SplitTime
       @parent_key = [:event_id, :bib_number]
       @child_key = [:lap, :split_id, :sub_split_bitkey]
-      @saved_records = []
-      @invalid_records = []
-      @destroyed_records = []
-      @ignored_records = []
-      @errors = []
-      validate_setup
     end
 
-    def load_records
-      return if errors.present?
-      ActiveRecord::Base.transaction do
+    def custom_load
+      proto_records.each do |proto_record|
+        parent_record = fetch_parent(proto_record)
+        child_records = proto_record.children.map { |child_proto_record| child_record_from_proto(child_proto_record, parent_record) }.compact
 
-        proto_records.each do |proto_record|
-          parent_record = fetch_parent(proto_record)
-          child_records = proto_record.children.map { |child_proto_record| child_record_from_proto(child_proto_record, parent_record) }.compact
-
-          child_records.each do |child_record|
-            if parent_record.persisted? && (child_record.new_record? || child_record.changed?)
-              upsert(child_record, parent_record)
-            else
-              ignored_records << child_record
-            end
+        child_records.each do |child_record|
+          if parent_record.persisted? && (child_record.new_record? || child_record.changed?)
+            upsert(child_record, parent_record)
+          else
+            ignored_records << child_record
           end
         end
-
-        raise ActiveRecord::Rollback if invalid_records.present?
       end
     end
 
     private
 
-    attr_reader :proto_records, :options, :parent_model, :child_model, :parent_key, :child_key
+    attr_reader :parent_model, :child_model, :parent_key, :child_key
 
     def fetch_parent(proto_record)
       fetch_record(proto_record, parent_model, parent_key, parent_model)
@@ -94,26 +78,6 @@ module DataImport::Loaders
         saved_records << child_record
       else
         invalid_records << child_record
-      end
-    end
-
-    def add_audit_attributes(record)
-      record.created_by = current_user_id if record.new_record?
-      record.updated_by = current_user_id
-    end
-
-    def params_class(model_name)
-      "#{model_name.to_s.classify}Parameters".constantize
-    end
-
-    def current_user_id
-      options[:current_user_id]
-    end
-
-    def validate_setup
-      errors << missing_current_user_error unless current_user_id
-      proto_records.each do |proto_record|
-        errors << invalid_proto_record_error(proto_record) unless proto_record.record_class
       end
     end
   end

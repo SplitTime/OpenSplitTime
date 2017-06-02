@@ -217,13 +217,14 @@
 
         channel.bind('update', function (data) {
             if (firstUpdate) {
-                messageBox.removeClass('hide');
+                progressDiv.removeClass('hide');
                 firstUpdate = false;
             }
             progressBar.width(data.progress + "%");
             messageBox.html(data.message);
         });
 
+        var progressDiv = $('#progress-bar-with-messages');
         var messageBox = $('#progress-bar-with-messages').children('.progress-bar-title');
         var progressBar = $('#realtime-progress-bar');
     })

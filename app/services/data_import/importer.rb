@@ -51,8 +51,8 @@ module DataImport
       proto_record_groups.each do |proto_record_group|
         loader = DataImport::Loader.new(proto_record_group, options)
         loader.load_records
-        REPORT_ARRAYS.each do |group|
-          loader.send(group).each { |element| send(group) << element }
+        REPORT_ARRAYS.each do |report_array|
+          loader.send(report_array).each { |element| send(report_array) << element }
         end
       end
     end

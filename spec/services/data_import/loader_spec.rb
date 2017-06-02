@@ -46,6 +46,19 @@ RSpec.describe DataImport::Loader do
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, time_from_start: nil)])
   ] }
+
+  let(:proto_with_invalid_child) { [
+      ProtoRecord.new(record_type: :effort, age: '40', gender: 'male', bib_number: '500',
+                      first_name: 'Johtest', last_name: 'Apptest', event_id: event.id, concealed: true,
+                      children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, time_from_start: 0.0),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, time_from_start: 1000.0),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: 2000.0),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, time_from_start: nil),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, time_from_start: -999.0),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, time_from_start: 5000.0)])
+  ] }
+
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
   let(:options) { {event: event, current_user_id: 111} }
 
@@ -64,7 +77,7 @@ RSpec.describe DataImport::Loader do
         expect(efforts.map(&:event_id)).to eq([event.id] * efforts.size)
       end
 
-      it 'accurately saves new child records and accurately saves attributes' do
+      it 'saves new child records and accurately saves attributes' do
         split_times = SplitTime.all
         expect(split_times.size).to eq(0)
         subject.load_records
@@ -101,13 +114,15 @@ RSpec.describe DataImport::Loader do
         subject.load_records
         expect(Effort.all.size).to eq(3)
         expect(SplitTime.all.size).to eq(10)
-        expect(Effort.first.split_times.pluck(:time_from_start))
+        subject_effort = Effort.find_by(first_name: 'Jatest')
+        expect(subject_effort.split_times.pluck(:time_from_start))
             .to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
       end
 
       it 'assigns current_user_id to both created_by and updated_by in newly created efforts and to updated_by in existing records' do
         skip
-        # This does not work when running full test suite because RubyMine assigns an internal user_id via callbacks
+        # This does not work when running full test suite because RubyMine assigns
+        # an internal user_id via callbacks to created_by and updated_by
         user_id = options[:current_user_id]
         existing_effort = Effort.all.first
         existing_split_times = SplitTime.all.first(2)
@@ -144,6 +159,27 @@ RSpec.describe DataImport::Loader do
         expect(subject.errors.size).to eq(1)
         expect(subject.errors.first[:title]).to match(/Effort could not be saved/)
         expect(subject.errors.first[:detail][:messages]).to include("Gender can't be blank")
+      end
+    end
+
+    context 'when a parent record is valid but at least one child record is invalid' do
+      subject { DataImport::Loader.new(proto_with_invalid_child, options) }
+
+      it 'does not create any records of the parent or child class' do
+        skip
+        subject.load_records
+        expect(Effort.all.size).to eq(0)
+        expect(SplitTime.all.size).to eq(0)
+      end
+
+      it 'places the parent and the invalid child record and into invalid_records and other child records into ignored_records' do
+        skip
+        subject.load_records
+        expect(subject.invalid_records.size).to eq(2)
+      end
+
+      it 'adds an error to the parent record specifying problems with the child record' do
+        skip
       end
     end
   end

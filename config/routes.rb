@@ -138,7 +138,7 @@ Rails.application.routes.draw do
         collection { get :current }
       end
       post 'auth', to: 'authentication#create'
-      get 'staging/:staging_id/get_countries', to: 'staging#get_countries', as: :staging_get_countries
+      get 'staging/get_countries', to: 'staging#get_countries', as: :staging_get_countries
       get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
       post 'staging/:staging_id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
       patch 'staging/:staging_id/update_event_visibility', to: 'staging#update_event_visibility', as: :staging_update_event_visibility

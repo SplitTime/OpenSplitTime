@@ -36,10 +36,6 @@ RSpec.describe DataImport::Csv::TransformSplitsStrategy do
       it 'converts [:distance] from preferred units to meters' do
         expect(proto_records.map { |pr| pr[:distance_from_start] }).to eq([0, 8047, 16093])
       end
-
-      it 'dumps data' do
-        proto_records.each { |pr| expect(pr.attributes).to be_nil }
-      end
     end
 
     context 'when an event is not provided' do

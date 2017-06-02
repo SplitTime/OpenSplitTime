@@ -101,6 +101,18 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
         time_points = event.required_time_points
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
       end
+
+      it 'sets [:stopped_here] attribute on the final child record if [:time] == "DNF"' do
+        records = third_proto_record.children
+        expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
+        expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true, nil, nil, nil, nil])
+      end
+
+      it 'does not set [:stopped_here] attribute if [:time] != "DNF"' do
+        expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+        expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+        expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+      end
     end
 
     context 'when an event is not provided' do

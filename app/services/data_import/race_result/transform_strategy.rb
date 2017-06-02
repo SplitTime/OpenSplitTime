@@ -33,6 +33,7 @@ module DataImport::RaceResult
       transform_times!(proto_record)
       create_children!(proto_record)
       mark_for_destruction!(proto_record)
+      set_stop!(proto_record)
     end
 
     def extract_times!(proto_record)
@@ -77,6 +78,13 @@ module DataImport::RaceResult
     def mark_for_destruction!(proto_record)
       proto_record.children.each do |child_record|
         child_record.record_action = :destroy if child_record[:time_from_start].blank?
+      end
+    end
+
+    def set_stop!(proto_record)
+      if proto_record[:time] == 'DNF'
+        stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
+        (stopped_child_record[:stopped_here] = true) if stopped_child_record
       end
     end
 

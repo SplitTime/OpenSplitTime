@@ -7,7 +7,8 @@ module DataImport
       @options = options || {}
     end
 
-    delegate :load_records, :errors, to: :load_strategy
+    delegate :load_records, :saved_records, :invalid_records, :destroyed_records,
+             :ignored_records, :errors, to: :load_strategy
 
     def load_strategy
       @load_strategy ||= load_strategy_class.new(proto_records, options)

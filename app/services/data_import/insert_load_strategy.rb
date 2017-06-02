@@ -1,13 +1,14 @@
 module DataImport
   class InsertLoadStrategy
     include DataImport::Errors
-    attr_reader :saved_records, :invalid_records, :ignored_records, :errors
+    attr_reader :saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors
 
     def initialize(proto_records, options)
       @proto_records = proto_records
       @options = options
       @saved_records = []
       @invalid_records = []
+      @destroyed_records = []
       @ignored_records = []
       @errors = []
       validate_setup
@@ -27,6 +28,7 @@ module DataImport
             if child_records.all?(&:persisted?)
               saved_records << record
             else
+              record.validate # Adds child_record errors to record
               invalid_records << record
             end
           else

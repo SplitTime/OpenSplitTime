@@ -30,7 +30,6 @@ module DataImport
             if parent_record.persisted? && (child_record.new_record? || child_record.changed?)
               upsert(child_record, parent_record)
             else
-              child_record.errors.add(:base, "no matching parent was found for #{parent_record.model_name} having attributes #{parent_record.attributes}")
               ignored_records << child_record
             end
           end
@@ -49,7 +48,7 @@ module DataImport
     end
 
     def fetch_child(proto_record, parent_record)
-      child_scope = parent_record ? parent_record.send(child_model.model_name.plural) : child_model.send(:none)
+      child_scope = parent_record&.send(child_model.model_name.plural) || child_model.none
       fetch_record(proto_record, child_model, child_key, child_scope)
     end
 
@@ -75,7 +74,6 @@ module DataImport
 
     def eliminate(record)
       if record.new_record?
-        record.errors.add(:base, 'the transformer marked this record for elimination')
         ignored_records << record
       else
         begin

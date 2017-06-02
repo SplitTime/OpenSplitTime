@@ -5,19 +5,19 @@ module DataImport
     REPORT_ARRAYS = [:saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors]
     attr_reader *REPORT_ARRAYS
 
-    def initialize(file_path, source, options = {})
+    def initialize(file_path, format, options = {})
       @file_path = file_path
-      @source = source
+      @format = format
       @options = options
-      @valid_records = []
+      @saved_records = []
       @invalid_records = []
       @destroyed_records = []
-      @discarded_records = []
+      @ignored_records = []
       @errors = []
     end
 
     def import
-      case source
+      case format
       when :race_result_full
         import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, InsertLoadStrategy, options)
       when :race_result_times
@@ -27,13 +27,13 @@ module DataImport
       when :csv_splits
         import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, UpsertLoadStrategy, options)
       else
-        self.errors << source_not_recognized_error(source)
+        self.errors << format_not_recognized_error(format)
       end
     end
 
     private
 
-    attr_reader :file_path, :source, :options
+    attr_reader :file_path, :format, :options
     attr_writer *REPORT_ARRAYS
 
     def import_with(file_path, read_strategy, parse_strategy, transform_strategy, load_strategy, options)
@@ -54,7 +54,7 @@ module DataImport
         loader = DataImport::Loader.new(proto_record_group, load_strategy, options)
         loader.load_records
         REPORT_ARRAYS.each do |report_array|
-          loader.send(report_array).each { |element| send(report_array) << element }
+          loader.send(report_array).each { |report_element| send(report_array) << report_element }
         end
       end
     end

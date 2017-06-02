@@ -58,7 +58,7 @@ class LiveTimeRowImporter
     effort = effort_data.effort
     indexed_split_times = effort_data.indexed_existing_split_times
     row_success = true
-    participant_id = effort_data.participant_id || 0
+    participant_id = effort_data.participant_id || 0 # Id 0 is the dump for efforts with no participant_id
     saved_split_times[participant_id] ||= []
 
     effort_data.proposed_split_times.each do |proposed_split_time|

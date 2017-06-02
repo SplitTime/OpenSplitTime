@@ -48,7 +48,7 @@ module DataImport
       record = fetch_record(proto_record)
       record.created_by = current_user_id if record.new_record?
       record.updated_by = current_user_id
-      eliminate(record) and return nil if proto_record.record_action == :destroy
+      return nil if proto_record.record_action == :destroy
       record
     end
 

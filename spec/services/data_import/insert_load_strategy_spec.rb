@@ -92,11 +92,6 @@ RSpec.describe DataImport::InsertLoadStrategy do
         expect(subject.saved_records.size).to eq(3)
         expect(subject.saved_records.map(&:created_by)).to eq([options[:current_user_id]] * subject.saved_records.size)
       end
-
-      it 'for any child proto_record marked with record_action == :destroy, ignores the record' do
-        subject.load_records
-        expect(subject.ignored_records.size).to eq(11)
-      end
     end
 
     context 'when one or more records exists' do

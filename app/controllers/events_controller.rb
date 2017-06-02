@@ -110,12 +110,12 @@ class EventsController < ApplicationController
     authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     model = params[:model]
-    source = "csv_#{model}".to_sym
+    format = "csv_#{model}".to_sym
     if file_url
-      importer = DataImport::Importer.new(file_url, source, event: @event, current_user_id: current_user.id, strict: true)
+      importer = DataImport::Importer.new(file_url, format, event: @event, current_user_id: current_user.id, strict: true)
       importer.import
       respond_to do |format|
-        if importer.errors.present?
+        if importer.invalid_records.present?
           format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
           format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
                                status: :unprocessable_entity }
@@ -123,12 +123,12 @@ class EventsController < ApplicationController
           case model
           when :splits
             splits = @event.splits.to_set
-            importer.valid_records.each { |record| @event.splits << record unless splits.include?(record) }
+            importer.saved_records.each { |record| @event.splits << record unless splits.include?(record) }
           when :efforts
             EffortsAutoReconcileJob.perform_later(event: @event)
           end
-          format.html { flash[:success] = "Imported #{importer.valid_records.size} #{model}." and redirect_to :back }
-          format.json { render json: importer.valid_records, status: :created }
+          format.html { flash[:success] = "Imported #{importer.saved_records.size} #{model}." and redirect_to :back }
+          format.json { render json: importer.saved_records, status: :created }
         end
       end
     else

@@ -25,6 +25,18 @@ module DataImport::Transformable
     merging_attributes.each { |key, value| self[key] = value }
   end
 
+  def normalize_birthdate!
+    date = self[:birthdate].to_date
+    case
+    when date.year <= Date.today.year % 100
+      self[:birthdate] = date + 2000.years
+    when date.year <= Date.today.year % 100 + 100
+      self[:birthdate] = date + 1900.years
+    else
+      self[:birthdate] = date
+    end
+  end
+
   def normalize_country_code!
     country_data = self[:country_code].to_s.downcase.strip
     country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)

@@ -107,6 +107,39 @@ shared_examples_for 'transformable' do
     end
   end
 
+  describe '#normalize_birthdate!' do
+    context 'when provided with an American mm/dd/yy format' do
+      let(:attributes) { {birthdate: '09/29/67'} }
+
+      it 'corrects the year to between 1920 and 2019' do
+        subject.normalize_birthdate!
+        expect(subject[:birthdate]).to eq('1967-09-29'.to_date)
+      end
+    end
+
+    context 'when provided with a two-digit year above the mod 100 of the current year' do
+      let(:two_digit_year) { Date.today.year % 100 + 1 }
+      let(:four_digit_year) { Date.today.year - 99 }
+      let(:attributes) { {birthdate: "09/29/#{two_digit_year}"} }
+
+      it 'assumes a year in the past' do
+        subject.normalize_birthdate!
+        expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29".to_date)
+      end
+    end
+
+    context 'when provided with a two-digit year equal to or lower than the mod 100 of the current year' do
+      let(:two_digit_year) { Date.today.year % 100 }
+      let(:four_digit_year) { Date.today.year }
+      let(:attributes) { {birthdate: "09/29/#{two_digit_year}"} }
+
+      it 'assumes the current year' do
+        subject.normalize_birthdate!
+        expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29".to_date)
+      end
+    end
+  end
+
   describe '#normalize_country_code!' do
     context 'when provided with ISO 3166 2-character code' do
       let(:attributes) { {country_code: 'US'} }

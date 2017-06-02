@@ -8,9 +8,9 @@ RSpec.describe DataImport::Csv::TransformSplitsStrategy do
   let(:options) { {event: event} }
   let(:proto_records) { subject.transform }
   let(:parsed_structs) { [
-      OpenStruct.new(name: 'Start', distance_from_start: 0, kind: 0, sub_split_bitmap: 1),
-      OpenStruct.new(name: 'Aid 1', distance_from_start: 5000, kind: 2, sub_split_bitmap: 65 ),
-      OpenStruct.new(name: 'Finish', distance_from_start: 10000, kind: 1, sub_split_bitmap: 1)
+      OpenStruct.new(name: 'Start', distance: 0, kind: 0, sub_split_bitmap: 1),
+      OpenStruct.new(name: 'Aid 1', distance: 5, kind: 2, sub_split_bitmap: 65 ),
+      OpenStruct.new(name: 'Finish', distance: 10, kind: 1, sub_split_bitmap: 1)
   ] }
 
   describe '#transform' do
@@ -31,6 +31,14 @@ RSpec.describe DataImport::Csv::TransformSplitsStrategy do
 
       it 'assigns event.course.id to :course_id' do
         expect(proto_records.map { |pr| pr[:course_id] }).to eq([event.course.id] * parsed_structs.size)
+      end
+
+      it 'converts [:distance] from preferred units to meters' do
+        expect(proto_records.map { |pr| pr[:distance_from_start] }).to eq([0, 8047, 16093])
+      end
+
+      it 'dumps data' do
+        proto_records.each { |pr| expect(pr.attributes).to be_nil }
       end
     end
 

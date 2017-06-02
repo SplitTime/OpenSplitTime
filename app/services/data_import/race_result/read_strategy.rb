@@ -3,19 +3,22 @@ module DataImport::RaceResult
     include DataImport::Errors
     attr_reader :errors
 
-    def initialize(file_path)
-      @file_path = file_path
+    def initialize(data_object)
+      @data_object = data_object
       @errors = []
     end
 
     def read_file
-      if file_path.is_a?(Hash)
-        file_path
+      case
+      when data_object.is_a?(Hash)
+        data_object
+      when data_object.is_a?(StringIO)
+        JSON.parse(File.read(data_object))
       else # Assume a real file path
         if file
           JSON.parse(File.read(file))
         else
-          errors << file_not_found_error(file_path)
+          errors << file_not_found_error(data_object)
           nil
         end
       end
@@ -23,10 +26,10 @@ module DataImport::RaceResult
 
     private
 
-    attr_reader :file_path
+    attr_reader :data_object
 
     def file
-      @file ||= FileStore.get(file_path)
+      @file ||= FileStore.get(data_object)
     end
   end
 end

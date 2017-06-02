@@ -19,15 +19,17 @@ module DataImport
     def import
       case format
       when :race_result_full
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, Loaders::InsertStrategy, options)
+        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy,
+                    Loaders::InsertStrategy, options)
       when :race_result_times
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, Loaders::SplitTimeUpsertStrategy, options)
+        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy,
+                    Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, Loaders::UpsertStrategy,
-                    default_unique_key(:effort).merge(options))
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy,
+                    Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
       when :csv_splits
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, Loaders::UpsertStrategy,
-                    default_unique_key(:split).merge(options))
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy,
+                    Loaders::UpsertStrategy, default_unique_key(:split).merge(options))
       else
         self.errors << format_not_recognized_error(format)
       end

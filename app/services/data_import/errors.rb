@@ -5,6 +5,10 @@ module DataImport
       {title: 'File not found', detail: {messages: ["File #{file_path} could not be read"]}}
     end
 
+    def format_not_recognized_error(format)
+      {title: 'Format not recognized', detail: {messages: ["data_format #{format} is not recognized"]}}
+    end
+
     def invalid_proto_record_error(proto_record)
       {title: 'Invalid proto record', detail: {messages: ["#{proto_record} is invalid"]}}
     end

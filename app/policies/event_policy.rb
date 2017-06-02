@@ -18,6 +18,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
+  def import?
+    user.authorized_for_live?(event)
+  end
+
   def import_splits?
     user.authorized_for_live?(event)
   end

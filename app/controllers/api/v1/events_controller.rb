@@ -69,6 +69,19 @@ class Api::V1::EventsController < ApiController
     end
   end
 
+  def import
+    authorize @event
+    body = request.body
+    format = params[:data_format].to_sym
+    importer = DataImport::Importer.new(body, format, event: @event)
+    importer.import
+    if importer.errors.present? || importer.invalid_records.present?
+      render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }}, status: :unprocessable_entity
+    else
+      render json: {message: 'Import complete'}, status: :created
+    end
+  end
+
   # This legacy endpoint requires only an event_id, which is passed via the URL as params[:id]
   # It returns a json containing eventId, eventName, and detailed split info
   # for all splits associated with the event.
@@ -143,7 +156,7 @@ class Api::V1::EventsController < ApiController
 
   def set_event
     @event = params[:staging_id].uuid? ?
-        Event.find_by!(staging_id: params[:staging_id]) :
-        Event.friendly.find(params[:staging_id])
+                 Event.find_by!(staging_id: params[:staging_id]) :
+                 Event.friendly.find(params[:staging_id])
   end
 end

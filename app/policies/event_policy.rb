@@ -135,7 +135,7 @@ class EventPolicy < ApplicationPolicy
   # Policies for staging namespace
 
   def get_countries?
-    user.authorized_for_live?(event)
+    user.present?
   end
 
   def get_locations?

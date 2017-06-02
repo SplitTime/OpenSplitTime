@@ -1,10 +1,11 @@
 class Api::V1::StagingController < ApiController
   before_action :set_event, except: [:post_event_course_org, :get_countries]
   before_action :find_or_initialize_event, only: [:post_event_course_org]
-  before_action :authorize_event
+  before_action :authorize_event, except: [:get_countries]
 
   # GET /api/v1/staging/get_countries
   def get_countries
+    authorize Event
     render json: {countries: Geodata.standard_countries_subregions}
   end
 

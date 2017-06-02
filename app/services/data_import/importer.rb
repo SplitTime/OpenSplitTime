@@ -23,9 +23,11 @@ module DataImport
       when :race_result_times
         import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, Loaders::UpsertStrategy, options)
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, Loaders::UpsertStrategy,
+                    default_unique_key(:effort).merge(options))
       when :csv_splits
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, Loaders::UpsertStrategy, options)
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, Loaders::UpsertStrategy,
+                    default_unique_key(:split).merge(options))
       else
         self.errors << format_not_recognized_error(format)
       end
@@ -57,6 +59,14 @@ module DataImport
           loader.send(report_array).each { |report_element| send(report_array) << report_element }
         end
       end
+    end
+
+    def default_unique_key(model_name)
+      {unique_key: params_class(model_name).unique_key}
+    end
+
+    def params_class(model_name)
+      "#{model_name.to_s.classify}Parameters".constantize
     end
   end
 end

@@ -103,7 +103,7 @@ RSpec.describe DataImport::Loaders::SplitTimeUpsertStrategy do
       end
     end
 
-    context 'when one or more child records exist' do
+    context 'when one or more child records exist with times in conflict' do
       let(:first_child) { valid_proto_records.first.children.first }
       let(:second_child) { valid_proto_records.first.children.second }
       let!(:existing_effort) { create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number]) }
@@ -122,6 +122,39 @@ RSpec.describe DataImport::Loaders::SplitTimeUpsertStrategy do
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(7)
         expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
+      end
+    end
+
+    context 'when the update contains blanks in the place of one or more existing child records' do
+      let(:first_child) { valid_proto_records.first.children.first }
+      let(:second_child) { valid_proto_records.first.children.second }
+      let(:third_child) { valid_proto_records.second.children.third }
+      let(:fourth_child) { valid_proto_records.second.children.fourth }
+      let(:fifth_child) { valid_proto_records.second.children.fifth }
+      let!(:existing_effort) { create(:effort, event: event, bib_number: valid_proto_records.second[:bib_number]) }
+      let!(:split_time_1) { create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
+                                   bitkey: first_child[:sub_split_bitkey], time_from_start: 0) }
+      let!(:split_time_2) { create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
+                                   bitkey: second_child[:sub_split_bitkey], time_from_start: 1000) }
+      let!(:split_time_3) { create(:split_time, effort: existing_effort, lap: third_child[:lap], split_id: third_child[:split_id],
+                                   bitkey: third_child[:sub_split_bitkey], time_from_start: 2000) }
+      let!(:split_time_4) { create(:split_time, effort: existing_effort, lap: fourth_child[:lap], split_id: fourth_child[:split_id],
+                                   bitkey: fourth_child[:sub_split_bitkey], time_from_start: 3000) }
+      let!(:split_time_5) { create(:split_time, effort: existing_effort, lap: fifth_child[:lap], split_id: fifth_child[:split_id],
+                                   bitkey: fifth_child[:sub_split_bitkey], time_from_start: 4000) }
+
+      subject { DataImport::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
+
+      it 'finds existing records based on a unique key and deletes times where blanks exist' do
+        expect(Effort.all.size).to eq(1)
+        expect(SplitTime.all.size).to eq(5)
+        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])
+        subject.load_records
+        expect(Effort.all.size).to eq(1)
+        expect(SplitTime.all.size).to eq(3)
+        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 4916.63, 14398.48])
+        expect(subject.destroyed_records.size).to eq(2)
+        expect(subject.destroyed_records.map(&:split_id)).to eq([fourth_child[:split_id], fifth_child[:split_id]])
       end
     end
 

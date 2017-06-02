@@ -1,5 +1,5 @@
-module DataImport
-  class SplitTimeUpsertLoadStrategy
+module DataImport::Loaders
+  class SplitTimeUpsertStrategy
     include DataImport::Errors
     attr_reader :saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors
 

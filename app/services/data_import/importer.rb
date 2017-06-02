@@ -19,13 +19,13 @@ module DataImport
     def import
       case format
       when :race_result_full
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, InsertLoadStrategy, options)
+        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, Loaders::InsertStrategy, options)
       when :race_result_times
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, SplitTimeUpsertLoadStrategy, options)
+        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy, Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, UpsertLoadStrategy, options)
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy, Loaders::UpsertStrategy, options)
       when :csv_splits
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, UpsertLoadStrategy, options)
+        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy, Loaders::UpsertStrategy, options)
       else
         self.errors << format_not_recognized_error(format)
       end

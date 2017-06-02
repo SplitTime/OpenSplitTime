@@ -1,5 +1,5 @@
-module DataImport
-  class InsertLoadStrategy
+module DataImport::Loaders
+  class InsertStrategy
     include DataImport::Errors
     attr_reader :saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors
 

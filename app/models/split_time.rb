@@ -54,11 +54,11 @@ class SplitTime < ActiveRecord::Base
   end
 
   def to_s
-    "#{effort.slug} at #{split.slug}"
+    "#{effort || '[unknown effort]'} at #{split || '[unknown split]'}"
   end
 
   def course_is_consistent
-    if effort && effort.event && split && (effort.event.course_id != split.course_id)
+    if effort&.event && split && (effort.event.course_id != split.course_id)
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
       errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end
@@ -135,7 +135,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def split_name
-    split ? split.name(bitkey) : '[unknown split]'
+    split&.name(bitkey) || '[unknown split]'
   end
 
   def split_name_with_lap
@@ -151,11 +151,11 @@ class SplitTime < ActiveRecord::Base
   end
 
   def effort_name
-    @effort_name ||= effort ? effort.full_name : '[unknown effort]'
+    @effort_name ||= effort&.full_name || '[unknown effort]'
   end
 
   def event_name
-    @event_name ||= effort ? effort.event_name : '[unknown event]'
+    @event_name ||= effort&.event_name || '[unknown event]'
   end
 
   private

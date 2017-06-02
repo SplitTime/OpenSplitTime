@@ -304,34 +304,31 @@
         methods: {
             normalize: function() {
                 this.course.normalize();
-                /* Remove Unused Aid Stations */
-                // NOTE: Let's leave this dissabled for now.
-                /* var splits = [];
+                var newCourse = false || this.aidStations.length == 0;
+                /* Remove Aid Stations for other Courses */
                 for ( var i = this.aidStations.length - 1; i >= 0; i-- ) {
                     var splitId = this.aidStations[i].splitId;
                     if ( splitId === null ) break; // Unnecessary
                     for ( var j = this.course.splits.length - 1; j >= 0; j-- ) {
-                        if ( this.course.splits[j].id == splitId ) {
-                            id = null;
-                            break;
-                        }
+                        if ( this.course.splits[j].id == splitId ) break;
                     }
-                    debugger;
-                    if ( id !== null || splits[ this.aidStations[i].splitId ] != this.aidStations[i].id ) {
-                        console.log( this, this.aidStations[i] );
+                    if ( j < 0 ) {
+                        newCourse = true;
                         this.aidStations[i].delete();
                         this.aidStations.splice( i, 1 );
-                    } else {
-                        splits[ this.aidStations[i].splitId ] = this.aidStations[i].id;
                     }
-                } */
-                /* Attach Current Splits */
-                var start = this.course.endSplit( 'start' );
-                if ( start.__new__ ) start.post().then( function() { start.associate( true ); } )
-                else if ( !start.associated ) start.associate( true );
-                var finish = this.course.endSplit( 'finish' );
-                if ( finish.__new__ ) finish.post().then( function() { finish.associate( true ); } )
-                else if ( !finish.associated ) finish.associate( true );
+                }
+                /* Attach Splits on a New Course*/
+                if ( newCourse ) {
+                    for ( var i = this.course.splits.length - 1; i >= 0; i-- ) {
+                        var split = this.course.splits[i];
+                        if ( split.__new__ ) {
+                            split.post().then( function() { split.associate( true ); } );
+                        } else if ( !split.associated ) {
+                            split.associate( true );
+                        }
+                    }
+                }
             },
             validate: function( context ) {
                 var self = ( context ) ? context : this;
@@ -425,7 +422,7 @@
          * This method is used to populate the locale array
          */
         ajaxPopulateLocale: function() {
-            $.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
+            $.get( '/api/v1/staging/get_countries', function( response ) {
                 for ( var i in response.countries ) {
                     locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
                     locales.countryNames[ response.countries[i].code ] = response.countries[i].name;

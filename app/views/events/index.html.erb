@@ -14,7 +14,7 @@
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <% if @current_user %>
-          <%= link_to 'Create event', event_staging_new_path,
+          <%= link_to 'Create event', event_staging_app_path('new'),
                       class: 'btn btn-sm btn-success' %>
       <% end %>
     </div>

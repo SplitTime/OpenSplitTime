@@ -422,7 +422,7 @@
          * This method is used to populate the locale array
          */
         ajaxPopulateLocale: function() {
-            $.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
+            $.get( '/api/v1/staging/get_countries', function( response ) {
                 for ( var i in response.countries ) {
                     locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
                     locales.countryNames[ response.countries[i].code ] = response.countries[i].name;

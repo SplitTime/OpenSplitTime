@@ -1,7 +1,8 @@
 module ButtonTextHelper
   BEACON_TEXT = {'findmespot.com' => 'SPOT Page',
                  'fastertracks.com' => 'FasterTracks',
-                 'trackleaders.com' => 'SPOT via TrackLeaders'}
+                 'trackleaders.com' => 'SPOT via TrackLeaders',
+                 'maprogress.com' => 'MAProgress Tracking'}
 
   REPORT_TEXT = {'strava.com' => 'Strava Page',
                  'fastertracks.com' => 'FasterTracks',

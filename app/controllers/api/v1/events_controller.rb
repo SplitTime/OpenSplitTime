@@ -71,7 +71,7 @@ class Api::V1::EventsController < ApiController
 
   def import
     authorize @event
-    body = request.body
+    body = params.slice(:list, :data)
     format = params[:data_format].to_sym
     importer = DataImport::Importer.new(body, format, event: @event)
     importer.import

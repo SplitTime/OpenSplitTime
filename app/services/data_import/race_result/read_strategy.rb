@@ -12,8 +12,6 @@ module DataImport::RaceResult
       case
       when data_object.is_a?(Hash)
         data_object
-      when data_object.is_a?(StringIO)
-        JSON.parse(File.read(data_object))
       else # Assume a real file path
         if file
           JSON.parse(File.read(file))

@@ -156,6 +156,7 @@ describe Api::V1::EventsController do
 
   describe '#import' do
     before do
+      FactoryGirl.reload
       event.splits << splits
     end
 
@@ -194,9 +195,19 @@ describe Api::V1::EventsController do
       expect(response.status).to eq(201)
     end
 
-    it 'creates an event record with a staging_id' do
+    it 'creates efforts' do
+      expect(Effort.all.size).to eq(0)
+      post :import, request_params.merge(body)
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['message']).to match(/Import complete/)
+      expect(Effort.all.size).to eq(5)
+    end
+
+    it 'creates split_time records' do
       expect(SplitTime.all.size).to eq(0)
       post :import, request_params.merge(body)
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['message']).to match(/Import complete/)
       expect(SplitTime.all.size).to eq(23)
     end
   end

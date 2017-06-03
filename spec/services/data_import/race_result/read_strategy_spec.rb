@@ -20,7 +20,7 @@ RSpec.describe DataImport::RaceResult::ReadStrategy do
 
       it 'reads the file and returns a parsed version in Hash format' do
         raw_data = subject.read_file
-        expect(raw_data['list']['LastChange']).to eq('2016-06-04 21:58:25')
+        expect(raw_data['list']['last_change']).to eq('2016-06-04 21:58:25')
       end
     end
 

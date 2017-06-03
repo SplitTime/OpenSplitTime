@@ -1,64 +1,64 @@
 {
   "list": {
-    "LastChange": "2016-06-04 21:58:25",
-    "Orders": [],
-    "Filters": [],
-    "Fields": [
+    "last_change": "2016-06-04 21:58:25",
+    "orders": [],
+    "filters": [],
+    "fields": [
       {
-        "Expression": "iif([RANK1]>0;[RANK1];\"*\")",
-        "Label": "Place"
+        "expression": "iif([RANK1]>0;[RANK1];\"*\")",
+        "label": "Place"
       },
       {
-        "Expression": "BIB",
-        "Label": "Bib"
+        "expression": "BIB",
+        "label": "Bib"
       },
       {
-        "Expression": "CorrectSpelling([DisplayName])",
-        "Label": "Name"
+        "expression": "CorrectSpelling([DisplayName])",
+        "label": "Name"
       },
       {
-        "Expression": "SexMF",
-        "Label": "Sex"
+        "expression": "SexMF",
+        "label": "Sex"
       },
       {
-        "Expression": "iif([AGE]>0;[AGE];\"n/a\")",
-        "Label": "Age"
+        "expression": "iif([AGE]>0;[AGE];\"n/a\")",
+        "label": "Age"
       },
       {
-        "Expression": "Section1Split",
-        "Label": "Aid1"
+        "expression": "Section1Split",
+        "label": "Aid1"
       },
       {
-        "Expression": "Section2Split",
-        "Label": "Aid2"
+        "expression": "Section2Split",
+        "label": "Aid2"
       },
       {
-        "Expression": "Section3Split",
-        "Label": "Aid3"
+        "expression": "Section3Split",
+        "label": "Aid3"
       },
       {
-        "Expression": "Section4Split",
-        "Label": "Aid4"
+        "expression": "Section4Split",
+        "label": "Aid4"
       },
       {
-        "Expression": "Section5Split",
-        "Label": "Aid5"
+        "expression": "Section5Split",
+        "label": "Aid5"
       },
       {
-        "Expression": "Section6Split",
-        "Label": "ToFinish"
+        "expression": "Section6Split",
+        "label": "ToFinish"
       },
       {
-        "Expression": "ElapsedTime",
-        "Label": "Elapsed"
+        "expression": "ElapsedTime",
+        "label": "Elapsed"
       },
       {
-        "Expression": "TimeOrStatus([ChipTime])",
-        "Label": "Time"
+        "expression": "TimeOrStatus([ChipTime])",
+        "label": "Time"
       },
       {
-        "Expression": "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")",
-        "Label": "Pace"
+        "expression": "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")",
+        "label": "Pace"
       }
     ]
   },

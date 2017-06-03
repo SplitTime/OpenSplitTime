@@ -155,27 +155,32 @@ describe Api::V1::EventsController do
   end
 
   describe '#import' do
-    let(:course) { create(:course, id: 10) }
-    let(:event) { create(:event, course: course) }
-    let(:params) { {as: :json, staging_id: event.id, data_format: 'race_result_times'} }
-    let(:body) { {'list' => {'LastChange' => '2016-06-04 21:58:25',
-                             'Orders' => [],
-                             'Filters' => [],
-                             'Fields' => [
-                                 {'Expression' => "iif([RANK1]>0;[RANK1];\"*\")", 'Label' => 'Place'},
-                                 {'Expression' => 'BIB', 'Label' => 'Bib'},
-                                 {'Expression' => 'CorrectSpelling([DisplayName])', 'Label' => 'Name'},
-                                 {'Expression' => 'SexMF', 'Label' => 'Sex'},
-                                 {'Expression' => "iif([AGE]>0;[AGE];\"n/a\")", 'Label' => 'Age'},
-                                 {'Expression' => 'Section1Split', 'Label' => 'Aid1'},
-                                 {'Expression' => 'Section2Split', 'Label' => 'Aid2'},
-                                 {'Expression' => 'Section3Split', 'Label' => 'Aid3'},
-                                 {'Expression' => 'Section4Split', 'Label' => 'Aid4'},
-                                 {'Expression' => 'Section5Split', 'Label' => 'Aid5'},
-                                 {'Expression' => 'Section6Split', 'Label' => 'ToFinish'},
-                                 {'Expression' => 'ElapsedTime', 'Label' => 'Elapsed'},
-                                 {'Expression' => 'TimeOrStatus([ChipTime])', 'Label' => 'Time'},
-                                 {'Expression' => "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")", 'Label' => 'Pace'}
+    before do
+      event.splits << splits
+    end
+
+    let(:course) { create(:course) }
+    let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
+    let(:event) { create(:event, course_id: course.id, laps_required: 1) }
+    let(:request_params) { {as: :json, staging_id: event.id, data_format: 'race_result_full'} }
+    let(:body) { {'list' => {'last_change' => '2016-06-04 21:58:25',
+                             'orders' => [],
+                             'filters' => [],
+                             'fields' => [
+                                 {'expression' => "iif([RANK1]>0;[RANK1];\"*\")", 'label' => 'Place'},
+                                 {'expression' => 'BIB', 'label' => 'Bib'},
+                                 {'expression' => 'CorrectSpelling([DisplayName])', 'label' => 'Name'},
+                                 {'expression' => 'SexMF', 'label' => 'Sex'},
+                                 {'expression' => "iif([AGE]>0;[AGE];\"n/a\")", 'label' => 'Age'},
+                                 {'expression' => 'Section1Split', 'label' => 'Aid1'},
+                                 {'expression' => 'Section2Split', 'label' => 'Aid2'},
+                                 {'expression' => 'Section3Split', 'label' => 'Aid3'},
+                                 {'expression' => 'Section4Split', 'label' => 'Aid4'},
+                                 {'expression' => 'Section5Split', 'label' => 'Aid5'},
+                                 {'expression' => 'Section6Split', 'label' => 'ToFinish'},
+                                 {'expression' => 'ElapsedTime', 'label' => 'Elapsed'},
+                                 {'expression' => 'TimeOrStatus([ChipTime])', 'label' => 'Time'},
+                                 {'expression' => "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")", 'label' => 'Pace'}
                              ]},
                   'data' => {'#1_50k' => [['5', '3', '5', 'Jatest Schtest', 'M', '39', '0:43:01.36', '1:02:07.50', '0:52:34.70', '1:08:27.81', '0:51:23.93', '0:18:01.15', '4:55:36.43', '4:55:36.43', '09:30'],
                                           ['656', '28', '656', 'Tatest Notest', 'F', '26', '0:50:20.33', '1:14:15.40', '1:08:08.92', '1:18:06.69', '', '', '5:58:12.86', '5:58:12.86', '11:31'],
@@ -185,18 +190,14 @@ describe Api::V1::EventsController do
     } }
 
     it 'returns a successful json response' do
-      post :import, params.merge(body)
-      json_request = request.body
-      expect(json_request).to be_nil
-      expect(parsed_response['data']['id']).not_to be_nil
+      post :import, request_params.merge(body)
       expect(response.status).to eq(201)
     end
 
     it 'creates an event record with a staging_id' do
-      expect(Event.all.count).to eq(0)
-      post :import, data: {type: 'events', attributes: params }
-      expect(Event.all.count).to eq(1)
-      expect(Event.first.staging_id).not_to be_nil
+      expect(SplitTime.all.size).to eq(0)
+      post :import, request_params.merge(body)
+      expect(SplitTime.all.size).to eq(23)
     end
   end
 end

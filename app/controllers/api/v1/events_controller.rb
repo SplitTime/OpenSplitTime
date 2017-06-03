@@ -73,7 +73,7 @@ class Api::V1::EventsController < ApiController
     authorize @event
     body = params.slice(:list, :data)
     format = params[:data_format].to_sym
-    importer = DataImport::Importer.new(body, format, event: @event)
+    importer = DataImport::Importer.new(body, format, event: @event, current_user_id: current_user.id)
     importer.import
     if importer.errors.present? || importer.invalid_records.present?
       render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }}, status: :unprocessable_entity
@@ -81,7 +81,7 @@ class Api::V1::EventsController < ApiController
       render json: {message: 'Import complete'}, status: :created
     end
     if importer.saved_records.present?
-      split_times = saved_records.select { |record| record.is_a?(SplitTime) }
+      split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
       notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
       notifier.notify
     end

@@ -36,7 +36,7 @@ module DataImport
     def missing_fields_error(raw_data)
       {title: 'Invalid fields',
        detail: {messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +
-                               "or the ['list']['Fields'] key or its values"]}}
+                               "or the ['list']['fields'] key or its values"]}}
     end
 
     def source_not_recognized_error(source)

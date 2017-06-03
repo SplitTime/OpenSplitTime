@@ -507,7 +507,8 @@
             this.errorAlert.init();
 
             // Load UUID
-            this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
+            var eventId = $( '#event-app' ).data( 'uuid' );
+            this.data.eventModel.stagingId = eventId === 'new' ? null : eventId;
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
 

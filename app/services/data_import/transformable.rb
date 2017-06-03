@@ -1,6 +1,7 @@
 module DataImport::Transformable
 
   def align_split_distance!(split_distances)
+    return unless self[:distance_from_start].present?
     match_threshold = 10
     matching_distance = split_distances.find do |distance|
       (distance - self[:distance_from_start]).abs < match_threshold
@@ -26,6 +27,7 @@ module DataImport::Transformable
   end
 
   def normalize_birthdate!
+    return unless self[:birthdate].present?
     date = self[:birthdate].to_date
     case
     when date.year <= Date.today.year % 100
@@ -38,19 +40,20 @@ module DataImport::Transformable
   end
 
   def normalize_country_code!
+    return unless self[:country_code].present?
     country_data = self[:country_code].to_s.downcase.strip
     country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
     self[:country_code] = country ? country.code : find_country_code_by_nickname(country_data)
   end
 
   def normalize_gender!
+    return unless self[:gender].present?
     gender = self[:gender]
-    if gender.present?
-      self[:gender] = gender.downcase.start_with?('m') ? 'male' : 'female'
-    end
+    self[:gender] = gender.downcase.start_with?('m') ? 'male' : 'female'
   end
 
   def normalize_state_code!
+    return unless self[:state_code].present?
     state_data = self[:state_code].to_s.strip
     country = Carmen::Country.coded(self[:country_code])
     self[:state_code] =
@@ -66,6 +69,7 @@ module DataImport::Transformable
   end
 
   def split_field!(old_field, first_field, second_field, split_char = ' ')
+    return unless self[old_field].present?
     old_value = delete_field(old_field)
     values = old_value.to_s.split(split_char)
     first_value = values.size < 2 ? values.first : values[0..-2].join(split_char)

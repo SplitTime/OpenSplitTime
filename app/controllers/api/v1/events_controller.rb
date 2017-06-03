@@ -80,6 +80,11 @@ class Api::V1::EventsController < ApiController
     else
       render json: {message: 'Import complete'}, status: :created
     end
+    if importer.saved_records.present?
+      split_times = saved_records.select { |record| record.is_a?(SplitTime) }
+      notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
+      notifier.notify
+    end
   end
 
   # This legacy endpoint requires only an event_id, which is passed via the URL as params[:id]

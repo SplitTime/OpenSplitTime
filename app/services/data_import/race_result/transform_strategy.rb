@@ -82,7 +82,8 @@ module DataImport::RaceResult
     end
 
     def set_stop!(proto_record)
-      if proto_record[:time] == 'DNF'
+      stop_indicators = %w(DNF DSQ)
+      if stop_indicators.include?(proto_record[:time])
         stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
         (stopped_child_record[:stopped_here] = true) if stopped_child_record
       end

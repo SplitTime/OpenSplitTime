@@ -19,6 +19,10 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
                      section1_split: '1:21:56.63', section2_split: '2:38:01.85', section3_split: '',
                      section4_split: '', section5_split: '', section6_split: '',
                      elapsed: '3:59:58.48', time: 'DNF', pace: '*'),
+      OpenStruct.new(rr_id: '662', place: '*', bib: '662', name: 'Bestest Sartest', sex: 'M', age: '31',
+                     section1_split: '1:21:56.63', section2_split: '2:38:01.85', section3_split: '',
+                     section4_split: '', section5_split: '', section6_split: '',
+                     elapsed: '3:59:58.48', time: 'DSQ', pace: '*'),
       OpenStruct.new(rr_id: '633', place: '*', bib: '633', name: 'Mictest Hintest', sex: 'F', age: '35',
                      section1_split: '', section2_split: '', section3_split: '',
                      section4_split: '', section5_split: '', section6_split: '',
@@ -39,10 +43,11 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
       let(:first_proto_record) { proto_records.first }
       let(:second_proto_record) { proto_records.second }
       let(:third_proto_record) { proto_records.third }
+      let(:fourth_proto_record) { proto_records.fourth }
       let(:last_proto_record) { proto_records.last }
 
       it 'returns the same number of ProtoRecords as it is given OpenStructs' do
-        expect(proto_records.size).to eq(5)
+        expect(proto_records.size).to eq(6)
         expect(proto_records.all? { |row| row.is_a?(ProtoRecord) }).to eq(true)
       end
 
@@ -52,12 +57,12 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
       end
 
       it 'returns genders transformed to "male" or "female"' do
-        expect(proto_records.map { |pr| pr[:gender] }).to eq(['male', 'female', 'female', 'female', ''])
+        expect(proto_records.map { |pr| pr[:gender] }).to eq(['male', 'female', 'female', 'male', 'female', ''])
       end
 
       it 'splits full names into first names and last names' do
-        expect(proto_records.map { |pr| pr[:first_name] }).to eq(%w(Jatest Sutest Castest Mictest N.n.))
-        expect(proto_records.map { |pr| pr[:last_name] }).to eq(%w(Schtest Ritest Pertest Hintest 62))
+        expect(proto_records.map { |pr| pr[:first_name] }).to eq(%w(Jatest Sutest Castest Bestest Mictest N.n.))
+        expect(proto_records.map { |pr| pr[:last_name] }).to eq(%w(Schtest Ritest Pertest Sartest Hintest 62))
       end
 
       it 'assigns event.id and event.concealed to :event_id and :concealed keys' do
@@ -102,8 +107,11 @@ RSpec.describe DataImport::RaceResult::TransformStrategy do
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
       end
 
-      it 'sets [:stopped_here] attribute on the final child record if [:time] == "DNF"' do
+      it 'sets [:stopped_here] attribute on the final child record if [:time] == "DNF" or "DSQ"' do
         records = third_proto_record.children
+        expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
+        expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true, nil, nil, nil, nil])
+        records = fourth_proto_record.children
         expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
         expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true, nil, nil, nil, nil])
       end

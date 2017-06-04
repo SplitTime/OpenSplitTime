@@ -283,13 +283,14 @@
         }
     } );
     api.define( 'events', {
-        slug: 'stagingId',
+        slug: 'slug',
         attributes: {
             name: { type: String, default: '' },
             concealed: { type: Boolean, default: true },
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
-            stagingId: String,
+            slug: String,
+            stagingId: String, // TODO: REMOVE
             startTime: { type: Date, default: null },
             courseNew: Boolean
         },
@@ -358,7 +359,7 @@
             post: function() {
                 var self = this;
                 var creating = this.__new__;
-                return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST', 'application/json' )
+                return this.request( 'staging/' + this.slug + '/post_event_course_org', 'POST', 'application/json' )
                 .then( function() {
                     if ( creating ) {
                         return self.visibility( false ).then( function() {
@@ -371,7 +372,7 @@
             },
             visibility: function( visible ) {
                 var self = this;
-                return $.ajax( '/api/v1/staging/' + this.stagingId + '/update_event_visibility', {
+                return $.ajax( '/api/v1/staging/' + this.slug + '/update_event_visibility', {
                     type: "PATCH",
                     data: { status: visible ? 'public' : 'private' },
                     dataType: "json"
@@ -470,6 +471,15 @@
                 }
             } else if ( from.name === 'home' ) {
                 // next();
+                var doRedirect = eventStage.data.eventModel.__new__;
+                if ( doRedirect ) { // TODO: REMOVE
+                    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                        return v.toString(16);
+                    });
+                    eventStage.data.eventModel.slug = uuid;
+                    eventStage.data.eventModel.stagingId = uuid;
+                }
                 eventStage.data.eventModel.post().done( function() {
                     next();
                 } ).fail( function( e ) {                    
@@ -507,8 +517,8 @@
             this.errorAlert.init();
 
             // Load UUID
-            var eventId = $( '#event-app' ).data( 'uuid' );
-            this.data.eventModel.stagingId = eventId === 'new' ? null : eventId;
+            var eventSlug = $( '#event-app' ).data( 'uuid' );
+            this.data.eventModel.slug = eventSlug === 'new' ? null : eventSlug;
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
 

@@ -37,7 +37,7 @@ class LiveTimeRowImporter
         unsaved_rows << effort_data.response_row
       end
     end
-    notify_followers
+    notify_followers if event.available_live
   end
 
   def returned_rows

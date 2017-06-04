@@ -55,12 +55,16 @@ module EventsHelper
       link_to 'Disable live',
               live_disable_event_path(view_object.event),
               data: {confirm: "NOTE: This will suspend all live entry actions for #{view_object.name}, " +
-                  'including any that may be in process. Are you sure you want to proceed?'},
+                  'including any that may be in process, and will disable live follower notifications ' +
+                  'by email and SMS text when new times are added. Are you sure you want to proceed?'},
               method: :put,
               class: 'btn btn-sm btn-warning'
     else
       link_to 'Enable live',
               live_enable_event_path(view_object.event),
+              data: {confirm: "NOTE: This will enable live entry actions for #{view_object.name}, " +
+                  'and will also trigger live follower notifications by email and SMS text when new times are added. ' +
+                  'Are you sure you want to proceed?'},
               method: :put,
               class: 'btn btn-sm btn-warning'
     end

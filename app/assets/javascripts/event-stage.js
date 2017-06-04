@@ -482,7 +482,16 @@
                 }
                 eventStage.data.eventModel.post().done( function() {
                     next();
-                } ).fail( function( e ) {                    
+                    var slug = eventStage.data.eventModel.slug;
+                    var url = window.location.pathname.replace(/\/new\//, '/' + slug + '/') + window.location.hash;
+                    try {
+                        // Replace url without causing refresh
+                        window.history.replaceState( window.history.state, '', url );
+                    } catch ( e ) {
+                        // replaceState didn't work: Manually reload the page
+                        window.location.href = window.location.origin + url;
+                    }
+                } ).fail( function( e ) {
                     next( '/' );
                 } );
             } else {

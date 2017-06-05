@@ -1,5 +1,5 @@
-module DataImport::RaceResult
-  class TransformStrategy
+module DataImport::Transformers
+  class RaceResultSplitTimesStrategy
     include DataImport::Errors
     attr_reader :errors
 

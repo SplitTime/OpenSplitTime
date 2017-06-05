@@ -1,5 +1,5 @@
-module DataImport::RaceResult
-  class UriBuilder
+module DataImport::Helpers
+  class RaceResultUriBuilder
 
     def initialize(rr_event_id, rr_contest_id)
       @rr_event_id = rr_event_id

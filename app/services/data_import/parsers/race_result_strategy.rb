@@ -1,5 +1,5 @@
-module DataImport::RaceResult
-  class ParseStrategy
+module DataImport::Parsers
+  class RaceResultStrategy
     include DataImport::Errors
     attr_reader :errors
 

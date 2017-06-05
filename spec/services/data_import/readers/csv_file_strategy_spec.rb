@@ -2,8 +2,8 @@ require 'rails_helper'
 
 include ActionDispatch::TestProcess
 
-RSpec.describe DataImport::Csv::ReadStrategy do
-  subject { DataImport::Csv::ReadStrategy.new(file_path) }
+RSpec.describe DataImport::Readers::CsvFileStrategy do
+  subject { DataImport::Readers::CsvFileStrategy.new(file_path) }
 
   describe '#read_file' do
     context 'when the file_path references an existing file' do

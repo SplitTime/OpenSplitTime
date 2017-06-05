@@ -1,5 +1,5 @@
-module DataImport::Csv
-  class TransformEffortsStrategy
+module DataImport::Transformers
+  class GenericEffortsStrategy
     include DataImport::Errors
     attr_reader :errors
 

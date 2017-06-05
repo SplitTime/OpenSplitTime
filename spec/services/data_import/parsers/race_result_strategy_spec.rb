@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DataImport::RaceResult::ParseStrategy do
+RSpec.describe DataImport::Parsers::RaceResultStrategy do
   let(:raw_data) { {'list' => {'last_change' => '2016-06-04 21:58:25',
                                'orders' => [],
                                'filters' => [],
@@ -27,7 +27,7 @@ RSpec.describe DataImport::RaceResult::ParseStrategy do
                                             ['633', '*', '633', 'Mictest Hintest', 'F', '35', '', '', '', '', '', '', '', 'DNS', '*']]}
   } }
   let(:options) { {} }
-  subject { DataImport::RaceResult::ParseStrategy.new(raw_data, options) }
+  subject { DataImport::Parsers::RaceResultStrategy.new(raw_data, options) }
 
   describe '#parse' do
     it 'returns an array of attribute rows with effort data in OpenStruct format' do

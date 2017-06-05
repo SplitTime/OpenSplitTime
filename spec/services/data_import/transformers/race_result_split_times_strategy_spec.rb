@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe DataImport::RaceResult::TransformStrategy do
-  subject { DataImport::RaceResult::TransformStrategy.new(parsed_structs, options) }
+RSpec.describe DataImport::Transformers::RaceResultSplitTimesStrategy do
+  subject { DataImport::Transformers::RaceResultSplitTimesStrategy.new(parsed_structs, options) }
 
   let(:event) { build_stubbed(:event_with_standard_splits, id: 1, concealed: true, in_sub_splits_only: true, splits_count: 7) }
   let(:options) { {event: event} }

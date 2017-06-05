@@ -1,5 +1,5 @@
-module DataImport::Csv
-  class ParseStrategy
+module DataImport::Parsers
+  class PassThroughStrategy
     include DataImport::Errors
     attr_reader :errors
 

@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe DataImport::Csv::ParseStrategy do
+RSpec.describe DataImport::Parsers::PassThroughStrategy do
   let(:raw_data) { [{first_name: "Bjorn", last_name: "Borg", gender: "male"},
                     {first_name: "Charlie", last_name: "Brown", gender: "male"},
                     {first_name: "Lucy", last_name: "Pendergrast", gender: "female"}] }
   let(:options) { {model: :effort} }
-  subject { DataImport::Csv::ParseStrategy.new(raw_data, options) }
+  subject { DataImport::Parsers::PassThroughStrategy.new(raw_data, options) }
 
   describe '#parse' do
     it 'returns an array of attribute rows in OpenStruct format' do

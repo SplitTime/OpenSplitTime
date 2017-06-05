@@ -1,5 +1,5 @@
-module DataImport::Csv
-  class ReadStrategy
+module DataImport::Readers
+  class CsvFileStrategy
     include DataImport::Errors
 
     BYTE_ORDER_MARK = "\xEF\xBB\xBF".force_encoding('UTF-8')

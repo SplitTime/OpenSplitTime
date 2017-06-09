@@ -1,5 +1,5 @@
-module DataImport::Csv
-  class TransformSplitsStrategy
+module DataImport::Transformers
+  class GenericSplitsStrategy
     include DataImport::Errors
     attr_reader :errors
 

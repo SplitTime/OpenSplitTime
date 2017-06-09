@@ -1,6 +1,10 @@
 module DataImport
   module Errors
 
+    def data_not_present_error
+      {title: 'Data not present', detail: {messages: ['No data was provided']}}
+    end
+
     def file_not_found_error(file_path)
       {title: 'File not found', detail: {messages: ["File #{file_path} could not be read"]}}
     end

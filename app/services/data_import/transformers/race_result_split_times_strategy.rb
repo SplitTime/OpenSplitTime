@@ -1,5 +1,5 @@
-module DataImport::RaceResult
-  class TransformStrategy
+module DataImport::Transformers
+  class RaceResultSplitTimesStrategy
     include DataImport::Errors
     attr_reader :errors
 
@@ -7,6 +7,7 @@ module DataImport::RaceResult
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options
       @errors = []
+      add_section_times! if time_keys.size.zero?
       validate_setup
     end
 
@@ -27,6 +28,13 @@ module DataImport::RaceResult
     private
 
     attr_reader :proto_records, :options
+
+    def add_section_times!
+      proto_records.each do |proto_record|
+        proto_record[:section1_split] = ((proto_record[:time] == 'DNS') ? '' : proto_record[:time])
+      end
+      @time_keys = ['section1_split']
+    end
 
     def transform_time_data!(proto_record)
       extract_times!(proto_record)

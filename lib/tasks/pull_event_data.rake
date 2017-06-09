@@ -17,7 +17,7 @@ namespace :pull_event do
     abort("Aborted: Event id #{args[:event_id]} not found") unless event
     puts "Located event: #{event.name}"
 
-    uri = DataImport::RaceResult::UriBuilder.new(args[:rr_event_id], args[:rr_contest_id]).full_uri
+    uri = DataImport::Helpers::RaceResultUriBuilder.new(args[:rr_event_id], args[:rr_contest_id]).full_uri
     importer = DataImport::Importer.new(uri, args[:format], event: event, strict: false, current_user_id: 1)
     abort("Importer could not be created") unless importer
     importer.import

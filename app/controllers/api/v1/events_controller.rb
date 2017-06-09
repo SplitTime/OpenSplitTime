@@ -72,6 +72,7 @@ class Api::V1::EventsController < ApiController
   def import_json
     authorize @event
     format = params[:data_format]&.to_sym
+    puts "#{params[:import_data].class} size: #{params[:import_data].size}"
     importer = DataImport::Importer.new(params[:import_data], format, event: @event, current_user_id: current_user.id)
     importer.import
     if importer.errors.present? || importer.invalid_records.present?

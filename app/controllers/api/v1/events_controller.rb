@@ -69,11 +69,10 @@ class Api::V1::EventsController < ApiController
     end
   end
 
-  def import
+  def import_json
     authorize @event
-    body = params.slice(:list, :data)
-    format = params[:data_format].to_sym
-    importer = DataImport::Importer.new(body, format, event: @event, current_user_id: current_user.id)
+    format = params[:data_format]&.to_sym
+    importer = DataImport::Importer.new(params[:import_data], format, event: @event, current_user_id: current_user.id)
     importer.import
     if importer.errors.present? || importer.invalid_records.present?
       render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},

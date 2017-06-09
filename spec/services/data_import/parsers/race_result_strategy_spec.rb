@@ -1,24 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe DataImport::Parsers::RaceResultStrategy do
-  let(:raw_data) { {'list' => {'last_change' => '2016-06-04 21:58:25',
-                               'orders' => [],
-                               'filters' => [],
-                               'fields' => [
-                                   {'expression' => "iif([RANK1]>0;[RANK1];\"*\")", 'label' => 'Place'},
-                                   {'expression' => 'BIB', 'label' => 'Bib'},
-                                   {'expression' => 'CorrectSpelling([DisplayName])', 'label' => 'Name'},
-                                   {'expression' => 'SexMF', 'label' => 'Sex'},
-                                   {'expression' => "iif([AGE]>0;[AGE];\"n/a\")", 'label' => 'Age'},
-                                   {'expression' => 'Section1Split', 'label' => 'Aid1'},
-                                   {'expression' => 'Section2Split', 'label' => 'Aid2'},
-                                   {'expression' => 'Section3Split', 'label' => 'Aid3'},
-                                   {'expression' => 'Section4Split', 'label' => 'Aid4'},
-                                   {'expression' => 'Section5Split', 'label' => 'Aid5'},
-                                   {'expression' => 'Section6Split', 'label' => 'ToFinish'},
-                                   {'expression' => 'ElapsedTime', 'label' => 'Elapsed'},
-                                   {'expression' => 'TimeOrStatus([ChipTime])', 'label' => 'Time'},
-                                   {'expression' => "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")", 'label' => 'Pace'}
+  let(:raw_data) { {'list' => {'lastChange' => '2016-06-04 21:58:25',
+                               'Orders' => [],
+                               'Filters' => [],
+                               'Fields' => [
+                                   {'Expression' => "iif([RANK1]>0;[RANK1];\"*\")", 'Label' => 'Place'},
+                                   {'Expression' => 'BIB', 'Label' => 'Bib'},
+                                   {'Expression' => 'CorrectSpelling([DisplayName])', 'Label' => 'Name'},
+                                   {'Expression' => 'SexMF', 'Label' => 'Sex'},
+                                   {'Expression' => "iif([AGE]>0;[AGE];\"n/a\")", 'Label' => 'Age'},
+                                   {'Expression' => 'Section1Split', 'Label' => 'Aid1'},
+                                   {'Expression' => 'Section2Split', 'Label' => 'Aid2'},
+                                   {'Expression' => 'Section3Split', 'Label' => 'Aid3'},
+                                   {'Expression' => 'Section4Split', 'Label' => 'Aid4'},
+                                   {'Expression' => 'Section5Split', 'Label' => 'Aid5'},
+                                   {'Expression' => 'Section6Split', 'Label' => 'ToFinish'},
+                                   {'Expression' => 'ElapsedTime', 'Label' => 'Elapsed'},
+                                   {'Expression' => 'TimeOrStatus([ChipTime])', 'Label' => 'Time'},
+                                   {'Expression' => "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")", 'Label' => 'Pace'}
                                ]},
                     'data' => {'#1_50k' => [['5', '3', '5', 'Jatest Schtest', 'M', '39', '0:43:01.36', '1:02:07.50', '0:52:34.70', '1:08:27.81', '0:51:23.93', '0:18:01.15', '4:55:36.43', '4:55:36.43', '09:30'],
                                             ['656', '28', '656', 'Tatest Notest', 'F', '26', '0:50:20.33', '1:14:15.40', '1:08:08.92', '1:18:06.69', '', '', '5:58:12.86', '5:58:12.86', '11:31'],
@@ -51,7 +51,7 @@ RSpec.describe DataImport::Parsers::RaceResultStrategy do
 
     it 'exists if the provided hash does not include a ["list"]["fields"] key' do
       test_data = raw_data
-      test_data['list']['fields'] = nil
+      test_data['list']['Fields'] = nil
       subject.parse
       expect(subject.errors).to be_present
       expect(subject.errors.first[:title]).to match(/Invalid fields/)

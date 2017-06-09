@@ -1,5 +1,5 @@
 module DataImport::Readers
-  class HashStrategy
+  class JsonStrategy
     include DataImport::Errors
     attr_reader :errors
 
@@ -10,7 +10,7 @@ module DataImport::Readers
 
     def read_file
       if data_object
-        data_object
+        JSON.parse(data_object)
       else
         errors << data_not_present_error
         nil

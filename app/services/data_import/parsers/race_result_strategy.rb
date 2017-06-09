@@ -33,7 +33,7 @@ module DataImport::Parsers
     end
 
     def expression_or_section(header)
-      expression, label = [header['expression'], header['label']].map(&:underscore)
+      expression, label = [header['Expression'], header['Label']].map(&:underscore)
       expression.start_with?('section') ? expression : label
     end
 
@@ -42,7 +42,7 @@ module DataImport::Parsers
     end
 
     def data_fields
-      @data_fields ||= raw_data['list'] && raw_data['list']['fields']
+      @data_fields ||= raw_data['list'] && raw_data['list']['Fields']
     end
 
     def validate_raw_data

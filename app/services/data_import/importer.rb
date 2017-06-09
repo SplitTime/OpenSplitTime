@@ -19,10 +19,10 @@ module DataImport
     def import
       case format
       when :race_result_full
-        import_with(data_object, Readers::HashStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
+        import_with(data_object, Readers::JsonStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::InsertStrategy, options)
       when :race_result_times
-        import_with(data_object, Readers::HashStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
+        import_with(data_object, Readers::JsonStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
         import_with(data_object, Readers::CsvFileStrategy, Parsers::PassThroughStrategy, Transformers::GenericEffortsStrategy,

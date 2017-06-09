@@ -44,14 +44,17 @@ module DataImport
       reader = DataImport::Reader.new(data_object, read_strategy)
       raw_data = reader.read_file
       self.errors += reader.errors and return if reader.errors.present?
+      puts 'Successfully read file'
 
       parser = DataImport::Parser.new(raw_data, parse_strategy, options)
       parsed_structs = parser.parse
       self.errors += parser.errors and return if parser.errors.present?
+      puts "Parsed #{parsed_structs.size} records"
 
       transformer = DataImport::Transformer.new(parsed_structs, transform_strategy, options)
       proto_records = transformer.transform
       self.errors += transformer.errors and return if transformer.errors.present?
+      puts "Transformed #{proto_records.size} records"
 
       proto_record_groups = options[:strict] ? [proto_records] : proto_records.map { |record| [record] }
       proto_record_groups.each do |proto_record_group|

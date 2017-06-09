@@ -78,6 +78,10 @@ class Api::V1::EventsController < ApiController
       render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
              status: :unprocessable_entity
     else
+      puts "Imported #{importer.saved_records.size} records"
+      puts "Ignored #{importer.ignored_records.size} records"
+      puts "Invalidated #{importer.invalid_records.size} records"
+      puts "Deleted #{importer.destroyed_records.size} records"
       render json: {message: 'Import complete'}, status: :created
     end
     if importer.saved_records.present? && @event.available_live

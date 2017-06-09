@@ -118,7 +118,7 @@ Rails.application.routes.draw do
       resources :aid_stations, only: [:show, :create, :update, :destroy]
       resources :courses, only: [:index, :show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
-      resources :events, only: [:show, :create, :update, :destroy], param: :staging_id do
+      resources :events, only: [:index, :show, :create, :update, :destroy], param: :staging_id do
         member { delete :remove_splits }
         member { put :associate_splits }
         member { post :import_splits }

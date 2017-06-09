@@ -1,5 +1,5 @@
 class Api::V1::EventsController < ApiController
-  before_action :set_event, except: :create
+  before_action :set_event, except: [:index, :create]
 
   # GET /api/v1/events/:staging_id
   def show

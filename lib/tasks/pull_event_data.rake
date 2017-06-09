@@ -24,8 +24,11 @@ namespace :pull_event do
     abort('Aborted: Username and/or password not provided') unless rake_username && rake_password
     puts 'Located username and password'
 
-    event = Event.find_by(id: args[:event_id])
-    abort("Aborted: Event id #{args[:event_id]} not found") unless event
+    begin
+      event = Event.friendly.find(args[:event_id])
+    rescue ActiveRecord::RecordNotFound
+      abort("Aborted: Event id #{args[:event_id]} not found") unless event
+    end
     puts "Located event: #{event.name}"
 
     source_uri = URI(args[:source_uri])

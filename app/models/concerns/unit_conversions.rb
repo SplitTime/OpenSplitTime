@@ -23,22 +23,22 @@ module UnitConversions
 
     def distance_in_preferred_units(distance_in_meters)
       case pref_distance_unit
-        when 'miles'
-          distance_in_meters.meters.to.miles.value
-        when 'kilometers'
-          distance_in_meters.meters.to.kilometers.value
-        else
-          distance_in_meters
+      when 'miles'
+        distance_in_meters.meters.to.miles.value
+      when 'kilometers'
+        distance_in_meters.meters.to.kilometers.value
+      else
+        distance_in_meters
       end
     end
 
     def elevation_in_preferred_units(elevation_in_meters)
       return nil unless elevation_in_meters
       case pref_elevation_unit
-        when 'feet'
-          elevation_in_meters.meters.to.feet.value
-        else
-          elevation_in_meters
+      when 'feet'
+        elevation_in_meters.meters.to.feet.value
+      else
+        elevation_in_meters
       end
     end
 
@@ -64,11 +64,11 @@ module UnitConversions
     end
 
     def pref_distance_unit
-      (User.current && User.current.pref_distance_unit) || 'miles'
+      User.current&.pref_distance_unit || 'miles'
     end
 
     def pref_elevation_unit
-      (User.current && User.current.pref_elevation_unit) || 'feet'
+      User.current&.pref_elevation_unit || 'feet'
     end
   end
 end

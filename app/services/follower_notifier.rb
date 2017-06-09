@@ -33,6 +33,9 @@ class FollowerNotifier
 The following new times were reported for #{effort_data[:full_name]} at #{effort_data[:event_name]}:
   #{times_text}
 
+Full results for #{effort_data[:full_name]} here: https://www.opensplittime.org/efforts/#{effort_data[:effort_slug]}
+Full results for #{effort_data[:event_name]} here: https://www.opensplittime.org/events/#{effort_data[:event_slug]}
+
 Thank you for using OpenSplitTime!
     MESSAGE
   end

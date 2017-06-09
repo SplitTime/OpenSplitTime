@@ -38,8 +38,10 @@ namespace :pull_event do
 
     puts 'Authenticating with OpenSplitTime'
     session = ActionDispatch::Integration::Session.new(Rails.application)
-    session.post('/api/v1/auth', {user: {email: rake_username, password: rake_password}})
-    parsed_response = JSON.parse(session.response.body)
+    session.post('/api/v1/auth', {user: {email: rake_username, password: rake_password}},
+                 {accept: 'application/json'})
+    response_body = session.response.body.presence || '{}'
+    parsed_response = JSON.parse(response_body)
     auth_token = parsed_response['token']
     abort('Aborted: Authentication failed') unless auth_token
     puts 'Authenticated'

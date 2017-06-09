@@ -10,8 +10,6 @@ module DataImport::Readers
 
     def read_file
       if data_object
-        warn "#{data_object.class} size: #{data_object.size}"
-        warn data_object
         JSON.parse(data_object)
       else
         errors << data_not_present_error

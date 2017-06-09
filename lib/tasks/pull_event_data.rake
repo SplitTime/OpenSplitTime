@@ -24,6 +24,16 @@ namespace :pull_event do
     abort('Aborted: Username and/or password not provided') unless rake_username && rake_password
     puts 'Located username and password'
 
+    puts 'Authenticating with OpenSplitTime'
+    session = ActionDispatch::Integration::Session.new(Rails.application)
+    session.post('/api/v1/auth', {user: {email: rake_username, password: rake_password}},
+                 {accept: 'application/json'})
+    response_body = session.response.body.presence || '{}'
+    parsed_response = JSON.parse(response_body)
+    auth_token = parsed_response['token']
+    abort('Aborted: Authentication failed') unless auth_token
+    puts 'Authenticated'
+
     begin
       event = Event.friendly.find(args[:event_id])
     rescue ActiveRecord::RecordNotFound
@@ -35,16 +45,7 @@ namespace :pull_event do
     puts "Fetching data from #{source_uri}"
     rr_response = Net::HTTP.get(source_uri)
     abort("Aborted: No response received from #{source_uri}") unless rr_response.present?
-
-    puts 'Authenticating with OpenSplitTime'
-    session = ActionDispatch::Integration::Session.new(Rails.application)
-    session.post('/api/v1/auth', {user: {email: rake_username, password: rake_password}},
-                 {accept: 'application/json'})
-    response_body = session.response.body.presence || '{}'
-    parsed_response = JSON.parse(response_body)
-    auth_token = parsed_response['token']
-    abort('Aborted: Authentication failed') unless auth_token
-    puts 'Authenticated'
+    puts "Received data from #{source_uri}"
 
     ost_path = "/api/v1/events/#{args[:event_id]}/import_json"
     puts "Uploading data to #{ost_path}"

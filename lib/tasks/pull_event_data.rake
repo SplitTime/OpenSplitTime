@@ -31,7 +31,10 @@ namespace :pull_event do
     response_body = session.response.body.presence || '{}'
     parsed_response = JSON.parse(response_body)
     auth_token = parsed_response['token']
-    abort('Aborted: Authentication failed') unless auth_token
+    abort('Aborted: Authentication failed with status ' +
+              "#{session.response.status}\n" +
+              "Headers: #{session.response.headers}\n" +
+              "Body: #{session.response.body}") unless auth_token
     puts 'Authenticated'
 
     begin

@@ -308,24 +308,6 @@ describe PreparedParams do
         validate_param('filter', expected)
       end
     end
-
-    context 'when provided with an :editable key as true' do
-      let(:filter_params) { {'editable' => 'true', 'state_code' => '', 'country_code' => 'US'} }
-
-      it 'returns the permitted fields and the editable field with its value converted to a boolean value' do
-        expected = {'editable' => true, 'state_code' => nil, 'country_code' => 'US'}
-        validate_param('filter', expected)
-      end
-    end
-
-    context 'when provided with an :editable key as false' do
-      let(:filter_params) { {'editable' => 'false', 'state_code' => '', 'country_code' => 'US'} }
-
-      it 'returns the permitted fields and the editable field with its value converted to a boolean value' do
-        expected = {'editable' => false, 'state_code' => nil, 'country_code' => 'US'}
-        validate_param('filter', expected)
-      end
-    end
   end
 
   describe '#filter[:gender]' do
@@ -445,6 +427,30 @@ describe PreparedParams do
       it 'returns nil' do
         expected = nil
         validate_param('search', expected)
+      end
+    end
+  end
+
+  describe '#editable' do
+    let(:params) { ActionController::Parameters.new(filter: filter_params) }
+    let(:permitted) { [] }
+    let(:permitted_query) { [] }
+
+    context 'when provided with a [:filter][:editable] key as true' do
+      let(:filter_params) { {'editable' => 'true', 'state_code' => '', 'country_code' => 'US'} }
+
+      it 'returns true' do
+        expected = true
+        validate_param('editable', expected)
+      end
+    end
+
+    context 'when provided with a [:filter][:editable] key as false' do
+      let(:filter_params) { {'editable' => 'false', 'state_code' => '', 'country_code' => 'US'} }
+
+      it 'returns false' do
+        expected = false
+        validate_param('editable', expected)
       end
     end
   end

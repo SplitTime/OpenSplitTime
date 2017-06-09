@@ -1,9 +1,12 @@
 class PreparedParams
 
+  attr_reader :search, :editable
+
   def initialize(params, permitted, permitted_query = nil)
     @params = params
     @permitted = permitted.map(&:to_s)
     @permitted_query = (permitted_query || permitted).map(&:to_s)
+    parse_filter_param
   end
 
   def [](method_name)
@@ -32,12 +35,7 @@ class PreparedParams
     return @filter if defined?(@filter)
     filter_params = transformed_filter_values
     filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
-    filter_params['editable'] = filter_params['editable'].to_boolean if filter_params.has_key?('editable')
     @filter = filter_params.with_indifferent_access
-  end
-
-  def search
-    @search ||= (params[:filter] || {})[:search].to_s.presence
   end
 
   def page
@@ -55,6 +53,13 @@ class PreparedParams
   private
 
   attr_reader :params, :permitted, :permitted_query
+  attr_writer :search, :editable
+
+  def parse_filter_param
+    params[:filter] = {} unless params[:filter].is_a?(ActionController::Parameters)
+    self.search = params[:filter].delete(:search).presence
+    self.editable = params[:filter].delete(:editable)&.to_boolean
+  end
 
   def transformed_filter_values
     permitted_filter_params.transform_values do |list|

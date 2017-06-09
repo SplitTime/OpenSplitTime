@@ -65,7 +65,6 @@ group :development do
   gem 'bullet'
   gem 'quiet_assets'
   gem 'derailed_benchmarks'
-  gem 'active_record_query_trace'
   gem 'rails-erd'
 end
 
@@ -88,6 +87,7 @@ group :development, :test do
   gem 'rb-fsevent'
   gem 'pry-byebug'
   gem 'dotenv-rails'
+  gem 'active_record_query_trace'
 end
 
 group :production do

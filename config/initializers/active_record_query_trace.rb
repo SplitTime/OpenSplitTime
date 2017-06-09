@@ -1,4 +1,4 @@
-if ENV['RAILS_ENV'] == 'development'
+if Rails.env.development? || Rails.env.test?
   ActiveRecordQueryTrace.enabled = false
   ActiveRecordQueryTrace.level = :app
   ActiveRecordQueryTrace.ignore_cached_queries = true

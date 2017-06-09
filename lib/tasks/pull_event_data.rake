@@ -28,6 +28,7 @@ namespace :pull_event do
     session = ActionDispatch::Integration::Session.new(Rails.application)
     session.post('/api/v1/auth', {user: {email: rake_username, password: rake_password}},
                  {accept: 'application/json'})
+    puts "Authentication requested with #{session.request.filtered_parameters}"
     response_body = session.response.body.presence || '{}'
     parsed_response = JSON.parse(response_body)
     auth_token = parsed_response['token']

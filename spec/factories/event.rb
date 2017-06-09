@@ -7,6 +7,12 @@ FactoryGirl.define do
     sequence(:staging_id) { SecureRandom.uuid }
     course
 
+    transient { without_slug false }
+
+    after(:build, :stub) do |event, evaluator|
+      event.slug = event.name.parameterize unless evaluator.without_slug
+    end
+
     factory :event_with_standard_splits do
 
       transient { splits_count 4 }

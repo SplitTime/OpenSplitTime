@@ -95,11 +95,12 @@ RSpec.describe LiveTime, type: :model do
   end
 
   describe '#event_slug=' do
-    let!(:event) { create(:event, slug: 'test-event') }
+    let!(:event) { create(:event) }
     let(:live_time) { LiveTime.new }
 
     it 'finds the event having a slug equal to the provided param and sets event_id' do
-      live_time.event_slug = 'test-event'
+      slug = event.slug
+      live_time.event_slug = slug
       expect(live_time.event).to eq(event)
     end
 

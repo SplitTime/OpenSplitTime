@@ -260,7 +260,7 @@ describe PreparedParams do
     context 'when provided with a single field and an array of values' do
       let(:filter_params) { {'state_code' => %w(NM AZ NY)} }
 
-      it 'returns the array' do
+      it 'preserves the array' do
         expected = {'state_code' => %w(NM AZ NY)}
         validate_param('filter', expected)
       end
@@ -308,6 +308,24 @@ describe PreparedParams do
         validate_param('filter', expected)
       end
     end
+
+    context 'when provided with an :editable key as true' do
+      let(:filter_params) { {'editable' => 'true', 'state_code' => '', 'country_code' => 'US'} }
+
+      it 'returns the permitted fields and the editable field with its value converted to a boolean value' do
+        expected = {'editable' => true, 'state_code' => nil, 'country_code' => 'US'}
+        validate_param('filter', expected)
+      end
+    end
+
+    context 'when provided with an :editable key as false' do
+      let(:filter_params) { {'editable' => 'false', 'state_code' => '', 'country_code' => 'US'} }
+
+      it 'returns the permitted fields and the editable field with its value converted to a boolean value' do
+        expected = {'editable' => false, 'state_code' => nil, 'country_code' => 'US'}
+        validate_param('filter', expected)
+      end
+    end
   end
 
   describe '#filter[:gender]' do
@@ -344,7 +362,7 @@ describe PreparedParams do
     end
 
     context 'when provided with combined' do
-      let(:gender_param) { ['combined'] }
+      let(:gender_param) { 'combined' }
 
       it 'returns an array containing numeric values for both genders' do
         expected = {'gender' => [0, 1]}

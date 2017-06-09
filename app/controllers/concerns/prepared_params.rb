@@ -32,6 +32,7 @@ class PreparedParams
     return @filter if defined?(@filter)
     filter_params = transformed_filter_values
     filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
+    filter_params['editable'] = filter_params['editable'].to_boolean if filter_params.has_key?('editable')
     @filter = filter_params.with_indifferent_access
   end
 
@@ -57,7 +58,7 @@ class PreparedParams
 
   def transformed_filter_values
     permitted_filter_params.transform_values do |list|
-      items = list.is_a?(Array) ? list : list.to_s.split(',')
+      items = list.to_s.split(',')
       items.size > 1 ? items : items.first.presence
     end
   end
@@ -78,7 +79,11 @@ class PreparedParams
   end
 
   def permitted_filter_params
-    params[:filter]&.to_unsafe_hash.to_h.slice(*permitted_query) || {}
+    # ActionController::Parameters#permit will strip out any key whose value is an Array,
+    # so first convert any Arrays to comma-separated lists
+    params[:filter]&.each { |k,v| params[:filter][k] = v.join(',') if v.is_a?(Array) }
+    permitted_keys = permitted_query << :editable
+    params[:filter]&.permit(*permitted_keys) || {}
   end
 
   def sort_fields

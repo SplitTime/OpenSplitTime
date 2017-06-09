@@ -8,6 +8,50 @@ describe Api::V1::LiveTimesController do
   let(:split) { FactoryGirl.create(:split, course: course) }
   let(:course) { FactoryGirl.create(:course) }
 
+  describe '#index' do
+    before do
+      create(:live_time, event: event, split: split, bib_number: 101, absolute_time: '10:00:00')
+      create(:live_time, event: event, split: split, bib_number: 102, absolute_time: '11:00:00')
+      create(:live_time, event: event, split: split, bib_number: 103, absolute_time: '10:30:00')
+      create(:live_time, event: event, split: split, bib_number: 103, absolute_time: '16:00:00')
+      create(:live_time, event: event, split: split, bib_number: 101, absolute_time: '16:00:00')
+    end
+
+    it 'returns a successful 200 response' do
+      get :index
+      expect(response.status).to eq(200)
+    end
+
+    it 'returns each live_time' do
+      get :index
+      expect(response.status).to eq(200)
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].size).to eq(5)
+      expect(parsed_response['data'].map { |item| item['id'].to_i }).to eq(LiveTime.all.map(&:id))
+    end
+
+    it 'sorts properly in ascending order based on a provided sort parameter' do
+      expected = [101, 101, 102, 103, 103]
+      get :index, sort: 'bib_number'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
+    end
+
+    it 'sorts properly in descending order based on a provided sort parameter with a minus sign' do
+      expected = [103, 103, 102, 101, 101]
+      get :index, sort: '-bibNumber'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
+    end
+
+    it 'sorts properly on multiple fields' do
+      expected = [101, 103, 102, 103, 101]
+      get :index, sort: '-absolute_time,bib_number'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
+    end
+  end
+
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, id: live_time

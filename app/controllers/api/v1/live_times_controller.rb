@@ -1,3 +1,3 @@
 class Api::V1::LiveTimesController < ApiController
-  before_action :set_resource, except: :create
+  before_action :set_resource, except: [:index, :create]
 end

@@ -10,7 +10,9 @@ class ApiController < ApplicationController
   # Returns only those resources that the user is authorized to edit.
   def index
     authorize controller_class
-    render json: policy_class::Scope.new(current_user, controller_class).editable.order(prepared_params[:sort]),
+    authorized_scope = policy_class::Scope.new(current_user, controller_class)
+    working_scope = prepared_params[:filter][:editable] ? authorized_scope.editable : authorized_scope.viewable
+    render json: working_scope.order(prepared_params[:sort]),
            include: prepared_params[:include], fields: prepared_params[:fields]
   end
 

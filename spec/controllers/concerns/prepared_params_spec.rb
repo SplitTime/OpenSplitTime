@@ -472,8 +472,8 @@ describe PreparedParams do
     context 'when page param contains a number key with no value' do
       let(:page_param) { {page: {number: nil}} }
 
-      it 'returns nil' do
-        expected = nil
+      it 'returns 1' do
+        expected = 1
         validate_param('page', expected)
       end
     end
@@ -490,8 +490,8 @@ describe PreparedParams do
     context 'when no page param exists' do
       let(:page_param) { {} }
 
-      it 'returns nil' do
-        expected = nil
+      it 'returns 1' do
+        expected = 1
         validate_param('page', expected)
       end
     end
@@ -501,12 +501,14 @@ describe PreparedParams do
     let(:params) { ActionController::Parameters.new(page_param) }
     let(:permitted) { [] }
     let(:permitted_query) { [] }
+    let(:default_per_page) { PreparedParams::DEFAULT_PER_PAGE }
+    let(:max_per_page) { PreparedParams::MAX_PER_PAGE }
 
     context 'when page param contains a size key' do
-      let(:page_param) { {page: {size: 100}} }
+      let(:page_param) { {page: {size: 25}} }
 
       it 'returns the number' do
-        expected = 100
+        expected = 25
         validate_param('per_page', expected)
       end
     end
@@ -514,26 +516,26 @@ describe PreparedParams do
     context 'when page param contains a size key with no value' do
       let(:page_param) { {page: {size: nil}} }
 
-      it 'returns nil' do
-        expected = nil
+      it 'returns the default' do
+        expected = default_per_page
         validate_param('per_page', expected)
       end
     end
 
     context 'when page param is not a hash' do
-      let(:page_param) { {page: 2, per_page: 100} }
+      let(:page_param) { {page: 2, per_page: 25} }
 
       it 'returns the number' do
-        expected = 100
+        expected = 25
         validate_param('per_page', expected)
       end
     end
 
     context 'when page param has a size key and per_page param also exists' do
-      let(:page_param) { {page: {size: 50}, per_page: 100} }
+      let(:page_param) { {page: {size: 25}, per_page: 100} }
 
       it 'returns the value in page[:size]' do
-        expected = 50
+        expected = 25
         validate_param('per_page', expected)
       end
     end
@@ -541,9 +543,44 @@ describe PreparedParams do
     context 'when no page param or per_page param exists' do
       let(:page_param) { {} }
 
-      it 'returns nil' do
-        expected = nil
+      it 'returns the default' do
+        expected = default_per_page
         validate_param('per_page', expected)
+      end
+    end
+
+    context 'when a number above the maximum is requested' do
+      let(:page_param) { {page: {size: max_per_page + 50}} }
+
+      it 'returns the number' do
+        expected = max_per_page
+        validate_param('per_page', expected)
+      end
+    end
+  end
+
+  describe '#offset' do
+    let(:params) { ActionController::Parameters.new(page_param) }
+    let(:permitted) { [] }
+    let(:permitted_query) { [] }
+    let(:default_per_page) { PreparedParams::DEFAULT_PER_PAGE }
+    let(:max_per_page) { PreparedParams::MAX_PER_PAGE }
+
+    context 'when page size and number are both provided' do
+      let(:page_param) { {page: {number: 2, size: 25}} }
+
+      it 'returns the correct offset' do
+        expected = 25
+        validate_param('offset', expected)
+      end
+    end
+
+    context 'when page size and number are not provided' do
+      let(:page_param) { {} }
+
+      it 'returns 0' do
+        expected = 0
+        validate_param('offset', expected)
       end
     end
   end

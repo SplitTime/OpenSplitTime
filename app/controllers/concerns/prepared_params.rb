@@ -1,4 +1,6 @@
 class PreparedParams
+  DEFAULT_PER_PAGE = 10
+  MAX_PER_PAGE = 50
 
   attr_reader :search, :editable
 
@@ -39,11 +41,17 @@ class PreparedParams
   end
 
   def page
-    params[:page].is_a?(Hash) ? params[:page][:number] : params[:page]
+    page_param = params[:page].is_a?(ActionController::Parameters) ? params[:page][:number] : params[:page]
+    page_param.present? ? page_param.to_i : 1
   end
 
   def per_page
-    params[:page].is_a?(Hash) ? params[:page][:size] : params[:per_page]
+    per_page_param = params[:page].is_a?(Hash) ? params[:page][:size] : params[:per_page]
+    per_page_param.present? ? [per_page_param.to_i, MAX_PER_PAGE].min : DEFAULT_PER_PAGE
+  end
+
+  def offset
+    (page - 1) * per_page
   end
 
   def method_missing(method)

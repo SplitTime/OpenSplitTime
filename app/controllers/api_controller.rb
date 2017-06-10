@@ -12,7 +12,8 @@ class ApiController < ApplicationController
     authorize controller_class
     authorized_scope = policy_class::Scope.new(current_user, controller_class)
     working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
-    render json: working_scope.where(prepared_params[:filter]).order(prepared_params[:sort]),
+    render json: working_scope.where(prepared_params[:filter]).order(prepared_params[:sort])
+                     .limit(prepared_params[:per_page]).offset(prepared_params[:offset]),
            include: prepared_params[:include], fields: prepared_params[:fields]
   end
 

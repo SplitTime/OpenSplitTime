@@ -69,10 +69,14 @@ class Api::V1::EventsController < ApiController
     end
   end
 
-  def import_json
+  def import
     authorize @event
     format = params[:data_format]&.to_sym
-    importer = DataImport::Importer.new(params[:import_data], format, event: @event, current_user_id: current_user.id)
+    if (request.content_type == 'multipart/form-data') && params[:file]
+      file_url = FileStore.public_upload('imports', params[:file], current_user.id)
+      params[:data] = FileStore.get(file_url)
+    end
+    importer = DataImport::Importer.new(params[:data], format, event: @event, current_user_id: current_user.id)
     importer.import
     if importer.errors.present? || importer.invalid_records.present?
       render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
@@ -165,7 +169,7 @@ class Api::V1::EventsController < ApiController
 
   def set_event
     @event = params[:staging_id].uuid? ?
-                 Event.find_by!(staging_id: params[:staging_id]) :
-                 Event.friendly.find(params[:staging_id])
+        Event.find_by!(staging_id: params[:staging_id]) :
+        Event.friendly.find(params[:staging_id])
   end
 end

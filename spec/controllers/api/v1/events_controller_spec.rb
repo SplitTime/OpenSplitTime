@@ -154,7 +154,7 @@ describe Api::V1::EventsController do
     end
   end
 
-  describe '#import_json' do
+  describe '#import' do
     before do
       FactoryGirl.reload
       event.splits << splits
@@ -168,13 +168,13 @@ describe Api::V1::EventsController do
     let(:import_data) { File.read(file_path) }
 
     it 'returns a successful json response' do
-      post :import_json, request_params
+      post :import, request_params
       expect(response.status).to eq(201)
     end
 
     it 'creates efforts' do
       expect(Effort.all.size).to eq(0)
-      post :import_json, request_params
+      post :import, request_params
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/Import complete/)
       expect(Effort.all.size).to eq(5)
@@ -182,7 +182,7 @@ describe Api::V1::EventsController do
 
     it 'creates split_time records' do
       expect(SplitTime.all.size).to eq(0)
-      post :import_json, request_params
+      post :import, request_params
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['message']).to match(/Import complete/)
       expect(SplitTime.all.size).to eq(23)

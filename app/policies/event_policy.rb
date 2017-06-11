@@ -18,7 +18,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_for_live?(event)
   end
 
-  def import_json?
+  def import?
     user.authorized_for_live?(event)
   end
 

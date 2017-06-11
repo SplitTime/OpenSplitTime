@@ -51,9 +51,9 @@ namespace :pull_event do
     abort("Aborted: No response received from #{source_uri}") unless rr_response.present?
     puts "Received data from #{source_uri}"
 
-    ost_path = "/api/v1/events/#{args[:event_id]}/import_json"
+    ost_path = "/api/v1/events/#{args[:event_id]}/import"
     puts "Uploading data to #{ost_path}"
-    session.post(ost_path, {import_data: rr_response, data_format: args[:format]},
+    session.post(ost_path, {data: rr_response, data_format: args[:format]},
                  {authorization: auth_token, accept: 'application/json'})
     puts session.response.body
 

@@ -123,7 +123,7 @@ Rails.application.routes.draw do
         member { put :associate_splits }
         member { post :import_splits }
         member { post :import_efforts }
-        member { post :import_json }
+        member { post :import }
         member { get :spread }
         member { get :event_data }
         member { get :live_effort_data }

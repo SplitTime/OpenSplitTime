@@ -31,7 +31,7 @@ describe Api::V1::EventsController do
     let(:params) { {course_id: course.id, name: 'Test Event', start_time: '2017-03-01 06:00:00', laps_required: 1} }
 
     it 'returns a successful json response' do
-      post :create, data: {type: 'events', attributes: params }
+      post :create, data: {type: 'events', attributes: params}
       expect(response.body).to be_jsonapi_response_for('events')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
@@ -40,7 +40,7 @@ describe Api::V1::EventsController do
 
     it 'creates an event record with a staging_id' do
       expect(Event.all.count).to eq(0)
-      post :create, data: {type: 'events', attributes: params }
+      post :create, data: {type: 'events', attributes: params}
       expect(Event.all.count).to eq(1)
       expect(Event.first.staging_id).not_to be_nil
     end
@@ -50,19 +50,19 @@ describe Api::V1::EventsController do
     let(:attributes) { {name: 'Updated Event Name'} }
 
     it 'returns a successful json response' do
-      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes }
+      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes}
       expect(response.body).to be_jsonapi_response_for('events')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes }
+      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes}
       event.reload
       expect(event.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the event does not exist' do
-      put :update, staging_id: 123, data: {type: 'events', attributes: attributes }
+      put :update, staging_id: 123, data: {type: 'events', attributes: attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -163,29 +163,66 @@ describe Api::V1::EventsController do
     let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
     let(:event) { create(:event, course_id: course.id, laps_required: 1) }
-    let(:request_params) { {staging_id: event.id, data_format: 'race_result_full', import_data: import_data} }
-    let(:file_path) { "#{Rails.root}/spec/fixtures/files/test_rr_response.json" }
-    let(:import_data) { File.read(file_path) }
 
-    it 'returns a successful json response' do
-      post :import, request_params
-      expect(response.status).to eq(201)
+    context 'when provided with a file' do
+      let(:request_params) { {staging_id: event.staging_id, data_format: 'csv_efforts', file: file} }
+      let(:file) { file_fixture('test_efforts.csv') } # Should work in Rails 5
+
+      it 'returns a successful json response' do
+        skip 'Until Rails 5 upgrade'
+        post :import, request_params
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates efforts' do
+        skip 'Until Rails 5 upgrade'
+        expect(Effort.all.size).to eq(0)
+        post :import, request_params
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['message']).to match(/Import complete/)
+        expect(Effort.all.size).to eq(5)
+      end
+
+      it 'creates split_time records' do
+        skip 'Until Rails 5 upgrade'
+        expect(SplitTime.all.size).to eq(0)
+        post :import, request_params
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['message']).to match(/Import complete/)
+        expect(SplitTime.all.size).to eq(23)
+      end
     end
 
-    it 'creates efforts' do
-      expect(Effort.all.size).to eq(0)
-      post :import, request_params
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/Import complete/)
-      expect(Effort.all.size).to eq(5)
-    end
+    context 'when provided with json data and data_format: :jsonapi' do
+      let(:split_id) { splits.first.id }
+      let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi', data: data} }
+      let(:data) { [
+          {type: 'live_time',
+           attributes: {bibNumber: '101', splitId: split_id, subSplitBitkey: 1, absoluteTime: '10:45:45 -06:00', withPacer: true, droppedHere: false}},
+          {type: 'live_time',
+           attributes: {bibNumber: '101', splitId: split_id, subSplitBitkey: 64, absoluteTime: '10:50:50 -06:00', withPacer: true, droppedHere: true}}
+      ] }
 
-    it 'creates split_time records' do
-      expect(SplitTime.all.size).to eq(0)
-      post :import, request_params
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/Import complete/)
-      expect(SplitTime.all.size).to eq(23)
+      it 'returns a successful json response' do
+        post :import, request_params
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates efforts' do
+        expect(Effort.all.size).to eq(0)
+        post :import, request_params
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['message']).to match(/Import complete/)
+        expect(Effort.all.size).to eq(5)
+      end
+
+      it 'creates split_time records' do
+        expect(SplitTime.all.size).to eq(0)
+        post :import, request_params
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['message']).to match(/Import complete/)
+        expect(SplitTime.all.size).to eq(23)
+      end
     end
   end
 end

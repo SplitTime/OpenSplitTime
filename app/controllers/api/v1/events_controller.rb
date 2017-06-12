@@ -71,23 +71,28 @@ class Api::V1::EventsController < ApiController
 
   def import
     authorize @event
-    format = params[:data_format]&.to_sym
-    if (request.content_type == 'multipart/form-data') && params[:file]
-      file_url = FileStore.public_upload('imports', params[:file], current_user.id)
-      params[:data] = FileStore.get(file_url)
+
+    if params[:file]
+      params[:data] = File.read(params[:file])
     end
-    importer = DataImport::Importer.new(params[:data], format, event: @event, current_user_id: current_user.id)
+
+    data_format = params[:data_format]&.to_sym
+    strict = params[:load_records] != 'single'
+    importer = DataImport::Importer.new(params[:data], data_format, event: @event, current_user_id: current_user.id, strict: strict)
     importer.import
+
     if importer.errors.present? || importer.invalid_records.present?
       render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
              status: :unprocessable_entity
     else
-      puts "Imported #{importer.saved_records.size} records"
-      puts "Ignored #{importer.ignored_records.size} records"
-      puts "Invalidated #{importer.invalid_records.size} records"
-      puts "Deleted #{importer.destroyed_records.size} records"
-      render json: {message: 'Import complete'}, status: :created
+      render json: {title: 'Import complete',
+                    detail: {messages: ["Imported #{importer.saved_records.size} records",
+                                        "Ignored #{importer.ignored_records.size} records",
+                                        "Invalidated #{importer.invalid_records.size} records",
+                                        "Deleted #{importer.destroyed_records.size} records"]}},
+             status: :created
     end
+
     if importer.saved_records.present? && @event.available_live
       split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
       notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
@@ -169,7 +174,7 @@ class Api::V1::EventsController < ApiController
 
   def set_event
     @event = params[:staging_id].uuid? ?
-        Event.find_by!(staging_id: params[:staging_id]) :
-        Event.friendly.find(params[:staging_id])
+                 Event.find_by!(staging_id: params[:staging_id]) :
+                 Event.friendly.find(params[:staging_id])
   end
 end

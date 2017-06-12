@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe Api::V1::LiveTimesController do
   login_admin
+  before do
+    event.splits << split
+  end
 
   let(:live_time) { FactoryGirl.create(:live_time, event: event, split: split) }
   let(:event) { FactoryGirl.create(:event, course: course) }
@@ -10,11 +13,11 @@ describe Api::V1::LiveTimesController do
 
   describe '#index' do
     before do
-      create(:live_time, event: event, split: split, bib_number: 101, absolute_time: '10:00:00')
-      create(:live_time, event: event, split: split, bib_number: 102, absolute_time: '11:00:00')
-      create(:live_time, event: event, split: split, bib_number: 103, absolute_time: '10:30:00')
-      create(:live_time, event: event, split: split, bib_number: 103, absolute_time: '16:00:00')
-      create(:live_time, event: event, split: split, bib_number: 101, absolute_time: '16:00:00')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: '10:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 102, absolute_time: '11:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 103, absolute_time: '10:30:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 103, absolute_time: '16:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: '16:00:00', source: 'ost-test')
     end
 
     it 'returns a successful 200 response' do
@@ -74,8 +77,8 @@ describe Api::V1::LiveTimesController do
   end
 
   describe '#create' do
-    let(:attributes) { {event_id: event.id, lap: 1, split_id: split.id, bitkey: 1, bib_number: '101',
-                        absolute_time: '08:00:00', batch: '1'} }
+    let(:attributes) { {event_id: event.id, split_id: split.id, bitkey: 1, bib_number: '101',
+                        absolute_time: '08:00:00', source: 'ost-test', batch: '1'} }
 
     it 'returns a successful json response' do
       post :create, data: {type: 'live_times', attributes: attributes}

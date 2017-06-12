@@ -38,7 +38,7 @@ RSpec.describe DataImport::Transformers::JsonapiBatchStrategy do
 
       it 'moves all attributes into the ProtoRecord attributes struct' do
         expect(first_proto_record.to_h.keys.sort)
-            .to eq(%i(absolute_time bib_number bitkey split_id stopped_here with_pacer))
+            .to eq(%i(absolute_time bib_number bitkey event_id split_id stopped_here with_pacer))
       end
     end
 
@@ -53,11 +53,6 @@ RSpec.describe DataImport::Transformers::JsonapiBatchStrategy do
 
       it 'converts name_extension to the applicable bitkey' do
         expect(first_proto_record[:bitkey]).to eq(1)
-      end
-
-      it 'moves all attributes into the ProtoRecord attributes struct' do
-        expect(first_proto_record.to_h.keys.sort)
-            .to eq(%i(absolute_time bib_number bitkey split_id stopped_here with_pacer))
       end
     end
   end

@@ -193,9 +193,9 @@ describe Api::V1::EventsController do
       end
     end
 
-    context 'when provided with json data and data_format: :jsonapi_batch' do
+    context 'when provided with an array of hashes and data_format: :jsonapi_batch' do
       let(:split_id) { splits.first.id }
-      let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi_batch', data: json_blob} }
+      let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi_batch', data: data} }
       let(:data) { [
           {type: 'live_time',
            attributes: {bibNumber: '101', splitId: split_id, bitkey: 1, absoluteTime: '10:45:45-06:00',
@@ -204,7 +204,6 @@ describe Api::V1::EventsController do
            attributes: {bibNumber: '101', splitId: split_id, bitkey: 64, absoluteTime: '10:50:50-06:00',
                         withPacer: true, stoppedHere: true, source: 'ost-remote-1234'}}
       ] }
-      let(:json_blob) { data.to_json }
 
       it 'returns a successful json response' do
         post :import, request_params
@@ -215,7 +214,7 @@ describe Api::V1::EventsController do
         expect(LiveTime.all.size).to eq(0)
         post :import, request_params
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['title']).to match(/Import complete/)
+        expect(parsed_response['data'].map { |record| record['type'] }).to all ( eq('liveTimes') )
         expect(LiveTime.all.size).to eq(2)
       end
 
@@ -228,5 +227,3 @@ describe Api::V1::EventsController do
     end
   end
 end
-
-{'data' => [{'type' => 'live_time', 'attributes' => {'bibNumber' => '101', 'splitId' => '55', 'bitkey' => '1', 'absoluteTime' => '10:45:45-06:00', 'withPacer' => 'true', 'stoppedHere' => 'false', 'source' => 'ost-remote-1234'}}, {'type' => 'live_time', 'attributes' => {'bibNumber' => '101', 'splitId' => '55', 'bitkey' => '64', 'absoluteTime' => '10:50:50-06:00', 'withPacer' => 'true', 'stoppedHere' => 'true', 'source' => 'ost-remote-1234'}}], 'data_format' => 'jsonapi_batch'}

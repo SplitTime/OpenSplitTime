@@ -22,9 +22,13 @@ RSpec.describe LiveTime, type: :model do
 
   describe '#initialize' do
     let(:time_string) { '08:00:00' }
+    let(:source) { 'ost-test' }
+    before do
+      event.splits << split
+    end
 
-    it 'is valid when created with an event, split, bib_number, and absolute_time' do
-      live_time = LiveTime.new(event: event, split: split, bib_number: 101, absolute_time: time_string)
+    it 'is valid when created with an event, split, bitkey, bib_number, absolute_time, and source' do
+      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: time_string, source: source)
       expect(live_time).to be_valid
     end
 
@@ -75,6 +79,9 @@ RSpec.describe LiveTime, type: :model do
 
   describe '#split_time' do
     let(:split_time) { create(:split_time, effort: effort, split: split) }
+    before do
+      event.splits << split
+    end
 
     it 'when related split_time is deleted, sets live_time.split_time to nil' do
       live_time = create(:live_time, event: event, split: split, split_time: split_time)

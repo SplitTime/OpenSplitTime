@@ -19,7 +19,7 @@ module DataImport::Transformers
         proto_record.normalize_country_code!
         proto_record.normalize_state_code!
         proto_record.normalize_birthdate!
-        proto_record.permit!(EffortParameters.permitted.to_set)
+        proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)
       end
       proto_records

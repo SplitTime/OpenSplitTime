@@ -18,6 +18,10 @@ class ProtoRecord
     record_type&.to_s&.classify&.constantize
   end
 
+  def params_class
+    record_class && "#{record_class}Parameters".constantize
+  end
+
   private
 
   def validate_setup

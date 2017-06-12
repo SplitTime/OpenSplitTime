@@ -19,7 +19,7 @@ module DataImport::Transformers
         proto_record.map_keys!({name: :full_name, sex: :gender, bib: :bib_number})
         proto_record.normalize_gender!
         proto_record.split_field!(:full_name, :first_name, :last_name)
-        proto_record.permit!(permitted_params)
+        proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)
       end
       proto_records
@@ -115,10 +115,6 @@ module DataImport::Transformers
 
     def time_points
       @time_points ||= event.required_time_points
-    end
-
-    def permitted_params
-      EffortParameters.permitted.to_set
     end
 
     def validate_setup

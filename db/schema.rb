@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170612045746) do
+ActiveRecord::Schema.define(version: 20170612054310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,7 +108,6 @@ ActiveRecord::Schema.define(version: 20170612045746) do
 
   create_table "live_times", force: :cascade do |t|
     t.integer  "event_id",      null: false
-    t.integer  "lap"
     t.integer  "split_id",      null: false
     t.string   "wave"
     t.integer  "bib_number",    null: false
@@ -116,14 +115,14 @@ ActiveRecord::Schema.define(version: 20170612045746) do
     t.boolean  "with_pacer"
     t.boolean  "stopped_here"
     t.string   "remarks"
-    t.integer  "source"
     t.string   "batch"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.integer  "split_time_id"
-    t.integer  "bitkey"
+    t.integer  "bitkey",        null: false
+    t.string   "source",        null: false
   end
 
   add_index "live_times", ["event_id"], name: "index_live_times_on_event_id", using: :btree

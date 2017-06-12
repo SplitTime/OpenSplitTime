@@ -1,11 +1,10 @@
 class LiveTime < ActiveRecord::Base
-  enum source: [:internal, :generic_api]
   include Auditable
 
   belongs_to :event
   belongs_to :split
   belongs_to :split_time
-  validates_presence_of :event, :split, :bib_number, :absolute_time
+  validates_presence_of :event, :split, :bib_number, :bitkey, :absolute_time, :source
   validate :course_is_consistent
   validate :split_is_consistent
 

@@ -25,6 +25,6 @@ class ProtoRecord
   private
 
   def validate_setup
-    raise ArgumentError, 'children of a ProtoRecord must be of type ProtoRecord' unless children.all? { |child| child.is_a?(ProtoRecord) }
+    raise ArgumentError, 'children of a ProtoRecord must be ProtoRecords' unless children.all? { |child| child.is_a?(ProtoRecord) }
   end
 end

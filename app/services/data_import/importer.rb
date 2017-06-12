@@ -19,10 +19,10 @@ module DataImport
     def import
       case format
       when :race_result_full
-        import_with(data_object, Readers::JsonStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
+        import_with(data_object, Readers::PassThroughStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::InsertStrategy, options)
       when :race_result_times
-        import_with(data_object, Readers::JsonStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
+        import_with(data_object, Readers::PassThroughStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
         import_with(data_object, Readers::CsvFileStrategy, Parsers::PassThroughStrategy, Transformers::GenericEffortsStrategy,
@@ -30,6 +30,9 @@ module DataImport
       when :csv_splits
         import_with(data_object, Readers::CsvFileStrategy, Parsers::PassThroughStrategy, Transformers::GenericSplitsStrategy,
                     Loaders::UpsertStrategy, default_unique_key(:split).merge(options))
+      when :jsonapi_batch
+        import_with(data_object, Readers::PassThroughStrategy, Parsers::PassThroughStrategy, Transformers::JsonapiBatchStrategy,
+                    Loaders::UpsertStrategy, options)
       else
         self.errors << format_not_recognized_error(format)
       end
@@ -44,17 +47,14 @@ module DataImport
       reader = DataImport::Reader.new(data_object, read_strategy)
       raw_data = reader.read_file
       self.errors += reader.errors and return if reader.errors.present?
-      puts 'Successfully read file'
 
       parser = DataImport::Parser.new(raw_data, parse_strategy, options)
       parsed_structs = parser.parse
       self.errors += parser.errors and return if parser.errors.present?
-      puts "Parsed #{parsed_structs.size} records"
 
       transformer = DataImport::Transformer.new(parsed_structs, transform_strategy, options)
       proto_records = transformer.transform
       self.errors += transformer.errors and return if transformer.errors.present?
-      puts "Transformed #{proto_records.size} records"
 
       proto_record_groups = options[:strict] ? [proto_records] : proto_records.map { |record| [record] }
       proto_record_groups.each do |proto_record_group|

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe DataImport::Parsers::PassThroughStrategy do
-  let(:raw_data) { [{first_name: "Bjorn", last_name: "Borg", gender: "male"},
-                    {first_name: "Charlie", last_name: "Brown", gender: "male"},
-                    {first_name: "Lucy", last_name: "Pendergrast", gender: "female"}] }
+  let(:raw_data) { [{first_name: 'Bjorn', last_name: 'Borg', gender: 'male'},
+                    {first_name: 'Charlie', last_name: 'Brown', gender: 'male'},
+                    {first_name: 'Lucy', last_name: 'Pendergrast', gender: 'female'}] }
   let(:options) { {model: :effort} }
   subject { DataImport::Parsers::PassThroughStrategy.new(raw_data, options) }
 

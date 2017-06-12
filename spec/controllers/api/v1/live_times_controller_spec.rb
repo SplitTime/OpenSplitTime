@@ -74,7 +74,7 @@ describe Api::V1::LiveTimesController do
   end
 
   describe '#create' do
-    let(:attributes) { {event_id: event.id, lap: 1, split_id: split.id, split_extension: 'in', bib_number: '101',
+    let(:attributes) { {event_id: event.id, lap: 1, split_id: split.id, bitkey: 1, bib_number: '101',
                         absolute_time: '08:00:00', batch: '1'} }
 
     it 'returns a successful json response' do

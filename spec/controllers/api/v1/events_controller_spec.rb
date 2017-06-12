@@ -193,36 +193,40 @@ describe Api::V1::EventsController do
       end
     end
 
-    context 'when provided with json data and data_format: :jsonapi' do
+    context 'when provided with json data and data_format: :jsonapi_batch' do
       let(:split_id) { splits.first.id }
-      let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi', data: data} }
+      let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi_batch', data: json_blob} }
       let(:data) { [
           {type: 'live_time',
-           attributes: {bibNumber: '101', splitId: split_id, subSplitBitkey: 1, absoluteTime: '10:45:45 -06:00', withPacer: true, droppedHere: false}},
+           attributes: {bibNumber: '101', splitId: split_id, bitkey: 1, absoluteTime: '10:45:45-06:00',
+                        withPacer: true, stoppedHere: false, source: 'ost-remote-1234'}},
           {type: 'live_time',
-           attributes: {bibNumber: '101', splitId: split_id, subSplitBitkey: 64, absoluteTime: '10:50:50 -06:00', withPacer: true, droppedHere: true}}
+           attributes: {bibNumber: '101', splitId: split_id, bitkey: 64, absoluteTime: '10:50:50-06:00',
+                        withPacer: true, stoppedHere: true, source: 'ost-remote-1234'}}
       ] }
+      let(:json_blob) { data.to_json }
 
       it 'returns a successful json response' do
         post :import, request_params
         expect(response.status).to eq(201)
       end
 
-      it 'creates efforts' do
-        expect(Effort.all.size).to eq(0)
+      it 'creates live_times' do
+        expect(LiveTime.all.size).to eq(0)
         post :import, request_params
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['message']).to match(/Import complete/)
-        expect(Effort.all.size).to eq(5)
+        expect(parsed_response['title']).to match(/Import complete/)
+        expect(LiveTime.all.size).to eq(2)
       end
 
-      it 'creates split_time records' do
-        expect(SplitTime.all.size).to eq(0)
+      it 'assigns attributes correctly' do
         post :import, request_params
-        parsed_response = JSON.parse(response.body)
-        expect(parsed_response['message']).to match(/Import complete/)
-        expect(SplitTime.all.size).to eq(23)
+        expect(LiveTime.all.map(&:bib_number)).to eq([101, 101])
+        expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
+        expect(LiveTime.all.map(&:absolute_time)).to eq(%w(10:45:45-06:00 10:50:50-06:00))
       end
     end
   end
 end
+
+{'data' => [{'type' => 'live_time', 'attributes' => {'bibNumber' => '101', 'splitId' => '55', 'bitkey' => '1', 'absoluteTime' => '10:45:45-06:00', 'withPacer' => 'true', 'stoppedHere' => 'false', 'source' => 'ost-remote-1234'}}, {'type' => 'live_time', 'attributes' => {'bibNumber' => '101', 'splitId' => '55', 'bitkey' => '64', 'absoluteTime' => '10:50:50-06:00', 'withPacer' => 'true', 'stoppedHere' => 'true', 'source' => 'ost-remote-1234'}}], 'data_format' => 'jsonapi_batch'}

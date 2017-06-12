@@ -81,16 +81,18 @@ class Api::V1::EventsController < ApiController
     importer = DataImport::Importer.new(params[:data], data_format, event: @event, current_user_id: current_user.id, strict: strict)
     importer.import
 
-    if importer.errors.present? || importer.invalid_records.present?
-      render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
-             status: :unprocessable_entity
+    if strict
+      if importer.errors.present? || importer.invalid_records.present?
+        render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
+               status: :unprocessable_entity
+      else
+        render json: importer.saved_records, status: :created
+      end
     else
-      render json: {title: 'Import complete',
-                    detail: {messages: ["Imported #{importer.saved_records.size} records",
-                                        "Ignored #{importer.ignored_records.size} records",
-                                        "Invalidated #{importer.invalid_records.size} records",
-                                        "Deleted #{importer.destroyed_records.size} records"]}},
-             status: :created
+      render json: {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                    destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                    errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
+             status: importer.saved_records.present? ? :created : :unprocessable_entity
     end
 
     if importer.saved_records.present? && @event.available_live
@@ -174,7 +176,7 @@ class Api::V1::EventsController < ApiController
 
   def set_event
     @event = params[:staging_id].uuid? ?
-                 Event.find_by!(staging_id: params[:staging_id]) :
-                 Event.friendly.find(params[:staging_id])
+        Event.find_by!(staging_id: params[:staging_id]) :
+        Event.friendly.find(params[:staging_id])
   end
 end

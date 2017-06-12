@@ -48,7 +48,8 @@ class ApplicationController < ActionController::Base
 
   def jsonapi_error_object(record)
     {title: "#{record.class} could not be #{past_tense[action_name]}",
-     detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
+     detail: {attributes: record.attributes.compact.transform_keys { |key| key.camelize(:lower) },
+              messages: record.errors.full_messages}}
   end
 
   def child_records_error_object(record, child_record_model)

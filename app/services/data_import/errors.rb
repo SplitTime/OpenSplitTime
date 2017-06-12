@@ -13,6 +13,10 @@ module DataImport
       {title: 'Format not recognized', detail: {messages: ["data_format #{format} is not recognized"]}}
     end
 
+    def invalid_json_error(string)
+      {title: 'Invalid JSON', detail: {messages: ["#{string} is not valid JSON"]}}
+    end
+
     def invalid_proto_record_error(proto_record)
       {title: 'Invalid proto record', detail: {messages: ["#{proto_record} is invalid"]}}
     end

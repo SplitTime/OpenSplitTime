@@ -1,6 +1,6 @@
 ruby '2.3.3'
 source 'https://rubygems.org'
-gem 'rails', '4.2.7'
+gem 'rails', '~> 4.2.7'
 gem 'responders', '~> 2.0'
 gem 'bootstrap-sass'
 gem 'vuejs-rails'

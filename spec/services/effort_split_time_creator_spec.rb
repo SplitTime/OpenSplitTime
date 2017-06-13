@@ -68,7 +68,7 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
 
     def validate_row_time_validation(row_time_data, error_expected, event)
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(event.splits)
-      effort = FactoryGirl.build_stubbed(:effort, id: 1001, event: event)
+      effort = FactoryGirl.build_stubbed(:effort, id: 1001, event: event, without_slug: true)
       if error_expected
         expect { EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
                                             current_user_id: current_user_id, event: event) }

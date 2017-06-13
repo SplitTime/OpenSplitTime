@@ -7,11 +7,12 @@ class ApiController < ApplicationController
   after_action :report_to_ga
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-  # Returns only those resources that the user is authorized to edit.
   def index
     authorize controller_class
-    render json: policy_class::Scope.new(current_user, controller_class).editable.order(prepared_params[:sort]),
-           include: prepared_params[:include], fields: prepared_params[:fields]
+    authorized_scope = policy_class::Scope.new(current_user, controller_class)
+    working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
+    @resources = working_scope.where(prepared_params[:filter]).order(prepared_params[:sort])
+    paginate json: @resources, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
   def show
@@ -52,8 +53,8 @@ class ApiController < ApplicationController
 
   def set_resource
     @resource = controller_class.respond_to?(:friendly) ?
-        controller_class.friendly.find(params[:id]) :
-        controller_class.find(params[:id])
+                    controller_class.friendly.find(params[:id]) :
+                    controller_class.find(params[:id])
   end
 
   def permitted_params

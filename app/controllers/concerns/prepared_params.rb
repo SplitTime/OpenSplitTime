@@ -1,9 +1,12 @@
 class PreparedParams
 
+  attr_reader :search, :editable
+
   def initialize(params, permitted, permitted_query = nil)
     @params = params
     @permitted = permitted.map(&:to_s)
     @permitted_query = (permitted_query || permitted).map(&:to_s)
+    parse_filter_param
   end
 
   def [](method_name)
@@ -35,18 +38,6 @@ class PreparedParams
     @filter = filter_params.with_indifferent_access
   end
 
-  def search
-    @search ||= (params[:filter] || {})[:search].to_s.presence
-  end
-
-  def page
-    params[:page].is_a?(Hash) ? params[:page][:number] : params[:page]
-  end
-
-  def per_page
-    params[:page].is_a?(Hash) ? params[:page][:size] : params[:per_page]
-  end
-
   def method_missing(method)
     params[method]
   end
@@ -54,10 +45,17 @@ class PreparedParams
   private
 
   attr_reader :params, :permitted, :permitted_query
+  attr_writer :search, :editable
+
+  def parse_filter_param
+    params[:filter] = {} unless params[:filter].is_a?(ActionController::Parameters)
+    self.search = params[:filter].delete(:search).presence
+    self.editable = params[:filter].delete(:editable)&.to_boolean
+  end
 
   def transformed_filter_values
     permitted_filter_params.transform_values do |list|
-      items = list.is_a?(Array) ? list : list.to_s.split(',')
+      items = list.to_s.split(',')
       items.size > 1 ? items : items.first.presence
     end
   end
@@ -78,7 +76,11 @@ class PreparedParams
   end
 
   def permitted_filter_params
-    params[:filter]&.to_unsafe_hash.to_h.slice(*permitted_query) || {}
+    # ActionController::Parameters#permit will strip out any key whose value is an Array,
+    # so first convert any Arrays to comma-separated lists
+    params[:filter]&.each { |k,v| params[:filter][k] = v.join(',') if v.is_a?(Array) }
+    permitted_keys = permitted_query << :editable
+    params[:filter]&.permit(*permitted_keys) || {}
   end
 
   def sort_fields

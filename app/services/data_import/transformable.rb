@@ -68,6 +68,13 @@ module DataImport::Transformable
         end
   end
 
+  def slice_permitted!(permitted_params = nil)
+    permitted_params ||= params_class.permitted.to_set
+    to_h.keys.each do |key|
+      delete_field(key) unless permitted_params.include?(key)
+    end
+  end
+
   def split_field!(old_field, first_field, second_field, split_char = ' ')
     return unless self[old_field].present?
     old_value = delete_field(old_field)
@@ -77,21 +84,11 @@ module DataImport::Transformable
     self[first_field], self[second_field] = first_value, second_value
   end
 
-  def permit!(permitted_params)
-    to_h.keys.each do |key|
-      delete_field(key) unless permitted_params.include?(key)
-    end
-  end
-
   private
 
   def find_country_code_by_nickname(country_string)
     return nil if country_string.blank?
     country_code = I18n.t("nicknames.#{country_string}")
     country_code.include?('translation missing') ? nil : country_code
-  end
-
-  def params_class(model_name)
-    "#{model_name.to_s.classify}Parameters".constantize
   end
 end

@@ -1,12 +1,20 @@
 module DataImport
   module Errors
 
+    def data_not_present_error
+      {title: 'Data not present', detail: {messages: ['No data was provided']}}
+    end
+
     def file_not_found_error(file_path)
       {title: 'File not found', detail: {messages: ["File #{file_path} could not be read"]}}
     end
 
     def format_not_recognized_error(format)
       {title: 'Format not recognized', detail: {messages: ["data_format #{format} is not recognized"]}}
+    end
+
+    def invalid_json_error(string)
+      {title: 'Invalid JSON', detail: {messages: ["#{string} is not valid JSON"]}}
     end
 
     def invalid_proto_record_error(proto_record)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe DataImport::Csv::TransformSplitsStrategy do
-  subject { DataImport::Csv::TransformSplitsStrategy.new(parsed_structs, options) }
+RSpec.describe DataImport::Transformers::GenericSplitsStrategy do
+  subject { DataImport::Transformers::GenericSplitsStrategy.new(parsed_structs, options) }
 
   let(:course) { build_stubbed(:course, id: 10)}
   let(:event) { build_stubbed(:event, id: 1, course: course) }

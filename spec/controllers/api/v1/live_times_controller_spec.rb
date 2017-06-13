@@ -2,11 +2,58 @@ require 'rails_helper'
 
 describe Api::V1::LiveTimesController do
   login_admin
+  before do
+    event.splits << split
+  end
 
   let(:live_time) { FactoryGirl.create(:live_time, event: event, split: split) }
   let(:event) { FactoryGirl.create(:event, course: course) }
   let(:split) { FactoryGirl.create(:split, course: course) }
   let(:course) { FactoryGirl.create(:course) }
+
+  describe '#index' do
+    before do
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: '10:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 102, absolute_time: '11:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 103, absolute_time: '10:30:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 103, absolute_time: '16:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: '16:00:00', source: 'ost-test')
+    end
+
+    it 'returns a successful 200 response' do
+      get :index
+      expect(response.status).to eq(200)
+    end
+
+    it 'returns each live_time' do
+      get :index
+      expect(response.status).to eq(200)
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].size).to eq(5)
+      expect(parsed_response['data'].map { |item| item['id'].to_i }).to eq(LiveTime.all.map(&:id))
+    end
+
+    it 'sorts properly in ascending order based on a provided sort parameter' do
+      expected = [101, 101, 102, 103, 103]
+      get :index, sort: 'bib_number'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
+    end
+
+    it 'sorts properly in descending order based on a provided sort parameter with a minus sign' do
+      expected = [103, 103, 102, 101, 101]
+      get :index, sort: '-bibNumber'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
+    end
+
+    it 'sorts properly on multiple fields' do
+      expected = [101, 103, 102, 103, 101]
+      get :index, sort: '-absolute_time,bib_number'
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
+    end
+  end
 
   describe '#show' do
     it 'returns a successful 200 response' do
@@ -30,8 +77,8 @@ describe Api::V1::LiveTimesController do
   end
 
   describe '#create' do
-    let(:attributes) { {event_id: event.id, lap: 1, split_id: split.id, split_extension: 'in', bib_number: '101',
-                        absolute_time: '08:00:00', batch: '1'} }
+    let(:attributes) { {event_id: event.id, split_id: split.id, bitkey: 1, bib_number: '101',
+                        absolute_time: '08:00:00', source: 'ost-test', batch: '1'} }
 
     it 'returns a successful json response' do
       post :create, data: {type: 'live_times', attributes: attributes}

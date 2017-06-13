@@ -27,7 +27,7 @@ class ApplicationPolicy
     alias_method :viewable, :resolve_viewable
 
     def visible_records
-      scope.visible
+      scope.respond_to?(:visible) ? scope.visible : scope
     end
 
     def owned_records

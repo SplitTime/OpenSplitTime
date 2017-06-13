@@ -48,7 +48,7 @@ describe Api::V1::EffortsController do
     end
 
     context 'when provided with invalid attributes' do
-      let(:invalid_attributes) { {'event_id' => event.id, 'first_name' => 'Johnny'} }
+      let(:invalid_attributes) { {'eventId' => event.id, 'firstName' => 'Johnny'} }
 
       it 'returns a jsonapi error object and status code unprocessable entity' do
         post :create, data: {type: 'efforts', attributes: invalid_attributes}

@@ -64,4 +64,16 @@ RSpec.describe ProtoRecord, type: :model do
       expect(pr.record_class).to be_nil
     end
   end
+
+  describe '#params_class' do
+    it 'returns the class of the record_type' do
+      pr = ProtoRecord.new(record_type: :effort)
+      expect(pr.params_class).to eq(EffortParameters)
+    end
+
+    it 'returns nil when record_type is nil' do
+      pr = ProtoRecord.new
+      expect(pr.params_class).to be_nil
+    end
+  end
 end

@@ -11,7 +11,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.smtp_settings = {address: 'localhost', port: 25, domain: 'whatever.com'}
-  config.action_mailer.default_url_options = {host: 'http://localhost:3000'}
+  config.action_mailer.default_url_options = {host: ENV['BASE_URI']}
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true

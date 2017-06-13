@@ -1,18 +1,24 @@
 class LiveTime < ActiveRecord::Base
-  enum source: [:internal, :generic_api]
   include Auditable
 
   belongs_to :event
   belongs_to :split
   belongs_to :split_time
-  validates_presence_of :event, :split, :bib_number, :absolute_time
+  validates_presence_of :event, :split, :bib_number, :bitkey, :absolute_time, :source
   validate :course_is_consistent
+  validate :split_is_associated
   validate :split_is_consistent
 
   def course_is_consistent
     if event && split && (event.course_id != split.course_id)
       errors.add(:effort_id, 'the event.course_id does not resolve with the split.course_id')
       errors.add(:split_id, 'the event.course_id does not resolve with the split.course_id')
+    end
+  end
+
+  def split_is_associated
+    if event && split && event.splits.exclude?(split)
+      errors.add(:split_id, 'the split is not associated with the event')
     end
   end
 

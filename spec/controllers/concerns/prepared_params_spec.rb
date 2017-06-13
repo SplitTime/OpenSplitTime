@@ -260,7 +260,7 @@ describe PreparedParams do
     context 'when provided with a single field and an array of values' do
       let(:filter_params) { {'state_code' => %w(NM AZ NY)} }
 
-      it 'returns the array' do
+      it 'preserves the array' do
         expected = {'state_code' => %w(NM AZ NY)}
         validate_param('filter', expected)
       end
@@ -344,7 +344,7 @@ describe PreparedParams do
     end
 
     context 'when provided with combined' do
-      let(:gender_param) { ['combined'] }
+      let(:gender_param) { 'combined' }
 
       it 'returns an array containing numeric values for both genders' do
         expected = {'gender' => [0, 1]}
@@ -431,95 +431,26 @@ describe PreparedParams do
     end
   end
 
-  describe '#page' do
-    let(:params) { ActionController::Parameters.new(page_param) }
+  describe '#editable' do
+    let(:params) { ActionController::Parameters.new(filter: filter_params) }
     let(:permitted) { [] }
     let(:permitted_query) { [] }
 
-    context 'when page param contains a number key' do
-      let(:page_param) { {page: {number: 2}} }
+    context 'when provided with a [:filter][:editable] key as true' do
+      let(:filter_params) { {'editable' => 'true', 'state_code' => '', 'country_code' => 'US'} }
 
-      it 'returns the number' do
-        expected = 2
-        validate_param('page', expected)
+      it 'returns true' do
+        expected = true
+        validate_param('editable', expected)
       end
     end
 
-    context 'when page param contains a number key with no value' do
-      let(:page_param) { {page: {number: nil}} }
+    context 'when provided with a [:filter][:editable] key as false' do
+      let(:filter_params) { {'editable' => 'false', 'state_code' => '', 'country_code' => 'US'} }
 
-      it 'returns nil' do
-        expected = nil
-        validate_param('page', expected)
-      end
-    end
-
-    context 'when page param is not a hash but includes only a number' do
-      let(:page_param) { {page: 2} }
-
-      it 'returns the number' do
-        expected = 2
-        validate_param('page', expected)
-      end
-    end
-
-    context 'when no page param exists' do
-      let(:page_param) { {} }
-
-      it 'returns nil' do
-        expected = nil
-        validate_param('page', expected)
-      end
-    end
-  end
-
-  describe '#per_page' do
-    let(:params) { ActionController::Parameters.new(page_param) }
-    let(:permitted) { [] }
-    let(:permitted_query) { [] }
-
-    context 'when page param contains a size key' do
-      let(:page_param) { {page: {size: 100}} }
-
-      it 'returns the number' do
-        expected = 100
-        validate_param('per_page', expected)
-      end
-    end
-
-    context 'when page param contains a size key with no value' do
-      let(:page_param) { {page: {size: nil}} }
-
-      it 'returns nil' do
-        expected = nil
-        validate_param('per_page', expected)
-      end
-    end
-
-    context 'when page param is not a hash' do
-      let(:page_param) { {page: 2, per_page: 100} }
-
-      it 'returns the number' do
-        expected = 100
-        validate_param('per_page', expected)
-      end
-    end
-
-    context 'when page param has a size key and per_page param also exists' do
-      let(:page_param) { {page: {size: 50}, per_page: 100} }
-
-      it 'returns the value in page[:size]' do
-        expected = 50
-        validate_param('per_page', expected)
-      end
-    end
-
-    context 'when no page param or per_page param exists' do
-      let(:page_param) { {} }
-
-      it 'returns nil' do
-        expected = nil
-        validate_param('per_page', expected)
+      it 'returns false' do
+        expected = false
+        validate_param('editable', expected)
       end
     end
   end

@@ -5,8 +5,8 @@ module DataImport
     REPORT_ARRAYS = [:saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors]
     attr_reader *REPORT_ARRAYS
 
-    def initialize(file_path, format, options = {})
-      @file_path = file_path
+    def initialize(data_object, format, options = {})
+      @data_object = data_object
       @format = format
       @options = options
       @saved_records = []
@@ -19,17 +19,20 @@ module DataImport
     def import
       case format
       when :race_result_full
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy,
+        import_with(data_object, Readers::PassThroughStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::InsertStrategy, options)
       when :race_result_times
-        import_with(file_path, RaceResult::ReadStrategy, RaceResult::ParseStrategy, RaceResult::TransformStrategy,
+        import_with(data_object, Readers::PassThroughStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformEffortsStrategy,
+        import_with(data_object, Readers::CsvFileStrategy, Parsers::PassThroughStrategy, Transformers::GenericEffortsStrategy,
                     Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
       when :csv_splits
-        import_with(file_path, Csv::ReadStrategy, Csv::ParseStrategy, Csv::TransformSplitsStrategy,
+        import_with(data_object, Readers::CsvFileStrategy, Parsers::PassThroughStrategy, Transformers::GenericSplitsStrategy,
                     Loaders::UpsertStrategy, default_unique_key(:split).merge(options))
+      when :jsonapi_batch
+        import_with(data_object, Readers::PassThroughStrategy, Parsers::PassThroughStrategy, Transformers::JsonapiBatchStrategy,
+                    Loaders::UpsertStrategy, options)
       else
         self.errors << format_not_recognized_error(format)
       end
@@ -37,11 +40,11 @@ module DataImport
 
     private
 
-    attr_reader :file_path, :format, :options
+    attr_reader :data_object, :format, :options
     attr_writer *REPORT_ARRAYS
 
-    def import_with(file_path, read_strategy, parse_strategy, transform_strategy, load_strategy, options)
-      reader = DataImport::Reader.new(file_path, read_strategy)
+    def import_with(data_object, read_strategy, parse_strategy, transform_strategy, load_strategy, options)
+      reader = DataImport::Reader.new(data_object, read_strategy)
       raw_data = reader.read_file
       self.errors += reader.errors and return if reader.errors.present?
 

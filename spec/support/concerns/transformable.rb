@@ -254,13 +254,25 @@ shared_examples_for 'transformable' do
     end
   end
 
-  describe '#permit!' do
-    let(:attributes) { {first_name: 'Joe', age: 55, role: 'admin'} }
-    let(:permitted) { [:first_name, :last_name, :age] }
+  describe '#slice_permitted!' do
+    context 'when provided with a set of permitted parameters' do
+      let(:attributes) { {first_name: 'Joe', age: 55, role: 'admin'} }
+      let(:permitted) { [:first_name, :last_name, :age] }
 
-    it 'removes attributes that are not permitted' do
-      subject.permit!(permitted)
-      expect(subject.to_h).to eq({first_name: 'Joe', age: 55})
+      it 'removes attributes that are not in the provided permitted parameters' do
+        subject.slice_permitted!(permitted)
+        expect(subject.to_h).to eq({first_name: 'Joe', age: 55})
+      end
+    end
+
+    context 'when not provided with a set of permitted parameters' do
+      let(:attributes) { {record_type: :effort, first_name: 'Joe', age: 55, role: 'admin'} }
+
+      it 'removes attributes that are not found in the params class for the record_type' do
+        allow(EffortParameters).to receive(:permitted).and_return([:first_name, :last_name, :age])
+        subject.slice_permitted!
+        expect(subject.to_h).to eq({first_name: 'Joe', age: 55})
+      end
     end
   end
 

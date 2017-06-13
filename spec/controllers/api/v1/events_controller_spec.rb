@@ -31,7 +31,7 @@ describe Api::V1::EventsController do
     let(:params) { {course_id: course.id, name: 'Test Event', start_time: '2017-03-01 06:00:00', laps_required: 1} }
 
     it 'returns a successful json response' do
-      post :create, data: {type: 'events', attributes: params }
+      post :create, data: {type: 'events', attributes: params}
       expect(response.body).to be_jsonapi_response_for('events')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
@@ -40,7 +40,7 @@ describe Api::V1::EventsController do
 
     it 'creates an event record with a staging_id' do
       expect(Event.all.count).to eq(0)
-      post :create, data: {type: 'events', attributes: params }
+      post :create, data: {type: 'events', attributes: params}
       expect(Event.all.count).to eq(1)
       expect(Event.first.staging_id).not_to be_nil
     end
@@ -50,19 +50,19 @@ describe Api::V1::EventsController do
     let(:attributes) { {name: 'Updated Event Name'} }
 
     it 'returns a successful json response' do
-      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes }
+      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes}
       expect(response.body).to be_jsonapi_response_for('events')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes }
+      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes}
       event.reload
       expect(event.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the event does not exist' do
-      put :update, staging_id: 123, data: {type: 'events', attributes: attributes }
+      put :update, staging_id: 123, data: {type: 'events', attributes: attributes}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -163,52 +163,67 @@ describe Api::V1::EventsController do
     let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
     let(:event) { create(:event, course_id: course.id, laps_required: 1) }
-    let(:request_params) { {as: :json, staging_id: event.id, data_format: 'race_result_full'} }
-    let(:body) { {'list' => {'last_change' => '2016-06-04 21:58:25',
-                             'orders' => [],
-                             'filters' => [],
-                             'fields' => [
-                                 {'expression' => "iif([RANK1]>0;[RANK1];\"*\")", 'label' => 'Place'},
-                                 {'expression' => 'BIB', 'label' => 'Bib'},
-                                 {'expression' => 'CorrectSpelling([DisplayName])', 'label' => 'Name'},
-                                 {'expression' => 'SexMF', 'label' => 'Sex'},
-                                 {'expression' => "iif([AGE]>0;[AGE];\"n/a\")", 'label' => 'Age'},
-                                 {'expression' => 'Section1Split', 'label' => 'Aid1'},
-                                 {'expression' => 'Section2Split', 'label' => 'Aid2'},
-                                 {'expression' => 'Section3Split', 'label' => 'Aid3'},
-                                 {'expression' => 'Section4Split', 'label' => 'Aid4'},
-                                 {'expression' => 'Section5Split', 'label' => 'Aid5'},
-                                 {'expression' => 'Section6Split', 'label' => 'ToFinish'},
-                                 {'expression' => 'ElapsedTime', 'label' => 'Elapsed'},
-                                 {'expression' => 'TimeOrStatus([ChipTime])', 'label' => 'Time'},
-                                 {'expression' => "iif([TIMETEXT30]<>\"\" AND [STATUS]=0;[TIMETEXT30];\"*\")", 'label' => 'Pace'}
-                             ]},
-                  'data' => {'#1_50k' => [['5', '3', '5', 'Jatest Schtest', 'M', '39', '0:43:01.36', '1:02:07.50', '0:52:34.70', '1:08:27.81', '0:51:23.93', '0:18:01.15', '4:55:36.43', '4:55:36.43', '09:30'],
-                                          ['656', '28', '656', 'Tatest Notest', 'F', '26', '0:50:20.33', '1:14:15.40', '1:08:08.92', '1:18:06.69', '', '', '5:58:12.86', '5:58:12.86', '11:31'],
-                                          ['324', '31', '324', 'Justest Rietest', 'M', '26', '0:50:06.26', '1:15:46.73', '1:07:10.94', '1:22:20.34', '1:05:15.36', '0:20:29.76', '6:01:09.37', '6:01:09.37', '11:37'],
-                                          ['661', '*', '661', 'Castest Pertest', 'F', '31', '1:21:56.63', '2:38:01.85', '', '', '', '', '3:59:58.48', 'DNF', '*'],
-                                          ['633', '*', '633', 'Mictest Hintest', 'F', '35', '', '', '', '', '', '', '', 'DNS', '*']]}
-    } }
 
-    it 'returns a successful json response' do
-      post :import, request_params.merge(body)
-      expect(response.status).to eq(201)
+    context 'when provided with a file' do
+      let(:request_params) { {staging_id: event.staging_id, data_format: 'csv_efforts', file: file} }
+      let(:file) { file_fixture('test_efforts.csv') } # Should work in Rails 5
+
+      it 'returns a successful json response' do
+        skip 'Until Rails 5 upgrade'
+        post :import, request_params
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates efforts' do
+        skip 'Until Rails 5 upgrade'
+        expect(Effort.all.size).to eq(0)
+        post :import, request_params
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['message']).to match(/Import complete/)
+        expect(Effort.all.size).to eq(5)
+      end
+
+      it 'creates split_time records' do
+        skip 'Until Rails 5 upgrade'
+        expect(SplitTime.all.size).to eq(0)
+        post :import, request_params
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['message']).to match(/Import complete/)
+        expect(SplitTime.all.size).to eq(23)
+      end
     end
 
-    it 'creates efforts' do
-      expect(Effort.all.size).to eq(0)
-      post :import, request_params.merge(body)
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/Import complete/)
-      expect(Effort.all.size).to eq(5)
-    end
+    context 'when provided with an array of hashes and data_format: :jsonapi_batch' do
+      let(:split_id) { splits.first.id }
+      let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi_batch', data: data} }
+      let(:data) { [
+          {type: 'live_time',
+           attributes: {bibNumber: '101', splitId: split_id, bitkey: 1, absoluteTime: '10:45:45-06:00',
+                        withPacer: true, stoppedHere: false, source: 'ost-remote-1234'}},
+          {type: 'live_time',
+           attributes: {bibNumber: '101', splitId: split_id, bitkey: 64, absoluteTime: '10:50:50-06:00',
+                        withPacer: true, stoppedHere: true, source: 'ost-remote-1234'}}
+      ] }
 
-    it 'creates split_time records' do
-      expect(SplitTime.all.size).to eq(0)
-      post :import, request_params.merge(body)
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/Import complete/)
-      expect(SplitTime.all.size).to eq(23)
+      it 'returns a successful json response' do
+        post :import, request_params
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates live_times' do
+        expect(LiveTime.all.size).to eq(0)
+        post :import, request_params
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['data'].map { |record| record['type'] }).to all ( eq('liveTimes') )
+        expect(LiveTime.all.size).to eq(2)
+      end
+
+      it 'assigns attributes correctly' do
+        post :import, request_params
+        expect(LiveTime.all.map(&:bib_number)).to eq([101, 101])
+        expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
+        expect(LiveTime.all.map(&:absolute_time)).to eq(%w(10:45:45-06:00 10:50:50-06:00))
+      end
     end
   end
 end

@@ -1,5 +1,5 @@
 class Api::V1::EventsController < ApiController
-  before_action :set_event, except: :create
+  before_action :set_event, except: [:index, :create]
 
   # GET /api/v1/events/:staging_id
   def show
@@ -71,16 +71,30 @@ class Api::V1::EventsController < ApiController
 
   def import
     authorize @event
-    body = params.slice(:list, :data)
-    format = params[:data_format].to_sym
-    importer = DataImport::Importer.new(body, format, event: @event, current_user_id: current_user.id)
-    importer.import
-    if importer.errors.present? || importer.invalid_records.present?
-      render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
-             status: :unprocessable_entity
-    else
-      render json: {message: 'Import complete'}, status: :created
+
+    if params[:file]
+      params[:data] = File.read(params[:file])
     end
+
+    data_format = params[:data_format]&.to_sym
+    strict = params[:load_records] != 'single'
+    importer = DataImport::Importer.new(params[:data], data_format, event: @event, current_user_id: current_user.id, strict: strict)
+    importer.import
+
+    if strict
+      if importer.errors.present? || importer.invalid_records.present?
+        render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
+               status: :unprocessable_entity
+      else
+        render json: importer.saved_records, status: :created
+      end
+    else
+      render json: {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                    destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                    errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
+             status: importer.saved_records.present? ? :created : :unprocessable_entity
+    end
+
     if importer.saved_records.present? && @event.available_live
       split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
       notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
@@ -162,7 +176,7 @@ class Api::V1::EventsController < ApiController
 
   def set_event
     @event = params[:staging_id].uuid? ?
-                 Event.find_by!(staging_id: params[:staging_id]) :
-                 Event.friendly.find(params[:staging_id])
+        Event.find_by!(staging_id: params[:staging_id]) :
+        Event.friendly.find(params[:staging_id])
   end
 end

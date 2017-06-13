@@ -1,6 +1,6 @@
 ruby '2.3.3'
 source 'https://rubygems.org'
-gem 'rails', '4.2.7'
+gem 'rails', '~> 4.2.7'
 gem 'responders', '~> 2.0'
 gem 'bootstrap-sass'
 gem 'vuejs-rails'
@@ -12,7 +12,6 @@ gem 'jquery-fileupload-rails'
 gem 'jquery-ui-rails', '~> 5.0'
 gem 'switchery-rails'
 gem 'jbuilder', '~> 2.0'
-gem 'kaminari'
 gem 'turbolinks'
 gem 'high_voltage'
 gem 'omniauth'
@@ -32,6 +31,7 @@ gem 'foreman'
 gem 'rails_layout'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'api-pagination'
 gem 'twitter-bootstrap-rails'
 gem 'bulk_insert'
 gem 'descriptive_statistics'
@@ -65,7 +65,6 @@ group :development do
   gem 'bullet'
   gem 'quiet_assets'
   gem 'derailed_benchmarks'
-  gem 'active_record_query_trace'
   gem 'rails-erd'
 end
 
@@ -88,6 +87,7 @@ group :development, :test do
   gem 'rb-fsevent'
   gem 'pry-byebug'
   gem 'dotenv-rails'
+  gem 'active_record_query_trace'
 end
 
 group :production do

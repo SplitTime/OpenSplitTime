@@ -66,10 +66,12 @@ RSpec.describe LiveEffortMailData do
       in_split_name = multi_lap ? in_split_time.split_name_with_lap : in_split_time.split_name
       out_split_name = multi_lap ? out_split_time.split_name_with_lap : out_split_time.split_name
       split_times_data = [{split_name: in_split_name,
+                           split_distance: in_split_time.split.distance_from_start,
                            day_and_time: in_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
                            pacer: nil,
                            stopped_here: in_split_time.stopped_here},
                           {split_name: out_split_name,
+                           split_distance: out_split_time.split.distance_from_start,
                            day_and_time: out_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
                            pacer: nil,
                            stopped_here: out_split_time.stopped_here}]
@@ -77,8 +79,9 @@ RSpec.describe LiveEffortMailData do
       expected = {full_name: effort.full_name,
                   event_name: event.name,
                   split_times_data: split_times_data,
-                  effort_id: effort.id,
-                  event_id: event.id}
+                  effort_slug: effort.slug,
+                  event_slug: event.slug}
+      p expected
       expect(mail_data.effort_data).to eq(expected)
     end
   end

@@ -387,6 +387,16 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
+  describe '#lap_split' do
+    it 'returns a LapSplit object' do
+      lap = 2
+      split_time = SplitTime.new(lap: lap, split_id: 101, bitkey: in_bitkey)
+      split = Split.new(id: 101)
+      allow(split_time).to receive(:split).and_return(split)
+      expect(split_time.lap_split).to eq(LapSplit.new(lap, split))
+    end
+  end
+
   describe '#effort_lap_key' do
     it 'returns effort_id and lap in an EffortLapKey struct' do
       split_time = SplitTime.new(effort_id: 101, lap: 2)

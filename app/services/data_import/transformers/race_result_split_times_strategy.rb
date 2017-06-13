@@ -1,5 +1,5 @@
-module DataImport::RaceResult
-  class TransformStrategy
+module DataImport::Transformers
+  class RaceResultSplitTimesStrategy
     include DataImport::Errors
     attr_reader :errors
 
@@ -7,6 +7,7 @@ module DataImport::RaceResult
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options
       @errors = []
+      add_section_times! if time_keys.size.zero?
       validate_setup
     end
 
@@ -18,7 +19,7 @@ module DataImport::RaceResult
         proto_record.map_keys!({name: :full_name, sex: :gender, bib: :bib_number})
         proto_record.normalize_gender!
         proto_record.split_field!(:full_name, :first_name, :last_name)
-        proto_record.permit!(permitted_params)
+        proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)
       end
       proto_records
@@ -27,6 +28,13 @@ module DataImport::RaceResult
     private
 
     attr_reader :proto_records, :options
+
+    def add_section_times!
+      proto_records.each do |proto_record|
+        proto_record[:section1_split] = ((proto_record[:time] == 'DNS') ? '' : proto_record[:time])
+      end
+      @time_keys = ['section1_split']
+    end
 
     def transform_time_data!(proto_record)
       extract_times!(proto_record)
@@ -107,10 +115,6 @@ module DataImport::RaceResult
 
     def time_points
       @time_points ||= event.required_time_points
-    end
-
-    def permitted_params
-      EffortParameters.permitted.to_set
     end
 
     def validate_setup

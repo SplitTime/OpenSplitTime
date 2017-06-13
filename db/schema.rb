@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170612054310) do
+ActiveRecord::Schema.define(version: 20170613193552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,12 @@ ActiveRecord::Schema.define(version: 20170612054310) do
 
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
+
+  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",            limit: 64, null: false
@@ -179,6 +185,17 @@ ActiveRecord::Schema.define(version: 20170612054310) do
   add_index "participants", ["topic_resource_key"], name: "index_participants_on_topic_resource_key", unique: true, using: :btree
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
+  create_table "partner_ads", force: :cascade do |t|
+    t.integer  "event_id",               null: false
+    t.string   "image",                  null: false
+    t.string   "link",                   null: false
+    t.integer  "weight",     default: 1, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "partner_ads", ["event_id"], name: "index_partner_ads_on_event_id", using: :btree
+
   create_table "split_times", force: :cascade do |t|
     t.integer  "effort_id",                        null: false
     t.integer  "split_id",                         null: false
@@ -295,6 +312,7 @@ ActiveRecord::Schema.define(version: 20170612054310) do
   add_foreign_key "live_times", "split_times"
   add_foreign_key "live_times", "splits"
   add_foreign_key "participants", "users"
+  add_foreign_key "partner_ads", "events"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
   add_foreign_key "splits", "courses"

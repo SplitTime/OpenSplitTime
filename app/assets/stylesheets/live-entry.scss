@@ -23,356 +23,380 @@ Globals
 
 /******* Header ********/
 .header {
-	@extend .no-gutter;
-	position: relative;
-	border-bottom: 1px solid $gray;
+    @extend .no-gutter;
+    position: relative;
+    border-bottom: 1px solid $gray;
 
-	.page-navigation {
-		padding-top: 20px;
-		margin-bottom: 10px;
-		text-align: right;
-	}
+    .page-navigation {
+        padding-top: 20px;
+        margin-bottom: 10px;
+        text-align: right;
+    }
 
-  .page-navigation-text {
-    padding-top: 10px;
-    padding-bottom: 0px;
-    text-align: right;
-    vertical-align: bottom;
-  }
+    .partner-ad {
 
-  .event-id {
-		display: none;
-	}
+    }
+
+    .page-navigation-text {
+        padding-top: 10px;
+        padding-bottom: 0px;
+        text-align: right;
+        vertical-align: bottom;
+    }
+
+    .event-id {
+        display: none;
+    }
 }
 
 /******* Live Entry Form ********/
 .form-split-wrapper {
-	display: table;
-	@extend .no-gutter;
-	border-bottom: 1px solid $gray;
-	width: 100%;
+    display: table;
+    @extend .no-gutter;
+    border-bottom: 1px solid $gray;
+    width: 100%;
 
-	&.lap-disabled .lap-only {
-		display: none;
-	}
+    &.lap-disabled .lap-only {
+        display: none;
+    }
 
-	.live-entry {
-		margin: 0 auto 25px;
+    .live-entry {
+        margin: 0 auto 25px;
 
-		label {
-			text-align: right;
-			padding-top: 7px;
-		}
+        label {
+            text-align: right;
+            padding-top: 7px;
+        }
 
-		.message {
-			font-weight: bold;
-			font-style: italic;
-		}
+        .message {
+            font-weight: bold;
+            font-style: italic;
+        }
 
-		button {
-			text-align: center;
-			input[type="checkbox"] {
-				display: none;
-			}
-		}
+        button {
+            text-align: center;
+            input[type="checkbox"] {
+                display: none;
+            }
+        }
 
-		.form-buttons button {
-			width: 46%;
+        .form-buttons button {
+            width: 46%;
 
-			&:last-child {
-				margin-left: 4%;
-			}
-		}
-	}
+            &:last-child {
+                margin-left: 4%;
+            }
+        }
+    }
 
-  .time-status {
-  	display: none;
-    font-size: 16px;
-    padding: 6px 8px 4px 8px;
-    min-width: 54px;
-    text-align: center;
-  }
+    .time-status {
+        display: none;
+        font-size: 16px;
+        padding: 6px 8px 4px 8px;
+        min-width: 54px;
+        text-align: center;
+    }
 
-  .time-status, .time-mode {
-    span { display: none; }
-    .null { display: inline-block; }
-  }
+    .time-status, .time-mode {
+        span {
+            display: none;
+        }
+        .null {
+            display: inline-block;
+        }
+    }
 
-  input.good ~ .time-status { 
-  	display: table-cell;
-    .good { display: inline-block; }
-  }
+    input.good ~ .time-status {
+        display: table-cell;
+        .good {
+            display: inline-block;
+        }
+    }
 
-  input.bad ~ .time-status {
-  	display: table-cell;
-    .bad { display: inline-block; }
-  }
+    input.bad ~ .time-status {
+        display: table-cell;
+        .bad {
+            display: inline-block;
+        }
+    }
 
-  input.questionable ~ .time-status {
-  	display: table-cell;
-    .questionable { display: inline-block; }
-  }
+    input.questionable ~ .time-status {
+        display: table-cell;
+        .questionable {
+            display: inline-block;
+        }
+    }
 
-  input.exists ~ .time-status {
-  	display: table-cell;
-    .exists { display: inline-block; }
-  }
+    input.exists ~ .time-status {
+        display: table-cell;
+        .exists {
+            display: inline-block;
+        }
+    }
 
-  .time-mode {
-	cursor: pointer;
-	padding: 6px;
-  }
+    .time-mode {
+        cursor: pointer;
+        padding: 6px;
+    }
 
-  input:disabled ~ .time-mode {
-	pointer-events: none;
-    .null { display: none; }
-    .disabled { display: inline-block; }
-  }
+    input:disabled ~ .time-mode {
+        pointer-events: none;
+        .null {
+            display: none;
+        }
+        .disabled {
+            display: inline-block;
+        }
+    }
 
-  .form-group.rapid-mode .time-mode {
-    .null { display: none; }
-    .enabled { display: inline-block; }
-  }
+    .form-group.rapid-mode .time-mode {
+        .null {
+            display: none;
+        }
+        .enabled {
+            display: inline-block;
+        }
+    }
 
 }
 
 /******* Splits Slider ********/
 .splits-slider {
-	background: $lightGray;
-	display: table-cell;
-	padding: 20px 75px 40px;
-	height: 100%;
-	&-plotter {
-		position: relative;
-		top: 35px;
-		height: 75px;
-		margin: 0 30px;
+    background: $lightGray;
+    display: table-cell;
+    padding: 20px 75px 40px;
+    height: 100%;
+    &-plotter {
+        position: relative;
+        top: 35px;
+        height: 75px;
+        margin: 0 30px;
 
-		&:before {
-			content: "";
-			display: block;
-			width: 100%;
-			height: 3px;
-			left: 0;
-			background: $gray;
-			position: relative;
-		}
+        &:before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            left: 0;
+            background: $gray;
+            position: relative;
+        }
 
-		&.begin:before {
-			width: 50%;
-			left: 50%;
-		}
+        &.begin:before {
+            width: 50%;
+            left: 50%;
+        }
 
-		&.end:before {
-			width: 50%;
-			left: 0;
-		}
+        &.end:before {
+            width: 50%;
+            left: 0;
+        }
 
-		&.animate {
-			&:before,
-			.split-slider-item {
-				transition: all 0.6s ease-in-out;
-			}
-		}
+        &.animate {
+            &:before,
+            .split-slider-item {
+                transition: all 0.6s ease-in-out;
+            }
+        }
 
-		.split-slider-item {
-			position: absolute;
-			top: -8px;
-			display: none;
-			max-width: 120px;
-			min-width: 80px;
+        .split-slider-item {
+            position: absolute;
+            top: -8px;
+            display: none;
+            max-width: 120px;
+            min-width: 80px;
 
-			&-name, &-distance {
-				min-width: 100%;
-			}
+            &-name, &-distance {
+                min-width: 100%;
+            }
 
-			&-dot {
-				position: relative;
-				display: block;
-				background: $gray;
-				border-radius: 50%;
-				width: 20px;
-				height: 20px;
-				margin: 0 auto;
-				&:after {
-					display: block;
-					content: "\000A";
-					white-space: pre;
-				}
-			}
+            &-dot {
+                position: relative;
+                display: block;
+                background: $gray;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                margin: 0 auto;
+                &:after {
+                    display: block;
+                    content: "\000A";
+                    white-space: pre;
+                }
+            }
 
-			&.active,
-			&.inactive {
-				display: block;
-				opacity: 100%;
+            &.active,
+            &.inactive {
+                display: block;
+                opacity: 100%;
 
-				&.begin {
-					left: 0;
-					@include transform( translateX(-50%) );
-					text-align: left;
-					.split-slider-item-name,
-					.split-slider-item-distance {
-						@include transform( translateX(50%) );
-					}
-				}
+                &.begin {
+                    left: 0;
+                    @include transform(translateX(-50%));
+                    text-align: left;
+                    .split-slider-item-name,
+                    .split-slider-item-distance {
+                        @include transform(translateX(50%));
+                    }
+                }
 
-				&.middle {
-					left: 50%;
-					@include transform( translateX(-50%) );
-					text-align: center;
-				}
+                &.middle {
+                    left: 50%;
+                    @include transform(translateX(-50%));
+                    text-align: center;
+                }
 
-				&.end {
-					left: 100%;
-					@include transform( translateX(-50%) );
-					text-align: right;
-					.split-slider-item-name,
-					.split-slider-item-distance {
-						@include transform( translateX(-50%) );
-					}
-				}
-			}
+                &.end {
+                    left: 100%;
+                    @include transform(translateX(-50%));
+                    text-align: right;
+                    .split-slider-item-name,
+                    .split-slider-item-distance {
+                        @include transform(translateX(-50%));
+                    }
+                }
+            }
 
-			&.inactive {
-				opacity: 0;
-			}
+            &.inactive {
+                opacity: 0;
+            }
 
-			&-name,
-			&-distance {
-				display: inline-block;
-			}
+            &-name,
+            &-distance {
+                display: inline-block;
+            }
 
-			&-name {
-				font-weight: bold;
-				padding-top: 15px;
-			}
+            &-name {
+                font-weight: bold;
+                padding-top: 15px;
+            }
 
-			&-distance {
-				display: block;
-			}
-		}
-	}
+            &-distance {
+                display: block;
+            }
+        }
+    }
 
-	.splits-slider-data {
-		margin-top: 75px;
+    .splits-slider-data {
+        margin-top: 75px;
 
-		[data-toggle="modal"] {
-			cursor: pointer;
-		}
+        [data-toggle="modal"] {
+            cursor: pointer;
+        }
 
-		.data-label {
-			text-align: right;
-			clear: left;
-		}
-	}
+        .data-label {
+            text-align: right;
+            clear: left;
+        }
+    }
 }
 
 /******* Provisional Data Table ********/
 .provisional-data {
 
-	&.lap-disabled .lap-only {
-		display: none;
-	}
-	
-	.provisional-data-table {
-		th {
-			cursor: pointer;
+    &.lap-disabled .lap-only {
+        display: none;
+    }
 
-			@media (min-width: 992px) {
-				&.sorting,
-				&.sorting_asc,
-				&.sorting_desc {
-					position: relative;
+    .provisional-data-table {
+        th {
+            cursor: pointer;
 
-					&:before,
-					&:after {
-						display: block;
-						position: absolute;
-						right: 10px;
-						font-size: 10px;
-						line-height: 12px;
-						color: $mediumGray;
-					}
+            @media (min-width: 992px) {
+                &.sorting,
+                &.sorting_asc,
+                &.sorting_desc {
+                    position: relative;
 
-					&:before {
-						content: '\25B2';
-						bottom: 50%;
-					}
-					
-					&:after {
-						content: '\25BC';
-						top: 50%;
-					}
-				}
+                    &:before,
+                    &:after {
+                        display: block;
+                        position: absolute;
+                        right: 10px;
+                        font-size: 10px;
+                        line-height: 12px;
+                        color: $mediumGray;
+                    }
 
-				&.sorting_asc:before {
-					color: inherit;
-				}
+                    &:before {
+                        content: '\25B2';
+                        bottom: 50%;
+                    }
 
-				&.sorting_desc:after {
-					color: inherit;
-				}
-			}
-		}
+                    &:after {
+                        content: '\25BC';
+                        top: 50%;
+                    }
+                }
 
-		td {
-			vertical-align: middle;
-		}
-	}
+                &.sorting_asc:before {
+                    color: inherit;
+                }
 
-	.dataTables_filter {
-		text-align: right;
+                &.sorting_desc:after {
+                    color: inherit;
+                }
+            }
+        }
 
-		.dataTables_filter-clear {
-			display: none;
-			cursor: pointer;
-			pointer-events: all;
-		}
-	}
+        td {
+            vertical-align: middle;
+        }
+    }
 
-	.dataTables_length, .dataTables_filter {
-		select, .input-group {
-			margin: 0 5px;
-		}
-	}
+    .dataTables_filter {
+        text-align: right;
 
-	.row-edit-btns {
-		text-align: right;
-		min-width: 7.0em;
-		box-sizing: content-box;
+        .dataTables_filter-clear {
+            display: none;
+            cursor: pointer;
+            pointer-events: all;
+        }
+    }
 
-		.effort-row-btn {
-			display: inline-block;
-			margin-left: 0.20em;
-			width: 2em;
-			height: 2em;
-			text-align: center;
-			padding: 0;
-			line-height: 1;
-			-webkit-border-radius: 14px;
-			-moz-border-radius: 14px;
-			border-radius: 14px;
+    .dataTables_length, .dataTables_filter {
+        select, .input-group {
+            margin: 0 5px;
+        }
+    }
 
-			&:first-child {
-				margin-left: 0;
-			}
-		}
-	}
+    .row-edit-btns {
+        text-align: right;
+        min-width: 7.0em;
+        box-sizing: content-box;
 
-	.table-submit-wrapper {
-		text-align: right;
-		margin-bottom: 4em;
+        .effort-row-btn {
+            display: inline-block;
+            margin-left: 0.20em;
+            width: 2em;
+            height: 2em;
+            text-align: center;
+            padding: 0;
+            line-height: 1;
+            -webkit-border-radius: 14px;
+            -moz-border-radius: 14px;
+            border-radius: 14px;
 
-		> * {
-			margin: 0 1.5em 1em 0;
-		}
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
 
-		button {
-			padding: 0.5em 1.5em;
-		}
-	}
+    .table-submit-wrapper {
+        text-align: right;
+        margin-bottom: 4em;
+
+        > * {
+            margin: 0 1.5em 1em 0;
+        }
+
+        button {
+            padding: 0.5em 1.5em;
+        }
+    }
 }
 
 #debug {
-	display: none;
+    display: none;
 }

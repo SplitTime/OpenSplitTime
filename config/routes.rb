@@ -90,6 +90,7 @@ Rails.application.routes.draw do
   resources :split_times
   resources :aid_stations, except: [:index, :new, :create]
   resources :subscriptions, only: [:create, :destroy]
+  resources :partner_ads
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

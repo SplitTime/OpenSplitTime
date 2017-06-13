@@ -1,0 +1,29 @@
+<%# Requires parameter partner_ads %>
+
+<%= link_to 'Add Partner', new_partner_ad_path, class: "btn btn-sm btn-success" %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Image Location</th>
+    <th>Partner Link</th>
+    <th>Weight</th>
+    <th>Actions</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% partner_ads.each do |partner_ad| %>
+      <tr>
+        <td><%= partner_ad.image %></td>
+        <td><%= partner_ad.link %></td>
+        <td><%= partner_ad.weight %></td>
+        <td>
+          <%= link_to 'Edit', edit_partner_ad_path(partner_ad), class: "btn btn-sm btn-primary" %>
+          <%= link_to 'Delete', partner_ad_path(partner_ad), method: :delete,
+                      data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

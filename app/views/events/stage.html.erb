@@ -145,6 +145,10 @@
                     disabled: @event_stage.view_text == 'problems',
                     class: 'btn btn-sm btn-primary',
                     search: params[:search] %>
+        <%= link_to 'Show partners',
+                    stage_event_path(@event_stage.event, view: 'partners'),
+                    disabled: @event_stage.view_text == 'partners',
+                    class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
   </div>
@@ -159,6 +163,8 @@
     <% else %>
         <h4>No splits are associated with this event.</h4>
     <% end %>
+<% elsif @event_stage.view_text == 'partners' %>
+    <%= render 'partner_ad_list', partner_ads: @event_stage.partner_ads %>
 <% else %>
     <% if @event_stage.efforts_count < 1 %>
         <strong>No efforts are associated with this event.</strong>

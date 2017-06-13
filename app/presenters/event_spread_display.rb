@@ -36,6 +36,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
+  def show_partner_ads?
+    event.available_live && event.partner_ads.present?
+  end
+
   private
 
   delegate :multiple_laps?, to: :event

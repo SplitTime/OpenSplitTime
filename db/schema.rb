@@ -37,12 +37,6 @@ ActiveRecord::Schema.define(version: 20170613222825) do
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
 
-  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
-    t.string   "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "courses", force: :cascade do |t|
     t.string   "name",            limit: 64, null: false
     t.text     "description"

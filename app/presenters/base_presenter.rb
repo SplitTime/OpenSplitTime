@@ -4,16 +4,8 @@ class BasePresenter
     raise NotImplementedError, "#{self.class.name} is an abstract class."
   end
 
-  def sort_hash
-    params[:sort]
-  end
-
-  def sort_string
-    sort_hash.map { |field, direction| "#{(direction == :desc ? '-' : '')}#{field}" }.join(',')
-  end
-
-  def search_text
-    params[:search]
+  def current_user
+    params[:current_user]
   end
 
   def filter_hash
@@ -30,6 +22,18 @@ class BasePresenter
 
   def per_page
     params[:per_page] || 25
+  end
+
+  def search_text
+    params[:search]
+  end
+
+  def sort_hash
+    params[:sort]
+  end
+
+  def sort_string
+    sort_hash.map { |field, direction| "#{(direction == :desc ? '-' : '')}#{field}" }.join(',')
   end
 
   private

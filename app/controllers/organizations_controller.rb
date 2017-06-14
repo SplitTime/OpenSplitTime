@@ -11,7 +11,8 @@ class OrganizationsController < ApplicationController
 
   def show
     params[:view] ||= 'events'
-    @organization_show = OrganizationShowView.new(@organization, params)
+    params[:current_user] = current_user
+    @presenter = OrganizationPresenter.new(@organization, params)
     session[:return_to] = organization_path(@organization)
   end
 

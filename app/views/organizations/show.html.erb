@@ -1,18 +1,18 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show organization - #{@organization.name}" %>
+    <% "OpenSplitTime: Show organization - #{@presenter.name}" %>
 <% end %>
 <div class="row header">
   <div class="col-xs-7">
-    <h2><strong><%= @organization.name %></strong></h2>
+    <h2><strong><%= @presenter.name %></strong></h2>
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="row">
-      <% if @current_user && @current_user.authorized_to_edit?(@organization) %>
-          <%= link_to 'Add/remove stewards', stewards_organization_path(@organization), class: "btn btn-sm btn-warning" %>
+      <% if @current_user && @current_user.authorized_to_edit?(@presenter.organization) %>
+          <%= link_to 'Add/remove stewards', stewards_organization_path(@presenter), class: "btn btn-sm btn-warning" %>
           <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-sm btn-success" %>
-          <%= link_to 'Edit this organization', edit_organization_path(@organization), class: "btn btn-sm btn-primary" %>
+          <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-sm btn-primary" %>
           <%= link_to 'Delete this organization',
-                      organization_path(@organization),
+                      organization_path(@presenter),
                       method: :delete,
                       data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
       <% end %>
@@ -22,28 +22,28 @@
 
 <div class="row">
   <div class="col-md-7">
-    <%= @organization_show.description %>
+    <%= @presenter.description %>
   </div>
 </div>
 
 <div class="row header">
   <div class="col-xs-5">
-    <h3><%= @organization_show.view_text.titleize %></h3>
+    <h3><%= @presenter.view_text.titleize %></h3>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <div class="btn-group">
         <%= link_to 'Show courses',
-                    organization_path(@organization_show.organization, view: 'courses'),
+                    organization_path(@presenter, view: 'courses'),
                     disabled: params[:view] == 'courses',
                     class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Show events',
-                    organization_path(@organization_show.organization, view: 'events'),
+                    organization_path(@presenter, view: 'events'),
                     disabled: params[:view] == 'events',
                     class: 'btn btn-sm btn-primary' %>
-        <% if @current_user && @current_user.authorized_to_edit?(@organization_show.organization) %>
+        <% if @current_user && @current_user.authorized_to_edit?(@presenter.organization) %>
             <%= link_to 'Show stewards',
-                        organization_path(@organization_show.organization, view: 'stewards'),
+                        organization_path(@presenter, view: 'stewards'),
                         disabled: params[:view] == 'stewards',
                         class: 'btn btn-sm btn-primary' %>
         <% end %>
@@ -53,20 +53,20 @@
 </div>
 
 <% if params[:view] == 'courses' %>
-    <% if @organization_show.courses_count > 0 %>
-        <%= render 'courses/courses', courses: @organization_show.courses %>
+    <% if @presenter.courses_count > 0 %>
+        <%= render 'courses/courses', courses: @presenter.courses %>
     <% else %>
         <h4>No courses are associated with this organization.</h4>
     <% end %>
 <% elsif params[:view] == 'stewards' %>
-    <% if @organization_show.stewards_count > 0 %>
-        <%= render 'stewards_list', stewards: @organization_show.stewards %>
+    <% if @presenter.stewards_count > 0 %>
+        <%= render 'stewards_list', stewards: @presenter.stewards %>
     <% else %>
         <h4>No stewards have been added to this organization.</h4>
     <% end %>
 <% else %>
-    <% if @organization_show.events_count > 0 %>
-        <%= render 'events/events', events: @organization_show.events %>
+    <% if @presenter.events_count > 0 %>
+        <%= render 'events/events', events: @presenter.events %>
     <% else %>
         <h4>No events are associated with this organization.</h4>
     <% end %>

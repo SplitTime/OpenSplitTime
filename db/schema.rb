@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613193552) do
+ActiveRecord::Schema.define(version: 20170613222825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -186,12 +186,15 @@ ActiveRecord::Schema.define(version: 20170613193552) do
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "partner_ads", force: :cascade do |t|
-    t.integer  "event_id",               null: false
-    t.string   "image",                  null: false
-    t.string   "link",                   null: false
-    t.integer  "weight",     default: 1, null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "event_id",                        null: false
+    t.string   "link",                            null: false
+    t.integer  "weight",              default: 1, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "banner_file_name"
+    t.string   "banner_content_type"
+    t.integer  "banner_file_size"
+    t.datetime "banner_updated_at"
   end
 
   add_index "partner_ads", ["event_id"], name: "index_partner_ads_on_event_id", using: :btree

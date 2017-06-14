@@ -58,6 +58,7 @@ gem 'font-awesome-rails'
 gem 'pg_search'
 gem 'smarter_csv'
 gem 'american_date'
+gem 'paperclip', '~> 5.0.0'
 
 group :development do
   gem 'web-console', '~> 2.0'

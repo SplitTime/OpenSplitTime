@@ -156,4 +156,45 @@ RSpec.describe Event, type: :model do
       expect(event.maximum_laps).to eq(nil)
     end
   end
+
+  describe '#pick_ad' do
+    context 'where multiple ads for the event exist and multiple ads for an unrelated event exist' do
+      let!(:event) { create(:event) }
+      let!(:wrong_event) { create(:event) }
+      let!(:related_ads) { create_list(:partner_ad, 4, event: event) }
+      let!(:unrelated_ads) { create_list(:partner_ad, 4, event: wrong_event) }
+
+      it 'returns a random ad for the event' do
+        partner_ads = []
+        100.times { partner_ads << event.pick_ad }
+        expect(partner_ads.map(&:event_id).uniq).to eq([event.id])
+      end
+    end
+
+    context 'where multiple ads for the event exist and one is weighted more highly' do
+      # Four ads with weight: 1 and one ad with weight: 10 means the weighted ad should receive,
+      # on average, about 71% of hits.
+      let!(:event) { create(:event) }
+      let!(:weighted_ad) { create(:partner_ad, event: event, weight: 10) }
+      let!(:unweighted_ads) { create_list(:partner_ad, 4, event: event) }
+
+      it 'returns a random ad giving weight to the weighted ad' do
+        partner_ads = []
+        100.times { partner_ads << event.pick_ad }
+        partner_ads_count = partner_ads.count_by(&:id)
+        expect(partner_ads_count[weighted_ad.id]).to be > (50)
+        unweighted_ads.each do |unweighted_ad|
+          expect(partner_ads_count[unweighted_ad.id]).to be_between(1, 20).inclusive
+        end
+      end
+    end
+
+    context 'where no ads for the event exist' do
+      let!(:event) { create(:event) }
+
+      it 'returns nil' do
+        expect(event.pick_ad).to be_nil
+      end
+    end
+  end
 end

@@ -10,7 +10,7 @@
       <br/>
       Run on <%= link_to @spread_display.course_name, course_path(@spread_display.course) %>
       <% if @spread_display.organization %>
-          <br/>Organized under <%= link_to @spread_display.organization_name, organization_path(@spread_display.organization) %>
+          <br/>Organized by <%= link_to @spread_display.organization_name, organization_path(@spread_display.organization) %>
       <% end %>
     </h4>
   </div>
@@ -49,12 +49,17 @@
   </div>
 </div>
 
+<% if @spread_display.show_partner_ads? %>
+    <%= render 'partner_ad', view_model: @spread_display %>
+<% end %>
+
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
     <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
                                                        display_style: params[:display_style],
-                                                       sort: reversed_sort_param(@spread_display, :overall_rank)) %></th>
+                                                       sort: reversed_sort_param(@spread_display, :overall_rank)) %>
+    </th>
     <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
                                              display_style: params[:display_style],
                                              sort: reversed_sort_param(@spread_display, :bib_number)) %></th>

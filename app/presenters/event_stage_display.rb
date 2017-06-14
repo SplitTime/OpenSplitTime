@@ -1,7 +1,7 @@
 class EventStageDisplay < EventWithEffortsPresenter
 
   attr_reader :associated_splits
-  delegate :id, :unreconciled_efforts, :unreconciled_efforts?, :started?, to: :event
+  delegate :id, :unreconciled_efforts, :unreconciled_efforts?, :started?, :partner_ads, to: :event
 
   def post_initialize(args)
     @associated_splits ||= event.ordered_splits.to_a
@@ -40,7 +40,7 @@ class EventStageDisplay < EventWithEffortsPresenter
   end
 
   def view_text
-    %w(splits efforts problems).include?(params[:view]) ? params[:view] : 'efforts'
+    %w(splits efforts problems partners).include?(params[:view]) ? params[:view] : 'efforts'
   end
 
   private

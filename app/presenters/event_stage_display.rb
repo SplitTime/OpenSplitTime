@@ -1,7 +1,7 @@
 class EventStageDisplay < EventWithEffortsPresenter
 
   attr_reader :associated_splits
-  delegate :id, :unreconciled_efforts, :unreconciled_efforts?, :started?, :partner_ads, to: :event
+  delegate :id, :unreconciled_efforts, :unreconciled_efforts?, :started?, :partners, to: :event
 
   def post_initialize(args)
     @associated_splits ||= event.ordered_splits.to_a

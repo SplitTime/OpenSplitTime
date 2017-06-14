@@ -49,8 +49,8 @@
   </div>
 </div>
 
-<% if @spread_display.show_partner_ads? %>
-    <%= render 'partner_ad', view_model: @spread_display %>
+<% if @spread_display.show_partner_banners? %>
+    <%= render 'partner_banner', view_model: @spread_display %>
 <% end %>
 
 <table class="table table-condensed table-striped">

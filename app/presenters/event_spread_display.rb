@@ -36,12 +36,12 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
-  def show_partner_ads?
-    event.available_live && event.partner_ads.present?
+  def show_partner_banners?
+    event.available_live && event.partners.present?
   end
 
-  def partner_ad
-    @partner_ad ||= event.pick_ad
+  def partner
+    @partner ||= event.pick_partner
   end
 
   private

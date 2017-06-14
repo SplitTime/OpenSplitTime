@@ -10,12 +10,13 @@ require 'rails_helper'
 # t.integer  "banner_file_size"
 # t.datetime "banner_updated_at"
 
-RSpec.describe PartnerAd, type: :model do
-  it { is_expected.to strip_attribute(:link).collapse_spaces }
+RSpec.describe Partner, type: :model do
+  it { is_expected.to strip_attribute(:name).collapse_spaces }
+  it { is_expected.to strip_attribute(:banner_link).collapse_spaces }
 
   describe '#initialize' do
     it 'initializes with an event_id, a link URL, and a weight' do
-      expect { create(:partner_ad) }.not_to raise_error
+      expect { create(:partner) }.not_to raise_error
     end
   end
 end

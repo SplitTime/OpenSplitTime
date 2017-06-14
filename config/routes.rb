@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get '/.well-known/acme-challenge/:id' => 'visitors#letsencrypt'
 
   devise_for :users, :controllers => {registrations: 'registrations'}
+
   resources :users do
     member { get :participants }
     member { post :add_interest }
@@ -30,11 +31,33 @@ Rails.application.routes.draw do
     member { get :edit_preferences }
     member { put :update_preferences }
   end
+
+  resources :aid_stations, except: [:index, :new, :create]
+
   resources :courses do
     member { get :best_efforts }
     member { get :plan_effort }
     member { get :segment_picker }
   end
+
+  resources :efforts do
+    collection { put :associate_participants }
+    member { put :edit_split_times }
+    member { patch :update_split_times }
+    member { put :start }
+    member { delete :delete_split_times }
+    member { put :confirm_split_times }
+    member { put :set_data_status }
+    member { get :analyze }
+    member { get :place }
+    collection { post :mini_table }
+    member { get :add_beacon }
+    member { get :add_report }
+    member { put :add_photo }
+    member { get :show_photo }
+    collection { get :subregion_options }
+  end
+
   resources :events do
     member { post :import_csv }
     member { post :import_splits }
@@ -57,11 +80,12 @@ Rails.application.routes.draw do
     member { get :export_to_ultrasignup }
     member { get :find_problem_effort }
   end
-  resources :splits
+
   resources :organizations do
     member { get :stewards }
     member { put :remove_steward }
   end
+
   resources :participants do
     collection { get :subregion_options }
     member { get :avatar_claim }
@@ -70,27 +94,12 @@ Rails.application.routes.draw do
     member { put :combine }
     member { delete :remove_effort }
   end
-  resources :efforts do
-    collection { put :associate_participants }
-    member { put :edit_split_times }
-    member { patch :update_split_times }
-    member { put :start }
-    member { delete :delete_split_times }
-    member { put :confirm_split_times }
-    member { put :set_data_status }
-    member { get :analyze }
-    member { get :place }
-    collection { post :mini_table }
-    member { get :add_beacon }
-    member { get :add_report }
-    member { put :add_photo }
-    member { get :show_photo }
-    collection { get :subregion_options }
-  end
+
+  resources :partners
   resources :split_times
-  resources :aid_stations, except: [:index, :new, :create]
+  resources :splits
   resources :subscriptions, only: [:create, :destroy]
-  resources :partner_ads
+
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout

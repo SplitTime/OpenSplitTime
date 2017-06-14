@@ -13,7 +13,7 @@ class Event < ActiveRecord::Base
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
   has_many :live_times
-  has_many :partner_ads
+  has_many :partners
 
   validates_presence_of :course_id, :name, :start_time, :laps_required
   validates_uniqueness_of :name, case_sensitive: false
@@ -99,7 +99,7 @@ class Event < ActiveRecord::Base
     efforts.ranked_with_finish_status(args)
   end
 
-  def pick_ad
-    partner_ads.map { |ad| [ad] * ad.weight }.flatten.shuffle.first
+  def pick_partner
+    partners.map { |partner| [partner] * partner.weight }.flatten.shuffle.first
   end
 end

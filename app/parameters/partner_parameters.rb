@@ -1,6 +1,6 @@
 class PartnerParameters < BaseParameters
 
   def self.permitted
-    [:id, :event_id, :banner, :link, :weight]
+    [:id, :name, :event_id, :banner, :banner_link, :weight]
   end
 end

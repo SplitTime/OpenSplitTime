@@ -15,23 +15,23 @@ class EventPolicy < ApplicationPolicy
   end
 
   def spread?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def import?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def import_splits?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def import_csv?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def import_efforts?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def stage?
@@ -91,7 +91,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def aid_station_detail?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def add_beacon?
@@ -105,35 +105,35 @@ class EventPolicy < ApplicationPolicy
   # Policies for live namespace
 
   def live_entry?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def progress_report?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def aid_station_report?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def event_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def live_effort_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def effort_table?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def post_file_effort_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def set_times_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   # Policies for staging namespace
@@ -143,19 +143,19 @@ class EventPolicy < ApplicationPolicy
   end
 
   def get_locations?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def event_staging_app?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def post_event_course_org?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def update_event_visibility?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def new_staging?

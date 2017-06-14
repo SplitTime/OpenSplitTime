@@ -16,7 +16,7 @@
         <td><%= l(event.start_time, format: :full_with_time) %></td>
         <td><%= "#{pluralize(event.effort_count, 'effort')}" %></td>
         <td>
-          <% if @current_user && event.available_live && @current_user.authorized_for_live?(event) %>
+          <% if @current_user && event.available_live && @current_user.authorized_to_edit?(event) %>
               <%= link_to 'Live Entry', live_entry_live_event_path(event), class: "btn btn-xs btn-warning" %>
           <% end %>
         </td>

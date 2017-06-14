@@ -22,13 +22,13 @@ module EventsHelper
   end
 
   def link_to_enter_live_entry(view_object, current_user)
-    if current_user && current_user.authorized_for_live?(view_object) && view_object.available_live
-      link_to 'Live Data Entry', live_entry_live_event_path(view_object.event), method: :get, class: 'btn btn-sm btn-warning'
+    if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.available_live
+      link_to 'Live Data Entry', live_entry_live_event_path(view_object), method: :get, class: 'btn btn-sm btn-warning'
     end
   end
 
   def link_to_classic_admin(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object)
+    if current_user && current_user.authorized_to_edit?(view_object.event)
       link_to 'Classic Admin', stage_event_path(view_object),
               disabled: stage_button_disabled?(view_object.class),
               class: 'btn btn-sm btn-primary'
@@ -36,14 +36,14 @@ module EventsHelper
   end
 
   def link_to_event_staging(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object)
+    if current_user && current_user.authorized_to_edit?(view_object.event)
       link_to 'Event Staging (beta)', "#{event_staging_app_path(view_object)}#/#{event_staging_app_page(view_object)}",
               class: 'btn btn-sm btn-primary'
     end
   end
 
   def link_to_download_spread_csv(view_object, current_user)
-    if current_user && current_user.authorized_for_live?(view_object) && view_object.event_finished?
+    if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',
               spread_event_path(view_object.event, format: :csv, display_style: view_object.display_style, sort: view_object.sort_hash),
               method: :get, class: 'btn btn-sm btn-success'

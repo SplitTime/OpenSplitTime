@@ -1,11 +1,11 @@
-<%# Requires parameter partner_ads %>
+<%# Requires parameters partner_ads, view_model %>
 
-<%= link_to 'Add Partner', new_partner_ad_path, class: "btn btn-sm btn-success" %>
+<%= link_to 'Add Partner', new_partner_ad_path(event_id: view_model.id), class: "btn btn-sm btn-success" %>
 
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th>Image Location</th>
+    <th>Image</th>
     <th>Partner Link</th>
     <th>Weight</th>
     <th>Actions</th>
@@ -15,8 +15,8 @@
   <tbody>
   <% partner_ads.each do |partner_ad| %>
       <tr>
-        <td><%= partner_ad.image %></td>
-        <td><%= partner_ad.link %></td>
+        <td><%= image_tag partner_ad.banner.url(:small) %></td>
+        <td><%= link_to partner_ad.link, url_with_protocol(partner_ad.link), target: '_blank' %></td>
         <td><%= partner_ad.weight %></td>
         <td>
           <%= link_to 'Edit', edit_partner_ad_path(partner_ad), class: "btn btn-sm btn-primary" %>

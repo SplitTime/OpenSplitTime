@@ -164,7 +164,7 @@
         <h4>No splits are associated with this event.</h4>
     <% end %>
 <% elsif @event_stage.view_text == 'partners' %>
-    <%= render 'partner_ad_list', partner_ads: @event_stage.partner_ads %>
+    <%= render 'partner_ad_list', partner_ads: @event_stage.partner_ads, view_model: @event_stage %>
 <% else %>
     <% if @event_stage.efforts_count < 1 %>
         <strong>No efforts are associated with this event.</strong>

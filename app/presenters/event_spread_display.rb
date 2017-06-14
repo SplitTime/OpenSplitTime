@@ -40,6 +40,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     event.available_live && event.partner_ads.present?
   end
 
+  def partner_ad
+    @partner_ad ||= event.pick_ad
+  end
+
   private
 
   delegate :multiple_laps?, to: :event

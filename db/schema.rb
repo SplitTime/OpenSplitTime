@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614125325) do
+ActiveRecord::Schema.define(version: 20170614135807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -181,7 +181,7 @@ ActiveRecord::Schema.define(version: 20170614125325) do
 
   create_table "partners", force: :cascade do |t|
     t.integer  "event_id",                        null: false
-    t.string   "banner_link",                     null: false
+    t.string   "banner_link"
     t.integer  "weight",              default: 1, null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(version: 20170614125325) do
     t.string   "banner_content_type"
     t.integer  "banner_file_size"
     t.datetime "banner_updated_at"
-    t.string   "name"
+    t.string   "name",                            null: false
   end
 
   add_index "partners", ["event_id"], name: "index_partners_on_event_id", using: :btree

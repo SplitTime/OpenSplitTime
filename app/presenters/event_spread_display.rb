@@ -37,11 +37,11 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def show_partner_banners?
-    event.available_live && event.partners.present?
+    event.available_live && partner_with_banner
   end
 
-  def partner
-    @partner ||= event.pick_partner_with_banner
+  def partner_with_banner
+    @partner_with_banner ||= event.pick_partner_with_banner
   end
 
   private

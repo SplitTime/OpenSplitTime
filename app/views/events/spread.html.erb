@@ -50,7 +50,7 @@
 </div>
 
 <% if @spread_display.show_partner_banners? %>
-    <%= render 'partner_banner', view_model: @spread_display %>
+    <%= render 'partner_banner', partner: @spread_display.partner_with_banner %>
 <% end %>
 
 <table class="table table-condensed table-striped">

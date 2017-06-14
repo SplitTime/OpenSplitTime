@@ -18,7 +18,7 @@
       <tr>
         <td><%= link_to partner.name, edit_partner_path(partner) %></td>
         <td><%= image_tag partner.banner.url(:small) %></td>
-        <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: '_blank' %></td>
+        <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: '_blank' if partner.banner_link %></td>
         <td><%= partner.weight %></td>
         <td>
           <%= link_to 'Delete', partner_path(partner), method: :delete,

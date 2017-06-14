@@ -157,43 +157,47 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#pick_partner' do
-    context 'where multiple ads for the event exist and multiple ads for an unrelated event exist' do
+  describe '#pick_partner_with_banner' do
+    context 'where multiple partners exist for both the subject event and another event' do
       let!(:event) { create(:event) }
       let!(:wrong_event) { create(:event) }
-      let!(:related_ads) { create_list(:partner, 4, event: event) }
-      let!(:unrelated_ads) { create_list(:partner, 4, event: wrong_event) }
+      let!(:related_partners_with_banners) { create_list(:partner_with_banner, 3, event: event) }
+      let!(:related_partners_without_banners) { create_list(:partner, 3, event: event) }
+      let!(:unrelated_partners_with_banners) { create_list(:partner_with_banner, 3, event: wrong_event) }
+      let!(:unrelated_partners_without_banners) { create_list(:partner, 3, event: wrong_event) }
 
-      it 'returns a random ad for the event' do
+      it 'returns a random partner with a banner for the event' do
         partners = []
-        100.times { partners << event.pick_partner }
+        100.times { partners << event.pick_partner_with_banner }
         expect(partners.map(&:event_id).uniq).to eq([event.id])
+        expect(partners.map(&:banner_file_name)).to all ( be_present )
       end
     end
 
-    context 'where multiple ads for the event exist and one is weighted more highly' do
-      # Four ads with weight: 1 and one ad with weight: 10 means the weighted ad should receive,
+    context 'where multiple partners with banners for the event exist and one is weighted more heavily' do
+      # Four partners with weight: 1 and one partner with weight: 10 means the weighted partner should receive,
       # on average, about 71% of hits.
       let!(:event) { create(:event) }
-      let!(:weighted_ad) { create(:partner, event: event, weight: 10) }
-      let!(:unweighted_ads) { create_list(:partner, 4, event: event) }
+      let!(:weighted_partner) { create(:partner_with_banner, event: event, weight: 10) }
+      let!(:unweighted_partners) { create_list(:partner_with_banner, 4, event: event) }
 
-      it 'returns a random ad giving weight to the weighted ad' do
+      it 'returns a random partner giving weight to the weighted partner' do
         partners = []
-        100.times { partners << event.pick_partner }
+        100.times { partners << event.pick_partner_with_banner }
         partners_count = partners.count_by(&:id)
-        expect(partners_count[weighted_ad.id]).to be > (50)
-        unweighted_ads.each do |unweighted_ad|
-          expect(partners_count[unweighted_ad.id]).to be_between(1, 20).inclusive
+        expect(partners_count[weighted_partner.id]).to be > (50)
+        unweighted_partners.each do |unweighted_partner|
+          expect(partners_count[unweighted_partner.id]).to be_between(1, 20).inclusive
         end
       end
     end
 
-    context 'where no ads for the event exist' do
+    context 'where no partners with banners for the event exist' do
       let!(:event) { create(:event) }
 
       it 'returns nil' do
-        expect(event.pick_partner).to be_nil
+        create(:partner, event: event) # Without a banner
+        expect(event.pick_partner_with_banner).to be_nil
       end
     end
   end

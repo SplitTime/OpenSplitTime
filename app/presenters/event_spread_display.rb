@@ -41,7 +41,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def partner
-    @partner ||= event.pick_partner
+    @partner ||= event.pick_partner_with_banner
   end
 
   private

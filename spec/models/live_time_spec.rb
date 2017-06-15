@@ -60,7 +60,7 @@ RSpec.describe LiveTime, type: :model do
       new_split = create(:split)
       live_time = LiveTime.new(event: event, split: new_split, bib_number: 101, absolute_time: time_string)
       expect(live_time).to be_invalid
-      expect(live_time.errors.full_messages).to include('Effort the event.course_id does not resolve with the split.course_id')
+      expect(live_time.errors.full_messages).to include('Split the event.course_id does not resolve with the split.course_id')
     end
 
     it 'is invalid when the split is not the same as the split_time.split' do

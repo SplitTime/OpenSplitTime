@@ -102,4 +102,8 @@ class Event < ActiveRecord::Base
   def pick_partner_with_banner
     partners.with_banners.map { |partner| [partner] * partner.weight }.flatten.shuffle.first
   end
+
+  def live_entry_attributes
+    ordered_splits.map(&:live_entry_attributes)
+  end
 end

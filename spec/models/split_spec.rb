@@ -332,4 +332,28 @@ RSpec.describe Split, kind: :model do
       end
     end
   end
+
+  describe '#live_entry_attributes' do
+    context 'when a split has in and out sub_splits' do
+      let(:split) { build_stubbed(:split, sub_split_bitmap: 65) }
+
+      it 'returns an array with a title and an array of button labels, sub_splits, and split_ids' do
+        expected = {
+            title: split.base_name,
+            entries: [{split_id: split.id, sub_split: 'in', label: split.name(in_bitkey)},
+                      {split_id: split.id, sub_split: 'out', label: split.name(out_bitkey)}]
+        }
+        expect(split.live_entry_attributes).to eq(expected)
+      end
+
+      context 'when a split has only an in sub_split' do
+        let(:split) { build_stubbed(:split, sub_split_bitmap: 1) }
+
+        it 'returns a single-item array with button label, sub_split, and split_id' do
+          expected = [{split_id: split.id, sub_split: 'in', label: split.name(in_bitkey)}]
+          expect(split.live_entry_attributes).to eq(expected)
+        end
+      end
+    end
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614235157) do
+ActiveRecord::Schema.define(version: 20170615043251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,12 +36,6 @@ ActiveRecord::Schema.define(version: 20170614235157) do
 
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
-
-  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
-    t.string   "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",            limit: 64, null: false
@@ -113,23 +107,24 @@ ActiveRecord::Schema.define(version: 20170614235157) do
   add_index "events", ["staging_id"], name: "index_events_on_staging_id", unique: true, using: :btree
 
   create_table "live_times", force: :cascade do |t|
-    t.integer  "event_id",                      null: false
-    t.integer  "split_id",                      null: false
+    t.integer  "event_id",      null: false
+    t.integer  "split_id",      null: false
     t.string   "wave"
-    t.integer  "bib_number",                    null: false
-    t.string   "absolute_time",                 null: false
+    t.integer  "bib_number",    null: false
+    t.string   "absolute_time", null: false
     t.boolean  "with_pacer"
     t.boolean  "stopped_here"
     t.string   "remarks"
     t.string   "batch"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.integer  "split_time_id"
-    t.integer  "bitkey",                        null: false
-    t.string   "source",                        null: false
-    t.boolean  "pulled",        default: false, null: false
+    t.integer  "bitkey",        null: false
+    t.string   "source",        null: false
+    t.integer  "pulled_by"
+    t.datetime "pulled_at"
   end
 
   add_index "live_times", ["event_id"], name: "index_live_times_on_event_id", using: :btree
@@ -187,7 +182,7 @@ ActiveRecord::Schema.define(version: 20170614235157) do
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "partners", force: :cascade do |t|
-    t.integer  "event_id"
+    t.integer  "event_id",                        null: false
     t.string   "banner_link"
     t.integer  "weight",              default: 1, null: false
     t.datetime "created_at",                      null: false

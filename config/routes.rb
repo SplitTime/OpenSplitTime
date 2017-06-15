@@ -129,16 +129,21 @@ Rails.application.routes.draw do
       resources :courses, only: [:index, :show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
       resources :events, only: [:index, :show, :create, :update, :destroy], param: :staging_id do
-        member { delete :remove_splits }
-        member { put :associate_splits }
-        member { post :import_splits }
-        member { post :import_efforts }
-        member { post :import }
-        member { get :spread }
-        member { get :event_data }
-        member { get :live_effort_data }
-        member { post :set_times_data }
-        member { post :post_file_effort_data }
+        member do
+          delete :remove_splits
+          put :associate_splits
+          post :import_splits
+          post :import_efforts
+          post :import
+          get :spread
+          get :event_data
+          get :live_effort_data
+          post :set_times_data
+          post :post_file_effort_data
+          resources :live_times, only: [] do
+            collection { patch :pull }
+          end
+        end
       end
       resources :live_times, only: [:index, :show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614135807) do
+ActiveRecord::Schema.define(version: 20170614235157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,22 +113,23 @@ ActiveRecord::Schema.define(version: 20170614135807) do
   add_index "events", ["staging_id"], name: "index_events_on_staging_id", unique: true, using: :btree
 
   create_table "live_times", force: :cascade do |t|
-    t.integer  "event_id",      null: false
-    t.integer  "split_id",      null: false
+    t.integer  "event_id",                      null: false
+    t.integer  "split_id",                      null: false
     t.string   "wave"
-    t.integer  "bib_number",    null: false
-    t.string   "absolute_time", null: false
+    t.integer  "bib_number",                    null: false
+    t.string   "absolute_time",                 null: false
     t.boolean  "with_pacer"
     t.boolean  "stopped_here"
     t.string   "remarks"
     t.string   "batch"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.integer  "split_time_id"
-    t.integer  "bitkey",        null: false
-    t.string   "source",        null: false
+    t.integer  "bitkey",                        null: false
+    t.string   "source",                        null: false
+    t.boolean  "pulled",        default: false, null: false
   end
 
   add_index "live_times", ["event_id"], name: "index_live_times_on_event_id", using: :btree

@@ -350,7 +350,8 @@ RSpec.describe Split, kind: :model do
         let(:split) { build_stubbed(:split, sub_split_bitmap: 1) }
 
         it 'returns a single-item array with button label, sub_split, and split_id' do
-          expected = [{split_id: split.id, sub_split: 'in', label: split.name(in_bitkey)}]
+          expected = {title: split.base_name,
+                      entries: [{split_id: split.id, sub_split: 'in', label: split.name(in_bitkey)}]}
           expect(split.live_entry_attributes).to eq(expected)
         end
       end

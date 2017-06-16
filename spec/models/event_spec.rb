@@ -210,8 +210,8 @@ RSpec.describe Event, type: :model do
       allow(event).to receive(:ordered_splits).and_return(splits)
       split = splits.second
       expected = {title: split.base_name,
-                  entries: [{split_id: split.id, sub_split: "in", label: "#{split.base_name} In"},
-                            {split_id: split.id, sub_split: "out", label: "#{split.base_name} Out"}]}
+                  entries: [{split_id: split.id, sub_split_kind: 'in', label: "#{split.base_name} In"},
+                            {split_id: split.id, sub_split_kind: 'out', label: "#{split.base_name} Out"}]}
       attributes = event.live_entry_attributes
       expect(attributes.size).to eq(splits.size)
       expect(attributes.second).to eq(expected)

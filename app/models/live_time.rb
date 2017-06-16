@@ -43,4 +43,12 @@ class LiveTime < ActiveRecord::Base
   def split_slug=(slug)
     self.split = Split.find_by(slug: slug)
   end
+
+  def sub_split_kind
+    SubSplit.kind(bitkey)
+  end
+
+  def sub_split_kind=(sub_split_kind)
+    self.bitkey = SubSplit.bitkey(sub_split_kind.to_s)
+  end
 end

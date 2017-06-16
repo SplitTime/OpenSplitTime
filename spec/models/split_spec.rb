@@ -340,8 +340,8 @@ RSpec.describe Split, kind: :model do
       it 'returns an array with a title and an array of button labels, sub_splits, and split_ids' do
         expected = {
             title: split.base_name,
-            entries: [{split_id: split.id, sub_split: 'in', label: split.name(in_bitkey)},
-                      {split_id: split.id, sub_split: 'out', label: split.name(out_bitkey)}]
+            entries: [{split_id: split.id, sub_split_kind: 'in', label: split.name(in_bitkey)},
+                      {split_id: split.id, sub_split_kind: 'out', label: split.name(out_bitkey)}]
         }
         expect(split.live_entry_attributes).to eq(expected)
       end
@@ -351,7 +351,7 @@ RSpec.describe Split, kind: :model do
 
         it 'returns a single-item array with button label, sub_split, and split_id' do
           expected = {title: split.base_name,
-                      entries: [{split_id: split.id, sub_split: 'in', label: split.name(in_bitkey)}]}
+                      entries: [{split_id: split.id, sub_split_kind: 'in', label: split.name(in_bitkey)}]}
           expect(split.live_entry_attributes).to eq(expected)
         end
       end

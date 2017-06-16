@@ -176,6 +176,6 @@ class Split < ActiveRecord::Base
 
   def live_entry_attributes
     {title: base_name,
-     entries: sub_split_bitkeys.map { |bitkey| {split_id: id, sub_split: SubSplit.kind(bitkey).downcase, label: name(bitkey)} }}
+     entries: sub_split_bitkeys.map { |bitkey| {split_id: id, sub_split_kind: SubSplit.kind(bitkey).downcase, label: name(bitkey)} }}
   end
 end

@@ -26,12 +26,12 @@ RSpec.describe DataImport::Readers::CsvFileStrategy do
       end
     end
 
-    context 'when the file references an existing file with non-standard characters in headers' do
+    context 'when the file has non-standard characters in headers' do
       let(:file) { File.new("#{Rails.root}/spec/fixtures/files/test_efforts_header_formats.csv") }
 
       it 'returns headers converted to symbols' do
         raw_data = subject.read_file
-        expect(raw_data.first.keys).to eq([:first_name, :last, :sex, :age, :city, :state, :country, :"bib_#"])
+        expect(raw_data.first.keys).to eq([:first_name, :LAST, :sex, :age, :city, :state, :country, :"bib_#"])
       end
     end
   end

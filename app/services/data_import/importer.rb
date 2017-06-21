@@ -25,13 +25,16 @@ module DataImport
         import_with(data_object, Readers::PassThroughStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
-        import_with(data_object, Readers::CsvFileStrategy, Parsers::PassThroughStrategy, Transformers::GenericEffortsStrategy,
+        import_with(data_object, Readers::CsvFileStrategy, Parsers::UnderscoreKeysStrategy, Transformers::GenericEffortsStrategy,
                     Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
       when :csv_splits
-        import_with(data_object, Readers::CsvFileStrategy, Parsers::PassThroughStrategy, Transformers::GenericSplitsStrategy,
+        import_with(data_object, Readers::CsvFileStrategy, Parsers::UnderscoreKeysStrategy, Transformers::GenericSplitsStrategy,
                     Loaders::UpsertStrategy, default_unique_key(:split).merge(options))
       when :jsonapi_batch
         import_with(data_object, Readers::PassThroughStrategy, Parsers::PassThroughStrategy, Transformers::JsonapiBatchStrategy,
+                    Loaders::UpsertStrategy, options)
+      when :csv_live_times
+        import_with(data_object, Readers::CsvFileStrategy, Parsers::UnderscoreKeysStrategy, Transformers::CsvLiveTimesStrategy,
                     Loaders::UpsertStrategy, options)
       else
         self.errors << format_not_recognized_error(format)

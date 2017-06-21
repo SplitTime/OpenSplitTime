@@ -47,6 +47,11 @@ module DataImport
                                "or the ['list']['fields'] key or its values"]}}
     end
 
+    def missing_split_error
+      {title: 'Split is missing',
+       detail: {messages: ['This import requires that a split be provided']}}
+    end
+
     def source_not_recognized_error(source)
       {title: 'Source not recognized', detail: {messages: ["Importer does not recognize the source: #{source}"]}}
     end

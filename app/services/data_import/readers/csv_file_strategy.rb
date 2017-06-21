@@ -12,7 +12,7 @@ module DataImport::Readers
 
     def read_file
       if file
-        SmarterCSV.process(file, row_sep: :auto, force_utf8: true, strip_chars_from_headers: BYTE_ORDER_MARK)
+        SmarterCSV.process(file, row_sep: :auto, force_utf8: true, strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false)
       else
         errors << file_not_found_error(file)
         nil

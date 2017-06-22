@@ -50,7 +50,8 @@ class PreparedParams
   def parse_filter_param
     params[:filter] = {} unless params[:filter].is_a?(ActionController::Parameters)
     self.search = params[:filter].delete(:search).presence
-    self.editable = params[:filter].delete(:editable)&.to_boolean
+    editable_flag = params[:filter].delete(:editable)
+    self.editable = editable_flag.to_boolean if editable_flag # This breaks if written as editable_flag&.to_boolean
   end
 
   def transformed_filter_values

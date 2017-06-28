@@ -1,7 +1,6 @@
 class Api::V1::StagingController < ApiController
   before_action :set_event, except: [:post_event_course_org, :get_countries]
-  before_action :find_or_initialize_event, only: [:post_event_course_org]
-  before_action :authorize_event, except: [:get_countries]
+  before_action :authorize_event, except: [:post_event_course_org, :get_countries]
 
   # GET /api/v1/staging/get_countries
   def get_countries
@@ -25,13 +24,16 @@ class Api::V1::StagingController < ApiController
 
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
+    event = Event.find_or_initialize_by(slug: params[:staging_id])
+    authorize event unless event.new_record?
+
     course = Course.find_or_initialize_by(id: params[:course][:id])
     authorize course unless course.new_record?
 
     organization = Organization.find_or_initialize_by(id: params[:organization][:id])
     authorize organization unless organization.new_record?
 
-    setter = EventCourseOrgSetter.new(event: @event, course: course, organization: organization, params: params)
+    setter = EventCourseOrgSetter.new(event: event, course: course, organization: organization, params: params)
     setter.set_resources
     if setter.status == :ok
       render json: setter.resources.map { |resource| [resource.class.to_s.underscore, resource] }.to_h, status: setter.status
@@ -62,13 +64,6 @@ class Api::V1::StagingController < ApiController
     @event = params[:staging_id].uuid? ?
         Event.find_by!(staging_id: params[:staging_id]) :
         Event.friendly.find(params[:staging_id])
-  end
-
-  def find_or_initialize_event
-    @event = Event.find_or_initialize_by(staging_id: params[:staging_id])
-    unless @event.staging_id
-      render json: {errors: ['invalid uuid'], detail: 'provided staging_id is not a valid uuid'}, status: :bad_request
-    end
   end
 
   def authorize_event

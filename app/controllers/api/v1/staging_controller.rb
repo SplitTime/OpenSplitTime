@@ -25,12 +25,12 @@ class Api::V1::StagingController < ApiController
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
     event = Event.find_or_initialize_by(slug: params[:staging_id])
-    authorize event unless event.new_record?
-
     course = Course.find_or_initialize_by(id: params[:course][:id])
-    authorize course unless course.new_record?
-
     organization = Organization.find_or_initialize_by(id: params[:organization][:id])
+
+    skip_authorization if event.new_record? && course.new_record? && organization.new_record?
+    authorize event unless event.new_record?
+    authorize course unless course.new_record?
     authorize organization unless organization.new_record?
 
     setter = EventCourseOrgSetter.new(event: event, course: course, organization: organization, params: params)

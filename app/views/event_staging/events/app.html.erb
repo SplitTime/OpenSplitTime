@@ -245,7 +245,7 @@
           <p class="pull-left">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
             </button>
-            <ajax-import :url="'/events/' + eventModel.slug + '/import_csv?model=splits'" v-on:import="eventModel.fetch()">
+            <ajax-import :url="'/events/' + eventModel.slug + '/import_csv?dataFormat=csv_splits'" v-on:import="eventModel.fetch()">
               <span>Import Splits</span>
             </ajax-import>
           </p>
@@ -445,7 +445,7 @@
           <p class="pull-left">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-participant-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
             </button>
-            <ajax-import :url="'/events/' + eventModel.slug + '/import_csv?model=efforts'" v-on:import="eventModel.fetch()">
+            <ajax-import :url="'/events/' + eventModel.slug + '/import_csv?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
               <span>Import Entrants</span>
             </ajax-import>
           </p>

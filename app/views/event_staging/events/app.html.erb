@@ -367,7 +367,7 @@
                   </div>
                   <div class="col-xs-12 split-modal-btn-wrap">
                     <span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done'); value.__new__ || value.associate( true )" v-on:fail="error = $event.data.errors">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
                       <template v-if="!model._dtid">Add Split</template>
                       <template v-else>Done</template>
                     </button>

@@ -23,7 +23,7 @@
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="glyphicon glyphicon-question-sign"></i></span>
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-            <resource-select class="form-control" v-model="eventModel.organization" source="organizations">
+            <resource-select class="form-control" v-model="eventModel.organization" source="organizations?filter[editable]=true">
               <option :value="null" selected disabled>Select One</option>
             </resource-select>
           </div>
@@ -68,7 +68,7 @@
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you have already created a course for a prior Event like this one, you can select it here."><i class="glyphicon glyphicon-question-sign"></i></span>
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-            <resource-select class="form-control" v-model="eventModel.course" source="courses">
+            <resource-select class="form-control" v-model="eventModel.course" source="courses?filter[editable]=true">
               <option :value="null" selected disabled>Select One</option>
             </resource-select>
           </div>
@@ -367,7 +367,7 @@
                   </div>
                   <div class="col-xs-12 split-modal-btn-wrap">
                     <span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done'); value.__new__ || value.associate( true )" v-on:fail="error = $event.data.errors">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
                       <template v-if="!model._dtid">Add Split</template>
                       <template v-else>Done</template>
                     </button>

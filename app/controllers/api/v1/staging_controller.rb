@@ -24,7 +24,7 @@ class Api::V1::StagingController < ApiController
 
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
-    event = Event.find_or_initialize_by(slug: params[:staging_id])
+    event = params[:staging_id] == 'new' ? Event.new : Event.friendly.find(params[:staging_id])
     course = Course.find_or_initialize_by(id: params[:course][:id])
     organization = Organization.find_or_initialize_by(id: params[:organization][:id])
 

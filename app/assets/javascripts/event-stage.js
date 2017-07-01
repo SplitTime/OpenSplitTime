@@ -290,7 +290,6 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             slug: String,
-            stagingId: String, // TODO: REMOVE
             startTime: { type: Date, default: null },
             courseNew: Boolean
         },
@@ -478,7 +477,6 @@
                         return v.toString(16);
                     });
                     eventStage.data.eventModel.slug = uuid;
-                    eventStage.data.eventModel.stagingId = uuid;
                 }
                 eventStage.data.eventModel.post().done( function() {
                     next();

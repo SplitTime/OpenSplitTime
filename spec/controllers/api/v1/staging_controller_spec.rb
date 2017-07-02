@@ -193,7 +193,7 @@ describe Api::V1::StagingController do
            event: params[:event], course: params[:course], organization: params[:organization]
 
       parsed_response = JSON.parse(response.body)
-      resources = {event: Event.find_by(slug: event_id),
+      resources = {event: Event.find_by(id: parsed_response['event']['id']),
                    course: Course.find_by(id: parsed_response['course']['id']),
                    organization: Organization.find_by(id: parsed_response['organization']['id'])}
 

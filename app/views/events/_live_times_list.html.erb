@@ -1,0 +1,53 @@
+<%# Requires parameters partners, view_model %>
+
+<% if live_times.present? %>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(live_times, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
+    <table class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th>Bib #</th>
+        <th>Name</th>
+        <th>Split</th>
+        <th>In/Out</th>
+        <th>Time</th>
+        <th>With pacer?</th>
+        <th>Stopped here?</th>
+        <th>Matched?</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% live_times.each do |live_time| %>
+          <tr>
+            <td><%= link_to live_time.bib_number %></td>
+            <td><%= live_time.effort_full_name %></td>
+            <td><%= live_time.split_base_name %></td>
+            <td><%= live_time.sub_split_kind %></td>
+            <td><%= live_time.absolute_time %></td>
+            <td><%= live_time.with_pacer ? 'Yes' : 'No' %></td>
+            <td><%= live_time.stopped_here ? 'Yes' : 'No' %></td>
+            <td><%= live_time.matched? ? 'Yes' : 'No' %></td>
+            <td>
+              <%= link_to 'Delete', api_v1_live_time_path(live_time), method: :delete,
+                          data: {confirm: 'Are you sure?'}, class: 'btn btn-sm btn-danger' %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(live_times, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
+<% else %>
+    <h4>No live times have been entered for this event.</h4>
+<% end %>

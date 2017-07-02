@@ -51,4 +51,20 @@ class LiveTime < ActiveRecord::Base
   def sub_split_kind=(sub_split_kind)
     self.bitkey = SubSplit.bitkey(sub_split_kind.to_s)
   end
+
+  def effort
+    event.efforts.find_by(bib_number: bib_number)
+  end
+
+  def effort_full_name
+    effort ? effort.full_name : '[Bib not found]'
+  end
+
+  def split_base_name
+    split.base_name
+  end
+
+  def matched?
+    split_time.present?
+  end
 end

@@ -132,22 +132,26 @@
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <div class="btn-group">
-        <%= link_to 'Show splits',
+        <%= link_to 'Splits',
                     stage_event_path(@event_stage.event, view: 'splits'),
                     disabled: @event_stage.view_text == 'splits',
                     class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Show efforts',
+        <%= link_to 'Efforts',
                     stage_event_path(@event_stage.event, view: 'efforts', search: params[:search]),
                     disabled: @event_stage.view_text == 'efforts',
                     class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Show problems',
+        <%= link_to 'Problem efforts',
                     stage_event_path(@event_stage.event, view: 'problems', search: params[:search]),
                     disabled: @event_stage.view_text == 'problems',
                     class: 'btn btn-sm btn-primary',
                     search: params[:search] %>
-        <%= link_to 'Show partners',
+        <%= link_to 'Partners',
                     stage_event_path(@event_stage.event, view: 'partners'),
                     disabled: @event_stage.view_text == 'partners',
+                    class: 'btn btn-sm btn-primary' %>
+        <%= link_to 'Entered times',
+                    stage_event_path(@event_stage.event, view: 'times'),
+                    disabled: @event_stage.view_text == 'times',
                     class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
@@ -165,6 +169,8 @@
     <% end %>
 <% elsif @event_stage.view_text == 'partners' %>
     <%= render 'partner_list', partners: @event_stage.partners, view_model: @event_stage %>
+<% elsif @event_stage.view_text == 'times' %>
+    <%= render 'live_times_list', live_times: @event_stage.filtered_live_times, view_model: @event_stage %>
 <% else %>
     <% if @event_stage.efforts_count < 1 %>
         <strong>No efforts are associated with this event.</strong>

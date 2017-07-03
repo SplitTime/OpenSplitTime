@@ -9,6 +9,8 @@ class LiveTime < ActiveRecord::Base
   validate :split_is_associated
   validate :split_is_consistent
 
+  scope :with_split_names, -> { joins(:split).select('live_times.*, splits.base_name') }
+
   def course_is_consistent
     if event && split && (event.course_id != split.course_id)
       errors.add(:effort_id, 'the event.course_id does not resolve with the split.course_id')
@@ -61,7 +63,7 @@ class LiveTime < ActiveRecord::Base
   end
 
   def split_base_name
-    split.base_name
+    attributes['base_name'] || split.base_name
   end
 
   def matched?

@@ -216,4 +216,36 @@ RSpec.describe LiveTime, type: :model do
       end
     end
   end
+
+  describe '#effort' do
+    context 'when the related event includes an effort with a bib_number matching the live_time.bib_number' do
+      it 'returns the effort' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: effort.bib_number)
+        expect(live_time.effort).to eq(effort)
+      end
+    end
+
+    context 'when the related event does not include an effort with a matching bib_number' do
+      it 'returns nil' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: 0)
+        expect(live_time.effort).to eq(nil)
+      end
+    end
+  end
+
+  describe '#effort_full_name' do
+    context 'when the related event includes an effort with a bib_number matching the live_time.bib_number' do
+      it 'returns the full name of the effort' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: effort.bib_number)
+        expect(live_time.effort_full_name).to eq(effort.full_name)
+      end
+    end
+
+    context 'when the related event does not include an effort with a matching bib_number' do
+      it 'returns [Bib not found]' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: 0)
+        expect(live_time.effort_full_name).to eq('[Bib not found]')
+      end
+    end
+  end
 end

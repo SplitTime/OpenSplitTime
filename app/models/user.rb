@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
   end
 
   def steward_of?(resource)
-    resource.is_a?(Event) ? resource.organization&.stewards.include?(self) : false
+    resource.is_a?(Event) ? resource.organization&.stewards&.include?(self) : false
   end
 
   def full_name

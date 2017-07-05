@@ -290,7 +290,6 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             slug: String,
-            stagingId: String, // TODO: REMOVE
             startTime: { type: Date, default: null },
             courseNew: Boolean
         },
@@ -471,14 +470,8 @@
                 }
             } else if ( from.name === 'home' ) {
                 // next();
-                var doRedirect = eventStage.data.eventModel.__new__;
-                if ( doRedirect ) { // TODO: REMOVE
-                    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-                        return v.toString(16);
-                    });
-                    eventStage.data.eventModel.slug = uuid;
-                    eventStage.data.eventModel.stagingId = uuid;
+                if (eventStage.data.eventModel.__new__) {
+                    eventStage.data.eventModel.slug = 'new';
                 }
                 eventStage.data.eventModel.post().done( function() {
                     next();
@@ -525,8 +518,8 @@
             this.inputUnits.init();
             this.errorAlert.init();
 
-            // Load UUID
-            var eventSlug = $( '#event-app' ).data( 'uuid' );
+            // Load Event Slug
+            var eventSlug = $( '#event-app' ).data( 'slug' );
             this.data.eventModel.slug = eventSlug === 'new' ? null : eventSlug;
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();

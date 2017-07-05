@@ -103,6 +103,12 @@ describe Api::V1::EventsController do
       expect(response.body).to be_jsonapi_response_for('event_spread_displays')
     end
 
+    it 'returns data from cache if the cache is valid' do
+      expect(EventSpreadDisplay).to receive(:new).once.and_call_original
+      get :spread, staging_id: event.staging_id
+      get :spread, staging_id: event.staging_id
+    end
+
     it 'returns an error if the event does not exist' do
       get :spread, staging_id: 123
       parsed_response = JSON.parse(response.body)

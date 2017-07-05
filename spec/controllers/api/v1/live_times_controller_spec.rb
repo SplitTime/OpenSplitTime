@@ -172,7 +172,7 @@ describe Api::V1::LiveTimesController do
       it 'returns a successful json response with an empty data array' do
         patch :pull, staging_id: event.id
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response).to eq({'data' => []})
+        expect(parsed_response['data']).to eq([])
       end
     end
   end

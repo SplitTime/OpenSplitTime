@@ -2,6 +2,8 @@
 
 <%= link_to 'Add Partner', new_partner_path(event_id: view_model.id), class: 'btn btn-sm btn-success' %>
 
+<% if partners.present? %>
+
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
@@ -28,3 +30,7 @@
   <% end %>
   </tbody>
 </table>
+
+<% else %>
+    <h4>No partners are associated with this event.</h4>
+<% end %>

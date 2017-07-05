@@ -59,6 +59,7 @@ gem 'pg_search'
 gem 'smarter_csv'
 gem 'american_date'
 gem 'paperclip', '~> 5.0.0'
+gem 'dalli'
 
 group :development do
   gem 'web-console', '~> 2.0'

@@ -490,7 +490,7 @@ var JSONAPI = (function ($) {
         }
 
         this.all = function( name ) {
-            var model = this.create( name );
+            var model = this.create( name.split('?')[0] );
             if ( model === null ) return $.Deferred().reject();
             return request( name, 'get', model.__includes__ );
         }

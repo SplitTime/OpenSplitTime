@@ -149,7 +149,7 @@ describe Api::V1::LiveTimesController do
         expect(response.status).to eq(200)
       end
 
-      it 'selects all unpulled live_times for an event, marks them as pulled, and returns them' do
+      it 'selects unpulled live_times for an event, marks them as pulled, and returns them' do
         expect(LiveTime.where(pulled_by: nil).size).to eq(4)
         patch :pull, staging_id: event.id
         expect(LiveTime.where(pulled_by: nil).size).to eq(0)

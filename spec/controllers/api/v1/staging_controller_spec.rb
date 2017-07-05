@@ -4,8 +4,8 @@ describe Api::V1::StagingController do
   let(:existing_event) { FactoryGirl.create(:event, course: existing_course, organization: existing_organization) }
   let(:existing_course) { FactoryGirl.create(:course) }
   let(:existing_organization) { FactoryGirl.create(:organization) }
-  let(:existing_staging_id) { existing_event.staging_id }
-  let(:new_staging_id) { SecureRandom.uuid }
+  let(:existing_event_id) { existing_event.to_param }
+  let(:new_event_indicator) { 'new' }
 
   login_admin
 
@@ -36,164 +36,164 @@ describe Api::V1::StagingController do
     let(:existing_course_params) { existing_course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
     let(:existing_organization_params) { existing_organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
 
-    context 'when an existing staging_id is provided' do
+    context 'when an existing event_id is provided' do
       let(:existing_event_params) { existing_event.attributes.with_indifferent_access.slice(*EventParameters.permitted) }
 
       it 'returns a successful 200 response' do
-        staging_id = existing_staging_id
+        event_id = existing_event_id
         params = {event: existing_event_params,
                   course: existing_course_params,
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
+        post_and_validate_response(event_id, params, expected_response, expected_attributes)
       end
 
       it 'updates provided attributes for an existing organization' do
         new_params = {name: 'Updated Organization Name', description: 'Updated organization description'}
-        staging_id = existing_staging_id
+        event_id = existing_event_id
         params = {event: existing_event_params,
                   course: existing_course_params,
                   organization: existing_organization_params.merge(new_params)}
         expected_response = 200
         expected_attributes = {organization: [:name, :description]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
+        post_and_validate_response(event_id, params, expected_response, expected_attributes)
       end
 
       it 'updates provided attributes for an existing course' do
         new_params = {name: 'Updated Course Name', description: 'Updated course description'}
-        staging_id = existing_staging_id
+        event_id = existing_event_id
         params = {event: existing_event_params,
                   course: existing_course_params.merge(new_params),
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {course: [:name, :description]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
+        post_and_validate_response(event_id, params, expected_response, expected_attributes)
       end
 
       it 'updates provided attributes for an existing event' do
         new_params = {name: 'Updated Event Name', laps_required: 3}
-        staging_id = existing_staging_id
-        params = {event: existing_event_params,
-                  course: existing_course_params.merge(new_params),
+        event_id = existing_event_id
+        params = {event: existing_event_params.merge(new_params),
+                  course: existing_course_params,
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
+        post_and_validate_response(event_id, params, expected_response, expected_attributes)
       end
     end
 
-    context 'when a new staging_id is provided' do
+    context 'when a new event_id is provided' do
       let(:new_event_params) { {name: 'New Event Name', start_time: '2017-03-01 06:00:00', laps_required: 1} }
       let(:new_course_params) { {name: 'New Course Name', description: 'New course description.'} }
       let(:new_organization_params) { {name: 'New Organization Name'} }
 
       it 'returns a successful 200 response' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: new_course_params,
                   organization: new_organization_params}
         expected_response = 200
         expected_attributes = {}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
+        post_and_validate_response(event_id, params, expected_response, expected_attributes)
       end
 
       it 'creates an event using provided parameters and associates existing course and organization' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: existing_course_params,
                   organization: existing_organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
+        post_and_validate_response(event_id, params, expected_response, expected_attributes)
       end
 
       it 'creates an event using provided parameters and associates newly created course and organization' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: new_course_params,
                   organization: new_organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
-        post_and_validate_response(staging_id, params, expected_response, expected_attributes)
+        post_and_validate_response(event_id, params, expected_response, expected_attributes)
       end
 
       it 'returns a bad request message with descriptive errors and provided data if the event cannot be created' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params.except(:start_time),
                   course: new_course_params,
                   organization: new_organization_params}
         expected_response = 422
         expected_errors = [/Start time can't be blank/]
-        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
+        post_and_validate_errors(event_id, params, expected_response, expected_errors)
       end
 
       it 'returns a bad request message with descriptive errors and provided data if the course cannot be created' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: new_course_params.except(:name),
                   organization: new_organization_params}
         expected_response = 422
         expected_errors = [/Name can't be blank/]
-        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
+        post_and_validate_errors(event_id, params, expected_response, expected_errors)
       end
 
       it 'returns a bad request message with descriptive errors and provided data if the organization cannot be created' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: new_course_params,
                   organization: new_organization_params.except(:name)}
         expected_response = 422
         expected_errors = [/Name can't be blank/]
-        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
+        post_and_validate_errors(event_id, params, expected_response, expected_errors)
       end
 
       it 'does not create any resources if the organization cannot be created' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: new_course_params,
                   organization: new_organization_params.except(:name)}
         expected_response = 422
         expected_errors = []
-        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
+        post_and_validate_errors(event_id, params, expected_response, expected_errors)
         expect(Event.all.size).to eq(0)
         expect(Course.all.size).to eq(0)
         expect(Organization.all.size).to eq(0)
       end
 
       it 'does not create any resources if the course cannot be created' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: new_course_params.except(:name),
                   organization: new_organization_params}
         expected_response = 422
         expected_errors = {}
-        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
+        post_and_validate_errors(event_id, params, expected_response, expected_errors)
         expect(Event.all.size).to eq(0)
         expect(Course.all.size).to eq(0)
         expect(Organization.all.size).to eq(0)
       end
 
       it 'does not create any resources if the event cannot be created' do
-        staging_id = new_staging_id
+        event_id = new_event_indicator
         params = {event: new_event_params.except(:start_time),
                   course: new_course_params,
                   organization: new_organization_params}
         expected_response = 422
         expected_errors = {}
-        post_and_validate_errors(staging_id, params, expected_response, expected_errors)
+        post_and_validate_errors(event_id, params, expected_response, expected_errors)
         expect(Event.all.size).to eq(0)
         expect(Course.all.size).to eq(0)
         expect(Organization.all.size).to eq(0)
       end
     end
 
-    def post_and_validate_response(staging_id, params, expected_response, expected_attributes)
-      post :post_event_course_org, staging_id: staging_id,
+    def post_and_validate_response(event_id, params, expected_response, expected_attributes)
+      post :post_event_course_org, staging_id: event_id,
            event: params[:event], course: params[:course], organization: params[:organization]
 
       parsed_response = JSON.parse(response.body)
-      resources = {event: Event.find_by(staging_id: staging_id),
+      resources = {event: Event.find_by(id: parsed_response['event']['id']),
                    course: Course.find_by(id: parsed_response['course']['id']),
                    organization: Organization.find_by(id: parsed_response['organization']['id'])}
 
@@ -207,8 +207,8 @@ describe Api::V1::StagingController do
       end
     end
 
-    def post_and_validate_errors(staging_id, params, expected_response, expected_errors)
-      post :post_event_course_org, staging_id: staging_id,
+    def post_and_validate_errors(event_id, params, expected_response, expected_errors)
+      post :post_event_course_org, staging_id: event_id,
            event: params[:event], course: params[:course], organization: params[:organization]
 
       expect(response.status).to eq(expected_response)
@@ -228,7 +228,7 @@ describe Api::V1::StagingController do
 
       it 'returns a successful 200 response' do
         event = existing_event
-        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        patch :update_event_visibility, staging_id: event.to_param, status: status
         expect(response).to be_success
       end
 
@@ -239,7 +239,7 @@ describe Api::V1::StagingController do
         organization.update(concealed: true)
         efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: true)
         efforts.each { |effort| effort.participant.update(concealed: true) }
-        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        patch :update_event_visibility, staging_id: event.to_param, status: status
         event.reload
         organization.reload
         expect(event.concealed).to eq(false)
@@ -256,7 +256,7 @@ describe Api::V1::StagingController do
 
       it 'returns a successful 200 response' do
         event = existing_event
-        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        patch :update_event_visibility, staging_id: event.to_param, status: status
         expect(response).to be_success
       end
 
@@ -267,7 +267,7 @@ describe Api::V1::StagingController do
         organization.update(concealed: false)
         efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
         efforts.each { |effort| effort.participant.update(concealed: false) }
-        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        patch :update_event_visibility, staging_id: event.to_param, status: status
         event.reload
         organization.reload
         expect(event.concealed).to eq(true)
@@ -287,7 +287,7 @@ describe Api::V1::StagingController do
         efforts.each { |effort| effort.participant.update(concealed: false) }
         p_with_other_effort = efforts.first.participant
         FactoryGirl.create(:effort, participant: p_with_other_effort, concealed: false)
-        patch :update_event_visibility, staging_id: event.staging_id, status: status
+        patch :update_event_visibility, staging_id: event.to_param, status: status
         event.reload
         organization.reload
         expect(event.concealed).to eq(true)
@@ -307,12 +307,12 @@ describe Api::V1::StagingController do
     context 'when params[:status] is not "public" or "private"' do
       it 'returns a bad request response' do
         event = existing_event
-        patch :update_event_visibility, staging_id: event.staging_id, status: 'random'
+        patch :update_event_visibility, staging_id: event.to_param, status: 'random'
         expect(response).to be_bad_request
       end
     end
 
-    context 'when the staging_id does not exist' do
+    context 'when the event_id does not exist' do
       it 'returns a not found response' do
         patch :update_event_visibility, staging_id: 123, status: 'public'
         expect(response).to be_not_found

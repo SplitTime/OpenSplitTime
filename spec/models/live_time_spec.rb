@@ -19,6 +19,8 @@ RSpec.describe LiveTime, type: :model do
   let(:event) { create(:event, course: course) }
   let(:split) { create(:split, course: course) }
   let(:course) { create(:course) }
+  let(:in_bitkey) { SubSplit::IN_BITKEY }
+  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   describe '#initialize' do
     let(:time_string) { '08:00:00' }
@@ -138,6 +140,112 @@ RSpec.describe LiveTime, type: :model do
     it 'sets the split to nil if the slug is not found' do
       live_time.split_slug = 'nonexistent-split'
       expect(live_time.split_id).to be_nil
+    end
+  end
+
+  describe '#sub_split_kind' do
+    context 'when bitkey is the in_bitkey' do
+      let(:live_time) { LiveTime.new(bitkey: in_bitkey) }
+
+      it 'returns "in" when bitkey is the in_bitkey' do
+        expect(live_time.sub_split_kind).to eq('In')
+      end
+    end
+
+    context 'when bitkey is the out_bitkey' do
+      let(:live_time) { LiveTime.new(bitkey: out_bitkey) }
+
+      it 'returns "in" when bitkey is the in_bitkey' do
+        expect(live_time.sub_split_kind).to eq('Out')
+      end
+    end
+  end
+
+  describe '#sub_split_kind=' do
+    context 'when sub_split_kind is "in"' do
+      let(:sub_split_kind) { 'in' }
+
+      it 'sets the bitkey to the in_bitkey' do
+        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
+        expect(live_time.bitkey).to eq(in_bitkey)
+      end
+    end
+
+    context 'when sub_split_kind is "out"' do
+      let(:sub_split_kind) { 'out' }
+
+      it 'sets the bitkey to the in_bitkey' do
+        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
+        expect(live_time.bitkey).to eq(out_bitkey)
+      end
+    end
+
+    context 'when sub_split_kind has different capitalization' do
+      let(:sub_split_kind) { 'OUT' }
+
+      it 'sets the bitkey as expected' do
+        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
+        expect(live_time.bitkey).to eq(out_bitkey)
+      end
+    end
+
+    context 'when sub_split_kind is a symbol' do
+      let(:sub_split_kind) { :out }
+
+      it 'sets the bitkey as expected' do
+        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
+        expect(live_time.bitkey).to eq(out_bitkey)
+      end
+    end
+
+    context 'when sub_split_kind is an empty string' do
+      let(:sub_split_kind) { '' }
+
+      it 'sets the bitkey to nil' do
+        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
+        expect(live_time.bitkey).to eq(nil)
+      end
+    end
+
+    context 'when sub_split_kind is nil' do
+      let(:sub_split_kind) { nil }
+
+      it 'sets the bitkey to nil' do
+        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
+        expect(live_time.bitkey).to eq(nil)
+      end
+    end
+  end
+
+  describe '#effort' do
+    context 'when the related event includes an effort with a bib_number matching the live_time.bib_number' do
+      it 'returns the effort' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: effort.bib_number)
+        expect(live_time.effort).to eq(effort)
+      end
+    end
+
+    context 'when the related event does not include an effort with a matching bib_number' do
+      it 'returns nil' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: 0)
+        expect(live_time.effort).to eq(nil)
+      end
+    end
+  end
+
+  describe '#effort_full_name' do
+    context 'when the related event includes an effort with a bib_number matching the live_time.bib_number' do
+      it 'returns the full name of the effort' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: effort.bib_number)
+        expect(live_time.effort_full_name).to eq(effort.full_name)
+      end
+    end
+
+    context 'when the related event does not include an effort with a matching bib_number' do
+      it 'returns [Bib not found]' do
+        live_time = build_stubbed(:live_time, event: event, bib_number: 0)
+        expect(live_time.effort_full_name).to eq('[Bib not found]')
+      end
     end
   end
 end

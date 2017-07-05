@@ -44,7 +44,9 @@ class Api::V1::EventsController < ApiController
   def spread
     authorize @event
     params[:display_style] ||= 'absolute'
-    spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
+    spread_display = Rails.cache.fetch("event_spread_#{@event.id}", expires_in: 5.minutes) do
+      EventSpreadDisplay.new(event: @event, params: prepared_params)
+    end
     render json: spread_display, serializer: EventSpreadSerializer, include: 'effort_times_rows'
   end
 

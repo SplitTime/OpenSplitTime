@@ -168,7 +168,7 @@ class Api::V1::EventsController < ApiController
     authorize @event
     if @event.available_live
       @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
-      render partial: 'live/events/file_effort_data_report.json.ruby'
+      render json: {returnedRows: @returned_rows}, status: :created
     else
       render partial: 'live/events/live_entry_unavailable.json.ruby'
     end

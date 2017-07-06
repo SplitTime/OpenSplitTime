@@ -34,7 +34,7 @@ describe Api::V1::AuthenticationController do
       token = parsed_response['token']
       payload = JsonWebToken.decode(token)
       expect(Time.at(payload['exp']))
-          .to be_within(1.minute).of(Time.current + Rails.application.secrets.jwt_expiration_hours.to_f.hours)
+          .to be_within(1.minute).of(Time.current + Rails.application.secrets.jwt_duration)
     end
 
     it 'returns an error if the email does not exist' do
@@ -49,6 +49,17 @@ describe Api::V1::AuthenticationController do
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/Invalid email or password/)
       expect(response).to be_bad_request
+    end
+
+    context 'when params[:code] is equal to ENV["DURABLE_JWT_CODE"]' do
+      it 'returns a valid long-duration expiration' do
+        post :create, user: {email: 'user@example.com', password: 'password'}, code: ENV['DURABLE_JWT_CODE']
+        parsed_response = JSON.parse(response.body)
+        token = parsed_response['token']
+        payload = JsonWebToken.decode(token)
+        expect(Time.at(payload['exp']))
+            .to be_within(1.minute).of(Time.current + Rails.application.secrets.jwt_duration_long)
+      end
     end
   end
 end

@@ -1,9 +1,9 @@
 class JsonWebToken
-  def self.encode(payload, duration = nil)
-    duration ||= Rails.application.secrets.jwt_expiration_hours
+  def self.encode(payload, duration: nil)
+    duration ||= Rails.application.secrets.jwt_duration
 
     payload = payload.dup
-    payload['exp'] = duration.to_f.hours.from_now.to_i
+    payload['exp'] = (Time.current + duration).to_i
 
     JWT.encode(payload, Rails.application.secrets.secret_key_base)
   end

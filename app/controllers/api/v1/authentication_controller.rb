@@ -5,9 +5,10 @@ class Api::V1::AuthenticationController < ApiController
     skip_authorization
     user = User.find_by(email: params[:user][:email])
     if user && user.valid_password?(params[:user][:password])
-      if params[:code] == ENV['DURABLE_JWT_CODE']
-        p "Durable JWT generated for #{user.email}, #{user.id}"
+      if params[:durable] == ENV['DURABLE_JWT_CODE']
         render json: {token: JsonWebToken.encode({sub: user.id}, duration: Rails.application.secrets.jwt_duration_long)}
+      elsif params[:durable]
+        render json: {errors: ['Invalid durable code']}, status: :bad_request
       else
         p "JWT generated for #{user.email}, #{user.id}"
         render json: {token: JsonWebToken.encode(sub: user.id)}

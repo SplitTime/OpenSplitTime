@@ -51,14 +51,23 @@ describe Api::V1::AuthenticationController do
       expect(response).to be_bad_request
     end
 
-    context 'when params[:code] is equal to ENV["DURABLE_JWT_CODE"]' do
+    context 'when params[:durable] is equal to ENV["DURABLE_JWT_CODE"]' do
       it 'returns a valid long-duration expiration' do
-        post :create, user: {email: 'user@example.com', password: 'password'}, code: ENV['DURABLE_JWT_CODE']
+        post :create, user: {email: 'user@example.com', password: 'password'}, durable: ENV['DURABLE_JWT_CODE']
         parsed_response = JSON.parse(response.body)
         token = parsed_response['token']
         payload = JsonWebToken.decode(token)
         expect(Time.at(payload['exp']))
             .to be_within(1.minute).of(Time.current + Rails.application.secrets.jwt_duration_long)
+      end
+    end
+
+    context 'when params[:durable] is provided but is not equal to ENV["DURABLE_JWT_CODE"]' do
+      it 'returns an error' do
+        post :create, user: {email: 'user@example.com', password: 'password'}, durable: 'invalid_code'
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['errors']).to include(/Invalid durable code/)
+        expect(response).to be_bad_request
       end
     end
   end

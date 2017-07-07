@@ -1,8 +1,12 @@
 class ObjectPairer
 
+  def self.pair(args)
+    new(args).pair
+  end
+
   def initialize(args)
     @objects = args[:objects]
-    @identical_attributes = args[:identical_attributes]
+    @identical_attributes = Array.wrap(args[:identical_attributes])
     @pairing_criteria = args[:pairing_criteria]
   end
 

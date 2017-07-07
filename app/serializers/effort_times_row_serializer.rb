@@ -27,4 +27,16 @@ class EffortTimesRowSerializer < BaseSerializer
   def segment_times
     object.time_clusters.map { |tc| [tc.segment_time, tc.time_in_aid] }
   end
+
+  def stopped
+    object.stopped?
+  end
+
+  def dropped
+    object.dropped?
+  end
+
+  def finished
+    object.finished?
+  end
 end

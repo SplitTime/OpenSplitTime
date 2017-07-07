@@ -1,5 +1,5 @@
 class EffortTimesRowSerializer < BaseSerializer
-  attributes *EffortTimesRow::EXPORT_ATTRIBUTES, :display_style
+  attributes *EffortTimesRow::EXPORT_ATTRIBUTES, :display_style, :stopped, :dropped
   attribute :elapsed_times, if: :show_elapsed_times
   attribute :absolute_times, if: :show_absolute_times
   attribute :segment_times, if: :show_segment_times

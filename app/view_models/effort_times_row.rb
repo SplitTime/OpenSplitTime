@@ -7,7 +7,8 @@ class EffortTimesRow
 
   attr_reader :effort, :display_style, :time_clusters
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset, to: :effort
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset,
+           :stopped, :dropped, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args,

@@ -32,16 +32,18 @@ class LiveTimeRowConverter
   attr_reader :event, :live_times, :times_container
 
   def time_rows
-    paired_live_times.map { |left_lt, right_lt| {split_id: left_lt.split_id || right_lt.split_id,
-                                                 bib_number: left_lt.bib_number || right_lt.bib_number,
-                                                 live_time_id_in: left_lt.id,
-                                                 live_time_id_out: right_lt.id,
-                                                 time_in: left_lt.military_time,
-                                                 time_out: right_lt.military_time,
-                                                 pacer_in: left_lt.with_pacer,
-                                                 pacer_out: right_lt.with_pacer,
-                                                 dropped_here: left_lt.stopped_here || right_lt.stopped_here,
-                                                 remarks: [left_lt.remarks, right_lt.remarks].join(' / ')} }
+    paired_live_times.map do |left_live_time, right_live_time|
+      {split_id: left_live_time&.split_id || right_live_time&.split_id,
+       bib_number: left_live_time&.bib_number || right_live_time&.bib_number,
+       live_time_id_in: left_live_time&.id,
+       live_time_id_out: right_live_time&.id,
+       time_in: left_live_time&.military_time,
+       time_out: right_live_time&.military_time,
+       pacer_in: left_live_time&.with_pacer,
+       pacer_out: right_live_time&.with_pacer,
+       dropped_here: left_live_time&.stopped_here || right_live_time&.stopped_here,
+       remarks: [left_live_time&.remarks, right_live_time&.remarks].join(' / ')}
+    end
   end
 
   def paired_live_times

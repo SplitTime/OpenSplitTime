@@ -190,9 +190,9 @@ class Api::V1::EventsController < ApiController
 
     scoped_live_times = force_pull ? @event.live_times.unmatched : @event.live_times.unconsidered
     live_times = scoped_live_times.order(:split_id, :bib_number, :bitkey).limit(live_times_limit)
-    live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
 
     live_time_rows = LiveTimeRowConverter.convert(event: @event, live_times: live_times)
+    live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
     render json: {returnedRows: live_time_rows}, status: :ok
   end
 

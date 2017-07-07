@@ -23,6 +23,7 @@ RSpec.describe LiveTime, type: :model do
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   describe '#initialize' do
+    let(:current_time) { Time.current }
     let(:time_string) { '08:00:00' }
     let(:source) { 'ost-test' }
     before do
@@ -30,37 +31,42 @@ RSpec.describe LiveTime, type: :model do
     end
 
     it 'is valid when created with an event, split, bitkey, bib_number, absolute_time, and source' do
-      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: time_string, source: source)
+      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: current_time, source: source)
+      expect(live_time).to be_valid
+    end
+
+    it 'is valid when created with an event, split, bitkey, bib_number, *entered_time*, and source' do
+      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: 101, entered_time: time_string, source: source)
       expect(live_time).to be_valid
     end
 
     it 'is invalid when no event is provided' do
-      live_time = LiveTime.new(split: split, bib_number: 101, absolute_time: time_string)
+      live_time = LiveTime.new(split: split, bib_number: 101, absolute_time: current_time, bitkey: 1, source: 'test-source')
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include("Event can't be blank")
     end
 
     it 'is invalid when no split is provided' do
-      live_time = LiveTime.new(event: event, bib_number: 101, absolute_time: time_string)
+      live_time = LiveTime.new(event: event, bib_number: 101, absolute_time: current_time, bitkey: 1, source: 'test-source')
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include("Split can't be blank")
     end
 
     it 'is invalid when no bib_number is provided' do
-      live_time = LiveTime.new(event: event, split: split, absolute_time: time_string)
+      live_time = LiveTime.new(event: event, split: split, absolute_time: current_time, bitkey: 1, source: 'test-source')
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include("Bib number can't be blank")
     end
 
-    it 'is invalid when no absolute_time is provided' do
-      live_time = LiveTime.new(event: event, split: split, bib_number: 101)
+    it 'is invalid when neither absolute_time nor entered_time is provided' do
+      live_time = LiveTime.new(event: event, split: split, bib_number: 101, bitkey: 1, source: 'test-source')
       expect(live_time).to be_invalid
-      expect(live_time.errors.full_messages).to include("Absolute time can't be blank")
+      expect(live_time.errors.full_messages).to include('Either absolute_time or entered_time must be present')
     end
 
     it 'is invalid when the event.course is not the same as the split.course' do
       new_split = create(:split)
-      live_time = LiveTime.new(event: event, split: new_split, bib_number: 101, absolute_time: time_string)
+      live_time = LiveTime.new(event: event, split: new_split, bib_number: 101, absolute_time: current_time)
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include('Split the event.course_id does not resolve with the split.course_id')
     end
@@ -68,7 +74,7 @@ RSpec.describe LiveTime, type: :model do
     it 'is invalid when the split is not the same as the split_time.split' do
       new_split = create(:split)
       split_time = SplitTime.create(effort: effort, split: new_split)
-      live_time = LiveTime.new(event: event, split: split, bib_number: 101, absolute_time: time_string, split_time: split_time)
+      live_time = LiveTime.new(event: event, split: split, bib_number: 101, absolute_time: current_time, split_time: split_time)
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include('Split time the split_id is not the same as the split_time.split_id')
     end
@@ -245,6 +251,29 @@ RSpec.describe LiveTime, type: :model do
       it 'returns [Bib not found]' do
         live_time = build_stubbed(:live_time, event: event, bib_number: 0)
         expect(live_time.effort_full_name).to eq('[Bib not found]')
+      end
+    end
+  end
+
+  describe '#military_time' do
+    context 'when an absolute_time exists' do
+      it 'returns the time component in hh:mm:ss format' do
+        live_time = build_stubbed(:live_time, absolute_time: '2017-07-31 09:30:45 -0600', entered_time: '0123')
+        expect(live_time.military_time).to eq('09:30:45')
+      end
+    end
+
+    context 'when no absolute_time exists' do
+      it 'returns the entered_time in hh:mm:ss format' do
+        live_time = build_stubbed(:live_time, absolute_time: nil, entered_time: '16:30:45')
+        expect(live_time.military_time).to eq('16:30:45')
+      end
+    end
+
+    context 'when entered_time has no colons' do
+      it 'returns the entered_time in hh:mm:ss format' do
+        live_time = build_stubbed(:live_time, absolute_time: nil, entered_time: '163045')
+        expect(live_time.military_time).to eq('16:30:45')
       end
     end
   end

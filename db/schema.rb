@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170615043251) do
+ActiveRecord::Schema.define(version: 20170707084421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20170615043251) do
     t.integer  "split_id",      null: false
     t.string   "wave"
     t.integer  "bib_number",    null: false
-    t.string   "absolute_time", null: false
+    t.datetime "absolute_time"
     t.boolean  "with_pacer"
     t.boolean  "stopped_here"
     t.string   "remarks"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 20170615043251) do
     t.string   "source",        null: false
     t.integer  "pulled_by"
     t.datetime "pulled_at"
+    t.string   "entered_time"
   end
 
   add_index "live_times", ["event_id"], name: "index_live_times_on_event_id", using: :btree

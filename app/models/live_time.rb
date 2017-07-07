@@ -4,7 +4,8 @@ class LiveTime < ActiveRecord::Base
   belongs_to :event
   belongs_to :split
   belongs_to :split_time
-  validates_presence_of :event, :split, :bib_number, :bitkey, :absolute_time, :source
+  validates_presence_of :event, :split, :bib_number, :bitkey, :source
+  validate :absolute_or_entered_time
   validate :course_is_consistent
   validate :split_is_associated
   validate :split_is_consistent
@@ -12,6 +13,12 @@ class LiveTime < ActiveRecord::Base
   scope :unconsidered, -> { where(pulled_by: nil).where(split_time: nil) }
   scope :unmatched, -> { where(split_time: nil) }
   scope :with_split_names, -> { joins(:split).select('live_times.*, splits.base_name') }
+
+  def absolute_or_entered_time
+    if absolute_time.blank? && entered_time.blank?
+      errors.add(:base, 'Either absolute_time or entered_time must be present')
+    end
+  end
 
   def course_is_consistent
     if event && split && (event.course_id != split.course_id)
@@ -69,5 +76,9 @@ class LiveTime < ActiveRecord::Base
 
   def matched?
     split_time.present?
+  end
+
+  def military_time
+    absolute_time ? TimeConversion.absolute_to_hms(absolute_time) : TimeConversion.file_to_military(entered_time)
   end
 end

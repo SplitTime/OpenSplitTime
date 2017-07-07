@@ -176,9 +176,11 @@ class Api::V1::EventsController < ApiController
 
   def pull_live_time_rows
 
-    # This endpoint searches for live_times related to the event, marks them as pulled,
-    # combines them into live_time_rows, and returns them to the live entry page.
-    # Params may include page[size]; otherwise the default number will be used.
+    # This endpoint searches for live_times related to the event, selects a batch,
+    # marks them as pulled, combines them into live_time_rows, and returns them
+    # to the live entry page.
+
+    # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
 
     authorize @event
 
@@ -190,7 +192,7 @@ class Api::V1::EventsController < ApiController
     live_times = scoped_live_times.order(:split_id, :bib_number, :bitkey).limit(live_times_limit)
     live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
 
-    live_time_rows = LiveTimeRowConverter.convert(live_times: live_times)
+    live_time_rows = LiveTimeRowConverter.convert(event: @event, live_times: live_times)
     render json: {returnedRows: live_time_rows}, status: :ok
   end
 

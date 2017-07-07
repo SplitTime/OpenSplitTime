@@ -34,11 +34,13 @@ class LiveTimeRowConverter
   def time_rows
     paired_live_times.map { |left_lt, right_lt| {split_id: left_lt.split_id || right_lt.split_id,
                                                  bib_number: left_lt.bib_number || right_lt.bib_number,
-                                                 time_in: left_lt.absolute_time,
-                                                 time_out: right_lt.absolute_time,
+                                                 live_time_id_in: left_lt.id,
+                                                 live_time_id_out: right_lt.id,
+                                                 time_in: left_lt.military_time,
+                                                 time_out: right_lt.military_time,
                                                  pacer_in: left_lt.with_pacer,
                                                  pacer_out: right_lt.with_pacer,
-                                                 stopped_here: left_lt.stopped_here || right_lt.stopped_here,
+                                                 dropped_here: left_lt.stopped_here || right_lt.stopped_here,
                                                  remarks: [left_lt.remarks, right_lt.remarks].join(' / ')} }
   end
 

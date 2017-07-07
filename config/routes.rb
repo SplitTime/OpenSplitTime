@@ -141,9 +141,6 @@ Rails.application.routes.draw do
           post :set_times_data
           post :post_file_effort_data
           patch :pull_live_time_rows
-          resources :live_times, only: [] do
-            collection { patch :pull }
-          end
         end
       end
       resources :live_times, only: [:index, :show, :create, :update, :destroy]

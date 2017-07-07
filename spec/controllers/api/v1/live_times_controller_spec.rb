@@ -138,42 +138,4 @@ describe Api::V1::LiveTimesController do
       expect(response.status).to eq(404)
     end
   end
-
-  describe '#pull' do
-    context 'when unpulled live_times exist for the given event' do
-      let!(:unpulled_live_times) { create_list(:live_time, 4, event: event, split: split) }
-      let!(:pulled_live_time) { create(:live_time, event: event, split: split, pulled_by: 1, pulled_at: Time.current) }
-
-      it 'returns a successful json response' do
-        patch :pull, staging_id: event.id
-        expect(response.status).to eq(200)
-      end
-
-      it 'selects unpulled live_times for an event, marks them as pulled, and returns them' do
-        expect(LiveTime.where(pulled_by: nil).size).to eq(4)
-        patch :pull, staging_id: event.id
-        expect(LiveTime.where(pulled_by: nil).size).to eq(0)
-        expect(LiveTime.where(pulled_by: 1).size).to eq(1)
-        parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data'].size).to eq(4)
-        expect(parsed_response['data'].map { |record| record['id'].to_i }.sort)
-            .to eq(unpulled_live_times.map(&:id).sort)
-      end
-    end
-
-    context 'when no unpulled live_times exist for the given event' do
-      before do
-        other_event.splits << split
-      end
-
-      let(:other_event) { create(:event, course: course) }
-      let!(:unpulled_live_times) { create_list(:live_time, 4, event: other_event, split: split) }
-
-      it 'returns a successful json response with an empty data array' do
-        patch :pull, staging_id: event.id
-        parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data']).to eq([])
-      end
-    end
-  end
 end

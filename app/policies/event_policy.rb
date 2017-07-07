@@ -136,7 +136,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def pull?
+  def pull_live_time_rows?
     user.authorized_to_edit?(event)
   end
 

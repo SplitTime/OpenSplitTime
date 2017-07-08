@@ -47,7 +47,7 @@ class LiveTimeRowImporter
 
   private
 
-  EXTRACTABLE_ATTRIBUTES = %w(time_from_start data_status pacer remarks stopped_here)
+  EXTRACTABLE_ATTRIBUTES = %w(time_from_start data_status pacer remarks stopped_here live_time_id)
 
   attr_reader :event, :time_rows, :times_container
   attr_accessor :unsaved_rows, :saved_split_times
@@ -83,7 +83,8 @@ class LiveTimeRowImporter
 
   # Extract only those extractable attributes that are non-nil (false must be extracted)
   def extracted_attributes(split_time)
-    split_time.attributes.select { |attribute, value| EXTRACTABLE_ATTRIBUTES.include?(attribute) && !value.nil? }
+    EXTRACTABLE_ATTRIBUTES.map { |attribute| [attribute, split_time.send(attribute)] }.to_h
+        .select { |_, value| !value.nil? }
   end
 
   def ordered_splits
@@ -95,9 +96,9 @@ class LiveTimeRowImporter
   end
 
   def match_live_times
-    split_times = saved_split_times.values.flatten.select(&:live_time_id)
+    split_times = saved_split_times.values.flatten.select { |st| st.live_time_id.present? }
     split_times.each do |split_time|
-      live_time = LiveTime.find_by(id: split_time.live_time_id)
+      live_time = LiveTime.find(split_time.live_time_id)
       live_time.update(split_time: split_time)
     end
   end

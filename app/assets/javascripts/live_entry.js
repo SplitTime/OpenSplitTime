@@ -51,6 +51,7 @@
                 liveEntry.timeRowsTable.init();
                 liveEntry.splitSlider.init();
             });
+            liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
         },
 
         /**
@@ -741,18 +742,7 @@
                         liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {
-                        var response = data.result;
-                        for (var i = 0; i < response.returnedRows.length; i++) {
-                            var timeRow = response.returnedRows[i];
-                            timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-
-                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
-                                storedTimeRows.push(timeRow);
-                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                                liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
-                            }
-                        }
+                        liveEntry.populateRows(data.result);
                     },
                     fail: function (e, data) {
                         $('#debug').empty().append( data.response().jqXHR.responseText );
@@ -761,7 +751,44 @@
                         liveEntry.timeRowsTable.busy = false;
                     }
                 });
+                $('#js-import-live-times').on('click', function (event) {
+                    event.preventDefault();
+                    if (liveEntry.importAsyncBusy) {
+                        return;
+                    }
+                    liveEntry.importAsyncBusy = true;
+                    $.ajax('/api/v1/events/' + liveEntry.currentEventId + '/pull_live_time_rows', {
+                       error: function(obj, error) {
+                            liveEntry.importAsyncBusy = false;
+                            liveEntry.timeRowsTable.importLiveError(obj, error);
+                       },
+                       dataType: 'json',
+                       success: function(data) {
+                            if (data.returnedRows.length === 0) {
+                                $('#js-live-messages').append(liveEntry.importLiveWarning);
+                                liveEntry.importLiveWarning.fadeTo(500, 1);
+                                window.setTimeout(function() {
+                                liveEntry.importLiveWarning.fadeTo(500, 0).slideUp(500, function(){
+                                        liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
+                                        liveEntry.importAsyncBusy = false;
+                                    });
+                                }, 4000);
+                                return;
+                            }
+                            liveEntry.populateRows(data);
+                            liveEntry.importAsyncBusy = false;
+                       },
+                       type: 'PATCH'
+                    });
+                    return false;
+                });
             },
+            importLiveError: function(obj, error) {
+
+                // TODO: handle error - display message to user
+                console.log(error);
+                
+            }
         }, // END timeRowsTable
 
         splitSlider: {
@@ -875,7 +902,20 @@
                     $('#js-split-slider').addClass('end');
                 }
             }
-        } // END splitSlider
+        }, // END splitSlider
+        populateRows: function(response) {
+            for (var i = 0; i < response.returnedRows.length; i++) {
+                var timeRow = response.returnedRows[i];
+                timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
+                    storedTimeRows.push(timeRow);
+                    liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                    liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                }
+            }
+        } // END populateRows
     }; // END liveEntry
 
     $('.events.live_entry').ready(function () {

@@ -176,15 +176,17 @@ class Api::V1::EventsController < ApiController
 
   def pull_live_time_rows
 
-    # This endpoint searches for live_times related to the event, selects a batch,
+    # This endpoint searches for un-pulled live_times related to the event, selects a batch,
     # marks them as pulled, combines them into live_time_rows, and returns them
     # to the live entry page.
 
     # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
+    # If params[:force_pull] == true, live_times without a matching split_time will be pulled
+    # even if they show as already having been pulled.
 
     authorize @event
 
-    force_pull = false
+    force_pull = params[:force_pull]&.to_boolean
     live_times_default_limit = 50
     live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
 

@@ -52,6 +52,16 @@ RSpec.describe ObjectPairer do
       end
     end
 
+    context 'when no objects can be paired because left pairing criteria are nil' do
+      let(:objects) { [live_time_1, live_time_2, live_time_3, live_time_4] }
+      let(:pairing_criteria) { [{split_id: nil, bitkey: nil}, {split_id: 101, bitkey: 64}] }
+
+      it 'returns an array of objects paired with nils' do
+        expected = [[nil, live_time_2], [nil, live_time_4]]
+        expect(subject.pair).to eq(expected)
+      end
+    end
+
     context 'when no objects match the pairing criteria' do
       let(:objects) { [live_time_1, live_time_2, live_time_3, live_time_4] }
       let(:pairing_criteria) { [{split_id: 102, bitkey: 1}, {split_id: 102, bitkey: 64}] }

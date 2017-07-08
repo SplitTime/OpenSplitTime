@@ -14,6 +14,7 @@ class SplitTime < ActiveRecord::Base
   belongs_to :split
   has_many :live_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
+  attr_accessor :live_time_id
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }

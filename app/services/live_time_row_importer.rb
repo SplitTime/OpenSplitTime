@@ -37,6 +37,7 @@ class LiveTimeRowImporter
         unsaved_rows << effort_data.response_row
       end
     end
+    match_live_times
     notify_followers if event.available_live
   end
 
@@ -91,6 +92,14 @@ class LiveTimeRowImporter
 
   def force_option?
     time_rows.size == 1
+  end
+
+  def match_live_times
+    split_times = saved_split_times.values.flatten.select(&:live_time_id)
+    split_times.each do |split_time|
+      live_time = LiveTime.find_by(id: split_time.live_time_id)
+      live_time.update(split_time: split_time)
+    end
   end
 
   def notify_followers

@@ -183,7 +183,8 @@ class LiveEffortData
     SplitTime.new(effort: effort,
                   time_point: time_points[kind],
                   time_from_start: time_from_start(kind),
-                  pacer: param_with_kind('pacer', kind) == 'true')
+                  pacer: param_with_kind('pacer', kind) == 'true',
+                  live_time_id: param_with_kind('live_time_id', kind))
   end
 
   def time_from_start(kind)

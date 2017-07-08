@@ -52,6 +52,7 @@
                 liveEntry.splitSlider.init();
             });
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
+            liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
         },
 
         /**
@@ -765,14 +766,9 @@
                        dataType: 'json',
                        success: function(data) {
                             if (data.returnedRows.length === 0) {
-                                $('#js-live-messages').append(liveEntry.importLiveWarning);
-                                liveEntry.importLiveWarning.fadeTo(500, 1);
-                                window.setTimeout(function() {
-                                liveEntry.importLiveWarning.fadeTo(500, 0).slideUp(500, function(){
-                                        liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
-                                        liveEntry.importAsyncBusy = false;
-                                    });
-                                }, 4000);
+                                liveEntry.displayAndHideMessage(
+                                    liveEntry.importLiveWarning,
+                                    '#js-import-live-warning');
                                 return;
                             }
                             liveEntry.populateRows(data);
@@ -784,12 +780,24 @@
                 });
             },
             importLiveError: function(obj, error) {
-
-                // TODO: handle error - display message to user
-                console.log(error);
-                
+                liveEntry.displayAndHideMessage(liveEntry.importLiveError, '#js-import-live-error');
             }
         }, // END timeRowsTable
+
+        displayAndHideMessage: function(msgElement, selector) {
+            // Fade in and fade out Bootstrap Alert
+            // @param msgElement object jQuery element containing the alert
+            // @param selector string jQuery selector to access the alert element
+            $('#js-live-messages').append(msgElement);
+            msgElement.fadeTo(500, 1);
+            window.setTimeout(function() {
+            msgElement.fadeTo(500, 0).slideUp(500, function(){
+                    msgElement = $(selector).hide().detach();
+                    liveEntry.importAsyncBusy = false;
+                });
+            }, 4000);
+            return;
+        },
 
         splitSlider: {
 

@@ -45,8 +45,8 @@ class LiveEffortData
      pacer_out: new_split_times[:out].pacer,
      time_in_status: new_split_times[:in].data_status,
      time_out_status: new_split_times[:out].data_status,
-     time_in_exists: times_exist[:in],
-     time_out_exists: times_exist[:out],
+     time_in_exists: new_split_times[:in].time_exists,
+     time_out_exists: new_split_times[:out].time_exists,
      identical: identical_row_exists?}
         .camelize_keys
   end
@@ -56,7 +56,8 @@ class LiveEffortData
   end
 
   def clean?
-    times_exist.values.none? && proposed_split_times.all?(&:valid_status?)
+    proposed_split_times.none? { |st| st.time_exists && st.time_from_start } &&
+        proposed_split_times.all?(&:valid_status?)
   end
 
   def subject_lap_split
@@ -94,10 +95,6 @@ class LiveEffortData
     params[:dropped_here] == 'true'
   end
 
-  def times_exist
-    sub_split_kinds.map { |kind| [kind, indexed_existing_split_times[time_points[kind]].present?] }.to_h
-  end
-
   def identical_row_exists?
     sub_split_kinds.all? { |kind| identical_split_time_exists?(kind) }
   end
@@ -127,6 +124,19 @@ class LiveEffortData
 
   def lap_for_lap_splits
     [ordered_existing_split_times.last.try(:lap) || 1, lap].max
+  end
+
+  def new_live_times
+    @new_live_times ||=
+        sub_split_kinds.map do |kind|
+          [kind, LiveTime.new(event: event,
+                              split: subject_split,
+                              bib_number: effort.bib_number,
+                              with_pacer: param_with_kind('pacer', kind) == 'true',
+                              bitkey: SubSplit.bitkey(kind),
+                              source: 'ost-live-entry',
+                              entered_time: param_with_kind('time', kind))]
+        end.to_h
   end
 
   private
@@ -184,7 +194,8 @@ class LiveEffortData
                   time_point: time_points[kind],
                   time_from_start: time_from_start(kind),
                   pacer: param_with_kind('pacer', kind) == 'true',
-                  live_time_id: param_with_kind('live_time_id', kind))
+                  live_time_id: param_with_kind('live_time_id', kind).presence,
+                  time_exists: indexed_existing_split_times[time_points[kind]].present?)
   end
 
   def time_from_start(kind)

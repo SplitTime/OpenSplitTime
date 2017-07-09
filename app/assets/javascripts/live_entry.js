@@ -51,6 +51,8 @@
                 liveEntry.timeRowsTable.init();
                 liveEntry.splitSlider.init();
             });
+            liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
+            liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
         },
 
         /**
@@ -741,18 +743,7 @@
                         liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {
-                        var response = data.result;
-                        for (var i = 0; i < response.returnedRows.length; i++) {
-                            var timeRow = response.returnedRows[i];
-                            timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-
-                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
-                                storedTimeRows.push(timeRow);
-                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                                liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
-                            }
-                        }
+                        liveEntry.populateRows(data.result);
                     },
                     fail: function (e, data) {
                         $('#debug').empty().append( data.response().jqXHR.responseText );
@@ -761,8 +752,52 @@
                         liveEntry.timeRowsTable.busy = false;
                     }
                 });
+                $('#js-import-live-times').on('click', function (event) {
+                    event.preventDefault();
+                    if (liveEntry.importAsyncBusy) {
+                        return;
+                    }
+                    liveEntry.importAsyncBusy = true;
+                    $.ajax('/api/v1/events/' + liveEntry.currentEventId + '/pull_live_time_rows', {
+                       error: function(obj, error) {
+                            liveEntry.importAsyncBusy = false;
+                            liveEntry.timeRowsTable.importLiveError(obj, error);
+                       },
+                       dataType: 'json',
+                       success: function(data) {
+                            if (data.returnedRows.length === 0) {
+                                liveEntry.displayAndHideMessage(
+                                    liveEntry.importLiveWarning,
+                                    '#js-import-live-warning');
+                                return;
+                            }
+                            liveEntry.populateRows(data);
+                            liveEntry.importAsyncBusy = false;
+                       },
+                       type: 'PATCH'
+                    });
+                    return false;
+                });
             },
+            importLiveError: function(obj, error) {
+                liveEntry.displayAndHideMessage(liveEntry.importLiveError, '#js-import-live-error');
+            }
         }, // END timeRowsTable
+
+        displayAndHideMessage: function(msgElement, selector) {
+            // Fade in and fade out Bootstrap Alert
+            // @param msgElement object jQuery element containing the alert
+            // @param selector string jQuery selector to access the alert element
+            $('#js-live-messages').append(msgElement);
+            msgElement.fadeTo(500, 1);
+            window.setTimeout(function() {
+            msgElement.fadeTo(500, 0).slideUp(500, function(){
+                    msgElement = $(selector).hide().detach();
+                    liveEntry.importAsyncBusy = false;
+                });
+            }, 4000);
+            return;
+        },
 
         splitSlider: {
 
@@ -875,7 +910,20 @@
                     $('#js-split-slider').addClass('end');
                 }
             }
-        } // END splitSlider
+        }, // END splitSlider
+        populateRows: function(response) {
+            for (var i = 0; i < response.returnedRows.length; i++) {
+                var timeRow = response.returnedRows[i];
+                timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
+                    storedTimeRows.push(timeRow);
+                    liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                    liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                }
+            }
+        } // END populateRows
     }; // END liveEntry
 
     $('.events.live_entry').ready(function () {

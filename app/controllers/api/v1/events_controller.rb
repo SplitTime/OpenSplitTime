@@ -118,7 +118,7 @@ class Api::V1::EventsController < ApiController
     if @event.available_live
       render partial: 'live/events/event_data.json.ruby'
     else
-      render partial: 'live/events/live_entry_unavailable.json.ruby'
+      render json: live_entry_unavailable, status: :forbidden
     end
   end
 
@@ -140,7 +140,7 @@ class Api::V1::EventsController < ApiController
       @live_data_entry_reporter = LiveDataEntryReporter.new(event: @event, params: params)
       render partial: 'live/events/live_effort_data.json.ruby'
     else
-      render partial: 'live/events/live_entry_unavailable.json.ruby'
+      render json: live_entry_unavailable, status: :forbidden
     end
   end
 
@@ -152,10 +152,17 @@ class Api::V1::EventsController < ApiController
 
     authorize @event
     if @event.available_live
-      @returned_rows = LiveTimeRowImporter.import(event: @event, time_rows: params[:time_rows])
-      render partial: 'live/events/set_times_data_report.json.ruby'
+      importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:time_rows])
+      importer.import
+      @returned_rows = importer.returned_rows
+
+      if importer.errors.present?
+        render json: {errors: importer.errors}, status: :unprocessable_entity
+      else
+        render partial: 'live/events/set_times_data_report.json.ruby'
+      end
     else
-      render partial: 'live/events/live_entry_unavailable.json.ruby'
+      render json: live_entry_unavailable, status: :forbidden
     end
   end
 
@@ -170,7 +177,7 @@ class Api::V1::EventsController < ApiController
       @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
       render json: {returnedRows: @returned_rows}, status: :created
     else
-      render partial: 'live/events/live_entry_unavailable.json.ruby'
+      render json: live_entry_unavailable, status: :forbidden
     end
   end
 
@@ -186,23 +193,33 @@ class Api::V1::EventsController < ApiController
 
     authorize @event
 
-    force_pull = params[:force_pull]&.to_boolean
-    live_times_default_limit = 50
-    live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
+    if @event.available_live
+      force_pull = params[:force_pull]&.to_boolean
+      live_times_default_limit = 50
+      live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
 
-    scoped_live_times = force_pull ? @event.live_times.unmatched : @event.live_times.unconsidered
-    live_times = scoped_live_times.order(:split_id, :bib_number, :bitkey).limit(live_times_limit)
+      scoped_live_times = force_pull ? @event.live_times.unmatched : @event.live_times.unconsidered
+      live_times = scoped_live_times.order(:split_id, :bib_number, :bitkey).limit(live_times_limit)
 
-    live_time_rows = LiveTimeRowConverter.convert(event: @event, live_times: live_times)
-    live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
-    render json: {returnedRows: live_time_rows}, status: :ok
+      live_time_rows = LiveTimeRowConverter.convert(event: @event, live_times: live_times)
+
+      live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+      render json: {returnedRows: live_time_rows}, status: :ok
+    else
+      render json: live_entry_unavailable, status: :forbidden
+    end
   end
 
   private
 
   def set_event
     @event = params[:staging_id].uuid? ?
-        Event.find_by!(staging_id: params[:staging_id]) :
-        Event.friendly.find(params[:staging_id])
+                 Event.find_by!(staging_id: params[:staging_id]) :
+                 Event.friendly.find(params[:staging_id])
+  end
+
+  def live_entry_unavailable
+    {reportText: "Live entry for #{@event.name} is currently unavailable. " +
+        'Please enable live entry access through the event stage/admin page.'}
   end
 end

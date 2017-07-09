@@ -126,6 +126,19 @@ class LiveEffortData
     [ordered_existing_split_times.last.try(:lap) || 1, lap].max
   end
 
+  def new_live_times
+    @new_live_times ||=
+        sub_split_kinds.map do |kind|
+          [kind, LiveTime.new(event: event,
+                              split: subject_split,
+                              bib_number: effort.bib_number,
+                              with_pacer: param_with_kind('pacer', kind) == 'true',
+                              bitkey: SubSplit.bitkey(kind),
+                              source: 'ost-live-entry',
+                              entered_time: param_with_kind('time', kind))]
+        end.to_h
+  end
+
   private
 
   attr_reader :event, :params, :times_container

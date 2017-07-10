@@ -45,9 +45,9 @@ class Api::V1::EventsController < ApiController
     authorize @event
     params[:display_style] ||= 'absolute'
     spread_display = Rails.cache.fetch("event_spread_#{@event.id}", expires_in: 5.minutes) do
-      EventSpreadSerializer.new(EventSpreadDisplay.new(event: @event, params: prepared_params), include: 'effort_times_rows').to_json
+      ActiveModelSerializers::Adapter.create(EventSpreadSerializer.new(EventSpreadDisplay.new(event: @event, params: prepared_params)), adapter: :json_api, include: :effort_times_rows).to_json
     end
-    render json: spread_display
+   render json: spread_display
   end
 
   # Send 'with_times' => 'false' to ignore split_time data

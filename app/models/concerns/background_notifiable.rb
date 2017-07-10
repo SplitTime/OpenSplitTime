@@ -20,6 +20,12 @@ module BackgroundNotifiable
     notifier.publish(channel: background_channel, event: 'error', message: args[:message]) if background_channel
   end
 
+  def report_live_times_available(event)
+    channel = "live_times_available_#{event.id}"
+    message = {count: event.live_times.unconsidered.size}
+    Pusher.trigger(channel, 'update', message)
+  end
+
   private
 
   def notifier

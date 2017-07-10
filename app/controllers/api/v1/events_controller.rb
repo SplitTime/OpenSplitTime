@@ -1,4 +1,5 @@
 class Api::V1::EventsController < ApiController
+  include BackgroundNotifiable
   before_action :set_event, except: [:index, :create]
 
   # GET /api/v1/events/:staging_id
@@ -101,6 +102,9 @@ class Api::V1::EventsController < ApiController
       split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
       notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
       notifier.notify
+
+      live_times = importer.saved_records.select { |record| record.is_a?(LiveTime) }
+      report_live_times_available(@event) if live_times
     end
   end
 

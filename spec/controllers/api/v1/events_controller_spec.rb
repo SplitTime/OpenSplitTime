@@ -199,7 +199,7 @@ describe Api::V1::EventsController do
       end
     end
 
-    context 'when provided with an array of hashes and data_format: :jsonapi_batch' do
+    context 'when provided with an array of live_time hashes and data_format: :jsonapi_batch' do
       let(:split_id) { splits.first.id }
       let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi_batch', data: data} }
       let(:data) { [
@@ -229,6 +229,17 @@ describe Api::V1::EventsController do
         expect(LiveTime.all.map(&:bib_number)).to eq([101, 101])
         expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
         expect(LiveTime.all.map(&:absolute_time)).to eq(%w(10:45:45-06:00 10:50:50-06:00))
+      end
+
+      context 'when the event is available live' do
+        let(:event) { create(:event, course_id: course.id, laps_required: 1, available_live: true) }
+
+        it 'sends a push notification that includes the count of available times' do
+          allow(Pusher).to receive(:trigger)
+          post :import, request_params
+          expected_args = ["live_times_available_#{event.id}", 'update', {count: 2}]
+          expect(Pusher).to have_received(:trigger).with(*expected_args)
+        end
       end
     end
   end

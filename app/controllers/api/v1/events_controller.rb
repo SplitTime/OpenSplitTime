@@ -104,7 +104,7 @@ class Api::V1::EventsController < ApiController
       notifier.notify
 
       live_times = importer.saved_records.select { |record| record.is_a?(LiveTime) }
-      report_live_times_available(@event) if live_times
+      report_live_times_available(@event) if live_times.present?
     end
   end
 

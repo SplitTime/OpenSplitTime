@@ -34,7 +34,7 @@ class Participant < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
-  validates :phone, format: {with: VALID_PHONE_REGEX}
+  validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
 
   # This method needs to extract ids and run a new search to remain compatible

@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   pg_search_scope :search_name_email, against: [:first_name, :last_name, :email], using: {tsearch: {any_word: true, prefix: true}}
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
-  phony_normalize :phone, default_country_code: 'US'
+  phony_normalize :phone, country_code: 'US'
   strip_attributes collapse_spaces: true
 
   has_many :subscriptions, dependent: :destroy
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   alias_attribute :https, :https_endpoint
 
   validates_presence_of :first_name, :last_name
-  validates :phone, phony_plausible: true
+  validates_plausible_phone :phone, country_code: 'US', message: 'must be a valid US or Canada phone number'
 
   after_initialize :set_default_role, if: :new_record?
 

@@ -9,7 +9,6 @@ class Participant < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   strip_attributes collapse_spaces: true
-  phony_normalize :phone, default_country_code: 'US'
 
   enum gender: [:male, :female]
   has_many :subscriptions, dependent: :destroy
@@ -35,7 +34,7 @@ class Participant < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
-  validates :phone, phony_plausible: true
+  validates :phone, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
 
   # This method needs to extract ids and run a new search to remain compatible

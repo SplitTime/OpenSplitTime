@@ -2,7 +2,6 @@ class Effort < ActiveRecord::Base
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   enum gender: [:male, :female]
   strip_attributes collapse_spaces: true
-  phony_normalize :phone, default_country_code: 'US'
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]]
@@ -30,7 +29,7 @@ class Effort < ActiveRecord::Base
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
-  validates :phone, phony_plausible: true
+  validates :phone, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
 
   before_save :reset_age_from_birthdate

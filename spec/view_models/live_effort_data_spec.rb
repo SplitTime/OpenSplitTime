@@ -357,6 +357,61 @@ RSpec.describe LiveEffortData do
       validate_new_split_times(event, effort, split_times, params, attributes)
     end
 
+    it 'sets time_exists depending on whether a split_time exists in the database for the provided split and effort' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+      attributes = {in: {time_exists: true}, out: {time_exists: true}}
+      validate_new_split_times(event, effort, split_times, params, attributes)
+    end
+
+    it 'sets time_exists properly when only the in split_time exists' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(2)
+      provided_split = event.splits[1]
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+      attributes = {in: {time_exists: true}, out: {time_exists: false}}
+      validate_new_split_times(event, effort, split_times, params, attributes)
+    end
+
+    it 'sets time_exists properly when only the out time exists' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times[2..3]
+      provided_split = event.splits[1]
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+      attributes = {in: {time_exists: false}, out: {time_exists: true}}
+      validate_new_split_times(event, effort, split_times, params, attributes)
+    end
+
+    it 'sets time_exists to nil for a sub_split kind that is not associated with the provided split' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(5)
+      provided_split = event.splits[0]
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+      attributes = {in: {time_exists: true}, out: {time_exists: nil}}
+      validate_new_split_times(event, effort, split_times, params, attributes)
+    end
+
+    it 'functions the same when times are not provided' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '', 'time_out' => '', 'id' => '4'}
+      attributes = {in: {time_exists: true}, out: {time_exists: true}}
+      validate_new_split_times(event, effort, split_times, params, attributes)
+    end
+
     def validate_new_split_times(event, effort, split_times, params, attributes)
       ordered_splits = event.splits
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
@@ -370,77 +425,6 @@ RSpec.describe LiveEffortData do
         pairs.each do |attribute, expected|
           expect(effort_data.new_split_times[in_out].send(attribute)).to eq(expected)
         end
-      end
-    end
-  end
-
-  describe '#times_exist' do
-    it 'returns a hash indicating the presence (true or false) if split_times for the provided split and effort' do
-      event = test_event
-      effort = test_effort
-      split_times = effort.split_times.first(3)
-      provided_split = event.splits[1]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      attributes = {in: true, out: true}
-      validate_times_exist(event, effort, split_times, params, attributes)
-    end
-
-    it 'functions when only the in time exists' do
-      event = test_event
-      effort = test_effort
-      split_times = effort.split_times.first(2)
-      provided_split = event.splits[1]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      attributes = {in: true, out: false}
-      validate_times_exist(event, effort, split_times, params, attributes)
-    end
-
-    it 'functions when only the out time exists' do
-      event = test_event
-      effort = test_effort
-      split_times = effort.split_times[2..3]
-      provided_split = event.splits[1]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      attributes = {in: false, out: true}
-      validate_times_exist(event, effort, split_times, params, attributes)
-    end
-
-    it 'returns nil for a sub_split kind that is not associated with the provided split' do
-      event = test_event
-      effort = test_effort
-      split_times = effort.split_times.first(5)
-      provided_split = event.splits[0]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      attributes = {in: true, out: nil}
-      validate_times_exist(event, effort, split_times, params, attributes)
-    end
-
-    it 'functions the same when times are not provided' do
-      event = test_event
-      effort = test_effort
-      split_times = effort.split_times.first(3)
-      provided_split = event.splits[1]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
-      attributes = {in: true, out: true}
-      validate_times_exist(event, effort, split_times, params, attributes)
-    end
-
-    def validate_times_exist(event, effort, split_times, params, attributes)
-      ordered_splits = event.splits
-      allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
-      allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      effort_data = LiveEffortData.new(event: event,
-                                       params: params,
-                                       ordered_splits: ordered_splits,
-                                       effort: effort,
-                                       times_container: times_container)
-      attributes.each do |in_out, expected|
-        expect(effort_data.times_exist[in_out]).to eq(expected)
       end
     end
   end

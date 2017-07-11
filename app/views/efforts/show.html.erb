@@ -1,6 +1,17 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Show effort - #{@effort_show.full_name} - #{@effort_show.event_name}" %>
 <% end %>
+
+<% if @current_user && @effort_show.participant %>
+    <%= div_for(@effort_show.participant) do %>
+        <h4>
+          Notify Me Live:
+          <%= link_to_toggle_email_subscription(@effort_show.participant) %>
+          <%= link_to_toggle_sms_subscription(@effort_show.participant) %>
+        </h4>
+    <% end %>
+<% end %>
+
 <div class="row header">
   <div class="col-xs-6">
     <h2><strong>

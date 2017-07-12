@@ -1,10 +1,10 @@
 class Api::V1::EventsController < ApiController
   include BackgroundNotifiable
   before_action :set_event, except: [:index, :create]
+  before_action :authorize_event, except: [:index, :create]
 
   # GET /api/v1/events/:staging_id
   def show
-    authorize @event
     render json: @event, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
@@ -23,7 +23,6 @@ class Api::V1::EventsController < ApiController
 
   # PUT /api/v1/events/:staging_id
   def update
-    authorize @event
     if @event.update(permitted_params)
       render json: @event
     else
@@ -33,7 +32,6 @@ class Api::V1::EventsController < ApiController
 
   # DELETE /api/v1/events/:staging_id
   def destroy
-    authorize @event
     if @event.destroy
       render json: @event
     else
@@ -43,14 +41,13 @@ class Api::V1::EventsController < ApiController
 
   # GET /api/v1/events/:staging_id/spread
   def spread
-    authorize @event
     params[:display_style] ||= 'absolute'
     cache_params = params.except('controller', 'action', 'staging_id')
     spread_display = Rails.cache.fetch("event_spread_#{@event.id}#{cache_params}", expires_in: 1.minute) do
       presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
       ActiveModelSerializers::Adapter.create(EventSpreadSerializer.new(presenter), adapter: :json_api, include: :effort_times_rows).to_json
     end
-   render json: spread_display
+    render json: spread_display
   end
 
   # Send 'with_times' => 'false' to ignore split_time data
@@ -59,7 +56,6 @@ class Api::V1::EventsController < ApiController
 
   # POST /api/v1/events/:staging_id/import_efforts
   def import_efforts
-    authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)
     if file_url
       if Rails.env.production?
@@ -75,8 +71,6 @@ class Api::V1::EventsController < ApiController
   end
 
   def import
-    authorize @event
-
     if params[:file]
       params[:data] = File.read(params[:file])
     end
@@ -119,8 +113,6 @@ class Api::V1::EventsController < ApiController
 
   #GET /api/v1/events/:staging_id/event_data
   def event_data
-
-    authorize @event
     if @event.available_live
       render partial: 'live/events/event_data.json.ruby'
     else
@@ -141,7 +133,6 @@ class Api::V1::EventsController < ApiController
     # timeFromLastReported ("hh:mm"), timeInAid ("mm minutes"), timeInExists (bool), timeOutExists (bool),
     # timeInStatus ('good', 'questionable', 'bad'), timeOutStatus ('good', 'questionable', 'bad') }
 
-    authorize @event
     if @event.available_live
       @live_data_entry_reporter = LiveDataEntryReporter.new(event: @event, params: params)
       render partial: 'live/events/live_effort_data.json.ruby'
@@ -156,7 +147,6 @@ class Api::V1::EventsController < ApiController
     # pacerIn (boolean), pacerOut (boolean), and droppedHere (boolean). This action ingests time_rows, converts and
     # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
-    authorize @event
     if @event.available_live
       importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:time_rows])
       importer.import
@@ -178,7 +168,6 @@ class Api::V1::EventsController < ApiController
     # This endpoint interprets and verifies rows from the file and returns
     # return_rows containing all data necessary to populate the local data workspace.
 
-    authorize @event
     if @event.available_live
       @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
       render json: {returnedRows: @returned_rows}, status: :created
@@ -196,8 +185,6 @@ class Api::V1::EventsController < ApiController
     # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
     # If params[:force_pull] == true, live_times without a matching split_time will be pulled
     # even if they show as already having been pulled.
-
-    authorize @event
 
     if @event.available_live
       force_pull = params[:force_pull]&.to_boolean
@@ -222,6 +209,10 @@ class Api::V1::EventsController < ApiController
     @event = params[:staging_id].uuid? ?
                  Event.find_by!(staging_id: params[:staging_id]) :
                  Event.friendly.find(params[:staging_id])
+  end
+
+  def authorize_event
+    authorize @event
   end
 
   def live_entry_unavailable

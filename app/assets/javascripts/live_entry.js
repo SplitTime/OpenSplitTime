@@ -53,6 +53,7 @@
             });
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
+            liveEntry.PopulatingFromRow = false;
         },
 
         /**
@@ -310,6 +311,17 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function() {
+                if (liveEntry.PopulatingFromRow) {
+                    // Do nothing.
+                    // This fn is being called from several places based
+                    // on different actions.
+                    // None of them are needed if the form is being populated
+                    // by the system from a Local row's data
+                    // (User clicks on Edit icon in a Local Data Workspace row)
+                    // This flag will be on while the form is populated by that action
+                    // and turnedd of when that's done.
+                    return $.Deferred().resolve();
+                }
                 liveEntry.liveEntryForm.prefillCurrentTime();
 
                 var bibNumber = $('#js-bib-number').val();
@@ -703,6 +715,7 @@
             timeRowControls: function () {
 
                 $(document).on('click', '.js-edit-effort', function (event) {
+                    liveEntry.PopulatingFromRow = true;
                     event.preventDefault();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     var $row = $(this).closest('tr');
@@ -711,6 +724,7 @@
                     liveEntry.timeRowsTable.removeTimeRows( $(this) );
 
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
+                    liveEntry.PopulatingFromRow = false;
                 });
 
                 $(document).on('click', '.js-delete-effort', function () {

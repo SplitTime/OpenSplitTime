@@ -44,6 +44,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     @partner_with_banner ||= event.pick_partner_with_banner
   end
 
+  def cache_key
+    "#{to_param}/spread/display_style=#{display_style}&sort=#{sort_string}&filter=#{filter_hash}"
+  end
+
   private
 
   delegate :multiple_laps?, to: :event

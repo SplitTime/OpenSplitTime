@@ -53,56 +53,58 @@
     <%= render 'partner_banner', partner: @spread_display.partner_with_banner %>
 <% end %>
 
-<table class="table table-condensed table-striped">
-  <thead>
-  <tr>
-    <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
-                                                       display_style: params[:display_style],
-                                                       sort: reversed_sort_param(@spread_display, :overall_rank)) %>
-    </th>
-    <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
-                                             display_style: params[:display_style],
-                                             sort: reversed_sort_param(@spread_display, :bib_number)) %></th>
-    <th><%= link_to 'Name', spread_event_path(@spread_display.event,
-                                              display_style: params[:display_style],
-                                              sort: toggled_sort_param(@spread_display, :last_name, :first_name)) %></th>
-    <th>Category</th>
-    <th>From</th>
-    <% spread_relevant_elements(@spread_display.split_header_data).each do |header| %>
-        <th class="text-nowrap text-center">
-          <%= clustered_header(header) %>
-        </th>
-    <% end %>
-    <% if @spread_display.show_segment_totals? %>
-        <th class="text-center text-nowrap">
-          <%= clustered_segment_total_header %>
-        </th>
-    <% end %>
-  </tr>
-  </thead>
-  <tbody>
-  <% @spread_display.effort_times_rows.each do |row| %>
+<% cache @spread_display.cache_key, expires_in: 1.minute do %>
+    <table class="table table-condensed table-striped">
+      <thead>
       <tr>
-        <td><%= "#{row.overall_rank}/#{row.gender_rank}" %></td>
-        <td><%= row.bib_number %></td>
-        <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
-        <td class="text-nowrap"><%= row.bio_historic %></td>
-        <td class="text-nowrap"><%= row.state_and_country %></td>
-        <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
-            <td class="text-nowrap text-center">
-              <% if cluster.drop_display? %>
-                  <strong><==DONE</strong>
-              <% else %>
-                  <%= time_cluster_display_data(cluster, @spread_display.display_style) %>
-              <% end %>
-            </td>
+        <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
+                                                           display_style: params[:display_style],
+                                                           sort: reversed_sort_param(@spread_display, :overall_rank)) %>
+        </th>
+        <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
+                                                 display_style: params[:display_style],
+                                                 sort: reversed_sort_param(@spread_display, :bib_number)) %></th>
+        <th><%= link_to 'Name', spread_event_path(@spread_display.event,
+                                                  display_style: params[:display_style],
+                                                  sort: toggled_sort_param(@spread_display, :last_name, :first_name)) %></th>
+        <th>Category</th>
+        <th>From</th>
+        <% spread_relevant_elements(@spread_display.split_header_data).each do |header| %>
+            <th class="text-nowrap text-center">
+              <%= clustered_header(header) %>
+            </th>
         <% end %>
         <% if @spread_display.show_segment_totals? %>
-            <td class="text-center text-nowrap">
-              <%= clustered_segment_total_data(row) %>
-            </td>
+            <th class="text-center text-nowrap">
+              <%= clustered_segment_total_header %>
+            </th>
         <% end %>
       </tr>
-  <% end %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+      <% @spread_display.effort_times_rows.each do |row| %>
+          <tr>
+            <td><%= "#{row.overall_rank}/#{row.gender_rank}" %></td>
+            <td><%= row.bib_number %></td>
+            <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
+            <td class="text-nowrap"><%= row.bio_historic %></td>
+            <td class="text-nowrap"><%= row.state_and_country %></td>
+            <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
+                <td class="text-nowrap text-center">
+                  <% if cluster.drop_display? %>
+                      <strong><==DONE</strong>
+                  <% else %>
+                      <%= time_cluster_display_data(cluster, @spread_display.display_style) %>
+                  <% end %>
+                </td>
+            <% end %>
+            <% if @spread_display.show_segment_totals? %>
+                <td class="text-center text-nowrap">
+                  <%= clustered_segment_total_data(row) %>
+                </td>
+            <% end %>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>

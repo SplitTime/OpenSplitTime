@@ -28,7 +28,7 @@ class CoursesController < ApplicationController
 
     if @course.save
       @course.update_initial_splits
-      redirect_to new_event_path(course_id: @course.id)
+      redirect_to event_staging_app_path('new')
     else
       render 'new'
     end

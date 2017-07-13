@@ -725,6 +725,7 @@
 
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
                     liveEntry.PopulatingFromRow = false;
+                    liveEntry.liveEntryForm.fetchEffortData();
                 });
 
                 $(document).on('click', '.js-delete-effort', function () {

@@ -63,11 +63,22 @@
                 // Listen to push notifications
                 var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
                 var pusher = new Pusher(liveTimesPusherKey);
-                var channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
+                var channel = {};
+                if (typeof liveEntry.eventLiveEntryData === 'undefined') {
+                    // Just for safety, abort this init if there is no event data
+                    // and avoid breaking execution
+                    return;
+                }
+                if (typeof liveEntry.eventLiveEntryData.eventId === 'undefined') {
+                    // Just for safety, abort this init if there is no eventID
+                    // and avoid breaking execution
+                    return;
+                }
+                channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
                 channel.bind('update', function (data) {
                     // New value pushed from the server
                     // Display updated number of new live times on Pull Times button
-                    if (typeof data.count === "number") {
+                    if (typeof data.count === 'number') {
                         liveEntry.pusher.displayNewCount(data.count);
                         return;
                     }

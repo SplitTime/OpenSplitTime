@@ -5,6 +5,7 @@
         <% "OpenSplitTime: #{@event_display.name} - Results" %>
     <% end %>
 <% end %>
+
 <div class="row header">
   <div class="col-xs-5">
     <h2><strong><%= "#{@event_display.name}: Results" %></strong>
@@ -52,7 +53,9 @@
           </div>
         </div>
 
-        <%= render 'efforts/efforts_list' %>
+        <% cache @event_display.cache_key_started, expires_in: 1.minute do %>
+            <%= render 'efforts/efforts_list' %>
+        <% end %>
 
         <div class="row">
           <div class="col-xs-8">
@@ -64,6 +67,7 @@
         <strong>No results match that search.</strong>
     <% end %>
 <% end %>
+
 <% if @event_display.unstarted_efforts_count > 0 %>
     <hr>
     <div class="row">
@@ -77,7 +81,9 @@
       </div>
     </div>
 
-    <%= render 'efforts/efforts_not_started' %>
+    <% cache @event_display.cache_key_unstarted, expires_in: 1.minute do %>
+        <%= render 'efforts/efforts_not_started' %>
+    <% end %>
 
     <div class="row">
       <div class="col-xs-8">

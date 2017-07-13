@@ -45,7 +45,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def cache_key
-    "#{to_param}/#{Rails.env}/spread/display_style=#{display_style}&sort=#{sort_string}&filter=#{filter_hash}"
+    "#{Rails.env}/events/#{to_param}/spread/display_style=#{display_style}&sort=#{sort_string}&filter=#{filter_hash}"
   end
 
   private

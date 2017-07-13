@@ -42,9 +42,8 @@ class Api::V1::EventsController < ApiController
   # GET /api/v1/events/:staging_id/spread
   def spread
     params[:display_style] ||= 'absolute'
-    cache_params = params.except('controller', 'action', 'staging_id')
-    spread_display = Rails.cache.fetch("event_spread_#{@event.id}#{cache_params}", expires_in: 1.minute) do
-      presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
+    presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
+    spread_display = Rails.cache.fetch("#{presenter.cache_key}/json", expires_in: 1.minute) do
       ActiveModelSerializers::Adapter.create(EventSpreadSerializer.new(presenter), adapter: :json_api, include: :effort_times_rows).to_json
     end
     render json: spread_display

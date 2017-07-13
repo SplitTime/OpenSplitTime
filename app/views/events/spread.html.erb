@@ -53,7 +53,7 @@
     <%= render 'partner_banner', partner: @spread_display.partner_with_banner %>
 <% end %>
 
-<% cache @spread_display.cache_key, expires_in: 1.minute do %>
+<% cache "#{@spread_display.cache_key}/html", expires_in: 1.minute do %>
     <table class="table table-condensed table-striped">
       <thead>
       <tr>

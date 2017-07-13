@@ -563,7 +563,6 @@
                         return;
                     }
                     thisTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-                    // thisTimeRow.liveTimeIdIn = liveEntry.timeRowsCache.getLiveTimeIdIn();
 
                     var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                     if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {

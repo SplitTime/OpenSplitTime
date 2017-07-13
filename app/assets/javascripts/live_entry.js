@@ -50,10 +50,45 @@
                 liveEntry.liveEntryForm.init();
                 liveEntry.timeRowsTable.init();
                 liveEntry.splitSlider.init();
+                liveEntry.pusher.init();
             });
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.PopulatingFromRow = false;
+            
+        },
+
+        pusher: {
+            init: function() {
+                // Listen to push notifications
+                var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
+                var pusher = new Pusher(liveTimesPusherKey);
+                var channel = {};
+                if (typeof liveEntry.eventLiveEntryData === 'undefined') {
+                    // Just for safety, abort this init if there is no event data
+                    // and avoid breaking execution
+                    return;
+                }
+                if (typeof liveEntry.eventLiveEntryData.eventId === 'undefined') {
+                    // Just for safety, abort this init if there is no eventID
+                    // and avoid breaking execution
+                    return;
+                }
+                channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
+                channel.bind('update', function (data) {
+                    // New value pushed from the server
+                    // Display updated number of new live times on Pull Times button
+                    if (typeof data.count === 'number') {
+                        liveEntry.pusher.displayNewCount(data.count);
+                        return;
+                    }
+                    liveEntry.pusher.displayNewCount(0);
+                });
+            },
+            displayNewCount: function(count) {
+                var text = count > 0 ? '(' + count + ')' : '';
+                $('#js-pull-times-count').text(text);
+            }
         },
 
         /**
@@ -397,6 +432,8 @@
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
                 thisTimeRow.timeOutExists = liveEntry.currentEffortData.timeOutExists;
+                thisTimeRow.liveTimeIdIn = $('#js-live-time-id-in').val() || '';
+                thisTimeRow.liveTimeIdOut = $('#js-live-time-id-out').val() || '';
                 return thisTimeRow;
             },
 
@@ -410,6 +447,8 @@
                 $('#js-pacer-in').prop('checked', timeRow.pacerIn);
                 $('#js-pacer-out').prop('checked', timeRow.pacerOut);
                 $('#js-dropped').prop('checked', timeRow.droppedHere).change();
+                $('#js-live-time-id-in').val(timeRow.liveTimeIdIn);
+                $('#js-live-time-id-out').val(timeRow.liveTimeIdOut);
                 liveEntry.splitSlider.changeSplitSlider(timeRow.splitId);
             },
 
@@ -598,7 +637,9 @@
                 // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
-                    <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
+                    <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '"\
+                        data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
+                        data-live-time-id-out="' + timeRow.liveTimeIdOut +'">\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
                         <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
@@ -944,4 +985,5 @@
     $('.events.live_entry').ready(function () {
         liveEntry.init();
     });
+
 })(jQuery);

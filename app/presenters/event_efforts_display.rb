@@ -26,6 +26,6 @@ class EventEffortsDisplay < EventWithEffortsPresenter
   end
 
   def cache_key(tag)
-    "#{to_param}/#{tag}/page[number]=#{send("#{tag}_page")}&page[size]=#{per_page}&search=#{search_text}&sort=#{sort_string}&filter=#{filter_hash}"
+    "#{to_param}/#{Rails.env}/#{tag}/page[number]=#{send("#{tag}_page")}&page[size]=#{per_page}&search=#{search_text}&sort=#{sort_string}&filter=#{filter_hash}"
   end
 end

@@ -196,6 +196,7 @@ class Api::V1::EventsController < ApiController
       live_time_rows = LiveTimeRowConverter.convert(event: @event, live_times: live_times)
 
       live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+      report_live_times_available(@event)
       render json: {returnedRows: live_time_rows}, status: :ok
     else
       render json: live_entry_unavailable, status: :forbidden

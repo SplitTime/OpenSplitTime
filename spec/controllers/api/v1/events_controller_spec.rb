@@ -104,6 +104,7 @@ describe Api::V1::EventsController do
     end
 
     it 'returns data from cache if the cache is valid' do
+      skip 'caching in test environment is disabled'
       expect(EventSpreadDisplay).to receive(:new).once.and_call_original
       get :spread, staging_id: event.staging_id
       get :spread, staging_id: event.staging_id

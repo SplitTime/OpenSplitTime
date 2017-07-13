@@ -50,10 +50,34 @@
                 liveEntry.liveEntryForm.init();
                 liveEntry.timeRowsTable.init();
                 liveEntry.splitSlider.init();
+                liveEntry.pusher.init();
             });
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.PopulatingFromRow = false;
+            
+        },
+
+        pusher: {
+            init: function() {
+                // Listen to push notifications
+                var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
+                var pusher = new Pusher(liveTimesPusherKey);
+                var channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
+                channel.bind('update', function (data) {
+                    // New value pushed from the server
+                    // Display updated number of new live times on Pull Times button
+                    if (typeof data.count === "number") {
+                        liveEntry.pusher.displayNewCount(data.count);
+                        return;
+                    }
+                    liveEntry.pusher.displayNewCount(0);
+                });
+            },
+            displayNewCount: function(count) {
+                var text = count > 0 ? '(' + count + ')' : '';
+                $('#js-pull-times-count').text(text);
+            }
         },
 
         /**
@@ -950,4 +974,5 @@
     $('.events.live_entry').ready(function () {
         liveEntry.init();
     });
+
 })(jQuery);

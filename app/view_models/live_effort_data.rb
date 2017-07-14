@@ -92,7 +92,7 @@ class LiveEffortData
   end
 
   def stopped_here?
-    params[:dropped_here] == 'true'
+    (params[:dropped_here] == 'true') || (params[:dropped_here] == true)
   end
 
   def identical_row_exists?
@@ -193,7 +193,7 @@ class LiveEffortData
     SplitTime.new(effort: effort,
                   time_point: time_points[kind],
                   time_from_start: time_from_start(kind),
-                  pacer: param_with_kind('pacer', kind) == 'true',
+                  pacer: (param_with_kind('pacer', kind) == true) || (param_with_kind('pacer', kind) == 'true'),
                   live_time_id: param_with_kind('live_time_id', kind).presence,
                   time_exists: indexed_existing_split_times[time_points[kind]].present?)
   end

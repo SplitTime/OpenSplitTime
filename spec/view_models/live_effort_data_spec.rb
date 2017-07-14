@@ -412,6 +412,28 @@ RSpec.describe LiveEffortData do
       validate_new_split_times(event, effort, split_times, params, attributes)
     end
 
+    it 'returns pacer_in and pacer_out values that reflect params provided as true or false boolean values' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '', 'time_out' => '', 'id' => '4', 'pacer_in' => true, 'pacer_out' => false}
+      attributes = {in: {pacer: true}, out: {pacer: false}}
+      validate_new_split_times(event, effort, split_times, params, attributes)
+    end
+
+    it 'returns pacer_in and pacer_out values that reflect params provided as true or false string values' do
+      event = test_event
+      effort = test_effort
+      split_times = effort.split_times.first(3)
+      provided_split = event.splits[1]
+      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                'time_in' => '', 'time_out' => '', 'id' => '4', 'pacer_in' => 'true', 'pacer_out' => 'false'}
+      attributes = {in: {pacer: true}, out: {pacer: false}}
+      validate_new_split_times(event, effort, split_times, params, attributes)
+    end
+
     def validate_new_split_times(event, effort, split_times, params, attributes)
       ordered_splits = event.splits
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)

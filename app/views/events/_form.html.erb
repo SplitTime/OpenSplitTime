@@ -44,7 +44,8 @@
           </div>
           <div class="col-sm-8">
             <%= f.datetime_select :start_time,
-                                  {use_short_month: true,
+                                  {include_seconds: true,
+                                   use_short_month: true,
                                    start_year: (Date.today + 1.year).year,
                                    end_year: 1970,
                                    ampm: true,

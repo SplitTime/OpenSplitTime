@@ -8,7 +8,7 @@ class ProtoRecord
     @record_type = args[:record_type]&.to_sym
     @record_action = args[:record_action]&.to_sym
     @children = Array.wrap(args[:children]) || []
-    @attributes = OpenStruct.new(args.to_h.except(:record_type, :record_action, :children))
+    @attributes = OpenStruct.new(args.to_h.compact.except(:record_type, :record_action, :children))
     validate_setup
   end
 

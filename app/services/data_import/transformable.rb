@@ -84,6 +84,10 @@ module DataImport::Transformable
     self[first_field], self[second_field] = first_value, second_value
   end
 
+  def strip_white_space!
+    to_h.each { |k, v| self[k] = v&.strip.presence || v.presence }
+  end
+
   private
 
   def find_country_code_by_nickname(country_string)

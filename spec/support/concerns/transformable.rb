@@ -335,4 +335,14 @@ shared_examples_for 'transformable' do
       expect(subject[:last_name]).to eq(expected_last_name)
     end
   end
+
+  describe '#strip_white_space' do
+    let(:attributes) { {'time_in' => ' 09:22 ', 'time_out' => '  10:12  '} }
+
+    it 'removes white space from attribute values' do
+      subject.strip_white_space!
+      expect(subject[:time_in]).to eq('09:22')
+      expect(subject[:time_out]).to eq('10:12')
+    end
+  end
 end

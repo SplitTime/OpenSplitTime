@@ -120,5 +120,18 @@ RSpec.describe LiveRowNormalizer do
       expect(file_row[:pacer_out]).to be_nil
       expect(file_row[:dropped_here]).to be_nil
     end
+
+    context 'when headers are non-standard' do
+      let(:headers) { ['Count', 'Bib #', 'Time In', 'Time Out', 'Pacer In', 'Pacer Out', 'Drop', 'Comments'] }
+
+      it 'ignores non-permitted header names and normalizes other header names' do
+        values = ['1', '9', '12:54:00', '13:04:30', '', '', '', '']
+        csv_row = CSV::Row.new(headers, values)
+        file_row = LiveRowNormalizer.normalize(csv_row)
+        expect(file_row[:time_in]).to eq('12:54:00')
+        expect(file_row[:time_out]).to eq('13:04:30')
+        expect(file_row.keys.sort).to eq([:time_in, :time_out, :pacer_in, :pacer_out, :remarks, :bib_number, :dropped_here].sort)
+      end
+    end
   end
 end

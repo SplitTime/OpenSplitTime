@@ -88,7 +88,7 @@ class LiveEffortData
   end
 
   def effort_name
-    effort.try(:full_name) || (params[:bib_number].present? ? 'Bib number not located' : 'n/a')
+    effort&.full_name.presence || (params[:bib_number].present? ? 'Bib number not located' : 'n/a')
   end
 
   def stopped_here?

@@ -42,7 +42,7 @@ module PersonalInfo
   end
 
   def full_name
-    [first_name, last_name].join(' ')
+    [first_name.presence, last_name.presence].compact.join(' ')
   end
   alias_method :name, :full_name
 

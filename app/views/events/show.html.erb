@@ -53,9 +53,7 @@
           </div>
         </div>
 
-        <% cache @event_display.cache_key_started, expires_in: 1.minute do %>
-            <%= render 'efforts/efforts_list' %>
-        <% end %>
+        <%= render 'efforts/efforts_list' %>
 
         <div class="row">
           <div class="col-xs-8">
@@ -81,9 +79,7 @@
       </div>
     </div>
 
-    <% cache @event_display.cache_key_unstarted, expires_in: 1.minute do %>
-        <%= render 'efforts/efforts_not_started' %>
-    <% end %>
+    <%= render 'efforts/efforts_not_started' %>
 
     <div class="row">
       <div class="col-xs-8">

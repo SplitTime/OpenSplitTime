@@ -2,7 +2,9 @@
     <% "OpenSplitTime: Live entry - #{@event.name}" %>
 <% end %>
 <div class="row header">
-
+  <div id="js-new-times-alert" class="alert alert-info center" role="alert">
+    <a href="#js-import-live-times">New Live Times availale</a>
+  </div>
   <div class="col-xs-12 col-md-6 page-title">
     <h2></h2>
     <%= content_tag "div", id: "js-event-id", "data-event-id": params[:id] do %>
@@ -182,7 +184,7 @@
    <div class="btn-group" role="group">
       <button id="js-import-live-times" class="btn btn-primary">
         Pull Times
-        <span id="js-pull-times-count"></span>
+        <span class="badge" id="js-pull-times-count"></span>
       </button>
     </div>
     <div class="btn-group" role="group">

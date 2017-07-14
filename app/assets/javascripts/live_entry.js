@@ -54,6 +54,7 @@
             });
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
+            liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
             liveEntry.PopulatingFromRow = false;
             
         },
@@ -86,7 +87,14 @@
                 });
             },
             displayNewCount: function(count) {
-                var text = count > 0 ? '(' + count + ')' : '';
+                var text = '';
+                if (count > 0) {
+                    $('#js-new-times-alert').fadeTo(500, 1);
+                    text = count;
+                }
+                else {
+                    $('#js-new-times-alert').fadeTo(500, 0, function() {$('#js-new-times-alert').hide()});
+                }
                 $('#js-pull-times-count').text(text);
             }
         },

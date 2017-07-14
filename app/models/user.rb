@@ -83,6 +83,10 @@ class User < ActiveRecord::Base
     [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime('%H:%M:%S')]]
   end
 
+  def authorized_fully?(resource)
+    admin? || (id == resource.created_by) || resource.new_record?
+  end
+
   def authorized_to_edit?(resource)
     admin? || (id == resource.created_by) || steward_of?(resource) || resource.new_record?
   end

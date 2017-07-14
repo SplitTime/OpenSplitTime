@@ -59,7 +59,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def delete_all_efforts?
-    user.authorized_to_edit?(event)
+    user.authorized_fully?(event)
   end
 
   def associate_participants?
@@ -79,11 +79,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def live_enable?
-    user.authorized_to_edit?(event)
+    user.authorized_fully?(event)
   end
 
   def live_disable?
-    user.authorized_to_edit?(event)
+    user.authorized_fully?(event)
   end
 
   def export_to_ultrasignup?

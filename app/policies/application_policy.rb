@@ -73,6 +73,6 @@ class ApplicationPolicy
   end
 
   def destroy?
-    user.authorized_to_edit?(record)
+    user.authorized_fully?(record)
   end
 end

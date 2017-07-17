@@ -94,6 +94,10 @@ class LiveTime < ActiveRecord::Base
   end
 
   def user_full_name
-    created_by ? User.find(created_by)&.full_name : '[User not found]'
+    created_by ? User.find(created_by)&.full_name : '--'
+  end
+
+  def pulled_full_name
+    pulled_by ? User.find(pulled_by)&.full_name : '--'
   end
 end

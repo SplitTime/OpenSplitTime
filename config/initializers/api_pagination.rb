@@ -1,5 +1,5 @@
 ApiPagination.configure do |config|
-  DEFAULT_PER_PAGE ||= 10
+  DEFAULT_PER_PAGE ||= 25
   MAX_PER_PAGE ||= 50
 
   config.page_param do |params|

@@ -81,4 +81,19 @@ class LiveTime < ActiveRecord::Base
   def military_time
     absolute_time ? TimeConversion.absolute_to_hms(absolute_time) : TimeConversion.file_to_military(entered_time)
   end
+
+  def source_shorthand
+    case
+    when source.start_with?('ost-remote')
+      'OST Remote'
+    when source.start_with?('ost-live-entry')
+      'Live Data Entry'
+    else
+      source
+    end
+  end
+
+  def user_full_name
+    created_by ? User.find(created_by)&.full_name : '[User not found]'
+  end
 end

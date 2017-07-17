@@ -61,7 +61,7 @@ module ToggleSubscriptionHelper
     protocol = args[:protocol]
 
     url = subscriptions_path
-    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", 'Notify', url, {
+    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
         method: 'post',
         remote: true,
         class: "#{protocol}-sub btn btn-xs btn-default"

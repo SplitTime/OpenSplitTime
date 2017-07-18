@@ -133,8 +133,8 @@ class Api::V1::EventsController < ApiController
     # timeInStatus ('good', 'questionable', 'bad'), timeOutStatus ('good', 'questionable', 'bad') }
 
     if @event.available_live
-      @live_data_entry_reporter = LiveDataEntryReporter.new(event: @event, params: params)
-      render partial: 'live/events/live_effort_data.json.ruby'
+      reporter = LiveDataEntryReporter.new(event: @event, params: params)
+      render json: reporter.full_report
     else
       render json: live_entry_unavailable, status: :forbidden
     end
@@ -149,12 +149,12 @@ class Api::V1::EventsController < ApiController
     if @event.available_live
       importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:time_rows])
       importer.import
-      @returned_rows = importer.returned_rows
+      returned_rows = importer.returned_rows
 
       if importer.errors.present?
         render json: {errors: importer.errors}, status: :unprocessable_entity
       else
-        render partial: 'live/events/set_times_data_report.json.ruby'
+        render json: returned_rows
       end
     else
       render json: live_entry_unavailable, status: :forbidden
@@ -168,8 +168,8 @@ class Api::V1::EventsController < ApiController
     # return_rows containing all data necessary to populate the local data workspace.
 
     if @event.available_live
-      @returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
-      render json: {returnedRows: @returned_rows}, status: :created
+      returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
+      render json: {returnedRows: returned_rows}, status: :created
     else
       render json: live_entry_unavailable, status: :forbidden
     end

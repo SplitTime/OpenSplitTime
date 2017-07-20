@@ -61,6 +61,8 @@
 
         pusher: {
             init: function() {
+                // For debugging purposes only, log notifications to the console
+                Pusher.logToConsole = true;
                 // Listen to push notifications
                 var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
                 var pusher = new Pusher(liveTimesPusherKey);

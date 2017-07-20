@@ -103,7 +103,10 @@
 
         triggerLiveTimesPush: function() {
             var endpoint = '/api/v1/events/' + liveEntry.eventLiveEntryData.eventId + ' /trigger_live_times_push';
-            $.get(endpoint);
+            $.ajax({
+                url: endpoint,
+                cache: false
+            });
         },
 
         /**

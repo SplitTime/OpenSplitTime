@@ -244,4 +244,20 @@ describe Api::V1::EventsController do
       end
     end
   end
+
+  describe '#trigger_live_times_push' do
+    let(:course) { create(:course) }
+    let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
+    let(:event) { create(:event, course_id: course.id, laps_required: 1) }
+    let(:request_params) { {staging_id: event.staging_id} }
+
+    it 'sends a push notification that includes the count of available times' do
+      event.splits << splits
+      create_list(:live_time, 3, event: event, split: splits.first)
+      allow(Pusher).to receive(:trigger)
+      get :trigger_live_times_push, request_params
+      expected_args = ["live_times_available_#{event.id}", 'update', {count: 3}]
+      expect(Pusher).to have_received(:trigger).with(*expected_args)
+    end
+  end
 end

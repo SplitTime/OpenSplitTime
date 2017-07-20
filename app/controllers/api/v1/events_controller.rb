@@ -103,6 +103,11 @@ class Api::V1::EventsController < ApiController
     end
   end
 
+  def trigger_live_times_push
+    report_live_times_available(@event)
+    render json: {message: "Live times push notification sent for #{@event.name}"}
+  end
+
   # This legacy endpoint requires only an event_id, which is passed via the URL as params[:id]
   # It returns a json containing eventId, eventName, and detailed split info
   # for all splits associated with the event.

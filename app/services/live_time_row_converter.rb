@@ -19,11 +19,15 @@ class LiveTimeRowConverter
   end
 
   def transformed_rows
-    @transformed_rows ||= time_rows.map do |time_row|
-      LiveEffortData.response_row(event: event,
-                                  params: time_row,
-                                  times_container: times_container,
-                                  ordered_splits: ordered_splits)
+    effort_data_objects.map { |effort_data| effort_data.response_row }
+  end
+
+  def effort_data_objects
+    @effort_data_objects ||= time_rows.map do |time_row|
+      LiveEffortData.new(event: event,
+                         params: time_row,
+                         times_container: times_container,
+                         ordered_splits: ordered_splits)
     end
   end
 

@@ -242,6 +242,26 @@ describe Api::V1::EventsController do
           expect(Pusher).to have_received(:trigger).with(*expected_args)
         end
       end
+
+      context 'when the event is available live and auto_live_times is true' do
+        let!(:event) { create(:event, course_id: course.id, laps_required: 1, available_live: true, auto_live_times: true) }
+        let!(:effort) { create(:effort, event: event, bib_number: 101) }
+        let(:data) { [
+            {type: 'live_time',
+             attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 1, absoluteTime: '10:45:45-06:00',
+                          withPacer: true, stoppedHere: false, source: 'ost-remote-1234'}},
+            {type: 'live_time',
+             attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 64, absoluteTime: '10:50:50-06:00',
+                          withPacer: true, stoppedHere: true, source: 'ost-remote-1234'}}
+        ] }
+
+        it 'creates new split_times matching the live_times' do
+          post :import, request_params
+          expect(LiveTime.all.size).to eq(2)
+          expect(SplitTime.all.size).to eq(2)
+          expect(LiveTime.all.pluck(:split_time_id).sort).to eq(SplitTime.all.pluck(:id).sort)
+        end
+      end
     end
   end
 

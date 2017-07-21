@@ -61,6 +61,8 @@
 
         pusher: {
             init: function() {
+                // For debugging purposes only, log notifications to the console
+                Pusher.logToConsole = true;
                 // Listen to push notifications
                 var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
                 var pusher = new Pusher(liveTimesPusherKey);
@@ -85,6 +87,8 @@
                     }
                     liveEntry.pusher.displayNewCount(0);
                 });
+                // Force the server to trigger a push for initial display
+                liveEntry.triggerLiveTimesPush();
             },
             displayNewCount: function(count) {
                 var text = '';
@@ -97,6 +101,14 @@
                 }
                 $('#js-pull-times-count').text(text);
             }
+        },
+
+        triggerLiveTimesPush: function() {
+            var endpoint = '/api/v1/events/' + liveEntry.eventLiveEntryData.eventId + ' /trigger_live_times_push';
+            $.ajax({
+                url: endpoint,
+                cache: false
+            });
         },
 
         /**

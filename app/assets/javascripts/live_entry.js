@@ -78,6 +78,11 @@
                     return;
                 }
                 channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
+                channel.bind('pusher:subscription_succeeded', function() {
+                    // Force the server to trigger a push for initial display
+                    liveEntry.triggerLiveTimesPush();
+                    console.log(' SUBSCRIBED - Triggering...');
+                });
                 channel.bind('update', function (data) {
                     // New value pushed from the server
                     // Display updated number of new live times on Pull Times button
@@ -87,8 +92,6 @@
                     }
                     liveEntry.pusher.displayNewCount(0);
                 });
-                // Force the server to trigger a push for initial display
-                liveEntry.triggerLiveTimesPush();
             },
             displayNewCount: function(count) {
                 var text = '';

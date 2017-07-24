@@ -13,10 +13,11 @@ class AidStationDetail < LiveEventFramework
   def post_initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:event, :aid_station],
-                           exclusive: [:event, :aid_station, :times_container],
+                           exclusive: [:event, :aid_station, :times_container, :params],
                            class: self.class)
     @event = args[:event]
     @aid_station = args[:aid_station]
+    @params = args[:params]
     @aid_station_row ||= AidStationRow.new(aid_station: aid_station, event_framework: self, split_times: split_times_here)
   end
 
@@ -70,7 +71,7 @@ class AidStationDetail < LiveEventFramework
 
   private
 
-  attr_reader :event, :aid_station_row
+  attr_reader :event, :params, :aid_station_row
 
   def category_effort_rows
     @category_effort_rows ||=

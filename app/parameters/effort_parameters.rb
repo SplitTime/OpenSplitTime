@@ -12,7 +12,9 @@ class EffortParameters < BaseParameters
      :final_split_name, :final_lap_distance, :final_lap, :final_split_id, :final_bitkey, :final_time,
      :final_split_time_id, :stopped_split_time_id, :stopped_lap, :stopped_split_id, :stopped_bitkey,
      :stopped_time, :final_lap_complete, :course_distance, :started, :laps_started, :laps_finished,
-     :final_distance, :finished, :stopped, :dropped, :overall_rank, :gender_rank]
+     :final_distance, :finished, :stopped, :dropped, :overall_rank, :gender_rank, :full_name, :bio_historic,
+     :prior_to_here_info, :stopped_here_info, :dropped_here_info, :recorded_here_info, :after_here_info,
+     :expected_here_info]
   end
 
   def self.permitted

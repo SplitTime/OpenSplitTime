@@ -11,4 +11,8 @@ class EffortSplitData
   def <=>(other)
     (days_and_times.compact.first&.to_i || 0) <=> (other.days_and_times.compact.first&.to_i || 0)
   end
+
+  def [](arg)
+    send(arg)
+  end
 end

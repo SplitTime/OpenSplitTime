@@ -1,11 +1,12 @@
 class AidStationDetail < LiveEventFramework
 
   attr_reader :aid_station, :times_container
-  delegate :course, :organization, to: :event
+  delegate :course, :organization, :to_param, to: :event
   delegate :event, :split, :split_id, :open_time, :close_time, :status, :captain_name, :comms_crew_names,
            :comms_frequencies, :current_issues, to: :aid_station
   delegate :split_name, :category_sizes, :category_table_titles, to: :aid_station_row
 
+  DEFAULT_DISPLAY_STYLE = :expected
   AID_EFFORT_CATEGORIES = AidStationRow::AID_EFFORT_CATEGORIES
   IN_BITKEY = SubSplit::IN_BITKEY
   OUT_BITKEY = SubSplit::OUT_BITKEY
@@ -16,6 +17,7 @@ class AidStationDetail < LiveEventFramework
                      missed: {default_sort_field: :after_here_info, default_sort_order: :asc, custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info, :after_here_info]},
                      in_aid: {default_sort_field: :recorded_here_info, default_sort_order: :asc, custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info]},
                      recorded_here: {default_sort_field: :recorded_here_info, default_sort_order: :desc, custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info, :after_here_info]}}
+                        .with_indifferent_access
 
   def post_initialize(args)
     ArgsValidator.validate(params: args,
@@ -28,56 +30,42 @@ class AidStationDetail < LiveEventFramework
     @aid_station_row ||= AidStationRow.new(aid_station: aid_station, event_framework: self, split_times: split_times_here)
   end
 
-  def expected_effort_data
-    @expected_effort_data ||= effort_data(:expected)
+  def effort_data
+    return @effort_data if defined?(@effort_data)
+    rows = category_effort_rows[display_style].sort_by { |row| row.send(sort_field(display_style)) }
+               .map { |row| row.extract_attributes(*extractable_attributes(display_style)) }
+    @effort_data = (sort_order(display_style) == :desc ? rows.reverse : rows)
   end
 
-  def stopped_effort_data
-    @stopped_effort_data ||= effort_data(:stopped_here)
+  def display_style
+    params[:display_style]&.to_sym || DEFAULT_DISPLAY_STYLE
   end
 
-  def dropped_effort_data
-    @dropped_effort_data ||= effort_data(:dropped_here)
-  end
-
-  def missed_effort_data
-    @missed_effort_data ||= effort_data(:missed)
-  end
-
-  def in_aid_effort_data
-    @in_aid_effort_data ||= effort_data(:in_aid)
-  end
-
-  def recorded_here_effort_data
-    @recorded_here_effort_data ||= effort_data(:recorded_here)
+  def ascending_sort?(field)
+    (sort_param_field == field) && (sort_param_order == :asc)
   end
 
   private
 
   attr_reader :event, :params, :aid_station_row
 
-  def effort_data(view)
-    rows = category_effort_rows[view].sort_by { |row| row.send(sort_field(view)) }
-               .map { |row| row.extract_attributes(*extractable_attributes(view)) }
-    sort_order(view) == :desc ? rows.reverse : rows
-  end
-
   def category_effort_rows
     @category_effort_rows ||=
         AID_EFFORT_CATEGORIES
-            .map { |category| [category, rows_from_lap_keys(aid_station_row.category_effort_lap_keys[category])] }.to_h
+            .map { |category| [category, rows_from_lap_keys(aid_station_row.category_effort_lap_keys[category])] }
+            .to_h.with_indifferent_access
   end
 
-  def extractable_attributes(view)
-    (UNIVERSAL_ATTRIBUTES + VIEW_ATTRIBUTES[view][:custom_attributes])
+  def extractable_attributes(display_style)
+    (UNIVERSAL_ATTRIBUTES + VIEW_ATTRIBUTES[display_style][:custom_attributes])
   end
 
-  def sort_field(view)
-    sort_param_field || VIEW_ATTRIBUTES[view][:default_sort_field]
+  def sort_field(display_style)
+    sort_param_field || VIEW_ATTRIBUTES[display_style][:default_sort_field]
   end
 
-  def sort_order(view)
-    sort_param_order || VIEW_ATTRIBUTES[view][:default_sort_order]
+  def sort_order(display_style)
+    sort_param_order || VIEW_ATTRIBUTES[display_style][:default_sort_order]
   end
 
   def split_times_by_effort
@@ -120,6 +108,6 @@ class AidStationDetail < LiveEventFramework
   end
 
   def sort_param
-    params[:sort].first || []
+    (params[:sort].first || []).map(&:to_sym)
   end
 end

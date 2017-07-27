@@ -1,26 +1,25 @@
 <div class="row">
   <div class="col-xs-10">
-    <% if @aid_station_detail.expected_effort_data.empty? %>
+    <% if @aid_station_detail.effort_data.empty? %>
         <h4><%= "No efforts expected at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
     <% else %>
         <h4><%= "Efforts expected at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th class="text-center">Bib</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th class="text-center">Last Reported</th>
-            <th class="text-center">Due Next</th>
-            <th class="text-center"><%= "Expected at #{@aid_station_detail.split_name}" %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :bib_number, 'Bib') %></th>
+            <th><%= link_to_aid_detail_field(@aid_station_detail, :full_name, 'Name') %></th>
+            <th><%= link_to_aid_detail_field(@aid_station_detail, :bio_historic, 'Category') %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :last_reported_info, 'Last Reported') %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :due_next_info, 'Due Next') %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :expected_here_info, "Expected at #{@aid_station_detail.split_name}") %></th>
           </tr>
           </thead>
           <tbody>
-          <% @aid_station_detail.expected_effort_data.each do |row| %>
+          <% @aid_station_detail.effort_data.each do |row| %>
               <tr>
                 <td class="text-center"><%= row[:bib_number] %></td>
-                <td class="text-nowrap">
-                  <strong><%= link_to row[:full_name], effort_path(row[:effort_slug]) %></strong></td>
+                <td class="text-nowrap"><strong><%= link_to row[:full_name], effort_path(row[:effort_slug]) %></strong></td>
                 <td class="text-nowrap"><%= row[:bio_historic] %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:last_reported_info]) %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:due_next_info]) %></td>

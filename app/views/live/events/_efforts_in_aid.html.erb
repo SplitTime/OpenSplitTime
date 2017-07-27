@@ -3,7 +3,7 @@
     <% if @aid_station_detail.effort_data.empty? %>
         <h4><%= "No efforts in aid at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
     <% else %>
-        <h4><%= "Efforts in aid at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
+        <h4><%= "#{pluralize(@aid_station_detail.effort_data.size, 'effort')} in aid at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
         <table class="table table-condensed table-striped">
           <thead>
           <tr>

@@ -41,8 +41,16 @@ class AidStationDetail < LiveEventFramework
     params[:display_style]&.to_sym || DEFAULT_DISPLAY_STYLE
   end
 
-  def ascending_sort?(field)
-    (sort_param_field == field) && (sort_param_order == :asc)
+  def existing_sort
+    (sort_param_order == :desc) ? "-#{sort_param_field}" : "#{sort_param_field}"
+  end
+
+  def prior_aid_station
+    ordered_aid_stations.elements_before(aid_station)&.last
+  end
+
+  def next_aid_station
+    ordered_aid_stations.elements_after(aid_station)&.first
   end
 
   private
@@ -109,5 +117,9 @@ class AidStationDetail < LiveEventFramework
 
   def sort_param
     (params[:sort].first || []).map(&:to_sym)
+  end
+
+  def ordered_aid_stations
+    @ordered_aid_stations ||= event.aid_stations.includes(:split).order('splits.distance_from_start').to_a
   end
 end

@@ -38,7 +38,22 @@
 <hr>
 <div class="row">
   <div class="col-xs-4">
-    <%= link_to '<< Back to aid station report', aid_station_report_live_event_path(@aid_station_detail.event_id), class: 'btn btn-sm btn-default' %>
+    <% if @aid_station_detail.prior_aid_station %>
+        <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",
+                    aid_station_detail_live_event_path(@aid_station_detail,
+                                                       aid_station: @aid_station_detail.prior_aid_station,
+                                                       display_style: @aid_station_detail.display_style,
+                                                       sort: @aid_station_detail.existing_sort),
+                    class: 'btn btn-sm btn-default' %>
+    <% end %>
+    <% if @aid_station_detail.next_aid_station %>
+        <%= link_to "#{@aid_station_detail.next_aid_station.split.base_name} >>",
+                    aid_station_detail_live_event_path(@aid_station_detail,
+                                                       aid_station: @aid_station_detail.next_aid_station,
+                                                       display_style: @aid_station_detail.display_style,
+                                                       sort: @aid_station_detail.existing_sort),
+                    class: 'btn btn-sm btn-default' %>
+    <% end %>
   </div>
   <div class="col-xs-8">
     <div class="text-right">

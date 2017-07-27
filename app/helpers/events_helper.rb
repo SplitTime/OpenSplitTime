@@ -13,7 +13,7 @@ module EventsHelper
   end
 
   def link_to_beacon_button(view_object)
-    if view_object.available_live && view_object.beacon_url
+    if view_object.beacon_url
       link_to event_beacon_button_text(view_object.beacon_url),
               url_with_protocol(view_object.beacon_url),
               class: 'btn btn-sm btn-default',

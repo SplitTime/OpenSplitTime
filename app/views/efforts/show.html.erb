@@ -38,20 +38,17 @@
   </div>
   <div class="col-xs-3 page-navigation">
     <div class="row">
-      <% if @effort_show.in_progress? %>
-          <% if @effort_show.beacon_url %>
-              <%= link_to effort_beacon_button_text(@effort_show.beacon_url),
-                          url_with_protocol(@effort_show.beacon_url),
-                          class: "btn btn-sm btn-default",
-                          target: "_blank" %>
-          <% end %>
-      <% else %>
-          <% if @effort_show.report_url %>
-              <%= link_to effort_report_button_text(@effort_show.report_url),
-                          url_with_protocol(@effort_show.report_url),
-                          class: "btn btn-sm btn-default",
-                          target: "_blank" %>
-          <% end %>
+      <% if @effort_show.beacon_url %>
+          <%= link_to effort_beacon_button_text(@effort_show.beacon_url),
+                      url_with_protocol(@effort_show.beacon_url),
+                      class: "btn btn-sm btn-default",
+                      target: "_blank" %>
+      <% end %>
+      <% if @effort_show.report_url %>
+          <%= link_to effort_report_button_text(@effort_show.report_url),
+                      url_with_protocol(@effort_show.report_url),
+                      class: "btn btn-sm btn-default",
+                      target: "_blank" %>
       <% end %>
       <div class="btn-group">
         <% unless @effort_show.simple? || @effort_show.not_analyzable? %>
@@ -115,27 +112,27 @@
 <% end %>
 
 <script>
-  $('#beacon-link').editable({
-    type: 'text',
-    emptytext: 'Click here',
-    url: '<%= add_beacon_effort_path(@effort_show.effort) %>',
-    pk: 1,
-    title: 'Paste link:',
-    ajaxOptions: {
-      type: 'get',
-      dataType: 'script'
-    }
-  });
+    $('#beacon-link').editable({
+        type: 'text',
+        emptytext: 'Click here',
+        url: '<%= add_beacon_effort_path(@effort_show.effort) %>',
+        pk: 1,
+        title: 'Paste link:',
+        ajaxOptions: {
+            type: 'get',
+            dataType: 'script'
+        }
+    });
 
-  $('#report-link').editable({
-    type: 'text',
-    emptytext: 'Click here',
-    url: '<%= add_report_effort_path(@effort_show.effort) %>',
-    pk: 1,
-    title: 'Paste link:',
-    ajaxOptions: {
-      type: 'get',
-      dataType: 'script'
-    }
-  });
+    $('#report-link').editable({
+        type: 'text',
+        emptytext: 'Click here',
+        url: '<%= add_report_effort_path(@effort_show.effort) %>',
+        pk: 1,
+        title: 'Paste link:',
+        ajaxOptions: {
+            type: 'get',
+            dataType: 'script'
+        }
+    });
 </script>

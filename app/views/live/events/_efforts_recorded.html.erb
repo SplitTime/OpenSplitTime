@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-xs-10">
     <% if @aid_station_detail.effort_data.empty? %>
-        <h4><%= "No efforts recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
+        <h4><%= "No times have been recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
     <% else %>
-        <h4><%= "#{pluralize(@aid_station_detail.effort_data.size, 'effort')} recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
+        <h4><%= "#{pluralize(@aid_station_detail.effort_data.size, 'time')} recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
         <table class="table table-condensed table-striped">
           <thead>
           <tr>

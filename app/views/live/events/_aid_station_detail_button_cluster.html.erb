@@ -1,0 +1,36 @@
+<%= link_to 'Recorded here',
+            aid_station_detail_live_event_path(@aid_station_detail.event_id,
+                                               aid_station: @aid_station_detail.aid_station,
+                                               display_style: 'recorded_here'),
+            disabled: @aid_station_detail.display_style == :recorded_here,
+            class: 'btn btn-sm btn-primary' %>
+<%= link_to 'In aid',
+            aid_station_detail_live_event_path(@aid_station_detail.event_id,
+                                               aid_station: @aid_station_detail.aid_station,
+                                               display_style: 'in_aid'),
+            disabled: @aid_station_detail.display_style == :in_aid,
+            class: 'btn btn-sm btn-primary' %>
+<%= link_to 'Missed here',
+            aid_station_detail_live_event_path(@aid_station_detail.event_id,
+                                               aid_station: @aid_station_detail.aid_station,
+                                               display_style: 'missed'),
+            disabled: @aid_station_detail.display_style == :missed,
+            class: 'btn btn-sm btn-primary' %>
+<%= link_to 'Stopped here',
+            aid_station_detail_live_event_path(@aid_station_detail.event_id,
+                                               aid_station: @aid_station_detail.aid_station,
+                                               display_style: 'stopped_here'),
+            disabled: @aid_station_detail.display_style == :stopped_here,
+            class: 'btn btn-sm btn-primary' %>
+<%= link_to 'Dropped here',
+            aid_station_detail_live_event_path(@aid_station_detail.event_id,
+                                               aid_station: @aid_station_detail.aid_station,
+                                               display_style: 'dropped_here'),
+            disabled: @aid_station_detail.display_style == :dropped_here,
+            class: 'btn btn-sm btn-primary' %>
+<%= link_to 'Expected',
+            aid_station_detail_live_event_path(@aid_station_detail.event_id,
+                                               aid_station: @aid_station_detail.aid_station,
+                                               display_style: 'expected'),
+            disabled: @aid_station_detail.display_style == :expected,
+            class: 'btn btn-sm btn-primary' %>

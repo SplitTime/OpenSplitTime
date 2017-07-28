@@ -1,11 +1,11 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Edit split times - #{@effort.full_name}" %>
 <% end %>
-<h2>Update Split Times</h2>
 
 <div class="row">
   <div class="col-xs-12">
-    <h2><%= "#{@effort.full_name} • #{@effort.event.name} • #{@effort.finish_status}" %></h2>
+    <h2><strong><%= "#{@effort.full_name}" + (@effort.bib_number ? " (Bib ##{@effort.bib_number})" : '') %><br/>
+      <%= "#{@effort.event_name} • #{@effort.finish_status}" %></strong></h2>
   </div>
 </div>
 
@@ -18,22 +18,13 @@
 <hr>
 <%= form_for(@effort, url: update_split_times_effort_path(@effort), :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
     <div class="row">
-      <div class="col-sm-2">
-        <h4><%= f.label :bib_number %></h4>
-      </div>
-      <div class="col-sm-2">
-        <%= f.text_field :bib_number, class: 'form-control', placeholder: '#', autofocus: true %>
-      </div>
-    </div>
-
-    <div class="row">
       <div class="col-sm-6">
         <table class="table table-condensed table-striped">
           <thead>
           </thead>
           <tbody>
-          <% @effort.lap_splits.each do |lap_split| %>
-              <% data_status = DataStatus.worst(@effort.split_times(lap_split).map(&:data_status)) %>
+          <% @effort.lap_splits[1..-1].each do |lap_split| %>
+              <% data_status = DataStatus.worst(@effort.split_times.select { |st| st.lap_split == lap_split }.map(&:data_status)) %>
               <% if data_status == 'bad' %>
                   <tr class="text-danger">
               <% elsif data_status == 'questionable' %>
@@ -49,7 +40,11 @@
                                                                              sub_split_bitkey: time_point.bitkey,
                                                                              effort_id: @effort.id) do |builder| %>
                       <td>
-                        <%= builder.text_field :elapsed_time, class: 'form-control', placeholder: 'hh:mm:ss' %>
+                        <% if params[:display_style] == 'military_times' %>
+                            <%= builder.text_field :military_time, class: 'form-control', placeholder: 'hh:mm:ss' %>
+                        <% else %>
+                            <%= builder.text_field :elapsed_time, class: 'form-control', placeholder: 'hh:mm:ss' %>
+                        <% end %>
                         <%= builder.hidden_field :lap, {value: time_point.lap} %>
                         <%= builder.hidden_field :split_id, {value: time_point.split_id} %>
                         <%= builder.hidden_field :sub_split_bitkey, {value: time_point.bitkey} %>
@@ -66,11 +61,10 @@
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit('Update Times', class: 'btn btn-primary btn-large') %>
+        <%= f.submit((params[:display_style] == 'military_times') ? 'Update times of day' : 'Update elapsed times', class: 'btn btn-primary btn-large') %>
       </div>
     </div>
     <div class="col-xs-4 col-xs-offset-2">
       [ <%= link_to 'Cancel', effort_path(@effort) %> ]
     </div>
 <% end %>
-

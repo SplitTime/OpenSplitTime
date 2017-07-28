@@ -113,7 +113,7 @@ class SplitTime < ActiveRecord::Base
   end
 
   def day_and_time
-    @day_and_time ||= attributes['day_and_time'].try(:in_time_zone) ||
+    @day_and_time ||= attributes['day_and_time']&.in_time_zone ||
         time_from_start && (event_start_time + effort_start_offset + time_from_start)
   end
 

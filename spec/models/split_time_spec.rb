@@ -347,7 +347,8 @@ RSpec.describe SplitTime, kind: :model do
       time_point = TimePoint.new(lap, split.id, bitkey)
       military_time = '06:05:00'
       split_time = SplitTime.new(effort: effort, time_point: time_point)
-      allow(IntendedTimeCalculator).to receive(:day_and_time)
+      allow(split_time).to receive(:event_start_time).and_return(DateTime.parse('2017-07-01 06:00:00'))
+      allow(IntendedTimeCalculator).to receive(:day_and_time).and_return(DateTime.parse('2017-07-01 08:00:00'))
       split_time.military_time = military_time
       expect(IntendedTimeCalculator).to have_received(:day_and_time).with(military_time: military_time,
                                                                           effort: effort,

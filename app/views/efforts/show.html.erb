@@ -69,7 +69,10 @@
       <div class="col-xs-6">
         <% if @current_user.authorized_to_edit?(@effort_show.effort) %>
             <%= link_to 'Edit effort', edit_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
-            <%= link_to 'Edit split times', edit_split_times_effort_path(@effort_show.effort),
+            <%= link_to 'Edit times of day', edit_split_times_effort_path(@effort_show.effort, display_style: 'military_times'),
+                        method: :put,
+                        class: "btn btn-sm btn-primary" %>
+            <%= link_to 'Edit elapsed times', edit_split_times_effort_path(@effort_show.effort),
                         method: :put,
                         class: "btn btn-sm btn-primary" %>
             <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),

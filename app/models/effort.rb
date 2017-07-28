@@ -19,7 +19,8 @@ class Effort < ActiveRecord::Base
   belongs_to :event
   belongs_to :participant
   has_many :split_times, dependent: :destroy
-  accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
+  accepts_nested_attributes_for :split_times, :reject_if =>
+      lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank?}
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time

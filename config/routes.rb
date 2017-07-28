@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'photo_credits', to: 'visitors#photo_credits'
   get 'about', to: 'visitors#about'
   get 'donations', to: 'visitors#donations'
+  get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
   get 'donation_thank_you', to: 'visitors#donation_thank_you'
   get 'getting_started', to: 'visitors#getting_started'

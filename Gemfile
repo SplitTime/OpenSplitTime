@@ -62,34 +62,34 @@ gem 'paperclip', '~> 5.0.0'
 gem 'dalli'
 
 group :development do
-  gem 'web-console', '~> 2.0'
-  gem 'spring'
   gem 'bullet'
-  gem 'quiet_assets'
   gem 'derailed_benchmarks'
+  gem 'quiet_assets'
   gem 'rails-erd'
+  gem 'spring'
+  gem 'web-console', '~> 2.0'
 end
 
 group :test do
   gem 'capybara'
-  gem 'launchy'
-  gem 'guard-rspec'
-  gem 'factory_girl_rails', require: false
   gem 'database_cleaner'
+  gem 'factory_girl_rails', require: false
+  gem 'guard-rspec'
+  gem 'launchy'
 end
 
 group :development, :test do
+  gem 'active_record_query_trace'
+  gem 'byebug'
+  gem 'dotenv-rails'
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-rescue'
-  gem 'rubocop', '~> 0.36'
+  gem 'rb-fsevent'
   gem 'rspec', '~> 3.4'
   gem 'rspec-rails', '~> 3.0'
-  gem 'byebug'
+  gem 'rubocop', '~> 0.49'
   gem 'spring-commands-rspec'
-  gem 'rb-fsevent'
-  gem 'pry-byebug'
-  gem 'dotenv-rails'
-  gem 'active_record_query_trace'
 end
 
 group :production do

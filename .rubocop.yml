@@ -11,14 +11,8 @@ AllCops:
    - 'db/schema.rb'
    - 'vendor/bundle/**/*'
 
-Metrics/LineLength:
-  Max: 120
-
 Documentation:
   Enabled: false
-
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: always
 
 Layout/EndOfLine:
   EnforcedStyle: lf
@@ -30,6 +24,9 @@ Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
   IndentationWidth: 4
 
+Layout/SpaceInLambdaLiteral:
+  Enabled: false
+
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*.rb'
@@ -40,6 +37,18 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
 
+Metrics/LineLength:
+  Max: 120
+
 Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
+
+SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always
+
+Style/SymbolArray:
+  Enabled: false

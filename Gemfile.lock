@@ -507,7 +507,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   paperclip (~> 5.0.0)
-  pg (~> 0.20.0)
+  pg (~> 0.20)
   pg_search
   phony_rails
   pry-byebug

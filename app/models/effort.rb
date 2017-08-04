@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class Effort < ActiveRecord::Base
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   enum gender: [:male, :female]
   strip_attributes collapse_spaces: true
 
   # See app/concerns/data_status_methods for related scopes and methods
-  VALID_STATUSES = [nil, data_statuses[:good]]
+  VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
   include Auditable
   include Concealable

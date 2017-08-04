@@ -89,7 +89,8 @@ class EffortsController < ApplicationController
 
   def edit_split_times
     authorize @effort
-    session[:return_to] = effort_path(@effort)
+    effort_with_relations = Effort.where(id: @effort.id).eager_load(:event, :split_times).first
+    @presenter = EffortWithTimesPresenter.new(effort: effort_with_relations, params: params)
   end
 
   def update_split_times

@@ -1,26 +1,25 @@
 <div class="row">
   <div class="col-xs-10">
-    <% if @aid_station_detail.recorded_here_effort_data.empty? %>
-        <h4><%= "No efforts recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
+    <% if @aid_station_detail.effort_data.empty? %>
+        <h4><%= "No times have been recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
     <% else %>
-        <h4><%= "Efforts recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
+        <h4><%= "#{pluralize(@aid_station_detail.effort_data.size, 'time')} recorded at #{@aid_station_detail.split_name} as of #{day_time_current_military_full}" %></h4>
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th class="text-center">Bib</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th class="text-center">Valid Reported Time<br/><%= "Prior To #{@aid_station_detail.split_name}" %></th>
-            <th class="text-center"><%= "Recorded at #{@aid_station_detail.split_name}" %></th>
-            <th class="text-center">Reported Time<br/><%= "After #{@aid_station_detail.split_name}" %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :bib_number, 'Bib') %></th>
+            <th><%= link_to_aid_detail_field(@aid_station_detail, :full_name, 'Name') %></th>
+            <th><%= link_to_aid_detail_field(@aid_station_detail, :bio_historic, 'Category') %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :prior_to_here_info, "Reported Prior To #{@aid_station_detail.split_name}") %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :recorded_here_info, "Recorded at #{@aid_station_detail.split_name}") %></th>
+            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :after_here_info, "Reported After #{@aid_station_detail.split_name}") %></th>
           </tr>
           </thead>
           <tbody>
-          <% @aid_station_detail.recorded_here_effort_data.each do |row| %>
+          <% @aid_station_detail.effort_data.each do |row| %>
               <tr>
                 <td class="text-center"><%= row[:bib_number] %></td>
-                <td class="text-nowrap">
-                  <strong><%= link_to row[:full_name], effort_path(row[:effort_slug]) %></strong></td>
+                <td class="text-nowrap"><strong><%= link_to row[:full_name], effort_path(row[:effort_slug]) %></strong></td>
                 <td class="text-nowrap"><%= row[:bio_historic] %></td>
                 <td class="text-center text-nowrap"><%= display_progress_info(row[:prior_to_here_info]) %></td>
                 <td class="text-center text-nowrap"><%= display_progress_times_only(row[:recorded_here_info]) %></td>

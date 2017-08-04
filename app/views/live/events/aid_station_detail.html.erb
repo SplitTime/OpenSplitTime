@@ -38,65 +38,45 @@
 <hr>
 <div class="row">
   <div class="col-xs-4">
-    <%= link_to '<< Back to aid station report', aid_station_report_live_event_path(@aid_station_detail.event_id), class: 'btn btn-sm btn-default' %>
+    <% if @aid_station_detail.prior_aid_station %>
+        <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",
+                    aid_station_detail_live_event_path(@aid_station_detail,
+                                                       aid_station: @aid_station_detail.prior_aid_station,
+                                                       display_style: @aid_station_detail.display_style,
+                                                       sort: @aid_station_detail.existing_sort),
+                    class: 'btn btn-sm btn-default' %>
+    <% end %>
+    <% if @aid_station_detail.next_aid_station %>
+        <%= link_to "#{@aid_station_detail.next_aid_station.split.base_name} >>",
+                    aid_station_detail_live_event_path(@aid_station_detail,
+                                                       aid_station: @aid_station_detail.next_aid_station,
+                                                       display_style: @aid_station_detail.display_style,
+                                                       sort: @aid_station_detail.existing_sort),
+                    class: 'btn btn-sm btn-default' %>
+    <% end %>
   </div>
   <div class="col-xs-8">
     <div class="text-right">
       <div class="btn-group">
-        <%= link_to 'Recorded here',
-                    aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                                       aid_station: @aid_station_detail.aid_station,
-                                                       efforts: 'recorded'),
-                    disabled: params[:efforts] == 'recorded',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'In aid',
-                    aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                                       aid_station: @aid_station_detail.aid_station,
-                                                       efforts: 'in_aid'),
-                    disabled: params[:efforts] == 'in_aid',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Missed here',
-                    aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                                       aid_station: @aid_station_detail.aid_station,
-                                                       efforts: 'missed'),
-                    disabled: params[:efforts] == 'missed',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Stopped here',
-                    aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                                       aid_station: @aid_station_detail.aid_station,
-                                                       efforts: 'stopped'),
-                    disabled: params[:efforts] == 'stopped',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Dropped here',
-                    aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                                       aid_station: @aid_station_detail.aid_station,
-                                                       efforts: 'dropped'),
-                    disabled: params[:efforts] == 'dropped',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Expected',
-                    aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                                       aid_station: @aid_station_detail.aid_station,
-                                                       efforts: 'expected'),
-                    disabled: params[:efforts] == 'expected',
-                    class: 'btn btn-sm btn-primary' %>
+        <%= render 'aid_station_detail_button_cluster' %>
       </div>
     </div>
   </div>
 </div>
 <hr>
 <div>
-  <% case params[:efforts] %>
-  <% when 'expected' %>
+  <% case @aid_station_detail.display_style %>
+  <% when :expected %>
       <%= render 'efforts_expected' %>
-  <% when 'recorded' %>
+  <% when :recorded_here %>
       <%= render 'efforts_recorded' %>
-  <% when 'in_aid' %>
+  <% when :in_aid %>
       <%= render 'efforts_in_aid' %>
-  <% when 'stopped' %>
+  <% when :stopped_here %>
       <%= render 'efforts_stopped_here' %>
-  <% when 'dropped' %>
+  <% when :dropped_here %>
       <%= render 'efforts_dropped_here' %>
-  <% when 'missed' %>
+  <% when :missed %>
       <%= render 'efforts_missed' %>
   <% else %>
       <strong>Nothing to show.</strong>

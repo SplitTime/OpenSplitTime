@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Event < ActiveRecord::Base
 
   include Auditable
@@ -19,12 +21,13 @@ class Event < ActiveRecord::Base
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :staging_id
 
-  scope :recent, -> (max) { where('start_time < ?', Time.now).order(start_time: :desc).limit(max) }
-  scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
-  scope :select_with_params, -> (search_param) { search(search_param)
-                                                     .select('events.*, COUNT(efforts.id) as effort_count')
-                                                     .joins('LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)')
-                                                     .group('events.id').order(start_time: :desc) }
+  scope :name_search, ->(search_param) { where('name ILIKE ?', "%#{search_param}%") }
+  scope :select_with_params, ->(search_param) do
+    search(search_param)
+        .select('events.*, COUNT(efforts.id) as effort_count')
+        .joins('LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)')
+        .group('events.id').order(start_time: :desc)
+  end
 
   def self.search(search_param)
     return all if search_param.blank?

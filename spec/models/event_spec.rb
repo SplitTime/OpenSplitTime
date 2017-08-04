@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # t.integer  "course_id"
@@ -185,7 +187,7 @@ RSpec.describe Event, type: :model do
         partners = []
         100.times { partners << event.pick_partner_with_banner }
         partners_count = partners.count_by(&:id)
-        expect(partners_count[weighted_partner.id]).to be > (50)
+        expect(partners_count[weighted_partner.id]).to be > 50
         unweighted_partners.each do |unweighted_partner|
           expect(partners_count[unweighted_partner.id]).to be_between(1, 20).inclusive
         end

@@ -2,7 +2,8 @@ FactoryGirl.define do
 
   factory :event do
     sequence(:name) { |n| "Test Event #{n}" }
-    start_time '2016-07-01 06:00:00'
+    home_time_zone { ActiveSupport::TimeZone.all.shuffle.first.name }
+    start_time Time.zone.parse('2016-07-01 06:00:00')
     laps_required 1
     sequence(:staging_id) { SecureRandom.uuid }
     course

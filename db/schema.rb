@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721040907) do
+ActiveRecord::Schema.define(version: 20170806141129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,12 @@ ActiveRecord::Schema.define(version: 20170721040907) do
 
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
+
+  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",            limit: 64, null: false
@@ -100,6 +106,7 @@ ActiveRecord::Schema.define(version: 20170721040907) do
     t.uuid     "staging_id",                 default: "uuid_generate_v4()"
     t.string   "slug",                                                      null: false
     t.boolean  "auto_live_times",            default: false
+    t.string   "home_time_zone",                                            null: false
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
@@ -184,7 +191,7 @@ ActiveRecord::Schema.define(version: 20170721040907) do
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
 
   create_table "partners", force: :cascade do |t|
-    t.integer  "event_id",                        null: false
+    t.integer  "event_id"
     t.string   "banner_link"
     t.integer  "weight",              default: 1, null: false
     t.datetime "created_at",                      null: false

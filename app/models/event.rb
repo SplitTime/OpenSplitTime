@@ -17,7 +17,7 @@ class Event < ActiveRecord::Base
   has_many :live_times, dependent: :destroy
   has_many :partners, dependent: :destroy
 
-  validates_presence_of :course, :name, :start_time, :laps_required, :home_time_zone
+  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :staging_id
   validate :home_time_zone_exists

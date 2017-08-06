@@ -28,7 +28,7 @@ describe Api::V1::EventsController do
   end
 
   describe '#create' do
-    let(:params) { {course_id: course.id, name: 'Test Event', start_time: '2017-03-01 06:00:00', laps_required: 1} }
+    let(:params) { {course_id: course.id, name: 'Test Event', start_time_in_home_zone: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
 
     it 'returns a successful json response' do
       post :create, data: {type: 'events', attributes: params}
@@ -221,7 +221,7 @@ describe Api::V1::EventsController do
         expect(LiveTime.all.size).to eq(0)
         post :import, request_params
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data'].map { |record| record['type'] }).to all ( eq('liveTimes') )
+        expect(parsed_response['data'].map { |record| record['type'] }).to all (eq('liveTimes'))
         expect(LiveTime.all.size).to eq(2)
       end
 

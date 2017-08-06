@@ -40,7 +40,7 @@ RSpec.describe Event, type: :model do
     it 'is invalid without a course' do
       event = Event.new(course: nil, name: 'Slo Mo 100 2015', start_time: start_time, laps_required: 1, home_time_zone: home_time_zone)
       expect(event).not_to be_valid
-      expect(event.errors[:course]).to include("can't be blank")
+      expect(event.errors[:course_id]).to include("can't be blank")
     end
 
     it 'is invalid without a name' do

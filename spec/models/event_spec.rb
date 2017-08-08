@@ -13,7 +13,7 @@ require 'rails_helper'
 # t.uuid     "staging_id",                 default: "uuid_generate_v4()"
 # t.string   "slug",                                                      null: false
 # t.boolean  "auto_live_times",            default: false
-# t.string   "home_time_zone",                                                  null: false
+# t.string   "home_time_zone",                                            null: false
 
 RSpec.describe Event, type: :model do
   include ActiveSupport::Testing::TimeHelpers
@@ -22,47 +22,47 @@ RSpec.describe Event, type: :model do
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe 'initialize' do
-    let(:course) { Course.create!(name: 'Slo Mo 100 CCW') }
-    let(:course2) { Course.create!(name: 'Slo Mo 100 CW') }
+    let(:course) { build_stubbed(:course) }
     let(:start_time) { DateTime.parse('2015-07-01 06:00:00-06:00') }
     let(:home_time_zone) { 'Mountain Time (US & Canada)' }
 
     it 'is valid when created with a course, name, start time, laps_required, and home_time_zone' do
-      event = Event.create!(course: course, name: 'Slo Mo 100 2015', home_time_zone: home_time_zone, start_time: start_time, laps_required: 1)
+      event = build_stubbed(:event, course: course)
 
-      expect(Event.all.count).to eq(1)
-      expect(event.course).to eq(course)
-      expect(event.name).to eq('Slo Mo 100 2015')
-      expect(event.start_time).to eq('2015-07-01 06:00:00'.in_time_zone)
+      expect(event.course_id).to be_present
+      expect(event.name).to be_present
+      expect(event.start_time).to be_present
+      expect(event.laps_required).to be_present
+      expect(event.home_time_zone).to be_present
       expect(event).to be_valid
     end
 
     it 'is invalid without a course' do
-      event = Event.new(course: nil, name: 'Slo Mo 100 2015', start_time: start_time, laps_required: 1, home_time_zone: home_time_zone)
+      event = build_stubbed(:event, course: nil)
       expect(event).not_to be_valid
       expect(event.errors[:course_id]).to include("can't be blank")
     end
 
     it 'is invalid without a name' do
-      event = Event.new(course: course, name: nil, start_time: start_time, laps_required: 1, home_time_zone: home_time_zone)
+      event = build_stubbed(:event, name: nil, without_slug: true)
       expect(event).not_to be_valid
       expect(event.errors[:name]).to include("can't be blank")
     end
 
     it 'is invalid without a start date' do
-      event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: nil, laps_required: 1, home_time_zone: home_time_zone)
+      event = build_stubbed(:event, start_time: nil)
       expect(event).not_to be_valid
       expect(event.errors[:start_time]).to include("can't be blank")
     end
 
     it 'is invalid without a laps_required' do
-      event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: start_time, laps_required: nil, home_time_zone: home_time_zone)
+      event = build_stubbed(:event, laps_required: nil)
       expect(event).not_to be_valid
       expect(event.errors[:laps_required]).to include("can't be blank")
     end
 
     it 'is invalid without a home_time_zone' do
-      event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: start_time, laps_required: 1, home_time_zone: nil)
+      event = build_stubbed(:event, home_time_zone: nil)
       expect(event).not_to be_valid
       expect(event.errors[:home_time_zone]).to include("can't be blank")
     end

@@ -23,29 +23,27 @@ RSpec.describe Participant, type: :model do
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
   it 'is valid when created with a first_name, a last_name, and a gender' do
-    participant = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male')
-
-    expect(Participant.all.count).to eq(1)
-    expect(participant.first_name).to eq('Johnny')
-    expect(participant.last_name).to eq('Appleseed')
-    expect(participant.gender).to eq('male')
+    participant = build_stubbed(:participant)
+    expect(participant.first_name).to be_present
+    expect(participant.last_name).to be_present
+    expect(participant.gender).to be_present
     expect(participant).to be_valid
   end
 
   it 'is invalid without a first_name' do
-    participant = Participant.new(first_name: nil, last_name: 'Appleseed', gender: 'male')
+    participant = build_stubbed(:participant, first_name: nil)
     expect(participant).not_to be_valid
     expect(participant.errors[:first_name]).to include("can't be blank")
   end
 
   it 'is invalid without a last_name' do
-    participant = Participant.new(first_name: 'Johnny', last_name: nil, gender: 'male')
+    participant = build_stubbed(:participant, last_name: nil)
     expect(participant).not_to be_valid
     expect(participant.errors[:last_name]).to include("can't be blank")
   end
 
   it 'is invalid without a gender' do
-    participant = Participant.new(first_name: 'Johnny', last_name: 'Appleseed', gender: nil)
+    participant = build_stubbed(:participant, gender: nil)
     expect(participant).not_to be_valid
     expect(participant.errors[:gender]).to include("can't be blank")
   end

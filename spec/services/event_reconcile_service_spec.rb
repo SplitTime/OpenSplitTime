@@ -2,8 +2,8 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe EventReconcileService do
-  let(:course) { Course.create!(name: 'Test Course 100') }
-  let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
+  let(:course) { create(:course) }
+  let(:event) { create(:event, course: course) }
   let(:effort1) { Effort.create!(event: event, first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
   let(:effort2) { Effort.create!(event: event, first_name: 'John', last_name: 'Hardster', gender: 'male') }
   let(:effort3) { Effort.create!(event: event, first_name: 'Jim', last_name: 'Hamster', gender: 'male') }
@@ -108,9 +108,12 @@ RSpec.describe EventReconcileService do
 
       it 'assigns efforts to participants' do
         EventReconcileService.associate_participants(params)
-        expect(Effort.find(effort1.id).participant).to eq(participant1)
-        expect(Effort.find(effort2.id).participant).to eq(participant2)
-        expect(Effort.find(effort3.id).participant).to eq(participant3)
+        {effort1 => participant1,
+         effort2 => participant2,
+         effort3 => participant3}.each do |effort, participant|
+          effort.reload
+          expect(effort.participant).to eq(participant)
+        end
       end
 
       it 'returns an integer representing the number of assigned pairs' do

@@ -2,22 +2,21 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe EffortAutoReconciler do
-  let(:course) { Course.create!(name: 'Test Course 100') }
-  let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
-  let!(:effort1) { Effort.create!(event: event, first_name: 'Jen', last_name: 'Abelman', gender: 'female', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
-  let!(:effort2) { Effort.create!(event: event, first_name: 'John', last_name: 'Benenson', gender: 'male', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
-  let!(:effort3) { Effort.create!(event: event, first_name: 'Jim', last_name: 'Carlson', gender: 'male') }
-  let!(:effort4) { Effort.create!(event: event, first_name: 'Jane', last_name: 'Danielson', gender: 'female') }
-  let!(:effort5) { Effort.create!(event: event, first_name: 'Joel', last_name: 'Eagleston', gender: 'male') }
-  let!(:effort6) { Effort.create!(event: event, first_name: 'Julie', last_name: 'Fredrickson', gender: 'female') }
-  let!(:effort7) { Effort.create!(event: event, first_name: 'Jerry', last_name: 'Gottfredson', gender: 'male') }
-  let!(:effort8) { Effort.create!(event: event, first_name: 'Joe', last_name: 'Hendrickson', gender: 'male') }
-  let!(:effort9) { Effort.create!(event: event, first_name: 'Jill', last_name: 'Isaacson', gender: 'female') }
-  let!(:participant1) { Participant.create!(first_name: 'Jen', last_name: 'Abelman', gender: 'female', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
-  let!(:participant2) { Participant.create!(first_name: 'John', last_name: 'Benenson', gender: 'male', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
-  let!(:participant3) { Participant.create!(first_name: 'Jimmy', last_name: 'Carlson', gender: 'male') }
-  let!(:participant4) { Participant.create!(first_name: 'Janey', last_name: 'Danielson', gender: 'female') }
-  let!(:participant5) { Participant.create!(first_name: 'Joel', last_name: 'Eagleston', gender: 'male') }
+  let!(:event) { create(:event) }
+  let!(:effort1) { create(:effort, event: event, participant: nil, first_name: 'Jen', last_name: 'Abelman', gender: 'female', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
+  let!(:effort2) { create(:effort, event: event, participant: nil, first_name: 'John', last_name: 'Benenson', gender: 'male', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
+  let!(:effort3) { create(:effort, event: event, participant: nil, first_name: 'Jim', last_name: 'Carlson', gender: 'male') }
+  let!(:effort4) { create(:effort, event: event, participant: nil, first_name: 'Jane', last_name: 'Danielson', gender: 'female') }
+  let!(:effort5) { create(:effort, event: event, participant: nil, first_name: 'Joel', last_name: 'Eagleston', gender: 'male') }
+  let!(:effort6) { create(:effort, event: event, participant: nil, first_name: 'Julie', last_name: 'Fredrickson', gender: 'female') }
+  let!(:effort7) { create(:effort, event: event, participant: nil, first_name: 'Jerry', last_name: 'Gottfredson', gender: 'male') }
+  let!(:effort8) { create(:effort, event: event, participant: nil, first_name: 'Joe', last_name: 'Hendrickson', gender: 'male') }
+  let!(:effort9) { create(:effort, event: event, participant: nil, first_name: 'Jill', last_name: 'Isaacson', gender: 'female') }
+  let!(:participant1) { create(:participant, first_name: 'Jen', last_name: 'Abelman', gender: 'female', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
+  let!(:participant2) { create(:participant, first_name: 'John', last_name: 'Benenson', gender: 'male', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
+  let!(:participant3) { create(:participant, first_name: 'Jimmy', last_name: 'Carlson', gender: 'male') }
+  let!(:participant4) { create(:participant, first_name: 'Janey', last_name: 'Danielson', gender: 'female') }
+  let!(:participant5) { create(:participant, first_name: 'Joel', last_name: 'Eagleston', gender: 'male') }
 
   subject { EffortAutoReconciler.new(event: event) }
 

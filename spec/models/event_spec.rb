@@ -276,9 +276,27 @@ RSpec.describe Event, type: :model do
       let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'converts the string based on the specified home_time_zone' do
-        event.start_time_in_home_zone = '2017-07-01 06:00:00'
+        event.start_time_in_home_zone = '07/01/2017 06:00:00'
         start_time = event.start_time.in_time_zone('GMT')
         expect(start_time).to eq('2017-07-01 10:00:00 -0000')
+      end
+
+      it 'works properly with a 24-hour time' do
+        event.start_time_in_home_zone = '07/01/2017 16:00:00'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-07-01 20:00:00 -0000')
+      end
+
+      it 'works properly with AM/PM time' do
+        event.start_time_in_home_zone = '07/01/2017 04:00:00 PM'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-07-01 20:00:00 -0000')
+      end
+
+      it 'works properly with date formatted in yyyy-mm-dd style' do
+        event.start_time_in_home_zone = '2017-07-01 16:00:00'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-07-01 20:00:00 -0000')
       end
     end
 

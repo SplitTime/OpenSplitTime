@@ -67,9 +67,7 @@ class Event < ActiveRecord::Base
   end
 
   def start_time_in_home_zone=(time)
-    unless home_time_zone_valid?
-      raise ArgumentError, 'start_time_in_home_zone cannot be set without a valid home_time_zone'
-    end
+    raise ArgumentError, 'start_time_in_home_zone cannot be set without a valid home_time_zone' unless home_time_zone_valid?
     self.start_time = ActiveSupport::TimeZone[home_time_zone].parse(time)
   end
 

@@ -3,17 +3,7 @@
 <% end %>
 <div class="row header">
   <div class="col-xs-5">
-    <h2><strong><%= @event_stage.name %></strong>
-    </h2>
-    <h4>
-      <%= "Start Time: #{l(@event_stage.event_start_time, format: :full_with_weekday)} at #{l(@event_stage.event_start_time, format: :ampm)}" %>
-      <br/>
-      Run on <%= link_to @event_stage.course_name, course_path(@event_stage.course) %>
-      <% if @event_stage.organization %>
-          <br/>Organized
-          under <%= link_to @event_stage.organization_name, organization_path(@event_stage.organization) %>
-      <% end %>
-    </h4>
+    <%= render 'event_info', view_object: @event_stage, title: 'Admin' %>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">

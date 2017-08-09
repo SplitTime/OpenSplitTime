@@ -8,17 +8,7 @@
 
 <div class="row header">
   <div class="col-xs-5">
-    <h2><strong><%= "#{@event_display.name}: Results" %></strong>
-    </h2>
-    <h4>
-      <%= "Start Time: #{l(@event_display.event_start_time, format: :full_with_weekday)} #{l(@event_display.event_start_time, format: :ampm)}" %>
-      <br/>
-      Run on <%= link_to @event_display.course_name, course_path(@event_display.course) %>
-      <% if @event_display.organization %>
-          <br/>Organized
-          under <%= link_to @event_display.organization_name, organization_path(@event_display.organization) %>
-      <% end %>
-    </h4>
+    <%= render 'event_info', view_object: @event_display, title: 'Results' %>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">

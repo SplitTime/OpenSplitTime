@@ -48,7 +48,9 @@
                                value: @event.start_time_in_home_zone&.strftime('%m/%d/%Y %H:%M:%S'),
                                placeholder: 'mm/dd/yyyy hh:mm:ss',
                                class: 'form-control',
-                               data: {provide: 'datetimepicker', date_format: 'MM/DD/YYYY HH:mm:ss', date_default_date: (Date.current + 6.hours).strftime('%m/%d/%Y %H:%M:%S')} %>
+                               data: {provide: 'datetimepicker',
+                                      date_format: 'MM/DD/YYYY HH:mm:ss',
+                                      date_default_date: (Date.current + 6.hours).strftime('%m/%d/%Y %H:%M:%S')} %>
               <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>
           </div>

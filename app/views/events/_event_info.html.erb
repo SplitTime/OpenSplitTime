@@ -1,6 +1,6 @@
 <h2><strong><%= "#{view_object.name}: #{title}" %></strong></h2>
 <h4>
-  <%= "Start Time: #{l(view_object.event_start_time, format: :full_day_time_and_time_zone)}" %>
+  <%= "Start Time: #{l(view_object.event_start_time, format: :full_day_time_and_zone)}" %>
   <br/>
   Run on <%= link_to view_object.course_name, course_path(view_object.course) %>
   <% if view_object.organization %>

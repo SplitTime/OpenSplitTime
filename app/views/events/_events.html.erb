@@ -13,7 +13,7 @@
   <% events.each do |event| %>
       <tr>
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
-        <td><%= l(event.start_time, format: :full_with_time) %></td>
+        <td><%= l(event.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
         <td><%= "#{pluralize(event.effort_count, 'effort')}" %></td>
         <td>
           <% if @current_user && event.available_live && @current_user.authorized_to_edit?(event) %>

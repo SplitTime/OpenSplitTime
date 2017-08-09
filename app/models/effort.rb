@@ -102,7 +102,11 @@ class Effort < ActiveRecord::Base
   end
 
   def event_start_time
-    @event_start_time ||= attributes['event_start_time']&.in_time_zone || event&.start_time
+    @event_start_time ||= attributes['event_start_time']&.in_time_zone(event_home_zone) || event&.start_time_in_home_zone
+  end
+
+  def event_home_zone
+    @event_home_zone ||= attributes['event_home_zone'] || event&.home_time_zone
   end
 
   def event_name

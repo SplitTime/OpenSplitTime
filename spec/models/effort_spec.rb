@@ -413,4 +413,33 @@ RSpec.describe Effort, type: :model do
       expect(effort.stopped_split_time).to eq(expected)
     end
   end
+
+  describe '#event_start_time' do
+    subject { build_stubbed(:effort, event: event) }
+
+    context 'when the event has a start_time and a home_time_zone' do
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: 'Arizona') }
+
+      it 'returns the start_time in the home_time_zone' do
+        expect(subject.event_start_time).to be_a(ActiveSupport::TimeWithZone)
+        expect(subject.event_start_time).to eq('Tue, 01 Aug 2017 05:00:00 MST -07:00')
+      end
+    end
+
+    context 'when the event has no start_time' do
+      let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Arizona') }
+
+      it 'returns nil' do
+        expect(subject.event_start_time).to be_nil
+      end
+    end
+
+    context 'when the event has no home_time_zone' do
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: nil) }
+
+      it 'returns nil' do
+        expect(subject.event_start_time).to be_nil
+      end
+    end
+  end
 end

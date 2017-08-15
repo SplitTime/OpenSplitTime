@@ -201,8 +201,8 @@ class LiveEffortData
   def time_from_start(kind)
     day_and_time = day_and_time(kind)
     return nil unless day_and_time
-    effort.start_offset = day_and_time - event.start_time if subject_lap_split.start?
-    day_and_time - event.start_time - effort.start_offset # Evaluates to 0 if subject_lap_split.start?
+    effort.start_offset = day_and_time - event.start_time_in_home_zone if subject_lap_split.start?
+    day_and_time - event.start_time_in_home_zone - effort.start_offset # Evaluates to 0 if subject_lap_split.start?
   end
 
   def day_and_time(kind)

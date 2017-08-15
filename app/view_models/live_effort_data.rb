@@ -24,7 +24,6 @@ class LiveEffortData
     create_split_times
     assign_stopped_here
     fill_with_null_split_times
-    validate_setup
   end
 
   def response_row
@@ -219,10 +218,5 @@ class LiveEffortData
 
   def param_with_kind(base, kind)
     params["#{base}_#{kind}".to_sym]
-  end
-
-  def validate_setup
-    warn "DEPRECATION WARNING: params #{params} contain no :lap key; LiveEffortData will assume lap: 1 " +
-             'but this is deprecated. Lack of a lap parameter may fail in the future.' if params[:lap].nil?
   end
 end

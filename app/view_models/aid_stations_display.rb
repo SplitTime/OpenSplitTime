@@ -1,6 +1,6 @@
 class AidStationsDisplay < LiveEventFramework
 
-  delegate :start_time, :course, :organization, to: :event
+  delegate :course, :organization, :home_time_zone, to: :event
 
   def post_initialize(args)
     ArgsValidator.validate(params: args, required: :event, exclusive: [:event, :times_container], class: self.class)
@@ -13,6 +13,10 @@ class AidStationsDisplay < LiveEventFramework
                             event_framework: self,
                             split_times: grouped_split_times[aid_station.split_id])
         end
+  end
+
+  def start_time
+    event.start_time_in_home_zone
   end
 
   private

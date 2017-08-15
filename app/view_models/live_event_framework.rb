@@ -1,6 +1,6 @@
 class LiveEventFramework
 
-  delegate :multiple_laps?, to: :event
+  delegate :multiple_laps?, :home_time_zone, to: :event
 
   def initialize(args)
     @event = args[:event]
@@ -21,7 +21,7 @@ class LiveEventFramework
   end
 
   def event_start_time
-    event.start_time
+    event.start_time_in_home_zone
   end
 
   def efforts_started

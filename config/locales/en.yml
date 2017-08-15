@@ -40,3 +40,4 @@ en:
       full_with_weekday_and_time: "%A, %B %-d, %Y %l:%M%p"
       full_with_time: "%B %-d, %Y %l:%M%p"
       full_day_time_and_zone: "%A, %B %-d, %Y %l:%M%p (%Z)"
+      full_day_military_and_zone: "%A, %B %-d, %Y %H:%M (%Z)"

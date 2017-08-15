@@ -23,7 +23,7 @@
       <br/><%= link_to @effort_show.event_name, event_path(@effort_show.event) %></strong>
     </h2>
     <h4>
-      <%= "#{l(@effort_show.start_time, format: :full_with_weekday)} #{l(@effort_show.start_time, format: :ampm)}" %>
+      <%= l(@effort_show.start_time, format: :full_day_time_and_zone) %>
       <br/>
       <%= @effort_show.finish_status %>
       <%= "• #{@effort_show.overall_rank.ordinalize} Place " if @effort_show.overall_rank %>

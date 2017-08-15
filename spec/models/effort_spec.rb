@@ -26,64 +26,60 @@ RSpec.describe Effort, type: :model do
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
   describe 'validations' do
-    let(:course) { Course.create!(name: 'Test Course') }
-    let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
-    let(:participant) { Participant.create!(first_name: 'Joe', last_name: 'Hardman',
-                                            gender: 'male', birthdate: '1989-12-15',
-                                            city: 'Boulder', state_code: 'CO', country_code: 'US') }
+    let(:course) { build_stubbed(:course) }
+    let(:event) { build_stubbed(:event, course: course) }
+    let(:participant) { build_stubbed(:participant) }
 
     it 'is valid when created with an event_id, first_name, last_name, and gender' do
-      Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male')
-
-      expect(Effort.all.count).to(equal(1))
-      expect(Effort.first.event).to eq(event)
-      expect(Effort.first.last_name).to eq('Goliath')
+      effort = build_stubbed(:effort, event: event)
+      expect(effort.event_id).to be_present
+      expect(effort.first_name).to be_present
+      expect(effort.last_name).to be_present
+      expect(effort.gender).to be_present
+      expect(effort).to be_valid
     end
 
     it 'is invalid without an event_id' do
-      effort = Effort.new(event: nil, first_name: 'David', last_name: 'Goliath', gender: 'male')
+      effort = build_stubbed(:effort, event: nil)
       expect(effort).not_to be_valid
       expect(effort.errors[:event_id]).to include("can't be blank")
     end
 
     it 'is invalid without a first_name' do
-      effort = Effort.new(event: event, first_name: nil, last_name: 'Appleseed', gender: 'male')
+      effort = build_stubbed(:effort, event: event, first_name: nil)
       expect(effort).not_to be_valid
       expect(effort.errors[:first_name]).to include("can't be blank")
     end
 
     it 'is invalid without a last_name' do
-      effort = Effort.new(first_name: 'Johnny', last_name: nil, gender: 'male')
+      effort = build_stubbed(:effort, event: event, last_name: nil)
       expect(effort).not_to be_valid
       expect(effort.errors[:last_name]).to include("can't be blank")
     end
 
     it 'is invalid without a gender' do
-      effort = Effort.new(first_name: 'Johnny', last_name: 'Appleseed', gender: nil)
+      effort = build_stubbed(:effort, event: event, gender: nil)
       expect(effort).not_to be_valid
       expect(effort.errors[:gender]).to include("can't be blank")
     end
 
     it 'does not permit more than one effort by a participant in a given event' do
-      Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male',
-                     participant: participant)
-      effort = Effort.new(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male',
-                          participant: participant)
+      existing_participant = create(:participant)
+      existing_effort = create(:effort, participant: existing_participant)
+      effort = build_stubbed(:effort, event: existing_effort.event, participant: existing_participant)
       expect(effort).not_to be_valid
       expect(effort.errors[:participant_id]).to include('has already been taken')
     end
 
     it 'permits more than one effort in a given event with unassigned participants' do
-      Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male',
-                     participant: nil)
-      effort = Effort.new(event: event, first_name: 'Betty', last_name: 'Boop', gender: 'female',
-                          participant: nil)
+      existing_effort = create(:effort, participant: nil)
+      effort = build_stubbed(:effort, event: existing_effort.event, participant: nil)
       expect(effort).to be_valid
     end
 
     it 'does not permit duplicate bib_numbers within a given event' do
-      Effort.create!(event: event, first_name: 'David', last_name: 'Goliath', gender: 'male', bib_number: 20)
-      effort = Effort.new(event: event, participant_id: 2, bib_number: 20)
+      existing_effort = create(:effort, bib_number: 20)
+      effort = build_stubbed(:effort, event: existing_effort.event, bib_number: 20)
       expect(effort).not_to be_valid
       expect(effort.errors[:bib_number]).to include('has already been taken')
     end
@@ -415,6 +411,35 @@ RSpec.describe Effort, type: :model do
       stopped_indexes.each { |i| split_times[i].stopped_here = true }
       allow(effort).to receive(:ordered_split_times).and_return(split_times)
       expect(effort.stopped_split_time).to eq(expected)
+    end
+  end
+
+  describe '#event_start_time' do
+    subject { build_stubbed(:effort, event: event) }
+
+    context 'when the event has a start_time and a home_time_zone' do
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: 'Arizona') }
+
+      it 'returns the start_time in the home_time_zone' do
+        expect(subject.event_start_time).to be_a(ActiveSupport::TimeWithZone)
+        expect(subject.event_start_time).to eq('Tue, 01 Aug 2017 05:00:00 MST -07:00')
+      end
+    end
+
+    context 'when the event has no start_time' do
+      let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Arizona') }
+
+      it 'returns nil' do
+        expect(subject.event_start_time).to be_nil
+      end
+    end
+
+    context 'when the event has no home_time_zone' do
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: nil) }
+
+      it 'returns nil' do
+        expect(subject.event_start_time).to be_nil
+      end
     end
   end
 end

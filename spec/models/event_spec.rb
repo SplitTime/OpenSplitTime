@@ -2,56 +2,80 @@
 
 require 'rails_helper'
 
-# t.integer  "course_id"
+# t.integer  "course_id",                                                 null: false
 # t.integer  "organization_id"
-# t.string   "name"
+# t.string   "name",            limit: 64,                                null: false
 # t.datetime "start_time"
+# t.boolean  "concealed",                  default: false
+# t.boolean  "available_live",             default: false
+# t.string   "beacon_url"
+# t.integer  "laps_required"
+# t.uuid     "staging_id",                 default: "uuid_generate_v4()"
+# t.string   "slug",                                                      null: false
+# t.boolean  "auto_live_times",            default: false
+# t.string   "home_time_zone",                                            null: false
 
 RSpec.describe Event, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
   it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe 'initialize' do
-    let(:course) { Course.create!(name: 'Slo Mo 100 CCW') }
-    let(:course2) { Course.create!(name: 'Slo Mo 100 CW') }
+    let(:course) { build_stubbed(:course) }
+    let(:start_time) { DateTime.parse('2015-07-01 06:00:00-06:00') }
+    let(:home_time_zone) { 'Mountain Time (US & Canada)' }
 
-    it 'is valid when created with a course, a name, and a start time' do
-      event = Event.create!(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01 06:00:00', laps_required: 1)
+    it 'is valid when created with a course, name, start time, laps_required, and home_time_zone' do
+      event = build_stubbed(:event, course: course)
 
-      expect(Event.all.count).to eq(1)
-      expect(event.course).to eq(course)
-      expect(event.name).to eq('Slo Mo 100 2015')
-      expect(event.start_time).to eq('2015-07-01 06:00:00'.in_time_zone)
+      expect(event.course_id).to be_present
+      expect(event.name).to be_present
+      expect(event.start_time).to be_present
+      expect(event.laps_required).to be_present
+      expect(event.home_time_zone).to be_present
       expect(event).to be_valid
     end
 
     it 'is invalid without a course' do
-      event = Event.new(course: nil, name: 'Slo Mo 100 2015', start_time: '2015-07-01', laps_required: 1)
+      event = build_stubbed(:event, course: nil)
       expect(event).not_to be_valid
       expect(event.errors[:course_id]).to include("can't be blank")
     end
 
     it 'is invalid without a name' do
-      event = Event.new(course: course, name: nil, start_time: '2015-07-01', laps_required: 1)
+      event = build_stubbed(:event, name: nil, without_slug: true)
       expect(event).not_to be_valid
       expect(event.errors[:name]).to include("can't be blank")
     end
 
     it 'is invalid without a start date' do
-      event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: nil, laps_required: 1)
+      event = build_stubbed(:event, start_time: nil)
       expect(event).not_to be_valid
       expect(event.errors[:start_time]).to include("can't be blank")
     end
 
     it 'is invalid without a laps_required' do
-      event = Event.new(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01', laps_required: nil)
+      event = build_stubbed(:event, laps_required: nil)
       expect(event).not_to be_valid
       expect(event.errors[:laps_required]).to include("can't be blank")
     end
 
+    it 'is invalid without a home_time_zone' do
+      event = build_stubbed(:event, home_time_zone: nil)
+      expect(event).not_to be_valid
+      expect(event.errors[:home_time_zone]).to include("can't be blank")
+    end
+
+    it 'is invalid with a nonexistent home_time_zone' do
+      event = build_stubbed(:event, home_time_zone: 'Narnia')
+      expect(event).to be_invalid
+      expect(event.errors[:home_time_zone]).to include("must be the name of an ActiveSupport::TimeZone object")
+    end
+
     it 'does not permit duplicate names' do
-      Event.create!(course: course, name: 'Slo Mo 100 2015', start_time: '2015-07-01', laps_required: 1)
-      event = Event.new(course: course2, name: 'Slo Mo 100 2015', start_time: '2016-07-01', laps_required: 1)
+      existing_event = create(:event)
+      event = build_stubbed(:event, name: existing_event.name)
       expect(event).not_to be_valid
       expect(event.errors[:name]).to include('has already been taken')
     end
@@ -172,7 +196,7 @@ RSpec.describe Event, type: :model do
         partners = []
         100.times { partners << event.pick_partner_with_banner }
         expect(partners.map(&:event_id).uniq).to eq([event.id])
-        expect(partners.map(&:banner_file_name)).to all ( be_present )
+        expect(partners.map(&:banner_file_name)).to all (be_present)
       end
     end
 
@@ -217,6 +241,72 @@ RSpec.describe Event, type: :model do
       attributes = event.live_entry_attributes
       expect(attributes.size).to eq(splits.size)
       expect(attributes.second).to eq(expected)
+    end
+  end
+
+  describe '#start_time_in_home_zone' do
+    context 'when the event specifies a valid home_time_zone' do
+      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), home_time_zone: 'Eastern Time (US & Canada)') }
+
+      it 'returns the start_time in the time zone specified by event.home_time_zone' do
+        expect(event.start_time_in_home_zone.time_zone.name).to eq(event.home_time_zone)
+        expect(event.start_time_in_home_zone.to_s).to eq('2017-07-01 02:00:00 -0400')
+      end
+    end
+
+    context 'when the event home_time_zone is nil' do
+      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), home_time_zone: nil) }
+
+      it 'returns nil' do
+        expect(event.start_time_in_home_zone).to be_nil
+      end
+    end
+
+    context 'when the event start_time is nil' do
+      let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Eastern Time (US & Canada)') }
+
+      it 'returns nil' do
+        expect(event.start_time_in_home_zone).to be_nil
+      end
+    end
+  end
+
+  describe '#start_time_in_home_zone=' do
+    context 'when home_time_zone exists' do
+      let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }
+
+      it 'converts the string based on the specified home_time_zone' do
+        event.start_time_in_home_zone = '07/01/2017 06:00:00'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-07-01 10:00:00 -0000')
+      end
+
+      it 'works properly with a 24-hour time' do
+        event.start_time_in_home_zone = '07/01/2017 16:00:00'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-07-01 20:00:00 -0000')
+      end
+
+      it 'works properly with AM/PM time' do
+        event.start_time_in_home_zone = '07/01/2017 04:00:00 PM'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-07-01 20:00:00 -0000')
+      end
+
+      it 'works properly with date formatted in yyyy-mm-dd style' do
+        event.start_time_in_home_zone = '2017-07-01 16:00:00'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-07-01 20:00:00 -0000')
+      end
+    end
+
+    context 'when home_time_zone does not exist' do
+      let(:event) { build_stubbed(:event, home_time_zone: nil) }
+
+      it 'raises an error' do
+        expect { event.start_time_in_home_zone = '2017-07-01 06:00:00' }
+            .to raise_error(/start_time_in_home_zone cannot be set without a valid home_time_zone/)
+      end
     end
   end
 end

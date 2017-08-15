@@ -24,7 +24,6 @@ class LiveEffortData
     create_split_times
     assign_stopped_here
     fill_with_null_split_times
-    validate_setup
   end
 
   def response_row
@@ -201,8 +200,8 @@ class LiveEffortData
   def time_from_start(kind)
     day_and_time = day_and_time(kind)
     return nil unless day_and_time
-    effort.start_offset = day_and_time - event.start_time if subject_lap_split.start?
-    day_and_time - event.start_time - effort.start_offset # Evaluates to 0 if subject_lap_split.start?
+    effort.start_offset = day_and_time - event.start_time_in_home_zone if subject_lap_split.start?
+    day_and_time - event.start_time_in_home_zone - effort.start_offset # Evaluates to 0 if subject_lap_split.start?
   end
 
   def day_and_time(kind)
@@ -219,10 +218,5 @@ class LiveEffortData
 
   def param_with_kind(base, kind)
     params["#{base}_#{kind}".to_sym]
-  end
-
-  def validate_setup
-    warn "DEPRECATION WARNING: params #{params} contain no :lap key; LiveEffortData will assume lap: 1 " +
-             'but this is deprecated. Lack of a lap parameter may fail in the future.' if params[:lap].nil?
   end
 end

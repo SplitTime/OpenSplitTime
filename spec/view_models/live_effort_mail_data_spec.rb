@@ -81,7 +81,6 @@ RSpec.describe LiveEffortMailData do
                   split_times_data: split_times_data,
                   effort_slug: effort.slug,
                   event_slug: event.slug}
-      p expected
       expect(mail_data.effort_data).to eq(expected)
     end
   end

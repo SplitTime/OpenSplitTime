@@ -12,7 +12,7 @@ FactoryGirl.define do
     transient { without_slug false }
 
     after(:build, :stub) do |effort, evaluator|
-      effort.slug = "#{effort.first_name.parameterize}-#{effort.last_name.parameterize}" unless evaluator.without_slug
+      effort.slug = "#{effort.first_name&.parameterize}-#{effort.last_name&.parameterize}" unless evaluator.without_slug
     end
 
     factory :efforts_hardrock, class: Effort do

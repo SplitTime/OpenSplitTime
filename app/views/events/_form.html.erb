@@ -40,18 +40,28 @@
         </div>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :start_time %>
+            <%= f.label 'Start time' %>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group date" id="datetimepicker">
+              <%= f.text_field :start_time_in_home_zone,
+                               value: @event.start_time_in_home_zone&.strftime('%m/%d/%Y %H:%M:%S'),
+                               placeholder: 'mm/dd/yyyy hh:mm:ss',
+                               class: 'form-control',
+                               data: {provide: 'datetimepicker',
+                                      date_format: 'MM/DD/YYYY HH:mm:ss',
+                                      date_default_date: (Date.current + 6.hours).strftime('%m/%d/%Y %H:%M:%S')} %>
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :home_time_zone %>
           </div>
           <div class="col-sm-8">
-            <%= f.datetime_select :start_time,
-                                  {include_seconds: true,
-                                   use_short_month: true,
-                                   start_year: (Date.today + 1.year).year,
-                                   end_year: 1970,
-                                   ampm: true,
-                                   default: Date.today.in_time_zone + 6.hours,
-                                   order: [:month, :day, :year]},
-                                  {class: "dropdown-select-field"} %>
+            <%= collection_select(:event, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
+                                  {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "dropdown-select-field"}) %>
           </div>
         </div>
         <div class="form-group">
@@ -91,3 +101,9 @@
     <% end %>
   </div>
 </div>
+
+<script>
+    $(function () {
+        $('#datetimepicker').datetimepicker();
+    });
+</script>

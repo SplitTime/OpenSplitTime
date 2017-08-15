@@ -304,7 +304,8 @@ RSpec.describe Event, type: :model do
       let(:event) { build_stubbed(:event, home_time_zone: nil) }
 
       it 'raises an error' do
-        expect { event.start_time_in_home_zone = '2017-07-01 06:00:00' }.to raise_error
+        expect { event.start_time_in_home_zone = '2017-07-01 06:00:00' }
+            .to raise_error(/start_time_in_home_zone cannot be set without a valid home_time_zone/)
       end
     end
   end

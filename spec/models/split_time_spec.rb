@@ -300,7 +300,7 @@ RSpec.describe SplitTime, kind: :model do
   end
 
   describe '#military time' do
-    let(:event) { build_stubbed(:event, start_time: Time.zone.parse('2017-07-01 06:00:00')) }
+    let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)', start_time_in_home_zone: '2017-07-01 06:00:00') }
 
     it 'returns nil if time_from_start is nil' do
       split_time = build_stubbed(:split_time, time_from_start: nil)
@@ -361,7 +361,7 @@ RSpec.describe SplitTime, kind: :model do
   end
 
   describe '#military_time=' do
-    let(:event) { build_stubbed(:event, start_time: Time.zone.parse('2017-07-01 06:00:00')) }
+    let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)', start_time_in_home_zone: '2017-07-01 06:00:00') }
     let(:effort) { build_stubbed(:effort, event: event, start_offset: 0) }
 
     it 'sets time_from_start to nil if passed a nil value' do

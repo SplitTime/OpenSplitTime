@@ -8,12 +8,12 @@ describe Api::V1::EventsController do
 
   describe '#show' do
     it 'returns a successful 200 response' do
-      get :show, staging_id: event.staging_id
+      get :show, staging_id: event.id
       expect(response.status).to eq(200)
     end
 
     it 'returns data of a single event' do
-      get :show, staging_id: event.staging_id
+      get :show, staging_id: event.id
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(event.id)
       expect(response.body).to be_jsonapi_response_for('events')
@@ -50,13 +50,13 @@ describe Api::V1::EventsController do
     let(:attributes) { {name: 'Updated Event Name'} }
 
     it 'returns a successful json response' do
-      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes}
+      put :update, staging_id: event.id, data: {type: 'events', attributes: attributes}
       expect(response.body).to be_jsonapi_response_for('events')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, staging_id: event.staging_id, data: {type: 'events', attributes: attributes}
+      put :update, staging_id: event.id, data: {type: 'events', attributes: attributes}
       event.reload
       expect(event.name).to eq(attributes[:name])
     end
@@ -71,14 +71,14 @@ describe Api::V1::EventsController do
 
   describe '#destroy' do
     it 'returns a successful json response' do
-      delete :destroy, staging_id: event.staging_id
+      delete :destroy, staging_id: event.id
       expect(response.status).to eq(200)
     end
 
     it 'destroys the event record' do
       test_event = event
       expect(Event.all.count).to eq(1)
-      delete :destroy, staging_id: test_event.staging_id
+      delete :destroy, staging_id: test_event.id
       expect(Event.all.count).to eq(0)
     end
 
@@ -91,13 +91,17 @@ describe Api::V1::EventsController do
   end
 
   describe '#spread' do
+    before do
+      Rails.cache.clear
+    end
+    
     it 'returns a successful 200 response' do
-      get :spread, staging_id: event.staging_id
+      get :spread, staging_id: event.id
       expect(response.status).to eq(200)
     end
 
     it 'returns data of a single event' do
-      get :spread, staging_id: event.staging_id
+      get :spread, staging_id: event.id
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(event.id)
       expect(response.body).to be_jsonapi_response_for('event_spread_displays')
@@ -106,8 +110,8 @@ describe Api::V1::EventsController do
     it 'returns data from cache if the cache is valid' do
       skip 'caching in test environment is disabled'
       expect(EventSpreadDisplay).to receive(:new).once.and_call_original
-      get :spread, staging_id: event.staging_id
-      get :spread, staging_id: event.staging_id
+      get :spread, staging_id: event.id
+      get :spread, staging_id: event.id
     end
 
     it 'returns an error if the event does not exist' do
@@ -131,28 +135,28 @@ describe Api::V1::EventsController do
       end
 
       it 'returns split data in the expected format' do
-        get :spread, staging_id: event.staging_id
+        get :spread, staging_id: event.id
         parsed_response = JSON.parse(response.body)
         expect(parsed_response.dig('data', 'attributes', 'splitHeaderData').map { |header| header['title'] })
             .to eq(Split.all.map(&:base_name))
       end
 
       it 'returns effort data in the expected format' do
-        get :spread, staging_id: event.staging_id
+        get :spread, staging_id: event.id
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') })
             .to eq([Effort.third.last_name, Effort.first.last_name, Effort.second.last_name])
       end
 
       it 'sorts effort data based on the sort param' do
-        get :spread, staging_id: event.staging_id, sort: 'last_name'
+        get :spread, staging_id: event.id, sort: 'last_name'
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') })
             .to eq([Effort.first.last_name, Effort.second.last_name, Effort.third.last_name])
       end
 
       it 'returns time data in the expected format' do
-        get :spread, staging_id: event.staging_id
+        get :spread, staging_id: event.id
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['included'].first.dig('attributes', 'displayStyle')).to eq('absolute')
         expect(parsed_response['included'].first.dig('attributes', 'absoluteTimes').flatten.map { |time| time.first(19) })
@@ -172,7 +176,7 @@ describe Api::V1::EventsController do
     let(:event) { create(:event, course_id: course.id, laps_required: 1) }
 
     context 'when provided with a file' do
-      let(:request_params) { {staging_id: event.staging_id, data_format: 'csv_efforts', file: file} }
+      let(:request_params) { {staging_id: event.id, data_format: 'csv_efforts', file: file} }
       let(:file) { file_fixture('test_efforts.csv') } # Should work in Rails 5
 
       it 'returns a successful json response' do
@@ -202,7 +206,7 @@ describe Api::V1::EventsController do
 
     context 'when provided with an array of live_time hashes and data_format: :jsonapi_batch' do
       let(:split_id) { splits.first.id }
-      let(:request_params) { {staging_id: event.staging_id, data_format: 'jsonapi_batch', data: data} }
+      let(:request_params) { {staging_id: event.id, data_format: 'jsonapi_batch', data: data} }
       let(:data) { [
           {type: 'live_time',
            attributes: {bibNumber: '101', splitId: split_id, bitkey: 1, absoluteTime: '10:45:45-06:00',
@@ -266,10 +270,8 @@ describe Api::V1::EventsController do
   end
 
   describe '#trigger_live_times_push' do
-    let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
-    let(:event) { create(:event, course_id: course.id, laps_required: 1) }
-    let(:request_params) { {staging_id: event.staging_id} }
+    let(:request_params) { {staging_id: event.id} }
 
     it 'sends a push notification that includes the count of available times' do
       event.splits << splits

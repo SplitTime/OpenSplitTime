@@ -1,9 +1,8 @@
 FactoryGirl.define do
-
   factory :event do
     sequence(:name) { |n| "Test Event #{n}" }
     home_time_zone { ActiveSupport::TimeZone.all.shuffle.first.name }
-    start_time Time.zone.parse('2016-07-01 06:00:00')
+    start_time '2016-07-01 00:00:00 GMT'
     laps_required 1
     sequence(:staging_id) { SecureRandom.uuid }
     course
@@ -41,7 +40,6 @@ FactoryGirl.define do
         efforts_count 5
         laps_required 1
         unlimited_laps_generated 3
-        start_time '2016-07-01 06:00:00'
       end
 
       after(:stub) do |event, evaluator|
@@ -49,7 +47,6 @@ FactoryGirl.define do
         splits = course.splits.to_a
         sub_splits = splits.map(&:sub_splits).flatten
         event.laps_required = evaluator.laps_required
-        event.start_time = evaluator.start_time
         laps_generated = event.laps_required.zero? ? evaluator.unlimited_laps_generated : event.laps_required
         time_points = sub_splits.each_with_iteration.first(sub_splits.size * laps_generated)
                           .map { |sub_split, iter| TimePoint.new(iter, sub_split.split_id, sub_split.bitkey) }

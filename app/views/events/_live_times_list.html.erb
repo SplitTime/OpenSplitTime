@@ -1,4 +1,4 @@
-<%# Requires parameters partners, view_model %>
+<%# Requires parameters live_times, view_model %>
 
 <% if live_times.present? %>
 
@@ -32,7 +32,7 @@
             <td><%= live_time.effort_full_name %></td>
             <td><%= live_time.split_base_name %></td>
             <td><%= live_time.sub_split_kind %></td>
-            <td><%= live_time.military_time %></td>
+            <td><%= live_time.military_time(view_model.home_time_zone) %></td>
             <td><%= live_time.with_pacer ? 'Yes' : 'No' %></td>
             <td><%= live_time.stopped_here ? 'Yes' : 'No' %></td>
             <td><%= live_time.source_shorthand %></td>

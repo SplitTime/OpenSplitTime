@@ -78,8 +78,8 @@ class LiveTime < ActiveRecord::Base
     split_time.present?
   end
 
-  def military_time
-    absolute_time ? TimeConversion.absolute_to_hms(absolute_time) : TimeConversion.file_to_military(entered_time)
+  def military_time(zone = nil)
+    (absolute_time && zone) ? TimeConversion.absolute_to_hms(absolute_time.in_time_zone(zone)) : TimeConversion.file_to_military(entered_time)
   end
 
   def source_shorthand

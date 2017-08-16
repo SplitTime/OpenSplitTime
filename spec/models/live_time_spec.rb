@@ -256,10 +256,27 @@ RSpec.describe LiveTime, type: :model do
   end
 
   describe '#military_time' do
-    context 'when an absolute_time exists' do
-      it 'returns the time component in hh:mm:ss format' do
-        live_time = build_stubbed(:live_time, absolute_time: '2017-07-31 09:30:45 -0600', entered_time: '0123')
-        expect(live_time.military_time).to eq('09:30:45')
+    context 'when absolute_time exists and a zone string argument is passed' do
+      it 'returns the time component in hh:mm:ss format in the specified time zone' do
+        live_time = build_stubbed(:live_time, absolute_time: '2017-07-31 09:30:45 -0000', entered_time: '0123')
+        zone = 'Eastern Time (US & Canada)'
+        expect(live_time.military_time(zone)).to eq('05:30:45')
+      end
+    end
+
+    context 'when absolute_time exists and a TimeZone object argument is passed' do
+      it 'returns the time component in hh:mm:ss format in the specified time zone' do
+        live_time = build_stubbed(:live_time, absolute_time: '2017-07-31 09:30:45 -0000', entered_time: '0123')
+        zone = ActiveSupport::TimeZone['Eastern Time (US & Canada)']
+        expect(live_time.military_time(zone)).to eq('05:30:45')
+      end
+    end
+
+    context 'when absolute_time exists but zone does not exist' do
+      it 'returns the entered_time in hh:mm:ss format' do
+        live_time = build_stubbed(:live_time, absolute_time: '2017-07-31 09:30:45 -0000', entered_time: '0123')
+        zone = nil
+        expect(live_time.military_time(zone)).to eq('01:23:00')
       end
     end
 

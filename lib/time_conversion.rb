@@ -24,10 +24,6 @@ class TimeConversion
     to_hms(time.hour, time.min, time.sec)
   end
 
-  def self.hms_to_absolute(hms, base_absolute)
-    hms.present? ? base_absolute.in_time_zone + hms_to_seconds(hms) : base_absolute.in_time_zone
-  end
-
   def self.components_to_absolute(components)
     DateTime.new(components['date(1i)'].to_i,
                  components['date(2i)'].to_i,

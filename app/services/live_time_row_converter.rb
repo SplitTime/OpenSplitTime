@@ -34,6 +34,7 @@ class LiveTimeRowConverter
   private
 
   attr_reader :event, :live_times, :times_container
+  delegate :home_time_zone, to: :event
 
   def time_rows
     paired_live_times.map do |left_live_time, right_live_time|
@@ -41,8 +42,8 @@ class LiveTimeRowConverter
        bib_number: left_live_time&.bib_number || right_live_time&.bib_number,
        live_time_id_in: left_live_time&.id,
        live_time_id_out: right_live_time&.id,
-       time_in: left_live_time&.military_time,
-       time_out: right_live_time&.military_time,
+       time_in: left_live_time&.military_time(home_time_zone),
+       time_out: right_live_time&.military_time(home_time_zone),
        pacer_in: left_live_time&.with_pacer,
        pacer_out: right_live_time&.with_pacer,
        dropped_here: left_live_time&.stopped_here || right_live_time&.stopped_here,

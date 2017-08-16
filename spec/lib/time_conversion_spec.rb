@@ -120,26 +120,12 @@ describe TimeConversion do
         expect(TimeConversion.absolute_to_hms(absolute)).to eq(expected)
       end
     end
-  end
-
-  describe '.hms_to_absolute' do
-    it 'returns the absolute_base converted to a time object when passed a nil hms parameter' do
-      hms = nil
-      absolute_base = Date.new(2016, 1, 1)
-      expect(TimeConversion.hms_to_absolute(hms, absolute_base)).to eq(absolute_base.in_time_zone)
-    end
-
-    it 'returns the absolute_base converted to a time object when passed an empty string hms parameter' do
-      hms = ''
-      absolute_base = Date.new(2016, 1, 1)
-      expect(TimeConversion.hms_to_absolute(hms, absolute_base)).to eq(absolute_base.in_time_zone)
-    end
 
     with_each_class do |clazz|
-      it 'adds hours, minutes, and seconds when passed a string in the form of hh:mm:ss and a time or datetime object' do
-        hms = '03:30:00'
-        absolute_base = clazz.new(2016, 7, 1, 6, 0, 0).in_time_zone
-        expect(TimeConversion.hms_to_absolute(hms, absolute_base)).to eq(Time.new(2016, 7, 1, 9, 30, 0).in_time_zone)
+      it 'functions as expected in different time zones' do
+        absolute = clazz.parse('2017-08-01 12:00:00 GMT').in_time_zone('Arizona')
+        expected = '05:00:00'
+        expect(TimeConversion.absolute_to_hms(absolute)).to eq(expected)
       end
     end
   end

@@ -56,8 +56,7 @@ class EventsController < ApplicationController
     authorize @event
     @event.destroy
 
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || events_path
+    redirect_to events_path
   end
 
   def find_problem_effort

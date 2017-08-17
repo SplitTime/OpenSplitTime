@@ -24,12 +24,17 @@ RSpec.describe FollowerNotifier do
       stubbed_response = OpenStruct.new(successful?: true)
       subject = FollowerNotifier.new(topic_arn: topic_arn, effort_data: effort_data, sns_client: sns_client)
       expected_subject = 'Update for Joe LastName 1 at Test Event 1 from OpenSplitTime'
-      expected_message = "The following new times were reported for Joe LastName 1 at Test Event 1:\n" +
-          "  Split 1 In (Mile 6.2), Friday, July 1, 2016  7:40AM \n" +
-          "Split 1 Out (Mile 6.2), Friday, July 1, 2016  7:50AM and stopped there\n\n" +
-          "Full results for Joe LastName 1 here: https://www.opensplittime.org/efforts/joe-lastname-1\n" +
-          "Full results for Test Event 1 here: https://www.opensplittime.org/events/test-event-1\n\n" +
-          "Thank you for using OpenSplitTime!\n"
+      expected_message = <<~MESSAGE
+        The following new times were reported for Joe LastName 1 at Test Event 1:
+
+        Split 1 In (Mile 6.2), Friday, July 1, 2016  7:40AM 
+        Split 1 Out (Mile 6.2), Friday, July 1, 2016  7:50AM and stopped there
+
+        Full results for Joe LastName 1 here: #{ENV['BASE_URI']}/efforts/joe-lastname-1
+        Full results for Test Event 1 here: #{ENV['BASE_URI']}/events/test-event-1/spread
+
+        Thank you for using OpenSplitTime!
+      MESSAGE
       expect(sns_client).to receive(:publish).with(topic_arn: topic_arn, subject: expected_subject, message: expected_message).and_return(stubbed_response)
       subject.publish
     end

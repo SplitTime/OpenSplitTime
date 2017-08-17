@@ -291,6 +291,7 @@
             lapsRequired: { type: Number, default: 1 },
             slug: String,
             startTime: { type: Date, default: null },
+            homeTimeZone: { type: String, default: 'Mountain Time (US & Canada)' },
             courseNew: Boolean
         },
         relationships: {

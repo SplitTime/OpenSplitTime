@@ -58,11 +58,6 @@
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="glyphicon glyphicon-question-sign"></i></span>
         <input type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' ' + (eventModel.startTime && eventModel.startTime.getFullYear()) : ''">
       </div>
-      <div class="form-group">
-        <label>Description</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Provide an optional helpful description of your Event."><i class="glyphicon glyphicon-question-sign"></i></span>
-        <textarea class="form-control" placeholder="Your event's description" v-model="eventModel.description"></textarea>
-      </div>
       <div class="form-group event-info-course-row">
         <label for="event-start-time">Choose an existing course</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you have already created a course for a prior Event like this one, you can select it here."><i class="glyphicon glyphicon-question-sign"></i></span>

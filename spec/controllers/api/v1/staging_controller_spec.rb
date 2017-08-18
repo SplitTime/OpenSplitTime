@@ -32,6 +32,29 @@ describe Api::V1::StagingController do
     end
   end
 
+  describe '#get_time_zones' do
+    it 'returns a successful 200 response' do
+      get :get_time_zones
+      expect(response).to be_success
+    end
+
+    it 'returns an array of all ActiveSupport::TimeZone names and offsets' do
+      tz_count = ActiveSupport::TimeZone.all.size
+      get :get_time_zones
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['time_zones'].size).to eq(tz_count)
+    end
+
+    it 'returns both names and formatted offsets for each time zone' do
+      eastern_time_zone_name = 'Eastern Time (US & Canada)'
+      eastern = ActiveSupport::TimeZone[eastern_time_zone_name]
+      get :get_time_zones
+      parsed_response = JSON.parse(response.body)
+      eastern_response = parsed_response['time_zones'].find { |tz| tz.first == eastern_time_zone_name }
+      expect(eastern_response.last).to eq(eastern.formatted_offset)
+    end
+  end
+
   describe '#post_event_course_org' do
     let(:existing_course_params) { existing_course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
     let(:existing_organization_params) { existing_organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }

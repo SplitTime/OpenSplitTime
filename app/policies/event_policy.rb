@@ -150,6 +150,10 @@ class EventPolicy < ApplicationPolicy
     user.present?
   end
 
+  def get_time_zones?
+    user.present?
+  end
+
   def get_locations?
     user.authorized_to_edit?(event)
   end

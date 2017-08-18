@@ -1,11 +1,17 @@
 class Api::V1::StagingController < ApiController
-  before_action :set_event, except: [:post_event_course_org, :get_countries]
-  before_action :authorize_event, except: [:post_event_course_org, :get_countries]
+  before_action :set_event, except: [:post_event_course_org, :get_countries, :get_time_zones]
+  before_action :authorize_event, except: [:post_event_course_org, :get_countries, :get_time_zones]
 
   # GET /api/v1/staging/get_countries
   def get_countries
     authorize Event
     render json: {countries: Geodata.standard_countries_subregions}
+  end
+
+  # GET /api/v1/staging/get_time_zones
+  def get_time_zones
+    authorize Event
+    render json: {time_zones: ActiveSupport::TimeZone.all.map { |tz| [tz.name, tz.formatted_offset]} }
   end
 
   # Returns location data for all splits on any course that falls

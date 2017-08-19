@@ -15,10 +15,23 @@ class LiveTimeSplitTimeCreator
   end
 
   def create
+    created_split_time_ids = []
     creatable_split_times.each do |split_time|
       if split_time.save
+        created_split_time_ids << split_time.id
         live_time = live_times.find { |lt| lt.id == split_time.live_time_id }
         live_time.update(split_time: split_time) if live_time
+      end
+    end
+    created_split_times = SplitTime.where(id: created_split_time_ids).eager_load(:effort)
+    updated_efforts = created_split_times.map(&:effort).uniq
+    updated_efforts.each { |effort| EffortDataStatusSetter.set_data_status(effort: effort) }
+    if event.available_live
+      indexed_split_times = created_split_times.group_by { |st| st.effort.participant_id || 0 }
+      indexed_split_times.each do |participant_id, split_times|
+        NotifyFollowersJob.perform_later(participant_id: participant_id,
+                                         split_time_ids: split_times.map(&:id),
+                                         multi_lap: event.multiple_laps?) unless participant_id.zero?
       end
     end
   end

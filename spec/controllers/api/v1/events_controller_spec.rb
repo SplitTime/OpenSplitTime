@@ -263,7 +263,29 @@ describe Api::V1::EventsController do
           post :import, request_params
           expect(LiveTime.all.size).to eq(2)
           expect(SplitTime.all.size).to eq(2)
+
           expect(LiveTime.all.pluck(:split_time_id).sort).to eq(SplitTime.all.pluck(:id).sort)
+        end
+
+        it 'sends a message to NotifyFollowersJob with relevant participant and split_time data' do
+          allow(NotifyFollowersJob).to receive(:perform_later)
+          post :import, request_params
+          split_time_ids = SplitTime.all.ids.sort.reverse
+          participant_id = SplitTime.first.effort.participant_id
+
+          expect(NotifyFollowersJob).to have_received(:perform_later)
+                                            .with({participant_id: participant_id,
+                                                   split_time_ids: split_time_ids,
+                                                   multi_lap: false})
+        end
+
+        it 'sends a message to EffortDataStatusSetter with the effort associated with the modified split_times' do
+          allow(EffortDataStatusSetter).to receive(:set_data_status)
+          post :import, request_params
+          effort = SplitTime.first.effort
+
+          expect(EffortDataStatusSetter).to have_received(:set_data_status)
+                                            .with(effort: effort)
         end
       end
     end

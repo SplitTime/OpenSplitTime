@@ -11,7 +11,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.smtp_settings = {address: 'localhost', port: 25, domain: 'whatever.com'}
-  config.action_mailer.default_url_options = {host: 'http://localhost:3000'}
+  config.action_mailer.default_url_options = {host: ENV['BASE_URI']}
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -42,6 +42,20 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  config.paperclip_defaults = {
+      storage: :s3,
+      s3_credentials: {
+          bucket: ENV['S3_BUCKET'],
+          access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+          secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+          s3_region: ENV['AWS_REGION'],
+          s3_host_name: "s3-#{ENV['AWS_REGION']}.amazonaws.com",
+      }
+  }
+
+  if ENV['MEMCACHEDCLOUD_SERVERS']
+    config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','), { namespace: Rails.env, expires_in: 4.hours, compress: true, username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
+  end
 
   config.assets.quiet = true
 end

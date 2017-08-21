@@ -257,6 +257,15 @@ describe PreparedParams do
       end
     end
 
+    context 'when provided with a single field and an array of values' do
+      let(:filter_params) { {'state_code' => %w(NM AZ NY)} }
+
+      it 'preserves the array' do
+        expected = {'state_code' => %w(NM AZ NY)}
+        validate_param('filter', expected)
+      end
+    end
+
     context 'when provided with multiple fields and lists of values' do
       let(:filter_params) { {'state_code' => 'NM,AZ,BC', 'country_code' => 'US,CA'} }
 
@@ -335,7 +344,7 @@ describe PreparedParams do
     end
 
     context 'when provided with combined' do
-      let(:gender_param) { ['combined'] }
+      let(:gender_param) { 'combined' }
 
       it 'returns an array containing numeric values for both genders' do
         expected = {'gender' => [0, 1]}
@@ -418,6 +427,30 @@ describe PreparedParams do
       it 'returns nil' do
         expected = nil
         validate_param('search', expected)
+      end
+    end
+  end
+
+  describe '#editable' do
+    let(:params) { ActionController::Parameters.new(filter: filter_params) }
+    let(:permitted) { [] }
+    let(:permitted_query) { [] }
+
+    context 'when provided with a [:filter][:editable] key as true' do
+      let(:filter_params) { {'editable' => 'true', 'state_code' => '', 'country_code' => 'US'} }
+
+      it 'returns true' do
+        expected = true
+        validate_param('editable', expected)
+      end
+    end
+
+    context 'when provided with a [:filter][:editable] key as false' do
+      let(:filter_params) { {'editable' => 'false', 'state_code' => '', 'country_code' => 'US'} }
+
+      it 'returns false' do
+        expected = false
+        validate_param('editable', expected)
       end
     end
   end

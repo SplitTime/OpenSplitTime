@@ -29,11 +29,15 @@ class FollowerNotifier
   end
 
   def message
-    <<-MESSAGE
-The following new times were reported for #{effort_data[:full_name]} at #{effort_data[:event_name]}:
-  #{times_text}
+    <<~MESSAGE
+      The following new times were reported for #{effort_data[:full_name]} at #{effort_data[:event_name]}:
 
-Thank you for using OpenSplitTime!
+      #{times_text}
+
+      Full results for #{effort_data[:full_name]} here: #{ENV['BASE_URI']}/efforts/#{effort_data[:effort_slug]}
+      Full results for #{effort_data[:event_name]} here: #{ENV['BASE_URI']}/events/#{effort_data[:event_slug]}/spread
+
+      Thank you for using OpenSplitTime!
     MESSAGE
   end
 

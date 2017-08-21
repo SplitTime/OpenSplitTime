@@ -12,7 +12,9 @@ class SplitTime < ApplicationRecord
   include Structpluck
   belongs_to :effort
   belongs_to :split
+  has_many :live_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
+  attr_accessor :live_time_id, :time_exists
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }
@@ -35,6 +37,7 @@ class SplitTime < ApplicationRecord
   validates_presence_of :effort_id, :split_id, :sub_split_bitkey, :time_from_start, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
                           message: 'only one of any given time_point permitted within an effort'
+  validates :time_from_start, numericality: {greater_than_or_equal_to: 0}
   validate :course_is_consistent
 
   def self.null_record
@@ -51,8 +54,12 @@ class SplitTime < ApplicationRecord
     self.find_by_sql(query)
   end
 
+  def to_s
+    "#{effort || '[unknown effort]'} at #{split || '[unknown split]'}"
+  end
+
   def course_is_consistent
-    if effort && effort.event && split && (effort.event.course_id != split.course_id)
+    if effort&.event && split && (effort.event.course_id != split.course_id)
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
       errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end
@@ -77,6 +84,10 @@ class SplitTime < ApplicationRecord
     self.lap = time_point.lap
   end
 
+  def lap_split
+    LapSplit.new(lap, split)
+  end
+
   def lap_split_key
     LapSplitKey.new(lap, split_id)
   end
@@ -89,8 +100,10 @@ class SplitTime < ApplicationRecord
     effort.set_data_status
   end
 
-  def elapsed_time
-    time_from_start && TimeConversion.seconds_to_hms(time_from_start)
+  def elapsed_time(options = {})
+    return nil unless time_from_start
+    time = options[:with_fractionals] ? time_from_start : time_from_start.round(0)
+    TimeConversion.seconds_to_hms(time)
   end
 
   alias_method :formatted_time_hhmmss, :elapsed_time
@@ -100,7 +113,7 @@ class SplitTime < ApplicationRecord
   end
 
   def day_and_time
-    @day_and_time ||= attributes['day_and_time'].try(:in_time_zone) ||
+    @day_and_time ||= attributes['day_and_time']&.in_time_zone(event_home_zone) ||
         time_from_start && (event_start_time + effort_start_offset + time_from_start)
   end
 
@@ -127,7 +140,7 @@ class SplitTime < ApplicationRecord
   end
 
   def split_name
-    split ? split.name(bitkey) : '[unknown split]'
+    split&.name(bitkey) || '[unknown split]'
   end
 
   def split_name_with_lap
@@ -143,17 +156,21 @@ class SplitTime < ApplicationRecord
   end
 
   def effort_name
-    @effort_name ||= effort ? effort.full_name : '[unknown effort]'
+    @effort_name ||= effort&.full_name || '[unknown effort]'
   end
 
   def event_name
-    @event_name ||= effort ? effort.event_name : '[unknown event]'
+    @event_name ||= effort&.event_name || '[unknown event]'
   end
 
   private
 
   def event_start_time
     @event_start_time ||= effort.event_start_time
+  end
+
+  def event_home_zone
+    @event_home_zone ||= effort.event_home_zone
   end
 
   def effort_start_offset

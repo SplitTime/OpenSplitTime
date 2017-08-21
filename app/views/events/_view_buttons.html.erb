@@ -1,18 +1,13 @@
 <div class="btn-group">
 
-  <% unless view_object.simple? %>
-      <%= link_to 'Search and explore', event_path(view_object.event),
-                  disabled: explore_button_disabled?(view_object.class),
-                  class: 'btn btn-sm btn-primary' %>
-      <%= link_to 'Full spread', spread_event_path(view_object.event),
-                  disabled: spread_button_disabled?(view_object.class),
-                  class: 'btn btn-sm btn-primary' %>
-  <% end %>
+  <%= link_to 'Search and explore', event_path(view_object),
+              disabled: explore_button_disabled?(view_object.class),
+              class: 'btn btn-sm btn-primary' %>
+  <%= link_to 'Full spread', spread_event_path(view_object),
+              disabled: spread_button_disabled?(view_object.class),
+              class: 'btn btn-sm btn-primary' %>
 
-  <% if @current_user && @current_user.authorized_to_edit?(view_object.event) %>
-      <%= link_to 'Admin', stage_event_path(view_object.event),
-                  disabled: stage_button_disabled?(view_object.class),
-                  class: 'btn btn-sm btn-primary' %>
-  <% end %>
+  <%= link_to_classic_admin(view_object, @current_user) %>
+  <%= link_to_event_staging(view_object, @current_user) %>
 
 </div>

@@ -13,7 +13,7 @@ module EventsHelper
   end
 
   def link_to_beacon_button(view_object)
-    if view_object.available_live && view_object.beacon_url
+    if view_object.beacon_url
       link_to event_beacon_button_text(view_object.beacon_url),
               url_with_protocol(view_object.beacon_url),
               class: 'btn btn-sm btn-default',
@@ -22,13 +22,28 @@ module EventsHelper
   end
 
   def link_to_enter_live_entry(view_object, current_user)
-    if current_user && current_user.authorized_for_live?(view_object.event) && view_object.available_live
-      link_to 'Live Data Entry', live_entry_live_event_path(view_object.event), method: :get, class: 'btn btn-sm btn-warning'
+    if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.available_live
+      link_to 'Live Data Entry', live_entry_live_event_path(view_object), method: :get, class: 'btn btn-sm btn-warning'
+    end
+  end
+
+  def link_to_classic_admin(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object.event)
+      link_to 'Classic Admin', stage_event_path(view_object),
+              disabled: stage_button_disabled?(view_object.class),
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
+  def link_to_event_staging(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object.event)
+      link_to 'Event Staging (beta)', "#{event_staging_app_path(view_object)}#/#{event_staging_app_page(view_object)}",
+              class: 'btn btn-sm btn-primary'
     end
   end
 
   def link_to_download_spread_csv(view_object, current_user)
-    if current_user && current_user.authorized_for_live?(view_object.event) && view_object.event_finished?
+    if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',
               spread_event_path(view_object.event, format: :csv, display_style: view_object.display_style, sort: view_object.sort_hash),
               method: :get, class: 'btn btn-sm btn-success'
@@ -40,12 +55,16 @@ module EventsHelper
       link_to 'Disable live',
               live_disable_event_path(view_object.event),
               data: {confirm: "NOTE: This will suspend all live entry actions for #{view_object.name}, " +
-                  "including any that may be in process. Are you sure you want to proceed?"},
+                  'including any that may be in process, and will disable live follower notifications ' +
+                  'by email and SMS text when new times are added. Are you sure you want to proceed?'},
               method: :put,
               class: 'btn btn-sm btn-warning'
     else
       link_to 'Enable live',
               live_enable_event_path(view_object.event),
+              data: {confirm: "NOTE: This will enable live entry actions for #{view_object.name}, " +
+                  'and will also trigger live follower notifications by email and SMS text when new times are added. ' +
+                  'Are you sure you want to proceed?'},
               method: :put,
               class: 'btn btn-sm btn-warning'
     end
@@ -74,12 +93,20 @@ module EventsHelper
             class: 'btn btn-sm btn-success'
   end
 
-  def link_to_start_all_efforts(view_object)
-    link_to 'Start all efforts', start_all_efforts_event_path(view_object.event),
-            method: :put,
-            data: {confirm: "NOTE: This will create a starting split time for all efforts associated with " +
-                "#{view_object.name}. Are you sure you want to proceed?"},
-            class: 'btn btn-sm btn-success'
+  def link_to_start_ready_efforts(view_object)
+    if view_object.ready_efforts.present?
+      link_to "Start #{pluralize(view_object.ready_efforts_count, 'effort')}",
+              start_ready_efforts_event_path(view_object.event),
+              method: :put,
+              data: {confirm: 'NOTE: This will create a starting split time for the ' +
+                  "#{pluralize(view_object.ready_efforts_count, 'unstarted effort')} " +
+                  'scheduled to start before the current time. Are you sure you want to proceed?'},
+              class: 'btn btn-sm btn-success'
+    else
+      link_to 'Nothing to start', '#', disabled: true,
+              data: {confirm: 'No efforts are ready to start. Reload the page to check again.'},
+              class: 'btn btn-sm btn-success'
+    end
   end
 
   def suggested_match_id_hash(efforts)
@@ -104,5 +131,9 @@ module EventsHelper
 
   def stage_button_disabled?(klass)
     klass == EventStageDisplay
+  end
+
+  def event_staging_app_page(view_object)
+    (view_object.respond_to?(:view_text)) && (view_object.view_text == 'splits') ? 'splits' : 'entrants'
   end
 end

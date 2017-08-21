@@ -3,7 +3,7 @@
 <div class="homepage">
   <div class="row first" >
     <div class="over-text">
-      <h2><br/>A New Era for Endurance Event Data</h2>
+      <h2><br/>Endurance Event Data Lives Here</h2>
       <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it
         easy to collect, store, and play with endurance event data.<br/>
         <% if @current_user %>
@@ -27,8 +27,8 @@
             </form>
         <% end %>
         <br/>
-        <%= link_to 'Hardrock 2016 Results', spread_event_path(50), class: 'btn btn-info cta' %>
-        <%= link_to 'Silverton Double Dirty 30', spread_event_path(77), class: 'btn btn-info cta' %>
+        <%= link_to 'Live! Twisted Branch 2017', spread_event_path('twisted-branch-trail-run-2017'), class: 'btn btn-info cta' %>
+        <%= link_to 'Never Summer 2017 Results', spread_event_path('never-summer-100k-2017'), class: 'btn btn-info cta' %>
         </div>
     <div class="gradient"></div>
     <a data-toggle="static-popover-dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
@@ -43,9 +43,9 @@
         OpenSplitTime will tell you where you need to be and when.<br/>
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
-      <%= link_to '2017 Hardrock', plan_effort_course_path(1), class: 'btn btn-info cta' %>
-      <%= link_to '2017 Double Dirty 30', plan_effort_course_path(24), class: 'btn btn-info cta' %>
-      <%= link_to '2017 Never Summer 100K', plan_effort_course_path(25), class: 'btn btn-info cta' %>
+      <%= link_to '2017 Twisted Branch 100K', plan_effort_course_path('twisted-branch-trail'), class: 'btn btn-info cta' %>
+      <%= link_to '2017 Double Dirty 30', plan_effort_course_path('silverton-double-dirty-30-course'), class: 'btn btn-info cta' %>
+      <%= link_to '2018 Hardrock', plan_effort_course_path('hardrock-100-clockwise'), class: 'btn btn-info cta' %>
     </div>
   </div>
   <div class="row third" >

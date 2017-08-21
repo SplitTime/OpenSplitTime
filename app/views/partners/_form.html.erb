@@ -1,0 +1,53 @@
+<%= render 'shared/errors', obj: @partner %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@partner, multipart: true, html: {class: 'form-horizontal', role: 'form'}) do |f| %>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :name %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :name, class: 'form-control', placeholder: 'Partner name', autofocus: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :banner %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.file_field :banner, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= image_tag @partner.banner.url(:medium) %>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :banner_link %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.text_field :banner_link, class: 'form-control',
+                             placeholder: 'Paste the link that this banner should open' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :weight %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.number_field :weight, class: 'form-control' %>
+          </div>
+        </div>
+        <%= f.hidden_field :event_id, value: @partner.event_id %>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit(@partner.new_record? ? 'Create partner' : 'Update partner', class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+        <div class="col-xs-4 col-xs-offset-2">
+          [ <%= link_to 'Cancel', stage_event_path(@partner.event, view: 'partners') %> ]
+        </div>
+    <% end %>
+  </div>
+</div>

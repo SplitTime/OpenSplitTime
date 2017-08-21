@@ -1,6 +1,6 @@
 class EventSerializer < BaseSerializer
-  attributes :id, :course_id, :organization_id, :name, :start_time, :concealed, :laps_required, :staging_id,
-             :maximum_laps, :multi_lap
+  attributes :id, :course_id, :organization_id, :name, :start_time, :home_time_zone, :concealed,
+             :laps_required, :staging_id, :maximum_laps, :multi_lap, :slug, :live_entry_attributes
   link(:self) { api_v1_event_path(object) }
 
   has_many :efforts

@@ -1,20 +1,35 @@
 FactoryGirl.define do
-
   factory :event do
     sequence(:name) { |n| "Test Event #{n}" }
-    start_time '2016-07-01 06:00:00'
+    home_time_zone { ActiveSupport::TimeZone.all.shuffle.first.name }
+    start_time '2016-07-01 00:00:00 GMT'
     laps_required 1
     sequence(:staging_id) { SecureRandom.uuid }
     course
 
+    transient { without_slug false }
+
+    after(:build, :stub) do |event, evaluator|
+      event.slug = event.name.parameterize unless evaluator.without_slug
+    end
+
     factory :event_with_standard_splits do
 
       transient { splits_count 4 }
+      transient { in_sub_splits_only false }
 
       after(:stub) do |event, evaluator|
-        course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count)
+        course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count,
+                               in_sub_splits_only: evaluator.in_sub_splits_only)
         assign_fg_stub_relations(event, {course: course, splits: course.splits})
         assign_fg_stub_relations(course, {events: [event]})
+      end
+
+      after(:create) do |event, evaluator|
+        course = create(:course_with_standard_splits, splits_count: evaluator.splits_count,
+                        in_sub_splits_only: evaluator.in_sub_splits_only)
+        event.update(course: course)
+        event.splits << course.splits
       end
     end
 
@@ -25,7 +40,6 @@ FactoryGirl.define do
         efforts_count 5
         laps_required 1
         unlimited_laps_generated 3
-        start_time '2016-07-01 06:00:00'
       end
 
       after(:stub) do |event, evaluator|
@@ -33,7 +47,6 @@ FactoryGirl.define do
         splits = course.splits.to_a
         sub_splits = splits.map(&:sub_splits).flatten
         event.laps_required = evaluator.laps_required
-        event.start_time = evaluator.start_time
         laps_generated = event.laps_required.zero? ? evaluator.unlimited_laps_generated : event.laps_required
         time_points = sub_splits.each_with_iteration.first(sub_splits.size * laps_generated)
                           .map { |sub_split, iter| TimePoint.new(iter, sub_split.split_id, sub_split.bitkey) }

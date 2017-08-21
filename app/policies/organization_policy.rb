@@ -1,12 +1,12 @@
 class OrganizationPolicy < ApplicationPolicy
-  class Scope < Scope
+  class Scope < ApplicationPolicy::Scope
     attr_reader :user, :scope
 
     def post_initialize
     end
 
     def delegated_records
-      scope.joins(:stewardships).where(stewardships: {user_id: user.id})
+      user ? scope.joins(:stewardships).where(stewardships: {user_id: user.id}) : scope.none
     end
   end
 

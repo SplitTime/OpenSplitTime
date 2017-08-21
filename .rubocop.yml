@@ -1,5 +1,7 @@
 AllCops:
-  RunRailsCops: true
+  Rails:
+    Enabled: true
+  TargetRubyVersion: 2.3
   Include:
     - '**/Gemfile'
     - '**/Rakefile'
@@ -8,3 +10,45 @@ AllCops:
    - 'db/seeds.rb'
    - 'db/schema.rb'
    - 'vendor/bundle/**/*'
+
+Documentation:
+  Enabled: false
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Layout/IndentHeredoc:
+  EnforcedStyle: powerpack
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+  IndentationWidth: 4
+
+Layout/SpaceInLambdaLiteral:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always
+
+Style/SymbolArray:
+  Enabled: false

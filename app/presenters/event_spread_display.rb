@@ -36,6 +36,18 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
+  def show_partner_banners?
+    event.available_live && partner_with_banner
+  end
+
+  def partner_with_banner
+    @partner_with_banner ||= event.pick_partner_with_banner
+  end
+
+  def cache_key
+    "#{Rails.env}/events/#{to_param}/spread/display_style=#{display_style}&sort=#{sort_string}&filter=#{filter_hash}"
+  end
+
   private
 
   delegate :multiple_laps?, to: :event

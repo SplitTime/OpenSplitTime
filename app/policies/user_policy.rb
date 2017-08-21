@@ -1,5 +1,5 @@
 class UserPolicy < ApplicationPolicy
-  class Scope < Scope
+  class Scope < ApplicationPolicy::Scope
     attr_reader :current_user
 
     def post_initialize

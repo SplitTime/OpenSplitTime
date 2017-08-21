@@ -33,9 +33,14 @@ module TimeFormats
     end
   end
 
-  def time_formatter(time_in_seconds, format_string, time_initials, placeholder)
+  def offset_format_xxhyym(time_in_seconds)
+    indicator = time_in_seconds.negative? ? '-' : '+'
+    indicator + time_formatter(time_in_seconds, '%02dh%02dm', 'hm', '00:00', false)
+  end
+
+  def time_formatter(time_in_seconds, format_string, time_initials, placeholder, negative_parens = true)
     return placeholder if time_in_seconds.nil?
-    format_string = "(#{format_string})" if time_in_seconds.to_i < 0
+    format_string = "(#{format_string})" if time_in_seconds.to_i.negative? && negative_parens
     format(format_string, *time_components(time_in_seconds, time_initials))
   end
 

@@ -11,10 +11,10 @@ Rails.application.configure do
   config.eager_load = true
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { :host => 'opensplittime.org', :protocol => 'http'}
+  config.action_mailer.default_url_options = {host: ENV['BASE_URI'], protocol: 'http'}
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
@@ -79,4 +79,19 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.paperclip_defaults = {
+      storage: :s3,
+      s3_credentials: {
+          bucket: ENV['S3_BUCKET'],
+          access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+          secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
+          s3_region: ENV['AWS_REGION'],
+          s3_host_name: "s3-#{ENV['AWS_REGION']}.amazonaws.com",
+      }
+  }
+
+  if ENV['MEMCACHEDCLOUD_SERVERS']
+    config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','), { namespace: Rails.env, expires_in: 4.hours, compress: true, username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
+  end
 end

@@ -1,10 +1,10 @@
 class EventStageDisplay < EventWithEffortsPresenter
 
   attr_reader :associated_splits
-  delegate :id, :unreconciled_efforts, :unreconciled_efforts?, :started?, to: :event
+  delegate :id, :unreconciled_efforts, :unreconciled_efforts?, :started?, :partners, :live_times, to: :event
 
   def post_initialize(args)
-    @associated_splits = event.ordered_splits
+    @associated_splits ||= event.ordered_splits.to_a
   end
 
   def filtered_efforts
@@ -31,8 +31,24 @@ class EventStageDisplay < EventWithEffortsPresenter
     course_splits.size
   end
 
+  def ready_efforts_count
+    ready_efforts.size
+  end
+
+  def ready_efforts
+    @ready_efforts ||= event_efforts.ready_to_start
+  end
+
+  def filtered_live_times
+    @filtered_live_times ||= live_times
+                                 .with_split_names
+                                 .where(filter_hash)
+                                 .order(sort_hash.presence || {absolute_time: :desc})
+                                 .paginate(page: page, per_page: per_page)
+  end
+
   def view_text
-    %w(splits efforts problems).include?(params[:view]) ? params[:view] : 'efforts'
+    %w(splits efforts problems partners times).include?(params[:view]) ? params[:view] : 'efforts'
   end
 
   private

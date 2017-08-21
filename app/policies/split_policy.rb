@@ -1,5 +1,5 @@
 class SplitPolicy < ApplicationPolicy
-  class Scope < Scope
+  class Scope < ApplicationPolicy::Scope
     def post_initialize
     end
   end
@@ -8,10 +8,6 @@ class SplitPolicy < ApplicationPolicy
 
   def post_initialize(split)
     @split = split
-  end
-
-  def destroy?
-    user.admin?
   end
 
   def import?

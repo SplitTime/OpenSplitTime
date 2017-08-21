@@ -187,7 +187,11 @@ var JSONAPI = (function ($) {
                 .then( function( json ) {
                     return parse.call( self, json, url );
                 } , function( a,b,c ) {
-                    if ( a.status === 404 ) {
+                    if ( a.responseJSON && a.responseJSON.errors ) {
+                        console.error( 'JSONAPI', 'Server reported errors \'' + self.__type__ + '\' model.' )
+                        $( document ).trigger( 'global-error', [ a.responseJSON.errors ] );
+                        return error( self, 'ERRORS' );
+                    } else if ( a.status === 404 ) {
                         console.warn( 'JSONAPI', 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );
                         return error( self, 'Unknown Model ID' );
                     } else if ( a.status === 400 ) {
@@ -486,7 +490,7 @@ var JSONAPI = (function ($) {
         }
 
         this.all = function( name ) {
-            var model = this.create( name );
+            var model = this.create( name.split('?')[0] );
             if ( model === null ) return $.Deferred().reject();
             return request( name, 'get', model.__includes__ );
         }

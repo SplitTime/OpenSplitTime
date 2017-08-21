@@ -101,6 +101,65 @@
         }
     };
 
+    var errorAlert = (function(){
+        var $container = null;
+
+        var buildAlert = function( $contents ) {
+            var $alert = $( '<div class="alert alert-danger" role="alert"></div>' );
+            $alert.append( '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' );
+            $alert.append( $contents );
+            return $alert;
+        }
+
+        var buildJSONAPIErrors = function( errors ) {
+            var $contents = '';
+            for ( var i = 0; i < errors.length; i++ ) {
+                var title = errors[i].title || 'Unknown Error';
+                var detail = errors[i].detail;
+                if ( $.isPlainObject( detail ) && detail.messages ) {
+                    detail = detail.messages.join( ',&nbsp;' );
+                } else if ( !detail instanceof String ) {
+                    detail = '';
+                }
+                $contents += ( $contents === '' ) ? '' : '<br>';
+                $contents += '<strong>' + title + '</strong>&nbsp;' + detail;
+                if ( errors[i].dump ) {
+                    $contents += '<br>' + JSON.stringify( errors[i].dump, null, ' ' );
+                }
+            }
+            return $( '<span>' + $contents + '</span>' );
+        }
+
+        return {
+            error: function( event, errors ) {
+                var $alert;
+                if ( $.isArray( errors ) && errors.length > 0 ) {
+                    if ( $.isPlainObject( errors[0] ) ) {
+                        // Interpret as JSONAPI errors
+                        $alert = buildJSONAPIErrors( errors );
+                    } else {
+                        // Interpret as array of string errors
+                        $alert = $( '<span>' + errors.join( ',&nbsp;' ) + '</span>' );
+                    }
+                }
+                if ( $alert ) {
+                    $alert = buildAlert( $alert );
+                    $alert.hide();
+                    $container.append( $alert );
+                    $alert.slideDown();
+                }
+            },
+            init: function () {
+                if ( $container === null ) {
+                    $container = $( '<aside id="global-alerts"><div class="container"></div></aside>' );
+                    $( 'body' ).append( $container );
+                    $container = $container.find( 'div' );
+                    $( document ).bind( 'global-error', errorAlert.error );
+                }
+            },
+        };
+    })();
+
     /*
     <label class="switchery-label">
       <span>Rapid<br>Mode</span>
@@ -122,9 +181,21 @@
 
     var datepicker = {
         init: function () {
+            var update = function( e ) {
+                /*
+                 * BruceLampson on Dec 31, 2016
+                 * https://github.com/RobinHerbots/Inputmask/issues/1468
+                 */
+                var event = document.createEvent( 'HTMLEvents' );
+                event.initEvent( 'input', true, true );
+                e.currentTarget.dispatchEvent( event );
+                $( this ).trigger( 'change' );
+            };
             $( '[data-toggle="datetimepicker"]' ).each( function( i, el ) {
                 $( el ).datetimepicker( {
                     format: $( el ).data( 'format' ) || false
+                } ).on( 'dp.change', function( e ) {
+                    update( e );
                 } );
             } );
         }
@@ -135,6 +206,7 @@
         staticPopover.init();
         switchery.init();
         datepicker.init();
+        errorAlert.init();
     };
 
     $(document).ready( init );

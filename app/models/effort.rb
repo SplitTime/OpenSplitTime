@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 class Effort < ApplicationRecord
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   enum gender: [:male, :female]
   strip_attributes collapse_spaces: true
-  phony_normalize :phone, default_country_code: 'US'
 
   # See app/concerns/data_status_methods for related scopes and methods
-  VALID_STATUSES = [nil, data_statuses[:good]]
+  VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
   include Auditable
   include Concealable
@@ -20,15 +21,19 @@ class Effort < ApplicationRecord
   belongs_to :event
   belongs_to :participant
   has_many :split_times, dependent: :destroy
-  accepts_nested_attributes_for :split_times, :reject_if => lambda { |s| s[:time_from_start].blank? && s[:elapsed_time].blank? }
+  accepts_nested_attributes_for :split_times, :reject_if =>
+      lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank?}
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender
+  validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
-  validates :phone, phony_plausible: true
+  validates :email, allow_blank: true, length: {maximum: 105},
+            format: {with: VALID_EMAIL_REGEX}
+  validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
+  validates_with BirthdateValidator
 
   before_save :reset_age_from_birthdate
 
@@ -38,6 +43,9 @@ class Effort < ApplicationRecord
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(participant_id: nil) }
   scope :started, -> { joins(:split_times).uniq }
+  scope :unstarted, -> { includes(:split_times).where(:split_times => {:id => nil}) }
+  scope :ready_to_start,
+        -> { joins(:event).unstarted.where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now) }
   scope :with_ordered_split_times,
         -> { eager_load(:split_times).includes(split_times: :split)
                  .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
@@ -66,6 +74,10 @@ class Effort < ApplicationRecord
     self.find_by_sql(query)
   end
 
+  def to_s
+    slug
+  end
+
   def slug_candidates
     [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
      [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
@@ -82,7 +94,7 @@ class Effort < ApplicationRecord
   def start_time=(datetime)
     return unless datetime.present?
     new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
-    self.start_offset = TimeDifference.from(event_start_time, new_datetime).in_seconds
+    self.start_offset = TimeDifference.from(event.start_time, new_datetime).in_seconds
   end
 
   def day_and_time(time_from_start)
@@ -90,7 +102,11 @@ class Effort < ApplicationRecord
   end
 
   def event_start_time
-    @event_start_time ||= attributes['event_start_time']&.in_time_zone || event&.start_time
+    @event_start_time ||= attributes['event_start_time']&.in_time_zone(event_home_zone) || event&.start_time_in_home_zone
+  end
+
+  def event_home_zone
+    @event_home_zone ||= attributes['event_home_zone'] || event&.home_time_zone
   end
 
   def event_name
@@ -207,8 +223,8 @@ class Effort < ApplicationRecord
     (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
   end
 
-  def approximate_age_today
-    @approximate_age_today ||=
+  def current_age_approximate
+    @current_age_approximate ||=
         age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
   end
 
@@ -249,8 +265,8 @@ class Effort < ApplicationRecord
     stopped_split_time&.time_point
   end
 
-  def stop
-    EffortStopper.stop(effort: self)
+  def stop(split_time = nil)
+    EffortStopper.stop(effort: self, stopped_split_time: split_time)
   end
 
   def unstop

@@ -50,6 +50,67 @@
                 liveEntry.liveEntryForm.init();
                 liveEntry.timeRowsTable.init();
                 liveEntry.splitSlider.init();
+                liveEntry.pusher.init();
+            });
+            liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
+            liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
+            liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
+            liveEntry.PopulatingFromRow = false;
+            
+        },
+
+        pusher: {
+            init: function() {
+                // For debugging purposes only, log notifications to the console
+                Pusher.logToConsole = true;
+                // Listen to push notifications
+                var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
+                var pusher = new Pusher(liveTimesPusherKey);
+                var channel = {};
+                if (typeof liveEntry.eventLiveEntryData === 'undefined') {
+                    // Just for safety, abort this init if there is no event data
+                    // and avoid breaking execution
+                    return;
+                }
+                if (typeof liveEntry.eventLiveEntryData.eventId === 'undefined') {
+                    // Just for safety, abort this init if there is no eventID
+                    // and avoid breaking execution
+                    return;
+                }
+                channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
+                channel.bind('pusher:subscription_succeeded', function() {
+                    // Force the server to trigger a push for initial display
+                    liveEntry.triggerLiveTimesPush();
+                    console.log(' SUBSCRIBED - Triggering...');
+                });
+                channel.bind('update', function (data) {
+                    // New value pushed from the server
+                    // Display updated number of new live times on Pull Times button
+                    if (typeof data.count === 'number') {
+                        liveEntry.pusher.displayNewCount(data.count);
+                        return;
+                    }
+                    liveEntry.pusher.displayNewCount(0);
+                });
+            },
+            displayNewCount: function(count) {
+                var text = '';
+                if (count > 0) {
+                    $('#js-new-times-alert').fadeTo(500, 1);
+                    text = count;
+                }
+                else {
+                    $('#js-new-times-alert').fadeTo(500, 0, function() {$('#js-new-times-alert').hide()});
+                }
+                $('#js-pull-times-count').text(text);
+            }
+        },
+
+        triggerLiveTimesPush: function() {
+            var endpoint = '/api/v1/events/' + liveEntry.eventLiveEntryData.eventId + ' /trigger_live_times_push';
+            $.ajax({
+                url: endpoint,
+                cache: false
             });
         },
 
@@ -308,6 +369,17 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function() {
+                if (liveEntry.PopulatingFromRow) {
+                    // Do nothing.
+                    // This fn is being called from several places based
+                    // on different actions.
+                    // None of them are needed if the form is being populated
+                    // by the system from a Local row's data
+                    // (User clicks on Edit icon in a Local Data Workspace row)
+                    // This flag will be on while the form is populated by that action
+                    // and turnedd of when that's done.
+                    return $.Deferred().resolve();
+                }
                 liveEntry.liveEntryForm.prefillCurrentTime();
 
                 var bibNumber = $('#js-bib-number').val();
@@ -383,6 +455,8 @@
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
                 thisTimeRow.timeOutExists = liveEntry.currentEffortData.timeOutExists;
+                thisTimeRow.liveTimeIdIn = $('#js-live-time-id-in').val() || '';
+                thisTimeRow.liveTimeIdOut = $('#js-live-time-id-out').val() || '';
                 return thisTimeRow;
             },
 
@@ -396,6 +470,8 @@
                 $('#js-pacer-in').prop('checked', timeRow.pacerIn);
                 $('#js-pacer-out').prop('checked', timeRow.pacerOut);
                 $('#js-dropped').prop('checked', timeRow.droppedHere).change();
+                $('#js-live-time-id-in').val(timeRow.liveTimeIdIn);
+                $('#js-live-time-id-out').val(timeRow.liveTimeIdOut);
                 liveEntry.splitSlider.changeSplitSlider(timeRow.splitId);
             },
 
@@ -584,7 +660,9 @@
                 // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
-                    <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '" >\
+                    <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '"\
+                        data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
+                        data-live-time-id-out="' + timeRow.liveTimeIdOut +'">\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
                         <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
@@ -701,6 +779,7 @@
             timeRowControls: function () {
 
                 $(document).on('click', '.js-edit-effort', function (event) {
+                    liveEntry.PopulatingFromRow = true;
                     event.preventDefault();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     var $row = $(this).closest('tr');
@@ -709,6 +788,8 @@
                     liveEntry.timeRowsTable.removeTimeRows( $(this) );
 
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
+                    liveEntry.PopulatingFromRow = false;
+                    liveEntry.liveEntryForm.fetchEffortData();
                 });
 
                 $(document).on('click', '.js-delete-effort', function () {
@@ -741,18 +822,7 @@
                         liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {
-                        var response = data.result;
-                        for (var i = 0; i < response.returnedRows.length; i++) {
-                            var timeRow = response.returnedRows[i];
-                            timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-
-                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
-                                storedTimeRows.push(timeRow);
-                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                                liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
-                            }
-                        }
+                        liveEntry.populateRows(data.result);
                     },
                     fail: function (e, data) {
                         $('#debug').empty().append( data.response().jqXHR.responseText );
@@ -761,8 +831,52 @@
                         liveEntry.timeRowsTable.busy = false;
                     }
                 });
+                $('#js-import-live-times').on('click', function (event) {
+                    event.preventDefault();
+                    if (liveEntry.importAsyncBusy) {
+                        return;
+                    }
+                    liveEntry.importAsyncBusy = true;
+                    $.ajax('/api/v1/events/' + liveEntry.currentEventId + '/pull_live_time_rows', {
+                       error: function(obj, error) {
+                            liveEntry.importAsyncBusy = false;
+                            liveEntry.timeRowsTable.importLiveError(obj, error);
+                       },
+                       dataType: 'json',
+                       success: function(data) {
+                            if (data.returnedRows.length === 0) {
+                                liveEntry.displayAndHideMessage(
+                                    liveEntry.importLiveWarning,
+                                    '#js-import-live-warning');
+                                return;
+                            }
+                            liveEntry.populateRows(data);
+                            liveEntry.importAsyncBusy = false;
+                       },
+                       type: 'PATCH'
+                    });
+                    return false;
+                });
             },
+            importLiveError: function(obj, error) {
+                liveEntry.displayAndHideMessage(liveEntry.importLiveError, '#js-import-live-error');
+            }
         }, // END timeRowsTable
+
+        displayAndHideMessage: function(msgElement, selector) {
+            // Fade in and fade out Bootstrap Alert
+            // @param msgElement object jQuery element containing the alert
+            // @param selector string jQuery selector to access the alert element
+            $('#js-live-messages').append(msgElement);
+            msgElement.fadeTo(500, 1);
+            window.setTimeout(function() {
+            msgElement.fadeTo(500, 0).slideUp(500, function(){
+                    msgElement = $(selector).hide().detach();
+                    liveEntry.importAsyncBusy = false;
+                });
+            }, 4000);
+            return;
+        },
 
         splitSlider: {
 
@@ -875,10 +989,24 @@
                     $('#js-split-slider').addClass('end');
                 }
             }
-        } // END splitSlider
+        }, // END splitSlider
+        populateRows: function(response) {
+            for (var i = 0; i < response.returnedRows.length; i++) {
+                var timeRow = response.returnedRows[i];
+                timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
+                    storedTimeRows.push(timeRow);
+                    liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                    liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                }
+            }
+        } // END populateRows
     }; // END liveEntry
 
     $('.events.live_entry').ready(function () {
         liveEntry.init();
     });
+
 })(jQuery);

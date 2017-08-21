@@ -7,16 +7,18 @@
       <%= link_to @plan_display.course_name, course_path(@plan_display.course) %><br/>
     </strong></h2>
     <strong>
-      <% if @plan_display.expected_time && @plan_display.lap_split_rows.present? %>
-          <%= "Analyzed #{pluralize(@plan_display.relevant_efforts_count, 'effort')} " +
-                  "from #{'year'.pluralize(@plan_display.event_years_analyzed.size)} " +
-                  "#{@plan_display.event_years_analyzed.to_sentence}" %>
+      <% if @plan_display.event %>
+          <% if @plan_display.expected_time && @plan_display.lap_split_rows.present? %>
+              <%= "Analyzed #{pluralize(@plan_display.relevant_efforts_count, 'effort')} " +
+                      "from #{'year'.pluralize(@plan_display.event_years_analyzed.size)} " +
+                      "#{@plan_display.event_years_analyzed.to_sentence}" %>
+          <% end %>
       <% end %>
     </strong>
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="page-navigation-text">
-      <% if @plan_display.expected_time %>
+      <% if @plan_display.event && @plan_display.expected_time %>
           <h4>
             <%= "PACING PLAN FOR A #{time_format_hhmm(@plan_display.expected_time)} FINISH TIME" %>
             <% if @current_user %>
@@ -28,13 +30,17 @@
   </div>
 </div>
 
-<%= render 'time_input' %>
+<% if @plan_display.event %>
+    <%= render 'time_input' %>
 
-<hr>
-<% if @plan_display.expected_time %>
-    <% if @plan_display.lap_split_rows.present? %>
-        <%= render 'plan_detail' %>
-    <% else %>
-        <h4>Insufficient data to create a plan.</h4>
+    <hr>
+    <% if @plan_display.expected_time %>
+        <% if @plan_display.lap_split_rows.present? %>
+            <%= render 'plan_detail' %>
+        <% else %>
+            <h4>Insufficient data to create a plan.</h4>
+        <% end %>
     <% end %>
+<% else %>
+    <h4>Insufficient data to create a plan.</h4>
 <% end %>

@@ -1,0 +1,36 @@
+<%# Requires parameters partners, view_model %>
+
+<%= link_to 'Add Partner', new_partner_path(event_id: view_model.id), class: 'btn btn-sm btn-success' %>
+
+<% if partners.present? %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Banner</th>
+    <th>Banner Link</th>
+    <th>Weight</th>
+    <th>Actions</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% partners.each do |partner| %>
+      <tr>
+        <td><%= link_to partner.name, edit_partner_path(partner) %></td>
+        <td><%= image_tag partner.banner.url(:small) %></td>
+        <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: '_blank' if partner.banner_link %></td>
+        <td><%= partner.weight %></td>
+        <td>
+          <%= link_to 'Delete', partner_path(partner), method: :delete,
+                      data: {confirm: 'Are you sure?'}, class: 'btn btn-sm btn-danger' %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<% else %>
+    <h4>No partners are associated with this event.</h4>
+<% end %>

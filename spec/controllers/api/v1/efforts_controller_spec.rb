@@ -23,24 +23,46 @@ describe Api::V1::EffortsController do
     it 'returns an error if the effort does not exist' do
       get :show, params: {id: 0}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
 
   describe '#create' do
-    it 'returns a successful json response' do
-      post :create, params: {data: {type: 'efforts', attributes: {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}}}
-      expect(response.body).to be_jsonapi_response_for('efforts')
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data']['id']).not_to be_nil
-      expect(response.status).to eq(201)
+    context 'when provided with valid attributes' do
+      let(:valid_attributes) { {'event_id' => event.id, 'first_name' => 'Johnny', 'last_name' => 'Appleseed', 'gender' => 'male'} }
+
+      it 'returns a successful json response' do
+        post :create, data: {type: 'efforts', attributes: valid_attributes}
+        expect(response.body).to be_jsonapi_response_for('efforts')
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['data']['id']).not_to be_nil
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates an effort record' do
+        expect(Effort.all.count).to eq(0)
+        post :create, data: {type: 'efforts', attributes: valid_attributes}
+        expect(Effort.all.count).to eq(1)
+      end
     end
 
-    it 'creates an effort record' do
-      expect(Effort.all.count).to eq(0)
-      post :create, params: {data: {type: 'efforts', attributes: {event_id: event.id, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male'}}}
-      expect(Effort.all.count).to eq(1)
+    context 'when provided with invalid attributes' do
+      let(:invalid_attributes) { {'eventId' => event.id, 'firstName' => 'Johnny'} }
+
+      it 'returns a jsonapi error object and status code unprocessable entity' do
+        post :create, data: {type: 'efforts', attributes: invalid_attributes}
+        expect(response.body).to be_jsonapi_errors
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns the attributes of the object' do
+        post :create, data: {type: 'efforts', attributes: invalid_attributes}
+        parsed_response = JSON.parse(response.body)
+        error_object = parsed_response['errors'].first
+        expect(error_object['title']).to match(/could not be created/)
+        expect(error_object['detail']['attributes']).to include(invalid_attributes)
+      end
     end
   end
 
@@ -62,7 +84,7 @@ describe Api::V1::EffortsController do
     it 'returns an error if the effort does not exist' do
       put :update, params: {id: 0, data: {type: 'efforts', attributes: attributes}}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -83,7 +105,7 @@ describe Api::V1::EffortsController do
     it 'returns an error if the effort does not exist' do
       delete :destroy, params: {id: 0}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end

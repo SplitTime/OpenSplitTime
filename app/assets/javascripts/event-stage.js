@@ -11,6 +11,7 @@
      */
     var locales = {
         countries : [],
+        countryNames : {},
         regions : {}
     }
 
@@ -119,7 +120,6 @@
             },
             validate: function() {
                 if ( !this.baseName ) return false;
-                if ( !this.description ) return false;
                 if ( !this.nameExtensions ) return false;
                 if ( !$.isNumeric( this.distanceFromStart ) ) return false;
                 if ( !$.isNumeric( this.vertGainFromStart ) ) return false;
@@ -142,12 +142,22 @@
             city: String,
             stateCode: String,
             countryCode: String,
-            startOffset: { type: Number, default: 0 },
+            beaconUrl: String,
+            concealed: { type: Boolean, default: true },
+            startOffset: { type: Number, default: null },
+            startMinutes: {
+                get: function() {
+                    return Math.round( this.startOffset / 60 );
+                },
+                set: function( value ) {
+                    this.startOffset = value * 60;
+                }
+            },
             startDate: {
                 get: function() {
                     var startTime = eventStage.data.eventModel.startTime;
                     if ( startTime instanceof Date ) {
-                        return moment( startTime ).add( this.startOffset, 'minutes' ).toDate();
+                        return moment( startTime ).add( this.startMinutes, 'minutes' ).toDate();
                     } else {
                         return this.date;
                     }
@@ -155,7 +165,7 @@
                 set: function( value ) {
                     var startTime = eventStage.data.eventModel.startTime;
                     if ( startTime instanceof Date ) {
-                        this.startOffset = moment( value ).diff( startTime, 'minutes' );
+                        this.startMinutes = moment( value ).diff( startTime, 'minutes' );
                     } else {
                         this.date = value;
                     }
@@ -163,15 +173,17 @@
             },
             offsetTime: {
                 get: function() {
-                    if ( this.offset === '' ) return '';
-                    var hours = Math.floor( Math.abs( this.startOffset ) / 60 );
-                    if ( this.startOffset < 0 ) hours = "-" + hours;
-                    var minutes = ( ( "0" + Math.abs( this.startOffset % 60 ) ).slice( -2 ) );
-                    return ( hours != 0 ) ? hours + ":" + minutes : this.startOffset % 60;
+                    if ( this.startMinutes === null ) return '';
+                    var hours = Math.floor( Math.abs( this.startMinutes ) / 60 );
+                    if ( this.startMinutes < 0 ) hours = "-" + hours;
+                    var minutes = ( ( "0" + Math.abs( this.startMinutes % 60 ) ).slice( -2 ) );
+                    return ( hours != 0 ) ? hours + ":" + minutes : this.startMinutes % 60;
                 },
                 set: function( value ) {
-                    this.offset = value;
-                    if ( value === '' ) return;
+                    if ( value === '' ) {
+                        this.startMinutes = null;
+                        return;
+                    }
                     var time = value.split( ':' );
                     if ( time.length > 1 ) {
                         var hours = time[0] * 60;
@@ -180,22 +192,39 @@
                         time = time[0] - 0;
                     }
                     if ( $.isNumeric( time ) )
-                        this.startOffset = time;
+                        this.startMinutes = time;
+                }
+            },
+            location: {
+                get: function() {
+                    var location = '';
+                    if ( this.city ) {
+                        location += this.city;
+                    }
+                    if ( this.stateCode ) {
+                        location += ( location == '' ) ? '' : ', ';
+                        location += ( ( locales.regions[ this.countryCode ] || {} )[ this.stateCode ] || this.stateCode );
+                    }
+                    if ( this.countryCode ) {
+                        if ( location == '' || !this.stateCode ) {
+                            location += ' ' + ( locales.countryNames[ this.countryCode ] || this.countryCode );
+                        } else {
+                            location += ' ' + this.countryCode;
+                        }
+                    }
+                    return location;
                 }
             },
             // Event ID Polyfill
             event_id: { get: function() { return eventStage.data.eventModel ? eventStage.data.eventModel.id: null; } }
         },
         methods: {
+            afterCreate: function() { this.concealed = eventStage.data.eventModel.concealed; },
             validate: function() {
                 if ( !this.firstName ) return false;
                 if ( !this.lastName ) return false;
                 if ( !this.gender ) return false;
                 if ( !this.bibNumber ) return false;
-                if ( !this.email ) return false;
-                if ( !this.city ) return false;
-                if ( !this.stateCode ) return false;
-                if ( !this.countryCode ) return false;
                 return true;
             }
         }
@@ -254,14 +283,15 @@
         }
     } );
     api.define( 'events', {
-        slug: 'stagingId',
+        slug: 'slug',
         attributes: {
             name: { type: String, default: '' },
             concealed: { type: Boolean, default: true },
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
-            stagingId: String,
+            slug: String,
             startTime: { type: Date, default: null },
+            homeTimeZone: { type: String, default: 'Mountain Time (US & Canada)' },
             courseNew: Boolean
         },
         relationships: {
@@ -275,34 +305,31 @@
         methods: {
             normalize: function() {
                 this.course.normalize();
-                /* Remove Unused Aid Stations */
-                // NOTE: Let's leave this dissabled for now.
-                /* var splits = [];
+                var newCourse = false || this.aidStations.length == 0;
+                /* Remove Aid Stations for other Courses */
                 for ( var i = this.aidStations.length - 1; i >= 0; i-- ) {
                     var splitId = this.aidStations[i].splitId;
                     if ( splitId === null ) break; // Unnecessary
                     for ( var j = this.course.splits.length - 1; j >= 0; j-- ) {
-                        if ( this.course.splits[j].id == splitId ) {
-                            id = null;
-                            break;
-                        }
+                        if ( this.course.splits[j].id == splitId ) break;
                     }
-                    debugger;
-                    if ( id !== null || splits[ this.aidStations[i].splitId ] != this.aidStations[i].id ) {
-                        console.log( this, this.aidStations[i] );
+                    if ( j < 0 ) {
+                        newCourse = true;
                         this.aidStations[i].delete();
                         this.aidStations.splice( i, 1 );
-                    } else {
-                        splits[ this.aidStations[i].splitId ] = this.aidStations[i].id;
                     }
-                } */
-                /* Attach Current Splits */
-                var start = this.course.endSplit( 'start' );
-                if ( start.__new__ ) start.post().then( function() { start.associate( true ); } )
-                else if ( !start.associated ) start.associate( true );
-                var finish = this.course.endSplit( 'finish' );
-                if ( finish.__new__ ) finish.post().then( function() { finish.associate( true ); } )
-                else if ( !finish.associated ) finish.associate( true );
+                }
+                /* Attach Splits on a New Course*/
+                if ( newCourse ) {
+                    for ( var i = this.course.splits.length - 1; i >= 0; i-- ) {
+                        var split = this.course.splits[i];
+                        if ( split.__new__ ) {
+                            split.post().then( function() { split.associate( true ); } );
+                        } else if ( !split.associated ) {
+                            split.associate( true );
+                        }
+                    }
+                }
             },
             validate: function( context ) {
                 var self = ( context ) ? context : this;
@@ -332,7 +359,7 @@
             post: function() {
                 var self = this;
                 var creating = this.__new__;
-                return this.request( 'staging/' + this.stagingId + '/post_event_course_org', 'POST', 'application/json' )
+                return this.request( 'staging/' + this.slug + '/post_event_course_org', 'POST', 'application/json' )
                 .then( function() {
                     if ( creating ) {
                         return self.visibility( false ).then( function() {
@@ -345,12 +372,16 @@
             },
             visibility: function( visible ) {
                 var self = this;
-                return $.ajax( '/api/v1/staging/' + this.stagingId + '/update_event_visibility', {
+                return $.ajax( '/api/v1/staging/' + this.slug + '/update_event_visibility', {
                     type: "PATCH",
                     data: { status: visible ? 'public' : 'private' },
                     dataType: "json"
                 } ).then( function() {
                     return self.fetch();
+                } ).fail( function( e ) {
+                    if ( e.responseJSON && e.responseJSON.errors ) {
+                        $( document ).trigger( 'global-error', [ e.responseJSON.errors ] );
+                    }
                 } );
             }
         }
@@ -383,6 +414,7 @@
         app: null,
         data: {
             isDirty: false,
+            isReady: false,
             isStaged: false,
             eventModel: api.create( 'events' )
         },
@@ -391,12 +423,18 @@
          * This method is used to populate the locale array
          */
         ajaxPopulateLocale: function() {
-            $.get( '/api/v1/staging/' + eventStage.data.eventModel.stagingId + '/get_countries', function( response ) {
+            $.get( '/api/v1/staging/get_countries', function( response ) {
                 for ( var i in response.countries ) {
                     locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
+                    locales.countryNames[ response.countries[i].code ] = response.countries[i].name;
                     if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
                     locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
                 }               
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load Locale Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -404,6 +442,11 @@
             return api.find( 'users', 'current' ).always( function( model ) {
                 units.distance = model.prefDistanceUnit;
                 units.elevation = model.prefElevationUnit;
+            } ).fail( function() {
+                $( document ).trigger( 'global-error', [ [ { 
+                    title: 'Failed to Load User Data:',
+                    detail: 'Please try reloading the app.'
+                } ] ] );
             } );
         },
 
@@ -428,16 +471,27 @@
                 }
             } else if ( from.name === 'home' ) {
                 // next();
+                if (eventStage.data.eventModel.__new__) {
+                    eventStage.data.eventModel.slug = 'new';
+                }
                 eventStage.data.eventModel.post().done( function() {
                     next();
-                } ).fail( function( e ) {                    
+                    var slug = eventStage.data.eventModel.slug;
+                    var url = window.location.pathname.replace(/\/new\//, '/' + slug + '/') + window.location.hash;
+                    try {
+                        // Replace url without causing refresh
+                        window.history.replaceState( window.history.state, '', url );
+                    } catch ( e ) {
+                        // replaceState didn't work: Manually reload the page
+                        window.location.href = window.location.origin + url;
+                    }
+                } ).fail( function( e ) {
                     next( '/' );
                 } );
             } else {
                 eventStage.data.eventModel.fetch().always( function() {
                     if ( !eventStage.data.eventModel.id && to.name !== 'home' ) {
                         next( '/' );
-                        // next();
                     } else {
                         next();
                     }
@@ -463,9 +517,11 @@
             this.resourceSelect.init();
             this.ajaxImport.init();
             this.inputUnits.init();
+            this.errorAlert.init();
 
-            // Load UUID
-            this.data.eventModel.stagingId = $( '#event-app' ).data( 'uuid' );
+            // Load Event Slug
+            var eventSlug = $( '#event-app' ).data( 'slug' );
+            this.data.eventModel.slug = eventSlug === 'new' ? null : eventSlug;
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
 
@@ -501,7 +557,7 @@
                                 return api.create( 'splits' );
                             }
                         },
-                        data: function() { return { modalData: {}, filter: '', units: units } },
+                        data: function() { return { modalData: {}, filter: '', units: units, highlight: null } },
                         template: '#splits'
                     },
                     beforeEnter: this.onRouteChange
@@ -555,6 +611,9 @@
             ];
             var router = new VueRouter( {
                 routes: routes
+            } );
+            router.afterEach( function( to, from ) {
+                eventStage.data.isReady = true;
             } );
             eventStage.router = router;
             eventStage.app = new Vue( {
@@ -691,7 +750,10 @@
             },
             init: function() {
                 Vue.component( 'data-tables', {
-                    template: '<table class="table table-striped" width="100%"><thead><slot name="header"></slot></thead><tbody><slot></slot></tbody></table>',
+                    template: '<table class="table table-striped" width="100%">\
+                                    <thead><slot name="header"></slot></thead>\
+                                    <tbody v-on:mouseleave="$emit(\'mouseleave\')"><slot></slot></tbody>\
+                                </table>',
                     props: [ 'rows', 'entries', 'filter' ],
                     mounted: eventStage.dataTables.onMounted,
                     destroyed: eventStage.dataTables.onDestroyed,
@@ -727,7 +789,7 @@
             function onValueChange() {
                 var self = this;
                 if ( this.value ) {
-                    lastValue = this._lastValue || { lat: 0, lng: 0 };
+                    var lastValue = this._lastValue || { lat: 0, lng: 0 };
                     var latlng = { lat: parseFloat( this.value.latitude ), lng: parseFloat( this.value.longitude ) };
                     if ( lastValue.lat != latlng.lat || lastValue.lng != latlng.lng ) {
                         this._lastValue = latlng;
@@ -755,7 +817,12 @@
                             this._location.setPosition( latlng );
                         }
                     }
-                    onRouteChange.call( this );
+                    if ( this.editable !== undefined ) {
+                        onRouteChange.call( this );
+                    }
+                } else if ( this._location ) {
+                    this._location.setMap( null );
+                    this._lastValue = { lat: 0, lng: 0 };
                 }
             }
 
@@ -791,7 +858,7 @@
                         if ( isNaN( parseFloat( e[i].latitude ) ) || isNaN( parseFloat( e[i].longitude ) ) ) continue;
                         var latlng = { lat: parseFloat( e[i].latitude ) , lng: parseFloat( e[i].longitude ) };
                         bounds.extend( latlng );
-                        path.push( latlng );
+                        if ( e[i].associated ) path.push( latlng );
                         // Make Marker
                         var marker = null;
                         if ( !e[i]._gmid || !this._route[ e[i]._gmid ] ) {
@@ -854,8 +921,8 @@
                     } else {
                         this._routeBounds = null;
                     }
-                    // Reset bounds when map is Locked
-                    if ( this.locked !== undefined ) {
+                    // Reset bounds when map is fitted
+                    if ( this.fit !== undefined ) {
                         this._map.fitBounds( this._routeBounds || defaultBounds );
                     }
                 }
@@ -927,6 +994,7 @@
             }
 
             function updateValue( lat, lng ) {
+                if ( this.editable == undefined ) return;
                 var latlng = { lat: parseFloat( lat ), lng: parseFloat( lng ) };
                 if ( isNaN( latlng.lat ) || isNaN( latlng.lng ) ) return;
                 if ( !this.value ) return;
@@ -958,7 +1026,8 @@
                     center: defaultBounds.getCenter(),
                     mapTypeId: 'terrain',
                     zoom: 4,
-                    maxZoom: 18,
+                    maxZoom: 16,
+                    draggableCursor: ( this.editable == undefined ) ? null : 'crosshair',
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,
                     scrollwheel: this.locked == undefined,
@@ -997,6 +1066,8 @@
                         template: '<div class="splits-modal-map-wrap js-google-maps"></div>',
                         props: {
                             locked: {},
+                            fit: {},
+                            editable: {},
                             searchUrl: { type: String, default: null },
                             route: { type: Array, default: null },
                             value: { type: Object, default: null }
@@ -1007,6 +1078,7 @@
                                 handler: onRouteChange,
                                 deep: true
                             },
+                            'value': onValueChange,
                             'value.latitude': onValueChange,
                             'value.longitude': onValueChange,
                             'value.distanceFromStart': onValueChange
@@ -1051,10 +1123,10 @@
                         var reset = function() {
                             // Locally clone existing object
                             self.model = self.value;
+                            self.model.fetch();
                             self.error = null;
-                            $( self.$el ).modal( 'hide' );
                         };
-                        $( this.$el ).on( 'show.bs.modal hidden.bs.modal', reset );
+                        $( this.$el ).on( 'show.bs.modal hide.bs.modal', reset );
                         this.$on( 'cancel', reset );
                         this.$on( 'done', function() {
                             self.$emit( 'change' );
@@ -1405,11 +1477,23 @@
                     done: function (e, data) {
                         self.$emit( 'import', 'yay' );
                     },
-                    fail: function (e, data) {
+                    fail: function (e, data, a,b) {
                         self.error = true;
                         setTimeout( function() {
                             self.error = false;
                         }, 500 );
+                        if ( data.jqXHR.responseJSON && data.jqXHR.responseJSON.errors ) {
+                            var errors = data.jqXHR.responseJSON.errors;
+                            for ( var i = 0; i < errors.length; i++ ) {
+                                errors[i].dump = errors[i].detail.attributes;
+                            }
+                            $( document ).trigger( 'global-error', [ errors ] );
+                        } else {
+                            $( document ).trigger( 'global-error', [ [ {
+                                title: 'Failed to Upload File',
+                                detail: 'Unknown Server Error'
+                            } ] ] );
+                        }
                     },
                     always: function () {
                         self.busy = false;
@@ -1430,6 +1514,23 @@
                 } );
             }
         },
+
+        errorAlert: ( function() {
+            return {
+                init: function() {
+                    Vue.component( 'error-alert', {
+                        template: '<div class="alert alert-danger" role="alert" v-if="errors && errors.length > 0">\
+                            <template v-for="error in errors" v-if="typeof error == \'object\'">\
+                                <strong>{{ error.title }}</strong> {{ error.details }}\
+                            </template>\
+                        </div>',
+                        props: {
+                            errors: { type: Array, default: null }
+                        }
+                    } );
+                }
+            };
+        } )(),
 
         inputUnits: ( function() {
             return {

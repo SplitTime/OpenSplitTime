@@ -1,11 +1,17 @@
 class Api::V1::StagingController < ApiController
-  before_action :set_event, except: [:post_event_course_org]
-  before_action :find_or_initialize_event, only: [:post_event_course_org]
-  before_action :authorize_event
+  before_action :set_event, except: [:post_event_course_org, :get_countries, :get_time_zones]
+  before_action :authorize_event, except: [:post_event_course_org, :get_countries, :get_time_zones]
 
-  # GET /api/v1/staging/:staging_id/get_countries
+  # GET /api/v1/staging/get_countries
   def get_countries
+    authorize Event
     render json: {countries: Geodata.standard_countries_subregions}
+  end
+
+  # GET /api/v1/staging/get_time_zones
+  def get_time_zones
+    authorize Event
+    render json: {time_zones: ActiveSupport::TimeZone.all.map { |tz| [tz.name, tz.formatted_offset]} }
   end
 
   # Returns location data for all splits on any course that falls
@@ -24,17 +30,22 @@ class Api::V1::StagingController < ApiController
 
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
-    course_id = params[:course] && params[:course][:id]
-    course = Course.find_or_initialize_by(id: course_id)
-    authorize course unless course.new_record?
+    event = params[:staging_id] == 'new' ? Event.new : Event.friendly.find(params[:staging_id])
+    course = Course.find_or_initialize_by(id: params[:course][:id])
+    organization = Organization.find_or_initialize_by(id: params[:organization][:id])
 
-    org_id = params[:organization] && params[:organization][:id]
-    organization = Organization.find_or_initialize_by(id: org_id)
+    skip_authorization if event.new_record? && course.new_record? && organization.new_record?
+    authorize event unless event.new_record?
+    authorize course unless course.new_record?
     authorize organization unless organization.new_record?
 
-    setter = EventCourseOrgSetter.new(event: @event, course: course, organization: organization, params: params)
+    setter = EventCourseOrgSetter.new(event: event, course: course, organization: organization, params: params)
     setter.set_resources
-    render json: setter.response, status: setter.status
+    if setter.status == :ok
+      render json: setter.resources.map { |resource| [resource.class.to_s.underscore, resource] }.to_h, status: setter.status
+    else
+      render json: {errors: setter.resources.map { |resource| jsonapi_error_object(resource) }}, status: setter.status
+    end
   end
 
   # Sets the concealed status of the event and related organization, efforts, and participants.
@@ -48,7 +59,7 @@ class Api::V1::StagingController < ApiController
     elsif params[:status] == 'private'
       setter.make_private
     else
-      render json: {message: 'request must include status: public or status: private'}, status: :bad_request and return
+      render json: {errors: ['invalid status'], detail: 'request must include status: public or status: private'}, status: :bad_request and return
     end
     render json: setter.response, status: setter.status
   end
@@ -56,14 +67,9 @@ class Api::V1::StagingController < ApiController
   private
 
   def set_event
-    @event = Event.find_by!(staging_id: params[:staging_id])
-  end
-
-  def find_or_initialize_event
-    @event = Event.find_or_initialize_by(staging_id: params[:staging_id])
-    unless @event.staging_id
-      render json: {message: 'invalid uuid', error: 'provided staging_id is not a valid uuid'}, status: :bad_request
-    end
+    @event = params[:staging_id].uuid? ?
+        Event.find_by!(staging_id: params[:staging_id]) :
+        Event.friendly.find(params[:staging_id])
   end
 
   def authorize_event

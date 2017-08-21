@@ -5,32 +5,32 @@ RSpec.describe AttributePuller, type: :model do
     context 'when pulling geographical data' do
 
       it 'should pull country data from target when states match and country is nil' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: nil, state_code: 'CA', city: 'Los Angeles')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CA')
+        participant1 = create(:participant, country_code: nil, state_code: 'CA')
+        participant2 = create(:participant, country_code: 'US', state_code: 'CA')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.country_code).to eq('US')
       end
 
       it 'should not pull country data from target when puller state does not exist in country of target' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: nil, state_code: 'CA', city: 'Los Angeles')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'MX', state_code: nil)
+        participant1 = create(:participant, country_code: nil, state_code: 'CA')
+        participant2 = create(:participant, country_code: 'MX', state_code: nil)
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.country_code).to be_nil
       end
 
       it 'should not pull state data from target when target state does not exist in country of puller' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: nil, city: 'Denver')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'CA', state_code: 'BC')
+        participant1 = create(:participant, country_code: 'US', state_code: nil)
+        participant2 = create(:participant, country_code: 'CA', state_code: 'BC')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.state_code).to be_nil
       end
 
       it 'should not pull country, state, or city data from target when a country conflict exists' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'MX', state_code: nil)
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Denver')
+        participant1 = create(:participant, country_code: 'MX', state_code: nil, city: nil)
+        participant2 = create(:participant, country_code: 'US', state_code: 'CO', city: 'Denver')
         participant1.merge_with(participant2)
         participant1.reload
         expect(participant1.country_code).to eq('MX')
@@ -39,8 +39,8 @@ RSpec.describe AttributePuller, type: :model do
       end
 
       it 'should not pull state or city data from target when a state conflict exists' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CA')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Denver')
+        participant1 = create(:participant, country_code: 'US', state_code: 'CA', city: nil)
+        participant2 = create(:participant, country_code: 'US', state_code: 'CO', city: 'Denver')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.state_code).to eq('CA')
@@ -48,40 +48,40 @@ RSpec.describe AttributePuller, type: :model do
       end
 
       it 'should not pull city data from target when a city conflict exists' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Grand Junction')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Denver')
+        participant1 = create(:participant, country_code: 'US', state_code: 'CO', city: 'Grand Junction')
+        participant2 = create(:participant, country_code: 'US', state_code: 'CO', city: 'Denver')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.city).to eq('Grand Junction')
       end
 
       it 'should pull city data when country is the same and target state is nil' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: nil, city: 'Denver')
+        participant1 = create(:participant, country_code: 'US', state_code: 'CO', city: nil)
+        participant2 = create(:participant, country_code: 'US', state_code: nil, city: 'Denver')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.city).to eq('Denver')
       end
 
       it 'should pull city data when state is the same and target country is nil' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CA')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: nil, state_code: 'CA', city: 'Los Angeles')
+        participant1 = create(:participant, country_code: 'US', state_code: 'CA', city: nil)
+        participant2 = create(:participant, country_code: nil, state_code: 'CA', city: 'Los Angeles')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.city).to eq('Los Angeles')
       end
 
       it 'should pull city data when state and country are the same and city is nil' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Grand Junction')
+        participant1 = create(:participant, country_code: 'US', state_code: 'CO', city: nil)
+        participant2 = create(:participant, country_code: 'US', state_code: 'CO', city: 'Grand Junction')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.city).to eq('Grand Junction')
       end
 
       it 'should pull country, state, and city data when all three are nil' do
-        participant1 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01')
-        participant2 = Participant.create!(first_name: 'Johnny', last_name: 'Appleseed', gender: 'male', birthdate: '1950-01-01', country_code: 'US', state_code: 'CO', city: 'Grand Junction')
+        participant1 = create(:participant, country_code: nil, state_code: nil, city: nil)
+        participant2 = create(:participant, country_code: 'US', state_code: 'CO', city: 'Grand Junction')
         AttributePuller.pull_attributes!(participant1, participant2)
         participant1.reload
         expect(participant1.country_code).to eq('US')
@@ -91,14 +91,13 @@ RSpec.describe AttributePuller, type: :model do
     end
 
     context 'when pulling all available data' do
-      let(:course) { Course.create!(name: 'Test Course 100') }
-      let(:event) { Event.create!(course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00', laps_required: 1) }
+      let(:event) { build_stubbed(:event) }
+      let(:effort) { build_stubbed(:effort, event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
+                                   state_code: 'BC', country_code: 'CA', age: 50,
+                                   first_name: 'Jen', last_name: 'Huckster', gender: 'female', participant_id: nil) }
 
       it 'should pull all target data into corresponding empty fields' do
         participant = Participant.new
-        effort = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
-                                state_code: 'BC', country_code: 'CA', age: 50,
-                                first_name: 'Jen', last_name: 'Huckster', gender: 'female')
         AttributePuller.pull_attributes!(participant, effort)
         participant.reload
         expect(participant.first_name).to eq('Jen')
@@ -112,9 +111,6 @@ RSpec.describe AttributePuller, type: :model do
       it 'should not pull target data into corresponding populated fields' do
         participant = Participant.new(birthdate: '1978-01-01', country_code: 'US',
                                       first_name: 'Jennifer', last_name: 'Huckster', gender: 'female')
-        effort = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
-                                state_code: 'BC', country_code: 'CA', age: 50,
-                                first_name: 'Jen', last_name: 'Huckster', gender: 'female')
         AttributePuller.pull_attributes!(participant, effort)
         participant.reload
         expect(participant.first_name).to eq('Jennifer')
@@ -126,12 +122,8 @@ RSpec.describe AttributePuller, type: :model do
 
       it 'should not associate the puller with the target' do
         participant = Participant.new
-        effort = Effort.create!(event: event, bib_number: 99, city: 'Vancouver', birthdate: '1978-08-08',
-                                state_code: 'BC', country_code: 'CA', age: 50,
-                                first_name: 'Jen', last_name: 'Huckster', gender: 'female')
         AttributePuller.pull_attributes!(participant, effort)
-        effort.reload
-        expect(effort.participant).to be_nil
+        expect(effort.participant_id).to be_nil
       end
 
       it 'should return false if puller does not save' do

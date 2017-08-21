@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330001838) do
+ActiveRecord::Schema.define(version: 20170806141129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,12 @@ ActiveRecord::Schema.define(version: 20170330001838) do
 
   add_index "aid_stations", ["event_id"], name: "index_aid_stations_on_event_id", using: :btree
   add_index "aid_stations", ["split_id"], name: "index_aid_stations_on_split_id", using: :btree
+
+  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",            limit: 64, null: false
@@ -68,7 +74,7 @@ ActiveRecord::Schema.define(version: 20170330001838) do
     t.string   "country_code",     limit: 2
     t.date     "birthdate"
     t.integer  "data_status"
-    t.integer  "start_offset",                default: 0
+    t.integer  "start_offset",                default: 0,     null: false
     t.integer  "dropped_split_id"
     t.boolean  "concealed",                   default: false
     t.string   "beacon_url"
@@ -99,12 +105,40 @@ ActiveRecord::Schema.define(version: 20170330001838) do
     t.integer  "laps_required"
     t.uuid     "staging_id",                 default: "uuid_generate_v4()"
     t.string   "slug",                                                      null: false
+    t.boolean  "auto_live_times",            default: false
+    t.string   "home_time_zone",                                            null: false
   end
 
   add_index "events", ["course_id"], name: "index_events_on_course_id", using: :btree
   add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
   add_index "events", ["slug"], name: "index_events_on_slug", unique: true, using: :btree
   add_index "events", ["staging_id"], name: "index_events_on_staging_id", unique: true, using: :btree
+
+  create_table "live_times", force: :cascade do |t|
+    t.integer  "event_id",      null: false
+    t.integer  "split_id",      null: false
+    t.string   "wave"
+    t.integer  "bib_number",    null: false
+    t.datetime "absolute_time"
+    t.boolean  "with_pacer"
+    t.boolean  "stopped_here"
+    t.string   "remarks"
+    t.string   "batch"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.integer  "split_time_id"
+    t.integer  "bitkey",        null: false
+    t.string   "source",        null: false
+    t.integer  "pulled_by"
+    t.datetime "pulled_at"
+    t.string   "entered_time"
+  end
+
+  add_index "live_times", ["event_id"], name: "index_live_times_on_event_id", using: :btree
+  add_index "live_times", ["split_id"], name: "index_live_times_on_split_id", using: :btree
+  add_index "live_times", ["split_time_id"], name: "index_live_times_on_split_time_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",        limit: 64,                         null: false
@@ -155,6 +189,21 @@ ActiveRecord::Schema.define(version: 20170330001838) do
   add_index "participants", ["slug"], name: "index_participants_on_slug", unique: true, using: :btree
   add_index "participants", ["topic_resource_key"], name: "index_participants_on_topic_resource_key", unique: true, using: :btree
   add_index "participants", ["user_id"], name: "index_participants_on_user_id", using: :btree
+
+  create_table "partners", force: :cascade do |t|
+    t.integer  "event_id"
+    t.string   "banner_link"
+    t.integer  "weight",              default: 1, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "banner_file_name"
+    t.string   "banner_content_type"
+    t.integer  "banner_file_size"
+    t.datetime "banner_updated_at"
+    t.string   "name",                            null: false
+  end
+
+  add_index "partners", ["event_id"], name: "index_partners_on_event_id", using: :btree
 
   create_table "split_times", force: :cascade do |t|
     t.integer  "effort_id",                        null: false
@@ -268,7 +317,11 @@ ActiveRecord::Schema.define(version: 20170330001838) do
   add_foreign_key "efforts", "participants"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "organizations"
+  add_foreign_key "live_times", "events"
+  add_foreign_key "live_times", "split_times"
+  add_foreign_key "live_times", "splits"
   add_foreign_key "participants", "users"
+  add_foreign_key "partners", "events"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
   add_foreign_key "splits", "courses"

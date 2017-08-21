@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'photo_credits', to: 'visitors#photo_credits'
   get 'about', to: 'visitors#about'
   get 'donations', to: 'visitors#donations'
+  get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
   get 'donation_thank_you', to: 'visitors#donation_thank_you'
   get 'getting_started', to: 'visitors#getting_started'
@@ -23,6 +24,7 @@ Rails.application.routes.draw do
   get '/.well-known/acme-challenge/:id' => 'visitors#letsencrypt'
 
   devise_for :users, :controllers => {registrations: 'registrations'}
+
   resources :users do
     member { get :participants }
     member { post :add_interest }
@@ -30,45 +32,15 @@ Rails.application.routes.draw do
     member { get :edit_preferences }
     member { put :update_preferences }
   end
+
+  resources :aid_stations, except: [:index, :new, :create]
+
   resources :courses do
     member { get :best_efforts }
     member { get :plan_effort }
     member { get :segment_picker }
   end
-  resources :events do
-    member { post :import_splits }
-    member { post :import_efforts }
-    member { get :splits }
-    member { put :associate_splits }
-    member { put :set_data_status }
-    member { put :set_dropped_attributes }
-    member { put :start_all_efforts }
-    member { delete :remove_splits }
-    member { delete :delete_all_efforts }
-    member { get :reconcile }
-    member { post :create_participants }
-    member { get :stage }
-    member { get :spread }
-    member { put :live_enable }
-    member { put :live_disable }
-    member { get :add_beacon }
-    member { get :drop_list }
-    member { get :export_to_ultrasignup }
-    member { get :find_problem_effort }
-  end
-  resources :splits
-  resources :organizations do
-    member { get :stewards }
-    member { put :remove_steward }
-  end
-  resources :participants do
-    collection { get :subregion_options }
-    member { get :avatar_claim }
-    member { delete :avatar_disclaim }
-    member { get :merge }
-    member { put :combine }
-    member { delete :remove_effort }
-  end
+
   resources :efforts do
     collection { put :associate_participants }
     member { put :edit_split_times }
@@ -86,9 +58,49 @@ Rails.application.routes.draw do
     member { get :show_photo }
     collection { get :subregion_options }
   end
+
+  resources :events do
+    member { post :import_csv }
+    member { post :import_splits }
+    member { post :import_efforts }
+    member { get :splits }
+    member { put :associate_splits }
+    member { put :set_data_status }
+    member { put :set_dropped_attributes }
+    member { put :start_ready_efforts }
+    member { delete :remove_splits }
+    member { delete :delete_all_efforts }
+    member { get :reconcile }
+    member { post :create_participants }
+    member { get :stage }
+    member { get :spread }
+    member { put :live_enable }
+    member { put :live_disable }
+    member { get :add_beacon }
+    member { get :drop_list }
+    member { get :export_to_ultrasignup }
+    member { get :find_problem_effort }
+  end
+
+  resources :organizations do
+    member { get :stewards }
+    member { put :remove_steward }
+  end
+
+  resources :participants do
+    collection { get :subregion_options }
+    member { get :avatar_claim }
+    member { delete :avatar_disclaim }
+    member { get :merge }
+    member { put :combine }
+    member { delete :remove_effort }
+  end
+
+  resources :partners
   resources :split_times
-  resources :aid_stations, except: [:index, :new, :create]
+  resources :splits
   resources :subscriptions, only: [:create, :destroy]
+
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
   get '/signout' => 'sessions#destroy', :as => :signout
@@ -117,17 +129,23 @@ Rails.application.routes.draw do
       resources :aid_stations, only: [:show, :create, :update, :destroy]
       resources :courses, only: [:index, :show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
-      resources :events, only: [:show, :create, :update, :destroy], param: :staging_id do
-        member { delete :remove_splits }
-        member { put :associate_splits }
-        member { post :import_splits }
-        member { post :import_efforts }
-        member { get :spread }
-        member { get :event_data }
-        member { get :live_effort_data }
-        member { post :set_times_data }
-        member { post :post_file_effort_data }
+      resources :events, only: [:index, :show, :create, :update, :destroy], param: :staging_id do
+        member do
+          delete :remove_splits
+          put :associate_splits
+          post :import_splits
+          post :import_efforts
+          post :import
+          get :spread
+          get :event_data
+          get :live_effort_data
+          post :set_times_data
+          post :post_file_effort_data
+          patch :pull_live_time_rows
+          get :trigger_live_times_push
+        end
       end
+      resources :live_times, only: [:index, :show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :participants, only: [:show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]
@@ -136,7 +154,8 @@ Rails.application.routes.draw do
         collection { get :current }
       end
       post 'auth', to: 'authentication#create'
-      get 'staging/:staging_id/get_countries', to: 'staging#get_countries', as: :staging_get_countries
+      get 'staging/get_countries', to: 'staging#get_countries', as: :staging_get_countries
+      get 'staging/get_time_zones', to: 'staging#get_time_zones', as: :staging_get_time_zones
       get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
       post 'staging/:staging_id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
       patch 'staging/:staging_id/update_event_visibility', to: 'staging#update_event_visibility', as: :staging_update_event_visibility
@@ -144,7 +163,6 @@ Rails.application.routes.draw do
   end
 
   namespace :event_staging do
-    get 'new', to: 'events#new'
     get '/:staging_id/app', to: 'events#app', as: 'app'
   end
 end

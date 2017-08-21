@@ -4,4 +4,8 @@ class Stewardship < ApplicationRecord
   enum level: [:volunteer, :manager, :owner]
 
   validates_presence_of :user_id, :organization_id
+
+  def to_s
+    "#{user.slug} for #{organization.slug}"
+  end
 end

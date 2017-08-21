@@ -1,8 +1,8 @@
 class EventWithEffortsPresenter < BasePresenter
 
   attr_reader :event
-  delegate :id, :name, :course, :organization, :simple?, :beacon_url, :available_live,
-           :finish_split, :start_split, :multiple_laps?, to: :event
+  delegate :id, :name, :course, :organization, :simple?, :beacon_url, :available_live, :home_time_zone,
+           :finish_split, :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, to: :event
 
   def initialize(args)
     @event = args[:event]
@@ -62,7 +62,7 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def event_start_time
-    @event_start_time ||= event.start_time
+    @event_start_time ||= event.start_time_in_home_zone
   end
 
   private

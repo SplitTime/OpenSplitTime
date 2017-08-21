@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Event < ApplicationRecord
 
   include Auditable
@@ -12,27 +14,63 @@ class Event < ApplicationRecord
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
+  has_many :live_times, dependent: :destroy
+  has_many :partners, dependent: :destroy
 
-  validates_presence_of :course_id, :name, :start_time, :laps_required
+  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :staging_id
+  validate :home_time_zone_exists
 
-  scope :recent, -> (max) { where('start_time < ?', Time.now).order(start_time: :desc).limit(max) }
-  scope :most_recent, -> { where('start_time < ?', Time.now).order(start_time: :desc).first }
-  scope :latest, -> { order(start_time: :desc).first }
-  scope :earliest, -> { order(:start_time).first }
   scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
-  scope :select_with_params, -> (search_param) { search(search_param)
-                                                     .where(concealed: false)
-                                                     .select('events.*, COUNT(efforts.id) as effort_count')
-                                                     .joins('LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)')
-                                                     .group('events.id').order(start_time: :desc) }
+  scope :select_with_params, -> (search_param) do
+    search(search_param)
+        .select('events.*, COUNT(efforts.id) as effort_count')
+        .joins('LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)')
+        .group('events.id').order(start_time: :desc)
+  end
 
   def self.search(search_param)
     return all if search_param.blank?
     name_search(search_param)
   end
-  
+
+  def self.latest
+    order(start_time: :desc).first
+  end
+
+  def self.earliest
+    order(:start_time).first
+  end
+
+  def self.most_recent
+    where('start_time < ?', Time.now).order(start_time: :desc).first
+  end
+
+  def home_time_zone_exists
+    unless home_time_zone_valid?
+      errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
+    end
+  end
+
+  def home_time_zone_valid?
+    home_time_zone && ActiveSupport::TimeZone[home_time_zone].present?
+  end
+
+  def to_s
+    slug
+  end
+
+  def start_time_in_home_zone
+    return nil unless home_time_zone_valid?
+    start_time&.in_time_zone(home_time_zone)
+  end
+
+  def start_time_in_home_zone=(time)
+    raise ArgumentError, 'start_time_in_home_zone cannot be set without a valid home_time_zone' unless home_time_zone_valid?
+    self.start_time = ActiveSupport::TimeZone[home_time_zone].parse(time)
+  end
+
   def reconciled_efforts
     efforts.where.not(participant_id: nil)
   end
@@ -83,5 +121,13 @@ class Event < ApplicationRecord
 
   def efforts_ranked(args = {})
     efforts.ranked_with_finish_status(args)
+  end
+
+  def pick_partner_with_banner
+    partners.with_banners.map { |partner| [partner] * partner.weight }.flatten.shuffle.first
+  end
+
+  def live_entry_attributes
+    ordered_splits.map(&:live_entry_attributes)
   end
 end

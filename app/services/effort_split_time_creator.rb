@@ -1,5 +1,8 @@
 class EffortSplitTimeCreator
 
+  EXCEL_1900_BASE_DATETIME = '1899-12-30'.to_datetime
+  EXCEL_1904_BASE_DATETIME = '1904-01-01'.to_datetime
+
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:row_time_data, :effort, :current_user_id],
@@ -26,9 +29,6 @@ class EffortSplitTimeCreator
 
   private
 
-  EXCEL_BASE_DATETIME = '1899-12-30'.to_datetime
-  CUTOVER_YEAR = 1910
-
   attr_reader :row_time_data, :effort, :current_user_id, :event, :time_format
 
   def set_start_offset
@@ -38,7 +38,7 @@ class EffortSplitTimeCreator
     else
       proposed_offset = time_to_seconds(row_time_data.first) || 0
       effort.start_offset = proposed_offset unless proposed_offset == 0 # Avoid inadvertently destroying existing offsets
-      row_time_data[0] = 0 unless row_time_data[1..-1].compact.empty?
+      row_time_data[0] = 0 unless start_time_only?
     end
     effort.save if effort.changed?
   end
@@ -95,9 +95,16 @@ class EffortSplitTimeCreator
     end
   end
 
-  def datetime_to_seconds(value)
-    start_time = value.year < CUTOVER_YEAR ? EXCEL_BASE_DATETIME : event.start_time
-    TimeDifference.between(value, start_time).in_seconds
+  def datetime_to_seconds(datetime)
+    start_time = case
+                 when datetime.year < 1903
+                   EXCEL_1900_BASE_DATETIME
+                 when datetime.year < 1907
+                   EXCEL_1904_BASE_DATETIME
+                 else
+                   event.start_time
+                 end
+    TimeDifference.between(datetime, start_time).in_seconds
   end
 
   def military_time_to_day_and_time(military_time, time_point)
@@ -110,6 +117,10 @@ class EffortSplitTimeCreator
 
   def military_times?
     time_format == 'military'
+  end
+
+  def start_time_only?
+    row_time_data[1..-1].compact.empty?
   end
 
   def validate_row_time_data

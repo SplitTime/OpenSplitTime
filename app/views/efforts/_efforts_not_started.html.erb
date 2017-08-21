@@ -5,7 +5,8 @@
     <th>Bib&num;</th>
     <th>Category</th>
     <th>From</th>
-    <th>Get Notifications</th>
+    <th>Scheduled Start</th>
+    <th>Notify Me Live</th>
   </tr>
   </thead>
   <tbody>
@@ -14,6 +15,7 @@
       <td><%= effort.bib_number %></td>
       <td><%= effort.bio_historic %></td>
       <td><%= effort.state_and_country %></td>
+      <td><%= day_time_format_hhmmss(effort.start_time) %></td>
       <td>
         <%= div_for(effort.participant) do %>
             <%= link_to_toggle_email_subscription(effort.participant) %>

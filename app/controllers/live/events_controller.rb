@@ -27,14 +27,15 @@ class Live::EventsController < Live::BaseController
   def aid_station_detail
     authorize @event
     aid_station = @event.aid_stations.find(params[:aid_station])
-    params[:efforts] ||= 'expected'
-    @aid_station_detail = AidStationDetail.new(event: @event, aid_station: aid_station)
+    @aid_station_detail = AidStationDetail.new(event: @event, aid_station: aid_station, params: prepared_params)
   end
 
   private
 
   def set_event
-    @event = Event.friendly.find(params[:id])
+    @event = params[:id].uuid? ?
+        Event.find_by!(staging_id: params[:id]) :
+        Event.friendly.find(params[:id])
   end
 
   def verify_available_live

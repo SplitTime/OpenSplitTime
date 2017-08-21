@@ -7,17 +7,56 @@ class ApiController < ApplicationController
   after_action :report_to_ga
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
-  # Returns only those resources that the user is authorized to edit.
   def index
     authorize controller_class
-    render json: policy_class::Scope.new(current_user, controller_class).editable.order(prepared_params[:sort]),
-           include: prepared_params[:include], fields: prepared_params[:fields]
+    p "Current user: #{current_user.email}, #{current_user.id}"
+    p "Auth header: #{request.headers.fetch('Authorization', '').split(' ').last}"
+    authorized_scope = policy_class::Scope.new(current_user, controller_class)
+    working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
+    @resources = working_scope.where(prepared_params[:filter]).order(prepared_params[:sort])
+    paginate json: @resources, include: prepared_params[:include], fields: prepared_params[:fields]
+  end
+
+  def show
+    authorize @resource
+    render json: @resource, include: prepared_params[:include], fields: prepared_params[:fields]
+  end
+
+  def create
+    @resource = controller_class.new(permitted_params)
+    authorize @resource
+
+    if @resource.save
+      render json: @resource, status: :created
+    else
+      render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize @resource
+    if @resource.update(permitted_params)
+      render json: @resource
+    else
+      render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize @resource
+    if @resource.destroy
+      render json: @resource
+    else
+      render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_entity
+    end
   end
 
   private
 
-  def policy_class
-    @policy_class ||= "#{controller_class}Policy".constantize
+  def set_resource
+    @resource = controller_class.respond_to?(:friendly) ?
+                    controller_class.friendly.find(params[:id]) :
+                    controller_class.find(params[:id])
   end
 
   def permitted_params
@@ -25,7 +64,7 @@ class ApiController < ApplicationController
   end
 
   def user_not_authorized
-    render json: {message: 'not authorized'}, status: :unauthorized
+    render json: {errors: ['not authorized']}, status: :unauthorized
   end
 
   def set_default_format
@@ -33,7 +72,7 @@ class ApiController < ApplicationController
   end
 
   def record_not_found
-    render json: {message: 'record not found'}, status: :not_found
+    render json: {errors: ['record not found']}, status: :not_found
   end
 
   def json_web_token_present?

@@ -1,5 +1,5 @@
 class SubscriptionPolicy < ApplicationPolicy
-  class Scope < Scope
+  class Scope < ApplicationPolicy::Scope
     def post_initialize
     end
   end

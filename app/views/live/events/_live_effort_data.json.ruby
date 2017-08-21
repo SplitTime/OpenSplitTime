@@ -1,1 +1,0 @@
-@live_data_entry_reporter.full_report.to_json

@@ -24,7 +24,7 @@ describe Api::V1::AidStationsController do
     it 'returns an error if the aid_station does not exist' do
       get :show, params: {id: 0}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -64,7 +64,7 @@ describe Api::V1::AidStationsController do
     it 'returns an error if the aid_station does not exist' do
       put :update, params: {id: 0, data: {type: 'aid_stations', attributes: attributes }}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end
@@ -85,7 +85,7 @@ describe Api::V1::AidStationsController do
     it 'returns an error if the aid_station does not exist' do
       delete :destroy, params: {id: 0}
       parsed_response = JSON.parse(response.body)
-      expect(parsed_response['message']).to match(/not found/)
+      expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
     end
   end

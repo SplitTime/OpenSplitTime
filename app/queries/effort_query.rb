@@ -65,6 +65,7 @@ class EffortQuery < BaseQuery
                     efforts_scoped.*,
                     events.laps_required,
                     events.start_time as event_start_time,
+                    events.home_time_zone as event_home_zone,
                     splits.base_name as final_split_name,
                     splits.distance_from_start as final_lap_distance,
                     split_times.lap as final_lap,
@@ -139,6 +140,7 @@ class EffortQuery < BaseQuery
         FROM 
             (SELECT efforts_scoped.*, 
                     events.start_time as event_start_time, 
+                    events.home_time_zone as event_home_zone, 
                     split_times.effort_id, 
                     split_times.time_from_start as tfs_begin, 
                     split_times.lap, 

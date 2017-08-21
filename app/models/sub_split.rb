@@ -42,7 +42,7 @@ class SubSplit
   end
 
   def self.bitkey(kind)
-    case kind.try(:downcase)
+    case kind.to_s.downcase
       when 'in'
         IN_BITKEY
       when 'out'

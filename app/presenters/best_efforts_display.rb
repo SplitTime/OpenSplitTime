@@ -44,10 +44,6 @@ class BestEffortsDisplay < BasePresenter
     events.last.start_time.to_date.to_formatted_s(:long)
   end
 
-  def latest_event_date
-    events.first.start_time.to_date.to_formatted_s(:long)
-  end
-
   def most_recent_event_date
     most_recent_event && most_recent_event.start_time.to_date.to_formatted_s(:long)
   end

@@ -1,17 +1,20 @@
 class EventStaging::EventsController < EventStaging::BaseController
-
-  def new
-    skip_authorization
-    uuid = SecureRandom.uuid
-    redirect_to event_staging_app_path(uuid)
-  end
+  before_action :set_event
 
   def app
-    @event = Event.find_by(staging_id: params[:staging_id])
     if @event
       authorize @event, :event_staging_app?
     else
       authorize Event, :new_staging?
     end
+  end
+
+  private
+
+  def set_event
+    return if params[:staging_id] == 'new'
+    @event = params[:staging_id].uuid? ?
+        Event.find_by(staging_id: params[:staging_id]) :
+        Event.friendly.find(params[:staging_id])
   end
 end

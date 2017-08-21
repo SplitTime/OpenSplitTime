@@ -3,6 +3,7 @@ class LiveEffortData
   delegate :participant_id, to: :effort
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
   ASSUMED_LAP ||= 1
+  COMPARISON_KEYS ||= %w(time_from_start pacer stopped_here)
 
   def self.response_row(args)
     new(args).response_row
@@ -23,7 +24,6 @@ class LiveEffortData
     create_split_times
     assign_stopped_here
     fill_with_null_split_times
-    validate_setup
   end
 
   def response_row
@@ -33,17 +33,20 @@ class LiveEffortData
      split_name: subject_split.base_name,
      split_distance: subject_lap_split.distance_from_start,
      effort_id: effort.id,
-     bib_number: effort.bib_number,
+     bib_number: effort.bib_number || params[:bib_number],
      effort_name: effort_name,
      dropped_here: stopped_here?,
-     time_in: new_split_times[:in].military_time,
-     time_out: new_split_times[:out].military_time,
+     live_time_id_in: params[:live_time_id_in],
+     live_time_id_out: params[:live_time_id_out],
+     time_in: new_split_times[:in].military_time || params[:time_in],
+     time_out: new_split_times[:out].military_time || params[:time_out],
      pacer_in: new_split_times[:in].pacer,
      pacer_out: new_split_times[:out].pacer,
      time_in_status: new_split_times[:in].data_status,
      time_out_status: new_split_times[:out].data_status,
-     time_in_exists: times_exist[:in],
-     time_out_exists: times_exist[:out]}
+     time_in_exists: new_split_times[:in].time_exists,
+     time_out_exists: new_split_times[:out].time_exists,
+     identical: identical_row_exists?}
         .camelize_keys
   end
 
@@ -52,7 +55,8 @@ class LiveEffortData
   end
 
   def clean?
-    times_exist.values.none? && proposed_split_times.all?(&:valid_status?)
+    proposed_split_times.none? { |st| st.time_exists && st.time_from_start } &&
+        proposed_split_times.all?(&:valid_status?)
   end
 
   def subject_lap_split
@@ -83,15 +87,22 @@ class LiveEffortData
   end
 
   def effort_name
-    effort.try(:full_name) || (params[:bib_number].present? ? 'Bib number not located' : 'n/a')
+    effort&.full_name.presence || (params[:bib_number].present? ? '[Bib not found]' : 'n/a')
   end
 
   def stopped_here?
-    params[:dropped_here] == 'true'
+    (params[:dropped_here] == 'true') || (params[:dropped_here] == true)
   end
 
-  def times_exist
-    sub_split_kinds.map { |kind| [kind, indexed_existing_split_times[time_points[kind]].present?] }.to_h
+  def identical_row_exists?
+    sub_split_kinds.all? { |kind| identical_split_time_exists?(kind) }
+  end
+
+  def identical_split_time_exists?(kind)
+    existing_split_time = indexed_existing_split_times[time_points[kind]]
+    new_split_time = new_split_times[kind]
+    start_offset_unchanged? && existing_split_time && new_split_time &&
+        COMPARISON_KEYS.all? { |key| existing_split_time[key].presence == new_split_time[key].presence }
   end
 
   def ordered_split_times
@@ -112,6 +123,19 @@ class LiveEffortData
 
   def lap_for_lap_splits
     [ordered_existing_split_times.last.try(:lap) || 1, lap].max
+  end
+
+  def new_live_times
+    @new_live_times ||=
+        sub_split_kinds.map do |kind|
+          [kind, LiveTime.new(event: event,
+                              split: subject_split,
+                              bib_number: effort.bib_number,
+                              with_pacer: param_with_kind('pacer', kind) == 'true',
+                              bitkey: SubSplit.bitkey(kind),
+                              source: 'ost-live-entry',
+                              entered_time: param_with_kind('time', kind))]
+        end.to_h
   end
 
   private
@@ -168,14 +192,16 @@ class LiveEffortData
     SplitTime.new(effort: effort,
                   time_point: time_points[kind],
                   time_from_start: time_from_start(kind),
-                  pacer: param_with_kind('pacer', kind) == 'true')
+                  pacer: (param_with_kind('pacer', kind) == true) || (param_with_kind('pacer', kind) == 'true'),
+                  live_time_id: param_with_kind('live_time_id', kind).presence,
+                  time_exists: indexed_existing_split_times[time_points[kind]].present?)
   end
 
   def time_from_start(kind)
     day_and_time = day_and_time(kind)
     return nil unless day_and_time
-    effort.start_offset = day_and_time - event.start_time if subject_lap_split.start?
-    day_and_time - event.start_time - effort.start_offset # Evaluates to 0 if subject_lap_split.start?
+    effort.start_offset = day_and_time - event.start_time_in_home_zone if subject_lap_split.start?
+    day_and_time - event.start_time_in_home_zone - effort.start_offset # Evaluates to 0 if subject_lap_split.start?
   end
 
   def day_and_time(kind)
@@ -186,12 +212,11 @@ class LiveEffortData
                                                                 split_times: ordered_split_times)
   end
 
-  def param_with_kind(base, kind)
-    params["#{base}_#{kind}".to_sym]
+  def start_offset_unchanged?
+    !effort.changed_attributes.key?('start_offset')
   end
 
-  def validate_setup
-    warn "DEPRECATION WARNING: params #{params} contain no :lap key; LiveEffortData will assume lap: 1 " +
-             'but this is deprecated. Lack of a lap parameter may fail in the future.' if params[:lap].nil?
+  def param_with_kind(base, kind)
+    params["#{base}_#{kind}".to_sym]
   end
 end

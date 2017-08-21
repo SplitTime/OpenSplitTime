@@ -1,5 +1,5 @@
 class EffortTimesRowSerializer < BaseSerializer
-  attributes *EffortTimesRow::EXPORT_ATTRIBUTES, :display_style
+  attributes *EffortTimesRow::EXPORT_ATTRIBUTES, :display_style, :stopped, :dropped, :finished
   attribute :elapsed_times, if: :show_elapsed_times
   attribute :absolute_times, if: :show_absolute_times
   attribute :segment_times, if: :show_segment_times
@@ -26,5 +26,17 @@ class EffortTimesRowSerializer < BaseSerializer
 
   def segment_times
     object.time_clusters.map { |tc| [tc.segment_time, tc.time_in_aid] }
+  end
+
+  def stopped
+    object.stopped?
+  end
+
+  def dropped
+    object.dropped?
+  end
+
+  def finished
+    object.finished?
   end
 end

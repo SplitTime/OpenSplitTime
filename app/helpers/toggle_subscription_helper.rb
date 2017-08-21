@@ -37,7 +37,7 @@ module ToggleSubscriptionHelper
 
     if subscription
       url = subscription_path(subscription)
-      link_to_with_icon("glyphicon glyphicon-#{glyphicon}", 'Subscribed', url, {
+      link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
           method: 'delete',
           remote: true,
           class: "#{protocol}-sub btn btn-xs btn-success",
@@ -47,7 +47,7 @@ module ToggleSubscriptionHelper
       url = subscriptions_path(subscription: {user_id: @current_user.id,
                                               participant_id: participant.id,
                                               protocol: protocol})
-      link_to_with_icon("glyphicon glyphicon-#{glyphicon}", 'Notify', url, {
+      link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
           method: 'post',
           remote: true,
           class: "#{protocol}-sub btn btn-xs btn-default",
@@ -61,7 +61,7 @@ module ToggleSubscriptionHelper
     protocol = args[:protocol]
 
     url = subscriptions_path
-    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", 'Notify', url, {
+    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
         method: 'post',
         remote: true,
         class: "#{protocol}-sub btn btn-xs btn-default"

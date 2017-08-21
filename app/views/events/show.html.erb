@@ -5,18 +5,10 @@
         <% "OpenSplitTime: #{@event_display.name} - Results" %>
     <% end %>
 <% end %>
+
 <div class="row header">
   <div class="col-xs-5">
-    <h2><strong><%= "#{@event_display.name}: Results" %></strong>
-    </h2>
-    <h4>
-      <%= "Start Time: #{l(@event_display.event_start_time, format: :full_with_weekday)} #{l(@event_display.event_start_time, format: :ampm)}" %>
-      <br/>
-      Run on <%= link_to @event_display.course_name, course_path(@event_display.course) %>
-      <% if @event_display.organization %>
-          <br/>Organized under <%= link_to @event_display.organization_name, organization_path(@event_display.organization) %>
-      <% end %>
-    </h4>
+    <%= render 'event_info', view_object: @event_display, title: 'Results' %>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
@@ -30,10 +22,14 @@
   </div>
 </div>
 
+<% unless (@event_display.started_efforts_count < 1) && (@event_display.unstarted_efforts_count < 1) %>
+    <%= render 'effort_lookup', event: @event_display.event %>
+<% end %>
+
 <% if @event_display.started_efforts_count < 1 %>
+    <hr>
     <strong>No efforts have started yet.</strong>
 <% else %>
-    <%= render 'effort_lookup', event: @event_display.event %>
     <% if @event_display.filtered_ranked_efforts_count > 0 %>
         <hr>
         <div class="row">
@@ -59,6 +55,7 @@
         <strong>No results match that search.</strong>
     <% end %>
 <% end %>
+
 <% if @event_display.unstarted_efforts_count > 0 %>
     <hr>
     <div class="row">

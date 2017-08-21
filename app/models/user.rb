@@ -11,7 +11,7 @@ class User < ApplicationRecord
   pg_search_scope :search_name_email, against: [:first_name, :last_name, :email], using: {tsearch: {any_word: true, prefix: true}}
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
-  phony_normalize :phone, default_country_code: 'US'
+  phony_normalize :phone, country_code: 'US'
   strip_attributes collapse_spaces: true
 
   has_many :subscriptions, dependent: :destroy
@@ -24,7 +24,7 @@ class User < ApplicationRecord
   alias_attribute :https, :https_endpoint
 
   validates_presence_of :first_name, :last_name
-  validates :phone, phony_plausible: true
+  validates_plausible_phone :phone, country_code: 'US', message: 'must be a valid US or Canada phone number'
 
   after_initialize :set_default_role, if: :new_record?
 
@@ -63,9 +63,9 @@ class User < ApplicationRecord
     when 'email'
       order(:email)
     when 'avatar_desc'
-      includes(:participants).order('participants.last_name DESC')
+      includes(:avatar).order('participants.last_name DESC')
     when 'avatar_asc'
-      includes(:participants).order('participants.last_name')
+      includes(:avatar).order('participants.last_name')
     when 'date_asc'
       order(:confirmed_at)
     else
@@ -75,12 +75,20 @@ class User < ApplicationRecord
 
   attr_accessor :has_json_web_token
 
+  def to_s
+    slug
+  end
+
   def slug_candidates
     [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime('%H:%M:%S')]]
   end
 
-  def authorized_to_edit?(resource)
+  def authorized_fully?(resource)
     admin? || (id == resource.created_by) || resource.new_record?
+  end
+
+  def authorized_to_edit?(resource)
+    admin? || (id == resource.created_by) || steward_of?(resource) || resource.new_record?
   end
 
   def authorized_to_claim?(participant)
@@ -88,16 +96,12 @@ class User < ApplicationRecord
     admin? || (last_name == participant.last_name) || (first_name == participant.first_name)
   end
 
-  def authorized_for_live?(resource)
-    admin? || (id == resource.created_by) || steward_of?(resource) || resource.new_record?
-  end
-
   def authorized_to_edit_personal?(effort)
     admin? || (effort.participant ? (avatar == effort.participant) : authorized_to_edit?(effort))
   end
 
   def steward_of?(resource)
-    resource.organization && resource.organization.stewards.include?(self)
+    resource.is_a?(Event) ? resource.organization&.stewards&.include?(self) : false
   end
 
   def full_name

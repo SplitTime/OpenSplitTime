@@ -2,7 +2,9 @@
     <% "OpenSplitTime: Live entry - #{@event.name}" %>
 <% end %>
 <div class="row header">
-
+  <div id="js-new-times-alert" class="alert alert-info center" role="alert">
+    <a href="#js-import-live-times">New Live Times availale</a>
+  </div>
   <div class="col-xs-12 col-md-6 page-title">
     <h2></h2>
     <%= content_tag "div", id: "js-event-id", "data-event-id": params[:id] do %>
@@ -17,7 +19,10 @@
 <div class="row form-split-wrapper lap-disabled">
 
   <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
+    <span id="js-live-times-pusher" data-key="<%= ENV['PUSHER_KEY'] %>"></span>
     <form id="js-add-effort-form">
+      <input type="hidden" id="js-live-time-id-in" value="" />
+      <input type="hidden" id="js-live-time-id-out" value="" />
       <div class="form-group form-group-sm clearfix">
         <label class="col-xs-4" for="split-select">Aid Station</label>
         <div class="col-xs-8">
@@ -27,18 +32,18 @@
       <div class="form-group form-group-sm clearfix">
         <label class="col-xs-4" for="js-bib-number">Bib</label>
         <div class="col-xs-8">
-          <input type="text" id="js-bib-number" name="bibNumber" class="form-control" autocomplete="off" value="" style="text-align: left;">
+          <input type="tel" id="js-bib-number" name="bibNumber" class="form-control" autocomplete="off" value="" style="text-align: left;">
         </div>
         <label class="col-xs-2 lap-only" for="js-lap-number">Lap</label>
         <div class="col-xs-3 lap-only">
-          <input type="text" id="js-lap-number" name="lap" class="form-control" autocomplete="off" value="">
+          <input type="tel" id="js-lap-number" name="lap" class="form-control" autocomplete="off" value="">
         </div>
       </div>
       <div class="form-group form-group-sm clearfix">
-        <label class="col-xs-4" for="js-time-in">Time</label>
+        <label class="col-xs-4" for="js-time-in">Time In</label>
         <div class="col-xs-8">
           <div class="input-group">
-            <input id="js-time-in" type="text" name="timeIn" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
+            <input id="js-time-in" type="tel" name="timeIn" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
             <span class="input-group-addon time-status">
               <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
@@ -54,10 +59,10 @@
         </div>
       </div>
       <div class="form-group form-group-sm clearfix">
-        <label class="col-xs-4" for="js-time-out"></label>
+        <label class="col-xs-4" for="js-time-out">Time Out</label>
         <div class="col-xs-8">
           <div class="input-group">
-            <input id="js-time-out" type="text" name="timeOut" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
+            <input id="js-time-out" type="tel" name="timeOut" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
             <span class="input-group-addon time-status">
               <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
@@ -163,8 +168,25 @@
       </table>
     </div>
   </div>
-
+</div>
+<div class="row">
+  <div class="col-xs-12" id="js-live-messages">
+    <div class="alert alert-warning" role="alert" id="js-import-live-warning">
+      <strong>You're up to date</strong> No live time data available to pull.
+    </div>
+    <div class="alert alert-danger" role="alert" id="js-import-live-error">
+      <strong>Error</strong> Couldn't read data from the server.
+    </div>
+  </div>
+</div>
+<div class="row provisional-data">
   <div class="col-xs-12 table-submit-wrapper">
+   <div class="btn-group" role="group">
+      <button id="js-import-live-times" class="btn btn-primary">
+        Pull Times
+        <span class="badge" id="js-pull-times-count"></span>
+      </button>
+    </div>
     <div class="btn-group" role="group">
       <button id="js-file-split" class="btn btn-primary" disabled></button>
       <button class="btn btn-primary fileinput-button">

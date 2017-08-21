@@ -4,7 +4,7 @@
 <div class="row header">
   <div class="col-xs-7">
     <h2><%= "#{@progress_display.event_name}: Progress Report" %></h2>
-    <h4><%= "as of #{day_time_current_military_full}" %></h4>
+    <h4><%= "as of #{day_time_current_military_full(@progress_display.home_time_zone)}" %></h4>
   </div>
   <div class="col-xs-5 page-navigation">
     <%= render 'live_entry_button_cluster', page: 'progress' %>

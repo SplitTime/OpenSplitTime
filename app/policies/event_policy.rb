@@ -1,10 +1,10 @@
 class EventPolicy < ApplicationPolicy
-  class Scope < Scope
+  class Scope < ApplicationPolicy::Scope
     def post_initialize
     end
 
     def delegated_records
-      scope.joins(organization: :stewardships).where(stewardships: {user_id: user.id})
+      user ? scope.joins(organization: :stewardships).where(stewardships: {user_id: user.id}) : scope.none
     end
   end
 
@@ -15,15 +15,23 @@ class EventPolicy < ApplicationPolicy
   end
 
   def spread?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
+  end
+
+  def import?
+    user.authorized_to_edit?(event)
   end
 
   def import_splits?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
+  end
+
+  def import_csv?
+    user.authorized_to_edit?(event)
   end
 
   def import_efforts?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def stage?
@@ -51,7 +59,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def delete_all_efforts?
-    user.authorized_to_edit?(event)
+    user.authorized_fully?(event)
   end
 
   def associate_participants?
@@ -66,16 +74,16 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def start_all_efforts?
+  def start_ready_efforts?
     user.authorized_to_edit?(event)
   end
 
   def live_enable?
-    user.authorized_to_edit?(event)
+    user.authorized_fully?(event)
   end
 
   def live_disable?
-    user.authorized_to_edit?(event)
+    user.authorized_fully?(event)
   end
 
   def export_to_ultrasignup?
@@ -83,7 +91,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def aid_station_detail?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def add_beacon?
@@ -97,64 +105,72 @@ class EventPolicy < ApplicationPolicy
   # Policies for live namespace
 
   def live_entry?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def progress_report?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def aid_station_report?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def event_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def live_effort_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def effort_table?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def post_file_effort_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def set_times_data?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
+  end
+
+  def pull_live_time_rows?
+    user.authorized_to_edit?(event)
+  end
+
+  def trigger_live_times_push?
+    user.present?
   end
 
   # Policies for staging namespace
 
   def get_countries?
-    user.authorized_for_live?(event)
+    user.present?
+  end
+
+  def get_time_zones?
+    user.present?
   end
 
   def get_locations?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def event_staging_app?
-    Rails.env.production? ?
-        user.admin? :
-        user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def post_event_course_org?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def update_event_visibility?
-    user.authorized_for_live?(event)
+    user.authorized_to_edit?(event)
   end
 
   def new_staging?
-    Rails.env.production? ?
-        user.admin? :
-        user.present?
+    user.present?
   end
 end

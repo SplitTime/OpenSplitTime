@@ -87,7 +87,7 @@ describe Api::V1::SplitsController do
       event = create(:event, course: course)
       effort = create(:effort, event: event)
       create(:split_time, split: split, effort: effort)
-      delete :destroy, id: split
+      delete :destroy, params: {id: split}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors'].first['detail']['messages']).to include(/Split has 1 associated split times/)
       expect(response.status).to eq(422)

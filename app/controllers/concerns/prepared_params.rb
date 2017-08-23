@@ -35,7 +35,7 @@ class PreparedParams
     return @filter if defined?(@filter)
     filter_params = transformed_filter_values
     filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
-    @filter = filter_params.with_indifferent_access
+    @filter = filter_params.to_h.with_indifferent_access
   end
 
   def method_missing(method)

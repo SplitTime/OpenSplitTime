@@ -117,7 +117,7 @@ describe Api::V1::OrganizationsController do
     it 'destroys the organization record' do
       test_organization = organization
       expect(Organization.all.count).to eq(1)
-      delete :destroy, {id: test_organization}
+      delete :destroy, params: {id: test_organization}
       expect(Organization.all.count).to eq(0)
     end
 

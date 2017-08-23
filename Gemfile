@@ -65,7 +65,6 @@ gem 'record_tag_helper'
 group :development do
   gem 'bullet'
   gem 'derailed_benchmarks'
-  gem 'quiet_assets'
   gem 'rails-erd'
   gem 'spring'
   gem 'web-console', '~> 2.0'

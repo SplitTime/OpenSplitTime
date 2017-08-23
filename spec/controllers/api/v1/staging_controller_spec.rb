@@ -212,8 +212,10 @@ describe Api::V1::StagingController do
     end
 
     def post_and_validate_response(event_id, params, expected_response, expected_attributes)
-      post :post_event_course_org, staging_id: event_id,
-           event: params[:event], course: params[:course], organization: params[:organization]
+      post :post_event_course_org, params: {staging_id: event_id,
+                                            event: params[:event],
+                                            course: params[:course],
+                                            organization: params[:organization]}
 
       parsed_response = JSON.parse(response.body)
       resources = {event: Event.find_by(id: parsed_response['event']['id']),
@@ -231,8 +233,10 @@ describe Api::V1::StagingController do
     end
 
     def post_and_validate_errors(event_id, params, expected_response, expected_errors)
-      post :post_event_course_org, staging_id: event_id,
-           event: params[:event], course: params[:course], organization: params[:organization]
+      post :post_event_course_org, params: {staging_id: event_id,
+                                            event: params[:event],
+                                            course: params[:course],
+                                            organization: params[:organization]}
 
       expect(response.status).to eq(expected_response)
 
@@ -251,7 +255,7 @@ describe Api::V1::StagingController do
 
       it 'returns a successful 200 response' do
         event = existing_event
-        patch :update_event_visibility, staging_id: event.to_param, status: status
+        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         expect(response).to be_success
       end
 
@@ -262,7 +266,7 @@ describe Api::V1::StagingController do
         organization.update(concealed: true)
         efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: true)
         efforts.each { |effort| effort.participant.update(concealed: true) }
-        patch :update_event_visibility, staging_id: event.to_param, status: status
+        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
         expect(event.concealed).to eq(false)
@@ -279,7 +283,7 @@ describe Api::V1::StagingController do
 
       it 'returns a successful 200 response' do
         event = existing_event
-        patch :update_event_visibility, staging_id: event.to_param, status: status
+        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         expect(response).to be_success
       end
 
@@ -290,7 +294,7 @@ describe Api::V1::StagingController do
         organization.update(concealed: false)
         efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
         efforts.each { |effort| effort.participant.update(concealed: false) }
-        patch :update_event_visibility, staging_id: event.to_param, status: status
+        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
         expect(event.concealed).to eq(true)
@@ -310,7 +314,7 @@ describe Api::V1::StagingController do
         efforts.each { |effort| effort.participant.update(concealed: false) }
         p_with_other_effort = efforts.first.participant
         FactoryGirl.create(:effort, participant: p_with_other_effort, concealed: false)
-        patch :update_event_visibility, staging_id: event.to_param, status: status
+        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
         expect(event.concealed).to eq(true)
@@ -330,14 +334,14 @@ describe Api::V1::StagingController do
     context 'when params[:status] is not "public" or "private"' do
       it 'returns a bad request response' do
         event = existing_event
-        patch :update_event_visibility, staging_id: event.to_param, status: 'random'
+        patch :update_event_visibility, params: {staging_id: event.to_param, status: 'random'}
         expect(response).to be_bad_request
       end
     end
 
     context 'when the event_id does not exist' do
       it 'returns a not found response' do
-        patch :update_event_visibility, staging_id: 123, status: 'public'
+        patch :update_event_visibility, params: {staging_id: 123, status: 'public'}
         expect(response).to be_not_found
       end
     end

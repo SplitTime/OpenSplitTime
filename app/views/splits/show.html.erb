@@ -8,6 +8,7 @@
     <%= @split.description %>
   </div>
 </div>
+
 <div class="well col-xs-8 col-xs-offset-2">
   <ul class="object-list-body">
     <li>
@@ -36,6 +37,7 @@
     <% end %>
   </div>
   <hr>
+
   <% if @split.latitude && @split.longitude %>
       <%= "Elevation: #{elevation_format(@split.elevation)}" %>
       <hr>
@@ -43,7 +45,7 @@
 
       <script>
         $(document).ready(function () {
-          var locations = <%= @split.course.splits.unshift(@split).uniq.to_json.html_safe %>;    // pass ruby variable to javascript
+          var locations = <%= @split.course.splits.to_a.unshift(@split).uniq.to_json.html_safe %>;    // pass ruby variable to javascript
 
               gmap_show(locations, {latitude: locations[0].latitude, longitude: locations[0].longitude, zoom: 12});    // init show map
         });

@@ -12,7 +12,8 @@
     var locales = {
         countries : [],
         countryNames : {},
-        regions : {}
+        regions : {},
+        timeZones : []
     }
 
     /**
@@ -423,14 +424,22 @@
          * This method is used to populate the locale array
          */
         ajaxPopulateLocale: function() {
-            $.get( '/api/v1/staging/get_countries', function( response ) {
-                for ( var i in response.countries ) {
-                    locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
-                    locales.countryNames[ response.countries[i].code ] = response.countries[i].name;
-                    if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
-                    locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
-                }               
-            } ).fail( function() {
+            $.when(
+                $.get( '/api/v1/staging/get_countries', function( response ) {
+                    for ( var i in response.countries ) {
+                        locales.countries.push( { code: response.countries[i].code, name: response.countries[i].name } );
+                        locales.countryNames[ response.countries[i].code ] = response.countries[i].name;
+                        if ( $.isEmptyObject( response.countries[i].subregions ) ) continue;
+                        locales.regions[ response.countries[i].code ] = response.countries[i].subregions;
+                    }               
+                } ),
+                $.get( '/api/v1/staging/get_time_zones', function( response ) {
+                    for ( var i in response.time_zones ) {
+                        locales.timeZones.push( { name: response.time_zones[i][0], offset: response.time_zones[i][1]} );
+                    }
+                    console.log( locales );
+                } )
+            ).fail( function() {
                 $( document ).trigger( 'global-error', [ [ { 
                     title: 'Failed to Load Locale Data:',
                     detail: 'Please try reloading the app.'
@@ -543,7 +552,7 @@
                                 return api.create( 'courses' );
                             }
                         },
-                        data: function() { return { units: units } },
+                        data: function() { return { units: units, timeZones: locales.timeZones } },
                         template: '#event'
                     },
                     beforeEnter: this.onRouteChange

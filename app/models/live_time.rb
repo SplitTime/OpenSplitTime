@@ -1,4 +1,4 @@
-class LiveTime < ActiveRecord::Base
+class LiveTime < ApplicationRecord
   include Auditable
 
   belongs_to :event

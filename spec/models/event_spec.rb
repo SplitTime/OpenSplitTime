@@ -187,9 +187,9 @@ RSpec.describe Event, type: :model do
     context 'where multiple partners exist for both the subject event and another event' do
       let!(:event) { create(:event) }
       let!(:wrong_event) { create(:event) }
-      let!(:related_partners_with_banners) { create_list(:partner_with_banner, 3, event: event) }
+      let!(:related_partners_with_banners) { create_list(:partner, 3, :with_banner, event: event) }
       let!(:related_partners_without_banners) { create_list(:partner, 3, event: event) }
-      let!(:unrelated_partners_with_banners) { create_list(:partner_with_banner, 3, event: wrong_event) }
+      let!(:unrelated_partners_with_banners) { create_list(:partner, 3, :with_banner, event: wrong_event) }
       let!(:unrelated_partners_without_banners) { create_list(:partner, 3, event: wrong_event) }
 
       it 'returns a random partner with a banner for the event' do
@@ -204,8 +204,8 @@ RSpec.describe Event, type: :model do
       # Four partners with weight: 1 and one partner with weight: 10 means the weighted partner should receive,
       # on average, about 71% of hits.
       let!(:event) { create(:event) }
-      let!(:weighted_partner) { create(:partner_with_banner, event: event, weight: 10) }
-      let!(:unweighted_partners) { create_list(:partner_with_banner, 4, event: event) }
+      let!(:weighted_partner) { create(:partner, :with_banner, event: event, weight: 10) }
+      let!(:unweighted_partners) { create_list(:partner, 4, :with_banner, event: event) }
 
       it 'returns a random partner giving weight to the weighted partner' do
         partners = []

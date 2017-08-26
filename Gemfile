@@ -67,7 +67,7 @@ group :development do
   gem 'derailed_benchmarks'
   gem 'rails-erd'
   gem 'spring'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.0'
 end
 
 group :test do

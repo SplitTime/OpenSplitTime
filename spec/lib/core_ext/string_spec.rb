@@ -49,5 +49,9 @@ describe String do
     it 'returns false when the object is not a valid UUID v4' do
       expect('Hello'.uuid?).to eq(false)
     end
+
+    it 'returns false when the object is an empty string' do
+      expect(''.uuid?).to eq(false)
+    end
   end
 end

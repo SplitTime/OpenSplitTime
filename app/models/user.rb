@@ -101,7 +101,14 @@ class User < ApplicationRecord
   end
 
   def steward_of?(resource)
-    resource.is_a?(Event) ? resource.organization&.stewards&.include?(self) : false
+    case
+    when resource.is_a?(Event)
+      resource.organization&.stewards&.include?(self)
+    when resource.is_a?(Organization)
+      resource.stewards.include?(self)
+    else
+      false
+    end
   end
 
   def full_name

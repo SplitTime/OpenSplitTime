@@ -79,7 +79,7 @@ RSpec.describe EventReconcileService do
     let(:params) { ActionController::Parameters.new(ids: id_hash) }
 
     it 'assigns each effort to the corresponding participant' do
-      id_hash = params[:ids].to_hash
+      id_hash = params[:ids].to_unsafe_h
       EventReconcileService.assign_participants_to_efforts(id_hash)
       expect(Effort.find(effort1.id).participant).to eq(participant1)
       expect(Effort.find(effort2.id).participant).to eq(participant2)

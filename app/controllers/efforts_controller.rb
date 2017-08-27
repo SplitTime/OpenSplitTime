@@ -72,7 +72,7 @@ class EffortsController < ApplicationController
   def associate_participants
     @event = Event.friendly.find(params[:event_id])
     authorize @event
-    id_hash = params[:ids].to_hash
+    id_hash = params[:ids].to_unsafe_h
 
     if id_hash.blank?
       redirect_to reconcile_event_path(@event)

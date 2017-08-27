@@ -1,4 +1,4 @@
-class ImportSplitsJob < ActiveJob::Base
+class ImportSplitsJob < ApplicationJob
 
   queue_as :default
 

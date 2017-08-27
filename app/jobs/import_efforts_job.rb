@@ -1,4 +1,4 @@
-class ImportEffortsJob < ActiveJob::Base
+class ImportEffortsJob < ApplicationJob
 
   queue_as :default
 

@@ -1,4 +1,5 @@
 class ApiController < ApplicationController
+  include Rails::Pagination
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token, if: :json_web_token_present?
   before_action :set_default_format

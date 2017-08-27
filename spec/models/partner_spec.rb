@@ -15,8 +15,12 @@ RSpec.describe Partner, type: :model do
   it { is_expected.to strip_attribute(:banner_link).collapse_spaces }
 
   describe '#initialize' do
-    it 'initializes with an event_id, a link URL, and a weight' do
-      expect { create(:partner) }.not_to raise_error
+    it 'initializes with an event_id, a name, and a weight' do
+      partner = build_stubbed(:partner)
+      expect(partner.event_id).to be_present
+      expect(partner.name).to be_present
+      expect(partner.weight).to be_present
+      expect(partner).to be_valid
     end
   end
 end

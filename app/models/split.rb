@@ -1,4 +1,4 @@
-class Split < ActiveRecord::Base
+class Split < ApplicationRecord
 
   include Auditable
   include Concealable

@@ -1,4 +1,4 @@
-class AidStation < ActiveRecord::Base
+class AidStation < ApplicationRecord
   belongs_to :event
   belongs_to :split
   enum status: [:pre_open, :open, :closed, :released]

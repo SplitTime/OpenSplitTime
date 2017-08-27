@@ -9,19 +9,19 @@ describe Api::V1::EffortsController do
 
   describe '#show' do
     it 'returns a successful 200 response' do
-      get :show, id: effort
+      get :show, params: {id: effort}
       expect(response.status).to eq(200)
     end
 
     it 'returns data of a single effort' do
-      get :show, id: effort
+      get :show, params: {id: effort}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(effort.id)
       expect(response.body).to be_jsonapi_response_for('efforts')
     end
 
     it 'returns an error if the effort does not exist' do
-      get :show, id: 0
+      get :show, params: {id: 0}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -33,7 +33,7 @@ describe Api::V1::EffortsController do
       let(:valid_attributes) { {'event_id' => event.id, 'first_name' => 'Johnny', 'last_name' => 'Appleseed', 'gender' => 'male'} }
 
       it 'returns a successful json response' do
-        post :create, data: {type: 'efforts', attributes: valid_attributes}
+        post :create, params: {data: {type: 'efforts', attributes: valid_attributes}}
         expect(response.body).to be_jsonapi_response_for('efforts')
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['data']['id']).not_to be_nil
@@ -42,7 +42,7 @@ describe Api::V1::EffortsController do
 
       it 'creates an effort record' do
         expect(Effort.all.count).to eq(0)
-        post :create, data: {type: 'efforts', attributes: valid_attributes}
+        post :create, params: {data: {type: 'efforts', attributes: valid_attributes}}
         expect(Effort.all.count).to eq(1)
       end
     end
@@ -51,13 +51,13 @@ describe Api::V1::EffortsController do
       let(:invalid_attributes) { {'eventId' => event.id, 'firstName' => 'Johnny'} }
 
       it 'returns a jsonapi error object and status code unprocessable entity' do
-        post :create, data: {type: 'efforts', attributes: invalid_attributes}
+        post :create, params: {data: {type: 'efforts', attributes: invalid_attributes}}
         expect(response.body).to be_jsonapi_errors
         expect(response.status).to eq(422)
       end
 
       it 'returns the attributes of the object' do
-        post :create, data: {type: 'efforts', attributes: invalid_attributes}
+        post :create, params: {data: {type: 'efforts', attributes: invalid_attributes}}
         parsed_response = JSON.parse(response.body)
         error_object = parsed_response['errors'].first
         expect(error_object['title']).to match(/could not be created/)
@@ -70,19 +70,19 @@ describe Api::V1::EffortsController do
     let(:attributes) { {last_name: 'Updated Last Name'} }
 
     it 'returns a successful json response' do
-      put :update, id: effort, data: {type: 'efforts', attributes: attributes}
+      put :update, params: {id: effort, data: {type: 'efforts', attributes: attributes}}
       expect(response.body).to be_jsonapi_response_for('efforts')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, id: effort, data: {type: 'efforts', attributes: attributes}
+      put :update, params: {id: effort, data: {type: 'efforts', attributes: attributes}}
       effort.reload
       expect(effort.last_name).to eq(attributes[:last_name])
     end
 
     it 'returns an error if the effort does not exist' do
-      put :update, id: 0, data: {type: 'efforts', attributes: attributes}
+      put :update, params: {id: 0, data: {type: 'efforts', attributes: attributes}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -91,19 +91,19 @@ describe Api::V1::EffortsController do
 
   describe '#destroy' do
     it 'returns a successful json response' do
-      delete :destroy, id: effort
+      delete :destroy, params: {id: effort}
       expect(response.status).to eq(200)
     end
 
     it 'destroys the effort record' do
       test_effort = effort
       expect(Effort.all.count).to eq(1)
-      delete :destroy, id: test_effort
+      delete :destroy, params: {id: test_effort}
       expect(Effort.all.count).to eq(0)
     end
 
     it 'returns an error if the effort does not exist' do
-      delete :destroy, id: 0
+      delete :destroy, params: {id: 0}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)

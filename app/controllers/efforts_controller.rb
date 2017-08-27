@@ -3,7 +3,7 @@ class EffortsController < ApplicationController
   before_action :set_effort, except: [:index, :new, :create, :associate_participants, :mini_table, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :analyze, :place]
 
-  before_filter do
+  before_action do
     locale = params[:locale]
     Carmen.i18n_backend.locale = locale if locale
   end
@@ -72,10 +72,12 @@ class EffortsController < ApplicationController
   def associate_participants
     @event = Event.friendly.find(params[:event_id])
     authorize @event
-    if params[:ids].nil?
+    id_hash = params[:ids].to_unsafe_h
+
+    if id_hash.blank?
       redirect_to reconcile_event_path(@event)
     else
-      count = EventReconcileService.associate_participants(params[:ids])
+      count = EventReconcileService.assign_participants_to_efforts(id_hash)
       flash[:success] = "#{count.to_s + ' effort'.pluralize(count)} reconciled." if count > 0
       redirect_to reconcile_event_path(@event)
     end

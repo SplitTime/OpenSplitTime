@@ -1,5 +1,4 @@
 class PreparedParams
-
   attr_reader :search, :editable
 
   def initialize(params, permitted, permitted_query = nil)
@@ -22,7 +21,7 @@ class PreparedParams
   end
 
   def fields
-    @fields ||= (params[:fields] || {})
+    @fields ||= (params[:fields] || ActionController::Parameters.new({})).to_unsafe_h
                     .map {|resource, fields| {resource => fields.split(',').map {|field| field.underscore.to_sym}}}
                     .reduce({}, :merge).with_indifferent_access
   end
@@ -35,7 +34,7 @@ class PreparedParams
     return @filter if defined?(@filter)
     filter_params = transformed_filter_values
     filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
-    @filter = filter_params.with_indifferent_access
+    @filter = filter_params.to_h.with_indifferent_access
   end
 
   def method_missing(method)
@@ -51,7 +50,7 @@ class PreparedParams
     params[:filter] = {} unless params[:filter].is_a?(ActionController::Parameters)
     self.search = params[:filter].delete(:search).presence
     editable_flag = params[:filter].delete(:editable)
-    self.editable = editable_flag.to_boolean if editable_flag # This breaks if written as editable_flag&.to_boolean
+    self.editable = editable_flag&.to_boolean
   end
 
   def transformed_filter_values

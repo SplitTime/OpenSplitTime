@@ -127,7 +127,7 @@ RSpec.describe LapSplitRow, type: :model do
   end
 
   describe '#data_status' do
-    it 'returns the worst of the time_data_statuses in the split_row_' do
+    it 'returns the worst of the time_data_statuses in the lap_split_row' do
       expect(split_row_1.data_status).to eq('good')
       expect(split_row_2.data_status).to eq('good')
       expect(split_row_3.data_status).to eq('bad')

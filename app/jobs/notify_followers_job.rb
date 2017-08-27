@@ -1,4 +1,4 @@
-class NotifyFollowersJob < ActiveJob::Base
+class NotifyFollowersJob < ApplicationJob
   def perform(args)
     ArgsValidator.validate(params: args,
                            required: [:participant_id, :split_time_ids],

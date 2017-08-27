@@ -1,4 +1,4 @@
-class Subscription < ActiveRecord::Base
+class Subscription < ApplicationRecord
   enum protocol: [:email, :sms, :http, :https]
   belongs_to :user
   belongs_to :participant

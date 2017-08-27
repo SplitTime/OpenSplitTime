@@ -1,4 +1,4 @@
-class Partner < ActiveRecord::Base
+class Partner < ApplicationRecord
   belongs_to :event
   scope :with_banners, -> { where.not(banner_file_name: nil).where.not(banner_link: nil) }
 
@@ -13,5 +13,5 @@ class Partner < ActiveRecord::Base
                        file_name: { matches: [/png\z/, /jpe?g\z/] },
                        size: { in: 0..500.kilobytes }
 
-  validates_presence_of :event, :name
+  validates_presence_of :event, :name, :weight
 end

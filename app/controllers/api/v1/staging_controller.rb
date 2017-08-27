@@ -31,8 +31,8 @@ class Api::V1::StagingController < ApiController
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
     event = params[:staging_id] == 'new' ? Event.new : Event.friendly.find(params[:staging_id])
-    course = Course.find_or_initialize_by(id: params[:course][:id])
-    organization = Organization.find_or_initialize_by(id: params[:organization][:id])
+    course = Course.find_or_initialize_by(id: params.dig(:course, :id))
+    organization = Organization.find_or_initialize_by(id: params.dig(:organization, :id))
 
     skip_authorization if event.new_record? && course.new_record? && organization.new_record?
     authorize event unless event.new_record?

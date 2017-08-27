@@ -246,11 +246,18 @@ RSpec.describe Event, type: :model do
 
   describe '#start_time_in_home_zone' do
     context 'when the event specifies a valid home_time_zone' do
-      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), home_time_zone: 'Eastern Time (US & Canada)') }
+      let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'returns the start_time in the time zone specified by event.home_time_zone' do
+        event.start_time = DateTime.parse('2017-07-01T06:00+00:00')
         expect(event.start_time_in_home_zone.time_zone.name).to eq(event.home_time_zone)
         expect(event.start_time_in_home_zone.to_s).to eq('2017-07-01 02:00:00 -0400')
+      end
+
+      it 'properly senses daylight savings time where applicable' do
+        event.start_time = DateTime.parse('2017-12-15T06:00+00:00')
+        expect(event.start_time_in_home_zone.time_zone.name).to eq(event.home_time_zone)
+        expect(event.start_time_in_home_zone.to_s).to eq('2017-12-15 01:00:00 -0500')
       end
     end
 
@@ -297,6 +304,12 @@ RSpec.describe Event, type: :model do
         event.start_time_in_home_zone = '2017-07-01 16:00:00'
         start_time = event.start_time.in_time_zone('GMT')
         expect(start_time).to eq('2017-07-01 20:00:00 -0000')
+      end
+
+      it 'works properly regardless of daylight savings time' do
+        event.start_time_in_home_zone = '2017-12-15 16:00:00'
+        start_time = event.start_time.in_time_zone('GMT')
+        expect(start_time).to eq('2017-12-15 21:00:00 -0000')
       end
     end
 

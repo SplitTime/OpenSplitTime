@@ -293,6 +293,7 @@ var JSONAPI = (function ($) {
             Model.prototype.attributes = function() {
                 var data = {};
                 for ( var name in this.__attributes__ ) {
+                    if ( this.__attributes__[ name ].hidden ) continue;
                     if ( this.__attributes__[ name ].type === Number ) {
                         if ( $.isNumeric( this[ name ] ) ) {
                             data[ name ] = Number( this[ name ] );

@@ -145,7 +145,7 @@
             countryCode: String,
             beaconUrl: String,
             concealed: { type: Boolean, default: true },
-            startOffset: { type: Number, default: null },
+            startOffset: { type: Number, default: 0 },
             startMinutes: {
                 get: function() {
                     return Math.round( this.startOffset / 60 );
@@ -1146,9 +1146,11 @@
                         var self = this;
                         var reset = function() {
                             // Locally clone existing object
-                            self.model = self.value;
-                            self.model.fetch();
-                            self.error = null;
+                            setTimeout(function(){
+                                self.model = self.value;
+                                if ( self.model ) self.model.fetch();
+                                self.error = null;
+                            });
                         };
                         $( this.$el ).on( 'show.bs.modal hide.bs.modal', reset );
                         this.$on( 'cancel', reset );

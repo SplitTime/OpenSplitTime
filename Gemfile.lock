@@ -30,8 +30,6 @@ GEM
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.2)
     active_record_query_trace (1.5.4)
-    active_record_union (1.2.0)
-      activerecord (>= 4.0)
     activejob (5.0.5)
       activesupport (= 5.0.5)
       globalid (>= 0.3.6)
@@ -145,13 +143,9 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
-    faraday (0.11.0)
-      multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
     font-awesome-rails (4.7.0.2)
       railties (>= 3.2, < 5.2)
-    foreman (0.84.0)
-      thor (~> 0.19.1)
     formatador (0.2.5)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
@@ -173,9 +167,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    hashie (3.5.5)
     heapy (0.1.2)
-    high_voltage (3.0.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     httpclient (2.8.3)
@@ -226,8 +218,6 @@ GEM
     momentjs-rails (2.17.1)
       railties (>= 3.1)
     multi_json (1.12.1)
-    multi_xml (0.6.0)
-    multipart-post (2.0.0)
     nenv (0.3.0)
     netrc (0.11.0)
     nio4r (2.1.0)
@@ -236,21 +226,6 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    oauth2 (1.3.1)
-      faraday (>= 0.8, < 0.12)
-      jwt (~> 1.0)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (>= 1.2, < 3)
-    oj (3.0.9)
-    omniauth (1.6.1)
-      hashie (>= 3.4.6, < 3.6.0)
-      rack (>= 1.6.2, < 3)
-    omniauth-facebook (4.0.0)
-      omniauth-oauth2 (~> 1.2)
-    omniauth-oauth2 (1.4.0)
-      oauth2 (~> 1.0)
-      omniauth (~> 1.2)
     orm_adapter (0.5.0)
     paperclip (5.0.0)
       activemodel (>= 4.2.0)
@@ -325,8 +300,6 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
-    rails_apps_pages (0.6.7)
-    rails_layout (1.0.41)
     rails_serve_static_assets (0.0.5)
     rails_stdout_logging (0.0.5)
     railties (5.0.5)
@@ -406,8 +379,6 @@ GEM
       redis (~> 3.3, >= 3.3.3)
     sitemap_generator (5.3.1)
       builder (~> 3.0)
-    skylight (1.3.0)
-      activesupport (>= 3.0.0)
     slop (3.6.0)
     smarter_csv (1.1.4)
     spreadsheet (1.1.4)
@@ -471,7 +442,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   active_record_query_trace
-  active_record_union
   alchemist
   american_date
   api-pagination
@@ -495,11 +465,9 @@ DEPENDENCIES
   dotenv-rails
   factory_girl_rails
   font-awesome-rails
-  foreman
   friendly_id (~> 5.1.0)
   gmaps4rails
   guard-rspec
-  high_voltage
   jbuilder (~> 2.0)
   jquery-fileupload-rails
   jquery-rails
@@ -507,9 +475,6 @@ DEPENDENCIES
   jwt
   launchy
   momentjs-rails
-  oj
-  omniauth
-  omniauth-facebook
   paperclip (~> 5.0.0)
   pg (~> 0.20)
   pg_search
@@ -524,11 +489,8 @@ DEPENDENCIES
   rails (>= 5.0.1, < 5.1)
   rails-erd
   rails_12factor
-  rails_apps_pages
-  rails_layout
   rb-fsevent
   record_tag_helper
-  responders (~> 2.0)
   rest-client
   roo
   roo-xls
@@ -538,7 +500,6 @@ DEPENDENCIES
   sass-rails (~> 5.0.6)
   sidekiq
   sitemap_generator
-  skylight
   smarter_csv
   spring
   spring-commands-rspec

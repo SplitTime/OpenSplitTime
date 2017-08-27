@@ -72,10 +72,12 @@ class EffortsController < ApplicationController
   def associate_participants
     @event = Event.friendly.find(params[:event_id])
     authorize @event
-    if params[:ids].nil?
+    id_hash = params[:ids].to_hash
+
+    if id_hash.blank?
       redirect_to reconcile_event_path(@event)
     else
-      count = EventReconcileService.associate_participants(params[:ids])
+      count = EventReconcileService.assign_participants_to_efforts(id_hash)
       flash[:success] = "#{count.to_s + ' effort'.pluralize(count)} reconciled." if count > 0
       redirect_to reconcile_event_path(@event)
     end

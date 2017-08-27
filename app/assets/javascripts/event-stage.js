@@ -156,17 +156,17 @@
             },
             startDate: {
                 get: function() {
-                    var startTime = eventStage.data.eventModel.startTime;
-                    if ( startTime instanceof Date ) {
-                        return moment( startTime ).add( this.startMinutes, 'minutes' ).toDate();
+                    var virtualStartTime = eventStage.data.eventModel.virtualStartTime;
+                    if ( virtualStartTime instanceof Date ) {
+                        return moment( virtualStartTime ).add( this.startMinutes, 'minutes' ).toDate();
                     } else {
                         return this.date;
                     }
                 },
                 set: function( value ) {
-                    var startTime = eventStage.data.eventModel.startTime;
-                    if ( startTime instanceof Date ) {
-                        this.startMinutes = moment( value ).diff( startTime, 'minutes' );
+                    var virtualStartTime = eventStage.data.eventModel.virtualStartTime;
+                    if ( virtualStartTime instanceof Date ) {
+                        this.startMinutes = moment( value ).diff( virtualStartTime, 'minutes' );
                     } else {
                         this.date = value;
                     }
@@ -291,7 +291,23 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             slug: String,
-            startTime: { type: Date, default: null },
+            
+            virtualStartTime: { type: Date, default: null, hidden: true },
+            startTimeInHomeZone: { 
+                get: function() {
+                    if (!(this.virtualStartTime instanceof Date)) return null;
+                    var regex = new RegExp('Z$');
+                    return moment(this.virtualStartTime).utcOffset(0, true).toISOString().replace(regex, '');
+                },
+                set: function(value) {
+                    if (typeof value === 'string') {
+                        var regex = new RegExp('[\\+\\- ][0-9][0-9]:[0-9][0-9]$');
+                        this.virtualStartTime = moment(value.replace(regex,'')).toDate();
+                    } else {
+                        this.virtualStartTime = null;
+                    }
+                }
+            },
             homeTimeZone: { type: String, default: 'Mountain Time (US & Canada)' },
             courseNew: Boolean
         },
@@ -338,7 +354,7 @@
                 if ( !self.organization || !self.organization.validate() ) return false;
                 if ( !self.course || !self.course.validate() ) return false;
 
-                if ( !self.startTime ) return false;
+                if ( !self.virtualStartTime ) return false;
                 return true;
             },
             jsonify: function () {
@@ -437,7 +453,6 @@
                     for ( var i in response.time_zones ) {
                         locales.timeZones.push( { name: response.time_zones[i][0], offset: response.time_zones[i][1]} );
                     }
-                    console.log( locales );
                 } )
             ).fail( function() {
                 $( document ).trigger( 'global-error', [ [ { 

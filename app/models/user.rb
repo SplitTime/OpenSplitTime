@@ -54,25 +54,6 @@ class User < ApplicationRecord
     search_param.present? ? search_name_email(search_param) : all
   end
 
-  def self.sort(sort_param)
-    case sort_param
-    when 'first'
-      order(:first_name)
-    when 'last'
-      order(:last_name)
-    when 'email'
-      order(:email)
-    when 'avatar_desc'
-      includes(:avatar).order('participants.last_name DESC')
-    when 'avatar_asc'
-      includes(:avatar).order('participants.last_name')
-    when 'date_asc'
-      order(:confirmed_at)
-    else
-      order('users.confirmed_at DESC')
-    end
-  end
-
   attr_accessor :has_json_web_token
 
   def to_s

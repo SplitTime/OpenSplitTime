@@ -5,23 +5,20 @@
         <thead>
         <tr>
           <th>
-            <%= link_to 'Name',
-                        users_path(search: params[:search],
-                                   sort: params[:sort] == 'last' ? 'first' : 'last') %>
+            <%= link_to 'Name', users_path(filter: params[:filter],
+                                           sort: params[:sort]&.include?('last_name') ? 'first_name' : 'last_name') %>
           </th>
-          <th><%= link_to 'Email', users_path(search: params[:search], sort: 'email') %></th>
-          <th><%= link_to 'Confirmed at',
-                          users_path(search: params[:search],
-                                     sort: params[:sort] == 'date_desc' ? 'date_asc' : 'date_desc') %></th>
-          <th><%= link_to 'Avatar',
-                          users_path(search: params[:search],
-                                     sort: params[:sort] == 'avatar_desc' ? 'avatar_asc' : 'avatar_desc') %></th>
-          <th>Change role</th>
+          <th><%= link_to 'Email', users_path(filter: params[:filter], sort: 'email') %></th>
+          <th><%= link_to 'Confirmed at', users_path(filter: params[:filter],
+                                                     sort: params[:sort]&.include?('-confirmed_at') ? 'confirmed_at' : '-confirmed_at') %></th>
+          <th>Avatar</th>
+          <th><%= link_to 'Role', users_path(filter: params[:filter],
+                                             sort: params[:sort]&.include?('-role') ? 'role' : '-role') %></th>
           <th>Delete</th>
         </tr>
         </thead>
         <tbody>
-        <% @users.each do |user| %>
+        <% users.each do |user| %>
             <tr>
               <td><%= link_to user.full_name, user %></td>
               <td><%= user.email %></td>

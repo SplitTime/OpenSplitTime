@@ -18,17 +18,17 @@
 
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
+    <%= will_paginate(@resources, inner_window: 2, outer_window: 0) %>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-8">
-    <% if @users.present? %>
-        <%= render 'users' %>
+    <% if @resources.present? %>
+        <%= render 'users', users: @resources, params: params %>
     <% else %>
         <br/>
         <p><strong>
-          <% "No users match this search" unless params[:search].blank? %>
+          <% "No users match this search" if params[:filter] && params[:filter][:search].present? %>
         </strong></p>
     <% end %>
   </div>
@@ -37,7 +37,6 @@
 <hr>
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
+    <%= will_paginate(@resources, inner_window: 2, outer_window: 0) %>
   </div>
 </div>
-

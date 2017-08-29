@@ -35,10 +35,11 @@ class LiveEffortMailData
   end
 
   def split_times_data
-    split_times.map do |split_time|
+    split_times.sort_by(&:time_from_start).map do |split_time|
       {split_name: split_name(split_time),
        split_distance: split_distance(split_time),
        day_and_time: split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+       elapsed_time: TimeConversion.seconds_to_hms(split_time.time_from_start.to_i),
        pacer: split_time.pacer,
        stopped_here: split_time.stopped_here}
     end

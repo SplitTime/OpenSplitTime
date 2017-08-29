@@ -6,8 +6,8 @@ RSpec.describe FollowerNotifier do
   let(:topic_arn) { 'arn:aws:sns:us-west-2:998989370925:d-follow_joe-lastname-1' }
   let(:effort_data) { {full_name: 'Joe LastName 1',
                        event_name: 'Test Event 1',
-                       split_times_data: [{split_name: 'Split 1 In', split_distance: 10000, day_and_time: 'Friday, July 1, 2016  7:40AM', pacer: nil, stopped_here: false},
-                                          {split_name: 'Split 1 Out', split_distance: 10000, day_and_time: 'Friday, July 1, 2016  7:50AM', pacer: nil, stopped_here: true}],
+                       split_times_data: [{split_name: 'Split 1 In', split_distance: 10000, day_and_time: 'Friday, July 1, 2016  7:40AM', elapsed_time: '01:40:00', pacer: nil, stopped_here: false},
+                                          {split_name: 'Split 1 Out', split_distance: 10000, day_and_time: 'Friday, July 1, 2016  7:50AM', elapsed_time: '01:50:00', pacer: nil, stopped_here: true}],
                        effort_slug: 'joe-lastname-1',
                        event_slug: 'test-event-1'} }
   let(:sns_client) { Aws::SNS::Client.new(stub_responses: true) }
@@ -27,8 +27,8 @@ RSpec.describe FollowerNotifier do
       expected_message = <<~MESSAGE
         The following new times were reported for Joe LastName 1 at Test Event 1:
 
-        Split 1 In (Mile 6.2), Friday, July 1, 2016  7:40AM 
-        Split 1 Out (Mile 6.2), Friday, July 1, 2016  7:50AM and stopped there
+        Split 1 In (Mile 6.2), Friday, July 1, 2016  7:40AM, elapsed time: 01:40:00
+        Split 1 Out (Mile 6.2), Friday, July 1, 2016  7:50AM, elapsed time: 01:50:00 and stopped there
 
         Full results for Joe LastName 1 here: #{ENV['BASE_URI']}/efforts/joe-lastname-1
         Full results for Test Event 1 here: #{ENV['BASE_URI']}/events/test-event-1/spread

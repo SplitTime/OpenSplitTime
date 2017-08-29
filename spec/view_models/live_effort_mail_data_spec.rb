@@ -68,11 +68,13 @@ RSpec.describe LiveEffortMailData do
       split_times_data = [{split_name: in_split_name,
                            split_distance: in_split_time.split.distance_from_start,
                            day_and_time: in_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+                           elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
                            pacer: nil,
                            stopped_here: in_split_time.stopped_here},
                           {split_name: out_split_name,
                            split_distance: out_split_time.split.distance_from_start,
                            day_and_time: out_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+                           elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
                            pacer: nil,
                            stopped_here: out_split_time.stopped_here}]
       mail_data = LiveEffortMailData.new(participant: participant, split_times: split_times, multi_lap: multi_lap)

@@ -30,7 +30,7 @@ class FollowerNotifier
 
   def message
     <<~MESSAGE
-      The following new times were reported for #{effort_data[:full_name]} at #{effort_data[:event_name]}:
+      The following new #{time_with_verb} reported for #{effort_data[:full_name]} at #{effort_data[:event_name]}:
 
       #{times_text}
 
@@ -45,5 +45,9 @@ class FollowerNotifier
     effort_data[:split_times_data].map do |split_time_data|
       follower_update_body_text(split_time_data)
     end.join("\n")
+  end
+
+  def time_with_verb
+    effort_data[:split_times_data].one? ? 'time was' : 'times were'
   end
 end

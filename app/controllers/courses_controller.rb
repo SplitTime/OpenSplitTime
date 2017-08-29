@@ -60,15 +60,19 @@ class CoursesController < ApplicationController
 
   def best_efforts
     course = Course.friendly.find(params[:id])
-    if course.visible_events.empty?
+    if params[:split1] && params[:split2] && params[:split1] == params[:split2]
+      flash[:warning] = "Select two different splits"
+      redirect_to segment_picker_course_path(course)
+    elsif course.visible_events.empty?
       flash[:danger] = "No events yet held on this course"
       redirect_to course_path(course)
     elsif Effort.visible.on_course(course).empty?
       flash[:danger] = "No efforts yet run on this course"
       redirect_to course_path(course)
+    else
+      @best_display = BestEffortsDisplay.new(course, prepared_params)
+      session[:return_to] = best_efforts_course_path(course)
     end
-    @best_display = BestEffortsDisplay.new(course, prepared_params)
-    session[:return_to] = best_efforts_course_path(course)
   end
 
   def segment_picker

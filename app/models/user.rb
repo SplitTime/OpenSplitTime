@@ -83,6 +83,8 @@ class User < ApplicationRecord
 
   def steward_of?(resource)
     case
+    when resource.is_a?(Effort)
+      resource.event&.organization&.stewards&.include?(self)
     when resource.is_a?(Event)
       resource.organization&.stewards&.include?(self)
     when resource.is_a?(Organization)

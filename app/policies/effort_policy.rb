@@ -15,7 +15,7 @@ class EffortPolicy < ApplicationPolicy
   end
 
   def associate_participants?
-    user.authorized_to_edit?(effort.event)
+    user.authorized_to_edit?(effort)
   end
 
   def start?

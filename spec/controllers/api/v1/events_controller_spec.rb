@@ -267,14 +267,14 @@ describe Api::V1::EventsController do
           expect(LiveTime.all.pluck(:split_time_id).sort).to eq(SplitTime.all.pluck(:id).sort)
         end
 
-        it 'sends a message to NotifyFollowersJob with relevant participant and split_time data' do
+        it 'sends a message to NotifyFollowersJob with relevant person and split_time data' do
           allow(NotifyFollowersJob).to receive(:perform_later)
           post :import, params: request_params
           split_time_ids = SplitTime.all.ids.sort.reverse
-          participant_id = SplitTime.first.effort.participant_id
+          person_id = SplitTime.first.effort.person_id
 
           expect(NotifyFollowersJob).to have_received(:perform_later)
-                                            .with({participant_id: participant_id,
+                                            .with({person_id: person_id,
                                                    split_time_ids: split_time_ids,
                                                    multi_lap: false})
         end

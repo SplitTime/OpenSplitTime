@@ -2,12 +2,12 @@
     <% "OpenSplitTime: Show effort - #{@effort_show.full_name} - #{@effort_show.event_name}" %>
 <% end %>
 
-<% if @current_user && @effort_show.participant %>
-    <%= div_for(@effort_show.participant) do %>
+<% if @current_user && @effort_show.person %>
+    <%= div_for(@effort_show.person) do %>
         <h4>
           Notify Me Live:
-          <%= link_to_toggle_email_subscription(@effort_show.participant) %>
-          <%= link_to_toggle_sms_subscription(@effort_show.participant) %>
+          <%= link_to_toggle_email_subscription(@effort_show.person) %>
+          <%= link_to_toggle_sms_subscription(@effort_show.person) %>
         </h4>
     <% end %>
 <% end %>
@@ -15,8 +15,8 @@
 <div class="row header">
   <div class="col-xs-6">
     <h2><strong>
-      <% if @effort_show.participant %>
-          <%= link_to @effort_show.full_name, participant_path(@effort_show.participant) %>
+      <% if @effort_show.person %>
+          <%= link_to @effort_show.full_name, person_path(@effort_show.person) %>
       <% else %>
           <%= @effort_show.full_name %>
       <% end %>

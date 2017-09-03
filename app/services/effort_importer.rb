@@ -55,7 +55,7 @@ class EffortImporter
 
   private
 
-  attr_accessor :import_file, :auto_matched_count, :participants_created_count, :unreconciled_efforts_count
+  attr_accessor :import_file, :auto_matched_count, :people_created_count, :unreconciled_efforts_count
   attr_reader :event, :current_user_id, :with_status, :with_times, :time_format, :background_channel
   attr_writer :effort_import_report
   delegate :spreadsheet, :header1, :header2, :split_offset, :effort_offset, :split_title_array, :finish_times_only?,

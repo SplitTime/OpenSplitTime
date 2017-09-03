@@ -11,16 +11,16 @@
     </div>
     <div class="col-md-4">
       <% if suggested_match_count(@unreconciled_batch) > 0 %>
-          <%= link_to "Match #{suggested_match_count(@unreconciled_batch)} participants",
-                      associate_participants_efforts_path(event_id: @event.id,
+          <%= link_to "Match #{suggested_match_count(@unreconciled_batch)} people",
+                      associate_people_efforts_path(event_id: @event.id,
                                                           ids: suggested_match_id_hash(@unreconciled_batch)),
                       method: :put,
                       class: 'btn btn-sm btn-primary btn-margin-top' %>
       <% end %>
-      <%= link_to "Create #{@unreconciled_batch.size} participants",
-                  create_participants_event_path(@event.id, effort_ids: @unreconciled_batch.ids),
+      <%= link_to "Create #{@unreconciled_batch.size} people",
+                  create_people_event_path(@event.id, effort_ids: @unreconciled_batch.ids),
                   method: :post,
-                  data: {confirm: "Create #{@unreconciled_batch.size} new participants?"},
+                  data: {confirm: "Create #{@unreconciled_batch.size} new people?"},
                   class: 'btn btn-sm btn-success btn-margin-top pull-right' %>
     </div>
   </div>

@@ -1,21 +1,21 @@
 <% content_for :title do %>
     <% if params[:search].present? %>
-        <% "OpenSplitTime: Search participants - #{params[:search]}" %>
+        <% "OpenSplitTime: Search people - #{params[:search]}" %>
     <% else %>
-        <% "OpenSplitTime: Search participants" %>
+        <% "OpenSplitTime: Search people" %>
     <% end %>
 <% end %>
 
 <div class="row header">
   <div class="col-xs-5">
     <h2>
-      <strong>Participants</strong>
+      <strong>People</strong>
     </h2>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <% if @current_user && @current_user.admin? %>
-          <%= link_to 'Create a new participant', new_participant_path,
+          <%= link_to 'Create a new person', new_person_path,
                       class: 'btn btn-sm btn-success' %>
       <% end %>
     </div>
@@ -31,8 +31,8 @@
 </div>
 <div class="row">
   <div class="col-xs-8">
-    <% if @participants.present? %>
-        <%= render 'participants_list' %>
+    <% if @people.present? %>
+        <%= render 'people_list' %>
     <% else %>
         <br/>
         <% if params[:search].blank? %>
@@ -40,7 +40,7 @@
         <% elsif params[:search].length < 3 %>
             <p><strong>Search parameter is too short</strong></p>
         <% else %>
-            <p><strong>No participants match this search</strong></p>
+            <p><strong>No people match this search</strong></p>
         <% end %>
     <% end %>
   </div>

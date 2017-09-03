@@ -72,11 +72,11 @@ class Event < ApplicationRecord
   end
 
   def reconciled_efforts
-    efforts.where.not(participant_id: nil)
+    efforts.where.not(person_id: nil)
   end
 
   def unreconciled_efforts
-    efforts.where(participant_id: nil)
+    efforts.where(person_id: nil)
   end
 
   def unreconciled_efforts?

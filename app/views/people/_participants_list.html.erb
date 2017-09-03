@@ -1,0 +1,27 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Bio</th>
+    <th>From</th>
+    <th>Efforts</th>
+    <th>Notify Me Live</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @people.each do |person| %>
+      <tr>
+        <td><strong><%= link_to person.full_name, person_path(person) %></strong></td>
+        <td><%= person.bio %></td>
+        <td><%= person.state_and_country %></td>
+        <td><%= pluralize(person.effort_count, 'effort') %></td>
+        <td>
+          <%= div_for(person) do %>
+              <%= link_to_toggle_email_subscription(person) %>
+              <%= link_to_toggle_sms_subscription(person) %>
+          <% end %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

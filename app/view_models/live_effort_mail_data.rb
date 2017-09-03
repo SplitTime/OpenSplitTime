@@ -1,14 +1,14 @@
 class LiveEffortMailData
 
-  attr_reader :participant, :split_times
-  delegate :topic_resource_key, to: :participant
+  attr_reader :person, :split_times
+  delegate :topic_resource_key, to: :person
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required_alternatives: [:participant, :participant_id],
-                           exclusive: [:participant, :participant_id, :split_times, :split_time_ids, :multi_lap],
+                           required_alternatives: [:person, :person_id],
+                           exclusive: [:person, :person_id, :split_times, :split_time_ids, :multi_lap],
                            class: self.class)
-    @participant = args[:participant] || Participant.friendly.find(args[:participant_id])
+    @person = args[:person] || Person.friendly.find(args[:person_id])
     @split_times = args[:split_times] || SplitTime.where(id: args[:split_time_ids])
                                              .eager_load(:split, effort: :event)
     @multi_lap = args[:multi_lap] || false
@@ -23,7 +23,7 @@ class LiveEffortMailData
   end
 
   def followers
-    @followers ||= participant.followers
+    @followers ||= person.followers
   end
 
   private

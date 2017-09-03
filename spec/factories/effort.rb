@@ -7,7 +7,7 @@ FactoryGirl.define do
     gender 'male'
     start_offset 0
     event
-    participant
+    person
 
     transient { without_slug false }
 

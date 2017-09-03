@@ -1,12 +1,12 @@
-<div id="participant_state_code_wrapper">
+<div id="person_state_code_wrapper">
   <% parent_region ||= params[:parent_region] %>
   <% country = Carmen::Country.coded(parent_region) %>
 
   <% if country.nil? %>
       <small>[Select a country first]</small>
   <% elsif country.subregions? %>
-      <%= subregion_select(:participant, :state_code, parent_region) %>
+      <%= subregion_select(:person, :state_code, parent_region) %>
   <% else %>
-      <%= text_field(:participant, :state_code) %>
+      <%= text_field(:person, :state_code) %>
   <% end %>
 </div>

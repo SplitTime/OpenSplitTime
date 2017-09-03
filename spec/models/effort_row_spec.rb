@@ -3,7 +3,7 @@ require 'pry-byebug'
 
 RSpec.describe EffortRow, type: :model do
   let (:test_effort) { create(:effort, state_code: 'CA', country_code: 'US', age: 30) }
-  let (:test_participant) { create(:participant) }
+  let (:test_person) { create(:person) }
 
   describe '#initializate' do
     it 'instantiates an EffortRow if provided an effort' do

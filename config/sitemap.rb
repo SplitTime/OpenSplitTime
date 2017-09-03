@@ -6,7 +6,7 @@ SitemapGenerator::Sitemap.create do
 
   add organizations_path
   add events_path
-  add participants_path
+  add people_path
   add about_path
   add getting_started_path
 
@@ -18,11 +18,11 @@ SitemapGenerator::Sitemap.create do
     add event_path(event), lastmod: event.updated_at
   end
 
-  Participant.find_each do |participant|
-    add participant_path(participant), lastmod: participant.updated_at
+  Person.find_each do |person|
+    add person_path(person), lastmod: person.updated_at
   end
 
   Effort.find_each do |effort|
-    add participant_path(effort), lastmod: effort.updated_at
+    add person_path(effort), lastmod: effort.updated_at
   end
 end

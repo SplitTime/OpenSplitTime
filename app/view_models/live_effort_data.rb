@@ -1,6 +1,6 @@
 class LiveEffortData
   attr_reader :ordered_splits, :effort, :new_split_times, :indexed_existing_split_times
-  delegate :participant_id, to: :effort
+  delegate :person_id, to: :effort
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
   ASSUMED_LAP ||= 1
   COMPARISON_KEYS ||= %w(time_from_start pacer stopped_here)

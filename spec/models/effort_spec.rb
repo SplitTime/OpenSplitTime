@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 # t.integer  "event_id",                  null: false
-# t.integer  "participant_id"
+# t.integer  "person_id"
 # t.string   "wave"
 # t.integer  "bib_number"
 # t.string   "city",           limit: 64
@@ -28,7 +28,7 @@ RSpec.describe Effort, type: :model do
   describe 'validations' do
     let(:course) { build_stubbed(:course) }
     let(:event) { build_stubbed(:event, course: course) }
-    let(:participant) { build_stubbed(:participant) }
+    let(:person) { build_stubbed(:person) }
 
     it 'is valid when created with an event_id, first_name, last_name, and gender' do
       effort = build_stubbed(:effort, event: event)
@@ -63,17 +63,17 @@ RSpec.describe Effort, type: :model do
       expect(effort.errors[:gender]).to include("can't be blank")
     end
 
-    it 'does not permit more than one effort by a participant in a given event' do
-      existing_participant = create(:participant)
-      existing_effort = create(:effort, participant: existing_participant)
-      effort = build_stubbed(:effort, event: existing_effort.event, participant: existing_participant)
+    it 'does not permit more than one effort by a person in a given event' do
+      existing_person = create(:person)
+      existing_effort = create(:effort, person: existing_person)
+      effort = build_stubbed(:effort, event: existing_effort.event, person: existing_person)
       expect(effort).not_to be_valid
-      expect(effort.errors[:participant_id]).to include('has already been taken')
+      expect(effort.errors[:person_id]).to include('has already been taken')
     end
 
-    it 'permits more than one effort in a given event with unassigned participants' do
-      existing_effort = create(:effort, participant: nil)
-      effort = build_stubbed(:effort, event: existing_effort.event, participant: nil)
+    it 'permits more than one effort in a given event with unassigned people' do
+      existing_effort = create(:effort, person: nil)
+      effort = build_stubbed(:effort, event: existing_effort.event, person: nil)
       expect(effort).to be_valid
     end
 

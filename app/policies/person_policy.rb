@@ -1,13 +1,13 @@
-class ParticipantPolicy < ApplicationPolicy
+class PersonPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def post_initialize
     end
   end
 
-  attr_reader :participant
+  attr_reader :person
 
-  def post_initialize(participant)
-    @participant = participant
+  def post_initialize(person)
+    @person = person
   end
 
   def new?
@@ -23,7 +23,7 @@ class ParticipantPolicy < ApplicationPolicy
   end
 
   def avatar_claim?
-    user.authorized_to_claim?(participant)
+    user.authorized_to_claim?(person)
   end
 
   def avatar_disclaim?

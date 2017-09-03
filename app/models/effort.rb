@@ -19,7 +19,7 @@ class Effort < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   belongs_to :event
-  belongs_to :participant
+  belongs_to :person
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if =>
       lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank?}
@@ -28,7 +28,7 @@ class Effort < ApplicationRecord
   attr_writer :last_reported_split_time, :event_start_time
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
-  validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
+  validates_uniqueness_of :person_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
@@ -41,7 +41,7 @@ class Effort < ApplicationRecord
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
-  scope :unreconciled, -> { where(participant_id: nil) }
+  scope :unreconciled, -> { where(person_id: nil) }
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(:split_times => {:id => nil}) }
   scope :ready_to_start,
@@ -229,7 +229,7 @@ class Effort < ApplicationRecord
   end
 
   def unreconciled?
-    participant_id.nil?
+    person_id.nil?
   end
 
   def destroy_split_times(split_time_ids)

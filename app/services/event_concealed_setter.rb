@@ -27,8 +27,8 @@ class EventConcealedSetter
       set_resource_concealed(organization, organization.should_be_concealed?) if organization
       event.efforts.each do |effort|
         set_resource_concealed(effort, boolean)
-        participant = effort.participant
-        set_resource_concealed(participant, participant.should_be_concealed?) if participant
+        person = effort.person
+        set_resource_concealed(person, person.should_be_concealed?) if person
       end
       raise ActiveRecord::Rollback if status
     end

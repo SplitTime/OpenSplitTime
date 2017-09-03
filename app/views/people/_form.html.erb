@@ -1,8 +1,8 @@
-<%= render 'shared/errors', obj: @participant %>
+<%= render 'shared/errors', obj: @person %>
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_for(@participant, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+    <%= form_for(@person, :html => {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :first_name %>
@@ -24,7 +24,7 @@
             <%= f.label :gender %>
           </div>
           <div class="col-sm-8">
-            <%= f.select :gender, Participant.genders.keys.map { |gender| [gender.titleize, gender] },
+            <%= f.select :gender, Person.genders.keys.map { |gender| [gender.titleize, gender] },
                          {prompt: true}, {class: "dropdown-select-field"} %>
           </div>
         </div>
@@ -95,11 +95,11 @@
         <% end %>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@participant.new_record? ? "Create Participant" : "Update Participant", class: 'btn btn-primary btn-large') %>
+            <%= f.submit(@person.new_record? ? "Create Person" : "Update Person", class: 'btn btn-primary btn-large') %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', participants_path %> ]
+          [ <%= link_to 'Cancel', people_path %> ]
         </div>
     <% end %>
   </div>

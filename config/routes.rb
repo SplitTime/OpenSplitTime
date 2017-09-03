@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'course_info', to: 'visitors#course_info'
   get 'effort_info', to: 'visitors#effort_info'
   get 'event_info', to: 'visitors#event_info'
-  get 'participant_info', to: 'visitors#participant_info'
+  get 'person_info', to: 'visitors#person_info'
   get 'organization_info', to: 'visitors#organization_info'
   get 'split_info', to: 'visitors#split_info'
   get 'split_time_info', to: 'visitors#split_time_info'
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {registrations: 'registrations'}
 
   resources :users do
-    member { get :participants }
+    member { get :people }
     member { post :add_interest }
     member { post :remove_interest }
     member { get :edit_preferences }
@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   end
 
   resources :efforts do
-    collection { put :associate_participants }
+    collection { put :associate_people }
     member { put :edit_split_times }
     member { patch :update_split_times }
     member { put :start }
@@ -71,7 +71,7 @@ Rails.application.routes.draw do
     member { delete :remove_splits }
     member { delete :delete_all_efforts }
     member { get :reconcile }
-    member { post :create_participants }
+    member { post :create_people }
     member { get :stage }
     member { get :spread }
     member { put :live_enable }
@@ -87,7 +87,7 @@ Rails.application.routes.draw do
     member { put :remove_steward }
   end
 
-  resources :participants do
+  resources :people do
     collection { get :subregion_options }
     member { get :avatar_claim }
     member { delete :avatar_disclaim }
@@ -147,7 +147,7 @@ Rails.application.routes.draw do
       end
       resources :live_times, only: [:index, :show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
-      resources :participants, only: [:show, :create, :update, :destroy]
+      resources :people, only: [:index, :show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]
       resources :splits, only: [:show, :create, :update, :destroy]
       resources :users, only: [:show, :create, :update, :destroy] do

@@ -5,7 +5,7 @@
   <% if country.nil? %>
       <small>[Select a country first]</small>
   <% elsif country.subregions? %>
-      <%= subregion_select(:effort, :state_code, parent_region) %>
+      <%= carmen_subregion_select(:effort, :state_code, country) %>
   <% else %>
       <%= text_field(:effort, :state_code) %>
   <% end %>

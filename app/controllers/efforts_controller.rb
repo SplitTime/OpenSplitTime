@@ -36,7 +36,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
-      redirect_to stage_event_path(@effort.event)
+      redirect_to effort_path(@effort)
     else
       render 'new'
     end
@@ -46,7 +46,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.update(permitted_params)
-      redirect_to stage_event_path(@effort.event)
+      redirect_to effort_path(@effort)
     else
       render 'edit'
     end

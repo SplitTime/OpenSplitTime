@@ -13,11 +13,11 @@ describe Api::V1::LiveTimesController do
 
   describe '#index' do
     before do
-      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: '10:00:00', source: 'ost-test')
-      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 102, absolute_time: '11:00:00', source: 'ost-test')
-      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 103, absolute_time: '10:30:00', source: 'ost-test')
-      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 103, absolute_time: '16:00:00', source: 'ost-test')
-      create(:live_time, event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: '16:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: '101', absolute_time: '10:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: '102', absolute_time: '11:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: '103', absolute_time: '10:30:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: '103', absolute_time: '16:00:00', source: 'ost-test')
+      create(:live_time, event: event, split: split, bitkey: 1, bib_number: '101', absolute_time: '16:00:00', source: 'ost-test')
     end
 
     it 'returns a successful 200 response' do

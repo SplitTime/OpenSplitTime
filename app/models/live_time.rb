@@ -5,6 +5,7 @@ class LiveTime < ApplicationRecord
   belongs_to :split
   belongs_to :split_time
   validates_presence_of :event, :split, :bib_number, :bitkey, :source
+  validates :bib_number, length: {maximum: 6}, format: {with: /\A[\d\*]+\z/, message: 'may contain only digits and asterisks'}
   validate :absolute_or_entered_time
   validate :course_is_consistent
   validate :split_is_associated

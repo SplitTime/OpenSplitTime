@@ -5,7 +5,7 @@ require 'rails_helper'
 # t.integer  "split_id",        null: false
 # t.string   "split_extension"
 # t.string   "wave"
-# t.integer  "bib_number",      null: false
+# t.string   "bib_number",      null: false
 # t.string   "absolute_time",   null: false
 # t.boolean  "with_pacer"
 # t.boolean  "stopped_here"
@@ -31,23 +31,23 @@ RSpec.describe LiveTime, type: :model do
     end
 
     it 'is valid when created with an event, split, bitkey, bib_number, absolute_time, and source' do
-      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: 101, absolute_time: current_time, source: source)
+      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: '101', absolute_time: current_time, source: source)
       expect(live_time).to be_valid
     end
 
     it 'is valid when created with an event, split, bitkey, bib_number, *entered_time*, and source' do
-      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: 101, entered_time: time_string, source: source)
+      live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: '101', entered_time: time_string, source: source)
       expect(live_time).to be_valid
     end
 
     it 'is invalid when no event is provided' do
-      live_time = LiveTime.new(split: split, bib_number: 101, absolute_time: current_time, bitkey: 1, source: 'test-source')
+      live_time = LiveTime.new(split: split, bib_number: '101', absolute_time: current_time, bitkey: 1, source: 'test-source')
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include("Event can't be blank")
     end
 
     it 'is invalid when no split is provided' do
-      live_time = LiveTime.new(event: event, bib_number: 101, absolute_time: current_time, bitkey: 1, source: 'test-source')
+      live_time = LiveTime.new(event: event, bib_number: '101', absolute_time: current_time, bitkey: 1, source: 'test-source')
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include("Split can't be blank")
     end
@@ -59,14 +59,14 @@ RSpec.describe LiveTime, type: :model do
     end
 
     it 'is invalid when neither absolute_time nor entered_time is provided' do
-      live_time = LiveTime.new(event: event, split: split, bib_number: 101, bitkey: 1, source: 'test-source')
+      live_time = LiveTime.new(event: event, split: split, bib_number: '101', bitkey: 1, source: 'test-source')
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include('Either absolute_time or entered_time must be present')
     end
 
     it 'is invalid when the event.course is not the same as the split.course' do
       new_split = create(:split)
-      live_time = LiveTime.new(event: event, split: new_split, bib_number: 101, absolute_time: current_time)
+      live_time = LiveTime.new(event: event, split: new_split, bib_number: '101', absolute_time: current_time)
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include('Split the event.course_id does not resolve with the split.course_id')
     end
@@ -74,9 +74,25 @@ RSpec.describe LiveTime, type: :model do
     it 'is invalid when the split is not the same as the split_time.split' do
       new_split = create(:split)
       split_time = SplitTime.create(effort: effort, split: new_split)
-      live_time = LiveTime.new(event: event, split: split, bib_number: 101, absolute_time: current_time, split_time: split_time)
+      live_time = LiveTime.new(event: event, split: split, bib_number: '101', absolute_time: current_time, split_time: split_time)
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include('Split time the split_id is not the same as the split_time.split_id')
+    end
+
+    it 'is valid when bib_number contains digits and asterisks' do
+      live_time = build_stubbed(:live_time, bib_number: '1**9', event: event, split: split)
+      expect(live_time).to be_valid
+    end
+
+    it 'is invalid when bib_number contains only an asterisk' do
+      live_time = build_stubbed(:live_time, bib_number: '*', event: event, split: split)
+      expect(live_time).to be_valid
+    end
+
+    it 'is invalid when bib_number contains characters other than digits and asterisks' do
+      live_time = build_stubbed(:live_time, bib_number: '12?', event: event, split: split)
+      expect(live_time).to be_invalid
+      expect(live_time.errors.full_messages).to include(/may contain only digits and asterisks/)
     end
 
     it 'saves a valid record to the database' do

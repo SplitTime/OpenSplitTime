@@ -43,7 +43,7 @@ class EventStageDisplay < EventWithEffortsPresenter
     @filtered_live_times ||= live_times
                                  .with_split_names
                                  .where(filter_hash)
-                                 .order(sort_hash.presence || {absolute_time: :desc})
+                                 .order(sort_hash.presence || {created_at: :desc})
                                  .paginate(page: page, per_page: per_page)
   end
 

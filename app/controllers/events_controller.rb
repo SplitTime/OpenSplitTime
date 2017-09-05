@@ -90,9 +90,9 @@ class EventsController < ApplicationController
     end
   end
 
-  def create_participants
+  def create_people
     authorize @event
-    EventReconcileService.create_participants_from_efforts(params[:effort_ids])
+    EventReconcileService.create_people_from_efforts(params[:effort_ids])
     redirect_to reconcile_event_path(@event)
   end
 

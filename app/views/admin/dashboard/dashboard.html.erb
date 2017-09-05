@@ -10,7 +10,7 @@
 <div class="row">
   <div class="col-xs-6">
     <h4>Database Statistics</h4><br/>
-    <%= "Participants: #{Participant.all.size}" %><br/>
+    <%= "People: #{Person.all.size}" %><br/>
     <%= "Events: #{Event.all.size} with #{Effort.unreconciled.size} unreconciled efforts" %><br/>
     <%= "Efforts: #{Effort.all.size} with #{Effort.bad.size} bad and #{Effort.questionable.size} questionable" %><br/>
     <%= "Split Times: #{SplitTime.all.size} with #{SplitTime.bad.size} bad and #{SplitTime.questionable.size} questionable" %><br/>

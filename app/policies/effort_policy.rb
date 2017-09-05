@@ -14,7 +14,7 @@ class EffortPolicy < ApplicationPolicy
     @effort = effort
   end
 
-  def associate_participants?
+  def associate_people?
     user.authorized_to_edit?(effort)
   end
 

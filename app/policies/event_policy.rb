@@ -50,7 +50,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def create_participants?
+  def create_people?
     user.authorized_to_edit?(event)
   end
 
@@ -62,7 +62,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_fully?(event)
   end
 
-  def associate_participants?
+  def associate_people?
     user.authorized_to_edit?(event)
   end
 

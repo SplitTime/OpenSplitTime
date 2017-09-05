@@ -15,10 +15,10 @@ class User < ApplicationRecord
   strip_attributes collapse_spaces: true
 
   has_many :subscriptions, dependent: :destroy
-  has_many :interests, through: :subscriptions, source: :participant
+  has_many :interests, through: :subscriptions, source: :person
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships
-  has_one :avatar, class_name: 'Participant'
+  has_one :avatar, class_name: 'Person'
   alias_attribute :sms, :phone
   alias_attribute :http, :http_endpoint
   alias_attribute :https, :https_endpoint
@@ -72,13 +72,13 @@ class User < ApplicationRecord
     admin? || (id == resource.created_by) || steward_of?(resource) || resource.new_record?
   end
 
-  def authorized_to_claim?(participant)
+  def authorized_to_claim?(person)
     return false if self.has_avatar?
-    admin? || (last_name == participant.last_name) || (first_name == participant.first_name)
+    admin? || (last_name == person.last_name) || (first_name == person.first_name)
   end
 
   def authorized_to_edit_personal?(effort)
-    admin? || (effort.participant ? (avatar == effort.participant) : authorized_to_edit?(effort))
+    admin? || (effort.person ? (avatar == effort.person) : authorized_to_edit?(effort))
   end
 
   def steward_of?(resource)
@@ -106,19 +106,19 @@ class User < ApplicationRecord
     avatar.present?
   end
 
-  def interested_in?(participant)
-    interests.include?(participant)
+  def interested_in?(person)
+    interests.include?(person)
   end
 
-  def add_interest(participant)
-    interests << participant
+  def add_interest(person)
+    interests << person
   end
 
-  def remove_interest(participant)
-    interests.delete(participant)
+  def remove_interest(person)
+    interests.delete(person)
   end
 
-  def except_current_user(participants)
-    participants.reject { |participant| participant.claimant == self }
+  def except_current_user(people)
+    people.reject { |person| person.claimant == self }
   end
 end

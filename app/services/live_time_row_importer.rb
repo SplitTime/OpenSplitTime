@@ -62,8 +62,8 @@ class LiveTimeRowImporter
   def create_or_update_times(effort_data)
     effort = effort_data.effort
     indexed_split_times = effort_data.indexed_existing_split_times
-    participant_id = effort_data.participant_id || 0 # Id 0 is the dump for efforts with no participant_id
-    saved_split_times[participant_id] ||= []
+    person_id = effort_data.person_id || 0 # Id 0 is the dump for efforts with no person_id
+    saved_split_times[person_id] ||= []
     row_success = true
 
     ActiveRecord::Base.transaction do
@@ -89,7 +89,7 @@ class LiveTimeRowImporter
 
           effort.stop(saved_split_time) if saved_split_time.stopped_here
           EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
-          saved_split_times[participant_id] << saved_split_time
+          saved_split_times[person_id] << saved_split_time
         end
       else
         unsaved_rows << effort_data.response_row
@@ -126,10 +126,10 @@ class LiveTimeRowImporter
   end
 
   def notify_followers
-    saved_split_times.each do |participant_id, split_times|
-      NotifyFollowersJob.perform_later(participant_id: participant_id,
+    saved_split_times.each do |person_id, split_times|
+      NotifyFollowersJob.perform_later(person_id: person_id,
                                        split_time_ids: split_times.map(&:id),
-                                       multi_lap: event.multiple_laps?) unless participant_id.zero?
+                                       multi_lap: event.multiple_laps?) unless person_id.zero?
     end
   end
 

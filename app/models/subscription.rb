@@ -1,12 +1,16 @@
 class Subscription < ApplicationRecord
   enum protocol: [:email, :sms, :http, :https]
   belongs_to :user
-  belongs_to :participant
+  belongs_to :person
 
   before_validation :set_resource_key
   before_destroy :delete_resource_key
-  validates_presence_of :user_id, :participant_id, :protocol, :resource_key
+  validates_presence_of :user_id, :person_id, :protocol, :resource_key
   validates :protocol, inclusion: {in: Subscription.protocols.keys}
+
+  alias_attribute :participant_id, :person_id
+  ActiveSupport::Deprecation.new('in January 2018', 'opensplittime.org')
+      .deprecate_methods(Effort, 'participant_id' => 'person_id', 'participant_id=' => 'person_id=')
 
   def set_resource_key
     if should_generate_resource?
@@ -36,7 +40,7 @@ class Subscription < ApplicationRecord
   end
 
   def to_s
-    "SNS subscription for #{user.slug} following #{participant.slug} by #{protocol}"
+    "SNS subscription for #{user.slug} following #{person.slug} by #{protocol}"
   end
 
   private
@@ -54,6 +58,6 @@ class Subscription < ApplicationRecord
   end
 
   def required_data_present?
-    participant.try(:topic_resource_key).present? && user.try(protocol).present?
+    person.try(:topic_resource_key).present? && user.try(protocol).present?
   end
 end

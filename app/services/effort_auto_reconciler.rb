@@ -13,8 +13,8 @@ class EffortAutoReconciler
   end
 
   def reconcile
-    self.auto_matched_count = EventReconcileService.assign_participants_to_efforts(matched_hash)
-    self.auto_created_count = EventReconcileService.create_participants_from_efforts(not_matched_array)
+    self.auto_matched_count = EventReconcileService.assign_people_to_efforts(matched_hash)
+    self.auto_created_count = EventReconcileService.create_people_from_efforts(not_matched_array)
   end
 
   def report
@@ -27,7 +27,7 @@ class EffortAutoReconciler
   attr_accessor :auto_matched_count, :auto_created_count
 
   def matched_hash
-    @matched_hash ||= exact_matches.map { |effort, participant| [effort.id, participant.id] }.to_h
+    @matched_hash ||= exact_matches.map { |effort, person| [effort.id, person.id] }.to_h
   end
 
   def not_matched_array
@@ -36,13 +36,13 @@ class EffortAutoReconciler
 
   def exact_matches
     @exact_matches ||= unreconciled_efforts
-                           .map { |effort| [effort, effort.exact_matching_participant] }.to_h.compact
+                           .map { |effort| [effort, effort.exact_matching_person] }.to_h.compact
   end
 
   def close_matches
     @close_matches ||= unreconciled_efforts
                            .map { |effort| [effort, effort.suggest_close_match] }
-                           .select { |_, participant| participant }
+                           .select { |_, person| person }
                            .reject { |effort, _| exact_matched_efforts.include?(effort) }.to_h
   end
 
@@ -64,19 +64,19 @@ class EffortAutoReconciler
 
   def matched_report
     auto_matched_count > 0 ?
-        "We found #{auto_matched_count} participants that matched our database. " :
-        'No participants matched our database exactly. '
+        "We found #{auto_matched_count} people that matched our database. " :
+        'No people matched our database exactly. '
   end
 
   def created_report
     auto_created_count > 0 ?
-        "We created #{auto_created_count} participants from efforts that had no close matches. " :
+        "We created #{auto_created_count} people from efforts that had no close matches. " :
         ''
   end
 
   def unreconciled_report
     close_matched_count > 0 ?
-        "We found #{close_matched_count} participants that may or may not match our database. Please reconcile them now. " :
+        "We found #{close_matched_count} people that may or may not match our database. Please reconcile them now. " :
         "All efforts for #{event.name} have been reconciled. "
   end
 end

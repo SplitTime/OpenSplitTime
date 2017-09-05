@@ -19,16 +19,20 @@ class Effort < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   belongs_to :event
-  belongs_to :participant
+  belongs_to :person
   has_many :split_times, dependent: :destroy
   accepts_nested_attributes_for :split_times, :reject_if =>
-      lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank?}
+      lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank? }
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
 
+  alias_attribute :participant_id, :person_id
+  ActiveSupport::Deprecation.new('in January 2018', 'opensplittime.org')
+      .deprecate_methods(Effort, 'participant_id' => 'person_id', 'participant_id=' => 'person_id=')
+
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
-  validates_uniqueness_of :participant_id, scope: :event_id, allow_blank: true
+  validates_uniqueness_of :person_id, scope: :event_id, allow_blank: true
   validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
@@ -41,7 +45,7 @@ class Effort < ApplicationRecord
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
   scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
-  scope :unreconciled, -> { where(participant_id: nil) }
+  scope :unreconciled, -> { where(person_id: nil) }
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(:split_times => {:id => nil}) }
   scope :ready_to_start,
@@ -93,7 +97,15 @@ class Effort < ApplicationRecord
 
   def start_time=(datetime)
     return unless datetime.present?
-    new_datetime = datetime.is_a?(Hash) ? Time.zone.local(*datetime.values) : datetime
+    time_zone = ActiveSupport::TimeZone[event.home_time_zone] || Time.zone
+    new_datetime = case
+                   when datetime.is_a?(Hash)
+                     time_zone.local(*datetime.values)
+                   when datetime.is_a?(String)
+                     time_zone.parse(datetime)
+                   else
+                     datetime
+                   end
     self.start_offset = TimeDifference.from(event.start_time, new_datetime).in_seconds
   end
 
@@ -229,7 +241,7 @@ class Effort < ApplicationRecord
   end
 
   def unreconciled?
-    participant_id.nil?
+    person_id.nil?
   end
 
   def destroy_split_times(split_time_ids)

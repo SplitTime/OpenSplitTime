@@ -259,13 +259,13 @@ describe Api::V1::StagingController do
         expect(response).to be_success
       end
 
-      it 'sets concealed status of the event and its related organization, efforts, and participants to false' do
+      it 'sets concealed status of the event and its related organization, efforts, and people to false' do
         event = existing_event
         organization = existing_organization
         event.update(concealed: true)
         organization.update(concealed: true)
         efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: true)
-        efforts.each { |effort| effort.participant.update(concealed: true) }
+        efforts.each { |effort| effort.person.update(concealed: true) }
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
@@ -273,7 +273,7 @@ describe Api::V1::StagingController do
         expect(organization.concealed).to eq(false)
         event.efforts.each do |effort|
           expect(effort.concealed).to eq(false)
-          expect(effort.participant.concealed).to eq(false)
+          expect(effort.person.concealed).to eq(false)
         end
       end
     end
@@ -287,13 +287,13 @@ describe Api::V1::StagingController do
         expect(response).to be_success
       end
 
-      it 'sets concealed status of the event and its related organization, efforts, and participants to true' do
+      it 'sets concealed status of the event and its related organization, efforts, and people to true' do
         event = existing_event
         organization = existing_organization
         event.update(concealed: false)
         organization.update(concealed: false)
         efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
-        efforts.each { |effort| effort.participant.update(concealed: false) }
+        efforts.each { |effort| effort.person.update(concealed: false) }
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
@@ -301,19 +301,19 @@ describe Api::V1::StagingController do
         expect(organization.concealed).to eq(true)
         event.efforts.each do |effort|
           expect(effort.concealed).to eq(true)
-          expect(effort.participant.concealed).to eq(true)
+          expect(effort.person.concealed).to eq(true)
         end
       end
 
-      it 'does not make a participant private if that participant has other public efforts' do
+      it 'does not make a person private if that person has other public efforts' do
         event = existing_event
         organization = existing_organization
         event.update(concealed: false)
         organization.update(concealed: false)
         efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
-        efforts.each { |effort| effort.participant.update(concealed: false) }
-        p_with_other_effort = efforts.first.participant
-        FactoryGirl.create(:effort, participant: p_with_other_effort, concealed: false)
+        efforts.each { |effort| effort.person.update(concealed: false) }
+        p_with_other_effort = efforts.first.person
+        FactoryGirl.create(:effort, person: p_with_other_effort, concealed: false)
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
@@ -321,11 +321,11 @@ describe Api::V1::StagingController do
         expect(organization.concealed).to eq(true)
         event.efforts.each do |effort|
           expect(effort.concealed).to eq(true)
-          participant = effort.participant
-          if participant == p_with_other_effort
-            expect(effort.participant.concealed).to eq(false)
+          person = effort.person
+          if person == p_with_other_effort
+            expect(effort.person.concealed).to eq(false)
           else
-            expect(effort.participant.concealed).to eq(true)
+            expect(effort.person.concealed).to eq(true)
           end
         end
       end

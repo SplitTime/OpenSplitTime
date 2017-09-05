@@ -1,7 +1,7 @@
 class EffortAnalysisView < EffortWithLapSplitRows
 
   attr_reader :effort
-  delegate :full_name, :event_name, :participant, :bib_number, :finish_status, :gender,
+  delegate :full_name, :event_name, :person, :bib_number, :finish_status, :gender,
            :overall_rank, :gender_rank, to: :effort
 
   def post_initialize(args_effort)

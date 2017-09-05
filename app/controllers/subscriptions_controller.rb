@@ -6,8 +6,8 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    # Raise an error if either participant or user does not exist
-    Participant.friendly.find(permitted_params[:participant_id])
+    # Raise an error if either person or user does not exist
+    Person.friendly.find(permitted_params[:person_id])
     user = User.friendly.find(permitted_params[:user_id])
 
     @subscription = Subscription.new(permitted_params)

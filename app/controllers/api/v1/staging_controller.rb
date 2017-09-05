@@ -48,7 +48,7 @@ class Api::V1::StagingController < ApiController
     end
   end
 
-  # Sets the concealed status of the event and related organization, efforts, and participants.
+  # Sets the concealed status of the event and related organization, efforts, and people.
   # param :status must be set to 'public' or 'private'
 
   # PATCH /api/v1/staging/:staging_id/update_event_visibility

@@ -27,11 +27,11 @@ class LiveTimeSplitTimeCreator
     updated_efforts = created_split_times.map(&:effort).uniq
     updated_efforts.each { |effort| EffortDataStatusSetter.set_data_status(effort: effort) }
     if event.available_live
-      indexed_split_times = created_split_times.group_by { |st| st.effort.participant_id || 0 }
-      indexed_split_times.each do |participant_id, split_times|
-        NotifyFollowersJob.perform_later(participant_id: participant_id,
+      indexed_split_times = created_split_times.group_by { |st| st.effort.person_id || 0 }
+      indexed_split_times.each do |person_id, split_times|
+        NotifyFollowersJob.perform_later(person_id: person_id,
                                          split_time_ids: split_times.map(&:id),
-                                         multi_lap: event.multiple_laps?) unless participant_id.zero?
+                                         multi_lap: event.multiple_laps?) unless person_id.zero?
       end
     end
   end

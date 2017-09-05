@@ -1,4 +1,4 @@
-class Participant < ApplicationRecord
+class Person < ApplicationRecord
 
   include Auditable
   include Concealable
@@ -18,14 +18,14 @@ class Participant < ApplicationRecord
 
   attr_accessor :suggested_match
 
-  # Outer joins are required to find participants having no associated efforts
+  # Outer joins are required to find people having no associated efforts
   scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count])
-                                             .joins('LEFT OUTER JOIN efforts ON (efforts.participant_id = participants.id)')
+                                             .joins('LEFT OUTER JOIN efforts ON (efforts.person_id = people.id)')
                                              .joins('LEFT OUTER JOIN events ON (events.id = efforts.event_id)')
-                                             .group('participants.id') }
+                                             .group('people.id') }
   scope :ordered_by_name, -> { order(:last_name, :first_name) }
 
-  SQL = {age_and_effort_count: 'participants.*, COUNT(efforts.id) as effort_count, ' +
+  SQL = {age_and_effort_count: 'people.*, COUNT(efforts.id) as effort_count, ' +
       'ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as current_age_from_efforts',
          ages_from_events: '((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)'}
 
@@ -49,7 +49,7 @@ class Participant < ApplicationRecord
   def self.age_matches(age_param, threshold = 2)
     return none unless age_param
     ids = with_age_and_effort_count
-              .select { |participant| participant.current_age && ((participant.current_age - age_param).abs < threshold) }
+              .select { |person| person.current_age && ((person.current_age - age_param).abs < threshold) }
               .map(&:id)
     where(id: ids)
   end
@@ -68,12 +68,12 @@ class Participant < ApplicationRecord
   end
 
   def set_topic_resource
-    self.topic_resource_key = SnsTopicManager.generate(participant: self) if generate_new_topic_resource?
+    self.topic_resource_key = SnsTopicManager.generate(person: self) if generate_new_topic_resource?
   end
 
   def delete_topic_resource
     if topic_resource_key.present?
-      SnsTopicManager.delete(participant: self)
+      SnsTopicManager.delete(person: self)
       self.topic_resource_key = nil
     end
   end
@@ -102,19 +102,19 @@ class Participant < ApplicationRecord
     !efforts.visible.present?
   end
 
-  # Methods related to matching and merging efforts with participants
+  # Methods related to matching and merging efforts with people
 
   def most_likely_duplicate
-    possible_matching_participants.first
+    possible_matching_people.first
   end
 
   def associate_effort(effort)
     if AttributePuller.pull_attributes!(self, effort)
-      if effort.update(participant: self)
-        logger.info "Effort #{effort.name} was associated with Participant #{self.name}"
+      if effort.update(person: self)
+        logger.info "Effort #{effort.name} was associated with Person #{self.name}"
         true
       else
-        logger.info "Effort #{effort.name} could not be associated with Participant #{self.name}: " +
+        logger.info "Effort #{effort.name} could not be associated with Person #{self.name}: " +
                         "#{effort.errors.full_messages}, #{self.errors.full_messages}"
         false
       end

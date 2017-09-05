@@ -5,7 +5,7 @@ class EffortParameters < BaseParameters
   end
 
   def self.enriched_query
-    [:id, :event_id, :participant_id, :wave, :bib_number, :city, :state_code, :age,
+    [:id, :event_id, :person_id, :participant_id, :wave, :bib_number, :city, :state_code, :age,
      :created_at, :updated_at, :created_by, :updated_by, :first_name, :last_name, :gender,
      :country_code, :birthdate, :data_status, :start_offset, :dropped_split_id, :concealed,
      :beacon_url, :report_url, :photo_url, :dropped_lap, :laps_required, :event_start_time,
@@ -18,7 +18,7 @@ class EffortParameters < BaseParameters
   end
 
   def self.permitted
-    [:id, :event_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
+    [:id, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
      :city, :state_code, :country_code, :finished, :concealed, :start_time, :start_offset,
      :beacon_url, :report_url, :photo_url, :phone, :email,
      split_times_attributes: [*SplitTimeParameters.permitted]]

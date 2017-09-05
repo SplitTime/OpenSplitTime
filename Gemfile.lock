@@ -91,9 +91,6 @@ GEM
       xpath (~> 2.0)
     carmen (1.0.2)
       activesupport (>= 3.0.0)
-    carmen-rails (1.0.1)
-      carmen (~> 1.0.0)
-      rails
     case_transform (0.2)
       activesupport
     choice (0.2.0)
@@ -454,7 +451,7 @@ DEPENDENCIES
   bullet
   byebug
   capybara
-  carmen-rails
+  carmen
   coffee-rails (~> 4.1.0)
   dalli
   database_cleaner

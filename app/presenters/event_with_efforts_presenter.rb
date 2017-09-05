@@ -16,8 +16,8 @@ class EventWithEffortsPresenter < BasePresenter
 
   def ranked_effort_rows
     @ranked_effort_rows ||= filtered_ranked_efforts.map do |effort|
-      participant = indexed_participants[effort.participant_id]
-      effort.participant = participant if participant
+      person = indexed_people[effort.person_id]
+      effort.person = person if person
       EffortRow.new(effort)
     end
   end
@@ -74,7 +74,7 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def unstarted_efforts
-    @unstarted_efforts ||= event_efforts.where(id: unstarted_effort_ids).eager_load(:participant)
+    @unstarted_efforts ||= event_efforts.where(id: unstarted_effort_ids).eager_load(:person)
   end
 
   def unstarted_effort_ids
@@ -89,13 +89,13 @@ class EventWithEffortsPresenter < BasePresenter
     @filtered_ids ||= event_efforts.where(filter_hash).search(search_text).ids.to_set
   end
 
-  def indexed_participants
-    @indexed_participants ||= Participant.where(id: participant_ids).index_by(&:id)
+  def indexed_people
+    @indexed_people ||= Person.where(id: person_ids).index_by(&:id)
   end
 
-  def participant_ids
-    @participant_ids ||=
-        (filtered_ranked_efforts.map(&:participant_id) + filtered_unstarted_efforts.map(&:participant_id)).compact
+  def person_ids
+    @person_ids ||=
+        (filtered_ranked_efforts.map(&:person_id) + filtered_unstarted_efforts.map(&:person_id)).compact
   end
 
   def started_page

@@ -1,0 +1,18 @@
+<%= person.bio %> |
+<%= person.city_state_and_country %><br/>
+<% if person.email %>
+    <%= person.email %><br/>
+<% end %>
+<% if person.phone %>
+    <%= person.phone %><br/>
+<% end %>
+<%= link_to pluralize(@person_merge.effort_counts[person.id], 'effort'), person_path(person) %><br/>
+<% if person.claimed? %>
+    <% if person.claimant == @current_user %>
+        <strong>Hey, this is me!</strong><br/>
+    <% else %>
+        <%= "Identified as user #{person.claimant.full_name}" %>
+    <% end %>
+<% else %>
+    <strong>Not claimed</strong>
+<% end %>

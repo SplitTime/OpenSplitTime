@@ -66,8 +66,8 @@
             <%= f.label :country_code, 'Country' %>
           </div>
           <div class="col-sm-8 dropdown-select-field-carmen">
-            <%= f.country_select :country_code, priority: %w(US CA),
-                                 prompt: 'Please select a country' %>
+            <%= carmen_country_select :effort, :country_code, priority: %w(US CA),
+                                      prompt: 'Please select a country' %>
           </div>
         </div>
         <div class="form-group">
@@ -98,14 +98,17 @@
           <div class="control-label col-sm-2">
             <%= f.label :start_time %>
           </div>
-          <div class="col-sm-8">
-            <%= f.datetime_select :start_time,
-                                  {use_short_month: true,
-                                   start_year: (Date.today + 1.year).year,
-                                   end_year: 1970,
-                                   ampm: true,
-                                   order: [:month, :day, :year]},
-                                  {class: "dropdown-select-field"} %>
+          <div class="col-sm-3">
+            <div class="input-group date" id="datetimepicker">
+              <%= f.text_field :start_time,
+                               value: @effort.start_time&.strftime('%m/%d/%Y %H:%M:%S'),
+                               placeholder: 'mm/dd/yyyy hh:mm:ss',
+                               class: 'form-control',
+                               data: {provide: 'datetimepicker',
+                                      date_format: 'MM/DD/YYYY HH:mm:ss',
+                                      date_default_date: (Date.current + 6.hours).strftime('%m/%d/%Y %H:%M:%S')} %>
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -119,3 +122,9 @@
     <% end %>
   </div>
 </div>
+
+<script>
+    $(function () {
+        $('#datetimepicker').datetimepicker();
+    });
+</script>

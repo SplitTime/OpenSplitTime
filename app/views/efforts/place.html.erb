@@ -4,8 +4,8 @@
 <div class="row header">
   <div class="col-xs-7">
     <h2><strong>
-      <% if @effort_place.participant %>
-          <%= link_to @effort_place.full_name, participant_path(@effort_place.participant) %>
+      <% if @effort_place.person %>
+          <%= link_to @effort_place.full_name, person_path(@effort_place.person) %>
       <% else %>
           <%= @effort_place.full_name %>
       <% end %>

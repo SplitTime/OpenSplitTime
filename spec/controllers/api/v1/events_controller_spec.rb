@@ -231,7 +231,7 @@ describe Api::V1::EventsController do
 
       it 'assigns attributes correctly' do
         post :import, params: request_params
-        expect(LiveTime.all.map(&:bib_number)).to eq([101, 101])
+        expect(LiveTime.all.map(&:bib_number)).to eq(%w[101 101])
         expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
         expect(LiveTime.all.map(&:absolute_time)).to eq(%w(10:45:45-06:00 10:50:50-06:00))
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170903131921) do
+ActiveRecord::Schema.define(version: 20170905222021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170903131921) do
     t.integer  "event_id",      null: false
     t.integer  "split_id",      null: false
     t.string   "wave"
-    t.integer  "bib_number",    null: false
+    t.string   "bib_number",    null: false
     t.datetime "absolute_time"
     t.boolean  "with_pacer"
     t.boolean  "stopped_here"

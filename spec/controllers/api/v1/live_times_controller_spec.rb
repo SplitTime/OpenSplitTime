@@ -34,21 +34,21 @@ describe Api::V1::LiveTimesController do
     end
 
     it 'sorts properly in ascending order based on a provided sort parameter' do
-      expected = [101, 101, 102, 103, 103]
+      expected = %w[101 101 102 103 103]
       get :index, params: {sort: 'bib_number'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
     end
 
     it 'sorts properly in descending order based on a provided sort parameter with a minus sign' do
-      expected = [103, 103, 102, 101, 101]
+      expected = %w[103 103 102 101 101]
       get :index, params: {sort: '-bibNumber'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
     end
 
     it 'sorts properly on multiple fields' do
-      expected = [101, 103, 102, 103, 101]
+      expected = %w[101 103 102 103 101]
       get :index, params: {sort: '-absolute_time,bib_number'}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data'].map { |item| item.dig('attributes', 'bibNumber') }).to eq(expected)
@@ -96,7 +96,7 @@ describe Api::V1::LiveTimesController do
   end
 
   describe '#update' do
-    let(:updated_attributes) { {bib_number: 0} }
+    let(:updated_attributes) { {bib_number: '0'} }
 
     it 'returns a successful json response' do
       put :update, params: {id: live_time, data: {type: 'live_times', attributes: updated_attributes}}

@@ -9,6 +9,7 @@ class Person < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   strip_attributes collapse_spaces: true
+  strip_attributes only: [:phone], :regex => /[^0-9|+]/
 
   enum gender: [:male, :female]
   has_many :subscriptions, dependent: :destroy

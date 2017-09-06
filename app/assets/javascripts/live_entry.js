@@ -272,7 +272,7 @@
 
                 $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
-                $('#js-bib-number').inputmask("9999999999999999999", {placeholder: ""});
+                $('#js-bib-number').inputmask("Regex", {regex: "[0-9|*]{0,6}"});
                 $('#js-lap-number').inputmask("integer", { min: 1, max: liveEntry.eventLiveEntryData.maximumLaps || undefined });
 
                 // Enabled / Disable Laps field

@@ -17,7 +17,7 @@ class LiveEffortData
     @event = args[:event]
     @params = args[:params].symbolize_keys
     @ordered_splits ||= args[:ordered_splits] || event.ordered_splits.to_a
-    @effort ||= args[:effort] || event.efforts.find_guaranteed(bib_number: params[:bib_number])
+    @effort ||= args[:effort] || effort_from_params
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @indexed_existing_split_times = ordered_existing_split_times.index_by(&:time_point)
     @new_split_times = {}
@@ -141,6 +141,11 @@ class LiveEffortData
   private
 
   attr_reader :event, :params, :times_container
+
+  def effort_from_params
+    return Effort.null_record if params[:bib_number].include?('*')
+    event.efforts.find_guaranteed(bib_number: params[:bib_number])
+  end
 
   def indexed_split_times
     @indexed_split_times ||= confirmed_good_split_times.index_by(&:time_point)

@@ -64,6 +64,7 @@ class LiveTime < ApplicationRecord
   end
 
   def effort
+    return nil if bib_number.include?('*')
     event.efforts.find_by(bib_number: bib_number)
   end
 

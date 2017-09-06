@@ -249,7 +249,16 @@ RSpec.describe LiveTime, type: :model do
 
     context 'when the related event does not include an effort with a matching bib_number' do
       it 'returns nil' do
-        live_time = build_stubbed(:live_time, event: event, bib_number: 0)
+        live_time = build_stubbed(:live_time, event: event, bib_number: '0')
+        expect(live_time.effort).to eq(nil)
+      end
+    end
+
+    context 'when the bib_number contains a wildcard character even though the event has an effort that matches the coerced integer' do
+      it 'returns nil' do
+        bib_number_string = "#{effort.bib_number}*"
+        expect(bib_number_string.to_i).to eq(effort.bib_number)
+        live_time = build_stubbed(:live_time, event: event, bib_number: bib_number_string)
         expect(live_time.effort).to eq(nil)
       end
     end
@@ -265,7 +274,16 @@ RSpec.describe LiveTime, type: :model do
 
     context 'when the related event does not include an effort with a matching bib_number' do
       it 'returns [Bib not found]' do
-        live_time = build_stubbed(:live_time, event: event, bib_number: 0)
+        live_time = build_stubbed(:live_time, event: event, bib_number: '0')
+        expect(live_time.effort_full_name).to eq('[Bib not found]')
+      end
+    end
+
+    context 'when the bib_number contains a wildcard character even though the event has an effort that matches the coerced integer' do
+      it 'returns [Bib not found]' do
+        bib_number_string = "#{effort.bib_number}*"
+        expect(bib_number_string.to_i).to eq(effort.bib_number)
+        live_time = build_stubbed(:live_time, event: event, bib_number: bib_number_string)
         expect(live_time.effort_full_name).to eq('[Bib not found]')
       end
     end

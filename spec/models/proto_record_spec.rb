@@ -76,4 +76,12 @@ RSpec.describe ProtoRecord, type: :model do
       expect(pr.params_class).to be_nil
     end
   end
+
+  describe '#to_h' do
+    it 'returns a hash of the attributes' do
+      pr = ProtoRecord.new(first_name: 'Joe', age: 21, gender: 'male')
+      hash = pr.to_h
+      expect(hash).to eq({first_name: 'Joe', age: 21, gender: 'male'})
+    end
+  end
 end

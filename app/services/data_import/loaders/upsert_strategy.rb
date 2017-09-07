@@ -2,7 +2,7 @@ module DataImport::Loaders
   class UpsertStrategy < BaseLoader
 
     def post_initialize(options)
-      @unique_key = options[:unique_key]
+      @unique_key = options[:unique_key]&.map(&:to_sym)
     end
 
     def custom_load

@@ -27,8 +27,10 @@ class EffortEventChanger
 
   def save_changes
     ActiveRecord::Base.transaction do
-      effort.save! if effort.changed?
+      effort.save!(validate: false) if effort.changed?
       split_times.each { |st| st.save! if st.changed? }
+      effort.reload
+      raise ActiveRecord::Rollback unless effort.valid?
     end
   end
 

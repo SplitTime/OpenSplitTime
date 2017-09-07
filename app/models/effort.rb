@@ -39,6 +39,7 @@ class Effort < ApplicationRecord
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
+  validates_with SplitTimeValidator
 
   before_save :reset_age_from_birthdate
 

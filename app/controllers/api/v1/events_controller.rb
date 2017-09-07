@@ -74,9 +74,13 @@ class Api::V1::EventsController < ApiController
       params[:data] = File.read(params[:file])
     end
 
-    data_format = params[:data_format]&.to_sym
     strict = params[:load_records] != 'single'
-    importer = DataImport::Importer.new(params[:data], data_format, event: @event, current_user_id: current_user.id, strict: strict)
+    importer = DataImport::Importer.new(params[:data],
+                                        params[:data_format]&.to_sym,
+                                        event: @event,
+                                        current_user_id: current_user.id,
+                                        strict: strict,
+                                        unique_key: params[:unique_key])
     importer.import
 
     if strict

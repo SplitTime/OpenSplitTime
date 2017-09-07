@@ -98,6 +98,10 @@ class Api::V1::EventsController < ApiController
              status: importer.saved_records.present? ? :created : :unprocessable_entity
     end
 
+    if importer.saved_records.any? { |record| record.is_a?(Effort) }
+      EffortsAutoReconcileJob.perform_later(event: event)
+    end
+
     if importer.saved_records.present? && @event.available_live
       split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
       notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)

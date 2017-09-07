@@ -99,7 +99,7 @@ class Api::V1::EventsController < ApiController
     end
 
     if importer.saved_records.any? { |record| record.is_a?(Effort) }
-      EffortsAutoReconcileJob.perform_later(event: event)
+      EffortsAutoReconcileJob.perform_later(event: @event)
     end
 
     if importer.saved_records.present? && @event.available_live

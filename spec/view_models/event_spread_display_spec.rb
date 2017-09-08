@@ -11,10 +11,10 @@ RSpec.describe EventSpreadDisplay do
                                      'Chapman In', 'Chapman Out', 'Kamm Traverse In', 'Kamm Traverse Out', 'Putnam In', 'Putnam Out', 'Finish'] }
   let(:split_names_with_start) { split_names_without_start.unshift('Start') }
 
-  context 'when display_style is ampm' do
-    let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
+  describe '#split_header_names' do
+    context 'when display_style is ampm' do
+      let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
 
-    describe '#split_header_names' do
       before do
         FactoryGirl.reload
       end
@@ -42,6 +42,46 @@ RSpec.describe EventSpreadDisplay do
         actual = spread_display.split_header_names
         expected = split_names_without_start
         expect(actual).to eq(expected)
+      end
+    end
+  end
+
+  describe '#display_style' do
+    subject { EventSpreadDisplay.new(event: event, params: prepared_params) }
+
+    context 'when display_style is provided in the params' do
+      let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
+      let(:event) { instance_double('Event', simple?: true, available_live: true) }
+
+      it 'returns the provided display_style' do
+        expect(subject.display_style).to eq('ampm')
+      end
+    end
+
+    context 'when display_style is not provided in the params and the event has only start/finish splits' do
+      let(:prepared_params) { ActionController::Parameters.new(display_style: nil) }
+      let(:event) { instance_double('Event', simple?: true, available_live: true) }
+
+      it 'returns elapsed' do
+        expect(subject.display_style).to eq('elapsed')
+      end
+    end
+
+    context 'when display_style is not provided in the params and the event has multiple splits and is available live' do
+      let(:prepared_params) { ActionController::Parameters.new(display_style: nil) }
+      let(:event) { instance_double('Event', simple?: false, available_live: true) }
+
+      it 'returns elapsed' do
+        expect(subject.display_style).to eq('ampm')
+      end
+    end
+
+    context 'when display_style is not provided in the params and the event has multiple splits and is not available live' do
+      let(:prepared_params) { ActionController::Parameters.new(display_style: nil) }
+      let(:event) { instance_double('Event', simple?: false, available_live: false) }
+
+      it 'returns elapsed' do
+        expect(subject.display_style).to eq('elapsed')
       end
     end
   end

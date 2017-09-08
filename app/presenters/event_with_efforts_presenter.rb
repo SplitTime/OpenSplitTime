@@ -1,8 +1,8 @@
 class EventWithEffortsPresenter < BasePresenter
 
   attr_reader :event
-  delegate :id, :name, :course, :organization, :simple?, :beacon_url, :available_live, :home_time_zone,
-           :finish_split, :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, to: :event
+  delegate :id, :name, :course, :organization, :simple?, :beacon_url, :available_live, :home_time_zone, :finish_split,
+           :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, :available_live, to: :event
 
   def initialize(args)
     @event = args[:event]

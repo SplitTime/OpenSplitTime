@@ -15,7 +15,7 @@
         <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
         <td><%= effort.bib_number %></td>
         <td><%= effort.bio_historic %></td>
-        <td><%= effort.state_and_country %></td>
+        <td><%= effort.flexible_geolocation %></td>
         <td><%= "#{day_time_format(effort.start_time)} (#{offset_format_xxhyym(effort.start_offset)})" %></td>
         <td><%= effort.data_status %></td>
       </tr>

@@ -19,7 +19,7 @@
         </td>
         <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
         <td><%= effort_row.bio_historic %></td>
-        <td><%= effort_row.state_and_country %></td>
+        <td><%= effort_row.flexible_geolocation %></td>
         <td><%= effort_row.year_and_lap %></td>
         <td class="text-right"><%= time_format_hhmmss(effort_row.segment_seconds) %></td>
       </tr>

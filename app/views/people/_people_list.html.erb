@@ -13,7 +13,7 @@
       <tr>
         <td><strong><%= link_to person.full_name, person_path(person) %></strong></td>
         <td><%= person.bio %></td>
-        <td><%= person.state_and_country %></td>
+        <td><%= person.flexible_geolocation %></td>
         <td><%= pluralize(person.effort_count, 'effort') %></td>
         <td>
           <%= div_for(person) do %>

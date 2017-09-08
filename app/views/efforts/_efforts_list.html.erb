@@ -31,7 +31,7 @@
           <td><%= effort_row.bib_number %></td>
       <% end %>
       <td><%= effort_row.bio_historic %></td>
-      <td><%= effort_row.state_and_country %></td>
+      <td><%= effort_row.flexible_geolocation %></td>
       <td><%= effort_row.run_status %></td>
       <td><%= "#{effort_row.final_lap_split_name} (#{pdu('singular')} #{d(effort_row.final_distance)})" %></td>
       <% if @event_display.available_live %>

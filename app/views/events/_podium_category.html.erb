@@ -1,54 +1,50 @@
-<div class="podium-category">
-
-  <thead>
-  <tr>
-    <th><%= category.name %></th>
-    <% if @presenter.multiple_laps? %>
-        <th>Laps</th>
-    <% end %>
-    <th>Time</th>
-    <th>Name</th>
-    <th>Category</th>
-    <th>From</th>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% if category.efforts.present? %>
-      <% category.efforts.each_with_index do |effort, i| %>
-          <tr>
-            <td><%= "#{(i + 1).ordinalize} Place" %></td>
-            <% if @presenter.multiple_laps? %>
-                <td><%= effort.laps_finished %></td>
-            <% end %>
-            <td><%= time_format_hhmmss(effort.final_time) %></td>
-            <td><%= effort.full_name %></td>
-            <td><%= effort.bio_historic %></td>
-            <td><%= effort.flexible_geolocation %></td>
-          </tr>
-      <% end %>
-  <% else %>
-      <tr>
-        <td><strong>[Empty category]</strong></td>
-        <% if @presenter.multiple_laps? %>
-            <td></td>
-        <% end %>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+<thead>
+<tr>
+  <th><%= category.name %></th>
+  <% if @presenter.multiple_laps? %>
+      <th>Laps</th>
   <% end %>
-  <tr>
-    <td><br/></td>
-    <% if @presenter.multiple_laps? %>
-        <td><br/></td>
-    <% end %>
-    <td><br/></td>
-    <td><br/></td>
-    <td><br/></td>
-    <td><br/></td>
-  </tr>
-  </tbody>
+  <th>Time</th>
+  <th>Name</th>
+  <th>Category</th>
+  <th>From</th>
+</tr>
+</thead>
 
-</div>
+<tbody>
+<% if category.efforts.present? %>
+    <% category.efforts.each_with_index do |effort, i| %>
+        <tr>
+          <td><%= "#{(i + 1).ordinalize} Place" %></td>
+          <% if @presenter.multiple_laps? %>
+              <td><%= effort.laps_finished %></td>
+          <% end %>
+          <td><%= time_format_hhmmss(effort.final_time) %></td>
+          <td><%= effort.full_name %></td>
+          <td><%= effort.bio_historic %></td>
+          <td><%= effort.flexible_geolocation %></td>
+        </tr>
+    <% end %>
+<% else %>
+    <tr>
+      <td><strong>[Empty category]</strong></td>
+      <% if @presenter.multiple_laps? %>
+          <td></td>
+      <% end %>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+<% end %>
+<tr>
+  <td><br/></td>
+  <% if @presenter.multiple_laps? %>
+      <td><br/></td>
+  <% end %>
+  <td><br/></td>
+  <td><br/></td>
+  <td><br/></td>
+  <td><br/></td>
+</tr>
+</tbody>

@@ -2,6 +2,7 @@
   <thead>
   <tr>
     <th><%= category.name %></th>
+    <th>Time</th>
     <th>Name</th>
     <th>Category</th>
     <th>From</th>
@@ -12,13 +13,14 @@
       <% category.efforts.each_with_index do |effort, i| %>
           <tr>
             <td><%= (i + 1).ordinalize %></td>
+            <td><%= time_format_hhmmss(effort.final_time) %></td>
             <td><%= effort.full_name %></td>
             <td><%= effort.bio_historic %></td>
             <td><%= effort.flexible_geolocation %></td>
           </tr>
       <% end %>
   <% else %>
-      <tr><td></td><td><strong>[No efforts in this category]</strong></td></tr>
+      <tr><td></td><td></td><td><strong>[Empty category]</strong></td></tr>
   <% end %>
   <tr>
     <td><br/></td>

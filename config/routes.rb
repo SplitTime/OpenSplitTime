@@ -74,6 +74,7 @@ Rails.application.routes.draw do
     member { post :create_people }
     member { get :stage }
     member { get :spread }
+    member { get :podium }
     member { put :live_enable }
     member { put :live_disable }
     member { get :add_beacon }

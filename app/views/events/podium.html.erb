@@ -1,0 +1,15 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Podium - #{@presenter.name}" %>
+<% end %>
+
+<div class="row header">
+  <div class="col-xs-5">
+    <%= render 'event_info', view_object: @presenter, title: 'Podium' %>
+  </div>
+</div>
+
+<table class="table table-condensed table-striped">
+  <% @presenter.categories.each do |category| %>
+      <%= render 'podium_category', category: category %>
+  <% end %>
+</table>

@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :spread, :place, :analyze, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :spread, :podium, :place, :analyze, :drop_list]
   before_action :set_event, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :spread, :place, :analyze, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :spread, :podium, :place, :analyze, :drop_list]
 
   def index
     @events = policy_class::Scope.new(current_user, controller_class).viewable
@@ -182,6 +182,11 @@ class EventsController < ApplicationController
                   filename: "#{@event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
       end
     end
+  end
+
+  def podium
+    template = Results::FillTemplate.perform(event: @event, template_name: 'Ramble')
+    @presenter = PodiumPresenter.new(@event, template)
   end
 
 # Actions related to the event/split relationship

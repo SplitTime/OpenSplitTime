@@ -1,0 +1,27 @@
+<div class="podium-category">
+  <thead>
+  <tr>
+    <th><%= category.name %></th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>From</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if category.efforts.present? %>
+      <% category.efforts.each_with_index do |effort, i| %>
+          <tr>
+            <td><%= (i + 1).ordinalize %></td>
+            <td><%= effort.full_name %></td>
+            <td><%= effort.bio_historic %></td>
+            <td><%= effort.flexible_geolocation %></td>
+          </tr>
+      <% end %>
+  <% else %>
+      <tr><td></td><td><strong>[No efforts in this category]</strong></td></tr>
+  <% end %>
+  <tr>
+    <td><br/></td>
+  </tr>
+  </tbody>
+</div>

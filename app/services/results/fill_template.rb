@@ -10,11 +10,15 @@ module Results
     end
 
     def perform
-      Results::Compute.perform(efforts: event.efforts.ranked_with_finish_status,
+      Results::Compute.perform(efforts: efforts,
                                categories: template.categories,
                                podium_size: template.podium_size,
                                method: template.method)
       template
+    end
+
+    def efforts
+      event.efforts.ranked_with_finish_status.select(&:finished)
     end
 
     private

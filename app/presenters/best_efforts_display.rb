@@ -7,7 +7,7 @@ class BestEffortsDisplay < BasePresenter
   def initialize(course, params = {})
     @course = course
     @params = params
-    @events = Event.where(id: all_efforts.map(&:event_id).uniq, concealed: false).order(start_time: :desc).to_a
+    @events = Event.where(id: all_efforts.map(&:event_id).uniq).order(start_time: :desc).to_a
   end
 
   def filtered_efforts

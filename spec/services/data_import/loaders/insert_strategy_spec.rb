@@ -7,7 +7,7 @@ RSpec.describe DataImport::Loaders::InsertStrategy do
 
   let(:valid_proto_records) { [
       ProtoRecord.new(record_type: :effort, age: '39', gender: 'male', bib_number: '5',
-                      first_name: 'Jatest', last_name: 'Schtest', event_id: event.id, concealed: true,
+                      first_name: 'Jatest', last_name: 'Schtest', event_id: event.id,
                       children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, time_from_start: 0.0),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, time_from_start: 2581.36),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: 6308.86),
@@ -16,7 +16,7 @@ RSpec.describe DataImport::Loaders::InsertStrategy do
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, time_from_start: 16655.3),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, time_from_start: 17736.45)]),
       ProtoRecord.new(record_type: :effort, age: '31', gender: 'female', bib_number: '661',
-                      first_name: 'Castest', last_name: 'Pertest', event_id: event.id, concealed: true,
+                      first_name: 'Castest', last_name: 'Pertest', event_id: event.id,
                       children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, time_from_start: 0.0),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, time_from_start: 4916.63),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: 14398.48),
@@ -25,7 +25,7 @@ RSpec.describe DataImport::Loaders::InsertStrategy do
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, time_from_start: nil)]),
       ProtoRecord.new(record_type: :effort, age: '35', gender: 'female', bib_number: '633',
-                      first_name: 'Mictest', last_name: 'Hintest', event_id: event.id, concealed: true,
+                      first_name: 'Mictest', last_name: 'Hintest', event_id: event.id,
                       children: [ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: nil),
@@ -37,7 +37,7 @@ RSpec.describe DataImport::Loaders::InsertStrategy do
 
   let(:invalid_proto_record) { [
       ProtoRecord.new(record_type: :effort, age: '0', gender: '', bib_number: '62',
-                      first_name: 'N.n.', last_name: '62', event_id: event.id, concealed: true,
+                      first_name: 'N.n.', last_name: '62', event_id: event.id,
                       children: [ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: nil),
@@ -49,7 +49,7 @@ RSpec.describe DataImport::Loaders::InsertStrategy do
 
   let(:proto_with_invalid_child) { [
       ProtoRecord.new(record_type: :effort, age: '40', gender: 'male', bib_number: '500',
-                      first_name: 'Johtest', last_name: 'Apptest', event_id: event.id, concealed: true,
+                      first_name: 'Johtest', last_name: 'Apptest', event_id: event.id,
                       children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, time_from_start: 0.0),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, time_from_start: 1000.0),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: 2000.0),

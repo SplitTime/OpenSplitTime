@@ -19,7 +19,7 @@ RSpec.describe DataImport::Transformers::RaceResultSplitTimesStrategy do
       end
 
       context 'when the parsed structs contain one or more section splits in addition to the finish time' do
-        let(:event) { build_stubbed(:event_with_standard_splits, id: 1, concealed: true, in_sub_splits_only: true, splits_count: 7) }
+        let(:event) { build_stubbed(:event_with_standard_splits, id: 1, in_sub_splits_only: true, splits_count: 7) }
         let(:parsed_structs) { [
             OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
                            section1_split: '0:43:01.36', section4_split: '1:08:27.81', section5_split: '0:51:23.93',
@@ -54,7 +54,7 @@ RSpec.describe DataImport::Transformers::RaceResultSplitTimesStrategy do
 
         it 'returns rows with effort headers transformed to match the database' do
           expect(first_proto_record.to_h.keys.sort)
-              .to eq(%i(age bib_number concealed event_id first_name gender last_name))
+              .to eq(%i(age bib_number event_id first_name gender last_name))
         end
 
         it 'returns genders transformed to "male" or "female"' do
@@ -66,9 +66,8 @@ RSpec.describe DataImport::Transformers::RaceResultSplitTimesStrategy do
           expect(proto_records.map { |pr| pr[:last_name] }).to eq(%w(Schtest Ritest Pertest Sartest Hintest 62))
         end
 
-        it 'assigns event.id and event.concealed to :event_id and :concealed keys' do
+        it 'assigns event.id to :event_id key' do
           expect(proto_records.map { |pr| pr[:event_id] }).to eq([event.id] * parsed_structs.size)
-          expect(proto_records.map { |pr| pr[:concealed] }).to eq([event.concealed] * parsed_structs.size)
         end
 
         it 'sorts split headers and returns an array of children' do
@@ -196,7 +195,7 @@ RSpec.describe DataImport::Transformers::RaceResultSplitTimesStrategy do
         allow(event).to receive(:required_time_points).and_return(time_points)
       end
 
-      let(:event) { build_stubbed(:event_with_standard_splits, id: 1, concealed: true, in_sub_splits_only: true, splits_count: 6) }
+      let(:event) { build_stubbed(:event_with_standard_splits, id: 1, in_sub_splits_only: true, splits_count: 6) }
       let(:parsed_structs) { [OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
                                              section1_split: '0:43:01.36', section4_split: '1:08:27.81', section5_split: '0:51:23.93',
                                              section2_split: '1:02:07.50', section3_split: '0:52:34.70', section6_split: '0:18:01.15',

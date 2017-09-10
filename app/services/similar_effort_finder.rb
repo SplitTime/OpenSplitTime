@@ -64,8 +64,8 @@ class SimilarEffortFinder
 
   def ranged_split_times
     SplitTime.valid_status.includes(effort: :event)
-        .where(lap: time_point.lap, split_id: time_point.split_id, bitkey: time_point.bitkey,
-               efforts: {concealed: false})
+        .where(lap: time_point.lap, split_id: time_point.split_id, bitkey: time_point.bitkey)
+        .where('events.concealed = ?', 'f')
         .within_time_range(lowest_time, highest_time)
   end
 

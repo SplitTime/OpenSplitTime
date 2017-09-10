@@ -216,7 +216,7 @@ RSpec.describe Effort, type: :model do
       expect(effort.start_offset).to eq(expected_offset)
     end
   end
-  
+
   describe '#finished?' do
     context 'for an event with a fixed lap requirement' do
       let(:laps_required) { 2 }
@@ -445,6 +445,50 @@ RSpec.describe Effort, type: :model do
       it 'returns nil' do
         expect(subject.event_start_time).to be_nil
       end
+    end
+  end
+
+  describe '#concealed?' do
+    subject { build_stubbed(:effort, event: event) }
+
+    context 'when the associated event is concealed' do
+      let(:event) { build_stubbed(:event, concealed: true) }
+
+      it 'returns true' do
+        expect(subject.concealed?).to eq(true)
+      end
+    end
+
+    context 'when the associated event is not concealed' do
+      let(:event) { build_stubbed(:event, concealed: false) }
+
+      it 'returns false' do
+        expect(subject.concealed?).to eq(false)
+      end
+    end
+  end
+
+  describe '.concealed' do
+    let(:visible_event) { create(:event, concealed: false) }
+    let(:concealed_event) { create(:event, concealed: true) }
+    let(:visible_efforts) { create_list(:effort, 2, event: visible_event) }
+    let(:concealed_efforts) { create_list(:effort, 2, event: concealed_event) }
+
+    it 'limits the subject scope to efforts whose event is concealed' do
+      visible_efforts.each { |effort| expect(Effort.concealed).not_to include(effort) }
+      concealed_efforts.each { |effort| expect(Effort.concealed).to include(effort) }
+    end
+  end
+
+  describe '.visible' do
+    let(:visible_event) { create(:event, concealed: false) }
+    let(:concealed_event) { create(:event, concealed: true) }
+    let(:visible_efforts) { create_list(:effort, 2, event: visible_event) }
+    let(:concealed_efforts) { create_list(:effort, 2, event: concealed_event) }
+
+    it 'limits the subject scope to efforts whose event is visible' do
+      visible_efforts.each { |effort| expect(Effort.visible).to include(effort) }
+      concealed_efforts.each { |effort| expect(Effort.visible).not_to include(effort) }
     end
   end
 end

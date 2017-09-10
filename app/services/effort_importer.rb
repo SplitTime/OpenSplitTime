@@ -87,7 +87,7 @@ class EffortImporter
                                           first_name: row_hash[:first_name],
                                           last_name: row_hash[:last_name])
     row_hash.each {|attribute, data| effort.assign_attributes({attribute => data})}
-    effort.assign_attributes(created_by: current_user_id, updated_by: current_user_id, concealed: event.concealed?)
+    effort.assign_attributes(created_by: current_user_id, updated_by: current_user_id)
     effort.save
     effort
   end

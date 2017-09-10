@@ -1,22 +1,14 @@
-# Used for models with a 'concealed' attribute. Includes conditional logic for use on models
-# that do not currently but might contain a 'concealed' attribute in the future.
+# Used for models with a 'concealed' attribute.
+
+# Not used on the Effort module, which needs custom logic entirely based on the
+# associated event's concealed status.
 
 module Concealable
   extend ActiveSupport::Concern
 
-  include SetOperations
-
   included do
-    scope :concealed, -> { column_names.include?('concealed') ? where(concealed: true) : none }
-    scope :visible, -> { column_names.include?('concealed') ? where(concealed: false) : all }
-  end
-
-  def concealed?
-    attributes.has_key?('concealed') ? attributes['concealed'] : false
-  end
-
-  def visible?
-    attributes.has_key?('concealed') ? !attributes['concealed'] : true
+    scope :concealed, -> { where(concealed: true) }
+    scope :visible, -> { where(concealed: false) }
   end
 
   # May be overridden in models

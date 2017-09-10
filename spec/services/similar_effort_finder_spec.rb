@@ -9,7 +9,7 @@ RSpec.describe SimilarEffortFinder, type: :model do
     end
 
     it 'initializes when provided with a split_time' do
-      split_time = FactoryGirl.build_stubbed(:split_times_in_only)
+      split_time = build_stubbed(:split_times_in_only)
       expect { SimilarEffortFinder.new(split_time: split_time) }.not_to raise_error
     end
   end
@@ -17,7 +17,7 @@ RSpec.describe SimilarEffortFinder, type: :model do
   describe '#effort_ids' do
     it 'returns an empty array when no efforts meet the provided criteria' do
       effort_times = {}
-      split_time = FactoryGirl.build_stubbed(:split_times_in_only)
+      split_time = build_stubbed(:split_times_in_only)
       finder = SimilarEffortFinder.new(split_time: split_time)
       allow(finder).to receive(:effort_times).and_return(effort_times)
       expect(finder.effort_ids).to eq([])

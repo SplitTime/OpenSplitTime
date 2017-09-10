@@ -146,7 +146,8 @@ class EffortQuery < BaseQuery
                     split_times.lap, 
                     split_times.split_id, 
                     split_times.sub_split_bitkey,
-                    events.laps_required
+                    events.laps_required,
+                    events.concealed
             FROM efforts_scoped
               INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
               INNER JOIN events ON events.id = efforts_scoped.event_id 
@@ -164,7 +165,7 @@ class EffortQuery < BaseQuery
         as e2 
         WHERE (e1.effort_id = e2.effort_id AND e1.lap = e2.lap)) 
       as efforts 
-      WHERE efforts.concealed = 'f'
+      WHERE concealed = 'f'
       ORDER BY overall_rank
     SQL
     query.squish

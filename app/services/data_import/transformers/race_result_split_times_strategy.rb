@@ -106,7 +106,7 @@ module DataImport::Transformers
     end
 
     def global_attributes
-      {event_id: event.id, concealed: event.concealed}
+      {event_id: event.id}
     end
 
     def event

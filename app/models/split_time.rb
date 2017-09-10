@@ -6,7 +6,6 @@ class SplitTime < ApplicationRecord
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
 
   include Auditable
-  include Concealable
   include DataStatusMethods
   include GuaranteedFindable
   include Structpluck

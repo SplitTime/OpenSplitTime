@@ -259,12 +259,12 @@ describe Api::V1::StagingController do
         expect(response).to be_success
       end
 
-      it 'sets concealed status of the event and its related organization, efforts, and people to false' do
+      it 'sets concealed status of the event and its related organization and people to false' do
         event = existing_event
         organization = existing_organization
         event.update(concealed: true)
         organization.update(concealed: true)
-        efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: true)
+        efforts = FactoryGirl.create_list(:effort, 3, event: event)
         efforts.each { |effort| effort.person.update(concealed: true) }
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
@@ -272,7 +272,6 @@ describe Api::V1::StagingController do
         expect(event.concealed).to eq(false)
         expect(organization.concealed).to eq(false)
         event.efforts.each do |effort|
-          expect(effort.concealed).to eq(false)
           expect(effort.person.concealed).to eq(false)
         end
       end
@@ -287,12 +286,12 @@ describe Api::V1::StagingController do
         expect(response).to be_success
       end
 
-      it 'sets concealed status of the event and its related organization, efforts, and people to true' do
+      it 'sets concealed status of the event and its related organization and people to true' do
         event = existing_event
         organization = existing_organization
         event.update(concealed: false)
         organization.update(concealed: false)
-        efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
+        efforts = FactoryGirl.create_list(:effort, 3, event: event)
         efforts.each { |effort| effort.person.update(concealed: false) }
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
@@ -300,7 +299,6 @@ describe Api::V1::StagingController do
         expect(event.concealed).to eq(true)
         expect(organization.concealed).to eq(true)
         event.efforts.each do |effort|
-          expect(effort.concealed).to eq(true)
           expect(effort.person.concealed).to eq(true)
         end
       end
@@ -310,17 +308,16 @@ describe Api::V1::StagingController do
         organization = existing_organization
         event.update(concealed: false)
         organization.update(concealed: false)
-        efforts = FactoryGirl.create_list(:effort, 3, event: event, concealed: false)
+        efforts = FactoryGirl.create_list(:effort, 3, event: event)
         efforts.each { |effort| effort.person.update(concealed: false) }
         p_with_other_effort = efforts.first.person
-        FactoryGirl.create(:effort, person: p_with_other_effort, concealed: false)
+        FactoryGirl.create(:effort, person: p_with_other_effort)
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
         expect(event.concealed).to eq(true)
         expect(organization.concealed).to eq(true)
         event.efforts.each do |effort|
-          expect(effort.concealed).to eq(true)
           person = effort.person
           if person == p_with_other_effort
             expect(effort.person.concealed).to eq(false)

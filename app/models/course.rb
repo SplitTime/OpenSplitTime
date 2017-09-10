@@ -1,7 +1,6 @@
 class Course < ApplicationRecord
 
   include Auditable
-  include Concealable
   include SplitMethods
   extend FriendlyId
   friendly_id :name, use: :slugged

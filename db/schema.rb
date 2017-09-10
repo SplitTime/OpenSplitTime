@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905222021) do
+ActiveRecord::Schema.define(version: 20170909211800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,15 +48,15 @@ ActiveRecord::Schema.define(version: 20170905222021) do
   end
 
   create_table "efforts", force: :cascade do |t|
-    t.integer  "event_id",                                    null: false
+    t.integer  "event_id",                                null: false
     t.integer  "person_id"
     t.string   "wave"
     t.integer  "bib_number"
     t.string   "city",             limit: 64
     t.string   "state_code",       limit: 64
     t.integer  "age"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "first_name"
@@ -65,16 +65,15 @@ ActiveRecord::Schema.define(version: 20170905222021) do
     t.string   "country_code",     limit: 2
     t.date     "birthdate"
     t.integer  "data_status"
-    t.integer  "start_offset",                default: 0,     null: false
+    t.integer  "start_offset",                default: 0, null: false
     t.integer  "dropped_split_id"
-    t.boolean  "concealed",                   default: false
     t.string   "beacon_url"
     t.string   "report_url"
     t.string   "photo_url"
     t.integer  "dropped_lap"
     t.string   "phone",            limit: 15
     t.string   "email"
-    t.string   "slug",                                        null: false
+    t.string   "slug",                                    null: false
     t.index ["event_id"], name: "index_efforts_on_event_id", using: :btree
     t.index ["person_id"], name: "index_efforts_on_person_id", using: :btree
     t.index ["slug"], name: "index_efforts_on_slug", unique: true, using: :btree

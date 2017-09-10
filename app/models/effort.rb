@@ -10,7 +10,6 @@ class Effort < ApplicationRecord
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
   include Auditable
-  include Concealable
   include DataStatusMethods
   include GuaranteedFindable
   include LapsRequiredMethods
@@ -55,6 +54,8 @@ class Effort < ApplicationRecord
   scope :with_ordered_split_times,
         -> { eager_load(:split_times).includes(split_times: :split)
                  .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
+  scope :concealed, -> { includes(:event).where(events: {concealed: true}) }
+  scope :visible, -> { includes(:event).where(events: {concealed: false}) }
 
   delegate :organization, to: :event
 
@@ -242,6 +243,10 @@ class Effort < ApplicationRecord
         age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
   end
 
+  def concealed?
+    event.concealed?
+  end
+
   def unreconciled?
     person_id.nil?
   end
@@ -288,9 +293,5 @@ class Effort < ApplicationRecord
       split_time.stopped_here = false
       split_time.save if split_time.changed?
     end
-  end
-
-  def should_be_concealed?
-    event.concealed
   end
 end

@@ -25,8 +25,7 @@ class EventConcealedSetter
       set_resource_concealed(event, boolean)
       organization = event.organization
       set_resource_concealed(organization, organization.should_be_concealed?) if organization
-      event.efforts.each do |effort|
-        set_resource_concealed(effort, boolean)
+      event.efforts.includes(person: {efforts: :event}).each do |effort|
         person = effort.person
         set_resource_concealed(person, person.should_be_concealed?) if person
       end

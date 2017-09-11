@@ -133,18 +133,18 @@ RSpec.describe Person, type: :model do
     let(:visible_effort) { build_stubbed(:effort, event: visible_event) }
 
     it 'returns true if all efforts associated with the person are concealed' do
-      person = build_stubbed(:person, concealed: true, efforts: [concealed_effort])
+      person = build_stubbed(:person, efforts: [concealed_effort])
       expect(person.should_be_concealed?).to eq(true)
     end
 
     it 'returns false if any efforts associated with the person are visible' do
-      person = build_stubbed(:person, concealed: true, efforts: [concealed_effort, visible_effort])
+      person = build_stubbed(:person, efforts: [concealed_effort, visible_effort])
       expect(person.should_be_concealed?).to eq(false)
     end
 
-    it 'returns true if no efforts are associated with the person' do
-      person = build_stubbed(:person, concealed: true, efforts: [])
-      expect(person.should_be_concealed?).to eq(true)
+    it 'returns false if no efforts are associated with the person' do
+      person = build_stubbed(:person, efforts: [])
+      expect(person.should_be_concealed?).to eq(false)
     end
   end
 end

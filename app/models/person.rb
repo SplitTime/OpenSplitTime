@@ -96,7 +96,7 @@ class Person < ApplicationRecord
   end
 
   def should_be_concealed?
-    efforts.all?(&:concealed?) # This avoids an n + 1 query when called from EventConcealedSetter
+    efforts.present? && efforts.all?(&:concealed?) # This avoids an n + 1 query when called from EventConcealedSetter
   end
 
   # Methods related to matching and merging efforts with people

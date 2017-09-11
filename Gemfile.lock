@@ -217,6 +217,7 @@ GEM
     multi_json (1.12.1)
     nenv (0.3.0)
     netrc (0.11.0)
+    newrelic_rpm (4.4.0.336)
     nio4r (2.1.0)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
@@ -472,6 +473,7 @@ DEPENDENCIES
   jwt
   launchy
   momentjs-rails
+  newrelic_rpm
   paperclip (~> 5.0.0)
   pg (~> 0.20)
   pg_search

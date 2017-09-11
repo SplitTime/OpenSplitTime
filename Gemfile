@@ -51,6 +51,8 @@ gem 'american_date'
 gem 'paperclip', '~> 5.0.0'
 gem 'dalli'
 gem 'record_tag_helper'
+gem 'newrelic_rpm'
+
 
 group :development do
   gem 'bullet'

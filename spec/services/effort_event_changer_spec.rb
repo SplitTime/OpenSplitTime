@@ -28,7 +28,7 @@ RSpec.describe EffortEventChanger do
 
   describe '#assign_event' do
     context 'when the new event has the same splits as the old' do
-      let(:new_event) { create(:event, course: old_course, start_time: '2017-07-01 08:00:00') }
+      let!(:new_event) { create(:event, course: old_course, start_time: '2017-07-01 08:00:00') }
 
       before do
         old_event.splits << old_course.splits
@@ -63,12 +63,15 @@ RSpec.describe EffortEventChanger do
 
     context 'when the new event has different splits from the old' do
       let(:new_event) { create(:event, course: new_course) }
-      let(:new_course) { create(:course_with_standard_splits, splits_count: 4) }
+      let(:new_course) { create(:course, splits: new_splits) }
+      let(:new_split_1) { create(:start_split) }
+      let(:new_split_2) { create(:split, distance_from_start: old_course.ordered_splits.second.distance_from_start) }
+      let(:new_split_3) { create(:split, distance_from_start: old_course.ordered_splits.third.distance_from_start) }
+      let(:new_split_4) { create(:split, distance_from_start: new_split_3.distance_from_start + 10000) }
+      let(:new_splits) { [new_split_1, new_split_2, new_split_3, new_split_4] }
 
       before do
         FactoryGirl.reload
-        normalize_distances(old_course.splits)
-        normalize_distances(new_course.splits)
         old_event.splits << old_course.splits
         new_event.splits << new_course.splits
         create_split_times_for_effort
@@ -91,15 +94,17 @@ RSpec.describe EffortEventChanger do
       end
 
       it 'raises an error if distances do not coincide' do
-        split = new_event.splits.find_by(distance_from_start: 10000)
-        split.update(distance_from_start: 9999)
+        split = new_event.ordered_splits.second
+        split.update(distance_from_start: split.distance_from_start - 1)
+        new_event.reload
         expect { EffortEventChanger.new(effort: effort, event: new_event) }
             .to raise_error(/distances do not coincide/)
       end
 
       it 'raises an error if sub_splits do not coincide' do
-        split = new_event.splits.find_by(distance_from_start: 10000)
+        split = new_event.ordered_splits.second
         split.update(sub_split_bitmap: 1)
+        new_event.reload
         expect { EffortEventChanger.new(effort: effort, event: new_event) }
             .to raise_error(/sub splits do not coincide/)
       end
@@ -110,10 +115,6 @@ RSpec.describe EffortEventChanger do
         expect { EffortEventChanger.new(effort: effort, event: new_event) }
             .to raise_error(/laps exceed maximum required/)
       end
-    end
-
-    def normalize_distances(splits)
-      splits.each_with_index { |split, i| split.update(distance_from_start: i * 10000) }
     end
 
     def create_split_times_for_effort

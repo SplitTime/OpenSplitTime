@@ -22,6 +22,7 @@ class PeopleController < ApplicationController
   end
 
   def show
+    @presenter = PersonPresenter.new(@person, prepared_params)
     session[:return_to] = person_path(@person)
   end
 

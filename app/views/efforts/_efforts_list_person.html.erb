@@ -3,10 +3,10 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th><%= "#{@person.full_name}'s efforts:" %></th>
+    <th><%= "#{@presenter.full_name}'s efforts:" %></th>
     <th>From</th>
     <th class="text-right">Finish Time</th>
-    <% if @current_user && @current_user.admin? %>
+    <% if current_user&.admin? %>
         <th class="text-right">Actions</th>
     <% end %>
   </tr>
@@ -23,9 +23,9 @@
       <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
       <td><%= effort.state_and_country %></td>
       <td class="text-right"><%= effort.finish_status %></td>
-      <% if @current_user && @current_user.admin? %>
+      <% if current_user&.admin? %>
           <td class="text-right"><%= link_to 'Disassociate',
-                                             remove_effort_person_path(@person, effort_id: effort.id),
+                                             remove_effort_person_path(@presenter, effort_id: effort.id),
                                              method: :delete,
                                              class: 'btn btn-xs btn-danger' %></td>
       <% end %>

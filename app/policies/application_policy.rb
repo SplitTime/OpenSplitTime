@@ -11,6 +11,8 @@ class ApplicationPolicy
     def resolve_editable
       if user&.admin?
         scope.all
+      elsif user.nil?
+        scope.none
       else
         scope.where(id: (owned_records.ids + delegated_records.ids).uniq)
       end
@@ -20,6 +22,8 @@ class ApplicationPolicy
     def resolve_viewable
       if user&.admin?
         scope.all
+      elsif user.nil?
+        visible_records
       else
         scope.where(id: (visible_records.ids + owned_records.ids + delegated_records.ids).uniq)
       end
@@ -31,7 +35,7 @@ class ApplicationPolicy
     end
 
     def owned_records
-      user ? scope.where(created_by: user.id) : scope.none
+      scope.where(created_by: user.id)
     end
 
     # May be overridden by model policies

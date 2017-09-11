@@ -19,12 +19,8 @@ class Person < ApplicationRecord
 
   attr_accessor :suggested_match
 
-  # Outer joins are required to find people having no associated efforts
-  scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count])
-                                             .joins('LEFT OUTER JOIN efforts ON (efforts.person_id = people.id)')
-                                             .joins('LEFT OUTER JOIN events ON (events.id = efforts.event_id)')
-                                             .group('people.id') }
-  scope :ordered_by_name, -> { order(:last_name, :first_name) }
+  scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count]).joins(efforts: :event)
+                                             .where(events: {concealed: false}).group('people.id') }
 
   SQL = {age_and_effort_count: 'people.*, COUNT(efforts.id) as effort_count, ' +
       'ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) as current_age_from_efforts',

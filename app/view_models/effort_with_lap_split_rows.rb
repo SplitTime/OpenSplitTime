@@ -12,7 +12,7 @@ class EffortWithLapSplitRows
   end
 
   def event
-    @event ||= effort.event
+    @event ||= Event.where(id: effort.event_id).eager_load(:efforts, :splits).first
   end
 
   def total_time_in_aid
@@ -48,7 +48,7 @@ class EffortWithLapSplitRows
   end
 
   def ordered_split_times
-    @ordered_split_times ||= effort.ordered_split_times.to_a
+    @ordered_split_times ||= loaded_effort.ordered_split_times
   end
 
   def indexed_split_times
@@ -65,5 +65,9 @@ class EffortWithLapSplitRows
 
   def last_lap
     ordered_split_times.map(&:lap).last || 1
+  end
+
+  def loaded_effort
+    @loaded_effort ||= Effort.where(id: effort.id).eager_load(split_times: :split).eager_load(:event).eager_load(:person).first
   end
 end

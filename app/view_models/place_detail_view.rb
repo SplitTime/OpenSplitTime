@@ -11,7 +11,7 @@ class PlaceDetailView
   end
 
   def event
-    @event ||= Event.where(id: effort.id).eager_load(:splits, :efforts).first
+    @event ||= Event.where(id: effort.event_id).eager_load(:splits, :efforts).first
   end
 
   def efforts_passed(begin_time_point, end_time_point)

@@ -26,11 +26,11 @@ class PlaceDetailRow
   end
 
   def days_and_times
-    split_times.map { |st| st.try(:day_and_time) }
+    split_times.map { |st| st&.day_and_time }
   end
 
   def end_time_point
-    split_times.last.try(:time_point)
+    split_times.last&.time_point
   end
 
   def encountered_ids # Preserve multiples to enable frequency testing

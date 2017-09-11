@@ -5,13 +5,13 @@ class PlaceDetailView
            :overall_rank, :gender_rank, to: :effort
 
   def initialize(args_effort)
-    @effort ||= args_effort.enriched || args_effort
+    @effort = args_effort.enriched || args_effort
     @place_detail_rows = []
     create_place_detail_rows
   end
 
   def event
-    @event ||= effort.event
+    @event ||= Event.where(id: effort.id).eager_load(:splits, :efforts).first
   end
 
   def efforts_passed(begin_time_point, end_time_point)
@@ -78,7 +78,7 @@ class PlaceDetailView
   end
 
   def effort_rank(time_point)
-    indexed_effort_split_times[time_point].try(:time_point_rank)
+    indexed_effort_split_times[time_point]&.time_point_rank
   end
 
   def indexed_segment_times(begin_time_point, end_time_point)
@@ -87,8 +87,8 @@ class PlaceDetailView
     begin_split_times = grouped_split_times[begin_time_point].index_by(&:effort_id)
     end_split_times = grouped_split_times[end_time_point].index_by(&:effort_id)
     event_efforts.each do |effort|
-      day_and_time_begin = begin_split_times[effort.id].try(:day_and_time)
-      day_and_time_end = end_split_times[effort.id].try(:day_and_time)
+      day_and_time_begin = begin_split_times[effort.id]&.day_and_time
+      day_and_time_end = end_split_times[effort.id]&.day_and_time
       result[effort.id] = {in: day_and_time_begin, out: day_and_time_end}
     end
     result
@@ -126,7 +126,7 @@ class PlaceDetailView
   end
 
   def grouped_split_times
-    return @grouped_split_times if @grouped_split_times.present?
+    return @grouped_split_times if defined?(@grouped_split_times)
     @grouped_split_times = event_split_times.group_by(&:time_point)
     @grouped_split_times.default = []
     @grouped_split_times

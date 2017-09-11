@@ -52,11 +52,13 @@ class SplitTimeQuery < BaseQuery
                          effort_gender desc, 
                          effort_age desc,
                          tiebreaker_id) 
-            as time_point_rank
+            as time_point_rank,
+            day_and_time,
+            event_home_zone
       FROM
           (SELECT time_from_start as subquery_time, #{split_time_fields}, 
             (events.start_time + efforts.start_offset * interval '1 second' + time_from_start * interval '1 second') as day_and_time,
-            efforts.gender as effort_gender, efforts.age as effort_age, efforts.id as tiebreaker_id
+            efforts.gender as effort_gender, efforts.age as effort_age, efforts.id as tiebreaker_id, events.home_time_zone as event_home_zone
           FROM split_times_scoped
           INNER JOIN efforts ON efforts.id = split_times_scoped.effort_id
           INNER JOIN events ON events.id = efforts.event_id

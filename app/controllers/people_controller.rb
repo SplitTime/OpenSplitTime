@@ -13,10 +13,11 @@ class PeopleController < ApplicationController
   end
 
   def index
+    params[:sort] ||= 'last_name,first_name'
     @people = policy_class::Scope.new(current_user, controller_class).viewable
                         .search(prepared_params[:search])
                         .with_age_and_effort_count
-                        .ordered_by_name
+                        .order(prepared_params[:sort])
                         .paginate(page: params[:page], per_page: 25)
     session[:return_to] = people_path
   end

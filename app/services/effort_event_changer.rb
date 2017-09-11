@@ -9,7 +9,7 @@ class EffortEventChanger
     @effort = args[:effort]
     @event = args[:event]
     @old_event ||= effort.event
-    @split_times ||= effort.ordered_split_times.select('split_times.*, splits.distance_from_start')
+    @split_times ||= effort.ordered_split_times
     verify_compatibility
   end
 

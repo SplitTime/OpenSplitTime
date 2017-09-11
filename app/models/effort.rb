@@ -218,8 +218,8 @@ class Effort < ApplicationRecord
   end
 
   def ordered_split_times(lap_split = nil)
-    lap_split ? split_times.where(lap: lap_split.lap, split: lap_split.split)
-                    .order(:sub_split_bitkey) : split_times.ordered
+    lap_split ? split_times.select { |st| st.lap_split == lap_split }.sort_by(&:bitkey) :
+        split_times.sort_by { |st| [st.lap, st.distance_from_start, st.bitkey] }
   end
 
   def ordered_splits

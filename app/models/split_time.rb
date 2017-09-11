@@ -14,6 +14,7 @@ class SplitTime < ApplicationRecord
   has_many :live_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
   attr_accessor :live_time_id, :time_exists
+  delegate :distance_from_start, to: :split
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }
@@ -169,7 +170,7 @@ class SplitTime < ApplicationRecord
   end
 
   def event_home_zone
-    @event_home_zone ||= effort.event_home_zone
+    @event_home_zone ||= attributes['event_home_zone'] || effort.event_home_zone
   end
 
   def effort_start_offset

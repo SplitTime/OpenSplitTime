@@ -491,4 +491,30 @@ RSpec.describe Effort, type: :model do
       concealed_efforts.each { |effort| expect(Effort.visible).not_to include(effort) }
     end
   end
+
+  describe '#ordered_split_times' do
+    let(:in_bitkey) { SubSplit::IN_BITKEY }
+    let(:out_bitkey) { SubSplit::OUT_BITKEY }
+    let(:effort) { build_stubbed(:effort, split_times: split_times) }
+    let(:splits) { build_stubbed_list(:split, 3) }
+    let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: splits.second, bitkey: in_bitkey) }
+    let(:split_time_2) { build_stubbed(:split_time, lap: 1, split: splits.second, bitkey: out_bitkey) }
+    let(:split_time_3) { build_stubbed(:split_time, lap: 1, split: splits.third, bitkey: in_bitkey) }
+    let(:split_time_4) { build_stubbed(:split_time, lap: 2, split: splits.first, bitkey: in_bitkey) }
+    let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4].shuffle }
+
+    context 'when called without a lap_split argument' do
+      it 'returns split_times in the correct order taking into account lap, split, and bitkey' do
+        expect(effort.ordered_split_times).to eq([split_time_1, split_time_2, split_time_3, split_time_4])
+      end
+    end
+
+    context 'when called with a lap_split argument' do
+      let(:lap_split) { LapSplit.new(1, splits.second) }
+
+      it 'returns only those split_times that belong to the given lap_split' do
+        expect(effort.ordered_split_times(lap_split)).to eq([split_time_1, split_time_2])
+      end
+    end
+  end
 end

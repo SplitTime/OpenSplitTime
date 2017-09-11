@@ -4,7 +4,7 @@
         <div class="input-group">
           <span class="input-group-btn">
             <%= text_field_tag 'filter[search]',
-                               params[:filter] && params[:filter][:search],
+                               prepared_params[:search],
                                placeholder: 'First name, last name, state, or country',
                                autofocus: true,
                                class: 'form-control search-box input-sm' %>

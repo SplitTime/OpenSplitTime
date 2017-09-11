@@ -1,4 +1,22 @@
-module ToggleSubscriptionHelper
+module ToggleHelper
+
+  def link_to_toggle_check_in(effort)
+    if effort.checked_in?
+      url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
+      link_to_with_icon("glyphicon glyphicon-check", 'Checked', url, {
+          method: 'patch',
+          remote: true,
+          class: "check-in btn btn-sm btn-success"
+      })
+    else
+      url = effort_path(effort, effort: {checked_in: true}, button: :check_in)
+      link_to_with_icon("glyphicon glyphicon-unchecked", 'Check In', url, {
+          method: 'patch',
+          remote: true,
+          class: "check-in btn btn-sm btn-default"
+      })
+    end
+  end
 
   def link_to_toggle_email_subscription(person)
     if @current_user

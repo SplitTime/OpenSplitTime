@@ -7,6 +7,7 @@
     <th>From</th>
     <th>Scheduled Start Time</th>
     <th>Data Status</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -18,6 +19,11 @@
         <td><%= effort.flexible_geolocation %></td>
         <td><%= "#{day_time_format(effort.start_time)} (#{offset_format_xxhyym(effort.start_offset)})" %></td>
         <td><%= effort.data_status %></td>
+        <td>
+          <%= div_for(effort) do %>
+              <%= link_to_toggle_check_in(effort) %>
+          <% end %>
+        </td>
       </tr>
   <% end %>
   </tbody>

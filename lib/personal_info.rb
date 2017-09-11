@@ -6,7 +6,7 @@ module PersonalInfo
   end
 
   def bio_historic
-    [gender.try(:titlecase), age.try(:to_i)].compact.join(', ')
+    [gender&.titlecase, age&.to_i].compact.join(', ')
   end
 
   def country
@@ -23,20 +23,20 @@ module PersonalInfo
   end
 
   def flexible_geolocation
-    [city, flexible_state, flexible_country].compact.join(', ')
+    [city, flexible_state, flexible_country].select(&:present?).join(', ')
   end
 
   def full_bio
-    [bio, flexible_geolocation].compact.join(' • ')
+    [bio, flexible_geolocation].select(&:present?).join(' • ')
   end
 
   def full_name
-    [first_name.presence, last_name.presence].compact.join(' ')
+    [first_name, last_name].select(&:present?).join(' ')
   end
   alias_method :name, :full_name
 
   def personal_info
-    [full_name, bio, flexible_geolocation].compact.join(' – ')
+    [full_name, bio, flexible_geolocation].select(&:present?).join(' – ')
   end
 
   def state
@@ -44,7 +44,7 @@ module PersonalInfo
   end
 
   def state_and_country
-    [state_name, country_name].compact.join(', ')
+    [state_name, country_name].select(&:present?).join(', ')
   end
 
   module ClassMethods

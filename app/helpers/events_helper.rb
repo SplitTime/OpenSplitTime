@@ -105,11 +105,11 @@ module EventsHelper
               data: {confirm: 'NOTE: This will create a starting split time for the ' +
                   "#{pluralize(view_object.ready_efforts_count, 'unstarted effort')} " +
                   'scheduled to start before the current time. Are you sure you want to proceed?'},
-              class: 'btn btn-sm btn-success'
+              class: 'start-ready-efforts btn btn-sm btn-success'
     else
       link_to 'Nothing to start', '#', disabled: true,
               data: {confirm: 'No efforts are ready to start. Reload the page to check again.'},
-              class: 'btn btn-sm btn-success'
+              class: 'start-ready-efforts btn btn-sm btn-success'
     end
   end
 

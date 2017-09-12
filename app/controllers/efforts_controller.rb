@@ -47,6 +47,8 @@ class EffortsController < ApplicationController
 
     if @effort.update(permitted_params)
       if params[:button] == 'check_in'
+        event = @effort.event
+        @stage_display = EventStageDisplay.new(event: event, params: {})
         render :toggle_check_in
       else
         redirect_to effort_path(@effort)

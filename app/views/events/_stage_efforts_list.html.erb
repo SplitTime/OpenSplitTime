@@ -1,0 +1,73 @@
+<% if @event_stage.efforts_count < 1 %>
+    <strong>No efforts are associated with this event.</strong>
+<% else %>
+    <div class="row">
+      <div class="col-xs-5">
+        <%= render 'effort_lookup_stage', event: @event_stage.event %>
+      </div>
+      <div class="col-xs-7 text-right">
+        <div class="btn-group">
+          <%= link_to_check_in_filters('unchecked', 'Not checked', false, false) %>
+          <%= link_to_check_in_filters('check', 'Checked in', true, false) %>
+          <%= link_to_check_in_filters('expand', 'Started', nil, true) %>
+        </div>
+          <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil) %>
+      </div>
+    </div>
+
+    <hr>
+    <% if @event_stage.filtered_efforts_count > 0 %>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <strong><%= "Returned #{@event_stage.filtered_efforts_count} of #{@event_stage.efforts_count} efforts for #{@event_stage.name}" %></strong>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Bib&num;</th>
+            <th>Category</th>
+            <th>From</th>
+            <th>Scheduled Start Time</th>
+            <th>Data Status</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @event_stage.filtered_efforts.each do |effort| %>
+              <tr>
+                <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+                <td><%= effort.bib_number %></td>
+                <td><%= effort.bio_historic %></td>
+                <td><%= effort.flexible_geolocation %></td>
+                <td><%= "#{day_time_format(effort.start_time)} (#{offset_format_xxhyym(effort.start_offset)})" %></td>
+                <td><%= effort.data_status %></td>
+                <td>
+                  <%= div_for(effort) do %>
+                      <%= link_to_toggle_check_in(effort, @event_stage.effort_started?(effort)) %>
+                  <% end %>
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+
+    <% else %>
+        <strong>No results match that search.</strong>
+    <% end %>
+<% end %>

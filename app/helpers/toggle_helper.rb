@@ -1,21 +1,29 @@
 module ToggleHelper
 
+  def link_to_check_in_filters(glyphicon, text, checked_in, started)
+    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
+                      stage_event_path(@event_stage, checked_in: checked_in, started: started),
+                      {class: 'btn btn-sm btn-primary',
+                       disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started})
+  end
+
   def link_to_toggle_check_in(effort, started)
     if started
-      link_to_with_icon("glyphicon glyphicon-expand", 'Started', '#', {disabled: true, class: 'btn btn-sm btn-primary'})
+      link_to_with_icon("glyphicon glyphicon-expand", 'Started', '#', {
+          disabled: true, class: 'btn btn-sm btn-primary btn-block'})
     elsif effort.checked_in?
       url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
-      link_to_with_icon("glyphicon glyphicon-check", 'Checked', url, {
+      link_to_with_icon("glyphicon glyphicon-check", 'Checked in', url, {
           method: 'patch',
           remote: true,
-          class: "check-in btn btn-sm btn-success"
+          class: 'check-in btn btn-sm btn-success btn-block'
       })
     else
       url = effort_path(effort, effort: {checked_in: true}, button: :check_in)
-      link_to_with_icon("glyphicon glyphicon-unchecked", 'Check In', url, {
+      link_to_with_icon("glyphicon glyphicon-unchecked", 'Check in', url, {
           method: 'patch',
           remote: true,
-          class: "check-in btn btn-sm btn-default"
+          class: 'check-in btn btn-sm btn-default btn-block'
       })
     end
   end

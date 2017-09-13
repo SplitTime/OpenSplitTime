@@ -15,14 +15,6 @@ class CoursePolicy < ApplicationPolicy
     user.admin?
   end
 
-  def segment_picker?
-    true
-  end
-
-  def plan_effort?
-    true
-  end
-
   def post_event_course_org?
     user.authorized_to_edit?(course)
   end

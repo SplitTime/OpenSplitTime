@@ -1,7 +1,9 @@
 module ToggleHelper
 
-  def link_to_toggle_check_in(effort)
-    if effort.checked_in?
+  def link_to_toggle_check_in(effort, started)
+    if started
+      link_to_with_icon("glyphicon glyphicon-expand", 'Started', '#', {disabled: true, class: 'btn btn-sm btn-primary'})
+    elsif effort.checked_in?
       url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
       link_to_with_icon("glyphicon glyphicon-check", 'Checked', url, {
           method: 'patch',

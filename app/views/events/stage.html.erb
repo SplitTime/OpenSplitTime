@@ -171,30 +171,25 @@
         <strong>No efforts are associated with this event.</strong>
     <% else %>
         <%= render 'effort_lookup_stage', event: @event_stage.event %>
-        <% if @event_stage.filtered_efforts_count > 0 %>
-            <hr>
-            <div class="row">
-              <div class="col-xs-8">
-                <strong><%= "Returned #{@event_stage.filtered_efforts_count} of #{@event_stage.efforts_count} efforts for #{@event_stage.name}" %></strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-8">
-                <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
-              </div>
-            </div>
+        <hr>
+        <div class="row">
+          <div class="col-xs-8">
+            <strong><%= "Returned #{@event_stage.filtered_efforts_count} of #{@event_stage.efforts_count} efforts for #{@event_stage.name}" %></strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
 
-            <%= render 'efforts/efforts_list_stage', efforts: @event_stage.event_efforts %>
+        <%= render 'efforts/efforts_list_stage', efforts: @event_stage.event_efforts %>
 
-            <div class="row">
-              <div class="col-xs-8">
-                <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
-              </div>
-            </div>
-        <% else %>
-            <hr>
-            <strong>No results match that search.</strong>
-        <% end %>
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
     <% end %>
 <% end %>
 

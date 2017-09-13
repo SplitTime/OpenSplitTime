@@ -16,11 +16,11 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def segment_picker?
-    user.present?
+    true
   end
 
   def plan_effort?
-    user.present?
+    true
   end
 
   def post_event_course_org?

@@ -41,8 +41,8 @@ describe String do
     end
   end
 
-  describe '#phrase_in_common' do
-    subject { string.phrase_in_common(other) }
+  describe '#longest_common_phrase' do
+    subject { string.longest_common_phrase(other) }
 
     context 'when the two strings have one word in common at the start of the string' do
       let(:string) { 'hello world' }

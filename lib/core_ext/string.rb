@@ -17,7 +17,7 @@ class String
     (self =~ /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i).present?
   end
 
-  def phrase_in_common(other)
+  def longest_common_phrase(other)
     n = [size, other&.size || 0].min
     while n > 0 do
       other_words = other.downcase.split.each_cons(n)

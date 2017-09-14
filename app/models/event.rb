@@ -11,6 +11,7 @@ class Event < ApplicationRecord
   strip_attributes collapse_spaces: true
   belongs_to :course
   belongs_to :organization
+  belongs_to :event_group
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations

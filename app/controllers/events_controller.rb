@@ -280,9 +280,8 @@ class EventsController < ApplicationController
   private
 
   def set_event
-    @event = params[:id].uuid? ?
-                 Event.find_by!(staging_id: params[:id]) :
-                 Event.friendly.find(params[:id])
+    params[:id] = Deprecation::SubstituteSlug.perform(:events, params[:id])
+    @event = Event.friendly.find(params[:id])
   end
 
   def update_beacon_url(url)

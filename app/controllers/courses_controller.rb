@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :segment_picker]
+  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :segment_picker, :plan_effort]
   before_action :set_course, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :best_efforts, :segment_picker]
+  after_action :verify_authorized, except: [:index, :show, :best_efforts, :segment_picker, :plan_effort]
 
   def index
     @courses = Course.paginate(page: params[:page], per_page: 25).order(:name)
@@ -80,7 +80,6 @@ class CoursesController < ApplicationController
 
   def plan_effort
     course = Course.friendly.find(params[:id])
-    authorize course
     unless course.events
       flash[:danger] = "No events yet held on this course"
       redirect_to course_path(course)

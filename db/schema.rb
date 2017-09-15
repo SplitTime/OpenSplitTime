@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20170915061215) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "slug",                            null: false
-    t.integer  "organization_id",                 null: false
+    t.integer  "organization_id"
     t.index ["organization_id"], name: "index_event_groups_on_organization_id", using: :btree
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true, using: :btree
   end

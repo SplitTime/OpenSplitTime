@@ -5,8 +5,6 @@ class AddOrganizationToEventGroups < ActiveRecord::Migration[5.0]
     EventGroup.all.each do |event_group|
       event_group.update!(organization_id: event_group.events.first.organization.id)
     end
-
-    change_column_null :event_groups, :organization_id, false
   end
 
   def self.down

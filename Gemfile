@@ -20,7 +20,6 @@ gem 'roo'
 gem 'roo-xls'
 gem 'carmen'
 gem 'gmaps4rails'
-gem 'better_errors'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'api-pagination'
@@ -61,6 +60,7 @@ group :development do
   gem 'rails-erd'
   gem 'spring'
   gem 'web-console', '~> 3.0'
+  gem 'better_errors', '>= 2.3'
 end
 
 group :test do

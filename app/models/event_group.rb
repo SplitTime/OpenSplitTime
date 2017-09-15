@@ -11,4 +11,8 @@ class EventGroup < ApplicationRecord
   def to_s
     name
   end
+
+  def ordered_events
+    events.sort_by { |event| [-event.start_time.to_i, event.name] }
+  end
 end

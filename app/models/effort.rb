@@ -95,8 +95,8 @@ class Effort < ApplicationRecord
     assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
   end
 
-  def events_in_group
-    event&.events_in_group
+  def events_within_group
+    event&.events_within_group
   end
 
   def event_group

@@ -323,8 +323,8 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#events_in_group' do
-    subject { event.events_in_group }
+  describe '#events_within_group' do
+    subject { event.events_within_group }
     let(:event_group_1) { create(:event_group) }
     let(:event_group_2) { create(:event_group) }
     let(:event) { create(:event, event_group: event_group_1) }

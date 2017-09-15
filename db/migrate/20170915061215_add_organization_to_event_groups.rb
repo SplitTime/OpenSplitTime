@@ -3,7 +3,12 @@ class AddOrganizationToEventGroups < ActiveRecord::Migration[5.0]
     add_reference :event_groups, :organization, foreign_key: true
 
     EventGroup.all.each do |event_group|
-      event_group.update!(organization_id: event_group.events.first.organization.id)
+      event = event_group.events.first
+      event_group.assign_attributes(organization_id: event.organization.id,
+                                    available_live: event.available_live,
+                                    auto_live_times: event.auto_live_times,
+                                    concealed: event.concealed)
+      event_group.save!
     end
   end
 

@@ -5,7 +5,7 @@
   <div class="col-xs-5">
     <%= render 'event_info', view_object: @event_stage, title: 'Admin' %>
   </div>
-  <div class="col-xs-7 page-navigation">
+  <div id='<%= "event_#{@event_stage.id}" %>'class="col-xs-7 page-navigation">
     <div class="row">
       <%= link_to_enter_live_entry(@event_stage, @current_user) %>
       <%= render 'view_buttons', view_object: @event_stage %>
@@ -167,35 +167,7 @@
 <% elsif @event_stage.view_text == 'times' %>
     <%= render 'live_times_list', live_times: @event_stage.filtered_live_times, view_model: @event_stage %>
 <% else %>
-    <% if @event_stage.efforts_count < 1 %>
-        <strong>No efforts are associated with this event.</strong>
-    <% else %>
-        <%= render 'effort_lookup_stage', event: @event_stage.event %>
-        <% if @event_stage.filtered_efforts_count > 0 %>
-            <hr>
-            <div class="row">
-              <div class="col-xs-8">
-                <strong><%= "Returned #{@event_stage.filtered_efforts_count} of #{@event_stage.efforts_count} efforts for #{@event_stage.name}" %></strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-8">
-                <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
-              </div>
-            </div>
-
-            <%= render 'efforts/efforts_list_stage', efforts: @event_stage.event_efforts %>
-
-            <div class="row">
-              <div class="col-xs-8">
-                <%= will_paginate(@event_stage.filtered_efforts, inner_window: 2, outer_window: 0) %>
-              </div>
-            </div>
-        <% else %>
-            <hr>
-            <strong>No results match that search.</strong>
-        <% end %>
-    <% end %>
+    <%= render 'stage_efforts_list' %>
 <% end %>
 
 <script>

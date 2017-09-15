@@ -48,6 +48,10 @@ class Event < ApplicationRecord
     where('start_time < ?', Time.now).order(start_time: :desc).first
   end
 
+  def events_in_group
+    event_group&.events
+  end
+
   def home_time_zone_exists
     unless home_time_zone_valid?
       errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")

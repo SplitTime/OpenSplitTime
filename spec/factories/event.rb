@@ -6,6 +6,7 @@ FactoryGirl.define do
     laps_required 1
     sequence(:staging_id) { SecureRandom.uuid }
     course
+    event_group
 
     transient { without_slug false }
 

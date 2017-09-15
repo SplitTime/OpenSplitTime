@@ -322,4 +322,19 @@ RSpec.describe Event, type: :model do
       end
     end
   end
+
+  describe '#events_in_group' do
+    subject { event.events_in_group }
+    let(:event_group_1) { create(:event_group) }
+    let(:event_group_2) { create(:event_group) }
+    let(:event) { create(:event, event_group: event_group_1) }
+    let(:event_same_group) { create(:event, event_group: event_group_1) }
+    let(:event_different_group) { create(:event, event_group: event_group_2) }
+
+    it 'returns the event and other members of the group as an array' do
+      expect(subject).to include(event)
+      expect(subject).to include(event_same_group)
+      expect(subject).not_to include(event_different_group)
+    end
+  end
 end

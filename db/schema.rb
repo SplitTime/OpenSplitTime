@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911220756) do
+ActiveRecord::Schema.define(version: 20170915061215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,21 @@ ActiveRecord::Schema.define(version: 20170911220756) do
     t.index ["slug"], name: "index_efforts_on_slug", unique: true, using: :btree
   end
 
+  create_table "event_groups", force: :cascade do |t|
+    t.string   "name",                            null: false
+    t.boolean  "available_live",  default: false
+    t.boolean  "auto_live_times", default: false
+    t.boolean  "concealed",       default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.string   "slug",                            null: false
+    t.integer  "organization_id",                 null: false
+    t.index ["organization_id"], name: "index_event_groups_on_organization_id", using: :btree
+    t.index ["slug"], name: "index_event_groups_on_slug", unique: true, using: :btree
+  end
+
   create_table "events", force: :cascade do |t|
     t.integer  "course_id",                                                        null: false
     t.integer  "organization_id"
@@ -97,7 +112,9 @@ ActiveRecord::Schema.define(version: 20170911220756) do
     t.string   "slug",                                                             null: false
     t.boolean  "auto_live_times",            default: false
     t.string   "home_time_zone",                                                   null: false
+    t.integer  "event_group_id"
     t.index ["course_id"], name: "index_events_on_course_id", using: :btree
+    t.index ["event_group_id"], name: "index_events_on_event_group_id", using: :btree
     t.index ["organization_id"], name: "index_events_on_organization_id", using: :btree
     t.index ["slug"], name: "index_events_on_slug", unique: true, using: :btree
     t.index ["staging_id"], name: "index_events_on_staging_id", unique: true, using: :btree
@@ -295,7 +312,9 @@ ActiveRecord::Schema.define(version: 20170911220756) do
   add_foreign_key "aid_stations", "splits"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"
+  add_foreign_key "event_groups", "organizations"
   add_foreign_key "events", "courses"
+  add_foreign_key "events", "event_groups"
   add_foreign_key "events", "organizations"
   add_foreign_key "live_times", "events"
   add_foreign_key "live_times", "split_times"

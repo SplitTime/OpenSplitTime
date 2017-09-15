@@ -40,7 +40,7 @@ RSpec.describe Effort, type: :model do
     end
 
     it 'is invalid without an event_id' do
-      effort = build_stubbed(:effort, event: nil)
+      effort = build_stubbed(:effort, event_id: nil)
       expect(effort).not_to be_valid
       expect(effort.errors[:event_id]).to include("can't be blank")
     end
@@ -63,12 +63,12 @@ RSpec.describe Effort, type: :model do
       expect(effort.errors[:gender]).to include("can't be blank")
     end
 
-    it 'does not permit more than one effort by a person in a given event' do
+    it 'does not permit more than one effort by a person in a given event group' do
       existing_person = create(:person)
       existing_effort = create(:effort, person: existing_person)
       effort = build_stubbed(:effort, event: existing_effort.event, person: existing_person)
       expect(effort).not_to be_valid
-      expect(effort.errors[:person_id]).to include('has already been taken')
+      expect(effort.errors[:person]).to include(/has already been entered in/)
     end
 
     it 'permits more than one effort in a given event with unassigned people' do
@@ -81,7 +81,15 @@ RSpec.describe Effort, type: :model do
       existing_effort = create(:effort, bib_number: 20)
       effort = build_stubbed(:effort, event: existing_effort.event, bib_number: 20)
       expect(effort).not_to be_valid
-      expect(effort.errors[:bib_number]).to include('has already been taken')
+      expect(effort.errors[:bib_number]).to include(/already exists/)
+    end
+
+    it 'does not permit duplicate bib_numbers within a given event_group' do
+      existing_effort = create(:effort, bib_number: 20)
+      other_event = create(:event, event_group: existing_effort.event.event_group)
+      effort = build_stubbed(:effort, event: other_event, bib_number: 20)
+      expect(effort).not_to be_valid
+      expect(effort.errors[:bib_number]).to include(/already exists/)
     end
   end
 

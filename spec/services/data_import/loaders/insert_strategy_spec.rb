@@ -121,7 +121,7 @@ RSpec.describe DataImport::Loaders::InsertStrategy do
         expect(subject.invalid_records.size).to eq(1)
         subject_record = subject.invalid_records.first
         expect(subject_record.bib_number).to eq(valid_proto_records.first[:bib_number].to_i)
-        expect(subject_record.errors.full_messages).to include('Bib number has already been taken')
+        expect(subject_record.errors.full_messages).to include(/Bib number [\d] already exists/)
       end
     end
 

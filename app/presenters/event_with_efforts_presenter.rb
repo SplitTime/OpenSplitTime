@@ -2,7 +2,8 @@ class EventWithEffortsPresenter < BasePresenter
 
   attr_reader :event
   delegate :id, :name, :course, :organization, :simple?, :beacon_url, :available_live, :home_time_zone, :finish_split,
-           :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, :available_live, to: :event
+           :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, :available_live, :event_group,
+           :ordered_events_within_group, to: :event
 
   def initialize(args)
     @event = args[:event]
@@ -55,6 +56,14 @@ class EventWithEffortsPresenter < BasePresenter
 
   def organization_name
     organization&.name
+  end
+
+  def prior_event_within_group
+    ordered_events_within_group.elements_before(event)&.last
+  end
+
+  def next_event_within_group
+    ordered_events_within_group.elements_after(event)&.first
   end
 
   def event_finished?

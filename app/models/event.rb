@@ -11,6 +11,7 @@ class Event < ApplicationRecord
   strip_attributes collapse_spaces: true
   belongs_to :course
   belongs_to :organization
+  belongs_to :event_group
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
@@ -45,6 +46,14 @@ class Event < ApplicationRecord
 
   def self.most_recent
     where('start_time < ?', Time.now).order(start_time: :desc).first
+  end
+
+  def events_within_group
+    event_group&.events
+  end
+
+  def ordered_events_within_group
+    event_group&.ordered_events
   end
 
   def home_time_zone_exists

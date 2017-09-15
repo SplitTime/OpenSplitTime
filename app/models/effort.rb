@@ -32,13 +32,13 @@ class Effort < ApplicationRecord
       .deprecate_methods(Effort, 'participant_id' => 'person_id', 'participant_id=' => 'person_id=')
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
-  validates_uniqueness_of :person_id, scope: :event_id, allow_blank: true
-  validates_uniqueness_of :bib_number, scope: :event_id, allow_nil: true
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
   validates_with SplitTimeValidator
+  validates_with BibNumberValidator
+  validates_with PersonValidator
 
   before_save :reset_age_from_birthdate
 
@@ -93,6 +93,14 @@ class Effort < ApplicationRecord
 
   def reset_age_from_birthdate
     assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
+  end
+
+  def events_within_group
+    event&.events_within_group
+  end
+
+  def event_group
+    event&.event_group
   end
 
   def start_time

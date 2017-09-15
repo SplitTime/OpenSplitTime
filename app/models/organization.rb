@@ -6,6 +6,7 @@ class Organization < ApplicationRecord
   friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
   has_many :events
+  has_many :event_groups
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
 

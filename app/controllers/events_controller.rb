@@ -191,24 +191,6 @@ class EventsController < ApplicationController
 
 # Actions related to the event/split relationship
 
-  def associate_splits
-    authorize @event
-    if params[:split_ids].nil?
-      redirect_to :back
-    else
-      params[:split_ids].each do |split_id|
-        @event.splits << Split.find(split_id)
-      end
-      redirect_to splits_event_url(id: @event.id)
-    end
-  end
-
-  def remove_splits
-    authorize @event
-    params[:split_ids].each { |split_id| @event.splits.delete(split_id) }
-    redirect_to splits_event_path(@event)
-  end
-
   def set_data_status
     authorize @event
     report = BulkDataStatusSetter.set_data_status(efforts: @event.efforts)

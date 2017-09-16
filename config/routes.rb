@@ -63,11 +63,9 @@ Rails.application.routes.draw do
     member { post :import_csv }
     member { post :import_splits }
     member { post :import_efforts }
-    member { put :associate_splits }
     member { put :set_data_status }
     member { put :set_dropped_attributes }
     member { put :start_ready_efforts }
-    member { delete :remove_splits }
     member { delete :delete_all_efforts }
     member { get :reconcile }
     member { post :create_people }

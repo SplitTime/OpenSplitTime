@@ -46,7 +46,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.update(permitted_params)
-      redirect_to session.delete(:return_to) || @event
+      redirect_to stage_event_path(@event)
     else
       render 'edit'
     end
@@ -213,18 +213,6 @@ class EventsController < ApplicationController
   end
 
 # Enable/disable availability for live views
-
-  def live_enable
-    authorize @event
-    @event.update(available_live: true)
-    redirect_to stage_event_path(@event)
-  end
-
-  def live_disable
-    authorize @event
-    @event.update(available_live: false)
-    redirect_to stage_event_path(@event)
-  end
 
   def drop_list
     @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params)

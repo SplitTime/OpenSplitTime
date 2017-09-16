@@ -12,30 +12,44 @@
       <%= link_to_download_spread_csv(@spread_display, @current_user) %>
       <%= render 'view_buttons', view_object: @spread_display %>
     </div>
-    <div class="row">
-      <div class="btn-group">
-        <%= link_to 'Elapsed time', spread_event_path(@spread_display.event,
-                                                      display_style: 'elapsed',
-                                                      sort: @spread_display.sort_string),
-                    disabled: @spread_display.display_style == 'elapsed',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'AM / PM', spread_event_path(@spread_display.event,
-                                                 display_style: 'ampm',
-                                                 sort: @spread_display.sort_string),
-                    disabled: @spread_display.display_style == 'ampm',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to '24-hour time', spread_event_path(@spread_display.event,
-                                                      display_style: 'military',
-                                                      sort: @spread_display.sort_string),
-                    disabled: @spread_display.display_style == 'military',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Segment time', spread_event_path(@spread_display.event,
-                                                      display_style: 'segment',
-                                                      sort: @spread_display.sort_string),
-                    disabled: @spread_display.display_style == 'segment',
-                    class: 'btn btn-sm btn-primary' %>
-      </div>
+  </div>
+</div>
 
+<div class="row header">
+  <div class="col-xs-5 page-navigation-left">
+    <% if @spread_display.ordered_events_within_group.many? %>
+        <div class="btn-group">
+          <% @spread_display.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.name}",
+                          spread_event_path(event, display_style: @spread_display.display_style),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @spread_display.event %>
+          <% end %>
+        </div>
+    <% end %>
+  </div>
+  <div class="col-xs-7 page-navigation">
+    <div class="btn-group">
+      <%= link_to 'Elapsed', spread_event_path(@spread_display.event,
+                                                    display_style: 'elapsed',
+                                                    sort: @spread_display.sort_string),
+                  disabled: @spread_display.display_style == 'elapsed',
+                  class: 'btn btn-sm btn-primary' %>
+      <%= link_to 'AM / PM', spread_event_path(@spread_display.event,
+                                               display_style: 'ampm',
+                                               sort: @spread_display.sort_string),
+                  disabled: @spread_display.display_style == 'ampm',
+                  class: 'btn btn-sm btn-primary' %>
+      <%= link_to '24-hour', spread_event_path(@spread_display.event,
+                                                    display_style: 'military',
+                                                    sort: @spread_display.sort_string),
+                  disabled: @spread_display.display_style == 'military',
+                  class: 'btn btn-sm btn-primary' %>
+      <%= link_to 'Segment', spread_event_path(@spread_display.event,
+                                                    display_style: 'segment',
+                                                    sort: @spread_display.sort_string),
+                  disabled: @spread_display.display_style == 'segment',
+                  class: 'btn btn-sm btn-primary' %>
     </div>
   </div>
 </div>

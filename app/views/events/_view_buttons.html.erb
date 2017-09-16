@@ -1,6 +1,6 @@
 <div class="btn-group">
 
-  <%= link_to 'Search and explore', event_path(view_object),
+  <%= link_to 'Results', event_path(view_object),
               disabled: explore_button_disabled?(view_object.class),
               class: 'btn btn-sm btn-primary' %>
   <%= link_to 'Full spread', spread_event_path(view_object),

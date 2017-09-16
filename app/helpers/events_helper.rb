@@ -23,13 +23,13 @@ module EventsHelper
 
   def link_to_enter_live_entry(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.available_live
-      link_to 'Live Data Entry', live_entry_live_event_path(view_object), method: :get, class: 'btn btn-sm btn-warning'
+      link_to 'Live Entry', live_entry_live_event_path(view_object), method: :get, class: 'btn btn-sm btn-warning'
     end
   end
 
   def link_to_classic_admin(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event)
-      link_to 'Classic Admin', stage_event_path(view_object),
+      link_to 'Admin', stage_event_path(view_object),
               disabled: stage_button_disabled?(view_object.class),
               class: 'btn btn-sm btn-primary'
     end
@@ -37,7 +37,7 @@ module EventsHelper
 
   def link_to_event_staging(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event)
-      link_to 'Event Staging (beta)', "#{event_staging_app_path(view_object)}#/#{event_staging_app_page(view_object)}",
+      link_to 'Event Staging', "#{event_staging_app_path(view_object)}#/#{event_staging_app_page(view_object)}",
               class: 'btn btn-sm btn-primary'
     end
   end

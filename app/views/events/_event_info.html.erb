@@ -4,7 +4,6 @@
   <br/>
   Run on <%= link_to view_object.course_name, course_path(view_object.course) %>
   <% if view_object.organization %>
-      <br/>Organized
-      under <%= link_to view_object.organization_name, organization_path(view_object.organization) %>
+      <br/>Organized by <%= link_to view_object.organization_name, organization_path(view_object.organization) %>
   <% end %>
 </h4>

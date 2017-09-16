@@ -122,17 +122,16 @@
 </div>
 <div class="row header">
   <div class="col-xs-5 page-navigation-left">
-    <% if @event_stage.prior_event_within_group %>
-        <%= link_to "<< #{@event_stage.prior_event_within_group.name}",
-                    stage_event_path(@event_stage.prior_event_within_group,
-                                     view: @event_stage.view_text),
-                    class: 'btn btn-sm btn-default' %>
-    <% end %>
-    <% if @event_stage.next_event_within_group %>
-        <%= link_to "#{@event_stage.next_event_within_group.name} >>",
-                    stage_event_path(@event_stage.next_event_within_group,
-                                     view: @event_stage.view_text),
-                    class: 'btn btn-sm btn-default' %>
+    <% if @event_stage.ordered_events_within_group.many? %>
+        <div class="btn-group">
+          <% @event_stage.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.name}",
+                          stage_event_path(event,
+                                           view: @event_stage.view_text),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @event_stage.event %>
+          <% end %>
+        </div>
     <% end %>
   </div>
   <div class="col-xs-7 page-navigation">

@@ -337,4 +337,36 @@ RSpec.describe Event, type: :model do
       expect(subject).not_to include(event_different_group)
     end
   end
+
+  describe '#simple?' do
+    subject { event.simple? }
+    let(:event) { build_stubbed(:event, splits: splits, laps_required: laps_required)}
+
+    context 'when the event has only a start and finish split and only one lap' do
+      let(:splits) { build_stubbed_list(:split, 2) }
+      let(:laps_required) { 1 }
+
+      it 'returns true' do
+        expect(subject).to eq(true)
+      end
+    end
+
+    context 'when the event has only a start and finish split but multiple laps' do
+      let(:splits) { build_stubbed_list(:split, 2) }
+      let(:laps_required) { 0 }
+
+      it 'returns false' do
+        expect(subject).to eq(false)
+      end
+    end
+
+    context 'when the event has more than two splits and only one lap' do
+      let(:splits) { build_stubbed_list(:split, 3) }
+      let(:laps_required) { 1 }
+
+      it 'returns false' do
+        expect(subject).to eq(false)
+      end
+    end
+  end
 end

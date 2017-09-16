@@ -179,4 +179,25 @@ RSpec.describe Course, type: :model do
       expect(course.vert_loss).to be_nil
     end
   end
+
+  describe '#simple?' do
+    subject { course.simple? }
+    let(:course) { build_stubbed(:course, splits: splits)}
+
+    context 'when the course has only a start and finish split' do
+      let(:splits) { build_stubbed_list(:split, 2) }
+
+      it 'returns true' do
+        expect(subject).to eq(true)
+      end
+    end
+
+    context 'when the course has more than two splits' do
+      let(:splits) { build_stubbed_list(:split, 3) }
+
+      it 'returns false' do
+        expect(subject).to eq(false)
+      end
+    end
+  end
 end

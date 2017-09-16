@@ -141,6 +141,6 @@ class Event < ApplicationRecord
   end
 
   def simple?
-    (splits_count > 3) && !multiple_laps?
+    (splits_count < 3) && !multiple_laps?
   end
 end

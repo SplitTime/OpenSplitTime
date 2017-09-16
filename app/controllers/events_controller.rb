@@ -191,11 +191,6 @@ class EventsController < ApplicationController
 
 # Actions related to the event/split relationship
 
-  def splits
-    authorize @event
-    @other_splits = @event.course.ordered_splits - @event.splits
-  end
-
   def associate_splits
     authorize @event
     if params[:split_ids].nil?

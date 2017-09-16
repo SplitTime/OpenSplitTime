@@ -38,10 +38,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def splits?
-    user.authorized_to_edit?(event)
-  end
-
   def associate_splits?
     user.authorized_to_edit?(event)
   end

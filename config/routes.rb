@@ -63,7 +63,6 @@ Rails.application.routes.draw do
     member { post :import_csv }
     member { post :import_splits }
     member { post :import_efforts }
-    member { get :splits }
     member { put :associate_splits }
     member { put :set_data_status }
     member { put :set_dropped_attributes }

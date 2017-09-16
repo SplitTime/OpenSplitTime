@@ -46,4 +46,8 @@ class Course < ApplicationRecord
   def vert_loss
     @vert_loss ||= ordered_splits.last.vert_loss_from_start if ordered_splits.present?
   end
+
+  def simple?
+    splits_count < 3
+  end
 end

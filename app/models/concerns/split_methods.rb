@@ -41,10 +41,6 @@ module SplitMethods
     splits[splits.index(split) - 1]
   end
 
-  def simple?
-    splits_count < 3
-  end
-
   def splits_count
     @splits_count ||= splits.size
   end

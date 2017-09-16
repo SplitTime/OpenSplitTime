@@ -139,4 +139,8 @@ class Event < ApplicationRecord
   def live_entry_attributes
     ordered_splits.map(&:live_entry_attributes)
   end
+
+  def simple?
+    (splits_count > 3) && !multiple_laps?
+  end
 end

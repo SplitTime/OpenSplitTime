@@ -34,100 +34,13 @@
   </div>
 </div>
 
-<% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
-    <div class="article-actions">
-      <div class="row">
-        <div class="col-xs-4">
-          <%= link_to 'Create split', new_split_path(event_id: @event_stage.id), class: 'btn btn-sm btn-success' %>
-          <% unless @event_stage.course.simple? %>
-              <%= link_to 'Associate or remove splits', splits_event_path, class: 'btn btn-sm btn-success' %>
-          <% end %>
-        </div>
-        <div class="col-xs-4">
-          <%= link_to 'Create effort', new_effort_path(event_id: @event_stage.id), class: 'btn btn-sm btn-success' %>
-          <% if @event_stage.unreconciled_efforts? %>
-              <%= link_to 'Reconcile with people', reconcile_event_path, class: 'btn btn-sm btn-success' %>
-          <% end %>
-          <% if @event_stage.efforts_count > 0 && @current_user.authorized_fully?(@event_stage.event) %>
-              <%= link_to 'Delete all efforts', delete_all_efforts_event_path,
-                          method: :delete,
-                          data: {confirm: 'NOTE: This will delete all efforts and split times for this event. ' +
-                              'This action cannot be undone. Are you sure you want to go ahead?'},
-                          class: 'btn btn-sm btn-danger' %>
-          <% end %>
-        </div>
-        <div class="col-xs-4">
-          <div class="text-right">
-            <% if @event_stage.available_live %>
-                <strong><%= @event_stage.beacon_url ? 'Modify event locator beacon link: ' : 'Add link to event locator beacon:' %></strong>
-                <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to TrackLeaders or other event locator site here:"><%= "#{@event_stage.beacon_url}" %></a>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-<% end %>
-<hr>
-<div class="row">
-  <div class="col-xs-4">
-    <strong>Splits associated with event / on this course:</strong>
-    <%= link_to @event_stage.event_splits_count, splits_event_path(@event_stage.event) %>
-    / <%= link_to @event_stage.course_splits_count, course_path(@event_stage.course) %><br/>
-    <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
-        <strong>Import Splits for this Event</strong>
-        <%= form_tag({action: :import_splits}, multipart: true) do %>
-            <%= file_field_tag :file, id: 'file-splits' %>
-            <%= submit_tag 'Import Splits', id: 'submit-splits', disabled: true, class: 'btn btn-xs btn-success' %>
-        <% end %>
-    <% end %>
-  </div>
-  <div class="col-xs-4">
-    <strong>Associated Efforts:</strong>
-    <%= @event_stage.efforts_count %>
-    <% if @event_stage.unreconciled_efforts? %>
-        <%= "(#{@event_stage.unreconciled_efforts.size} unreconciled)" %>
-    <% elsif @event_stage.efforts_count > 0 %>
-        (All reconciled)
-    <% end %>
-    <br/>
-    <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
-        <strong>Import Efforts With Time Data</strong>
-        <%= form_tag({action: :import_efforts}, multipart: true) do %>
-            <%= hidden_field_tag 'time_format', 'elapsed' %>
-            <%= hidden_field_tag 'with_status', true %>
-            <%= hidden_field_tag 'with_times', true %>
-            <%= file_field_tag :file, id: 'file-efforts-with-times' %>
-            <%= submit_tag 'Import efforts and elapsed times', id: 'submit-efforts-with-times', disabled: true, class: 'btn btn-xs btn-success' %>
-        <% end %>
-        <%= form_tag({action: :import_efforts}, multipart: true) do %>
-            <%= hidden_field_tag 'time_format', 'military' %>
-            <%= hidden_field_tag 'with_status', true %>
-            <%= hidden_field_tag 'with_times', true %>
-            <%= file_field_tag :file, id: 'file-efforts-with-military-times' %>
-            <%= submit_tag 'Import efforts and military times', id: 'submit-efforts-with-military-times', disabled: true, class: 'btn btn-xs btn-success' %>
-        <% end %>
-    <% end %>
-  </div>
-  <div class="col-xs-4">
-    <% if @current_user && @current_user.authorized_to_edit?(@event_stage.event) %>
-        <strong>Import Efforts Without Time Data</strong>
-        <%= form_tag({action: :import_efforts}, multipart: true) do %>
-            <%= hidden_field_tag 'with_status', true %>
-            <%= hidden_field_tag 'with_times', false %>
-            <%= file_field_tag :file, id: 'file-efforts-without-times' %>
-            <%= submit_tag 'Import efforts (no times)', id: 'submit-efforts-without-times', disabled: true, class: 'btn btn-xs btn-success' %>
-        <% end %>
-    <% end %>
-  </div>
-</div>
-<div class="row header">
+<div class="row mid">
   <div class="col-xs-5 page-navigation-left">
     <% if @event_stage.ordered_events_within_group.many? %>
         <div class="btn-group">
           <% @event_stage.ordered_events_within_group.each do |event| %>
               <%= link_to "#{event.name}",
-                          stage_event_path(event,
-                                           view: @event_stage.view_text),
+                          stage_event_path(event, view: @event_stage.view_text),
                           class: 'btn btn-sm btn-primary',
                           disabled: event == @event_stage.event %>
           <% end %>
@@ -176,23 +89,57 @@
     <%= render 'partner_list', partners: @event_stage.partners, view_model: @event_stage %>
 <% elsif @event_stage.view_text == 'times' %>
     <%= render 'live_times_list', live_times: @event_stage.filtered_live_times, view_model: @event_stage %>
+<% elsif @event_stage.view_text == 'problems' %>
+    <%= render 'stage_efforts_list' %>
 <% else %>
+    <div class="row mid">
+      <div class="col-xs-4 page-navigation-left">
+        <strong>Manage Efforts:</strong>
+        <%= @event_stage.efforts_count %>
+        <% if @event_stage.unreconciled_efforts? %>
+            <%= "(#{@event_stage.unreconciled_efforts.size} unreconciled)" %>
+        <% elsif @event_stage.efforts_count > 0 %>
+            (All reconciled)
+        <% end %>
+        <br/>
+        <%= link_to 'Create effort', new_effort_path(event_id: @event_stage.id), class: 'btn btn-sm btn-success' %>
+        <% if @event_stage.efforts_count > 0 && @current_user.authorized_fully?(@event_stage.event) %>
+            <%= link_to 'Delete all efforts', delete_all_efforts_event_path,
+                        method: :delete,
+                        data: {confirm: 'NOTE: This will delete all efforts and split times for this event. ' +
+                            'This action cannot be undone. Are you sure you want to go ahead?'},
+                        class: 'btn btn-sm btn-danger' %>
+        <% end %>
+        <% if @event_stage.unreconciled_efforts? %>
+            <%= link_to 'Reconcile efforts', reconcile_event_path, class: 'btn btn-sm btn-success' %>
+        <% end %>
+      </div>
+
+      <div class="col-xs-4 page-navigation-left">
+        <strong>Import Efforts With Elapsed Times</strong>
+        <%= form_tag({action: :import_efforts}, multipart: true) do %>
+            <%= hidden_field_tag 'time_format', 'elapsed' %>
+            <%= hidden_field_tag 'with_status', true %>
+            <%= hidden_field_tag 'with_times', true %>
+            <%= file_field_tag :file, id: 'file-efforts-with-times' %>
+            <%= submit_tag 'Import', id: 'submit-efforts-with-times', disabled: true, class: 'btn btn-xs btn-success' %>
+        <% end %>
+      </div>
+
+      <div class="col-xs-4 page-navigation-left">
+        <strong>Import Efforts With Absolute Times</strong>
+        <%= form_tag({action: :import_efforts}, multipart: true) do %>
+            <%= hidden_field_tag 'time_format', 'military' %>
+            <%= hidden_field_tag 'with_status', true %>
+            <%= hidden_field_tag 'with_times', true %>
+            <%= file_field_tag :file, id: 'file-efforts-with-military-times' %>
+            <%= submit_tag 'Import', id: 'submit-efforts-with-military-times', disabled: true, class: 'btn btn-xs btn-success' %>
+        <% end %>
+      </div>
+    </div>
+
     <%= render 'stage_efforts_list' %>
 <% end %>
-
-<script>
-    $('#beacon-link').editable({
-        type: 'text',
-        emptytext: 'Click here',
-        url: '<%= add_beacon_event_path(@event_stage.event) %>',
-        pk: 1,
-        title: 'Paste link:',
-        ajaxOptions: {
-            type: 'get',
-            dataType: 'script'
-        }
-    });
-</script>
 
 <script>
     $(document).ready(function () {

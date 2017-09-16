@@ -17,6 +17,7 @@ Placeholders
 Globals
 *******/
 .row.header,
+.row.mid,
 .live_entry .row {
     margin: 0 auto 25px; // Nerfed: Please QA
 }
@@ -52,6 +53,32 @@ Globals
 
     .event-id {
         display: none;
+    }
+}
+
+/******* Mid ********/
+.mid {
+    @extend .no-gutter;
+    position: relative;
+    border-bottom: 1px solid $gray;
+
+    .page-navigation {
+        padding-top: 0px;
+        margin-bottom: 10px;
+        text-align: right;
+    }
+
+    .page-navigation-left {
+        padding-top: 0px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .page-navigation-text {
+        padding-top: 10px;
+        padding-bottom: 0px;
+        text-align: right;
+        vertical-align: bottom;
     }
 }
 

@@ -11,6 +11,7 @@
             <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
           </div>
         </div>
+
         <% if @course.nil? %>
             <div class="form-group">
               <div class="control-label col-sm-2">
@@ -29,6 +30,7 @@
               </div>
             </div>
         <% end %>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :organization_id %>
@@ -38,6 +40,7 @@
                                   {prompt: true}, {class: "dropdown-select-field"}) %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label 'Start time' %>
@@ -55,6 +58,7 @@
             </div>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :home_time_zone %>
@@ -64,6 +68,7 @@
                                   {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "dropdown-select-field"}) %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :laps_required, "Laps required" %>
@@ -74,6 +79,16 @@
               cutoff)</p>
           </div>
         </div>
+
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :beacon_url %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
+          </div>
+        </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :concealed, "Concealed (invisible to the public)?" %>
@@ -82,6 +97,7 @@
             <%= f.check_box :concealed %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :auto_live_times, "Submit OST Remote times automatically without review?" %>
@@ -90,13 +106,14 @@
             <%= f.check_box :auto_live_times %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', events_path %> ]
+          [ <%= link_to 'Cancel', @event.new_record? ? events_path : stage_event_path(@event) %> ]
         </div>
     <% end %>
   </div>

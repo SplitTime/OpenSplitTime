@@ -90,10 +90,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def add_beacon?
-    user.authorized_to_edit?(event)
-  end
-
   def find_problem_effort?
     user.authorized_to_edit?(event)
   end

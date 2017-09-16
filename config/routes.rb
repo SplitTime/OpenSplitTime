@@ -76,7 +76,6 @@ Rails.application.routes.draw do
     member { get :podium }
     member { put :live_enable }
     member { put :live_disable }
-    member { get :add_beacon }
     member { get :drop_list }
     member { get :export_to_ultrasignup }
     member { get :find_problem_effort }

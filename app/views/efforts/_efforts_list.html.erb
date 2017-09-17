@@ -1,13 +1,13 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th>Rank</th>
-    <th>Name</th>
+    <th><%= link_to_event_show_field(@event_display, '', 'Rank') %></th>
+    <th><%= link_to_event_show_field(@event_display, :last_name, 'Name') %></th>
     <% if @event_display.available_live %>
-        <th>Bib&num;</th>
+        <th><%= link_to_event_show_field(@event_display, :bib_number, 'Bib#') %></th>
     <% end %>
-    <th>Category</th>
-    <th>From</th>
+    <th><%= link_to_event_show_field(@event_display, 'gender,age', 'Category') %></th>
+    <th><%= link_to_event_show_field(@event_display, :state_code, 'From') %></th>
     <% if @event_display.available_live %>
         <th>Status</th>
     <% else %>

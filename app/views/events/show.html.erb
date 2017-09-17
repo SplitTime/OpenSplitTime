@@ -46,12 +46,12 @@
 <% if @event_display.display_style == 'started' %>
     <%= render 'show_efforts_list',
                unfiltered_efforts_count: @event_display.started_efforts_count,
+               filtered_efforts_count: @event_display.filtered_ranked_efforts_count,
                filtered_efforts: @event_display.filtered_ranked_efforts %>
-
 <% else %>
 
     <%= render 'show_efforts_list',
                unfiltered_efforts_count: @event_display.unstarted_efforts_count,
+               filtered_efforts_count: @event_display.filtered_unstarted_efforts_count,
                filtered_efforts: @event_display.filtered_unstarted_efforts %>
-
 <% end %>

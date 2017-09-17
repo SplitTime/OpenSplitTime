@@ -133,9 +133,9 @@ module EventsHelper
 
   def link_to_spread_display_style(view_object, display_style, title)
     link_to title, spread_event_path(view_object.event,
-                                         :display_style => display_style,
-                                         :sort => view_object.sort_string,
-                                         'filter[gender]' => view_object.gender_text),
+                                     :display_style => display_style,
+                                     :sort => view_object.sort_string,
+                                     'filter[gender]' => view_object.gender_text),
             disabled: view_object.display_style == display_style,
             class: 'btn btn-sm btn-primary'
   end
@@ -152,6 +152,12 @@ module EventsHelper
             event_path(view_object, display_style: display_style),
             disabled: view_object.display_style == display_style,
             class: 'btn btn-sm btn-primary'
+  end
+
+  def link_to_event_show_field(view_object, field_name, column_heading)
+    link_to column_heading, event_path(view_object,
+                                       display_style: view_object.display_style,
+                                       sort: (view_object.existing_sort == field_name.to_s) ? "-#{field_name}" : field_name.to_s)
   end
 
   def suggested_match_id_hash(efforts)

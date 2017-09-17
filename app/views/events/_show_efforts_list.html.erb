@@ -1,7 +1,7 @@
-<% # Requires parameters unfiltered_efforts_count and filtered_efforts %>
+<% # Requires parameters unfiltered_efforts_count, filtered_efforts_count, and filtered_efforts %>
 
 <% if unfiltered_efforts_count.zero? %>
-    <strong>No efforts have started yet.</strong>
+    <h4><strong><%= "No efforts are #{@event_display.display_style}" %></strong></h4>
 <% else %>
 
     <%= render 'effort_lookup', event: @event_display.event %>
@@ -10,7 +10,10 @@
     <% if filtered_efforts.size > 0 %>
         <div class="row">
           <div class="col-xs-8">
-            <strong><%= "#{@event_display.display_style.titleize} efforts: Returned #{filtered_efforts.size} of #{unfiltered_efforts_count} for #{@event_display.name}" %></strong>
+            <h4><strong>
+              <%= "#{@event_display.display_style.titleize} efforts:" %>
+              <%= filtered_efforts_count == unfiltered_efforts_count ? unfiltered_efforts_count : "Returned #{filtered_efforts_count} of #{unfiltered_efforts_count}" %>
+            </strong></h4>
           </div>
         </div>
         <div class="row">
@@ -31,6 +34,6 @@
           </div>
         </div>
     <% else %>
-        <strong>No results match that search.</strong>
+        <h4><strong>No results match that search.</strong></h4>
     <% end %>
 <% end %>

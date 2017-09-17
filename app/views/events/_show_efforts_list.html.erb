@@ -1,0 +1,36 @@
+<% # Requires parameters unfiltered_efforts_count and filtered_efforts %>
+
+<% if unfiltered_efforts_count.zero? %>
+    <strong>No efforts have started yet.</strong>
+<% else %>
+
+    <%= render 'effort_lookup', event: @event_display.event %>
+    <hr>
+
+    <% if filtered_efforts.size > 0 %>
+        <div class="row">
+          <div class="col-xs-8">
+            <strong><%= "#{@event_display.display_style.titleize} efforts: Returned #{filtered_efforts.size} of #{unfiltered_efforts_count} for #{@event_display.name}" %></strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(filtered_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+
+        <% if @event_display.display_style == 'started' %>
+            <%= render 'efforts/efforts_list' %>
+        <% else %>
+            <%= render 'efforts/efforts_not_started' %>
+        <% end %>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(filtered_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+    <% else %>
+        <strong>No results match that search.</strong>
+    <% end %>
+<% end %>

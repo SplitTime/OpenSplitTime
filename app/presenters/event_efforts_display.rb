@@ -6,15 +6,19 @@ class EventEffortsDisplay < EventWithEffortsPresenter
             .order(sort_hash)
             .where(filter_hash)
             .search(search_text)
-            .paginate(page: unstarted_page, per_page: per_page)
-  end
-
-  def unstarted_page
-    params[:unstarted_page]
+            .paginate(page: page, per_page: per_page)
   end
 
   def filtered_unstarted_efforts_count
     filtered_unstarted_efforts.total_entries
+  end
+
+  def display_style
+    %w(started unstarted).include?(params[:display_style]) ? params[:display_style] : default_display_style
+  end
+
+  def default_display_style
+    started_effort_ids.present? ? 'started' : 'unstarted'
   end
 
   def cache_key_started

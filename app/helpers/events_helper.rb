@@ -147,6 +147,13 @@ module EventsHelper
             class: 'btn btn-sm btn-primary'
   end
 
+  def link_to_show_start_status(view_object, display_style, title)
+    link_to title,
+            event_path(view_object, display_style: display_style),
+            disabled: view_object.display_style == display_style,
+            class: 'btn btn-sm btn-primary'
+  end
+
   def suggested_match_id_hash(efforts)
     efforts.select(&:suggested_match).map { |effort| [effort.id, effort.suggested_match.id] }.to_h
   end

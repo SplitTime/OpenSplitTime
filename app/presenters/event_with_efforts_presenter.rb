@@ -27,7 +27,7 @@ class EventWithEffortsPresenter < BasePresenter
     @filtered_ranked_efforts ||=
         ranked_efforts
             .select { |effort| filtered_ids.include?(effort.id) }
-            .paginate(page: started_page, per_page: per_page)
+            .paginate(page: page, per_page: per_page)
   end
 
   def event_efforts
@@ -56,14 +56,6 @@ class EventWithEffortsPresenter < BasePresenter
 
   def organization_name
     organization&.name
-  end
-
-  def prior_event_within_group
-    ordered_events_within_group.elements_before(event)&.last
-  end
-
-  def next_event_within_group
-    ordered_events_within_group.elements_after(event)&.first
   end
 
   def event_finished?
@@ -109,10 +101,6 @@ class EventWithEffortsPresenter < BasePresenter
   def person_ids
     @person_ids ||=
         (filtered_ranked_efforts.map(&:person_id) + filtered_unstarted_efforts.map(&:person_id)).compact
-  end
-
-  def started_page
-    params[:started_page]
   end
 
   def sort_param_field

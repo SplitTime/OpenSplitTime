@@ -76,7 +76,7 @@ class EventStageDisplay < EventWithEffortsPresenter
       effort.checked_in
     when false
       !effort.checked_in
-    else
+    else # value is nil so do not filter
       true
     end
   end
@@ -87,7 +87,7 @@ class EventStageDisplay < EventWithEffortsPresenter
       effort_started?(effort)
     when false
       !effort_started?(effort)
-    else
+    else # value is nil so do not filter
       true
     end
   end

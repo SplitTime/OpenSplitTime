@@ -12,6 +12,17 @@ class BasePresenter
     params[:filter] || {}
   end
 
+  def gender_text
+    case genders
+    when [0]
+      'male'
+    when [1]
+      'female'
+    else
+      'combined'
+    end
+  end
+
   def genders
     filter_hash[:gender] || [0, 1]
   end

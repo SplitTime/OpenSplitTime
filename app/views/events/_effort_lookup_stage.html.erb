@@ -1,5 +1,5 @@
 <%= form_tag stage_event_path(event), method: :get do %>
-    <%= hidden_field_tag 'view', @event_stage.view_text %>
+    <%= hidden_field_tag 'display_style', @event_stage.display_style %>
     <div class="row">
       <div class="col-xs-8">
         <div class="input-group">

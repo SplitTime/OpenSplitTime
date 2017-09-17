@@ -14,11 +14,8 @@
         <th>Result</th>
     <% end %>
     <th>Last Recorded</th>
-    <% if @event_display.available_live %>
-        <th>Time of Day</th>
-    <% else %>
-        <th>Time</th>
-    <% end %>
+    <th>Time of Day</th>
+    <th>Elapsed Time</th>
     <th>Notify Me Live</th>
   </tr>
   </thead>
@@ -34,11 +31,8 @@
       <td><%= effort_row.flexible_geolocation %></td>
       <td><%= effort_row.run_status %></td>
       <td><%= "#{effort_row.final_lap_split_name} (#{pdu('singular')} #{d(effort_row.final_distance)})" %></td>
-      <% if @event_display.available_live %>
-          <td><%= "#{day_time_format_hhmmss(effort_row.final_day_and_time)}" %></td>
-      <% else %>
-          <td><%= "#{time_format_hhmmss(effort_row.final_time)}" %></td>
-      <% end %>
+      <td><%= "#{day_time_format_hhmmss(effort_row.final_day_and_time)}" %></td>
+      <td><%= "#{time_format_hhmmss(effort_row.final_time)}" %></td>
       <td>
         <%= div_for(effort_row.person) do %>
             <%= link_to_toggle_email_subscription(effort_row.person) %>

@@ -40,27 +40,38 @@ class EventStageDisplay < EventWithEffortsPresenter
     @ready_efforts ||= event_efforts.ready_to_start
   end
 
-  def matches_criteria?(effort)
-    matches_start_criteria?(effort) && matches_checked_in_criteria?(effort)
+  def filtered_live_times
+    @filtered_live_times ||= live_times
+                                 .with_split_names
+                                 .where(filter_hash)
+                                 .order(sort_hash.presence || {created_at: :desc})
+                                 .paginate(page: page, per_page: per_page)
   end
 
-  def matches_start_criteria?(effort)
-    case params[:started]&.to_boolean
-    when true
-      effort_started?(effort)
-    when false
-      !effort_started?(effort)
-    else
-      true
-    end
+  def display_style
+    %w(splits efforts problems partners times).include?(params[:display_style]) ? params[:display_style] : 'efforts'
+  end
+
+  def checked_in_filter?
+    params[:checked_in]&.to_boolean
+  end
+
+  def started_filter?
+    params[:started]&.to_boolean
   end
 
   def effort_started?(effort)
     started_effort_ids.include?(effort.id)
   end
 
+  private
+
+  def matches_criteria?(effort)
+    matches_checked_in_criteria?(effort) && matches_start_criteria?(effort)
+  end
+
   def matches_checked_in_criteria?(effort)
-    case params[:checked_in]&.to_boolean
+    case checked_in_filter?
     when true
       effort.checked_in
     when false
@@ -70,21 +81,18 @@ class EventStageDisplay < EventWithEffortsPresenter
     end
   end
 
-  def filtered_live_times
-    @filtered_live_times ||= live_times
-                                 .with_split_names
-                                 .where(filter_hash)
-                                 .order(sort_hash.presence || {created_at: :desc})
-                                 .paginate(page: page, per_page: per_page)
+  def matches_start_criteria?(effort)
+    case started_filter?
+    when true
+      effort_started?(effort)
+    when false
+      !effort_started?(effort)
+    else
+      true
+    end
   end
-
-  def view_text
-    %w(splits efforts problems partners times).include?(params[:view]) ? params[:view] : 'efforts'
-  end
-
-  private
 
   def scoped_efforts
-    params[:view] == 'problems' ? event_efforts.invalid_status : event_efforts
+    params[:display_style] == 'problems' ? event_efforts.invalid_status : event_efforts
   end
 end

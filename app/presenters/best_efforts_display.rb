@@ -60,17 +60,6 @@ class BestEffortsDisplay < BasePresenter
     segment_is_full_course? ? 'Course Time' : 'Segment Time'
   end
 
-  def gender_text
-    case genders
-    when [0]
-      'male'
-    when [1]
-      'female'
-    else
-      'combined'
-    end
-  end
-
   private
 
   attr_reader :course, :events, :params

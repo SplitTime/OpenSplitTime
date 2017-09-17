@@ -30,26 +30,16 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="btn-group">
-      <%= link_to 'Elapsed', spread_event_path(@spread_display.event,
-                                                    display_style: 'elapsed',
-                                                    sort: @spread_display.sort_string),
-                  disabled: @spread_display.display_style == 'elapsed',
-                  class: 'btn btn-sm btn-primary' %>
-      <%= link_to 'AM / PM', spread_event_path(@spread_display.event,
-                                               display_style: 'ampm',
-                                               sort: @spread_display.sort_string),
-                  disabled: @spread_display.display_style == 'ampm',
-                  class: 'btn btn-sm btn-primary' %>
-      <%= link_to '24-hour', spread_event_path(@spread_display.event,
-                                                    display_style: 'military',
-                                                    sort: @spread_display.sort_string),
-                  disabled: @spread_display.display_style == 'military',
-                  class: 'btn btn-sm btn-primary' %>
-      <%= link_to 'Segment', spread_event_path(@spread_display.event,
-                                                    display_style: 'segment',
-                                                    sort: @spread_display.sort_string),
-                  disabled: @spread_display.display_style == 'segment',
-                  class: 'btn btn-sm btn-primary' %>
+      <%= link_to_spread_gender(@spread_display, 'combined') %>
+      <%= link_to_spread_gender(@spread_display, 'male') %>
+      <%= link_to_spread_gender(@spread_display, 'female') %>
+    </div>
+
+    <div class="btn-group">
+      <%= link_to_spread_display_style(@spread_display, 'elapsed', 'Elapsed') %>
+      <%= link_to_spread_display_style(@spread_display, 'ampm', 'AM / PM') %>
+      <%= link_to_spread_display_style(@spread_display, 'military', '24-Hour') %>
+      <%= link_to_spread_display_style(@spread_display, 'segment', 'Segment') %>
     </div>
   </div>
 </div>
@@ -63,15 +53,17 @@
       <thead>
       <tr>
         <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
-                                                           display_style: params[:display_style],
-                                                           sort: reversed_sort_param(@spread_display, :overall_rank)) %>
-        </th>
+                                                           :display_style => @spread_display.display_style,
+                                                           'filter[gender]' => @spread_display.gender_text,
+                                                           :sort => reversed_sort_param(@spread_display, :overall_rank)) %></th>
         <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
-                                                 display_style: params[:display_style],
-                                                 sort: reversed_sort_param(@spread_display, :bib_number)) %></th>
+                                                 :display_style => @spread_display.display_style,
+                                                 'filter[gender]' => @spread_display.gender_text,
+                                                 :sort => reversed_sort_param(@spread_display, :bib_number)) %></th>
         <th><%= link_to 'Name', spread_event_path(@spread_display.event,
-                                                  display_style: params[:display_style],
-                                                  sort: toggled_sort_param(@spread_display, :last_name, :first_name)) %></th>
+                                                  :display_style => @spread_display.display_style,
+                                                  'filter[gender]' => @spread_display.gender_text,
+                                                  :sort => toggled_sort_param(@spread_display, :last_name, :first_name)) %></th>
         <th>Category</th>
         <th>From</th>
         <% spread_relevant_elements(@spread_display.split_header_data).each do |header| %>

@@ -33,12 +33,12 @@
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th>Name</th>
-            <th>Bib&num;</th>
-            <th>Category</th>
-            <th>From</th>
-            <th>Scheduled Start Time</th>
-            <th>Data Status</th>
+            <th><%= link_to_stage_efforts_field(@event_stage, :last_name, 'Name') %></th>
+            <th><%= link_to_stage_efforts_field(@event_stage, :bib_number, 'Bib#') %></th>
+            <th><%= link_to_stage_efforts_field(@event_stage, :gender, 'Category') %></th>
+            <th><%= link_to_stage_efforts_field(@event_stage, :state_code, 'From') %></th>
+            <th><%= link_to_stage_efforts_field(@event_stage, :start_offset, 'Scheduled Start') %></th>
+            <th><%= link_to_stage_efforts_field(@event_stage, :data_status, 'Data Status') %></th>
             <th></th>
           </tr>
           </thead>

@@ -94,7 +94,8 @@ module EventsHelper
   end
 
   def link_to_podium(view_object)
-    link_to 'Podium', podium_event_path(view_object.event), class: 'btn btn-sm btn-success'
+    link_to 'Podium', podium_event_path(view_object.event),
+            class: 'btn btn-sm btn-success'
   end
 
   def link_to_start_ready_efforts(view_object)
@@ -111,6 +112,39 @@ module EventsHelper
               data: {confirm: 'No efforts are ready to start. Reload the page to check again.'},
               class: 'start-ready-efforts btn btn-sm btn-success'
     end
+  end
+
+  def link_to_stage_efforts_field(view_object, field_name, column_heading)
+    link_to column_heading, stage_event_path(view_object,
+                                             display_style: view_object.display_style,
+                                             started: view_object.started_filter?,
+                                             checked_in: view_object.checked_in_filter?,
+                                             sort: (view_object.existing_sort == field_name.to_s) ? "-#{field_name}" : field_name.to_s)
+  end
+
+  def link_to_spread_gender(view_object, gender)
+    link_to gender.titlecase, spread_event_path(view_object,
+                                                'filter[gender]' => gender,
+                                                'sort' => view_object.existing_sort,
+                                                'display_style' => view_object.display_style),
+            disabled: view_object.gender_text == gender,
+            class: 'btn btn-sm btn-primary'
+  end
+
+  def link_to_spread_display_style(view_object, display_style, title)
+    link_to title, spread_event_path(view_object.event,
+                                         :display_style => display_style,
+                                         :sort => view_object.sort_string,
+                                         'filter[gender]' => view_object.gender_text),
+            disabled: view_object.display_style == display_style,
+            class: 'btn btn-sm btn-primary'
+  end
+
+  def link_to_stage_display_style(view_object, display_style, title)
+    link_to title,
+            stage_event_path(view_object, display_style: display_style),
+            disabled: view_object.display_style == display_style,
+            class: 'btn btn-sm btn-primary'
   end
 
   def suggested_match_id_hash(efforts)

@@ -74,6 +74,10 @@ class EventWithEffortsPresenter < BasePresenter
     @event_start_time ||= event.start_time_in_home_zone
   end
 
+  def existing_sort
+    (sort_param_order == :desc) ? "-#{sort_param_field}" : "#{sort_param_field}"
+  end
+
   private
 
   attr_reader :params
@@ -109,5 +113,17 @@ class EventWithEffortsPresenter < BasePresenter
 
   def started_page
     params[:started_page]
+  end
+
+  def sort_param_field
+    sort_param.first
+  end
+
+  def sort_param_order
+    sort_param.last
+  end
+
+  def sort_param
+    (params[:sort].first || []).map(&:to_sym)
   end
 end

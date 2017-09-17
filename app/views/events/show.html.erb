@@ -22,9 +22,9 @@
   </div>
 </div>
 
-<div class="row mid">
-  <div class="col-xs-5 page-navigation-left">
-    <% if @event_display.ordered_events_within_group.many? %>
+<% if @event_display.ordered_events_within_group.many? %>
+    <div class="row mid">
+      <div class="col-xs-5 page-navigation-left">
         <div class="btn-group">
           <% @event_display.ordered_events_within_group.each do |event| %>
               <%= link_to "#{event.name}",
@@ -33,10 +33,10 @@
                           disabled: event == @event_display.event %>
           <% end %>
         </div>
-    <% end %>
-  </div>
-  <div class="col-xs-7 page-navigation">
-  </div>
+      </div>
+    </div>
+<% end %>
+<div class="col-xs-7 page-navigation">
 </div>
 
 <% unless (@event_display.started_efforts_count < 1) && (@event_display.unstarted_efforts_count < 1) %>

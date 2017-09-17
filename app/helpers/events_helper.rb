@@ -52,22 +52,22 @@ module EventsHelper
 
   def link_to_toggle_live_entry(view_object)
     if view_object.available_live
-      link_to 'Disable live',
-              event_path(view_object.event, event: {available_live: false}),
-              data: {confirm: "NOTE: This will suspend all live entry actions for #{view_object.name}, " +
-                  'including any that may be in process, and will disable live follower notifications ' +
-                  'by email and SMS text when new times are added. Are you sure you want to proceed?'},
-              method: :put,
-              class: 'btn btn-sm btn-warning'
+      button_text = 'Disable live'
+      confirm_text = "NOTE: This will suspend all live entry actions for #{view_object.name}, " +
+          'including any that may be in process, and will disable live follower notifications ' +
+          'by email and SMS text when new times are added. Are you sure you want to proceed?'
     else
-      link_to 'Enable live',
-              event_path(view_object.event, event: {available_live: true}),
-              data: {confirm: "NOTE: This will enable live entry actions for #{view_object.name}, " +
-                  'and will also trigger live follower notifications by email and SMS text when new times are added. ' +
-                  'Are you sure you want to proceed?'},
-              method: :put,
-              class: 'btn btn-sm btn-warning'
+      button_text = 'Enable live'
+      confirm_text = "NOTE: This will enable live entry actions for #{view_object.name}, " +
+          'and will also trigger live follower notifications by email and SMS text when new times are added. ' +
+          'Are you sure you want to proceed?'
     end
+
+    link_to button_text,
+            event_group_path(view_object.event_group, event_group: {available_live: !view_object.available_live}),
+            data: {confirm: confirm_text},
+            method: :put,
+            class: 'btn btn-sm btn-warning'
   end
 
   def link_to_stewards(view_object)

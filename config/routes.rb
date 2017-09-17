@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     member { put :update_preferences }
   end
 
-  resources :aid_stations, except: [:index, :new, :create]
+  resources :aid_stations, only: [:show, :create, :update, :destroy]
 
   resources :courses do
     member { get :best_efforts }
@@ -58,6 +58,8 @@ Rails.application.routes.draw do
     member { get :show_photo }
     collection { get :subregion_options }
   end
+
+  resources :event_groups, only: [:show, :create, :update, :destroy]
 
   resources :events do
     member { post :import_csv }

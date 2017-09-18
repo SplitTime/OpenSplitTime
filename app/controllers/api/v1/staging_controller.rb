@@ -31,6 +31,7 @@ class Api::V1::StagingController < ApiController
   # POST /api/v1/staging/:staging_id/post_event_course_org
   def post_event_course_org
     event = params[:staging_id] == 'new' ? Event.new : Event.friendly.find(params[:staging_id])
+    event_group = EventGroup.find_or_initialize_by(id: event.event_group_id)
     course = Course.find_or_initialize_by(id: params.dig(:course, :id))
     organization = Organization.find_or_initialize_by(id: params.dig(:organization, :id))
 
@@ -39,7 +40,7 @@ class Api::V1::StagingController < ApiController
     authorize course unless course.new_record?
     authorize organization unless organization.new_record?
 
-    setter = EventCourseOrgSetter.new(event: event, course: course, organization: organization, params: params)
+    setter = EventCourseOrgSetter.new(event: event, event_group: event_group, course: course, organization: organization, params: params)
     setter.set_resources
     if setter.status == :ok
       render json: setter.resources.map { |resource| [resource.class.to_s.underscore, resource] }.to_h, status: setter.status
@@ -67,9 +68,7 @@ class Api::V1::StagingController < ApiController
   private
 
   def set_event
-    @event = params[:staging_id].uuid? ?
-        Event.find_by!(staging_id: params[:staging_id]) :
-        Event.friendly.find(params[:staging_id])
+    @event = Event.friendly.find(params[:staging_id])
   end
 
   def authorize_event

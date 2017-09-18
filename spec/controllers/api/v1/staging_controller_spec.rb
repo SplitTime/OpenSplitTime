@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 describe Api::V1::StagingController do
-  let(:existing_event) { FactoryGirl.create(:event, course: existing_course, organization: existing_organization) }
-  let(:existing_course) { FactoryGirl.create(:course) }
-  let(:existing_organization) { FactoryGirl.create(:organization) }
-  let(:existing_event_id) { existing_event.to_param }
+  let(:event_group) { create(:event_group, organization: organization) }
+  let(:event) { create(:event, event_group: event_group, course: course) }
+  let(:course) { create(:course) }
+  let(:organization) { create(:organization) }
+  let(:event_id) { event.to_param }
   let(:new_event_indicator) { 'new' }
 
   login_admin
@@ -56,17 +57,16 @@ describe Api::V1::StagingController do
   end
 
   describe '#post_event_course_org' do
-    let(:existing_course_params) { existing_course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
-    let(:existing_organization_params) { existing_organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
+    let(:course_params) { course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
+    let(:organization_params) { organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
 
     context 'when an existing event_id is provided' do
-      let(:existing_event_params) { existing_event.attributes.with_indifferent_access.slice(*EventParameters.permitted) }
+      let(:event_params) { event.attributes.with_indifferent_access.slice(*EventParameters.permitted) }
 
       it 'returns a successful 200 response' do
-        event_id = existing_event_id
-        params = {event: existing_event_params,
-                  course: existing_course_params,
-                  organization: existing_organization_params}
+        params = {event: event_params,
+                  course: course_params,
+                  organization: organization_params}
         expected_response = 200
         expected_attributes = {}
         post_and_validate_response(event_id, params, expected_response, expected_attributes)
@@ -74,10 +74,9 @@ describe Api::V1::StagingController do
 
       it 'updates provided attributes for an existing organization' do
         new_params = {name: 'Updated Organization Name', description: 'Updated organization description'}
-        event_id = existing_event_id
-        params = {event: existing_event_params,
-                  course: existing_course_params,
-                  organization: existing_organization_params.merge(new_params)}
+        params = {event: event_params,
+                  course: course_params,
+                  organization: organization_params.merge(new_params)}
         expected_response = 200
         expected_attributes = {organization: [:name, :description]}
         post_and_validate_response(event_id, params, expected_response, expected_attributes)
@@ -85,10 +84,9 @@ describe Api::V1::StagingController do
 
       it 'updates provided attributes for an existing course' do
         new_params = {name: 'Updated Course Name', description: 'Updated course description'}
-        event_id = existing_event_id
-        params = {event: existing_event_params,
-                  course: existing_course_params.merge(new_params),
-                  organization: existing_organization_params}
+        params = {event: event_params,
+                  course: course_params.merge(new_params),
+                  organization: organization_params}
         expected_response = 200
         expected_attributes = {course: [:name, :description]}
         post_and_validate_response(event_id, params, expected_response, expected_attributes)
@@ -96,10 +94,9 @@ describe Api::V1::StagingController do
 
       it 'updates provided attributes for an existing event' do
         new_params = {name: 'Updated Event Name', laps_required: 3}
-        event_id = existing_event_id
-        params = {event: existing_event_params.merge(new_params),
-                  course: existing_course_params,
-                  organization: existing_organization_params}
+        params = {event: event_params.merge(new_params),
+                  course: course_params,
+                  organization: organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
         post_and_validate_response(event_id, params, expected_response, expected_attributes)
@@ -124,8 +121,8 @@ describe Api::V1::StagingController do
       it 'creates an event using provided parameters and associates existing course and organization' do
         event_id = new_event_indicator
         params = {event: new_event_params,
-                  course: existing_course_params,
-                  organization: existing_organization_params}
+                  course: course_params,
+                  organization: organization_params}
         expected_response = 200
         expected_attributes = {event: [:name, :laps_required]}
         post_and_validate_response(event_id, params, expected_response, expected_attributes)
@@ -219,10 +216,20 @@ describe Api::V1::StagingController do
 
       parsed_response = JSON.parse(response.body)
       resources = {event: Event.find_by(id: parsed_response['event']['id']),
+                   event_group: EventGroup.find_by(id: parsed_response['event_group']['id']),
                    course: Course.find_by(id: parsed_response['course']['id']),
                    organization: Organization.find_by(id: parsed_response['organization']['id'])}
 
       expect(response.status).to eq(expected_response)
+
+      event = resources[:event]
+      event_group = resources[:event_group]
+      course = resources[:course]
+      organization = resources[:organization]
+
+      expect(event.event_group_id).to eq(event_group.id)
+      expect(event.course_id).to eq(course.id)
+      expect(event_group.organization_id).to eq(organization.id)
 
       expected_attributes.each do |class_name, attributes|
         attributes.each do |attribute|
@@ -254,22 +261,21 @@ describe Api::V1::StagingController do
       let(:status) { 'public' }
 
       it 'returns a successful 200 response' do
-        event = existing_event
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         expect(response).to be_success
       end
 
-      it 'sets concealed status of the event and its related organization and people to false' do
-        event = existing_event
-        organization = existing_organization
-        event.update(concealed: true)
+      it 'sets concealed status of the event_group, organization, and people to false' do
+        event_group.update(concealed: true)
         organization.update(concealed: true)
-        efforts = FactoryGirl.create_list(:effort, 3, event: event)
+        efforts = create_list(:effort, 3, event: event)
         efforts.each { |effort| effort.person.update(concealed: true) }
+
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
-        event.reload
+
+        event_group.reload
         organization.reload
-        expect(event.concealed).to eq(false)
+        expect(event_group.concealed).to eq(false)
         expect(organization.concealed).to eq(false)
         event.efforts.each do |effort|
           expect(effort.person.concealed).to eq(false)
@@ -281,22 +287,21 @@ describe Api::V1::StagingController do
       let(:status) { 'private' }
 
       it 'returns a successful 200 response' do
-        event = existing_event
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         expect(response).to be_success
       end
 
-      it 'sets concealed status of the event and its related organization and people to true' do
-        event = existing_event
-        organization = existing_organization
-        event.update(concealed: false)
+      it 'sets concealed status of the event_group and its related organization and people to true' do
+        event_group.update(concealed: false)
         organization.update(concealed: false)
-        efforts = FactoryGirl.create_list(:effort, 3, event: event)
+        efforts = create_list(:effort, 3, event: event)
         efforts.each { |effort| effort.person.update(concealed: false) }
+
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
-        event.reload
+
+        event_group.reload
         organization.reload
-        expect(event.concealed).to eq(true)
+        expect(event_group.concealed).to eq(true)
         expect(organization.concealed).to eq(true)
         event.efforts.each do |effort|
           expect(effort.person.concealed).to eq(true)
@@ -304,14 +309,12 @@ describe Api::V1::StagingController do
       end
 
       it 'does not make a person private if that person has other public efforts' do
-        event = existing_event
-        organization = existing_organization
         event.update(concealed: false)
         organization.update(concealed: false)
-        efforts = FactoryGirl.create_list(:effort, 3, event: event)
+        efforts = create_list(:effort, 3, event: event)
         efforts.each { |effort| effort.person.update(concealed: false) }
         p_with_other_effort = efforts.first.person
-        FactoryGirl.create(:effort, person: p_with_other_effort)
+        create(:effort, person: p_with_other_effort)
         patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
         event.reload
         organization.reload
@@ -330,7 +333,6 @@ describe Api::V1::StagingController do
 
     context 'when params[:status] is not "public" or "private"' do
       it 'returns a bad request response' do
-        event = existing_event
         patch :update_event_visibility, params: {staging_id: event.to_param, status: 'random'}
         expect(response).to be_bad_request
       end

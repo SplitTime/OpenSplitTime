@@ -11,8 +11,7 @@ class FileStore
       public_url = S3FileManager.public_upload(key, file)
       public_url
     else
-      errors.add(:bucket_store_service, "Import file must be less than #{MAX_FILESIZE / 1024 / 1024} MB")
-      false
+      nil
     end
   end
 

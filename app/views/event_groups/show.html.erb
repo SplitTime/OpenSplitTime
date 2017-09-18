@@ -1,0 +1,27 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Show event group - #{@presenter.name}" %>
+<% end %>
+<div class="row header">
+  <div class="col-xs-7">
+    <h2><strong><%= "Event Group: #{@presenter.name}" %></strong></h2>
+  </div>
+  <div class="col-xs-5 page-navigation">
+    <div class="row">
+      <% if @presenter.authorized_to_edit? %>
+          <%= link_to 'Edit', edit_event_group_path(@presenter), class: 'btn btn-sm btn-primary' %>
+          <%= link_to 'Delete', event_group_path(@presenter, referrer_path: events_path),
+                      method: :delete,
+                      data: {confirm: 'NOTE: This will delete the event_group and all associated events. This action cannot be undone. Are you sure you want to go ahead?'},
+                      class: 'btn btn-sm btn-danger' %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div>
+  <% if @presenter.events.present? %>
+      <%= render 'events/events', events: @presenter.events %>
+  <% else %>
+      <h4>No events exist within this event group.</h4>
+  <% end %>
+</div>

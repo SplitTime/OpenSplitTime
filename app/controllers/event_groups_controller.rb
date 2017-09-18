@@ -1,10 +1,10 @@
 class EventGroupsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
   before_action :set_event_group
-  after_action :verify_authorized
+  after_action :verify_authorized, except: [:show]
 
   def show
-    authorize @event_group
+    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
   end
 
   def edit

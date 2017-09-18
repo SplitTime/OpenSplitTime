@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170915061215) do
+ActiveRecord::Schema.define(version: 20170918145724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,7 +82,6 @@ ActiveRecord::Schema.define(version: 20170915061215) do
 
   create_table "event_groups", force: :cascade do |t|
     t.string   "name"
-    t.integer  "event_groups_id"
     t.integer  "organization_id"
     t.boolean  "available_live",  default: false
     t.boolean  "auto_live_times", default: false
@@ -92,7 +91,6 @@ ActiveRecord::Schema.define(version: 20170915061215) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "slug"
-    t.index ["event_groups_id"], name: "index_event_groups_on_event_groups_id", using: :btree
     t.index ["organization_id"], name: "index_event_groups_on_organization_id", using: :btree
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true, using: :btree
   end
@@ -314,7 +312,6 @@ ActiveRecord::Schema.define(version: 20170915061215) do
   add_foreign_key "aid_stations", "splits"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"
-  add_foreign_key "event_groups", "event_groups", column: "event_groups_id"
   add_foreign_key "event_groups", "organizations"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"

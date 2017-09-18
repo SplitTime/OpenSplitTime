@@ -1,7 +1,7 @@
 class FileStore
   require 'open-uri'
 
-  MAX_FILESIZE = 50.megabytes
+  MAX_FILESIZE = 2.megabytes
 
   def self.public_upload(directory, file, id)
     if Rails.env.test?

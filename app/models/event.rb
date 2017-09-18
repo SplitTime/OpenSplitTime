@@ -3,7 +3,6 @@
 class Event < ApplicationRecord
 
   include Auditable
-  include Concealable
   include SplitMethods
   include LapsRequiredMethods
   extend FriendlyId
@@ -18,7 +17,7 @@ class Event < ApplicationRecord
   has_many :live_times, dependent: :destroy
   has_many :partners, dependent: :destroy
 
-  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone
+  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :staging_id
   validate :home_time_zone_exists
@@ -27,9 +26,12 @@ class Event < ApplicationRecord
   scope :select_with_params, -> (search_param) do
     search(search_param)
         .select('events.*, COUNT(efforts.id) as effort_count')
-        .joins('LEFT OUTER JOIN efforts ON (efforts.event_id = events.id)')
-        .group('events.id').order(start_time: :desc)
+        .left_joins(:efforts).left_joins(:event_group)
+        .group('events.id, event_groups.id')
+        .order(start_time: :desc)
   end
+  scope :concealed, -> { includes(:event_group).where(event_groups: {concealed: true}) }
+  scope :visible, -> { includes(:event_group).where(event_groups: {concealed: false}) }
 
   def self.search(search_param)
     return all if search_param.blank?
@@ -46,6 +48,29 @@ class Event < ApplicationRecord
 
   def self.most_recent
     where('start_time < ?', Time.now).order(start_time: :desc).first
+  end
+
+  def concealed
+    event_group&.concealed
+  end
+  alias_method :concealed?, :concealed
+
+  def available_live
+    event_group&.available_live
+  end
+  alias_method :available_live?, :available_live
+
+  def auto_live_times
+    event_group&.auto_live_times
+  end
+  alias_method :auto_live_times?, :auto_live_times
+
+  def organization
+    event_group&.organization
+  end
+
+  def organization_id
+    event_group&.organization_id
   end
 
   def events_within_group

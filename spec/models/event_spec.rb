@@ -22,14 +22,11 @@ RSpec.describe Event, type: :model do
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe 'initialize' do
-    let(:course) { build_stubbed(:course) }
-    let(:start_time) { DateTime.parse('2015-07-01 06:00:00-06:00') }
-    let(:home_time_zone) { 'Mountain Time (US & Canada)' }
-
-    it 'is valid when created with a course, name, start time, laps_required, and home_time_zone' do
-      event = build_stubbed(:event, course: course)
+    it 'is valid when created with a course, organization, event_group, name, start time, laps_required, and home_time_zone' do
+      event = build_stubbed(:event)
 
       expect(event.course_id).to be_present
+      expect(event.event_group_id).to be_present
       expect(event.name).to be_present
       expect(event.start_time).to be_present
       expect(event.laps_required).to be_present
@@ -41,6 +38,12 @@ RSpec.describe Event, type: :model do
       event = build_stubbed(:event, course: nil)
       expect(event).not_to be_valid
       expect(event.errors[:course_id]).to include("can't be blank")
+    end
+
+    it 'is invalid without an event_group' do
+      event = build_stubbed(:event, event_group: nil)
+      expect(event).not_to be_valid
+      expect(event.errors[:event_group_id]).to include("can't be blank")
     end
 
     it 'is invalid without a name' do
@@ -82,11 +85,11 @@ RSpec.describe Event, type: :model do
   end
 
   describe 'methods that produce lap_splits and time_points' do
-    let(:event) { FactoryGirl.build_stubbed(:event, laps_required: 2) }
-    let(:start_split) { FactoryGirl.build_stubbed(:start_split, id: 111) }
-    let(:intermediate_split1) { FactoryGirl.build_stubbed(:split, id: 102) }
-    let(:intermediate_split2) { FactoryGirl.build_stubbed(:split, id: 103) }
-    let(:finish_split) { FactoryGirl.build_stubbed(:finish_split, id: 112) }
+    let(:event) { build_stubbed(:event, laps_required: 2) }
+    let(:start_split) { build_stubbed(:start_split, id: 111) }
+    let(:intermediate_split1) { build_stubbed(:split, id: 102) }
+    let(:intermediate_split2) { build_stubbed(:split, id: 103) }
+    let(:finish_split) { build_stubbed(:finish_split, id: 112) }
     let(:splits) { [start_split, intermediate_split1, intermediate_split2, finish_split] }
 
     describe '#required_lap_splits' do
@@ -151,34 +154,34 @@ RSpec.describe Event, type: :model do
 
   describe '#multiple_laps?' do
     it 'returns false if the event requires exactly one lap' do
-      event = FactoryGirl.build_stubbed(:event, laps_required: 1)
+      event = build_stubbed(:event, laps_required: 1)
       expect(event.multiple_laps?).to be_falsey
     end
 
     it 'returns true if the event requires more than one lap' do
-      event = FactoryGirl.build_stubbed(:event, laps_required: 2)
+      event = build_stubbed(:event, laps_required: 2)
       expect(event.multiple_laps?).to be_truthy
     end
 
     it 'returns true if the event requires zero (i.e. unlimited) laps' do
-      event = FactoryGirl.build_stubbed(:event, laps_required: 0)
+      event = build_stubbed(:event, laps_required: 0)
       expect(event.multiple_laps?).to be_truthy
     end
   end
 
   describe '#maximum_laps' do
     it 'returns laps_required when laps_required is 1' do
-      event = FactoryGirl.build_stubbed(:event, laps_required: 1)
+      event = build_stubbed(:event, laps_required: 1)
       expect(event.maximum_laps).to eq(1)
     end
 
     it 'returns laps_required when laps_required is greater than 1' do
-      event = FactoryGirl.build_stubbed(:event, laps_required: 3)
+      event = build_stubbed(:event, laps_required: 3)
       expect(event.maximum_laps).to eq(3)
     end
 
     it 'returns nil when laps_required is 0' do
-      event = FactoryGirl.build_stubbed(:event, laps_required: 0)
+      event = build_stubbed(:event, laps_required: 0)
       expect(event.maximum_laps).to eq(nil)
     end
   end

@@ -25,8 +25,4 @@ module Live::EventsHelper
     days_and_times.present? ?
         days_and_times.map { |day_and_time| day_time_military_format(day_and_time) }.join(' / ') : '[not recorded]'
   end
-
-  def link_to_aid_detail_field(view_object, field_name, column_heading)
-    link_to column_heading, request.params.merge(sort: view_object.reversing_sort(field_name))
-  end
 end

@@ -7,12 +7,12 @@
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :bib_number, 'Bib') %></th>
-            <th><%= link_to_aid_detail_field(@aid_station_detail, :full_name, 'Name') %></th>
-            <th><%= link_to_aid_detail_field(@aid_station_detail, :bio_historic, 'Category') %></th>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :last_reported_info, 'Last Reported') %></th>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :due_next_info, 'Due Next') %></th>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :expected_here_info, "Expected at #{@aid_station_detail.split_name}") %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :bib_number, @aid_station_detail.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Name', :full_name, @aid_station_detail.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Category', :bio_historic, @aid_station_detail.existing_sort) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading('Last Reported', :last_reported_info, @aid_station_detail.existing_sort) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading('Due Next', :due_next_info, @aid_station_detail.existing_sort) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading("Expected at #{@aid_station_detail.split_name}", :expected_here_info, @aid_station_detail.existing_sort) %></th>
           </tr>
           </thead>
           <tbody>

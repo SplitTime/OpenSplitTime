@@ -7,13 +7,13 @@
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :bib_number, 'Bib') %></th>
-            <th><%= link_to_aid_detail_field(@aid_station_detail, :full_name, 'Name') %></th>
-            <th><%= link_to_aid_detail_field(@aid_station_detail, :bio_historic, 'Category') %></th>
-            <th><%= link_to_aid_detail_field(@aid_station_detail, :state_and_country, 'From') %></th>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :prior_to_here_info, "Reported Prior To #{@aid_station_detail.split_name}") %>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :recorded_here_info, "Missed at #{@aid_station_detail.split_name}") %>
-            <th class="text-center"><%= link_to_aid_detail_field(@aid_station_detail, :after_here_info, "Reported After #{@aid_station_detail.split_name}") %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :bib_number, @aid_station_detail.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Name', :full_name, @aid_station_detail.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Category', :bio_historic, @aid_station_detail.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('From', :state_and_country, @aid_station_detail.existing_sort) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading("Reported Prior To #{@aid_station_detail.split_name}", :prior_to_here_info, @aid_station_detail.existing_sort) %>
+            <th class="text-center"><%= link_to_reversing_sort_heading("Missed at #{@aid_station_detail.split_name}", :recorded_here_info, @aid_station_detail.existing_sort) %>
+            <th class="text-center"><%= link_to_reversing_sort_heading("Reported After #{@aid_station_detail.split_name}", :after_here_info, @aid_station_detail.existing_sort) %></th>
           </tr>
           </thead>
           <tbody>

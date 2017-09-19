@@ -1,20 +1,21 @@
 require 'rails_helper'
 
 describe PreparedParams do
+  subject { PreparedParams.new(params, permitted, permitted_query) }
+  let(:permitted) { [] }
+  let(:permitted_query) { [] }
+
   describe '#initialize' do
     let(:params) { ActionController::Parameters.new }
-    let(:permitted) { [] }
-    let(:permitted_query) { [] }
 
     it 'initializes given an instance of ActionControllers::Parameters' do
-      expect { PreparedParams.new(params, permitted, permitted_query) }.not_to raise_error
+      expect { subject }.not_to raise_error
     end
   end
 
   describe '#data' do
     let(:params) { ActionController::Parameters.new(data: data_params) }
     let(:permitted) { [:id, :name, :age] }
-    let(:permitted_query) { [] }
 
     context 'when provided with params[:data] in jsonapi format' do
       let(:data_params) { {id: 123, attributes: {name: 'John Doe', age: 50}} }
@@ -25,9 +26,8 @@ describe PreparedParams do
       end
 
       it 'responds indifferently to string and symbol keys' do
-        prepared_params = PreparedParams.new(params, permitted, permitted_query)
-        expect(prepared_params[:data][:name]).to eq('John Doe')
-        expect(prepared_params[:data]['name']).to eq('John Doe')
+        expect(subject[:data][:name]).to eq('John Doe')
+        expect(subject[:data]['name']).to eq('John Doe')
       end
     end
 
@@ -59,72 +59,48 @@ describe PreparedParams do
     end
   end
 
-  describe '#sort' do
-    let(:params) { ActionController::Parameters.new(sort: sort_string) }
-    let(:permitted) { [] }
-    let(:permitted_query) { [:name, :age, :country_code] }
+  describe '#editable' do
+    let(:params) { ActionController::Parameters.new(filter: filter_params) }
 
-    context 'when provided with params[:sort] in jsonapi format' do
-      let(:sort_string) { 'name,-age' }
+    context 'when provided with a [:filter][:editable] key as true' do
+      let(:filter_params) { {'editable' => 'true', 'state_code' => '', 'country_code' => 'US'} }
 
-      it 'returns a hash containing the given data' do
-        expected = {'name' => :asc, 'age' => :desc}
-        validate_param('sort', expected)
-      end
-
-      it 'responds indifferently to string and symbol keys' do
-        prepared_params = PreparedParams.new(params, permitted, permitted_query)
-        expect(prepared_params[:sort][:name]).to eq(:asc)
-        expect(prepared_params[:sort]['name']).to eq(:asc)
-      end
-
-      it 'works correctly when used as the argument in an ActiveRecord #order method' do
-        prepared_params = PreparedParams.new(params, permitted, permitted_query)
-        relation = Effort.order(prepared_params[:sort])
-        expect(relation.to_sql).to include("ORDER BY \"efforts\".\"name\" ASC, \"efforts\".\"age\" DESC")
+      it 'returns true' do
+        expected = true
+        validate_param('editable', expected)
       end
     end
 
-    context 'when provided with params[:sort] fields in camelCase' do
-      let(:sort_string) { 'name,-countryCode' }
+    context 'when provided with a [:filter][:editable] key as false' do
+      let(:filter_params) { {'editable' => 'false', 'state_code' => '', 'country_code' => 'US'} }
 
-      it 'returns a hash containing the given data' do
-        expected = {'name' => :asc, 'country_code' => :desc}
-        validate_param('sort', expected)
+      it 'returns false' do
+        expected = false
+        validate_param('editable', expected)
       end
     end
 
-    context 'when provided with a non-permitted sort attribute' do
-      let(:sort_string) { 'name,-age,role' }
+    context 'when no [:filter][:editable] key is present' do
+      let(:filter_params) { {'state_code' => '', 'country_code' => 'US'} }
 
-      it 'returns a hash containing only the permitted attributes' do
-        expected = {'name' => :asc, 'age' => :desc}
-        validate_param('sort', expected)
+      it 'returns nil' do
+        expected = nil
+        validate_param('editable', expected)
       end
     end
 
-    context 'when sort is an empty string' do
-      let(:sort_string) { '' }
+    context 'when no [:filter] key is present' do
+      let(:filter_params) { nil }
 
-      it 'returns an empty hash' do
-        expected = {}
-        validate_param('sort', expected)
-      end
-    end
-
-    context 'when sort is nil' do
-      let(:sort_string) { nil }
-
-      it 'returns an empty hash' do
-        expected = {}
-        validate_param('sort', expected)
+      it 'returns nil' do
+        expected = nil
+        validate_param('editable', expected)
       end
     end
   end
 
   describe '#fields' do
     let(:params) { ActionController::Parameters.new(fields: field_params) }
-    let(:permitted) { [] }
     let(:permitted_query) { [:name, :age] }
 
     context 'when provided with fields for a single model in jsonapi format' do
@@ -136,9 +112,8 @@ describe PreparedParams do
       end
 
       it 'responds indifferently to string and symbol keys' do
-        prepared_params = PreparedParams.new(params, permitted, permitted_query)
-        expect(prepared_params[:fields][:courses]).to eq([:name, :description])
-        expect(prepared_params[:fields]['courses']).to eq([:name, :description])
+        expect(subject[:fields][:courses]).to eq([:name, :description])
+        expect(subject[:fields]['courses']).to eq([:name, :description])
       end
     end
 
@@ -189,42 +164,8 @@ describe PreparedParams do
     end
   end
 
-  describe '#include' do
-    let(:params) { ActionController::Parameters.new(include: include_params) }
-    let(:permitted) { [] }
-    let(:permitted_query) { [] }
-
-    context 'when provided with camelCased models and relations in jsonapi format' do
-      let(:include_params) { 'course,split.splitTimes' }
-
-      it 'returns a string with camelCase converted to underscore' do
-        expected = 'course,split.split_times'
-        validate_param('include', expected)
-      end
-    end
-
-    context 'when provided with an empty string' do
-      let(:include_params) { '' }
-
-      it 'returns an empty string' do
-        expected = ''
-        validate_param('include', expected)
-      end
-    end
-
-    context 'when include param is nil' do
-      let(:include_params) { nil }
-
-      it 'returns an empty string' do
-        expected = ''
-        validate_param('include', expected)
-      end
-    end
-  end
-
   describe '#filter' do
     let(:params) { ActionController::Parameters.new(filter: filter_params) }
-    let(:permitted) { [] }
     let(:permitted_query) { [:state_code, :country_code] }
 
     context 'when provided with a single field and value' do
@@ -236,14 +177,12 @@ describe PreparedParams do
       end
 
       it 'responds indifferently to string and symbol keys' do
-        prepared_params = PreparedParams.new(params, permitted, permitted_query)
-        expect(prepared_params[:filter][:state_code]).to eq('NM')
-        expect(prepared_params[:filter]['state_code']).to eq('NM')
+        expect(subject[:filter][:state_code]).to eq('NM')
+        expect(subject[:filter]['state_code']).to eq('NM')
       end
 
       it 'works correctly when used as the argument in an ActiveRecord #where method' do
-        prepared_params = PreparedParams.new(params, permitted, permitted_query)
-        relation = Effort.where(prepared_params[:filter])
+        relation = Effort.where(subject[:filter])
         expect(relation.to_sql).to include("WHERE \"efforts\".\"state_code\" = 'NM'")
       end
     end
@@ -275,10 +214,18 @@ describe PreparedParams do
       end
 
       it 'works correctly when used as the argument in an ActiveRecord #where method' do
-        prepared_params = PreparedParams.new(params, permitted, permitted_query)
-        relation = Effort.where(prepared_params[:filter])
+        relation = Effort.where(subject[:filter])
         expect(relation.to_sql)
             .to include("WHERE \"efforts\".\"state_code\" IN ('NM', 'AZ', 'BC') AND \"efforts\".\"country_code\" IN ('US', 'CA')")
+      end
+    end
+
+    context 'when provided with multiple fields combined with "editable" and "search" keys' do
+      let(:filter_params) { {'state_code' => 'NM,AZ,BC', 'country_code' => 'US,CA', 'search' => 'colorado', 'editable' => 'true'} }
+
+      it 'ignores the "search" and "editable" keys' do
+        expected = {'state_code' => %w(NM AZ BC), 'country_code' => %w(US CA)}
+        validate_param('filter', expected)
       end
     end
 
@@ -312,7 +259,6 @@ describe PreparedParams do
 
   describe '#filter[:gender]' do
     let(:params) { ActionController::Parameters.new(filter: {gender: gender_param}) }
-    let(:permitted) { [] }
     let(:permitted_query) { [:gender] }
     let(:gender) { params.dig('filter', 'gender') }
 
@@ -398,10 +344,48 @@ describe PreparedParams do
     end
   end
 
+  describe '#include' do
+    let(:params) { ActionController::Parameters.new(include: include_params) }
+
+    context 'when provided with camelCased models and relations in jsonapi format' do
+      let(:include_params) { 'course,split.splitTimes' }
+
+      it 'returns a string with camelCase converted to underscore' do
+        expected = 'course,split.split_times'
+        validate_param('include', expected)
+      end
+    end
+
+    context 'when provided with an empty string' do
+      let(:include_params) { '' }
+
+      it 'returns an empty string' do
+        expected = ''
+        validate_param('include', expected)
+      end
+    end
+
+    context 'when include param is nil' do
+      let(:include_params) { nil }
+
+      it 'returns an empty string' do
+        expected = ''
+        validate_param('include', expected)
+      end
+    end
+  end
+
+  describe '#original_params' do
+    let(:params) { ActionController::Parameters.new(filter: {search: 'john', state_code: 'CO'}, include: 'efforts', sort: 'last_name') }
+
+    it 'returns the provided params' do
+      expected = params
+      validate_param('original_params', expected)
+    end
+  end
+
   describe '#search' do
     let(:params) { ActionController::Parameters.new(filter: {search: search_param}) }
-    let(:permitted) { [] }
-    let(:permitted_query) { [] }
 
     context 'when search param contains a string' do
       let(:search_param) { 'john doe co' }
@@ -429,36 +413,80 @@ describe PreparedParams do
         validate_param('search', expected)
       end
     end
+
+    context 'when filter param is nil' do
+      let(:params) { ActionController::Parameters.new(filter: nil) }
+
+      it 'returns nil' do
+        expected = nil
+        validate_param('search', expected)
+      end
+    end
   end
 
-  describe '#editable' do
-    let(:params) { ActionController::Parameters.new(filter: filter_params) }
-    let(:permitted) { [] }
-    let(:permitted_query) { [] }
+  describe '#sort' do
+    let(:params) { ActionController::Parameters.new(sort: sort_string) }
+    let(:permitted_query) { [:name, :age, :country_code] }
 
-    context 'when provided with a [:filter][:editable] key as true' do
-      let(:filter_params) { {'editable' => 'true', 'state_code' => '', 'country_code' => 'US'} }
+    context 'when provided with params[:sort] in jsonapi format' do
+      let(:sort_string) { 'name,-age' }
 
-      it 'returns true' do
-        expected = true
-        validate_param('editable', expected)
+      it 'returns a hash containing the given data' do
+        expected = {'name' => :asc, 'age' => :desc}
+        validate_param('sort', expected)
+      end
+
+      it 'responds indifferently to string and symbol keys' do
+        expect(subject[:sort][:name]).to eq(:asc)
+        expect(subject[:sort]['name']).to eq(:asc)
+      end
+
+      it 'works correctly when used as the argument in an ActiveRecord #order method' do
+        relation = Effort.order(subject[:sort])
+        expect(relation.to_sql).to include("ORDER BY \"efforts\".\"name\" ASC, \"efforts\".\"age\" DESC")
       end
     end
 
-    context 'when provided with a [:filter][:editable] key as false' do
-      let(:filter_params) { {'editable' => 'false', 'state_code' => '', 'country_code' => 'US'} }
+    context 'when provided with params[:sort] fields in camelCase' do
+      let(:sort_string) { 'name,-countryCode' }
 
-      it 'returns false' do
-        expected = false
-        validate_param('editable', expected)
+      it 'returns a hash containing the given data' do
+        expected = {'name' => :asc, 'country_code' => :desc}
+        validate_param('sort', expected)
+      end
+    end
+
+    context 'when provided with a non-permitted sort attribute' do
+      let(:sort_string) { 'name,-age,role' }
+
+      it 'returns a hash containing only the permitted attributes' do
+        expected = {'name' => :asc, 'age' => :desc}
+        validate_param('sort', expected)
+      end
+    end
+
+    context 'when sort is an empty string' do
+      let(:sort_string) { '' }
+
+      it 'returns an empty hash' do
+        expected = {}
+        validate_param('sort', expected)
+      end
+    end
+
+    context 'when sort is nil' do
+      let(:sort_string) { nil }
+
+      it 'returns an empty hash' do
+        expected = {}
+        validate_param('sort', expected)
       end
     end
   end
 
   def validate_param(method, expected)
-    prepared_params = PreparedParams.new(params, permitted, permitted_query)
-    expect(prepared_params.send(method)).to eq(expected)
-    expect(prepared_params[method.to_s]).to eq(expected)
-    expect(prepared_params[method.to_sym]).to eq(expected)
+    expect(subject.send(method)).to eq(expected)
+    expect(subject[method.to_s]).to eq(expected)
+    expect(subject[method.to_sym]).to eq(expected)
   end
 end

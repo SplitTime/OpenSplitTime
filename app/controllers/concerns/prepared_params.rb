@@ -1,11 +1,10 @@
 class PreparedParams
-  attr_reader :search, :editable
+  SPECIAL_FILTER_FIELDS = %i(editable search)
 
   def initialize(params, permitted, permitted_query = nil)
     @params = params
     @permitted = permitted.map(&:to_s)
     @permitted_query = (permitted_query || permitted).map(&:to_s)
-    parse_filter_param
   end
 
   def [](method_name)
@@ -16,8 +15,8 @@ class PreparedParams
     @data ||= ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: permitted).with_indifferent_access
   end
 
-  def sort
-    @sort ||= sort_hash.reject {|field, _| permitted_query.exclude?(field)}.with_indifferent_access
+  def editable
+    params[:filter] && params[:filter][:editable]&.to_boolean
   end
 
   def fields
@@ -26,15 +25,31 @@ class PreparedParams
                     .reduce({}, :merge).with_indifferent_access
   end
 
+  def filter
+    return @filter if defined?(@filter)
+    filter_params = transformed_filter_values.except(*SPECIAL_FILTER_FIELDS)
+    filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
+    @filter = filter_params.to_h.with_indifferent_access
+  end
+
   def include
     @include ||= params[:include].to_s.underscore
   end
 
-  def filter
-    return @filter if defined?(@filter)
-    filter_params = transformed_filter_values
-    filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
-    @filter = filter_params.to_h.with_indifferent_access
+  def original_params
+    params
+  end
+
+  def search
+    params[:filter] && params[:filter][:search].presence
+  end
+
+  def sort
+    @sort ||= sort_hash.reject {|field, _| permitted_query.exclude?(field)}.with_indifferent_access
+  end
+
+  def sort_text
+    sort.map { |field, direction| "#{field} #{direction}" }.join(',')
   end
 
   def method_missing(method)
@@ -44,14 +59,6 @@ class PreparedParams
   private
 
   attr_reader :params, :permitted, :permitted_query
-  attr_writer :search, :editable
-
-  def parse_filter_param
-    params[:filter] = {} unless params[:filter].is_a?(ActionController::Parameters)
-    self.search = params[:filter].delete(:search).presence
-    editable_flag = params[:filter].delete(:editable)
-    self.editable = editable_flag&.to_boolean
-  end
 
   def transformed_filter_values
     permitted_filter_params.transform_values do |list|

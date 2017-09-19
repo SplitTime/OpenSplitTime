@@ -13,9 +13,17 @@ class EventGroupsController < ApplicationController
 
   def update
     authorize @event_group
+    @event_group.assign_attributes(permitted_params)
 
-    if @event_group.update(permitted_params)
+    if @event_group.concealed_changed?
+      setter = EventConcealedSetter.new(event_group: @event_group, concealed: @event_group.concealed)
+      setter.perform
+      flash[:danger] = setter.response[:errors] unless setter.status == :ok
       redirect_to session.delete(:return_to) || @event_group
+
+    elsif @event_group.save
+      redirect_to session.delete(:return_to) || @event_group
+
     else
       render 'edit'
     end
@@ -24,17 +32,16 @@ class EventGroupsController < ApplicationController
   def destroy
     authorize @event_group
     if @event_group.events.present?
-      flash[:danger] = 'Event group cannot be deleted if events are present within the event_group. ' +
-          'Delete the related events individually and then delete the event_group.'
+      flash[:danger] = 'Event group cannot be deleted if events are present within the event group. ' +
+          'Delete the related events individually and then delete the event group.'
+      redirect_to event_group_path(@event_group)
     else
       @event_group.destroy
       flash[:success] = 'Event group deleted.'
+      session[:return_to] = params[:referrer_path] if params[:referrer_path]
+      redirect_to session.delete(:return_to) || events_path
     end
-
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || events_path
   end
-
 
   private
 

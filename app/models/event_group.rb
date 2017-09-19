@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class EventGroup < ApplicationRecord
+  include Concealable
   extend FriendlyId
   friendly_id :name, use: :slugged
+  strip_attributes collapse_spaces: true
   has_many :events
   belongs_to :organization
   validates_presence_of :name

@@ -459,16 +459,18 @@ RSpec.describe Effort, type: :model do
   describe '#concealed?' do
     subject { build_stubbed(:effort, event: event) }
 
-    context 'when the associated event is concealed' do
-      let(:event) { build_stubbed(:event, concealed: true) }
+    context 'when the associated event_group is concealed' do
+      let(:event) { build_stubbed(:event, event_group: event_group) }
+      let(:event_group) { build_stubbed(:event_group, concealed: true) }
 
       it 'returns true' do
         expect(subject.concealed?).to eq(true)
       end
     end
 
-    context 'when the associated event is not concealed' do
-      let(:event) { build_stubbed(:event, concealed: false) }
+    context 'when the associated event_group is not concealed' do
+      let(:event) { build_stubbed(:event, event_group: event_group) }
+      let(:event_group) { build_stubbed(:event_group, concealed: false) }
 
       it 'returns false' do
         expect(subject.concealed?).to eq(false)
@@ -476,27 +478,26 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe '.concealed' do
-    let(:visible_event) { create(:event, concealed: false) }
-    let(:concealed_event) { create(:event, concealed: true) }
+  describe '.concealed and .visible' do
+    let(:visible_event_group) { create(:event_group, concealed: false) }
+    let(:concealed_event_group) { create(:event_group, concealed: true) }
+    let(:visible_event) { create(:event, event_group: visible_event_group) }
+    let(:concealed_event) { create(:event, event_group: concealed_event_group) }
     let(:visible_efforts) { create_list(:effort, 2, event: visible_event) }
     let(:concealed_efforts) { create_list(:effort, 2, event: concealed_event) }
 
-    it 'limits the subject scope to efforts whose event is concealed' do
-      visible_efforts.each { |effort| expect(Effort.concealed).not_to include(effort) }
-      concealed_efforts.each { |effort| expect(Effort.concealed).to include(effort) }
+    describe '.concealed' do
+      it 'limits the subject scope to efforts whose event_group is concealed' do
+        visible_efforts.each { |effort| expect(Effort.concealed).not_to include(effort) }
+        concealed_efforts.each { |effort| expect(Effort.concealed).to include(effort) }
+      end
     end
-  end
 
-  describe '.visible' do
-    let(:visible_event) { create(:event, concealed: false) }
-    let(:concealed_event) { create(:event, concealed: true) }
-    let(:visible_efforts) { create_list(:effort, 2, event: visible_event) }
-    let(:concealed_efforts) { create_list(:effort, 2, event: concealed_event) }
-
-    it 'limits the subject scope to efforts whose event is visible' do
-      visible_efforts.each { |effort| expect(Effort.visible).to include(effort) }
-      concealed_efforts.each { |effort| expect(Effort.visible).not_to include(effort) }
+    describe '.visible' do
+      it 'limits the subject scope to efforts whose event_group is visible' do
+        visible_efforts.each { |effort| expect(Effort.visible).to include(effort) }
+        concealed_efforts.each { |effort| expect(Effort.visible).not_to include(effort) }
+      end
     end
   end
 

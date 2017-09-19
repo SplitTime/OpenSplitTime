@@ -55,8 +55,8 @@ class Effort < ApplicationRecord
   scope :with_ordered_split_times,
         -> { eager_load(:split_times).includes(split_times: :split)
                  .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
-  scope :concealed, -> { includes(:event).where(events: {concealed: true}) }
-  scope :visible, -> { includes(:event).where(events: {concealed: false}) }
+  scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
+  scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
 
   delegate :organization, to: :event
 
@@ -254,7 +254,7 @@ class Effort < ApplicationRecord
   end
 
   def concealed?
-    event.concealed?
+    event_group.concealed?
   end
 
   def unreconciled?

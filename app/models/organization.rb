@@ -5,10 +5,14 @@ class Organization < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
-  has_many :events
-  has_many :event_groups
+  has_many :event_groups, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
+
+  scope :with_event_count, -> do
+    left_joins(event_groups: :events).select('organizations.*, COUNT(events.id) as event_count')
+        .where(event_groups: {concealed: false}).group('events.id, organizations.id').uniq
+  end
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
@@ -26,6 +30,6 @@ class Organization < ApplicationRecord
   end
 
   def should_be_concealed?
-    !events.visible.present?
+    !event_groups.visible.present?
   end
 end

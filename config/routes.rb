@@ -59,7 +59,7 @@ Rails.application.routes.draw do
     collection { get :subregion_options }
   end
 
-  resources :event_groups, only: [:show, :create, :update, :destroy]
+  resources :event_groups, only: [:show, :create, :edit, :update, :destroy]
 
   resources :events do
     member { post :import_csv }

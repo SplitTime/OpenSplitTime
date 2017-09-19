@@ -250,7 +250,7 @@ describe Api::V1::EventsController do
         end
       end
 
-      context 'when the event is available live and auto_live_times is true' do
+      context 'when the event_group is available live and auto_live_times is true' do
         let!(:event) { create(:event, course_id: course.id, laps_required: 1, event_group: event_group) }
         let!(:event_group) { create(:event_group, available_live: true, auto_live_times: true) }
         let!(:effort) { create(:effort, event: event, bib_number: 101) }

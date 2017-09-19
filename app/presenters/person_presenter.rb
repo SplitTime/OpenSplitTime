@@ -1,5 +1,7 @@
 class PersonPresenter < BasePresenter
 
+  delegate :to_param, to: :person
+
   def initialize(person, params, current_user)
     @person = person
     @params = params

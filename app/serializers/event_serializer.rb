@@ -7,7 +7,7 @@ class EventSerializer < BaseSerializer
   has_many :splits
   has_many :aid_stations
   belongs_to :course
-  belongs_to :organization
+  belongs_to :event_group
 
   def multi_lap
     object.multiple_laps?

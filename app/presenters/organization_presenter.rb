@@ -3,13 +3,14 @@ class OrganizationPresenter < BasePresenter
   attr_reader :organization
   delegate :id, :name, :description, :stewards, :to_param, to: :organization
 
-  def initialize(organization, params)
+  def initialize(organization, params, current_user)
     @organization = organization
     @params = params
+    @current_user = current_user
   end
 
   def events
-    @events ||= EventPolicy::Scope.new(current_user, Event).viewable.where(organization: organization)
+    @events ||= EventPolicy::Scope.new(current_user, Event).viewable.includes(:event_group).where(event_groups: {organization: organization})
                     .select_with_params(search_text).to_a
   end
 
@@ -42,5 +43,5 @@ class OrganizationPresenter < BasePresenter
 
   private
 
-  attr_reader :params
+  attr_reader :params, :current_user
 end

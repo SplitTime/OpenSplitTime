@@ -17,13 +17,13 @@ class PeopleController < ApplicationController
     @people = policy_class::Scope.new(current_user, controller_class).viewable
                         .search(prepared_params[:search])
                         .with_age_and_effort_count
-                        .order(prepared_params[:sort])
+                        .order(prepared_params[:sort_text])
                         .paginate(page: params[:page], per_page: 25)
     session[:return_to] = people_path
   end
 
   def show
-    @presenter = PersonPresenter.new(@person, prepared_params)
+    @presenter = PersonPresenter.new(@person, prepared_params, current_user)
     session[:return_to] = person_path(@person)
   end
 

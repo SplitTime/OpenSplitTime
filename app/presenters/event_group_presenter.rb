@@ -1,5 +1,6 @@
 class EventGroupPresenter < BasePresenter
   attr_reader :event_group
+  delegate :to_param, to: :event_group
 
   def initialize(event_group, params, current_user)
     @event_group = event_group

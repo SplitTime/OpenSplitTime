@@ -4,10 +4,6 @@ class BasePresenter
     raise NotImplementedError, "#{self.class.name} is an abstract class."
   end
 
-  def current_user
-    params[:current_user]
-  end
-
   def filter_hash
     params[:filter] || {}
   end
@@ -35,6 +31,10 @@ class BasePresenter
     params[:per_page] || 25
   end
 
+  def reversing_sort(field_name)
+    existing_sort == field_name.to_s ? "-#{field_name}" : field_name.to_s
+  end
+
   def search_text
     params[:search]
   end
@@ -51,5 +51,9 @@ class BasePresenter
 
   def params
     raise NotImplementedError, "#{self.class.name} must implement a params method."
+  end
+
+  def existing_sort
+    params.original_params[:sort]
   end
 end

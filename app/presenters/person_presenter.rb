@@ -1,8 +1,9 @@
 class PersonPresenter < BasePresenter
 
-  def initialize(person, params)
+  def initialize(person, params, current_user)
     @person = person
     @params = params
+    @current_user = current_user
   end
 
   def efforts
@@ -16,5 +17,5 @@ class PersonPresenter < BasePresenter
 
   private
 
-  attr_reader :person, :params
+  attr_reader :person, :params, :current_user
 end

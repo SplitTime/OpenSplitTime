@@ -42,7 +42,7 @@ class AidStationDetail < LiveEventFramework
   end
 
   def existing_sort
-    (sort_param_order == :desc) ? "-#{sort_param_field}" : "#{sort_param_field}"
+    params.original_params[:sort]
   end
 
   def prior_aid_station

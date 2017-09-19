@@ -4,15 +4,14 @@ class OrganizationsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @organizations = policy_class::Scope.new(current_user, controller_class).viewable
+    @organizations = policy_class::Scope.new(current_user, controller_class).viewable.with_event_count
                  .paginate(page: params[:page], per_page: 25).order(:name)
     session[:return_to] = organizations_path
   end
 
   def show
     params[:view] ||= 'events'
-    params[:current_user] = current_user
-    @presenter = OrganizationPresenter.new(@organization, params)
+    @presenter = OrganizationPresenter.new(@organization, params, current_user)
     session[:return_to] = organization_path(@organization)
   end
 
@@ -48,7 +47,7 @@ class OrganizationsController < ApplicationController
 
   def destroy
     authorize @organization
-    if @organization.events.present?
+    if @organization.event_groups.map(&:events).flatten.present?
       flash[:danger] = 'An organization cannot be deleted so long as any events are associated with it. ' +
           'Delete the related events individually and then delete the organization.'
       redirect_to organization_path(@organization)

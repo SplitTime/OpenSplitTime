@@ -60,7 +60,8 @@ RSpec.describe EventSpreadDisplay do
 
     context 'when display_style is not provided in the params and the event has only start/finish splits' do
       let(:prepared_params) { ActionController::Parameters.new(display_style: nil) }
-      let(:event) { instance_double('Event', simple?: true, available_live: true) }
+      let(:event) { instance_double('Event', simple?: true, event_group: event_group) }
+      let(:event_group) { instance_double('EventGroup', available_live: true) }
 
       it 'returns elapsed' do
         expect(subject.display_style).to eq('elapsed')
@@ -69,7 +70,8 @@ RSpec.describe EventSpreadDisplay do
 
     context 'when display_style is not provided in the params and the event has multiple splits and is available live' do
       let(:prepared_params) { ActionController::Parameters.new(display_style: nil) }
-      let(:event) { instance_double('Event', simple?: false, available_live: true) }
+      let(:event) { instance_double('Event', simple?: false, event_group: event_group) }
+      let(:event_group) { instance_double('EventGroup', available_live: true) }
 
       it 'returns elapsed' do
         expect(subject.display_style).to eq('ampm')
@@ -78,7 +80,8 @@ RSpec.describe EventSpreadDisplay do
 
     context 'when display_style is not provided in the params and the event has multiple splits and is not available live' do
       let(:prepared_params) { ActionController::Parameters.new(display_style: nil) }
-      let(:event) { instance_double('Event', simple?: false, available_live: false) }
+      let(:event) { instance_double('Event', simple?: false, event_group: event_group) }
+      let(:event_group) { instance_double('EventGroup', available_live: false) }
 
       it 'returns elapsed' do
         expect(subject.display_style).to eq('elapsed')

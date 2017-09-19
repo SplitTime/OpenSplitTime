@@ -3,8 +3,9 @@ require 'rails_helper'
 describe Api::V1::EventsController do
   login_admin
 
-  let(:event) { create(:event, course: course) }
+  let(:event) { create(:event, course: course, event_group: event_group) }
   let(:course) { create(:course) }
+  let(:event_group) { create(:event_group) }
 
   describe '#show' do
     it 'returns a successful 200 response' do
@@ -28,7 +29,8 @@ describe Api::V1::EventsController do
   end
 
   describe '#create' do
-    let(:params) { {course_id: course.id, name: 'Test Event', start_time_in_home_zone: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
+    let(:params) { {course_id: course.id, event_group_id: event_group.id, name: 'Test Event',
+                    start_time_in_home_zone: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
 
     it 'returns a successful json response' do
       post :create, params: {data: {type: 'events', attributes: params }}
@@ -38,11 +40,11 @@ describe Api::V1::EventsController do
       expect(response.status).to eq(201)
     end
 
-    it 'creates an event record with a staging_id' do
+    it 'creates an event record with an id' do
       expect(Event.all.count).to eq(0)
       post :create, params: {data: {type: 'events', attributes: params }}
       expect(Event.all.count).to eq(1)
-      expect(Event.first.staging_id).not_to be_nil
+      expect(Event.first.id).not_to be_nil
     end
   end
 
@@ -237,7 +239,8 @@ describe Api::V1::EventsController do
       end
 
       context 'when the event is available live' do
-        let(:event) { create(:event, course_id: course.id, laps_required: 1, available_live: true) }
+        let(:event) { create(:event, course_id: course.id, laps_required: 1, event_group: event_group) }
+        let(:event_group) { create(:event_group, available_live: true) }
 
         it 'sends a push notification that includes the count of available times' do
           allow(Pusher).to receive(:trigger)
@@ -248,7 +251,8 @@ describe Api::V1::EventsController do
       end
 
       context 'when the event is available live and auto_live_times is true' do
-        let!(:event) { create(:event, course_id: course.id, laps_required: 1, available_live: true, auto_live_times: true) }
+        let!(:event) { create(:event, course_id: course.id, laps_required: 1, event_group: event_group) }
+        let!(:event_group) { create(:event_group, available_live: true, auto_live_times: true) }
         let!(:effort) { create(:effort, event: event, bib_number: 101) }
         let(:data) { [
             {type: 'live_time',

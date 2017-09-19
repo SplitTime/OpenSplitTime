@@ -46,7 +46,7 @@ class PartnersController < ApplicationController
   private
 
   def partner_event_path
-    stage_event_path(@partner.event, view: 'partners')
+    stage_event_path(@partner.event, display_style: 'partners')
   end
 
   def set_partner

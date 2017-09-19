@@ -11,7 +11,7 @@ class EventStageDisplay < EventWithEffortsPresenter
     @filtered_efforts ||= scoped_efforts
                               .search(search_text)
                               .where(filter_hash)
-                              .order(sort_hash)
+                              .order(sort_hash.presence || :bib_number)
                               .select { |effort| matches_criteria?(effort) }
                               .paginate(page: page, per_page: per_page)
   end
@@ -62,6 +62,14 @@ class EventStageDisplay < EventWithEffortsPresenter
 
   def effort_started?(effort)
     started_effort_ids.include?(effort.id)
+  end
+
+  def concealed_text
+    concealed? ? '(private)' : nil
+  end
+
+  def event_group_names
+    ordered_events_within_group.map(&:name).to_sentence(two_words_connector: ' and ', last_word_connector: ', and ')
   end
 
   private

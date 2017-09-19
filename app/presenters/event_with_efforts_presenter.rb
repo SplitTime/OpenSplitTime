@@ -4,7 +4,7 @@ class EventWithEffortsPresenter < BasePresenter
   delegate :id, :name, :course, :organization, :simple?, :beacon_url, :home_time_zone, :finish_split,
            :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, :event_group,
            :ordered_events_within_group, to: :event
-  delegate :available_live, :concealed, to: :event_group
+  delegate :available_live, :available_live?, :concealed, :concealed?, to: :event_group
 
   def initialize(args)
     @event = args[:event]
@@ -68,7 +68,7 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def existing_sort
-    (sort_param_order == :desc) ? "-#{sort_param_field}" : "#{sort_param_field}"
+    params.original_params[:sort]
   end
 
   private
@@ -100,19 +100,6 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def person_ids
-    @person_ids ||=
-        (filtered_ranked_efforts.map(&:person_id) + filtered_unstarted_efforts.map(&:person_id)).compact
-  end
-
-  def sort_param_field
-    sort_param.first
-  end
-
-  def sort_param_order
-    sort_param.last
-  end
-
-  def sort_param
-    (params[:sort].first || []).map(&:to_sym)
+    @person_ids ||= (filtered_ranked_efforts.map(&:person_id) + filtered_unstarted_efforts.map(&:person_id)).compact
   end
 end

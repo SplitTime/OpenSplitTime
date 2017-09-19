@@ -88,6 +88,25 @@ module EventsHelper
             class: 'btn btn-sm btn-warning'
   end
 
+  def link_to_toggle_ost_remote(view_object)
+    if view_object.auto_live_times?
+      button_text = 'OST Remote Manual'
+      confirm_text = "NOTE: Times imported from OST Remote into #{view_object.event_group_names} " +
+          'will need to be manually updated in the Live Entry view. Are you sure you want to proceed?'
+    else
+      button_text = 'OST Remote Auto'
+      confirm_text = "NOTE: Times imported from OST Remote into #{view_object.event_group_names} " +
+          'will be automatically updated, with only duplicate and questionable times requiring attention ' +
+          'in the Live Entry view. Are you sure you want to proceed?'
+    end
+
+    link_to button_text,
+            event_group_path(view_object.event_group, event_group: {auto_live_times: !view_object.auto_live_times?}),
+            data: {confirm: confirm_text},
+            method: :put,
+            class: 'btn btn-sm btn-warning'
+  end
+
   def link_to_stewards(view_object)
     link_to 'Stewards', stewards_organization_path(view_object.organization), class: 'btn btn-sm btn-warning' if view_object.organization
   end

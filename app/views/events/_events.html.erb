@@ -7,11 +7,16 @@
     <th>Date and Time</th>
     <th>Details</th>
     <% if presenter.show_visibility_columns? %>
-        <th>Visibility</th>
-        <th></th>
+        <th class="text-center">Visibility</th>
+        <th class="text-center">OST Remote</th>
+        <th class="text-center"></th>
     <% end %>
-    <% if show_join_button && current_user.authorized_fully?(presenter.event_group)%>
-        <th>Join</th>
+    <% if %w(join leave).include?(show_grouping_button) && current_user.authorized_fully?(presenter.event_group) %>
+        <% if show_grouping_button == 'join' %>
+            <th class="text-center">Join</th>
+        <% elsif events.many? && show_grouping_button == 'leave' %>
+            <th class="text-center">Leave</th>
+        <% end %>
     <% end %>
   </tr>
   </thead>
@@ -22,18 +27,26 @@
         <td><%= l(event.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
         <td><%= "#{pluralize(event.effort_count, 'effort')}" %></td>
         <% if presenter.show_visibility_columns? %>
-            <td><%= event.concealed? ? 'Private' : 'Public' %></td>
-            <td>
+            <td class="text-center"><%= event.concealed? ? 'Private' : 'Public' %></td>
+            <td class="text-center"><%= event.auto_live_times? ? 'Auto' : 'Manual' %></td>
+            <td class="text-center">
               <% if event.available_live? && current_user&.authorized_to_edit?(event) %>
                   <%= link_to 'Live Entry', live_entry_live_event_path(event), class: 'btn btn-xs btn-warning' %>
               <% end %>
             </td>
         <% end %>
-        <% if show_join_button && current_user.authorized_fully?(presenter.event_group)%>
-            <td><%= link_to 'Join', event_path(event, event: {event_group_id: presenter.event_group.id}),
-                            method: :patch,
-                            data: {confirm: ''},
-                            class: 'btn btn-xs btn-success' %></td>
+        <% if %w(join leave).include?(show_grouping_button) && current_user.authorized_fully?(presenter.event_group) %>
+            <% if show_grouping_button == 'join' %>
+                <td class="text-center"><%= link_to 'Join', event_path(event, event: {event_group_id: presenter.event_group.id}),
+                                                    method: :patch,
+                                                    data: {confirm: "Join #{event.name} into the #{presenter.event_group.name} group?"},
+                                                    class: 'btn btn-xs btn-success' %></td>
+            <% elsif events.many? && show_grouping_button == 'leave' %>
+                <td class="text-center"><%= link_to 'Leave', event_path(event, event: {event_group_id: nil}),
+                                                    method: :patch,
+                                                    data: {confirm: "Remove #{event.name} from the #{presenter.event_group.name} group?"},
+                                                    class: 'btn btn-xs btn-success' %></td>
+            <% end %>
         <% end %>
       </tr>
   <% end %>

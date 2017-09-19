@@ -76,7 +76,7 @@
     <% end %>
 <% else %>
     <% if @course_view.events_count > 0 %>
-        <%= render 'events/events', presenter: @course_view, events: @course_view.events, show_join_button: false %>
+        <%= render 'events/events', presenter: @course_view, events: @course_view.events, show_grouping_button: false %>
     <% else %>
         <h4>No events have been held on this course.</h4>
     <% end %>

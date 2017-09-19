@@ -6,6 +6,7 @@ class EventsController < ApplicationController
   def index
     @events = policy_class::Scope.new(current_user, controller_class).viewable
                   .select_with_params(params[:search])
+                  .order(start_time: :desc)
                   .paginate(page: params[:page], per_page: 25)
     @presenter = EventsCollectionPresenter.new(@events, params, current_user)
     session[:return_to] = events_path

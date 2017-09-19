@@ -45,6 +45,11 @@ class BulkUpdateService
       end
       raise ActiveRecord::Rollback if errors.present?
     end
-    errors.present? ? errors : "Added start times for #{efforts.size} efforts."
+    if errors.present? then
+      errors
+    else
+      plural_efforts = efforts.one? ? '1 effort' : "#{efforts.size} efforts"
+      "Added start times for #{plural_efforts}."
+    end
   end
 end

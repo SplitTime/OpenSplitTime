@@ -7,11 +7,12 @@
       </div>
       <div class="col-xs-7 text-right">
         <div class="btn-group">
-          <%= link_to_check_in_filters('unchecked', 'Not checked', false, false) %>
-          <%= link_to_check_in_filters('check', 'Checked in', true, false) %>
-          <%= link_to_check_in_filters('expand', 'Started', nil, true) %>
+          <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true) %>
+          <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil) %>
+          <%= link_to_check_in_filters('check', 'Checked in', true, false, nil) %>
+          <%= link_to_check_in_filters('expand', 'Started', nil, true, nil) %>
         </div>
-        <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil) %>
+        <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil, nil) %>
       </div>
     </div>
 
@@ -33,6 +34,7 @@
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
+            <th class="text-center"><%= link_to_reversing_sort_heading('Reconciled?', 'person_id,bib_number', @event_stage.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @event_stage.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @event_stage.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @event_stage.existing_sort) %></th>
@@ -45,6 +47,7 @@
           <tbody>
           <% @event_stage.filtered_efforts.each do |effort| %>
               <tr>
+                <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
                 <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
                 <td><%= effort.bib_number %></td>
                 <td><%= effort.bio_historic %></td>

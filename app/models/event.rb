@@ -27,7 +27,6 @@ class Event < ApplicationRecord
         .select('events.*, COUNT(efforts.id) as effort_count')
         .left_joins(:efforts).left_joins(:event_group)
         .group('events.id, event_groups.id')
-        .order(start_time: :desc)
   end
   scope :concealed, -> { includes(:event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(:event_group).where(event_groups: {concealed: false}) }

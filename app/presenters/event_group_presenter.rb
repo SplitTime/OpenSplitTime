@@ -12,7 +12,7 @@ class EventGroupPresenter < BasePresenter
 
   def events
     @events ||= EventPolicy::Scope.new(current_user, Event).viewable
-                     .where(event_group: event_group).select_with_params('').to_a
+                     .where(event_group: event_group).select_with_params('').order(:start_time).to_a
   end
 
   def event_group_names
@@ -24,7 +24,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def candidate_events
-    (organization.events.select_with_params('') - events)
+    (organization.events.select_with_params('').order(start_time: :desc) - events)
         .select { |event| (event.start_time - events.first.start_time).abs < CANDIDATE_SEPARATION_LIMIT }
   end
 

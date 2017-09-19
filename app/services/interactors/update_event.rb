@@ -9,11 +9,13 @@ module Interactors
       @event = event
       @event_group_updated = event.event_group_id_changed?
       @old_event_group_id = event.event_group_id_was
+      @new_event_group_id = event.event_group_id
       @response = Interactors::Response.new([])
     end
 
     def perform!
       ActiveRecord::Base.transaction do
+        event.event_group = new_event_group
         event.save
         response.errors += event.errors.full_messages
         if event_group_orphaned?
@@ -35,7 +37,7 @@ module Interactors
 
     private
 
-    attr_reader :event, :event_group_updated, :old_event_group_id, :old_event_group, :response
+    attr_reader :event, :event_group_updated, :old_event_group, :old_event_group_id, :new_event_group_id, :response
     attr_accessor :destroyed_event_group
 
     def event_group_orphaned?
@@ -49,6 +51,19 @@ module Interactors
 
     def old_event_group
       @old_event_group ||= EventGroup.find_by(id: old_event_group_id)
+    end
+
+    def new_event_group
+      @new_event_group ||= EventGroup.find_by(id: new_event_group_id) ||
+          EventGroup.create!(name: unique_name,
+                             organization_id: old_event_group.organization_id,
+                             concealed: old_event_group.concealed,
+                             auto_live_times: old_event_group.auto_live_times,
+                             available_live: old_event_group.available_live)
+    end
+
+    def unique_name
+      EventGroup.find_by(name: event.name) ? "#{event.name} #{Time.now}" : event.name
     end
 
     def event_saved_message

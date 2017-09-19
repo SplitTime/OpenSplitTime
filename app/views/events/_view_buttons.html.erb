@@ -13,7 +13,7 @@
 </div>
 
 <% if current_user&.authorized_fully?(view_object) %>
-    <%= link_to 'Group', event_group_path(view_object.event_group),
+    <%= link_to 'Settings', event_group_path(view_object.event_group),
                 disabled: view_object.class == EventGroupPresenter,
                 class: 'btn btn-sm btn-warning' %>
 <% end %>

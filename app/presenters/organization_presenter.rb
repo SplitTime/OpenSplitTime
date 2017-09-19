@@ -10,8 +10,9 @@ class OrganizationPresenter < BasePresenter
   end
 
   def events
-    @events ||= EventPolicy::Scope.new(current_user, Event).viewable.includes(:event_group).where(event_groups: {organization: organization})
-                    .select_with_params(search_text).to_a
+    @events ||= EventPolicy::Scope.new(current_user, Event).viewable
+                    .includes(:event_group).where(event_groups: {organization: organization})
+                    .select_with_params(search_text).order(start_time: :desc).to_a
   end
 
   def courses

@@ -3,10 +3,11 @@ class CourseShowView
   attr_reader :course, :events
   delegate :name, :description, to: :course
 
-  def initialize(course, params)
+  def initialize(course, params, current_user)
     @course = course
     @params = params
-    @events = course.events.select_with_params(params[:search]).to_a
+    @current_user = current_user
+    @events = course.events.select_with_params(params[:search]).order(start_time: :desc).to_a
   end
 
   def ordered_splits
@@ -55,6 +56,6 @@ class CourseShowView
 
   private
 
-  attr_reader :params
+  attr_reader :params, :current_user
 
 end

@@ -1,10 +1,10 @@
 module ToggleHelper
 
-  def link_to_check_in_filters(glyphicon, text, checked_in, started)
+  def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
-                      request.params.merge(checked_in: checked_in, started: started, 'filter[search]' => ''),
+                      request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, 'filter[search]' => ''),
                       {class: 'btn btn-sm btn-primary',
-                       disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started})
+                       disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled})
   end
 
   def link_to_toggle_check_in(effort, started)

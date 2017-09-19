@@ -60,6 +60,10 @@ class EventStageDisplay < EventWithEffortsPresenter
     params[:started]&.to_boolean
   end
 
+  def unreconciled_filter?
+    params[:unreconciled]&.to_boolean
+  end
+
   def effort_started?(effort)
     started_effort_ids.include?(effort.id)
   end
@@ -71,7 +75,7 @@ class EventStageDisplay < EventWithEffortsPresenter
   private
 
   def matches_criteria?(effort)
-    matches_checked_in_criteria?(effort) && matches_start_criteria?(effort)
+    matches_checked_in_criteria?(effort) && matches_start_criteria?(effort) && matches_unreconciled_criteria?(effort)
   end
 
   def matches_checked_in_criteria?(effort)
@@ -91,6 +95,17 @@ class EventStageDisplay < EventWithEffortsPresenter
       effort_started?(effort)
     when false
       !effort_started?(effort)
+    else # value is nil so do not filter
+      true
+    end
+  end
+
+  def matches_unreconciled_criteria?(effort)
+    case unreconciled_filter?
+    when true
+      effort.unreconciled?
+    when false
+      !effort.unreconciled?
     else # value is nil so do not filter
       true
     end

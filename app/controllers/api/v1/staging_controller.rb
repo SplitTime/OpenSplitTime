@@ -11,7 +11,7 @@ class Api::V1::StagingController < ApiController
   # GET /api/v1/staging/get_time_zones
   def get_time_zones
     authorize Event
-    render json: {time_zones: ActiveSupport::TimeZone.all.map { |tz| [tz.name, tz.formatted_offset]} }
+    render json: {time_zones: ActiveSupport::TimeZone.all.map { |tz| [tz.name, tz.formatted_offset] }}
   end
 
   # Returns location data for all splits on any course that falls
@@ -54,11 +54,9 @@ class Api::V1::StagingController < ApiController
 
   # PATCH /api/v1/staging/:staging_id/update_event_visibility
   def update_event_visibility
-    setter = EventConcealedSetter.new(event: @event)
-    if params[:status] == 'public'
-      setter.make_public
-    elsif params[:status] == 'private'
-      setter.make_private
+    if %w(public private).include?(params[:status])
+      setter = EventConcealedSetter.new(event_group: @event.event_group, concealed: params[:status] == 'private')
+      setter.perform
     else
       render json: {errors: ['invalid status'], detail: 'request must include status: public or status: private'}, status: :bad_request and return
     end

@@ -1,13 +1,6 @@
 require 'rails_helper'
 
 describe Api::V1::StagingController do
-  let(:event_group) { create(:event_group, organization: organization) }
-  let(:event) { create(:event, event_group: event_group, course: course) }
-  let(:course) { create(:course) }
-  let(:organization) { create(:organization) }
-  let(:event_id) { event.to_param }
-  let(:new_event_indicator) { 'new' }
-
   login_admin
 
   describe '#get_countries' do
@@ -57,6 +50,12 @@ describe Api::V1::StagingController do
   end
 
   describe '#post_event_course_org' do
+    let(:event_group) { create(:event_group, organization: organization) }
+    let(:event) { create(:event, event_group: event_group, course: course) }
+    let(:course) { create(:course) }
+    let(:organization) { create(:organization) }
+    let(:event_id) { event.to_param }
+    let(:new_event_indicator) { 'new' }
     let(:course_params) { course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
     let(:organization_params) { organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
 
@@ -257,28 +256,41 @@ describe Api::V1::StagingController do
   end
 
   describe '#update_event_visibility' do
+    let(:event_group) { create(:event_group, organization: organization, events: events) }
+    let(:event_1) { create(:event, efforts: event_1_efforts) }
+    let(:event_2) { create(:event, efforts: event_2_efforts) }
+    let(:events) { [event_1, event_2] }
+    let(:event_1_efforts) { create_list(:effort, 2) }
+    let(:event_2_efforts) { create_list(:effort, 2) }
+    let(:organization) { create(:organization) }
+
     context 'when params[:status] == "public"' do
       let(:status) { 'public' }
 
       it 'returns a successful 200 response' do
-        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
+        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
         expect(response).to be_success
       end
 
       it 'sets concealed status of the event_group, organization, and people to false' do
         event_group.update(concealed: true)
         organization.update(concealed: true)
-        efforts = create_list(:effort, 3, event: event)
-        efforts.each { |effort| effort.person.update(concealed: true) }
+        event_group.events.each do |event|
+          event.efforts.each do |effort|
+            effort.person.update(concealed: true)
+          end
+        end
 
-        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
+        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
 
         event_group.reload
         organization.reload
         expect(event_group.concealed).to eq(false)
         expect(organization.concealed).to eq(false)
-        event.efforts.each do |effort|
-          expect(effort.person.concealed).to eq(false)
+        event_group.events do |event|
+          event.efforts.each do |effort|
+            expect(effort.person.concealed).to eq(false)
+          end
         end
       end
     end
@@ -287,45 +299,60 @@ describe Api::V1::StagingController do
       let(:status) { 'private' }
 
       it 'returns a successful 200 response' do
-        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
+        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
         expect(response).to be_success
       end
 
-      it 'sets concealed status of the event_group and its related organization and people to true' do
+      it 'sets concealed status of the event_group, organization, and people to true' do
         event_group.update(concealed: false)
         organization.update(concealed: false)
-        efforts = create_list(:effort, 3, event: event)
-        efforts.each { |effort| effort.person.update(concealed: false) }
+        event_group.events.each do |event|
+          event.efforts.each do |effort|
+            effort.person.update(concealed: false)
+          end
+        end
 
-        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
+        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
 
         event_group.reload
         organization.reload
         expect(event_group.concealed).to eq(true)
         expect(organization.concealed).to eq(true)
-        event.efforts.each do |effort|
-          expect(effort.person.concealed).to eq(true)
+        event_group.events do |event|
+          event.efforts.each do |effort|
+            expect(effort.person.concealed).to eq(true)
+          end
         end
       end
 
       it 'does not make a person private if that person has other public efforts' do
-        event.update(concealed: false)
+        event_group.update(concealed: false)
         organization.update(concealed: false)
-        efforts = create_list(:effort, 3, event: event)
-        efforts.each { |effort| effort.person.update(concealed: false) }
-        p_with_other_effort = efforts.first.person
-        create(:effort, person: p_with_other_effort)
-        patch :update_event_visibility, params: {staging_id: event.to_param, status: status}
-        event.reload
+        event_group.events.each do |event|
+          event.efforts.each do |effort|
+            effort.person.update(concealed: false)
+          end
+        end
+
+        visible_event_group = create(:event_group)
+        visible_event = create(:event, event_group: visible_event_group)
+        p_with_other_effort = event_1_efforts.first.person
+        create(:effort, person: p_with_other_effort, event: visible_event)
+
+        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
+
+        event_group.reload
         organization.reload
-        expect(event.concealed).to eq(true)
+        expect(event_group.concealed).to eq(true)
         expect(organization.concealed).to eq(true)
-        event.efforts.each do |effort|
-          person = effort.person
-          if person == p_with_other_effort
-            expect(effort.person.concealed).to eq(false)
-          else
-            expect(effort.person.concealed).to eq(true)
+        event_group.events do |event|
+          event.efforts.each do |effort|
+            person = effort.person
+            if person == p_with_other_effort
+              expect(effort.person.concealed).to eq(false)
+            else
+              expect(effort.person.concealed).to eq(true)
+            end
           end
         end
       end
@@ -333,7 +360,7 @@ describe Api::V1::StagingController do
 
     context 'when params[:status] is not "public" or "private"' do
       it 'returns a bad request response' do
-        patch :update_event_visibility, params: {staging_id: event.to_param, status: 'random'}
+        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: 'random'}
         expect(response).to be_bad_request
       end
     end

@@ -3,31 +3,30 @@ class EventConcealedSetter
   attr_reader :response, :status
 
   def initialize(args)
-    @event = args[:event]
+    @event_group = args[:event_group]
+    @concealed = args[:concealed]
     @response = {errors: {}}
   end
 
-  def make_public
-    set_resources_concealed(false)
-  end
-
-  def make_private
-    set_resources_concealed(true)
+  def perform
+    set_resources_concealed(concealed)
   end
 
   private
 
-  attr_reader :event
+  attr_reader :event_group, :concealed
   attr_writer :response, :status
 
   def set_resources_concealed(boolean)
     ActiveRecord::Base.transaction do
-      set_resource_concealed(event, boolean)
-      organization = event.organization
+      set_resource_concealed(event_group, boolean)
+      organization = event_group.organization
       set_resource_concealed(organization, organization.should_be_concealed?) if organization
-      event.efforts.includes(person: {efforts: :event}).each do |effort|
-        person = effort.person
-        set_resource_concealed(person, person.should_be_concealed?) if person
+      event_group.events.eager_load(efforts: :person) do |event|
+        event.efforts.each do |effort|
+          person = effort.person
+          set_resource_concealed(person, person.should_be_concealed?) if person
+        end
       end
       raise ActiveRecord::Rollback if status
     end

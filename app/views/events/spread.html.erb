@@ -47,7 +47,7 @@
 </div>
 
 <% if @spread_display.show_partner_banners? %>
-    <%= render 'partner_banner', partner: @spread_display.partner_with_banner %>
+    <%= render 'partner_banner', partner: @spread_display.partner_with_banner, organization_name: @spread_display.organization_name %>
 <% end %>
 
 <% cache "#{@spread_display.cache_key}/html", expires_in: @spread_display.cache_expire do %>

@@ -1,7 +1,12 @@
 <div class="row header">
-  <div class="col-xs-6 partner-ad">
+  <div class="col-md-6 partner-ad">
     <a href="<%= url_with_protocol(partner.banner_link) %>" target="_blank">
       <img src="<%= partner.banner.url(:medium) %>">
     </a>
+  </div>
+  <div class="col-md-6">
+    <div class="text-muted text-right">
+      <%= "All partner proceeds for this event benefit #{organization_name}." %>
+    </div>
   </div>
 </div>

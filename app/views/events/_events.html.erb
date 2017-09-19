@@ -6,7 +6,13 @@
     <th>Name</th>
     <th>Date and Time</th>
     <th>Details</th>
-    <th></th>
+    <% if presenter.show_visibility_columns? %>
+        <th>Visibility</th>
+        <th></th>
+    <% end %>
+    <% if show_join_button && current_user.authorized_fully?(presenter.event_group)%>
+        <th>Join</th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
@@ -15,11 +21,20 @@
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
         <td><%= l(event.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
         <td><%= "#{pluralize(event.effort_count, 'effort')}" %></td>
-        <td>
-          <% if @current_user && event.available_live && @current_user.authorized_to_edit?(event) %>
-              <%= link_to 'Live Entry', live_entry_live_event_path(event), class: "btn btn-xs btn-warning" %>
-          <% end %>
-        </td>
+        <% if presenter.show_visibility_columns? %>
+            <td><%= event.concealed? ? 'Private' : 'Public' %></td>
+            <td>
+              <% if event.available_live? && current_user&.authorized_to_edit?(event) %>
+                  <%= link_to 'Live Entry', live_entry_live_event_path(event), class: 'btn btn-xs btn-warning' %>
+              <% end %>
+            </td>
+        <% end %>
+        <% if show_join_button && current_user.authorized_fully?(presenter.event_group)%>
+            <td><%= link_to 'Join', event_path(event, event: {event_group_id: presenter.event_group.id}),
+                            method: :patch,
+                            data: {confirm: ''},
+                            class: 'btn btn-xs btn-success' %></td>
+        <% end %>
       </tr>
   <% end %>
   </tbody>

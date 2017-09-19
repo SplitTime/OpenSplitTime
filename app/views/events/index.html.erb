@@ -13,7 +13,7 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <% if @current_user %>
+      <% if current_user %>
           <%= link_to 'Create event', event_staging_app_path('new'),
                       class: 'btn btn-sm btn-success' %>
       <% end %>
@@ -32,7 +32,7 @@
 <div class="row">
   <div class="col-xs-8">
     <% if @events.present? %>
-        <%= render 'events', events: @events %>
+        <%= render 'events', presenter: @presenter, events: presenter.events, show_join_button: false %>
     <% else %>
         <br/>
         <% if params[:search].blank? %>

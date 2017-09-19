@@ -66,7 +66,7 @@
     <% end %>
 <% else %>
     <% if @presenter.events_count > 0 %>
-        <%= render 'events/events', events: @presenter.events %>
+        <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_join_button: false %>
     <% else %>
         <h4>No events are associated with this organization.</h4>
     <% end %>

@@ -68,10 +68,6 @@ class EventStageDisplay < EventWithEffortsPresenter
     concealed? ? '(private)' : nil
   end
 
-  def event_group_names
-    ordered_events_within_group.map(&:name).to_sentence(two_words_connector: ' and ', last_word_connector: ', and ')
-  end
-
   private
 
   def matches_criteria?(effort)

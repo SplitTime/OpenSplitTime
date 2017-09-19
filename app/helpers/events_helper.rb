@@ -30,7 +30,7 @@ module EventsHelper
   def link_to_classic_admin(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event)
       link_to 'Admin', stage_event_path(view_object),
-              disabled: stage_button_disabled?(view_object.class),
+              disabled: view_object.class == EventStageDisplay,
               class: 'btn btn-sm btn-primary'
     end
   end

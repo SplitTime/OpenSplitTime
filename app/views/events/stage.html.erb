@@ -11,11 +11,6 @@
       <%= render 'view_buttons', view_object: @event_stage %>
     </div>
     <div class="row">
-      <% if @current_user && @current_user.authorized_fully?(@event_stage.event) %>
-          <%= link_to_toggle_live_entry(@event_stage) %>
-          <%= link_to_toggle_public_private(@event_stage) %>
-          <%= link_to_stewards(@event_stage) %>
-      <% end %>
       <%= link_to_edit_event(@event_stage) %>
       <% if @event_stage.started? %>
           <%= link_to_set_data_status(@event_stage) %>

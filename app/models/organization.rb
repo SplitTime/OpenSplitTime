@@ -21,6 +21,10 @@ class Organization < ApplicationRecord
     slug
   end
 
+  def events
+    Event.where(event_group_id: event_groups.ids)
+  end
+
   def add_stewardship(user)
     stewards << user
   end

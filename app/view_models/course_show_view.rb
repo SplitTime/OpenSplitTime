@@ -49,6 +49,10 @@ class CourseShowView
     splits_count <= 2
   end
 
+  def show_visibility_columns?
+    current_user.admin?
+  end
+
   private
 
   attr_reader :params

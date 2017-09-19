@@ -7,6 +7,7 @@ class EventsController < ApplicationController
     @events = policy_class::Scope.new(current_user, controller_class).viewable
                   .select_with_params(params[:search])
                   .paginate(page: params[:page], per_page: 25)
+    @presenter = EventsCollectionPresenter.new(@events, params, current_user)
     session[:return_to] = events_path
   end
 
@@ -44,9 +45,12 @@ class EventsController < ApplicationController
 
   def update
     authorize @event
+    @event.assign_attributes(permitted_params)
+    response = Interactors::UpdateEvent.perform!(@event)
 
-    if @event.update(permitted_params)
-      redirect_to stage_event_path(@event)
+    if response.successful?
+      flash[:success] = response.message
+      redirect_to session.delete(:return_to) || stage_event_path(@event)
     else
       render 'edit'
     end

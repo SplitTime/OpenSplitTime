@@ -41,6 +41,10 @@ class OrganizationPresenter < BasePresenter
     end
   end
 
+  def show_visibility_columns?
+    current_user.authorized_to_edit?(organization)
+  end
+
   private
 
   attr_reader :params, :current_user

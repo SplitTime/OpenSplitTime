@@ -5,6 +5,7 @@ class EventGroupsController < ApplicationController
 
   def show
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
+    session[:return_to] = event_group_path(@event_group)
   end
 
   def edit
@@ -19,10 +20,10 @@ class EventGroupsController < ApplicationController
       setter = EventConcealedSetter.new(event_group: @event_group, concealed: @event_group.concealed)
       setter.perform
       flash[:danger] = setter.response[:errors] unless setter.status == :ok
-      redirect_to session.delete(:return_to) || @event_group
+      redirect_to @event_group
 
     elsif @event_group.save
-      redirect_to session.delete(:return_to) || @event_group
+      redirect_to @event_group
 
     else
       render 'edit'

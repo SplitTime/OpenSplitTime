@@ -27,9 +27,6 @@ module Live::EventsHelper
   end
 
   def link_to_aid_detail_field(view_object, field_name, column_heading)
-    link_to column_heading, aid_station_detail_live_event_path(view_object,
-                                                               aid_station: view_object.aid_station,
-                                                               display_style: view_object.display_style,
-                                                               sort: (view_object.existing_sort == field_name.to_s) ? "-#{field_name}" : field_name.to_s)
+    link_to column_heading, request.params.merge(sort: view_object.reversing_sort(field_name))
   end
 end

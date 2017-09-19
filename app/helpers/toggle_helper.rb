@@ -2,7 +2,7 @@ module ToggleHelper
 
   def link_to_check_in_filters(glyphicon, text, checked_in, started)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
-                      stage_event_path(@event_stage, checked_in: checked_in, started: started, sort: @event_stage.existing_sort),
+                      request.params.merge(checked_in: checked_in, started: started, 'filter[search]' => ''),
                       {class: 'btn btn-sm btn-primary',
                        disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started})
   end

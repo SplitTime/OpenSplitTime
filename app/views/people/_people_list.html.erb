@@ -1,10 +1,13 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th>Name</th>
-    <th>Bio</th>
-    <th>From</th>
+    <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', params[:sort]) %></th>
+    <th><%= link_to_reversing_sort_heading('Bio', 'gender,current_age_from_efforts', params[:sort]) %></th>
+    <th><%= link_to_reversing_sort_heading('From', 'state_code', params[:sort]) %></th>
     <th>Efforts</th>
+    <% if current_user&.admin? %>
+        <th><%= link_to_reversing_sort_heading('Concealed?', 'concealed', params[:sort]) %></th>
+    <% end %>
     <th>Notify Me Live</th>
   </tr>
   </thead>
@@ -15,6 +18,7 @@
         <td><%= person.bio %></td>
         <td><%= person.flexible_geolocation %></td>
         <td><%= pluralize(person.effort_count, 'effort') %></td>
+        <td><%= person.concealed? %></td>
         <td>
           <%= div_for(person) do %>
               <%= link_to_toggle_email_subscription(person) %>

@@ -11,7 +11,7 @@
           <%= link_to_check_in_filters('check', 'Checked in', true, false) %>
           <%= link_to_check_in_filters('expand', 'Started', nil, true) %>
         </div>
-          <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil) %>
+        <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil) %>
       </div>
     </div>
 
@@ -33,12 +33,12 @@
         <table class="table table-condensed table-striped">
           <thead>
           <tr>
-            <th><%= link_to_stage_efforts_field(@event_stage, :last_name, 'Name') %></th>
-            <th><%= link_to_stage_efforts_field(@event_stage, :bib_number, 'Bib#') %></th>
-            <th><%= link_to_stage_efforts_field(@event_stage, :gender, 'Category') %></th>
-            <th><%= link_to_stage_efforts_field(@event_stage, :state_code, 'From') %></th>
-            <th><%= link_to_stage_efforts_field(@event_stage, :start_offset, 'Scheduled Start') %></th>
-            <th><%= link_to_stage_efforts_field(@event_stage, :data_status, 'Data Status') %></th>
+            <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @event_stage.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @event_stage.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @event_stage.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('From', 'state_code', @event_stage.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Scheduled Start', 'start_offset', @event_stage.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Data Status', 'data_status', @event_stage.existing_sort) %></th>
             <th></th>
           </tr>
           </thead>

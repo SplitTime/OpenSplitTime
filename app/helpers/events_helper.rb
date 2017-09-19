@@ -51,20 +51,38 @@ module EventsHelper
   end
 
   def link_to_toggle_live_entry(view_object)
-    if view_object.available_live
+    if view_object.available_live?
       button_text = 'Disable live'
-      confirm_text = "NOTE: This will suspend all live entry actions for #{view_object.name}, " +
+      confirm_text = "NOTE: This will suspend all live entry actions for #{view_object.event_group_names}, " +
           'including any that may be in process, and will disable live follower notifications ' +
           'by email and SMS text when new times are added. Are you sure you want to proceed?'
     else
       button_text = 'Enable live'
-      confirm_text = "NOTE: This will enable live entry actions for #{view_object.name}, " +
+      confirm_text = "NOTE: This will enable live entry actions for #{view_object.event_group_names}, " +
           'and will also trigger live follower notifications by email and SMS text when new times are added. ' +
           'Are you sure you want to proceed?'
     end
 
     link_to button_text,
-            event_group_path(view_object.event_group, event_group: {available_live: !view_object.available_live}),
+            event_group_path(view_object.event_group, event_group: {available_live: !view_object.available_live?}),
+            data: {confirm: confirm_text},
+            method: :put,
+            class: 'btn btn-sm btn-warning'
+  end
+
+  def link_to_toggle_public_private(view_object)
+    if view_object.concealed?
+      button_text = 'Make public'
+      confirm_text = "NOTE: This will make #{view_object.event_group_names} visible to the public, " +
+          'including all related efforts and people. Are you sure you want to proceed?'
+    else
+      button_text = 'Make private'
+      confirm_text = "NOTE: This will conceal #{view_object.event_group_names} from the public, " +
+          'including all related efforts. Are you sure you want to proceed?'
+    end
+
+    link_to button_text,
+            event_group_path(view_object.event_group, event_group: {concealed: !view_object.concealed?}),
             data: {confirm: confirm_text},
             method: :put,
             class: 'btn btn-sm btn-warning'
@@ -114,50 +132,22 @@ module EventsHelper
     end
   end
 
-  def link_to_stage_efforts_field(view_object, field_name, column_heading)
-    link_to column_heading, stage_event_path(view_object,
-                                             display_style: view_object.display_style,
-                                             started: view_object.started_filter?,
-                                             checked_in: view_object.checked_in_filter?,
-                                             sort: (view_object.existing_sort == field_name.to_s) ? "-#{field_name}" : field_name.to_s)
-  end
-
   def link_to_spread_gender(view_object, gender)
-    link_to gender.titlecase, spread_event_path(view_object,
-                                                'filter[gender]' => gender,
-                                                'sort' => view_object.existing_sort,
-                                                'display_style' => view_object.display_style),
+    link_to gender.titlecase, request.params.merge(filter: {gender: gender}),
             disabled: view_object.gender_text == gender,
             class: 'btn btn-sm btn-primary'
   end
 
   def link_to_spread_display_style(view_object, display_style, title)
-    link_to title, spread_event_path(view_object.event,
-                                     :display_style => display_style,
-                                     :sort => view_object.sort_string,
-                                     'filter[gender]' => view_object.gender_text),
+    link_to title, request.params.merge(display_style: display_style),
             disabled: view_object.display_style == display_style,
             class: 'btn btn-sm btn-primary'
   end
 
-  def link_to_stage_display_style(view_object, display_style, title)
-    link_to title,
-            stage_event_path(view_object, display_style: display_style),
+  def link_to_display_style(view_object, display_style, title)
+    link_to title, request.path_parameters.merge(display_style: display_style),
             disabled: view_object.display_style == display_style,
             class: 'btn btn-sm btn-primary'
-  end
-
-  def link_to_show_start_status(view_object, display_style, title)
-    link_to title,
-            event_path(view_object, display_style: display_style),
-            disabled: view_object.display_style == display_style,
-            class: 'btn btn-sm btn-primary'
-  end
-
-  def link_to_event_show_field(view_object, field_name, column_heading)
-    link_to column_heading, event_path(view_object,
-                                       display_style: view_object.display_style,
-                                       sort: (view_object.existing_sort == field_name.to_s) ? "-#{field_name}" : field_name.to_s)
   end
 
   def suggested_match_id_hash(efforts)

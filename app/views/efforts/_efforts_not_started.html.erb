@@ -1,11 +1,11 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th><%= link_to_event_show_field(@event_display, :last_name, 'Name') %></th>
-    <th><%= link_to_event_show_field(@event_display, :bib_number, 'Bib#') %></th>
-    <th><%= link_to_event_show_field(@event_display, :gender, 'Category') %></th>
-    <th><%= link_to_event_show_field(@event_display, :state_code, 'From') %></th>
-    <th><%= link_to_event_show_field(@event_display, :start_offset, 'Scheduled Start') %></th>
+    <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @event_display.existing_sort) %></th>
+    <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @event_display.existing_sort) %></th>
+    <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @event_display.existing_sort) %></th>
+    <th><%= link_to_reversing_sort_heading('From', 'state_code', @event_display.existing_sort) %></th>
+    <th><%= link_to_reversing_sort_heading('Scheduled Start', 'start_offset', @event_display.existing_sort) %></th>
     <th>Notify Me Live</th>
   </tr>
   </thead>

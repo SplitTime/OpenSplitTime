@@ -54,20 +54,11 @@
     <table class="table table-condensed table-striped">
       <thead>
       <tr>
-        <th>O/G<br/><%= link_to 'Place', spread_event_path(@spread_display.event,
-                                                           :display_style => @spread_display.display_style,
-                                                           'filter[gender]' => @spread_display.gender_text,
-                                                           :sort => reversed_sort_param(@spread_display, :overall_rank)) %></th>
-        <th><%= link_to 'Bib', spread_event_path(@spread_display.event,
-                                                 :display_style => @spread_display.display_style,
-                                                 'filter[gender]' => @spread_display.gender_text,
-                                                 :sort => reversed_sort_param(@spread_display, :bib_number)) %></th>
-        <th><%= link_to 'Name', spread_event_path(@spread_display.event,
-                                                  :display_style => @spread_display.display_style,
-                                                  'filter[gender]' => @spread_display.gender_text,
-                                                  :sort => toggled_sort_param(@spread_display, :last_name, :first_name)) %></th>
-        <th>Category</th>
-        <th>From</th>
+        <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @spread_display.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @spread_display.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @spread_display.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @spread_display.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('From', :state_code, @spread_display.existing_sort) %></th>
         <% spread_relevant_elements(@spread_display.split_header_data).each do |header| %>
             <th class="text-nowrap text-center">
               <%= clustered_header(header) %>

@@ -11,7 +11,7 @@
   <% organizations.each do |organization| %>
       <tr>
         <td><strong><%= link_to organization.name, organization_path(organization) %></strong></td>
-        <td><%= pluralize(organization.events.visible.size, 'event') %></td>
+        <td><%= pluralize(organization.event_groups.visible.map(&:events).flatten.size, 'event') %></td>
       </tr>
   <% end %>
   </tbody>

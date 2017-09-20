@@ -10,11 +10,17 @@ class EventGroup < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
 
+  after_commit :align_event_booleans
+
   def to_s
     name
   end
 
   def ordered_events
     events.sort_by { |event| [-event.start_time.to_i, event.name] }
+  end
+
+  def align_event_booleans
+    events.each { |event| event.update(available_live: available_live, concealed: concealed, auto_live_times: auto_live_times) }
   end
 end

@@ -84,7 +84,7 @@ RSpec.describe DataImport::Loaders::SplitTimeUpsertStrategy do
         expect(split_times.size).to eq(0)
         subject.load_records
         expect(split_times.size).to eq(7)
-        expect(split_times.map(&:split_id)).to eq(split_ids.cycle.first(split_times.size))
+        expect(split_times.map(&:split_id).sort).to eq(split_ids.cycle.first(split_times.size).sort)
         expect(split_times.map(&:time_from_start)).to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
         expect(split_times.map(&:effort_id)).to all eq(effort_1.id)
         expect(split_times.map(&:created_by)).to all eq(options[:current_user_id])

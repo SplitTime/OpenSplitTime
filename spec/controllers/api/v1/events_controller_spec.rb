@@ -7,6 +7,41 @@ describe Api::V1::EventsController do
   let(:course) { create(:course) }
   let(:event_group) { create(:event_group) }
 
+  describe '#index' do
+    before do
+      create(:event, available_live: true)
+      create(:event, available_live: false)
+      create(:event, available_live: false)
+    end
+
+    it 'returns a successful 200 response' do
+      get :index
+      expect(response.status).to eq(200)
+    end
+
+    context 'when no params are given' do
+      it 'returns all available events' do
+        get :index
+
+        expect(response.status).to eq(200)
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['data'].size).to eq(3)
+        expect(parsed_response['data'].map { |item| item['id'].to_i }.sort).to eq(Event.all.map(&:id).sort)
+      end
+    end
+
+    context 'when a filter[:available_live] param is given' do
+      let(:params) { {filter: {available_live: true}} }
+      it 'returns only those events that are available live' do
+        get :index, params: params
+
+        expect(response.status).to eq(200)
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['data'].size).to eq(1)
+      end
+    end
+  end
+
   describe '#show' do
     it 'returns a successful 200 response' do
       get :show, params: {staging_id: event.id}
@@ -33,7 +68,7 @@ describe Api::V1::EventsController do
                     start_time_in_home_zone: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
 
     it 'returns a successful json response' do
-      post :create, params: {data: {type: 'events', attributes: params }}
+      post :create, params: {data: {type: 'events', attributes: params}}
       expect(response.body).to be_jsonapi_response_for('events')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
@@ -42,7 +77,7 @@ describe Api::V1::EventsController do
 
     it 'creates an event record with an id' do
       expect(Event.all.count).to eq(0)
-      post :create, params: {data: {type: 'events', attributes: params }}
+      post :create, params: {data: {type: 'events', attributes: params}}
       expect(Event.all.count).to eq(1)
       expect(Event.first.id).not_to be_nil
     end
@@ -52,19 +87,19 @@ describe Api::V1::EventsController do
     let(:attributes) { {name: 'Updated Event Name'} }
 
     it 'returns a successful json response' do
-      put :update, params: {staging_id: event.id, data: {type: 'events', attributes: attributes }}
+      put :update, params: {staging_id: event.id, data: {type: 'events', attributes: attributes}}
       expect(response.body).to be_jsonapi_response_for('events')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, params: {staging_id: event.id, data: {type: 'events', attributes: attributes }}
+      put :update, params: {staging_id: event.id, data: {type: 'events', attributes: attributes}}
       event.reload
       expect(event.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the event does not exist' do
-      put :update, params: {staging_id: 123, data: {type: 'events', attributes: attributes }}
+      put :update, params: {staging_id: 123, data: {type: 'events', attributes: attributes}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -199,7 +234,7 @@ describe Api::V1::EventsController do
       it 'creates split_time records' do
         skip 'Until Rails 5 upgrade'
         expect(SplitTime.all.size).to eq(0)
-        post :import, params:  request_params
+        post :import, params: request_params
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['message']).to match(/Import complete/)
         expect(SplitTime.all.size).to eq(23)
@@ -289,7 +324,7 @@ describe Api::V1::EventsController do
           effort = SplitTime.first.effort
 
           expect(EffortDataStatusSetter).to have_received(:set_data_status)
-                                            .with(effort: effort)
+                                                .with(effort: effort)
         end
       end
     end

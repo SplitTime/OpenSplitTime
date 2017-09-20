@@ -5,7 +5,7 @@ class OrganizationsController < ApplicationController
 
   def index
     @organizations = policy_class::Scope.new(current_user, controller_class).viewable.order(:name)
-                         .with_visible_event_count.paginate(page: params[:page], per_page: 25)
+                         .paginate(page: params[:page], per_page: 25)
     session[:return_to] = organizations_path
   end
 

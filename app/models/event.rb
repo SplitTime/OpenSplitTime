@@ -48,20 +48,20 @@ class Event < ApplicationRecord
     where('start_time < ?', Time.now).order(start_time: :desc).first
   end
 
-  def concealed
-    event_group&.concealed
-  end
-  alias_method :concealed?, :concealed
-
-  def available_live
-    event_group&.available_live
-  end
-  alias_method :available_live?, :available_live
-
-  def auto_live_times
-    event_group&.auto_live_times
-  end
-  alias_method :auto_live_times?, :auto_live_times
+  # def concealed
+  #   event_group&.concealed
+  # end
+  # alias_method :concealed?, :concealed
+  #
+  # def available_live
+  #   event_group&.available_live
+  # end
+  # alias_method :available_live?, :available_live
+  #
+  # def auto_live_times
+  #   event_group&.auto_live_times
+  # end
+  # alias_method :auto_live_times?, :auto_live_times
 
   def organization
     event_group&.organization

@@ -327,30 +327,29 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#events_within_group' do
-    subject { event.events_within_group }
-    let(:event_group_1) { create(:event_group) }
-    let(:event_group_2) { create(:event_group) }
-    let(:event) { create(:event, event_group: event_group_1) }
-    let(:event_same_group) { create(:event, event_group: event_group_1) }
-    let(:event_different_group) { create(:event, event_group: event_group_2) }
+    subject { create(:event, event_group: event_group_1) }
+    let!(:event_group_1) { create(:event_group) }
+    let!(:event_group_2) { create(:event_group) }
+    let!(:event_same_group) { create(:event, event_group: event_group_1) }
+    let!(:event_different_group) { create(:event, event_group: event_group_2) }
 
     it 'returns the event and other members of the group as an array' do
-      expect(subject).to include(event)
-      expect(subject).to include(event_same_group)
-      expect(subject).not_to include(event_different_group)
+      subject.reload
+      expect(subject.events_within_group).to include(subject)
+      expect(subject.events_within_group).to include(event_same_group)
+      expect(subject.events_within_group).not_to include(event_different_group)
     end
   end
 
   describe '#simple?' do
-    subject { event.simple? }
-    let(:event) { build_stubbed(:event, splits: splits, laps_required: laps_required)}
+    subject { build_stubbed(:event, splits: splits, laps_required: laps_required) }
 
     context 'when the event has only a start and finish split and only one lap' do
       let(:splits) { build_stubbed_list(:split, 2) }
       let(:laps_required) { 1 }
 
       it 'returns true' do
-        expect(subject).to eq(true)
+        expect(subject.simple?).to eq(true)
       end
     end
 
@@ -359,7 +358,7 @@ RSpec.describe Event, type: :model do
       let(:laps_required) { 0 }
 
       it 'returns false' do
-        expect(subject).to eq(false)
+        expect(subject.simple?).to eq(false)
       end
     end
 
@@ -368,7 +367,7 @@ RSpec.describe Event, type: :model do
       let(:laps_required) { 1 }
 
       it 'returns false' do
-        expect(subject).to eq(false)
+        expect(subject.simple?).to eq(false)
       end
     end
   end

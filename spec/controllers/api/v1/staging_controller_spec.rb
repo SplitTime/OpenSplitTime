@@ -60,45 +60,55 @@ describe Api::V1::StagingController do
     let(:organization_params) { organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
 
     context 'when an existing event_id is provided' do
+      let(:params) { {event: event_params.merge(new_event_params),
+                      course: course_params.merge(new_course_params),
+                      organization: organization_params.merge(new_organization_params)} }
       let(:event_params) { event.attributes.with_indifferent_access.slice(*EventParameters.permitted) }
+      let(:new_event_params) { {} }
+      let(:new_course_params) { {} }
+      let(:new_organization_params) { {} }
+
 
       it 'returns a successful 200 response' do
-        params = {event: event_params,
-                  course: course_params,
-                  organization: organization_params}
-        expected_response = 200
-        expected_attributes = {}
-        post_and_validate_response(event_id, params, expected_response, expected_attributes)
+        status, _ = post_with_params(event_id, params)
+
+        expect(status).to eq(200)
       end
 
-      it 'updates provided attributes for an existing organization' do
-        new_params = {name: 'Updated Organization Name', description: 'Updated organization description'}
-        params = {event: event_params,
-                  course: course_params,
-                  organization: organization_params.merge(new_params)}
-        expected_response = 200
-        expected_attributes = {organization: [:name, :description]}
-        post_and_validate_response(event_id, params, expected_response, expected_attributes)
+      context 'when updated attributes are provided for an existing organization' do
+        let(:new_organization_params) { {name: 'Updated Organization Name', description: 'Updated organization description'} }
+
+        it 'updates provided attributes for an existing organization' do
+          status, resources = post_with_params(event_id, params)
+          expected_attributes = {organization: [:name, :description]}
+
+          expect(status).to eq(200)
+          validate_response(resources, expected_attributes)
+        end
       end
 
-      it 'updates provided attributes for an existing course' do
-        new_params = {name: 'Updated Course Name', description: 'Updated course description'}
-        params = {event: event_params,
-                  course: course_params.merge(new_params),
-                  organization: organization_params}
-        expected_response = 200
-        expected_attributes = {course: [:name, :description]}
-        post_and_validate_response(event_id, params, expected_response, expected_attributes)
+      context 'when attributes are provided for an existing course' do
+        let(:new_course_params) { {name: 'Updated Course Name', description: 'Updated course description'} }
+
+        it 'updates provided attributes for an existing course' do
+          status, resources = post_with_params(event_id, params)
+          expected_attributes = {course: [:name, :description]}
+
+          expect(status).to eq(200)
+          validate_response(resources, expected_attributes)
+        end
       end
 
-      it 'updates provided attributes for an existing event' do
-        new_params = {name: 'Updated Event Name', laps_required: 3}
-        params = {event: event_params.merge(new_params),
-                  course: course_params,
-                  organization: organization_params}
-        expected_response = 200
-        expected_attributes = {event: [:name, :laps_required]}
-        post_and_validate_response(event_id, params, expected_response, expected_attributes)
+      context 'when attributes are provided for an existing event' do
+        let(:new_event_params) { {name: 'Updated Event Name', laps_required: 3} }
+
+        it 'updates provided attributes for an existing event' do
+          status, resources = post_with_params(event_id, params)
+          expected_attributes = {event: [:name, :laps_required]}
+
+          expect(status).to eq(200)
+          validate_response(resources, expected_attributes)
+        end
       end
     end
 
@@ -106,121 +116,112 @@ describe Api::V1::StagingController do
       let(:new_event_params) { {name: 'New Event Name', start_time: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Pacific Time (US & Canada)'} }
       let(:new_course_params) { {name: 'New Course Name', description: 'New course description.'} }
       let(:new_organization_params) { {name: 'New Organization Name'} }
+      let(:event_id) { new_event_indicator }
 
       it 'returns a successful 200 response' do
-        event_id = new_event_indicator
         params = {event: new_event_params,
                   course: new_course_params,
                   organization: new_organization_params}
-        expected_response = 200
-        expected_attributes = {}
-        post_and_validate_response(event_id, params, expected_response, expected_attributes)
+        status, _ = post_with_params(event_id, params)
+
+        expect(status).to eq(200)
       end
 
-      it 'creates an event using provided parameters and associates existing course and organization' do
-        event_id = new_event_indicator
-        params = {event: new_event_params,
-                  course: course_params,
-                  organization: organization_params}
-        expected_response = 200
-        expected_attributes = {event: [:name, :laps_required]}
-        post_and_validate_response(event_id, params, expected_response, expected_attributes)
+      context 'when the course and organization already exist' do
+        let(:params) { {event: new_event_params,
+                        course: course_params,
+                        organization: organization_params} }
+
+        it 'creates an event using provided parameters and associates existing course and organization' do
+          status, resources = post_with_params(event_id, params)
+          expected_attributes = {event: [:name, :laps_required]}
+
+          expect(status).to eq(200)
+          validate_response(resources, expected_attributes)
+        end
       end
 
-      it 'creates an event using provided parameters and associates newly created course and organization' do
-        event_id = new_event_indicator
-        params = {event: new_event_params,
-                  course: new_course_params,
-                  organization: new_organization_params}
-        expected_response = 200
-        expected_attributes = {event: [:name, :laps_required]}
-        post_and_validate_response(event_id, params, expected_response, expected_attributes)
+      context 'when the course and organization are new' do
+        let(:params) { {event: new_event_params,
+                        course: new_course_params,
+                        organization: new_organization_params} }
+
+        it 'creates an event using provided parameters and associates newly created course and organization' do
+          status, resources = post_with_params(event_id, params)
+          expected_attributes = {event: [:name, :laps_required]}
+
+          expect(status).to eq(200)
+          validate_response(resources, expected_attributes)
+        end
       end
 
-      it 'returns a bad request message with descriptive errors and provided data if the event cannot be created' do
-        event_id = new_event_indicator
-        params = {event: new_event_params.except(:start_time),
-                  course: new_course_params,
-                  organization: new_organization_params}
-        expected_response = 422
-        expected_errors = [/Start time can't be blank/]
-        post_and_validate_errors(event_id, params, expected_response, expected_errors)
+      context 'when the event cannot be created' do
+        let(:params) { {event: new_event_params.except(:start_time),
+                        course: new_course_params,
+                        organization: new_organization_params} }
+
+        it 'returns a bad request message with descriptive errors and provided data and creates no resources' do
+          status, _, parsed_response = post_with_params(event_id, params)
+          expected_errors = [/Start time can't be blank/]
+
+          expect(status).to eq(422)
+          validate_errors(parsed_response, expected_errors)
+          validate_no_resources_created
+        end
       end
 
-      it 'returns a bad request message with descriptive errors and provided data if the course cannot be created' do
-        event_id = new_event_indicator
-        params = {event: new_event_params,
-                  course: new_course_params.except(:name),
-                  organization: new_organization_params}
-        expected_response = 422
-        expected_errors = [/Name can't be blank/]
-        post_and_validate_errors(event_id, params, expected_response, expected_errors)
+      context 'when the course cannot be created' do
+        let(:params) { {event: new_event_params,
+                        course: new_course_params.except(:name),
+                        organization: new_organization_params} }
+
+        it 'returns a bad request message with descriptive errors and provided data and creates no resources' do
+          status, _, parsed_response = post_with_params(event_id, params)
+          expected_errors = [/Name can't be blank/]
+
+          expect(status).to eq(422)
+          validate_errors(parsed_response, expected_errors)
+          validate_no_resources_created
+        end
       end
 
-      it 'returns a bad request message with descriptive errors and provided data if the organization cannot be created' do
-        event_id = new_event_indicator
-        params = {event: new_event_params,
-                  course: new_course_params,
-                  organization: new_organization_params.except(:name)}
-        expected_response = 422
-        expected_errors = [/Name can't be blank/]
-        post_and_validate_errors(event_id, params, expected_response, expected_errors)
-      end
+      context 'when the organization cannot be created' do
+        let(:params) { {event: new_event_params,
+                        course: new_course_params,
+                        organization: new_organization_params.except(:name)} }
 
-      it 'does not create any resources if the organization cannot be created' do
-        event_id = new_event_indicator
-        params = {event: new_event_params,
-                  course: new_course_params,
-                  organization: new_organization_params.except(:name)}
-        expected_response = 422
-        expected_errors = []
-        post_and_validate_errors(event_id, params, expected_response, expected_errors)
-        expect(Event.all.size).to eq(0)
-        expect(Course.all.size).to eq(0)
-        expect(Organization.all.size).to eq(0)
-      end
+        it 'returns a bad request message with descriptive errors and provided data and creates no resources' do
+          status, _, parsed_response = post_with_params(event_id, params)
+          expected_errors = [/Name can't be blank/]
 
-      it 'does not create any resources if the course cannot be created' do
-        event_id = new_event_indicator
-        params = {event: new_event_params,
-                  course: new_course_params.except(:name),
-                  organization: new_organization_params}
-        expected_response = 422
-        expected_errors = {}
-        post_and_validate_errors(event_id, params, expected_response, expected_errors)
-        expect(Event.all.size).to eq(0)
-        expect(Course.all.size).to eq(0)
-        expect(Organization.all.size).to eq(0)
-      end
-
-      it 'does not create any resources if the event cannot be created' do
-        event_id = new_event_indicator
-        params = {event: new_event_params.except(:start_time),
-                  course: new_course_params,
-                  organization: new_organization_params}
-        expected_response = 422
-        expected_errors = {}
-        post_and_validate_errors(event_id, params, expected_response, expected_errors)
-        expect(Event.all.size).to eq(0)
-        expect(Course.all.size).to eq(0)
-        expect(Organization.all.size).to eq(0)
+          expect(status).to eq(422)
+          validate_errors(parsed_response, expected_errors)
+          validate_no_resources_created
+        end
       end
     end
 
-    def post_and_validate_response(event_id, params, expected_response, expected_attributes)
+    def post_with_params(event_id, params)
       post :post_event_course_org, params: {staging_id: event_id,
                                             event: params[:event],
                                             course: params[:course],
                                             organization: params[:organization]}
 
+      status = response.status
       parsed_response = JSON.parse(response.body)
-      resources = {event: Event.find_by(id: parsed_response['event']['id']),
-                   event_group: EventGroup.find_by(id: parsed_response['event_group']['id']),
-                   course: Course.find_by(id: parsed_response['course']['id']),
-                   organization: Organization.find_by(id: parsed_response['organization']['id'])}
+      if status == 200
+        resources = {event: Event.find_by(id: parsed_response['event']['id']),
+                     event_group: EventGroup.find_by(id: parsed_response['event_group']['id']),
+                     course: Course.find_by(id: parsed_response['course']['id']),
+                     organization: Organization.find_by(id: parsed_response['organization']['id'])}
+      else
+        resources = {}
+      end
 
-      expect(response.status).to eq(expected_response)
+      [status, resources, parsed_response]
+    end
 
+    def validate_response(resources, expected_attributes)
       event = resources[:event]
       event_group = resources[:event_group]
       course = resources[:course]
@@ -238,20 +239,19 @@ describe Api::V1::StagingController do
       end
     end
 
-    def post_and_validate_errors(event_id, params, expected_response, expected_errors)
-      post :post_event_course_org, params: {staging_id: event_id,
-                                            event: params[:event],
-                                            course: params[:course],
-                                            organization: params[:organization]}
-
-      expect(response.status).to eq(expected_response)
-
-      parsed_response = JSON.parse(response.body)
+    def validate_errors(parsed_response, expected_errors)
       message_array = parsed_response['errors'].map { |error| error['detail']['messages'] }.flatten
 
       expected_errors.each do |error_text|
         expect(message_array).to include(error_text)
       end
+    end
+
+    def validate_no_resources_created
+      expect(Event.all.size).to eq(0)
+      expect(Course.all.size).to eq(0)
+      expect(Organization.all.size).to eq(0)
+      expect(EventGroup.all.size).to eq(0)
     end
   end
 

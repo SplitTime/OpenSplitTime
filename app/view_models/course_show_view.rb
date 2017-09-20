@@ -51,7 +51,7 @@ class CourseShowView
   end
 
   def show_visibility_columns?
-    current_user.admin?
+    current_user&.admin?
   end
 
   private

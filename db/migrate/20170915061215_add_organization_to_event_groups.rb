@@ -5,7 +5,7 @@ class AddOrganizationToEventGroups < ActiveRecord::Migration[5.0]
 
     grouped_events.each do |_, events|
       first_event = events.first
-      group_name = String.longest_common_phrase(events.map(&:name)).titlecase
+      group_name = String.longest_common_phrase(events.map(&:name))&.titlecase || events.first.name
       event_group = EventGroup.create!(name: group_name,
                                        organization_id: first_event.organization_id,
                                        available_live: first_event.available_live,

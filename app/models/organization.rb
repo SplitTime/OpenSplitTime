@@ -8,7 +8,6 @@ class Organization < ApplicationRecord
   has_many :event_groups, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
-  has_many :events, through: :event_groups
 
   scope :with_visible_event_count, -> do
     left_joins(event_groups: :events).select('organizations.*, COUNT(DISTINCT events) AS event_count')
@@ -20,6 +19,10 @@ class Organization < ApplicationRecord
 
   def to_s
     slug
+  end
+
+  def events
+    Event.where(event_group_id: event_groups.ids)
   end
 
   def add_stewardship(user)

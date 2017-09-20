@@ -9,8 +9,6 @@ class Subscription < ApplicationRecord
   validates :protocol, inclusion: {in: Subscription.protocols.keys}
 
   alias_attribute :participant_id, :person_id
-  ActiveSupport::Deprecation.new('in January 2018', 'opensplittime.org')
-      .deprecate_methods(Effort, 'participant_id' => 'person_id', 'participant_id=' => 'person_id=')
 
   def set_resource_key
     if should_generate_resource?

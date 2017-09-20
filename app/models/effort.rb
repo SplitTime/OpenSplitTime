@@ -28,8 +28,6 @@ class Effort < ApplicationRecord
   attr_writer :last_reported_split_time, :event_start_time
 
   alias_attribute :participant_id, :person_id
-  ActiveSupport::Deprecation.new('in January 2018', 'opensplittime.org')
-      .deprecate_methods(Effort, 'participant_id' => 'person_id', 'participant_id=' => 'person_id=')
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates :email, allow_blank: true, length: {maximum: 105},

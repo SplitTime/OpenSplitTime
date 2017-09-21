@@ -11,6 +11,21 @@
   </div>
 </div>
 
+<% if @event_dropped_display.ordered_events_within_group.many? %>
+    <div class="row mid">
+      <div class="col-xs-12">
+        <div class="btn-group mid-padding">
+          <% @event_dropped_display.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.name}",
+                          drop_list_event_path(event),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @event_dropped_display.event %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <% if @event_dropped_display.dropped_efforts_count < 1 %>
     <strong><%= "No runners have dropped as of #{day_time_current_military_full(@event_dropped_display.home_time_zone)}." %></strong>
 <% else %>

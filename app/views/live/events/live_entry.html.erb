@@ -16,13 +16,29 @@
   </div>
 
 </div>
+
+<% if @event.ordered_events_within_group.many? %>
+    <div class="row mid">
+      <div class="col-xs-12">
+        <div class="btn-group mid-padding">
+          <% @event.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.name}",
+                          live_entry_live_event_path(event),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @event %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <div class="row form-split-wrapper lap-disabled">
 
   <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
     <span id="js-live-times-pusher" data-key="<%= ENV['PUSHER_KEY'] %>"></span>
     <form id="js-add-effort-form">
-      <input type="hidden" id="js-live-time-id-in" value="" />
-      <input type="hidden" id="js-live-time-id-out" value="" />
+      <input type="hidden" id="js-live-time-id-in" value=""/>
+      <input type="hidden" id="js-live-time-id-out" value=""/>
       <div class="form-group form-group-sm clearfix">
         <label class="col-xs-4" for="split-select">Aid Station</label>
         <div class="col-xs-8">
@@ -181,7 +197,7 @@
 </div>
 <div class="row provisional-data">
   <div class="col-xs-12 table-submit-wrapper">
-   <div class="btn-group" role="group">
+    <div class="btn-group" role="group">
       <button id="js-import-live-times" class="btn btn-primary">
         Pull Times
         <span class="badge" id="js-pull-times-count"></span>
@@ -208,7 +224,8 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
           <div class="js-modal-content"></div>
         </div>
       </div>

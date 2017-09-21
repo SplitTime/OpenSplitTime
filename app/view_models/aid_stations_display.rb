@@ -1,5 +1,4 @@
 class AidStationsDisplay < LiveEventFramework
-
   delegate :course, :organization, :home_time_zone, to: :event
 
   def post_initialize(args)
@@ -20,8 +19,6 @@ class AidStationsDisplay < LiveEventFramework
   end
 
   private
-
-  attr_reader :event
 
   def grouped_split_times
     @grouped_split_times ||= event.split_times

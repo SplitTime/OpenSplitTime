@@ -10,6 +10,22 @@
     <%= render 'live_entry_button_cluster', page: 'aid_detail' %>
   </div>
 </div>
+
+<% if @aid_station_detail.ordered_events_within_group.many? %>
+    <div class="row mid">
+      <div class="col-xs-12">
+        <div class="btn-group mid-padding">
+          <% @aid_station_detail.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.name}",
+                          request.params.merge(id: event, split_name: @aid_station_detail.split_name, aid_station: nil),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @aid_station_detail.event %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <div class="row">
   <div class="col-xs-4">
     <% if @aid_station_detail.open_time %>
@@ -41,12 +57,12 @@
   <div class="col-xs-4">
     <% if @aid_station_detail.prior_aid_station %>
         <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",
-                    request.params.merge(aid_station: @aid_station_detail.prior_aid_station),
+                    request.params.merge(aid_station: @aid_station_detail.prior_aid_station, split_name: nil),
                     class: 'btn btn-sm btn-default' %>
     <% end %>
     <% if @aid_station_detail.next_aid_station %>
         <%= link_to "#{@aid_station_detail.next_aid_station.split.base_name} >>",
-                    request.params.merge(aid_station: @aid_station_detail.next_aid_station),
+                    request.params.merge(aid_station: @aid_station_detail.next_aid_station, split_name: nil),
                     class: 'btn btn-sm btn-default' %>
     <% end %>
   </div>

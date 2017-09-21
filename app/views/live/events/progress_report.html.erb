@@ -10,6 +10,22 @@
     <%= render 'live_entry_button_cluster', page: 'progress' %>
   </div>
 </div>
+
+<% if @progress_display.ordered_events_within_group.many? %>
+    <div class="row mid">
+      <div class="col-xs-12">
+        <div class="btn-group mid-padding">
+          <% @progress_display.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.name}",
+                          progress_report_live_event_path(event),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @progress_display.event %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <div class="row">
   <div class="col-xs-6">
     <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>

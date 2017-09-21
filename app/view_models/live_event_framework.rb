@@ -1,6 +1,6 @@
 class LiveEventFramework
-
-  delegate :multiple_laps?, :home_time_zone, to: :event
+  attr_reader :event
+  delegate :multiple_laps?, :home_time_zone, :ordered_events_within_group, to: :event
 
   def initialize(args)
     @event = args[:event]
@@ -114,7 +114,6 @@ class LiveEventFramework
 
   private
 
-  attr_reader :event
   delegate :required_lap_splits, :required_time_points, to: :event
 
   def highest_lap

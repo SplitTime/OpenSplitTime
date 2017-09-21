@@ -10,6 +10,22 @@
     <%= render 'live_entry_button_cluster', page: 'aid_summary' %>
   </div>
 </div>
+
+<% if @aid_stations_display.ordered_events_within_group.many? %>
+    <div class="row mid">
+      <div class="col-xs-12">
+        <div class="btn-group mid-padding">
+          <% @aid_stations_display.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.name}",
+                          aid_station_report_live_event_path(event),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @aid_stations_display.event %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <div class="row">
   <div class="col-xs-6">
     <h4><%= "Event started on #{l(@aid_stations_display.start_time, format: :full_day_military_and_zone)} with #{@aid_stations_display.efforts_started_count} entrants" %></h4>

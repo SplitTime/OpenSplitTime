@@ -26,21 +26,25 @@ class Live::EventsController < Live::BaseController
 
   def aid_station_detail
     authorize @event
-    aid_station = @event.aid_stations.find(params[:aid_station])
+    if params[:split_name]
+      split = @event.splits.find_by(base_name: params[:split_name])
+      aid_station = @event.aid_stations.find_by(split_id: split.id) if split
+    else
+      aid_station = @event.aid_stations.find_by(id: params[:aid_station])
+    end
+    aid_station ||= @event.aid_stations.find_by(split_id: @event.ordered_split_ids.first)
     @aid_station_detail = AidStationDetail.new(event: @event, aid_station: aid_station, params: prepared_params)
   end
 
   private
 
   def set_event
-    @event = params[:id].uuid? ?
-        Event.find_by!(staging_id: params[:id]) :
-        Event.friendly.find(params[:id])
+    @event = Event.friendly.find(params[:id])
   end
 
   def verify_available_live
     unless @event.available_live
-      flash[:danger] = "#{@event.name} is not available for live entry. Please enable live entry access through the event stage/admin page."
+      flash[:danger] = "#{@event.name} is not available for live entry. Please enable live entry access through the event group settings page."
       redirect_to event_path(@event)
     end
   end

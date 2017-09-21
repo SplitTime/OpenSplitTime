@@ -7,6 +7,7 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
+      <%= link_to_enter_live_entry(@presenter, current_user) %>
       <%= render 'events/view_buttons', view_object: @presenter %>
     </div>
     <div class="row">

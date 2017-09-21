@@ -55,7 +55,7 @@ class AidStationDetail < LiveEventFramework
 
   private
 
-  attr_reader :event, :params, :aid_station_row
+  attr_reader :params, :aid_station_row
 
   def category_effort_rows
     @category_effort_rows ||=

@@ -21,7 +21,7 @@ class Event < ApplicationRecord
   validates_uniqueness_of :staging_id
   validate :home_time_zone_exists
 
-  scope :name_search, -> (search_param) { where('name ILIKE ?', "%#{search_param}%") }
+  scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
     search(search_param)
         .select('events.*, COUNT(efforts.id) as effort_count')

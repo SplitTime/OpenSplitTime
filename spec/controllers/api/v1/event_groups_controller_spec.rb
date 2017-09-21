@@ -5,6 +5,11 @@ describe Api::V1::EventGroupsController do
 
   let(:event_group) { create(:event_group) }
 
+  before do
+    allow(CombineEventGroupSplitAttributes)
+        .to receive(:perform).and_return(['EventGroup#combined_split_attributes is stubbed for testing'])
+  end
+
   describe '#index' do
     before do
       create(:event_group, name: 'Bravo', available_live: true)

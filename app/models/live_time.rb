@@ -89,7 +89,7 @@ class LiveTime < ApplicationRecord
     when source.start_with?('ost-remote')
       'OST Remote'
     when source.start_with?('ost-live-entry')
-      'Live Data Entry'
+      'Live Entry'
     else
       source
     end

@@ -427,8 +427,8 @@
             </tr>
             <template slot="row" scope="vm">
               <td>
-                <i class="glyphicon glyphicon-ok-sign" v-show="vm.row.participantId" data-toggle="tooltip" title="This effort has been reconciled"></i>
-                <i class="glyphicon glyphicon-question-sign" v-show="!vm.row.participantId" data-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
+                <i class="glyphicon glyphicon-ok-sign" v-show="vm.row.personId" data-toggle="tooltip" title="This effort has been reconciled"></i>
+                <i class="glyphicon glyphicon-question-sign" v-show="!vm.row.personId" data-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
               </td>
               <td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
               <td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>

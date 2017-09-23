@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(version: 20170923154542) do
   end
 
   create_table "partners", force: :cascade do |t|
-    t.integer  "event_id",                        null: false
+    t.integer  "event_id"
     t.string   "banner_link"
     t.integer  "weight",              default: 1, null: false
     t.datetime "created_at",                      null: false

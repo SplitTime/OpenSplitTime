@@ -16,7 +16,7 @@
       <div class="col-xs-12">
         <div class="btn-group mid-padding">
           <% @aid_station_detail.ordered_events_within_group.each do |event| %>
-              <%= link_to "#{event.name}",
+              <%= link_to "#{event.guaranteed_short_name}",
                           request.params.merge(id: event, split_name: @aid_station_detail.split_name, aid_station: nil),
                           class: 'btn btn-sm btn-primary',
                           disabled: event == @aid_station_detail.event %>

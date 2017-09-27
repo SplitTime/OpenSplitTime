@@ -28,6 +28,7 @@ class Effort < ApplicationRecord
   attr_writer :last_reported_split_time, :event_start_time
 
   alias_attribute :participant_id, :person_id
+  delegate :organization, :concealed?, to: :event_group
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates :email, allow_blank: true, length: {maximum: 105},
@@ -52,8 +53,6 @@ class Effort < ApplicationRecord
                  .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
-
-  delegate :organization, to: :event_group
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')
@@ -246,10 +245,6 @@ class Effort < ApplicationRecord
   def current_age_approximate
     @current_age_approximate ||=
         age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
-  end
-
-  def concealed?
-    event_group.concealed?
   end
 
   def unreconciled?

@@ -91,7 +91,8 @@ class EffortsController < ApplicationController
 
   def start
     authorize @effort
-    BulkUpdateService.start_efforts([@effort], @current_user.id)
+    response = Interactors::StartEfforts.perform!([@effort], current_user.id)
+    set_flash_message(response)
     redirect_to effort_path(@effort)
   end
 

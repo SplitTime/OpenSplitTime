@@ -46,6 +46,14 @@ class ApplicationController < ActionController::Base
     User.current = current_user
   end
 
+  def set_flash_message(response)
+    if response.successful?
+      flash[:success] = response.message
+    else
+      flash[:warning] = "#{response.message}: #{response.error_report}"
+    end
+  end
+
   def jsonapi_error_object(record)
     {title: "#{record.class} could not be #{past_tense[action_name]}",
      detail: {attributes: record.attributes.compact.transform_keys { |key| key.camelize(:lower) },

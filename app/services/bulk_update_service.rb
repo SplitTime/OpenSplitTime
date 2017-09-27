@@ -25,34 +25,4 @@ class BulkUpdateService
       end
     end
   end
-
-  def self.start_ready_efforts(event, current_user_id)
-    efforts = event.efforts.ready_to_start
-    start_efforts(efforts, current_user_id)
-  end
-
-  def self.start_efforts(efforts, current_user_id)
-    start_split_id = efforts.first.event.start_split.id
-    errors = []
-    SplitTime.transaction do
-      efforts.each do |effort|
-        split_time = SplitTime.new(effort_id: effort.id,
-                                   time_point: TimePoint.new(1, start_split_id, SubSplit::IN_BITKEY),
-                                   time_from_start: 0,
-                                   created_by: current_user_id,
-                                   updated_by: current_user_id)
-        errors << [split_time.attributes, split_time.errors.full_messages] unless split_time.save
-      end
-      if errors.present?
-        p errors
-        raise ActiveRecord::Rollback
-      end
-    end
-    if errors.present?
-      errors
-    else
-      plural_efforts = efforts.one? ? '1 effort' : "#{efforts.size} efforts"
-      "Started #{plural_efforts}."
-    end
-  end
 end

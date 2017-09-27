@@ -212,8 +212,9 @@ class EventsController < ApplicationController
 
   def start_ready_efforts
     authorize @event
-    report = BulkUpdateService.start_ready_efforts(@event, @current_user.id)
-    flash[:warning] = report if report
+    efforts = @event.efforts.ready_to_start
+    response = Interactors::StartEfforts.perform!(efforts, current_user.id)
+    set_flash_message(response)
     redirect_to stage_event_path(@event)
   end
 

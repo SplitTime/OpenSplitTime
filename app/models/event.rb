@@ -20,6 +20,7 @@ class Event < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :staging_id
   validate :home_time_zone_exists
+  validate :course_is_consistent
 
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
@@ -91,6 +92,12 @@ class Event < ApplicationRecord
 
   def home_time_zone_valid?
     home_time_zone && ActiveSupport::TimeZone[home_time_zone].present?
+  end
+
+  def course_is_consistent
+    if splits.any? { |split| split.course_id != course_id }
+      errors.add(:course_id, "does not reconcile with one or more splits")
+    end
   end
 
   def to_s

@@ -76,6 +76,17 @@ RSpec.describe Event, type: :model do
       expect(event.errors[:home_time_zone]).to include("must be the name of an ActiveSupport::TimeZone object")
     end
 
+    it 'is invalid if any splits do not reconcile with the course' do
+      course = build_stubbed(:course)
+      other_course = build_stubbed(:course)
+      split_1 = build_stubbed(:split, course: course)
+      split_2 = build_stubbed(:split, course: other_course)
+      splits = [split_1, split_2]
+      event = build_stubbed(:event, course: course, splits: splits)
+      expect(event).to be_invalid
+      expect(event.errors[:course_id]).to include(/does not reconcile with one or more splits/)
+    end
+
     it 'does not permit duplicate names' do
       existing_event = create(:event)
       event = build_stubbed(:event, name: existing_event.name)

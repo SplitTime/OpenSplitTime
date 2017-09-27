@@ -43,9 +43,12 @@ class BulkUpdateService
                                    updated_by: current_user_id)
         errors << [split_time.attributes, split_time.errors.full_messages] unless split_time.save
       end
-      raise ActiveRecord::Rollback if errors.present?
+      if errors.present?
+        p errors
+        raise ActiveRecord::Rollback
+      end
     end
-    if errors.present? then
+    if errors.present?
       errors
     else
       plural_efforts = efforts.one? ? '1 effort' : "#{efforts.size} efforts"

@@ -67,7 +67,7 @@ module Interactors
     def message
       case
       when errors.present?
-        'Event or event group could not be updated'
+        'Event or event group could not be updated. '
       when event_group_destroyed?
         event_saved_message + event_group_destroyed_message
       else
@@ -76,7 +76,7 @@ module Interactors
     end
 
     def event_saved_message
-      "Event #{event} was saved. "
+      "Event #{event} was updated. "
     end
 
     def event_group_destroyed_message

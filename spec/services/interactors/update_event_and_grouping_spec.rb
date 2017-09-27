@@ -18,7 +18,7 @@ RSpec.describe Interactors::UpdateEventAndGrouping do
         expect(event.event_group_id).to eq(new_event_group.id)
         expect(EventGroup.all.size).to eq(1)
         expect(EventGroup.first).to eq(new_event_group)
-        expect(response.message).to match(/was saved/)
+        expect(response.message).to match(/was updated/)
         expect(response.message).to match(/was deleted/)
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe Interactors::UpdateEventAndGrouping do
         expect(EventGroup.all.size).to eq(2)
         expect(event.event_group_id).not_to be_nil
         expect(event.event_group_id).not_to eq(old_event_group.id)
-        expect(response.message).to match(/was saved/)
+        expect(response.message).to match(/was updated/)
         expect(response.message).not_to match(/was deleted/)
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe Interactors::UpdateEventAndGrouping do
         event.reload
         expect(event.event_group_id).to eq(old_event_group.id)
         expect(EventGroup.all.size).to eq(2)
-        expect(response.message).to eq('Event or event group could not be updated')
+        expect(response.message).to eq('Event or event group could not be updated. ')
         expect(response.errors.first[:title]).to eq('Event group organizations do not match')
         expect(response.errors.first[:detail][:message]).to match(/The event cannot be updated because/)
       end

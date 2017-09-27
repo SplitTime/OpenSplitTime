@@ -33,16 +33,13 @@ class Effort < ApplicationRecord
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
+  validates_with EffortAttributesValidator
   validates_with BirthdateValidator
-  validates_with SplitTimeValidator
-  validates_with BibNumberValidator
-  validates_with PersonValidator
 
   before_save :reset_age_from_birthdate
 
   pg_search_scope :search_bib, against: :bib_number, using: {tsearch: {any_word: true}}
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
-  scope :ordered_by_date, -> { includes(:event).order('events.start_time DESC') }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(person_id: nil) }
   scope :started, -> { joins(:split_times).uniq }
@@ -56,7 +53,7 @@ class Effort < ApplicationRecord
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
 
-  delegate :organization, to: :event
+  delegate :organization, to: :event_group
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')
@@ -286,10 +283,6 @@ class Effort < ApplicationRecord
   # if more than one exists
   def stopped_split_time
     ordered_split_times.reverse.find(&:stopped_here)
-  end
-
-  def stopped_time_point
-    stopped_split_time&.time_point
   end
 
   def stop(split_time = nil)

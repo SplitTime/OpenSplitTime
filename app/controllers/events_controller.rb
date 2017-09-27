@@ -47,10 +47,10 @@ class EventsController < ApplicationController
   def update
     authorize @event
     @event.assign_attributes(permitted_params)
-    response = Interactors::UpdateEvent.perform!(@event)
+    response = Interactors::UpdateEventAndGrouping.perform!(@event)
 
     if response.successful?
-      flash[:success] = response.message
+      set_flash_message(response)
       redirect_to session.delete(:return_to) || stage_event_path(@event)
     else
       render 'edit'

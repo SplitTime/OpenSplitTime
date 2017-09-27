@@ -80,6 +80,8 @@ class LiveTimeRowImporter
       end
 
       if row_success
+        effort = Effort.where(id: effort.id).eager_load(:split_times).first
+
         temporary_split_times.each do |saved_split_time|
           unless saved_split_time.live_time_id
             live_time = effort_data.new_live_times[SubSplit.kind(saved_split_time.bitkey).downcase.to_sym]
@@ -87,7 +89,7 @@ class LiveTimeRowImporter
             live_time.save if live_time.valid?
           end
 
-          effort.stop(saved_split_time) if saved_split_time.stopped_here
+          effort.stop(saved_split_time) if saved_split_time.stopped_here?
           EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
           saved_split_times[person_id] << saved_split_time
         end

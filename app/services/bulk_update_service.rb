@@ -49,7 +49,7 @@ class BulkUpdateService
       errors
     else
       plural_efforts = efforts.one? ? '1 effort' : "#{efforts.size} efforts"
-      "Added start times for #{plural_efforts}."
+      "Started #{plural_efforts}."
     end
   end
 end

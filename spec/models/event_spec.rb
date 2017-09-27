@@ -371,4 +371,22 @@ RSpec.describe Event, type: :model do
       end
     end
   end
+
+  describe '#guaranteed_short_name' do
+    context 'when a short_name exists for the event' do
+      let(:event) { build_stubbed(:event, short_name: 'Test Short Name') }
+
+      it 'returns the short name' do
+        expect(event.guaranteed_short_name).to eq(event.short_name)
+      end
+    end
+
+    context 'when no short_name exists for the event' do
+      let(:event) { build_stubbed(:event, short_name: nil) }
+
+      it 'returns the event name' do
+        expect(event.guaranteed_short_name).to eq(event.name)
+      end
+    end
+  end
 end

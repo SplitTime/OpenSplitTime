@@ -22,7 +22,7 @@
     <% if @spread_display.ordered_events_within_group.many? %>
         <div class="btn-group">
           <% @spread_display.ordered_events_within_group.each do |event| %>
-              <%= link_to "#{event.name}",
+              <%= link_to "#{event.guaranteed_short_name}",
                           spread_event_path(event, display_style: @spread_display.display_style),
                           class: 'btn btn-sm btn-primary',
                           disabled: event == @spread_display.event %>

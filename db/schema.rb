@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918145724) do
+ActiveRecord::Schema.define(version: 20170923154542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20170918145724) do
     t.boolean  "auto_live_times",            default: false
     t.string   "home_time_zone",                                                   null: false
     t.integer  "event_group_id"
+    t.string   "short_name"
     t.index ["course_id"], name: "index_events_on_course_id", using: :btree
     t.index ["event_group_id"], name: "index_events_on_event_group_id", using: :btree
     t.index ["organization_id"], name: "index_events_on_organization_id", using: :btree

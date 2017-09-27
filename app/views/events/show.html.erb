@@ -27,7 +27,7 @@
     <% if @event_display.ordered_events_within_group.many? %>
         <div class="btn-group">
           <% @event_display.ordered_events_within_group.each do |event| %>
-              <%= link_to "#{event.name}",
+              <%= link_to "#{event.guaranteed_short_name}",
                           event_path(event),
                           class: 'btn btn-sm btn-primary',
                           disabled: event == @event_display.event %>

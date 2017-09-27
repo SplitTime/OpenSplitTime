@@ -87,7 +87,7 @@ class LiveTimeRowImporter
             live_time.save if live_time.valid?
           end
 
-          effort.split_times.includes(:split).reload
+          effort = Effort.where(id: effort.id).includes(split_times: :split).first
           effort.stop(saved_split_time) if saved_split_time.stopped_here?
           EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
           saved_split_times[person_id] << saved_split_time

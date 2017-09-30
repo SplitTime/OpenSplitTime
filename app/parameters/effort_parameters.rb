@@ -8,7 +8,7 @@ class EffortParameters < BaseParameters
     [:id, :event_id, :person_id, :participant_id, :wave, :bib_number, :city, :state_code, :age,
      :created_at, :updated_at, :created_by, :updated_by, :first_name, :last_name, :gender,
      :country_code, :birthdate, :data_status, :start_offset, :dropped_split_id,
-     :beacon_url, :report_url, :photo_url, :dropped_lap, :laps_required, :event_start_time,
+     :beacon_url, :report_url, :photo, :dropped_lap, :laps_required, :event_start_time,
      :final_split_name, :final_lap_distance, :final_lap, :final_split_id, :final_bitkey, :final_time,
      :final_split_time_id, :stopped_split_time_id, :stopped_lap, :stopped_split_id, :stopped_bitkey,
      :stopped_time, :final_lap_complete, :course_distance, :started, :laps_started, :laps_finished,
@@ -20,7 +20,7 @@ class EffortParameters < BaseParameters
   def self.permitted
     [:id, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
      :city, :state_code, :country_code, :finished, :start_time, :start_offset,
-     :beacon_url, :report_url, :photo_url, :phone, :email, :checked_in,
+     :beacon_url, :report_url, :photo, :phone, :email, :checked_in,
      split_times_attributes: [*SplitTimeParameters.permitted]]
   end
 

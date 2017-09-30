@@ -16,6 +16,7 @@ class Person < ApplicationRecord
   has_many :followers, through: :subscriptions, source: :user
   has_many :efforts
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
+  has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
 
   attr_accessor :suggested_match
 
@@ -32,6 +33,10 @@ class Person < ApplicationRecord
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
+  validates_attachment :photo,
+                       content_type: { content_type: %w(image/png image/jpeg)},
+                       file_name: { matches: [/png\z/, /jpe?g\z/] },
+                       size: { in: 0..1000.kilobytes }
 
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.
@@ -51,7 +56,7 @@ class Person < ApplicationRecord
   end
 
   def self.columns_to_pull_from_model
-    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo_url, :created_by]
+    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo, :created_by]
   end
 
   def to_s

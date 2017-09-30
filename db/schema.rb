@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170923154542) do
+ActiveRecord::Schema.define(version: 20170928193531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,33 +48,37 @@ ActiveRecord::Schema.define(version: 20170923154542) do
   end
 
   create_table "efforts", force: :cascade do |t|
-    t.integer  "event_id",                                    null: false
+    t.integer  "event_id",                                      null: false
     t.integer  "person_id"
     t.string   "wave"
     t.integer  "bib_number"
-    t.string   "city",             limit: 64
-    t.string   "state_code",       limit: 64
+    t.string   "city",               limit: 64
+    t.string   "state_code",         limit: 64
     t.integer  "age"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "gender"
-    t.string   "country_code",     limit: 2
+    t.string   "country_code",       limit: 2
     t.date     "birthdate"
     t.integer  "data_status"
-    t.integer  "start_offset",                default: 0,     null: false
+    t.integer  "start_offset",                  default: 0,     null: false
     t.integer  "dropped_split_id"
     t.string   "beacon_url"
     t.string   "report_url"
     t.string   "photo_url"
     t.integer  "dropped_lap"
-    t.string   "phone",            limit: 15
+    t.string   "phone",              limit: 15
     t.string   "email"
-    t.string   "slug",                                        null: false
-    t.boolean  "checked_in",                  default: false
+    t.string   "slug",                                          null: false
+    t.boolean  "checked_in",                    default: false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
     t.index ["event_id"], name: "index_efforts_on_event_id", using: :btree
     t.index ["person_id"], name: "index_efforts_on_person_id", using: :btree
     t.index ["slug"], name: "index_efforts_on_slug", unique: true, using: :btree
@@ -203,6 +207,10 @@ ActiveRecord::Schema.define(version: 20170923154542) do
     t.string   "photo_url"
     t.string   "slug",                                          null: false
     t.string   "topic_resource_key"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
     t.index ["slug"], name: "index_people_on_slug", unique: true, using: :btree
     t.index ["topic_resource_key"], name: "index_people_on_topic_resource_key", unique: true, using: :btree
     t.index ["user_id"], name: "index_people_on_user_id", using: :btree

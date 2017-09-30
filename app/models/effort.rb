@@ -21,13 +21,16 @@ class Effort < ApplicationRecord
   belongs_to :event
   belongs_to :person
   has_many :split_times, dependent: :destroy
+  has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
   accepts_nested_attributes_for :split_times, :reject_if =>
       lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank? }
+
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
 
   alias_attribute :participant_id, :person_id
+  delegate :organization, :concealed?, to: :event_group
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates :email, allow_blank: true, length: {maximum: 105},
@@ -35,6 +38,10 @@ class Effort < ApplicationRecord
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
+  validates_attachment :photo,
+                       content_type: { content_type: %w(image/png image/jpeg)},
+                       file_name: { matches: [/png\z/, /jpe?g\z/] },
+                       size: { in: 0..1000.kilobytes }
 
   before_save :reset_age_from_birthdate
 
@@ -53,15 +60,13 @@ class Effort < ApplicationRecord
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
 
-  delegate :organization, to: :event_group
-
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')
   end
 
   def self.attributes_for_import
     [:first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate, :city, :state_code, :country_code,
-     :start_time, :start_offset, :beacon_url, :report_url, :photo_url, :phone, :email]
+     :start_time, :start_offset, :beacon_url, :report_url, :photo, :phone, :email]
   end
 
   def self.search(param)
@@ -246,10 +251,6 @@ class Effort < ApplicationRecord
   def current_age_approximate
     @current_age_approximate ||=
         age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
-  end
-
-  def concealed?
-    event_group.concealed?
   end
 
   def unreconciled?

@@ -32,7 +32,14 @@
       <% end %>
     </h4>
   </div>
-  <div class="col-xs-6 page-navigation">
+
+  <div class="col-xs-3">
+    <% if @presenter.photo.present? %>
+        <%= image_tag(@presenter.photo.url(:small)) %>
+    <% end %>
+  </div>
+
+  <div class="col-xs-3 page-navigation">
     <div class="row">
       <% if @current_user %>
           <% if @presenter.unclaimed? && @current_user.authorized_to_claim?(@presenter) %>

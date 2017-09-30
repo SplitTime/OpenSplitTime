@@ -21,8 +21,10 @@ class Effort < ApplicationRecord
   belongs_to :event
   belongs_to :person
   has_many :split_times, dependent: :destroy
+  has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
   accepts_nested_attributes_for :split_times, :reject_if =>
       lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank? }
+
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
@@ -36,6 +38,10 @@ class Effort < ApplicationRecord
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
+  validates_attachment :photo,
+                       content_type: { content_type: %w(image/png image/jpeg)},
+                       file_name: { matches: [/png\z/, /jpe?g\z/] },
+                       size: { in: 0..1000.kilobytes }
 
   before_save :reset_age_from_birthdate
 
@@ -60,7 +66,7 @@ class Effort < ApplicationRecord
 
   def self.attributes_for_import
     [:first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate, :city, :state_code, :country_code,
-     :start_time, :start_offset, :beacon_url, :report_url, :photo_url, :phone, :email]
+     :start_time, :start_offset, :beacon_url, :report_url, :photo, :phone, :email]
   end
 
   def self.search(param)

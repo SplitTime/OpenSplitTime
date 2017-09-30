@@ -1,49 +1,65 @@
-desc 'Convert url references to paperclip attachments'
-task :urls_to_paperclip, [:model_name, :url_field, :attachment_field] => :environment do |_, args|
-  puts "Starting task"
+namespace :paperclip do
 
-  model_name = args[:model_name]
-  url_field = args[:url_field]
-  attachment_field = args[:attachment_field]
-  attachment_file_name_field = "#{attachment_field}_file_name"
+  desc 'Convert url references to paperclip attachments'
+  task :convert_url => :environment do
+    puts "Starting task"
 
-  klass = model_name.classify.constantize
-  records = klass.where.not(url_field => nil)
+    klass = Paperclip::Task.obtain_class.constantize
+    url_field = ENV['URL_FIELD'] || ENV['url_field']
+    attachment_field = ENV['ATTACHMENT'] || ENV['attachment']
+    attachment_file_name_field = "#{attachment_field}_file_name"
 
-  file_missing_count = 0
-  unsaved_record_count = 0
-  saved_record_count = 0
+    records = klass.where.not(url_field => nil)
 
-  puts "#{records.size} records found needing conversion"
+    skipped_records = []
+    saved_records = []
+    unsaved_records = []
+    file_missing_records = []
 
-  records.each do |record|
-    url = record.send(url_field)
-    file_name = url.split('/').last
-    file = FileStore.get(url)
+    puts "#{records.size} records found with urls"
 
-    if file
-      record.assign_attributes(attachment_field => file, attachment_file_name_field => file_name)
-      if record.save
-        print '.'
-        saved_record_count += 1
+    records.each do |record|
+      if record.photo.present?
+        print 'O'
+        skipped_records << record
       else
-        print 'X'
-        unsaved_record_count += 1
+        url = record.send(url_field)
+        file_name = url.split('/').last
+        file = FileStore.get(url)
+
+        if file
+          record.assign_attributes(attachment_field => file, attachment_file_name_field => file_name)
+          if record.save
+            print '.'
+            saved_records << record
+          else
+            print 'X'
+            unsaved_records << record
+          end
+        else
+          print '-'
+          file_missing_records << record
+        end
       end
-    else
-      print '-'
-      file_missing_count += 1
+    end
+
+    puts "\nGenerating thumbnails"
+
+    Rake::Task["paperclip:refresh:thumbnails"].invoke
+
+    puts "\nDone\n"
+
+    puts "#{saved_records.size} records were saved\n"
+    puts "#{unsaved_records.size} records could not be saved\n"
+    puts "#{file_missing_records.size} records referenced files that could not be located\n"
+    puts "#{skipped_records.size} records were skipped because they already have attachments\n"
+
+    if unsaved_records.present?
+      puts 'Unsaved records report the following errors:'
+      unsaved_records.each do |record|
+        Paperclip::Task.log_error("errors while processing #{klass} ID #{record.id}:")
+        Paperclip::Task.log_error(" " + record.errors.full_messages.join("\n ") + "\n")
+      end
     end
   end
-
-  puts "\nGenerating thumbnails"
-
-  ENV['CLASS'] = "#{klass}"
-  Rake::Task["paperclip:refresh:thumbnails"].invoke
-
-  puts "\nDone"
-
-  puts "\n#{saved_record_count} records were saved\n"
-  puts "#{unsaved_record_count} records could not be saved\n"
-  puts "#{file_missing_count} records referenced files that could not be located\n"
 end

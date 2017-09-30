@@ -36,7 +36,7 @@ class Person < ApplicationRecord
   validates_attachment :photo,
                        content_type: { content_type: %w(image/png image/jpeg)},
                        file_name: { matches: [/png\z/, /jpe?g\z/] },
-                       size: { in: 0..1000.kilobytes }
+                       size: { in: 0..2000.kilobytes }
 
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.

@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root to: 'visitors#index'
-  get 'hardrock', to: 'visitors#hardrock'
   get 'photo_credits', to: 'visitors#photo_credits'
   get 'about', to: 'visitors#about'
   get 'donations', to: 'visitors#donations'
@@ -20,8 +19,6 @@ Rails.application.routes.draw do
   get 'split_info', to: 'visitors#split_info'
   get 'split_time_info', to: 'visitors#split_time_info'
   get 'split_time_info', to: 'visitors#split_time_info'
-
-  get '/.well-known/acme-challenge/:id' => 'visitors#letsencrypt'
 
   devise_for :users, :controllers => {registrations: 'registrations'}
 

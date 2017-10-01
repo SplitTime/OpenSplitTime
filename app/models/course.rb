@@ -10,6 +10,7 @@ class Course < ApplicationRecord
   accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
   scope :used_for_organization, -> (organization) { joins(:events).where(events: {organization_id: organization.id}).uniq }
+  scope :standard_includes, -> { includes(:splits) }
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false

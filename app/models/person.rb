@@ -21,6 +21,7 @@ class Person < ApplicationRecord
   attr_accessor :suggested_match
 
   scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group('people.id') }
+  scope :standard_includes, -> { includes(:efforts).with_age_and_effort_count }
 
   SQL = {age_and_effort_count: 'people.*, COUNT(efforts.id) as effort_count, ' +
       'ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) ' +

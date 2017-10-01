@@ -14,7 +14,7 @@ class ApiController < ApplicationController
     p "Auth header: #{request.headers.fetch('Authorization', '').split(' ').last}"
     authorized_scope = policy_class::Scope.new(current_user, controller_class)
     working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
-    @resources = working_scope.where(prepared_params[:filter]).order(prepared_params[:sort])
+    @resources = working_scope.where(prepared_params[:filter]).order(prepared_params[:sort]).standard_includes
     paginate json: @resources, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 

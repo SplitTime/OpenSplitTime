@@ -36,6 +36,7 @@ class Event < ApplicationRecord
   end
   scope :concealed, -> { includes(:event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(:event_group).where(event_groups: {concealed: false}) }
+  scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
 
   def self.search(search_param)
     return all if search_param.blank?

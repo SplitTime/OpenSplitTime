@@ -14,6 +14,8 @@ class EventGroup < ApplicationRecord
 
   delegate :stewards, to: :organization
 
+  scope :standard_includes, -> { includes(events: :splits) }
+
   after_commit :align_event_booleans # Needed only so long as Event model retains these duplicate attributes
 
   def to_s

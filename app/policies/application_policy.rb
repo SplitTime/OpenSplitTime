@@ -14,7 +14,7 @@ class ApplicationPolicy
       elsif user.nil?
         scope.none
       else
-        scope.where(id: (owned_records.ids + delegated_records.ids).uniq)
+        scope.where(id: (created_records.ids + delegated_records.ids).uniq)
       end
     end
     alias_method :editable, :resolve_editable
@@ -25,7 +25,7 @@ class ApplicationPolicy
       elsif user.nil?
         visible_records
       else
-        scope.where(id: (visible_records.ids + owned_records.ids + delegated_records.ids).uniq)
+        scope.where(id: (visible_records.ids + created_records.ids + delegated_records.ids).uniq)
       end
     end
     alias_method :viewable, :resolve_viewable
@@ -34,7 +34,7 @@ class ApplicationPolicy
       scope.respond_to?(:visible) ? scope.visible : scope
     end
 
-    def owned_records
+    def created_records
       scope.where(created_by: user.id)
     end
 

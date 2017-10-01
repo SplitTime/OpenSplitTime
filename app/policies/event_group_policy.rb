@@ -4,7 +4,11 @@ class EventGroupPolicy < ApplicationPolicy
     end
 
     def delegated_records
-      user ? scope.joins(organization: :stewardships).where(stewardships: {user_id: user.id}) : scope.none
+      if user
+        scope.joins(organization: :stewardships).delegated(user.id)
+      else
+        scope.none
+      end
     end
   end
 

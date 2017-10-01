@@ -3,6 +3,7 @@
 class Event < ApplicationRecord
 
   include Auditable
+  include Delegable
   include SplitMethods
   include LapsRequiredMethods
   extend FriendlyId

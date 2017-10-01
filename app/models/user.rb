@@ -63,11 +63,11 @@ class User < ApplicationRecord
   end
 
   def authorized_fully?(resource)
-    admin? || (id == resource.created_by) || resource.new_record?
+    admin? || (id == resource.created_by) || resource.new_record? || owner_of?(resource)
   end
 
   def authorized_to_edit?(resource)
-    admin? || (id == resource.created_by) || steward_of?(resource) || resource.new_record?
+    authorized_fully?(resource) || steward_of?(resource)
   end
 
   def authorized_to_claim?(person)
@@ -77,6 +77,10 @@ class User < ApplicationRecord
 
   def authorized_to_edit_personal?(effort)
     admin? || (effort.person ? (avatar == effort.person) : authorized_to_edit?(effort))
+  end
+
+  def owner_of?(resource)
+    resource.respond_to?(:owner_id) ? resource.owner_id == self.id : false
   end
 
   def steward_of?(resource)

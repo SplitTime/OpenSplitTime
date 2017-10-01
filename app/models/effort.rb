@@ -11,6 +11,7 @@ class Effort < ApplicationRecord
 
   include Auditable
   include DataStatusMethods
+  include Delegable
   include GuaranteedFindable
   include LapsRequiredMethods
   include PersonalInfo

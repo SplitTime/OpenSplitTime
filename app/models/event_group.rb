@@ -3,6 +3,7 @@
 class EventGroup < ApplicationRecord
   include Auditable
   include Concealable
+  include Delegable
   extend FriendlyId
   friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true

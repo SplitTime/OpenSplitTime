@@ -17,11 +17,7 @@ class OrganizationPolicy < ApplicationPolicy
   end
 
   def stewards?
-    user.authorized_to_edit?(organization)
-  end
-
-  def remove_steward?
-    user.authorized_to_edit?(organization)
+    user.authorized_fully?(organization)
   end
 
   def post_event_course_org?

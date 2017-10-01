@@ -7,14 +7,14 @@
   </tr>
   </thead>
   <tbody>
-  <% @organization.stewards.each do |user| %>
+  <% @organization.stewardships.each do |stewardship| %>
       <tr>
-        <td><%= user.full_name %></td>
-        <td><%= user.email %></td>
+        <td><%= stewardship.full_name %></td>
+        <td><%= stewardship.email %></td>
         <td>
           <%= link_to "Remove",
-                      remove_steward_organization_path(@organization, user_id: user.id),
-                      :method => :put,
+                      stewardship_path(stewardship),
+                      :method => :delete,
                       :class => 'btn btn-xs btn-danger' %>
         </td>
       </tr>

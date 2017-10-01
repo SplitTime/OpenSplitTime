@@ -76,13 +76,6 @@ class OrganizationsController < ApplicationController
     session[:return_to] = stewards_organization_path
   end
 
-  def remove_steward
-    authorize @organization
-    user = User.friendly.find(params[:user_id])
-    @organization.remove_stewardship(user)
-    redirect_to stewards_organization_path
-  end
-
   private
 
   def set_organization

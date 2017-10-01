@@ -75,7 +75,6 @@ Rails.application.routes.draw do
 
   resources :organizations do
     member { get :stewards }
-    member { put :remove_steward }
   end
 
   resources :people do
@@ -90,6 +89,7 @@ Rails.application.routes.draw do
   resources :partners
   resources :split_times
   resources :splits
+  resources :stewardships, only: [:destroy]
   resources :subscriptions, only: [:create, :destroy]
 
   get '/auth/:provider/callback' => 'sessions#create'

@@ -7,7 +7,7 @@
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="row">
-      <% if @current_user && @current_user.authorized_to_edit?(@presenter.organization) %>
+      <% if current_user&.authorized_fully?(@presenter.organization) %>
           <%= link_to 'Add/remove stewards', stewards_organization_path(@presenter), class: "btn btn-sm btn-warning" %>
           <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-sm btn-success" %>
           <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-sm btn-primary" %>
@@ -41,7 +41,7 @@
                     organization_path(@presenter, view: 'events'),
                     disabled: params[:view] == 'events',
                     class: 'btn btn-sm btn-primary' %>
-        <% if @current_user && @current_user.authorized_to_edit?(@presenter.organization) %>
+        <% if current_user&.authorized_fully?(@presenter.organization) %>
             <%= link_to 'Show stewards',
                         organization_path(@presenter, view: 'stewards'),
                         disabled: params[:view] == 'stewards',
@@ -59,10 +59,14 @@
         <h4>No courses are associated with this organization.</h4>
     <% end %>
 <% elsif params[:view] == 'stewards' %>
-    <% if @presenter.stewards_count > 0 %>
-        <%= render 'stewards_list', stewards: @presenter.stewards %>
+    <% if current_user&.authorized_fully?(@presenter.organization) %>
+        <% if @presenter.stewards_count > 0 %>
+            <%= render 'stewards_list', stewards: @presenter.stewards %>
+        <% else %>
+            <h4>No stewards have been added to this organization.</h4>
+        <% end %>
     <% else %>
-        <h4>No stewards have been added to this organization.</h4>
+        <h4>Not authorized.</h4>
     <% end %>
 <% else %>
     <% if @presenter.events_count > 0 %>

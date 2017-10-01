@@ -29,10 +29,6 @@ class Organization < ApplicationRecord
     stewards << user
   end
 
-  def remove_stewardship(user)
-    stewards.delete(user)
-  end
-
   def should_be_concealed?
     !event_groups.visible.present?
   end

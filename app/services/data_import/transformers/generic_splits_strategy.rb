@@ -16,7 +16,7 @@ module DataImport::Transformers
         proto_record.record_type = :split
         proto_record.map_keys!(SplitParameters.mapping)
         proto_record.convert_split_distance!
-        proto_record.align_split_distance!(event.ordered_splits.pluck(:distance_from_start))
+        proto_record.align_split_distance!(event.ordered_splits.map(&:distance_from_start))
         proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)
       end

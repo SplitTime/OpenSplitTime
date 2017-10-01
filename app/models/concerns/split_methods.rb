@@ -2,7 +2,7 @@ module SplitMethods
   extend ActiveSupport::Concern
 
   def ordered_splits
-    splits.ordered
+    splits.sort_by(&:distance_from_start)
   end
 
   def sub_splits
@@ -10,23 +10,23 @@ module SplitMethods
   end
 
   def ordered_splits_without_start
-    ordered_splits.where(kind: [1, 2])
+    ordered_splits.reject(&:start?)
   end
 
   def ordered_splits_without_finish
-    ordered_splits.where(kind: [0, 2])
+    ordered_splits.reject(&:finish?)
   end
 
   def ordered_split_ids
-    ordered_splits.ids
+    ordered_splits.map(&:id)
   end
 
   def start_split
-    ordered_splits.start.first
+    ordered_splits.select(&:start?).first
   end
 
   def finish_split
-    ordered_splits.finish.first
+    ordered_splits.select(&:finish?).first
   end
 
   def next_split(split)

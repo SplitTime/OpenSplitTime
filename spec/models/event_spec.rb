@@ -400,4 +400,68 @@ RSpec.describe Event, type: :model do
       end
     end
   end
+
+  describe 'methods from the SplitMethods module' do
+    let(:in_bitkey) { SubSplit::IN_BITKEY }
+    let(:out_bitkey) { SubSplit::OUT_BITKEY }
+    let(:event) { build_stubbed(:event, splits: splits) }
+    let(:start_split) { build_stubbed(:start_split) }
+    let(:intermediate_split_1) { build_stubbed(:split, distance_from_start: 500) }
+    let(:intermediate_split_2) { build_stubbed(:split, distance_from_start: 1500) }
+    let(:intermediate_split_3) { build_stubbed(:split, distance_from_start: 2800) }
+    let(:finish_split) { build_stubbed(:finish_split, distance_from_start: 4000) }
+    let(:splits) { [start_split, intermediate_split_1, intermediate_split_2, intermediate_split_3, finish_split].shuffle }
+
+    describe '#ordered_splits' do
+      it 'returns all splits sorted by distance_from_start' do
+        expect(event.ordered_splits.map(&:distance_from_start)).to eq(splits.map(&:distance_from_start).sort)
+      end
+    end
+
+    describe '#ordered_split_ids' do
+      it 'returns all split ids sorted by distance_from_start' do
+        expect(event.ordered_split_ids).to eq(splits.sort_by(&:distance_from_start).map(&:id))
+      end
+    end
+
+    describe '#ordered_splits_without_start' do
+      it 'returns all splits sorted by distance_from_start without the start split' do
+        expect(event.ordered_splits_without_start.map(&:distance_from_start)).to eq((splits - [start_split]).map(&:distance_from_start).sort)
+      end
+    end
+
+    describe '#ordered_splits_without_finish' do
+      it 'returns all splits sorted by distance_from_start without the finish split' do
+        expect(event.ordered_splits_without_finish.map(&:distance_from_start)).to eq((splits - [finish_split]).map(&:distance_from_start).sort)
+      end
+    end
+
+    describe '#ordered_splits_without_finish' do
+      it 'returns all splits sorted by distance_from_start without the finish split' do
+        expect(event.ordered_splits_without_finish.map(&:distance_from_start)).to eq((splits - [finish_split]).map(&:distance_from_start).sort)
+      end
+    end
+
+    describe '#start_split' do
+      it 'returns the start split' do
+        expect(event.start_split).to eq(start_split)
+      end
+    end
+
+    describe '#finish_split' do
+      it 'returns the finish split' do
+        expect(event.finish_split).to eq(finish_split)
+      end
+    end
+
+    describe '#sub_splits' do
+      it 'returns an array of ordered sub_splits' do
+        expect(event.sub_splits).to eq([{start_split.id => in_bitkey}, 
+                                        {intermediate_split_1.id => in_bitkey}, {intermediate_split_1.id => out_bitkey}, 
+                                        {intermediate_split_2.id => in_bitkey}, {intermediate_split_2.id => out_bitkey}, 
+                                        {intermediate_split_3.id => in_bitkey}, {intermediate_split_3.id => out_bitkey},
+                                        {finish_split.id => in_bitkey}])
+      end
+    end
+  end
 end

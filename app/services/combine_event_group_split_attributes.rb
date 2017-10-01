@@ -1,4 +1,6 @@
 class CombineEventGroupSplitAttributes
+
+  # The event_group should be loaded with includes(events: :splits)
   def self.perform(event_group)
     new(event_group).perform
   end
@@ -17,7 +19,7 @@ class CombineEventGroupSplitAttributes
   attr_reader :event_group
 
   def ordered_split_names
-    events.map { |event| event.ordered_splits.map(&:base_name) }.reduce(:|)
+    @ordered_split_names ||= events.map { |event| event.ordered_splits.map(&:base_name) }.reduce(:|)
   end
 
   def combined_attributes(split_name)
@@ -39,7 +41,7 @@ class CombineEventGroupSplitAttributes
   end
 
   def event_splits_by_name
-    events.map { |event| [event.id, event.ordered_splits.index_by(&:base_name)] }.to_h
+    @event_splits_by_name ||= events.map { |event| [event.id, event.ordered_splits.index_by(&:base_name)] }.to_h
   end
 
   def events

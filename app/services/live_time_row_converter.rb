@@ -56,6 +56,6 @@ class LiveTimeRowConverter
   end
 
   def ordered_splits
-    @ordered_splits ||= event.ordered_splits.to_a
+    @ordered_splits ||= event.ordered_splits
   end
 end

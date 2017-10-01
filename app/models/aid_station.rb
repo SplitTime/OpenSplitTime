@@ -16,7 +16,6 @@ class AidStation < ApplicationRecord
   def course_is_consistent
     if event && split && event.course_id != split.course_id
       errors.add(:event_id, "event's course is not the same as split's course")
-      errors.add(:split_id, "event's course is not the same as split's course")
     end
   end
 
@@ -24,27 +23,31 @@ class AidStation < ApplicationRecord
     "#{event.slug} at #{split.slug}"
   end
 
-  def split_name
-    split.base_name
-  end
-
-  def event_name
-    event.name
+  def course
+    split.course
   end
 
   def course_name
     course.name
   end
 
-  def course
-    split.course
+  def event_group
+    event.event_group
   end
 
-  def organization_name
-    organization.try(:name)
+  def event_name
+    event.name
   end
 
   def organization
-    event.organization
+    event_group.organization
+  end
+
+  def organization_name
+    organization.name
+  end
+
+  def split_name
+    split.base_name
   end
 end

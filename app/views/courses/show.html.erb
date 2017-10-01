@@ -1,44 +1,44 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show course - #{@course_view.name}" %>
+    <% "OpenSplitTime: Show course - #{@presenter.name}" %>
 <% end %>
 <div class="row header">
   <div class="col-xs-7">
-    <h2><strong><%= @course_view.name %></strong></h2>
+    <h2><strong><%= @presenter.name %></strong></h2>
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="row">
-      <% if @current_user && @current_user.authorized_to_edit?(@course_view.course) %>
-          <%= link_to 'Edit', edit_course_path(@course_view.course), class: 'btn btn-sm btn-primary' %>
-          <%= link_to 'New split', new_split_path(course_id: @course_view.course_id), class: 'btn btn-sm btn-success' %>
-          <%= link_to 'Delete', course_path(@course_view.course, referrer_path: courses_path),
+      <% if current_user&.authorized_to_edit?(@presenter.course) %>
+          <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
+          <%= link_to 'New split', new_split_path(course_id: @presenter.id), class: 'btn btn-sm btn-success' %>
+          <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
                       method: :delete,
                       data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
                       class: 'btn btn-sm btn-danger' %>
       <% end %>
-      <% unless @course_view.simple? %>
-          <%= link_to 'Plan my effort', plan_effort_course_path(@course_view.course), method: :get, class: 'btn btn-sm btn-primary' %>
+      <% unless @presenter.simple? %>
+          <%= link_to 'Plan my effort', plan_effort_course_path(@presenter.course), method: :get, class: 'btn btn-sm btn-primary' %>
       <% end %>
-      <%= link_to 'All-time best', best_efforts_course_path(@course_view.course), class: 'btn btn-sm btn-primary' %>
+      <%= link_to 'All-time best', best_efforts_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <% if @course_view.description %>
+  <% if @presenter.description %>
       <div class="col-md-4">
-        <%= @course_view.description %>
+        <%= @presenter.description %>
       </div>
   <% end %>
-  <% if @course_view.course_has_location_data? %>
+  <% if @presenter.course_has_location_data? %>
       <div class="col-md-8">
         <div id="map" style="width: 550px; height: 350px;"></div>
 
         <script>
           $(document).ready(function () {
-            var locations = <%= @course_view.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
-            var latitude_center = <%= @course_view.latitude_center %>;
-            var longitude_center = <%= @course_view.longitude_center %>;
-            var zoom = <%= @course_view.zoom %>;
+            var locations = <%= @presenter.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
+            var latitude_center = <%= @presenter.latitude_center %>;
+            var longitude_center = <%= @presenter.longitude_center %>;
+            var zoom = <%= @presenter.default_zoom %>;
 
             gmap_show(locations, {latitude: latitude_center, longitude: longitude_center, zoom: zoom});    // init show map
           });
@@ -50,33 +50,33 @@
 
 <div class="row header">
   <div class="col-xs-5">
-    <h3><%= @course_view.view_text.titleize %></h3>
+    <h3><%= @presenter.display_style.titleize %></h3>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <div class="btn-group">
-        <%= link_to 'Show splits',
-                    course_path(@course_view.course, view: 'splits'),
-                    disabled: @course_view.view_text == 'splits',
+        <%= link_to 'Splits',
+                    request.params.merge(display_style: 'splits'),
+                    disabled: @presenter.display_style == 'splits',
                     class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Show events',
-                    course_path(@course_view.course, view: 'events'),
-                    disabled: @course_view.view_text == 'events',
+        <%= link_to 'Events',
+                    request.params.merge(display_style: 'events'),
+                    disabled: @presenter.display_style == 'events',
                     class: 'btn btn-sm btn-primary' %>
       </div>
     </div>
   </div>
 </div>
 
-<% if @course_view.view_text == 'splits' %>
-    <% if @course_view.splits_count > 0 %>
-        <%= render 'splits/splits', splits: @course_view.ordered_splits, referred_by: course_path(@course_view) %>
+<% if @presenter.display_style == 'splits' %>
+    <% if @presenter.ordered_splits.present? %>
+        <%= render 'splits/splits', splits: @presenter.ordered_splits, referred_by: course_path(@presenter) %>
     <% else %>
         <h4>No splits are associated with this course.</h4>
     <% end %>
 <% else %>
-    <% if @course_view.events_count > 0 %>
-        <%= render 'events/events', presenter: @course_view, events: @course_view.events, show_grouping_button: false %>
+    <% if @presenter.events.present? %>
+        <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
     <% else %>
         <h4>No events have been held on this course.</h4>
     <% end %>

@@ -19,6 +19,11 @@ FactoryGirl.define do
     sub_split_bitmap 65
     kind :intermediate
     course
+
+    trait :with_lat_lon do
+      latitude { rand(-70..70) }
+      longitude { rand(-140..140) }
+    end
   end
 
   factory :start_split, class: Split do

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe DataImport::Loaders::SplitTimeUpsertStrategy do
   let(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7) }
   let(:splits) { event.ordered_splits }
-  let(:split_ids) { splits.ids }
+  let(:split_ids) { splits.map(&:id) }
 
   let(:valid_proto_records) { [
       ProtoRecord.new(record_type: :effort, age: '39', gender: 'male', bib_number: '5',

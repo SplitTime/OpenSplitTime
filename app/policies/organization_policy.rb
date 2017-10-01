@@ -16,10 +16,6 @@ class OrganizationPolicy < ApplicationPolicy
     @organization = organization
   end
 
-  def stewards?
-    user.authorized_fully?(organization)
-  end
-
   def post_event_course_org?
     user.authorized_to_edit?(organization)
   end

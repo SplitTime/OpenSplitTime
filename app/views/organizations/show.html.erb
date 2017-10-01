@@ -8,7 +8,6 @@
   <div class="col-xs-5 page-navigation">
     <div class="row">
       <% if current_user&.authorized_fully?(@presenter.organization) %>
-          <%= link_to 'Add/remove stewards', stewards_organization_path(@presenter), class: "btn btn-sm btn-warning" %>
           <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-sm btn-success" %>
           <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-sm btn-primary" %>
           <%= link_to 'Delete this organization',
@@ -28,23 +27,23 @@
 
 <div class="row header">
   <div class="col-xs-5">
-    <h3><%= @presenter.view_text.titleize %></h3>
+    <h3><%= @presenter.display_style.to_s.titleize %></h3>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <div class="btn-group">
-        <%= link_to 'Show courses',
-                    organization_path(@presenter, view: 'courses'),
-                    disabled: params[:view] == 'courses',
+        <%= link_to 'Courses',
+                    request.params.merge(display_style: 'courses'),
+                    disabled: @presenter.display_style == 'courses',
                     class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Show events',
-                    organization_path(@presenter, view: 'events'),
-                    disabled: params[:view] == 'events',
+        <%= link_to 'Events',
+                    request.params.merge(display_style: 'events'),
+                    disabled: @presenter.display_style == 'events',
                     class: 'btn btn-sm btn-primary' %>
         <% if current_user&.authorized_fully?(@presenter.organization) %>
-            <%= link_to 'Show stewards',
-                        organization_path(@presenter, view: 'stewards'),
-                        disabled: params[:view] == 'stewards',
+            <%= link_to 'Stewards',
+                        request.params.merge(display_style: 'stewards'),
+                        disabled: @presenter.display_style == 'stewards',
                         class: 'btn btn-sm btn-primary' %>
         <% end %>
       </div>
@@ -52,13 +51,13 @@
   </div>
 </div>
 
-<% if params[:view] == 'courses' %>
+<% if @presenter.display_style == 'courses' %>
     <% if @presenter.courses_count > 0 %>
         <%= render 'courses/courses', courses: @presenter.courses %>
     <% else %>
         <h4>No courses are associated with this organization.</h4>
     <% end %>
-<% elsif params[:view] == 'stewards' %>
+<% elsif @presenter.display_style == 'stewards' %>
     <% if current_user&.authorized_fully?(@presenter.organization) %>
         <% if @presenter.stewards_count > 0 %>
             <%= render 'stewards_list', stewards: @presenter.stewards %>

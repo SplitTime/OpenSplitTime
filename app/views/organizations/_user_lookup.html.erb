@@ -1,15 +1,16 @@
-<%= form_tag stewards_organization_path, method: :get do %>
+<%= form_tag stewardships_path, method: :post do %>
+    <%= hidden_field_tag :organization_id, @organization.id %>
     <div class="row">
       <div class="col-xs-6">
         <div class="input-group">
           <span class="input-group-btn">
-            <%= text_field_tag :search,
-                               params[:search],
+            <%= text_field_tag :email,
+                               params[:email],
                                placeholder: 'email',
                                autofocus: true,
                                class: 'form-control search-box input-sm' %>
             <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
-                <i class='fa fa-search'></i> Find user
+                <i class='fa fa-search'></i> Add steward
             <% end %>
           </span>
         </div>

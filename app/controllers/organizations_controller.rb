@@ -47,7 +47,7 @@ class OrganizationsController < ApplicationController
 
   def destroy
     authorize @organization
-    if @organization.event_groups.map(&:events).flatten.present?
+    if @organization.events.present?
       flash[:danger] = 'An organization cannot be deleted so long as any events are associated with it. ' +
           'Delete the related events individually and then delete the organization.'
       redirect_to organization_path(@organization)
@@ -56,24 +56,6 @@ class OrganizationsController < ApplicationController
       flash[:success] = 'Organization deleted.'
       redirect_to organizations_path
     end
-  end
-
-  def stewards
-    authorize @organization
-    if params[:search].present?
-      user = User.find_by(email: params[:search])
-      if user
-        if @organization.stewards.include?(user)
-          flash[:warning] = 'That user is already a steward of this organization.'
-        else
-          @organization.add_stewardship(user)
-        end
-        params[:search] = nil
-      else
-        flash[:warning] = 'User was not located.'
-      end
-    end
-    session[:return_to] = stewards_organization_path
   end
 
   private

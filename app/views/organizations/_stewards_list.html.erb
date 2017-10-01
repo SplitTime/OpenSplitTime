@@ -1,8 +1,12 @@
+<%= render 'user_lookup' %>
+<hr/>
+
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
     <th>Name</th>
     <th>Email</th>
+    <th>Steward since</th>
     <th></th>
   </tr>
   </thead>
@@ -11,6 +15,7 @@
       <tr>
         <td><%= stewardship.full_name %></td>
         <td><%= stewardship.email %></td>
+        <td><%= l(stewardship.created_at, format: :full_with_weekday) %></td>
         <td>
           <%= link_to "Remove",
                       stewardship_path(stewardship),

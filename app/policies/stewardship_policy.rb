@@ -10,6 +10,10 @@ class StewardshipPolicy < ApplicationPolicy
     @stewardship = stewardship
   end
 
+  def create?
+    user.admin? || user.authorized_fully?(stewardship.organization)
+  end
+
   def destroy?
     user.admin? || user.authorized_fully?(stewardship.organization)
   end

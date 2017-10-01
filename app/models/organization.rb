@@ -25,10 +25,6 @@ class Organization < ApplicationRecord
     Event.where(event_group_id: event_groups.ids)
   end
 
-  def add_stewardship(user)
-    stewards << user
-  end
-
   def should_be_concealed?
     !event_groups.visible.present?
   end

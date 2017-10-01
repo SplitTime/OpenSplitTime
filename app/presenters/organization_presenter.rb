@@ -31,15 +31,12 @@ class OrganizationPresenter < BasePresenter
     stewards.size
   end
 
-  def view_text
-    case params[:view]
-    when 'courses'
-      'courses'
-    when 'stewards'
-      'stewards'
-    else
-      'events'
-    end
+  def display_style
+    %w[courses stewards events].include?(params[:display_style]) ? params[:display_style] : default_display_style
+  end
+
+  def default_display_style
+    'events'
   end
 
   def show_visibility_columns?

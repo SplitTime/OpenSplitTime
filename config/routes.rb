@@ -73,9 +73,7 @@ Rails.application.routes.draw do
     member { get :find_problem_effort }
   end
 
-  resources :organizations do
-    member { get :stewards }
-  end
+  resources :organizations
 
   resources :people do
     collection { get :subregion_options }
@@ -89,7 +87,7 @@ Rails.application.routes.draw do
   resources :partners
   resources :split_times
   resources :splits
-  resources :stewardships, only: [:destroy]
+  resources :stewardships, only: [:create, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 
   get '/auth/:provider/callback' => 'sessions#create'

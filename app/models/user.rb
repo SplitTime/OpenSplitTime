@@ -98,19 +98,7 @@ class User < ApplicationRecord
     [first_name, last_name].join(' ')
   end
 
-  def has_no_avatar?
-    avatar.nil?
-  end
-
   def has_avatar?
     avatar.present?
-  end
-
-  def interested_in?(person)
-    interests.include?(person)
-  end
-
-  def except_current_user(people)
-    people.reject { |person| person.claimant == self }
   end
 end

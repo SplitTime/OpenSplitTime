@@ -49,8 +49,4 @@ class EffortPolicy < ApplicationPolicy
   def add_report?
     user.authorized_to_edit_personal?(effort)
   end
-
-  def add_photo?
-    user.authorized_to_edit?(effort)
-  end
 end

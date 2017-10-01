@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928193531) do
+ActiveRecord::Schema.define(version: 20171001004212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,7 +69,6 @@ ActiveRecord::Schema.define(version: 20170928193531) do
     t.integer  "dropped_split_id"
     t.string   "beacon_url"
     t.string   "report_url"
-    t.string   "photo_url"
     t.integer  "dropped_lap"
     t.string   "phone",              limit: 15
     t.string   "email"
@@ -204,7 +203,6 @@ ActiveRecord::Schema.define(version: 20170928193531) do
     t.string   "country_code",       limit: 2
     t.integer  "user_id"
     t.boolean  "concealed",                     default: false
-    t.string   "photo_url"
     t.string   "slug",                                          null: false
     t.string   "topic_resource_key"
     t.string   "photo_file_name"

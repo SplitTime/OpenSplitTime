@@ -54,7 +54,6 @@ Rails.application.routes.draw do
     collection { post :mini_table }
     member { get :add_beacon }
     member { get :add_report }
-    member { put :add_photo }
     member { get :show_photo }
     collection { get :subregion_options }
   end

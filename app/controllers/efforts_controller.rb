@@ -164,17 +164,6 @@ class EffortsController < ApplicationController
     end
   end
 
-  def add_photo
-    authorize @effort
-    file_url = FileStore.public_upload("effort-photos/#{@effort.event_name}", params[:file], @effort.id)
-    if file_url
-      @effort.update(photo_url: file_url)
-    else
-      flash[:danger] = "Import file must be less than #{FileStore::MAX_FILESIZE / 1024 / 1024} MB"
-    end
-    redirect_to effort_path(@effort)
-  end
-
   def subregion_options
     render partial: 'subregion_select'
   end

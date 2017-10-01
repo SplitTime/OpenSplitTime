@@ -11,6 +11,8 @@ class EventGroup < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
 
+  delegate :stewards, to: :organization
+
   after_commit :align_event_booleans # Needed only so long as Event model retains these duplicate attributes
 
   def to_s

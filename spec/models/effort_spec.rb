@@ -56,7 +56,7 @@ RSpec.describe Effort, type: :model do
 
     it 'is invalid without an event_id' do
       effort = build_stubbed(:effort, event_id: nil)
-      expect(effort).not_to be_valid
+      expect { effort.valid? }.to raise_error Module::DelegationError
       expect(effort.errors[:event_id]).to include("can't be blank")
     end
 

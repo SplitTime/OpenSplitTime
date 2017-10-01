@@ -16,6 +16,10 @@ class Event < ApplicationRecord
   has_many :live_times, dependent: :destroy
   has_many :partners, dependent: :destroy
 
+  delegate :concealed, :concealed?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,
+           :organization, :organization_id, to: :event_group
+  delegate :stewards, to: :organization
+
   validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :staging_id
@@ -47,29 +51,6 @@ class Event < ApplicationRecord
 
   def self.most_recent
     where('start_time < ?', Time.now).order(start_time: :desc).first
-  end
-
-  def concealed
-    event_group&.concealed
-  end
-  alias_method :concealed?, :concealed
-
-  def available_live
-    event_group&.available_live
-  end
-  alias_method :available_live?, :available_live
-
-  def auto_live_times
-    event_group&.auto_live_times
-  end
-  alias_method :auto_live_times?, :auto_live_times
-
-  def organization
-    event_group&.organization
-  end
-
-  def organization_id
-    event_group&.organization_id
   end
 
   def events_within_group
@@ -139,7 +120,7 @@ class Event < ApplicationRecord
   end
 
   def organization_name
-    organization.try(:name)
+    organization&.name
   end
 
   def started?

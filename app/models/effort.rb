@@ -30,7 +30,9 @@ class Effort < ApplicationRecord
   attr_writer :last_reported_split_time, :event_start_time
 
   alias_attribute :participant_id, :person_id
+  delegate :event_group, :events_within_group, to: :event
   delegate :organization, :concealed?, to: :event_group
+  delegate :stewards, to: :organization
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
   validates :email, allow_blank: true, length: {maximum: 105},
@@ -93,14 +95,6 @@ class Effort < ApplicationRecord
 
   def reset_age_from_birthdate
     assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
-  end
-
-  def events_within_group
-    event&.events_within_group
-  end
-
-  def event_group
-    event&.event_group
   end
 
   def start_time

@@ -1,15 +1,13 @@
 class User < ApplicationRecord
+  include PgSearch
+  extend FriendlyId
 
-  # Include default devise modules. Others available are:
-  # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
   enum role: [:user, :admin]
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
-  include PgSearch
   pg_search_scope :search_name_email, against: [:first_name, :last_name, :email], using: {tsearch: {any_word: true, prefix: true}}
-  extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   phony_normalize :phone, country_code: 'US'
   strip_attributes collapse_spaces: true
@@ -82,16 +80,7 @@ class User < ApplicationRecord
   end
 
   def steward_of?(resource)
-    case
-    when resource.is_a?(Effort)
-      resource.event&.organization&.stewards&.include?(self)
-    when resource.is_a?(Event)
-      resource.organization&.stewards&.include?(self)
-    when resource.is_a?(Organization)
-      resource.stewards.include?(self)
-    else
-      false
-    end
+    resource.respond_to?(:stewards) ? resource.stewards.include?(self) : false
   end
 
   def full_name

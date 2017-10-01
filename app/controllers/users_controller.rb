@@ -53,20 +53,6 @@ class UsersController < ApplicationController
     redirect_to users_path, :notice => 'User deleted.'
   end
 
-  def add_interest
-    authorize @user
-    person = Person.friendly.find(params[:person])
-    @user.add_interest(person)
-    redirect_to people_path(search: params[:search], page: params[:page])
-  end
-
-  def remove_interest
-    authorize @user
-    person = Person.friendly.find(params[:person])
-    @user.remove_interest(person)
-    redirect_to people_path(search: params[:search], page: params[:page])
-  end
-
   private
 
   def secure_params

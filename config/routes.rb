@@ -24,8 +24,6 @@ Rails.application.routes.draw do
 
   resources :users do
     member { get :people }
-    member { post :add_interest }
-    member { post :remove_interest }
     member { get :edit_preferences }
     member { put :update_preferences }
   end

@@ -110,14 +110,6 @@ class User < ApplicationRecord
     interests.include?(person)
   end
 
-  def add_interest(person)
-    interests << person
-  end
-
-  def remove_interest(person)
-    interests.delete(person)
-  end
-
   def except_current_user(people)
     people.reject { |person| person.claimant == self }
   end

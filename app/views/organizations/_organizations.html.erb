@@ -7,11 +7,12 @@
     <th>Details</th>
   </tr>
   </thead>
+
   <tbody>
-  <% organizations.each do |organization| %>
+  <% presenter.organizations.each do |organization| %>
       <tr>
         <td><strong><%= link_to organization.name, organization_path(organization) %></strong></td>
-        <td><%= pluralize(organization.event_groups.visible.map(&:events).flatten.size, 'event') %></td>
+        <td><%= pluralize(presenter.events_count(organization), 'event') %></td>
       </tr>
   <% end %>
   </tbody>

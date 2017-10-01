@@ -22,7 +22,11 @@ class Organization < ApplicationRecord
   end
 
   def events
-    Event.where(event_group_id: event_groups.ids)
+    if event_groups.loaded? && event_groups.all? { |eg| eg.events.loaded? }
+      event_groups.map(&:events).flatten
+    else
+      Event.where(event_group_id: event_groups.ids)
+    end
   end
 
   def should_be_concealed?

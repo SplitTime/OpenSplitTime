@@ -4,7 +4,7 @@ class Live::EventsController < Live::BaseController
 
   def live_entry
     authorize @event
-    verify_available_live
+    verify_available_live(@event)
   end
 
   def aid_station_report
@@ -40,12 +40,5 @@ class Live::EventsController < Live::BaseController
 
   def set_event
     @event = Event.friendly.find(params[:id])
-  end
-
-  def verify_available_live
-    unless @event.available_live
-      flash[:danger] = "#{@event.name} is not available for live entry. Please enable live entry access through the event group settings page."
-      redirect_to event_path(@event)
-    end
   end
 end

@@ -17,4 +17,8 @@ class EventGroupPolicy < ApplicationPolicy
   def post_initialize(event_group)
     @event_group = event_group
   end
+
+  def live_entry?
+    user.authorized_to_edit?(event_group)
+  end
 end

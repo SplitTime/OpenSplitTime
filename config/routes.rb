@@ -111,6 +111,10 @@ Rails.application.routes.draw do
       member { get :effort_table }
       member { get :aid_station_detail }
     end
+
+    resources :event_groups, only: [] do
+      member { get :live_entry }
+    end
   end
 
   namespace :api do

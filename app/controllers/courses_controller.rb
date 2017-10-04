@@ -27,8 +27,7 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      @course.update_initial_splits
-      redirect_to event_staging_app_path('new')
+      redirect_to courses_path
     else
       render 'new'
     end

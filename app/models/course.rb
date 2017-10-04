@@ -27,11 +27,6 @@ class Course < ApplicationRecord
     events.most_recent&.start_time
   end
 
-  def update_initial_splits
-    splits.start.first.update(description: "Starting point for the #{name} course.") if splits.start.present?
-    splits.finish.first.update(description: "Finish point for the #{name} course.") if splits.finish.present?
-  end
-
   def visible_events
     events.visible
   end

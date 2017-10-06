@@ -47,7 +47,13 @@ module Interactors
     end
 
     def response_message
-      errors.present? ? [attempted_message, succeeded_message, failed_message].join : succeeded_message
+      if errors.present?
+        [attempted_message, succeeded_message, failed_message].join
+      elsif id_hash.size == 0
+        "No pairs were provided. "
+      else
+        succeeded_message
+      end
     end
 
     def attempted_message
@@ -55,13 +61,25 @@ module Interactors
     end
 
     def succeeded_message
-      resources[:saved].one? ? "Reconciled #{resources[:saved].first[:effort].full_name}. " :
-          "Reconciled #{resources[:saved].size} efforts. "
+      case resources[:saved].size
+      when 0
+        "No records were created. "
+      when 1
+        "Reconciled #{resources[:saved].first[:person].full_name} with #{resources[:saved].first[:effort].full_name}. "
+      else
+        "Reconciled #{resources[:saved].size} efforts. "
+      end
     end
 
     def failed_message
-      resources[:unsaved].one? ? "Could not reconcile #{resources[:unsaved].first[:effort].full_name} with #{resources[:unsaved].first[:person].full_name}. " :
-          "#{resources[:unsaved].size} efforts could not be reconciled. "
+      case resources[:unsaved].size
+      when 0
+        "No records failed to reconcile. "
+      when 1
+        "Could not reconcile #{resources[:unsaved].first[:effort].full_name} with #{resources[:unsaved].first[:person].full_name}. "
+      else
+        "#{resources[:unsaved].size} efforts could not be reconciled. "
+      end
     end
   end
 end

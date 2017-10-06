@@ -288,7 +288,8 @@ describe Api::V1::EventsController do
       context 'when the event_group is available live and auto_live_times is true' do
         let!(:event) { create(:event, course_id: course.id, laps_required: 1, event_group: event_group) }
         let!(:event_group) { create(:event_group, available_live: true, auto_live_times: true) }
-        let!(:effort) { create(:effort, event: event, bib_number: 101) }
+        let!(:effort) { create(:effort, event: event, bib_number: 101, person: person) }
+        let!(:person) { create(:person) }
         let(:data) { [
             {type: 'live_time',
              attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 1, absoluteTime: '10:45:45-06:00',

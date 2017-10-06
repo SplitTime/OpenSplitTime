@@ -44,7 +44,7 @@ RSpec.describe Interactors::AssignPeopleToEfforts do
         expect(response.message).to include('Reconciled')
         expect(response.message).to include('Could not reconcile')
         expect(response.errors).to be_present
-        expect(response.errors.first[:title]).to eq('Effort could not be saved')
+        expect(response.errors.first[:title]).to eq("Effort #{efforts.second} could not be saved")
       end
 
       it 'returns saved and unsaved effort/person pairs within the relevant resources key' do
@@ -66,6 +66,43 @@ RSpec.describe Interactors::AssignPeopleToEfforts do
         expect(response.message).to include('Attempted to reconcile 3 efforts.')
         expect(response.message).to include('Reconciled')
         expect(response.message).to include('Could not reconcile')
+      end
+    end
+
+    context 'when any person_id is nil' do
+      let(:id_hash) { {efforts.first.id.to_s => nil,
+                       efforts.second.id.to_s => nil} }
+
+      it 'creates new Person records and assigns them to the provided efforts' do
+        expect(Person.count).to eq(0)
+        response
+        expect(Person.count).to eq(2)
+        response.resources[:saved].each do |person_effort_hash|
+          effort = person_effort_hash[:effort]
+          person = person_effort_hash[:person]
+          expect(effort.person_id).to eq(person.id)
+          expect(effort.first_name).to eq(person.first_name)
+          expect(effort.last_name).to eq(person.last_name)
+          expect(effort.gender).to eq(person.gender)
+        end
+      end
+    end
+
+    context 'when any effort is not found' do
+      let(:id_hash) { {efforts.first.id.to_s => people.first.id.to_s,
+                       '0' => people.second.id.to_s} }
+
+      it 'raises an error' do
+        expect { response }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when any person is not found' do
+      let(:id_hash) { {efforts.first.id.to_s => people.first.id.to_s,
+                       efforts.second.id.to_s => '0'} }
+
+      it 'raises an error' do
+        expect { response }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

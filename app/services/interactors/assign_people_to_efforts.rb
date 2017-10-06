@@ -7,14 +7,15 @@ module Interactors
     end
 
     def initialize(id_hash)
-      @id_hash = id_hash.transform_keys(&:to_i).transform_values(&:to_i)
+      @id_hash = id_hash.transform_keys(&:to_i).transform_values { |person_id| person_id.to_i if person_id }
       @errors = []
       @resources = {saved: [], unsaved: []}
     end
 
     def perform!
       id_hash.each do |effort_id, person_id|
-        assign_response = Interactors::AssignPersonToEffort.perform(people[person_id], efforts[effort_id])
+        person = person_id ? people[person_id] : Person.new
+        assign_response = Interactors::AssignPersonToEffort.perform(person, efforts[effort_id])
         save_and_categorize(assign_response)
       end
       Interactors::Response.new(errors, response_message, resources)
@@ -25,11 +26,11 @@ module Interactors
     attr_reader :id_hash, :errors, :resources
 
     def people
-      @people ||= Person.where(id: id_hash.values).index_by(&:id)
+      @people ||= Person.find(id_hash.values).index_by(&:id)
     end
 
     def efforts
-      @efforts ||= Effort.where(id: id_hash.keys).index_by(&:id)
+      @efforts ||= Effort.find(id_hash.keys).index_by(&:id)
     end
 
     def save_and_categorize(assign_response)

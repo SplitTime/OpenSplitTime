@@ -1,5 +1,5 @@
 module Interactors
-  Response = Struct.new(:errors, :message) do
+  Response = Struct.new(:errors, :message, :resources) do
     def successful?
       errors.blank?
     end

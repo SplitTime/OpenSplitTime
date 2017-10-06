@@ -46,7 +46,8 @@ RSpec.describe Interactors::StartEfforts do
         expect(SplitTime.count).to eq(0)
         expect(response).not_to be_successful
         expect(response.message).to eq('No efforts were started')
-        expect(response.errors.first[:title]).to eq('SplitTime could not be saved')
+        expect(response.errors.first[:title]).to include('SplitTime')
+        expect(response.errors.first[:title]).to include('could not be saved')
         expect(response.errors.first[:detail][:messages])
             .to include(/the effort.event.course_id does not resolve with the split.course_id/)
       end

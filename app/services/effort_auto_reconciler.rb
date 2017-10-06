@@ -15,7 +15,8 @@ class EffortAutoReconciler
   def reconcile
     assign_response = Interactors::AssignPeopleToEfforts.perform!(matched_hash)
     self.auto_matched_count = assign_response.resources[:saved].size
-    self.auto_created_count = EventReconcileService.create_people_from_efforts(not_matched_array)
+    create_response = Interactors::CreatePeopleFromEfforts.perform!(not_matched_array)
+    self.auto_created_count = create_response.resources[:saved].size
   end
 
   def report

@@ -111,28 +111,6 @@ RSpec.describe Person, type: :model do
     end
   end
 
-  describe '#associate_effort' do
-    let(:event) { create(:event) }
-    let(:person) { build(:person) }
-
-    it 'upon successful save, associates the person with the pulled effort' do
-      effort = create(:effort)
-      person.associate_effort(effort)
-      effort.reload
-      expect(effort.person).to eq(person)
-    end
-
-    it 'returns false if person does not save' do
-      effort = build(:effort, first_name: nil)
-      expect(person.associate_effort(effort)).to be_falsey
-    end
-
-    it 'returns true if person saves' do
-      effort = create(:effort)
-      expect(person.associate_effort(effort)).to be_truthy
-    end
-  end
-
   describe '#should_be_concealed?' do
     let(:concealed_event_group) { create(:event_group, concealed: true) }
     let(:visible_event_group) { create(:event_group, concealed: false) }

@@ -17,7 +17,7 @@
   </td>
   <td>
     <%= link_to 'New person',
-                create_people_event_path(effort_ids: effort.id, event_id: @event.id),
+                create_people_event_path(effort_ids: [effort.id]),
                 method: :post,
                 class: "btn btn-xs btn-success" %>
   </td>

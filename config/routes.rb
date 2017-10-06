@@ -40,7 +40,6 @@ Rails.application.routes.draw do
     collection do
       get :subregion_options
       post :mini_table
-      put :associate_people
     end
     member do
       get :add_beacon

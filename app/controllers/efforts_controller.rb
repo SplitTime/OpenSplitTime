@@ -75,20 +75,6 @@ class EffortsController < ApplicationController
     session[:return_to] = place_effort_path(@effort)
   end
 
-  def associate_people
-    @event = Event.friendly.find(params[:event_id])
-    authorize @event
-    id_hash = params[:ids].to_unsafe_h
-
-    if id_hash.blank?
-      redirect_to reconcile_event_path(@event)
-    else
-      count = EventReconcileService.assign_people_to_efforts(id_hash)
-      flash[:success] = "#{count.to_s + ' effort'.pluralize(count)} reconciled." if count > 0
-      redirect_to reconcile_event_path(@event)
-    end
-  end
-
   def start
     authorize @effort
     response = Interactors::StartEfforts.perform!([@effort], current_user.id)

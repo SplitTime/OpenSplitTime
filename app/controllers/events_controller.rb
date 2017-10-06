@@ -95,6 +95,14 @@ class EventsController < ApplicationController
     end
   end
 
+  def associate_people
+    authorize @event
+    id_hash = params[:ids].to_unsafe_h
+    response = Interactors::AssignPeopleToEfforts.perform!(id_hash)
+    set_flash_message(response)
+    redirect_to reconcile_event_path(@event)
+  end
+
   def create_people
     authorize @event
     EventReconcileService.create_people_from_efforts(params[:effort_ids])

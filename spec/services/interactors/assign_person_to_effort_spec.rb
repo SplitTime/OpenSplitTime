@@ -50,26 +50,5 @@ RSpec.describe Interactors::AssignPersonToEffort do
         expect(modified_person.email).not_to eq(modified_effort.email)
       end
     end
-
-    context 'when the person is invalid' do
-      let(:person_attributes) { {first_name: nil} }
-      let(:effort_attributes) { {first_name: nil} }
-
-      it 'returns a descriptive error in the response object' do
-        expect(response.errors).to be_present
-        expect(response.errors.first[:title]).to eq('Person could not be saved')
-        expect(response.errors.first[:detail][:messages]).to include(/First name can't be blank/)
-      end
-    end
-
-    context 'when the effort is invalid' do
-      let(:effort_attributes) { {first_name: nil} }
-
-      it 'returns a descriptive error in the response object' do
-        expect(response.errors).to be_present
-        expect(response.errors.first[:title]).to eq('Effort could not be saved')
-        expect(response.errors.first[:detail][:messages]).to include(/First name can't be blank/)
-      end
-    end
   end
 end

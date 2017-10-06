@@ -1,6 +1,5 @@
 module Interactors
   class AssignPersonToEffort
-    include Interactors::Errors
     RELEVANT_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo]
 
     def self.perform(person, effort)
@@ -17,7 +16,6 @@ module Interactors
       Interactors::AssignGeoAttributes.perform(effort, person)
       effort.person = person
       assign_relevant_attributes
-      validate_resources
       Interactors::Response.new(errors, response_message, resources)
     end
 
@@ -31,16 +29,8 @@ module Interactors
       end
     end
 
-    def validate_resources
-      resources.values.each do |resource|
-        unless resource.valid?
-          errors << resource_error_object(resource)
-        end
-      end
-    end
-
     def response_message
-      errors.present? ? "#{person.full_name} was not assigned to effort #{effort}" : "#{person.full_name} was assigned to effort #{effort}"
+      "#{person.full_name} was assigned to effort #{effort}"
     end
 
     def resources

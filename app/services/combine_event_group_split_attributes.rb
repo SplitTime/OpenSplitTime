@@ -30,7 +30,7 @@ class CombineEventGroupSplitAttributes
     splits_by_event = splits_by_event(split_name)
     split = splits_by_event.values.first
     split.bitkeys.map do |bitkey|
-      {'event_split_ids' => splits_by_event.map { |event_id, split| [event_id, split.id] }.to_h,
+      {'event_split_ids' => splits_by_event.transform_values(&:id),
        'sub_split_kind' => SubSplit.kind(bitkey).downcase,
        'label' => split.name(bitkey)}
     end

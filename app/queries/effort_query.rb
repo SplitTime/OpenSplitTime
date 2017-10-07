@@ -15,6 +15,7 @@ class EffortQuery < BaseQuery
             (ORDER BY dropped, 
                       final_lap desc, 
                       final_lap_distance desc, 
+                      final_bitkey desc, 
                       final_time, 
                       gender desc, 
                       age desc) 
@@ -24,6 +25,7 @@ class EffortQuery < BaseQuery
              ORDER BY dropped, 
                       final_lap desc, 
                       final_lap_distance desc, 
+                      final_bitkey desc, 
                       final_time, 
                       gender desc, 
                       age desc) 

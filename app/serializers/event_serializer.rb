@@ -12,4 +12,8 @@ class EventSerializer < BaseSerializer
   def multi_lap
     object.multiple_laps?
   end
+
+  def concealed
+    object.event_group.concealed?
+  end
 end

@@ -52,14 +52,16 @@
 </div>
 
 <% if @presenter.display_style == 'courses' %>
-    <% if @presenter.courses_count > 0 %>
+    <% if @presenter.courses.present? %>
         <%= render 'courses/courses', courses: @presenter.courses %>
     <% else %>
         <h4>No courses are associated with this organization.</h4>
     <% end %>
+
 <% elsif @presenter.display_style == 'stewards' %>
     <% if current_user&.authorized_fully?(@presenter.organization) %>
-        <% if @presenter.stewards_count > 0 %>
+        <%= render 'user_lookup' %>
+        <% if @presenter.stewards.present? %>
             <%= render 'stewards_list', stewards: @presenter.stewards %>
         <% else %>
             <h4>No stewards have been added to this organization.</h4>
@@ -67,8 +69,9 @@
     <% else %>
         <h4>Not authorized.</h4>
     <% end %>
+
 <% else %>
-    <% if @presenter.events_count > 0 %>
+    <% if @presenter.events.present? %>
         <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
     <% else %>
         <h4>No events are associated with this organization.</h4>

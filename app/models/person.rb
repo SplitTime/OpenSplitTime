@@ -110,14 +110,6 @@ class Person < ApplicationRecord
     possible_matching_people.first
   end
 
-  def merge_with(target)
-    target.reload
-    if AttributePuller.pull_attributes!(self, target)
-      efforts << target.efforts
-      target.destroy
-    end
-  end
-
   private
 
   def generate_new_topic_resource?

@@ -83,40 +83,6 @@ RSpec.describe Person, type: :model do
     expect(person).to be_valid
   end
 
-  describe '#merge_with' do
-    let(:course) { create(:course) }
-    let(:event_1) { create(:event, course: course) }
-    let(:event_2) { create(:event, course: course) }
-    let(:event_3) { create(:event, course: course) }
-    let(:person_1) { create(:person) }
-    let(:person_2) { create(:person) }
-    let!(:effort_1) { create(:effort, event: event_1, person: person_1) }
-    let!(:effort_2) { create(:effort, event: event_2, person: person_1) }
-    let!(:effort_3) { create(:effort, event: event_3, person: person_2) }
-
-    it 'assigns efforts associated with the target to the surviving person' do
-      person_2.merge_with(person_1)
-      expect(person_2.efforts.count).to eq(3)
-      expect(person_2.efforts).to include(effort_1)
-      expect(person_2.efforts).to include(effort_2)
-      expect(person_2.efforts).to include(effort_3)
-    end
-
-    it 'works in either direction' do
-      person_1.merge_with(person_2)
-      expect(person_1.efforts.count).to eq(3)
-      expect(person_1.efforts).to include(effort_1)
-      expect(person_1.efforts).to include(effort_2)
-      expect(person_1.efforts).to include(effort_3)
-    end
-
-    it 'retains the subject person and destroys the target person' do
-      person_2.merge_with(person_1)
-      expect(Person.find_by(id: person_2.id)).to eq(person_2)
-      expect(Person.find_by(id: person_1.id)).to be_nil
-    end
-  end
-
   describe '#should_be_concealed?' do
     let(:concealed_event_group) { create(:event_group, concealed: true) }
     let(:visible_event_group) { create(:event_group, concealed: false) }

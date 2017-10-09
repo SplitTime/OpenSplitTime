@@ -19,18 +19,6 @@ class OrganizationPresenter < BasePresenter
     @courses ||= Course.used_for_organization(organization)
   end
 
-  def events_count
-    events.size
-  end
-
-  def courses_count
-    courses.size
-  end
-
-  def stewards_count
-    stewards.size
-  end
-
   def display_style
     %w[courses stewards events].include?(params[:display_style]) ? params[:display_style] : default_display_style
   end

@@ -51,7 +51,7 @@ class EffortsController < ApplicationController
         @stage_display = EventStageDisplay.new(event: event, params: {})
         render :toggle_check_in
       else
-        redirect_to effort_path(@effort)
+        redirect_to params[:commit] == 'Disassociate' ? request.referrer : effort_path(@effort)
       end
     else
       render 'edit'

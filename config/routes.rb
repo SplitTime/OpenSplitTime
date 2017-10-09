@@ -87,7 +87,6 @@ Rails.application.routes.draw do
     member { delete :avatar_disclaim }
     member { get :merge }
     member { put :combine }
-    member { delete :remove_effort }
   end
 
   resources :partners

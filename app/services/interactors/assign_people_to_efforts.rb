@@ -1,6 +1,7 @@
 module Interactors
   class AssignPeopleToEfforts
     include Interactors::Errors
+    PERSONAL_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo]
 
     def self.perform!(id_hash)
       new(id_hash).perform!
@@ -14,9 +15,8 @@ module Interactors
 
     def perform!
       id_hash.each do |effort_id, person_id|
-        person = person_id ? people[person_id] : Person.new
-        assign_response = Interactors::AssignPersonToEffort.perform(person, efforts[effort_id])
-        save_and_categorize(assign_response)
+        pull_response = find_and_pull_attributes(effort_id, person_id)
+        save_and_categorize(effort: pull_response.resources[:source], person: pull_response.resources[:destination])
       end
       Interactors::Response.new(errors, response_message, resources)
     end
@@ -24,6 +24,14 @@ module Interactors
     private
 
     attr_reader :id_hash, :errors, :resources
+
+    def find_and_pull_attributes(effort_id, person_id)
+      person = person_id ? people[person_id] : Person.new
+      effort = efforts[effort_id]
+      effort.person = person
+      Interactors::PullAttributes.perform(effort, person, PERSONAL_ATTRIBUTES)
+      Interactors::PullGeoAttributes.perform(effort, person)
+    end
 
     def people
       @people ||= Person.find(id_hash.values).index_by(&:id)
@@ -33,14 +41,13 @@ module Interactors
       @efforts ||= Effort.find(id_hash.keys).index_by(&:id)
     end
 
-    def save_and_categorize(assign_response)
-      person_effort_hash = assign_response.resources
+    def save_and_categorize(modified_resources)
       ActiveRecord::Base.transaction do
-        if person_effort_hash.values.all? { |resource| resource.save }
-          resources[:saved] << person_effort_hash
+        if modified_resources.values.all? { |resource| resource.save }
+          resources[:saved] << modified_resources
         else
-          resources[:unsaved] << person_effort_hash
-          person_effort_hash.values.select(&:invalid?).each { |invalid_resource| errors << resource_error_object(invalid_resource) }
+          resources[:unsaved] << modified_resources
+          modified_resources.values.select(&:invalid?).each { |invalid_resource| errors << resource_error_object(invalid_resource) }
           raise ActiveRecord::Rollback
         end
       end
@@ -76,7 +83,7 @@ module Interactors
       when 0
         "No records failed to reconcile. "
       when 1
-        "Could not reconcile #{resources[:unsaved].first[:effort].full_name} with #{resources[:unsaved].first[:person].full_name}. "
+        "Could not reconcile #{resources[:unsaved].first[:person].full_name} with #{resources[:unsaved].first[:effort].full_name}. "
       else
         "#{resources[:unsaved].size} efforts could not be reconciled. "
       end

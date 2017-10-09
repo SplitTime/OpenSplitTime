@@ -5,19 +5,26 @@ RSpec.describe Interactors::AssignPeopleToEfforts do
     let(:response) { Interactors::AssignPeopleToEfforts.perform!(id_hash) }
     let(:id_hash) { {efforts.first.id.to_s => people.first.id.to_s,
                      efforts.second.id.to_s => people.second.id.to_s} }
-    let(:people) { create_list(:person, 2) }
-    let(:efforts) { create_list(:effort, 2, event: event) }
+    let(:people) { create_list(:person, 2, birthdate: nil, country_code: nil, state_code: nil) }
+    let(:efforts) { create_list(:effort, 2, :with_geo_attributes, :with_birthdate, event: event) }
     let(:event) { create(:event) }
 
     context 'in all cases' do
-      let(:stubbed_interactor_response) { Interactors::Response.new([], 'stubbed response', {}) }
+      let(:stubbed_interactor_response) { Interactors::Response.new([], 'stubbed response', {source: efforts.first, destination: people.first}) }
       before do
-        allow(Interactors::AssignPersonToEffort).to receive(:perform).and_return(stubbed_interactor_response)
+        allow(Interactors::PullAttributes).to receive(:perform).and_return(stubbed_interactor_response)
+        allow(Interactors::PullGeoAttributes).to receive(:perform).and_return(stubbed_interactor_response)
       end
 
-      it 'sends a message to AssignPersonToEffort for each id_hash effort_id/person_id pair' do
-        expect(Interactors::AssignPersonToEffort).to receive(:perform).with(people.first, efforts.first)
-        expect(Interactors::AssignPersonToEffort).to receive(:perform).with(people.second, efforts.second)
+      it 'sends a message to PullGeoAttributes for each effort_id/person_id pair' do
+        expect(Interactors::PullGeoAttributes).to receive(:perform).with(efforts.first, people.first)
+        expect(Interactors::PullGeoAttributes).to receive(:perform).with(efforts.second, people.second)
+        response
+      end
+
+      it 'sends a message to PullAttributes for each effort_id/person_id pair' do
+        expect(Interactors::PullAttributes).to receive(:perform).with(efforts.first, people.first, Interactors::AssignPeopleToEfforts::PERSONAL_ATTRIBUTES)
+        expect(Interactors::PullAttributes).to receive(:perform).with(efforts.second, people.second, Interactors::AssignPeopleToEfforts::PERSONAL_ATTRIBUTES)
         response
       end
     end
@@ -32,6 +39,17 @@ RSpec.describe Interactors::AssignPeopleToEfforts do
         expect(response.resources[:saved].count).to eq(2)
         expect(response.resources[:saved]).to include({effort: efforts.first, person: people.first})
         expect(response.resources[:saved]).to include({effort: efforts.second, person: people.second})
+      end
+
+      it 'results in attributes being assigned from efforts to people' do
+        response.resources[:saved].each do |effort_person_pair|
+          effort = effort_person_pair[:effort]
+          person = effort_person_pair[:person]
+          [:birthdate, :country_code, :state_code, :city].each do |attribute|
+            expect(effort[attribute]).not_to be_nil
+            expect(person[attribute]).to eq(effort[attribute])
+          end
+        end
       end
     end
 

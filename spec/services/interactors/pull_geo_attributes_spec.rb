@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Interactors::AssignGeoAttributes do
+RSpec.describe Interactors::PullGeoAttributes do
   describe '.perform' do
-    let(:result) { Interactors::AssignGeoAttributes.perform(source, destination) }
+    let(:result) { Interactors::PullGeoAttributes.perform(source, destination) }
     let(:source) { build_stubbed(:person, source_attributes) }
     let(:destination) { build_stubbed(:person, destination_attributes) }
     let(:modified_destination) { result.resources[:destination] }

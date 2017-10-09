@@ -1,5 +1,5 @@
 module Interactors
-  class AssignGeoAttributes
+  class PullGeoAttributes
     include Interactors::Errors
 
     def self.perform(source, destination)

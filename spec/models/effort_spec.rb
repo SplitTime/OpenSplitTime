@@ -45,6 +45,12 @@ RSpec.describe Effort, type: :model do
     let(:event) { build_stubbed(:event, course: course) }
     let(:person) { build_stubbed(:person) }
 
+    it 'saves a generic factory-created record to the database' do
+      effort = create(:effort)
+      expect(Effort.count).to eq(1)
+      expect(Effort.first).to eq(effort)
+    end
+
     it 'is valid when created with an event_id, first_name, last_name, and gender' do
       effort = build_stubbed(:effort, event: event)
       expect(effort.event_id).to be_present

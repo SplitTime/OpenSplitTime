@@ -188,8 +188,8 @@ describe Api::V1::EventsController do
       it 'sorts effort data based on the sort param' do
         get :spread, params: {staging_id: event.id, sort: 'last_name'}
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') })
-            .to eq([Effort.first.last_name, Effort.second.last_name, Effort.third.last_name])
+        last_names = parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') }
+        expect(last_names.sort).to eq(last_names)
       end
 
       it 'returns time data in the expected format' do

@@ -29,6 +29,12 @@ RSpec.describe Person, type: :model do
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
+  it 'saves a generic factory-created record to the database' do
+    person = create(:person)
+    expect(Person.count).to eq(1)
+    expect(Person.first).to eq(person)
+  end
+
   it 'is valid when created with a first_name, a last_name, and a gender' do
     person = build_stubbed(:person)
     expect(person.first_name).to be_present

@@ -69,6 +69,7 @@ group :test do
   gem 'factory_girl_rails', require: false
   gem 'guard-rspec'
   gem 'launchy'
+  gem 'ffaker'
 end
 
 group :development, :test do

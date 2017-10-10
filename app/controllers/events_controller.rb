@@ -182,6 +182,9 @@ class EventsController < ApplicationController
   def series
     events = Event.find(params[:event_ids])
     @presenter = EventSeriesPresenter.new(events, prepared_params)
+  rescue ActiveRecord::RecordNotFound => exception
+    flash[:danger] = "#{exception}"
+    redirect_to events_path
   end
 
 # Actions related to the event/split relationship

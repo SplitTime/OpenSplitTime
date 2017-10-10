@@ -12,6 +12,7 @@
   </div>
 </div>
 
+<% if @presenter.series_efforts.present? %>
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
@@ -39,3 +40,7 @@
   <% end %>
   </tbody>
 </table>
+
+<% else %>
+  <h4>No efforts were found in common.</h4>
+<% end %>

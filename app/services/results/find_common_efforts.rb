@@ -6,7 +6,7 @@ module Results
     end
 
     def initialize(events)
-      @events ||= events.to_a
+      @events = events
     end
 
     def perform

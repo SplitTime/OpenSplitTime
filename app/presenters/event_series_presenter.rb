@@ -1,20 +1,20 @@
 class EventSeriesPresenter < BasePresenter
 
   def initialize(events, params)
-    @events = events
+    @events = events || []
     @params = params
   end
 
   def organization
-    events.first.organization
+    events.first&.organization
   end
 
   def organization_name
-    organization.name
+    organization&.name
   end
 
   def event_names
-    series_efforts.first.event_names
+    events.map(&:name)
   end
 
   def series_efforts

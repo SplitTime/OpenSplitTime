@@ -146,18 +146,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def import_splits
-    authorize @event
-    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
-    if file_url
-      ImportSplitsJob.perform_later(file_url, @event, current_user.id)
-      flash[:success] = 'Import in progress. Reload page for results.'
-    else
-      flash[:danger] = 'Import file too large.'
-    end
-    redirect_to stage_event_path(@event)
-  end
-
   def import_efforts
     authorize @event
     file_url = FileStore.public_upload('imports', params[:file], current_user.id)

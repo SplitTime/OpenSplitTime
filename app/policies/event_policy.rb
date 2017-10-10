@@ -26,10 +26,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def import_splits?
-    user.authorized_to_edit?(event)
-  end
-
   def import_csv?
     user.authorized_to_edit?(event)
   end

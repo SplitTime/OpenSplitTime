@@ -49,26 +49,6 @@ class Api::V1::EventsController < ApiController
     render json: spread_display
   end
 
-  # Send 'with_times' => 'false' to ignore split_time data
-  # Send 'time_format' => 'elapsed' or 'military' depending on time data format
-  # Send 'with_status' => 'false' to skip setting data status for imported split_times
-
-  # POST /api/v1/events/:staging_id/import_efforts
-  def import_efforts
-    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
-    if file_url
-      if Rails.env.production?
-        ImportEffortsJob.perform_later(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
-        render json: {message: 'Import in progress.'}
-      else
-        ImportEffortsJob.perform_now(file_url, @event, current_user.id, params.slice(:time_format, :with_times, :with_status))
-        render json: {message: 'Import complete.'}
-      end
-    else
-      render json: {errors: ['Import file too large.']}, status: :bad_request
-    end
-  end
-
   def import
     if params[:file]
       params[:data] = File.read(params[:file])

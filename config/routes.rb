@@ -69,7 +69,6 @@ Rails.application.routes.draw do
       post :create_people
       post :import_csv
       post :import_efforts
-      post :import_splits
       put :associate_people
       put :set_data_status
       put :set_dropped_attributes
@@ -131,8 +130,6 @@ Rails.application.routes.draw do
         member do
           delete :remove_splits
           put :associate_splits
-          post :import_splits
-          post :import_efforts
           post :import
           get :spread
           get :event_data

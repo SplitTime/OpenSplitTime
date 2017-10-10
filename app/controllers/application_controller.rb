@@ -78,7 +78,6 @@ class ApplicationController < ActionController::Base
         destroy: :destroyed,
         import_csv: :imported,
         import_efforts: :imported,
-        import_splits: :imported
     }.with_indifferent_access
     result.default = :saved
     result

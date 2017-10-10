@@ -1,0 +1,41 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Event Series - #{@presenter.event_names.join(', ')}" %>
+<% end %>
+
+<div class="row header">
+  <div class="col-xs-7">
+    <h2><strong><%= "Event Series: #{@presenter.event_names.join(', ')}" %></strong></h2>
+    <h4>
+      <br/>
+      <br/>Organized by <%= link_to @presenter.organization_name, organization_path(@presenter.organization) %>
+    </h4>
+  </div>
+</div>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Category</th>
+    <th>From</th>
+    <% @presenter.event_names.each do |event_name| %>
+        <th class="text-center"><%= event_name %></th>
+    <% end %>
+    <th class="text-center">Total Time</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @presenter.series_efforts.each do |series_effort| %>
+      <tr>
+        <td><strong><%= link_to series_effort.full_name, person_path(series_effort) %></strong></td>
+        <td><%= series_effort.bio_historic %></td>
+        <td><%= series_effort.flexible_geolocation %></td>
+        <% series_effort.final_times.each do |time_from_start| %>
+            <td class="text-center"><%= time_format_hhmmss(time_from_start) %></td>
+        <% end %>
+        <td class="text-center"><%= time_format_hhmmss(series_effort.total_time) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

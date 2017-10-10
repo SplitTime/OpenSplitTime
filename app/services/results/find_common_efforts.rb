@@ -6,31 +6,35 @@ module Results
     end
 
     def initialize(events)
-      @events = events
+      @events ||= events.to_a
     end
 
     def perform
-      common_efforts.reject { |_, efforts| efforts.size != events.size }
+      @perform ||= complete_common_efforts.map { |person_id, efforts| {person_id: person_id, efforts: efforts} }
     end
 
     private
 
     attr_reader :events
 
+    def complete_common_efforts
+      common_efforts.reject { |_, efforts| efforts.size != events.size }
+    end
+
     def common_efforts
-      common_person_ids.map { |person_id| [person_id, events.map { |event| find_effort(person_id, event) }] }.to_h
+      common_person_ids.map { |person_id| [person_id, events.map { |event| find_effort(person_id, event) }] }
     end
 
     def common_person_ids
-      all_efforts.map { |effort_group| effort_group.map(&:person_id) }.reduce(:&)
+      @common_person_ids ||= indexed_all_efforts.map { |_, effort_group| effort_group.map(&:person_id) }.reduce(:&)
     end
 
-    def all_efforts
-      @all_efforts ||= events.map { |event| event.efforts.ranked_with_finish_status.select(&:finished?) }
+    def indexed_all_efforts
+      @indexed_all_efforts ||= events.map { |event| [event.id, event.efforts.ranked_with_finish_status.select(&:finished?)] }.to_h
     end
 
     def find_effort(person_id, event)
-      all_efforts.flatten.find { |effort| (effort.person_id == person_id) && (effort.event_id == event.id) }
+      indexed_all_efforts[event.id].find { |effort| (effort.person_id == person_id) }
     end
   end
 end

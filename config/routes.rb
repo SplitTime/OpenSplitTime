@@ -59,6 +59,7 @@ Rails.application.routes.draw do
   resources :event_groups, only: [:show, :create, :edit, :update, :destroy]
 
   resources :events do
+    collection { get :series }
     member do
       get :drop_list
       get :export_to_ultrasignup

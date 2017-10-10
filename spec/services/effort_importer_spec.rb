@@ -3,10 +3,18 @@ require 'rails_helper'
 RSpec.describe EffortImporter do
   describe 'initialization' do
     let(:course) { create(:course) }
+
+    let(:splits) { [split_start, split_ridgeline, split_riverdance, split_mountain, split_tunnel, split_finish] }
+    let(:split_start) { create(:start_split, course: course) }
+    let(:split_ridgeline) { create(:split, course: course, base_name: 'Ridgeline', sub_split_bitmap: 65, distance_from_start: 10460) }
+    let(:split_riverdance) { create(:split, course: course, base_name: 'Riverdance', sub_split_bitmap: 1, distance_from_start: 53108) }
+    let(:split_mountain) { create(:split, course: course, base_name: 'Mountain Top', sub_split_bitmap: 1, distance_from_start: 64373) }
+    let(:split_tunnel) { create(:split, course: course, base_name: 'Tunnel', sub_split_bitmap: 65, distance_from_start: 74995) }
+    let(:split_finish) { create(:finish_split, course: course, distance_from_start: 82559) }
+
     let(:event) { create(:event, course: course, start_time: '2015-07-01 06:00:00') }
     let(:import_file) { 'spec/fixtures/files/baddata2015test.xlsx' }
     let(:current_user_id) { 1 }
-    let(:split_importer) { SplitImporter.new(file_path: import_file, event: event, current_user_id: current_user_id) }
 
     describe 'effort_import' do
       let(:effort_1) { Effort.find_by(bib_number: 1) }
@@ -21,17 +29,10 @@ RSpec.describe EffortImporter do
       let(:effort_135) { Effort.find_by(bib_number: 135) }
       let(:effort_143) { Effort.find_by(bib_number: 143) }
       let(:effort_186) { Effort.find_by(bib_number: 186) }
-      
-      let(:split_start) { Split.find_by(base_name: 'Start') }
-      let(:split_ridgeline) { Split.find_by(base_name: 'Ridgeline') }
-      let(:split_mountain) { Split.find_by(base_name: 'Mountain Top') }
-      let(:split_tunnel) { Split.find_by(base_name: 'Tunnel') }
-      let(:split_finish) { Split.find_by(base_name: 'Finish') }
-
 
       let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, with_status: false) }
       before do
-        split_importer.split_import
+        event.splits << splits
         effort_importer.effort_import
       end
 
@@ -66,17 +67,17 @@ RSpec.describe EffortImporter do
         expect(effort_importer.effort_failure_array.last[:data]).to include('NoFirstName')
         expect(effort_importer.effort_failure_array.first[:errors]).to include(/Last name can't be blank/)
         expect(effort_importer.effort_failure_array.last[:errors]).to include(/First name can't be blank/)
-      # end
+        # end
 
-      # it 'correctly sets start_offsets, including where start split is omitted' do
+        # it 'correctly sets start_offsets, including where start split is omitted' do
         expect(effort_135.start_offset).to eq(60 * 60)
         expect(effort_32.start_offset).to eq(0)
         expect(effort_1.start_offset).to eq(0)
         expect(effort_30.start_offset).to eq(30 * 60)
         expect(effort_11.start_offset).to eq(0)
-      # end
+        # end
 
-      # it 'imports all valid split_times and correctly sets split_time times from start' do
+        # it 'imports all valid split_times and correctly sets split_time times from start' do
         expect(SplitTime.all.count).to eq(78)
         expect(SplitTime.find_by(effort: effort_128, split: split_mountain, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((22.hours + 45.minutes).to_i)
         expect(SplitTime.find_by(effort: effort_128, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((20.hours + 22.minutes).to_i)
@@ -91,9 +92,9 @@ RSpec.describe EffortImporter do
         expect(SplitTime.find_by(effort: effort_186, split: split_finish, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((43.hours + 58.minutes).to_i)
         expect(SplitTime.find_by(effort: effort_128, split: split_ridgeline, bitkey: SubSplit::IN_BITKEY).time_from_start).to be_within(1.second).of((2.hours + 1.minutes).to_i)
         expect(SplitTime.find_by(effort: effort_11, split: split_start, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq(0)
-      # end
+        # end
 
-      # it 'does not create a split_time where no time is provided and creates no split_times for an empty effort' do
+        # it 'does not create a split_time where no time is provided and creates no split_times for an empty effort' do
         expect(SplitTime.where(effort: effort_2, split: split_ridgeline).count).to eq(1)
         expect(SplitTime.where(effort: effort_131, split: split_ridgeline, bitkey: 64).count).to eq(0)
         expect(SplitTime.where(effort: effort_131, split: split_tunnel, bitkey: 64).count).to eq(0)

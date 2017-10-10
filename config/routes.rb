@@ -62,7 +62,6 @@ Rails.application.routes.draw do
     member do
       get :drop_list
       get :export_to_ultrasignup
-      get :find_problem_effort
       get :podium
       get :reconcile
       get :spread

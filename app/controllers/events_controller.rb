@@ -64,18 +64,6 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
-  def find_problem_effort
-    authorize @event
-    @effort = @event.efforts.invalid_status.shuffle.first
-    if @effort
-      redirect_to effort_path(@effort)
-    else
-      flash[:success] = "No problem efforts found for #{@event.name}."
-      redirect_to stage_event_path(@event)
-    end
-  end
-
-
 # Event staging actions
 
   def stage

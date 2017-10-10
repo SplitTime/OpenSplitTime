@@ -78,10 +78,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def find_problem_effort?
-    user.authorized_to_edit?(event)
-  end
-
   # Policies for live namespace
 
   def live_entry?

@@ -17,19 +17,19 @@ class Split < ApplicationRecord
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :base_name, scope: :course_id, case_sensitive: false,
                           message: 'must be unique for a course'
-  validates_uniqueness_of :kind, scope: :course_id, if: 'is_start?',
+  validates_uniqueness_of :kind, scope: :course_id, if: :is_start?,
                           message: 'only one start split permitted on a course'
-  validates_uniqueness_of :kind, scope: :course_id, if: 'is_finish?',
+  validates_uniqueness_of :kind, scope: :course_id, if: :is_finish?,
                           message: 'only one finish split permitted on a course'
   validates_uniqueness_of :distance_from_start, scope: :course_id,
                           message: 'only one split of a given distance permitted on a course. Use sub_splits if needed.'
-  validates_numericality_of :distance_from_start, equal_to: 0, if: 'is_start?',
+  validates_numericality_of :distance_from_start, equal_to: 0, if: :is_start?,
                             message: 'for the start split must be 0'
-  validates_numericality_of :vert_gain_from_start, equal_to: 0, if: 'is_start?', allow_nil: true,
+  validates_numericality_of :vert_gain_from_start, equal_to: 0, if: :is_start?, allow_nil: true,
                             message: 'for the start split must be 0'
-  validates_numericality_of :vert_loss_from_start, equal_to: 0, if: 'is_start?', allow_nil: true,
+  validates_numericality_of :vert_loss_from_start, equal_to: 0, if: :is_start?, allow_nil: true,
                             message: 'for the start split must be 0'
-  validates_numericality_of :distance_from_start, greater_than: 0, :unless => 'is_start?',
+  validates_numericality_of :distance_from_start, greater_than: 0, :unless => :is_start?,
                             message: 'must be positive for intermediate and finish splits'
   validates_numericality_of :vert_gain_from_start, greater_than_or_equal_to: 0, allow_nil: true,
                             message: 'may not be negative'

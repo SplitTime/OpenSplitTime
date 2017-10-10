@@ -16,8 +16,6 @@ require 'rails_helper'
 # t.string   "home_time_zone",                                            null: false
 
 RSpec.describe Event, type: :model do
-  include ActiveSupport::Testing::TimeHelpers
-
   it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 

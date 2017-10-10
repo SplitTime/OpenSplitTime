@@ -1,6 +1,3 @@
-require 'rails_helper'
-include ActionDispatch::TestProcess
-
 RSpec.describe BaseQuery do
   describe '.sql_order_from_hash' do
     context 'when sort_fields hash is provided with symbols as keys' do

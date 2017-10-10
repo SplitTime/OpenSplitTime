@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Interactors::Response do
   subject { Interactors::Response.new(errors, message) }
   let(:message) { '' }

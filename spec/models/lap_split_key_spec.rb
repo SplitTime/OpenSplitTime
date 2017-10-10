@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe LapSplitKey, type: :model do
   describe 'initialization' do
     it 'initializes with a lap and a split_id' do

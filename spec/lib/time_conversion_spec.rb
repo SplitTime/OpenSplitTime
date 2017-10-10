@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe TimeConversion do
   before(:context) do
     ENV['TZ'] = 'UTC'

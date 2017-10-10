@@ -1,7 +1,3 @@
-require 'rails_helper'
-
-include ActionDispatch::TestProcess
-
 RSpec.describe DataImport::Readers::JsonStrategy do
   subject { DataImport::Readers::JsonStrategy.new(json_blob) }
 

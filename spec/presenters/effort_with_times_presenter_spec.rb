@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe EffortWithTimesPresenter do
   subject { EffortWithTimesPresenter.new(effort: effort, params: params) }

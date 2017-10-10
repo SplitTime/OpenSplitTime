@@ -1,8 +1,7 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe EffortProgressRow do
-  let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 3, splits_count: 4) }
+  let(:test_event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4) }
   let(:test_splits) { test_event.splits }
   let(:test_efforts) { test_event.efforts }
 

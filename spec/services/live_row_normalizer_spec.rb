@@ -1,6 +1,3 @@
-require 'rails_helper'
-include ActionDispatch::TestProcess
-
 RSpec.describe LiveRowNormalizer do
   let(:headers) { %w(bibNumber timeIn timeOut pacerIn pacerOut droppedHere) }
 

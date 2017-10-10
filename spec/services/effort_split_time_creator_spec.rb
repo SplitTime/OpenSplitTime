@@ -5,9 +5,9 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
   let(:current_user_id) { 1 }
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
-  let(:event_with_one_lap) { FactoryGirl.build_stubbed(:event_with_standard_splits, laps_required: 1) }
-  let(:event_with_multiple_laps) { FactoryGirl.build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 3) }
-  let(:event_with_unlimited_laps) { FactoryGirl.build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 0) }
+  let(:event_with_one_lap) { build_stubbed(:event_with_standard_splits, laps_required: 1) }
+  let(:event_with_multiple_laps) { build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 3) }
+  let(:event_with_unlimited_laps) { build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 0) }
 
   describe '#initialize (validate_row_time_data)' do
     it 'for a single-lap event, does not raise an ArgumentError if row_time_data and event time_points count match' do
@@ -68,7 +68,7 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
 
     def validate_row_time_validation(row_time_data, error_expected, event)
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(event.splits)
-      effort = FactoryGirl.build_stubbed(:effort, id: 1001, event: event, without_slug: true)
+      effort = build_stubbed(:effort, id: 1001, event: event, without_slug: true)
       if error_expected
         expect { EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
                                             current_user_id: current_user_id, event: event) }
@@ -83,7 +83,7 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
 
   describe 'split_times' do
     context 'for a single-lap event' do
-      let(:test_event) { FactoryGirl.build_stubbed(:event_with_standard_splits, laps_required: 1) }
+      let(:test_event) { build_stubbed(:event_with_standard_splits, laps_required: 1) }
       let(:effort) { double(:effort, id: 1001, event: event, full_name: 'John Appleseed') }
 
       it 'returns an array of SplitTime objects the same number as is contained in row_time_data' do
@@ -201,7 +201,7 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
     end
 
     context 'for a multi-required-lap event' do
-      let(:test_event) { FactoryGirl.build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 3) }
+      let(:test_event) { build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 3) }
       let(:effort) { double(:effort, id: 1001, event: event, full_name: 'John Appleseed') }
       let(:time_data_with_nils) { [0, 1000, nil, 3000, nil, 5000, 5100, nil, 6000, 7000, 7100, 9000] }
 
@@ -239,7 +239,7 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
     end
 
     context 'for an unlimited-lap event' do
-      let(:test_event) { FactoryGirl.build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 0) }
+      let(:test_event) { build_stubbed(:event_with_standard_splits, splits_count: 3, laps_required: 0) }
       let(:effort) { double(:effort, id: 1001, event: event, full_name: 'John Appleseed') }
       let(:time_data_with_nils) { [0, 1000, nil, 3000, 3500, 5000, 5100, 7000, nil, 9000] }
 
@@ -279,7 +279,7 @@ RSpec.describe EffortSplitTimeCreator, type: :model do
     def validate_split_time_attribute(row_time_data, attribute, expected, event)
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(event.splits)
       allow(event).to receive(:sub_splits).and_return(event.splits.map(&:sub_splits).flatten)
-      effort = FactoryGirl.build_stubbed(:effort, id: 1001, event: event)
+      effort = build_stubbed(:effort, id: 1001, event: event)
       allow(effort).to receive(:changed?).and_return(false)
       creator = EffortSplitTimeCreator.new(row_time_data: row_time_data, effort: effort,
                                            current_user_id: current_user_id, event: event)

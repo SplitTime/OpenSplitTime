@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'pry-byebug'
 
 RSpec.describe EffortRow, type: :model do
   let (:test_effort) { create(:effort, state_code: 'CA', country_code: 'US', age: 30) }

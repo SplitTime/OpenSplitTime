@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe TimePredictor do
   before do
@@ -8,40 +7,40 @@ RSpec.describe TimePredictor do
 
   let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
   let(:vert_gain_factor) { SegmentTimeCalculator::VERT_GAIN_FACTOR }
-  let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 3, splits_count: 4, efforts_count: 1) }
+  let(:test_event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4, efforts_count: 1) }
   let(:test_effort) { test_event.efforts.first }
   let(:test_split_times) { test_effort.split_times }
   let(:start) { test_event.splits.first }
   let(:aid_1) { test_event.splits.second }
   let(:aid_2) { test_event.splits.third }
   let(:finish) { test_event.splits.last }
-  let(:lap_1_zero_start) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
-                                             end_lap: 1, end_split: start, end_in_out: 'in') }
-  let(:aid_1_in_to_aid_1_in) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
-                                                 end_lap: 1, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_1_in_aid_2) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'in',
-                                           end_lap: 1, end_split: aid_2, end_in_out: 'out') }
-  let(:lap_1_start_to_lap_1_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
-                                                       end_lap: 1, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
-                                                        end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_aid_1_to_lap_1_aid_2_inclusive) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
-                                                                 end_lap: 1, end_split: aid_2, end_in_out: 'out') }
-  let(:lap_1_aid_2_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
-                                                        end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_aid_1_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
-                                                        end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_2_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
-                                                       end_lap: 2, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_3_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
-                                                        end_lap: 3, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_start_to_completed) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
-                                                     end_lap: completed_split_time.lap, end_split: completed_split_time.split,
-                                                     end_in_out: SubSplit.kind(completed_split_time.bitkey)) }
+  let(:lap_1_zero_start) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+                                 end_lap: 1, end_split: start, end_in_out: 'in') }
+  let(:aid_1_in_to_aid_1_in) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
+                                     end_lap: 1, end_split: aid_1, end_in_out: 'in') }
+  let(:lap_1_in_aid_2) { build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'in',
+                               end_lap: 1, end_split: aid_2, end_in_out: 'out') }
+  let(:lap_1_start_to_lap_1_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+                                           end_lap: 1, end_split: aid_1, end_in_out: 'in') }
+  let(:lap_1_start_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+                                            end_lap: 1, end_split: finish, end_in_out: 'in') }
+  let(:lap_1_aid_1_to_lap_1_aid_2_inclusive) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
+                                                     end_lap: 1, end_split: aid_2, end_in_out: 'out') }
+  let(:lap_1_aid_2_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
+                                            end_lap: 1, end_split: finish, end_in_out: 'in') }
+  let(:lap_1_aid_1_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
+                                            end_lap: 1, end_split: finish, end_in_out: 'in') }
+  let(:lap_1_start_to_lap_2_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+                                           end_lap: 2, end_split: aid_1, end_in_out: 'in') }
+  let(:lap_1_start_to_lap_3_finish) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+                                            end_lap: 3, end_split: finish, end_in_out: 'in') }
+  let(:lap_1_start_to_completed) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+                                         end_lap: completed_split_time.lap, end_split: completed_split_time.split,
+                                         end_in_out: SubSplit.kind(completed_split_time.bitkey)) }
 
   describe '#initialize' do
     it 'initializes with a segment, lap_splits, and completed_split_time in an args hash' do
-      segment = FactoryGirl.build(:segment)
+      segment = build(:segment)
       lap_splits, _ = lap_splits_and_time_points(test_event)
       completed_split_time = test_split_times.last
       expect { TimePredictor.new(segment: segment,
@@ -59,7 +58,7 @@ RSpec.describe TimePredictor do
     end
 
     it 'raises an ArgumentError if no effort or lap_splits are given' do
-      segment = FactoryGirl.build(:segment)
+      segment = build(:segment)
       completed_split_time = test_split_times.last
       expect { TimePredictor.new(segment: segment,
                                  completed_split_time: completed_split_time) }
@@ -67,7 +66,7 @@ RSpec.describe TimePredictor do
     end
 
     it 'raises an ArgumentError if no effort or completed_split_time are given' do
-      segment = FactoryGirl.build(:segment)
+      segment = build(:segment)
       lap_splits, _ = lap_splits_and_time_points(test_event)
       expect { TimePredictor.new(segment: segment, lap_splits: lap_splits) }
           .to raise_error(/must include one of effort or lap_splits and completed_split_time/)

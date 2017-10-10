@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Deprecation::SubstituteSlug do
   describe '.perform' do
     subject { Deprecation::SubstituteSlug.perform(model, slug) }

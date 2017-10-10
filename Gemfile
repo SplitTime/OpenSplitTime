@@ -65,20 +65,13 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'database_cleaner'
   gem 'factory_girl_rails', require: false
-  gem 'guard-rspec'
-  gem 'launchy'
   gem 'ffaker'
 end
 
 group :development, :test do
   gem 'active_record_query_trace'
-  gem 'byebug'
   gem 'dotenv-rails'
-  gem 'pry-byebug'
-  gem 'pry-rails'
-  gem 'pry-rescue'
   gem 'rb-fsevent'
   gem 'rspec', '~> 3.4'
   gem 'rspec-rails', '~> 3.0'

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe PreparedParams do
   subject { PreparedParams.new(params, permitted, permitted_query) }
   let(:permitted) { [] }

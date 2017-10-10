@@ -3,48 +3,48 @@ require 'rails_helper'
 RSpec.describe Segment, type: :model do
   let(:lap_1) { 1 }
   let(:lap_2) { 2 }
-  let(:start) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
-  let(:aid_1) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 1', course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 500) }
-  let(:aid_2) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 2', course_id: 10, distance_from_start: 25000, vert_gain_from_start: 2500, vert_loss_from_start: 1250) }
-  let(:aid_3) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 3', course_id: 10, distance_from_start: 45000, vert_gain_from_start: 4500, vert_loss_from_start: 2250) }
-  let(:finish) { FactoryGirl.build_stubbed(:finish_split, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
-  let(:lap_1_start_to_lap_1_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:start) { build_stubbed(:start_split, course_id: 10) }
+  let(:aid_1) { build_stubbed(:split, base_name: 'Aid 1', course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 500) }
+  let(:aid_2) { build_stubbed(:split, base_name: 'Aid 2', course_id: 10, distance_from_start: 25000, vert_gain_from_start: 2500, vert_loss_from_start: 1250) }
+  let(:aid_3) { build_stubbed(:split, base_name: 'Aid 3', course_id: 10, distance_from_start: 45000, vert_gain_from_start: 4500, vert_loss_from_start: 2250) }
+  let(:finish) { build_stubbed(:finish_split, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
+  let(:lap_1_start_to_lap_1_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                        end_lap: 1, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_1_aid_2) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_1_aid_2) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                        end_lap: 1, end_split: aid_2, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_1_aid_3) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_1_aid_3) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                        end_lap: 1, end_split: aid_3, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                         end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_aid_1_to_lap_1_aid_2) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
+  let(:lap_1_aid_1_to_lap_1_aid_2) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
                                                        end_lap: 1, end_split: aid_2, end_in_out: 'in') }
-  let(:lap_1_aid_2_to_lap_1_aid_3) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
+  let(:lap_1_aid_2_to_lap_1_aid_3) { build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
                                                        end_lap: 1, end_split: aid_3, end_in_out: 'in') }
-  let(:lap_1_aid_3_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_3, begin_in_out: 'out',
+  let(:lap_1_aid_3_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: aid_3, begin_in_out: 'out',
                                                         end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_aid_1_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
+  let(:lap_1_aid_1_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
                                                         end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_aid_2_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
+  let(:lap_1_aid_2_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
                                                         end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_in_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
+  let(:lap_1_in_aid_1) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
                                            end_lap: 1, end_split: aid_1, end_in_out: 'out') }
-  let(:lap_1_in_aid_2) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'in',
+  let(:lap_1_in_aid_2) { build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'in',
                                            end_lap: 1, end_split: aid_2, end_in_out: 'out') }
-  let(:lap_1_in_aid_3) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_3, begin_in_out: 'in',
+  let(:lap_1_in_aid_3) { build(:segment, begin_lap: 1, begin_split: aid_3, begin_in_out: 'in',
                                            end_lap: 1, end_split: aid_3, end_in_out: 'out') }
-  let(:lap_1_aid_1_to_lap_1_aid_2_inclusive) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
+  let(:lap_1_aid_1_to_lap_1_aid_2_inclusive) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
                                                                  end_lap: 1, end_split: aid_2, end_in_out: 'out') }
-  let(:lap_1_zero_start) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_zero_start) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                              end_lap: 1, end_split: start, end_in_out: 'in') }
-  let(:aid_1_in_to_aid_1_in) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
+  let(:aid_1_in_to_aid_1_in) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
                                                  end_lap: 1, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_2_zero_start) { FactoryGirl.build(:segment, begin_lap: 2, begin_split: start, begin_in_out: 'in',
+  let(:lap_2_zero_start) { build(:segment, begin_lap: 2, begin_split: start, begin_in_out: 'in',
                                              end_lap: 2, end_split: start, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_2_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_2_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                        end_lap: 2, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_2_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_2_finish) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                         end_lap: 2, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_finish_to_lap_2_start) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: finish, begin_in_out: 'in',
+  let(:lap_1_finish_to_lap_2_start) { build(:segment, begin_lap: 1, begin_split: finish, begin_in_out: 'in',
                                                         end_lap: 2, end_split: start, end_in_out: 'in') }
 
   describe 'initialization' do
@@ -70,7 +70,7 @@ RSpec.describe Segment, type: :model do
     it 'raises an error when splits on the same lap are out of order' do
       begin_lap, begin_split, begin_in_out = lap_1, aid_2, 'in'
       end_lap, end_split, end_in_out = lap_1, aid_1, 'in'
-      expect { FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      expect { build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                  end_lap: end_lap, end_split: end_split, end_in_out: end_in_out) }
           .to raise_error(/Segment splits on the same lap are out of order/)
     end
@@ -78,7 +78,7 @@ RSpec.describe Segment, type: :model do
     it 'raises an error when laps are out of order' do
       begin_lap, begin_split, begin_in_out = lap_2, aid_1, 'in'
       end_lap, end_split, end_in_out = lap_1, aid_1, 'in'
-      expect { FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      expect { build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                  end_lap: end_lap, end_split: end_split, end_in_out: end_in_out) }
           .to raise_error(/Segment laps are out of order/)
     end
@@ -86,7 +86,7 @@ RSpec.describe Segment, type: :model do
     it 'raises an error when time_points are out of order' do
       begin_lap, begin_split, begin_in_out = lap_1, aid_1, 'out'
       end_lap, end_split, end_in_out = lap_1, aid_1, 'in'
-      expect { FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      expect { build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                  end_lap: end_lap, end_split: end_split, end_in_out: end_in_out) }
           .to raise_error(/Segment bitkeys within the same split are out of order/)
     end
@@ -94,7 +94,7 @@ RSpec.describe Segment, type: :model do
     it 'does not raise an error when splits are out of order if order_control: false is given' do
       begin_lap, begin_split, begin_in_out = lap_1, aid_2, 'in'
       end_lap, end_split, end_in_out = lap_1, aid_1, 'in'
-      expect { FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      expect { build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                  end_lap: end_lap, end_split: end_split, end_in_out: end_in_out, order_control: false) }
           .not_to raise_error
     end
@@ -105,9 +105,9 @@ RSpec.describe Segment, type: :model do
     it 'equates itself with other segments using the same splits' do
       begin_lap, begin_split, begin_in_out = lap_1, aid_1, 'in'
       end_lap, end_split, end_in_out = lap_2, aid_2, 'in'
-      segment1 = FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      segment1 = build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                    end_lap: end_lap, end_split: end_split, end_in_out: end_in_out)
-      segment2 = FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      segment2 = build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                    end_lap: end_lap, end_split: end_split, end_in_out: end_in_out)
       expect(segment1 == segment2).to eq(true)
     end
@@ -116,9 +116,9 @@ RSpec.describe Segment, type: :model do
       begin_lap, begin_split, begin_in_out = lap_1, aid_1, 'in'
       end_lap, end_split, end_in_out = lap_2, aid_2, 'in'
       alt_end_lap, alt_end_split, alt_end_in_out = lap_2, aid_2, 'out'
-      segment1 = FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      segment1 = build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                    end_lap: end_lap, end_split: end_split, end_in_out: end_in_out)
-      segment2 = FactoryGirl.build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
+      segment2 = build(:segment, begin_lap: begin_lap, begin_split: begin_split, begin_in_out: begin_in_out,
                                    end_lap: alt_end_lap, end_split: alt_end_split, end_in_out: alt_end_in_out)
       expect(segment1 == segment2).to eq(false)
     end
@@ -287,7 +287,7 @@ RSpec.describe Segment, type: :model do
   end
 
   def validate_attribute(attribute, segment, expected)
-    course = FactoryGirl.build_stubbed(:course)
+    course = build_stubbed(:course)
     allow(course).to receive(:distance).and_return(finish.distance_from_start)
     allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
     allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)

@@ -1,9 +1,5 @@
-require 'rails_helper'
-
 RSpec.describe SplitBuilder, type: :model do
-
   describe 'splits' do
-
     it 'returns an empty array when the input hash is empty' do
       builder = SplitBuilder.new({})
       expect(builder.splits).to eq([])

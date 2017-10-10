@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe LiveEffortData do
   before do

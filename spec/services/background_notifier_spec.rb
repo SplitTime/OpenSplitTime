@@ -1,6 +1,3 @@
-require 'rails_helper'
-include ActionDispatch::TestProcess
-
 RSpec.describe BackgroundNotifier do
   let(:channel) { 'progress_1' }
   let(:event) { 'update' }

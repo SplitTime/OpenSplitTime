@@ -1,6 +1,3 @@
-require 'rails_helper'
-include ActionDispatch::TestProcess
-
 RSpec.describe ImportFile do
   describe 'initialization' do
     let(:file) { 'spec/fixtures/files/baddata2015test.xlsx' }

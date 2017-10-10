@@ -1,8 +1,7 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe SegmentsBuilder do
-  let(:test_event) { FactoryGirl.build_stubbed(:event_with_standard_splits, laps_required: 3, splits_count: 3) }
+  let(:test_event) { build_stubbed(:event_with_standard_splits, laps_required: 3, splits_count: 3) }
 
   describe '#initialize' do
     it 'initializes with a set of time_points in an args hash' do

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Hash do
   describe '#camelize_keys' do
     it 'changes hash keys from symbolized underscore to symbolized camelCase format' do

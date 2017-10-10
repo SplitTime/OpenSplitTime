@@ -9,15 +9,10 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require 'devise'
-
-require 'database_cleaner'
-# DatabaseCleaner.strategy = :transactions
-
 require 'pundit/rspec'
 require 'factory_girl_rails'
 require 'capybara/rspec'
 require 'strip_attributes/matchers'
-
 require 'json'
 require 'active_support/core_ext/hash/keys'
 require 'active_support/inflector'
@@ -36,6 +31,7 @@ require 'rack/test'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
+
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Checks for pending migration and applies them before tests are run.
@@ -50,12 +46,7 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-  config.mock_with :rspec do |mocks|
-    # Prevents you from mocking or stubbing a method that does not exist on
-    # a real object. This is generally recommended, and will default to
-    # `true` in RSpec 4.
-    mocks.verify_partial_doubles = true
-  end
+
   config.include ControllerHelpers, type: :controller
 
   Warden.test_mode!

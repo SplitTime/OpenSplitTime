@@ -1,13 +1,12 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe EffortOffsetTimeAdjuster do
   before do
     FactoryGirl.reload
   end
 
-  let(:split_times_100) { FactoryGirl.build_stubbed_list(:split_times_hardrock_45, 4) }
-  let(:test_effort) { FactoryGirl.build_stubbed(:effort, event_id: 50) }
+  let(:split_times_100) { build_stubbed_list(:split_times_hardrock_45, 4) }
+  let(:test_effort) { build_stubbed(:effort, event_id: 50) }
 
   describe '#initialize' do
     it 'initializes with an effort and split_times in an args hash' do

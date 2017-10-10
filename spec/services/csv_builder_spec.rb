@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe CsvBuilder do
   let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 16) }

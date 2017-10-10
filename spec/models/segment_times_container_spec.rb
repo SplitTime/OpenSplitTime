@@ -1,20 +1,19 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe SegmentTimesContainer do
-  let(:course) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 3) }
+  let(:course) { build_stubbed(:course_with_standard_splits, splits_count: 3) }
   let(:start) { course.splits.first }
   let(:aid_1) { course.splits.second }
   let(:finish) { course.splits.last }
-  let(:lap_1_zero_start) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_zero_start) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                              end_lap: 1, end_split: start, end_in_out: 'in') }
-  let(:lap_1_in_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
+  let(:lap_1_in_aid_1) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
                                            end_lap: 1, end_split: aid_1, end_in_out: 'out') }
-  let(:lap_1_aid_1_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
+  let(:lap_1_aid_1_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'out',
                                                         end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_2_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_2_finish) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                         end_lap: 2, end_split: finish, end_in_out: 'in') }
-  let(:lap_2_finish_to_lap_1_start) { FactoryGirl.build(:segment, begin_lap: 2, begin_split: finish, begin_in_out: 'in',
+  let(:lap_2_finish_to_lap_1_start) { build(:segment, begin_lap: 2, begin_split: finish, begin_in_out: 'in',
                                                         end_lap: 1, end_split: start, end_in_out: 'in', order_control: false) }
 
   describe '#initialize' do
@@ -23,7 +22,7 @@ RSpec.describe SegmentTimesContainer do
     end
 
     it 'initializes with an args hash that contains only efforts' do
-      efforts = FactoryGirl.build_stubbed_list(:effort, 4)
+      efforts = build_stubbed_list(:effort, 4)
       expect { SegmentTimesContainer.new(efforts: efforts) }.not_to raise_error
     end
 

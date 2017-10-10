@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe String do
   describe '.longest_common_phrase' do
     subject { String.longest_common_phrase(strings) }

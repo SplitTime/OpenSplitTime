@@ -1,6 +1,3 @@
-require 'rails_helper'
-require 'pry-byebug'
-
 RSpec.describe LapSplitRow, type: :model do
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }

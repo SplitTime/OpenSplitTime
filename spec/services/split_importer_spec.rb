@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe SplitImporter do
   describe 'split_import' do

@@ -7,7 +7,7 @@ RSpec.describe LapSplit, type: :model do
   describe 'initialization' do
     it 'initializes with a lap and a split' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split)
+      split = build_stubbed(:split)
       expect { LapSplit.new(lap, split) }.not_to raise_error
     end
   end
@@ -15,7 +15,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#lap' do
     it 'returns the first value passed to the LapSplit at initialization' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split)
+      split = build_stubbed(:split)
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.lap).to eq(lap)
     end
@@ -24,7 +24,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#split' do
     it 'returns the second value passed to the LapSplit at initialization' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split)
+      split = build_stubbed(:split)
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.split).to eq(split)
     end
@@ -34,9 +34,9 @@ RSpec.describe LapSplit, type: :model do
     let(:lap_1) { 1 }
     let(:lap_2) { 2 }
     let(:lap_3) { 3 }
-    let(:split_1) { FactoryGirl.build_stubbed(:start_split) }
-    let(:split_2) { FactoryGirl.build_stubbed(:split, distance_from_start: 20000) }
-    let(:split_3) { FactoryGirl.build_stubbed(:split, distance_from_start: 30000) }
+    let(:split_1) { build_stubbed(:start_split) }
+    let(:split_2) { build_stubbed(:split, distance_from_start: 20000) }
+    let(:split_3) { build_stubbed(:split, distance_from_start: 30000) }
 
     context 'when laps are different' do
       it 'treats a LapSplit with more laps as greater than the other LapSplits' do
@@ -89,7 +89,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#key' do
     it 'returns a LapSplitKey containing the split_id and lap number' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, id: 123)
+      split = build_stubbed(:split, id: 123)
       lap_split = LapSplit.new(lap, split)
       expected = LapSplitKey.new(1, 123)
       expect(lap_split.key).to eq(expected)
@@ -97,14 +97,14 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns nil if split_id is not present' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split)
+      split = build_stubbed(:split)
       split.id = nil
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.key).to be_nil
     end
 
     it 'returns nil if lap is not present' do
-      split = FactoryGirl.build_stubbed(:split, id: 123)
+      split = build_stubbed(:split, id: 123)
       lap_split = LapSplit.new(nil, split)
       expect(lap_split.key).to be_nil
     end
@@ -113,7 +113,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#names' do
     it 'returns the split name and lap number in an array if the split has one sub_split' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:start_split, base_name: 'Test Start')
       lap_split = LapSplit.new(lap, split)
       expected = ['Test Start Lap 1']
       expect(lap_split.names).to eq(expected)
@@ -121,7 +121,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns the split names with extensions and lap number in an array if the split has multiple sub_splits' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = ['Test Aid Station In Lap 1', 'Test Aid Station Out Lap 1']
       expect(lap_split.names).to eq(expected)
@@ -131,7 +131,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#names_without_laps' do
     it 'returns the split name in an array if the split has one sub_split' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:start_split, base_name: 'Test Start')
       lap_split = LapSplit.new(lap, split)
       expected = ['Test Start']
       expect(lap_split.names_without_laps).to eq(expected)
@@ -139,7 +139,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns the split names with extensions in an array if the split has multiple sub_splits' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = ['Test Aid Station In', 'Test Aid Station Out']
       expect(lap_split.names_without_laps).to eq(expected)
@@ -149,7 +149,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#name' do
     it 'returns the split name and lap number if the split has one sub_split' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:start_split, base_name: 'Test Start')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Start Lap 1'
       expect(lap_split.name).to eq(expected)
@@ -157,7 +157,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns the split name with extensions and lap number if the split has multiple sub_splits' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station In / Out Lap 1'
       expect(lap_split.name).to eq(expected)
@@ -165,7 +165,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns the split name with the related extension and the lap number if a bitkey is provided' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       bitkey = out_bitkey
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station Out Lap 1'
@@ -174,7 +174,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns the split name plus "[unknown lap]" if lap is not present' do
       lap = nil
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station In / Out [unknown lap]'
       expect(lap_split.name).to eq(expected)
@@ -192,7 +192,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#name_without_lap' do
     it 'returns the split name if the split has one sub_split' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:start_split, base_name: 'Test Start')
       expected = 'Test Start'
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.name_without_lap).to eq(expected)
@@ -200,7 +200,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns the split name with extensions and lap number if the split has multiple sub_splits' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station In / Out'
       expect(lap_split.name_without_lap).to eq(expected)
@@ -208,7 +208,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns the split name with the related extension if a bitkey is provided' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       bitkey = out_bitkey
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station Out'
@@ -227,14 +227,14 @@ RSpec.describe LapSplit, type: :model do
   describe '#base_name' do
     it 'returns a string containing the split name and lap number' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station Lap 1'
       expect(lap_split.base_name).to eq(expected)
     end
 
     it 'returns the split base_name plus "[unknown lap]" if lap is not present' do
-      split = FactoryGirl.build_stubbed(:split, id: 123, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, id: 123, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(nil, split)
       expect(lap_split.base_name).to eq('Test Aid Station [unknown lap]')
     end
@@ -249,14 +249,14 @@ RSpec.describe LapSplit, type: :model do
   describe '#base_name_without_lap' do
     it 'returns a string containing the split name' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Aid Station'
       expect(lap_split.base_name_without_lap).to eq(expected)
     end
 
     it 'returns a string containing the split name even if lap is not present' do
-      split = FactoryGirl.build_stubbed(:split, base_name: 'Test Aid Station')
+      split = build_stubbed(:split, base_name: 'Test Aid Station')
       lap_split = LapSplit.new(nil, split)
       expected = 'Test Aid Station'
       expect(lap_split.base_name_without_lap).to eq(expected)
@@ -272,7 +272,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#time_points' do
     it 'for split with multiple bitkeys, returns an array of TimePoints using the lap and split.id and all valid bitkeys' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, id: 123)
+      split = build_stubbed(:split, id: 123)
       lap_split = LapSplit.new(lap, split)
       expected = [TimePoint.new(lap, split.id, in_bitkey), TimePoint.new(lap, split.id, out_bitkey)]
       expect(lap_split.time_points).to eq(expected)
@@ -280,7 +280,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'for a split with a single bitkey, returns an array of one TimePoint using the lap and split.id and bitkey' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:start_split, id: 123)
+      split = build_stubbed(:start_split, id: 123)
       lap_split = LapSplit.new(lap, split)
       expected = [TimePoint.new(lap, split.id, in_bitkey)]
       expect(lap_split.time_points).to eq(expected)
@@ -294,7 +294,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns nil if split is present but has no id' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split)
+      split = build_stubbed(:split)
       split.id = nil
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.time_points).to be_nil
@@ -304,7 +304,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#time_point_in and #time_point_out' do
     it 'returns a TimePoint using the lap and split.id and an in or out bitkey' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split, sub_split_bitmap: 65, id: 123)
+      split = build_stubbed(:split, sub_split_bitmap: 65, id: 123)
       lap_split = LapSplit.new(lap, split)
       expected = TimePoint.new(lap, split.id, in_bitkey)
       expect(lap_split.time_point_in).to eq(expected)
@@ -314,7 +314,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'for a split with only an out bitkey, returns nil for time_point_in and a TimePoint for time_point_out' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:start_split, sub_split_bitmap: 64, id: 123)
+      split = build_stubbed(:start_split, sub_split_bitmap: 64, id: 123)
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.time_point_in).to be_nil
       expected = TimePoint.new(lap, split.id, out_bitkey)
@@ -323,7 +323,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'for a split with only an in bitkey, returns nil for time_point_out and a TimePoint for time_point_in' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:start_split, sub_split_bitmap: 1, id: 123)
+      split = build_stubbed(:start_split, sub_split_bitmap: 1, id: 123)
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.time_point_out).to be_nil
       expected = TimePoint.new(lap, split.id, in_bitkey)
@@ -339,7 +339,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'returns nil if split is present but has no id' do
       lap = 1
-      split = FactoryGirl.build_stubbed(:split)
+      split = build_stubbed(:split)
       split.id = nil
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.time_point_in).to be_nil
@@ -350,7 +350,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#course' do
     it 'returns the course to which split belongs' do
       lap_1 = 1
-      course = FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 3)
+      course = build_stubbed(:course_with_standard_splits, splits_count: 3)
       split = course.splits.first
       lap_split = LapSplit.new(lap_1, split)
       expect(lap_split.course).to eq(course)
@@ -358,7 +358,7 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#distance_from_start' do
-    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 4) }
+    let(:course_with_splits) { build_stubbed(:course_with_standard_splits, splits_count: 4) }
     let(:splits) { course_with_splits.splits }
 
     it 'returns 0 for a start split on lap 1' do
@@ -405,7 +405,7 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#vert_gain_from_start' do
-    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 4) }
+    let(:course_with_splits) { build_stubbed(:course_with_standard_splits, splits_count: 4) }
     let(:splits) { course_with_splits.splits }
 
     it 'returns 0 for a start split on lap 1' do
@@ -452,7 +452,7 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#vert_loss_from_start' do
-    let(:course_with_splits) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 4) }
+    let(:course_with_splits) { build_stubbed(:course_with_standard_splits, splits_count: 4) }
     let(:splits) { course_with_splits.splits }
 
     it 'returns 0 for a start split on lap 1' do
@@ -499,8 +499,8 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#start?' do
-    let(:start_split) { FactoryGirl.build_stubbed(:start_split) }
-    let(:intermediate_split) { FactoryGirl.build_stubbed(:split) }
+    let(:start_split) { build_stubbed(:start_split) }
+    let(:intermediate_split) { build_stubbed(:split) }
 
     it 'returns true when split is a start split and lap == 1' do
       lap = 1

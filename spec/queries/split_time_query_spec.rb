@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe SplitTimeQuery do
   let(:in_bitkey) { SubSplit::IN_BITKEY }
@@ -9,14 +8,14 @@ RSpec.describe SplitTimeQuery do
   describe '.typical_segment_time' do
     before do
       FactoryGirl.reload
-      course = FactoryGirl.create(:course)
-      splits = FactoryGirl.create_list(:splits_hardrock_ccw, 3, course: course)
-      event = FactoryGirl.create(:event, course: course)
+      course = create(:course)
+      splits = create_list(:splits_hardrock_ccw, 3, course: course)
+      event = create(:event, course: course)
       event.splits << splits
-      efforts = FactoryGirl.create_list(:efforts_hardrock, 4, event: event)
+      efforts = create_list(:efforts_hardrock, 4, event: event)
       split_time_simulations = [:split_times_hardrock_45, :split_times_hardrock_43, :split_times_hardrock_41, :split_times_hardrock_38]
       efforts.zip(split_time_simulations).each do |effort, simulation|
-        split_times = FactoryGirl.create_list(simulation, 5, effort: effort, data_status: 2)
+        split_times = create_list(simulation, 5, effort: effort, data_status: 2)
         effort.split_times << split_times
       end
       expect(Course.all.size).to eq(1)

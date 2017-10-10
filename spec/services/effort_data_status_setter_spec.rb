@@ -1,22 +1,21 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe EffortDataStatusSetter do
   before do
     FactoryGirl.reload
   end
 
-  let(:split_times_100) { FactoryGirl.build_stubbed_list(:split_times_hardrock_45, 10, effort_id: 100) }
-  let(:split_times_104) { FactoryGirl.build_stubbed_list(:split_times_hardrock_36, 10, effort_id: 104) }
-  let(:split_times_105) { FactoryGirl.build_stubbed_list(:split_times_hardrock_35, 10, effort_id: 105) }
-  let(:split_times_109) { FactoryGirl.build_stubbed_list(:split_times_hardrock_25, 10, effort_id: 109) }
-  let(:test_splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
-  let(:test_effort) { FactoryGirl.build_stubbed(:effort, event_id: 50) }
+  let(:split_times_100) { build_stubbed_list(:split_times_hardrock_45, 10, effort_id: 100) }
+  let(:split_times_104) { build_stubbed_list(:split_times_hardrock_36, 10, effort_id: 104) }
+  let(:split_times_105) { build_stubbed_list(:split_times_hardrock_35, 10, effort_id: 105) }
+  let(:split_times_109) { build_stubbed_list(:split_times_hardrock_25, 10, effort_id: 109) }
+  let(:test_splits) { build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
+  let(:test_effort) { build_stubbed(:effort, event_id: 50) }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
   describe '#initialize' do
     it 'initializes with an effort and a times_container in an args hash' do
-      effort = FactoryGirl.build_stubbed(:effort)
+      effort = build_stubbed(:effort)
       times_container = SegmentTimesContainer.new(calc_model: :terrain)
       expect { EffortDataStatusSetter.new(effort: effort,
                                           times_container: times_container) }.not_to raise_error
@@ -45,8 +44,8 @@ RSpec.describe EffortDataStatusSetter do
     end
 
     context 'for an effort partially underway or completed in a single-lap event' do
-      let(:test_event) { FactoryGirl.build_stubbed(:event, id: 50, laps_required: 1) }
-      let(:test_course) { FactoryGirl.build_stubbed(:course) }
+      let(:test_event) { build_stubbed(:event, id: 50, laps_required: 1) }
+      let(:test_course) { build_stubbed(:course) }
 
       it 'sets data_status of all split_times and effort to "good" when split_times fall within expected ranges' do
         n = 10
@@ -215,7 +214,7 @@ RSpec.describe EffortDataStatusSetter do
     end
 
     context 'for an effort partially underway or completed in a multi-lap event' do
-      let(:multi_event) { FactoryGirl.build_stubbed(:event_functional, splits_count: 3, laps_required: 3, efforts_count: 1) }
+      let(:multi_event) { build_stubbed(:event_functional, splits_count: 3, laps_required: 3, efforts_count: 1) }
       let(:multi_effort) { multi_event.efforts.first }
       let(:multi_course) { multi_event.course }
       let(:multi_splits) { multi_course.splits }
@@ -305,10 +304,10 @@ RSpec.describe EffortDataStatusSetter do
       expect(split_times[0]).to receive(:changed?).and_return(false)
       expect(split_times[1]).to receive(:changed?).and_return(false)
       expect(split_times[2]).to receive(:changed?).and_return(false)
-      course = FactoryGirl.build_stubbed(:course)
+      course = build_stubbed(:course)
       course_distance = test_splits.last.distance_from_start
       allow(course).to receive(:distance).and_return(course_distance)
-      event = FactoryGirl.build_stubbed(:event, id: 50, laps_required: 1)
+      event = build_stubbed(:event, id: 50, laps_required: 1)
       allow_any_instance_of(Event).to receive(:ordered_splits).and_return(test_splits)
       lap_splits = event.required_lap_splits
       lap_splits.each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }

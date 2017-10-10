@@ -1,9 +1,5 @@
-require 'rails_helper'
-
 RSpec.describe EffortSchema, type: :model do
-
   describe 'to_a' do
-
     it 'should return an empty array when passed an empty array' do
       expect(EffortSchema.new([]).to_a).to eq([])
     end
@@ -58,7 +54,5 @@ RSpec.describe EffortSchema, type: :model do
       expect(schema.to_a).to eq([:last_name, :first_name, nil, :age, nil,
                                  :bib_number, nil, :country_code])
     end
-
   end
-
 end

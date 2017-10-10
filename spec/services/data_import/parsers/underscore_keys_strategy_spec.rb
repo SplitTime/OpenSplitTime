@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe DataImport::Parsers::UnderscoreKeysStrategy do
   let(:options) { {model: :effort} }
   subject { DataImport::Parsers::UnderscoreKeysStrategy.new(raw_data, options) }

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe SearchStringParser, type: :model do
   describe '#number' do
     it 'returns a string containing a single integer passed in the search_string' do

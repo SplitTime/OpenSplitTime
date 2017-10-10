@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Array do
   describe '#elements_before' do
     it 'returns all elements in the array indexed prior to the provided parameter' do

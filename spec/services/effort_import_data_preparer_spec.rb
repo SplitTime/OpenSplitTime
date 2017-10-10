@@ -1,9 +1,5 @@
-require 'rails_helper'
-
 RSpec.describe EffortImportDataPreparer, type: :model do
-
   describe 'output_row' do
-
     it 'should function properly when passed first name, last name, and gender' do
       schema_array = [:first_name, :last_name, :gender]
       input_row = %w(Joe Hardman male)

@@ -1,19 +1,18 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe LiveEffortMailData do
-  let(:split_times_101) { FactoryGirl.build_stubbed_list(:split_times_in_out, 5, effort_id: 101) }
+  let(:split_times_101) { build_stubbed_list(:split_times_in_out, 5, effort_id: 101) }
   let(:split_ids) { split_times_101.map(&:split_id).uniq }
-  let(:split1) { FactoryGirl.build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
-  let(:split2) { FactoryGirl.build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
-  let(:split3) { FactoryGirl.build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
-  let(:split4) { FactoryGirl.build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
-  let(:split5) { FactoryGirl.build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
-  let(:split6) { FactoryGirl.build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
+  let(:split1) { build_stubbed(:start_split, id: split_ids[0], course_id: 10, distance_from_start: 0) }
+  let(:split2) { build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
+  let(:split3) { build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
+  let(:split4) { build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
+  let(:split5) { build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
+  let(:split6) { build_stubbed(:finish_split, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
 
   describe '#initialize' do
     it 'initializes with a person and split_times in an args hash' do
-      person = FactoryGirl.build_stubbed(:person)
+      person = build_stubbed(:person)
       split_times = split_times_101
       expect { LiveEffortMailData.new(person: person, split_times: split_times) }.not_to raise_error
     end
@@ -24,7 +23,7 @@ RSpec.describe LiveEffortMailData do
     end
 
     it 'raises an ArgumentError if any parameter other than person, person_id, split_times, or split_times_ids are given' do
-      person = FactoryGirl.build_stubbed(:person)
+      person = build_stubbed(:person)
       split_times = split_times_101
       expect { LiveEffortMailData.new(person: person, split_times: split_times, random_param: 123) }
           .to raise_error(/may not include random_param/)
@@ -32,8 +31,8 @@ RSpec.describe LiveEffortMailData do
   end
 
   describe '#effort_data' do
-    let(:person) { FactoryGirl.build_stubbed(:person) }
-    let(:event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
+    let(:person) { build_stubbed(:person) }
+    let(:event) { build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
     let(:test_effort) { event.efforts.first }
     let(:split_times) { test_effort.split_times }
 

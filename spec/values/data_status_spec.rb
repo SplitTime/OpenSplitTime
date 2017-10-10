@@ -1,6 +1,3 @@
-require 'rails_helper'
-include ActionDispatch::TestProcess
-
 RSpec.describe DataStatus do
   describe '.worst' do
     it 'returns :bad when the array includes any :bad element' do

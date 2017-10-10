@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe Results::Compute do
   describe '.perform' do
     subject do

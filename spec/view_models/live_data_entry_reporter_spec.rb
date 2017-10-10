@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe LiveDataEntryReporter do
   let(:test_event) { build_stubbed(:event, id: 20, start_time: '2016-07-01 06:00:00') }

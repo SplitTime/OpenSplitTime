@@ -1,26 +1,25 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe SegmentTimeCalculator do
   let(:stat_threshold) { SegmentTimeCalculator::STATS_CALC_THRESHOLD }
-  let(:start) { FactoryGirl.build_stubbed(:start_split, course_id: 10) }
-  let(:aid_1) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 1', course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 500) }
-  let(:aid_2) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 2', course_id: 10, distance_from_start: 25000, vert_gain_from_start: 2500, vert_loss_from_start: 1250) }
-  let(:aid_3) { FactoryGirl.build_stubbed(:split, base_name: 'Aid 3', course_id: 10, distance_from_start: 45000, vert_gain_from_start: 4500, vert_loss_from_start: 2250) }
-  let(:finish) { FactoryGirl.build_stubbed(:finish_split, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
-  let(:lap_1_zero_start) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:start) { build_stubbed(:start_split, course_id: 10) }
+  let(:aid_1) { build_stubbed(:split, base_name: 'Aid 1', course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 500) }
+  let(:aid_2) { build_stubbed(:split, base_name: 'Aid 2', course_id: 10, distance_from_start: 25000, vert_gain_from_start: 2500, vert_loss_from_start: 1250) }
+  let(:aid_3) { build_stubbed(:split, base_name: 'Aid 3', course_id: 10, distance_from_start: 45000, vert_gain_from_start: 4500, vert_loss_from_start: 2250) }
+  let(:finish) { build_stubbed(:finish_split, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
+  let(:lap_1_zero_start) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                              end_lap: 1, end_split: start, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_1_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_1_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                        end_lap: 1, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_1_aid_2_to_lap_1_aid_3) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
+  let(:lap_1_aid_2_to_lap_1_aid_3) { build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'out',
                                                        end_lap: 1, end_split: aid_3, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_1_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_1_finish) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                         end_lap: 1, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_2_aid_1) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_2_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                        end_lap: 2, end_split: aid_1, end_in_out: 'in') }
-  let(:lap_1_start_to_lap_3_finish) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
+  let(:lap_1_start_to_lap_3_finish) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                         end_lap: 3, end_split: finish, end_in_out: 'in') }
-  let(:lap_1_in_aid_2) { FactoryGirl.build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'in',
+  let(:lap_1_in_aid_2) { build(:segment, begin_lap: 1, begin_split: aid_2, begin_in_out: 'in',
                                            end_lap: 1, end_split: aid_2, end_in_out: 'out') }
 
   describe '#initialize' do
@@ -97,7 +96,7 @@ RSpec.describe SegmentTimeCalculator do
     end
 
     def validate_typical_time_terrain(segment, expected)
-      course = FactoryGirl.build_stubbed(:course)
+      course = build_stubbed(:course)
       allow(course).to receive(:distance).and_return(finish.distance_from_start)
       allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
       allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)

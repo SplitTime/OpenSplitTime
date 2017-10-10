@@ -1,8 +1,7 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe SplitTimeFinder do
-  let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 3, splits_count: 3, efforts_count: 1) }
+  let(:test_event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 3, efforts_count: 1) }
   let(:test_effort) { test_event.efforts.first }
   let(:test_split_times) { test_effort.split_times }
 

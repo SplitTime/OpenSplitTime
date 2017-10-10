@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Enumerable do
   describe '#each_with_iteration' do
     context 'when called without a block' do

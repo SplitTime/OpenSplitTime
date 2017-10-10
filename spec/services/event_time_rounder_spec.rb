@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe EventTimeRounder do
   describe '#initialize' do
@@ -18,11 +17,11 @@ RSpec.describe EventTimeRounder do
   describe '#fix_excel_import' do
     before do
       FactoryGirl.reload
-      test_course = FactoryGirl.create(:course)
-      FactoryGirl.create_list(:splits_hardrock_ccw, 16, course_id: test_course.id)
-      test_event = FactoryGirl.create(:event, course_id: test_course.id)
-      test_effort = FactoryGirl.create(:effort, event_id: test_event.id)
-      FactoryGirl.create_list(:split_times_hardrock_45, 5, effort_id: test_effort.id)
+      course = create(:course)
+      create_list(:splits_hardrock_ccw, 16, course: course)
+      event = create(:event, course: course)
+      effort = create(:effort, event: event)
+      create_list(:split_times_hardrock_45, 5, effort: effort)
     end
 
     it 'rounds intermediate split_times ending in :59 and :01 to the nearest minute' do

@@ -1,8 +1,7 @@
 require 'rails_helper'
-include ActionDispatch::TestProcess
 
 RSpec.describe ExpectedLapFinder do
-  let(:test_event) { FactoryGirl.build_stubbed(:event_functional, laps_required: 4, splits_count: 4, efforts_count: 1) }
+  let(:test_event) { build_stubbed(:event_functional, laps_required: 4, splits_count: 4, efforts_count: 1) }
   let(:test_splits) { test_event.splits }
   let(:test_effort) { test_event.efforts.first }
   let(:test_split_times) { test_effort.split_times }

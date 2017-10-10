@@ -1,7 +1,3 @@
-require 'rails_helper'
-
-include ActionDispatch::TestProcess
-
 RSpec.describe DataImport::Readers::CsvFileStrategy do
   subject { DataImport::Readers::CsvFileStrategy.new(file) }
 

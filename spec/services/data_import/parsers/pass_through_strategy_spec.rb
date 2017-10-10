@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe DataImport::Parsers::PassThroughStrategy do
   let(:options) { {model: :effort} }
   subject { DataImport::Parsers::PassThroughStrategy.new(raw_data, options) }

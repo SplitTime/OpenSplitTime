@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe DataImport::Parsers::RaceResultStrategy do
   let(:raw_data) { {'list' => {'lastChange' => '2016-06-04 21:58:25',
                                'Orders' => [],

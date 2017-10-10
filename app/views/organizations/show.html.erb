@@ -64,6 +64,7 @@
         <% if @presenter.stewards.present? %>
             <%= render 'stewards_list', stewards: @presenter.stewards %>
         <% else %>
+            <hr/>
             <h4>No stewards have been added to this organization.</h4>
         <% end %>
     <% else %>

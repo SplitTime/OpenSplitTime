@@ -2,12 +2,29 @@ FactoryGirl.define do
   factory :effort do
     sequence(:id, (100..109).cycle)
     sequence(:bib_number, (200..209).cycle)
-    first_name 'Joe'
-    sequence(:last_name) { |n| "LastName #{n}" }
-    gender 'male'
+    first_name { FFaker::Name.first_name }
+    last_name { FFaker::Name.last_name }
+    gender { FFaker::Gender.random }
     start_offset 0
     event
-    person
+
+    trait :with_geo_attributes do
+      country_code 'US'
+      state_code { FFaker::AddressUS.state_abbr }
+      city { FFaker::AddressUS.city }
+    end
+
+    trait :with_birthdate do
+      birthdate { FFaker::Time.between(10.years.ago, 80.years.ago).to_date }
+    end
+
+    trait :male do
+      gender 'male'
+    end
+
+    trait :female do
+      gender 'female'
+    end
 
     transient { without_slug false }
 

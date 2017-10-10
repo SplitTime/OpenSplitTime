@@ -110,27 +110,6 @@ class Person < ApplicationRecord
     possible_matching_people.first
   end
 
-  def associate_effort(effort)
-    if AttributePuller.pull_attributes!(self, effort)
-      if effort.update(person: self)
-        logger.info "Effort #{effort.name} was associated with Person #{self.name}"
-        true
-      else
-        logger.info "Effort #{effort.name} could not be associated with Person #{self.name}: " +
-                        "#{effort.errors.full_messages}, #{self.errors.full_messages}"
-        false
-      end
-    end
-  end
-
-  def merge_with(target)
-    target.reload
-    if AttributePuller.pull_attributes!(self, target)
-      efforts << target.efforts
-      target.destroy
-    end
-  end
-
   private
 
   def generate_new_topic_resource?

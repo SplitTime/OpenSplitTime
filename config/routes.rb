@@ -37,40 +37,46 @@ Rails.application.routes.draw do
   end
 
   resources :efforts do
-    collection { put :associate_people }
-    member { put :edit_split_times }
-    member { patch :update_split_times }
-    member { put :start }
-    member { delete :delete_split_times }
-    member { put :confirm_split_times }
-    member { put :set_data_status }
-    member { get :analyze }
-    member { get :place }
-    collection { post :mini_table }
-    member { get :add_beacon }
-    member { get :add_report }
-    member { get :show_photo }
-    collection { get :subregion_options }
+    collection do
+      get :subregion_options
+      post :mini_table
+    end
+    member do
+      get :add_beacon
+      get :add_report
+      get :analyze
+      get :place
+      get :show_photo
+      patch :update_split_times
+      put :confirm_split_times
+      put :edit_split_times
+      put :set_data_status
+      put :start
+      delete :delete_split_times
+    end
   end
 
   resources :event_groups, only: [:show, :create, :edit, :update, :destroy]
 
   resources :events do
-    member { post :import_csv }
-    member { post :import_splits }
-    member { post :import_efforts }
-    member { put :set_data_status }
-    member { put :set_dropped_attributes }
-    member { put :start_ready_efforts }
-    member { delete :delete_all_efforts }
-    member { get :reconcile }
-    member { post :create_people }
-    member { get :stage }
-    member { get :spread }
-    member { get :podium }
-    member { get :drop_list }
-    member { get :export_to_ultrasignup }
-    member { get :find_problem_effort }
+    member do
+      get :drop_list
+      get :export_to_ultrasignup
+      get :find_problem_effort
+      get :podium
+      get :reconcile
+      get :spread
+      get :stage
+      post :create_people
+      post :import_csv
+      post :import_efforts
+      post :import_splits
+      put :associate_people
+      put :set_data_status
+      put :set_dropped_attributes
+      put :start_ready_efforts
+      delete :delete_all_efforts
+    end
   end
 
   resources :organizations
@@ -81,7 +87,6 @@ Rails.application.routes.draw do
     member { delete :avatar_disclaim }
     member { get :merge }
     member { put :combine }
-    member { delete :remove_effort }
   end
 
   resources :partners

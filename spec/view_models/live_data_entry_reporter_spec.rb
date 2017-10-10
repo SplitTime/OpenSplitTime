@@ -2,15 +2,15 @@ require 'rails_helper'
 include ActionDispatch::TestProcess
 
 RSpec.describe LiveDataEntryReporter do
-  let(:test_event) { FactoryGirl.build_stubbed(:event, id: 20, start_time: '2016-07-01 06:00:00') }
-  let(:test_effort) { FactoryGirl.build_stubbed(:effort, id: 104, first_name: 'Johnny', last_name: 'Appleseed', gender: 'male') }
+  let(:test_event) { build_stubbed(:event, id: 20, start_time: '2016-07-01 06:00:00') }
+  let(:test_effort) { build_stubbed(:effort) }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
-  let(:split_times_4) { FactoryGirl.build_stubbed_list(:split_times_hardrock_36, 30, effort_id: 104) }
-  let(:splits) { FactoryGirl.build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
+  let(:split_times_4) { build_stubbed_list(:split_times_hardrock_36, 30, effort: test_effort) }
+  let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
   describe '#initialize' do
     it 'initializes with an event and params and a LiveEffortData object in an args hash' do
-      event = FactoryGirl.build_stubbed(:event)
+      event = build_stubbed(:event)
       params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data) }.not_to raise_error
@@ -23,13 +23,13 @@ RSpec.describe LiveDataEntryReporter do
     end
 
     it 'raises an ArgumentError if no params are given' do
-      event = FactoryGirl.build_stubbed(:event)
+      event = build_stubbed(:event)
       effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, effort_data: effort_data) }.to raise_error(/must include params/)
     end
 
     it 'raises an ArgumentError if any parameter other than event, params, or effort_data is given' do
-      event = FactoryGirl.build_stubbed(:event)
+      event = build_stubbed(:event)
       params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data, random_param: 123) }

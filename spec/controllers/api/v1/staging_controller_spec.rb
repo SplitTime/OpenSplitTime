@@ -260,8 +260,8 @@ describe Api::V1::StagingController do
     let(:event_1) { create(:event, efforts: event_1_efforts) }
     let(:event_2) { create(:event, efforts: event_2_efforts) }
     let(:events) { [event_1, event_2] }
-    let(:event_1_efforts) { create_list(:effort, 2) }
-    let(:event_2_efforts) { create_list(:effort, 2) }
+    let(:event_1_efforts) { [create(:effort, person: create(:person)), create(:effort, person: create(:person))] }
+    let(:event_2_efforts) { [create(:effort, person: create(:person)), create(:effort, person: create(:person))] }
     let(:organization) { create(:organization) }
 
     context 'when params[:status] == "public"' do

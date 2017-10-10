@@ -87,30 +87,10 @@ class PeopleController < ApplicationController
 
   def combine
     authorize @person
-    if @person.merge_with(Person.find(params[:target_id]))
-      flash[:success] = 'Merge was successful. '
-    else
-      flash[:danger] = 'Merge could not be completed.'
-    end
-    redirect_to merge_person_path(@person)
-  end
-
-  def remove_effort
-    authorize @person
-    @effort = Effort.friendly.find(params[:effort_id])
-    @effort.person = nil
-    @effort.save
+    target = Person.find(params[:target_id])
+    response = Interactors::MergePeople.perform!(@person, target)
+    set_flash_message(response)
     redirect_to person_path(@person)
-  end
-
-  def current_user_follow
-    authorize @person
-    @person.add_follower(@current_user)
-  end
-
-  def current_user_unfollow
-    authorize @person
-    @person.remove_follower(@current_user)
   end
 
   private

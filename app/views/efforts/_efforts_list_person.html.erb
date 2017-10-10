@@ -25,8 +25,8 @@
       <td class="text-right"><%= effort.finish_status %></td>
       <% if current_user&.admin? %>
           <td class="text-right"><%= link_to 'Disassociate',
-                                             remove_effort_person_path(@presenter, effort_id: effort.id),
-                                             method: :delete,
+                                             effort_path(effort, effort: {person_id: nil}, commit: 'Disassociate'),
+                                             method: :patch,
                                              class: 'btn btn-xs btn-danger' %></td>
       <% end %>
       </tr>

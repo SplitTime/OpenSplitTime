@@ -37,8 +37,4 @@ class PersonPolicy < ApplicationPolicy
   def combine?
     user.admin?
   end
-
-  def remove_effort?
-    user.admin?
-  end
 end

@@ -5,8 +5,7 @@
   <td>
     <% if effort.suggested_match %>
         <%= link_to 'Same person >>',
-                    associate_people_efforts_path(event_id: @event.id,
-                                                      ids: {effort.id => effort.suggested_match.id}),
+                    associate_people_event_path(ids: {effort.id => effort.suggested_match.id}),
                     method: :put,
                     class: "btn btn-xs btn-primary" %>
     <% end %>
@@ -18,7 +17,7 @@
   </td>
   <td>
     <%= link_to 'New person',
-                create_people_event_path(effort_ids: effort.id, event_id: @event.id),
+                create_people_event_path(effort_ids: [effort.id]),
                 method: :post,
                 class: "btn btn-xs btn-success" %>
   </td>

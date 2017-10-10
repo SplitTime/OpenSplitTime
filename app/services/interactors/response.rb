@@ -1,5 +1,5 @@
 module Interactors
-  Response = Struct.new(:errors, :message) do
+  Response = Struct.new(:errors, :message, :resources) do
     def successful?
       errors.blank?
     end
@@ -18,7 +18,11 @@ module Interactors
     private
 
     def error_details
-      errors.map { |error| "\n#{error[:title]}: #{error[:detail]}" }.join
+      errors.map { |error| "\n#{error[:title]}: #{error_messages(error[:detail])}" }.join
+    end
+
+    def error_messages(error_detail)
+      error_detail[:message] || error_detail[:messages]&.join || error_detail
     end
   end
 end

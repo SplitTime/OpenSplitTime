@@ -188,8 +188,8 @@ describe Api::V1::EventsController do
       it 'sorts effort data based on the sort param' do
         get :spread, params: {staging_id: event.id, sort: 'last_name'}
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') })
-            .to eq([Effort.first.last_name, Effort.second.last_name, Effort.third.last_name])
+        last_names = parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') }
+        expect(last_names.sort).to eq(last_names)
       end
 
       it 'returns time data in the expected format' do
@@ -288,7 +288,8 @@ describe Api::V1::EventsController do
       context 'when the event_group is available live and auto_live_times is true' do
         let!(:event) { create(:event, course_id: course.id, laps_required: 1, event_group: event_group) }
         let!(:event_group) { create(:event_group, available_live: true, auto_live_times: true) }
-        let!(:effort) { create(:effort, event: event, bib_number: 101) }
+        let!(:effort) { create(:effort, event: event, bib_number: 101, person: person) }
+        let!(:person) { create(:person) }
         let(:data) { [
             {type: 'live_time',
              attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 1, absoluteTime: '10:45:45-06:00',

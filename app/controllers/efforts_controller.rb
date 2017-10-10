@@ -51,7 +51,7 @@ class EffortsController < ApplicationController
         @stage_display = EventStageDisplay.new(event: event, params: {})
         render :toggle_check_in
       else
-        redirect_to effort_path(@effort)
+        redirect_to params[:commit] == 'Disassociate' ? request.referrer : effort_path(@effort)
       end
     else
       render 'edit'
@@ -73,20 +73,6 @@ class EffortsController < ApplicationController
   def place
     @effort_place = PlaceDetailView.new(@effort)
     session[:return_to] = place_effort_path(@effort)
-  end
-
-  def associate_people
-    @event = Event.friendly.find(params[:event_id])
-    authorize @event
-    id_hash = params[:ids].to_unsafe_h
-
-    if id_hash.blank?
-      redirect_to reconcile_event_path(@event)
-    else
-      count = EventReconcileService.assign_people_to_efforts(id_hash)
-      flash[:success] = "#{count.to_s + ' effort'.pluralize(count)} reconciled." if count > 0
-      redirect_to reconcile_event_path(@event)
-    end
   end
 
   def start

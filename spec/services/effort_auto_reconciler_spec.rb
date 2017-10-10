@@ -3,20 +3,20 @@ include ActionDispatch::TestProcess
 
 RSpec.describe EffortAutoReconciler do
   let!(:event) { create(:event) }
-  let!(:effort1) { create(:effort, event: event, person: nil, first_name: 'Jen', last_name: 'Abelman', gender: 'female', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
-  let!(:effort2) { create(:effort, event: event, person: nil, first_name: 'John', last_name: 'Benenson', gender: 'male', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
-  let!(:effort3) { create(:effort, event: event, person: nil, first_name: 'Jim', last_name: 'Carlson', gender: 'male') }
-  let!(:effort4) { create(:effort, event: event, person: nil, first_name: 'Jane', last_name: 'Danielson', gender: 'female') }
-  let!(:effort5) { create(:effort, event: event, person: nil, first_name: 'Joel', last_name: 'Eagleston', gender: 'male') }
-  let!(:effort6) { create(:effort, event: event, person: nil, first_name: 'Julie', last_name: 'Fredrickson', gender: 'female') }
-  let!(:effort7) { create(:effort, event: event, person: nil, first_name: 'Jerry', last_name: 'Gottfredson', gender: 'male') }
-  let!(:effort8) { create(:effort, event: event, person: nil, first_name: 'Joe', last_name: 'Hendrickson', gender: 'male') }
-  let!(:effort9) { create(:effort, event: event, person: nil, first_name: 'Jill', last_name: 'Isaacson', gender: 'female') }
-  let!(:person1) { create(:person, first_name: 'Jen', last_name: 'Abelman', gender: 'female', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
-  let!(:person2) { create(:person, first_name: 'John', last_name: 'Benenson', gender: 'male', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
-  let!(:person3) { create(:person, first_name: 'Jimmy', last_name: 'Carlson', gender: 'male') }
-  let!(:person4) { create(:person, first_name: 'Janey', last_name: 'Danielson', gender: 'female') }
-  let!(:person5) { create(:person, first_name: 'Joel', last_name: 'Eagleston', gender: 'male') }
+  let!(:effort1) { create(:effort, :female, event: event, person: nil, first_name: 'Jen', last_name: 'Abelman', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
+  let!(:effort2) { create(:effort, :male, event: event, person: nil, first_name: 'John', last_name: 'Benenson', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
+  let!(:effort3) { create(:effort, :male, event: event, person: nil, first_name: 'Jim', last_name: 'Carlson') }
+  let!(:effort4) { create(:effort, :female, event: event, person: nil, first_name: 'Jane', last_name: 'Danielson') }
+  let!(:effort5) { create(:effort, :male, event: event, person: nil, first_name: 'Joel', last_name: 'Eagleston') }
+  let!(:effort6) { create(:effort, :female, event: event, person: nil, first_name: 'Julie', last_name: 'Fredrickson') }
+  let!(:effort7) { create(:effort, :male, event: event, person: nil, first_name: 'Jerry', last_name: 'Gottfredson') }
+  let!(:effort8) { create(:effort, :male, event: event, person: nil, first_name: 'Joe', last_name: 'Hendrickson') }
+  let!(:effort9) { create(:effort, :female, event: event, person: nil, first_name: 'Jill', last_name: 'Isaacson') }
+  let!(:person1) { create(:person, :female, first_name: 'Jen', last_name: 'Abelman', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
+  let!(:person2) { create(:person, :male, first_name: 'John', last_name: 'Benenson', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
+  let!(:person3) { create(:person, :male, first_name: 'Jimmy', last_name: 'Carlson') }
+  let!(:person4) { create(:person, :female, first_name: 'Janey', last_name: 'Danielson') }
+  let!(:person5) { create(:person, :male, first_name: 'Joel', last_name: 'Eagleston') }
 
   subject { EffortAutoReconciler.new(event: event) }
 

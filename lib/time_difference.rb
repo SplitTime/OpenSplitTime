@@ -47,40 +47,6 @@ class TimeDifference
   end
   alias_method :in_ms, :in_milliseconds
 
-  def in_each_component
-    Hash[TIME_COMPONENTS.map do |time_component|
-      [time_component, public_send("in_#{time_component}")]
-    end]
-  end
-
-  def in_general
-    remaining = time_diff
-
-    Hash[TIME_COMPONENTS.map do |time_component|
-      rounded_time_component = (remaining / 1.send(time_component)).floor
-      remaining -= rounded_time_component.send(time_component)
-
-      [time_component, rounded_time_component]
-    end]
-  end
-
-  def humanize
-    diff_parts = []
-    in_general.each do |part,quantity|
-      next if quantity <= 0
-      part = part.to_s.humanize
-
-      if quantity <= 1
-        part = part.singularize
-      end
-
-      diff_parts << "#{quantity} #{part}"
-    end
-
-    last_part = diff_parts.pop
-    diff_parts.empty? ? last_part : [diff_parts.join(', '), last_part].join(' and ')
-  end
-
   private
 
   def initialize(start_time, end_time, absolute:)

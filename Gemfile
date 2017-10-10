@@ -1,6 +1,6 @@
 ruby '2.3.3'
 source 'https://rubygems.org'
-gem 'rails', '>= 5.1', '< 5.2'
+gem 'rails', '>= 5.0.6', '< 5.1'
 gem 'bootstrap-sass'
 gem 'vuejs-rails'
 gem 'sass-rails', '~> 5.0.6'

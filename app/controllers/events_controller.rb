@@ -14,7 +14,6 @@ class EventsController < ApplicationController
 
   def show
     @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
-    session[:return_to] = event_path(@event)
     render 'show'
   end
 
@@ -70,7 +69,6 @@ class EventsController < ApplicationController
     authorize @event
     @event_stage = EventStageDisplay.new(event: @event, params: prepared_params)
     params[:view] ||= 'efforts'
-    session[:return_to] = stage_event_path(@event)
   end
 
   def reconcile

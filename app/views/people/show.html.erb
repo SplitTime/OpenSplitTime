@@ -52,6 +52,7 @@
           <% end %>
           <% if @current_user.authorized_to_edit?(@presenter) %>
               <%= link_to 'Edit', edit_person_path(@presenter), class: "btn btn-sm btn-primary" %>
+              <%= link_to_reset_slug(@presenter.person) %>
               <%= link_to 'Delete', person_path(@presenter), method: :delete,
                           data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
           <% end %>

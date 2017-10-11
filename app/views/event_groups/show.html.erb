@@ -17,6 +17,7 @@
           <%= link_to_toggle_ost_remote(@presenter) %>
           <%= link_to_toggle_live_entry(@presenter) %>
           <%= link_to 'Edit group', edit_event_group_path(@presenter), class: 'btn btn-sm btn-primary' %>
+          <%= link_to_reset_slug(@presenter.event_group) %>
           <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: events_path),
                       method: :delete,
                       data: {confirm: 'This action cannot be undone. Are you sure you want to go ahead?'},

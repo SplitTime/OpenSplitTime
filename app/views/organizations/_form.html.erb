@@ -11,6 +11,7 @@
             <%= f.text_field :name, class: "form-control", placeholder: "Organization name", autofocus: true %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :description %>
@@ -20,7 +21,8 @@
                             placeholder: "Say something about your organization" %>
           </div>
         </div>
-        <% if current_user && current_user.admin? %>
+
+        <% if current_user&.admin? %>
             <div class="form-group">
               <div class="control-label col-sm-2">
                 <%= f.label :concealed, "Concealed (unsearchable)?" %>
@@ -30,6 +32,7 @@
               </div>
             </div>
         <% end %>
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@organization.new_record? ? "Create Organization" : "Update Organization", class: 'btn btn-primary btn-large') %>

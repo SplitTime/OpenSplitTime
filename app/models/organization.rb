@@ -3,8 +3,8 @@ class Organization < ApplicationRecord
   include Auditable
   include Concealable
   extend FriendlyId
-  friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
+  friendly_id :name, use: :slugged
   has_many :event_groups, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user

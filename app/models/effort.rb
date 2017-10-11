@@ -3,8 +3,6 @@
 class Effort < ApplicationRecord
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
   enum gender: [:male, :female]
-  strip_attributes collapse_spaces: true
-  strip_attributes only: [:phone], :regex => /[^0-9|+]/
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
@@ -18,6 +16,8 @@ class Effort < ApplicationRecord
   include Searchable
   include Matchable
   extend FriendlyId
+  strip_attributes collapse_spaces: true
+  strip_attributes only: [:phone], :regex => /[^0-9|+]/
   friendly_id :slug_candidates, use: :slugged
   belongs_to :event
   belongs_to :person

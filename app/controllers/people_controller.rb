@@ -24,7 +24,6 @@ class PeopleController < ApplicationController
 
   def show
     @presenter = PersonPresenter.new(@person, prepared_params, current_user)
-    session[:return_to] = person_path(@person)
   end
 
   def new
@@ -51,7 +50,7 @@ class PeopleController < ApplicationController
     authorize @person
 
     if @person.update(permitted_params)
-      redirect_to session.delete(:return_to) || @person
+      redirect_to @person
     else
       render 'edit'
     end

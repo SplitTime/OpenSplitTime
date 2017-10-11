@@ -8,9 +8,9 @@ class User < ApplicationRecord
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
   pg_search_scope :search_name_email, against: [:first_name, :last_name, :email], using: {tsearch: {any_word: true, prefix: true}}
+  strip_attributes collapse_spaces: true
   friendly_id :slug_candidates, use: :slugged
   phony_normalize :phone, country_code: 'US'
-  strip_attributes collapse_spaces: true
 
   has_many :subscriptions, dependent: :destroy
   has_many :interests, through: :subscriptions, source: :person

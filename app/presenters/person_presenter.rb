@@ -1,5 +1,5 @@
 class PersonPresenter < BasePresenter
-
+  attr_reader :person
   delegate :to_param, to: :person
 
   def initialize(person, params, current_user)
@@ -19,5 +19,5 @@ class PersonPresenter < BasePresenter
 
   private
 
-  attr_reader :person, :params, :current_user
+  attr_reader :params, :current_user
 end

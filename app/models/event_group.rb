@@ -5,8 +5,8 @@ class EventGroup < ApplicationRecord
   include Concealable
   include Delegable
   extend FriendlyId
-  friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
+  friendly_id :name, use: :slugged
   has_many :events
   belongs_to :organization
   validates_presence_of :name

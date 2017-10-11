@@ -7,8 +7,8 @@ class Event < ApplicationRecord
   include SplitMethods
   include LapsRequiredMethods
   extend FriendlyId
-  friendly_id :name, use: :slugged
   strip_attributes collapse_spaces: true
+  friendly_id :name, use: :slugged
   belongs_to :course
   belongs_to :event_group
   has_many :efforts, dependent: :destroy

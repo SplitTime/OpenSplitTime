@@ -4,8 +4,8 @@ class Split < ApplicationRecord
   include GuaranteedFindable
   include UnitConversions
   extend FriendlyId
-  friendly_id :course_split_name, use: :slugged
   strip_attributes collapse_spaces: true
+  friendly_id :course_split_name, use: :slugged
   enum kind: [:start, :finish, :intermediate]
   belongs_to :course
   has_many :split_times

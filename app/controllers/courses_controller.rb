@@ -37,7 +37,7 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.update(permitted_params)
-      redirect_to session.delete(:return_to) || @course
+      redirect_to @course, notice: 'Course updated'
     else
       render 'edit'
     end

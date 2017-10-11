@@ -11,6 +11,7 @@
             <%= f.text_field :first_name, class: "form-control", placeholder: "First name", autofocus: true %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :last_name %>
@@ -19,6 +20,7 @@
             <%= f.text_field :last_name, class: "form-control", placeholder: "Last name" %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :gender %>
@@ -28,6 +30,7 @@
                          {prompt: true}, {class: "dropdown-select-field"} %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :birthdate %>
@@ -42,6 +45,7 @@
                               {class: "dropdown-select-field"} %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :country_code, 'Country' %>
@@ -51,6 +55,7 @@
                                       prompt: 'Please select a country' %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :state_code, 'State' %><br/>
@@ -59,6 +64,7 @@
             <%= render partial: 'subregion_select', locals: {parent_region: f.object.country_code} %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :city %>
@@ -67,6 +73,7 @@
             <%= f.text_field :city, class: "form-control", placeholder: "City" %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :email %>
@@ -75,6 +82,7 @@
             <%= f.email_field :email, class: "form-control", placeholder: "Email" %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :phone %>
@@ -83,7 +91,8 @@
             <%= f.phone_field :phone, class: "form-control", placeholder: "Phone" %>
           </div>
         </div>
-        <% if current_user && current_user.admin? %>
+
+        <% if current_user&.admin? %>
             <div class="form-group">
               <div class="control-label col-sm-2">
                 <%= f.label :concealed, "Concealed (unsearchable)?" %>
@@ -93,13 +102,15 @@
               </div>
             </div>
         <% end %>
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@person.new_record? ? "Create Person" : "Update Person", class: 'btn btn-primary btn-large') %>
           </div>
         </div>
+
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', people_path %> ]
+          [ <%= link_to 'Cancel', @person.new_record? ? people_path : @person %> ]
         </div>
     <% end %>
   </div>

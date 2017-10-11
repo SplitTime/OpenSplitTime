@@ -5,7 +5,6 @@ class EventGroupsController < ApplicationController
 
   def show
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-    session[:return_to] = event_group_path(@event_group)
   end
 
   def edit
@@ -35,7 +34,7 @@ class EventGroupsController < ApplicationController
     if @event_group.events.present?
       flash[:danger] = 'Event group cannot be deleted if events are present within the event group. ' +
           'Delete the related events individually and then delete the event group.'
-      redirect_to event_group_path(@event_group)
+      redirect_to @event_group
     else
       @event_group.destroy
       flash[:success] = 'Event group deleted.'

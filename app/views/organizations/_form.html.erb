@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', organizations_path %> ]
+          [ <%= link_to 'Cancel', @organization.new_record? ? organizations_path : @organization %> ]
         </div>
     <% end %>
   </div>

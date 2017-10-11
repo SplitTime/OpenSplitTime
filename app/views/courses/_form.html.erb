@@ -11,6 +11,7 @@
             <%= f.text_field :name, class: "form-control", placeholder: "Course name", autofocus: true %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :description %>
@@ -19,6 +20,7 @@
             <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Course description" %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :next_start_time, 'Start time of next event (if known)' %>
@@ -34,6 +36,7 @@
                                   {class: "dropdown-select-field"} %>
           </div>
         </div>
+
         <% if @course.new_record? %>
             <%= f.fields_for :splits, @course.splits.new do |builder| %>
                 <%= builder.hidden_field :base_name, value: 'Start' %>
@@ -75,13 +78,15 @@
                 </div>
             <% end %>
         <% end %>
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@course.new_record? ? "Create Course" : "Update Course", class: 'btn btn-primary btn-large') %>
           </div>
         </div>
+
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', courses_path %> ]
+          [ <%= link_to 'Cancel', @course.new_record? ? courses_path : @course %> ]
         </div>
     <% end %>
   </div>

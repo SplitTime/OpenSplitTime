@@ -11,6 +11,7 @@
             <%= f.text_field :name, class: 'form-control', placeholder: 'Partner name', autofocus: true %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :banner %>
@@ -19,6 +20,7 @@
             <%= f.file_field :banner, class: 'form-control' %>
           </div>
         </div>
+
         <div class="form-group">
           <%= image_tag @partner.banner.url(:medium) %>
         </div>
@@ -31,6 +33,7 @@
                              placeholder: 'Paste the link that this banner should open' %>
           </div>
         </div>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :weight %>
@@ -39,12 +42,15 @@
             <%= f.number_field :weight, class: 'form-control' %>
           </div>
         </div>
+
         <%= f.hidden_field :event_id, value: @partner.event_id %>
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@partner.new_record? ? 'Create partner' : 'Update partner', class: 'btn btn-primary btn-large') %>
           </div>
         </div>
+
         <div class="col-xs-4 col-xs-offset-2">
           [ <%= link_to 'Cancel', stage_event_path(@partner.event, view: 'partners') %> ]
         </div>

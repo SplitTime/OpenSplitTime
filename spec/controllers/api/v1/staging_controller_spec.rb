@@ -138,6 +138,7 @@ describe Api::V1::StagingController do
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
+          expect(resources[:event].slug).to eq(new_event_params[:name].parameterize)
         end
       end
 
@@ -152,6 +153,7 @@ describe Api::V1::StagingController do
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
+          expect(resources[:event].slug).to eq(new_event_params[:name].parameterize)
         end
       end
 

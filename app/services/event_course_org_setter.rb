@@ -41,11 +41,17 @@ class EventCourseOrgSetter
 
   def update_resource(resource)
     if resource.update(class_params(resource.class))
+      fix_new_slug_bug(resource) if resource.slug == 'new'
       resource.reload
     else
       self.status = :unprocessable_entity
     end
     self.resources << resource
+  end
+
+  def fix_new_slug_bug(resource)
+    resource.update(slug: nil)
+    warn "WARNING: #{resource.class} #{resource} was submitted with 'new' as its slug."
   end
 
   def relationships

@@ -16,7 +16,7 @@ class OrganizationPresenter < BasePresenter
   end
 
   def courses
-    @courses ||= Course.used_for_organization(organization)
+    @courses ||= Course.includes(:splits, :events).used_for_organization(organization)
   end
 
   def display_style

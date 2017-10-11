@@ -133,7 +133,7 @@
         attributes: {
             firstName: String,
             lastName: String,
-            participantId: Number,
+            personId: Number,
             bibNumber: String,
             fullName: String,
             gender: String,

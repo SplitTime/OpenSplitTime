@@ -1,5 +1,66 @@
 (function ($) {
 
+    var api = JSONAPI( '/api/v1/' );
+    api.define( 'eventGroups', {
+        url: 'event_groups',
+        attributes: {
+            slug: String,
+            name: String,
+        },
+        includes: [ 'events', 'events.efforts', 'events.splits' ],
+        relationships: {
+            events: ['events'],
+        }
+    });
+    api.define( 'splits', {
+        attributes: {
+            baseName: String,
+            distanceFromStart: { type: Number, default: 0 },
+            vertGainFromStart: { type: Number, default: 0 },
+            vertLossFromStart: { type: Number, default: 0 },
+            kind: { type: String, default: 'intermediate' },
+            nameExtensions: Array,
+            description: String,
+            latitude: Number,
+            longitude: Number,
+            elevation: Number,
+        }
+    });
+    api.define( 'efforts', {
+        attributes: {
+            firstName: String,
+            lastName: String,
+            personId: Number,
+            bibNumber: String,
+            fullName: String,
+            gender: String,
+            birthdate: String,
+            phone: String,
+            email: String,
+            age: Number,
+            city: String,
+            stateCode: String,
+            countryCode: String,
+            beaconUrl: String,
+            concealed: { type: Boolean, default: true },
+            startOffset: { type: Number, default: 0 },
+        }
+    });
+    api.define( 'events', {
+        slug: 'slug',
+        attributes: {
+            name: { type: String, default: '' },
+            concealed: { type: Boolean, default: true },
+            laps: { type: Boolean, default: false },
+            lapsRequired: { type: Number, default: 1 },
+            slug: String
+        },
+        relationships: {
+            efforts: ['efforts'],
+            splits: ['splits'],
+        }
+    });
+
     /**
      * UI object for the live event view
      *
@@ -29,10 +90,11 @@
         currentSplitId: null,
 
         getEventLiveEntryData: function () {
-            return $.get('/api/v1/events/' + liveEntry.currentEventId + '/event_data', function (response) {
-                liveEntry.eventLiveEntryData = response
-
-            })
+            return $.get('/api/v1/events/' + liveEntry.currentEventId + '/event_data')
+                .then(function (response) {
+                    liveEntry.eventLiveEntryData = response;
+                    return api.find('eventGroups', 1);
+                });
         },
 
         /**
@@ -44,7 +106,7 @@
 
             // Sets the currentEventId once
             liveEntry.currentEventId = $('#js-event-id').data('event-id');
-            liveEntry.getEventLiveEntryData().done(function () {
+            liveEntry.getEventLiveEntryData().done(function (eventGroup) {
                 liveEntry.timeRowsCache.init();
                 liveEntry.header.init();
                 liveEntry.liveEntryForm.init();

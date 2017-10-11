@@ -427,8 +427,8 @@
             </tr>
             <template slot="row" scope="vm">
               <td>
-                <i class="glyphicon glyphicon-ok-sign" v-show="vm.row.participantId" data-toggle="tooltip" title="This effort has been reconciled"></i>
-                <i class="glyphicon glyphicon-question-sign" v-show="!vm.row.participantId" data-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
+                <i class="glyphicon glyphicon-ok-sign" v-show="vm.row.personId" data-toggle="tooltip" title="This effort has been reconciled"></i>
+                <i class="glyphicon glyphicon-question-sign" v-show="!vm.row.personId" data-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
               </td>
               <td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
               <td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>
@@ -450,6 +450,7 @@
             <ajax-import :url="'/events/' + eventModel.slug + '/import_csv?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
               <span>Import Entrants</span>
             </ajax-import>
+            <a href="http://google.com" class="btn btn-default">Consolidate</button>
           </p>
           <router-link to="/confirmation" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>
@@ -490,7 +491,7 @@
                 </div>
                 <div class="form-group col-xs-6">
                   <label>Date of Birth</label>
-                  <input type="text" class="form-control" v-model="model.birthdate" data-toggle="datetimepicker" data-date-format="YYYY-MM-DD" placeholder="yyyy-mm-dd" data-date-view-mode="years" data-date-default-date="01/01/1980"></input>
+                  <input type="text" class="form-control" v-model="model.birthdate" data-toggle="datetimepicker" data-date-format="MM/DD/YYYY" placeholder="mm/dd/yyyy" data-date-view-mode="years" data-date-default-date="01/01/1980"></input>
                 </div>
               </div>
               <div class="row">

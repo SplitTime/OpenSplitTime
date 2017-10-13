@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User visits organizations index' do
+feature 'Visit the organizations index' do
   let(:user) { create(:user) }
   let(:owner) { create(:user) }
   let(:steward) { create(:user) }

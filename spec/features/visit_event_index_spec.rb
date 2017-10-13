@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User visits events index' do
+feature 'Visit the events index' do
   let(:user) { create(:user) }
   let(:owner) { create(:user) }
   let(:steward) { create(:user) }

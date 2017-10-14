@@ -197,7 +197,7 @@ describe Api::V1::EventsController do
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['included'].first.dig('attributes', 'displayStyle')).to eq('absolute')
         expect(parsed_response['included'].first.dig('attributes', 'absoluteTimes').flatten.map { |time| time.first(19) })
-            .to match(Effort.third.split_times.map { |st| st.day_and_time.to_s.first(19).gsub(' ', 'T') })
+            .to match_array(Effort.third.split_times.map { |st| st.day_and_time.to_s.first(19).gsub(' ', 'T') })
       end
     end
   end

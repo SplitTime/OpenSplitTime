@@ -117,11 +117,11 @@ RSpec.describe DataImport::Loaders::SplitTimeUpsertStrategy do
       it 'finds existing records based on a unique key and updates provided fields' do
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(2)
-        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 1000])
+        expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 1000])
         subject.load_records
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(7)
-        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
+        expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
       end
     end
 

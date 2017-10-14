@@ -18,6 +18,10 @@ FactoryGirl.define do
       birthdate { FFaker::Time.between(10.years.ago, 80.years.ago).to_date }
     end
 
+    trait :with_bib_number do
+      bib_number { rand(1..999) }
+    end
+
     trait :male do
       gender 'male'
     end

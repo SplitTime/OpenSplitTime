@@ -308,15 +308,18 @@ describe Api::V1::EventsController do
         end
 
         it 'sends a message to NotifyFollowersJob with relevant person and split_time data' do
-          allow(NotifyFollowersJob).to receive(:perform_later)
+          allow(NotifyFollowersJob).to receive(:perform_later) do |args|
+            args[:split_time_ids].sort!
+          end
+
           post :import, params: request_params
-          split_time_ids = SplitTime.all.ids.sort.reverse
+          split_time_ids = SplitTime.all.ids
           person_id = SplitTime.first.effort.person_id
 
           expect(NotifyFollowersJob).to have_received(:perform_later)
-                                            .with({person_id: person_id,
-                                                   split_time_ids: split_time_ids,
-                                                   multi_lap: false})
+                                            .with(person_id: person_id,
+                                                  split_time_ids: split_time_ids.sort,
+                                                  multi_lap: false)
         end
 
         it 'sends a message to EffortDataStatusSetter with the effort associated with the modified split_times' do

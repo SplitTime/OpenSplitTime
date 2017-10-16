@@ -1,7 +1,7 @@
 require 'rails_helper'
 include FeatureMacros
 
-feature 'visit a populated event show page and try various features' do
+RSpec.feature 'visit a populated event show page and try various features' do
   context 'when the event has started efforts' do
     before(:context) do
       create_hardrock_event

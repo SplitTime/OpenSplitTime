@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe EffortShowView do
+RSpec.describe EffortShowView do
   subject { EffortShowView.new(effort: effort) }
   let(:event) { build_stubbed(:event, efforts: efforts) }
   let(:efforts) { other_efforts + [effort] }

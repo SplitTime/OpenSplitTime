@@ -1,4 +1,4 @@
-describe String do
+RSpec.describe String do
   describe '.longest_common_phrase' do
     subject { String.longest_common_phrase(strings) }
 

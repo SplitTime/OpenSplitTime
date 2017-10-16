@@ -1,4 +1,4 @@
-shared_examples_for 'unit_conversions' do
+RSpec.shared_examples_for 'unit_conversions' do
   let (:model) { described_class }
 
   describe 'entered_distance_to_meters' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'search the event index' do
+RSpec.feature 'search the event index' do
   let(:user) { create(:user) }
   let(:admin) { create(:admin) }
   let!(:visible_event_1) { create(:event, event_group: visible_event_group) }

@@ -1,4 +1,4 @@
-shared_examples_for 'matchable' do
+RSpec.shared_examples_for 'matchable' do
   let(:model) { described_class }
 
   describe '#possible_matching_people' do

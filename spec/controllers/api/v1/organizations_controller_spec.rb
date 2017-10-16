@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::OrganizationsController do
+RSpec.describe Api::V1::OrganizationsController do
   login_admin
 
   let(:organization) { FactoryGirl.create(:organization) }

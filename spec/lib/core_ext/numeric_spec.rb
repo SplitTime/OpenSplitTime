@@ -1,4 +1,4 @@
-describe Numeric do
+RSpec.describe Numeric do
 
   describe '#numericize' do
     it 'returns self without modification' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::StagingController do
+RSpec.describe Api::V1::StagingController do
   login_admin
 
   describe '#get_countries' do

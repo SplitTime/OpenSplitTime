@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::EffortsController do
+RSpec.describe Api::V1::EffortsController do
   login_admin
 
   let(:effort) { FactoryGirl.create(:effort, event: event) }

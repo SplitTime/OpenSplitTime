@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::SplitTimesController do
+RSpec.describe Api::V1::SplitTimesController do
   login_admin
 
   let(:split_time) { FactoryGirl.create(:split_time, effort: effort, split: split) }

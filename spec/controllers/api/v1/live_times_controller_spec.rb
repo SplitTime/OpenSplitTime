@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::LiveTimesController do
+RSpec.describe Api::V1::LiveTimesController do
   login_admin
   before do
     event.splits << split

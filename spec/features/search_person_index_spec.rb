@@ -7,7 +7,7 @@ require 'rails_helper'
 #   SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
 # $function$;
 
-feature 'Search the person index' do
+RSpec.feature 'Search the person index' do
   let(:user) { create(:user) }
   let(:admin) { create(:admin) }
   let!(:visible_person_1) { create(:person, concealed: false) }

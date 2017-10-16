@@ -1,4 +1,4 @@
-shared_examples_for 'data_status_methods' do
+RSpec.shared_examples_for 'data_status_methods' do
   let (:model) { described_class }
   let (:model_name) { model.to_s.underscore.to_sym }
   let (:resource_good) { FactoryGirl.create(model_name, data_status: :good) }

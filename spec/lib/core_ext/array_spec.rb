@@ -1,4 +1,4 @@
-describe Array do
+RSpec.describe Array do
   describe '#elements_before' do
     it 'returns all elements in the array indexed prior to the provided parameter' do
       array = %w(cat bird sheep ferret coyote)

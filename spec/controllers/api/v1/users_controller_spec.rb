@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::UsersController do
+RSpec.describe Api::V1::UsersController do
   login_admin
 
   let(:user) { FactoryGirl.create(:user) }

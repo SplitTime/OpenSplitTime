@@ -65,6 +65,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'database_cleaner', '~> 1.6'
   gem 'factory_girl_rails', require: false
   gem 'ffaker'
 end

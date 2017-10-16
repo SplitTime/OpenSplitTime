@@ -8,7 +8,7 @@ include FeatureMacros
 #   SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
 # $function$;
 
-feature 'Visit the best efforts page and search for an effort' do
+RSpec.feature 'Visit the best efforts page and search for an effort' do
   before(:context) do
     create_hardrock_event
   end

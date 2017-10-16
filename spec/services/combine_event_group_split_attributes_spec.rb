@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CombineEventGroupSplitAttributes do
+RSpec.describe CombineEventGroupSplitAttributes do
   describe '.perform' do
     subject { CombineEventGroupSplitAttributes.perform(event_group) }
     let(:event_1) { build_stubbed(:event, splits: event_1_splits) }

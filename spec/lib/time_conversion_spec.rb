@@ -1,4 +1,4 @@
-describe TimeConversion do
+RSpec.describe TimeConversion do
   before(:context) do
     ENV['TZ'] = 'UTC'
   end

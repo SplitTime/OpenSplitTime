@@ -93,7 +93,7 @@
             return $.get('/api/v1/events/' + liveEntry.currentEventId + '/event_data')
                 .then(function (response) {
                     liveEntry.eventLiveEntryData = response;
-                    return api.find('eventGroups', 1);
+                    return api.find('eventGroups', liveEntry.eventLiveEntryData.eventGroupId);
                 });
         },
 

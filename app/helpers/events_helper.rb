@@ -194,6 +194,6 @@ module EventsHelper
   end
 
   def event_staging_app_page(view_object)
-    (view_object.respond_to?(:view_text)) && (view_object.view_text == 'splits') ? 'splits' : 'entrants'
+    (view_object.respond_to?(:display_style)) && (view_object.display_style == 'splits') ? 'splits' : 'entrants'
   end
 end

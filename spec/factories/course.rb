@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :course do
-    sequence(:name) { |n| "Course #{n}" }
+    name { FFaker::Product.product }
 
     factory :course_with_standard_splits do
 

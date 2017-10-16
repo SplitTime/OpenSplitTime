@@ -1,3 +1,5 @@
+# As suggested by http://www.virtuouscode.com/2012/08/31/configuring-database_cleaner-with-rails-rspec-capybara-and-selenium/
+
 RSpec.configure do |config|
 
   config.before(:suite) do

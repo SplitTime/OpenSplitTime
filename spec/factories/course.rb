@@ -2,6 +2,10 @@ FactoryGirl.define do
   factory :course do
     name { FFaker::Product.product }
 
+    trait :with_description do
+      description { FFaker::HipsterIpsum.phrase }
+    end
+
     factory :course_with_standard_splits do
 
       transient { splits_count 4 }

@@ -209,8 +209,9 @@ RSpec.describe Api::V1::EventsController do
     end
 
     let(:course) { create(:course) }
-    let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
-    let(:event) { create(:event, course_id: course.id, laps_required: 1) }
+    let(:splits) { create_list(:splits_hardrock_ccw, 4, course: course) }
+    let(:event_group) { create(:event_group) }
+    let(:event) { create(:event, start_time: '2016-07-01 00:00:00 GMT', event_group: event_group, course: course, laps_required: 1) }
 
     context 'when provided with a file' do
       let(:request_params) { {staging_id: event.id, data_format: 'csv_efforts', file: file} }
@@ -274,7 +275,6 @@ RSpec.describe Api::V1::EventsController do
       end
 
       context 'when the event is available live' do
-        let(:event) { create(:event, course_id: course.id, laps_required: 1, event_group: event_group) }
         let(:event_group) { create(:event_group, available_live: true) }
 
         it 'sends a push notification that includes the count of available times' do
@@ -286,7 +286,6 @@ RSpec.describe Api::V1::EventsController do
       end
 
       context 'when the event_group is available live and auto_live_times is true' do
-        let!(:event) { create(:event, course_id: course.id, laps_required: 1, event_group: event_group) }
         let!(:event_group) { create(:event_group, available_live: true, auto_live_times: true) }
         let!(:effort) { create(:effort, event: event, bib_number: 101, person: person) }
         let!(:person) { create(:person) }

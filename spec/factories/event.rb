@@ -2,9 +2,8 @@ FactoryGirl.define do
   factory :event do
     name { "#{rand(2010..2020)} #{FFaker::Company.name} #{rand(1..10) * 25}" }
     home_time_zone { ActiveSupport::TimeZone.all.shuffle.first.name }
-    start_time '2016-07-01 00:00:00 GMT'
+    start_time { FFaker::Time.datetime }
     laps_required 1
-    sequence(:staging_id) { SecureRandom.uuid }
     course
     event_group
 

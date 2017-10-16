@@ -12,7 +12,7 @@
       <p>Your event will be run on a Course and will belong to an Organization. You'll either use an existing Course or
         create one, and either use an existing Organization or create one.</p>
       <p>
-        <router-link to="/splits" class="btn btn-primary" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+        <router-link to="/splits" id="continue-side-1" class="btn btn-primary" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
         </router-link>
       </p>
       <p><span class="brackets"><a href=<%= events_path %>>Cancel</a></span></p>
@@ -23,7 +23,7 @@
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="glyphicon glyphicon-question-sign"></i></span>
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-            <resource-select class="form-control" v-model="eventModel.organization" source="organizations?filter[editable]=true">
+            <resource-select id="organization-select" class="form-control" v-model="eventModel.organization" source="organizations?filter[editable]=true">
               <option :value="null" selected disabled>Select One</option>
             </resource-select>
           </div>
@@ -41,7 +41,7 @@
           <div class="form-group col-xs-12">
             <label class="required">Organization Name</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Name your Organization for the Events it organizes (like 'Hardrock 100' or for the company that organizes the Events (like 'Dirty 30 Running')."><i class="glyphicon glyphicon-question-sign"></i></span>
-            <input type="text" class="form-control" placeholder="Your organization name" v-model="eventModel.organization.name" :disabled="!eventModel.organization.editable">
+            <input id="organization-name-field" type="text" class="form-control" placeholder="Your organization name" v-model="eventModel.organization.name" :disabled="!eventModel.organization.editable">
           </div>
           <div class="col-xs-12" v-if="!eventModel.organization.id">
             <span class="brackets" v-on:click="eventModel.organization = null"><a href="#">Cancel</a></span>
@@ -56,21 +56,21 @@
       <div class="form-group">
         <label>Event Time Zone</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Some Tooltip"><i class="glyphicon glyphicon-question-sign"></i></span>
-        <select class="form-control" v-model="eventModel.homeTimeZone">
+        <select id="time-zone-select" class="form-control" v-model="eventModel.homeTimeZone">
           <option v-for="timeZone in timeZones" :value="timeZone.name">{{ timeZone.name }}&nbsp;[&nbsp;{{ timeZone.offset }}&nbsp;]</option>
         </select>
       </div>
       <div class="form-group">
         <label class="required">Event Name</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="glyphicon glyphicon-question-sign"></i></span>
-        <input type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' ' + (eventModel.virtualStartTime && eventModel.virtualStartTime.getFullYear()) : ''">
+        <input id="event-name-field" type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' ' + (eventModel.virtualStartTime && eventModel.virtualStartTime.getFullYear()) : ''">
       </div>
       <div class="form-group event-info-course-row">
         <label for="event-start-time">Choose an existing course</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you have already created a course for a prior Event like this one, you can select it here."><i class="glyphicon glyphicon-question-sign"></i></span>
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-lg-7 no-padding-right">
-            <resource-select class="form-control" v-model="eventModel.course" source="courses?filter[editable]=true">
+            <resource-select id="course-select" class="form-control" v-model="eventModel.course" source="courses?filter[editable]=true">
               <option :value="null" selected disabled>Select One</option>
             </resource-select>
           </div>
@@ -88,13 +88,13 @@
           <div class="form-group col-xs-12">
             <label class="required">Course Name</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Give your Course a descriptive name that is appropriate for multiple Events. If your Event is the Trailrock 50 2017, this Course might be the Trailrock 50 Course."><i class="glyphicon glyphicon-question-sign"></i></span>
-            <input type="text" class="form-control" placeholder="Your course name" v-model="eventModel.course.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' Course' : ''">
+            <input id="course-name-field" type="text" class="form-control" placeholder="Your course name" v-model="eventModel.course.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' Course' : ''">
           </div>
           <div class="form-group col-xs-12">
             <label class="required">Course Distance</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the distance of a single lap."><i class="glyphicon glyphicon-question-sign"></i></span>
             <div class="input-group">
-              <input-units type="text" class="form-control" placeholder="miles" v-model.number="eventModel.course.endSplit('finish').distanceFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 2 }" :scale="units.forDistance()"/>
+              <input-units id="course-distance-field" type="text" class="form-control" placeholder="miles" v-model.number="eventModel.course.endSplit('finish').distanceFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 2 }" :scale="units.forDistance()"/>
               <span class="input-group-addon">{{ units.distance }}</span>
             </div>
           </div>
@@ -102,7 +102,7 @@
             <label class="required">Total Vertical Gain</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical gain for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical gain of a single lap."><i class="glyphicon glyphicon-question-sign"></i></span>
             <div class="input-group">
-              <input-units type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
+              <input-units id="vert-gain-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
               <span class="input-group-addon">{{ units.elevation }}</span>
             </div>
           </div>
@@ -110,14 +110,14 @@
             <label class="required">Total Vertical Loss</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical loss for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical loss of a single lap."><i class="glyphicon glyphicon-question-sign"></i></span>
             <div class="input-group">
-              <input-units type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
+              <input-units id="vert-loss-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
               <span class="input-group-addon">{{ units.elevation }}</span>
             </div>
           </div>
           <div class="form-group col-xs-12">
             <label>Description</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Provide an optional description of your Course here."><i class="glyphicon glyphicon-question-sign"></i></span>
-            <textarea class="form-control" placeholder="Course Description" v-model="eventModel.course.description"></textarea>
+            <textarea id="course-description-field" class="form-control" placeholder="Course Description" v-model="eventModel.course.description"></textarea>
           </div>
           <div class="col-xs-12" v-if="!eventModel.course.id">
             <span class="brackets" v-on:click="eventModel.course = null"><a href="#">Cancel</a></span>
@@ -146,7 +146,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <router-link to="/splits" class="btn btn-primary pull-right" :disabled="!eventModel.validate()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+          <router-link to="/splits" id="continue-bottom-1" class="btn btn-primary pull-right" :disabled="!eventModel.validate()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>
         </div>
       </div>
@@ -166,7 +166,7 @@
       <p>
         <router-link to="/" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
         </router-link>
-        <router-link to="/entrants" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+        <router-link to="/entrants" id="continue-side-2" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
         </router-link>
       </p>
     </aside>
@@ -251,7 +251,7 @@
               <span>Import Splits</span>
             </ajax-import>
           </p>
-          <router-link to="/entrants" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+          <router-link to="/entrants" id="continue-bottom-2" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>
         </div>
       </div>
@@ -397,7 +397,7 @@
       <p>
         <router-link to="/splits" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
         </router-link>
-        <router-link to="/confirmation" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+        <router-link to="/confirmation" id="continue-side-3" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
         </router-link>
       </p>
     </aside>
@@ -452,7 +452,7 @@
             </ajax-import>
             <a href="http://google.com" class="btn btn-default">Consolidate</button>
           </p>
-          <router-link to="/confirmation" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+          <router-link to="/confirmation" id="continue-bottom-3" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>
         </div>
       </div>

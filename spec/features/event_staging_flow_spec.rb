@@ -128,10 +128,8 @@ RSpec.feature 'Event staging app flow', js: true do
     fill_in class: 'js-time', with: '07:30'
     select 'Arizona', from: 'time-zone-select'
 
-    sleep(3)
     continue_button.click
     wait_for_ajax
-    sleep(3)
 
     event.reload
     expect(event.name).to eq('Updated Event Name')

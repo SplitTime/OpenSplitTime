@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::SplitsController do
+RSpec.describe Api::V1::SplitsController do
   login_admin
 
   let(:split) { FactoryGirl.create(:split, course: course) }

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe OrganizationsPresenter do
+RSpec.describe OrganizationsPresenter do
   subject { OrganizationsPresenter.new(organizations, params, current_user) }
   let(:organizations) { build_stubbed_list(:organization, 2) }
   let(:params) { ActionController::Parameters.new({}) }

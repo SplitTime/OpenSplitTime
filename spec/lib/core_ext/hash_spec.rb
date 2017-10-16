@@ -1,4 +1,4 @@
-describe Hash do
+RSpec.describe Hash do
   describe '#camelize_keys' do
     it 'changes hash keys from symbolized underscore to symbolized camelCase format' do
       hash = {first_name: 'Johnny', last_name: 'Appleseed', age: 21}

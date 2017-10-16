@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CoursePresenter do
+RSpec.describe CoursePresenter do
   subject { CoursePresenter.new(course, params, current_user) }
   let(:course) { build_stubbed(:course, splits: splits) }
   let(:params) { ActionController::Parameters.new({}) }

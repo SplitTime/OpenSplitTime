@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-xfeature 'Event staging app flow' do
+RSpec.xfeature 'Event staging app flow' do
   let(:user) { create(:user) }
 
   scenario 'Create a new event in the Event Staging app' do

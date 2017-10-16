@@ -1,4 +1,4 @@
-describe TimeDifference do
+RSpec.describe TimeDifference do
   before(:context) do
     ENV['TZ'] = 'UTC'
   end

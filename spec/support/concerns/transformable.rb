@@ -1,4 +1,4 @@
-shared_examples_for 'transformable' do
+RSpec.shared_examples_for 'transformable' do
   subject { described_class.new(attributes) }
 
   describe '#align_split_distance!' do

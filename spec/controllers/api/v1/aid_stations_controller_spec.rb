@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::AidStationsController do
+RSpec.describe Api::V1::AidStationsController do
   login_admin
 
   let(:course) { create(:course) }

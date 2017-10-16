@@ -1,4 +1,4 @@
-describe Enumerable do
+RSpec.describe Enumerable do
   describe '#each_with_iteration' do
     context 'when called without a block' do
       it 'returns an Enumerator' do

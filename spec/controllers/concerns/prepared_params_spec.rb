@@ -1,4 +1,4 @@
-describe PreparedParams do
+RSpec.describe PreparedParams do
   subject { PreparedParams.new(params, permitted, permitted_query) }
   let(:permitted) { [] }
   let(:permitted_query) { [] }

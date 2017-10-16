@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::EventGroupsController do
+RSpec.describe Api::V1::EventGroupsController do
   login_admin
 
   let(:event_group) { create(:event_group) }

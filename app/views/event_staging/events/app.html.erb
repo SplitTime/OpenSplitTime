@@ -102,7 +102,7 @@
             <label class="required">Total Vertical Gain</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical gain for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical gain of a single lap."><i class="glyphicon glyphicon-question-sign"></i></span>
             <div class="input-group">
-              <input-units id="vert-gain-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
+              <input-units id="course-vert-gain-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
               <span class="input-group-addon">{{ units.elevation }}</span>
             </div>
           </div>
@@ -110,7 +110,7 @@
             <label class="required">Total Vertical Loss</label>
             <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical loss for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical loss of a single lap."><i class="glyphicon glyphicon-question-sign"></i></span>
             <div class="input-group">
-              <input-units id="vert-loss-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
+              <input-units id="course-vert-loss-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
               <span class="input-group-addon">{{ units.elevation }}</span>
             </div>
           </div>

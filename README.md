@@ -52,22 +52,43 @@ Getting Started
 5. You can also locally import a sample race by downloading [Hardrock 2015](https://github.com/SplitTime/OpenSplitTime/raw/master/hardrock2015.xlsx)
 
 *Test Users*
+```
+| Role  | Email              | Password |
+| ----- | ------------------ | -------- |
+| user  | tester@example.com | password |
+| admin | user@example.com   | password |
+```
 
-| Role | Email | Password |
-| --- | --- | --- |
-| user | tester@example.com | password |
-| admin | user@example.com | password |
+*Postgres Search*
+
+OpenSplitTime relies on metaphone searching using a Postgres add-on function. The function is available in the migrations, but because of fundamental changes in database structure, it is no longer possible to run all migrations using the existing codebase, so your dev and test databases will need to be set up using a `db:schema:load` strategy, like `rails db:setup`. After setting up your dev and test databases, you will need to run the following SQL query directly against the database:
+```
+CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text LANGUAGE SQL IMMUTABLE STRICT AS $function$
+  SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
+$function$;
+```
+This is a one-time operation for each database.
 
 **AWS**
 
 OpenSplitTime relies on Amazon Web Services for file import and storage and for SNS (email and text) communications. To take full advantage of these, you will need AWS credentials loaded into your `.env` file, specifically:
-
+```
 AWS_ACCESS_KEY_ID=your_access_key_id
 AWS_SECRET_ACCESS_KEY=your_secret_access_key
 AWS_REGION=your_aws_region
 S3_BUCKET=your_aws_bucket
-
+```
 Use your own credentials or contact us if you would like to use the dev group's credentials.
+
+**Pusher**
+
+OpenSplitTime uses Pusher for messaging with workers and to notify Live Entry operators of times that need attention. Specifically, you will need to add the following to your `.env` file:
+```
+PUSHER_APP_ID=xxx
+PUSHER_KEY=xxx
+PUSHER_SECRET_KEY=xxx
+```
+Contact us for the dev team's Pusher credentials.
 
 **ChromeDriver**
 

@@ -15,9 +15,9 @@ Ruby on Rails
 This application requires:
 
 - Ruby 2.3.3
-- Rails 4.2.7
+- Rails 5.0.6
 
-Learn more about [Installing Rails](http://railsapps.github.io/installing-rails.html).
+Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 
 Getting Started
 ---------------
@@ -57,6 +57,21 @@ Getting Started
 | --- | --- | --- |
 | user | tester@example.com | password |
 | admin | user@example.com | password |
+
+**AWS**
+
+OpenSplitTime relies on Amazon Web Services for file import and storage and for SNS (email and text) communications. To take full advantage of these, you will need AWS credentials loaded into your `.env` file, specifically:
+
+AWS_ACCESS_KEY_ID=your_access_key_id
+AWS_SECRET_ACCESS_KEY=your_secret_access_key
+AWS_REGION=your_aws_region
+S3_BUCKET=your_aws_bucket
+
+Use your own credentials or contact us if you would like to use the dev group's credentials.
+
+**ChromeDriver**
+
+Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew install chromedriver` or your preferred package manager for Linux or Windows.
 
 Support
 -------------------------

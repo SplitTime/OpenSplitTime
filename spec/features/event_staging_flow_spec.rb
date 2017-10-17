@@ -204,5 +204,24 @@ RSpec.feature 'Event staging app flow', js: true do
         expect(effort[attribute]).to eq(stubbed_effort[attribute])
       end
     end
+
+    scenario 'Edit an existing effort' do
+      effort = create(:effort, :with_geo_attributes, :with_birthdate, :with_contact_info, :with_bib_number, event: event)
+
+      login_as user
+      visit "#{event_staging_app_path(event)}#/entrants"
+
+      expect(Effort.count).to eq(1)
+      edit_link = find_link(class: 'edit')
+      edit_link.click
+      fill_in 'effort-first-name-field', with: 'Betty'
+      fill_in 'effort-bib-number-field', with: '1001'
+      click_button 'Done'
+      wait_for_ajax
+
+      effort.reload
+      expect(effort.first_name).to eq('Betty')
+      expect(effort.bib_number).to eq(1001)
+    end
   end
 end

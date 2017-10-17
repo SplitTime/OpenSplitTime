@@ -75,7 +75,8 @@ class EventsController < ApplicationController
     authorize @event
     @unreconciled_batch = @event.unreconciled_efforts.order(:last_name).limit(20)
     if @unreconciled_batch.empty?
-      redirect_to stage_event_path(@event)
+      flash[:success] = 'All efforts have been reconciled'
+      redirect_to request.referrer.include?('event_staging') ? "#{event_staging_app_path(@event)}#/entrants" : stage_event_path(@event)
     else
       @unreconciled_batch.each { |effort| effort.suggest_close_match }
     end

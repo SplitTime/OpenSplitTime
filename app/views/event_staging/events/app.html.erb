@@ -450,7 +450,7 @@
             <ajax-import :url="'/events/' + eventModel.slug + '/import_csv?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
               <span>Import Entrants</span>
             </ajax-import>
-            <a href="http://google.com" class="btn btn-default">Consolidate</button>
+            <%= link_to 'Reconcile', reconcile_event_path(@event), class: 'btn btn-default' %>
           </p>
           <router-link to="/confirmation" id="continue-bottom-3" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>

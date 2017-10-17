@@ -111,28 +111,98 @@ RSpec.feature 'Event staging app flow', js: true do
     expect(event.slug).to eq(event.name.parameterize)
   end
 
-  scenario 'Edit a previously created event' do
-    organization = create(:organization, created_by: user.id)
-    course = create(:course_with_standard_splits, :with_description, created_by: user.id)
-    event_group = create(:event_group, organization: organization)
-    event = create(:event, event_group: event_group, course: course)
-    event.splits << course.splits
+  context 'when there is a previously created event' do
+    let(:course) { create(:course_with_standard_splits, :with_description, created_by: user.id) }
+    let(:organization) { create(:organization, created_by: user.id) }
+    let(:event_group) { create(:event_group, organization: organization) }
+    let(:event) { create(:event, event_group: event_group, course: course) }
 
-    login_as user
-    visit event_staging_app_path(event)
-    continue_button = find_by_id('continue-bottom-1')
-    expect(continue_button[:disabled]&.to_boolean).to be_falsey
+    before { event.splits << course.splits }
 
-    fill_in 'event-name-field', with: 'Updated Event Name'
-    fill_in class: 'js-date', with: '2017-10-01'
-    fill_in class: 'js-time', with: '07:30'
-    select 'Arizona', from: 'time-zone-select'
+    scenario 'Edit event information' do
+      login_as user
+      visit event_staging_app_path(event)
 
-    continue_button.click
-    wait_for_ajax
+      continue_button = find_by_id('continue-bottom-1')
+      expect(continue_button[:disabled]&.to_boolean).to be_falsey
 
-    event.reload
-    expect(event.name).to eq('Updated Event Name')
-    expect(event.start_time).to eq('2017-10-01 07:30 -07:00')
+      fill_in 'event-name-field', with: 'Updated Event Name'
+      fill_in class: 'js-date', with: '2017-10-01'
+      fill_in class: 'js-time', with: '07:30'
+      select 'Arizona', from: 'time-zone-select'
+
+      continue_button.click
+      wait_for_ajax
+
+      event.reload
+      expect(event.name).to eq('Updated Event Name')
+      expect(event.start_time).to eq('2017-10-01 07:30 -07:00')
+    end
+
+    scenario 'Add a split' do
+      login_as user
+      visit "#{event_staging_app_path(event)}#/splits"
+
+      expect(Split.count).to eq(4)
+      expect(AidStation.count).to eq(4)
+
+      click_button 'Add'
+      fill_in 'split-name-field', with: 'New Split Name'
+      fill_in 'split-description-field', with: 'A critical aid station'
+      fill_in 'split-distance-field', with: '15.5'
+      page.execute_script("$('#split-in-out-radio').click()")
+      fill_in 'split-vert-gain-field', with: '1500'
+      fill_in 'split-vert-loss-field', with: '1200'
+      fill_in 'split-latitude-field', with: '40.1'
+      fill_in 'split-longitude-field', with: '-105.1'
+      fill_in 'split-elevation-field', with: '6000'
+
+      click_button 'Add Split'
+      wait_for_ajax
+
+      expect(Split.count).to eq(5)
+      expect(AidStation.count).to eq(5)
+      split = Split.last
+      expect(split.base_name).to eq('New Split Name')
+      expect(split.description).to eq('A critical aid station')
+      expect(split.kind).to eq('intermediate')
+      expect(split.sub_split_bitmap).to eq(65)
+      expect(split.distance_from_start).to eq(24944)
+      expect(split.vert_gain_from_start).to be_within(1).of(457)
+      expect(split.vert_loss_from_start).to be_within(1).of(365)
+      expect(split.latitude).to eq(40.1)
+      expect(split.longitude).to eq(-105.1)
+      expect(split.elevation).to be_within(1).of(1828)
+    end
+
+    scenario 'Add an effort' do
+      stubbed_effort = build_stubbed(:effort, :with_geo_attributes, :with_birthdate, :with_bib_number, :with_contact_info)
+      country = Carmen::Country.coded(stubbed_effort.country_code)
+      login_as user
+      visit "#{event_staging_app_path(event)}#/entrants"
+
+      expect(Effort.count).to eq(0)
+
+      click_button 'Add'
+      fill_in 'effort-first-name-field', with: stubbed_effort.first_name
+      fill_in 'effort-last-name-field', with: stubbed_effort.last_name
+      page.execute_script("$('#effort-#{stubbed_effort.gender}-radio').click()")
+      fill_in 'effort-birthdate-field', with: stubbed_effort.birthdate.strftime('%m/%d/%Y')
+      fill_in 'effort-bib-number-field', with: stubbed_effort.bib_number
+      select country.name, from: 'effort-country-select'
+      select country.subregions.coded(stubbed_effort.state_code).name, from: 'effort-state-select'
+      fill_in 'effort-city-field', with: stubbed_effort.city
+      fill_in 'effort-email-field', with: stubbed_effort.email
+      fill_in 'effort-phone-field', with: stubbed_effort.phone
+
+      click_button 'Add Entrant'
+      wait_for_ajax
+
+      expect(Effort.count).to eq(1)
+      effort = Effort.last
+      [:first_name, :last_name, :gender, :birthdate, :bib_number, :city, :state_code, :country_code, :email, :phone].each do |attribute|
+        expect(effort[attribute]).to eq(stubbed_effort[attribute])
+      end
+    end
   end
 end

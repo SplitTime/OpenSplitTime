@@ -22,6 +22,11 @@ FactoryGirl.define do
       bib_number { rand(1..999) }
     end
 
+    trait :with_contact_info do
+      email { FFaker::Internet.email }
+      phone { FFaker::PhoneNumber.short_phone_number.gsub('-', '') }
+    end
+
     trait :male do
       gender 'male'
     end

@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     collection { get :series }
     member do
       get :drop_list
+      get :edit_start_time
       get :export_to_ultrasignup
       get :podium
       get :reconcile
@@ -74,6 +75,7 @@ Rails.application.routes.draw do
       put :set_data_status
       put :set_dropped_attributes
       put :start_ready_efforts
+      patch :update_start_time
       delete :delete_all_efforts
     end
   end

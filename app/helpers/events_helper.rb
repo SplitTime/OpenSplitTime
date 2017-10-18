@@ -4,6 +4,10 @@ module EventsHelper
     link_to 'Edit event', edit_event_path(view_object.event), class: 'btn btn-sm btn-primary'
   end
 
+  def link_to_update_start_time(view_object)
+    link_to 'Change start time', edit_start_time_event_path(view_object.event), class: 'btn btn-sm btn-primary'
+  end
+
   def link_to_delete_event(view_object)
     link_to 'Delete event', event_path(view_object.event, referrer_path: events_path),
             method: :delete,

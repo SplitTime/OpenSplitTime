@@ -69,6 +69,7 @@ class EventsController < ApplicationController
     authorize @event
     @event_stage = EventStageDisplay.new(event: @event, params: prepared_params)
     params[:view] ||= 'efforts'
+    session[:return_to] = stage_event_path(@event)
   end
 
   def reconcile
@@ -210,7 +211,21 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-# Enable/disable availability for live views
+# This action updates the event start_time and adjusts time_from_start on all
+# existing non-start split_times to keep absolute time consistent.
+
+  def edit_start_time
+    authorize @event
+  end
+
+  def update_start_time
+    authorize @event
+    @event.assign_attributes(params.require(:event).permit(:start_time_in_home_zone, :home_time_zone))
+
+    response = Interactors::AdjustEventStartTime.perform!(@event)
+    set_flash_message(response)
+    redirect_to stage_event_path(@event)
+  end
 
   def drop_list
     @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params)

@@ -58,6 +58,22 @@
           </div>
         </div>
 
+        <% if @event.started? %>
+            <div class="row">
+              <div class="col-sm-8 col-sm-offset-2">
+                <p>Changing the start time of an event that <strong>has existing split times</strong>
+                  using this page will <strong>retain the same time relative to the event start</strong> instead of the
+                  same absolute time.</p>
+                <p>For example, if the event start time is 06:00 and you change it to 06:10, a finish time at 08:00
+                  <strong>would be pushed out to 08:10</strong>, while the elapsed finish time would remain constant at
+                  2:00.</p>
+                <p>If you intend to keep existing absolute times constant and change elapsed times, use
+                  the <%= link_to 'Change start time', edit_start_time_event_path(@event) %> page instead.</p>
+                <hr>
+              </div>
+            </div>
+        <% end %>
+
         <div class="form-group">
           <div class="control-label col-sm-2">
             <%= f.label :home_time_zone %>

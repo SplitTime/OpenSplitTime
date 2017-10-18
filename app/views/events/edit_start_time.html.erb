@@ -16,9 +16,11 @@
   <div class="col-xs-12">
     <p>Use this page to update the start time of an event that <strong>has existing split times</strong> when you want
       those split
-      times to <strong>retain the same absolute time</strong> instead of the same time relative to the event start.</p>
+      times to <strong>retain the same absolute time</strong> instead of the same elapsed time relative to the event start.</p>
     <p>For example, if the event start time is 06:00 and you change it to 06:10, a finish time at 08:00 would remain at
       08:00, resulting in the <strong>elapsed finish time being shortened from 2:00 to 1:50</strong>.</p>
+    <p>If you intend to keep existing elapsed times constant and change absolute times, use
+      the <%= link_to 'Edit event', edit_event_path(@event) %> page instead.</p>
     <hr>
   </div>
 </div>

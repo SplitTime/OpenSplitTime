@@ -9,6 +9,7 @@ module Interactors
 
     def initialize(args)
       @event = args[:event]
+      @new_start_time = args[:new_start_time]
       @background_channel = args[:background_channel]
       @errors = []
     end
@@ -16,18 +17,18 @@ module Interactors
     def perform!
       unless start_time_shift.zero?
         ActiveRecord::Base.transaction do
-          update_split_times
-          errors << resource_error_object(event) unless event.save
+          errors << resource_error_object(event) unless event.update(start_time: new_start_time)
+          update_split_times unless errors.present?
           raise ActiveRecord::Rollback if errors.present?
         end
       end
-      report_response(response)
+      report_interactor_response(response)
       response
     end
 
     private
 
-    attr_reader :event, :background_channel, :errors
+    attr_reader :event, :new_start_time, :background_channel, :errors
 
     def update_split_times
       total_count = non_start_split_times.size
@@ -43,7 +44,7 @@ module Interactors
     end
 
     def start_time_shift
-      @start_time_shift ||= event.start_time - event.start_time_was
+      @start_time_shift ||= Time.parse(new_start_time) - event.start_time
     end
 
     def response

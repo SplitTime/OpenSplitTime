@@ -13,6 +13,17 @@
 </div>
 
 <div class="row">
+  <div class="col-xs-12">
+    <p>Use this page to update the start time of an event that <strong>has existing split times</strong> when you want
+      those split
+      times to <strong>retain the same absolute time</strong> instead of the same time relative to the event start.</p>
+    <p>For example, if the event start time is 06:00 and you change it to 06:10, a finish time at 08:00 would remain at
+      08:00, resulting in the <strong>elapsed finish time being shortened from 2:00 to 1:50</strong>.</p>
+    <hr>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-md-12">
     <%= form_for(@event, url: update_start_time_event_path(@event), :html => {class: "form-horizontal", role: "form"}) do |f| %>
 

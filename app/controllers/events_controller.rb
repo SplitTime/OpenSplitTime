@@ -220,10 +220,10 @@ class EventsController < ApplicationController
 
   def update_start_time
     authorize @event
-    @event.assign_attributes(params.require(:event).permit(:start_time_in_home_zone, :home_time_zone))
+    new_start_time = Event.new(params.require(:event).permit(:home_time_zone, :start_time_in_home_zone)).start_time.to_s
 
-    response = Interactors::AdjustEventStartTime.perform!(@event)
-    set_flash_message(response)
+    EventUpdateStartTimeJob.perform_later(event: @event, new_start_time: new_start_time)
+    flash[:success] = "Updating start time for #{@event.name}. "
     redirect_to stage_event_path(@event)
   end
 

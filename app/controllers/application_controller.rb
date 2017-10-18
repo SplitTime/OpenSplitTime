@@ -48,9 +48,9 @@ class ApplicationController < ActionController::Base
 
   def set_flash_message(response)
     if response.successful?
-      flash[:success] = response.message
+      flash[:success] = [flash[:success], response.message].compact.join("\n")
     else
-      flash[:warning] = "#{response.message}: #{response.error_report}"
+      flash[:warning] = [flash[:warning], "#{response.message}: #{response.error_report}"].compact.join("\n")
     end
   end
 

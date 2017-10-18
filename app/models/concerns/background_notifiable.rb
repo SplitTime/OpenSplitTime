@@ -20,6 +20,14 @@ module BackgroundNotifiable
     notifier.publish(channel: background_channel, event: 'error', message: args[:message]) if background_channel
   end
 
+  def report_response(response)
+    if response.successful?
+      report_status(message: response.message)
+    else
+      report_error(message: "#{response.message}: #{response.error_report}")
+    end
+  end
+
   def report_live_times_available(event)
     channel = "live_times_available_#{event.id}"
     message = {count: event.live_times.unconsidered.size}

@@ -54,4 +54,13 @@ RSpec.describe Interactors::Response do
       end
     end
   end
+
+  describe '#message_with_error_report' do
+    let(:message) { 'This thing broke' }
+    let(:errors) { [{title: 'Bad error', detail: {message: 'Some bad stuff happened'}}] }
+
+    it 'reports a message with the associated error report' do
+      expect(subject.message_with_error_report).to eq("This thing broke: 1 error was reported:\nBad error: Some bad stuff happened")
+    end
+  end
 end

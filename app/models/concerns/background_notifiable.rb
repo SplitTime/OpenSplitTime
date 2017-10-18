@@ -20,11 +20,11 @@ module BackgroundNotifiable
     notifier.publish(channel: background_channel, event: 'error', message: args[:message]) if background_channel
   end
 
-  def report_response(response)
+  def report_interactor_response(response)
     if response.successful?
       report_status(message: response.message)
     else
-      report_error(message: "#{response.message}: #{response.error_report}")
+      report_error(message: response.message_with_error_report)
     end
   end
 

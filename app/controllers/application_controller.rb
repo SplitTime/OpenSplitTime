@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
     if response.successful?
       flash[:success] = [flash[:success], response.message].compact.join("\n")
     else
-      flash[:warning] = [flash[:warning], "#{response.message}: #{response.error_report}"].compact.join("\n")
+      flash[:warning] = [flash[:warning], response.message_with_error_report].compact.join("\n")
     end
   end
 

@@ -15,6 +15,10 @@ module Interactors
       end
     end
 
+    def message_with_error_report
+      "#{message}: #{error_report}"
+    end
+
     private
 
     def error_details

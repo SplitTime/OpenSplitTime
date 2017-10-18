@@ -15,7 +15,9 @@ module Interactors
     end
 
     def perform!
-      unless start_time_shift.zero?
+      if start_time_shift.zero?
+        sleep(1)
+      else
         ActiveRecord::Base.transaction do
           errors << resource_error_object(event) unless event.update(start_time: new_start_time)
           update_split_times unless errors.present?
@@ -33,9 +35,10 @@ module Interactors
     def update_split_times
       total_count = non_start_split_times.size
       non_start_split_times.each.with_index(1) do |st, index|
+        report_progress(action: 'processed', resource: 'split time', current: index, total: total_count)
+        next if errors.present?
         st.time_from_start -= start_time_shift
         errors << resource_error_object(st) unless st.save
-        report_progress(action: 'updated', resource: 'split time', current: index, total: total_count)
       end
     end
 
@@ -57,7 +60,7 @@ module Interactors
       elsif start_time_shift.zero?
         "Start time for #{event} was not changed. "
       else
-        "Start time for #{event} was changed from #{event.start_time_was} to #{event.start_time} and non-start split times were adjusted #{adjustment_amount} to maintain absolute times. "
+        "Start time for #{event} was changed to #{event.start_time_in_home_zone}. Split times were adjusted #{adjustment_amount} to maintain absolute times. "
       end
     end
 

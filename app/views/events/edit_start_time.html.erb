@@ -4,7 +4,7 @@
   <div class="col-xs-5">
     <h2><strong><%= "#{@event.name}: Change Start Time" %></strong></h2>
     <h4>
-      <%= "Start Time: #{l(@event.start_time, format: :full_day_time_and_zone)}" %>
+      <%= "Start Time: #{l(@event.start_time_in_home_zone, format: :full_day_time_and_zone)}" %>
       <br/>
       Run on <%= link_to @event.course_name, course_path(@event.course) %>
       <br/>Organized by <%= link_to @event.organization.name, organization_path(@event.organization) %>
@@ -42,16 +42,6 @@
                                       date_default_date: (Date.current + 6.hours).strftime('%m/%d/%Y %H:%M:%S')} %>
               <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
             </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :home_time_zone %>
-          </div>
-          <div class="col-sm-8">
-            <%= collection_select(:event, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                  {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "dropdown-select-field"}) %>
           </div>
         </div>
 

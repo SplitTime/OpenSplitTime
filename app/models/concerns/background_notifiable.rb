@@ -1,12 +1,11 @@
 module BackgroundNotifiable
   extend ActiveSupport::Concern
 
-  RECORDS_PER_UPDATE = 10
-
   def report_progress(args)
     current = args[:current]
     total = args[:total]
-    if background_channel && ((current % RECORDS_PER_UPDATE == 0) || (current == total))
+    records_per_update = total / 20
+    if background_channel && ((current % records_per_update == 0) || (current == 1) || (current == total))
       notifier.publish(channel: background_channel, event: 'update', action: args[:action],
                        resource: args[:resource], current_object: current, total_objects: total)
     end
@@ -24,7 +23,7 @@ module BackgroundNotifiable
     if response.successful?
       report_status(message: response.message)
     else
-      report_error(message: response.message_with_error_report)
+      report_status(message: response.message_with_error_report)
     end
   end
 

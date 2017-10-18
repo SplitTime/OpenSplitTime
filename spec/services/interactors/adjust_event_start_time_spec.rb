@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Interactors::AdjustEventStartTime do
+  let(:response) { Interactors::AdjustEventStartTime.perform!(event: event, new_start_time: new_start_time) }
+
   let(:course) { create(:course_with_standard_splits, splits_count: 3) }
   let(:event) { create(:event, course: course, laps_required: 1) }
   let(:efforts) { create_list(:effort, 2, event: event) }
   let!(:original_start_time) { event.start_time }
+  let(:new_start_time) { (event.start_time + adjustment).to_s }
 
   before do
     event.splits << course.splits
@@ -19,12 +22,10 @@ RSpec.describe Interactors::AdjustEventStartTime do
   end
 
   context 'when the event start time has moved forward' do
-    before do
-      event.start_time += 100
-    end
+    let(:adjustment) { 100 }
 
     it 'adjusts all non-start split times backward by the same amount' do
-      response = Interactors::AdjustEventStartTime.perform!(event: event)
+      response
       event.reload
 
       expect(event.start_time).to eq(original_start_time + 100)
@@ -35,12 +36,10 @@ RSpec.describe Interactors::AdjustEventStartTime do
   end
 
   context 'when the event start time has moved backward' do
-    before do
-      event.start_time -= 100
-    end
+    let(:adjustment) { -100 }
 
     it 'adjusts all non-start split times forward by the same amount' do
-      response = Interactors::AdjustEventStartTime.perform!(event: event)
+      response
       event.reload
 
       expect(event.start_time).to eq(original_start_time - 100)
@@ -51,12 +50,10 @@ RSpec.describe Interactors::AdjustEventStartTime do
   end
 
   context 'when the event start time has moved forward beyond the time of any time_from_start' do
-    before do
-      event.start_time += 1200
-    end
+    let(:adjustment) { 1200 }
 
     it 'does not adjust the event start time or any times but returns descriptive errors' do
-      response = Interactors::AdjustEventStartTime.perform!(event: event)
+      response
       event.reload
 
       expect(event.start_time).to eq(original_start_time)
@@ -67,8 +64,10 @@ RSpec.describe Interactors::AdjustEventStartTime do
   end
 
   context 'when the event start time has not changed' do
+    let(:adjustment) { 0 }
+
     it 'does not adjust any times' do
-      response = Interactors::AdjustEventStartTime.perform!(event: event)
+      response
       event.reload
 
       expect(event.start_time).to eq(original_start_time)

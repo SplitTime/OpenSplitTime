@@ -27,6 +27,8 @@ class Event < ApplicationRecord
   validate :home_time_zone_exists
   validate :course_is_consistent
 
+  after_destroy :destroy_orphaned_event_group
+
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
     search(search_param)
@@ -61,6 +63,12 @@ class Event < ApplicationRecord
 
   def ordered_events_within_group
     event_group&.ordered_events
+  end
+
+  def destroy_orphaned_event_group
+    if events_within_group.empty?
+      event_group.destroy
+    end
   end
 
   def guaranteed_short_name

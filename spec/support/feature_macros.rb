@@ -1,10 +1,8 @@
 module FeatureMacros
   def create_hardrock_event
-    organization = create(:organization)
     course = create(:course)
     splits = create_list(:splits_hardrock_ccw, 16, course: course)
-    event_group = create(:event_group, organization: organization)
-    event = create(:event, course: course, event_group: event_group)
+    event = create(:event, course: course)
     event.splits << splits
     efforts = create_list(:effort, 5, event: event)
     create_list(:split_times_hardrock_36, 30, effort: efforts.first)

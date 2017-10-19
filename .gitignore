@@ -96,4 +96,6 @@ pickle-email-*.html
 *~
 .ruby-gemset
 .ruby-version
-dump.rdb
+dump.rdb/public/packs
+/public/packs-test
+/node_modules

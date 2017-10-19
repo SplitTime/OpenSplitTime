@@ -66,11 +66,10 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'capybara-selenium'
-  gem 'database_cleaner', '~> 1.6'
   gem 'factory_girl_rails', require: false
   gem 'ffaker'
   gem 'pry'
+  gem 'selenium-webdriver'
 end
 
 group :development, :test do

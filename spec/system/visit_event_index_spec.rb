@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Visit the events index' do
+RSpec.describe 'Visit the events index' do
   let(:user) { create(:user) }
   let(:owner) { create(:user) }
   let(:steward) { create(:user) }

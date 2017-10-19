@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.feature 'Event staging app flow', js: true do
-  let(:user) { create(:user) }
+RSpec.describe 'Event staging app flow', type: :system, js: true do
+  let!(:user) { create(:user) }
 
   # Build stubbed resources purely to get random attributes for fields
   let(:stubbed_org) { build_stubbed(:organization) }

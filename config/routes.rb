@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       put :set_dropped_attributes
       put :start_ready_efforts
       patch :update_start_time
+      patch :update_all_efforts
       delete :delete_all_efforts
     end
   end

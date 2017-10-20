@@ -211,6 +211,14 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
+  def update_all_efforts
+    authorize @event
+    attributes = params.require(:efforts).permit(:checked_in).to_hash
+    @event.efforts.update_all(attributes)
+
+    redirect_to stage_event_path(@event)
+  end
+
 # This action updates the event start_time and adjusts time_from_start on all
 # existing non-start split_times to keep absolute time consistent.
 

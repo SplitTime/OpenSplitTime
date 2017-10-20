@@ -173,6 +173,17 @@ module EventsHelper
             class: 'btn btn-sm btn-primary'
   end
 
+  def no_efforts_text_helper(view_object)
+    case
+    when view_object.event_efforts.empty?
+      "No efforts have been added to this event. "
+    when view_object.display_style == 'unstarted'
+      "All efforts have started. "
+    else
+      "No efforts have started. "
+    end
+  end
+
   def suggested_match_id_hash(efforts)
     efforts.select(&:suggested_match).map { |effort| [effort.id, effort.suggested_match.id] }.to_h
   end

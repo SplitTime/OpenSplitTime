@@ -66,6 +66,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
+  def update_all_efforts?
+    user.authorized_to_edit?(event)
+  end
+
   def edit_start_time?
     user.authorized_to_edit?(event)
   end

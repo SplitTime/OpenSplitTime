@@ -28,6 +28,24 @@ module ToggleHelper
     end
   end
 
+  def link_to_check_in_all(view_object)
+    url = update_all_efforts_event_path(view_object.event, efforts: {checked_in: true}, button: :check_in_all)
+    link_to_with_icon("glyphicon glyphicon-check", 'Check in all', url, {
+        method: 'patch',
+        data: {confirm: 'This will check in all entrants, making them eligible to start. Do you want to proceed?'},
+        class: 'btn btn-sm btn-success'
+    })
+  end
+
+  def link_to_check_out_all(view_object)
+    url = update_all_efforts_event_path(view_object.event, efforts: {checked_in: false}, button: :check_out_all)
+    link_to_with_icon("glyphicon glyphicon-unchecked", 'Check out all', url, {
+        method: 'patch',
+        data: {confirm: 'This will check out all entrants, making them ineligible to start. Do you want to proceed?'},
+        class: 'btn btn-sm btn-default'
+    })
+  end
+
   def link_to_toggle_email_subscription(person)
     if @current_user
       link_to_toggle_subscription(person: person,

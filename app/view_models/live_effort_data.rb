@@ -51,7 +51,7 @@ class LiveEffortData
   end
 
   def valid?
-    subject_split.real_record? && effort.real_record? && lap.present?
+    subject_split.real_record? && effort.real_record? && lap.present? && !homeless_booleans?
   end
 
   def clean?
@@ -141,6 +141,10 @@ class LiveEffortData
   private
 
   attr_reader :event, :params, :times_container
+
+  def homeless_booleans?
+    [params[:time_in], params[:time_out]].all?(&:blank?) && new_split_times.values.none?(&:time_exists)
+  end
 
   def effort_from_params
     return Effort.null_record if params[:bib_number].include?('*')

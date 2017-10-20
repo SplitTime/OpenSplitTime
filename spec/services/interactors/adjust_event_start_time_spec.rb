@@ -30,7 +30,7 @@ RSpec.describe Interactors::AdjustEventStartTime do
 
       expect(event.start_time).to eq(original_start_time + 100)
       expect(SplitTime.all.pluck(:time_from_start)).to match_array([0, 900, 1900, 2900, 0, 1400, 2400])
-      expect(response.message).to include("Start time for #{event} was changed")
+      expect(response.message).to include("Start time for #{event.name} was changed")
       expect(response.message).to include('Split times were adjusted backward by 100.0 seconds')
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe Interactors::AdjustEventStartTime do
 
       expect(event.start_time).to eq(original_start_time - 100)
       expect(SplitTime.all.pluck(:time_from_start)).to match_array([0, 1100, 2100, 3100, 0, 1600, 2600])
-      expect(response.message).to include("Start time for #{event} was changed")
+      expect(response.message).to include("Start time for #{event.name} was changed")
       expect(response.message).to include('Split times were adjusted forward by 100.0 seconds')
     end
   end
@@ -72,7 +72,7 @@ RSpec.describe Interactors::AdjustEventStartTime do
 
       expect(event.start_time).to eq(original_start_time)
       expect(SplitTime.all.pluck(:time_from_start)).to match_array([0, 1000, 2000, 3000, 0, 1500, 2500])
-      expect(response.message).to include("Start time for #{event} was not changed")
+      expect(response.message).to include("Start time for #{event.name} was not changed")
     end
   end
 end

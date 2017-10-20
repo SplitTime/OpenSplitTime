@@ -56,11 +56,11 @@ module Interactors
 
     def message
       if errors.present?
-        "Unable to update event start time for #{event}. "
+        "Unable to update event start time for #{event.name}. "
       elsif start_time_shift.zero?
-        "Start time for #{event} was not changed. "
+        "Start time for #{event.name} was not changed. "
       else
-        "Start time for #{event} was changed to #{event.start_time_in_home_zone}. Split times were adjusted #{adjustment_amount} to maintain absolute times. "
+        "Start time for #{event.name} was changed to #{event.start_time_in_home_zone}. Split times were adjusted #{adjustment_amount} to maintain absolute times. "
       end
     end
 

@@ -15,7 +15,7 @@ class LiveEffortData
                            exclusive: [:event, :params, :ordered_splits, :effort, :times_container],
                            class: self.class)
     @event = args[:event]
-    @params = args[:params].symbolize_keys
+    @params = args[:params]
     @ordered_splits ||= args[:ordered_splits] || event.ordered_splits
     @effort ||= args[:effort] || effort_from_params
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)

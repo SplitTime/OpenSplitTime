@@ -8,15 +8,16 @@ RSpec.describe LiveDataEntryReporter do
   let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
   describe '#initialize' do
+    let(:params) { ActionController::Parameters.new(params_hash) }
+    let(:params_hash) { {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'} }
+
     it 'initializes with an event and params and a LiveEffortData object in an args hash' do
       event = build_stubbed(:event)
-      params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data) }.not_to raise_error
     end
 
     it 'raises an ArgumentError if no event is given' do
-      params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(params: params, effort_data: effort_data) }.to raise_error(/must include event/)
     end
@@ -29,29 +30,28 @@ RSpec.describe LiveDataEntryReporter do
 
     it 'raises an ArgumentError if any parameter other than event, params, or effort_data is given' do
       event = build_stubbed(:event)
-      params = {'split_id' => '2', 'bib_number' => '124', 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       effort_data = instance_double(LiveEffortData)
       expect { LiveDataEntryReporter.new(event: event, params: params, effort_data: effort_data, random_param: 123) }
           .to raise_error(/may not include random_param/)
     end
   end
 
-  describe '#response_row[:reportText]' do
+  describe '#full_report[:reportText]' do
     it 'returns the name and time of the furthest reported split when provided split is prior to furthest reported split' do
       event, ordered_splits, lap_splits = resources_for_test_event
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
       provided_split = ordered_splits[2]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '11:30:00', 'time_out' => '11:50:00', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+                     'time_in' => '11:30:00', 'time_out' => '11:50:00', 'id' => '4'}
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
       stopped_index = nil
       stopped_time_offset = nil
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00')
     end
@@ -61,16 +61,16 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(3) # Through Cunningham out
       provided_split = ordered_splits[2]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
                 'time_in' => '10:30:00', 'time_out' => '10:50:00', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 2.5.hours
       stopped_index = nil
       stopped_time_offset = nil
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Cunningham Out at Fri 08:30')
     end
@@ -80,16 +80,16 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
       provided_split = ordered_splits[2]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
                 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
       stopped_index = -1
       stopped_time_offset = 7.hours
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 and stopped there')
     end
@@ -99,16 +99,16 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(9) # Through Sherman out
       provided_split = ordered_splits[2]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
                 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
       stopped_index = -3
       stopped_time_offset = 5.hours
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Sherman Out at Fri 13:00 but reported stopped at PoleCreek as of Fri 11:00')
     end
@@ -118,16 +118,16 @@ RSpec.describe LiveDataEntryReporter do
       effort = Effort.null_record
       split_times = []
       provided_split = ordered_splits[2]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
                 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
       stopped_index = -3
       stopped_time_offset = 5.hours
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('n/a')
     end
@@ -137,37 +137,37 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = []
       provided_split = ordered_splits[2]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
                 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 2
       prior_valid_time_offset = 2.5.hours
       last_reported_time_offset = 7.hours
       stopped_index = -3
       stopped_time_offset = 5.hours
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:reportText]).to eq('Not yet started')
     end
   end
 
-  describe '#response_row[:timeInAid]' do
+  describe '#full_report[:timeInAid]' do
     it 'returns elapsed time formatted in minutes between provided in and out times' do
       event, ordered_splits, lap_splits = resources_for_test_event
       effort = test_effort
       split_times = split_times_4.first(1)
       provided_split = ordered_splits[1]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
                 'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 0
       prior_valid_time_offset = 0.hours
       last_reported_time_offset = 0.hours
       stopped_index = nil
       stopped_time_offset = nil
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:timeInAid]).to eq('20m')
     end
@@ -177,16 +177,16 @@ RSpec.describe LiveDataEntryReporter do
       effort = test_effort
       split_times = split_times_4.first(1)
       provided_split = ordered_splits[1]
-      params = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
+      params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
                 'time_in' => '', 'time_out' => '', 'id' => '4'}
-      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params)
+      effort_data = build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
 
       prior_valid_index = 0
       prior_valid_time_offset = 0.hours
       last_reported_time_offset = 0.hours
       stopped_index = nil
       stopped_time_offset = nil
-      reporter = build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+      reporter = build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                                 last_reported_time_offset, stopped_index, stopped_time_offset)
       expect(reporter.full_report[:timeInAid]).to eq('--')
     end
@@ -200,7 +200,8 @@ RSpec.describe LiveDataEntryReporter do
     [event, ordered_splits, lap_splits]
   end
 
-  def build_live_effort_data(event, effort, split_times, ordered_splits, params)
+  def build_live_effort_data(event, effort, split_times, ordered_splits, params_hash)
+    params = ActionController::Parameters.new(params_hash)
     allow(event).to receive(:ordered_splits).and_return(ordered_splits)
     allow(effort).to receive(:ordered_split_times).and_return(split_times)
     LiveEffortData.new(event: event,
@@ -210,8 +211,9 @@ RSpec.describe LiveDataEntryReporter do
                        times_container: times_container)
   end
 
-  def build_reporter(event, params, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
+  def build_reporter(event, params_hash, effort_data, lap_splits, prior_valid_index, prior_valid_time_offset,
                      last_reported_time_offset, stopped_index, stopped_time_offset)
+    params = ActionController::Parameters.new(params_hash)
     existing_times = effort_data.ordered_existing_split_times
     prior_valid_split_time = existing_times[prior_valid_index]
     last_reported_split_time = existing_times.last

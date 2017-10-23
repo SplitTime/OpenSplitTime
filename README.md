@@ -15,7 +15,7 @@ Ruby on Rails
 This application requires:
 
 - Ruby 2.3.3
-- Rails 5.0.6
+- Rails 5.1.4
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 
@@ -89,6 +89,14 @@ PUSHER_KEY=xxx
 PUSHER_SECRET_KEY=xxx
 ```
 Contact us for the dev team's Pusher credentials.
+
+**Sidekiq and Redis**
+
+OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Install Redis using the simple instructions you'll find at [redis.io](https://redis.io). Run your Sidekiq server from the command line:
+
+`$ sidekiq`
+
+You'll know you did it right when you see the awesome ASCII art.
 
 **ChromeDriver**
 

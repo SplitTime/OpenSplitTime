@@ -1,7 +1,7 @@
 require 'rails_helper'
 include FeatureMacros
 
-RSpec.feature 'visit the plan efforts page and plan an effort' do
+RSpec.describe 'visit the plan efforts page and plan an effort' do
   before(:context) do
     create_hardrock_event
   end

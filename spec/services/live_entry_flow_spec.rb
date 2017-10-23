@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Live entry app flow', js: true do
+RSpec.describe 'Live entry app flow', type: :system, js: true do
   let(:user) { create(:user) }
   let(:course) { create(:course_with_standard_splits, :with_description, created_by: user.id) }
   let(:organization) { create(:organization, created_by: user.id) }
@@ -21,7 +21,7 @@ RSpec.feature 'Live entry app flow', js: true do
   context 'For a single-lap event' do
     let(:event) { create(:event, event_group: event_group, course: course, laps_required: 1, start_time: '2017-10-10 08:00:00') }
 
-    scenario 'Check setup' do
+    scenario 'Enter and submit times into previously unstarted efforts' do
       login_as user
       visit live_entry_live_event_path(event)
       wait_for_ajax

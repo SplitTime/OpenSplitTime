@@ -6,6 +6,7 @@
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "OpenSplitTime" %>">
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_pack_tag 'application' %>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGMCB8fvvGJzp_aR0Hp_YUyopUiAgGoCE"></script>
   <%= csrf_meta_tags %>
   <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>

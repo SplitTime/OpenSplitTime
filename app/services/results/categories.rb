@@ -22,7 +22,11 @@ module Results
           Results::Category.new('50 to 59 Men', %w[male], 50, 59),
           Results::Category.new('50 to 59 Women', %w[female], 50, 59),
           Results::Category.new('60 to 69 Men', %w[male], 60, 69),
-          Results::Category.new('60 to 69 Women', %w[female], 60, 69)
+          Results::Category.new('60 to 69 Women', %w[female], 60, 69),
+          Results::Category.new('Under 40 Men', %w[male], nil, 39),
+          Results::Category.new('Under 40 Women', %w[female], nil, 39),
+          Results::Category.new('Grandmasters Men', %w[male], 50),
+          Results::Category.new('Grandmasters Women', %w[female], 50)
       ]
     end
   end

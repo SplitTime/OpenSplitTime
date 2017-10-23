@@ -105,6 +105,16 @@
         </div>
 
         <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :podium_template %>
+          </div>
+          <div class="col-sm-8">
+            <%= collection_select(:event, :podium_template, Results::Templates.all, :name, :name,
+                                  {prompt: true}, {class: "dropdown-select-field"}) %>
+          </div>
+        </div>
+
+        <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>
           </div>

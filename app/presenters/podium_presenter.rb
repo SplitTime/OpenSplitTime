@@ -13,6 +13,10 @@ class PodiumPresenter < BasePresenter
     event.start_time
   end
 
+  def template_name
+    template.name
+  end
+
   private
 
   attr_reader :template

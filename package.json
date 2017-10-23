@@ -5,6 +5,6 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.9.2"
+    "webpack-dev-server": "^2.9.3"
   }
 }

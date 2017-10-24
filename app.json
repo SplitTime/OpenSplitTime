@@ -10,6 +10,7 @@
         { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
       ],
       "scripts": {
+        "test-setup": "bin/rails assets:precompile",
         "test": "bin/rspec"
       }
     }

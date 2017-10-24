@@ -52,7 +52,6 @@ RSpec.describe EffortEventChanger do
 
       it 'updates the effort start offset such that the absolute effort start_time does not change' do
         existing_start_time = effort.start_time
-        puts existing_start_time
         changer = EffortEventChanger.new(effort: effort, event: new_event)
         changer.assign_event
         reloaded_effort = Effort.find(effort.id)

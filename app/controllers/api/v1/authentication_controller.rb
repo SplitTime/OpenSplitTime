@@ -10,7 +10,6 @@ class Api::V1::AuthenticationController < ApiController
       elsif params[:durable]
         render json: {errors: ['Invalid durable code']}, status: :bad_request
       else
-        p "JWT generated for #{user.email}, #{user.id}"
         render json: {token: JsonWebToken.encode(sub: user.id)}
       end
     else

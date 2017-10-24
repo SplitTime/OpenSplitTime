@@ -10,8 +10,6 @@ class ApiController < ApplicationController
 
   def index
     authorize controller_class
-    p "Current user: #{current_user.email}, #{current_user.id}"
-    p "Auth header: #{request.headers.fetch('Authorization', '').split(' ').last}"
     authorized_scope = policy_class::Scope.new(current_user, controller_class)
     working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
     @resources = working_scope.where(prepared_params[:filter]).order(prepared_params[:sort]).standard_includes

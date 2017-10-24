@@ -5,6 +5,10 @@
         "heroku-redis:hobby-dev",
         "heroku-postgresql:hobby-basic"
       ],
+      "buildpacks": [
+        { "url": "heroku/ruby" },
+        { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
+      ],
       "scripts": {
         "test": "bin/rspec"
       }

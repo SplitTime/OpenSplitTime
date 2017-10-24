@@ -5,12 +5,14 @@
 <div class="row header">
   <div class="col-xs-7">
     <%= render 'event_info', view_object: @presenter, title: 'Podium' %>
-    <h4><%= "Using template: #{@presenter.template_name}" %></h4>
+    <h4><%= @presenter.template_name ? "Using template: #{@presenter.template_name}" : "The organizer has not specified a podium template." %></h4>
   </div>
 </div>
 
-<table class="table table-condensed table-striped">
-  <% @presenter.categories.each do |category| %>
-      <%= render 'podium_category', category: category %>
-  <% end %>
-</table>
+<% if @presenter.template_name %>
+    <table class="table table-condensed table-striped">
+      <% @presenter.categories.each do |category| %>
+          <%= render 'podium_category', category: category %>
+      <% end %>
+    </table>
+<% end %>

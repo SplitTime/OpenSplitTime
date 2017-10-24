@@ -175,13 +175,8 @@ class EventsController < ApplicationController
   end
 
   def podium
-    if @event.podium_template
-      template = Results::FillTemplate.perform(event: @event, template_name: @event.podium_template)
-      @presenter = PodiumPresenter.new(@event, template)
-    else
-      flash[:warning] = 'No podium template has been specified. Please choose one from the Edit Event screen. '
-      redirect_to stage_event_path(@event)
-    end
+    template = Results::FillTemplate.perform(event: @event, template_name: @event.podium_template)
+    @presenter = PodiumPresenter.new(@event, template)
   end
 
   def series

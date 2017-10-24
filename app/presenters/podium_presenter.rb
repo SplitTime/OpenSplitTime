@@ -2,7 +2,6 @@ class PodiumPresenter < BasePresenter
 
   attr_reader :event
   delegate :name, :course, :course_name, :organization, :organization_name, :to_param, :multiple_laps?, to: :event
-  delegate :categories, to: :template
 
   def initialize(event, template)
     @event = event
@@ -13,8 +12,12 @@ class PodiumPresenter < BasePresenter
     event.start_time
   end
 
+  def categories
+    template&.categories
+  end
+
   def template_name
-    template.name
+    template&.name
   end
 
   private

@@ -4,7 +4,7 @@ module FeatureMacros
     splits = create_list(:splits_hardrock_ccw, 16, course: course)
     event = create(:event, course: course)
     event.splits << splits
-    efforts = create_list(:effort, 5, event: event)
+    efforts = create_list(:effort, 5, :with_birthdate, event: event)
     create_list(:split_times_hardrock_36, 30, effort: efforts.first)
     create_list(:split_times_hardrock_38, 30, effort: efforts.second)
     create_list(:split_times_hardrock_41, 30, effort: efforts.third)

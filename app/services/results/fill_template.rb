@@ -6,10 +6,11 @@ module Results
 
     def initialize(args)
       @event = args[:event]
-      @template = Results::Templates.find(args[:template_name])
+      @template = Results::Templates.find(args[:template_name]) if args[:template_name]
     end
 
     def perform
+      return nil unless template
       Results::Compute.perform(efforts: efforts,
                                categories: template.categories,
                                podium_size: template.podium_size,

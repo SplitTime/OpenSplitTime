@@ -41,76 +41,85 @@ RSpec.describe Effort, type: :model do
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
   describe 'validations' do
-    let(:course) { build_stubbed(:course) }
-    let(:event) { build_stubbed(:event, course: course) }
-    let(:person) { build_stubbed(:person) }
+    context 'for validations independent of existing database records' do
+      let(:course) { build_stubbed(:course) }
+      let(:event) { build_stubbed(:event, course: course) }
+      let(:person) { build_stubbed(:person) }
 
-    it 'saves a generic factory-created record to the database' do
-      effort = create(:effort)
-      expect(Effort.count).to eq(1)
-      expect(Effort.first).to eq(effort)
+      it 'saves a generic factory-created record to the database' do
+        effort = create(:effort)
+        expect(Effort.count).to eq(1)
+        expect(Effort.first).to eq(effort)
+      end
+
+      it 'is valid when created with an event_id, first_name, last_name, and gender' do
+        effort = build_stubbed(:effort, event: event)
+        expect(effort.event_id).to be_present
+        expect(effort.first_name).to be_present
+        expect(effort.last_name).to be_present
+        expect(effort.gender).to be_present
+        expect(effort).to be_valid
+      end
+
+      it 'is invalid without an event_id' do
+        effort = build_stubbed(:effort, event_id: nil)
+        expect { effort.valid? }.to raise_error Module::DelegationError
+        expect(effort.errors[:event_id]).to include("can't be blank")
+      end
+
+      it 'is invalid without a first_name' do
+        effort = build_stubbed(:effort, event: event, first_name: nil)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:first_name]).to include("can't be blank")
+      end
+
+      it 'is invalid without a last_name' do
+        effort = build_stubbed(:effort, event: event, last_name: nil)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:last_name]).to include("can't be blank")
+      end
+
+      it 'is invalid without a gender' do
+        effort = build_stubbed(:effort, event: event, gender: nil)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:gender]).to include("can't be blank")
+      end
     end
 
-    it 'is valid when created with an event_id, first_name, last_name, and gender' do
-      effort = build_stubbed(:effort, event: event)
-      expect(effort.event_id).to be_present
-      expect(effort.first_name).to be_present
-      expect(effort.last_name).to be_present
-      expect(effort.gender).to be_present
-      expect(effort).to be_valid
-    end
+    context 'for validations dependent on existing database records' do
+      let(:event) { create(:event) }
+      let(:other_event) { build_stubbed(:event, event_group: existing_effort.event.event_group) }
+      let(:person_1) { create(:person) }
+      let(:person_2) { create(:person) }
+      let!(:existing_effort) { create(:effort, event: event, person: person_1, bib_number: 20) }
 
-    it 'is invalid without an event_id' do
-      effort = build_stubbed(:effort, event_id: nil)
-      expect { effort.valid? }.to raise_error Module::DelegationError
-      expect(effort.errors[:event_id]).to include("can't be blank")
-    end
+      it 'does not permit more than one effort by a person in a given event group' do
+        effort = build_stubbed(:effort, event: event, person: person_1)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:person]).to include(/has already been entered in/)
+      end
 
-    it 'is invalid without a first_name' do
-      effort = build_stubbed(:effort, event: event, first_name: nil)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:first_name]).to include("can't be blank")
-    end
+      it 'permits more than one effort in a given event with unassigned people' do
+        effort = build_stubbed(:effort, event: event, person: nil)
+        expect(effort).to be_valid
+      end
 
-    it 'is invalid without a last_name' do
-      effort = build_stubbed(:effort, event: event, last_name: nil)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:last_name]).to include("can't be blank")
-    end
+      it 'permits more than one effort in a given event with different people' do
+        effort = build_stubbed(:effort, event: event, person: person_2)
+        expect(effort).to be_valid
+      end
 
-    it 'is invalid without a gender' do
-      effort = build_stubbed(:effort, event: event, gender: nil)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:gender]).to include("can't be blank")
-    end
+      it 'does not permit duplicate bib_numbers within a given event' do
+        effort = build_stubbed(:effort, event: event, bib_number: existing_effort.bib_number)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:bib_number]).to include(/already exists/)
+      end
 
-    it 'does not permit more than one effort by a person in a given event group' do
-      existing_person = create(:person)
-      existing_effort = create(:effort, person: existing_person)
-      effort = build_stubbed(:effort, event: existing_effort.event, person: existing_person)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:person]).to include(/has already been entered in/)
-    end
-
-    it 'permits more than one effort in a given event with unassigned people' do
-      existing_effort = create(:effort, person: nil)
-      effort = build_stubbed(:effort, event: existing_effort.event, person: nil)
-      expect(effort).to be_valid
-    end
-
-    it 'does not permit duplicate bib_numbers within a given event' do
-      existing_effort = create(:effort, bib_number: 20)
-      effort = build_stubbed(:effort, event: existing_effort.event, bib_number: 20)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:bib_number]).to include(/already exists/)
-    end
-
-    it 'does not permit duplicate bib_numbers within a given event_group' do
-      existing_effort = create(:effort, bib_number: 20)
-      other_event = create(:event, event_group: existing_effort.event.event_group)
-      effort = build_stubbed(:effort, event: other_event, bib_number: 20)
-      expect(effort).not_to be_valid
-      expect(effort.errors[:bib_number]).to include(/already exists/)
+      it 'does not permit duplicate bib_numbers within a given event_group' do
+        effort = build_stubbed(:effort, event: other_event, bib_number: existing_effort.bib_number)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:bib_number]).to include(/already exists/)
+      end
     end
   end
 

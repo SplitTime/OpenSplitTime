@@ -33,7 +33,7 @@ RSpec.describe Organization, type: :model do
     let(:visible_event_group) { create(:event_group, concealed: false) }
 
     it 'returns true if all event_groups associated with the organization are concealed' do
-      organization = create(:organization, concealed: false)
+      organization = build(:organization, concealed: false)
       concealed_event_group.update(organization: organization)
       organization.reload
       expect(organization.event_groups.size).to eq(1)
@@ -41,7 +41,7 @@ RSpec.describe Organization, type: :model do
     end
 
     it 'returns false if any event_groups associated with the organization are visible' do
-      organization = create(:organization, concealed: true)
+      organization = build(:organization, concealed: true)
       visible_event_group.update(organization: organization)
       concealed_event_group.update(organization: organization)
       organization.reload
@@ -50,7 +50,7 @@ RSpec.describe Organization, type: :model do
     end
 
     it 'returns true if no event_groups are associated with the organization' do
-      organization = create(:organization, concealed: false)
+      organization = build(:organization, concealed: false)
       expect(organization.event_groups.size).to eq(0)
       expect(organization.should_be_concealed?).to eq(true)
     end

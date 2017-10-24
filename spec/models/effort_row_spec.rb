@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EffortRow, type: :model do
-  let (:test_effort) { create(:effort, state_code: 'CA', country_code: 'US', age: 30) }
-  let (:test_person) { create(:person) }
+  let (:test_effort) { build_stubbed(:effort, state_code: 'CA', country_code: 'US', age: 30) }
+  let (:test_person) { build_stubbed(:person) }
 
   describe '#initializate' do
     it 'instantiates an EffortRow if provided an effort' do

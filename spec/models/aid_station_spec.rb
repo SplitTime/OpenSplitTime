@@ -53,8 +53,9 @@ RSpec.describe AidStation, type: :model do
 
       it 'does not allow for duplicate records with the same course and split' do
         create(:aid_station, event: existing_event, split: existing_split)
-        aid_station = build(:aid_station, event: existing_event, split: existing_split)
+        aid_station = build_stubbed(:aid_station, event: existing_event, split: existing_split)
         expect(aid_station).not_to be_valid
+        expect(aid_station.errors.full_messages.first).to include('only one of any given split permitted within an event')
       end
     end
   end

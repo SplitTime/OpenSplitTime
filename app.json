@@ -1,10 +1,13 @@
 {
   "environments": {
     "test": {
-      "addons":[
+      "addons": [
         "heroku-redis:hobby-dev",
         "heroku-postgresql:hobby-basic"
-      ]
+      ],
+      "scripts": {
+        "test": "bin/rspec"
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-ruby '2.3.3'
+ruby '2.3.5'
 source 'https://rubygems.org'
 gem 'rails', '>= 5.1', '< 5.2'
 gem 'bootstrap-sass'

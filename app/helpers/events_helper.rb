@@ -31,6 +31,14 @@ module EventsHelper
     end
   end
 
+  def link_to_podium(view_object)
+    if view_object.podium_template
+      link_to 'Podium', podium_event_path(view_object.event),
+              disabled: view_object.class == PodiumPresenter,
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
   def link_to_classic_admin(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event)
       link_to 'Admin', stage_event_path(view_object.event),
@@ -131,11 +139,6 @@ module EventsHelper
   def link_to_set_data_status(view_object)
     link_to 'Set data status', set_data_status_event_path(view_object.event),
             method: :put,
-            class: 'btn btn-sm btn-success'
-  end
-
-  def link_to_podium(view_object)
-    link_to 'Podium', podium_event_path(view_object.event),
             class: 'btn btn-sm btn-success'
   end
 

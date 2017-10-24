@@ -1,6 +1,7 @@
 class EventGroupPresenter < BasePresenter
   attr_reader :event_group
   delegate :to_param, to: :event_group
+  delegate :podium_template, to: :event
 
   CANDIDATE_SEPARATION_LIMIT = 7.days
 

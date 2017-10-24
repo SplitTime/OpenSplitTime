@@ -14,7 +14,11 @@ module Results
        Results::Template.new('Blue Sky', 'inclusive', 3,
                              ['Overall Men', 'Overall Women', 'Under 40 Men', 'Under 40 Women',
                               'Masters Men', 'Masters Women', 'Grandmasters Men', 'Grandmasters Women']
-                                 .map { |name| Results::Categories.find(name) })]
+                                 .map { |name| Results::Categories.find(name) }),
+       Results::Template.new('Simple', 'inclusive', 3,
+                             ['Overall Men', 'Overall Women']
+                                 .map { |name| Results::Categories.find(name) })
+      ]
     end
   end
 end

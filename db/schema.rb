@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023220404) do
+ActiveRecord::Schema.define(version: 20171024075557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
-  enable_extension "uuid-ossp"
 
   create_table "aid_stations", id: :serial, force: :cascade do |t|
     t.integer "event_id"
@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(version: 20171023220404) do
   end
 
   create_table "partners", id: :serial, force: :cascade do |t|
-    t.integer "event_id"
+    t.integer "event_id", null: false
     t.string "banner_link"
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false

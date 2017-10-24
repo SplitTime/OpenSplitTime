@@ -1,4 +1,4 @@
-class AddPgSearchDmetaphoneSupportFunctions < ActiveRecord::Migration
+class AddPgSearchDmetaphoneSupportFunctions < ActiveRecord::Migration[5.1]
   def self.up
     say_with_time("Adding support functions for pg_search :dmetaphone") do
       execute <<-'SQL'

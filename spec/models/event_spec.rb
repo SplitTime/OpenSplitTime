@@ -207,7 +207,7 @@ RSpec.describe Event, type: :model do
       it 'returns a random partner with a banner for the event' do
         partners = []
         100.times { partners << event.pick_partner_with_banner }
-        expect(partners.map(&:event_id).uniq).to eq([event.id])
+        expect(partners.map(&:event).uniq).to eq([event])
         expect(partners.map(&:banner_file_name)).to all (be_present)
       end
     end

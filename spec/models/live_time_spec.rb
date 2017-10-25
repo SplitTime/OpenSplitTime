@@ -15,10 +15,10 @@ require 'rails_helper'
 # t.integer  "split_time_id"
 
 RSpec.describe LiveTime, type: :model do
-  let(:effort) { create(:effort, event: event) }
-  let(:event) { create(:event, course: course) }
-  let(:split) { create(:split, course: course) }
-  let(:course) { create(:course) }
+  let(:effort) { build_stubbed(:effort, event: event) }
+  let(:event) { build_stubbed(:event, course: course, splits: [split]) }
+  let(:split) { build_stubbed(:split, course: course) }
+  let(:course) { build_stubbed(:course) }
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
@@ -26,9 +26,6 @@ RSpec.describe LiveTime, type: :model do
     let(:current_time) { Time.current }
     let(:time_string) { '08:00:00' }
     let(:source) { 'ost-test' }
-    before do
-      event.splits << split
-    end
 
     it 'is valid when created with an event, split, bitkey, bib_number, absolute_time, and source' do
       live_time = LiveTime.new(event: event, split: split, bitkey: 1, bib_number: '101', absolute_time: current_time, source: source)
@@ -65,14 +62,14 @@ RSpec.describe LiveTime, type: :model do
     end
 
     it 'is invalid when the event.course is not the same as the split.course' do
-      new_split = create(:split)
+      new_split = build_stubbed(:split)
       live_time = LiveTime.new(event: event, split: new_split, bib_number: '101', absolute_time: current_time)
       expect(live_time).to be_invalid
       expect(live_time.errors.full_messages).to include('Split the event.course_id does not resolve with the split.course_id')
     end
 
     it 'is invalid when the split is not the same as the split_time.split' do
-      new_split = create(:split)
+      new_split = build_stubbed(:split)
       split_time = SplitTime.create(effort: effort, split: new_split)
       live_time = LiveTime.new(event: event, split: split, bib_number: '101', absolute_time: current_time, split_time: split_time)
       expect(live_time).to be_invalid
@@ -95,17 +92,27 @@ RSpec.describe LiveTime, type: :model do
       expect(live_time.errors.full_messages).to include(/may contain only digits and asterisks/)
     end
 
-    it 'saves a valid record to the database' do
-      create(:live_time, event: event, split: split)
-      expect(LiveTime.count).to eq(1)
+    context 'with persisted relationships' do
+      let(:effort) { create(:effort, event: event) }
+      let(:event) { create(:event, course: course) }
+      let(:split) { create(:split, course: course) }
+      let(:course) { create(:course) }
+      before { event.splits << split }
+
+      it 'saves a valid record to the database' do
+        create(:live_time, event: event, split: split)
+        expect(LiveTime.count).to eq(1)
+      end
     end
   end
 
   describe '#split_time' do
+    let(:effort) { create(:effort, event: event) }
+    let(:event) { create(:event, course: course) }
+    let(:split) { create(:split, course: course) }
+    let(:course) { create(:course) }
     let(:split_time) { create(:split_time, effort: effort, split: split) }
-    before do
-      event.splits << split
-    end
+    before { event.splits << split }
 
     it 'when related split_time is deleted, sets live_time.split_time to nil' do
       live_time = create(:live_time, event: event, split: split, split_time: split_time)
@@ -117,7 +124,7 @@ RSpec.describe LiveTime, type: :model do
   end
 
   describe '#event_slug' do
-    let!(:event) { create(:event, slug: 'test-event') }
+    let!(:event) { build_stubbed(:event, slug: 'test-event') }
 
     it 'returns the slug of the associated event' do
       live_time = LiveTime.new(event: event)
@@ -142,7 +149,7 @@ RSpec.describe LiveTime, type: :model do
   end
 
   describe '#split_slug' do
-    let!(:split) { create(:split, slug: 'test-split') }
+    let!(:split) { build_stubbed(:split, slug: 'test-split') }
 
     it 'returns the slug of the associated split' do
       live_time = LiveTime.new(split: split)
@@ -240,16 +247,23 @@ RSpec.describe LiveTime, type: :model do
   end
 
   describe '#effort' do
+    let(:effort) { create(:effort, :with_bib_number, event: event) }
+    let(:event) { create(:event, course: course) }
+    let(:split) { create(:split, course: course) }
+    let(:course) { create(:course) }
+    let(:split_time) { create(:split_time, effort: effort, split: split) }
+    before { event.splits << split }
+
     context 'when the related event includes an effort with a bib_number matching the live_time.bib_number' do
       it 'returns the effort' do
-        live_time = build_stubbed(:live_time, event: event, bib_number: effort.bib_number)
+        live_time = build_stubbed(:live_time, split: split, event: event, bib_number: effort.bib_number)
         expect(live_time.effort).to eq(effort)
       end
     end
 
     context 'when the related event does not include an effort with a matching bib_number' do
       it 'returns nil' do
-        live_time = build_stubbed(:live_time, event: event, bib_number: '0')
+        live_time = build_stubbed(:live_time, split: split, event: event, bib_number: '0')
         expect(live_time.effort).to eq(nil)
       end
     end
@@ -258,23 +272,30 @@ RSpec.describe LiveTime, type: :model do
       it 'returns nil' do
         bib_number_string = "#{effort.bib_number}*"
         expect(bib_number_string.to_i).to eq(effort.bib_number)
-        live_time = build_stubbed(:live_time, event: event, bib_number: bib_number_string)
+        live_time = build_stubbed(:live_time, split: split, event: event, bib_number: bib_number_string)
         expect(live_time.effort).to eq(nil)
       end
     end
   end
 
   describe '#effort_full_name' do
+    let(:effort) { create(:effort, :with_bib_number, event: event) }
+    let(:event) { create(:event, course: course) }
+    let(:split) { create(:split, course: course) }
+    let(:course) { create(:course) }
+    let(:split_time) { create(:split_time, effort: effort, split: split) }
+    before { event.splits << split }
+
     context 'when the related event includes an effort with a bib_number matching the live_time.bib_number' do
       it 'returns the full name of the effort' do
-        live_time = build_stubbed(:live_time, event: event, bib_number: effort.bib_number)
+        live_time = build_stubbed(:live_time, split: split, event: event, bib_number: effort.bib_number)
         expect(live_time.effort_full_name).to eq(effort.full_name)
       end
     end
 
     context 'when the related event does not include an effort with a matching bib_number' do
       it 'returns [Bib not found]' do
-        live_time = build_stubbed(:live_time, event: event, bib_number: '0')
+        live_time = build_stubbed(:live_time, split: split, event: event, bib_number: '0')
         expect(live_time.effort_full_name).to eq('[Bib not found]')
       end
     end
@@ -283,7 +304,7 @@ RSpec.describe LiveTime, type: :model do
       it 'returns [Bib not found]' do
         bib_number_string = "#{effort.bib_number}*"
         expect(bib_number_string.to_i).to eq(effort.bib_number)
-        live_time = build_stubbed(:live_time, event: event, bib_number: bib_number_string)
+        live_time = build_stubbed(:live_time, split: split, event: event, bib_number: bib_number_string)
         expect(live_time.effort_full_name).to eq('[Bib not found]')
       end
     end

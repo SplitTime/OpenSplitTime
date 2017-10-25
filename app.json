@@ -10,7 +10,7 @@
         { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
       ],
       "scripts": {
-        "test-setup": "rails db:purge db:create db:migrate RAILS_ENV=test; bin/rails assets:precompile",
+        "test-setup": "rails db:migrate; bin/rails assets:precompile",
         "test": "bin/rspec"
       }
     }

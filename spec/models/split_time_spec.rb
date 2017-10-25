@@ -15,86 +15,97 @@ RSpec.describe SplitTime, kind: :model do
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   describe 'validations' do
-    let(:course) { create(:course) }
-    let(:start_split) { create(:start_split, course: course) }
-    let(:intermediate_split) { create(:split, course: course) }
-    let(:event) { create(:event, course: course) }
-    let(:effort) { create(:effort, event: event) }
-    it 'is valid when created with an effort, a split, a sub_split, a time_from_start, and a lap' do
-      split_time = build_stubbed(:split_time)
+    context 'for validations that do not depend on existing records in the database' do
+      let(:course) { build_stubbed(:course) }
+      let(:start_split) { build_stubbed(:start_split, course: course) }
+      let(:intermediate_split) { build_stubbed(:split, course: course) }
+      let(:event) { build_stubbed(:event, course: course) }
+      let(:effort) { build_stubbed(:effort, event: event) }
 
-      expect(split_time.effort_id).to be_present
-      expect(split_time.split_id).to be_present
-      expect(split_time.sub_split).to be_present
-      expect(split_time.time_from_start).to be_present
-      expect(split_time.lap).to be_present
-      expect(split_time).to be_valid
+      it 'is valid when created with an effort, a split, a sub_split, a time_from_start, and a lap' do
+        split_time = build_stubbed(:split_time)
+
+        expect(split_time.effort_id).to be_present
+        expect(split_time.split_id).to be_present
+        expect(split_time.sub_split).to be_present
+        expect(split_time.time_from_start).to be_present
+        expect(split_time.lap).to be_present
+        expect(split_time).to be_valid
+      end
+
+      it 'is invalid without an effort' do
+        split_time = build_stubbed(:split_time, effort: nil)
+        expect(split_time).not_to be_valid
+        expect(split_time.errors[:effort_id]).to include("can't be blank")
+      end
+
+      it 'is invalid without a split_id' do
+        split_time = build_stubbed(:split_time, split: nil)
+        expect(split_time).not_to be_valid
+        expect(split_time.errors[:split_id]).to include("can't be blank")
+      end
+
+      it 'is invalid without a sub_split_bitkey' do
+        split_time = build_stubbed(:split_time, sub_split_bitkey: nil)
+        expect(split_time).not_to be_valid
+        expect(split_time.errors[:sub_split_bitkey]).to include("can't be blank")
+      end
+
+      it 'is invalid without a time_from_start' do
+        split_time = build_stubbed(:split_time, time_from_start: nil)
+        expect(split_time).not_to be_valid
+        expect(split_time.errors[:time_from_start]).to include("can't be blank")
+      end
+
+      it 'is invalid without a lap' do
+        split_time = build_stubbed(:split_time, lap: nil)
+        expect(split_time).not_to be_valid
+        expect(split_time.errors[:lap]).to include("can't be blank")
+      end
     end
 
-    it 'is invalid without an effort' do
-      split_time = build_stubbed(:split_time, effort: nil)
-      expect(split_time).not_to be_valid
-      expect(split_time.errors[:effort_id]).to include("can't be blank")
-    end
+    context 'for validations that rely on existing records in the database' do
+      let(:course) { create(:course) }
+      let(:start_split) { create(:start_split, course: course) }
+      let(:intermediate_split) { create(:split, course: course) }
+      let(:event) { create(:event, course: course) }
+      let(:effort) { build(:effort, event: event) }
 
-    it 'is invalid without a split_id' do
-      split_time = build_stubbed(:split_time, split: nil)
-      expect(split_time).not_to be_valid
-      expect(split_time.errors[:split_id]).to include("can't be blank")
-    end
+      it 'does not allow more than one of a given split_id/sub_split/lap combination within an effort' do
+        create(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
+        split_time = build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
+        expect(split_time).not_to be_valid
+        expect(split_time.errors[:split_id]).to include('only one of any given time_point permitted within an effort')
+      end
 
-    it 'is invalid without a sub_split_bitkey' do
-      split_time = build_stubbed(:split_time, sub_split_bitkey: nil)
-      expect(split_time).not_to be_valid
-      expect(split_time.errors[:sub_split_bitkey]).to include("can't be blank")
-    end
+      it 'allows within an effort one of a given split_id/lap combination for each sub_split' do
+        build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
+        split_time = build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: out_bitkey, lap: 1)
+        expect(split_time).to be_valid
+      end
 
-    it 'is invalid without a time_from_start' do
-      split_time = build_stubbed(:split_time, time_from_start: nil)
-      expect(split_time).not_to be_valid
-      expect(split_time.errors[:time_from_start]).to include("can't be blank")
-    end
+      it 'allows multiple of a given split_id/sub_split/lap combination within different efforts' do
+        efforts = build_stubbed_list(:effort, 3, event: event)
+        build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
+        split_time_1 = build_stubbed(:split_time, effort: efforts.first, split: intermediate_split, bitkey: in_bitkey, lap: 1)
+        split_time_2 = build_stubbed(:split_time, effort: efforts.second, split: intermediate_split, bitkey: in_bitkey, lap: 1)
+        split_time_3 = build_stubbed(:split_time, effort: efforts.third, split: intermediate_split, bitkey: in_bitkey, lap: 1)
+        expect(split_time_1).to be_valid
+        expect(split_time_2).to be_valid
+        expect(split_time_3).to be_valid
+      end
 
-    it 'is invalid without a lap' do
-      split_time = build_stubbed(:split_time, lap: nil)
-      expect(split_time).not_to be_valid
-      expect(split_time.errors[:lap]).to include("can't be blank")
-    end
-
-    it 'does not allow more than one of a given split_id/sub_split/lap combination within an effort' do
-      create(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-      split_time = build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-      expect(split_time).not_to be_valid
-      expect(split_time.errors[:split_id]).to include('only one of any given time_point permitted within an effort')
-    end
-
-    it 'allows within an effort one of a given split_id/lap combination for each sub_split' do
-      create(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-      split_time = build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: out_bitkey, lap: 1)
-      expect(split_time).to be_valid
-    end
-
-    it 'allows multiple of a given split_id/sub_split/lap combination within different efforts' do
-      efforts = create_list(:effort, 3, event: event)
-      create(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-      split_time_1 = build_stubbed(:split_time, effort: efforts.first, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-      split_time_2 = build_stubbed(:split_time, effort: efforts.second, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-      split_time_3 = build_stubbed(:split_time, effort: efforts.third, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-      expect(split_time_1).to be_valid
-      expect(split_time_2).to be_valid
-      expect(split_time_3).to be_valid
-    end
-
-    it 'ensures that effort.event.course_id is the same as split.course_id' do
-      course_1 = create(:course)
-      course_2 = create(:course)
-      event = create(:event, course: course_1)
-      effort = create(:effort, event: event)
-      split = create(:split, course: course_2)
-      split_time = build(:split_time, effort: effort, split: split)
-      expect(split_time).not_to be_valid
-      expect(split_time.errors[:effort_id]).to include('the effort.event.course_id does not resolve with the split.course_id')
-      expect(split_time.errors[:split_id]).to include('the effort.event.course_id does not resolve with the split.course_id')
+      it 'ensures that effort.event.course_id is the same as split.course_id' do
+        course_1 = build_stubbed(:course)
+        course_2 = build_stubbed(:course)
+        event = build_stubbed(:event, course: course_1)
+        effort = build_stubbed(:effort, event: event)
+        split = build_stubbed(:split, course: course_2)
+        split_time = build(:split_time, effort: effort, split: split)
+        expect(split_time).not_to be_valid
+        expect(split_time.errors[:effort_id]).to include('the effort.event.course_id does not resolve with the split.course_id')
+        expect(split_time.errors[:split_id]).to include('the effort.event.course_id does not resolve with the split.course_id')
+      end
     end
   end
 

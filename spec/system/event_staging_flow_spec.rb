@@ -119,7 +119,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
     before { event.splits << course.splits }
 
-    scenario 'Edit event information' do
+    xscenario 'Edit event information' do
       login_as user
       visit event_staging_app_path(event)
 

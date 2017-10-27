@@ -9,8 +9,14 @@
         { "url": "heroku/ruby" },
         { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
       ],
+      "formation": {
+        "test": {
+          "quantity": 1,
+          "size": "performance-l"
+        }
+      },
       "scripts": {
-        "test-setup": "bin/rails assets:precompile",
+        "test-setup": "rails db:structure:load; bin/rails assets:precompile",
         "test": "bin/rspec"
       }
     }

@@ -1,3 +1,7 @@
+-- This structure.sql file is not maintained or updated by Rails.
+-- It exists only to allow custom functions to be easily loaded.
+-- The app.json file runs db:structure:load prior to running tests in Heroku CI,
+-- which will add functions contained in this file to the test database.
 --
 -- Name: pg_search_dmetaphone(text); Type: FUNCTION; Schema: public; Owner: -
 --

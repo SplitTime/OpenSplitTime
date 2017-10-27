@@ -29,19 +29,19 @@ RSpec.describe Results::Compute do
     let(:efforts) { [male_1, male_2, male_3, male_4, male_5, male_6, male_7, male_8, male_9, male_10,
                      female_1, female_2, female_3, female_4, female_5, female_6, female_7, female_8, female_9, female_10].shuffle }
 
-    let(:overall) { Results::Categories.find('Overall') }
-    let(:overall_men) { Results::Categories.find('Overall Men') }
-    let(:overall_women) { Results::Categories.find('Overall Women') }
-    let(:masters_men) { Results::Categories.find('Masters Men') }
-    let(:masters_women) { Results::Categories.find('Masters Women') }
-    let(:kids_men) { Results::Categories.find('Under 20 Men') }
-    let(:kids_women) { Results::Categories.find('Under 20 Women') }
-    let(:twenties_men) { Results::Categories.find('20 to 29 Men') }
-    let(:twenties_women) { Results::Categories.find('20 to 29 Women') }
-    let(:thirties_men) { Results::Categories.find('30 to 39 Men') }
-    let(:thirties_women) { Results::Categories.find('30 to 39 Women') }
-    let(:forties_men) { Results::Categories.find('40 to 49 Men') }
-    let(:forties_women) { Results::Categories.find('40 to 49 Women') }
+    let(:combined_overall) { Results::Categories.find(:combined_overall) }
+    let(:men_overall) { Results::Categories.find(:men_overall) }
+    let(:women_overall) { Results::Categories.find(:women_overall) }
+    let(:men_masters) { Results::Categories.find(:men_masters) }
+    let(:women_masters) { Results::Categories.find(:women_masters) }
+    let(:men_under_20) { Results::Categories.find(:men_under_20) }
+    let(:women_under_20) { Results::Categories.find(:women_under_20) }
+    let(:men_20s) { Results::Categories.find(:men_20s) }
+    let(:women_20s) { Results::Categories.find(:women_20s) }
+    let(:men_30s) { Results::Categories.find(:men_30s) }
+    let(:women_30s) { Results::Categories.find(:women_30s) }
+    let(:men_40s) { Results::Categories.find(:men_40s) }
+    let(:women_40s) { Results::Categories.find(:women_40s) }
 
     context 'when mode is set to strict' do
       let(:method) { 'strict' }
@@ -56,7 +56,7 @@ RSpec.describe Results::Compute do
       end
 
       context 'when categories is a single overall rank category' do
-        let(:categories) { [overall] }
+        let(:categories) { [combined_overall] }
         let(:podium_size) { 2 }
 
         it 'returns efforts in a single array sorted by overall rank' do
@@ -65,7 +65,7 @@ RSpec.describe Results::Compute do
       end
 
       context 'when categories consist of overall men and overall women' do
-        let(:categories) { [overall_men, overall_women] }
+        let(:categories) { [men_overall, women_overall] }
         let(:podium_size) { 2 }
 
         it 'returns men and women in separate arrays ordered by overall rank' do
@@ -74,7 +74,7 @@ RSpec.describe Results::Compute do
       end
 
       context 'when categories consist of overall men and women and masters men and women' do
-        let(:categories) { [overall_men, overall_women, masters_men, masters_women] }
+        let(:categories) { [men_overall, women_overall, men_masters, women_masters] }
         let(:podium_size) { 2 }
 
         it 'returns men and women in the appropriate ranks' do
@@ -83,9 +83,9 @@ RSpec.describe Results::Compute do
       end
 
       context 'when categories consist of several different categories' do
-        let(:categories) { [overall_men, overall_women, masters_men, masters_women,
-                            kids_men, kids_women, twenties_men, twenties_women,
-                            thirties_men, thirties_women, forties_men, forties_women] }
+        let(:categories) { [men_overall, women_overall, men_masters, women_masters,
+                            men_under_20, women_under_20, men_20s, women_20s,
+                            men_30s, women_30s, men_40s, women_40s] }
         let(:podium_size) { 2 }
 
         it 'returns men and women in the appropriate ranks' do
@@ -100,7 +100,7 @@ RSpec.describe Results::Compute do
       let(:method) { 'inclusive' }
 
       context 'when categories consist of overall men and women and masters men and women' do
-        let(:categories) { [overall_men, overall_women, masters_men, masters_women] }
+        let(:categories) { [men_overall, women_overall, men_masters, women_masters] }
         let(:podium_size) { 2 }
 
         it 'returns men and women in the appropriate ranks' do
@@ -109,9 +109,9 @@ RSpec.describe Results::Compute do
       end
 
       context 'when categories consist of several different categories' do
-        let(:categories) { [overall_men, overall_women, masters_men, masters_women,
-                            kids_men, kids_women, twenties_men, twenties_women,
-                            thirties_men, thirties_women, forties_men, forties_women] }
+        let(:categories) { [men_overall, women_overall, men_masters, women_masters,
+                            men_under_20, women_under_20, men_20s, women_20s,
+                            men_30s, women_30s, men_40s, women_40s] }
         let(:podium_size) { 2 }
 
         it 'returns men and women in the appropriate ranks' do

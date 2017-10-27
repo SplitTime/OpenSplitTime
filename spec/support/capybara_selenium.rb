@@ -1,3 +1,6 @@
+# GOOGLE_CHROME_SHIM is an environment variable set within the Heroku CI pipeline environment.
+# GOOGLE_CHROME_SHIM contains the path to chrome-related assets on the Heroku CI ephemeral VM.
+
 chrome_bin = ENV.fetch('GOOGLE_CHROME_SHIM', nil)
 
 binary_options = chrome_bin ? {binary: chrome_bin} : {}

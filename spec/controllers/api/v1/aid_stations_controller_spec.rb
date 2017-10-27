@@ -6,7 +6,7 @@ RSpec.describe Api::V1::AidStationsController do
   let(:course) { create(:course) }
   let(:split) { create(:split, course: course) }
   let(:event) { create(:event, course: course) }
-  let(:aid_station) { AidStation.create!(split: split, event: event) }
+  let(:aid_station) { create(:aid_station, split: split, event: event) }
   
   describe '#show' do
     it 'returns a successful 200 response' do

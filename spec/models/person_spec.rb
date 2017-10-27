@@ -84,8 +84,8 @@ RSpec.describe Person, type: :model do
   end
 
   describe '#should_be_concealed?' do
-    let(:concealed_event_group) { create(:event_group, concealed: true) }
-    let(:visible_event_group) { create(:event_group, concealed: false) }
+    let(:concealed_event_group) { build_stubbed(:event_group, concealed: true) }
+    let(:visible_event_group) { build_stubbed(:event_group, concealed: false) }
     let(:concealed_event) { build_stubbed(:event, event_group: concealed_event_group) }
     let(:visible_event) { build_stubbed(:event, event_group: visible_event_group) }
     let(:concealed_effort) { build_stubbed(:effort, event: concealed_event) }

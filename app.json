@@ -7,10 +7,17 @@
       ],
       "buildpacks": [
         { "url": "heroku/ruby" },
+        { "url": "https://github.com/heroku/heroku-buildpack-chromedriver" },
         { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
       ],
+      "formation": {
+        "test": {
+          "quantity": 1,
+          "size": "performance-l"
+        }
+      },
       "scripts": {
-        "test-setup": "rails db:migrate; bin/rails assets:precompile",
+        "test-setup": "rails db:structure:load; bin/rails assets:precompile",
         "test": "bin/rspec"
       }
     }

@@ -8,5 +8,5 @@ module WaitForCSS
 end
 
 RSpec.configure do |config|
-  config.include WaitForCSS, type: :feature
+  config.include WaitForCSS, type: :system
 end

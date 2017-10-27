@@ -17,9 +17,9 @@ RSpec.describe Split, kind: :model do
 
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
-  let(:persisted_course) { FactoryGirl.create(:course) }
-  let(:course1) { FactoryGirl.build_stubbed(:course, name: 'Test Course') }
-  let(:course2) { FactoryGirl.build_stubbed(:course, name: 'Test Course 2') }
+  let(:persisted_course) { create(:course) }
+  let(:course1) { build_stubbed(:course, name: 'Test Course') }
+  let(:course2) { build_stubbed(:course, name: 'Test Course 2') }
 
   it 'is valid when created with a course, a name, a distance_from_start, and a kind' do
     Split.create!(course: persisted_course,
@@ -133,19 +133,19 @@ RSpec.describe Split, kind: :model do
 
   describe '#sub_splits' do
     it 'returns a single key_hash for a start split' do
-      split = FactoryGirl.build_stubbed(:start_split)
+      split = build_stubbed(:start_split)
       expect(split.sub_splits.size).to eq(1)
       expect(split.sub_splits.first).to eq({split.id => in_bitkey})
     end
 
     it 'returns two key_hashes for an intermediate split' do
-      split = FactoryGirl.build_stubbed(:split)
+      split = build_stubbed(:split)
       expect(split.sub_splits.size).to eq(2)
       expect(split.sub_splits).to eq([{split.id => in_bitkey}, {split.id => out_bitkey}])
     end
 
     it 'returns a single key_hash for a finish split' do
-      split = FactoryGirl.build_stubbed(:finish_split)
+      split = build_stubbed(:finish_split)
       expect(split.sub_splits.size).to eq(1)
       expect(split.sub_splits.first).to eq({split.id => in_bitkey})
     end

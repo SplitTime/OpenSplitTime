@@ -5,14 +5,14 @@
         <thead>
         <tr>
           <th>
-            <%= link_to 'Name', users_path(filter: params[:filter],
+            <%= link_to 'Name', users_path(filter: params.permit(:filter),
                                            sort: params[:sort]&.include?('last_name') ? 'first_name' : 'last_name') %>
           </th>
-          <th><%= link_to 'Email', users_path(filter: params[:filter], sort: 'email') %></th>
-          <th><%= link_to 'Confirmed at', users_path(filter: params[:filter],
+          <th><%= link_to 'Email', users_path(filter: params.permit(:filter), sort: 'email') %></th>
+          <th><%= link_to 'Confirmed at', users_path(filter: params.permit(:filter),
                                                      sort: params[:sort]&.include?('-confirmed_at') ? 'confirmed_at' : '-confirmed_at') %></th>
           <th>Avatar</th>
-          <th><%= link_to 'Role', users_path(filter: params[:filter],
+          <th><%= link_to 'Role', users_path(filter: params.permit(:filter),
                                              sort: params[:sort]&.include?('-role') ? 'role' : '-role') %></th>
           <th>Delete</th>
         </tr>

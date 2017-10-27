@@ -75,7 +75,7 @@ RSpec.describe Person, type: :model do
     expect(person_1.errors[:birthdate]).to include("can't be before 1900")
     person_2 = build_stubbed(:person, birthdate: 1.day.from_now)
     expect(person_2).not_to be_valid
-    expect(person_2.errors[:birthdate]).to include("can't be in the future")
+    expect(person_2.errors[:birthdate]).to include("can't be today or in the future")
   end
 
   it 'permits plausible birthdates' do

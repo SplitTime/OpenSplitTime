@@ -44,7 +44,7 @@ RSpec.describe Results::Compute do
     let(:women_40s) { Results::Categories.find(:women_40s) }
 
     context 'when mode is set to strict' do
-      let(:method) { 'strict' }
+      let(:method) { :strict }
 
       context 'when categories is an empty array' do
         let(:categories) { [] }
@@ -97,7 +97,7 @@ RSpec.describe Results::Compute do
     end
 
     context 'when mode is set to inclusive' do
-      let(:method) { 'inclusive' }
+      let(:method) { :inclusive }
 
       context 'when categories consist of overall men and women and masters men and women' do
         let(:categories) { [men_overall, women_overall, men_masters, women_masters] }

@@ -15,14 +15,15 @@ RSpec.describe 'visit the podium page' do
 
   context 'The event has a template selected' do
     before do
-      event.update(podium_template: 'Ramble')
+      event.update(podium_template: :ramble)
     end
 
     scenario 'A visitor views the podium page' do
       visit podium_event_path(event)
 
       expect(page).to have_content(event.name)
-      expect(page).to have_content(event.podium_template)
+      template_name = Results::Templates.find(event.podium_template).name
+      expect(page).to have_content(template_name)
       efforts.first(3).each do |effort|
         expect(page).to have_content(effort.full_name)
       end

@@ -37,7 +37,7 @@ module Results
     end
 
     def strict?
-      method == 'strict'
+      method == :strict
     end
   end
 end

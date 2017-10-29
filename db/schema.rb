@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027204951) do
+ActiveRecord::Schema.define(version: 20171028000321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,8 @@ ActiveRecord::Schema.define(version: 20171027204951) do
     t.integer "pulled_by"
     t.datetime "pulled_at"
     t.string "entered_time"
+    t.index ["absolute_time", "event_id", "split_id", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "live_time_unique_absolute_times_index", unique: true
+    t.index ["entered_time", "event_id", "split_id", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "live_time_unique_entered_times_index", unique: true
     t.index ["event_id"], name: "index_live_times_on_event_id"
     t.index ["split_id"], name: "index_live_times_on_split_id"
     t.index ["split_time_id"], name: "index_live_times_on_split_time_id"

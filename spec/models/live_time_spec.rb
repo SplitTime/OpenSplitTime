@@ -92,16 +92,56 @@ RSpec.describe LiveTime, type: :model do
       expect(live_time.errors.full_messages).to include(/may contain only digits and asterisks/)
     end
 
-    context 'with persisted relationships' do
+    context 'when validating with persisted relationships' do
       let(:effort) { create(:effort, event: event) }
       let(:event) { create(:event, course: course) }
       let(:split) { create(:split, course: course) }
       let(:course) { create(:course) }
+      let(:existing_live_time) { create(:live_time, event: event, split: split, bitkey: in_bitkey, absolute_time: '2017-10-31 08:30:30', bib_number: '101', source: 'test-source', with_pacer: false, stopped_here: false, remarks: nil) }
+      let(:identical_attributes) { existing_live_time.attributes.slice('event_id', 'split_id', 'bitkey', 'absolute_time', 'bib_number', 'source', 'with_pacer', 'stopped_here', 'remarks') }
+      let(:live_time) { build_stubbed(:live_time, attributes) }
+
       before { event.splits << split }
 
       it 'saves a valid record to the database' do
         create(:live_time, event: event, split: split)
         expect(LiveTime.count).to eq(1)
+      end
+
+      context 'when a duplicate time exists in the database' do
+        let(:attributes) { identical_attributes }
+
+        it 'is invalid' do
+          existing_live_time
+          expect(live_time).to be_invalid
+        end
+      end
+
+      context 'when a duplicate time exists in the database but the source is different' do
+        let(:attributes) { identical_attributes.merge(source: 'test-source-2') }
+
+        it 'is valid' do
+          existing_live_time
+          expect(live_time).to be_valid
+        end
+      end
+
+      context 'when a duplicate time exists in the database but the bitkey is different' do
+        let(:attributes) { identical_attributes.merge(bitkey: out_bitkey) }
+
+        it 'is valid' do
+          existing_live_time
+          expect(live_time).to be_valid
+        end
+      end
+
+      context 'when a near-duplicate time exists in the database but is off by 1 second' do
+        let(:attributes) { identical_attributes.merge(absolute_time: existing_live_time.absolute_time + 1.second) }
+
+        it 'is valid' do
+          existing_live_time
+          expect(live_time).to be_valid
+        end
       end
     end
   end

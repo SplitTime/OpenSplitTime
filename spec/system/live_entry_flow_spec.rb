@@ -123,6 +123,41 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
 
         verify_workspace_is_empty
       end
+
+      scenario 'Add and discard times' do
+        login_as user
+        visit live_entry_live_event_path(event)
+        wait_for_ajax
+
+        check_setup
+        expect(page).not_to have_field('js-lap-number')
+
+        expect(efforts.first.split_times).to be_one
+        expect(efforts.second.split_times).to be_one
+
+        select ordered_splits.second.base_name, from: 'split-select'
+
+        fill_in bib_number_field, with: efforts.first.bib_number
+        fill_in time_in_field, with: '08:45:45'
+        add_button.click
+
+        expect(local_workspace).to have_content(efforts.first.full_name)
+        expect(local_workspace).not_to have_content(efforts.second.full_name)
+
+        fill_in bib_number_field, with: efforts.second.bib_number
+        fill_in time_in_field, with: '09:00:00'
+        add_button.click
+
+        expect(local_workspace).to have_content(efforts.first.full_name)
+        expect(local_workspace).to have_content(efforts.second.full_name)
+
+        discard_all_efforts
+
+        expect(efforts.first.split_times).to be_one
+        expect(efforts.second.split_times).to be_one
+
+        verify_workspace_is_empty
+      end
     end
   end
 

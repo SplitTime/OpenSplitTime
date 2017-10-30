@@ -131,6 +131,8 @@ class Split < ApplicationRecord
     end
   end
 
+  alias_method :sub_split_kinds=, :name_extensions=
+
   def sub_splits
     sub_split_bitkeys.map { |bitkey| {id => bitkey} }
   end

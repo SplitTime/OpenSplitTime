@@ -222,6 +222,12 @@ RSpec.describe Split, kind: :model do
       split.name_extensions = nil
       expect(split.sub_split_bitmap).to eq(1)
     end
+
+    it 'is properly aliased as sub_split_kinds=' do
+      split = Split.new
+      split.sub_split_kinds = %w(In Out)
+      expect(split.sub_split_bitmap).to eq(65)
+    end
   end
 
   context 'when there is no current user (therefore no preferred distance or elevation units)' do

@@ -11,8 +11,8 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
 //= require jquery-ui/effects/effect-highlight
+//= require rails-ujs
 //= require twitter/bootstrap
 // require turbolinks
 //= require gmaps/google

@@ -6,10 +6,10 @@ RSpec.describe Api::V1::LiveTimesController do
     event.splits << split
   end
 
-  let(:live_time) { FactoryGirl.create(:live_time, event: event, split: split) }
-  let(:event) { FactoryGirl.create(:event, course: course) }
-  let(:split) { FactoryGirl.create(:split, course: course) }
-  let(:course) { FactoryGirl.create(:course) }
+  let(:live_time) { create(:live_time, event: event, split: split) }
+  let(:event) { create(:event, course: course) }
+  let(:split) { create(:split, course: course) }
+  let(:course) { create(:course) }
 
   describe '#index' do
     before do

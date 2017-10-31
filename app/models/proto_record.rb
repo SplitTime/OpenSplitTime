@@ -22,6 +22,10 @@ class ProtoRecord
     record_class && "#{record_class}Parameters".constantize
   end
 
+  def resource_attributes
+    record_class.new(to_h).attributes.with_indifferent_access.slice(*to_h.keys)
+  end
+
   private
 
   def validate_setup

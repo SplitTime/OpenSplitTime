@@ -214,6 +214,7 @@ RSpec.describe Api::V1::EventsController do
     let(:event) { create(:event, start_time: '2016-07-01 00:00:00 GMT', event_group: event_group, course: course, laps_required: 1) }
     let(:absolute_time_in) { '2016-07-01 10:45:45-06:00' }
     let(:absolute_time_out) { '2016-07-01 10:50:50-06:00' }
+    let(:unique_key) { nil }
 
     context 'when provided with a file' do
       let(:request_params) { {staging_id: event.id, data_format: 'csv_efforts', file: file} }
@@ -246,15 +247,16 @@ RSpec.describe Api::V1::EventsController do
 
     context 'when provided with an array of live_time hashes and data_format: :jsonapi_batch' do
       let(:split_id) { splits.first.id }
-      let(:request_params) { {staging_id: event.id, data_format: 'jsonapi_batch', data: data} }
+      let(:request_params) { {staging_id: event.id, data_format: 'jsonapi_batch', data: data, unique_key: unique_key} }
       let(:data) { [
           {type: 'live_time',
            attributes: {bibNumber: '101', splitId: split_id, bitkey: 1, absoluteTime: absolute_time_in,
-                        withPacer: true, stoppedHere: false, source: 'ost-remote-1234'}},
+                        withPacer: true, stoppedHere: false, source: source}},
           {type: 'live_time',
            attributes: {bibNumber: '101', splitId: split_id, bitkey: 64, absoluteTime: absolute_time_out,
-                        withPacer: true, stoppedHere: true, source: 'ost-remote-1234'}}
+                        withPacer: true, stoppedHere: true, source: source}}
       ] }
+      let(:source) { 'ost-remote-1234' }
 
       it 'returns a successful json response' do
         post :import, params: request_params
@@ -276,7 +278,35 @@ RSpec.describe Api::V1::EventsController do
         expect(LiveTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
       end
 
-      context 'when the event is available live' do
+      context 'when there is a duplicate record in the database' do
+        before do
+          create(:live_time, event: event, bib_number: '101', split_id: split_id, bitkey: 1, absolute_time: absolute_time_in, with_pacer: true, stopped_here: false, source: source)
+        end
+
+        context 'when unique_key is set' do
+          let(:unique_key) { [:absolute_time, :split_id, :bitkey, :bib_number, :source, :with_pacer, :stopped_here] }
+
+          it 'saves the non-duplicate live_time to the database and updates the existing live_time' do
+            expect(LiveTime.count).to eq(1)
+            post :import, params: request_params
+            expect(response.status).to eq(201)
+            expect(LiveTime.count).to eq(2)
+          end
+        end
+
+        context 'when unique_key is not set' do
+          let(:unique_key) { nil }
+
+          it 'returns the duplicate live_time and an error' do
+            expect(LiveTime.count).to eq(1)
+            post :import, params: request_params
+            expect(response.status).to eq(422)
+            expect(LiveTime.count).to eq(1)
+          end
+        end
+      end
+
+      context 'when the event_group is available live' do
         let(:event_group) { create(:event_group, available_live: true) }
 
         it 'sends a push notification that includes the count of available times' do
@@ -294,10 +324,10 @@ RSpec.describe Api::V1::EventsController do
         let(:data) { [
             {type: 'live_time',
              attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 1, absoluteTime: absolute_time_in,
-                          withPacer: true, stoppedHere: false, source: 'ost-remote-1234'}},
+                          withPacer: true, stoppedHere: false, source: source}},
             {type: 'live_time',
              attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 64, absoluteTime: absolute_time_out,
-                          withPacer: true, stoppedHere: true, source: 'ost-remote-1234'}}
+                          withPacer: true, stoppedHere: true, source: source}}
         ] }
 
         it 'creates new split_times matching the live_times' do

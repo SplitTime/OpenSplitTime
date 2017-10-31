@@ -30,7 +30,7 @@ module DataImport::Loaders
 
     def fetch_record(proto_record)
       model_class = proto_record.record_class
-      attributes = proto_record.to_h
+      attributes = proto_record.resource_attributes
       unique_attributes = attributes.slice(*unique_key)
       record = unique_key_valid?(unique_key, unique_attributes) ?
                    model_class.find_or_initialize_by(unique_attributes) :
@@ -62,7 +62,7 @@ module DataImport::Loaders
     end
 
     def unique_key_valid?(unique_key, unique_attributes)
-      unique_key.present? && unique_key.size == unique_attributes.size && unique_attributes.values.all?(&:present?)
+      unique_key.present? && unique_key.size == unique_attributes.size && unique_attributes.values.none?(&:nil?)
     end
   end
 end

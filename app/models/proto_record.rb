@@ -23,7 +23,8 @@ class ProtoRecord
   end
 
   def resource_attributes
-    record_class.new(to_h).attributes.with_indifferent_access.slice(*to_h.keys)
+    resource = record_class.new(to_h)
+    to_h.map { |attribute_name, _| [attribute_name, resource.send(attribute_name)] }.to_h
   end
 
   private

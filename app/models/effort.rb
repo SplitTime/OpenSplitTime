@@ -42,9 +42,9 @@ class Effort < ApplicationRecord
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
   validates_attachment :photo,
-                       content_type: { content_type: %w(image/png image/jpeg)},
-                       file_name: { matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/] },
-                       size: { in: 0..2000.kilobytes }
+                       content_type: {content_type: %w(image/png image/jpeg)},
+                       file_name: {matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/]},
+                       size: {in: 0..2000.kilobytes}
 
   before_save :reset_age_from_birthdate
 

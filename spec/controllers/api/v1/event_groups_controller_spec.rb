@@ -51,6 +51,18 @@ RSpec.describe Api::V1::EventGroupsController do
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
     end
+
+    context 'when a filter[:available_live] param is given' do
+      let(:params) { {filter: {available_live: true}} }
+
+      it 'returns only those events that are available live' do
+        get :index, params: params
+
+        expect(response.status).to eq(200)
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['data'].size).to eq(2)
+      end
+    end
   end
 
   describe '#show' do
@@ -78,7 +90,7 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:organization) { create(:organization) }
 
     it 'returns a successful json response' do
-      post :create, params: {data: {type: 'event_groups', attributes: {name: 'Test event_group', organization_id: organization.id} }}
+      post :create, params: {data: {type: 'event_groups', attributes: {name: 'Test event_group', organization_id: organization.id}}}
       expect(response.body).to be_jsonapi_response_for('event_groups')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
@@ -87,7 +99,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
     it 'creates a event_group record' do
       expect(EventGroup.all.count).to eq(0)
-      post :create, params: {data: {type: 'event_groups', attributes: {name: 'Test event_group', organization_id: organization.id} }}
+      post :create, params: {data: {type: 'event_groups', attributes: {name: 'Test event_group', organization_id: organization.id}}}
       expect(EventGroup.all.count).to eq(1)
     end
   end
@@ -96,19 +108,19 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:attributes) { {name: 'Updated EventGroup Name'} }
 
     it 'returns a successful json response' do
-      put :update, params: {id: event_group, data: {type: 'event_groups', attributes: attributes }}
+      put :update, params: {id: event_group, data: {type: 'event_groups', attributes: attributes}}
       expect(response.body).to be_jsonapi_response_for('event_groups')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, params: {id: event_group, data: {type: 'event_groups', attributes: attributes }}
+      put :update, params: {id: event_group, data: {type: 'event_groups', attributes: attributes}}
       event_group.reload
       expect(event_group.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the event_group does not exist' do
-      put :update, params: {id: 0, data: {type: 'event_groups', attributes: attributes }}
+      put :update, params: {id: 0, data: {type: 'event_groups', attributes: attributes}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)

@@ -2,6 +2,8 @@ require 'rails_helper'
 
 # t.string   "name"
 # t.string   "description"
+# t.datetime "next_start_time"
+# t.string   "slug", null: false
 
 RSpec.describe Course, type: :model do
   it_behaves_like 'auditable'

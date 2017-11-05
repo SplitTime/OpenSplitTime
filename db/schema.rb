@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171028000321) do
+ActiveRecord::Schema.define(version: 20171105005427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,10 @@ ActiveRecord::Schema.define(version: 20171028000321) do
     t.integer "updated_by"
     t.datetime "next_start_time"
     t.string "slug", null: false
+    t.string "gpx_file_name"
+    t.string "gpx_content_type"
+    t.integer "gpx_file_size"
+    t.datetime "gpx_updated_at"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
@@ -99,23 +103,23 @@ ActiveRecord::Schema.define(version: 20171028000321) do
 
   create_table "events", id: :serial, force: :cascade do |t|
     t.integer "course_id", null: false
-    t.integer "organization_id"
     t.string "name", limit: 64, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.integer "updated_by"
     t.datetime "start_time"
-    t.boolean "concealed", default: false
-    t.boolean "available_live", default: false
     t.string "beacon_url"
     t.integer "laps_required"
     t.uuid "staging_id", default: -> { "uuid_generate_v4()" }
     t.string "slug", null: false
-    t.boolean "auto_live_times", default: false
     t.string "home_time_zone", null: false
     t.integer "event_group_id"
     t.string "short_name"
+    t.boolean "auto_live_times"
+    t.boolean "available_live"
+    t.boolean "concealed"
+    t.integer "organization_id"
     t.string "podium_template"
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id"], name: "index_events_on_event_group_id"

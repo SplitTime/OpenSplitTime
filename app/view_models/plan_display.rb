@@ -52,8 +52,12 @@ class PlanDisplay
   end
 
   def default_start_time
-    return course.next_start_time.in_time_zone if course.next_start_time
+    return course.next_start_time.in_time_zone(default_time_zone) if course.next_start_time
     years_prior = Time.now.year - event.start_time.year
-    event.start_time + (years_prior * 52.17.to_i).weeks
+    event.start_time_in_home_zone + ((years_prior * 52.17).round(0)).weeks
+  end
+
+  def default_time_zone
+    event.home_time_zone
   end
 end

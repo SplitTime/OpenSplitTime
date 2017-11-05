@@ -71,7 +71,7 @@ RSpec.describe Api::V1::CoursesController do
 
   describe '#create' do
     it 'returns a successful json response' do
-      post :create, params: {data: {type: 'courses', attributes: {name: 'Test Course'} }}
+      post :create, params: {data: {type: 'courses', attributes: {name: 'Test Course'}}}
       expect(response.body).to be_jsonapi_response_for('courses')
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id']).not_to be_nil
@@ -80,7 +80,7 @@ RSpec.describe Api::V1::CoursesController do
 
     it 'creates a course record' do
       expect(Course.all.count).to eq(0)
-      post :create, params: {data: {type: 'courses', attributes: {name: 'Test Course'} }}
+      post :create, params: {data: {type: 'courses', attributes: {name: 'Test Course'}}}
       expect(Course.all.count).to eq(1)
     end
   end
@@ -89,19 +89,19 @@ RSpec.describe Api::V1::CoursesController do
     let(:attributes) { {name: 'Updated Course Name'} }
 
     it 'returns a successful json response' do
-      put :update, params: {id: course, data: {type: 'courses', attributes: attributes }}
+      put :update, params: {id: course, data: {type: 'courses', attributes: attributes}}
       expect(response.body).to be_jsonapi_response_for('courses')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, params: {id: course, data: {type: 'courses', attributes: attributes }}
+      put :update, params: {id: course, data: {type: 'courses', attributes: attributes}}
       course.reload
       expect(course.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the course does not exist' do
-      put :update, params: {id: 0, data: {type: 'courses', attributes: attributes }}
+      put :update, params: {id: 0, data: {type: 'courses', attributes: attributes}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)

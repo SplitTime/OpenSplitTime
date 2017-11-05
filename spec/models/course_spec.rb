@@ -8,24 +8,26 @@ RSpec.describe Course, type: :model do
   it { is_expected.to strip_attribute(:name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 
-  it 'is valid with a name' do
-    course = Course.create!(name: 'Slow Mo 100 CCW')
+  describe '#initialize' do
+    it 'is valid with a name' do
+      course = Course.create!(name: 'Slow Mo 100 CCW')
 
-    expect(Course.all.count).to(equal(1))
-    expect(course).to be_valid
-  end
+      expect(Course.all.count).to(equal(1))
+      expect(course).to be_valid
+    end
 
-  it 'is invalid without a name' do
-    course = Course.new(name: nil)
-    expect(course).not_to be_valid
-    expect(course.errors[:name]).to include("can't be blank")
-  end
+    it 'is invalid without a name' do
+      course = Course.new(name: nil)
+      expect(course).not_to be_valid
+      expect(course.errors[:name]).to include("can't be blank")
+    end
 
-  it 'does not allow duplicate names' do
-    Course.create!(name: 'Hard Time 100')
-    course = Course.new(name: 'Hard Time 100')
-    expect(course).not_to be_valid
-    expect(course.errors[:name]).to include('has already been taken')
+    it 'does not allow duplicate names' do
+      Course.create!(name: 'Hard Time 100')
+      course = Course.new(name: 'Hard Time 100')
+      expect(course).not_to be_valid
+      expect(course.errors[:name]).to include('has already been taken')
+    end
   end
 
   describe 'methods that produce lap_splits and time_points' do
@@ -164,7 +166,7 @@ RSpec.describe Course, type: :model do
       expect(course.vert_gain).to be_nil
     end
   end
-  
+
   describe '#vert_loss' do
     it 'returns a course vert_loss using the vert_loss_from_start of the finish split' do
       course = FactoryGirl.build_stubbed(:course_with_standard_splits)
@@ -182,7 +184,7 @@ RSpec.describe Course, type: :model do
 
   describe '#simple?' do
     subject { course.simple? }
-    let(:course) { build_stubbed(:course, splits: splits)}
+    let(:course) { build_stubbed(:course, splits: splits) }
 
     context 'when the course has only a start and finish split' do
       let(:splits) { build_stubbed_list(:split, 2) }

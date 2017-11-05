@@ -8,12 +8,15 @@ class Course < ApplicationRecord
   has_many :splits, dependent: :destroy
   has_many :events
   accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
+  has_attached_file :gpx
 
   scope :used_for_organization, -> (organization) { includes(events: :event_group).where(event_groups: {organization_id: organization.id}).uniq }
   scope :standard_includes, -> { includes(:splits) }
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
+  validates :gpx, attachment_content_type: {content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream]}
+  validates_attachment_file_name :gpx, matches: /gpx\Z/
 
   def to_s
     slug

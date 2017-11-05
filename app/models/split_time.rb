@@ -25,6 +25,8 @@ class SplitTime < ApplicationRecord
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
   scope :within_time_range, -> (low_time, high_time) { where(time_from_start: low_time..high_time) }
   scope :from_finished_efforts, -> { joins(effort: {split_times: :split}).where(splits: {kind: 1}) }
+  scope :visible, -> { includes(effort: {event: :event_group}).where('event_groups.concealed = ?', 'f') }
+  scope :at_time_point, -> (time_point) { where(lap: time_point.lap, split_id: time_point.split_id, bitkey: time_point.bitkey) }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
   # Otherwise it includes split_times from aid_stations other than the given parameter

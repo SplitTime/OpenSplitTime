@@ -9,6 +9,7 @@ class Course < ApplicationRecord
   has_many :events
   accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
   has_attached_file :gpx
+  include DeletableAttachment
 
   scope :used_for_organization, -> (organization) { includes(events: :event_group).where(event_groups: {organization_id: organization.id}).uniq }
   scope :standard_includes, -> { includes(:splits) }

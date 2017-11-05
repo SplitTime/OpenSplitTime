@@ -37,10 +37,39 @@
           </div>
         </div>
 
+        <% if @course.gpx.present? %>
+            <div class="form-group">
+              <div class="control-label col-sm-2">
+                <%= f.label 'Existing gpx file' %>
+              </div>
+              <div class="col-sm-8">
+                <%= "#{@course.gpx_file_name}, #{(@course.gpx_file_size / 1.0.megabyte).round(2)} MB" %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="control-label col-sm-2">
+                <%= f.label 'Remove gpx file?' %>
+              </div>
+              <div class="col-sm-8">
+                <%= f.check_box :delete_gpx %>
+              </div>
+            </div>
+        <% end %>
+
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label @course.gpx.present? ? 'Change gpx file' : 'Add gpx file' %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.file_field :gpx, class: 'form-control' %>
+          </div>
+        </div>
+
         <% if @course.new_record? %>
             <%= f.fields_for :splits, @course.splits.new do |builder| %>
                 <%= builder.hidden_field :base_name, value: 'Start' %>
-                <%= builder.hidden_field :description, value: 'Starting point for the course.' %>
+                <%= builder.hidden_field :description, value: "Starting point for #{course.name}" %>
                 <%= builder.hidden_field :distance_from_start, value: 0 %>
                 <%= builder.hidden_field :sub_split_bitmap, value: 1 %>
                 <%= builder.hidden_field :kind, value: :start %>
@@ -49,7 +78,7 @@
             <% end %>
             <%= f.fields_for :splits, @course.splits.new do |builder| %>
                 <%= builder.hidden_field :base_name, value: 'Finish' %>
-                <%= builder.hidden_field :description, value: 'Finishing point for the course.' %>
+                <%= builder.hidden_field :description, value: "Finishing point for #{course.name}" %>
                 <%= builder.hidden_field :sub_split_bitmap, value: 1 %>
                 <%= builder.hidden_field :kind, value: :finish %>
                 <div class="form-group">

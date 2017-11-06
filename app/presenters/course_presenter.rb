@@ -1,7 +1,7 @@
 class CoursePresenter < BasePresenter
 
   attr_reader :course, :events
-  delegate :id, :name, :description, :ordered_splits, :simple?, to: :course
+  delegate :id, :name, :description, :ordered_splits, :simple?, :gpx, :track_points, to: :course
 
   def initialize(course, params, current_user)
     @course = course
@@ -18,20 +18,8 @@ class CoursePresenter < BasePresenter
     params[:display_style] == 'splits' ? 'splits' : 'events'
   end
 
-  def latitude_center
-    ordered_splits.map(&:latitude).compact.mean
-  end
-
-  def longitude_center
-    ordered_splits.map(&:longitude).compact.mean
-  end
-
   def show_visibility_columns?
     current_user&.admin?
-  end
-
-  def default_zoom
-    9
   end
 
   private

@@ -35,14 +35,12 @@
         <div id="map" style="width: 550px; height: 350px;"></div>
 
         <script>
-          $(document).ready(function () {
-            var locations = <%= @presenter.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
-            var latitude_center = <%= @presenter.latitude_center %>;
-            var longitude_center = <%= @presenter.longitude_center %>;
-            var zoom = <%= @presenter.default_zoom %>;
+            $(document).ready(function () {
+                var locations = <%= @presenter.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
+                var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
 
-            gmap_show(locations, {latitude: latitude_center, longitude: longitude_center, zoom: zoom});    // init show map
-          });
+                gmap_show(locations, trackPoints);    // init show map
+            });
         </script>
 
       </div>

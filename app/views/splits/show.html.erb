@@ -1,11 +1,11 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show split - #{@split.base_name}" %>
+    <% "OpenSplitTime: Show split - #{@presenter.base_name}" %>
 <% end %>
-<h1 align="center"><%= @split.base_name %></h1>
-<h4 align="center"><%= "#{pdu('singular').titleize} #{d(@split.distance_from_start)}" %></h4>
+<h1 align="center"><%= @presenter.base_name %></h1>
+<h4 align="center"><%= "#{pdu('singular').titleize} #{d(@presenter.distance_from_start)}" %></h4>
 <div class="row">
   <div class="col-md-6 col-md-offset-3 center">
-    <%= @split.description %>
+    <%= @presenter.description %>
   </div>
 </div>
 
@@ -13,24 +13,24 @@
   <ul class="object-list-body">
     <li>
       <strong>Course:</strong>
-      <%= link_to @split.course.name, course_path(@split.course) %>
+      <%= link_to @presenter.course.name, course_path(@presenter.course) %>
     </li>
     <li>
       <strong>Vertical Gain From Start:</strong>
-      <%= elevation_format(@split.vert_gain_from_start) %>
+      <%= elevation_format(@presenter.vert_gain_from_start) %>
     </li>
     <li>
       <strong>Vertical Loss From Start:</strong>
-      <%= elevation_format(@split.vert_loss_from_start) %>
+      <%= elevation_format(@presenter.vert_loss_from_start) %>
     </li>
   </ul>
   <div class="article-actions">
-    <%= link_to '<< View course', course_path(@split.course), class: "btn btn-sm btn-default" %>
+    <%= link_to '<< View course', course_path(@presenter.course), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user && @current_user.authorized_to_edit?(@split) %>
-        <%= link_to 'Edit this split', edit_split_path(@split), class: "btn btn-sm btn-primary" %>
+    <% if @current_user && @current_user.authorized_to_edit?(@presenter) %>
+        <%= link_to 'Edit this split', edit_split_path(@presenter), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this split',
-                    split_path(@split),
+                    split_path(@presenter),
                     method: :delete,
                     data: {confirm: "Are you sure?"},
                     class: "btn btn-sm btn-danger" %>
@@ -38,17 +38,18 @@
   </div>
   <hr>
 
-  <% if @split.latitude && @split.longitude %>
-      <%= "Elevation: #{elevation_format(@split.elevation)}" %>
+  <% if @presenter.latitude && @presenter.longitude %>
+      <%= "Elevation: #{elevation_format(@presenter.elevation)}" %>
       <hr>
       <div id="map" style="width: 550px; height: 350px;"></div>
 
       <script>
-        $(document).ready(function () {
-          var locations = <%= @split.course.splits.to_a.unshift(@split).uniq.to_json.html_safe %>;    // pass ruby variable to javascript
+          $(document).ready(function () {
+              var locations = <%= @presenter.course_splits.to_json.html_safe %>;    // pass ruby variable to javascript
+              var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
 
-              gmap_show(locations, {latitude: locations[0].latitude, longitude: locations[0].longitude, zoom: 12});    // init show map
-        });
+              gmap_show(locations, trackPoints);    // init show map
+          });
       </script>
   <% end %>
 

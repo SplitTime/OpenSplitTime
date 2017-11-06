@@ -39,6 +39,14 @@ class Course < ApplicationRecord
     @distance ||= ordered_splits.last.distance_from_start if ordered_splits.present?
   end
 
+  def track_points
+    return [] unless gpx.present?
+    return @track_points if defined?(@track_points)
+    gpx_file = GPX::GPXFile.new(gpx_file: FileStore.get(gpx.url))
+    track = gpx_file.tracks.first
+    @track_points = track.points.map { |track_point| {'lat' => track_point.lat, 'lon' => track_point.lon} }
+  end
+
   def vert_gain
     @vert_gain ||= ordered_splits.last.vert_gain_from_start if ordered_splits.present?
   end

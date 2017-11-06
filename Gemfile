@@ -53,6 +53,7 @@ gem 'record_tag_helper'
 gem 'newrelic_rpm'
 gem 'bootsnap'
 gem 'webpacker', '~> 3.0'
+gem 'gpx'
 
 
 group :development do

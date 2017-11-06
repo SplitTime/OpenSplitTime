@@ -20,6 +20,7 @@ class SplitsController < ApplicationController
   end
 
   def show
+    @presenter = SplitPresenter.new(@split, params, current_user)
   end
 
   def new

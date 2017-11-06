@@ -43,8 +43,8 @@ class Course < ApplicationRecord
     return [] unless gpx.present?
     return @track_points if defined?(@track_points)
     gpx_file = GPX::GPXFile.new(gpx_file: FileStore.get(gpx.url))
-    track = gpx_file.tracks.first
-    @track_points = track.points.map { |track_point| {'lat' => track_point.lat, 'lon' => track_point.lon} }
+    points = gpx_file.tracks.map(&:points).flatten
+    @track_points = points.map { |track_point| {lat: track_point.lat, lon: track_point.lon} }
   end
 
   def vert_gain

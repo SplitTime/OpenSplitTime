@@ -16,8 +16,10 @@ class Course < ApplicationRecord
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
-  validates :gpx, attachment_content_type: {content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream]}
-  validates_attachment_file_name :gpx, matches: /gpx\Z/
+  validates_attachment :gpx,
+                       content_type: {content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream]},
+                       file_name: {matches: /gpx\Z/},
+                       size: {in: 0..500.kilobytes}
 
   def to_s
     slug

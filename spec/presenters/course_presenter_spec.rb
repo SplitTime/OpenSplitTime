@@ -30,38 +30,4 @@ RSpec.describe CoursePresenter do
       end
     end
   end
-
-  describe '#latitude_center' do
-    context 'when splits have latitude information' do
-      let(:split_1) { build_stubbed(:split, latitude: 40) }
-      let(:split_2) { build_stubbed(:split, latitude: 42) }
-
-      it 'returns the average latitude of the splits' do
-        expect(subject.latitude_center).to eq(41)
-      end
-    end
-
-    context 'when splits have no latitude information' do
-      it 'returns nil' do
-        expect(subject.latitude_center).to be_nil
-      end
-    end
-  end
-
-  describe '#longitude_center' do
-    context 'when splits have longitude information' do
-      let(:split_1) { build_stubbed(:split, longitude: -100) }
-      let(:split_2) { build_stubbed(:split, longitude: -102) }
-
-      it 'returns the average longitude of the splits' do
-        expect(subject.longitude_center).to eq(-101)
-      end
-    end
-
-    context 'when splits have no longitude information' do
-      it 'returns nil' do
-        expect(subject.longitude_center).to be_nil
-      end
-    end
-  end
 end

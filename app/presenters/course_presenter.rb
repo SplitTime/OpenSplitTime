@@ -11,7 +11,7 @@ class CoursePresenter < BasePresenter
   end
 
   def course_has_location_data?
-    ordered_splits.any? { |split| split.latitude && split.longitude }
+    ordered_splits.any? { |split| split.latitude && split.longitude } || gpx.present?
   end
 
   def display_style

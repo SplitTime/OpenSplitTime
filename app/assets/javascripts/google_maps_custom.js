@@ -21,31 +21,33 @@ var gmap_show = function (locations, trackPoints) {
     map = new google.maps.Map(document.getElementById('map'));
 
     var markers = locations.map(function (location, i) {
-        var lat = parseFloat(location.latitude);
-        var lng = parseFloat(location.longitude);
-        var point = new google.maps.LatLng(lat, lng);
+        if (location.latitude !== null && location.longitude !== null) {
+            var lat = parseFloat(location.latitude);
+            var lng = parseFloat(location.longitude);
+            var point = new google.maps.LatLng(lat, lng);
 
-        bounds.extend(point);
+            bounds.extend(point);
 
-        var marker = new google.maps.Marker({
-            position: point,
-            map: map
-        });
-
-        marker.infowindow = new google.maps.InfoWindow({
-            content: location.base_name + " : " + location.latitude + ", " + location.longitude
-        });
-
-        marker.addListener('click', function () {
-            markers.map(function (v, index) {
-                if (v.infowindow) {
-                    v.infowindow.close();
-                }
+            var marker = new google.maps.Marker({
+                position: point,
+                map: map
             });
-            marker.infowindow.open(map, marker);
-        });
 
-        return marker;
+            marker.infowindow = new google.maps.InfoWindow({
+                content: location.base_name + " : " + location.latitude + ", " + location.longitude
+            });
+
+            marker.addListener('click', function () {
+                markers.map(function (v, index) {
+                    if (v.infowindow) {
+                        v.infowindow.close();
+                    }
+                });
+                marker.infowindow.open(map, marker);
+            });
+
+            return marker;
+        }
 
     });
 

@@ -44,7 +44,7 @@ class Course < ApplicationRecord
   def track_points
     return [] unless gpx.present?
     return @track_points if defined?(@track_points)
-    gpx_file = GPX::GPXFile.new(gpx_file: FileStore.get(gpx.url))
+    gpx_file = GPX::GPXFile.new(gpx_data: FileStore.get(gpx.url))
     points = gpx_file.tracks.map(&:points).flatten
     @track_points = points.map { |track_point| {lat: track_point.lat, lon: track_point.lon} }
   end

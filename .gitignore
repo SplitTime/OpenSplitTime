@@ -23,9 +23,6 @@ db/*.sqlite3
 # Ignore all .idea files
 /.idea
 
-# Ignore all .idea files
-/.idea
-
 # Ignore the default SQLite database.
 /db/*.sqlite3
 >>>>>>> 940a324af3d8e1bc1077b36b94fc73689783057e

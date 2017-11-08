@@ -36,10 +36,15 @@ class AidStationsController < ApplicationController
     redirect_to session.delete(:return_to) || aid_stations_path
   end
 
+  def times
+    authorize @aid_station
+    @presenter = AidStationTimesPresenter.new(@aid_station, prepared_params, current_user)
+  end
 
   private
 
   def set_aid_station
-    @aid_station = AidStation.find(params[:id])
+    @aid_station = AidStation.where(id: params[:id]).includes(:event, :split).first
+    raise ActiveRecord::RecordNotFound unless @aid_station
   end
 end

@@ -1,0 +1,45 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Aid station live times - #{@presenter.split_name}" %>
+<% end %>
+<div class="row">
+  <div class="col-xs-6">
+    <h2><strong><%= "#{@presenter.split_name} - #{@presenter.event_name}" %></strong></h2>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12">
+    <%= link_to '<< Back to admin', stage_event_path(@presenter.event), class: "btn btn-sm btn-default" %>
+  </div>
+</div>
+<hr>
+<% if @presenter.bib_rows.present? %>
+    <div>
+      <table class="table table-condensed table-striped">
+        <thead>
+        <tr>
+          <th>Bib</th>
+          <th>Name</th>
+          <th>Display time</th>
+          <% @presenter.sources.each do |source| %>
+              <th><%= source %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% @presenter.bib_rows.each do |row| %>
+            <tr>
+              <td><%= row.bib_number %></td>
+              <td><%= row.full_name %></td>
+              <td style="white-space:pre-wrap; word-wrap:break-word"><%= row.result_times.map { |lap, time| "Lap #{lap}: #{time}" }.join("\n") %></td>
+              <% @presenter.sources.each do |source| %>
+                  <td style="white-space:pre-wrap; word-wrap:break-word"><%= row.recorded_times[source] %></td>
+              <% end %>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+<% else %>
+    <h4>No live times have been entered for this aid station.</h4>
+<% end %>

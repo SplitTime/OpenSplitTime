@@ -27,9 +27,6 @@
   <div class="col-xs-12">
     <%= link_to '<< Back to admin', event_path(@aid_station.event), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user && @current_user.authorized_to_edit?(@aid_station.event) %>
-        <%= link_to 'Edit this aid_station', edit_aid_station_path(@aid_station), class: "btn btn-sm btn-primary" %>
-    <% end %>
   </div>
 </div>
 <% if @aid_station.efforts_recorded_out %>

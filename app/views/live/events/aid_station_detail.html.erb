@@ -28,33 +28,6 @@
 
 <div class="row">
   <div class="col-xs-4">
-    <% if @aid_station_detail.open_time %>
-        <strong><%= "Aid station open time: #{l @aid_station_detail.open_time, format: :day_and_military}" %></strong><br/>
-    <% end %>
-    <% if @aid_station_detail.close_time %>
-        <strong><%= "Aid station close time: #{l @aid_station_detail.close_time, format: :day_and_military}" %></strong><br/>
-    <% end %>
-    <strong><%= "Aid station status: #{@aid_station_detail.status.titleize}" if @aid_station_detail.status %></strong><br/>
-    <strong><%= "Aid Captain: #{@aid_station_detail.captain_name}" %></strong><br/>
-    <strong><%= "Communications Crew: #{@aid_station_detail.comms_crew_names}" %></strong><br/>
-    <strong><%= "Radio Frequencies: #{@aid_station_detail.comms_frequencies}" %></strong><br/>
-    <strong><%= "Issues: #{@aid_station_detail.current_issues || '[None]'}" %></strong><br/>
-  </div>
-  <div class="col-xs-8">
-    <strong><%= "#{pluralize(@aid_station_detail.efforts_started_count, 'effort')} started" %></strong><br/>
-    <%= "#{@aid_station_detail.category_sizes[:recorded_in]} times recorded into this station" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:recorded_out]} times recorded out of this station" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:in_aid]} in aid (reported into but not out of this station)" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:missed]} times missed (not recorded here but recorded at a later station)" %>
-    <br/>
-    <%= "#{@aid_station_detail.category_sizes[:stopped_here]} stopped at this station" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:dropped_here]} dropped at this station" %><br/>
-    <%= "#{@aid_station_detail.category_sizes[:expected]} expected (in progress but not yet here)" %>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-4">
     <% if @aid_station_detail.prior_aid_station %>
         <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",
                     request.params.merge(aid_station: @aid_station_detail.prior_aid_station, split_name: nil),
@@ -68,6 +41,7 @@
   </div>
   <div class="col-xs-8">
     <div class="text-right">
+      <strong><%= "Of #{@aid_station_detail.efforts_started_count} started: " %></strong>
       <div class="btn-group">
         <%= render 'aid_station_detail_button_cluster' %>
       </div>

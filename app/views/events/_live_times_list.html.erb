@@ -13,7 +13,7 @@
       <tr>
         <th>Bib #</th>
         <th>Name</th>
-        <th>Split</th>
+        <th>Aid Station</th>
         <th class="text-center">In/Out</th>
         <th>Time</th>
         <th class="text-center">Pacer/Stop</th>
@@ -31,7 +31,7 @@
           <tr>
             <td><%= live_time.bib_number %></td>
             <td><%= live_time.effort_full_name %></td>
-            <td><%= live_time.split_base_name %></td>
+            <td><%= link_to live_time.split_base_name, times_aid_station_path(live_time.aid_station, sub_split_kind: live_time.sub_split_kind) %></td>
             <td class="text-center"><%= live_time.sub_split_kind %></td>
             <td><%= live_time.military_time(view_model.home_time_zone) %></td>
             <td class="text-center"><%= "#{live_time.with_pacer ? 'Yes' : 'No'} / #{live_time.stopped_here ? 'Yes' : 'No'}" %></td>

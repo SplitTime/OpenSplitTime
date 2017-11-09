@@ -67,6 +67,7 @@ class EventsController < ApplicationController
 
   def stage
     authorize @event
+    @event = Event.where(id: @event.id).includes(:course).includes(:splits).includes(:efforts).includes(event_group: :events).first
     @event_stage = EventStageDisplay.new(event: @event, params: prepared_params)
     params[:view] ||= 'efforts'
     session[:return_to] = stage_event_path(@event)

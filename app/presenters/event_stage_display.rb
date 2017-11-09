@@ -42,7 +42,7 @@ class EventStageDisplay < EventWithEffortsPresenter
 
   def filtered_live_times
     @filtered_live_times ||= live_times
-                                 .with_split_names
+                                 .includes(:split).includes(event: :aid_stations)
                                  .where(filter_hash)
                                  .order(sort_hash.presence || {created_at: :desc})
                                  .paginate(page: page, per_page: per_page)

@@ -19,7 +19,6 @@ class LiveTime < ApplicationRecord
 
   scope :unconsidered, -> { where(pulled_by: nil).where(split_time: nil) }
   scope :unmatched, -> { where(split_time: nil) }
-  scope :with_split_names, -> { joins(:split).select('live_times.*, splits.base_name') }
 
   def absolute_or_entered_time
     if absolute_time.blank? && entered_time.blank?
@@ -71,19 +70,23 @@ class LiveTime < ApplicationRecord
 
   def effort
     return nil if bib_number.include?('*')
-    event.efforts.find_by(bib_number: bib_number)
+    event.efforts.find { |effort| effort.bib_number.to_s == bib_number }
   end
 
   def effort_full_name
-    effort ? effort.full_name : '[Bib not found]'
+    effort&.full_name || '[Bib not found]'
   end
 
   def split_base_name
-    attributes['base_name'] || split.base_name
+    split.base_name
+  end
+
+  def aid_station
+    event.aid_stations.find { |aid_station| aid_station.split_id == split_id }
   end
 
   def matched?
-    split_time.present?
+    split_time_id.present?
   end
 
   def military_time(zone = nil)

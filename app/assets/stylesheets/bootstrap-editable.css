@@ -661,3 +661,17 @@ a.editable-click.editable-disabled:hover {
   margin-left: -5px;
   margin-right: -5px;
 }
+.table tbody tr.highlight td {
+    background-color: #ffff80;
+}
+.table tbody tr td.font-weight-bold {
+    font-weight: bold;
+}
+.table tbody tr td.border-left,
+.table thead tr th.border-left {
+    border-left: 2px solid #d8d8d8
+}
+.table tbody tr td.border-right,
+.table thead tr th.border-right {
+    border-right: 2px solid #d8d8d8
+}

@@ -121,6 +121,8 @@ class Split < ApplicationRecord
     sub_split_bitkeys.map { |bitkey| SubSplit.kind(bitkey) }
   end
 
+  alias_method :sub_split_kinds, :name_extensions
+
   def name_extensions=(extensions)
     name_extension_array = extensions.respond_to?(:map) ? extensions : extensions.to_s.split
     bitkeys = name_extension_array.map { |name_extension| SubSplit.bitkey(name_extension) }.compact

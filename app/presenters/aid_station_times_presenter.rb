@@ -1,5 +1,7 @@
 class AidStationTimesPresenter < BasePresenter
   delegate :event_name, :split_name, to: :aid_station
+  delegate :home_time_zone, :available_live, :podium_template, :event_group, to: :event
+  delegate :sub_split_kinds, to: :split
 
   def initialize(aid_station, params, current_user)
     @aid_station = aid_station
@@ -15,21 +17,33 @@ class AidStationTimesPresenter < BasePresenter
     @sources ||= all_live_times.map(&:source_text).uniq
   end
 
+  def split_text
+    split.name(bitkey)
+  end
+
+  def sub_split_kind
+    params[:sub_split_kind] || 'in'
+  end
+
+  def prior_aid_station
+    ordered_aid_stations.elements_before(aid_station)&.last
+  end
+
+  def next_aid_station
+    ordered_aid_stations.elements_after(aid_station)&.first
+  end
+
   private
 
   attr_reader :aid_station, :params, :current_user
   delegate :event, :split, to: :aid_station
 
   def bib_row(bib_number)
-    OpenStruct.new(bib_number: bib_number,
-                   full_name: indexed_efforts.fetch(bib_number, Effort.null_record).full_name,
-                   recorded_times: sources.map { |source| [source, find_military_times(bib_number, source).join("\n")] }.to_h,
-                   result_times: find_split_times(bib_number).map { |st| [st.lap, st.military_time] }.to_h)
-  end
-
-  def find_military_times(bib_number, source)
-    # noinspection RubyArgCount
-    grouped_live_times.fetch(bib_number, []).select { |lt| lt.source_text == source }.map { |lt| lt.military_time(time_zone) }
+    BibSubSplitTimeRow.new(bib_number: bib_number,
+                           effort: indexed_efforts[bib_number],
+                           live_times: grouped_live_times[bib_number],
+                           split_times: find_split_times(bib_number),
+                           event: event)
   end
 
   def find_split_times(bib_number)
@@ -37,14 +51,10 @@ class AidStationTimesPresenter < BasePresenter
     grouped_split_times.fetch(effort&.id, [])
   end
 
-  def time_zone
-    event.home_time_zone
-  end
-
   def all_live_times
     LiveTime.where(event: event, split: split)
   end
-  
+
   def live_times
     all_live_times.where(bitkey: bitkey)
   end
@@ -65,11 +75,11 @@ class AidStationTimesPresenter < BasePresenter
     @indexed_live_times ||= live_times.group_by(&:bib_number)
   end
 
-  def sub_split_kind
-    params[:sub_split_kind] || 'in'
-  end
-
   def bitkey
     SubSplit.bitkey(sub_split_kind)
+  end
+
+  def ordered_aid_stations
+    @ordered_aid_stations ||= event.aid_stations.sort_by(&:distance_from_start)
   end
 end

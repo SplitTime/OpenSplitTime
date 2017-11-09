@@ -10,6 +10,7 @@ class AidStation < ApplicationRecord
 
   attr_accessor :efforts_dropped_at_station, :efforts_in_aid, :efforts_recorded_out,
                 :efforts_passed_without_record, :efforts_expected
+  delegate :course, :distance_from_start, to: :split
 
   scope :ordered, -> { includes(:split).order('splits.distance_from_start') }
 
@@ -21,10 +22,6 @@ class AidStation < ApplicationRecord
 
   def to_s
     "#{event.slug} at #{split.slug}"
-  end
-
-  def course
-    split.course
   end
 
   def course_name

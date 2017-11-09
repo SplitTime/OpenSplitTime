@@ -1,40 +1,82 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Aid station live times - #{@presenter.split_name}" %>
 <% end %>
-<div class="row">
+<div class="row header">
+  <div class="col-xs-7">
+    <h2><strong><%= "#{@presenter.split_text}: #{@presenter.event_name}" %></strong></h2>
+    <h4><%= "Aid station time report as of #{day_time_current_military_full(@presenter.home_time_zone)}" %></h4>
+  </div>
+  <div class="row">
+    <%= link_to_enter_live_entry(@presenter, current_user) %>
+    <%= render 'events/view_buttons', view_object: @presenter %>
+  </div>
+</div>
+
+<div class="row mid">
   <div class="col-xs-6">
-    <h2><strong><%= "#{@presenter.split_name} - #{@presenter.event_name}" %></strong></h2>
+    <div class="btn-group mid-padding">
+      <% if @presenter.prior_aid_station %>
+          <%= link_to "<< #{@presenter.prior_aid_station.split_name}",
+                      request.params.merge(id: @presenter.prior_aid_station),
+                      class: 'btn btn-sm btn-default' %>
+      <% end %>
+      <% if @presenter.next_aid_station %>
+          <%= link_to "#{@presenter.next_aid_station.split_name} >>",
+                      request.params.merge(id: @presenter.next_aid_station),
+                      class: 'btn btn-sm btn-default' %>
+      <% end %>
+    </div>
+
+    <% if @presenter.sub_split_kinds.many? %>
+        <div class="btn-group mid-padding">
+          <% @presenter.sub_split_kinds.each do |sub_split_kind| %>
+              <%= link_to "Times #{sub_split_kind}",
+                          request.params.merge(sub_split_kind: sub_split_kind),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: sub_split_kind == @presenter.sub_split_kind %>
+          <% end %>
+        </div>
+    <% end %>
+  </div>
+
+  <div class="col-xs-6 page-navigation">
+    <div class="row">
+    </div>
   </div>
 </div>
-<hr>
-<div class="row">
-  <div class="col-xs-12">
-    <%= link_to '<< Back to admin', stage_event_path(@presenter.event), class: "btn btn-sm btn-default" %>
-  </div>
-</div>
+
 <hr>
 <% if @presenter.bib_rows.present? %>
     <div>
       <table class="table table-condensed table-striped">
         <thead>
         <tr>
+          <th></th>
+          <th></th>
+          <th class="border-right"></th>
+          <th class="text-center" colspan="<%= @presenter.sources.size %>">Live Time Sources</th>
+          <th class="border-left"></th>
+        </tr>
+        <tr>
           <th>Bib</th>
           <th>Name</th>
-          <th>Display time</th>
+          <th class="text-center border-right">Result times</th>
           <% @presenter.sources.each do |source| %>
-              <th><%= source %></th>
+              <th class="text-center"><%= source %></th>
           <% end %>
+          <th class="text-center border-left">Discrepancy</th>
         </tr>
         </thead>
         <tbody>
         <% @presenter.bib_rows.each do |row| %>
-            <tr>
+            <tr class="<%= 'highlight' if row.problem? %>">
               <td><%= row.bib_number %></td>
               <td><%= row.full_name %></td>
-              <td style="white-space:pre-wrap; word-wrap:break-word"><%= row.result_times.map { |lap, time| "Lap #{lap}: #{time}" }.join("\n") %></td>
+              <td class="text-center font-weight-bold border-right" style="white-space:pre-wrap; word-wrap:break-word"><%= row.result_times.map { |result_time| result_time[:time_and_optional_lap] }.join("\n") %></td>
               <% @presenter.sources.each do |source| %>
-                  <td style="white-space:pre-wrap; word-wrap:break-word"><%= row.recorded_times[source] %></td>
+                  <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.recorded_times.dig(source, :military_times)&.join("\n") %></td>
               <% end %>
+              <td class="text-center border-left"><%= TimeConversion.seconds_to_hms(row.largest_discrepancy) %></td>
             </tr>
         <% end %>
         </tbody>

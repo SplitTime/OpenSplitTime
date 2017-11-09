@@ -35,7 +35,7 @@ RSpec.describe DataImport::Loaders::UpsertStrategy do
         expect(Split.all.size).to eq(1)
         subject.load_records
         expect(Split.all.size).to eq(3)
-        expect(Split.all.map(&:base_name)).to eq(['Start', 'Aid 1', 'Finish'])
+        expect(Split.all.map(&:base_name)).to match_array(['Start', 'Aid 1', 'Finish'])
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.describe DataImport::Loaders::UpsertStrategy do
         expect(Split.all.size).to eq(1)
         expect(Split.first.base_name).to eq('Old Name')
         expect(subject.invalid_records.size).to eq(2)
-        expect(subject.invalid_records.map(&:distance_from_start)).to eq([0, -100])
+        expect(subject.invalid_records.map(&:distance_from_start)).to match_array([0, -100])
       end
     end
   end

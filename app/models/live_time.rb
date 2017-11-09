@@ -90,12 +90,12 @@ class LiveTime < ApplicationRecord
     (absolute_time && zone) ? TimeConversion.absolute_to_hms(absolute_time.in_time_zone(zone)) : TimeConversion.file_to_military(entered_time)
   end
 
-  def source_shorthand
+  def source_text
     case
     when source.start_with?('ost-remote')
-      'OST Remote'
+      "OSTR (#{source.last(4)})"
     when source.start_with?('ost-live-entry')
-      'Live Entry'
+      "Live Entry (#{created_by})"
     else
       source
     end

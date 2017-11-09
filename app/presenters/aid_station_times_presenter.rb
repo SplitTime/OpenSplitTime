@@ -12,7 +12,7 @@ class AidStationTimesPresenter < BasePresenter
   end
 
   def sources
-    @sources ||= all_live_times.map(&:source).uniq
+    @sources ||= all_live_times.map(&:source_text).uniq
   end
 
   private
@@ -29,7 +29,7 @@ class AidStationTimesPresenter < BasePresenter
 
   def find_military_times(bib_number, source)
     # noinspection RubyArgCount
-    grouped_live_times.fetch(bib_number, []).select { |lt| lt.source == source }.map { |lt| lt.military_time(time_zone) }
+    grouped_live_times.fetch(bib_number, []).select { |lt| lt.source_text == source }.map { |lt| lt.military_time(time_zone) }
   end
 
   def find_split_times(bib_number)

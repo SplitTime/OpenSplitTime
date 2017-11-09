@@ -38,6 +38,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in bib_number_field, with: efforts.first.bib_number
         fill_in time_in_field, with: '08:00'
         add_button.click
+        wait_for_css
 
         expect(local_workspace).to have_content(efforts.first.full_name)
         expect(local_workspace).not_to have_content(efforts.second.full_name)
@@ -46,24 +47,17 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in bib_number_field, with: efforts.second.bib_number
         fill_in time_in_field, with: '08:00'
         add_button.click
+        wait_for_css
 
         expect(local_workspace).to have_content(efforts.first.full_name)
         expect(local_workspace).to have_content(efforts.second.full_name)
         expect(local_workspace).not_to have_content(efforts.third.full_name)
 
-        fill_in bib_number_field, with: efforts.third.bib_number
-        fill_in time_in_field, with: '08:00'
-        add_button.click
-
-        expect(local_workspace).to have_content(efforts.first.full_name)
-        expect(local_workspace).to have_content(efforts.second.full_name)
-        expect(local_workspace).to have_content(efforts.third.full_name)
-
         submit_all_efforts
 
         expect(efforts.first.split_times).to be_one
         expect(efforts.second.split_times).to be_one
-        expect(efforts.third.split_times).to be_one
+        expect(efforts.third.split_times).to be_empty
 
         verify_workspace_is_empty
       end
@@ -94,6 +88,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in bib_number_field, with: efforts.first.bib_number
         fill_in time_in_field, with: '08:45:45'
         add_button.click
+        wait_for_css
 
         expect(local_workspace).to have_content(efforts.first.full_name)
         expect(local_workspace).not_to have_content(efforts.second.full_name)
@@ -102,24 +97,17 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in bib_number_field, with: efforts.second.bib_number
         fill_in time_in_field, with: '09:00:00'
         add_button.click
+        wait_for_css
 
         expect(local_workspace).to have_content(efforts.first.full_name)
         expect(local_workspace).to have_content(efforts.second.full_name)
         expect(local_workspace).not_to have_content(efforts.third.full_name)
 
-        fill_in bib_number_field, with: efforts.third.bib_number
-        fill_in time_in_field, with: '09:15:15'
-        add_button.click
-
-        expect(local_workspace).to have_content(efforts.first.full_name)
-        expect(local_workspace).to have_content(efforts.second.full_name)
-        expect(local_workspace).to have_content(efforts.third.full_name)
-
         submit_all_efforts
 
         expect(efforts.first.split_times).to be_many
         expect(efforts.second.split_times).to be_many
-        expect(efforts.third.split_times).to be_many
+        expect(efforts.third.split_times).to be_one
 
         verify_workspace_is_empty
       end
@@ -140,6 +128,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in bib_number_field, with: efforts.first.bib_number
         fill_in time_in_field, with: '08:45:45'
         add_button.click
+        wait_for_css
 
         expect(local_workspace).to have_content(efforts.first.full_name)
         expect(local_workspace).not_to have_content(efforts.second.full_name)
@@ -147,6 +136,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in bib_number_field, with: efforts.second.bib_number
         fill_in time_in_field, with: '09:00:00'
         add_button.click
+        wait_for_css
 
         expect(local_workspace).to have_content(efforts.first.full_name)
         expect(local_workspace).to have_content(efforts.second.full_name)

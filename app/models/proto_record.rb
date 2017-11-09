@@ -22,9 +22,10 @@ class ProtoRecord
     record_class && "#{record_class}Parameters".constantize
   end
 
-  def resource_attributes
+  def resource_attributes(attribute_names = [])
     resource = record_class.new(to_h)
-    to_h.map { |attribute_name, _| [attribute_name, resource.send(attribute_name)] }.to_h
+    joined_attributes = to_h.keys | (attribute_names || [])
+    joined_attributes.map { |attribute_name| [attribute_name, resource.send(attribute_name)] }.to_h
   end
 
   private

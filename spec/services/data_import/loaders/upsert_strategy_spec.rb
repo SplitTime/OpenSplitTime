@@ -15,6 +15,7 @@ RSpec.describe DataImport::Loaders::UpsertStrategy do
     [ProtoRecord.new({record_type: :split, kind: 1, sub_split_bitmap: 1, base_name: 'Start', distance_from_start: 0, course_id: 10}),
      ProtoRecord.new({record_type: :split, kind: 2, sub_split_bitmap: 65, base_name: 'Aid 1', distance_from_start: -100, course_id: 10})]
   end
+
   describe '#load_records' do
     context 'when data is valid and no matching records exist' do
       let(:proto_records) { valid_proto_records }
@@ -34,7 +35,7 @@ RSpec.describe DataImport::Loaders::UpsertStrategy do
         expect(Split.all.size).to eq(1)
         subject.load_records
         expect(Split.all.size).to eq(3)
-        expect(Split.all.map(&:base_name)).to eq(["Start", "Aid 1", "Finish"])
+        expect(Split.all.map(&:base_name)).to eq(['Start', 'Aid 1', 'Finish'])
       end
     end
 

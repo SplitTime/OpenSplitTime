@@ -284,10 +284,9 @@ RSpec.describe Api::V1::EventsController do
         end
 
         context 'when unique_key is set' do
-          let(:unique_key) { [:absolute_time, :split_id, :bitkey, :bib_number, :source, :with_pacer, :stopped_here] }
+          let(:unique_key) { %w(absoluteTime splitId bitkey bibNumber source withPacer stoppedHere) }
 
           it 'saves the non-duplicate live_time to the database and updates the existing live_time' do
-            skip
             expect(LiveTime.count).to eq(1)
             post :import, params: request_params
             expect(response.status).to eq(201)

@@ -2,7 +2,7 @@ module DataImport::Loaders
   class UpsertStrategy < BaseLoader
 
     def post_initialize(options)
-      @unique_key = options[:unique_key]&.map(&:to_sym)
+      @unique_key = options[:unique_key]&.map { |attribute| attribute.to_s.underscore.to_sym }
     end
 
     def custom_load
@@ -30,7 +30,7 @@ module DataImport::Loaders
 
     def fetch_record(proto_record)
       model_class = proto_record.record_class
-      attributes = proto_record.resource_attributes
+      attributes = proto_record.resource_attributes(unique_key)
       unique_attributes = attributes.slice(*unique_key)
       record = unique_key_valid?(unique_key, unique_attributes) ?
                    model_class.find_or_initialize_by(unique_attributes) :

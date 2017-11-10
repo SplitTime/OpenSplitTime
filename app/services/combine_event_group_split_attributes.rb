@@ -7,7 +7,6 @@ class CombineEventGroupSplitAttributes
 
   def initialize(event_group)
     @event_group = event_group
-    validate_compatible_splits
   end
 
   def perform
@@ -27,7 +26,7 @@ class CombineEventGroupSplitAttributes
   end
 
   def sub_split_entries(split_name)
-    splits_by_event = splits_by_event(split_name)
+    splits_by_event = MatchEventGroupSplitName.perform(event_group, split_name)[:event_splits]
     split = splits_by_event.values.first
     split.bitkeys.map do |bitkey|
       {'event_split_ids' => splits_by_event.transform_values(&:id),
@@ -36,28 +35,8 @@ class CombineEventGroupSplitAttributes
     end
   end
 
-  def splits_by_event(split_name)
-    events.map { |event| [event.id, event_splits_by_name[event.id][split_name]] }.to_h.compact
-  end
-
-  def event_splits_by_name
-    @event_splits_by_name ||= events.map { |event| [event.id, event.ordered_splits.index_by(&:base_name)] }.to_h
-  end
-
   def events
     # This sort ensures ordered_split_names produces the expected result
     @events ||= event_group.events.sort_by { |event| -event.splits.size }
-  end
-
-  def validate_compatible_splits
-    ordered_split_names.each do |split_name|
-      if incompatible_sub_splits?(split_name)
-        raise ArgumentError, "Splits with matching names must have matching sub_splits. The sub_splits for #{split_name} are incompatible."
-      end
-    end
-  end
-
-  def incompatible_sub_splits?(split_name)
-    splits_by_event(split_name).values.map(&:sub_split_bitmap).uniq.many?
   end
 end

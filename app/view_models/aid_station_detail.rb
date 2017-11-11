@@ -53,9 +53,14 @@ class AidStationDetail < LiveEventFramework
     ordered_aid_stations.elements_after(aid_station)&.first
   end
 
+  def event_group_aid_stations
+    MatchEventGroupSplitName.perform(event_group, split_name)[:event_aid_stations]
+  end
+
   private
 
   attr_reader :params, :aid_station_row
+  delegate :event_group, :ordered_aid_stations, to: :event
 
   def category_effort_rows
     @category_effort_rows ||=
@@ -117,9 +122,5 @@ class AidStationDetail < LiveEventFramework
 
   def sort_param
     (params[:sort].first || []).map(&:to_sym)
-  end
-
-  def ordered_aid_stations
-    @ordered_aid_stations ||= event.aid_stations.includes(:split).order('splits.distance_from_start').to_a
   end
 end

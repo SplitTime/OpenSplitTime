@@ -17,7 +17,7 @@
         <div class="btn-group mid-padding">
           <% @aid_station_detail.ordered_events_within_group.each do |event| %>
               <%= link_to "#{event.guaranteed_short_name}",
-                          request.params.merge(id: event, split_name: @aid_station_detail.split_name, aid_station: nil),
+                          request.params.merge(id: event, aid_station: @aid_station_detail.event_group_aid_stations[event.id]),
                           class: 'btn btn-sm btn-primary',
                           disabled: event == @aid_station_detail.event %>
           <% end %>
@@ -30,12 +30,12 @@
   <div class="col-xs-4">
     <% if @aid_station_detail.prior_aid_station %>
         <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",
-                    request.params.merge(aid_station: @aid_station_detail.prior_aid_station, split_name: nil),
+                    request.params.merge(aid_station: @aid_station_detail.prior_aid_station),
                     class: 'btn btn-sm btn-default' %>
     <% end %>
     <% if @aid_station_detail.next_aid_station %>
         <%= link_to "#{@aid_station_detail.next_aid_station.split.base_name} >>",
-                    request.params.merge(aid_station: @aid_station_detail.next_aid_station, split_name: nil),
+                    request.params.merge(aid_station: @aid_station_detail.next_aid_station),
                     class: 'btn btn-sm btn-default' %>
     <% end %>
   </div>

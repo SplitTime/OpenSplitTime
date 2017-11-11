@@ -37,6 +37,7 @@ class AidStationTimesPresenter < BasePresenter
 
   attr_reader :aid_station, :params, :current_user
   delegate :event, :split, to: :aid_station
+  delegate :ordered_aid_stations, to: :event
 
   def bib_row(bib_number)
     BibSubSplitTimeRow.new(bib_number: bib_number,
@@ -77,9 +78,5 @@ class AidStationTimesPresenter < BasePresenter
 
   def bitkey
     SubSplit.bitkey(sub_split_kind)
-  end
-
-  def ordered_aid_stations
-    @ordered_aid_stations ||= event.aid_stations.sort_by(&:distance_from_start)
   end
 end

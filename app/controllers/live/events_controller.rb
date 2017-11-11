@@ -26,13 +26,8 @@ class Live::EventsController < Live::BaseController
 
   def aid_station_detail
     authorize @event
-    if params[:split_name]
-      split = @event.splits.find_by(base_name: params[:split_name])
-      aid_station = @event.aid_stations.find_by(split_id: split.id) if split
-    else
-      aid_station = @event.aid_stations.find_by(id: params[:aid_station])
-    end
-    aid_station ||= @event.aid_stations.find_by(split_id: @event.ordered_split_ids.first)
+    @event = Event.where(id: @event.id).includes(:splits).includes(:event_group).first
+    aid_station = @event.aid_stations.find_by(id: params[:aid_station]) || @event.ordered_aid_stations.first
     @aid_station_detail = AidStationDetail.new(event: @event, aid_station: aid_station, params: prepared_params)
   end
 

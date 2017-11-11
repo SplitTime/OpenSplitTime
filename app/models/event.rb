@@ -168,4 +168,8 @@ class Event < ApplicationRecord
   def simple?
     (splits_count < 3) && !multiple_laps?
   end
+
+  def ordered_aid_stations
+    @ordered_aid_stations ||= aid_stations.sort_by(&:distance_from_start)
+  end
 end

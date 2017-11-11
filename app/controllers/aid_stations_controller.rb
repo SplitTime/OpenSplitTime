@@ -1,6 +1,6 @@
 class AidStationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_aid_station
+  before_action :set_aid_station, except: :times
   after_action :verify_authorized
 
   def show
@@ -37,9 +37,10 @@ class AidStationsController < ApplicationController
   end
 
   def times
-    authorize @aid_station
-    @aid_station = AidStation.where(id: @aid_station.id).includes(:split).includes(event: :splits)
+    @aid_station = AidStation.where(id: params[:id]).includes(:split).includes(event: :splits)
                        .includes(event: {event_group: {events: :splits}}).first
+    raise ActiveRecord::RecordNotFound unless @aid_station
+    authorize @aid_station
     @presenter = AidStationTimesPresenter.new(@aid_station, prepared_params, current_user)
   end
 

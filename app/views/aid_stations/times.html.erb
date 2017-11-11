@@ -12,6 +12,21 @@
   </div>
 </div>
 
+<% if @presenter.ordered_events_within_group.many? %>
+    <div class="row mid">
+      <div class="col-xs-12">
+        <div class="btn-group mid-padding">
+          <% @presenter.ordered_events_within_group.each do |event| %>
+              <%= link_to "#{event.guaranteed_short_name}",
+                          request.params.merge(id: @presenter.event_group_aid_stations[event.id] || event.ordered_aid_stations.first),
+                          class: 'btn btn-sm btn-primary',
+                          disabled: event == @presenter.event %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <div class="row mid">
   <div class="col-xs-6">
     <div class="btn-group mid-padding">

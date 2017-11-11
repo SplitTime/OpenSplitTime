@@ -38,13 +38,14 @@ class AidStationsController < ApplicationController
 
   def times
     authorize @aid_station
+    @aid_station = AidStation.where(id: @aid_station.id).includes(:split).includes(event: :splits)
+                       .includes(event: {event_group: {events: :splits}}).first
     @presenter = AidStationTimesPresenter.new(@aid_station, prepared_params, current_user)
   end
 
   private
 
   def set_aid_station
-    @aid_station = AidStation.where(id: params[:id]).includes(:event, :split).first
-    raise ActiveRecord::RecordNotFound unless @aid_station
+    @aid_station = AidStation.find(params[:id])
   end
 end

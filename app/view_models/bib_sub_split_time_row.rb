@@ -33,7 +33,7 @@ class BibSubSplitTimeRow
   def largest_discrepancy
     times_in_seconds = joined_military_times.map { |military_time| Time.parse(military_time).seconds_since_midnight }.sort
     adjusted_times = times_in_seconds.map { |seconds| (seconds - times_in_seconds.first) > 12.hours ? (seconds - 24.hours).to_i : seconds }.sort
-    adjusted_times.last - adjusted_times.first
+    (adjusted_times.last - adjusted_times.first).to_i
   end
 
   def problem?

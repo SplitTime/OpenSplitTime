@@ -1,6 +1,6 @@
 class AidStationTimesPresenter < BasePresenter
   delegate :event_name, :split_name, to: :aid_station
-  delegate :home_time_zone, :available_live, :podium_template, :event_group, to: :event
+  delegate :home_time_zone, :available_live, :podium_template, :event_group, :ordered_events_within_group, to: :event
   delegate :sub_split_kinds, to: :split
 
   def initialize(aid_station, params, current_user)
@@ -14,7 +14,7 @@ class AidStationTimesPresenter < BasePresenter
   end
 
   def sources
-    @sources ||= all_live_times.map(&:source_text).uniq
+    @sources ||= all_live_times.map(&:source_text).uniq.sort
   end
 
   def split_text
@@ -22,7 +22,7 @@ class AidStationTimesPresenter < BasePresenter
   end
 
   def sub_split_kind
-    params[:sub_split_kind] || 'in'
+    params[:sub_split_kind] || 'In'
   end
 
   def prior_aid_station
@@ -31,6 +31,10 @@ class AidStationTimesPresenter < BasePresenter
 
   def next_aid_station
     ordered_aid_stations.elements_after(aid_station)&.first
+  end
+
+  def event_group_aid_stations
+    MatchEventGroupSplitName.perform(event_group, split_name)[:event_aid_stations]
   end
 
   private

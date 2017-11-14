@@ -1,6 +1,6 @@
 class BibSubSplitTimeRow
   DISCREPANCY_THRESHOLD = 5.minutes
-  attr_reader :bib_number
+  attr_reader :bib_number, :effort
 
   def initialize(args)
     @bib_number = args[:bib_number]
@@ -42,7 +42,7 @@ class BibSubSplitTimeRow
 
   private
 
-  attr_reader :effort, :live_times, :split_times, :event
+  attr_reader :live_times, :split_times, :event
 
   def time_and_optional_lap(split_time)
     event.multiple_laps? ? "Lap #{split_time.lap}: #{split_time.military_time}" : split_time.military_time

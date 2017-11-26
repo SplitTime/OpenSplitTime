@@ -14,6 +14,7 @@ module DataImport::Transformers
       return if errors.present?
       proto_records.each do |proto_record|
         proto_record.record_type = :effort
+        proto_record.underscore_keys!
         proto_record.map_keys!(EffortParameters.mapping)
         proto_record.normalize_gender!
         proto_record.normalize_country_code!

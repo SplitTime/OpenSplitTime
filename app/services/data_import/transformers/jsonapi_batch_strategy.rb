@@ -14,7 +14,7 @@ module DataImport::Transformers
       return if errors.present?
       proto_records.each do |proto_record|
         proto_record.record_type = proto_record.delete_field(:type).to_sym
-        proto_record[:attributes].each { |key, value| proto_record[key.underscore] = value }
+        proto_record.attributes_to_keys!
         transform_name_extensions!(proto_record)
         proto_record.slice_permitted!
         proto_record[:event_id] = event.id if proto_record.record_class.attribute_names.include?('event_id')

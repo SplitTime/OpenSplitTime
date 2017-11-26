@@ -16,6 +16,7 @@ module DataImport::Transformers
       self.proto_records = parsed_structs.map { |struct| proto_records_from_struct(struct) }.flatten
       proto_records.each do |proto_record|
         proto_record.record_type = :live_time
+        proto_record.underscore_keys!
         proto_record.map_keys!(LiveTimeParameters.mapping)
         proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)

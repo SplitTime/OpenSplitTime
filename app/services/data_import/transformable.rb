@@ -9,6 +9,10 @@ module DataImport::Transformable
     self[:distance_from_start] = matching_distance if matching_distance
   end
 
+  def attributes_to_keys!
+    self[:attributes].each { |key, value| self[key.underscore] = value }
+  end
+
   def convert_split_distance!
     return unless self[:distance].present?
     temp_split = Split.new
@@ -86,6 +90,13 @@ module DataImport::Transformable
 
   def strip_white_space!
     to_h.each { |k, v| self[k] = v&.strip.presence || v.presence }
+  end
+
+  def underscore_keys!
+    to_h.keys.each do |key|
+      underscored_key = key.to_s.underscore.to_sym
+      self[underscored_key] = delete_field(key) if underscored_key != key
+    end
   end
 
   private

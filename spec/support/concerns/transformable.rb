@@ -336,13 +336,22 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
-  describe '#strip_white_space' do
+  describe '#strip_white_space!' do
     let(:attributes) { {'time_in' => ' 09:22 ', 'time_out' => '  10:12  '} }
 
     it 'removes white space from attribute values' do
       subject.strip_white_space!
       expect(subject[:time_in]).to eq('09:22')
       expect(subject[:time_out]).to eq('10:12')
+    end
+  end
+
+  describe '#underscore_keys!' do
+    let(:attributes) { {firstName: 'Joe', lastName: 'Hardman'} }
+
+    it 'changes keys according to the provided map' do
+      subject.underscore_keys!
+      expect(subject.to_h.keys.sort).to eq([:first_name, :last_name])
     end
   end
 end

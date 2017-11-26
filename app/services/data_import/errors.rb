@@ -12,6 +12,14 @@ module DataImport
       {title: 'File not found', detail: {messages: ["File #{file_path} could not be read"]}}
     end
 
+    def file_too_large_error(file)
+      {title: 'File too large', detail: {messages: ["File #{file} is #{file.size / 1.kilobyte} KB, but maximum file size is 500 KB"]}}
+    end
+
+    def file_type_incorrect_error(file)
+      {title: 'File type incorrect', detail: {messages: ["File #{file} must have a .csv extension and must be a CSV file"]}}
+    end
+
     def format_not_recognized_error(format)
       {title: 'Format not recognized', detail: {messages: ["data_format #{format} is not recognized"]}}
     end
@@ -26,7 +34,8 @@ module DataImport
 
     def jsonapi_error_object(record)
       {title: "#{record.class} could not be saved",
-       detail: {attributes: record.attributes.compact, messages: record.errors.full_messages}}
+       detail: {attributes: record.attributes.compact.transform_keys { |key| key.camelize(:lower) },
+                messages: record.errors.full_messages}}
     end
 
     def missing_current_user_error

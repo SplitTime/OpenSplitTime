@@ -14,6 +14,7 @@ module DataImport::Transformers
       return if errors.present?
       proto_records.each do |proto_record|
         proto_record.record_type = :split
+        proto_record.underscore_keys!
         proto_record.map_keys!(SplitParameters.mapping)
         proto_record.convert_split_distance!
         proto_record.align_split_distance!(event.ordered_splits.map(&:distance_from_start))

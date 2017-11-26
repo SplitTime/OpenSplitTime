@@ -1,0 +1,5 @@
+base_name,name_extensions,distance_from_start,vert_gain_from_start,vert_loss_from_start,latitude,longitude,elevation,kind
+Start,in,0,0,0,39.9,-104.9,2300,start
+Aid 1,in out,5000,300,300,40,-105,2600,intermediate
+Aid 2,in,7000,600,500,40.1,-105.1,2500,intermediate
+Finish,in,10000,900,800,40.0,-105.2,2400,finish

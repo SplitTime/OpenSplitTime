@@ -57,6 +57,7 @@ module DataImport::Loaders
       if record.save
         saved_records << record
       else
+        errors << jsonapi_error_object(record)
         invalid_records << record
       end
     end

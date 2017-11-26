@@ -1,14 +1,15 @@
-RSpec.describe DataImport::Readers::CsvFileStrategy do
-  subject { DataImport::Readers::CsvFileStrategy.new(file) }
+RSpec.describe DataImport::Extractors::CsvFileStrategy do
+  subject { DataImport::Extractors::CsvFileStrategy.new(file, options) }
+  let(:options) { {} }
 
-  describe '#read_file' do
+  describe '#extract' do
     context 'when file is provided' do
       let(:file) { File.new("#{Rails.root}/spec/fixtures/files/test_efforts.csv") }
 
-      it 'returns raw data in hash format' do
-        raw_data = subject.read_file
+      it 'returns raw data in OpenStruct format' do
+        raw_data = subject.extract
         expect(raw_data.size).to eq(3)
-        expect(raw_data.all? { |row| row.is_a?(Hash) }).to eq(true)
+        expect(raw_data).to all be_a(OpenStruct)
       end
     end
 
@@ -16,7 +17,7 @@ RSpec.describe DataImport::Readers::CsvFileStrategy do
       let(:file) { nil }
 
       it 'returns nil' do
-        raw_data = subject.read_file
+        raw_data = subject.extract
         expect(raw_data).to be_nil
         expect(subject.errors.first[:title]).to match(/File not found/)
       end
@@ -26,8 +27,8 @@ RSpec.describe DataImport::Readers::CsvFileStrategy do
       let(:file) { File.new("#{Rails.root}/spec/fixtures/files/test_efforts_header_formats.csv") }
 
       it 'returns headers converted to symbols' do
-        raw_data = subject.read_file
-        expect(raw_data.first.keys).to eq([:first_name, :LAST, :sex, :age, :city, :state, :country, :"bib_#"])
+        raw_data = subject.extract
+        expect(raw_data.first.to_h.keys).to eq([:first_name, :last, :sex, :age, :city, :state, :country, :"bib_#"])
       end
     end
   end

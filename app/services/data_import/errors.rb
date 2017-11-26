@@ -1,5 +1,8 @@
 module DataImport
   module Errors
+    def bad_url_error(url, error)
+      {title: 'Bad URL', detail: {messages: ["#{url} reported an error: #{error}"]}}
+    end
 
     def data_not_present_error
       {title: 'Data not present', detail: {messages: ['No data was provided']}}

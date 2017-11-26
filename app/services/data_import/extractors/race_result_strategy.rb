@@ -1,4 +1,4 @@
-module DataImport::Parsers
+module DataImport::Extractors
   class RaceResultStrategy
     include DataImport::Errors
     attr_reader :errors
@@ -10,7 +10,7 @@ module DataImport::Parsers
       validate_raw_data
     end
 
-    def parse
+    def extract
       extract_rows.map { |row| OpenStruct.new(row) } if errors.empty?
     end
 

@@ -5,8 +5,8 @@ module DataImport
     REPORT_ARRAYS = [:saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors]
     attr_reader *REPORT_ARRAYS
 
-    def initialize(data_object, format, options = {})
-      @data_object = data_object
+    def initialize(source_data, format, options = {})
+      @source_data = source_data
       @format = format
       @options = options
       @saved_records = []
@@ -19,23 +19,17 @@ module DataImport
     def import
       case format
       when :race_result_full
-        import_with(data_object, Readers::PassThroughStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
-                    Loaders::InsertStrategy, options)
+        import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::InsertStrategy, options)
       when :race_result_times
-        import_with(data_object, Readers::PassThroughStrategy, Parsers::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
-                    Loaders::SplitTimeUpsertStrategy, options)
+        import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, options)
       when :csv_efforts
-        import_with(data_object, Readers::CsvFileStrategy, Parsers::UnderscoreKeysStrategy, Transformers::GenericEffortsStrategy,
-                    Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericEffortsStrategy, Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
       when :csv_splits
-        import_with(data_object, Readers::CsvFileStrategy, Parsers::UnderscoreKeysStrategy, Transformers::GenericSplitsStrategy,
-                    Loaders::UpsertStrategy, default_unique_key(:split).merge(options))
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericSplitsStrategy, Loaders::UpsertStrategy, default_unique_key(:split).merge(options))
       when :jsonapi_batch
-        import_with(data_object, Readers::PassThroughStrategy, Parsers::PassThroughStrategy, Transformers::JsonapiBatchStrategy,
-                    Loaders::UpsertStrategy, options)
+        import_with(source_data, Extractors::PassThroughStrategy, Transformers::JsonapiBatchStrategy, Loaders::UpsertStrategy, options)
       when :csv_live_times
-        import_with(data_object, Readers::CsvFileStrategy, Parsers::UnderscoreKeysStrategy, Transformers::CsvLiveTimesStrategy,
-                    Loaders::UpsertStrategy, options)
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::CsvLiveTimesStrategy, Loaders::UpsertStrategy, options)
       else
         self.errors << format_not_recognized_error(format)
       end
@@ -43,19 +37,15 @@ module DataImport
 
     private
 
-    attr_reader :data_object, :format, :options
+    attr_reader :source_data, :format, :options
     attr_writer *REPORT_ARRAYS
 
-    def import_with(data_object, read_strategy, parse_strategy, transform_strategy, load_strategy, options)
-      reader = DataImport::Reader.new(data_object, read_strategy)
-      raw_data = reader.read_file
-      self.errors += reader.errors and return if reader.errors.present?
+    def import_with(source_data, extract_strategy, transform_strategy, load_strategy, options)
+      extractor = DataImport::Extractor.new(source_data, extract_strategy, options)
+      extracted_data = extractor.extract
+      self.errors += extractor.errors and return if extractor.errors.present?
 
-      parser = DataImport::Parser.new(raw_data, parse_strategy, options)
-      parsed_structs = parser.parse
-      self.errors += parser.errors and return if parser.errors.present?
-
-      transformer = DataImport::Transformer.new(parsed_structs, transform_strategy, options)
+      transformer = DataImport::Transformer.new(extracted_data, transform_strategy, options)
       proto_records = transformer.transform
       self.errors += transformer.errors and return if transformer.errors.present?
 

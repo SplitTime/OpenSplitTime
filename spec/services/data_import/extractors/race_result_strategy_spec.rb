@@ -1,4 +1,5 @@
-RSpec.describe DataImport::Parsers::RaceResultStrategy do
+RSpec.describe DataImport::Extractors::RaceResultStrategy do
+  subject { DataImport::Extractors::RaceResultStrategy.new(raw_data, options) }
   let(:raw_data) { {'list' => {'lastChange' => '2016-06-04 21:58:25',
                                'Orders' => [],
                                'Filters' => [],
@@ -25,11 +26,10 @@ RSpec.describe DataImport::Parsers::RaceResultStrategy do
                                             ['633', '*', '633', 'Mictest Hintest', 'F', '35', '', '', '', '', '', '', '', 'DNS', '*']]}
   } }
   let(:options) { {} }
-  subject { DataImport::Parsers::RaceResultStrategy.new(raw_data, options) }
 
   describe '#parse' do
     it 'returns an array of attribute rows with effort data in OpenStruct format' do
-      attribute_rows = subject.parse
+      attribute_rows = subject.extract
       expect(attribute_rows.size).to eq(5)
       expect(attribute_rows.all? { |row| row.is_a?(OpenStruct) }).to eq(true)
       expect(attribute_rows.first[:name]).to eq('Jatest Schtest')
@@ -42,7 +42,7 @@ RSpec.describe DataImport::Parsers::RaceResultStrategy do
     it 'exists if the provided hash does not include a ["list"] key' do
       test_data = raw_data
       test_data['list'] = nil
-      subject.parse
+      subject.extract
       expect(subject.errors).to be_present
       expect(subject.errors.first[:title]).to match(/Invalid fields/)
     end
@@ -50,7 +50,7 @@ RSpec.describe DataImport::Parsers::RaceResultStrategy do
     it 'exists if the provided hash does not include a ["list"]["fields"] key' do
       test_data = raw_data
       test_data['list']['Fields'] = nil
-      subject.parse
+      subject.extract
       expect(subject.errors).to be_present
       expect(subject.errors.first[:title]).to match(/Invalid fields/)
     end
@@ -58,7 +58,7 @@ RSpec.describe DataImport::Parsers::RaceResultStrategy do
     it 'exists if the provided hash does not include a ["data"] key' do
       test_data = raw_data
       test_data['data'] = nil
-      subject.parse
+      subject.extract
       expect(subject.errors).to be_present
       expect(subject.errors.first[:title]).to match(/Invalid data/)
     end

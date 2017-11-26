@@ -1,5 +1,5 @@
-module DataImport::Parsers
-  class UnderscoreKeysStrategy
+module DataImport::Extractors
+  class PassThroughStrategy
     include DataImport::Errors
     attr_reader :errors
 
@@ -9,12 +9,8 @@ module DataImport::Parsers
       @errors = []
     end
 
-    def parse
-      raw_data.map { |row| OpenStruct.new(underscore_keys(row)) }
-    end
-
-    def underscore_keys(row)
-      row.transform_keys { |key| key.to_s.underscore }
+    def extract
+      raw_data.map { |row| OpenStruct.new(row) }
     end
 
     private

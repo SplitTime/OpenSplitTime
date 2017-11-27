@@ -113,7 +113,7 @@ class EventsController < ApplicationController
 
     data_format = params[:data_format]&.to_sym
     strict = params[:accept_records] != 'single'
-    importer = DataImport::Importer.new(params[:file], data_format, event: @event, current_user_id: current_user.id, strict: strict)
+    importer = ETL::Importer.new(params[:file], data_format, event: @event, current_user_id: current_user.id, strict: strict)
     importer.import
 
     respond_to do |format|

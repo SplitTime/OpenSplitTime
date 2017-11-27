@@ -38,6 +38,7 @@ class Split < ApplicationRecord
   validates_numericality_of :elevation, greater_than_or_equal_to: -1000, less_than_or_equal_to: 10000, allow_nil: true
   validates_numericality_of :latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90, allow_nil: true
   validates_numericality_of :longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true
+  attribute :kind, default: :intermediate
 
   scope :ordered, -> { order(:distance_from_start) }
   scope :with_course_name, -> { select('splits.*, courses.name as course_name').joins(:course) }

@@ -84,11 +84,11 @@ RSpec.describe EffortEventChanger do
 
       it 'changes the split_ids of effort split_times to the corresponding split_ids of the new event' do
         time_points = new_event.required_time_points.first(effort.split_times.size)
-        expect(effort.split_times.map(&:time_point)).not_to eq(time_points)
+        expect(effort.split_times.map(&:time_point)).not_to match_array(time_points)
         changer = EffortEventChanger.new(effort: effort, event: new_event)
         changer.assign_event
         effort.reload
-        expect(effort.split_times.map(&:time_point)).to eq(time_points)
+        expect(effort.split_times.map(&:time_point)).to match_array(time_points)
       end
 
       it 'raises an error if distances do not coincide' do

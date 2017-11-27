@@ -1,0 +1,3 @@
+base_name,distance_from_start,vert_gain_from_start,vert_loss_from_start,latitude,longitude,elevation
+Aid 1,5000,300,300,40,-105,2600
+Aid 2,7000,600,500,40.1,-105.1,2500

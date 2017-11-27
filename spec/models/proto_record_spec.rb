@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe ProtoRecord, type: :model do
   it_behaves_like 'transformable'
 

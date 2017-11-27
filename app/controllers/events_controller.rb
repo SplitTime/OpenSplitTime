@@ -110,29 +110,16 @@ class EventsController < ApplicationController
 
   def import_csv
     authorize @event
-    if params[:file]
-      file_url = FileStore.public_upload('imports', params[:file], current_user.id)
-      if file_url
-        file_contents = FileStore.get(file_url)
-        params[:data] = file_contents
-      else
-        respond_to do |format|
-          format.html { flash[:danger] = 'Import file too large.' and redirect_to :back }
-          format.json { render json: {errors: [{title: 'Import file too large'}]}, status: :unprocessable_entity }
-        end
-      end
-    end
 
     data_format = params[:data_format]&.to_sym
     strict = params[:accept_records] != 'single'
-    importer = DataImport::Importer.new(params[:data], data_format, event: @event, current_user_id: current_user.id, strict: strict)
+    importer = ETL::Importer.new(params[:file], data_format, event: @event, current_user_id: current_user.id, strict: strict)
     importer.import
 
     respond_to do |format|
-      if importer.invalid_records.present?
-        format.html { flash[:warning] = "#{importer.invalid_records.map { |resource| jsonapi_error_object(resource) }}" and redirect_to :back }
-        format.json { render json: {errors: importer.invalid_records.map { |resource| jsonapi_error_object(resource) }},
-                             status: :unprocessable_entity }
+      if importer.errors.present?
+        format.html { flash[:warning] = "#{importer.errors}" and redirect_to :back }
+        format.json { render json: {errors: importer.errors}, status: :unprocessable_entity }
       else
         case data_format
         when :csv_splits

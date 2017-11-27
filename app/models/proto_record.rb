@@ -1,5 +1,5 @@
 class ProtoRecord
-  include DataImport::Transformable
+  include ETL::Transformable
 
   attr_accessor :record_type, :record_action
   attr_reader :children, :attributes

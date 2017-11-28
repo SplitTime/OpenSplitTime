@@ -48,7 +48,6 @@ module ETL::Transformers
     end
 
     def create_children
-      p time_points.zip(proto_record[:times_from_start])
       split_time_attributes = time_points.zip(proto_record[:times_from_start]).map do |time_point, time|
         {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
       end

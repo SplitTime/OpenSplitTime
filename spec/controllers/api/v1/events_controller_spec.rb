@@ -363,6 +363,29 @@ RSpec.describe Api::V1::EventsController do
         end
       end
     end
+
+    context 'when provided with an adilas url and data_format adilas_bear_times' do
+      let(:request_params) { {staging_id: event.id, data_format: 'adilas_bear_times', data: url} }
+      let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
+
+      it 'returns a successful json response' do
+        post :import, params: request_params
+        expect(response.status).to eq(201)
+      end
+
+      it 'creates an effort and split_times' do
+        expect(event.efforts.size).to eq(0)
+        post :import, params: request_params
+        event.reload
+        expect(event.efforts.size).to eq(1)
+        effort = event.efforts.first
+        expect(effort.first_name).to eq('Linda')
+        expect(effort.last_name).to eq('McFadden')
+        split_times = event.efforts.first.split_times
+        expect(split_times.size).to eq(7)
+        expect(split_times.map(&:time_from_start)).to match_array([0.0, 10150.0, 10150.0, 23427.0, 23429.0, 28151.0, 114551.0])
+      end
+    end
   end
 
   describe '#trigger_live_times_push' do

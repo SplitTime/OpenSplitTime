@@ -27,7 +27,7 @@ RSpec.describe ETL::Extractors::RaceResultStrategy do
   } }
   let(:options) { {} }
 
-  describe '#parse' do
+  describe '#extract' do
     it 'returns an array of attribute rows with effort data in OpenStruct format' do
       attribute_rows = subject.extract
       expect(attribute_rows.size).to eq(5)

@@ -1,15 +1,19 @@
-RSpec.describe ETL::Extractors::HTMLPageStrategy do
-  subject { ETL::Extractors::HTMLPageStrategy.new(url, options) }
+RSpec.describe ETL::Extractors::AdilasBearHTMLStrategy do
+  subject { ETL::Extractors::AdilasBearHTMLStrategy.new(url, options) }
+  let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
   let(:options) { {} }
+  let(:attributes) { {full_name: 'Linda McFadden', bib_number: '187', gender: 'F', age: '54', city: 'Modesto', state_code: 'CA', times: times} }
+  let(:times) { ['9/23/2016 6:00:00 am', '9/23/2016 8:49:10 am',
+                 '9/23/2016 8:49:10 am', '9/23/2016 12:30:27 pm',
+                 '9/23/2016 12:30:29 pm', '9/24/2016 1:49:11 pm',
+                 '9/23/2016 1:49:11 pm', '... ...'] }
 
   describe '#extract' do
     context 'when a valid URL is provided' do
-      let(:url) { 'https://www.example.com' }
+      let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
 
-      it 'returns raw data as a StringIO in html format' do
-        html = subject.extract
-        expect(html).to be_a(Nokogiri::HTML::Document)
-        expect(html.xpath('/html/body/div/h1').text).to eq('Example Domain')
+      it 'returns an OpenStruct containing effort and time information' do
+        expect(subject.extract).to eq(OpenStruct.new(attributes))
       end
     end
 

@@ -22,6 +22,8 @@ module ETL
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::InsertStrategy, options)
       when :race_result_times
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, options)
+      when :adilas_bear_times
+        import_with(source_data, Extractors::AdilasBearHTMLStrategy, Transformers::AdilasBearStrategy, Loaders::InsertStrategy, options)
       when :csv_efforts
         import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericEffortsStrategy, Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
       when :csv_splits

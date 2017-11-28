@@ -30,8 +30,8 @@ namespace :pull_event do
       Rake::Task['pull_event:from_uri'].invoke(args[:event_id], source_uri, :adilas_bear_times)
       Rake::Task['pull_event:from_uri'].reenable
     end
-    elapsed_time = Time.current - start_time
-    puts "\nProcessed #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')} in #{elapsed_time.round(2)} seconds\n"
+    elapsed_time = (Time.current - start_time).round(2)
+    puts "\nProcessed #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')} in #{elapsed_time} seconds\n"
   end
 
 
@@ -104,7 +104,7 @@ namespace :pull_event do
 
     upload_response_body = upload_response.body.presence || '{}'
     parsed_upload_response = JSON.parse(upload_response_body)
-    elapsed_time = Time.current - start_time
+    elapsed_time = (Time.current - start_time).round(2)
 
     if upload_response.code == 201
       puts "Completed pull_event:from_uri for event: #{event.name} from #{source_uri} in #{elapsed_time} seconds\n"
@@ -116,7 +116,7 @@ namespace :pull_event do
           puts "  #{detail_key.titlecase}: #{detail_value.respond_to?(:join) ? detail_value.join("\n") : detail_value}"
         end
       end
-      puts "Completed with errors in #{elapsed_time.round(2)} seconds"
+      puts "Completed with errors in #{elapsed_time} seconds"
     end
   end
 end

@@ -14,10 +14,14 @@ namespace :pull_event do
     Rake::Task['pull_event:from_uri'].invoke(args[:event_id], source_uri, :race_result_times)
   end
 
+
   desc 'Pulls and imports effort and time data from adilas.biz/bear100 into an event'
-  task :adilas_bear_times, [:event_id, :adilas_bear_id] => :environment do |_, args|
-    source_uri = "https://www.adilas.biz/bear100/runner_details.cfm?id=#{args[:adilas_bear_id]}"
-    Rake::Task['pull_event:from_uri'].invoke(args[:event_id], source_uri, :adilas_bear_times)
+  task :adilas_bear_times, [:event_id, :begin_adilas_id, :end_adilas_id] => :environment do |_, args|
+    (args[:begin_adilas_id]..args[:end_adilas_id]).each do |adilas_id|
+      source_uri = "https://www.adilas.biz/bear100/runner_details.cfm?id=#{adilas_id}"
+      Rake::Task['pull_event:from_uri'].invoke(args[:event_id], source_uri, :adilas_bear_times)
+      Rake::Task['pull_event:from_uri'].reenable
+    end
   end
 
 
@@ -33,7 +37,7 @@ namespace :pull_event do
     puts 'Authenticating with OpenSplitTime'
     session = ActionDispatch::Integration::Session.new(Rails.application)
     session.process(:POST, '/api/v1/auth', params: {user: {email: rake_username, password: rake_password}},
-                 headers: {accept: 'application/json'})
+                    headers: {accept: 'application/json'})
     puts "Authentication requested with #{session.request.filtered_parameters}"
     response_body = session.response.body.presence || '{}'
     parsed_response = JSON.parse(response_body)
@@ -60,7 +64,7 @@ namespace :pull_event do
     ost_path = "/api/v1/events/#{args[:event_id]}/import"
     puts "Uploading data to #{ost_path}"
     session.process(:POST, ost_path, params: {data: source_response, data_format: args[:format]},
-                 headers: {authorization: auth_token, accept: 'application/json'})
+                    headers: {authorization: auth_token, accept: 'application/json'})
     puts session.response.body
 
     elapsed_time = Time.current - start_time

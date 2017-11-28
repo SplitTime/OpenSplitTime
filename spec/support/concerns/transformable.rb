@@ -1,6 +1,35 @@
 RSpec.shared_examples_for 'transformable' do
   subject { described_class.new(attributes) }
 
+  describe '#add_country_from_state_code!' do
+    context 'when the state_code attribute is a US state' do
+      let(:attributes) { {state_code: 'NY'} }
+
+      it 'adds a US country code' do
+        subject.add_country_from_state_code!
+        expect(subject[:country_code]).to eq('US')
+      end
+    end
+
+    context 'when the state_code attribute is a Canadian province' do
+      let(:attributes) { {state_code: 'BC'} }
+
+      it 'adds a CA country code' do
+        subject.add_country_from_state_code!
+        expect(subject[:country_code]).to eq('CA')
+      end
+    end
+
+    context 'when the state_code attribute is not a US state or Canadian province' do
+      let(:attributes) { {state_code: 'XX'} }
+
+      it 'Does not add a country code' do
+        subject.add_country_from_state_code!
+        expect(subject[:country_code]).to be_nil
+      end
+    end
+  end
+
   describe '#align_split_distance!' do
     let!(:course_distances) { [0, 3000, 6000, 9000] }
 

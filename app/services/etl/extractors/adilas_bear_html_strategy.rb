@@ -60,7 +60,7 @@ module ETL::Extractors
     end
 
     def times
-      times_table.xpath('tr')[2..-1].map { |tr| times_from_tr(tr) }.flatten
+      times_table.xpath('tr')[2..-1].map { |tr| times_from_tr(tr) }.to_h
     end
 
     def times_table
@@ -69,7 +69,7 @@ module ETL::Extractors
 
     def times_from_tr(tr)
       cells = tr.xpath('td').map { |td| td.text.squish }
-      [cells[1..2].join(' '), cells[3..4].join(' ')]
+      [cells[0].split(':').first.gsub(/\D/, '').to_i, [cells[1..2].join(' '), cells[3..4].join(' ')]]
     end
 
     def validate_setup

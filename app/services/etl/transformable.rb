@@ -1,5 +1,13 @@
 module ETL::Transformable
 
+  def add_country_from_state_code!
+    state_code = self[:state_code]
+    return unless state_code&.size == 2
+    %w(US CA).each do |country_code|
+      self[:country_code] = country_code if Carmen::Country.coded(country_code).subregions.map(&:code).include?(state_code)
+    end
+  end
+
   def align_split_distance!(split_distances)
     return unless self[:distance_from_start].present?
     match_threshold = 10

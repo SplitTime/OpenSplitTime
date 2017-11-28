@@ -16,6 +16,7 @@ module ETL::Transformers
       proto_record.record_type = :effort
       proto_record.normalize_gender!
       proto_record.split_field!(:full_name, :first_name, :last_name)
+      proto_record.add_country_from_state_code!
       proto_record.slice_permitted!
       proto_record.merge_attributes!(global_attributes)
       [proto_record]
@@ -26,6 +27,7 @@ module ETL::Transformers
     attr_reader :proto_record, :options
 
     def transform_time_data
+      sort_and_fill_times
       parse_times
       calculate_times_from_start
       proto_record[:start_offset] = effort_start_time - event.start_time
@@ -33,30 +35,33 @@ module ETL::Transformers
       set_stop
     end
 
+    def sort_and_fill_times
+      proto_record[:times_of_day] = (0..13).map { |i| proto_record[:times][i] || ['...', '...'] }.flatten
+    end
+
     def parse_times
-      proto_record[:times] = proto_record[:times].map { |time_string| ActiveSupport::TimeZone[time_zone].parse(time_string) }
+      proto_record[:times_of_day] = proto_record[:times_of_day].map { |time_string| ActiveSupport::TimeZone[time_zone].parse(time_string) }
     end
 
     def calculate_times_from_start
-      proto_record[:times_from_start] = proto_record[:times].map { |time| time && (time - effort_start_time) }
+      proto_record[:times_from_start] = proto_record[:times_of_day].map { |time| time && (time - effort_start_time) }
     end
 
     def create_children
+      p time_points.zip(proto_record[:times_from_start])
       split_time_attributes = time_points.zip(proto_record[:times_from_start]).map do |time_point, time|
         {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
       end
-      split_time_attributes.each do |attributes|
-        proto_record.children << ProtoRecord.new(attributes) if attributes[:time_from_start]
-      end
+      split_time_attributes.each { |attributes| proto_record.children << ProtoRecord.new(attributes) if attributes[:time_from_start] }
     end
 
     def set_stop
-      stopped_child_record = proto_record.children.last
+      stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
       (stopped_child_record[:stopped_here] = true) if stopped_child_record
     end
 
     def effort_start_time
-      proto_record[:times].first
+      proto_record[:times_of_day].first
     end
 
     def global_attributes

@@ -64,6 +64,11 @@ module ETL
        detail: {messages: ['This import requires that a split be provided']}}
     end
 
+    def missing_table_error
+      {title: 'Table is missing',
+       detail: {messages: ['A required table was not found in the provided source data']}}
+    end
+
     def source_not_recognized_error(source)
       {title: 'Source not recognized', detail: {messages: ["Importer does not recognize the source: #{source}"]}}
     end

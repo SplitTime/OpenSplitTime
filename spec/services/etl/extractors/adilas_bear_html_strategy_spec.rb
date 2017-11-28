@@ -1,5 +1,6 @@
 RSpec.describe ETL::Extractors::AdilasBearHTMLStrategy do
-  subject { ETL::Extractors::AdilasBearHTMLStrategy.new(url, options) }
+  subject { ETL::Extractors::AdilasBearHTMLStrategy.new(source_data, options) }
+  let(:source_data) { open(url) }
   let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
   let(:options) { {} }
   let(:attributes) { {full_name: 'Linda McFadden', bib_number: '187', gender: 'F', age: '54', city: 'Modesto', state_code: 'CA', times: times} }
@@ -9,7 +10,7 @@ RSpec.describe ETL::Extractors::AdilasBearHTMLStrategy do
                  '9/23/2016 1:49:11 pm', '... ...'] }
 
   describe '#extract' do
-    context 'when a valid URL is provided' do
+    context 'when valid HTML data is provided' do
       let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
 
       it 'returns an OpenStruct containing effort and time information' do
@@ -17,27 +18,12 @@ RSpec.describe ETL::Extractors::AdilasBearHTMLStrategy do
       end
     end
 
-    context 'when a URL is provided with a valid domain name and a path that does not exist' do
-      let(:url) { 'https://www.example.com/pagethatdoesnotexist' }
+    context 'when invalid HTML data is provided' do
+      let(:url) { 'https://www.example.com' }
 
-      it 'returns nil and provides a descriptive error' do
-        html = subject.extract
-        expect(html).to be_nil
-        expect(subject.errors.first[:title]).to match(/Bad URL/)
-        expect(subject.errors.first[:detail][:messages].first).to include('https://www.example.com/pagethatdoesnotexist reported an error')
-        expect(subject.errors.first[:detail][:messages].first).to include('404')
-      end
-    end
-
-    context 'when a URL is provided with a domain name that does not exist' do
-      let(:url) { 'https://www.websitethatdoesnotexist.com' }
-
-      it 'returns nil' do
-        html = subject.extract
-        expect(html).to be_nil
-        expect(subject.errors.first[:title]).to match(/Bad URL/)
-        expect(subject.errors.first[:detail][:messages].first).to include('https://www.websitethatdoesnotexist.com reported an error')
-        expect(subject.errors.first[:detail][:messages].first).to include('443')
+      it 'returns nil and provides a descriptive error message' do
+        expect(subject.extract).to be_nil
+        expect(subject.errors.first[:title]).to eq('Table is missing')
       end
     end
   end

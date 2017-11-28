@@ -3,12 +3,12 @@ module ETL::Extractors
     include ETL::Errors
     attr_reader :errors
 
-    def initialize(url, options)
+    def initialize(source_data, options)
       @options = options
+      @source_data = source_data
+      @html = Nokogiri::HTML(source_data)
       @errors = []
-      @html = Nokogiri::HTML(open(url))
-    rescue => e
-      (errors << bad_url_error(url, e))
+      validate_setup
     end
 
     def extract
@@ -56,16 +56,24 @@ module ETL::Extractors
     end
 
     def runner_info
-      html.xpath('/html/body/table[2]/tr/td[1]/form/table')
+      html.search('[text()*="Runner Information"]')&.first&.parent&.parent&.parent
     end
 
     def times
-      html.xpath('/html/body/table[4]/tr')[2..-1].map { |tr| times_from_tr(tr) }.flatten
+      times_table.xpath('tr')[2..-1].map { |tr| times_from_tr(tr) }.flatten
+    end
+
+    def times_table
+      html.search('[text()*="Leg Length"]')&.first&.parent&.parent&.parent
     end
 
     def times_from_tr(tr)
       cells = tr.xpath('td').map { |td| td.text.squish }
       [cells[1..2].join(' '), cells[3..4].join(' ')]
+    end
+
+    def validate_setup
+      errors << missing_table_error unless times_table.present? && runner_info.present?
     end
   end
 end

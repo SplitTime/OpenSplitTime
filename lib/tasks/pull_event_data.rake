@@ -51,7 +51,7 @@ namespace :pull_event do
     parsed_auth_response = JSON.parse(auth_response_body)
     auth_token = parsed_auth_response['token']
     unless auth_token
-      abort('Aborted: Authentication failed with status ' + "#{auth_response.code}\n" + "#{parsed_auth_response['errors']&.join("\n")}")
+      abort('Aborted: Authentication failed with status ' + "#{auth_response.code}\n" + "#{parsed_auth_response['errors']&.join("\n") || parsed_auth_response}")
     end
     puts 'Authenticated'
 

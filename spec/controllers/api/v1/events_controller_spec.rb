@@ -365,7 +365,8 @@ RSpec.describe Api::V1::EventsController do
     end
 
     context 'when provided with an adilas url and data_format adilas_bear_times' do
-      let(:request_params) { {staging_id: event.id, data_format: 'adilas_bear_times', data: url} }
+      let(:request_params) { {staging_id: event.id, data_format: 'adilas_bear_times', data: source_data} }
+      let(:source_data) { Net::HTTP.get(URI(url)) }
       let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
 
       it 'returns a successful json response' do

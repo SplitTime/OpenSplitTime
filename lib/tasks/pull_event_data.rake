@@ -40,7 +40,7 @@ namespace :pull_event do
     auth_url = "#{ENV['BASE_URI']}/api/v1/auth"
     auth_params = {user: {email: rake_username, password: rake_password}}
     auth_headers = {accept: 'application/json'}
-    puts "Requesting authentication for #{auth_params[:user][:email]}"
+    puts "Requesting authentication from #{auth_url} for #{auth_params[:user][:email]}"
     begin
       auth_response = RestClient.post(auth_url, auth_params, auth_headers)
     rescue RestClient::ExceptionWithResponse => e
@@ -48,10 +48,10 @@ namespace :pull_event do
     end
 
     auth_response_body = auth_response.body.presence || '{}'
-    parsed_response = JSON.parse(auth_response_body)
-    auth_token = parsed_response['token']
+    parsed_auth_response = JSON.parse(auth_response_body)
+    auth_token = parsed_auth_response['token']
     unless auth_token
-      abort('Aborted: Authentication failed with status ' + "#{auth_response.code}\n" + "#{parsed_response['errors'].join("\n")}")
+      abort('Aborted: Authentication failed with status ' + "#{auth_response.code}\n" + "#{parsed_auth_response['errors']&.join("\n")}")
     end
     puts 'Authenticated'
 
@@ -101,7 +101,7 @@ namespace :pull_event do
       puts "\nFinished pull_event:from_uri for event: #{event.name} from #{source_uri} in #{elapsed_time} seconds\n"
     else
       puts "\nERROR during pull_event:from_uri for event: #{event.name} from #{source_uri} in #{elapsed_time} seconds\n"
-      puts parsed_upload_response['errors'].join("\n")
+      puts parsed_upload_response['errors']&.join("\n")
     end
   end
 end

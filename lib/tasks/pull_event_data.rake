@@ -36,42 +36,15 @@ namespace :pull_event do
 
 
   desc 'Pulls and imports event data from the given source_uri into an event using a specified format'
-  task :from_uri, [:event_id, :source_uri, :format] => :environment do |_, args|
+  task :from_uri, [:event_id, :source_uri, :format, :user_id] => :environment do |_, args|
     start_time = Time.current
-
-    # Get an authenticated token from OpenSplitTime
-
-    rake_username = ENV['RAKE_USERNAME']
-    rake_password = ENV['RAKE_PASSWORD']
-    abort('Aborted: Username and/or password not provided') unless rake_username && rake_password
-
-    auth_url = "#{ENV['FULL_URI']}/api/v1/auth"
-    auth_params = {user: {email: rake_username, password: rake_password}}
-    auth_headers = {accept: 'application/json'}
-    puts "\nRequesting authentication from #{auth_url} for #{auth_params[:user][:email]}"
-
-    begin
-      auth_response = RestClient.post(auth_url, auth_params, auth_headers)
-    rescue RestClient::ExceptionWithResponse => e
-      auth_response = e.response
-    end
-
-    auth_response_body = auth_response.body.presence || '{}'
-    parsed_auth_response = JSON.parse(auth_response_body)
-    auth_token = parsed_auth_response['token']
-    unless auth_token
-      abort('Aborted: Authentication failed with status ' + "#{auth_response.code}\n" + "#{parsed_auth_response['errors']&.join("\n") || parsed_auth_response}")
-    end
-    puts 'Authenticated'
-
-    # Locate the requested event
 
     begin
       event = Event.friendly.find(args[:event_id])
     rescue ActiveRecord::RecordNotFound
-      abort("Aborted: Event id #{args[:event_id]} not found") unless event
+      abort("\nAborted: Event id #{args[:event_id]} not found") unless event
     end
-    puts "Located event: #{event.name}"
+    puts "\nLocated event: #{event.name}"
 
     # Fetch source data from provided URI
 
@@ -91,6 +64,8 @@ namespace :pull_event do
 
     # Upload source data to OpenSplitTime /import endpoint
 
+    user_id = args[:user_id] || 1
+    auth_token = JsonWebToken.encode(sub: user_id)
     upload_url = "#{ENV['FULL_URI']}/api/v1/events/#{args[:event_id]}/import"
     upload_params = {data: source_response.body, data_format: args[:format]}
     upload_headers = {authorization: auth_token, accept: 'application/json'}

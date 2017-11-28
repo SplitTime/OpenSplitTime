@@ -31,7 +31,7 @@ namespace :pull_event do
       Rake::Task['pull_event:from_uri'].reenable
     end
     elapsed_time = Time.current - start_time
-    puts "\nProcessed #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')} in #{elapsed_time} seconds\n"
+    puts "\nProcessed #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')} in #{elapsed_time.round(2)} seconds\n"
   end
 
 
@@ -44,13 +44,11 @@ namespace :pull_event do
     rake_username = ENV['RAKE_USERNAME']
     rake_password = ENV['RAKE_PASSWORD']
     abort('Aborted: Username and/or password not provided') unless rake_username && rake_password
-    puts 'Located username and password'
 
-    puts 'Authenticating with OpenSplitTime'
     auth_url = "#{ENV['FULL_URI']}/api/v1/auth"
     auth_params = {user: {email: rake_username, password: rake_password}}
     auth_headers = {accept: 'application/json'}
-    puts "Requesting authentication from #{auth_url} for #{auth_params[:user][:email]}"
+    puts "\nRequesting authentication from #{auth_url} for #{auth_params[:user][:email]}"
 
     begin
       auth_response = RestClient.post(auth_url, auth_params, auth_headers)
@@ -113,12 +111,12 @@ namespace :pull_event do
     else
       puts "ERROR during pull_event:from_uri for event: #{event.name} from #{source_uri}\n"
       parsed_upload_response['errors']&.each do |error|
-        puts error['title']
+        puts "Error: #{error['title']}"
         error['detail'].each do |detail_key, detail_value|
-          puts "#{detail_key.titlecase}: #{detail_value}"
+          puts "  #{detail_key.titlecase}: #{detail_value.respond_to?(:join) ? detail_value.join("\n") : detail_value}"
         end
       end
-      puts "Completed with errors in #{elapsed_time} seconds"
+      puts "Completed with errors in #{elapsed_time.round(2)} seconds"
     end
   end
 end

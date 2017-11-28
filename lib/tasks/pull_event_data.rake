@@ -37,10 +37,11 @@ namespace :pull_event do
     puts 'Located username and password'
 
     puts 'Authenticating with OpenSplitTime'
-    auth_url = "#{ENV['BASE_URI']}/api/v1/auth"
+    auth_url = "#{ENV['FULL_URI']}/api/v1/auth"
     auth_params = {user: {email: rake_username, password: rake_password}}
     auth_headers = {accept: 'application/json'}
     puts "Requesting authentication from #{auth_url} for #{auth_params[:user][:email]}"
+
     begin
       auth_response = RestClient.post(auth_url, auth_params, auth_headers)
     rescue RestClient::ExceptionWithResponse => e
@@ -82,7 +83,7 @@ namespace :pull_event do
 
     # Upload source data to OpenSplitTime /import endpoint
 
-    upload_url = "#{ENV['BASE_URI']}/api/v1/events/#{args[:event_id]}/import"
+    upload_url = "#{ENV['FULL_URI']}/api/v1/events/#{args[:event_id]}/import"
     upload_params = {data: source_response.body, data_format: args[:format]}
     upload_headers = {authorization: auth_token, accept: 'application/json'}
     puts "Uploading data to #{upload_url}"

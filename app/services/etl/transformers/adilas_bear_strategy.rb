@@ -30,6 +30,7 @@ module ETL::Transformers
       sort_and_fill_times
       parse_times
       calculate_times_from_start
+      fix_negative_times
       proto_record[:start_offset] = effort_start_time - event.start_time
       create_children
       set_stop
@@ -45,6 +46,11 @@ module ETL::Transformers
 
     def calculate_times_from_start
       proto_record[:times_from_start] = proto_record[:times_of_day].map { |time| time && (time - effort_start_time) }
+    end
+
+    # Some times are off by a full day behind, resulting in negative (invalid) times from start
+    def fix_negative_times
+      proto_record[:times_from_start] = proto_record[:times_from_start].map { |time| time&.negative? ? time + 1.day : time }
     end
 
     def create_children

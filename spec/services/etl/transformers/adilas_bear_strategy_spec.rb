@@ -94,5 +94,23 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
         expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 6 + [true])
       end
     end
+
+    context 'when time data is behind by a full day, resulting in negative times from start' do
+      let(:times) { {0 => ['9/23/2016 6:00:00 am', '9/23/2016 8:49:10 am'],
+                     1 => ['9/23/2016 8:49:10 am', '9/23/2016 12:30:27 pm'],
+                     2 => ['9/22/2016 12:30:29 pm', '9/22/2016 1:49:11 pm'],
+                     3 => ['9/23/2016 3:49:11 pm', '... ...']} }
+      let(:time_points) { event.required_time_points.first(7) }
+
+      it 'adds a full day to the incorrect data' do
+        records = first_proto_record.children
+        expect(records.size).to eq(7)
+        expect(records.map(&:record_type)).to eq([:split_time] * records.size)
+        expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
+        expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+        expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
+        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 10150.0, 10150.0, 23427.0, 23429.0, 28151.0, 35351.0])
+      end
+    end
   end
 end

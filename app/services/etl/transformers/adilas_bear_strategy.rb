@@ -50,7 +50,7 @@ module ETL::Transformers
 
     # Some times are off by a full day behind, resulting in negative (invalid) times from start
     def fix_negative_times
-      proto_record[:times_from_start] = proto_record[:times_from_start].map { |time| time&.negative? ? time + 1.day : time }
+      proto_record[:times_from_start] = proto_record[:times_from_start].map { |time| time&.between?(-30.days, 0.second) ? time % (1.day / 1.second) : time }
     end
 
     def create_children

@@ -19,6 +19,11 @@ module Interactors
       "#{message}: #{error_report}"
     end
 
+    def merge(other)
+      return self unless other
+      Interactors::Response.new(errors + other.errors, [message, other.message].join("\n"), resources + other.resources)
+    end
+
     private
 
     def error_details

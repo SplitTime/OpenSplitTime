@@ -39,6 +39,8 @@ GEM
       activemodel (= 5.1.4)
       activesupport (= 5.1.4)
       arel (~> 8.0)
+    activerecord-import (0.21.0)
+      activerecord (>= 3.2)
     activesupport (5.1.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -78,8 +80,6 @@ GEM
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
     builder (3.2.3)
-    bulk_insert (1.6.0)
-      activerecord (>= 4.1.0)
     bullet (5.6.1)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.10.0)
@@ -425,6 +425,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   active_record_query_trace
+  activerecord-import
   alchemist
   american_date
   api-pagination
@@ -434,7 +435,6 @@ DEPENDENCIES
   bootstrap-sass
   bootstrap-will_paginate
   bootstrap3-datetimepicker-rails
-  bulk_insert
   bullet
   capybara
   carmen

@@ -24,7 +24,6 @@ gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'api-pagination'
 gem 'twitter-bootstrap-rails'
-gem 'bulk_insert'
 gem 'descriptive_statistics'
 gem 'pg', '~> 0.20'
 gem 'upsert'
@@ -54,6 +53,7 @@ gem 'newrelic_rpm'
 gem 'bootsnap'
 gem 'webpacker', '~> 3.0'
 gem 'gpx'
+gem 'activerecord-import'
 
 
 group :development do

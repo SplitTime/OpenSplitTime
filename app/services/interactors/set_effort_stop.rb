@@ -20,7 +20,10 @@ module Interactors
     private
 
     attr_reader :effort, :stop_status, :errors
-    delegate :ordered_split_times, to: :effort
+
+    def ordered_split_times
+      effort.ordered_split_times.reject(&:destroyed?)
+    end
 
     def resources
       ordered_split_times.select(&:changed?)

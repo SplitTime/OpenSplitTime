@@ -100,6 +100,13 @@ RSpec.describe EffortImporter do
         expect(SplitTime.where(effort: effort_131, split: split_tunnel, bitkey: 64).count).to eq(0)
         expect(SplitTime.where(effort: effort_49, split: split_finish).count).to eq(0)
         expect(effort_119.split_times.count).to eq(0)
+        # end
+
+        # it 'sets stops at the last split_time for each effort' do
+        expect(SplitTime.find_by(effort: effort_49, split: split_tunnel, bitkey: SubSplit::IN_BITKEY).stopped_here).to eq(false)
+        expect(SplitTime.find_by(effort: effort_49, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).stopped_here).to eq(true)
+        expect(SplitTime.find_by(effort: effort_128, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).stopped_here).to eq(false)
+        expect(SplitTime.find_by(effort: effort_128, split: split_finish, bitkey: SubSplit::IN_BITKEY).stopped_here).to eq(true)
       end
     end
   end

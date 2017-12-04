@@ -58,7 +58,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def set_dropped_attributes?
+  def set_stops?
     user.authorized_to_edit?(event)
   end
 

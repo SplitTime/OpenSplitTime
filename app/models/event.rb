@@ -137,10 +137,6 @@ class Event < ApplicationRecord
     SplitTime.where(effort: efforts).present?
   end
 
-  def set_dropped_attributes
-    BulkEffortsStopper.stop(efforts: efforts)
-  end
-
   def required_lap_splits
     @required_lap_splits ||= lap_splits_through(laps_required)
   end

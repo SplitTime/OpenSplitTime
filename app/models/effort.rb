@@ -284,11 +284,4 @@ class Effort < ApplicationRecord
   def stop(split_time = nil)
     EffortStopper.stop(effort: self, stopped_split_time: split_time)
   end
-
-  def unstop
-    split_times.each do |split_time|
-      split_time.stopped_here = false
-      split_time.save if split_time.changed?
-    end
-  end
 end

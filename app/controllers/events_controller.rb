@@ -184,10 +184,11 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-  def set_dropped_attributes
+  def set_stops
     authorize @event
-    report = @event.set_dropped_attributes
-    flash[:warning] = report if report
+    event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first
+    response = Interactors::UpdateEffortsStop.perform!(event.efforts, true)
+    set_flash_message(response)
     redirect_to stage_event_path(@event)
   end
 

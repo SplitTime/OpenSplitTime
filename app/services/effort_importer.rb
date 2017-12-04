@@ -102,7 +102,7 @@ class EffortImporter
   end
 
   def set_drops_and_status
-    BulkEffortsStopper.stop(efforts: imported_efforts, background_channel: background_channel)
+    Interactors::UpdateEffortsStop.perform!(imported_efforts, true)
 
     # Initial pass sets data_status based on the relaxed standards of the terrain model
     # Second pass sets data_status on the :stats model, ignoring times flagged as bad or questionable by the first pass

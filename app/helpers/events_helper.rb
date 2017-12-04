@@ -128,8 +128,8 @@ module EventsHelper
             class: 'btn btn-sm btn-success'
   end
 
-  def link_to_set_dropped_attributes(view_object)
-    link_to 'Establish drops', set_dropped_attributes_event_path(view_object.event),
+  def link_to_set_stops(view_object)
+    link_to 'Establish drops', set_stops_event_path(view_object.event),
             method: :put,
             data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
                 'at the last aid station for which times are available. Are you sure you want to proceed?'},

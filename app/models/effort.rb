@@ -271,8 +271,4 @@ class Effort < ApplicationRecord
   def stopped_split_time
     ordered_split_times.reverse.find(&:stopped_here)
   end
-
-  def stop(split_time = nil)
-    EffortStopper.stop(effort: self, stopped_split_time: split_time)
-  end
 end

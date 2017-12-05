@@ -175,7 +175,7 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
-# Actions related to the event/split relationship
+# Actions related to the event/effort/split_time relationship
 
   def set_data_status
     authorize @event
@@ -187,7 +187,8 @@ class EventsController < ApplicationController
   def set_stops
     authorize @event
     event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first
-    response = Interactors::UpdateEffortsStop.perform!(event.efforts, true)
+    stop_status = params[:stop_status].blank? ? true : params[:stop_status].to_boolean
+    response = Interactors::UpdateEffortsStop.perform!(event.efforts, stop_status: stop_status)
     set_flash_message(response)
     redirect_to stage_event_path(@event)
   end

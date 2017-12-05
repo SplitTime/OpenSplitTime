@@ -101,8 +101,11 @@ class EffortsController < ApplicationController
 
   def delete_split_times
     authorize @effort
-    @effort.destroy_split_times(params[:split_time_ids])
-    redirect_to effort_path(@effort)
+    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+    Interactors::DestroyEffortSplitTimes.perform!(effort, params[:split_time_ids])
+    # Interactors::SetEffortStatus(effort)
+    effort.save
+    redirect_to effort_path(effort)
   end
 
   def confirm_split_times

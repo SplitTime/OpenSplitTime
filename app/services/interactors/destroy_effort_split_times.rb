@@ -24,7 +24,7 @@ module Interactors
     def destroy_split_times
       stop_destroyed = targeted_split_times.any?(&:stopped_here)
       targeted_split_times.each { |st| errors << resource_error_object(st) unless st.destroy }
-      stop_response = Interactors::UpdateEffortsStop.perform!(effort, true) if stop_destroyed
+      stop_response = Interactors::UpdateEffortsStop.perform!(effort) if stop_destroyed
       self.response = Interactors::Response.new(errors, message, targeted_split_times).merge(stop_response)
     end
 

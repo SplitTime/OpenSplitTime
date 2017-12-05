@@ -2,13 +2,13 @@ module Interactors
   class UpdateEffortsStop
     include Interactors::Errors
 
-    def self.perform!(efforts, stop_status)
-      new(efforts, stop_status).perform!
+    def self.perform!(efforts, options = {})
+      new(efforts, options).perform!
     end
 
-    def initialize(efforts, stop_status)
+    def initialize(efforts, options = {})
       @efforts = efforts && Array.wrap(efforts)
-      @stop_status = stop_status
+      @stop_status = options[:stop_status].nil? ? true : options[:stop_status]
       @errors = []
       validate_setup
     end
@@ -30,7 +30,7 @@ module Interactors
     end
 
     def stop_responses
-      @stop_responses ||= efforts.map { |effort| Interactors::SetEffortStop.perform(effort, stop_status) }
+      @stop_responses ||= efforts.map { |effort| Interactors::SetEffortStop.perform(effort, stop_status: stop_status) }
     end
 
     def message
@@ -47,7 +47,6 @@ module Interactors
 
     def validate_setup
       raise ArgumentError, 'efforts argument was not provided' unless efforts
-      raise ArgumentError, 'stop_status argument was not provided' if stop_status.nil?
     end
   end
 end

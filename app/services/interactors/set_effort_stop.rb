@@ -1,14 +1,16 @@
 module Interactors
   class SetEffortStop
 
-    def self.perform(effort, stop_status)
-      new(effort, stop_status).perform
+    def self.perform(effort, options = {})
+      new(effort, options).perform
     end
 
-    def initialize(effort, stop_status)
+    def initialize(effort, options = {})
+      raise ArgumentError, 'arguments must include effort' unless effort
+      ArgsValidator.validate(params: options, exclusive: [:stop_status, :split_time])
       @effort = effort
-      @stop_status = stop_status
-      validate_setup
+      @stop_status = options[:stop_status].nil? ? true : options[:stop_status]
+      @split_time = options[:split_time] || ordered_split_times.last
     end
 
     def perform
@@ -19,7 +21,7 @@ module Interactors
 
     private
 
-    attr_reader :effort, :stop_status, :errors
+    attr_reader :effort, :stop_status, :split_time, :errors
 
     def ordered_split_times
       effort.ordered_split_times.reject(&:destroyed?)
@@ -27,15 +29,6 @@ module Interactors
 
     def resources
       ordered_split_times.select(&:changed?)
-    end
-
-    def split_time
-      ordered_split_times.last
-    end
-
-    def validate_setup
-      raise ArgumentError, 'effort is nil' unless effort
-      raise ArgumentError, 'stop status is nil' if stop_status.nil?
     end
   end
 end

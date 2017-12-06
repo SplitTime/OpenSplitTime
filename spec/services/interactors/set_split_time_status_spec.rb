@@ -124,6 +124,16 @@ RSpec.describe Interactors::SetSplitTimeStatus do
           expect(split_time.data_status).to eq('good')
         end
       end
+
+      context 'for time too long in aid' do
+        let(:split_time) { split_times.third }
+        before { split_time.time_from_start = split_times.second.time_from_start + 26.hours }
+
+        it 'sets data_status to bad' do
+          subject.perform
+          expect(split_time.data_status).to eq('bad')
+        end
+      end
     end
 
     context 'in a multi-lap event' do

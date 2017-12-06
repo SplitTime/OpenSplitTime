@@ -14,7 +14,12 @@ class SplitTime < ApplicationRecord
   has_many :live_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
   attr_accessor :live_time_id, :time_exists
-  delegate :distance_from_start, to: :lap_split
+
+  # distance_from_start is not the true distance from start in a multi-lap effort,
+  # but instead is the distance from the start of the split, which corresponds to the
+  # distance from start of the split_time lap.
+  # For full distance from start taking laps into account, use LapSplit#distance_from_start.
+  delegate :distance_from_start, to: :split
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }

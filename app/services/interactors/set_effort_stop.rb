@@ -6,8 +6,7 @@ module Interactors
     end
 
     def initialize(effort, options = {})
-      raise ArgumentError, 'arguments must include effort' unless effort
-      ArgsValidator.validate(params: options, exclusive: [:stop_status, :split_time])
+      ArgsValidator.validate(subject: effort, subject_class: Effort, params: options, exclusive: [:stop_status, :split_time])
       @effort = effort
       @stop_status = options[:stop_status].nil? ? true : options[:stop_status]
       @split_time = options[:split_time] || ordered_split_times.last

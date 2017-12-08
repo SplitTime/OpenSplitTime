@@ -14,10 +14,7 @@ module Interactors
     end
 
     def perform!
-      result = SplitTime.import(changed_split_times, on_duplicate_key_update: [:stopped_here])
-      unless result.failed_instances.empty?
-        result.failed_instances.each { |resource| errors << resource_error_object(resource) }
-      end
+      Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, :stopped_here)
       Interactors::Response.new(errors, message, changed_split_times)
     end
 

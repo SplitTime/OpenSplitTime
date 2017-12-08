@@ -6,10 +6,11 @@ module Interactors
     end
 
     def initialize(effort, options = {})
-      ArgsValidator.validate(subject: effort, subject_class: Effort, params: options, exclusive: [:stop_status, :split_time])
+      ArgsValidator.validate(subject: effort, subject_class: Effort, params: options, exclusive: [:stop_status, :split_time_id])
       @effort = effort
       @stop_status = options[:stop_status].nil? ? true : options[:stop_status]
-      @split_time = options[:split_time] || ordered_split_times.last
+      @split_time_id = options[:split_time_id]
+      validate_setup
     end
 
     def perform
@@ -20,14 +21,26 @@ module Interactors
 
     private
 
-    attr_reader :effort, :stop_status, :split_time, :errors
+    attr_reader :effort, :stop_status, :split_time_id, :errors
 
     def ordered_split_times
-      effort.ordered_split_times.reject(&:destroyed?)
+      @ordered_split_times ||= effort.ordered_split_times.reject(&:destroyed?)
+    end
+
+    def split_time
+      split_time_id.nil? ? ordered_split_times.last : found_split_time
+    end
+
+    def found_split_time
+      ordered_split_times.find { |st| st.id == split_time_id }
     end
 
     def resources
       ordered_split_times.select(&:changed?)
+    end
+
+    def validate_setup
+      raise ArgumentError, "split_time_id #{split_time_id} does not exist for #{effort}" if split_time_id && !found_split_time
     end
   end
 end

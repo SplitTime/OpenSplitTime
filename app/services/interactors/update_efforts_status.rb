@@ -15,8 +15,8 @@ module Interactors
 
     def perform!
       ActiveRecord::Base.transaction do
-        import_resources(SplitTime, changed_split_times, [:data_status])
-        import_resources(Effort, changed_efforts, [:data_status])
+        Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, :data_status)
+        Persist::BulkUpdateAll.perform!(Effort, changed_efforts, :data_status)
         raise ActiveRecord::Rollback if errors.present?
       end
       Interactors::Response.new(errors, message, changed_resources)
@@ -25,13 +25,6 @@ module Interactors
     private
 
     attr_reader :efforts, :times_container, :errors
-
-    def import_resources(model, resources, update_fields)
-      result = model.import(resources, on_duplicate_key_update: update_fields, validate: false)
-      unless result.failed_instances.empty?
-        result.failed_instances.each { |resource| errors << resource_error_object(resource) }
-      end
-    end
 
     def changed_resources
       @changed_resources ||= status_responses.map(&:resources).flatten

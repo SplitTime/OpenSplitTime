@@ -30,7 +30,7 @@ RSpec.describe EffortImporter do
       let(:effort_143) { Effort.find_by(bib_number: 143) }
       let(:effort_186) { Effort.find_by(bib_number: 186) }
 
-      let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, with_status: false) }
+      let(:effort_importer) { EffortImporter.new(file_path: import_file, event: event, current_user_id: current_user_id, with_status: 'true') }
       before do
         event.splits << splits
         effort_importer.effort_import
@@ -79,19 +79,10 @@ RSpec.describe EffortImporter do
 
         # it 'imports all valid split_times and correctly sets split_time times from start' do
         expect(SplitTime.all.count).to eq(78)
-        expect(SplitTime.find_by(effort: effort_128, split: split_mountain, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((22.hours + 45.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_128, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((20.hours + 22.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_128, split: split_finish, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((25.hours + 45.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_143, split: split_ridgeline, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((2.hours + 10.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_143, split: split_mountain, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((23.hours + 39.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_143, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((25.hours + 51.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_143, split: split_finish, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((27.hours + 3.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_186, split: split_ridgeline, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((2.hours + 50.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_186, split: split_mountain, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((37.hours + 45.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_186, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).time_from_start).to eq((41.hours + 24.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_186, split: split_finish, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq((43.hours + 58.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_128, split: split_ridgeline, bitkey: SubSplit::IN_BITKEY).time_from_start).to be_within(1.second).of((2.hours + 1.minutes).to_i)
-        expect(SplitTime.find_by(effort: effort_11, split: split_start, bitkey: SubSplit::IN_BITKEY).time_from_start).to eq(0)
+        expect(effort_128.ordered_split_times.map(&:time_from_start)).to eq([0.0, 7259.0, 7259.0, 50460.0, 81900.0, 73320.0, 73320.0, 92700.0])
+        expect(effort_143.ordered_split_times.map(&:time_from_start)).to eq([0.0, 7800.0, 7259.0, 51600.0, 85140.0, 93000.0, 93060.0, 97380.0])
+        expect(effort_186.ordered_split_times.map(&:time_from_start)).to eq([0.0, 10200.0, 10200.0, 81240.0, 135900.0, 148860.0, 149040.0, 158280.0])
+        expect(effort_11.ordered_split_times.map(&:time_from_start)).to eq([0.0, 12600.0, 12900.0])
         # end
 
         # it 'does not create a split_time where no time is provided and creates no split_times for an empty effort' do
@@ -107,6 +98,13 @@ RSpec.describe EffortImporter do
         expect(SplitTime.find_by(effort: effort_49, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).stopped_here).to eq(true)
         expect(SplitTime.find_by(effort: effort_128, split: split_tunnel, bitkey: SubSplit::OUT_BITKEY).stopped_here).to eq(false)
         expect(SplitTime.find_by(effort: effort_128, split: split_finish, bitkey: SubSplit::IN_BITKEY).stopped_here).to eq(true)
+        # end
+
+        # it 'sets data_status of split_times and efforts' do
+        expect(effort_49.data_status).to eq('good')
+        expect(effort_49.ordered_split_times.pluck(:data_status)).to all eq('good')
+        expect(effort_143.data_status).to eq('bad')
+        expect(effort_143.ordered_split_times.pluck(:data_status)).to eq([])
       end
     end
   end

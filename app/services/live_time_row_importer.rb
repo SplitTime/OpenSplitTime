@@ -60,7 +60,6 @@ class LiveTimeRowImporter
   # Returns false if any create/update is attempted but rejected
 
   def create_or_update_times(effort_data)
-    effort = effort_data.effort
     indexed_split_times = effort_data.indexed_existing_split_times
     person_id = effort_data.person_id || 0 # Id 0 is the dump for efforts with no person_id
     saved_split_times[person_id] ||= []
@@ -86,12 +85,15 @@ class LiveTimeRowImporter
             live_time.split_time = saved_split_time
             live_time.save if live_time.valid?
           end
-
-          effort = Effort.where(id: effort.id).includes(split_times: :split).first
-          Interactors::SetEffortStop.perform(effort, split_time: saved_split_time) if saved_split_time.stopped_here?
-          EffortDataStatusSetter.set_data_status(effort: effort, times_container: times_container)
           saved_split_times[person_id] << saved_split_time
         end
+
+        effort = Effort.where(id: effort_data.effort.id).includes(split_times: :split).first
+        stopped_split_time = temporary_split_times.select(&:stopped_here?).last
+
+        Interactors::SetEffortStop.perform(effort, split_time_id: stopped_split_time.id) if stopped_split_time
+        Interactors::SetEffortStatus.perform(effort, times_container: times_container)
+        effort.save if effort.changed? || effort.split_times.any?(&:changed)
       else
         unsaved_rows << effort_data.response_row
         raise ActiveRecord::Rollback

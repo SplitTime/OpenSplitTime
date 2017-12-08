@@ -107,13 +107,13 @@ class EffortImporter
     # Initial pass sets data_status based on the relaxed standards of the terrain model
     # Second pass sets data_status on the :stats model, ignoring times flagged as bad or questionable by the first pass
     if with_status
-      BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :terrain, background_channel: background_channel)
-      BulkDataStatusSetter.set_data_status(efforts: imported_efforts, calc_model: :stats, background_channel: background_channel)
+      Interactors::UpdateEffortsStatus.perform!(imported_efforts, calc_model: :terrain)
+      Interactors::UpdateEffortsStatus.perform!(imported_efforts, calc_model: :stats)
     end
   end
 
   def imported_efforts # Don't memoize--needs to be refreshed before the second pass
-    event.efforts.where(id: effort_id_array)
+    event.efforts.where(id: effort_id_array).includes(split_times: :split).to_a
   end
 
   def row_effort_hash(row_effort_data)

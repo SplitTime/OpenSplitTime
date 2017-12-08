@@ -12,7 +12,7 @@ class EffortWithLapSplitRows
   end
 
   def event
-    @event ||= Event.where(id: effort.event_id).eager_load(:efforts, :splits).first
+    @event ||= Event.where(id: effort.event_id).includes(:efforts, :splits).first
   end
 
   def total_time_in_aid
@@ -68,6 +68,6 @@ class EffortWithLapSplitRows
   end
 
   def loaded_effort
-    @loaded_effort ||= Effort.where(id: effort.id).eager_load(split_times: :split).eager_load(:event).eager_load(:person).first
+    @loaded_effort ||= Effort.where(id: effort.id).includes(split_times: :split).includes(:event).includes(:person).first
   end
 end

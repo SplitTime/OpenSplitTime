@@ -101,10 +101,10 @@ class EffortsController < ApplicationController
 
   def delete_split_times
     authorize @effort
-    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
-    Interactors::DestroyEffortSplitTimes.perform!(effort, params[:split_time_ids])
-    # Interactors::SetEffortStatus(effort)
-    effort.save
+    effort = Effort.where(id: @effort.id).includes(split_times: {split: :course}).first
+    destroy_response = Interactors::DestroyEffortSplitTimes.perform!(effort, params[:split_time_ids])
+    update_response = Interactors::UpdateEffortsStatus.perform!(effort)
+    set_flash_message(destroy_response.merge(update_response))
     redirect_to effort_path(effort)
   end
 

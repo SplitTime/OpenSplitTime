@@ -1,4 +1,9 @@
 module Persist
+
+  # This class uses update_all to optimize updates wherein the number of records is large and the
+  # universe of values for updated columns is small. For example, this class performs
+  # well updating boolean and enum fields over many records.
+
   class BulkUpdateAll
     def self.perform!(model, resources, update_fields)
       new(model, resources, update_fields).perform!
@@ -22,11 +27,9 @@ module Persist
     attr_reader :model, :resources, :update_fields
 
     def grouped_resources
-      @grouped_resources ||= changed_resources.group_by { |resource| update_fields.map { |field| [field, resource.send(field)] }.to_h }
-    end
-
-    def changed_resources
-      resources.select(&:changed?)
+      @grouped_resources ||= resources.group_by do |resource|
+        update_fields.map { |field| [field, resource.send(field)] }.to_h
+      end
     end
 
     def validate_setup

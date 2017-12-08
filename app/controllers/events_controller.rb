@@ -179,8 +179,6 @@ class EventsController < ApplicationController
 
   def set_data_status
     authorize @event
-    # report = BulkDataStatusSetter.set_data_status(efforts: @event.efforts)
-    # flash[:warning] = report if report
     event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first
     response = Interactors::UpdateEffortsStatus.perform!(event.efforts)
     set_flash_message(response)

@@ -7,7 +7,7 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
   let!(:split_time_3) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
   let!(:split_time_4) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: in_bitkey, time_from_start: 20000, stopped_here: false) }
   let!(:split_time_5) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: out_bitkey, time_from_start: 21000, stopped_here: true) }
-  let(:split_time_ids) { split_times.map(&:id) }
+  let(:split_time_ids) { split_times.map { |st| st.id.to_s } }
 
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
@@ -47,7 +47,7 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
     end
 
     context 'when split_time_ids are not included in effort.split_time ids' do
-      let(:split_time_ids) { [0, 1] }
+      let(:split_time_ids) { %w[0, 1] }
 
       it 'raises an error' do
         expect { subject }.to raise_error(/split_time ids 0, 1 do not correspond to effort/)

@@ -6,7 +6,7 @@ module Interactors
 
     def initialize(effort, split_time_ids)
       @effort = effort
-      @split_time_ids = split_time_ids
+      @split_time_ids = split_time_ids&.map(&:to_i)
       @errors = []
       validate_setup
     end
@@ -24,7 +24,7 @@ module Interactors
     def destroy_split_times
       stop_destroyed = targeted_split_times.any?(&:stopped_here)
       targeted_split_times.each { |st| errors << resource_error_object(st) unless st.destroy }
-      stop_response = Interactors::UpdateEffortsStop.perform!(effort) if stop_destroyed
+      stop_response = stop_destroyed ? Interactors::UpdateEffortsStop.perform!(effort) : nil
       self.response = Interactors::Response.new(errors, message, targeted_split_times).merge(stop_response)
     end
 
@@ -39,7 +39,7 @@ module Interactors
       if errors.present?
         "Split times could not be destroyed. "
       else
-        "Split times #{split_time_ids} for effort #{effort} were destroyed. "
+        "Deleted #{split_time_ids.join(', ')} for effort #{effort}. "
       end
     end
 

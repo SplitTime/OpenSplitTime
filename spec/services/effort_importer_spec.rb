@@ -6,11 +6,11 @@ RSpec.describe EffortImporter do
 
     let(:splits) { [split_start, split_ridgeline, split_riverdance, split_mountain, split_tunnel, split_finish] }
     let(:split_start) { create(:start_split, course: course) }
-    let(:split_ridgeline) { create(:split, course: course, base_name: 'Ridgeline', sub_split_bitmap: 65, distance_from_start: 10460) }
-    let(:split_riverdance) { create(:split, course: course, base_name: 'Riverdance', sub_split_bitmap: 1, distance_from_start: 53108) }
-    let(:split_mountain) { create(:split, course: course, base_name: 'Mountain Top', sub_split_bitmap: 1, distance_from_start: 64373) }
-    let(:split_tunnel) { create(:split, course: course, base_name: 'Tunnel', sub_split_bitmap: 65, distance_from_start: 74995) }
-    let(:split_finish) { create(:finish_split, course: course, distance_from_start: 82559) }
+    let(:split_ridgeline) { create(:split, course: course, base_name: 'Ridgeline', sub_split_bitmap: 65, distance_from_start: 16090) }
+    let(:split_riverdance) { create(:split, course: course, base_name: 'Riverdance', sub_split_bitmap: 1, distance_from_start: 112650) }
+    let(:split_mountain) { create(:split, course: course, base_name: 'Mountain Top', sub_split_bitmap: 1, distance_from_start: 160900) }
+    let(:split_tunnel) { create(:split, course: course, base_name: 'Tunnel', sub_split_bitmap: 65, distance_from_start: 193120) }
+    let(:split_finish) { create(:finish_split, course: course, distance_from_start: 225310) }
 
     let(:event) { create(:event, course: course, start_time: '2015-07-01 06:00:00') }
     let(:import_file) { 'spec/fixtures/files/baddata2015test.xlsx' }
@@ -78,10 +78,10 @@ RSpec.describe EffortImporter do
         # end
 
         # it 'imports all valid split_times and correctly sets split_time times from start' do
-        expect(SplitTime.all.count).to eq(78)
-        expect(effort_128.ordered_split_times.map(&:time_from_start)).to eq([0.0, 7259.0, 7259.0, 50460.0, 81900.0, 73320.0, 73320.0, 92700.0])
-        expect(effort_143.ordered_split_times.map(&:time_from_start)).to eq([0.0, 7800.0, 7259.0, 51600.0, 85140.0, 93000.0, 93060.0, 97380.0])
-        expect(effort_186.ordered_split_times.map(&:time_from_start)).to eq([0.0, 10200.0, 10200.0, 81240.0, 135900.0, 148860.0, 149040.0, 158280.0])
+        expect(SplitTime.all.count).to eq(77)
+        expect(effort_128.ordered_split_times.map(&:time_from_start)).to eq([0.0, 7259.0, 7259.0, 50580.0, 76860.0, 87000.0, 87300.0, 102720.0])
+        expect(effort_143.ordered_split_times.map(&:time_from_start)).to eq([0.0, 7800.0, 7800.0, 51600.0, 58799.0, 93000.0, 93060.0, 104543.0])
+        expect(effort_186.ordered_split_times.map(&:time_from_start)).to eq([0.0, 10200.0, 7500.0, 81240.0, 135900.0, 159660.0, 159840.0, 183000.0])
         expect(effort_11.ordered_split_times.map(&:time_from_start)).to eq([0.0, 12600.0, 12900.0])
         # end
 
@@ -101,10 +101,12 @@ RSpec.describe EffortImporter do
         # end
 
         # it 'sets data_status of split_times and efforts' do
-        expect(effort_49.data_status).to eq('good')
-        expect(effort_49.ordered_split_times.pluck(:data_status)).to all eq('good')
+        expect(effort_1.data_status).to eq('good')
+        expect(effort_1.ordered_split_times.pluck(:data_status)).to all eq('good')
         expect(effort_143.data_status).to eq('bad')
-        expect(effort_143.ordered_split_times.pluck(:data_status)).to eq([])
+        expect(effort_143.ordered_split_times.pluck(:data_status)).to eq(%w(good good good good bad good good good))
+        expect(effort_186.data_status).to eq('bad')
+        expect(effort_186.ordered_split_times.pluck(:data_status)).to eq(%w(good good bad good good good good good))
       end
     end
   end

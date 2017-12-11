@@ -21,7 +21,10 @@ module Interactors
 
     def merge(other)
       return self unless other
-      Interactors::Response.new(errors + other.errors, [message, other.message].join("\n"), resources + other.resources)
+      combined_errors = errors + other.errors
+      combined_message = [message, other.message].join("\n")
+      combined_resources = [resources, other.resources].compact.flatten
+      Interactors::Response.new(combined_errors, combined_message, combined_resources)
     end
 
     private

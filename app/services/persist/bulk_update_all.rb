@@ -4,27 +4,29 @@ module Persist
   # universe of values for updated columns is small. For example, this class performs
   # well updating boolean and enum fields over many records.
 
-  class BulkUpdateAll
-    def self.perform!(model, resources, update_fields)
-      new(model, resources, update_fields).perform!
-    end
+  # Be careful! The #update_all method bypasses all callbacks and some database constraints,
+  # such as foreign key constraints.
 
-    def initialize(model, resources, update_fields)
-      @model = model
-      @resources = resources
-      @update_fields = update_fields && Array.wrap(update_fields)
-      validate_setup
-    end
+  class BulkUpdateAll < Persist::Base
 
-    def perform!
-      grouped_resources.each do |value_pairs, selected_resources|
-        model.where(id: selected_resources).update_all(value_pairs)
-      end
+    def post_initialize(options)
+      @update_fields = options[:update_fields] && Array.wrap(options[:update_fields])
     end
 
     private
 
-    attr_reader :model, :resources, :update_fields
+    def persist_resources
+      grouped_resources.each do |value_pairs, selected_resources|
+        next if errors.present?
+
+        begin
+          model.where(id: selected_resources).update_all(value_pairs)
+        rescue ActiveRecord::ActiveRecordError => exception
+          errors << active_record_error(exception)
+        end
+
+      end
+    end
 
     def grouped_resources
       @grouped_resources ||= resources.group_by do |resource|
@@ -32,11 +34,8 @@ module Persist
       end
     end
 
-    def validate_setup
-      raise ArgumentError, 'model must be provided' unless model && model.is_a?(Class)
-      raise ArgumentError, 'resources must be provided' unless resources && resources.is_a?(Enumerable)
+    def validate_additional_setup
       raise ArgumentError, 'update_fields must be provided' unless update_fields
-      raise ArgumentError, 'all resources must be members of the model class' unless resources.all? { |resource| resource.class == model }
     end
   end
 end

@@ -1,4 +1,11 @@
 module Interactors
+
+  # Some time data is entered based on military time, and in that case the absolute time
+  # (as opposed to the elapsed time stored in the database) is more likely correct if the
+  # two conflict. If an effort.start_offset changes but we want existing absolute times
+  # (other than the start split_time) to remain the same, we need to counter the change in offset
+  # by subtracting a like amount from time_from_start in all later split_times for that effort.
+
   class AdjustEffortOffset
     include Interactors::Errors
 
@@ -30,7 +37,7 @@ module Interactors
     def update_split_times
       effort.split_times.each do |st|
         next if errors.present? || st.split.start?
-        st.time_from_start -= start_time_shift
+        st.time_from_start -= start_offset_shift
         errors << resource_error_object(st) unless st.save
       end
     end
@@ -58,7 +65,7 @@ module Interactors
     end
 
     def validate_setup
-      raise ArgumentError, 'arguments for Interactors::AdjustEffortOffset must include effort' unless effort && effort.is_a?(Effort)
+      raise ArgumentError, "arguments for #{self.class} must include effort" unless effort && effort.is_a?(Effort)
     end
   end
 end

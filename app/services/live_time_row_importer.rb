@@ -35,7 +35,7 @@ class LiveTimeRowImporter
 
       if effort_data.valid? && (effort_data.clean? || force_option?)
         if create_or_update_times(effort_data)
-          EffortOffsetTimeAdjuster.adjust(effort: effort_data.effort)
+          Interactors::AdjustEffortOffset.perform!(effort_data.effort)
         end
       else
         unsaved_rows << effort_data.response_row

@@ -14,8 +14,8 @@ module Interactors
     end
 
     def perform!
-      Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, :stopped_here)
-      Interactors::Response.new(errors, message, changed_split_times)
+      update_response = Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, update_fields: :stopped_here)
+      update_response.merge(Interactors::Response.new(errors, message, changed_split_times))
     end
 
     private

@@ -15,8 +15,8 @@ module Interactors
 
     def perform!
       ActiveRecord::Base.transaction do
-        Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, :data_status)
-        Persist::BulkUpdateAll.perform!(Effort, changed_efforts, :data_status)
+        Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, update_fields: :data_status)
+        Persist::BulkUpdateAll.perform!(Effort, changed_efforts, update_fields: :data_status)
         raise ActiveRecord::Rollback if errors.present?
       end
       Interactors::Response.new(errors, message, changed_resources)

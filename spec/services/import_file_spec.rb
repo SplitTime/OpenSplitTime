@@ -9,9 +9,9 @@ RSpec.describe ImportFile do
       expect(importer.header1[0]).to eq('first_name')
       expect(importer.header1[8]).to eq('Start')
       expect(importer.header1[14]).to eq('Tunnel Out')
-      expect(importer.header2[9]).to eq(6.5)
-      expect(importer.header2[12]).to eq(40)
-      expect(importer.header2[15]).to eq(51.3)
+      expect(importer.header2[9]).to eq(10)
+      expect(importer.header2[12]).to eq(100)
+      expect(importer.header2[15]).to eq(140)
     end
   end
 end

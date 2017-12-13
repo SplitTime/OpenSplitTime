@@ -50,9 +50,6 @@ RSpec.describe Api::V1::SplitTimesController do
 
   describe '#update' do
     let(:attributes) { {time_from_start: 12345} }
-    before do
-      allow_any_instance_of(SplitTime).to receive(:set_effort_data_status)
-    end
 
     it 'returns a successful json response' do
       put :update, params: {id: split_time, data: {type: 'split_times', attributes: attributes}}

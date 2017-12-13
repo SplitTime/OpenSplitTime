@@ -21,114 +21,146 @@ RSpec.describe Split, kind: :model do
   let(:course1) { build_stubbed(:course, name: 'Test Course') }
   let(:course2) { build_stubbed(:course, name: 'Test Course 2') }
 
-  it 'is valid when created with a course, a name, a distance_from_start, and a kind' do
-    Split.create!(course: persisted_course,
-                  base_name: 'Hopeless Outbound',
-                  distance_from_start: 50000,
-                  kind: 2)
+  describe '#initialize' do
+    it 'is valid when created with a course, a name, a distance_from_start, and a kind' do
+      Split.create!(course: persisted_course,
+                    base_name: 'Hopeless Outbound',
+                    distance_from_start: 50000,
+                    kind: :intermediate)
 
-    expect(Split.all.count).to(equal(1))
-    expect(Split.first.name).to eq('Hopeless Outbound')
-    expect(Split.first.distance_from_start).to eq(50000)
-    expect(Split.first.sub_split_bitmap).to eq(1) # default value
-    expect(Split.first.intermediate?).to eq(true)
-  end
+      expect(Split.all.count).to(equal(1))
+      expect(Split.first.name).to eq('Hopeless Outbound')
+      expect(Split.first.distance_from_start).to eq(50000)
+      expect(Split.first.sub_split_bitmap).to eq(1) # default value
+      expect(Split.first.intermediate?).to eq(true)
+    end
 
-  it 'is invalid without a base_name' do
-    split = Split.new(course: course1, base_name: nil, distance_from_start: 2000, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:base_name]).to include("can't be blank")
-  end
+    it 'is invalid without a base_name' do
+      split = build_stubbed(:split, base_name: nil)
+      expect(split).not_to be_valid
+      expect(split.errors[:base_name]).to include("can't be blank")
+    end
 
-  it 'is invalid without a distance_from_start' do
-    split = Split.new(course: course1, base_name: 'Test', distance_from_start: nil, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:distance_from_start]).to include("can't be blank")
-  end
+    it 'is invalid without a distance_from_start' do
+      split = build_stubbed(:split, distance_from_start: nil)
+      expect(split).not_to be_valid
+      expect(split.errors[:distance_from_start]).to include("can't be blank")
+    end
 
-  it 'is invalid without a sub_split_bitmap' do
-    split = Split.new(course: course1, base_name: 'Test', distance_from_start: 3000, sub_split_bitmap: nil, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:sub_split_bitmap]).to include("can't be blank")
-  end
+    it 'is invalid without a sub_split_bitmap' do
+      split = build_stubbed(:split, sub_split_bitmap: nil)
+      expect(split).not_to be_valid
+      expect(split.errors[:sub_split_bitmap]).to include("can't be blank")
+    end
 
-  it 'is invalid without a kind' do
-    split = Split.new(course: course1, base_name: 'Test', distance_from_start: 6000, kind: nil)
-    expect(split).not_to be_valid
-    expect(split.errors[:kind]).to include("can't be blank")
-  end
+    it 'is invalid without a kind' do
+      split = build_stubbed(:split, kind: nil)
+      expect(split).not_to be_valid
+      expect(split.errors[:kind]).to include("can't be blank")
+    end
 
-  it 'does not allow duplicate names within the same course' do
-    Split.create!(course: persisted_course, base_name: 'Wanderlust', distance_from_start: 7000, kind: 2)
-    split = Split.new(course: persisted_course, base_name: 'Wanderlust', distance_from_start: 8000, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:base_name]).to include('must be unique for a course')
-  end
+    it 'does not allow duplicate names within the same course' do
+      split_1 = create(:split, course: persisted_course)
+      split_2 = build_stubbed(:split, course: persisted_course, base_name: split_1.base_name)
+      expect(split_2).not_to be_valid
+      expect(split_2.errors[:base_name]).to include('must be unique for a course')
+    end
 
-  it 'allows duplicate names among different courses' do
-    Split.create!(course: persisted_course, base_name: 'Wanderlust', distance_from_start: 7000, kind: 2)
-    split = Split.new(course: course2, base_name: 'Wanderlust', distance_from_start: 8000, kind: 2)
-    expect(split).to be_valid
-  end
+    it 'allows duplicate names among different courses' do
+      split_1 = create(:split, course: persisted_course)
+      split_2 = build_stubbed(:split, course: course2, base_name: split_1.base_name)
+      expect(split_2).to be_valid
+    end
 
-  it 'does not allow more than one start split within the same course' do
-    Split.create!(course: persisted_course, base_name: 'Starting Point', distance_from_start: 0, kind: 0)
-    split = Split.new(course: persisted_course, base_name: 'Beginning Point', distance_from_start: 0, kind: 0)
-    expect(split).not_to be_valid
-    expect(split.errors[:kind]).to include('only one start split permitted on a course')
-  end
+    it 'does not allow more than one start split within the same course' do
+      create(:start_split, course: persisted_course)
+      split = build_stubbed(:start_split, course: persisted_course)
+      expect(split).not_to be_valid
+      expect(split.errors[:kind]).to include('only one start split permitted on a course')
+    end
 
-  it 'does not allow more than one finish split within the same course' do
-    Split.create!(course: persisted_course, base_name: 'Finish Point', distance_from_start: 5000, kind: 1)
-    split = Split.new(course: persisted_course, base_name: 'Ending Point', distance_from_start: 5000, kind: 1)
-    expect(split).not_to be_valid
-    expect(split.errors[:kind]).to include('only one finish split permitted on a course')
-  end
+    it 'does not allow more than one finish split within the same course' do
+      create(:split, course: persisted_course, kind: :finish)
+      split = build_stubbed(:split, course: persisted_course, kind: :finish)
+      expect(split).not_to be_valid
+      expect(split.errors[:kind]).to include('only one finish split permitted on a course')
+    end
 
-  it 'does not allow more than one split with the same distance from start on the same course' do
-    Split.create!(course: persisted_course, base_name: 'Aid1', distance_from_start: 9000, kind: 2)
-    Split.create!(course: persisted_course, base_name: 'Aid2', distance_from_start: 18000, kind: 2)
-    split1 = Split.new(course: persisted_course, base_name: 'Aid1', distance_from_start: 9000, kind: 2)
-    split2 = Split.new(course: persisted_course, base_name: 'Aid2', distance_from_start: 18000, kind: 2)
-    expect(split1).not_to be_valid
-    expect(split2).not_to be_valid
-  end
+    it 'does not allow more than one split with the same distance from start on the same course' do
+      split_1 = create(:split, course: persisted_course)
+      split_2 = build_stubbed(:split, course: persisted_course, distance_from_start: split_1.distance_from_start)
+      expect(split_2).not_to be_valid
+      expect(split_2.errors[:distance_from_start]).to include('only one split of a given distance permitted on a course. Use sub_splits if needed.')
+    end
 
-  it 'requires start splits to have distance_from_start: 0, vert_gain_from_start: 0, and vert_loss_from_start: 0' do
-    split = Split.new(course: course1, base_name: 'Start Line', distance_from_start: 100, vert_gain_from_start: 100, vert_loss_from_start: 100, kind: 0)
-    expect(split).not_to be_valid
-    expect(split.errors[:distance_from_start]).to include('for the start split must be 0')
-    expect(split.errors[:vert_gain_from_start]).to include('for the start split must be 0')
-    expect(split.errors[:vert_loss_from_start]).to include('for the start split must be 0')
-  end
+    it 'requires start splits to have distance_from_start: 0, vert_gain_from_start: 0, and vert_loss_from_start: 0' do
+      split = build_stubbed(:split, distance_from_start: 100, vert_gain_from_start: 100, vert_loss_from_start: 100, kind: :start)
+      expect(split).not_to be_valid
+      expect(split.errors[:distance_from_start]).to include('for the start split must be 0')
+      expect(split.errors[:vert_gain_from_start]).to include('for the start split must be 0')
+      expect(split.errors[:vert_loss_from_start]).to include('for the start split must be 0')
+    end
 
-  it 'requires intermediate splits and finish splits to have positive distance_from_start' do
-    split1 = Split.new(course: course1, base_name: 'Aid1', distance_from_start: 0, kind: 2)
-    split2 = Split.new(course: course1, base_name: 'Finish Line', distance_from_start: 0, kind: 1)
-    expect(split1).not_to be_valid
-    expect(split1.errors[:distance_from_start]).to include('must be positive for intermediate and finish splits')
-    expect(split2).not_to be_valid
-    expect(split2.errors[:distance_from_start]).to include('must be positive for intermediate and finish splits')
-  end
+    it 'requires intermediate splits and finish splits to have positive distance_from_start' do
+      split1 = build_stubbed(:split, distance_from_start: 0, kind: :finish)
+      split2 = build_stubbed(:split, distance_from_start: 0, kind: :intermediate)
+      expect(split1).not_to be_valid
+      expect(split1.errors[:distance_from_start]).to include('must be positive for intermediate and finish splits')
+      expect(split2).not_to be_valid
+      expect(split2.errors[:distance_from_start]).to include('must be positive for intermediate and finish splits')
+    end
 
-  it 'does not allow negative vert_gain_from_start' do
-    split = Split.new(course: course1, base_name: 'Test', distance_from_start: 6000, vert_gain_from_start: -100, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:vert_gain_from_start]).to include('may not be negative')
-  end
+    it 'does not allow negative vert_gain_from_start' do
+      split = build_stubbed(:split, vert_gain_from_start: -100)
+      expect(split).not_to be_valid
+      expect(split.errors[:vert_gain_from_start]).to include('may not be negative')
+    end
 
-  it 'does not allow negative vert_loss_from_start' do
-    split = Split.new(course: course1, base_name: 'Test', distance_from_start: 6000, vert_loss_from_start: -100, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:vert_loss_from_start]).to include('may not be negative')
-  end
+    it 'does not allow negative vert_loss_from_start' do
+      split = build_stubbed(:split, vert_loss_from_start: -100)
+      expect(split).not_to be_valid
+      expect(split.errors[:vert_loss_from_start]).to include('may not be negative')
+    end
 
-  it 'does not allow an intermediate split with distance_from_start great than the finish split distance_from_start' do
-    skip
-    Split.create!(course: persisted_course, base_name: 'Ending point', distance_from_start: 100, kind: 1)
-    split = Split.new(course: persisted_course, base_name: 'Aid Station', distance_from_start: 200, kind: 2)
-    expect(split).not_to be_valid
-    expect(split.errors[:distance_from_start]).to include('must be less than the finish split distance_from_start')
+    it 'does not allow an intermediate split with distance_from_start greater than the finish split distance_from_start' do
+      split_1 = create(:split, course: persisted_course, kind: :finish)
+      split_2 = build_stubbed(:split, course: persisted_course, distance_from_start: split_1.distance_from_start + 100, kind: :intermediate)
+      expect(split_2).not_to be_valid
+      expect(split_2.errors[:distance_from_start]).to include('must be less than the finish split distance_from_start')
+    end
+
+    it 'allows elevation only within physical limits' do
+      split = build_stubbed(:split, elevation: 0)
+      expect(split).to be_valid
+      split.elevation = -2000
+      expect(split).not_to be_valid
+      expect(split.errors[:elevation]).to include('must be between -1000 and 10,000 meters')
+      split.elevation = 11_000
+      expect(split).not_to be_valid
+      expect(split.errors[:elevation]).to include('must be between -1000 and 10,000 meters')
+    end
+
+    it 'allows latitude only within physical limits' do
+      split = build_stubbed(:split, latitude: 40)
+      expect(split).to be_valid
+      split.latitude = 91
+      expect(split).not_to be_valid
+      expect(split.errors[:latitude]).to include('must be between -90 and 90')
+      split.latitude = -91
+      expect(split).not_to be_valid
+      expect(split.errors[:latitude]).to include('must be between -90 and 90')
+    end
+
+    it 'allows longitude only within physical limits' do
+      split = build_stubbed(:split, longitude: -105)
+      expect(split).to be_valid
+      split.longitude = 181
+      expect(split).not_to be_valid
+      expect(split.errors[:longitude]).to include('must be between -180 and 180')
+      split.longitude = -181
+      expect(split).not_to be_valid
+      expect(split.errors[:longitude]).to include('must be between -180 and 180')
+    end
   end
 
   describe '#sub_splits' do

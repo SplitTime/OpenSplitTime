@@ -7,11 +7,13 @@ class ArgsValidator
     end
 
     def exclusive
-      [:params, :required, :required_alternatives, :exclusive, :deprecated, :class]
+      [:subject, :subject_class, :params, :required, :required_alternatives, :exclusive, :deprecated, :class]
     end
   end
 
   def initialize(args)
+    @subject = args[:subject]
+    @subject_class = args[:subject_class]
     @params = args[:params]
     @required = Array.wrap(args[:required]) || []
     @required_alternatives = Array.wrap(args[:required_alternatives]) || []
@@ -25,6 +27,7 @@ class ArgsValidator
   end
 
   def validate
+    validate_subject
     validate_hash
     report_deprecations
     validate_required_params
@@ -35,7 +38,12 @@ class ArgsValidator
 
   private
 
-  attr_reader :params, :required, :required_alternatives, :exclusive, :deprecated, :klass, :args
+  attr_reader :subject, :subject_class, :params, :required, :required_alternatives, :exclusive, :deprecated, :klass, :args
+
+  def validate_subject
+    raise ArgumentError, "arguments #{for_klass}must include a subject" if args.keys.include?(:subject) && subject.nil?
+    raise ArgumentError, "subject #{for_klass}must be a #{subject_class}" if subject_class && subject && !subject.is_a?(subject_class)
+  end
 
   def validate_hash
     raise ArgumentError, "arguments #{for_klass}must be provided as a hash" unless params.is_a?(Hash)

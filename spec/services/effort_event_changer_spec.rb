@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe EffortEventChanger do
-  let(:effort) { create(:effort, event: old_event) }
-  let(:old_event) { create(:event, course: old_course, start_time: '2017-07-01 06:00:00') }
-  let(:old_course) { create(:course_with_standard_splits, splits_count: 3) }
-
   describe '#initialization' do
     let(:effort) { build_stubbed(:effort) }
     let(:event) { build_stubbed(:event) }
@@ -26,10 +22,15 @@ RSpec.describe EffortEventChanger do
   end
 
   describe '#assign_event' do
+    let(:effort) { create(:effort, event: old_event) }
+    let!(:old_event) { create(:event, course: old_course, start_time: '2017-07-01 06:00:00') }
+    let(:old_course) { create(:course_with_standard_splits, splits_count: 3) }
+
     context 'when the new event has the same splits as the old' do
       let!(:new_event) { create(:event, course: old_course, start_time: '2017-07-01 08:00:00') }
 
       before do
+        old_course.reload
         old_event.splits << old_course.splits
         new_event.splits << old_course.splits
         create_split_times_for_effort
@@ -70,6 +71,7 @@ RSpec.describe EffortEventChanger do
 
       before do
         FactoryGirl.reload
+        old_course.reload
         old_event.splits << old_course.splits
         new_event.splits << new_course.splits
         create_split_times_for_effort

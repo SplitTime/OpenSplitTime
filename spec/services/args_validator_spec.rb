@@ -28,6 +28,11 @@ RSpec.describe ArgsValidator do
       expect { ArgsValidator.new(params: args, required: required, required_alternatives: required_alternatives, class: klass) }
           .not_to raise_error
     end
+
+    it 'instantiates an object when provided a subject and subject_class' do
+      args = {subject: Effort.new, subject_class: Effort}
+      expect { ArgsValidator.new(params: args) }.not_to raise_error
+    end
   end
 
   describe '#validate and .validate' do
@@ -51,6 +56,16 @@ RSpec.describe ArgsValidator do
           .to_not output(/use of 'a' has been deprecated in favor of 'b'/).to_stderr
       expect { ArgsValidator.validate(params: args, deprecated: deprecated) }
           .to output(/use of 'c' has been deprecated in favor of 'd'/).to_stderr
+    end
+
+    it 'raises ArgumentError if subject key is given but subject is not provided' do
+      expect { ArgsValidator.new(subject: nil, params: {}).validate }
+          .to raise_error(/arguments must include a subject/)
+    end
+
+    it 'raises ArgumentError if subject_class is given but subject is not an instance of subject_class' do
+      expect { ArgsValidator.new(subject: Effort.new, subject_class: SplitTime, params: {}).validate }
+          .to raise_error(/subject must be a SplitTime/)
     end
 
     it 'raises ArgumentError if params argument is not a Hash' do

@@ -252,17 +252,8 @@ class Effort < ApplicationRecord
     person_id.nil?
   end
 
-  def destroy_split_times(split_time_ids)
-    stop_existed = stopped_split_time.present?
-    split_times.where(id: split_time_ids).destroy_all
-    set_data_status
-    if stop_existed && stopped_split_time.blank?
-      stop
-    end
-  end
-
   def set_data_status
-    EffortDataStatusSetter.set_data_status(effort: self)
+    Interactors::UpdateEffortsStatus.perform!(self)
   end
 
   def enriched
@@ -279,16 +270,5 @@ class Effort < ApplicationRecord
   # if more than one exists
   def stopped_split_time
     ordered_split_times.reverse.find(&:stopped_here)
-  end
-
-  def stop(split_time = nil)
-    EffortStopper.stop(effort: self, stopped_split_time: split_time)
-  end
-
-  def unstop
-    split_times.each do |split_time|
-      split_time.stopped_here = false
-      split_time.save if split_time.changed?
-    end
   end
 end

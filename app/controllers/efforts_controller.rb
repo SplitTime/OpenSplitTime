@@ -60,6 +60,7 @@ class EffortsController < ApplicationController
 
   def destroy
     authorize @effort
+
     @effort.destroy
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || root_path
@@ -77,6 +78,7 @@ class EffortsController < ApplicationController
 
   def start
     authorize @effort
+
     response = Interactors::StartEfforts.perform!([@effort], current_user.id)
     set_flash_message(response)
     redirect_to effort_path(@effort)
@@ -84,25 +86,35 @@ class EffortsController < ApplicationController
 
   def edit_split_times
     authorize @effort
-    effort_with_relations = Effort.where(id: @effort.id).eager_load(:event, :split_times).first
-    @presenter = EffortWithTimesPresenter.new(effort: effort_with_relations, params: params)
+    effort = Effort.where(id: @effort.id).includes(:event, split_times: :split).first
+
+    @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
   end
 
   def update_split_times
     authorize @effort
-    if @effort.update(permitted_params)
-      @effort.set_data_status
-      redirect_to effort_path(@effort)
+    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+
+    if effort.update(permitted_params)
+      flash[:success] = "Updated split times. "
+      response = Interactors::UpdateEffortsStatus.perform!(effort)
+      set_flash_message(response)
+
+      redirect_to effort_path(effort)
     else
-      flash[:danger] = "Effort failed to update for the following reasons: #{@effort.errors.full_messages}"
+      flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
       render 'edit_split_times'
     end
   end
 
   def delete_split_times
     authorize @effort
-    @effort.destroy_split_times(params[:split_time_ids])
-    redirect_to effort_path(@effort)
+    effort = Effort.where(id: @effort.id).includes(split_times: {split: :course}).first
+
+    destroy_response = Interactors::DestroyEffortSplitTimes.perform!(effort, params[:split_time_ids])
+    update_response = Interactors::UpdateEffortsStatus.perform!(effort)
+    set_flash_message(destroy_response.merge(update_response))
+    redirect_to effort_path(effort)
   end
 
   def confirm_split_times

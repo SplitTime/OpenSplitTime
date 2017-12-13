@@ -60,7 +60,7 @@ RSpec.describe Interactors::UpdateEventAndGrouping do
         expect(EventGroup.all.size).to eq(2)
         expect(response.message).to eq('Event or event group could not be updated. ')
         expect(response.errors.first[:title]).to eq('Event group organizations do not match')
-        expect(response.errors.first[:detail][:message]).to match(/The event cannot be updated because/)
+        expect(response.errors.first[:detail][:messages].first).to match(/The event cannot be updated because/)
       end
     end
   end

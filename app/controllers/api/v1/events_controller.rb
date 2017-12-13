@@ -57,11 +57,11 @@ class Api::V1::EventsController < ApiController
     strict = params[:load_records] != 'single'
     unique_key = params[:unique_key].present? ? (params[:unique_key] + ['event_id']).uniq : nil
     importer = ETL::Importer.new(params[:data],
-                                        params[:data_format]&.to_sym,
-                                        event: @event,
-                                        current_user_id: current_user.id,
-                                        strict: strict,
-                                        unique_key: unique_key)
+                                 params[:data_format]&.to_sym,
+                                 event: @event,
+                                 current_user_id: current_user.id,
+                                 strict: strict,
+                                 unique_key: unique_key)
     importer.import
 
     if strict
@@ -78,20 +78,26 @@ class Api::V1::EventsController < ApiController
              status: importer.saved_records.present? ? :created : :unprocessable_entity
     end
 
-    if importer.saved_records.any? { |record| record.is_a?(Effort) }
+    efforts = importer.saved_records.select { |record| record.is_a?(Effort) }
+    if efforts.present?
       EffortsAutoReconcileJob.perform_later(event: @event)
     end
 
-    if importer.saved_records.present? && @event.available_live
-      split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
-      notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
-      notifier.notify
+    split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
+    if split_times.present?
+      updated_efforts = @event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
+      Interactors::UpdateEffortsStatus.perform!(updated_efforts)
 
-      live_times = importer.saved_records.select { |record| record.is_a?(LiveTime) }
-      if live_times.present?
-        LiveTimeSplitTimeCreator.create(event: @event, live_times: live_times) if @event.auto_live_times?
-        report_live_times_available(@event)
+      if @event.available_live?
+        notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
+        notifier.notify
       end
+    end
+
+    live_times = importer.saved_records.select { |record| record.is_a?(LiveTime) }
+    if live_times.present? && @event.available_live
+      LiveTimeSplitTimeCreator.create(event: @event, live_times: live_times) if @event.auto_live_times?
+      report_live_times_available(@event)
     end
   end
 

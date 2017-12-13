@@ -75,7 +75,7 @@ Rails.application.routes.draw do
       post :import_efforts
       put :associate_people
       put :set_data_status
-      put :set_dropped_attributes
+      put :set_stops
       put :start_ready_efforts
       patch :update_start_time
       patch :update_all_efforts

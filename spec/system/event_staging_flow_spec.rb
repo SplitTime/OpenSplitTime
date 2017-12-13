@@ -60,6 +60,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
   scenario 'Create a new event with an existing Organization and Course' do
     organization = create(:organization, created_by: user.id)
     course = create(:course_with_standard_splits, :with_description, created_by: user.id)
+    course.reload
 
     expect(Organization.count).to eq(1)
     expect(Course.count).to eq(1)
@@ -117,7 +118,10 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     let(:event_group) { create(:event_group, organization: organization) }
     let(:event) { create(:event, event_group: event_group, course: course) }
 
-    before { event.splits << course.splits }
+    before do
+      course.reload
+      event.splits << course.splits
+    end
 
     xscenario 'Edit event information' do
       login_as user

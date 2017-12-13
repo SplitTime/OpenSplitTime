@@ -1,5 +1,7 @@
 class LiveTimeSplitTimeCreator
 
+  # TODO The parallel logic located in LiveTimeRowImporter#create_or_update_times should be centralized here.
+
   def self.create(args)
     new(args).create
   end
@@ -23,9 +25,10 @@ class LiveTimeSplitTimeCreator
         live_time.update(split_time: split_time) if live_time
       end
     end
-    created_split_times = SplitTime.where(id: created_split_time_ids).eager_load(:effort)
-    updated_efforts = created_split_times.map(&:effort).uniq
-    updated_efforts.each { |effort| EffortDataStatusSetter.set_data_status(effort: effort) }
+    created_split_times = SplitTime.where(id: created_split_time_ids).includes(:effort)
+    updated_efforts = Effort.where(id: created_split_times.map(&:effort_id).uniq).includes(split_times: :split)
+    Interactors::UpdateEffortsStatus.perform!(updated_efforts)
+
     if event.available_live
       indexed_split_times = created_split_times.group_by { |st| st.effort.person_id || 0 }
       indexed_split_times.each do |person_id, split_times|

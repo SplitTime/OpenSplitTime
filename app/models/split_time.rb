@@ -103,10 +103,6 @@ class SplitTime < ApplicationRecord
     EffortLapKey.new(effort_id, lap)
   end
 
-  def set_effort_data_status
-    effort.set_data_status
-  end
-
   def elapsed_time(options = {})
     return nil unless time_from_start
     time = options[:with_fractionals] ? time_from_start : time_from_start.round(0)

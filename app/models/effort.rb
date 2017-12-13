@@ -253,7 +253,7 @@ class Effort < ApplicationRecord
   end
 
   def set_data_status
-    EffortDataStatusSetter.set_data_status(effort: self)
+    Interactors::UpdateEffortsStatus.perform!(self)
   end
 
   def enriched

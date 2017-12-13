@@ -1,5 +1,7 @@
 module Interactors
   class DestroyEffortSplitTimes
+    include ActionView::Helpers::TextHelper
+
     def self.perform!(effort, split_time_ids)
       new(effort, split_time_ids).perform!
     end
@@ -39,7 +41,7 @@ module Interactors
       if errors.present?
         "Split times could not be destroyed. "
       else
-        "Deleted #{split_time_ids.join(', ')} for effort #{effort}. "
+        "Deleted #{pluralize(split_time_ids.size, 'split time')} for effort #{effort}. "
       end
     end
 

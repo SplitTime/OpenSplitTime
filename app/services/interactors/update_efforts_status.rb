@@ -1,6 +1,7 @@
 module Interactors
   class UpdateEffortsStatus
     include Interactors::Errors
+    include ActionView::Helpers::TextHelper
 
     def self.perform!(efforts, options = {})
       new(efforts, options).perform!
@@ -44,9 +45,9 @@ module Interactors
 
     def message
       if errors.empty?
-        "Updated #{changed_efforts.size} efforts and #{changed_split_times.size} split times. "
+        "Updated status for #{pluralize(changed_efforts.size, 'effort')} and #{pluralize(changed_split_times.size, 'split time')}. "
       else
-        "Could not update efforts. "
+        "Could not update status for the provided efforts. "
       end
     end
   end

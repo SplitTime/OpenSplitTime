@@ -346,10 +346,10 @@ RSpec.describe Api::V1::EventsController do
                                                   multi_lap: false)
         end
 
-        it 'sends a message to EffortDataStatusSetter with the effort associated with the modified split_times' do
+        it 'sends a message to Interactors::UpdateEffortsStatus with the efforts associated with the modified split_times' do
           allow(Interactors::UpdateEffortsStatus).to receive(:perform!)
           post :import, params: request_params
-          efforts = Effort.where(id: SplitTime.first.effort_id)
+          efforts = Effort.where(id: SplitTime.all.pluck(:effort_id).uniq)
 
           expect(Interactors::UpdateEffortsStatus).to have_received(:perform!).with(efforts)
         end

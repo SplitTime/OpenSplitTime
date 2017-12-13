@@ -249,7 +249,6 @@ class EventsController < ApplicationController
   private
 
   def set_event
-    params[:id] = Deprecation::SubstituteSlug.perform(:events, params[:id])
     @event = Event.friendly.find(params[:id])
   end
 end

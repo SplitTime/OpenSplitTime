@@ -17,7 +17,9 @@ module GuaranteedFindable
 
   module ClassMethods
     def find_guaranteed(args)
-      find_by(args) || null_record
+      attributes = args[:attributes]
+      includes = args[:includes] || {}
+      where(attributes).includes(includes).first || null_record
     end
   end
 end

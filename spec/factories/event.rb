@@ -28,6 +28,7 @@ FactoryGirl.define do
       after(:create) do |event, evaluator|
         course = create(:course_with_standard_splits, splits_count: evaluator.splits_count,
                         in_sub_splits_only: evaluator.in_sub_splits_only)
+        course.reload
         event.update(course: course)
         event.splits << course.splits
       end

@@ -144,13 +144,6 @@ RSpec.describe Api::V1::EventsController do
       expect(response.body).to be_jsonapi_response_for('event_spread_displays')
     end
 
-    it 'returns data from cache if the cache is valid' do
-      skip 'caching in test environment is disabled'
-      expect(EventSpreadDisplay).to receive(:new).once.and_call_original
-      get :spread, params: {staging_id: event.id}
-      get :spread, params: {staging_id: event.id}
-    end
-
     it 'returns an error if the event does not exist' do
       get :spread, params: {staging_id: 123}
       parsed_response = JSON.parse(response.body)

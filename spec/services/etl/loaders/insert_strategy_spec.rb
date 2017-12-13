@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ETL::Loaders::InsertStrategy do
-  let(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7) }
+  let!(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7) }
   let(:splits) { event.ordered_splits }
   let(:split_ids) { splits.map(&:id) }
 
@@ -71,10 +71,10 @@ RSpec.describe ETL::Loaders::InsertStrategy do
         expect(efforts.size).to eq(0)
         subject.load_records
         expect(efforts.size).to eq(3)
-        expect(efforts.map(&:first_name)).to eq(%w(Jatest Castest Mictest))
-        expect(efforts.map(&:bib_number)).to eq([5, 661, 633])
-        expect(efforts.map(&:gender)).to eq(%w(male female female))
-        expect(efforts.map(&:event_id)).to eq([event.id] * efforts.size)
+        expect(efforts.map(&:first_name)).to match_array(%w(Jatest Castest Mictest))
+        expect(efforts.map(&:bib_number)).to match_array([5, 661, 633])
+        expect(efforts.map(&:gender)).to match_array(%w(male female female))
+        expect(efforts.map(&:event_id)).to all eq(event.id)
       end
 
       it 'assigns attributes and saves new child records' do
@@ -90,7 +90,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
       it 'returns saved parent records in the saved_records array and assigns a current user id to created_by' do
         subject.load_records
         expect(subject.saved_records.size).to eq(3)
-        expect(subject.saved_records.map(&:created_by)).to eq([options[:current_user_id]] * subject.saved_records.size)
+        expect(subject.saved_records.map(&:created_by)).to all eq(options[:current_user_id])
       end
     end
 

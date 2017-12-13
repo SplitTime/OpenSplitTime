@@ -3,14 +3,12 @@ require 'rails_helper'
 RSpec.describe Interactors::AdjustEventStartTime do
   let(:response) { Interactors::AdjustEventStartTime.perform!(event: event, new_start_time: new_start_time) }
 
-  let(:course) { create(:course_with_standard_splits, splits_count: 3) }
-  let(:event) { create(:event, course: course, laps_required: 1) }
+  let(:event) { create(:event_with_standard_splits, splits_count: 3, laps_required: 1) }
   let(:efforts) { create_list(:effort, 2, event: event) }
   let!(:original_start_time) { event.start_time }
   let(:new_start_time) { (event.start_time + adjustment).to_s }
 
   before do
-    event.splits << course.splits
     time_points = event.required_lap_splits.map(&:time_points).flatten
     SplitTime.create!(effort: efforts.first, time_point: time_points.first, time_from_start: 0)
     SplitTime.create!(effort: efforts.first, time_point: time_points.second, time_from_start: 1000)

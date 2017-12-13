@@ -5,7 +5,10 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
   let(:course) { create(:course_with_standard_splits, :with_description, created_by: user.id) }
   let(:organization) { create(:organization, created_by: user.id) }
   let(:event_group) { create(:event_group, organization: organization, available_live: true) }
-  before { event.splits << course.splits }
+  before do
+    course.reload
+    event.splits << course.splits
+  end
   let(:efforts) { create_list(:effort, 3, event: event) }
   let(:ordered_splits) { event.ordered_splits }
 

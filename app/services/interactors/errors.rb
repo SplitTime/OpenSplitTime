@@ -7,12 +7,17 @@ module Interactors
 
     def active_record_error(exception)
       {title: 'An ActiveRecord exception occurred',
-      detail: {exception: exception}}
+       detail: {exception: exception}}
     end
 
     def mismatched_organization_error(old_event_group, new_event_group)
       {title: 'Event group organizations do not match',
-       detail: {message: "The event cannot be updated because #{old_event_group} is organized under #{old_event_group.organization}, but #{new_event_group} is organized under #{new_event_group.organization}"}}
+       detail: {messages: ["The event cannot be updated because #{old_event_group} is organized under #{old_event_group.organization}, but #{new_event_group} is organized under #{new_event_group.organization}"]}}
+    end
+
+    def effort_offset_failure_error(effort)
+      {title: 'Effort offset could not be adjusted',
+       detail: {messages: ["The starting split time for #{effort} was beyond an existing later split time"]}}
     end
   end
 end

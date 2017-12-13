@@ -1,14 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Interactors::SetEffortStatus do
+  before { FactoryGirl.reload }
+
   subject { Interactors::SetEffortStatus.new(effort, times_container: times_container) }
   let(:event) { build_stubbed(:event_functional, efforts_count: 1) }
   let(:effort) { event.efforts.first }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
-
-  before do
-    FactoryGirl.reload
-  end
 
   describe '#initialize' do
     context 'when an effort is provided' do

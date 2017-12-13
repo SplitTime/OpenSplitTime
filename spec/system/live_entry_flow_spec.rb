@@ -20,15 +20,11 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
   let(:discard_all_button) { find_by_id('js-delete-all-efforts') }
 
   context 'For a single-lap event' do
-    let(:event) { create(:event, event_group: event_group, course: course, laps_required: 1, start_time: '2017-10-10 08:00:00') }
+    let(:event) { create(:event, event_group: event_group, course: course, laps_required: 1, start_time_in_home_zone: '2017-10-10 08:00:00') }
 
     context 'for previously unstarted efforts' do
       scenario 'Add and submit times' do
-        login_as user
-        visit live_entry_live_event_path(event)
-        wait_for_ajax
-
-        check_setup
+        login_and_check_setup
         expect(page).not_to have_field('js-lap-number')
 
         expect(efforts.first.split_times).to be_empty
@@ -65,28 +61,26 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
 
     context 'for previously started efforts' do
       before do
-        split = ordered_splits.first
+        split_1 = ordered_splits.first
+        split_2 = ordered_splits.second
         efforts.each do |effort|
-          SplitTime.create!(effort: effort, split: split, bitkey: SubSplit::IN_BITKEY, lap: 1, time_from_start: 0)
+          effort.split_times.create!(lap: 1, split: split_1, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+          effort.split_times.create!(lap: 1, split: split_2, bitkey: SubSplit::IN_BITKEY, time_from_start: 1.hour)
         end
       end
 
       scenario 'Add and submit times' do
-        login_as user
-        visit live_entry_live_event_path(event)
-        wait_for_ajax
-
-        check_setup
+        login_and_check_setup
         expect(page).not_to have_field('js-lap-number')
 
-        expect(efforts.first.split_times).to be_one
-        expect(efforts.second.split_times).to be_one
-        expect(efforts.third.split_times).to be_one
+        expect(efforts.first.split_times.size).to eq(2)
+        expect(efforts.second.split_times.size).to eq(2)
+        expect(efforts.third.split_times.size).to eq(2)
 
-        select ordered_splits.second.base_name, from: 'split-select'
+        select ordered_splits.third.base_name, from: 'split-select'
 
         fill_in bib_number_field, with: efforts.first.bib_number
-        fill_in time_in_field, with: '08:45:45'
+        fill_in time_in_field, with: '10:45:45'
         add_button.click
         wait_for_css
 
@@ -95,7 +89,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         expect(local_workspace).not_to have_content(efforts.third.full_name)
 
         fill_in bib_number_field, with: efforts.second.bib_number
-        fill_in time_in_field, with: '09:00:00'
+        fill_in time_in_field, with: '11:00:00'
         add_button.click
         wait_for_css
 
@@ -105,25 +99,22 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
 
         submit_all_efforts
 
-        expect(efforts.first.split_times).to be_many
-        expect(efforts.second.split_times).to be_many
-        expect(efforts.third.split_times).to be_one
-
         verify_workspace_is_empty
+
+        expect(efforts.first.split_times.size).to eq(3)
+        expect(efforts.second.split_times.size).to eq(3)
+        expect(efforts.third.split_times.size).to eq(2)
+
       end
 
       scenario 'Add and discard times' do
-        login_as user
-        visit live_entry_live_event_path(event)
-        wait_for_ajax
-
-        check_setup
+        login_and_check_setup
         expect(page).not_to have_field('js-lap-number')
 
-        expect(efforts.first.split_times).to be_one
-        expect(efforts.second.split_times).to be_one
+        expect(efforts.first.split_times.size).to eq(2)
+        expect(efforts.second.split_times.size).to eq(2)
 
-        select ordered_splits.second.base_name, from: 'split-select'
+        select ordered_splits.third.base_name, from: 'split-select'
 
         fill_in bib_number_field, with: efforts.first.bib_number
         fill_in time_in_field, with: '08:45:45'
@@ -143,12 +134,69 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
 
         discard_all_efforts
 
-        expect(efforts.first.split_times).to be_one
-        expect(efforts.second.split_times).to be_one
+        expect(efforts.first.split_times.size).to eq(2)
+        expect(efforts.second.split_times.size).to eq(2)
+
+        verify_workspace_is_empty
+      end
+
+      scenario 'Change a start split_time forwards and backwards' do
+        login_and_check_setup
+        expect(page).not_to have_field('js-lap-number')
+
+        effort = efforts.first
+        ordered_split_times = effort.ordered_split_times
+
+        expect(ordered_split_times.size).to eq(2)
+        expect(ordered_split_times.first.time_from_start).to eq(0)
+        expect(ordered_split_times.first.military_time).to eq('08:00:00')
+        expect(ordered_split_times.second.time_from_start).to eq(3600)
+
+        select ordered_splits.first.base_name, from: 'split-select'
+
+        fill_in bib_number_field, with: efforts.first.bib_number
+        fill_in time_in_field, with: '08:15:00'
+        add_button.click
+
+        submit_all_efforts
+
+        effort.reload
+        ordered_split_times = effort.ordered_split_times
+        expect(ordered_split_times.size).to eq(2)
+        expect(ordered_split_times.first.time_from_start).to eq(0)
+
+        # Because starting split time_from_start was moved forward by 900 seconds
+        expect(ordered_split_times.second.time_from_start).to eq(2700) # 3600 - 900
+        expect(effort.start_offset).to eq(900)
+
+        verify_workspace_is_empty
+
+        fill_in bib_number_field, with: efforts.first.bib_number
+        fill_in time_in_field, with: '07:45:00'
+        add_button.click
+
+        submit_all_efforts
+
+        effort.reload
+        ordered_split_times = effort.ordered_split_times
+        expect(ordered_split_times.size).to eq(2)
+        expect(ordered_split_times.first.time_from_start).to eq(0)
+
+        # Because starting split time_from_start was moved back by 1800 seconds
+        expect(ordered_split_times.second.time_from_start).to eq(4500) # 2700 + 1800
+        expect(effort.start_offset).to eq(-900)
 
         verify_workspace_is_empty
       end
     end
+  end
+
+  def login_and_check_setup
+    login_as user
+    visit live_entry_live_event_path(event)
+    wait_for_ajax
+
+    check_setup
   end
 
   def check_setup

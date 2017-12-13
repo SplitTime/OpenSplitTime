@@ -101,7 +101,7 @@ class LiveEffortData
   def identical_split_time_exists?(kind)
     existing_split_time = indexed_existing_split_times[time_points[kind]]
     new_split_time = new_split_times[kind]
-    start_offset_unchanged? && existing_split_time && new_split_time &&
+    existing_split_time && new_split_time &&
         COMPARISON_KEYS.all? { |key| existing_split_time[key].presence == new_split_time[key].presence }
   end
 
@@ -114,7 +114,7 @@ class LiveEffortData
   end
 
   def ordered_existing_split_times
-    @ordered_existing_split_times ||= effort.ordered_split_times.to_a.freeze
+    @ordered_existing_split_times ||= effort.ordered_split_times.freeze
   end
 
   def effort_lap_splits
@@ -122,7 +122,7 @@ class LiveEffortData
   end
 
   def lap_for_lap_splits
-    [ordered_existing_split_times.last.try(:lap) || 1, lap].max
+    [ordered_existing_split_times.last&.lap || 1, lap].max
   end
 
   def new_live_times
@@ -147,8 +147,9 @@ class LiveEffortData
   end
 
   def effort_from_params
+    # ActiveRecord will find bib_number 12 if we use Effort.where(bib_number: '12*')
     return Effort.null_record if params[:bib_number].include?('*')
-    event.efforts.find_guaranteed(bib_number: params[:bib_number])
+    event.efforts.find_guaranteed(attributes: {bib_number: params[:bib_number]}, includes: {split_times: :split})
   end
 
   def indexed_split_times
@@ -160,9 +161,9 @@ class LiveEffortData
   end
 
   # Temporarily change good split_times to confirmed; this optimizes #create_split_times
-  # by preventing EffortDataStatusSetter from rechecking the status of good times
+  # by preventing Interactors::SetEffortStatus from rechecking the status of good times
   def confirmed_good_split_times
-    ordered_existing_split_times.dup.each { |st| st.data_status = 'confirmed' if st.good? }
+    ordered_existing_split_times.dup.each { |st| st.data_status = :confirmed if st.good? }
   end
 
   def create_split_times
@@ -170,10 +171,7 @@ class LiveEffortData
       split_time = new_split_time(kind)
       if split_time.time_from_start
         indexed_split_times[split_time.time_point] = split_time
-        EffortDataStatusSetter.new(effort: effort,
-                                   ordered_split_times: ordered_split_times,
-                                   lap_splits: effort_lap_splits,
-                                   times_container: times_container).set_data_status
+        Interactors::SetEffortStatus.perform(effort, ordered_split_times: ordered_split_times, lap_splits: effort_lap_splits, times_container: times_container)
       end
       self.new_split_times[kind] = split_time
     end
@@ -193,8 +191,7 @@ class LiveEffortData
   end
 
   def time_points
-    @time_points ||=
-        subject_lap_split.time_points.map { |time_point| [time_point.kind.downcase.to_sym, time_point] }.to_h
+    @time_points ||= subject_lap_split.time_points.map { |time_point| [time_point.kind.downcase.to_sym, time_point] }.to_h
   end
 
   def new_split_time(kind)
@@ -208,9 +205,7 @@ class LiveEffortData
 
   def time_from_start(kind)
     day_and_time = day_and_time(kind)
-    return nil unless day_and_time
-    effort.start_offset = day_and_time - event.start_time_in_home_zone if subject_lap_split.start?
-    day_and_time - event.start_time_in_home_zone - effort.start_offset # Evaluates to 0 if subject_lap_split.start?
+    day_and_time ? day_and_time - event.start_time_in_home_zone - effort.start_offset : nil
   end
 
   def day_and_time(kind)
@@ -219,10 +214,6 @@ class LiveEffortData
                                                                 time_point: time_points[kind],
                                                                 lap_splits: effort_lap_splits,
                                                                 split_times: ordered_split_times)
-  end
-
-  def start_offset_unchanged?
-    !effort.changed_attributes.key?('start_offset')
   end
 
   def param_with_kind(base, kind)

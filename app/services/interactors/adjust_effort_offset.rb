@@ -2,52 +2,67 @@ module Interactors
 
   # Some time data is entered based on military time, and in that case the absolute time
   # (as opposed to the elapsed time stored in the database) is more likely correct if the
-  # two conflict. If an effort.start_offset changes but we want existing absolute times
+  # two conflict. If an effort's start split_time is non-zero, we need to make it zero
+  # and change effort.start_offset to account for the shift. But if we want existing absolute times
   # (other than the start split_time) to remain the same, we need to counter the change in offset
   # by subtracting a like amount from time_from_start in all later split_times for that effort.
+
+  # This Class expects to receive an effort with included split_times and splits.
+  # The non-zero starting split_time cannot be persisted, as it would not pass validations.
 
   class AdjustEffortOffset
     include Interactors::Errors
 
-    def self.perform!(effort)
-      new(effort).perform!
+    def self.perform(effort)
+      new(effort).perform
     end
 
     def initialize(effort)
+      ArgsValidator.validate(subject: effort, subject_class: Effort, params: {})
       @effort = effort
+      @start_offset_shift = start_split_time&.time_from_start || 0
       @errors = []
       validate_setup
     end
 
-    def perform!
-      unless start_offset_shift.zero?
-        ActiveRecord::Base.transaction do
-          errors << resource_error_object(effort) unless effort.save
-          update_split_times unless errors.present?
-          raise ActiveRecord::Rollback if errors.present?
-        end
+    def perform
+      unless start_offset_shift.zero? || errors.present?
+        adjust_start_offset
+        split_times.each { |st| adjust_split_time(st) }
       end
       response
     end
 
     private
 
-    attr_reader :effort, :errors
+    attr_reader :effort, :start_offset_shift, :errors
 
-    def update_split_times
-      effort.split_times.each do |st|
-        next if errors.present? || st.split.start?
+    def adjust_start_offset
+      effort.start_offset += start_offset_shift
+    end
+
+    def adjust_split_time(st)
+      if st == start_split_time
+        st.time_from_start = 0
+      else
         st.time_from_start -= start_offset_shift
-        errors << resource_error_object(st) unless st.save
       end
     end
 
-    def start_offset_shift
-      @start_time_shift ||= effort.start_offset - effort.start_offset_was
+    def split_times
+      effort.split_times
+    end
+
+    def start_split_time
+      @start_split_time ||= split_times.find { |st| st.split.start? }
+    end
+
+    def non_start_split_times
+      split_times - [start_split_time]
     end
 
     def response
-      Interactors::Response.new(errors, message, {})
+      Interactors::Response.new(errors, message, [effort])
     end
 
     def message
@@ -65,7 +80,11 @@ module Interactors
     end
 
     def validate_setup
-      raise ArgumentError, "arguments for #{self.class} must include effort" unless effort && effort.is_a?(Effort)
+      errors << effort_offset_failure_error(effort) if start_split_time_invalid?
+    end
+
+    def start_split_time_invalid?
+      start_offset_shift.positive? && non_start_split_times.any? { |st| st.time_from_start < start_offset_shift }
     end
   end
 end

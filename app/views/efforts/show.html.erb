@@ -79,8 +79,8 @@
             <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),
                         method: :put,
                         class: "btn btn-sm btn-success" %>
-            <% if @effort_show.effort %>
-                <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
+            <% if @effort_show.missing_start_time? %>
+                <%= link_to 'Create start time', start_effort_path(@effort_show.effort),
                             method: :put,
                             class: "btn btn-sm btn-success" %>
             <% end %>

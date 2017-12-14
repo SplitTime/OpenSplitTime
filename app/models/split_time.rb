@@ -19,7 +19,7 @@ class SplitTime < ApplicationRecord
   # but instead is the distance from the start of the split, which corresponds to the
   # distance from start of the split_time lap.
   # For full distance from start taking laps into account, use LapSplit#distance_from_start.
-  delegate :distance_from_start, to: :split
+  delegate :distance_from_start, :start?, to: :split
 
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }

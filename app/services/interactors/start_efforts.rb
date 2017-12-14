@@ -1,6 +1,7 @@
 module Interactors
   class StartEfforts
     include Interactors::Errors
+    include ActionView::Helpers::TextHelper
 
     def self.perform!(efforts, current_user_id)
       new(efforts, current_user_id).perform!
@@ -26,6 +27,7 @@ module Interactors
     attr_reader :efforts, :current_user_id, :errors, :saved_split_times
 
     def start_effort(effort)
+      return if effort.split_times.any?(&:start?)
       split_time = SplitTime.new(effort_id: effort.id,
                                  time_point: TimePoint.new(1, start_split_id, SubSplit::IN_BITKEY),
                                  time_from_start: 0,
@@ -42,11 +44,7 @@ module Interactors
     end
 
     def response_message
-      errors.present? ? "No efforts were started" : "Started #{plural_efforts}"
-    end
-
-    def plural_efforts
-      saved_split_times.one? ? '1 effort' : "#{saved_split_times.size} efforts"
+      errors.present? ? "No efforts were started" : "Started #{pluralize(saved_split_times.size, 'effort')}"
     end
   end
 end

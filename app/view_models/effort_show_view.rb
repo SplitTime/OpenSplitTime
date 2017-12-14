@@ -10,6 +10,10 @@ class EffortShowView < EffortWithLapSplitRows
     proposed_effort unless proposed_effort == effort
   end
 
+  def missing_start_time?
+    loaded_effort.split_times.none?(&:start?)
+  end
+
   private
 
   def problem_efforts

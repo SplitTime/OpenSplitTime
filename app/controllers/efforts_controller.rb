@@ -78,10 +78,11 @@ class EffortsController < ApplicationController
 
   def start
     authorize @effort
+    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
 
-    response = Interactors::StartEfforts.perform!([@effort], current_user.id)
+    response = Interactors::StartEfforts.perform!([effort], current_user.id)
     set_flash_message(response)
-    redirect_to effort_path(@effort)
+    redirect_to effort_path(effort)
   end
 
   def edit_split_times

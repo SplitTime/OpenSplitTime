@@ -9,7 +9,7 @@ class PersonPresenter < BasePresenter
   end
 
   def efforts
-    @efforts ||= EffortPolicy::Scope.new(current_user, Effort).viewable.with_ordered_split_times
+    @efforts ||= EffortPolicy::Scope.new(current_user, Effort).viewable.includes(:event, split_times: :split)
                      .where(person: person).sort_by { |effort| -effort.start_time.to_i }
   end
 

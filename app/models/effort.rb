@@ -53,13 +53,10 @@ class Effort < ApplicationRecord
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(person_id: nil) }
   scope :started, -> { joins(:split_times).uniq }
-  scope :unstarted, -> { includes(:split_times).where(:split_times => {:id => nil}) }
+  scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :ready_to_start,
         -> { joins(:event).unstarted.checked_in.where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now) }
-  scope :with_ordered_split_times,
-        -> { eager_load(:split_times).includes(split_times: :split)
-                 .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
 
@@ -258,10 +255,6 @@ class Effort < ApplicationRecord
 
   def enriched
     event.efforts.ranked_with_finish_status.find { |e| e.id == id }
-  end
-
-  def with_ordered_split_times
-    Effort.where(id: id).with_ordered_split_times.first
   end
 
   # Methods related to stopped split_time

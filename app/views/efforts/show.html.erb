@@ -79,6 +79,11 @@
             <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),
                         method: :put,
                         class: "btn btn-sm btn-success" %>
+            <% if @effort_show.effort %>
+                <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
+                            method: :put,
+                            class: "btn btn-sm btn-success" %>
+            <% end %>
             <% if @effort_show.next_problem_effort %>
                 <%= link_to 'Find a problem effort', effort_path(@effort_show.next_problem_effort),
                             class: "btn btn-sm btn-success" %>

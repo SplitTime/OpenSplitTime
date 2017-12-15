@@ -12,14 +12,8 @@
   </tr>
   </thead>
   <tbody>
-  <% efforts.each do |effort| %>
-      <% if effort.bad? %>
-          <tr class="text-danger">
-      <% elsif effort.questionable? %>
-          <tr class="text-warning">
-      <% else %>
-          <tr>
-      <% end %>
+    <% efforts.each do |effort| %>
+      <tr class="<%= data_status_text_class[effort.data_status] %>">
       <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
       <td><%= effort.state_and_country %></td>
       <td class="text-right"><%= effort.finish_status %></td>

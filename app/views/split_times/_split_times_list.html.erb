@@ -17,13 +17,7 @@
   </thead>
   <tbody>
   <% @effort_show.lap_split_rows.each do |row| %>
-      <% if row.data_status == 'bad' %>
-          <tr class="text-danger">
-      <% elsif row.data_status == 'questionable' %>
-          <tr class="text-warning">
-      <% else %>
-          <tr>
-      <% end %>
+      <tr class="<%= data_status_text_class[row.data_status] %>">
       <% if row.finish? %>
           <td><strong><%= row.name %></strong></td>
           <td class="text-right"><strong><%= d(row.distance_from_start) %></strong></td>

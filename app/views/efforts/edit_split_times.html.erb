@@ -27,13 +27,7 @@
           </thead>
           <tbody>
           <% @presenter.lap_split_rows[1..-1].each do |row| %>
-              <% if row.data_status == 'bad' %>
-                  <tr class="text-danger">
-              <% elsif row.data_status == 'questionable' %>
-                  <tr class="text-warning">
-              <% else %>
-                  <tr>
-              <% end %>
+              <tr class="<%= data_status_text_class[row.data_status] %>">
               <td class="text-nowrap"><strong><%= "#{row.name}" %></strong></td>
               <% row.time_points.each do |time_point| %>
                   <%= f.fields_for :split_times, @presenter.guaranteed_split_time(time_point) do |builder| %>

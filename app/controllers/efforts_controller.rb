@@ -118,18 +118,6 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
-  def confirm_split_times
-    authorize @effort
-    split_times = @effort.split_times.where(id: params[:split_time_ids])
-    if params[:status] == 'confirmed'
-      split_times.confirmed!
-    else
-      split_times.good!
-    end
-    @effort.set_data_status
-    redirect_to effort_path(@effort)
-  end
-
   def set_data_status
     authorize @effort
     @effort.set_data_status

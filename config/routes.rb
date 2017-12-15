@@ -50,7 +50,6 @@ Rails.application.routes.draw do
       get :place
       get :show_photo
       patch :update_split_times
-      put :confirm_split_times
       put :edit_split_times
       put :set_data_status
       put :start

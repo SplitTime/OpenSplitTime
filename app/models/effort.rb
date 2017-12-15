@@ -23,9 +23,10 @@ class Effort < ApplicationRecord
   belongs_to :person
   has_many :split_times, dependent: :destroy
   has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
-  accepts_nested_attributes_for :split_times, :reject_if =>
-      lambda { |st| st[:time_from_start].blank? && st[:elapsed_time].blank? && st[:military_time].blank? && st[:day_and_time].blank? }
 
+  # Reject any new split_time hashes (having no :id) that don't have one of the attributes that will result in a time_from_start
+  accepts_nested_attributes_for :split_times, reject_if:
+      lambda { |hash| %w[id time_from_start elapsed_time military_time day_and_time].all? { |key| hash[key].blank? } }
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time

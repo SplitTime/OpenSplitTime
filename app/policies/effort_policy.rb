@@ -34,10 +34,6 @@ class EffortPolicy < ApplicationPolicy
     user.authorized_to_edit?(effort)
   end
 
-  def confirm_split_times?
-    user.authorized_to_edit?(effort)
-  end
-
   def set_data_status?
     user.authorized_to_edit?(effort)
   end

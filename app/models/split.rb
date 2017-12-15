@@ -17,9 +17,9 @@ class Split < ApplicationRecord
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :base_name, scope: :course_id, case_sensitive: false,
                           message: 'must be unique for a course'
-  validates_uniqueness_of :kind, scope: :course_id, if: :is_start?,
+  validates_uniqueness_of :kind, scope: :course_id, if: :start?,
                           message: 'only one start split permitted on a course'
-  validates_uniqueness_of :kind, scope: :course_id, if: :is_finish?,
+  validates_uniqueness_of :kind, scope: :course_id, if: :finish?,
                           message: 'only one finish split permitted on a course'
   validates_uniqueness_of :distance_from_start, scope: :course_id,
                           message: 'only one split of a given distance permitted on a course. Use sub_splits if needed.'
@@ -35,14 +35,6 @@ class Split < ApplicationRecord
 
   def self.null_record
     @null_record ||= Split.new(base_name: '[not found]', description: '', sub_split_bitmap: 0)
-  end
-
-  def is_start?
-    self.start?
-  end
-
-  def is_finish?
-    self.finish?
   end
 
   def to_s

@@ -18,26 +18,14 @@
   <tbody>
   <% @effort_show.lap_split_rows.each do |row| %>
       <tr class="<%= data_status_text_class[row.data_status] %>">
-      <% if row.finish? %>
-          <td><strong><%= row.name %></strong></td>
-          <td class="text-right"><strong><%= d(row.distance_from_start) %></strong></td>
-          <td class="text-center">
-            <strong><%= row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></strong></td>
-          <td class="text-center"><strong><%= composite_time_zzs(row) %></strong></td>
+          <td><%= strong_conditional row.name, row.finish?  %></td>
+          <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.finish? %></td>
+          <td class="text-center"><%= strong_conditional combined_days_times(row), row.finish? %></td>
+          <td class="text-center"><%= strong_text_conditional composite_time_zzs(row), composite_time(row), row.finish? %></td>
           <% unless @effort_show.simple? %>
-              <td class="text-center"><strong><%= time_format_xxhyymzzs(row.segment_time) %></strong></td>
-              <td class="text-right"><strong><%= time_format_minutes(@effort_show.total_time_in_aid) %></strong></td>
+              <td class="text-center"><%= strong_text_conditional time_format_xxhyymzzs(row.segment_time), time_format_xxhyym(row.segment_time), row.finish? %></td>
+              <td class="text-right"><%= strong_text_conditional time_format_minutes(@effort_show.total_time_in_aid), time_format_minutes(row.time_in_aid), row.finish? %></td>
           <% end %>
-      <% else %>
-          <td><%= row.name %></td>
-          <td class="text-right"><%= d(row.distance_from_start) %></td>
-          <td class="text-center"><%= row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>
-          <td class="text-center"><%= composite_time(row) %></td>
-          <% unless @effort_show.simple? %>
-              <td class="text-center"><%= time_format_xxhyym(row.segment_time) %></td>
-              <td class="text-right"><%= time_format_minutes(row.time_in_aid) %></td>
-          <% end %>
-      <% end %>
       <%= render 'split_times/actions_confirm_delete', lap_split_row: row %>
       </tr>
   <% end %>

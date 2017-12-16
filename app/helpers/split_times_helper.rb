@@ -1,47 +1,34 @@
 module SplitTimesHelper
 
-  def composite_time(lap_split_row)
-    time_array = []
-    (0...lap_split_row.times_from_start.size).each do |i|
-      time = lap_split_row.times_from_start[i]
-      data_status = lap_split_row.time_data_statuses[i]
-      if time
-        element = case data_status
-                    when 'bad'
-                      '[*' + time_format_xxhyym(time) + '*]'
-                    when 'questionable'
-                      '[' + time_format_xxhyym(time) + ']'
-                    else
-                      time_format_xxhyym(time)
-                  end
-      else
-        element = '--:--:--'
-      end
-      time_array << element
+  STATUS_INDICATORS = {bad: %w([* *]), questionable: %w([ ])}.with_indifferent_access
+
+  def composite_time(row)
+    time_array = row.times_from_start.zip(row.time_data_statuses).map do |time, status|
+      brackets = STATUS_INDICATORS.fetch(status, ['', ''])
+      time ? "#{brackets.first}#{time_format_xxhyym(time)}#{brackets.last}" : '--:--:--'
     end
+
     time_array.join(' / ')
   end
 
-  def composite_time_zzs(lap_split_row)
-    time_array = []
-    (0...lap_split_row.times_from_start.size).each do |i|
-      time = lap_split_row.times_from_start[i]
-      data_status = lap_split_row.time_data_statuses[i]
-      if time
-        element = case data_status
-                    when 'bad'
-                      '[*' + time_format_xxhyymzzs(time) + '*]'
-                    when 'questionable'
-                      '[' + time_format_xxhyymzzs(time) + ']'
-                    else
-                      time_format_xxhyymzzs(time)
-                  end
-      else
-        element = '--:--:--'
-      end
-      time_array << element
+  def composite_time_zzs(row)
+    time_array = row.times_from_start.zip(row.time_data_statuses).map do |time, status|
+      brackets = STATUS_INDICATORS.fetch(status, ['', ''])
+      time ? "#{brackets.first}#{time_format_xxhyymzzs(time)}#{brackets.last}" : '--:--:--'
     end
+
     time_array.join(' / ')
   end
 
+  def combined_days_times(row)
+    row.days_and_times.map { |time| day_time_format(time) }.join(' / ')
+  end
+
+  def combined_days_times_military(row)
+    row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ')
+  end
+
+  def combined_pacer(row)
+    row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ')
+  end
 end

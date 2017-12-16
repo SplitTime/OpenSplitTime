@@ -7,39 +7,22 @@
     <th class="text-center">Elapsed Time</th>
     <th class="text-center">Pacer In/Out</th>
     <th class="text-center">Dropped</th>
-    <th class="text-center">Remarks</th>
   </tr>
   </thead>
   <tbody>
   <% @presenter.lap_split_rows.each do |row| %>
       <tr class="<%= data_status_text_class[row.data_status] %>">
-      <% if row.finish? %>
-          <td><strong><%= row.name %></strong></td>
-          <td class="text-right"><strong><%= d(row.distance_from_start) %></strong></td>
-          <td class="text-center">
-            <strong><%= row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></strong>
+          <td><%= strong_conditional row.name, row.finish? %></td>
+          <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.finish? %></td>
+          <td class="text-center"><%= strong_conditional combined_days_times_military(row), row.finish? %></td>
+          <td class="text-center"><%= strong_text_conditional composite_time_zzs(row), composite_time(row), row.finish? %></td>
+          <td class="text-center"><%= strong_conditional combined_pacer(row), row.finish? %></td>
+          <td>
+            <% if row.stopped_here? %>
+              <button class="btn btn-warning btn-xs disabled">Dropped Here</button>
+            <% end %>
           </td>
-          <td class="text-center"><strong><%= composite_time_zzs(row) %></strong></td>
-          <td class="text-center"><strong><%= row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></strong></td>
-          <% if row.stopped_here? %>
-              <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
-          <% else %>
-              <td></td>
-          <% end %>
-      <% else %>
-          <td><%= row.name %></td>
-          <td class="text-right"><%= d(row.distance_from_start) %></td>
-          <td class="text-center"><%= row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ') %></td>
-          <td class="text-center"><%= composite_time(row) %></td>
-          <td class="text-center"><%= row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ') %></td>
-          <% if row.stopped_here? %>
-              <td><button class="btn btn-warning btn-xs disabled">Dropped Here</button></td>
-          <% else %>
-              <td></td>
-          <% end %>
-          <td class="text-center"><%= row.remarks %></td>
       <% end %>
       </tr>
-  <% end %>
   </tbody>
 </table>

@@ -88,7 +88,7 @@
                 <%= link_to 'Find a problem effort', effort_path(@effort_show.next_problem_effort),
                             class: "btn btn-sm btn-success" %>
             <% end %>
-            <% unless @effort_show.started? %>
+            <% unless @effort_show.has_start_time? %>
                 <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
                             method: :put,
                             class: "btn btn-sm btn-success" %>

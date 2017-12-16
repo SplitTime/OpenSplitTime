@@ -186,6 +186,10 @@ class Effort < ApplicationRecord
     split_times.present?
   end
 
+  def has_start_time?
+    split_times.find(&:start?).present?
+  end
+
   # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'
   # (the logic cannot return true for that type of event).
   def dropped?

@@ -15,7 +15,7 @@
           <td><%= strong_conditional row.name, row.finish? %></td>
           <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.finish? %></td>
           <td class="text-center"><%= strong_conditional combined_days_times_military(row), row.finish? %></td>
-          <td class="text-center"><%= strong_text_conditional composite_time_zzs(row), composite_time(row), row.finish? %></td>
+          <td class="text-center"><%= strong_conditional composite_time(row, with_seconds: row.finish?), row.finish? %></td>
           <td class="text-center"><%= strong_conditional combined_pacer(row), row.finish? %></td>
           <td>
             <% if row.stopped_here? %>

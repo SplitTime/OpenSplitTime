@@ -11,7 +11,11 @@ class EffortShowView < EffortWithLapSplitRows
   end
 
   def missing_start_time?
-    loaded_effort.split_times.none?(&:start?)
+    ordered_split_times.none?(&:start?)
+  end
+
+  def final_stop?
+    ordered_split_times.last.stopped_here?
   end
 
   private

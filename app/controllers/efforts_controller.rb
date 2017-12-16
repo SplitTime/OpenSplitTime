@@ -85,6 +85,16 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
+  def stop
+    authorize @effort
+    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+
+    stop_response = Interactors::UpdateEffortsStop.perform!(effort)
+    update_response = Interactors::UpdateEffortsStatus.perform!(effort)
+    set_flash_message(stop_response.merge(update_response))
+    redirect_to effort_path(effort)
+  end
+
   def edit_split_times
     authorize @effort
     effort = Effort.where(id: @effort.id).includes(:event, split_times: :split).first

@@ -92,7 +92,6 @@ class LiveTimeRowImporter
 
       unless row_success
         error_response = effort_data.response_row.merge(message: combined_response.message_with_error_report)
-        p error_response
         unsaved_rows << error_response
         raise ActiveRecord::Rollback
       end

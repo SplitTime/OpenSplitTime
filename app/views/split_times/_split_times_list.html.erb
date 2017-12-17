@@ -19,13 +19,13 @@
   <tbody>
   <% @effort_show.lap_split_rows.each do |row| %>
       <tr class="<%= data_status_text_class[row.data_status] %>">
-          <td><%= strong_conditional row.name, row.finish?  %></td>
-          <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.finish? %></td>
-          <td class="text-center"><%= strong_conditional combined_days_times(row), row.finish? %></td>
-          <td class="text-center"><%= strong_conditional composite_time(row, with_seconds: row.finish?), row.finish? %></td>
+          <td><%= strong_conditional row.name, row.done?  %></td>
+          <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
+          <td class="text-center"><%= strong_conditional combined_days_times(row), row.done? %></td>
+          <td class="text-center"><%= strong_conditional composite_time(row, with_seconds: row.finish?), row.done? %></td>
           <% unless @effort_show.simple? %>
-              <td class="text-center"><%= strong_text_conditional time_format_xxhyymzzs(row.segment_time), time_format_xxhyym(row.segment_time), row.finish? %></td>
-              <td class="text-right"><%= strong_text_conditional time_format_minutes(@effort_show.total_time_in_aid), time_format_minutes(row.time_in_aid), row.finish? %></td>
+              <td class="text-center"><%= strong_text_conditional time_format_xxhyymzzs(row.segment_time), time_format_xxhyym(row.segment_time), row.done? %></td>
+              <td class="text-right"><%= strong_text_conditional time_format_minutes(@effort_show.total_time_in_aid), time_format_minutes(row.time_in_aid), row.done? %></td>
           <% end %>
       <%= render 'split_times/actions_confirm_delete', lap_split_row: row %>
       </tr>

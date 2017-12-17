@@ -49,6 +49,10 @@ class LapSplitRow
     split_times.compact.any?(&:stopped_here)
   end
 
+  def done?
+    stopped_here? || finish?
+  end
+
   private
 
   attr_reader :lap_split, :split_times, :prior_split_time, :start_time

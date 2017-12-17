@@ -6,7 +6,6 @@
     <th class="text-center">Time of Day</th>
     <th class="text-center">Elapsed Time</th>
     <th class="text-center">Pacer In/Out</th>
-    <th class="text-center">Dropped</th>
   </tr>
   </thead>
   <tbody>
@@ -17,11 +16,6 @@
           <td class="text-center"><%= strong_conditional combined_days_times_military(row), row.finish? %></td>
           <td class="text-center"><%= strong_conditional composite_time(row, with_seconds: row.finish?), row.finish? %></td>
           <td class="text-center"><%= strong_conditional combined_pacer(row), row.finish? %></td>
-          <td>
-            <% if row.stopped_here? %>
-              <button class="btn btn-warning btn-xs disabled">Dropped Here</button>
-            <% end %>
-          </td>
       <% end %>
       </tr>
   </tbody>

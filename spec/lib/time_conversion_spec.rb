@@ -52,6 +52,11 @@ RSpec.describe TimeConversion do
       hms_elapsed = '12:30:40.55'
       expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(12.hours + 30.minutes + 40.55.seconds)
     end
+
+    it 'computes times properly when no hour component is present' do
+      hms_elapsed = '05:24.00'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq((5.minutes + 24.seconds).to_i)
+    end
   end
 
   describe '.seconds_to_hms' do

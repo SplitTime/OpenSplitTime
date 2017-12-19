@@ -34,6 +34,25 @@ namespace :pull_event do
     puts "\nProcessed #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')} in #{elapsed_time} seconds\n"
   end
 
+  desc 'Pulls and imports effort and time data from itsyourrace.com into an event'
+  task :its_your_race, [:event_id, :begin_host_id, :end_host_id] => :environment do |_, args|
+    start_time = Time.current
+    begin_id = args[:begin_host_id]&.to_i
+    end_id = args[:end_host_id]&.to_i
+    unless begin_id && end_id && begin_id&.positive? && end_id >= begin_id
+      abort("Aborted: combination of begin host id #{begin_id} and end host id #{end_id} is invalid")
+    end
+
+    puts "Processing #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')}\n"
+    (begin_id..end_id).each do |adilas_id|
+      source_uri = "https://bhtr.itsyourrace.com//Results/384/2014/5798/#{adilas_id}"
+      Rake::Task['pull_event:from_uri'].invoke(args[:event_id], source_uri, :its_your_race_times)
+      Rake::Task['pull_event:from_uri'].reenable
+    end
+    elapsed_time = (Time.current - start_time).round(2)
+    puts "\nProcessed #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')} in #{elapsed_time} seconds\n"
+  end
+
 
   desc 'Pulls and imports event data from the given source_uri into an event using a specified format'
   task :from_uri, [:event_id, :source_uri, :format, :user_id] => :environment do |_, args|

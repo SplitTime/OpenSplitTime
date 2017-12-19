@@ -5,8 +5,6 @@ class TimeConversion
   def self.hms_to_seconds(hms)
     return nil unless hms.present?
     components = hms.split(':')
-    return nil if components.size < 2
-    components.unshift('00') if components.size == 2
     milliseconds_present = components.last.include?('.')
     numeric_method = milliseconds_present ? :to_f : :to_i
     units = %w(hours minutes seconds)

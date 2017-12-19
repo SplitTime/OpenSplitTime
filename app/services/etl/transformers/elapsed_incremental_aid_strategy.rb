@@ -28,6 +28,8 @@ module ETL::Transformers
 
     def transform_time_data
       establish_split_order
+      nullify_blanks
+      add_missing_hours
       parse_times
       add_incremental_times
       calculate_times_from_start
@@ -39,20 +41,30 @@ module ETL::Transformers
       proto_record[:ordered_splits] = proto_record[:times].keys
     end
 
+    def nullify_blanks
+      proto_record[:times].transform_values! { |time_string| time_string.gsub(/\D/, '').blank? ? '' : time_string}
+    end
+
+    def add_missing_hours
+      proto_record[:times].transform_values! do |time_string|
+        time_string.split(':').size == 2 ? '00:' + time_string : time_string
+      end
+    end
+
     def parse_times
-      proto_record[:times] = proto_record[:times].transform_values { |time_string| TimeConversion.hms_to_seconds(time_string) }
+      proto_record[:integer_times] = proto_record[:times].transform_values { |time_string| TimeConversion.hms_to_seconds(time_string) }
     end
 
     def add_incremental_times
       base_names.each do |base_name|
-        in_time = proto_record[:times]["#{base_name} In"]
-        out_time = proto_record[:times]["#{base_name} Out"]
-        proto_record[:times]["#{base_name} Out"] = in_time + out_time if in_time && out_time
+        in_time = proto_record[:integer_times]["#{base_name} In"]
+        out_time = proto_record[:integer_times]["#{base_name} Out"]
+        proto_record[:integer_times]["#{base_name} Out"] = in_time + out_time if in_time && out_time
       end
     end
 
     def calculate_times_from_start
-      proto_record[:times_from_start] = proto_record[:ordered_splits].map { |split| proto_record[:times][split] }.unshift(0)
+      proto_record[:times_from_start] = proto_record[:ordered_splits].map { |split| proto_record[:integer_times][split] }.unshift(0)
     end
 
     def create_children

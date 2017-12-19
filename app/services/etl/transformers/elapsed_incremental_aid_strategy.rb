@@ -64,7 +64,8 @@ module ETL::Transformers
     end
 
     def calculate_times_from_start
-      proto_record[:times_from_start] = proto_record[:ordered_splits].map { |split| proto_record[:integer_times][split] }.unshift(0)
+      proto_record[:times_from_start] = proto_record[:ordered_splits].map { |split| proto_record[:integer_times][split] }
+      proto_record[:times_from_start].unshift(0) if proto_record[:times_from_start].any?(&:present?)
     end
 
     def create_children

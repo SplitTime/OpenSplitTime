@@ -90,5 +90,16 @@ RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
         expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 4 + [true])
       end
     end
+
+    context 'when time data has no time information' do
+      let(:times) { {'DF In' => '--', 'DF Out' => '--', 'FB In' => '--', 'FB Out' => '--',
+                     'Jaws In' => '--', 'Jaws Out' => '--', 'Finish' => '--'} }
+      let(:time_points) { event.required_time_points[0..3] + event.required_time_points[-1..-1] }
+
+      it 'returns an empty array of children' do
+        records = first_proto_record.children
+        expect(records).to be_empty
+      end
+    end
   end
 end

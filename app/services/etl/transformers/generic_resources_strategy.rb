@@ -1,5 +1,5 @@
 module ETL::Transformers
-  class GenericSplitsStrategy
+  class GenericResourcesStrategy
     include ETL::Errors
     attr_reader :errors
 
@@ -13,13 +13,8 @@ module ETL::Transformers
     def transform
       return if errors.present?
       proto_records.each do |proto_record|
-        proto_record.record_type = :split
-        proto_record.underscore_keys!
-        proto_record.map_keys!(SplitParameters.mapping)
-        proto_record.convert_split_distance!
-        proto_record.align_split_distance!(event.ordered_splits.map(&:distance_from_start))
-        proto_record.slice_permitted!
-        proto_record.merge_attributes!(global_attributes)
+        proto_record.transform_as(model)
+        proto_record.merge_attributes!(global_attributes(model))
       end
       proto_records
     end
@@ -28,12 +23,18 @@ module ETL::Transformers
 
     attr_reader :proto_records, :options
 
-    def global_attributes
-      {course_id: event.course.id}
+    def global_attributes(model)
+      attributes = {split: {course_id: event.course_id},
+                    effort: {event_id: event.id}}
+      attributes[model] || {}
     end
 
     def event
       options[:event]
+    end
+
+    def model
+      options[:model].to_sym
     end
 
     def validate_setup

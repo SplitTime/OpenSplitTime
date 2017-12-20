@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe ETL::Transformers::GenericSplitsStrategy do
-  subject { ETL::Transformers::GenericSplitsStrategy.new(parsed_structs, options) }
+RSpec.describe ETL::Transformers::GenericResourcesStrategy do
+  subject { ETL::Transformers::GenericResourcesStrategy.new(parsed_structs, options) }
 
   let(:course) { build_stubbed(:course, id: 10)}
   let(:event) { build_stubbed(:event, id: 1, course: course) }
-  let(:options) { {event: event} }
+  let(:options) { {event: event, model: :split} }
   let(:proto_records) { subject.transform }
   let(:parsed_structs) { [
       OpenStruct.new(name: 'Start', distance: 0, kind: 0, sub_split_bitmap: 1),

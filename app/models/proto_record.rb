@@ -28,7 +28,28 @@ class ProtoRecord
     joined_attributes.map { |attribute_name| [attribute_name, resource.send(attribute_name)] }.to_h
   end
 
+  def transform_as(model)
+    self.record_type = model
+    underscore_keys!
+    map_keys!(params_class.mapping)
+    slice_permitted!
+    model_transform = "transform_as_#{model}"
+    self.send(model_transform) rescue NoMethodError
+  end
+
   private
+
+  def transform_as_effort
+    normalize_gender!
+    normalize_country_code!
+    normalize_state_code!
+    normalize_birthdate!
+  end
+
+  def transform_as_split
+    convert_split_distance!
+    align_split_distance!(event.ordered_splits.map(&:distance_from_start))
+  end
 
   def validate_setup
     raise ArgumentError, 'children of a ProtoRecord must be ProtoRecords' unless children.all? { |child| child.is_a?(ProtoRecord) }

@@ -26,10 +26,12 @@ module ETL
         import_with(source_data, Extractors::AdilasBearHTMLStrategy, Transformers::AdilasBearStrategy, Loaders::InsertStrategy, options)
       when :its_your_race_times
         import_with(source_data, Extractors::ItsYourRaceHTMLStrategy, Transformers::ElapsedIncrementalAidStrategy, Loaders::InsertStrategy, options)
-      when :csv_efforts
-        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericEffortsStrategy, Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
       when :csv_splits
-        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericSplitsStrategy, Loaders::UpsertStrategy, default_unique_key(:split).merge(options))
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, {model: :split}.merge(default_unique_key(:split)).merge(options))
+      when :csv_efforts
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, {model: :effort}.merge(default_unique_key(:effort)).merge(options))
+      when :csv_efforts_times
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::EffortsWithTimesStrategy, Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
       when :jsonapi_batch
         import_with(source_data, Extractors::PassThroughStrategy, Transformers::JsonapiBatchStrategy, Loaders::UpsertStrategy, options)
       when :csv_live_times

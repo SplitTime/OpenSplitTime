@@ -33,8 +33,8 @@ module ETL::Transformers
       parse_times
       add_incremental_times
       calculate_times_from_start
-      create_children
-      set_stop
+      proto_record.create_split_time_children!(time_points)
+      proto_record.set_split_time_stop!
     end
 
     def establish_split_order
@@ -66,18 +66,6 @@ module ETL::Transformers
     def calculate_times_from_start
       proto_record[:times_from_start] = proto_record[:ordered_splits].map { |split| proto_record[:integer_times][split] }
       proto_record[:times_from_start].unshift(0) if proto_record[:times_from_start].any?(&:present?)
-    end
-
-    def create_children
-      split_time_attributes = time_points.zip(proto_record[:times_from_start]).map do |time_point, time|
-        {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
-      end
-      split_time_attributes.each { |attributes| proto_record.children << ProtoRecord.new(attributes) if attributes[:time_from_start] }
-    end
-
-    def set_stop
-      stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
-      (stopped_child_record[:stopped_here] = true) if stopped_child_record
     end
 
     def effort_start_time

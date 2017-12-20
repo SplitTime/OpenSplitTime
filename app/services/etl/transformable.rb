@@ -28,6 +28,13 @@ module ETL::Transformable
     self[:distance_from_start] = temp_split.distance_from_start
   end
 
+  def create_split_time_children!(time_points)
+    split_time_attributes = time_points.zip(self[:times_from_start]).map do |time_point, time|
+      {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
+    end
+    split_time_attributes.each { |attributes| self.children << ProtoRecord.new(attributes) if attributes[:time_from_start] }
+  end
+
   def map_keys!(map)
     map.each do |old_key, new_key|
       self[new_key] = delete_field(old_key) if attributes.respond_to?(old_key)
@@ -78,6 +85,11 @@ module ETL::Transformable
           subregion = country.subregions.coded(state_data) || country.subregions.named(state_data)
           subregion ? subregion.code : state_data
         end
+  end
+
+  def set_split_time_stop!
+    stopped_child_record = children.reverse.find { |pr| pr[:time_from_start].present? }
+    (stopped_child_record[:stopped_here] = true) if stopped_child_record
   end
 
   def slice_permitted!(permitted_params = nil)

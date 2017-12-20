@@ -39,7 +39,7 @@ module ETL::Transformers
     def transform_time_data!(proto_record)
       extract_times!(proto_record)
       transform_times!(proto_record)
-      create_children!(proto_record)
+      proto_record.create_split_time_children!(time_points)
       mark_for_destruction!(proto_record)
       set_stop!(proto_record)
     end
@@ -74,13 +74,6 @@ module ETL::Transformers
       end
       calcs[0] = nil
       calcs.push(finish_seconds)
-    end
-
-    def create_children!(proto_record)
-      split_time_attributes = time_points.zip(proto_record[:times_from_start]).map do |time_point, time|
-        {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
-      end
-      split_time_attributes.each { |attributes| proto_record.children << ProtoRecord.new(attributes) }
     end
 
     def mark_for_destruction!(proto_record)

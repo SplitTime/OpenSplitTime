@@ -32,8 +32,8 @@ module ETL::Transformers
       calculate_times_from_start
       fix_negative_times
       proto_record[:start_offset] = effort_start_time - event.start_time
-      create_children
-      set_stop
+      proto_record.create_split_time_children!(time_points)
+      proto_record.set_split_time_stop!
     end
 
     def sort_and_fill_times
@@ -51,18 +51,6 @@ module ETL::Transformers
     # Some times are off by a full day behind, resulting in negative (invalid) times from start
     def fix_negative_times
       proto_record[:times_from_start] = proto_record[:times_from_start].map { |time| time&.between?(-30.days, 0.second) ? time % (1.day / 1.second) : time }
-    end
-
-    def create_children
-      split_time_attributes = time_points.zip(proto_record[:times_from_start]).map do |time_point, time|
-        {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
-      end
-      split_time_attributes.each { |attributes| proto_record.children << ProtoRecord.new(attributes) if attributes[:time_from_start] }
-    end
-
-    def set_stop
-      stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
-      (stopped_child_record[:stopped_here] = true) if stopped_child_record
     end
 
     def effort_start_time

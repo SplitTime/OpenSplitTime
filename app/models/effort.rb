@@ -57,9 +57,15 @@ class Effort < ApplicationRecord
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :ready_to_start,
-        -> { joins(:event).unstarted.checked_in.where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now) }
+        -> { joins(:event).without_start_time.checked_in.where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now) }
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
+  scope :without_start_time, -> do
+    joins("LEFT JOIN split_times ON split_times.effort_id = efforts.id").
+        joins("LEFT OUTER JOIN splits ON split_times.split_id = splits.id AND splits.kind = 0").
+        group("efforts.id").
+        having("COUNT(splits.id) = 0")
+  end
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')

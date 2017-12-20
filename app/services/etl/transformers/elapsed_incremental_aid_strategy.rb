@@ -68,16 +68,8 @@ module ETL::Transformers
       proto_record[:times_from_start].unshift(0) if proto_record[:times_from_start].any?(&:present?)
     end
 
-    def effort_start_time
-      proto_record[:times_of_day].first
-    end
-
     def global_attributes
       {event_id: event.id}
-    end
-
-    def time_zone
-      event.home_time_zone
     end
 
     def time_points

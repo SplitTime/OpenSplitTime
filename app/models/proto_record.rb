@@ -28,25 +28,28 @@ class ProtoRecord
     joined_attributes.map { |attribute_name| [attribute_name, resource.send(attribute_name)] }.to_h
   end
 
-  def transform_as(model)
+  def transform_as(model, options = {})
     self.record_type = model
     underscore_keys!
     map_keys!(params_class.mapping)
-    slice_permitted!
     model_transform = "transform_as_#{model}"
-    self.send(model_transform) rescue NoMethodError
+    begin
+      self.send(model_transform, options) rescue NoMethodError
+    end
+    slice_permitted!
   end
 
   private
 
-  def transform_as_effort
+  def transform_as_effort(_)
     normalize_gender!
     normalize_country_code!
     normalize_state_code!
     normalize_birthdate!
   end
 
-  def transform_as_split
+  def transform_as_split(options)
+    event = options[:event]
     convert_split_distance!
     align_split_distance!(event.ordered_splits.map(&:distance_from_start))
   end

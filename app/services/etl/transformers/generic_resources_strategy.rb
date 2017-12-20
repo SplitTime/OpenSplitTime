@@ -13,7 +13,7 @@ module ETL::Transformers
     def transform
       return if errors.present?
       proto_records.each do |proto_record|
-        proto_record.transform_as(model)
+        proto_record.transform_as(model, event: event)
         proto_record.merge_attributes!(global_attributes(model))
       end
       proto_records

@@ -91,4 +91,34 @@ RSpec.describe ProtoRecord, type: :model do
       expect(pr.resource_attributes).to eq(bib_number: '101', absolute_time: '2017-10-31 14:00:00 +0000', sub_split_kind: 'In')
     end
   end
+
+  describe '#transform_as' do
+    let(:pr) { ProtoRecord.new(attributes) }
+    before { pr.transform_as(model, options) }
+
+    context 'for an effort' do
+      let(:model) { :effort }
+      let(:attributes) { {sex: 'M', country: 'United States', state: 'California', birthdate: '09/01/66'} }
+      let(:options) { nil }
+
+      it 'sets the record type and normalizes data' do
+        expect(pr.record_type).to eq(:effort)
+        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: Date.parse('1966-09-01')})
+      end
+    end
+
+    context 'for a split' do
+      let(:model) { :split }
+      let(:attributes) { {distance: distance} }
+      let(:options) { {event: event} }
+      let(:event) { build_stubbed(:event_with_standard_splits) }
+      let(:distance) { (baseline_distance + 5) / 1609.3 }
+      let(:baseline_distance) { event.ordered_splits.second.distance_from_start }
+
+      it 'sets the record type and normalizes data' do
+        expect(pr.record_type).to eq(:split)
+        expect(pr.to_h).to eq({distance_from_start: baseline_distance})
+      end
+    end
+  end
 end

@@ -18,7 +18,7 @@ class Api::V1::StagingController < ApiController
   # entirely or partially within the provided boundaries, but excludes splits on
   # the course of the provided event.
 
-  # GET /api/vi/staging/:staging_id/get_locations?west=&east=&south=&north=
+  # GET /api/vi/staging/:id/get_locations?west=&east=&south=&north=
   def get_locations
     splits = SplitLocationFinder.splits(params).where.not(course_id: @event.course_id)
     render json: splits, each_serializer: SplitLocationSerializer
@@ -28,9 +28,9 @@ class Api::V1::StagingController < ApiController
   # and associates the event with the course and organization,
   # all in a single transaction.
 
-  # POST /api/v1/staging/:staging_id/post_event_course_org
+  # POST /api/v1/staging/:id/post_event_course_org
   def post_event_course_org
-    event = params[:staging_id] == 'new' ? Event.new : Event.friendly.find(params[:staging_id])
+    event = params[:id] == 'new' ? Event.new : Event.friendly.find(params[:id])
     event_group = EventGroup.find_or_initialize_by(id: event.event_group_id)
     course = Course.find_or_initialize_by(id: params.dig(:course, :id))
     organization = Organization.find_or_initialize_by(id: params.dig(:organization, :id))
@@ -52,7 +52,7 @@ class Api::V1::StagingController < ApiController
   # Sets the concealed status of the event and related organization and people.
   # param :status must be set to 'public' or 'private'
 
-  # PATCH /api/v1/staging/:staging_id/update_event_visibility
+  # PATCH /api/v1/staging/:id/update_event_visibility
   def update_event_visibility
     if %w(public private).include?(params[:status])
       setter = EventConcealedSetter.new(event_group: @event.event_group, concealed: params[:status] == 'private')
@@ -66,7 +66,7 @@ class Api::V1::StagingController < ApiController
   private
 
   def set_event
-    @event = Event.friendly.find(params[:staging_id])
+    @event = Event.friendly.find(params[:id])
   end
 
   def authorize_event

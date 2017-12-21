@@ -10,7 +10,6 @@ require 'rails_helper'
 # t.boolean  "available_live",             default: false
 # t.string   "beacon_url"
 # t.integer  "laps_required"
-# t.uuid     "staging_id",                 default: "uuid_generate_v4()"
 # t.string   "slug",                                                      null: false
 # t.boolean  "auto_live_times",            default: false
 # t.string   "home_time_zone",                                            null: false

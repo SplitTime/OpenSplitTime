@@ -204,7 +204,7 @@ RSpec.describe Api::V1::StagingController do
     end
 
     def post_with_params(event_id, params)
-      post :post_event_course_org, params: {staging_id: event_id,
+      post :post_event_course_org, params: {id: event_id,
                                             event: params[:event],
                                             course: params[:course],
                                             organization: params[:organization]}
@@ -270,7 +270,7 @@ RSpec.describe Api::V1::StagingController do
       let(:status) { 'public' }
 
       it 'returns a successful 200 response' do
-        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
+        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
         expect(response).to be_success
       end
 
@@ -283,7 +283,7 @@ RSpec.describe Api::V1::StagingController do
           end
         end
 
-        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
+        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
 
         event_group.reload
         organization.reload
@@ -301,7 +301,7 @@ RSpec.describe Api::V1::StagingController do
       let(:status) { 'private' }
 
       it 'returns a successful 200 response' do
-        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
+        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
         expect(response).to be_success
       end
 
@@ -314,7 +314,7 @@ RSpec.describe Api::V1::StagingController do
           end
         end
 
-        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
+        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
 
         event_group.reload
         organization.reload
@@ -341,7 +341,7 @@ RSpec.describe Api::V1::StagingController do
         p_with_other_effort = event_1_efforts.first.person
         create(:effort, person: p_with_other_effort, event: visible_event)
 
-        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: status}
+        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
 
         event_group.reload
         organization.reload
@@ -362,14 +362,14 @@ RSpec.describe Api::V1::StagingController do
 
     context 'when params[:status] is not "public" or "private"' do
       it 'returns a bad request response' do
-        patch :update_event_visibility, params: {staging_id: event_1.to_param, status: 'random'}
+        patch :update_event_visibility, params: {id: event_1.to_param, status: 'random'}
         expect(response).to be_bad_request
       end
     end
 
     context 'when the event_id does not exist' do
       it 'returns a not found response' do
-        patch :update_event_visibility, params: {staging_id: 123, status: 'public'}
+        patch :update_event_visibility, params: {id: 123, status: 'public'}
         expect(response).to be_not_found
       end
     end

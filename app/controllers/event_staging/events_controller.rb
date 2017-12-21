@@ -12,7 +12,7 @@ class EventStaging::EventsController < EventStaging::BaseController
   private
 
   def set_event
-    return if params[:staging_id] == 'new'
-    @event = Event.friendly.find(params[:staging_id])
+    return if params[:id] == 'new'
+    @event = Event.friendly.find(params[:id])
   end
 end

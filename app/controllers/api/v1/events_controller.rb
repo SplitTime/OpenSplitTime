@@ -3,7 +3,7 @@ class Api::V1::EventsController < ApiController
   before_action :set_event, except: [:index, :create]
   before_action :authorize_event, except: [:index, :create]
 
-  # GET /api/v1/events/:staging_id
+  # GET /api/v1/events/:id
   def show
     render json: @event, include: prepared_params[:include], fields: prepared_params[:fields]
   end
@@ -21,7 +21,7 @@ class Api::V1::EventsController < ApiController
     end
   end
 
-  # PUT /api/v1/events/:staging_id
+  # PUT /api/v1/events/:id
   def update
     if @event.update(permitted_params)
       render json: @event
@@ -30,7 +30,7 @@ class Api::V1::EventsController < ApiController
     end
   end
 
-  # DELETE /api/v1/events/:staging_id
+  # DELETE /api/v1/events/:id
   def destroy
     if @event.destroy
       render json: @event
@@ -39,7 +39,7 @@ class Api::V1::EventsController < ApiController
     end
   end
 
-  # GET /api/v1/events/:staging_id/spread
+  # GET /api/v1/events/:id/spread
   def spread
     params[:display_style] ||= 'absolute'
     presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
@@ -113,7 +113,7 @@ class Api::V1::EventsController < ApiController
   # This endpoint should be replaced by EventsController#show
   # and live_entry.js should be updated to parse the jsonapi response.
 
-  #GET /api/v1/events/:staging_id/event_data
+  #GET /api/v1/events/:id/event_data
   def event_data
     if @event.available_live
       render partial: 'live/events/event_data.json.ruby'
@@ -209,7 +209,7 @@ class Api::V1::EventsController < ApiController
   private
 
   def set_event
-    @event = Event.friendly.find(params[:staging_id])
+    @event = Event.friendly.find(params[:id])
   end
 
   def authorize_event

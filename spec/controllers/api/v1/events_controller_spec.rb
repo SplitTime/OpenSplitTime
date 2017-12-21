@@ -44,19 +44,19 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#show' do
     it 'returns a successful 200 response' do
-      get :show, params: {staging_id: event.id}
+      get :show, params: {id: event.id}
       expect(response.status).to eq(200)
     end
 
     it 'returns data of a single event' do
-      get :show, params: {staging_id: event.id}
+      get :show, params: {id: event.id}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(event.id)
       expect(response.body).to be_jsonapi_response_for('events')
     end
 
     it 'returns an error if the event does not exist' do
-      get :show, params: {staging_id: 123}
+      get :show, params: {id: 123}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -87,19 +87,19 @@ RSpec.describe Api::V1::EventsController do
     let(:attributes) { {name: 'Updated Event Name'} }
 
     it 'returns a successful json response' do
-      put :update, params: {staging_id: event.id, data: {type: 'events', attributes: attributes}}
+      put :update, params: {id: event.id, data: {type: 'events', attributes: attributes}}
       expect(response.body).to be_jsonapi_response_for('events')
       expect(response.status).to eq(200)
     end
 
     it 'updates the specified fields' do
-      put :update, params: {staging_id: event.id, data: {type: 'events', attributes: attributes}}
+      put :update, params: {id: event.id, data: {type: 'events', attributes: attributes}}
       event.reload
       expect(event.name).to eq(attributes[:name])
     end
 
     it 'returns an error if the event does not exist' do
-      put :update, params: {staging_id: 123, data: {type: 'events', attributes: attributes}}
+      put :update, params: {id: 123, data: {type: 'events', attributes: attributes}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -108,19 +108,19 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#destroy' do
     it 'returns a successful json response' do
-      delete :destroy, params: {staging_id: event.id}
+      delete :destroy, params: {id: event.id}
       expect(response.status).to eq(200)
     end
 
     it 'destroys the event record' do
       test_event = event
       expect(Event.all.count).to eq(1)
-      delete :destroy, params: {staging_id: test_event.id}
+      delete :destroy, params: {id: test_event.id}
       expect(Event.all.count).to eq(0)
     end
 
     it 'returns an error if the event does not exist' do
-      delete :destroy, params: {staging_id: 123}
+      delete :destroy, params: {id: 123}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -133,19 +133,19 @@ RSpec.describe Api::V1::EventsController do
     end
 
     it 'returns a successful 200 response' do
-      get :spread, params: {staging_id: event.id}
+      get :spread, params: {id: event.id}
       expect(response.status).to eq(200)
     end
 
     it 'returns data of a single event' do
-      get :spread, params: {staging_id: event.id}
+      get :spread, params: {id: event.id}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['data']['id'].to_i).to eq(event.id)
       expect(response.body).to be_jsonapi_response_for('event_spread_displays')
     end
 
     it 'returns an error if the event does not exist' do
-      get :spread, params: {staging_id: 123}
+      get :spread, params: {id: 123}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/not found/)
       expect(response.status).to eq(404)
@@ -165,28 +165,28 @@ RSpec.describe Api::V1::EventsController do
       end
 
       it 'returns split data in the expected format' do
-        get :spread, params: {staging_id: event.id}
+        get :spread, params: {id: event.id}
         parsed_response = JSON.parse(response.body)
         expect(parsed_response.dig('data', 'attributes', 'splitHeaderData').map { |header| header['title'] })
             .to eq(Split.all.map(&:base_name))
       end
 
       it 'returns effort data in the expected format' do
-        get :spread, params: {staging_id: event.id}
+        get :spread, params: {id: event.id}
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') })
             .to eq([Effort.third.last_name, Effort.first.last_name, Effort.second.last_name])
       end
 
       it 'sorts effort data based on the sort param' do
-        get :spread, params: {staging_id: event.id, sort: 'last_name'}
+        get :spread, params: {id: event.id, sort: 'last_name'}
         parsed_response = JSON.parse(response.body)
         last_names = parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') }
         expect(last_names.sort).to eq(last_names)
       end
 
       it 'returns time data in the expected format' do
-        get :spread, params: {staging_id: event.id}
+        get :spread, params: {id: event.id}
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['included'].first.dig('attributes', 'displayStyle')).to eq('absolute')
         expect(parsed_response['included'].first.dig('attributes', 'absoluteTimes').flatten.map { |time| time.first(19) })
@@ -210,7 +210,7 @@ RSpec.describe Api::V1::EventsController do
     let(:unique_key) { nil }
 
     context 'when provided with a file' do
-      let(:request_params) { {staging_id: event.id, data_format: 'csv_efforts', file: file} }
+      let(:request_params) { {id: event.id, data_format: 'csv_efforts', file: file} }
       let(:file) { file_fixture('test_efforts.csv') } # Should work in Rails 5
 
       it 'returns a successful json response' do
@@ -240,7 +240,7 @@ RSpec.describe Api::V1::EventsController do
 
     context 'when provided with an array of live_time hashes and data_format: :jsonapi_batch' do
       let(:split_id) { splits.first.id }
-      let(:request_params) { {staging_id: event.id, data_format: 'jsonapi_batch', data: data, unique_key: unique_key} }
+      let(:request_params) { {id: event.id, data_format: 'jsonapi_batch', data: data, unique_key: unique_key} }
       let(:data) { [
           {type: 'live_time',
            attributes: {bibNumber: '101', splitId: split_id, subSplitKind: 'in', absoluteTime: absolute_time_in,
@@ -357,7 +357,7 @@ RSpec.describe Api::V1::EventsController do
     end
 
     context 'when provided with an adilas url and data_format adilas_bear_times' do
-      let(:request_params) { {staging_id: event.id, data_format: 'adilas_bear_times', data: source_data} }
+      let(:request_params) { {id: event.id, data_format: 'adilas_bear_times', data: source_data} }
       let(:source_data) { Net::HTTP.get(URI(url)) }
       let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
 
@@ -383,7 +383,7 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#trigger_live_times_push' do
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
-    let(:request_params) { {staging_id: event.id} }
+    let(:request_params) { {id: event.id} }
 
     it 'sends a push notification that includes the count of available times' do
       event.splits << splits

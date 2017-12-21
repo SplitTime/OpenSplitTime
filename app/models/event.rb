@@ -23,7 +23,6 @@ class Event < ApplicationRecord
 
   validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id
   validates_uniqueness_of :name, case_sensitive: false
-  validates_uniqueness_of :staging_id
   validate :home_time_zone_exists
   validate :course_is_consistent
 

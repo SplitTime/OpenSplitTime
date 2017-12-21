@@ -132,7 +132,7 @@ Rails.application.routes.draw do
       resources :courses, only: [:index, :show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
       resources :event_groups, only: [:index, :show, :create, :update, :destroy]
-      resources :events, only: [:index, :show, :create, :update, :destroy], param: :staging_id do
+      resources :events, only: [:index, :show, :create, :update, :destroy] do
         member do
           delete :remove_splits
           put :associate_splits
@@ -157,13 +157,13 @@ Rails.application.routes.draw do
       post 'auth', to: 'authentication#create'
       get 'staging/get_countries', to: 'staging#get_countries', as: :staging_get_countries
       get 'staging/get_time_zones', to: 'staging#get_time_zones', as: :staging_get_time_zones
-      get 'staging/:staging_id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
-      post 'staging/:staging_id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
-      patch 'staging/:staging_id/update_event_visibility', to: 'staging#update_event_visibility', as: :staging_update_event_visibility
+      get 'staging/:id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
+      post 'staging/:id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
+      patch 'staging/:id/update_event_visibility', to: 'staging#update_event_visibility', as: :staging_update_event_visibility
     end
   end
 
   namespace :event_staging do
-    get '/:staging_id/app', to: 'events#app', as: 'app'
+    get '/:id/app', to: 'events#app', as: 'app'
   end
 end

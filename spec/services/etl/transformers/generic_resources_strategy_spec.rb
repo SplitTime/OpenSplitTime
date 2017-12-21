@@ -3,21 +3,21 @@ require 'rails_helper'
 RSpec.describe ETL::Transformers::GenericResourcesStrategy do
   subject { ETL::Transformers::GenericResourcesStrategy.new(parsed_structs, options) }
 
-  let(:course) { build_stubbed(:course, id: 10)}
+  let(:course) { build_stubbed(:course, id: 10) }
   let(:event) { build_stubbed(:event, id: 1, course: course) }
-  let(:options) { {event: event, model: :split} }
   let(:proto_records) { subject.transform }
-  let(:parsed_structs) { [
-      OpenStruct.new(name: 'Start', distance: 0, kind: 0, sub_split_bitmap: 1),
-      OpenStruct.new(name: 'Aid 1', distance: 5, kind: 2, sub_split_bitmap: 65 ),
-      OpenStruct.new(name: 'Finish', distance: 10, kind: 1, sub_split_bitmap: 1)
-  ] }
+  let(:first_proto_record) { proto_records.first }
+  let(:second_proto_record) { proto_records.second }
+  let(:third_proto_record) { proto_records.third }
 
   describe '#transform' do
-    context 'when event is present and data is all valid' do
-      let(:first_proto_record) { proto_records.first }
-      let(:second_proto_record) { proto_records.second }
-      let(:third_proto_record) { proto_records.third }
+    context 'when transforming splits' do
+      let(:options) { {event: event, model: :split} }
+      let(:parsed_structs) { [
+          OpenStruct.new(name: 'Start', distance: 0, kind: 0, sub_split_bitmap: 1),
+          OpenStruct.new(name: 'Aid 1', distance: 5, kind: 2, sub_split_bitmap: 65),
+          OpenStruct.new(name: 'Finish', distance: 10, kind: 1, sub_split_bitmap: 1)
+      ] }
 
       it 'returns the same number of ProtoRecords as it is given OpenStructs' do
         expect(proto_records.size).to eq(3)
@@ -25,12 +25,12 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
       end
 
       it 'returns rows with effort headers transformed to match the database' do
-        expect(first_proto_record.to_h.keys.sort)
-            .to eq(%i(base_name course_id distance_from_start kind sub_split_bitmap))
+        expect(first_proto_record.to_h.keys)
+            .to match_array(%i(base_name course_id distance_from_start kind sub_split_bitmap))
       end
 
-      it 'assigns event.course.id to :course_id' do
-        expect(proto_records.map { |pr| pr[:course_id] }).to eq([event.course.id] * parsed_structs.size)
+      it 'assigns event.course_id to :course_id' do
+        expect(proto_records.map { |pr| pr[:course_id] }).to all eq(event.course_id)
       end
 
       it 'converts [:distance] from preferred units to meters' do
@@ -38,7 +38,33 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
       end
     end
 
+    context 'when transforming efforts' do
+      let(:effort_1) { temp_efforts.first }
+
+      let(:options) { {event: event, model: :effort} }
+      let(:temp_efforts) { build_stubbed_list(:effort, 2) }
+      let(:parsed_structs) { [
+        OpenStruct.new(first: effort_1.first_name, last: effort_1.last_name, sex: effort_1.gender, State: 'Colorado'),
+        OpenStruct.new(first: effort_1.first_name, last: effort_1.last_name, sex: effort_1.gender, State: 'New York')
+      ] }
+
+      it 'returns the same number of ProtoRecords as it is given OpenStructs' do
+        expect(proto_records.size).to eq(2)
+        expect(proto_records.all? { |row| row.is_a?(ProtoRecord) }).to eq(true)
+      end
+
+      it 'returns rows with effort headers transformed to match the database' do
+        expect(first_proto_record.to_h.keys)
+            .to match_array(%i(first_name last_name gender state_code country_code event_id))
+      end
+
+      it 'assigns event.id to :event_id' do
+        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+      end
+    end
+
     context 'when an event is not provided' do
+      let(:parsed_structs) { [] }
       let(:options) { {} }
 
       it 'returns nil and adds an error' do

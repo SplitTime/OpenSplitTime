@@ -32,26 +32,31 @@ class ProtoRecord
     self.record_type = model
     underscore_keys!
     map_keys!(params_class.mapping)
-    model_transform = "transform_as_#{model}"
-    begin
-      self.send(model_transform, options) rescue NoMethodError
-    end
-    slice_permitted!
+    run_specific_transforms(model, options)
   end
 
   private
 
-  def transform_as_effort(_)
-    normalize_gender!
-    normalize_country_code!
-    normalize_state_code!
-    normalize_birthdate!
-  end
-
-  def transform_as_split(options)
+  def run_specific_transforms(model, options)
     event = options[:event]
-    convert_split_distance!
-    align_split_distance!(event.ordered_splits.map(&:distance_from_start))
+
+    case model
+      when :effort
+        normalize_gender!
+        normalize_country_code!
+        normalize_state_code!
+        create_country_from_state!
+        normalize_birthdate!
+        self[:event_id] = event.id
+
+      when :split
+        convert_split_distance!
+        align_split_distance!(event.ordered_splits.map(&:distance_from_start))
+        self[:course_id] = event.course_id
+
+      else
+        return
+    end
   end
 
   def validate_setup

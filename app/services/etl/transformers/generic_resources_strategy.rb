@@ -14,7 +14,7 @@ module ETL::Transformers
       return if errors.present?
       proto_records.each do |proto_record|
         proto_record.transform_as(model, event: event)
-        proto_record.merge_attributes!(global_attributes(model))
+        proto_record.slice_permitted!
       end
       proto_records
     end
@@ -22,12 +22,6 @@ module ETL::Transformers
     private
 
     attr_reader :proto_records, :options
-
-    def global_attributes(model)
-      attributes = {split: {course_id: event.course_id},
-                    effort: {event_id: event.id}}
-      attributes[model] || {}
-    end
 
     def event
       options[:event]

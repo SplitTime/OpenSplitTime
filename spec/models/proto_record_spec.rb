@@ -95,29 +95,31 @@ RSpec.describe ProtoRecord, type: :model do
   describe '#transform_as' do
     let(:pr) { ProtoRecord.new(attributes) }
     before { pr.transform_as(model, options) }
+    before { FactoryGirl.reload }
 
     context 'for an effort' do
       let(:model) { :effort }
       let(:attributes) { {sex: 'M', country: 'United States', state: 'California', birthdate: '09/01/66'} }
-      let(:options) { nil }
+      let(:options) { {event: event} }
+      let(:event) { build_stubbed(:event) }
 
       it 'sets the record type and normalizes data' do
         expect(pr.record_type).to eq(:effort)
-        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: Date.parse('1966-09-01')})
+        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: Date.parse('1966-09-01'), event_id: event.id})
       end
     end
 
     context 'for a split' do
       let(:model) { :split }
       let(:attributes) { {distance: distance} }
-      let(:options) { {event: event} }
-      let(:event) { build_stubbed(:event_with_standard_splits) }
       let(:distance) { (baseline_distance + 5) / 1609.3 }
       let(:baseline_distance) { event.ordered_splits.second.distance_from_start }
+      let(:options) { {event: event} }
+      let(:event) { build_stubbed(:event_with_standard_splits) }
 
       it 'sets the record type and normalizes data' do
         expect(pr.record_type).to eq(:split)
-        expect(pr.to_h).to eq({distance_from_start: baseline_distance})
+        expect(pr.to_h[:distance_from_start]).to eq(baseline_distance)
       end
     end
   end

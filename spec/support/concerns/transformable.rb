@@ -82,6 +82,26 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
+  describe '#create_country_from_state!' do
+    context 'when a state code from the United States exists but no country_code exists' do
+      let(:attributes) { {state_code: 'NY'} }
+
+      it 'adds country_code for the US' do
+        subject.create_country_from_state!
+        expect(subject[:country_code]).to eq('US')
+      end
+    end
+
+    context 'when a state code from Canada exists but no country_code exists' do
+      let(:attributes) { {state_code: 'BC'} }
+
+      it 'adds country_code for the US' do
+        subject.create_country_from_state!
+        expect(subject[:country_code]).to eq('CA')
+      end
+    end
+  end
+
   describe '#map_keys!' do
     context 'when all keys are in the object' do
       let(:attributes) { {name: 'Joe Hardman', sex: 'male'} }

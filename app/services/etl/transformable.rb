@@ -28,11 +28,23 @@ module ETL::Transformable
     self[:distance_from_start] = temp_split.distance_from_start
   end
 
-  def create_split_time_children!(time_points)
+  def create_country_from_state!
+    return unless self[:state_code].present? && self[:country_code].blank?
+    attempt_codes = %w[US CA]
+    self[:country_code] = attempt_codes.find do |code|
+      Carmen::Country.coded(code).subregions.map(&:code).include?(self[:state_code])
+    end
+  end
+
+  def create_split_time_children!(time_points, options = {})
     split_time_attributes = time_points.zip(self[:times_from_start]).map do |time_point, time|
       {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
     end
-    split_time_attributes.each { |attributes| self.children << ProtoRecord.new(attributes) if attributes[:time_from_start] }
+    split_time_attributes.each do |attributes|
+      if attributes[:time_from_start] || options[:preserve_nils]
+        self.children << ProtoRecord.new(attributes)
+      end
+    end
   end
 
   def map_keys!(map)
@@ -85,6 +97,14 @@ module ETL::Transformable
           subregion = country.subregions.coded(state_data) || country.subregions.named(state_data)
           subregion ? subregion.code : state_data
         end
+  end
+
+  def set_effort_offset!(start_time_point)
+    start_child_record = children.find { |pr| [pr[:lap], pr[:split_id], pr[:sub_split_bitkey]] == [start_time_point.lap, start_time_point.split_id, start_time_point.bitkey] }
+    if start_child_record && start_child_record[:time_from_start]
+      self[:start_offset] = start_child_record[:time_from_start]
+      start_child_record[:time_from_start] = 0
+    end
   end
 
   def set_split_time_stop!

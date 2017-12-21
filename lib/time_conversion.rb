@@ -4,12 +4,14 @@ class TimeConversion
 
   def self.hms_to_seconds(hms)
     return nil unless hms.present?
-    components = hms.split(':')
+    negative = hms.start_with?('-')
+    components = hms.sub(/\A-/, '').split(':')
     milliseconds_present = components.last.include?('.')
     numeric_method = milliseconds_present ? :to_f : :to_i
     units = %w(hours minutes seconds)
-    components.zip(units).map { |component, unit| component.send(numeric_method).send(unit) }
+    seconds = components.zip(units).map { |component, unit| component.send(numeric_method).send(unit) }
         .sum.send(numeric_method)
+    negative ? -seconds : seconds
   end
 
   def self.seconds_to_hms(seconds_elapsed)

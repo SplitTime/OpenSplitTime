@@ -57,6 +57,16 @@ RSpec.describe TimeConversion do
       hms_elapsed = '05:24'
       expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq((5.hours + 24.minutes).to_i)
     end
+
+    it 'computes negative times properly with no hours component' do
+      hms_elapsed = '-00:30:00'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(-1800)
+    end
+
+    it 'computes negative times properly with an hours component' do
+      hms_elapsed = '-01:30:00'
+      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(-5400)
+    end
   end
 
   describe '.seconds_to_hms' do

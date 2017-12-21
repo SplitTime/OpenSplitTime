@@ -15,7 +15,8 @@ module ETL::Extractors
 
     def extract
       return if errors.present?
-      rows = SmarterCSV.process(file, row_sep: :auto, force_utf8: true, strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false, strings_as_keys: true)
+      rows = SmarterCSV.process(file, remove_empty_values: false, row_sep: :auto, force_utf8: true,
+                                strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false, strings_as_keys: true)
       rows.map { |row| OpenStruct.new(row) }
     end
 

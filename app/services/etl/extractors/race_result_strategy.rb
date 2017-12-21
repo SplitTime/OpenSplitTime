@@ -23,7 +23,7 @@ module ETL::Extractors
     end
 
     def attribute_pairs(data_row)
-      Hash[extract_headers.zip(data_row)]
+      extract_headers.zip(data_row).to_h
     end
 
     def extract_headers

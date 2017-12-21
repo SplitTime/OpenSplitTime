@@ -64,6 +64,11 @@ module ETL
        detail: {messages: ['This import requires that a split be provided']}}
     end
 
+    def missing_start_key_error
+      {title: 'Start key is missing',
+       details: {messages: ['This import requires a column titled "start" or "start offset" to indicate at what point split times begin']}}
+    end
+
     def missing_table_error
       {title: 'Table is missing',
        detail: {messages: ['A required table was not found in the provided source data']}}
@@ -73,10 +78,10 @@ module ETL
       {title: 'Source not recognized', detail: {messages: ["Importer does not recognize the source: #{source}"]}}
     end
 
-    def split_mismatch_error(event, time_points, time_keys)
+    def split_mismatch_error(event, time_points_size, time_keys_size)
       {title: 'Split mismatch error',
-       detail: {messages: ["#{event} expects #{time_points.size - 1} time points (excluding the start split) " +
-                               "but the json response contemplates #{time_keys.size} time points."]}}
+       detail: {messages: ["#{event} expects #{time_points_size} time points (including the start split) " +
+                               "but the provided data contemplates #{time_keys_size} time points."]}}
     end
   end
 end

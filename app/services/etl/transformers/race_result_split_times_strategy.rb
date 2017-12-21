@@ -39,7 +39,7 @@ module ETL::Transformers
     def transform_time_data!(proto_record)
       extract_times!(proto_record)
       transform_times!(proto_record)
-      proto_record.create_split_time_children!(time_points)
+      proto_record.create_split_time_children!(time_points, preserve_nils: true)
       mark_for_destruction!(proto_record)
       set_stop!(proto_record)
     end
@@ -112,8 +112,8 @@ module ETL::Transformers
 
     def validate_setup
       errors << missing_event_error unless event.present?
-      (errors << split_mismatch_error(event, time_points, time_keys)) if event.present? && !event.laps_unlimited? &&
-          (time_keys.size != time_points.size - 1)
+      (errors << split_mismatch_error(event, time_points.size, time_keys.size + 1)) if event.present? && !event.laps_unlimited? &&
+          (time_keys.size + 1 != time_points.size)
     end
   end
 end

@@ -50,7 +50,9 @@ class Api::V1::EventsController < ApiController
   end
 
   def import
-    if params[:file]
+    if params[:file].is_a?(ActionDispatch::Http::UploadedFile)
+      params[:data] = params[:file]
+    elsif params[:file]
       params[:data] = File.read(params[:file])
     end
 

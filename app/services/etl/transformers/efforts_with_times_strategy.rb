@@ -37,11 +37,19 @@ module ETL::Transformers
     end
 
     def transform_times(proto_record)
-      proto_record[:times_from_start] = proto_record[:times].map { |time_string| TimeConversion.hms_to_seconds(time_string) }
+      if time_format == 'elapsed'
+        proto_record[:times_from_start] = proto_record[:times].map { |time_string| TimeConversion.hms_to_seconds(time_string) }
+      elsif time_format == 'military'
+        proto_record[:military_times] = proto_record[:times]
+      end
     end
 
     def time_keys
       @time_keys ||= attribute_keys.elements_after(start_key).unshift(start_key)
+    end
+
+    def time_format
+      options[:time_format] || 'elapsed'
     end
 
     def event
@@ -52,8 +60,7 @@ module ETL::Transformers
       @time_points ||= event.required_time_points
     end
 
-    # Assume the first provided effort has a full set of times,
-    # so use the first as a template for all.
+    # Assume keys are identical for all structs, so use the first as a template for all.
 
     def attribute_keys
       @attribute_keys ||= proto_records.first.to_h.keys.map { |key| key.to_s.underscore.to_sym }

@@ -30,8 +30,8 @@ module ETL
         import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, {model: :split}.merge(default_unique_key(:split)).merge(options))
       when :csv_efforts
         import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, {model: :effort}.merge(default_unique_key(:effort)).merge(options))
-      when :csv_efforts_times
-        import_with(source_data, Extractors::CsvFileStrategy, Transformers::EffortsWithTimesStrategy, Loaders::UpsertStrategy, default_unique_key(:effort).merge(options))
+      when :csv_efforts_elapsed_times
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::EffortsWithTimesStrategy, Loaders::InsertStrategy, {time_format: :elapsed}.merge(default_unique_key(:effort)).merge(options))
       when :jsonapi_batch
         import_with(source_data, Extractors::PassThroughStrategy, Transformers::JsonapiBatchStrategy, Loaders::UpsertStrategy, options)
       when :csv_live_times

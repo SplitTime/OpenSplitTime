@@ -1,6 +1,6 @@
 class PlanDisplay
 
-  attr_reader :course
+  attr_reader :course, :expected_time, :expected_laps
 
   delegate :relevant_events, :relevant_efforts, :lap_split_rows, :total_segment_time, :total_time_in_aid,
            :relevant_efforts_count, :event_years_analyzed, to: :mock_effort
@@ -15,18 +15,20 @@ class PlanDisplay
     @event ||= course.events.visible.latest
   end
 
-  def start_time
-    @start_time ||= params[:start_time].present? ?
-        TimeConversion.components_to_absolute(params[:start_time]) :
-        default_start_time
+  def expected_time
+    TimeConversion.hms_to_seconds(cleaned_time)
   end
 
-  def expected_time
-    @expected_time = expected_time_from_param(params[:expected_time])
+  def cleaned_time
+    (params[:expected_time] || '').gsub(/[^\d:]/, '').split(':').first(2).join(':')
   end
 
   def expected_laps
-    params[:expected_laps].present? ? [params[:expected_laps].to_i, 20].min : 1
+    [[params[:expected_laps].to_i, 1].max, 20].min
+  end
+
+  def start_time
+    params[:start_time].present? ? TimeConversion.components_to_absolute(params[:start_time]) : default_start_time
   end
 
   def course_name
@@ -38,17 +40,12 @@ class PlanDisplay
   attr_reader :params
 
   def mock_effort
-    @mock_effort ||=
-        MockEffort.new(event: event, expected_time: expected_time,
-                       expected_laps: expected_laps, start_time: start_time) if expected_time && start_time
+    @mock_effort ||= MockEffort.new(event: event, expected_time: expected_time,
+                                    expected_laps: expected_laps, start_time: start_time) if expected_time && start_time
   end
 
   def lap_splits
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(expected_laps)
-  end
-
-  def expected_time_from_param(entered_time)
-    entered_time.present? ? TimeConversion.hms_to_seconds(entered_time.gsub(/[^\d:]/, '')) : nil
   end
 
   def default_start_time

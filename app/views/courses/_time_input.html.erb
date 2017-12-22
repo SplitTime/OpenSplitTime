@@ -23,7 +23,7 @@
           <div class="col-xs-2 plan-label">
             <div class="input-group">
               <%= text_field_tag :expected_laps,
-                                 params[:expected_laps],
+                                 @plan_display.expected_laps,
                                  placeholder: 'number of laps',
                                  autofocus: true,
                                  class: 'form-control input-sm' %>
@@ -40,7 +40,7 @@
           <span class="input-group-btn">
             <%= label :expected_time, 'Expected time' %>
             <%= text_field_tag :expected_time,
-                               params[:expected_time],
+                               @plan_display.cleaned_time,
                                placeholder: 'hh:mm',
                                autofocus: true,
                                class: 'form-control search-box input-sm' %>

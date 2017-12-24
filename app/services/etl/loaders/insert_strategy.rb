@@ -9,15 +9,7 @@ module ETL::Loaders
         record = build_record(proto_record)
 
         if record.save
-          child_records = proto_record.children.map { |child_proto_record| build_record(child_proto_record) }.compact
-          assign_child_records(record, child_records)
-
-          if child_records.all?(&:persisted?)
-            saved_records << record
-          else
-            record.validate # Adds child_record errors to record
-            invalid_records << record
-          end
+          saved_records << record
         else
           invalid_records << record
         end
@@ -28,19 +20,11 @@ module ETL::Loaders
 
     def build_record(proto_record)
       model_class = proto_record.record_class
-      attributes = proto_record.to_h
+      attributes = proto_record.parent_child_attributes
       record = model_class.new(attributes)
       add_audit_attributes(record)
       return nil if proto_record.record_action == :destroy
       record
-    end
-
-    def eliminate(record)
-      ignored_records << record
-    end
-
-    def assign_child_records(record, child_records)
-      child_records.each { |child_record| record.send(child_record.model_name.plural) << child_record }
     end
   end
 end

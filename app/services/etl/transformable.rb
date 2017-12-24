@@ -37,11 +37,15 @@ module ETL::Transformable
   end
 
   def create_split_time_children!(time_points, options = {})
-    split_time_attributes = time_points.zip(self[:times_from_start]).map do |time_point, time|
-      {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_from_start: time}
+    time_attribute = options[:time_attribute] || :time_from_start
+    times_array = time_attribute.to_s.sub('time', 'times').to_sym
+
+    split_time_attributes = self[times_array].zip(time_points).select(&:last).map do |time, time_point|
+      {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_attribute => time}
     end
+
     split_time_attributes.each do |attributes|
-      if attributes[:time_from_start] || options[:preserve_nils]
+      if attributes[time_attribute] || options[:preserve_nils]
         self.children << ProtoRecord.new(attributes)
       end
     end

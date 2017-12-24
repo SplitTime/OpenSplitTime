@@ -3,6 +3,8 @@ module ETL::Transformers
     include ETL::Errors
     attr_reader :errors
 
+    TIME_ATTRIBUTE_MAP = {elapsed: :time_from_start, military: :military_time}
+
     def initialize(parsed_structs, options)
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options
@@ -27,7 +29,7 @@ module ETL::Transformers
     def transform_time_data!(proto_record)
       extract_times(proto_record)
       transform_times(proto_record)
-      proto_record.create_split_time_children!(time_points)
+      proto_record.create_split_time_children!(time_points, time_attribute: time_attribute)
       proto_record.set_split_time_stop!
       proto_record.set_effort_offset!(time_points.first)
     end
@@ -37,9 +39,9 @@ module ETL::Transformers
     end
 
     def transform_times(proto_record)
-      if time_format == 'elapsed'
+      if time_format == :elapsed
         proto_record[:times_from_start] = proto_record[:times].map { |time_string| TimeConversion.hms_to_seconds(time_string) }
-      elsif time_format == 'military'
+      elsif time_format == :military
         proto_record[:military_times] = proto_record[:times]
       end
     end
@@ -49,15 +51,19 @@ module ETL::Transformers
     end
 
     def time_format
-      options[:time_format] || 'elapsed'
+      options[:time_format]&.to_sym || :elapsed
     end
 
     def event
       options[:event]
     end
 
+    def time_attribute
+      TIME_ATTRIBUTE_MAP[time_format]
+    end
+
     def time_points
-      @time_points ||= event.required_time_points
+      @time_points ||= event.required_time_points.presence || event.cycled_time_points
     end
 
     # Assume keys are identical for all structs, so use the first as a template for all.
@@ -72,9 +78,11 @@ module ETL::Transformers
 
     def validate_setup
       errors << missing_event_error unless event.present?
+      return unless proto_records.present?
       errors << missing_start_key_error unless start_key
       (errors << split_mismatch_error(event, time_points.size, time_keys.size)) if event.present? && !event.laps_unlimited? &&
           (time_keys.size != time_points.size)
+      errors << value_not_permitted_error(:time_format, TIME_ATTRIBUTE_MAP.keys, time_format) unless TIME_ATTRIBUTE_MAP.keys.include?(time_format)
     end
   end
 end

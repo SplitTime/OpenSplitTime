@@ -23,10 +23,10 @@ RSpec.describe SplitTime, kind: :model do
       let(:effort) { build_stubbed(:effort, event: event) }
 
       it 'is valid when created with an effort, a split, a sub_split, a time_from_start, and a lap' do
-        split_time = build_stubbed(:split_time)
+        split_time = build_stubbed(:split_time, effort: effort, split: start_split)
 
-        expect(split_time.effort_id).to be_present
-        expect(split_time.split_id).to be_present
+        expect(split_time.effort).to be_present
+        expect(split_time.split).to be_present
         expect(split_time.sub_split).to be_present
         expect(split_time.time_from_start).to be_present
         expect(split_time.lap).to be_present
@@ -36,13 +36,13 @@ RSpec.describe SplitTime, kind: :model do
       it 'is invalid without an effort' do
         split_time = build_stubbed(:split_time, effort: nil)
         expect(split_time).not_to be_valid
-        expect(split_time.errors[:effort_id]).to include("can't be blank")
+        expect(split_time.errors[:effort]).to include("can't be blank")
       end
 
       it 'is invalid without a split_id' do
         split_time = build_stubbed(:split_time, split: nil)
         expect(split_time).not_to be_valid
-        expect(split_time.errors[:split_id]).to include("can't be blank")
+        expect(split_time.errors[:split]).to include("can't be blank")
       end
 
       it 'is invalid without a sub_split_bitkey' do

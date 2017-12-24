@@ -83,5 +83,10 @@ module ETL
        detail: {messages: ["#{event} expects #{time_points_size} time points (including the start split) " +
                                "but the provided data contemplates #{time_keys_size} time points."]}}
     end
+
+    def value_not_permitted_error(option, permitted_values, provided_value)
+      {title: 'Argument value is not permitted',
+       detail: {messages: ["Values for #{option} must be within #{permitted_values.to_sentence} but #{provided_value} was provided"]}}
+    end
   end
 end

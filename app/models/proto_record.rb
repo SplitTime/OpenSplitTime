@@ -22,6 +22,10 @@ class ProtoRecord
     record_class && "#{record_class}Parameters".constantize
   end
 
+  def parent_child_attributes
+    to_h.merge(child_attributes)
+  end
+
   def resource_attributes(attribute_names = [])
     resource = record_class.new(to_h)
     joined_attributes = to_h.keys | (attribute_names || [])
@@ -57,6 +61,10 @@ class ProtoRecord
       else
         return
     end
+  end
+
+  def child_attributes
+    children.group_by(&:record_type).map { |record_type, proto_records| ["#{record_type.to_s.pluralize}_attributes", proto_records.map(&:to_h)] }.to_h
   end
 
   def validate_setup

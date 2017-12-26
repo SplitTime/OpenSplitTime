@@ -121,7 +121,6 @@ GEM
       rack (>= 1)
       rake (> 10, < 13)
       thor (~> 0.19)
-    descriptive_statistics (2.5.1)
     devise (4.3.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -441,7 +440,6 @@ DEPENDENCIES
   coffee-rails
   dalli
   derailed_benchmarks
-  descriptive_statistics
   devise
   devise-bootstrap-views
   dotenv-rails
@@ -498,7 +496,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 2.3.5p376
+   ruby 2.4.2p198
 
 BUNDLED WITH
-   1.15.4
+   1.16.1

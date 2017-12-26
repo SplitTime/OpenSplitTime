@@ -16,7 +16,7 @@ class EffortWithLapSplitRows
   end
 
   def total_time_in_aid
-    lap_split_rows.sum(&:time_in_aid)
+    lap_split_rows.map(&:time_in_aid).compact.sum
   end
 
   def not_analyzable?

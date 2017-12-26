@@ -17,7 +17,7 @@ module Results
     end
 
     def total_time
-      final_times.sum
+      final_times.sum if final_times.all?(&:present?)
     end
 
     private

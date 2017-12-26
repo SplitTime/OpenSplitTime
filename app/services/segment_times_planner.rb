@@ -35,7 +35,7 @@ class SegmentTimesPlanner
   attr_reader :expected_time, :lap_splits, :calc_model, :similar_effort_ids, :times_container, :serial_segments
 
   def complete_time_set?
-    serial_times.present? && serial_times.exclude?(nil)
+    serial_times.present? && serial_times.all?(&:present?)
   end
 
   def indexed_serial_times
@@ -51,7 +51,7 @@ class SegmentTimesPlanner
   end
 
   def total_segment_time
-    indexed_serial_times.sum
+    indexed_serial_times.values.compact.sum
   end
 
   def time_points

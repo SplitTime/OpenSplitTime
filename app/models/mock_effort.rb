@@ -31,7 +31,7 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def total_segment_time
-    lap_split_rows.sum(&:segment_time)
+    lap_split_rows.map(&:segment_time).compact.sum
   end
 
   def finish_time_from_start

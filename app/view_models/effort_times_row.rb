@@ -28,7 +28,7 @@ class EffortTimesRow
   end
 
   def total_segment_time
-    time_clusters.map(&:segment_time).sum
+    time_clusters.map(&:segment_time).compact.sum
   end
 
   private

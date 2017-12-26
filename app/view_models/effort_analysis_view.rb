@@ -9,7 +9,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def total_segment_time
-    analysis_rows.sum(&:segment_time)
+    analysis_rows.map(&:segment_time).compact.sum
   end
 
   def total_segment_time_typical
@@ -17,11 +17,11 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def total_segment_time_over_under
-    analysis_rows.sum(&:segment_time_over_under)
+    analysis_rows.map(&:segment_time_over_under).compact.sum
   end
 
   def total_time_in_aid
-    analysis_rows.sum(&:time_in_aid)
+    analysis_rows.map(&:time_in_aid).compact.sum
   end
 
   def total_time_in_aid_typical
@@ -29,7 +29,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def total_time_in_aid_over_under
-    analysis_rows.sum(&:time_in_aid_over_under)
+    analysis_rows.map(&:time_in_aid_over_under).compact.sum
   end
 
   def total_time_combined

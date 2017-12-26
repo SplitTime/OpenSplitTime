@@ -24,7 +24,7 @@ class PlanDisplay
   end
 
   def expected_laps
-    [[params[:expected_laps].to_i, 1].max, 20].min
+    params[:expected_laps].to_i.clamp(1, 20)
   end
 
   def start_time

@@ -47,7 +47,7 @@ class SegmentTimesPlanner
   end
 
   def pace_factor
-    @pace_factor ||= expected_time / total_segment_time
+    @pace_factor ||= expected_time.to_f / total_segment_time
   end
 
   def total_segment_time

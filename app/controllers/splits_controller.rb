@@ -11,10 +11,9 @@ class SplitsController < ApplicationController
         @splits = @splits.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
       end
       format.csv do
-        @builder = CsvBuilder.new(@splits)
-        csv_stream = render_to_string(partial: 'shared/index.csv.ruby')
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv")
+        builder = CsvBuilder.new(@splits)
+        send_data(builder.full_string, type: 'text/csv',
+                  filename: "#{@splits.first&.course}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
       end
     end
   end
@@ -75,10 +74,10 @@ class SplitsController < ApplicationController
 
   def destroy
     authorize @split
-    course = Course.friendly.find(@split.course)
+    course = @split.course
     @split.destroy
 
-    redirect_to course_path(course)
+    redirect_to course_path(course, display_style: :splits)
   end
 
   private

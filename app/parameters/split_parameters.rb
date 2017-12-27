@@ -8,7 +8,7 @@ class SplitParameters < BaseParameters
   end
 
   def self.csv_attributes
-    %w(base_name distance kind vert_gain vert_loss latitude longitude elevation sub_split_bitmap)
+    %w(base_name distance kind vert_gain vert_loss latitude longitude elevation sub_split_kinds)
   end
 
   def self.mapping

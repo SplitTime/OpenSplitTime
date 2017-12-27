@@ -20,10 +20,6 @@ class EventStageDisplay < EventWithEffortsPresenter
     filtered_efforts.total_entries
   end
 
-  def event_splits_count
-    associated_splits.size
-  end
-
   def course_splits
     course.splits
   end

@@ -1,0 +1,17 @@
+Base name,Distance,Kind,Vert gain,Vert loss,Latitude,Longitude,Elevation,Sub split kinds
+Start,0.0,start,0,0,37.812496,-107.665898,2840.0,In
+Cunningham,9.3,intermediate,3840,2770,37.793287,-107.577864,3163.0,In Out
+Maggie,15.4,intermediate,7000,4470,37.819294,-107.536118,3566.0,In Out
+Pole Creek,19.7,intermediate,7960,5810,37.803,-107.473333,3493.008,In Out
+Sherman,28.8,intermediate,9350,9020,37.90117,-107.430661,2926.0,In Out
+Burrows,32.6,intermediate,10120,9020,37.936895,-107.460836,3176.0,In Out
+Grouse,42.2,intermediate,14608,13208,37.917532,-107.558352,3292.0,In Out
+Engineer,48.7,intermediate,16918,14428,37.986291,-107.606862,3505.0,In Out
+Ouray,56.6,intermediate,17373,19003,38.027895,-107.672853,7740.0,In Out
+Governor,64.5,intermediate,20521,19051,37.981944,-107.761076,3292.0,In Out
+Kroger,67.8,intermediate,22841,19051,37.962031,-107.774634,3985.0,In Out
+Telluride,72.8,intermediate,22881,23441,37.935055,-107.807532,2679.0,In Out
+Chapman,82.1,intermediate,27381,26531,37.855906,-107.804246,3109.0,In Out
+Kamm Traverse,89.1,intermediate,30301,28981,37.792321,-107.792616,3231.0,In Out
+Putnam,94.7,intermediate,32726,30436,37.781603,-107.727327,3414.0,In Out
+Finish,100.5,finish,33050,33050,37.812496,-107.665898,2840.0,In

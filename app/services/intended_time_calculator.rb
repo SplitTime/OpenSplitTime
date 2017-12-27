@@ -90,6 +90,6 @@ class IntendedTimeCalculator
 
   def validate_setup
     raise ArgumentError, "military time must be provided as a string; got #{military_time} (#{military_time.class})" unless military_time.is_a?(String)
-    raise RangeError, "#{military_time} is out of range for #{self.class}" if seconds_into_day && ((seconds_into_day >= 1.day) | (seconds_into_day < 0))
+    raise RangeError, "#{military_time} is out of range for #{self.class}" if seconds_into_day && !seconds_into_day.between?(0, 1.day)
   end
 end

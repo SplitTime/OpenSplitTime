@@ -70,6 +70,12 @@ class ApplicationController < ActionController::Base
                              "#{child_records.first(20).map(&:to_s).join(', ')}"]}}
   end
 
+  def redirect_numeric_to_friendly(resource, id_param)
+    unless resource.friendly_id == id_param
+      redirect_to request.params.merge(id: resource.friendly_id), status: 301
+    end
+  end
+
   # This should really be a helper method
   def past_tense
     result = {

@@ -31,6 +31,8 @@ class Api::V1::StagingController < ApiController
   # POST /api/v1/staging/:id/post_event_course_org
   def post_event_course_org
     event = params[:id] == 'new' ? Event.new : Event.friendly.find(params[:id])
+
+    # This should change to params.dig(:event_group, :id) when the event-staging app supports event_groups
     event_group = EventGroup.find_or_initialize_by(id: event.event_group_id)
     course = Course.find_or_initialize_by(id: params.dig(:course, :id))
     organization = Organization.find_or_initialize_by(id: params.dig(:organization, :id))

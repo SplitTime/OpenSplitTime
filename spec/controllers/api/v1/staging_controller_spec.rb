@@ -50,24 +50,30 @@ RSpec.describe Api::V1::StagingController do
   end
 
   describe '#post_event_course_org' do
-    let(:event_group) { create(:event_group, organization: organization) }
     let(:event) { create(:event, event_group: event_group, course: course) }
+    let(:event_group) { create(:event_group, organization: organization) }
     let(:course) { create(:course) }
     let(:organization) { create(:organization) }
     let(:event_id) { event.to_param }
     let(:new_event_indicator) { 'new' }
-    let(:course_params) { course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
-    let(:organization_params) { organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
+
+    let(:existing_event_params) { event.attributes.with_indifferent_access.slice(*EventParameters.permitted) }
+    let(:existing_event_group_params) { event_group.attributes.with_indifferent_access.slice(*EventGroupParameters.permitted) }
+    let(:existing_course_params) { course.attributes.with_indifferent_access.slice(*CourseParameters.permitted) }
+    let(:existing_organization_params) { organization.attributes.with_indifferent_access.slice(*OrganizationParameters.permitted) }
+
+    let(:updated_event_params) { {} }
+    let(:updated_event_group_params) { {} }
+    let(:updated_course_params) { {} }
+    let(:updated_organization_params) { {} }
+
+    let(:params) { {event: event_params, event_group: event_group_params, course: course_params, organization: organization_params} }
 
     context 'when an existing event_id is provided' do
-      let(:params) { {event: event_params.merge(new_event_params),
-                      course: course_params.merge(new_course_params),
-                      organization: organization_params.merge(new_organization_params)} }
-      let(:event_params) { event.attributes.with_indifferent_access.slice(*EventParameters.permitted) }
-      let(:new_event_params) { {} }
-      let(:new_course_params) { {} }
-      let(:new_organization_params) { {} }
-
+      let(:event_params) { existing_event_params.merge(updated_event_params) }
+      let(:event_group_params) { existing_event_params.merge(updated_event_group_params) }
+      let(:course_params) { existing_course_params.merge(updated_course_params) }
+      let(:organization_params) { existing_organization_params.merge(updated_organization_params) }
 
       it 'returns a successful 200 response' do
         status, _ = post_with_params(event_id, params)
@@ -75,12 +81,12 @@ RSpec.describe Api::V1::StagingController do
         expect(status).to eq(200)
       end
 
-      context 'when updated attributes are provided for an existing organization' do
-        let(:new_organization_params) { {name: 'Updated Organization Name', description: 'Updated organization description'} }
+      context 'when attributes are provided for an existing organization' do
+        let(:updated_organization_params) { {name: 'Updated Organization Name', description: 'Updated organization description'} }
 
         it 'updates provided attributes for an existing organization' do
           status, resources = post_with_params(event_id, params)
-          expected_attributes = {organization: [:name, :description]}
+          expected_attributes = {organization: updated_organization_params}
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
@@ -88,11 +94,11 @@ RSpec.describe Api::V1::StagingController do
       end
 
       context 'when attributes are provided for an existing course' do
-        let(:new_course_params) { {name: 'Updated Course Name', description: 'Updated course description'} }
+        let(:updated_course_params) { {name: 'Updated Course Name', description: 'Updated course description'} }
 
         it 'updates provided attributes for an existing course' do
           status, resources = post_with_params(event_id, params)
-          expected_attributes = {course: [:name, :description]}
+          expected_attributes = {course: updated_course_params}
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
@@ -100,11 +106,25 @@ RSpec.describe Api::V1::StagingController do
       end
 
       context 'when attributes are provided for an existing event' do
-        let(:new_event_params) { {name: 'Updated Event Name', laps_required: 3} }
+        let(:updated_event_params) { {name: 'Updated Event Name', laps_required: 3} }
 
         it 'updates provided attributes for an existing event' do
           status, resources = post_with_params(event_id, params)
-          expected_attributes = {event: [:name, :laps_required]}
+          expected_attributes = {event: updated_event_params}
+
+          expect(status).to eq(200)
+          validate_response(resources, expected_attributes)
+        end
+      end
+
+      context 'when attributes are provided for an existing event_group' do
+        let(:new_event_group_params) { {name: 'Updated Event Group Name'} }
+
+        it 'updates provided attributes for an existing event' do
+          skip 'until front end is fully event_group aware'
+
+          status, resources = post_with_params(event_id, params)
+          expected_attributes = {event_group: updated_event_group_params}
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
@@ -114,27 +134,26 @@ RSpec.describe Api::V1::StagingController do
 
     context 'when a new event_id is provided' do
       let(:new_event_params) { {name: 'New Event Name', start_time: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Pacific Time (US & Canada)'} }
+      let(:new_event_group_params) { {name: 'New Event Name'} }
       let(:new_course_params) { {name: 'New Course Name', description: 'New course description.'} }
       let(:new_organization_params) { {name: 'New Organization Name'} }
       let(:event_id) { new_event_indicator }
 
-      it 'returns a successful 200 response' do
-        params = {event: new_event_params,
-                  course: new_course_params,
-                  organization: new_organization_params}
-        status, _ = post_with_params(event_id, params)
+      context 'when the event and event_group are new but the course and organization already exist' do
+        let(:event_params) { new_event_params }
+        let(:event_group_params) { new_event_group_params }
+        let(:course_params) { existing_course_params }
+        let(:organization_params) { existing_organization_params }
 
-        expect(status).to eq(200)
-      end
+        it 'returns a successful 200 response' do
+          status, _ = post_with_params(event_id, params)
 
-      context 'when the course and organization already exist' do
-        let(:params) { {event: new_event_params,
-                        course: course_params,
-                        organization: organization_params} }
+          expect(status).to eq(200)
+        end
 
-        it 'creates an event using provided parameters and associates existing course and organization' do
+        it 'creates an event and event_group using provided parameters and associates existing course and organization' do
           status, resources = post_with_params(event_id, params)
-          expected_attributes = {event: [:name, :laps_required]}
+          expected_attributes = {event: new_event_params, event_group: new_event_group_params}
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
@@ -142,14 +161,33 @@ RSpec.describe Api::V1::StagingController do
         end
       end
 
-      context 'when the course and organization are new' do
-        let(:params) { {event: new_event_params,
-                        course: new_course_params,
-                        organization: new_organization_params} }
+      context 'when the event is new but the event_group, course, and organization already exist' do
+        let(:event_params) { new_event_params }
+        let(:event_group_params) { existing_event_group_params }
+        let(:course_params) { existing_course_params }
+        let(:organization_params) { existing_organization_params }
 
-        it 'creates an event using provided parameters and associates newly created course and organization' do
+        it 'creates an event using provided parameters and associates existing event_group, course, and organization' do
+          skip 'until front end is fully event_group aware'
+
           status, resources = post_with_params(event_id, params)
-          expected_attributes = {event: [:name, :laps_required]}
+          expected_attributes = {event: new_event_params, event_group: existing_event_group_params}
+
+          expect(status).to eq(200)
+          validate_response(resources, expected_attributes)
+          expect(resources[:event].slug).to eq(new_event_params[:name].parameterize)
+        end
+      end
+
+      context 'when the event_group, course, and organization are new' do
+        let(:event_params) { new_event_params }
+        let(:event_group_params) { new_event_group_params }
+        let(:course_params) { new_course_params }
+        let(:organization_params) { new_organization_params }
+
+        it 'creates an event using provided parameters and associates newly created event_group, course, and organization' do
+          status, resources = post_with_params(event_id, params)
+          expected_attributes = {event: new_event_params, event_group: new_event_group_params}
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
@@ -158,9 +196,10 @@ RSpec.describe Api::V1::StagingController do
       end
 
       context 'when the event cannot be created' do
-        let(:params) { {event: new_event_params.except(:start_time),
-                        course: new_course_params,
-                        organization: new_organization_params} }
+        let(:event_params) { new_event_params.except(:start_time) }
+        let(:event_group_params) { new_event_group_params }
+        let(:course_params) { new_course_params }
+        let(:organization_params) { new_organization_params }
 
         it 'returns a bad request message with descriptive errors and provided data and creates no resources' do
           status, _, parsed_response = post_with_params(event_id, params)
@@ -173,9 +212,10 @@ RSpec.describe Api::V1::StagingController do
       end
 
       context 'when the course cannot be created' do
-        let(:params) { {event: new_event_params,
-                        course: new_course_params.except(:name),
-                        organization: new_organization_params} }
+        let(:event_params) { new_event_params }
+        let(:event_group_params) { new_event_group_params }
+        let(:course_params) { new_course_params.except(:name) }
+        let(:organization_params) { new_organization_params }
 
         it 'returns a bad request message with descriptive errors and provided data and creates no resources' do
           status, _, parsed_response = post_with_params(event_id, params)
@@ -188,9 +228,10 @@ RSpec.describe Api::V1::StagingController do
       end
 
       context 'when the organization cannot be created' do
-        let(:params) { {event: new_event_params,
-                        course: new_course_params,
-                        organization: new_organization_params.except(:name)} }
+        let(:event_params) { new_event_params }
+        let(:event_group_params) { new_event_group_params }
+        let(:course_params) { new_course_params }
+        let(:organization_params) { new_organization_params.except(:name) }
 
         it 'returns a bad request message with descriptive errors and provided data and creates no resources' do
           status, _, parsed_response = post_with_params(event_id, params)
@@ -234,9 +275,9 @@ RSpec.describe Api::V1::StagingController do
       expect(event_group.organization_id).to eq(organization.id)
 
       expected_attributes.each do |class_name, attributes|
-        attributes.each do |attribute|
-          expect(resources[class_name].attributes.with_indifferent_access[attribute])
-              .to eq(params[class_name][attribute])
+        attributes.each_key do |attribute_key|
+          expect(resources[class_name].attributes.with_indifferent_access[attribute_key])
+              .to eq(attributes[attribute_key])
         end
       end
     end

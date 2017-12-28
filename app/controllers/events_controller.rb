@@ -250,5 +250,8 @@ class EventsController < ApplicationController
 
   def set_event
     @event = Event.friendly.find(params[:id])
+    unless @event.friendly_id == params[:id]
+      redirect_to request.params.merge(id: @event.friendly_id), status: 301
+    end
   end
 end

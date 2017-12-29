@@ -144,10 +144,6 @@ class Effort < ApplicationRecord
     @last_reported_split_time ||= ordered_split_times.last
   end
 
-  def valid_split_times
-    @valid_split_times ||= split_times.valid_status.ordered
-  end
-
   def finish_split_times
     @finish_split_times ||= split_times.finish.ordered
   end
@@ -231,8 +227,13 @@ class Effort < ApplicationRecord
   end
 
   def ordered_split_times(lap_split = nil)
-    lap_split ? split_times.select { |st| st.lap_split == lap_split }.sort_by(&:bitkey) :
-        split_times.sort_by { |st| [st.lap, st.distance_from_start, st.bitkey] }
+    if lap_split
+      split_times.select { |st| st.lap_split == lap_split }.sort_by(&:bitkey)
+    elsif split_times.all?(&:imposed_order)
+      split_times.sort_by(&:imposed_order)
+    else
+      split_times.sort_by { |st| [st.lap, st.distance_from_start, st.bitkey] }
+    end
   end
 
   def ordered_splits

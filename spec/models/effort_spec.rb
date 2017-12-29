@@ -532,6 +532,7 @@ RSpec.describe Effort, type: :model do
   end
 
   describe '#ordered_split_times' do
+    subject { effort.ordered_split_times(lap_split) }
     let(:in_bitkey) { SubSplit::IN_BITKEY }
     let(:out_bitkey) { SubSplit::OUT_BITKEY }
     let(:effort) { build_stubbed(:effort, split_times: split_times) }
@@ -543,8 +544,24 @@ RSpec.describe Effort, type: :model do
     let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4].shuffle }
 
     context 'when called without a lap_split argument' do
+      let(:lap_split) { nil }
+
       it 'returns split_times in the correct order taking into account lap, split, and bitkey' do
-        expect(effort.ordered_split_times).to eq([split_time_1, split_time_2, split_time_3, split_time_4])
+        expect(subject).to eq([split_time_1, split_time_2, split_time_3, split_time_4])
+      end
+    end
+
+    context 'when called without a lap_split argument when imposed_order attributes are present' do
+      let(:lap_split) { nil }
+      before do
+        split_time_1.imposed_order = 4
+        split_time_2.imposed_order = 3
+        split_time_3.imposed_order = 2
+        split_time_4.imposed_order = 1
+      end
+
+      it 'returns split_times sorted by imposed_order' do
+        expect(subject).to eq([split_time_4, split_time_3, split_time_2, split_time_1])
       end
     end
 

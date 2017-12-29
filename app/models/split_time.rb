@@ -13,7 +13,7 @@ class SplitTime < ApplicationRecord
   belongs_to :split
   has_many :live_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
-  attr_accessor :live_time_id, :time_exists
+  attr_accessor :live_time_id, :time_exists, :imposed_order
 
   # distance_from_start is not the true distance from start in a multi-lap effort,
   # but instead is the distance from the start of the split, which corresponds to the
@@ -39,7 +39,7 @@ class SplitTime < ApplicationRecord
   scope :recorded_at_aid, -> (aid_station_id) { includes(split: :aid_stations).includes(:effort)
                                                     .where(aid_stations: {id: aid_station_id}) }
 
-  before_validation :delete_if_blank
+  before_validation :destroy_if_blank
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :time_from_start, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -130,7 +130,8 @@ class SplitTime < ApplicationRecord
   end
 
   def military_time=(military_time)
-    self.day_and_time = military_time.present? ?
+    @military_time = military_time
+    self.day_and_time = military_time.present? && effort.present? ?
         IntendedTimeCalculator.day_and_time(military_time: military_time, effort: effort, time_point: time_point) : nil
   end
 
@@ -180,7 +181,7 @@ class SplitTime < ApplicationRecord
     @effort_start_offset ||= effort.start_offset
   end
 
-  def delete_if_blank
-    self.delete if elapsed_time == ''
+  def destroy_if_blank
+    self.destroy if elapsed_time == ''
   end
 end

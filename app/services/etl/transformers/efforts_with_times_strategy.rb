@@ -42,7 +42,7 @@ module ETL::Transformers
       if time_format == :elapsed
         proto_record[:times_from_start] = proto_record[:times].map { |time_string| TimeConversion.hms_to_seconds(time_string) }
       elsif time_format == :military
-        proto_record[:military_times] = proto_record[:times]
+        proto_record[:military_times] = proto_record[:times].map(&:presence)
       end
     end
 

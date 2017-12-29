@@ -61,7 +61,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
       context 'for a complete proto_record' do
         let(:subject_proto_record) { proto_records.first }
 
-        it 'returns an array of children' do
+        it 'returns an array of children with imposed_order attributes' do
           time_points = event.required_time_points
           expect(children.size).to eq(8)
           expect(children.map(&:record_type)).to all eq(:split_time)
@@ -69,6 +69,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 10134, 10219, 38043, 38600, 69519, 70104, 80647])
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4, 5, 6, 7])
         end
       end
 
@@ -83,6 +84,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 34824, 35446, 60516, 60522, 70742])
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 3, 4, 5, 6, 7])
         end
       end
 
@@ -104,7 +106,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
       context 'for a proto_record with no finish time' do
         let(:subject_proto_record) { proto_records.fourth }
 
-        it 'returns an array of children correctly' do
+        it 'returns an array of children correctly and sets [:stopped_here] attribute' do
           time_points = event.required_time_points.first(3)
           expect(children.size).to eq(3)
           expect(children.map(&:record_type)).to all eq(:split_time)
@@ -112,9 +114,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 9983, 10064])
-        end
-
-        it 'sets [:stopped_here] attribute on the final child record' do
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2])
           expect(children.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true])
         end
       end
@@ -180,6 +180,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:military_time] }).to eq(%w(10:00:00 20:34:03 20:43:20 08:24:07))
           expect(children.map { |pr| pr[:time_from_start] }).to all be_nil
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3])
         end
       end
     end
@@ -223,6 +224,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 34824, 56342, 57600, 72000, 86399])
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4, 5])
         end
       end
 
@@ -238,6 +240,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 54000, 72061])
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 2, 5])
         end
       end
 
@@ -252,6 +255,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 31224, 49142, 50400, 64800])
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4])
         end
       end
     end

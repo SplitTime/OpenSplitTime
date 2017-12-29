@@ -14,7 +14,7 @@ class TimePredictor
     @segment = args[:segment]
     @effort = args[:effort]
     @lap_splits = args[:lap_splits] || effort.lap_splits
-    @completed_split_time = args[:completed_split_time] || effort.valid_split_times.last || mock_start_split_time
+    @completed_split_time = args[:completed_split_time] || last_valid_split_time || mock_start_split_time
     @similar_effort_ids = args[:similar_effort_ids]
     @times_container = args[:times_container] ||
         SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
@@ -70,6 +70,10 @@ class TimePredictor
 
   def completed_lap_split
     @completed_lap_split ||= lap_splits.find { |lap_split| lap_split.key == completed_split_time.lap_split_key }
+  end
+
+  def last_valid_split_time
+    @last_valid_split_time ||= effort.ordered_split_times.select { |st| st.time_from_start && st.valid_status? }.last
   end
 
   def mock_start_split_time

@@ -40,8 +40,10 @@ module ETL::Transformable
     time_attribute = options[:time_attribute] || :time_from_start
     times_array = time_attribute.to_s.sub('time', 'times').to_sym
 
-    split_time_attributes = self[times_array].zip(time_points).select(&:last).map do |time, time_point|
-      {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_attribute => time}
+    split_time_attributes = self[times_array].zip(time_points).select(&:last).map.with_index do |time_and_time_point, i|
+      time = time_and_time_point.first
+      time_point = time_and_time_point.last
+      {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_attribute => time, imposed_order: i}
     end
 
     split_time_attributes.each do |attributes|

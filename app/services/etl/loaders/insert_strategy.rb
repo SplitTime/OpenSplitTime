@@ -19,12 +19,22 @@ module ETL::Loaders
     private
 
     def build_record(proto_record)
-      model_class = proto_record.record_class
-      attributes = proto_record.parent_child_attributes
-      record = model_class.new(attributes)
-      add_audit_attributes(record)
       return nil if proto_record.record_action == :destroy
+      model_class = proto_record.record_class
+      attributes = proto_record.to_h
+      record = model_class.new(attributes)
+      assign_child_records(proto_record, record)
+      add_audit_attributes(record)
       record
+    end
+
+    def assign_child_records(proto_record, record)
+      proto_record.children.each do |child|
+        unless child.record_action == :destroy
+          child_record = record.send(child.record_type.to_s.pluralize).new
+          child_record.assign_attributes(child.to_h)
+        end
+      end
     end
   end
 end

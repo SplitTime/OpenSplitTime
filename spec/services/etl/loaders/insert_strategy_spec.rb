@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ETL::Loaders::InsertStrategy do
-  let!(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7) }
+  subject { ETL::Loaders::InsertStrategy.new(proto_records, options) }
+  let!(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7, start_time_in_home_zone: '2017-12-25 06:00:00') }
   let(:splits) { event.ordered_splits }
   let(:split_ids) { splits.map(&:id) }
 
@@ -59,12 +60,24 @@ RSpec.describe ETL::Loaders::InsertStrategy do
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, time_from_start: 5000.0)])
   ] }
 
+  let(:proto_with_military_times) { [
+      ProtoRecord.new(record_type: :effort, age: '40', gender: 'male', bib_number: '500',
+                      first_name: 'Johtest', last_name: 'Apptest', event_id: event.id,
+                      children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, military_time: '06:00:00'),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, military_time: '07:20:00'),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, military_time: '08:40:00'),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, military_time: '10:00:00'),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, military_time: '11:20:00'),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, military_time: '12:40:00'),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, military_time: '14:00:00')])
+  ] }
+
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
   let(:options) { {event: event, current_user_id: 111} }
 
   describe '#load_records' do
     context 'when all provided records are valid and none previously exists' do
-      subject { ETL::Loaders::InsertStrategy.new(valid_proto_records, options) }
+      let(:proto_records) { valid_proto_records }
 
       it 'assigns attributes and creates new records of the parent class' do
         efforts = Effort.all
@@ -94,7 +107,34 @@ RSpec.describe ETL::Loaders::InsertStrategy do
       end
     end
 
+    context 'when valid records have children with military_time attributes' do
+      let(:proto_records) { proto_with_military_times }
+      before { FactoryGirl.reload }
+
+      it 'assigns attributes and creates new records of the parent class' do
+        efforts = Effort.all
+        expect(efforts.size).to eq(0)
+        subject.load_records
+        expect(efforts.size).to eq(1)
+        expect(efforts.first.first_name).to eq('Johtest')
+        expect(efforts.first.bib_number).to eq(500)
+        expect(efforts.first.gender).to eq('male')
+        expect(efforts.first.event_id).to eq(event.id)
+      end
+
+      it 'assigns attributes and saves new child records' do
+        split_times = SplitTime.all
+        expect(split_times.size).to eq(0)
+        subject.load_records
+        expect(split_times.size).to eq(7)
+        expect(split_times.map(&:split_id)).to match_array(split_ids.cycle.first(split_times.size))
+        expect(split_times.map(&:time_from_start)).to match_array([0, 80.minutes, 160.minutes, 240.minutes, 320.minutes, 400.minutes, 480.minutes])
+        expect(split_times.map(&:effort_id)).to all eq(Effort.first.id)
+      end
+    end
+
     context 'when one or more records exists' do
+      let(:proto_records) { valid_proto_records }
       let(:first_child) { valid_proto_records.first.children.first }
       let(:second_child) { valid_proto_records.first.children.second }
 
@@ -105,8 +145,6 @@ RSpec.describe ETL::Loaders::InsertStrategy do
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
                bitkey: second_child[:sub_split_bitkey], time_from_start: 1000)
       end
-
-      subject { ETL::Loaders::InsertStrategy.new(valid_proto_records, options) }
 
       it 'rolls back the transaction' do
         expect(Effort.all.size).to eq(1)
@@ -126,7 +164,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
     end
 
     context 'when any provided record is invalid' do
-      subject { ETL::Loaders::InsertStrategy.new(all_proto_records, options) }
+      let(:proto_records) { all_proto_records }
 
       it 'does not create any records of the parent or child class' do
         subject.load_records
@@ -143,7 +181,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
     end
 
     context 'when a parent record is valid but at least one child record is invalid' do
-      subject { ETL::Loaders::InsertStrategy.new(proto_with_invalid_child, options) }
+      let(:proto_records) { proto_with_invalid_child }
 
       it 'does not create any records of the parent or child class' do
         subject.load_records

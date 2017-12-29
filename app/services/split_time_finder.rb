@@ -21,7 +21,7 @@ class SplitTimeFinder
     @time_point = args[:time_point]
     @effort = args[:effort]
     @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
-    @split_times = args[:split_times] || effort.ordered_split_times.to_a
+    @split_times = args[:split_times] || effort.ordered_split_times
     @valid = args[:valid].nil? ? true : args[:valid]
     validate_setup
   end
@@ -63,7 +63,7 @@ class SplitTimeFinder
   end
 
   def scoped_split_times
-    valid ? split_times.select(&:valid_status?) : split_times
+    valid ? split_times.select { |st| st.time_from_start && st.valid_status? } : split_times
   end
 
   def validate_setup

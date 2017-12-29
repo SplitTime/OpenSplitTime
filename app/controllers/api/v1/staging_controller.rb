@@ -37,10 +37,9 @@ class Api::V1::StagingController < ApiController
     course = Course.find_or_initialize_by(id: params.dig(:course, :id))
     organization = Organization.find_or_initialize_by(id: params.dig(:organization, :id))
 
-    skip_authorization if event.new_record? && course.new_record? && organization.new_record?
-    authorize event unless event.new_record?
-    authorize course unless course.new_record?
-    authorize organization unless organization.new_record?
+    persisted_resources = [event, event_group, course, organization].select(&:persisted?)
+    skip_authorization if persisted_resources.empty?
+    persisted_resources.each { |resource| authorize resource }
 
     setter = EventCourseOrgSetter.new(event: event, event_group: event_group, course: course, organization: organization, params: params)
     setter.set_resources

@@ -21,4 +21,8 @@ class EventGroupPolicy < ApplicationPolicy
   def live_entry?
     user.authorized_to_edit?(event_group)
   end
+
+  def post_event_course_org?
+    user.authorized_to_edit?(event_group)
+  end
 end

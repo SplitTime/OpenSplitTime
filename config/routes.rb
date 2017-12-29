@@ -72,7 +72,6 @@ Rails.application.routes.draw do
       get :stage
       post :create_people
       post :import_csv
-      post :import_efforts
       put :associate_people
       put :set_data_status
       put :set_stops

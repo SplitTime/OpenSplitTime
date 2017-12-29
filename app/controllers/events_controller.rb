@@ -134,21 +134,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def import_efforts
-    authorize @event
-    file_url = FileStore.public_upload('imports', params[:file], current_user.id)
-    if file_url
-      uid = session.id
-      background_channel = "progress_#{uid}"
-      ImportEffortsJob.perform_later(file_url, @event, current_user.id,
-                                     params.slice(:time_format, :with_times, :with_status), background_channel)
-    else
-      flash[:danger] = 'The import file is too large. Delete extraneous data and ' +
-          'if it is still too large, divide the file and import in multiple steps.'
-    end
-    redirect_to stage_event_path(@event)
-  end
-
   def spread
     @spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
     respond_to do |format|

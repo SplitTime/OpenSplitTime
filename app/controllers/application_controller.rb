@@ -83,7 +83,6 @@ class ApplicationController < ActionController::Base
         update: :updated,
         destroy: :destroyed,
         import_csv: :imported,
-        import_efforts: :imported,
     }.with_indifferent_access
     result.default = :saved
     result

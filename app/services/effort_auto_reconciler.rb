@@ -1,14 +1,14 @@
 class EffortAutoReconciler
 
-  def self.reconcile(args)
-    reconciler = new(args)
+  def self.reconcile(event, options = {})
+    reconciler = new(event, options)
     reconciler.reconcile
     reconciler.report
   end
 
-  def initialize(args)
-    @event = args[:event]
-    @background_channel = args[:background_channel]
+  def initialize(event, options = {})
+    @event = event
+    @background_channel = options[:background_channel]
     @unreconciled_efforts = event.unreconciled_efforts.to_a
   end
 

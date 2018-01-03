@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EffortAutoReconciler do
+  subject { EffortAutoReconciler.new(event, options: options) }
+
   let!(:event) { create(:event) }
   let!(:effort1) { create(:effort, :female, event: event, person: nil, first_name: 'Jen', last_name: 'Abelman', birthdate: '2004-10-10', state_code: 'CO', country_code: 'US') }
   let!(:effort2) { create(:effort, :male, event: event, person: nil, first_name: 'John', last_name: 'Benenson', birthdate: '2005-11-11', state_code: 'TX', country_code: 'US') }
@@ -16,8 +18,7 @@ RSpec.describe EffortAutoReconciler do
   let!(:person3) { create(:person, :male, first_name: 'Jimmy', last_name: 'Carlson') }
   let!(:person4) { create(:person, :female, first_name: 'Janey', last_name: 'Danielson') }
   let!(:person5) { create(:person, :male, first_name: 'Joel', last_name: 'Eagleston') }
-
-  subject { EffortAutoReconciler.new(event: event) }
+  let(:options) { nil }
 
   describe '#reconcile' do
     it 'creates new people for unmatched efforts' do

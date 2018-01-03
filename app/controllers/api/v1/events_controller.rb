@@ -82,7 +82,7 @@ class Api::V1::EventsController < ApiController
 
     efforts = importer.saved_records.select { |record| record.is_a?(Effort) }
     if efforts.present?
-      EffortsAutoReconcileJob.perform_later(event: @event)
+      EffortsAutoReconcileJob.perform_later(@event, current_user: User.current)
     end
 
     split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }

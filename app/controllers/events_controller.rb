@@ -126,7 +126,7 @@ class EventsController < ApplicationController
           splits = @event.splits.to_set
           importer.saved_records.each { |record| @event.splits << record unless splits.include?(record) }
         when :csv_efforts
-          EffortsAutoReconcileJob.perform_later(event: @event)
+          EffortsAutoReconcileJob.perform_later(@event, current_user: User.current)
         end
         format.html { flash[:success] = "Imported #{importer.saved_records.size} #{model}." and redirect_to :back }
         format.json { render json: importer.saved_records, status: :created }

@@ -2,11 +2,13 @@ class EventUpdateStartTimeJob < ActiveJob::Base
 
   queue_as :default
 
-  def perform(args)
-    ArgsValidator.validate(params: args,
-                           required: [:event, :new_start_time],
-                           exclusive: [:event, :new_start_time, :background_channel],
+  def perform(event, options)
+    ArgsValidator.validate(subject: event, subject_class: Event, params: options,
+                           required: [:new_start_time],
+                           exclusive: [:new_start_time, :background_channel, :current_user],
                            class: self)
-    Interactors::AdjustEventStartTime.perform!(args)
+    User.current ||= options.delete(:current_user)
+
+    Interactors::AdjustEventStartTime.perform!(event, options)
   end
 end

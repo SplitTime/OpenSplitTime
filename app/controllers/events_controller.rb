@@ -208,7 +208,8 @@ class EventsController < ApplicationController
     temp_event = Event.new(home_time_zone: @event.home_time_zone, start_time_in_home_zone: params[:event][:start_time_in_home_zone])
     new_start_time = temp_event.start_time.to_s
 
-    EventUpdateStartTimeJob.perform_later(event: @event, new_start_time: new_start_time, background_channel: background_channel)
+    EventUpdateStartTimeJob.perform_later(@event, new_start_time: new_start_time,
+                                          background_channel: background_channel, current_user: User.current)
     redirect_to stage_event_path(@event)
   end
 

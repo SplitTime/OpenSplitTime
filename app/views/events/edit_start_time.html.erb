@@ -1,3 +1,7 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Edit event start time - #{@event.name}" %>
+<% end %>
+
 <%= render 'shared/errors', obj: @event %>
 
 <div class="row header">

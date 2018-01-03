@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Interactors::AdjustEventStartTime do
-  let(:response) { Interactors::AdjustEventStartTime.perform!(event: event, new_start_time: new_start_time) }
+  let(:response) { Interactors::AdjustEventStartTime.perform!(event, new_start_time: new_start_time) }
 
   let(:event) { create(:event_with_standard_splits, splits_count: 3, laps_required: 1) }
   let(:efforts) { create_list(:effort, 2, event: event) }

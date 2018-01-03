@@ -3,14 +3,14 @@ module Interactors
     include Interactors::Errors
     include BackgroundNotifiable
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(event, options)
+      new(event, options).perform!
     end
 
-    def initialize(args)
-      @event = args[:event]
-      @new_start_time = args[:new_start_time]
-      @background_channel = args[:background_channel]
+    def initialize(event, options)
+      @event = event
+      @new_start_time = options[:new_start_time]
+      @background_channel = options[:background_channel]
       @errors = []
     end
 

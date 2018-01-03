@@ -1,4 +1,4 @@
-class EventUpdateStartTimeJob < ActiveJob::Base
+class EventUpdateStartTimeJob < ApplicationJob
 
   queue_as :default
 

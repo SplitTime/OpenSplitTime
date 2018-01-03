@@ -7,7 +7,7 @@ class BulkFollowerNotifier
 
   def notify
     id_hash.each do |person_id, split_time_ids|
-      NotifyFollowersJob.perform_now(person_id: person_id, split_time_ids: split_time_ids, multi_lap: multi_lap)
+      NotifyFollowersJob.perform_later(person_id: person_id, split_time_ids: split_time_ids, multi_lap: multi_lap)
     end
   end
 

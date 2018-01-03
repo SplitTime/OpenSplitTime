@@ -1,4 +1,4 @@
-class EffortsAutoReconcileJob < ActiveJob::Base
+class EffortsAutoReconcileJob < ApplicationJob
 
   queue_as :default
 

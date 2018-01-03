@@ -5,7 +5,8 @@ class EffortsAutoReconcileJob < ApplicationJob
   def perform(event, options = {})
     ArgsValidator.validate(subject: event, subject_class: Event, params: options,
                            exclusive: [:background_channel, :current_user], class: self)
-    User.current ||= options.delete(:current_user)
+    set_current_user(options)
+
     EffortAutoReconciler.reconcile(event, options)
   end
 end

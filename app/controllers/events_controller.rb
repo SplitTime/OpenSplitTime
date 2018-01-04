@@ -63,7 +63,35 @@ class EventsController < ApplicationController
     redirect_to events_path
   end
 
-# Event staging actions
+  # Special views with results
+
+  def spread
+    @spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
+    respond_to do |format|
+      format.html
+      format.csv do
+        authorize @event
+        csv_stream = render_to_string(partial: 'spread.csv.ruby')
+        send_data(csv_stream, type: 'text/csv',
+                  filename: "#{@event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
+      end
+    end
+  end
+
+  def podium
+    template = Results::FillTemplate.perform(event: @event, template_name: @event.podium_template)
+    @presenter = PodiumPresenter.new(@event, template)
+  end
+
+  def series
+    events = Event.find(params[:event_ids])
+    @presenter = EventSeriesPresenter.new(events, prepared_params)
+  rescue ActiveRecord::RecordNotFound => exception
+    flash[:danger] = "#{exception}"
+    redirect_to events_path
+  end
+
+  # Event staging actions
 
   def stage
     authorize @event
@@ -104,60 +132,6 @@ class EventsController < ApplicationController
     @event.efforts.destroy_all
     flash[:warning] = "All efforts deleted for #{@event.name}"
     redirect_to stage_event_path(@event)
-  end
-
-# Import actions
-
-  def import_csv
-    authorize @event
-
-    data_format = params[:data_format]&.to_sym
-    strict = params[:accept_records] != 'single'
-    importer = ETL::Importer.new(params[:file], data_format, event: @event, current_user_id: current_user.id, strict: strict)
-    importer.import
-
-    respond_to do |format|
-      if importer.errors.present?
-        format.html { flash[:warning] = "#{importer.errors}" and redirect_to :back }
-        format.json { render json: {errors: importer.errors}, status: :unprocessable_entity }
-      else
-        case data_format
-        when :csv_splits
-          splits = @event.splits.to_set
-          importer.saved_records.each { |record| @event.splits << record unless splits.include?(record) }
-        when :csv_efforts
-          EffortsAutoReconcileJob.perform_later(@event, current_user: User.current)
-        end
-        format.html { flash[:success] = "Imported #{importer.saved_records.size} #{model}." and redirect_to :back }
-        format.json { render json: importer.saved_records, status: :created }
-      end
-    end
-  end
-
-  def spread
-    @spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
-    respond_to do |format|
-      format.html
-      format.csv do
-        authorize @event
-        csv_stream = render_to_string(partial: 'spread.csv.ruby')
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
-      end
-    end
-  end
-
-  def podium
-    template = Results::FillTemplate.perform(event: @event, template_name: @event.podium_template)
-    @presenter = PodiumPresenter.new(@event, template)
-  end
-
-  def series
-    events = Event.find(params[:event_ids])
-    @presenter = EventSeriesPresenter.new(events, prepared_params)
-  rescue ActiveRecord::RecordNotFound => exception
-    flash[:danger] = "#{exception}"
-    redirect_to events_path
   end
 
 # Actions related to the event/effort/split_time relationship

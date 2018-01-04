@@ -81,8 +81,7 @@ class ApplicationController < ActionController::Base
     result = {
         create: :created,
         update: :updated,
-        destroy: :destroyed,
-        import_csv: :imported,
+        destroy: :destroyed
     }.with_indifferent_access
     result.default = :saved
     result

@@ -1,0 +1,61 @@
+module ETL
+  class PostImportProcess
+    include BackgroundNotifiable
+
+    def self.perform!(event, importer)
+      new(event, importer).perform!
+    end
+
+    def initialize(event, importer)
+      @event = event
+      @importer = importer
+    end
+
+    def perform!
+      process_splits
+      process_efforts
+      process_split_times
+      process_live_times
+    end
+
+    private
+
+    attr_reader :event, :importer
+
+    def process_splits
+      splits = importer.saved_records.select { |record| record.is_a?(Split) }
+      if splits.present?
+        existing_splits = event.splits.to_set
+        splits.each { |split| event.splits << split unless existing_splits.include?(split) }
+      end
+    end
+
+    def process_efforts
+      efforts = importer.saved_records.select { |record| record.is_a?(Effort) }
+      if efforts.present?
+        EffortsAutoReconcileJob.perform_later(event, current_user: User.current)
+      end
+    end
+
+    def process_split_times
+      split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
+      if split_times.present?
+        updated_efforts = event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
+        Interactors::UpdateEffortsStatus.perform!(updated_efforts)
+
+        if event.available_live?
+          notifier = BulkFollowerNotifier.new(split_times, multi_lap: event.multiple_laps?)
+          notifier.notify
+        end
+      end
+    end
+
+    def process_live_times
+      live_times = importer.saved_records.select { |record| record.is_a?(LiveTime) }
+      if live_times.present? && event.available_live
+        LiveTimeSplitTimeCreator.create(event: event, live_times: live_times) if event.auto_live_times?
+        report_live_times_available(event)
+      end
+    end
+  end
+end

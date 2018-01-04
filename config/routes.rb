@@ -71,7 +71,6 @@ Rails.application.routes.draw do
       get :spread
       get :stage
       post :create_people
-      post :import_csv
       put :associate_people
       put :set_data_status
       put :set_stops

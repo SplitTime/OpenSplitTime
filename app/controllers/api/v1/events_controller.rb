@@ -56,14 +56,13 @@ class Api::V1::EventsController < ApiController
       params[:data] = File.read(params[:file])
     end
 
+    data_format = params[:data_format]&.to_sym
     strict = params[:load_records] != 'single'
     unique_key = params[:unique_key].present? ? (params[:unique_key] + ['event_id']).uniq : nil
-    importer = ETL::Importer.new(params[:data],
-                                 params[:data_format]&.to_sym,
-                                 event: @event,
-                                 current_user_id: current_user.id,
-                                 strict: strict,
-                                 unique_key: unique_key)
+    options = {event: @event, current_user_id: current_user.id, strict: strict}
+    options[:unique_key] = unique_key if unique_key # unique_key: nil will tromp standard unique_keys
+
+    importer = ETL::Importer.new(params[:data], data_format, options)
     importer.import
 
     if strict
@@ -71,35 +70,15 @@ class Api::V1::EventsController < ApiController
         render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
                status: :unprocessable_entity
       else
+        ETL::PostImportProcess.perform!(@event, importer)
         render json: importer.saved_records, status: :created
       end
     else
+      ETL::PostImportProcess.perform!(@event, importer)
       render json: {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
                     destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
                     errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
              status: importer.saved_records.present? ? :created : :unprocessable_entity
-    end
-
-    efforts = importer.saved_records.select { |record| record.is_a?(Effort) }
-    if efforts.present?
-      EffortsAutoReconcileJob.perform_later(@event, current_user: User.current)
-    end
-
-    split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
-    if split_times.present?
-      updated_efforts = @event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
-      Interactors::UpdateEffortsStatus.perform!(updated_efforts)
-
-      if @event.available_live?
-        notifier = BulkFollowerNotifier.new(split_times, multi_lap: @event.multiple_laps?)
-        notifier.notify
-      end
-    end
-
-    live_times = importer.saved_records.select { |record| record.is_a?(LiveTime) }
-    if live_times.present? && @event.available_live
-      LiveTimeSplitTimeCreator.create(event: @event, live_times: live_times) if @event.auto_live_times?
-      report_live_times_available(@event)
     end
   end
 

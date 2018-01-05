@@ -129,8 +129,8 @@ class EventsController < ApplicationController
 
   def delete_all_efforts
     authorize @event
-    @event.efforts.destroy_all
-    flash[:warning] = "All efforts deleted for #{@event.name}"
+    response = Interactors::BulkDeleteEfforts.perform!(@event.efforts)
+    set_flash_message(response)
     redirect_to stage_event_path(@event)
   end
 

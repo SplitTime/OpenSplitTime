@@ -23,7 +23,7 @@ module ETL
     attr_reader :event, :importer
 
     def process_splits
-      splits = importer.saved_records.select { |record| record.is_a?(Split) }
+      splits = grouped_records[Split]
       if splits.present?
         existing_splits = event.splits.to_set
         splits.each { |split| event.splits << split unless existing_splits.include?(split) }
@@ -31,14 +31,14 @@ module ETL
     end
 
     def process_efforts
-      efforts = importer.saved_records.select { |record| record.is_a?(Effort) }
+      efforts = grouped_records[Effort]
       if efforts.present?
         EffortsAutoReconcileJob.perform_later(event, current_user: User.current)
       end
     end
 
     def process_split_times
-      split_times = importer.saved_records.select { |record| record.is_a?(SplitTime) }
+      split_times = grouped_records[SplitTime]
       if split_times.present?
         updated_efforts = event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
         Interactors::UpdateEffortsStatus.perform!(updated_efforts)
@@ -51,11 +51,15 @@ module ETL
     end
 
     def process_live_times
-      live_times = importer.saved_records.select { |record| record.is_a?(LiveTime) }
+      live_times = grouped_records[LiveTime]
       if live_times.present? && event.available_live
         LiveTimeSplitTimeCreator.create(event: event, live_times: live_times) if event.auto_live_times?
         report_live_times_available(event)
       end
+    end
+
+    def grouped_records
+      @grouped_records ||= importer.saved_records.group_by(&:class)
     end
   end
 end

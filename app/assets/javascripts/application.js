@@ -14,7 +14,7 @@
 //= require jquery-ui/effects/effect-highlight
 //= require rails-ujs
 //= require twitter/bootstrap
-// require turbolinks
+//= require turbolinks
 //= require gmaps/google
 //= require jquery-readyselector
 //= require jquery-fileupload/basic

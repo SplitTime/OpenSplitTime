@@ -468,7 +468,6 @@ DEPENDENCIES
   rails (>= 5.1, < 5.2)
   rails-erd
   rails_12factor
-  rb-fsevent
   record_tag_helper
   rest-client
   roo
@@ -496,7 +495,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 2.4.2p198
+   ruby 2.5.0p0
 
 BUNDLED WITH
    1.16.1

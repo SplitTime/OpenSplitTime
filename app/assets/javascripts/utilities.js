@@ -207,6 +207,11 @@
         switchery.init();
         datepicker.init();
         errorAlert.init();
+        $( document ).on('ajax:error', function(e) {
+            if ($.isArray(e.detail[0].errors)) {
+                $(document).trigger('global-error', [e.detail[0].errors]);
+            }
+        });
     };
 
     $(document).ready( init );

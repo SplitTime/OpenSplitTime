@@ -2,7 +2,7 @@
 $(function () {
 
     // Change the link's icon while the request is performing
-    $(document).on('click', 'a[data-remote]', function () {
+    $('a[data-remote]').on('click', function () {
         var icon = $(this).find('i');
         icon.data('old-class', icon.attr('class'));
         icon.attr('class', 'glyphicon glyphicon-refresh spin');

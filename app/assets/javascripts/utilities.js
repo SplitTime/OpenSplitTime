@@ -214,7 +214,7 @@
         });
     };
 
-    $(document).ready( init );
+    document.addEventListener("turbolinks:load", init );
     $(document).bind( 'vue-ready', init );
 
 })(jQuery);

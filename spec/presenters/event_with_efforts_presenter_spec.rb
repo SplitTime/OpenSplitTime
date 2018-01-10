@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EventWithEffortsPresenter do
-  before do
-    FactoryGirl.reload
-  end
+  before { FactoryBot.reload }
+
   subject { EventWithEffortsPresenter.new(event: event, params: prepared_params) }
   let(:event) { build_stubbed(:event_functional) }
   let(:prepared_params) { create(:prepared_params) }

@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SegmentTimesPlanner do
-  before do
-    FactoryGirl.reload
-  end
+  before { FactoryBot.reload }
 
   let(:test_event) { build_stubbed(:event_functional, laps_required: 2, splits_count: 4, efforts_count: 1) }
   let(:test_effort) { test_event.efforts.first }

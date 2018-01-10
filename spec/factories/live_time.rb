@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :live_time do
     event
     split

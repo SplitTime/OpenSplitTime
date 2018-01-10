@@ -106,12 +106,9 @@ module ToggleHelper
     glyphicon = args[:glyphicon]
     protocol = args[:protocol]
 
-    url = subscriptions_path
-    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
-        method: 'post',
-        remote: true,
-        class: "#{protocol}-sub btn btn-xs btn-default"
-    })
+    url = new_user_session_path(redirect_to: request.fullpath)
+    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url,
+                      class: "btn btn-xs btn-default")
   end
 
   def link_to_with_icon(icon_css, title, url, options = {})

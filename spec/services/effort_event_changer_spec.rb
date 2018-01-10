@@ -70,7 +70,7 @@ RSpec.describe EffortEventChanger do
       let(:new_splits) { [new_split_1, new_split_2, new_split_3, new_split_4] }
 
       before do
-        FactoryGirl.reload
+        FactoryBot.reload
         old_course.reload
         old_event.splits << old_course.splits
         new_event.splits << new_course.splits

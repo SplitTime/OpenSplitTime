@@ -149,9 +149,8 @@ RSpec.describe Effort, type: :model do
   end
 
   describe '#time_in_aid' do
-    before do
-      FactoryGirl.reload
-    end
+    before { FactoryBot.reload }
+
     it 'returns nil when the split has no split_times' do
       split_times = SplitTime.none
       effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')

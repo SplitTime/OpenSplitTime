@@ -28,9 +28,7 @@ RSpec.describe ExpectedLapFinder do
   end
 
   describe '#lap' do
-    before do
-      FactoryGirl.reload
-    end
+    before { FactoryBot.reload }
 
     it 'returns 1 when split_times are not present' do
       split_times = test_split_times.first(0)

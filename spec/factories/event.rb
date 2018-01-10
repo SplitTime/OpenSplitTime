@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :event do
     name { "#{rand(2010..2020)} #{FFaker::Company.name} #{rand(1..10) * 25}" }
     home_time_zone { ActiveSupport::TimeZone.all.shuffle.first.name }
@@ -54,7 +54,7 @@ FactoryGirl.define do
         efforts = build_stubbed_list(:effort, evaluator.efforts_count)
 
         efforts.each do |effort|
-          split_times = FactoryGirl.build_stubbed_list(:split_times_in_out, 20, effort: effort).first(time_points.size)
+          split_times = build_stubbed_list(:split_times_in_out, 20, effort: effort).first(time_points.size)
           split_times.each_with_index do |split_time, i|
             split_time.time_point = time_points[i]
           end
@@ -74,7 +74,7 @@ FactoryGirl.define do
   end
 end
 
-# FactoryGirl assumes relations are persisted if the resource in question has an id.
+# FactoryBot assumes relations are persisted if the resource in question has an id.
 # To build relations without persisting anything, the resource.id must be removed,
 # then the relationship created, then (optionally) the resource.id may be restored.
 # See http://stackoverflow.com/a/23283955/5961578

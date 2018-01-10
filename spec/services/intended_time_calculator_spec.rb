@@ -35,9 +35,7 @@ RSpec.describe IntendedTimeCalculator do
     let(:event) { build_stubbed(:event, start_time_in_home_zone: '2016-07-01 06:00:00') }
     let(:home_time_zone) { event.home_time_zone }
 
-    before do
-      FactoryGirl.reload
-    end
+    before { FactoryBot.reload }
 
     context 'in all cases' do
       let(:time_point) { TimePoint.new(1, 44, 1) }

@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe LiveEffortData do
-  before do
-    FactoryGirl.reload
-  end
+  before { FactoryBot.reload }
+
   let(:event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 5, efforts_count: 1, start_time_in_home_zone: '2017-08-01 06:00:00') }
   let(:effort) { event.efforts.first }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }

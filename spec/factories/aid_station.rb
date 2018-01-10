@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :aid_station do
     event
     split

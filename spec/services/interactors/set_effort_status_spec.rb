@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Interactors::SetEffortStatus do
-  before { FactoryGirl.reload }
+  before { FactoryBot.reload }
 
   subject { Interactors::SetEffortStatus.new(effort, times_container: times_container) }
   let(:event) { build_stubbed(:event_functional, efforts_count: 1) }

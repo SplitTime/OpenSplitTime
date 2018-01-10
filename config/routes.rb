@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get 'split_time_info', to: 'visitors#split_time_info'
   get 'split_time_info', to: 'visitors#split_time_info'
 
-  devise_for :users, :controllers => {registrations: 'registrations'}
+  devise_for :users, controllers: {passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions'}
 
   resources :users do
     member { get :people }

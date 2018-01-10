@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CsvBuilder do
   let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 2) }
-  before { FactoryGirl.reload }
+  before { FactoryBot.reload }
 
   describe '#initialize' do
     subject { CsvBuilder.new(splits) }

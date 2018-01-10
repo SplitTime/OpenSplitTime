@@ -66,7 +66,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'factory_girl_rails', require: false
+  gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'pry'
   gem 'selenium-webdriver'
@@ -75,7 +75,6 @@ end
 group :development, :test do
   gem 'active_record_query_trace'
   gem 'dotenv-rails'
-  gem 'rb-fsevent'
   gem 'rspec', '~> 3.4'
   gem 'rspec-rails', '~> 3.0'
   gem 'rubocop', '~> 0.49'

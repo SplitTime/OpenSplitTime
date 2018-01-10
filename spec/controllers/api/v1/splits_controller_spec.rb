@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::SplitsController do
   login_admin
 
-  let(:split) { FactoryGirl.create(:split, course: course) }
-  let(:course) { FactoryGirl.create(:course) }
+  let(:split) { create(:split, course: course) }
+  let(:course) { create(:course) }
 
   describe '#show' do
     it 'returns a successful 200 response' do

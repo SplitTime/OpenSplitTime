@@ -1,8 +1,5 @@
 const Utils = require('utils');
 const defaults = require('lodash/defaults');
-
-console.log(Util);
-
 const defaultConfig = {
     baseUrl: '/',
 };

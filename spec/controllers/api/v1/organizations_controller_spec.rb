@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::OrganizationsController do
   login_admin
 
-  let(:organization) { FactoryGirl.create(:organization) }
+  let(:organization) { create(:organization) }
 
   describe '#index' do
     before do

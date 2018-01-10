@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe Api::V1::EffortsController do
   login_admin
 
-  let(:effort) { FactoryGirl.create(:effort, event: event) }
-  let(:event) { FactoryGirl.create(:event, course: course) }
-  let(:course) { FactoryGirl.create(:course) }
+  let(:effort) { create(:effort, event: event) }
+  let(:event) { create(:event, course: course) }
+  let(:course) { create(:course) }
 
   describe '#show' do
     it 'returns a successful 200 response' do

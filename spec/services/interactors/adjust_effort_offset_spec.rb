@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Interactors::AdjustEffortOffset do
-  before { FactoryGirl.reload }
+  before { FactoryBot.reload }
 
   subject { Interactors::AdjustEffortOffset.new(effort) }
   let(:event) { build_stubbed(:event_functional, efforts_count: 1) }

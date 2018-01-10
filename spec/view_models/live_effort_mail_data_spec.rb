@@ -36,9 +36,7 @@ RSpec.describe LiveEffortMailData do
     let(:test_effort) { event.efforts.first }
     let(:split_times) { test_effort.split_times }
 
-    before do
-      FactoryGirl.reload
-    end
+    before { FactoryBot.reload }
 
     it 'returns a hash containing effort and split_time data' do
       effort = test_effort

@@ -28,9 +28,8 @@ RSpec.describe SplitTimeFinder do
   end
 
   describe '#prior' do
-    before do
-      FactoryGirl.reload
-    end
+    before { FactoryBot.reload }
+
     context 'if args[:valid] is not provided' do
       it 'when all split_times are valid, returns the split_time that comes immediately prior to the provided time_point' do
         lap_splits, time_points = lap_splits_and_time_points(test_event)
@@ -104,9 +103,7 @@ RSpec.describe SplitTimeFinder do
   end
 
   describe '#next' do
-    before do
-      FactoryGirl.reload
-    end
+    before { FactoryBot.reload }
 
     it 'when all split_times are valid, returns the split_time that comes immediately after the provided time_point' do
       lap_splits, time_points = lap_splits_and_time_points(test_event)
@@ -157,9 +154,7 @@ RSpec.describe SplitTimeFinder do
   end
 
   describe '#guaranteed_prior' do
-    before do
-      FactoryGirl.reload
-    end
+    before { FactoryBot.reload }
 
     it 'when split_time exists, returns split_time' do
       lap_splits, time_points = lap_splits_and_time_points(test_event)

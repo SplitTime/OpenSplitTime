@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe TimePredictor do
-  before do
-    FactoryGirl.reload
-  end
+  before { FactoryBot.reload }
 
   let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
   let(:vert_gain_factor) { SegmentTimeCalculator::VERT_GAIN_FACTOR }

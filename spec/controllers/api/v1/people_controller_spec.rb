@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::PeopleController do
   login_admin
 
-  let(:person) { FactoryGirl.create(:person) }
+  let(:person) { create(:person) }
 
   describe '#show' do
     it 'returns a successful 200 response' do

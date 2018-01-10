@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   it 'creates a valid user with name and email and password' do
-    user_attr = FactoryGirl.attributes_for(:user)
+    user_attr = FactoryBot.attributes_for(:user)
     user = User.create!(user_attr)
 
     expect(User.all.size).to(equal(1))

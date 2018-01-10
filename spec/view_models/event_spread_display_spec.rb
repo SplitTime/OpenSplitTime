@@ -12,12 +12,9 @@ RSpec.describe EventSpreadDisplay do
 
   describe '#split_header_names' do
     context 'when display_style is ampm' do
+      before { FactoryBot.reload }
+
       let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
-
-      before do
-        FactoryGirl.reload
-      end
-
       let(:split_times_100) { build_stubbed_list(:split_times_hardrock_0, 10, effort_id: 100) }
       let(:split_times_101) { build_stubbed_list(:split_times_hardrock_1, 10, effort_id: 101) }
       let(:split_times_102) { build_stubbed_list(:split_times_hardrock_2, 10, effort_id: 102) }

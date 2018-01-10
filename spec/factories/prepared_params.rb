@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :prepared_params, class: PreparedParams do
     skip_create
 

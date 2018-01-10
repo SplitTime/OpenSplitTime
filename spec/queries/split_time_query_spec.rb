@@ -7,7 +7,7 @@ RSpec.describe SplitTimeQuery do
 
   describe '.typical_segment_time' do
     before do
-      FactoryGirl.reload
+      FactoryBot.reload
       course = create(:course)
       splits = create_list(:splits_hardrock_ccw, 3, course: course)
       event = create(:event, course: course)

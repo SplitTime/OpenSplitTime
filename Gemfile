@@ -66,7 +66,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'factory_girl_rails', require: false
+  gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'pry'
   gem 'selenium-webdriver'

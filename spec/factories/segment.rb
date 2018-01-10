@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :segment, class: Segment do
     skip_create
     transient do

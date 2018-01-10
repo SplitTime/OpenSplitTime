@@ -15,12 +15,12 @@ require 'rails_helper'
 RSpec.describe AidStation, type: :model do
   subject { build_stubbed(:aid_station, split: split, event: event) }
 
-  let(:course) { FactoryGirl.build_stubbed(:course) }
-  let(:event) { FactoryGirl.build_stubbed(:event, course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
-  let(:split) { FactoryGirl.build_stubbed(:split, course: course, base_name: 'Hopeless Outbound', distance_from_start: 50000) }
-  let(:wrong_course) { FactoryGirl.build_stubbed(:course, name: 'Wrong Course') }
-  let(:wrong_event) { FactoryGirl.build_stubbed(:event, course: wrong_course, name: 'Wrong Event', start_time: '2012-08-08 05:00:00') }
-  let(:wrong_split) { FactoryGirl.build_stubbed(:split, course: wrong_course, base_name: 'Wrong Outbound', distance_from_start: 50000) }
+  let(:course) { build_stubbed(:course) }
+  let(:event) { build_stubbed(:event, course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
+  let(:split) { build_stubbed(:split, course: course, base_name: 'Hopeless Outbound', distance_from_start: 50000) }
+  let(:wrong_course) { build_stubbed(:course, name: 'Wrong Course') }
+  let(:wrong_event) { build_stubbed(:event, course: wrong_course, name: 'Wrong Event', start_time: '2012-08-08 05:00:00') }
+  let(:wrong_split) { build_stubbed(:split, course: wrong_course, base_name: 'Wrong Outbound', distance_from_start: 50000) }
 
   describe '#initialize' do
     it 'is valid with an event and a split' do

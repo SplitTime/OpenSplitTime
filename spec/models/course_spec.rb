@@ -33,7 +33,7 @@ RSpec.describe Course, type: :model do
   end
 
   describe 'methods that produce lap_splits and time_points' do
-    let(:course) { FactoryGirl.build_stubbed(:course_with_standard_splits, splits_count: 4) }
+    let(:course) { build_stubbed(:course_with_standard_splits, splits_count: 4) }
     let(:splits) { course.splits }
 
     describe '#cycled_lap_splits' do
@@ -141,14 +141,14 @@ RSpec.describe Course, type: :model do
 
   describe '#distance' do
     it 'returns a course distance using the distance_from_start of the finish split' do
-      course = FactoryGirl.build_stubbed(:course_with_standard_splits)
+      course = build_stubbed(:course_with_standard_splits)
       course.splits.last.distance_from_start = 200
       allow(course).to receive(:ordered_splits).and_return(course.splits)
       expect(course.distance).to eq(200)
     end
 
     it 'returns nil if no finish split exists on the course' do
-      course = FactoryGirl.build_stubbed(:course)
+      course = build_stubbed(:course)
       allow(course).to receive(:ordered_splits).and_return([])
       expect(course.distance).to be_nil
     end
@@ -156,14 +156,14 @@ RSpec.describe Course, type: :model do
 
   describe '#vert_gain' do
     it 'returns a course vert_gain using the vert_gain_from_start of the finish split' do
-      course = FactoryGirl.build_stubbed(:course_with_standard_splits)
+      course = build_stubbed(:course_with_standard_splits)
       course.splits.last.vert_gain_from_start = 100
       allow(course).to receive(:ordered_splits).and_return(course.splits)
       expect(course.vert_gain).to eq(100)
     end
 
     it 'returns nil if no finish split exists on the course' do
-      course = FactoryGirl.build_stubbed(:course)
+      course = build_stubbed(:course)
       allow(course).to receive(:ordered_splits).and_return([])
       expect(course.vert_gain).to be_nil
     end
@@ -171,14 +171,14 @@ RSpec.describe Course, type: :model do
 
   describe '#vert_loss' do
     it 'returns a course vert_loss using the vert_loss_from_start of the finish split' do
-      course = FactoryGirl.build_stubbed(:course_with_standard_splits)
+      course = build_stubbed(:course_with_standard_splits)
       course.splits.last.vert_loss_from_start = 50
       allow(course).to receive(:ordered_splits).and_return(course.splits)
       expect(course.vert_loss).to eq(50)
     end
 
     it 'returns nil if no finish split exists on the course' do
-      course = FactoryGirl.build_stubbed(:course)
+      course = build_stubbed(:course)
       allow(course).to receive(:ordered_splits).and_return([])
       expect(course.vert_loss).to be_nil
     end

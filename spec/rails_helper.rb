@@ -10,7 +10,7 @@ require 'rspec/rails'
 
 require 'devise'
 require 'pundit/rspec'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'capybara/rspec'
 require 'strip_attributes/matchers'
 require 'json'
@@ -76,7 +76,7 @@ RSpec.configure do |config|
 
   config.include Capybara::DSL
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :system
@@ -89,5 +89,5 @@ RSpec.configure do |config|
 
   Aws.config.update(stub_responses: true)
 
-  FactoryGirl.allow_class_lookup = false
+  FactoryBot.allow_class_lookup = false
 end

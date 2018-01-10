@@ -95,7 +95,7 @@ RSpec.describe ProtoRecord, type: :model do
   describe '#transform_as' do
     let(:pr) { ProtoRecord.new(attributes) }
     before { pr.transform_as(model, options) }
-    before { FactoryGirl.reload }
+    before { FactoryBot.reload }
 
     context 'for an effort' do
       let(:model) { :effort }

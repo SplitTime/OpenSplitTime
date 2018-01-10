@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe Api::V1::SplitTimesController do
   login_admin
 
-  let(:split_time) { FactoryGirl.create(:split_time, effort: effort, split: split) }
-  let(:effort) { FactoryGirl.create(:effort, event: event) }
-  let(:event) { FactoryGirl.create(:event, course: course) }
-  let(:split) { FactoryGirl.create(:split, course: course) }
-  let(:course) { FactoryGirl.create(:course) }
+  let(:split_time) { create(:split_time, effort: effort, split: split) }
+  let(:effort) { create(:effort, event: event) }
+  let(:event) { create(:event, course: course) }
+  let(:split) { create(:split, course: course) }
+  let(:course) { create(:course) }
 
   describe '#show' do
     it 'returns a successful 200 response' do

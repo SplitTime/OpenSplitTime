@@ -109,7 +109,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
 
     context 'when valid records have children with military_time attributes' do
       let(:proto_records) { proto_with_military_times }
-      before { FactoryGirl.reload }
+      before { FactoryBot.reload }
 
       it 'assigns attributes and creates new records of the parent class' do
         efforts = Effort.all

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:distance_from_start) do |d|
     d * 10000
   end

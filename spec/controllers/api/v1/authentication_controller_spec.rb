@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AuthenticationController do
   before do
-    FactoryGirl.create(:user, email: 'user@example.com', password: 'password', password_confirmation: 'password')
+    create(:user, email: 'user@example.com', password: 'password', password_confirmation: 'password')
   end
 
   describe '#create' do

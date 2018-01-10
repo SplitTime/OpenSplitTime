@@ -2,7 +2,7 @@
 $(function () {
 
     // Change the link's icon while the request is performing
-    $('a[data-remote]').on('click', function () {
+    $('body').on('click', 'a[data-remote]', function () {
         var icon = $(this).find('i');
         icon.data('old-class', icon.attr('class'));
         icon.attr('class', 'glyphicon glyphicon-refresh spin');
@@ -18,10 +18,9 @@ $(function () {
     });
 
     // Redirect if not authorized
-    $(document).ajaxError(function (event, jqxhr) {
-        if (jqxhr.status == 401) {
+    $(document).on('ajax:error', function (e) {
+        if (e.detail[1] === 'Unauthorized') {
             window.location.replace('/users/sign_in');
         }
     });
-
-})
+});

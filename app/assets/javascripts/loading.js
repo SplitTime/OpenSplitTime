@@ -1,5 +1,5 @@
 // This isn't necessarily specific to toggle buttons
-$(function () {
+document.addEventListener("turbolinks:load", function () {
 
     // Change the link's icon while the request is performing
     $('body').on('click', 'a[data-remote]', function () {

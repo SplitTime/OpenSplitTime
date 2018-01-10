@@ -198,6 +198,8 @@
                     update( e );
                 } );
             } );
+
+            $('#datetimepicker').datetimepicker();
         }
     };
 

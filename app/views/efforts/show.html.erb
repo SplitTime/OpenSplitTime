@@ -2,7 +2,7 @@
     <% "OpenSplitTime: Show effort - #{@effort_show.full_name} - #{@effort_show.event_name}" %>
 <% end %>
 
-<% if @current_user && @effort_show.person %>
+<% if @effort_show.person %>
     <%= div_for(@effort_show.person) do %>
         <h4>
           Notify Me Live:

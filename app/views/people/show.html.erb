@@ -2,14 +2,12 @@
     <% "OpenSplitTime: Show person - #{@presenter.full_name}" %>
 <% end %>
 
-<% if @current_user %>
-    <%= div_for(@presenter) do %>
-        <h4>
-          Notify Me Live:
-          <%= link_to_toggle_email_subscription(@presenter) %>
-          <%= link_to_toggle_sms_subscription(@presenter) %>
-        </h4>
-    <% end %>
+<%= div_for(@presenter) do %>
+  <h4>
+    Notify Me Live:
+    <%= link_to_toggle_email_subscription(@presenter) %>
+    <%= link_to_toggle_sms_subscription(@presenter) %>
+  </h4>
 <% end %>
 
 <div class="row header">

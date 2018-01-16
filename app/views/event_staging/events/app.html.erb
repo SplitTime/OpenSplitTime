@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Event staging - #{@event.name}" %>
+  <% "OpenSplitTime: Event staging - #{@event&.name || 'New event'}" %>
 <% end %>
 
 <% content_for(:container_type) do %>

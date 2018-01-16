@@ -1,6 +1,11 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Full results - #{@spread_display.name}" %>
 <% end %>
+
+<% content_for :container_type do%>
+  container-fluid
+<% end %>
+
 <div class="row header">
   <div class="col-xs-5">
     <%= render 'event_info', view_object: @spread_display, title: 'Full results' %>
@@ -51,6 +56,7 @@
 <% end %>
 
 <% cache "#{@spread_display.cache_key}/html", expires_in: @spread_display.cache_expire do %>
+  <div class="spread">
     <table class="table table-condensed table-striped">
       <thead>
       <tr>
@@ -97,4 +103,5 @@
       <% end %>
       </tbody>
     </table>
+  </div>
 <% end %>

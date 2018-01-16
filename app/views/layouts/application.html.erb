@@ -17,9 +17,11 @@
 <%= render 'layouts/navigation' %>
 <%= render 'layouts/progress' %>
 <%= render 'layouts/messages' %>
-<% unless @skip_container %><div class="container"><% end %>
+<% if content_for?(:container_type) == 'skip' %>
   <%= yield %>
-<% unless @skip_container %></div><% end %>
+<% else %>
+  <div class="<%= content_for(:container_type) || 'container' %>"><%= yield %></div>
+<% end %>
 <%= render 'layouts/footer' unless @skip_footer %>
 </body>
 </html>

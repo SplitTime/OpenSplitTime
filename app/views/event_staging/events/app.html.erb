@@ -1,4 +1,10 @@
-<% @skip_container = true %>
+<% content_for :title do %>
+  <% "OpenSplitTime: Event staging - #{@event&.name || 'New event'}" %>
+<% end %>
+
+<% content_for(:container_type) do %>
+  skip
+<% end %>
 
 <!-- Vue.js Form Templates-->
 

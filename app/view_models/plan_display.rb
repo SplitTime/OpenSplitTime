@@ -35,6 +35,10 @@ class PlanDisplay
     course.name
   end
 
+  def out_sub_splits?
+    lap_splits.any?(&:time_point_out)
+  end
+
   private
 
   attr_reader :params

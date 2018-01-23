@@ -88,6 +88,6 @@ module TimeFormats
   end
 
   def day_time_full_format(datetime)
-    datetime ? datetime.strftime('%B %-d, %Y %l:%M%p') : '--- --:--:--'
+    datetime ? datetime.strftime('%B %-d, %Y %l:%M %p') : '--- --:--:--'
   end
 end

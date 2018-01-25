@@ -6,29 +6,23 @@
     <th class="text-center">Time of Day</th>
     <th class="text-center">Elapsed Time</th>
     <th class="text-center">Segment</th>
-    <th class="text-right">In Aid</th>
+    <% if @plan_display.out_sub_splits? %>
+      <th class="text-right">In Aid</th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
   <% @plan_display.lap_split_rows.each do |row| %>
-      <tr>
-        <% if row.finish? %>
-            <td><strong><%= row.name %></strong></td>
-            <td class="text-right"><strong><%= d(row.distance_from_start) %></strong></td>
-            <td class="text-center"><strong><%= row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></strong></td>
-            <td class="text-center"><strong><%= row.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %></strong></td>
-            <td class="text-center"><strong><%= time_format_hhmm(row.segment_time) %></strong>
-            </td>
-            <td class="text-right"><strong><%= time_format_minutes(@plan_display.total_time_in_aid) %></strong></td>
-        <% else %>
-            <td><%= row.name %></td>
-            <td class="text-right"><%= d(row.distance_from_start) %></td>
-            <td class="text-center"><%= row.days_and_times.map { |time| day_time_format(time) }.join(' / ') %></td>
-            <td class="text-center"><%= row.times_from_start.map { |time| time_format_hhmm(time) }.join(' / ') %></td>
-            <td class="text-center"><%= time_format_hhmm(row.segment_time) %></td>
-            <td class="text-right"><%= time_format_minutes(row.time_in_aid) %></td>
-        <% end %>
-      </tr>
+    <tr>
+      <td><%= strong_conditional row.name, row.finish? %></td>
+      <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.finish? %></td>
+      <td class="text-center"><%= strong_conditional row.days_and_times.map {|time| day_time_format(time)}.join(' / '), row.finish? %></td>
+      <td class="text-center"><%= strong_conditional row.times_from_start.map {|time| time_format_hhmm(time)}.join(' / '), row.finish? %></td>
+      <td class="text-center"><%= strong_conditional time_format_hhmm(row.segment_time), row.finish? %></td>
+      <% if @plan_display.out_sub_splits? %>
+        <td class="text-right"><%= strong_text_conditional time_format_minutes(@plan_display.total_time_in_aid), time_format_minutes(row.time_in_aid), row.finish? %></td>
+      <% end %>
+    </tr>
   <% end %>
   </tbody>
 </table>

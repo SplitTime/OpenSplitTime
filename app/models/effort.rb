@@ -107,7 +107,7 @@ class Effort < ApplicationRecord
   end
 
   def start_time=(datetime)
-    return unless datetime.present?
+    return unless datetime.present? && event.present?
     time_zone = ActiveSupport::TimeZone[event.home_time_zone] || Time.zone
     new_datetime = case
                    when datetime.is_a?(Hash)

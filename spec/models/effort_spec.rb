@@ -248,6 +248,15 @@ RSpec.describe Effort, type: :model do
       verify_start_offset(effort_start_time, expected_offset)
     end
 
+    context 'when event is not present' do
+      let(:event) { nil }
+
+      it 'returns without setting any attributes' do
+        effort.start_time = '2017-03-15 09:00:00'
+        expect(effort.start_offset).to eq(0)
+      end
+    end
+
     def verify_start_offset(effort_start_time, expected_offset)
       effort.start_time = effort_start_time
       expect(effort.start_offset).to eq(expected_offset)

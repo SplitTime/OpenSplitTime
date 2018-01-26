@@ -14,8 +14,8 @@ class EffortShowView < EffortWithLapSplitRows
     ordered_split_times.none?(&:start?)
   end
 
-  def final_stop?
-    ordered_split_times.last.stopped_here?
+  def needs_final_stop?
+    ordered_split_times.present? && !ordered_split_times.last.stopped_here?
   end
 
   private

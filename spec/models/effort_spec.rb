@@ -241,6 +241,12 @@ RSpec.describe Effort, type: :model do
       verify_start_offset(effort_start_time, expected_offset)
     end
 
+    it 'works properly when the start_time is provided as an American formatted string' do
+      expected_offset = 3.hours
+      effort_start_time = '3/15/2017 09:00'
+      verify_start_offset(effort_start_time, expected_offset)
+    end
+
     it 'works properly when the start_time is provided as a hash' do
       skip "How does Rails 5 return date and time params from menu selectors?"
       expected_offset = 3.hours

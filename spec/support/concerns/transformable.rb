@@ -156,12 +156,12 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
-  describe '#normalize_birthdate!' do
+  describe '#normalize_date!' do
     context 'when provided with an American mm/dd/yy format' do
       let(:attributes) { {birthdate: '09/29/67'} }
 
       it 'corrects the year to between 1920 and 2019' do
-        subject.normalize_birthdate!
+        subject.normalize_date!(:birthdate)
         expect(subject[:birthdate]).to eq('1967-09-29'.to_date)
       end
     end
@@ -172,7 +172,7 @@ RSpec.shared_examples_for 'transformable' do
       let(:attributes) { {birthdate: "09/29/#{two_digit_year}"} }
 
       it 'assumes a year in the past' do
-        subject.normalize_birthdate!
+        subject.normalize_date!(:birthdate)
         expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29".to_date)
       end
     end
@@ -183,7 +183,7 @@ RSpec.shared_examples_for 'transformable' do
       let(:attributes) { {birthdate: "09/29/#{two_digit_year}"} }
 
       it 'assumes the current year' do
-        subject.normalize_birthdate!
+        subject.normalize_date!(:birthdate)
         expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29".to_date)
       end
     end
@@ -300,6 +300,17 @@ RSpec.shared_examples_for 'transformable' do
         subject.normalize_state_code!
         expect(subject[:state_code]).to eq('Private Island of Joe')
       end
+    end
+  end
+
+  describe '#set_offset_from_start_time!' do
+    let(:attributes) { {start_time: '2018-02-01 08:30'} }
+    let(:event) { Event.new(start_time: '2018-02-01 06:00', home_time_zone: 'Pacific (US & Canada)') }
+
+    it 'sets the start_offset attribute and deletes the start_time attribute' do
+      subject.set_offset_from_start_time!(event)
+      expect(subject[:start_offset]).to eq(2.5.hours)
+      expect(subject[:start_time]).to be_nil
     end
   end
 

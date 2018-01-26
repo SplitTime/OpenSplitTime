@@ -108,16 +108,7 @@ class Effort < ApplicationRecord
 
   def start_time=(datetime)
     return unless datetime.present? && event.present?
-    time_zone = ActiveSupport::TimeZone[event.home_time_zone] || Time.zone
-    new_datetime = case
-                   when datetime.is_a?(Hash)
-                     time_zone.local(*datetime.values)
-                   when datetime.is_a?(String)
-                     time_zone.parse(datetime)
-                   else
-                     datetime
-                   end
-    self.start_offset = TimeDifference.from(event.start_time, new_datetime).in_seconds
+    self.start_offset = TimeConversion.absolute_to_offset(datetime, event)
   end
 
   def day_and_time(time_from_start)

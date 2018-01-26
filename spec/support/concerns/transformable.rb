@@ -162,7 +162,7 @@ RSpec.shared_examples_for 'transformable' do
 
       it 'corrects the year to between 1920 and 2019' do
         subject.normalize_date!(:birthdate)
-        expect(subject[:birthdate]).to eq('1967-09-29'.to_date)
+        expect(subject[:birthdate]).to eq('1967-09-29')
       end
     end
 
@@ -173,7 +173,7 @@ RSpec.shared_examples_for 'transformable' do
 
       it 'assumes a year in the past' do
         subject.normalize_date!(:birthdate)
-        expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29".to_date)
+        expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29")
       end
     end
 
@@ -184,7 +184,7 @@ RSpec.shared_examples_for 'transformable' do
 
       it 'assumes the current year' do
         subject.normalize_date!(:birthdate)
-        expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29".to_date)
+        expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29")
       end
     end
   end

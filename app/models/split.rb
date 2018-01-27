@@ -88,7 +88,7 @@ class Split < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    slug.blank? || base_name_changed? || course.name_changed?
+    slug.blank? || base_name_changed? || course&.name_changed?
   end
 
   def name(bitkey = nil)

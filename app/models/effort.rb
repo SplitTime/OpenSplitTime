@@ -99,7 +99,7 @@ class Effort < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed? || event.name_changed?
+    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed? || event&.name_changed?
   end
 
   def reset_age_from_birthdate

@@ -10,7 +10,6 @@
       <% if current_user&.authorized_fully?(@presenter.organization) %>
           <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-sm btn-success" %>
           <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-sm btn-primary" %>
-          <%= link_to_reset_slug(@presenter.organization) %>
           <%= link_to 'Delete this organization',
                       organization_path(@presenter),
                       method: :delete,

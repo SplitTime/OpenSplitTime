@@ -12,7 +12,6 @@
     </div>
     <div class="row">
       <%= link_to_edit_event(@event_stage) %>
-      <%= link_to_reset_slug(@event_stage.event) %>
       <% if @event_stage.started? %>
           <%= link_to_update_start_time(@event_stage) %>
           <%= link_to_set_data_status(@event_stage) %>

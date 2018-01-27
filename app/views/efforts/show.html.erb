@@ -93,7 +93,7 @@
                             method: :put,
                             class: "btn btn-sm btn-success" %>
             <% end %>
-            <% unless @effort_show.final_stop? %>
+            <% if @effort_show.needs_final_stop? %>
                 <%= link_to 'Set stop', stop_effort_path(@effort_show.effort),
                             method: :put,
                             class: "btn btn-sm btn-success" %>

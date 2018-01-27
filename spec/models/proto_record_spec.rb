@@ -105,7 +105,7 @@ RSpec.describe ProtoRecord, type: :model do
 
       it 'sets the record type and normalizes data' do
         expect(pr.record_type).to eq(:effort)
-        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: Date.parse('1966-09-01'), event_id: event.id})
+        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: '1966-09-01', event_id: event.id})
       end
     end
 

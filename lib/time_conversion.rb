@@ -53,4 +53,18 @@ class TimeConversion
     time_components = %w(hours minutes seconds).zip(military.split(':')).to_h.symbolize_keys
     time_components.all? { |component, value| value.between?('0', MILITARY_TIME_LIMITS[component].to_s) }
   end
+
+  def self.absolute_to_offset(datetime, event)
+    time_zone = ActiveSupport::TimeZone[event.home_time_zone] || Time.zone
+    new_datetime = case
+                   when datetime.is_a?(Hash)
+                     time_zone.local(*datetime.values)
+                   when datetime.is_a?(String)
+                     time_zone.parse(datetime)
+                   else
+                     datetime
+                   end
+    # pp "#{event.start_time} #{new_datetime}"
+    TimeDifference.from(event.start_time, new_datetime).in_seconds
+  end
 end

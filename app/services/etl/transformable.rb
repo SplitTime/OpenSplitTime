@@ -63,24 +63,21 @@ module ETL::Transformable
     merging_attributes.each { |key, value| self[key] = value }
   end
 
-  def normalize_birthdate!
-    return unless self[:birthdate].present?
-    date = self[:birthdate].to_date
-    case
-    when date.year <= Date.today.year % 100
-      self[:birthdate] = date + 2000.years
-    when date.year <= Date.today.year % 100 + 100
-      self[:birthdate] = date + 1900.years
-    else
-      self[:birthdate] = date
-    end
-  end
-
   def normalize_country_code!
     return unless self[:country_code].present?
     country_data = self[:country_code].to_s.downcase.strip
     country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
     self[:country_code] = country ? country.code : find_country_code_by_nickname(country_data)
+  end
+
+  def normalize_date!(attribute)
+    return unless self[attribute].present?
+    self[attribute] = modernize_date(self[attribute].to_date).to_s
+  end
+
+  def normalize_datetime!(attribute)
+    return unless self[attribute].present?
+    self[attribute] = modernize_date(self[attribute].to_datetime).strftime('%Y-%m-%d %H:%M:%S')
   end
 
   def normalize_gender!
@@ -111,6 +108,11 @@ module ETL::Transformable
       self[:start_offset] = start_child_record[:time_from_start]
       start_child_record[:time_from_start] = 0
     end
+  end
+
+  def set_offset_from_start_time!(event)
+    return unless self[:start_time].present?
+    self[:start_offset] = TimeConversion.absolute_to_offset(self.delete_field(:start_time), event)
   end
 
   def set_split_time_stop!
@@ -151,5 +153,16 @@ module ETL::Transformable
     return nil if country_string.blank?
     country_code = I18n.t("nicknames.#{country_string}")
     country_code.include?('translation missing') ? nil : country_code
+  end
+
+  def modernize_date(date)
+    case
+    when date.year <= Date.today.year % 100
+      date + 2000.years
+    when date.year <= Date.today.year % 100 + 100
+      date + 1900.years
+    else
+      date
+    end
   end
 end

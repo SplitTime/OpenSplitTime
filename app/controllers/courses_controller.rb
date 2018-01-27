@@ -98,5 +98,9 @@ class CoursesController < ApplicationController
 
   def set_course
     @course = Course.friendly.find(params[:id])
+
+    if request.path != course_path(@course)
+      redirect_numeric_to_friendly(@course, params[:id])
+    end
   end
 end

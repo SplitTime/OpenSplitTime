@@ -20,12 +20,4 @@ module LinkHelper
   def link_to_sort_heading(column_heading, sort_string)
     link_to column_heading, request.params.merge(sort: sort_string)
   end
-
-  def link_to_reset_slug(resource)
-    link_to 'Reset slug',
-            {controller: request.params[:controller], action: :update, id: resource.to_param, resource.class.name.underscore.to_sym => {slug: nil}},
-            method: :patch,
-            data: {confirm: "This will reset the URL for this #{resource.class.name.underscore.humanize} to match its name. This action may result in links to this page from outside sources ceasing to work properly. Do you want to proceed?"},
-            class: "btn btn-sm btn-primary"
-  end
 end

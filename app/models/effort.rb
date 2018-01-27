@@ -18,7 +18,7 @@ class Effort < ApplicationRecord
   extend FriendlyId
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone], :regex => /[^0-9|+]/
-  friendly_id :slug_candidates, use: :slugged
+  friendly_id :slug_candidates, use: [:slugged, :history]
   belongs_to :event
   belongs_to :person
   has_many :split_times, dependent: :destroy
@@ -96,6 +96,10 @@ class Effort < ApplicationRecord
   def slug_candidates
     [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
      [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
+  end
+
+  def should_generate_new_friendly_id?
+    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed? || event&.name_changed?
   end
 
   def reset_age_from_birthdate

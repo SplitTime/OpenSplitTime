@@ -9,7 +9,6 @@
     <div class="row">
       <% if current_user&.authorized_to_edit?(@presenter.course) %>
           <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
-          <%= link_to_reset_slug(@presenter.course) %>
           <%= link_to 'New split', new_split_path(course_id: @presenter.id), class: 'btn btn-sm btn-success' %>
           <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
                       method: :delete,

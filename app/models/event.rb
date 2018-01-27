@@ -8,7 +8,7 @@ class Event < ApplicationRecord
   include LapsRequiredMethods
   extend FriendlyId
   strip_attributes collapse_spaces: true
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :history]
   belongs_to :course
   belongs_to :event_group
   has_many :efforts, dependent: :destroy

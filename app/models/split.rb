@@ -5,7 +5,7 @@ class Split < ApplicationRecord
   include UnitConversions
   extend FriendlyId
   strip_attributes collapse_spaces: true
-  friendly_id :course_split_name, use: :slugged
+  friendly_id :course_split_name, use: [:slugged, :history]
   enum kind: [:start, :finish, :intermediate]
   belongs_to :course
   has_many :split_times
@@ -85,6 +85,10 @@ class Split < ApplicationRecord
 
   def course_split_name
     "#{course_name} #{base_name}"
+  end
+
+  def should_generate_new_friendly_id?
+    slug.blank? || base_name_changed? || course&.name_changed?
   end
 
   def name(bitkey = nil)

@@ -1,7 +1,12 @@
 FactoryBot.define do
   factory :event do
     name { "#{rand(2010..2020)} #{FFaker::Company.name} #{rand(1..10) * 25}" }
-    home_time_zone { ActiveSupport::TimeZone.all.shuffle.first.name }
+
+    # Samoa causes Capybara to throw ambiguous match errors, so remove it before picking
+
+    home_time_zone do
+      ActiveSupport::TimeZone.all.reject { |timezone| timezone.name == 'Samoa' }.shuffle.first.name
+    end
     start_time { FFaker::Time.datetime }
     laps_required 1
     course

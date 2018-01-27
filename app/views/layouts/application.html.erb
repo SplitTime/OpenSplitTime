@@ -13,7 +13,9 @@
   <%= render 'layouts/google_analytics' if Rails.env.production? %>
   <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
 </head>
+
 <body class="<%= controller_name %> <%= action_name %>">
+
 <%= render 'layouts/navigation' %>
 <%= render 'layouts/progress' %>
 <%= render 'layouts/messages' %>

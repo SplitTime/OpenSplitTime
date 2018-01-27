@@ -804,7 +804,7 @@
 
             // Default Map Bounds
             var defaultBounds = null;
-            $( function() {
+            document.addEventListener("turbolinks:load", function() {
                 defaultBounds = new google.maps.LatLngBounds(
                     { lat: 24.846, lng: -126.826 },
                     { lat: 49.038, lng: -65.478 }
@@ -1604,8 +1604,11 @@
         } )()
     };
 
-    $( '.events.app' ).ready(function () {
-        eventStage.init();
+    document.addEventListener("turbolinks:load", function() {
+        if(Rails.$('.events.app').length > 0) {
+            console.log("Running event-stage vue")
+            eventStage.init();
+        }
     });
 
     window.eventStage = eventStage;

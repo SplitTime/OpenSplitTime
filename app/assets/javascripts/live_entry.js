@@ -802,7 +802,7 @@
                 var callback = function() {
                     liveEntry.timeRowsTable.toggleDiscardAll(false);
                 };
-                $(document).ready( function() {
+                document.addEventListener("turbolinks:load", function() {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
                 return function (canDelete) {
@@ -1067,8 +1067,10 @@
         } // END populateRows
     }; // END liveEntry
 
-    $('.events.live_entry').ready(function () {
-        liveEntry.init();
+    document.addEventListener("turbolinks:load", function () {
+        if (Rails.$('.events.live_entry')[0] === document.body) {
+            liveEntry.init();
+        }
     });
 
 })(jQuery);

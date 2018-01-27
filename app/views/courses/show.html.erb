@@ -35,7 +35,7 @@
         <div id="map" style="width: 550px; height: 350px;"></div>
 
         <script>
-            $(document).ready(function () {
+            document.addEventListener("turbolinks:load", function () {
                 var locations = <%= @presenter.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
                 var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
 

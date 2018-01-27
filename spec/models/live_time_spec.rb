@@ -198,11 +198,11 @@ RSpec.describe LiveTime, type: :model do
   end
 
   describe '#split_slug=' do
-    let!(:split) { create(:split, slug: 'test-split') }
+    let!(:split) { create(:split) }
     let(:live_time) { LiveTime.new }
 
     it 'finds the split having a slug equal to the provided param and sets split_id' do
-      live_time.split_slug = 'test-split'
+      live_time.split_slug = split.slug
       expect(live_time.split).to eq(split)
     end
 

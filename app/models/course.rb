@@ -44,7 +44,8 @@ class Course < ApplicationRecord
   def track_points
     return [] unless gpx.present?
     return @track_points if defined?(@track_points)
-    gpx_file = GPX::GPXFile.new(gpx_data: FileStore.get(gpx.url))
+    file = Paperclip.io_adapters.for(gpx).read
+    gpx_file = GPX::GPXFile.new(gpx_data: file)
     points = gpx_file.tracks.map(&:points).flatten
     @track_points = points.map { |track_point| {lat: track_point.lat, lon: track_point.lon} }
   end

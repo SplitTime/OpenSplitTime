@@ -96,5 +96,6 @@ class PeopleController < ApplicationController
 
   def set_person
     @person = Person.friendly.find(params[:id])
+    redirect_numeric_to_friendly(@person, params[:id])
   end
 end

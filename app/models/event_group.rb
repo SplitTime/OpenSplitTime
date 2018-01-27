@@ -6,7 +6,7 @@ class EventGroup < ApplicationRecord
   include Delegable
   extend FriendlyId
   strip_attributes collapse_spaces: true
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :history]
   has_many :events
   belongs_to :organization
   validates_presence_of :name

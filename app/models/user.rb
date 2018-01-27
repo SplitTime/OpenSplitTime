@@ -9,7 +9,7 @@ class User < ApplicationRecord
   enum pref_elevation_unit: [:feet, :meters]
   pg_search_scope :search_name_email, against: [:first_name, :last_name, :email], using: {tsearch: {any_word: true, prefix: true}}
   strip_attributes collapse_spaces: true
-  friendly_id :slug_candidates, use: :slugged
+  friendly_id :slug_candidates, use: [:slugged, :history]
   phony_normalize :phone, country_code: 'US'
 
   has_many :subscriptions, dependent: :destroy
@@ -60,6 +60,10 @@ class User < ApplicationRecord
 
   def slug_candidates
     [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime('%H:%M:%S')]]
+  end
+
+  def should_generate_new_friendly_id?
+    slug.blank? || first_name_changed? || last_name_changed?
   end
 
   def authorized_fully?(resource)

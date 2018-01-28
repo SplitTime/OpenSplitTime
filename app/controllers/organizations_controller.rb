@@ -63,5 +63,6 @@ class OrganizationsController < ApplicationController
 
   def set_organization
     @organization = Organization.friendly.find(params[:id])
+    redirect_numeric_to_friendly(@organization, params[:id])
   end
 end

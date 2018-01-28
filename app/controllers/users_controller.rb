@@ -61,5 +61,6 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.friendly.find(params[:id])
+    redirect_numeric_to_friendly(@user, params[:id])
   end
 end

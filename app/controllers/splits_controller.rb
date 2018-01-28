@@ -84,5 +84,6 @@ class SplitsController < ApplicationController
 
   def set_split
     @split = Split.friendly.find(params[:id])
+    redirect_numeric_to_friendly(@split, params[:id])
   end
 end

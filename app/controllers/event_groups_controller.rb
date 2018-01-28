@@ -47,5 +47,6 @@ class EventGroupsController < ApplicationController
 
   def set_event_group
     @event_group = EventGroup.friendly.find(params[:id])
+    redirect_numeric_to_friendly(@event_group, params[:id])
   end
 end

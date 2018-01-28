@@ -169,6 +169,7 @@ class EffortsController < ApplicationController
 
   def set_effort
     @effort = Effort.friendly.find(params[:id])
+    redirect_numeric_to_friendly(@effort, params[:id])
   end
 
   def update_beacon_url(url)

@@ -16,7 +16,7 @@ class EventGroup < ApplicationRecord
 
   scope :standard_includes, -> { includes(events: :splits) }
 
-  after_commit :align_event_booleans # Needed only so long as Event model retains these duplicate attributes
+  after_commit :align_available_live # Needed only so long as Event model retains duplicate available_live attribute
 
   def to_s
     name
@@ -26,7 +26,7 @@ class EventGroup < ApplicationRecord
     events.sort_by { |event| [-event.start_time.to_i, event.name] }
   end
 
-  def align_event_booleans
-    events.each { |event| event.update(available_live: available_live, concealed: concealed, auto_live_times: auto_live_times) }
+  def align_available_live
+    events.each { |event| event.update(available_live: available_live) }
   end
 end

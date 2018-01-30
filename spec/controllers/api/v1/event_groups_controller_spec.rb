@@ -55,12 +55,14 @@ RSpec.describe Api::V1::EventGroupsController do
     context 'when a filter[:available_live] param is given' do
       let(:params) { {filter: {available_live: true}} }
 
-      it 'returns only those events that are available live' do
+      it 'returns only those event_groups that are available live' do
         get :index, params: params
 
         expect(response.status).to eq(200)
+        expected = %w(Bravo Delta)
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['data'].size).to eq(2)
+        expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
       end
     end
   end

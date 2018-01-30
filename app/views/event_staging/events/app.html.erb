@@ -57,7 +57,7 @@
       <div class="form-group">
         <label>Event Start Time</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="For an Event with multiple waves or differing start times, you will generally want to use the earliest start time."><i class="glyphicon glyphicon-question-sign"></i></span>
-        <input-datetime v-model="eventModel.virtualStartTime">
+        <input-datetime v-model="eventModel.virtualStartTime"></input-datetime>
       </div>
       <div class="form-group">
         <label>Event Time Zone</label>
@@ -71,7 +71,7 @@
       <div class="form-group">
         <label class="required">Event Name</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="glyphicon glyphicon-question-sign"></i></span>
-        <input id="event-name-field" type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="(eventModel.organization) ? eventModel.organization.name + ' ' + (eventModel.virtualStartTime && eventModel.virtualStartTime.getFullYear()) : ''">
+        <input id="event-name-field" type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="suggestedName()">
       </div>
       <div class="form-group event-info-course-row">
         <label for="event-start-time">Choose an existing course</label>
@@ -272,7 +272,7 @@
 
               <div class="row">
                 <div class="col-xs-12 col-md-6 col-md-push-6">
-                  <google-map editable v-model="model" :route="extra.course.splits" :search-url="'/api/v1/staging/' + eventModel.slug + '/get_locations'"></google-map>
+                  <google-map editable v-model="model" :route="extra.course.splits" :search-url="'/api/v1/staging/' + extra.slug + '/get_locations'"></google-map>
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-md-pull-6">
@@ -567,7 +567,7 @@
                             Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If any Entrant will start at a time other than the Event start time, use these fields to indicate start time."><i class="glyphicon glyphicon-question-sign"></i></span>
                         </div>
                       </div>
-                      <input-datetime id="effort-start-time-field" v-model="model.startDate" class="no-gutters">
+                      <input-datetime id="effort-start-time-field" v-model="model.startDate" class="no-gutters"></input-datetime>
                     </div>
                     <div class="col-xs-6">
                       <div class="form-group col-xs-12">

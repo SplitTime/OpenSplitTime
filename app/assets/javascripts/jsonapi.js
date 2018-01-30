@@ -294,6 +294,7 @@ var JSONAPI = (function ($) {
                 var data = {};
                 for ( var name in this.__attributes__ ) {
                     if ( this.__attributes__[ name ].hidden ) continue;
+                    if ( this.__attributes__[ name ].local ) continue;
                     if ( this.__attributes__[ name ].type === Number ) {
                         if ( $.isNumeric( this[ name ] ) ) {
                             data[ name ] = Number( this[ name ] );

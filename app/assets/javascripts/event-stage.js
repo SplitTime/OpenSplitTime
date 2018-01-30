@@ -292,8 +292,7 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             slug: String,
-            
-            virtualStartTime: { type: Date, default: null, hidden: true },
+            virtualStartTime: { type: Date, default: null, local: true },
             startTimeInHomeZone: { 
                 get: function() {
                     if (!(this.virtualStartTime instanceof Date)) return null;
@@ -560,6 +559,12 @@
                         methods: {
                             isEventValid: function() {
                                 return this.eventModel.validate();
+                            },
+                            suggestedName: function() {
+                                if (this.eventModel.organization && this.eventModel.virtualStartTime) {
+                                    return this.eventModel.organization.name + ' ' + this.eventModel.virtualStartTime.getFullYear();
+                                }
+                                return '';
                             },
                             newOrganization: function() {
                                 return api.create( 'organizations' );

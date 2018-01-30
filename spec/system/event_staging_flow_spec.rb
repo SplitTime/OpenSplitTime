@@ -152,6 +152,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
       click_button 'Add'
       fill_in 'split-name-field', with: 'New Split Name'
+      wait_for_css
       fill_in 'split-description-field', with: 'A critical aid station'
       fill_in 'split-distance-field', with: '15.5'
       page.execute_script("$('#split-in-out-radio').click()")

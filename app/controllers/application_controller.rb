@@ -82,7 +82,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_numeric_to_friendly(resource, id_param)
-    unless resource.friendly_id == id_param
+    if request.request_method_symbol == :get && resource.friendly_id != id_param
       redirect_to request.params.merge(id: resource.friendly_id), status: 301
     end
   end

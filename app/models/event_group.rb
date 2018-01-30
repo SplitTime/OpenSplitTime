@@ -16,17 +16,11 @@ class EventGroup < ApplicationRecord
 
   scope :standard_includes, -> { includes(events: :splits) }
 
-  after_commit :align_event_booleans # Needed only so long as Event model retains these duplicate attributes
-
   def to_s
     name
   end
 
   def ordered_events
     events.sort_by { |event| [-event.start_time.to_i, event.name] }
-  end
-
-  def align_event_booleans
-    events.each { |event| event.update(available_live: available_live, concealed: concealed, auto_live_times: auto_live_times) }
   end
 end

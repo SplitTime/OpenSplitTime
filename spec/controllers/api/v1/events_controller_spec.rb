@@ -9,9 +9,8 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#index' do
     before do
-      create(:event, available_live: true)
-      create(:event, available_live: false)
-      create(:event, available_live: false)
+      create(:event)
+      create(:event)
     end
 
     it 'returns a successful 200 response' do
@@ -25,19 +24,8 @@ RSpec.describe Api::V1::EventsController do
 
         expect(response.status).to eq(200)
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data'].size).to eq(3)
+        expect(parsed_response['data'].size).to eq(2)
         expect(parsed_response['data'].map { |item| item['id'].to_i }.sort).to eq(Event.all.map(&:id).sort)
-      end
-    end
-
-    context 'when a filter[:available_live] param is given' do
-      let(:params) { {filter: {available_live: true}} }
-      it 'returns only those events that are available live' do
-        get :index, params: params
-
-        expect(response.status).to eq(200)
-        parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data'].size).to eq(1)
       end
     end
   end

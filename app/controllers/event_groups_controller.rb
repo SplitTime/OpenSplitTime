@@ -1,7 +1,17 @@
 class EventGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-  before_action :set_event_group
-  after_action :verify_authorized, except: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_event_group, except: [:index]
+  after_action :verify_authorized, except: [:index, :show]
+
+  def index
+    @event_groups = policy_class::Scope.new(current_user, controller_class).viewable
+                        .includes(events: :efforts)
+                        .search(params[:search])
+                        .sort_by { |event_group| -event_group.ordered_events.first.start_time.to_i }
+                        .paginate(page: params[:page], per_page: 25)
+    @presenter = EventGroupsCollectionPresenter.new(@event_groups, params, current_user)
+    session[:return_to] = event_groups_path
+  end
 
   def show
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)

@@ -58,7 +58,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :event_groups, only: [:show, :create, :edit, :update, :destroy]
+  resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy]
 
   resources :events do
     collection { get :series }

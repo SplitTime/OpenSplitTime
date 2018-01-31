@@ -18,6 +18,15 @@ class EventGroup < ApplicationRecord
 
   after_commit :align_available_live # Needed only so long as Event model retains duplicate available_live attribute
 
+  def self.search(search_param)
+    return all if search_param.blank?
+    where('event_groups.name ILIKE ?', "%#{search_param}%")
+  end
+
+  def effort_count
+    events.map(&:efforts).flatten.size
+  end
+
   def to_s
     name
   end

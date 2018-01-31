@@ -178,6 +178,10 @@ section {
     background-color: transparent;
 }
 
+tr.sub-row > td:first-child {
+    padding-left: 20px;
+}
+
 footer {
   margin-top: 45px;
   padding-top: 5px;

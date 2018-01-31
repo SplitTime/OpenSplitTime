@@ -1,0 +1,52 @@
+<% content_for :title do %>
+  <% if params[:search].present? %>
+    <% "OpenSplitTime: Search events - #{params[:search]}" %>
+  <% else %>
+    <% "OpenSplitTime: Search events" %>
+  <% end %>
+<% end %>
+<div class="row header">
+  <div class="col-xs-5">
+    <h2>
+      <strong>Events</strong>
+    </h2>
+  </div>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <% if current_user %>
+        <%= link_to 'Create event', event_staging_app_path('new'),
+                    class: 'btn btn-sm btn-success' %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= render 'lookup' %>
+
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <% if @presenter.event_groups.present? %>
+      <%= render 'event_groups', presenter: @presenter, event_groups: @presenter.event_groups, show_grouping_button: false %>
+    <% else %>
+      <br/>
+      <% if params[:search].blank? %>
+        <p><strong>Enter an event name to search</strong></p>
+      <% else %>
+        <p><strong>No events match this search</strong></p>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<hr>
+<div class="row">
+  <div class="col-xs-8">
+    <%= will_paginate(inner_window: 2, outer_window: 0) %>
+  </div>
+</div>

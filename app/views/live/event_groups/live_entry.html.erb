@@ -2,4 +2,221 @@
     <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
 <% end %>
 
-<h4>Event Group Live Entry App</h4>
+<div class="row header">
+  <div id="js-new-times-alert" class="alert alert-info center" role="alert">
+    <a href="#js-import-live-times">New Live Times availale</a>
+  </div>
+  <div class="col-xs-12 col-md-6 page-title">
+    <h2></h2>
+    <%= content_tag "div", id: "js-event-group-id", "data-event-group-id": params[:id] do %>
+    <% end %>
+  </div>
+
+  <div class="col-xs-12 col-md-6 page-navigation">
+    <%= render 'live_entry_button_cluster', page: 'live_entry' %>
+  </div>
+
+</div>
+
+
+<div class="row form-split-wrapper lap-disabled">
+
+  <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
+    <span id="js-live-times-pusher" data-key="<%= ENV['PUSHER_KEY'] %>"></span>
+    <form id="js-add-effort-form">
+      <input type="hidden" id="js-live-time-id-in" value=""/>
+      <input type="hidden" id="js-live-time-id-out" value=""/>
+      <div class="form-group form-group-sm clearfix">
+        <label class="col-xs-4" for="split-select">Aid Station</label>
+        <div class="col-xs-8">
+          <select id="split-select" name="split-select" class="form-control" autofocus>Aid Station</select>
+        </div>
+      </div>
+      <div class="form-group form-group-sm clearfix">
+        <label class="col-xs-4" for="js-bib-number">Bib</label>
+        <div class="col-xs-8">
+          <input type="tel" id="js-bib-number" name="bibNumber" class="form-control" autocomplete="off" value="" style="text-align: left;">
+        </div>
+        <label class="col-xs-2 lap-only" for="js-lap-number">Lap</label>
+        <div class="col-xs-3 lap-only">
+          <input type="tel" id="js-lap-number" name="lap" class="form-control" autocomplete="off" value="">
+        </div>
+      </div>
+      <div class="form-group form-group-sm clearfix">
+        <label class="col-xs-4" for="js-time-in">Time In</label>
+        <div class="col-xs-8">
+          <div class="input-group">
+            <input id="js-time-in" type="tel" name="timeIn" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
+            <span class="input-group-addon time-status">
+              <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-question-sign questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-remove-sign bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+            <span id="js-rapid-time-in" class="input-group-addon time-mode">
+              <span class="glyphicon glyphicon-time null" title="Enable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-flash enabled" title="Disable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ban-circle disabled" title="Rapid Mode Halted" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-group-sm clearfix">
+        <label class="col-xs-4" for="js-time-out">Time Out</label>
+        <div class="col-xs-8">
+          <div class="input-group">
+            <input id="js-time-out" type="tel" name="timeOut" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
+            <span class="input-group-addon time-status">
+              <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-question-sign questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-remove-sign bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+            <span id="js-rapid-time-in" class="input-group-addon time-mode">
+              <span class="glyphicon glyphicon-time null" title="Enable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-flash enabled" title="Disable Rapid Mode" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-ban-circle disabled" title="Rapid Mode Halted" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-group-sm clearfix">
+        <label class="col-xs-4" for="pacer">Pacer</label>
+        <div class="col-xs-8">
+          <label class="checkbox-inline" for="js-pacer-in">
+            <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true"> In
+          </label>
+          <label class="checkbox-inline" for="js-pacer-out">
+            <input id="js-pacer-out" type="checkbox" name="pacerOut" value="true"> Out
+          </label>
+        </div>
+      </div>
+      <div class="form-group form-group-sm clearfix">
+        <label class="col-xs-4"></label>
+        <div class="col-xs-8">
+          <button id="js-dropped-button" type="button" class="btn btn-sm btn-default col-xs-12">
+            <input id="js-dropped" type="checkbox" name="dropped" value="true">
+            <span class="glyphicon glyphicon-unchecked"></span>
+            &nbsp;Dropped Here
+          </button>
+        </div>
+      </div>
+      <div class="col-xs-8 col-xs-offset-2 col-sm-offset-4 form-buttons">
+        <input id="js-effort-id" type="hidden" name="effort-id" value="">
+        <input id="js-live-bib" type="hidden" name="live-bib" value="">
+        <button id="js-add-to-cache" type="submit" class="btn btn-sm btn-primary">Add</button>
+        <button id="js-clear-entry-form" type="submit" class="btn btn-sm btn-danger">Discard</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-xs-12 col-sm-7 col-md-8 splits-slider">
+    <div class="col-xs-12">
+      <div id="js-split-slider" class="splits-slider-plotter">
+      </div>
+    </div>
+    <div class="splits-slider-data col-xs-12">
+      <div class="col-xs-6 data-label active">Name:</div>
+      <div class="col-xs-6">
+        <a id="js-effort-name" data-toggle="modal" data-target="#js-html-modal" data-effort-id="">&nbsp;</a></div>
+
+      <div class="col-xs-6 data-label">Last Reported:</div>
+      <div id="js-effort-last-reported" class="col-xs-6 ">&nbsp;</div>
+
+      <div class="col-xs-6 data-label">Prior Valid Reported:</div>
+      <div id="js-prior-valid-reported" class="col-xs-6">&nbsp;</div>
+
+      <div class="col-xs-6 data-label">Time From Prior Valid Reported:</div>
+      <div id="js-time-prior-valid-reported" class="col-xs-6">&nbsp;</div>
+
+      <div class="col-xs-6 data-label">Time Spent:</div>
+      <div id="js-time-spent" class="col-xs-6">&nbsp;</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row provisional-data lap-disabled ">
+
+  <div class="col-xs-12">
+    <h3>Local Data Workspace</h3>
+    <div class="provisional-table-wrapper">
+      <table id="js-provisional-data-table" class="table table-striped provisional-data-table">
+        <thead>
+        <tr>
+          <th>Aid Station</th>
+          <th>Bib</th>
+          <th class="lap-only">Lap</th>
+          <th>Time In</th>
+          <th>Time Out</th>
+          <th>Pacer In/Out?</th>
+          <th>Dropped</th>
+          <th>Name</th>
+          <th data-orderable="false">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="display: none">
+          <td data-order="0"></td>
+          <td></td>
+          <td class="lap-only"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12" id="js-live-messages">
+    <div class="alert alert-warning" role="alert" id="js-import-live-warning">
+      <strong>You're up to date</strong> No live time data available to pull.
+    </div>
+    <div class="alert alert-danger" role="alert" id="js-import-live-error">
+      <strong>Error</strong> Couldn't read data from the server.
+    </div>
+  </div>
+</div>
+<div class="row provisional-data">
+  <div class="col-xs-12 table-submit-wrapper">
+    <div class="btn-group" role="group">
+      <button id="js-import-live-times" class="btn btn-primary">
+        Pull Times
+        <span class="badge" id="js-pull-times-count"></span>
+      </button>
+    </div>
+    <div class="btn-group" role="group">
+      <button id="js-file-split" class="btn btn-primary" disabled></button>
+      <button class="btn btn-primary fileinput-button">
+        <span>Import File</span>
+        <input id="js-file-upload" type="file" name="file"/>
+      </button>
+    </div>
+    <div class="btn-group" role="group">
+      <button id="js-delete-all-efforts" class="btn btn-danger">Discard All</button>
+      <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
+    </div>
+    <button id="js-submit-all-efforts" class="btn btn-success">Submit All</button>
+  </div>
+
+  <div id="debug">
+  </div>
+
+  <div id="js-html-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <div class="js-modal-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

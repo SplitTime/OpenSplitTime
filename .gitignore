@@ -95,4 +95,6 @@ pickle-email-*.html
 .ruby-version
 dump.rdb/public/packs
 /public/packs-test
+/public/packs
+/public/assets
 /node_modules

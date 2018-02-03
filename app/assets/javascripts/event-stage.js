@@ -508,12 +508,14 @@
                         } );
                 }
             } else if ( from.name === 'home' ) {
-                // next();
+                var creating = this.__new__;
                 eventStage.data.eventModel.post().done( function() {
                     next();
-                    var id = eventStage.data.eventModel.id;
-                    var url = window.location.pathname.replace(/\/new\//, '/' + id + '/') + window.location.hash;
-                    window.location.href = window.location.origin + url;
+                    if (creating) {
+                        var id = eventStage.data.eventModel.id;
+                        var url = window.location.pathname.replace(/\/new\//, '/' + id + '/') + window.location.hash;
+                        window.location.href = window.location.origin + url;
+                    }
                 } ).fail( function( e ) {
                     next( '/' );
                 } );
@@ -549,7 +551,7 @@
             this.errorAlert.init();
 
             // Load Event Slug
-            var eventSlug = $( '#event-app' ).data( 'slug' );
+            var eventSlug = $( '#event-app' ).data( 'id' );
             this.data.eventModel.id = (eventSlug === 'new' || !eventSlug) ? null : eventSlug;
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();

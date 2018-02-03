@@ -255,7 +255,7 @@
           <p class="pull-left">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
             </button>
-            <ajax-import :url="'/api/v1/events/' + eventModel.slug + '/import?dataFormat=csv_splits'" v-on:import="eventModel.fetch()">
+            <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_splits'" v-on:import="eventModel.fetch()">
               <span>Import Splits</span>
             </ajax-import>
           </p>
@@ -272,7 +272,7 @@
 
               <div class="row">
                 <div class="col-xs-12 col-md-6 col-md-push-6">
-                  <google-map editable v-model="model" :route="extra.course.splits" :search-url="'/api/v1/staging/' + extra.slug + '/get_locations'"></google-map>
+                  <google-map editable v-model="model" :route="extra.course.splits" :search-url="'/api/v1/staging/' + extra.id + '/get_locations'"></google-map>
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-md-pull-6">
@@ -455,7 +455,7 @@
           <p class="pull-left">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-participant-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
             </button>
-            <ajax-import :url="'/api/v1/events/' + eventModel.slug + '/import?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
+            <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
               <span>Import Entrants</span>
             </ajax-import>
             <% if @event %>

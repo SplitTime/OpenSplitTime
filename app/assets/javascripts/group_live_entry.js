@@ -507,7 +507,10 @@
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-                return $.get('/api/v1/events/' + liveEntry.currentEventGroupId + '/live_effort_data', data, function (response) {
+                if (typeof currentEventId === 'undefined' || currentEventId === null) {
+                    return $.Deferred().resolve(); // No eventId
+                }
+                return $.get('/api/v1/events/' + currentEventId + '/live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
                     $('#js-effort-last-reported').html( response.reportText );

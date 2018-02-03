@@ -850,11 +850,11 @@
                     liveEntry.timeRowsTable.toggleDiscardAll(false);
                 };
                 document.addEventListener("turbolinks:load", function() {
-                    $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                    $deleteWarning = $('#js-group-delete-all-warning').hide().detach();
                 });
                 return function (canDelete) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    var $deleteButton = $('#js-delete-all-efforts');
+                    var $deleteButton = $('#js-group-delete-all-efforts');
                     $deleteButton.prop('disabled', true);
                     $(document).off('click', callback);
                     $deleteWarning.insertAfter($deleteButton).animate({
@@ -871,7 +871,7 @@
                                     $( '#split-select' ).focus();
                                 }
                                 $deleteButton.removeClass('confirm');
-                                $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                                $deleteWarning = $('#js-group-delete-all-warning').hide().detach();
                             } else {
                                 $deleteButton.addClass('confirm');
                                 $(document).one('click', callback);
@@ -910,7 +910,7 @@
                 });
 
 
-                $('#js-delete-all-efforts').on('click', function (event) {
+                $('#js-group-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.timeRowsTable.toggleDiscardAll(true);
                     return false;

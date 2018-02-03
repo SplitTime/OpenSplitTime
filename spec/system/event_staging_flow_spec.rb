@@ -123,7 +123,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       event.splits << course.splits
     end
 
-    xscenario 'Edit event information' do
+    scenario 'Edit event information' do
       login_as user
       visit event_staging_app_path(event)
 
@@ -131,8 +131,15 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       expect(continue_button[:disabled]&.to_boolean).to be_falsey
 
       fill_in 'event-name-field', with: 'Updated Event Name'
-      fill_in class: 'js-date', with: '2017-10-01'
-      fill_in class: 'js-time', with: '07:30'
+
+      date_field = find_field(class: 'js-date')
+      manually_clear_field(date_field)
+      date_field.native.send_keys('10/1/2017')
+
+      time_field = find_field(class: 'js-time')
+      manually_clear_field(time_field)
+      time_field.native.send_keys('07:30 am')
+
       select 'Arizona', from: 'time-zone-select'
 
       continue_button.click
@@ -228,5 +235,9 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       expect(effort.first_name).to eq('Betty')
       expect(effort.bib_number).to eq(1001)
     end
+  end
+
+  def manually_clear_field(field)
+    field.value.size.times { field.native.send_keys(:backspace) }
   end
 end

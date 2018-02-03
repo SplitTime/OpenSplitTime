@@ -285,13 +285,11 @@
         }
     } );
     api.define( 'events', {
-        slug: 'slug',
         attributes: {
             name: { type: String, default: '' },
             concealed: { type: Boolean, default: true },
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
-            slug: String,
             virtualStartTime: { type: Date, default: null, local: true },
             startTimeInHomeZone: { 
                 get: function() {
@@ -316,10 +314,13 @@
             splits: ['splits'],
             aidStations: ['aidStations'],
             course: 'courses',
-            organization: 'organizations'
+            eventGroup: 'eventGroups'
         },
-        includes: [ 'course', 'course.splits', 'splits', 'efforts', 'organization', 'aidStations' ],
+        includes: [ 'course', 'course.splits', 'splits', 'efforts', 'aidStations', 'eventGroup', 'eventGroup.organization' ],
         methods: {
+            afterCreate: function() {
+                this.eventGroup = api.create('eventGroups');
+            },
             normalize: function() {
                 this.course.normalize();
                 var newCourse = false || this.aidStations.length == 0;
@@ -351,7 +352,7 @@
             validate: function( context ) {
                 var self = ( context ) ? context : this;
                 if ( !self.name || self.name.length < 1 ) return false;
-                if ( !self.organization || !self.organization.validate() ) return false;
+                if ( !self.eventGroup.organization || !self.eventGroup.organization.validate() ) return false;
                 if ( !self.course || !self.course.validate() ) return false;
 
                 if ( !self.virtualStartTime ) return false;
@@ -360,7 +361,8 @@
             jsonify: function () {
                 var data = {
                     event: this.attributes(),
-                    organization: this.organization.attributes(),
+                    eventgroup: this.eventGroup.attributes(),
+                    organization: this.eventGroup.organization.attributes(),
                     course: this.course.attributes(),
                     splits: [
                         this.course.endSplit( 'start' ),
@@ -376,7 +378,7 @@
             post: function() {
                 var self = this;
                 var creating = this.__new__;
-                return this.request( 'staging/' + this.slug + '/post_event_course_org', 'POST', 'application/json' )
+                return this.request( 'staging/' + (creating ? 'new' : this.id) + '/post_event_course_org', 'POST', 'application/json' )
                 .then( function() {
                     if ( creating ) {
                         return self.visibility( false ).then( function() {
@@ -389,7 +391,7 @@
             },
             visibility: function( visible ) {
                 var self = this;
-                return $.ajax( '/api/v1/staging/' + this.slug + '/update_event_visibility', {
+                return $.ajax( '/api/v1/staging/' + this.id + '/update_event_visibility', {
                     type: "PATCH",
                     data: { status: visible ? 'public' : 'private' },
                     dataType: "json"
@@ -420,6 +422,18 @@
             status: String
         }
     } );
+    api.define( 'eventGroups', {
+        url: 'event_groups',
+        attributes: {
+            slug: String,
+            name: String,
+        },
+        includes: [ 'events', 'events.efforts', 'events.splits' ],
+        relationships: {
+            events: ['events'],
+            organization: 'organizations',
+        }
+    });
 
     /**
      * UI object for the live event view
@@ -475,7 +489,7 @@
         },
 
         isEventValid: function( eventData ) {
-            if ( ! eventData.organization.name ) return false;
+            if ( ! eventData.eventGroup.organization.name ) return false;
             if ( ! eventData.event.name ) return false;
             if ( ! eventData.course.name ) return false;
             return true;
@@ -495,20 +509,11 @@
                 }
             } else if ( from.name === 'home' ) {
                 // next();
-                if (eventStage.data.eventModel.__new__) {
-                    eventStage.data.eventModel.slug = 'new';
-                }
                 eventStage.data.eventModel.post().done( function() {
                     next();
-                    var slug = eventStage.data.eventModel.slug;
-                    var url = window.location.pathname.replace(/\/new\//, '/' + slug + '/') + window.location.hash;
-                    try {
-                        // Replace url without causing refresh
-                        window.history.replaceState( window.history.state, '', url );
-                    } catch ( e ) {
-                        // replaceState didn't work: Manually reload the page
-                        window.location.href = window.location.origin + url;
-                    }
+                    var id = eventStage.data.eventModel.id;
+                    var url = window.location.pathname.replace(/\/new\//, '/' + id + '/') + window.location.hash;
+                    window.location.href = window.location.origin + url;
                 } ).fail( function( e ) {
                     next( '/' );
                 } );
@@ -545,7 +550,7 @@
 
             // Load Event Slug
             var eventSlug = $( '#event-app' ).data( 'slug' );
-            this.data.eventModel.slug = eventSlug === 'new' ? null : eventSlug;
+            this.data.eventModel.id = (eventSlug === 'new' || !eventSlug) ? null : eventSlug;
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
 
@@ -561,8 +566,8 @@
                                 return this.eventModel.validate();
                             },
                             suggestedName: function() {
-                                if (this.eventModel.organization && this.eventModel.virtualStartTime) {
-                                    return this.eventModel.organization.name + ' ' + this.eventModel.virtualStartTime.getFullYear();
+                                if (this.eventModel.eventGroup.organization && this.eventModel.virtualStartTime) {
+                                    return this.eventModel.eventGroup.organization.name + ' ' + this.eventModel.virtualStartTime.getFullYear();
                                 }
                                 return '';
                             },

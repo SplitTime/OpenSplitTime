@@ -290,7 +290,6 @@
             concealed: { type: Boolean, default: true },
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
-            slug: String,
             virtualStartTime: { type: Date, default: null, local: true },
             startTimeInHomeZone: { 
                 get: function() {
@@ -392,7 +391,7 @@
             },
             visibility: function( visible ) {
                 var self = this;
-                return $.ajax( '/api/v1/staging/' + this.slug + '/update_event_visibility', {
+                return $.ajax( '/api/v1/staging/' + this.id + '/update_event_visibility', {
                     type: "PATCH",
                     data: { status: visible ? 'public' : 'private' },
                     dataType: "json"
@@ -512,15 +511,9 @@
                 // next();
                 eventStage.data.eventModel.post().done( function() {
                     next();
-                    var slug = eventStage.data.eventModel.slug;
-                    var url = window.location.pathname.replace(/\/new\//, '/' + slug + '/') + window.location.hash;
-                    try {
-                        // Replace url without causing refresh
-                        window.history.replaceState( window.history.state, '', url );
-                    } catch ( e ) {
-                        // replaceState didn't work: Manually reload the page
-                        window.location.href = window.location.origin + url;
-                    }
+                    var id = eventStage.data.eventModel.id;
+                    var url = window.location.pathname.replace(/\/new\//, '/' + id + '/') + window.location.hash;
+                    window.location.href = window.location.origin + url;
                 } ).fail( function( e ) {
                     next( '/' );
                 } );

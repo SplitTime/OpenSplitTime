@@ -379,7 +379,7 @@
             post: function() {
                 var self = this;
                 var creating = this.__new__;
-                return this.request( 'staging/' + (creating ? 'new' : this.slug) + '/post_event_course_org', 'POST', 'application/json' )
+                return this.request( 'staging/' + (creating ? 'new' : this.id) + '/post_event_course_org', 'POST', 'application/json' )
                 .then( function() {
                     if ( creating ) {
                         return self.visibility( false ).then( function() {

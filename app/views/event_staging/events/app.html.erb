@@ -722,7 +722,7 @@
           <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
         </strong>
         <strong v-if="!eventModel.__new__">
-          <a :href="'/events/' + eventModel.slug + '/stage'" class="btn btn-sm btn-primary pull-right">Classic Admin</a>
+          <%= link_to 'Classic Admin', stage_event_path(@event), class: "btn btn-sm btn-primary pull-right" %>
         </strong>
       </h2>
       <nav class="progress-bar-nav">

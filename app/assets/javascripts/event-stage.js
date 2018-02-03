@@ -425,7 +425,6 @@
     api.define( 'eventGroups', {
         url: 'event_groups',
         attributes: {
-            slug: String,
             name: String,
         },
         includes: [ 'events', 'events.efforts', 'events.splits' ],
@@ -550,9 +549,9 @@
             this.inputUnits.init();
             this.errorAlert.init();
 
-            // Load Event Slug
-            var eventSlug = $( '#event-app' ).data( 'id' );
-            this.data.eventModel.id = (eventSlug === 'new' || !eventSlug) ? null : eventSlug;
+            // Load Event ID
+            var eventId = $( '#event-app' ).data( 'id' );
+            this.data.eventModel.id = !eventId ? null : eventId;
             this.ajaxPopulateLocale();
             this.ajaxPopulateUnits();
 

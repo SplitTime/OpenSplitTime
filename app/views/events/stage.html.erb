@@ -118,8 +118,6 @@
 <script>
     document.addEventListener("turbolinks:load", function () {
 
-        Pusher.logToConsole = true;
-
         var uID = '<%= session.id %>';
         var pusher = new Pusher('<%= ENV['PUSHER_KEY'] %>');
         var channel = pusher.subscribe('progress_' + uID);

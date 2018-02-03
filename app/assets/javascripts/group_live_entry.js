@@ -75,7 +75,7 @@
          *
          * @type integer
          */
-        currentEventId: null,
+        currentEventGroupId: null,
 
         currentEffortData: {},
 
@@ -87,13 +87,30 @@
 
         lastReportedBitkey: null,
 
-        currentSplitId: null,
+        currentStationIndex: null,
 
         getEventLiveEntryData: function () {
-            return $.get('/api/v1/events/' + liveEntry.currentEventId + '/event_data')
+            return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '?include=events.efforts')
                 .then(function (response) {
                     liveEntry.eventLiveEntryData = response;
-                    return api.find('eventGroups', liveEntry.eventLiveEntryData.eventGroupId);
+                    liveEntry.timeRowsCache.init();
+                    liveEntry.header.init();
+                    liveEntry.liveEntryForm.init();
+                    liveEntry.timeRowsTable.init();
+                    liveEntry.splitSlider.init();
+                    liveEntry.pusher.init();
+                    liveEntry.efforts = response.included
+                        .filter(function(current){
+                            return current.type==='efforts';
+                        })
+                        .map(function(current) {
+                            var newObj = {};
+                            newObj['bibNumber'] = current.attributes.bibNumber;
+                            newObj['eventId'] = current.attributes.eventId;
+                            return newObj;
+                        });
+                    // return api.find('eventGroups', liveEntry.eventLiveEntryData.eventGroupId);
+                    return;
                 });
         },
 
@@ -104,15 +121,16 @@
         init: function () {
             // localStorage.clear();
 
-            // Sets the currentEventId once
-            liveEntry.currentEventId = $('#js-event-id').data('event-id');
+            // Sets the currentEventGroupId once
+            liveEntry.currentEventGroupId = $('#js-event-group-id').data('event-group-id');
             liveEntry.getEventLiveEntryData().done(function (eventGroup) {
-                liveEntry.timeRowsCache.init();
-                liveEntry.header.init();
-                liveEntry.liveEntryForm.init();
-                liveEntry.timeRowsTable.init();
-                liveEntry.splitSlider.init();
-                liveEntry.pusher.init();
+                // debugger;
+                // liveEntry.timeRowsCache.init();
+                // liveEntry.header.init();
+                // liveEntry.liveEntryForm.init();
+                // liveEntry.timeRowsTable.init();
+                // liveEntry.splitSlider.init();
+                // liveEntry.pusher.init();
             });
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
@@ -291,7 +309,7 @@
              *
              */
             updateEventName: function () {
-                $('.page-title h2').text(liveEntry.eventLiveEntryData.eventName.concat(': Live Data Entry'));
+                $('.page-title h2').text(liveEntry.eventLiveEntryData.data.attributes.name.concat(': Live Data Entry'));
             },
 
             /**
@@ -303,13 +321,15 @@
                 // Populate select list with event splits
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
-                for (var i = 0; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].id + '" data-index="' + i + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
+                for (var i = 0; i < liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes.length; i++) {
+                    splitItems += '<option value="' + i + '">';
+                    splitItems += liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[i].title + '</option>';
+                    // splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].id + '" data-index="' + i + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
                 }
                 $select.html(splitItems);
                 // Syncronize Select with splitId
                 $select.children().first().prop('selected', true);
-                liveEntry.currentSplitId = $select.val();
+                liveEntry.currentStationIndex = $select.val();
             },
         },
 
@@ -415,7 +435,7 @@
                         var data = {
                             'effortId': $source.attr('data-effort-id')
                         }
-                        $.get('/live/events/' + liveEntry.currentEventId + '/effort_table', data)
+                        $.get('/live/events/' + liveEntry.currentEventGroupId + '/effort_table', data)
                             .done( function(a,b,c) {
                                 $body.html(a);
                             });
@@ -429,6 +449,7 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function() {
+                var currentSplit, timeData;
                 if (liveEntry.PopulatingFromRow) {
                     // Do nothing.
                     // This fn is being called from several places based
@@ -441,25 +462,53 @@
                     return $.Deferred().resolve();
                 }
                 liveEntry.liveEntryForm.prefillCurrentTime();
-
                 var bibNumber = $('#js-bib-number').val();
                 var bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
-                var splitChanged = ( liveEntry.currentSplitId != liveEntry.liveEntryForm.lastSplit );
+                var splitChanged = ( liveEntry.currentStationIndex != liveEntry.liveEntryForm.lastSplit );
                 liveEntry.liveEntryForm.lastBib = bibNumber;
-                liveEntry.liveEntryForm.lastSplit = liveEntry.currentSplitId;
+                liveEntry.liveEntryForm.lastSplit = liveEntry.currentStationIndex;
 
+                var currentEventId = null;
+                if (typeof liveEntry.efforts !== 'undefined' && bibNumber !== '') {
+                    var currentEventIdObj = liveEntry.efforts.find(function(element) {
+                        return element.bibNumber === parseInt(bibNumber, 10)
+                    });
+                    currentEventId = currentEventIdObj.eventId;
+                }
+
+                // This is the splitEntry data corresponding to the selected AidStation
+                // Looks like: 
+                currentSplitEntries = liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[liveEntry.currentStationIndex].entries;
+
+                // Each subsplit populates one item in the timeData array to be sent to the server
+                // timeData: [{splitId: x, time: '12:34', subSplitKind: 'in', lap: 1}, {splitId: x, time: '12:34', subSplitKind: 'out', lap: 1}]
+                timeData = currentSplitEntries.map(function(eachVal) {
+                    var newObj = {};
+                    newObj.subSplitKind = eachVal.subSplitKind;
+                    newObj.lap = $('#js-lap-number').val();
+                    // splitId defaults to null if no bibNumber was entered
+                    newObj.splitId = currentEventId !== null ? eachVal.eventSplitIds[currentEventId] : null;
+                    return newObj;
+                });
+                timeData.forEach(function(el, index) {
+
+                    // Use time IN for the first subsplit and time OUT for the second one, if there is one
+                    // This should be updated when Group Live Entry supports variable time fields
+                    timeData[index]['time'] = index === 1 ? $('#js-time-out').val() : $('#js-time-in').val();
+                    timeData[index]['lap'] = $('#js-lap-number').val();
+                });
                 var data = {
-                    splitId: liveEntry.currentSplitId,
-                    lap: $('#js-lap-number').val(),
+                    timeData: timeData,
                     bibNumber: bibNumber,
-                    timeIn: $('#js-time-in').val(),
-                    timeOut: $('#js-time-out').val()
                 };
 
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-                return $.get('/api/v1/events/' + liveEntry.currentEventId + '/live_effort_data', data, function (response) {
+                if (typeof currentEventId === 'undefined' || currentEventId === null) {
+                    return $.Deferred().resolve(); // No eventId
+                }
+                return $.get('/api/v1/events/' + currentEventId + '/live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
                     $('#js-effort-last-reported').html( response.reportText );
@@ -500,7 +549,7 @@
                 var thisTimeRow = {};
                 thisTimeRow.liveBib = $('#js-live-bib').val();
                 thisTimeRow.lap = $('#js-lap-number').val();
-                thisTimeRow.eventId = liveEntry.currentEventId;
+                thisTimeRow.eventId = liveEntry.currentEventGroupId;
                 thisTimeRow.splitId = $('#split-select').val();
                 thisTimeRow.splitName = $('#split-select option:selected').html();
                 thisTimeRow.effortName = $('#js-effort-name').html();
@@ -772,7 +821,7 @@
                     var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
                     data.timeRows.push(timeRow);
                 });
-                $.post('/api/v1/events/' + liveEntry.currentEventId + '/set_times_data', data, function (response) {
+                $.post('/api/v1/events/' + liveEntry.currentEventGroupId + '/set_times_data', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
                     liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
                     for (var i = 0; i < response.returnedRows.length; i++) {
@@ -801,11 +850,11 @@
                     liveEntry.timeRowsTable.toggleDiscardAll(false);
                 };
                 document.addEventListener("turbolinks:load", function() {
-                    $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                    $deleteWarning = $('#js-group-delete-all-warning').hide().detach();
                 });
                 return function (canDelete) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    var $deleteButton = $('#js-delete-all-efforts');
+                    var $deleteButton = $('#js-group-delete-all-efforts');
                     $deleteButton.prop('disabled', true);
                     $(document).off('click', callback);
                     $deleteWarning.insertAfter($deleteButton).animate({
@@ -822,7 +871,7 @@
                                     $( '#split-select' ).focus();
                                 }
                                 $deleteButton.removeClass('confirm');
-                                $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                                $deleteWarning = $('#js-group-delete-all-warning').hide().detach();
                             } else {
                                 $deleteButton.addClass('confirm');
                                 $(document).one('click', callback);
@@ -861,7 +910,7 @@
                 });
 
 
-                $('#js-delete-all-efforts').on('click', function (event) {
+                $('#js-group-delete-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.timeRowsTable.toggleDiscardAll(true);
                     return false;
@@ -876,9 +925,9 @@
 
                 $('#js-file-upload').fileupload({
                     dataType: 'json',
-                    url: '/api/v1/events/' + liveEntry.currentEventId + '/post_file_effort_data',
+                    url: '/api/v1/events/' + liveEntry.currentEventGroupId + '/post_file_effort_data',
                     submit: function (e, data) {
-                        data.formData = {splitId: liveEntry.currentSplitId};
+                        data.formData = {splitId: liveEntry.currentStationIndex};
                         liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {
@@ -897,7 +946,7 @@
                         return;
                     }
                     liveEntry.importAsyncBusy = true;
-                    $.ajax('/api/v1/events/' + liveEntry.currentEventId + '/pull_live_time_rows', {
+                    $.ajax('/api/v1/events/' + liveEntry.currentEventGroupId + '/pull_live_time_rows', {
                        error: function(obj, error) {
                             liveEntry.importAsyncBusy = false;
                             liveEntry.timeRowsTable.importLiveError(obj, error);
@@ -937,7 +986,18 @@
             }, 4000);
             return;
         },
+        createTimeFields: function(){
 
+            // Generate time fields
+            var entries = liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[liveEntry.currentStationIndex].entries;
+            for (var i = 0; i < entries.length; i++) {
+                var field = $('.js-time-field-template').clone();
+                field.find('.js-time-label').innerText = liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[liveEntry.currentStationIndex].entries[i].label;
+                field.removeClass('js-time-field-template');
+                $('#js-time-fields').append(field);
+            }
+            
+        },
         splitSlider: {
 
             /**
@@ -946,7 +1006,7 @@
              */
             init: function () {
                 liveEntry.splitSlider.buildSplitSlider();
-                liveEntry.splitSlider.changeSplitSlider(liveEntry.currentSplitId);
+                liveEntry.splitSlider.changeSplitSlider(liveEntry.currentStationIndex);
             },
 
             /**
@@ -954,11 +1014,12 @@
              *
              */
             buildSplitSlider: function () {
-
                 // Inject initial html
                 var splitSliderItems = '';
-                for (var i = 0; i < liveEntry.eventLiveEntryData.splits.length; i++) {
-                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-index="' + i + '" data-split-id="' + liveEntry.eventLiveEntryData.splits[i].id + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryData.splits[i].base_name + '</span><span class="split-slider-item-distance">' + liveEntry.eventLiveEntryData.splits[i].distance_from_start + '</span></div>';
+                for (var i = 0; i < liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes.length; i++) {
+
+                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-index="' + i + '" data-split-id="' + i + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[i].title + '</span></div>';
+                    // <span class="split-slider-item-distance">' + liveEntry.eventLiveEntryData.splits[i].distance_from_start + '</span></div>';
                 }
                 $('#js-split-slider').html(splitSliderItems);
 
@@ -968,7 +1029,9 @@
                 $('#js-split-slider').addClass('begin');
                 $('#split-select').on('change', function () {
                     var targetId = $( this ).val();
+                    liveEntry.currentStationIndex = targetId;
                     liveEntry.splitSlider.changeSplitSlider(targetId);
+                    liveEntry.createTimeFields();
                 });
             },
 
@@ -1001,7 +1064,7 @@
                 setTimeout(function () {
                     $('#js-split-slider').addClass('animate');
                     liveEntry.splitSlider.setSplitSlider(selectedItemId);
-                    liveEntry.currentSplitId = splitId;
+                    // liveEntry.currentStationIndex = splitId;
                     liveEntry.liveEntryForm.fetchEffortData();
                     var timeout = $('#js-split-slider').data( 'timeout' );
                     if ( timeout !== null ) {
@@ -1014,7 +1077,6 @@
                     $('#js-split-slider').data( 'timeout', timeout );
                 }, 1);
             },
-
             /**
              * Sets the Split Slider to the specified Split index
              *
@@ -1066,7 +1128,7 @@
     }; // END liveEntry
 
     document.addEventListener("turbolinks:load", function () {
-        if (Rails.$('.events.live_entry')[0] === document.body) {
+        if (Rails.$('.event_groups.live_entry')[0] === document.body) {
             liveEntry.init();
         }
     });

@@ -710,7 +710,7 @@
     window._rails_assets.dotCheckered = "<%= asset_path( 'icons/dot-checkered.svg' ) %>";
     window._rails_assets.marker = "<%= asset_path( 'icons/green.svg' ) %>";
 </script>
-<div id="event-app" data-slug="<%= @event ? @event.slug : params[:slug] %>">
+<div id="event-app" data-id="<%= @event&.id %>">
   <div class="container-fluid header">
     <div class="container">
       <h2>

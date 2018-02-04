@@ -1,66 +1,5 @@
 (function ($) {
 
-    var api = JSONAPI( '/api/v1/' );
-    api.define( 'eventGroups', {
-        url: 'event_groups',
-        attributes: {
-            slug: String,
-            name: String,
-        },
-        includes: [ 'events', 'events.efforts', 'events.splits' ],
-        relationships: {
-            events: ['events'],
-        }
-    });
-    api.define( 'splits', {
-        attributes: {
-            baseName: String,
-            distanceFromStart: { type: Number, default: 0 },
-            vertGainFromStart: { type: Number, default: 0 },
-            vertLossFromStart: { type: Number, default: 0 },
-            kind: { type: String, default: 'intermediate' },
-            nameExtensions: Array,
-            description: String,
-            latitude: Number,
-            longitude: Number,
-            elevation: Number,
-        }
-    });
-    api.define( 'efforts', {
-        attributes: {
-            firstName: String,
-            lastName: String,
-            personId: Number,
-            bibNumber: String,
-            fullName: String,
-            gender: String,
-            birthdate: String,
-            phone: String,
-            email: String,
-            age: Number,
-            city: String,
-            stateCode: String,
-            countryCode: String,
-            beaconUrl: String,
-            concealed: { type: Boolean, default: true },
-            startOffset: { type: Number, default: 0 },
-        }
-    });
-    api.define( 'events', {
-        slug: 'slug',
-        attributes: {
-            name: { type: String, default: '' },
-            concealed: { type: Boolean, default: true },
-            laps: { type: Boolean, default: false },
-            lapsRequired: { type: Number, default: 1 },
-            slug: String
-        },
-        relationships: {
-            efforts: ['efforts'],
-            splits: ['splits'],
-        }
-    });
-
     /**
      * UI object for the live event view
      *
@@ -69,7 +8,7 @@
 
 
         /**
-         * Stores the ID for the current event
+         * Stores the ID for the current event_group
          * this is pulled from the url and dumped on the page
          * then stored in this variable
          *
@@ -99,7 +38,7 @@
                     liveEntry.timeRowsTable.init();
                     liveEntry.splitSlider.init();
                     liveEntry.pusher.init();
-                    liveEntry.efforts = response.included
+                    liveEntry.bibEventMap = response.included
                         .filter(function(current){
                             return current.type==='efforts';
                         })
@@ -109,9 +48,33 @@
                             newObj['eventId'] = current.attributes.eventId;
                             return newObj;
                         });
-                    // return api.find('eventGroups', liveEntry.eventLiveEntryData.eventGroupId);
-                    return;
+
+                    liveEntry.bibEventMap = {};
+
+                    response.included
+                        .filter(function(current){
+                            return current.type==='efforts';
+                        }).forEach(n => {
+                            liveEntry.bibEventMap[n.attributes.bibNumber] = n.attributes.eventId;
+                        });
+
+                    //{100: 57, 131: 56...}
+
                 });
+        },
+
+        splitsAttributes: function () {
+          return liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes
+        },
+
+        eventIdFromBib: function(bibNumber) {
+            if (typeof liveEntry.bibEventMap !== 'undefined' && bibNumber !== '') {
+                return liveEntry.bibEventMap[bibNumber]
+            }
+
+            else {
+                return null
+            }
         },
 
         /**
@@ -291,7 +254,6 @@
                 } else {
                     return true;
                 }
-                ;
             },
         },
         /**
@@ -321,10 +283,12 @@
                 // Populate select list with event splits
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
-                for (var i = 0; i < liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes.length; i++) {
-                    splitItems += '<option value="' + i + '">';
-                    splitItems += liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[i].title + '</option>';
-                    // splitItems += '<option value="' + liveEntry.eventLiveEntryData.splits[i].id + '" data-index="' + i + '" data-sub-split-in="' + liveEntry.eventLiveEntryData.splits[i].sub_split_in + '" data-sub-split-out="' + liveEntry.eventLiveEntryData.splits[i].sub_split_out + '" >' + liveEntry.eventLiveEntryData.splits[i].base_name + '</option>';
+                for (var i = 0; i < liveEntry.splitsAttributes().length; i++) {
+                    let subSplitIn = liveEntry.splitsAttributes()[i].entries.reduce((p, c) => p || c.subSplitKind === 'in', false);
+                    let subSplitOut = liveEntry.splitsAttributes()[i].entries.reduce((p, c) => p || c.subSplitKind === 'out', false);
+                    splitItems += '<option data-sub-split-in="'+ subSplitIn +'" data-sub-split-out="'+ subSplitOut +'" value="' + i + '">';
+                    splitItems += liveEntry.splitsAttributes()[i].title + '</option>';
+
                 }
                 $select.html(splitItems);
                 // Syncronize Select with splitId
@@ -468,17 +432,11 @@
                 liveEntry.liveEntryForm.lastBib = bibNumber;
                 liveEntry.liveEntryForm.lastSplit = liveEntry.currentStationIndex;
 
-                var currentEventId = null;
-                if (typeof liveEntry.efforts !== 'undefined' && bibNumber !== '') {
-                    var currentEventIdObj = liveEntry.efforts.find(function(element) {
-                        return element.bibNumber === parseInt(bibNumber, 10)
-                    });
-                    currentEventId = currentEventIdObj.eventId;
-                }
+                var currentEventId = liveEntry.eventIdFromBib(bibNumber);
 
                 // This is the splitEntry data corresponding to the selected AidStation
                 // Looks like: 
-                currentSplitEntries = liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[liveEntry.currentStationIndex].entries;
+                currentSplitEntries = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries;
 
                 // Each subsplit populates one item in the timeData array to be sent to the server
                 // timeData: [{splitId: x, time: '12:34', subSplitKind: 'in', lap: 1}, {splitId: x, time: '12:34', subSplitKind: 'out', lap: 1}]
@@ -549,11 +507,11 @@
                 var thisTimeRow = {};
                 thisTimeRow.liveBib = $('#js-live-bib').val();
                 thisTimeRow.lap = $('#js-lap-number').val();
-                thisTimeRow.eventId = liveEntry.currentEventGroupId;
                 thisTimeRow.splitId = $('#split-select').val();
                 thisTimeRow.splitName = $('#split-select option:selected').html();
                 thisTimeRow.effortName = $('#js-effort-name').html();
                 thisTimeRow.bibNumber = $('#js-bib-number').val();
+                thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber);
                 thisTimeRow.timeIn = $('#js-time-in:not(:disabled)').val() || '';
                 thisTimeRow.timeOut = $('#js-time-out:not(:disabled)').val() || '';
                 thisTimeRow.pacerIn = $('#js-pacer-in:not(:disabled)').prop('checked') || false;
@@ -771,7 +729,8 @@
                 var trHtml = '\
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '"\
                         data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
-                        data-live-time-id-out="' + timeRow.liveTimeIdOut +'">\
+                        data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
+                        data-event-id="'+ timeRow.eventId +'"\>\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
                         <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
@@ -989,10 +948,10 @@
         createTimeFields: function(){
 
             // Generate time fields
-            var entries = liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[liveEntry.currentStationIndex].entries;
+            var entries = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries;
             for (var i = 0; i < entries.length; i++) {
                 var field = $('.js-time-field-template').clone();
-                field.find('.js-time-label').innerText = liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[liveEntry.currentStationIndex].entries[i].label;
+                field.find('.js-time-label').innerText = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries[i].label;
                 field.removeClass('js-time-field-template');
                 $('#js-time-fields').append(field);
             }
@@ -1016,9 +975,9 @@
             buildSplitSlider: function () {
                 // Inject initial html
                 var splitSliderItems = '';
-                for (var i = 0; i < liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes.length; i++) {
+                for (var i = 0; i < liveEntry.splitsAttributes().length; i++) {
 
-                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-index="' + i + '" data-split-id="' + i + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes[i].title + '</span></div>';
+                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-index="' + i + '" data-split-id="' + i + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.splitsAttributes()[i].title + '</span></div>';
                     // <span class="split-slider-item-distance">' + liveEntry.eventLiveEntryData.splits[i].distance_from_start + '</span></div>';
                 }
                 $('#js-split-slider').html(splitSliderItems);

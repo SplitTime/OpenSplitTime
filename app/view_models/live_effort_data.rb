@@ -21,6 +21,7 @@ class LiveEffortData
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @indexed_existing_split_times = ordered_existing_split_times.index_by(&:time_point)
     @new_split_times = {}
+    transform_time_data_param
     create_split_times
     assign_stopped_here
     fill_with_null_split_times
@@ -164,6 +165,17 @@ class LiveEffortData
   # by preventing Interactors::SetEffortStatus from rechecking the status of good times
   def confirmed_good_split_times
     ordered_existing_split_times.dup.each { |st| st.data_status = :confirmed if st.good? }
+  end
+  
+  def transform_time_data_param
+    time_data = params[:time_data].values
+    return unless time_data.present?
+    params[:split_id] = time_data.first[:split_id]
+    params[:lap] = time_data.first[:lap]
+    time_in_data = time_data.find { |row| row[:sub_split_kind] == 'in' }
+    time_out_data = time_data.find { |row| row[:sub_split_kind] == 'out' }
+    params[:time_in] = time_in_data && time_in_data[:time]
+    params[:time_out] = time_out_data && time_out_data[:time]
   end
 
   def create_split_times

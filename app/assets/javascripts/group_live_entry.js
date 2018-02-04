@@ -411,20 +411,22 @@
                 liveEntry.liveEntryForm.lastBib = bibNumber;
                 liveEntry.liveEntryForm.lastSplit = liveEntry.currentStationIndex;
 
-                var currentEventId = liveEntry.eventIdFromBib(bibNumber);
+                let eventId = liveEntry.eventIdFromBib(bibNumber);
 
                 // This is the splitEntry data corresponding to the selected AidStation
-                // Looks like: 
-                currentSplitEntries = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries;
+                // Looks like: {"title": "Molas Pass (Aid1)",
+                //              "entries": [{"eventSplitIds": {"56": 206, "57": 218}, "subSplitKind": "in","label": "Molas Pass (Aid1) In"},
+                //                          {"eventSplitIds": {"56": 206, "57": 218}, "subSplitKind": "out", "label": "Molas Pass (Aid1) Out"}]}
+                let splitEntries = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries;
 
                 // Each subsplit populates one item in the timeData array to be sent to the server
                 // timeData: [{splitId: x, time: '12:34', subSplitKind: 'in', lap: 1}, {splitId: x, time: '12:34', subSplitKind: 'out', lap: 1}]
-                timeData = currentSplitEntries.map(function(eachVal) {
+                timeData = splitEntries.map(function(eachVal) {
                     var newObj = {};
                     newObj.subSplitKind = eachVal.subSplitKind;
                     newObj.lap = $('#js-lap-number').val();
-                    // splitId defaults to null if no bibNumber was entered
-                    newObj.splitId = currentEventId !== null ? eachVal.eventSplitIds[currentEventId] : null;
+                    // splitId defaults to null if no bibNumber was entered or bibNumber was not found
+                    newObj.splitId = eventId !== null ? eachVal.eventSplitIds[eventId] : null;
                     return newObj;
                 });
                 timeData.forEach(function(el, index) {
@@ -442,10 +444,10 @@
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-                if (typeof currentEventId === 'undefined' || currentEventId === null) {
+                if (typeof eventId === 'undefined' || eventId === null) {
                     return $.Deferred().resolve(); // No eventId
                 }
-                return $.get('/api/v1/events/' + currentEventId + '/live_effort_data', data, function (response) {
+                return $.get('/api/v1/events/' + eventId + '/live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
                     $('#js-effort-last-reported').html( response.reportText );
@@ -775,7 +777,7 @@
                 for(let eventId in eventsObj) {
                     let data = {timeRows: eventsObj[eventId]};
                     $.post('/api/v1/events/' + eventId + '/set_times_data', data, function (response) {
-                        liveEntry.timeRowsTable.removeTimeRows(timeRows);
+                        liveEntry.timeRowsTable.removeTimeRows(tableNodes);
                         liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
                         for (var i = 0; i < response.returnedRows.length; i++) {
                             var timeRow = response.returnedRows[i];

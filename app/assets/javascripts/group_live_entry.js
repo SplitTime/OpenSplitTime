@@ -38,28 +38,14 @@
                     liveEntry.timeRowsTable.init();
                     liveEntry.splitSlider.init();
                     liveEntry.pusher.init();
-                    liveEntry.bibEventMap = response.included
-                        .filter(function(current){
-                            return current.type==='efforts';
-                        })
-                        .map(function(current) {
-                            var newObj = {};
-                            newObj['bibNumber'] = current.attributes.bibNumber;
-                            newObj['eventId'] = current.attributes.eventId;
-                            return newObj;
-                        });
-
                     liveEntry.bibEventMap = {};
 
                     response.included
                         .filter(function(current){
-                            return current.type==='efforts';
+                            return current.type === 'efforts';
                         }).forEach(n => {
                             liveEntry.bibEventMap[n.attributes.bibNumber] = n.attributes.eventId;
                         });
-
-                    //{100: 57, 131: 56...}
-
                 });
         },
 
@@ -70,9 +56,7 @@
         eventIdFromBib: function(bibNumber) {
             if (typeof liveEntry.bibEventMap !== 'undefined' && bibNumber !== '') {
                 return liveEntry.bibEventMap[bibNumber]
-            }
-
-            else {
+            } else {
                 return null
             }
         },
@@ -86,15 +70,7 @@
 
             // Sets the currentEventGroupId once
             liveEntry.currentEventGroupId = $('#js-event-group-id').data('event-group-id');
-            liveEntry.getEventLiveEntryData().done(function (eventGroup) {
-                // debugger;
-                // liveEntry.timeRowsCache.init();
-                // liveEntry.header.init();
-                // liveEntry.liveEntryForm.init();
-                // liveEntry.timeRowsTable.init();
-                // liveEntry.splitSlider.init();
-                // liveEntry.pusher.init();
-            });
+            liveEntry.getEventLiveEntryData();
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
@@ -122,7 +98,6 @@
                 channel.bind('pusher:subscription_succeeded', function() {
                     // Force the server to trigger a push for initial display
                     liveEntry.triggerLiveTimesPush();
-                    console.log(' SUBSCRIBED - Triggering...');
                 });
                 channel.bind('update', function (data) {
                     // New value pushed from the server
@@ -139,8 +114,7 @@
                 if (count > 0) {
                     $('#js-new-times-alert').fadeTo(500, 1);
                     text = count;
-                }
-                else {
+                } else {
                     $('#js-new-times-alert').fadeTo(500, 0, function() {$('#js-new-times-alert').hide()});
                 }
                 $('#js-pull-times-count').text(text);
@@ -503,7 +477,6 @@
                     return null;
                 }
 
-                // Build up the timeRow
                 var thisTimeRow = {};
                 thisTimeRow.liveBib = $('#js-live-bib').val();
                 thisTimeRow.lap = $('#js-lap-number').val();
@@ -771,15 +744,29 @@
                 });
             },
 
-            submitTimeRows: function(timeRows) {
+            submitTimeRows: function(tableNodes) {
                 if ( liveEntry.timeRowsTable.busy ) return;
                 liveEntry.timeRowsTable.busy = true;
-                var data = {timeRows:[]}
-                $.each(timeRows, function(index) {
-                    var $row = $(this).closest('tr');
-                    var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
-                    data.timeRows.push(timeRow);
+
+                let timeRows = [];
+
+                $.each(tableNodes, function() {
+                    let $row = $(this).closest('tr');
+                    let timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    timeRows.push(timeRow);
                 });
+
+                let eventsObj = {};
+
+                for(let row of timeRows){
+                    let eventId = row.eventId;
+                    if(eventsObj[eventId]) {
+                        eventsObj[eventId].push(row);
+                    } else {
+                        eventsObj[eventId] = [row];
+                    }
+                }
+
                 $.post('/api/v1/events/' + liveEntry.currentEventGroupId + '/set_times_data', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(timeRows);
                     liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
@@ -865,7 +852,7 @@
                 });
 
                 $(document).on('click', '.js-submit-effort', function () {
-                    liveEntry.timeRowsTable.submitTimeRows( $(this) );
+                    liveEntry.timeRowsTable.submitTimeRows( [$(this).closest('tr')] );
                 });
 
 

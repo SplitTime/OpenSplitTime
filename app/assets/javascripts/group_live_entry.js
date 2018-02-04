@@ -61,6 +61,11 @@
             }
         },
 
+        getSplitId: function (eventId, splitIndex) {
+            let id = String(eventId);
+            return liveEntry.splitsAttributes()[splitIndex].entries[0].eventSplitIds[id]
+        },
+
         /**
          * This kicks off the full UI
          *
@@ -480,11 +485,11 @@
                 var thisTimeRow = {};
                 thisTimeRow.liveBib = $('#js-live-bib').val();
                 thisTimeRow.lap = $('#js-lap-number').val();
-                thisTimeRow.splitId = $('#split-select').val();
                 thisTimeRow.splitName = $('#split-select option:selected').html();
                 thisTimeRow.effortName = $('#js-effort-name').html();
                 thisTimeRow.bibNumber = $('#js-bib-number').val();
                 thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber);
+                thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, $('#split-select').val());
                 thisTimeRow.timeIn = $('#js-time-in:not(:disabled)').val() || '';
                 thisTimeRow.timeOut = $('#js-time-out:not(:disabled)').val() || '';
                 thisTimeRow.pacerIn = $('#js-pacer-in:not(:disabled)').prop('checked') || false;
@@ -767,23 +772,26 @@
                     }
                 }
 
-                $.post('/api/v1/events/' + liveEntry.currentEventGroupId + '/set_times_data', data, function (response) {
-                    liveEntry.timeRowsTable.removeTimeRows(timeRows);
-                    liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
-                    for (var i = 0; i < response.returnedRows.length; i++) {
-                        var timeRow = response.returnedRows[i];
-                        timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+                for(let eventId in eventsObj) {
+                    let data = {timeRows: eventsObj[eventId]};
+                    $.post('/api/v1/events/' + eventId + '/set_times_data', data, function (response) {
+                        liveEntry.timeRowsTable.removeTimeRows(timeRows);
+                        liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
+                        for (var i = 0; i < response.returnedRows.length; i++) {
+                            var timeRow = response.returnedRows[i];
+                            timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
-                        var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                        if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
-                            storedTimeRows.push(timeRow);
-                            liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                            liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
+                                storedTimeRows.push(timeRow);
+                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                                liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                            }
                         }
-                    }
-                }).always( function() {
-                    liveEntry.timeRowsTable.busy = false;
-                });
+                    }).always( function() {
+                        liveEntry.timeRowsTable.busy = false;
+                    });
+                }
             },
 
             /**

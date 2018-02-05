@@ -372,13 +372,14 @@
 
                 $('#js-html-modal').on('show.bs.modal', function(e) {
                     $(this).find('modal-body').html('');
-                    var $source = $(e.relatedTarget);
-                    var $body = $(this).find('.js-modal-content');
+                    let $source = $(e.relatedTarget);
+                    let $body = $(this).find('.js-modal-content');
                     if ($source.attr('data-effort-id')) {
-                        var data = {
+                        let eventId = $source.attr('data-event-id');
+                        let data = {
                             'effortId': $source.attr('data-effort-id')
-                        }
-                        $.get('/live/events/' + liveEntry.currentEventGroupId + '/effort_table', data)
+                        };
+                        $.get('/live/events/' + eventId + '/effort_table', data)
                             .done( function(a,b,c) {
                                 $body.html(a);
                             });
@@ -450,6 +451,7 @@
                 return $.get('/api/v1/events/' + eventId + '/live_effort_data', data, function (response) {
                     $('#js-live-bib').val('true');
                     $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
+                    $('#js-effort-name').html( response.effortName ).attr('data-event-id', eventId );
                     $('#js-effort-last-reported').html( response.reportText );
                     $('#js-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );

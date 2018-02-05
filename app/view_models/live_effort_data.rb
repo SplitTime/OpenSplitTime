@@ -168,7 +168,7 @@ class LiveEffortData
   end
   
   def transform_time_data_param
-    time_data = params[:time_data].values
+    time_data = params[:time_data]&.values
     return unless time_data.present?
     params[:split_id] = time_data.first[:split_id]
     params[:lap] = time_data.first[:lap]

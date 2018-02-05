@@ -2,18 +2,27 @@ require 'rails_helper'
 
 RSpec.describe 'Group live entry app flow', type: :system, js: true do
   let(:user) { create(:user) }
-  let(:course_1) { create(:course_with_standard_splits, :with_description, created_by: user.id) }
+  let(:course_1) { create(:course, :with_description, created_by: user.id) }
   let(:course_2) { create(:course, :with_description, created_by: user.id) }
+  let(:start_split_1) { create(:start_split, base_name: 'Start') }
+  let(:aid_1_split_1) { create(:split, base_name: 'Molas Pass', distance_from_start: 8000) }
+  let(:aid_2_split_1) { create(:split, base_name: 'Rolling Pass', distance_from_start: 15000) }
+  let(:finish_split_1) { create(:finish_split, base_name: 'Finish', distance_from_start: 20000) }
+  let(:splits_1) { [start_split_1, aid_1_split_1, aid_2_split_1, finish_split_1] }
+  let(:start_split_2) { create(:start_split, base_name: 'Start') }
+  let(:aid_1_split_2) { create(:split, base_name: 'Rolling Pass', distance_from_start: 6000) }
+  let(:finish_split_2) { create(:finish_split, base_name: 'Finish', distance_from_start: 10000) }
+  let(:splits_2) { [start_split_2, aid_1_split_2, finish_split_2] }
   let(:organization) { create(:organization, created_by: user.id) }
   let(:event_group) { create(:event_group, organization: organization, available_live: true) }
   before do
-    course_1.reload
+    course_1.splits << splits_1
     event_1.splits << course_1.splits
-    course_2.reload
+    course_2.splits << splits_2
     event_2.splits << course_2.splits
   end
-  let(:efforts_1) { create_list(:effort, 2, event: event_1) }
-  let(:efforts_2) { create_list(:effort, 2, event: event_2) }
+  let(:efforts_1) { create_list(:effort, 2, :with_bib_number, event: event_1) }
+  let(:efforts_2) { create_list(:effort, 2, :with_bib_number, event: event_2) }
   let(:ordered_splits_1) { event_1.ordered_splits }
 
   let(:add_efforts_form) { find_by_id('js-add-effort-form') }
@@ -22,6 +31,7 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
   let(:bib_number_field) { 'js-bib-number' }
   let(:time_in_field) { 'js-time-in' }
   let(:time_out_field) { 'js-time-out' }
+  let(:split_select) { find_by_id('split-select') }
   let(:add_button) { find_by_id('js-add-to-cache') }
   let(:submit_all_button) { find_by_id('js-submit-all-efforts') }
   let(:discard_all_button) { find_by_id('js-group-delete-all-efforts') }
@@ -212,12 +222,12 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
     expect(page).to have_content(event_group.name)
     expect(page).to have_content('Live Data Entry')
     verify_workspace_is_empty
-    expect(add_efforts_form).to have_select('split-select')
     expect(add_efforts_form).to have_field('js-bib-number')
     expect(add_efforts_form).to have_field('js-time-in', disabled: false)
     expect(add_efforts_form).to have_field('js-time-out', disabled: true)
     expect(add_efforts_form).to have_field('js-pacer-in', checked: false, disabled: false)
     expect(add_efforts_form).to have_field('js-pacer-out', checked: false, disabled: true)
+    expect(add_efforts_form).to have_select('split-select', options: ['Start', 'Molas Pass', 'Rolling Pass', 'Finish'])
   end
 
   def submit_all_efforts

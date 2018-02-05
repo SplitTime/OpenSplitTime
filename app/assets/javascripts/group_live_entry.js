@@ -635,7 +635,7 @@
                 });
 
                 // Wrap search field with clear button
-                $('#js-provisional-data-table_filter input')
+                $('#js-group-local-workspace-table_filter input')
                     .wrap('<div class="form-group form-group-sm has-feedback"></div>')
                     .on('change keyup', function() {
                         var value = $(this).val() || '';
@@ -645,7 +645,7 @@
                             $('#js-filter-clear').hide();
                         }
                     });
-                $('#js-provisional-data-table_filter .form-group').append(
+                $('#js-group-local-workspace-table_filter .form-group').append(
                     '<span id="js-filter-clear" class="glyphicon glyphicon-remove dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
                 );
                 $('#js-filter-clear').on('click', function() {

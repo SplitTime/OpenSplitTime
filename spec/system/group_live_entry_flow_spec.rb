@@ -25,15 +25,14 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
   let(:efforts_2) { create_list(:effort, 2, :with_bib_number, event: event_2) }
   let(:ordered_splits_1) { event_1.ordered_splits }
 
-  let(:add_efforts_form) { find_by_id('js-add-effort-form') }
+  let(:add_efforts_form) { find_by_id('js-group-add-effort-form') }
   let(:local_workspace) { find_by_id('js-provisional-data-table_wrapper') }
 
-  let(:bib_number_field) { 'js-bib-number' }
-  let(:time_in_field) { 'js-time-in' }
-  let(:time_out_field) { 'js-time-out' }
-  let(:split_select) { find_by_id('split-select') }
-  let(:add_button) { find_by_id('js-add-to-cache') }
-  let(:submit_all_button) { find_by_id('js-submit-all-efforts') }
+  let(:bib_number_field) { 'js-group-bib-number' }
+  let(:time_in_field) { 'js-group-time-in' }
+  let(:time_out_field) { 'js-group-time-out' }
+  let(:add_button) { find_by_id('js-group-add-to-cache') }
+  let(:submit_all_button) { find_by_id('js-group-submit-all-efforts') }
   let(:discard_all_button) { find_by_id('js-group-delete-all-efforts') }
 
   context 'For single-lap events' do
@@ -43,7 +42,7 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
     context 'for previously unstarted efforts' do
       xscenario 'Add and submit times' do
         login_and_check_setup
-        expect(page).not_to have_field('js-lap-number')
+        expect(page).not_to have_field('js-group-lap-number')
 
         expect(Effort.all.map(&:split_times)).to all be_empty
 
@@ -90,13 +89,13 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
       xscenario 'Add and submit times' do
         login_and_check_setup
-        expect(page).not_to have_field('js-lap-number')
+        expect(page).not_to have_field('js-group-lap-number')
 
         expect(efforts.first.split_times.size).to eq(2)
         expect(efforts.second.split_times.size).to eq(2)
         expect(efforts.third.split_times.size).to eq(2)
 
-        select ordered_splits.third.base_name, from: 'split-select'
+        select ordered_splits.third.base_name, from: 'js-group-station-select'
 
         fill_in bib_number_field, with: efforts.first.bib_number
         fill_in time_in_field, with: '10:45:45'
@@ -128,12 +127,12 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
       xscenario 'Add and discard times' do
         login_and_check_setup
-        expect(page).not_to have_field('js-lap-number')
+        expect(page).not_to have_field('js-group-lap-number')
 
         expect(efforts.first.split_times.size).to eq(2)
         expect(efforts.second.split_times.size).to eq(2)
 
-        select ordered_splits.third.base_name, from: 'split-select'
+        select ordered_splits.third.base_name, from: 'js-group-station-select'
 
         fill_in bib_number_field, with: efforts.first.bib_number
         fill_in time_in_field, with: '08:45:45'
@@ -161,7 +160,7 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
       xscenario 'Change a start split_time forwards and backwards' do
         login_and_check_setup
-        expect(page).not_to have_field('js-lap-number')
+        expect(page).not_to have_field('js-group-lap-number')
 
         effort = efforts.first
         ordered_split_times = effort.ordered_split_times
@@ -171,7 +170,7 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
         expect(ordered_split_times.first.military_time).to eq('08:00:00')
         expect(ordered_split_times.second.time_from_start).to eq(3600)
 
-        select ordered_splits.first.base_name, from: 'split-select'
+        select ordered_splits.first.base_name, from: 'js-group-station-select'
 
         fill_in bib_number_field, with: efforts.first.bib_number
         fill_in time_in_field, with: '08:15:00'
@@ -222,12 +221,12 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
     expect(page).to have_content(event_group.name)
     expect(page).to have_content('Live Data Entry')
     verify_workspace_is_empty
-    expect(add_efforts_form).to have_field('js-bib-number')
-    expect(add_efforts_form).to have_field('js-time-in', disabled: false)
-    expect(add_efforts_form).to have_field('js-time-out', disabled: true)
-    expect(add_efforts_form).to have_field('js-pacer-in', checked: false, disabled: false)
-    expect(add_efforts_form).to have_field('js-pacer-out', checked: false, disabled: true)
-    expect(add_efforts_form).to have_select('split-select', options: ['Start', 'Molas Pass', 'Rolling Pass', 'Finish'])
+    expect(add_efforts_form).to have_field('js-group-bib-number')
+    expect(add_efforts_form).to have_field('js-group-time-in', disabled: false)
+    expect(add_efforts_form).to have_field('js-group-time-out', disabled: true)
+    expect(add_efforts_form).to have_field('js-group-pacer-in', checked: false, disabled: false)
+    expect(add_efforts_form).to have_field('js-group-pacer-out', checked: false, disabled: true)
+    expect(add_efforts_form).to have_select('js-group-station-select', options: ['Start', 'Molas Pass', 'Rolling Pass', 'Finish'])
   end
 
   def submit_all_efforts

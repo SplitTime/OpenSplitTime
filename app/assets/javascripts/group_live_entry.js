@@ -76,9 +76,9 @@
             // Sets the currentEventGroupId once
             liveEntry.currentEventGroupId = $('#js-event-group-id').data('event-group-id');
             liveEntry.getEventLiveEntryData();
-            liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
-            liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
-            liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
+            liveEntry.importLiveWarning = $('#js-group-import-live-warning').hide().detach();
+            liveEntry.importLiveError = $('#js-group-import-live-error').hide().detach();
+            liveEntry.newTimesAlert = $('#js-group-new-times-alert').hide();
             liveEntry.PopulatingFromRow = false;
             
         },
@@ -86,7 +86,7 @@
         pusher: {
             init: function() {
                 // Listen to push notifications
-                var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
+                var liveTimesPusherKey = $('#js-group-live-times-pusher').data('key');
                 var pusher = new Pusher(liveTimesPusherKey);
                 var channel = {};
                 if (typeof liveEntry.eventLiveEntryData === 'undefined') {
@@ -117,12 +117,12 @@
             displayNewCount: function(count) {
                 var text = '';
                 if (count > 0) {
-                    $('#js-new-times-alert').fadeTo(500, 1);
+                    $('#js-group-new-times-alert').fadeTo(500, 1);
                     text = count;
                 } else {
-                    $('#js-new-times-alert').fadeTo(500, 0, function() {$('#js-new-times-alert').hide()});
+                    $('#js-group-new-times-alert').fadeTo(500, 0, function() {$('#js-group-new-times-alert').hide()});
                 }
-                $('#js-pull-times-count').text(text);
+                $('#js-group-pull-times-count').text(text);
             }
         },
 
@@ -258,7 +258,7 @@
              *
              */
             buildSplitSelect: function () {
-                var $select = $('#split-select');
+                var $select = $('#js-group-station-select');
                 // Populate select list with event splits
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
                 var splitItems = '';
@@ -291,19 +291,19 @@
                     showMaskOnHover: false,
                 };
 
-                $('#js-add-effort-form [data-toggle="tooltip"]').tooltip({container: 'body'});
+                $('#js-group-add-effort-form [data-toggle="tooltip"]').tooltip({container: 'body'});
 
-                $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
-                $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
-                $('#js-bib-number').inputmask("Regex", {regex: "[0-9|*]{0,6}"});
-                $('#js-lap-number').inputmask("integer", { min: 1, max: liveEntry.eventLiveEntryData.maximumLaps || undefined });
+                $('#js-group-time-in').inputmask("hh:mm:ss", maskOptions);
+                $('#js-group-time-out').inputmask("hh:mm:ss", maskOptions);
+                $('#js-group-bib-number').inputmask("Regex", {regex: "[0-9|*]{0,6}"});
+                $('#js-group-lap-number').inputmask("integer", { min: 1, max: liveEntry.eventLiveEntryData.maximumLaps || undefined });
 
                 // Enabled / Disable Laps field
-                $('#js-bib-number').closest('div').toggleClass('col-xs-3', liveEntry.eventLiveEntryData.multiLap || false);
+                $('#js-group-bib-number').closest('div').toggleClass('col-xs-3', liveEntry.eventLiveEntryData.multiLap || false);
                liveEntry.eventLiveEntryData.multiLap && $('.lap-disabled').removeClass('lap-disabled');
 
                 // Styles the Dropped Here button
-                $('#js-dropped').on('change', function (event) {
+                $('#js-group-dropped').on('change', function (event) {
                     var $root = $(this).parent();
                     if ($(this).prop('checked')){
                         $root.addClass('btn-warning').removeClass('btn-default');
@@ -315,19 +315,19 @@
                 });
 
                 // Clears the live entry form when the clear button is clicked
-                $('#js-clear-entry-form').on('click', function (event) {
+                $('#js-group-discard-entry-form').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.liveEntryForm.clearSplitsData();
-                    $('#js-bib-number').focus();
+                    $('#js-group-bib-number').focus();
                     return false;
                 });
 
                 // Listen for keydown on bibNumber
-                $('#js-bib-number').on('blur', function (event) {
+                $('#js-group-bib-number').on('blur', function (event) {
                     liveEntry.liveEntryForm.fetchEffortData();
                 });
 
-                $('#js-time-in').on('blur', function (event) {
+                $('#js-group-time-in').on('blur', function (event) {
                     var timeIn = $(this).val();
                     timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
                     if (timeIn === false) {
@@ -338,7 +338,7 @@
                     }
                 });
 
-                $('#js-time-out').on('blur', function (event) {
+                $('#js-group-time-out').on('blur', function (event) {
                     var timeIn = $(this).val();
                     timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
                     if (timeIn === false) {
@@ -349,7 +349,7 @@
                     }
                 });
 
-                $('#js-rapid-time-in,#js-rapid-time-out').on('click', function (event) {
+                $('#js-group-rapid-time-in,#js-group-rapid-time-out').on('click', function (event) {
                     if ( $( this ).siblings( 'input:disabled' ).length ) return;
                     var rapid = $(this).closest('.form-group').toggleClass( 'has-highlight' ).hasClass( 'has-highlight' );
                     $(this).closest('.form-group').toggleClass( 'rapid-mode', rapid );
@@ -358,19 +358,19 @@
                 // Enable / Disable Rapid Entry Mode
                 $('#js-rapid-mode').on('change', function (event) {
                     liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
-                    $('#js-time-in, #js-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
+                    $('#js-group-time-in, #js-group-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
                 }).change();
 
                 // Listen for keydown in pacer-in and pacer-out.
                 // Enter checks the box, tab moves to next field.
 
-                $('#js-dropped-button').on('click', function (event) {
+                $('#js-group-dropped-button').on('click', function (event) {
                     event.preventDefault();
-                    $('#js-dropped').prop('checked', !$('#js-dropped').prop('checked')).change();
+                    $('#js-group-dropped').prop('checked', !$('#js-group-dropped').prop('checked')).change();
                     return false;
                 });
 
-                $('#js-html-modal').on('show.bs.modal', function(e) {
+                $('#js-group-html-modal').on('show.bs.modal', function(e) {
                     $(this).find('modal-body').html('');
                     let $source = $(e.relatedTarget);
                     let $body = $(this).find('.js-modal-content');
@@ -406,7 +406,7 @@
                     return $.Deferred().resolve();
                 }
                 liveEntry.liveEntryForm.prefillCurrentTime();
-                var bibNumber = $('#js-bib-number').val();
+                var bibNumber = $('#js-group-bib-number').val();
                 var bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
                 var splitChanged = ( liveEntry.currentStationIndex != liveEntry.liveEntryForm.lastSplit );
                 liveEntry.liveEntryForm.lastBib = bibNumber;
@@ -425,7 +425,7 @@
                 timeData = splitEntries.map(function(eachVal) {
                     var newObj = {};
                     newObj.subSplitKind = eachVal.subSplitKind;
-                    newObj.lap = $('#js-lap-number').val();
+                    newObj.lap = $('#js-group-lap-number').val();
                     // splitId defaults to null if no bibNumber was entered or bibNumber was not found
                     newObj.splitId = eventId !== null ? eachVal.eventSplitIds[eventId] : null;
                     return newObj;
@@ -434,8 +434,8 @@
 
                     // Use time IN for the first subsplit and time OUT for the second one, if there is one
                     // This should be updated when Group Live Entry supports variable time fields
-                    timeData[index]['time'] = index === 1 ? $('#js-time-out').val() : $('#js-time-in').val();
-                    timeData[index]['lap'] = $('#js-lap-number').val();
+                    timeData[index]['time'] = index === 1 ? $('#js-group-time-out').val() : $('#js-group-time-in').val();
+                    timeData[index]['lap'] = $('#js-group-lap-number').val();
                 });
                 var data = {
                     timeData: timeData,
@@ -449,23 +449,23 @@
                     return $.Deferred().resolve(); // No eventId
                 }
                 return $.get('/api/v1/events/' + eventId + '/live_effort_data', data, function (response) {
-                    $('#js-live-bib').val('true');
-                    $('#js-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
-                    $('#js-effort-name').html( response.effortName ).attr('data-event-id', eventId );
-                    $('#js-effort-last-reported').html( response.reportText );
-                    $('#js-prior-valid-reported').html( response.priorValidReportText );
-                    $('#js-time-prior-valid-reported').html( response.timeFromPriorValid );
-                    $('#js-time-spent').html( response.timeInAid );
-                    if ( !$('#js-lap-number').val() || bibChanged || splitChanged ) {
-                        $('#js-lap-number').val( response.expectedLap );
-                        $('#js-lap-number:focus').select();
+                    $('#js-group-live-bib').val('true');
+                    $('#js-group-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
+                    $('#js-group-effort-name').html( response.effortName ).attr('data-event-id', eventId );
+                    $('#js-group-effort-last-reported').html( response.reportText );
+                    $('#js-group-prior-valid-reported').html( response.priorValidReportText );
+                    $('#js-group-time-prior-valid-reported').html( response.timeFromPriorValid );
+                    $('#js-group-time-spent').html( response.timeInAid );
+                    if ( !$('#js-group-lap-number').val() || bibChanged || splitChanged ) {
+                        $('#js-group-lap-number').val( response.expectedLap );
+                        $('#js-group-lap-number:focus').select();
                     }
 
-                    $('#js-time-in')
+                    $('#js-group-time-in')
                         .removeClass('exists null bad good questionable')
                         .addClass(response.timeInExists ? 'exists' : '')
                         .addClass(response.timeInStatus);
-                    $('#js-time-out')
+                    $('#js-group-time-out')
                         .removeClass('exists null bad good questionable')
                         .addClass(response.timeOutExists ? 'exists' : '')
                         .addClass(response.timeOutStatus);
@@ -480,47 +480,47 @@
              * @return {[type]} [description]
              */
             getTimeRow: function () {
-                if ($('#js-bib-number').val() == '' &&
-                    $('#js-time-in').val() == '' &&
-                    $('#js-time-out').val() == '') {
+                if ($('#js-group-bib-number').val() == '' &&
+                    $('#js-group-time-in').val() == '' &&
+                    $('#js-group-time-out').val() == '') {
                     return null;
                 }
 
                 var thisTimeRow = {};
-                thisTimeRow.liveBib = $('#js-live-bib').val();
-                thisTimeRow.lap = $('#js-lap-number').val();
-                thisTimeRow.splitName = $('#split-select option:selected').html();
-                thisTimeRow.effortName = $('#js-effort-name').html();
-                thisTimeRow.bibNumber = $('#js-bib-number').val();
+                thisTimeRow.liveBib = $('#js-group-live-bib').val();
+                thisTimeRow.lap = $('#js-group-lap-number').val();
+                thisTimeRow.splitName = $('#js-group-station-select option:selected').html();
+                thisTimeRow.effortName = $('#js-group-effort-name').html();
+                thisTimeRow.bibNumber = $('#js-group-bib-number').val();
                 thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber);
-                thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, $('#split-select').val());
-                thisTimeRow.timeIn = $('#js-time-in:not(:disabled)').val() || '';
-                thisTimeRow.timeOut = $('#js-time-out:not(:disabled)').val() || '';
-                thisTimeRow.pacerIn = $('#js-pacer-in:not(:disabled)').prop('checked') || false;
-                thisTimeRow.pacerOut = $('#js-pacer-out:not(:disabled)').prop('checked') || false;
-                thisTimeRow.droppedHere = $('#js-dropped').prop('checked');
+                thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, $('#js-group-station-select').val());
+                thisTimeRow.timeIn = $('#js-group-time-in:not(:disabled)').val() || '';
+                thisTimeRow.timeOut = $('#js-group-time-out:not(:disabled)').val() || '';
+                thisTimeRow.pacerIn = $('#js-group-pacer-in:not(:disabled)').prop('checked') || false;
+                thisTimeRow.pacerOut = $('#js-group-pacer-out:not(:disabled)').prop('checked') || false;
+                thisTimeRow.droppedHere = $('#js-group-dropped').prop('checked');
                 thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
                 thisTimeRow.timeOutExists = liveEntry.currentEffortData.timeOutExists;
-                thisTimeRow.liveTimeIdIn = $('#js-live-time-id-in').val() || '';
-                thisTimeRow.liveTimeIdOut = $('#js-live-time-id-out').val() || '';
+                thisTimeRow.liveTimeIdIn = $('#js-group-live-time-id-in').val() || '';
+                thisTimeRow.liveTimeIdOut = $('#js-group-live-time-id-out').val() || '';
                 return thisTimeRow;
             },
 
             loadTimeRow: function (timeRow) {
                 liveEntry.lastEffortRequest = {};
                 liveEntry.currentEffortData = timeRow;
-                $('#js-bib-number').val(timeRow.bibNumber).focus();
-                $('#js-lap-number').val(timeRow.lap);
-                $('#js-time-in').val(timeRow.timeIn);
-                $('#js-time-out').val(timeRow.timeOut);
-                $('#js-pacer-in').prop('checked', timeRow.pacerIn);
-                $('#js-pacer-out').prop('checked', timeRow.pacerOut);
-                $('#js-dropped').prop('checked', timeRow.droppedHere).change();
-                $('#js-live-time-id-in').val(timeRow.liveTimeIdIn);
-                $('#js-live-time-id-out').val(timeRow.liveTimeIdOut);
+                $('#js-group-bib-number').val(timeRow.bibNumber).focus();
+                $('#js-group-lap-number').val(timeRow.lap);
+                $('#js-group-time-in').val(timeRow.timeIn);
+                $('#js-group-time-out').val(timeRow.timeOut);
+                $('#js-group-pacer-in').prop('checked', timeRow.pacerIn);
+                $('#js-group-pacer-out').prop('checked', timeRow.pacerOut);
+                $('#js-group-dropped').prop('checked', timeRow.droppedHere).change();
+                $('#js-group-live-time-id-in').val(timeRow.liveTimeIdIn);
+                $('#js-group-live-time-id-out').val(timeRow.liveTimeIdOut);
                 liveEntry.splitSlider.changeSplitSlider(timeRow.splitId);
             },
 
@@ -529,23 +529,23 @@
              * @param  {Boolean} clearForm Determines if the form is cleared as well.
              */
             clearSplitsData: function () {
-                $('#js-effort-name').html('n/a').removeAttr('href');
-                $('#js-effort-last-reported').html('n/a')
-                $('#js-prior-valid-reported').html('n/a')
-                $('#js-time-prior-valid-reported').html('n/a');
+                $('#js-group-effort-name').html('n/a').removeAttr('href');
+                $('#js-group-effort-last-reported').html('n/a')
+                $('#js-group-prior-valid-reported').html('n/a')
+                $('#js-group-time-prior-valid-reported').html('n/a');
                 $('#js-effort-split-from').html('--:--');
-                $('#js-time-spent').html('-- minutes');
-                $('#js-time-in').removeClass('exists null bad good questionable');
-                $('#js-time-out').removeClass('exists null bad good questionable');
+                $('#js-group-time-spent').html('-- minutes');
+                $('#js-group-time-in').removeClass('exists null bad good questionable');
+                $('#js-group-time-out').removeClass('exists null bad good questionable');
                 liveEntry.lastEffortRequest = {};
-                $('#js-time-in').val('');
-                $('#js-time-out').val('');
-                $('#js-live-bib').val('');
-                $('#js-bib-number').val('');
-                $('#js-lap-number').val('');
-                $('#js-pacer-in').prop('checked', false);
-                $('#js-pacer-out').prop('checked', false);
-                $('#js-dropped').prop('checked', false).change();
+                $('#js-group-time-in').val('');
+                $('#js-group-time-out').val('');
+                $('#js-group-live-bib').val('');
+                $('#js-group-bib-number').val('');
+                $('#js-group-lap-number').val('');
+                $('#js-group-pacer-in').prop('checked', false);
+                $('#js-group-pacer-out').prop('checked', false);
+                $('#js-group-dropped').prop('checked', false).change();
                 liveEntry.liveEntryForm.fetchEffortData();
             },
 
@@ -574,12 +574,12 @@
              * Prefills the time fields with the current time
              */
             prefillCurrentTime: function() {
-                if ($('#js-bib-number').val() == '') {
-                    $('.rapid-mode #js-time-in').val('');
-                    $('.rapid-mode #js-time-out').val('');
-                } else if ($('#js-bib-number').val() != liveEntry.liveEntryForm.lastBib) {
-                    $('.rapid-mode #js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                    $('.rapid-mode #js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
+                if ($('#js-group-bib-number').val() == '') {
+                    $('.rapid-mode #js-group-time-in').val('');
+                    $('.rapid-mode #js-group-time-out').val('');
+                } else if ($('#js-group-bib-number').val() != liveEntry.liveEntryForm.lastBib) {
+                    $('.rapid-mode #js-group-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
+                    $('.rapid-mode #js-group-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
                 }
             }
         }, // END liveEntryForm form
@@ -612,7 +612,7 @@
             init: function () {
 
                 // Initiate DataTable Plugin
-                liveEntry.timeRowsTable.$dataTable = $('#js-provisional-data-table').DataTable({
+                liveEntry.timeRowsTable.$dataTable = $('#js-group-local-workspace-table').DataTable({
                     oLanguage: {
                         'sSearch': 'Filter:&nbsp;'
                     }
@@ -627,7 +627,7 @@
                 });
 
                 // Attach add listener
-                $('#js-add-to-cache').on('click', function (event) {
+                $('#js-group-add-to-cache').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.liveEntryForm.prefillCurrentTime();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
@@ -680,7 +680,7 @@
 
                     // Clear data and put focus on bibNumber field once we've collected all the data
                     liveEntry.liveEntryForm.clearSplitsData();
-                    $('#js-bib-number').focus();
+                    $('#js-group-bib-number').focus();
                 });
             },
 
@@ -714,13 +714,13 @@
                         data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
                         data-event-id="'+ timeRow.eventId +'"\>\
                         <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
-                        <td class="bib-number js-bib-number">' + timeRow.bibNumber + '</td>\
-                        <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
-                        <td class="time-in js-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
-                        <td class="time-out js-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
+                        <td class="bib-number js-group-bib-number">' + timeRow.bibNumber + '</td>\
+                        <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
+                        <td class="time-in js-group-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
+                        <td class="time-out js-group-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
-                        <td class="dropped-here js-dropped-here">' + (timeRow.droppedHere ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
-                        <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
+                        <td class="dropped-here js-group-dropped-here">' + (timeRow.droppedHere ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
+                        <td class="effort-name js-group-effort-name text-nowrap">' + timeRow.effortName + '</td>\
                         <td class="row-edit-btns">\
                             <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
                             <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
@@ -826,7 +826,7 @@
                             if ($deleteButton.hasClass('confirm')) {
                                 if (canDelete) {
                                     liveEntry.timeRowsTable.removeTimeRows(nodes);
-                                    $( '#split-select' ).focus();
+                                    $( '#js-group-station-select' ).focus();
                                 }
                                 $deleteButton.removeClass('confirm');
                                 $deleteWarning = $('#js-group-delete-all-warning').hide().detach();
@@ -874,14 +874,14 @@
                     return false;
                 });
 
-                $('#js-submit-all-efforts').on('click', function (event) {
+                $('#js-group-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     liveEntry.timeRowsTable.submitTimeRows(nodes);
                     return false;
                 });
 
-                $('#js-file-upload').fileupload({
+                $('#js-group-file-upload').fileupload({
                     dataType: 'json',
                     url: '/api/v1/events/' + liveEntry.currentEventGroupId + '/post_file_effort_data',
                     submit: function (e, data) {
@@ -898,7 +898,7 @@
                         liveEntry.timeRowsTable.busy = false;
                     }
                 });
-                $('#js-import-live-times').on('click', function (event) {
+                $('#js-group-import-live-times').on('click', function (event) {
                     event.preventDefault();
                     if (liveEntry.importAsyncBusy) {
                         return;
@@ -914,7 +914,7 @@
                             if (data.returnedRows.length === 0) {
                                 liveEntry.displayAndHideMessage(
                                     liveEntry.importLiveWarning,
-                                    '#js-import-live-warning');
+                                    '#js-group-import-live-warning');
                                 return;
                             }
                             liveEntry.populateRows(data);
@@ -926,7 +926,7 @@
                 });
             },
             importLiveError: function(obj, error) {
-                liveEntry.displayAndHideMessage(liveEntry.importLiveError, '#js-import-live-error');
+                liveEntry.displayAndHideMessage(liveEntry.importLiveError, '#js-group-import-live-error');
             }
         }, // END timeRowsTable
 
@@ -934,7 +934,7 @@
             // Fade in and fade out Bootstrap Alert
             // @param msgElement object jQuery element containing the alert
             // @param selector string jQuery selector to access the alert element
-            $('#js-live-messages').append(msgElement);
+            $('#js-group-live-messages').append(msgElement);
             msgElement.fadeTo(500, 1);
             window.setTimeout(function() {
             msgElement.fadeTo(500, 0).slideUp(500, function(){
@@ -976,16 +976,16 @@
                 var splitSliderItems = '';
                 for (var i = 0; i < liveEntry.splitsAttributes().length; i++) {
 
-                    splitSliderItems += '<div class="split-slider-item js-split-slider-item" data-index="' + i + '" data-split-id="' + i + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.splitsAttributes()[i].title + '</span></div>';
+                    splitSliderItems += '<div class="split-slider-item js-group-station-slider-item" data-index="' + i + '" data-split-id="' + i + '" ><span class="split-slider-item-dot"></span><span class="split-slider-item-name">' + liveEntry.splitsAttributes()[i].title + '</span></div>';
                     // <span class="split-slider-item-distance">' + liveEntry.eventLiveEntryData.splits[i].distance_from_start + '</span></div>';
                 }
-                $('#js-split-slider').html(splitSliderItems);
+                $('#js-group-station-slider').html(splitSliderItems);
 
                 // Set default states
-                $('.js-split-slider-item').eq(0).addClass('active middle');
-                $('.js-split-slider-item').eq(1).addClass('active end');
-                $('#js-split-slider').addClass('begin');
-                $('#split-select').on('change', function () {
+                $('.js-group-station-slider-item').eq(0).addClass('active middle');
+                $('.js-group-station-slider-item').eq(1).addClass('active end');
+                $('#js-group-station-slider').addClass('begin');
+                $('#js-group-station-select').on('change', function () {
                     var targetId = $( this ).val();
                     liveEntry.currentStationIndex = targetId;
                     liveEntry.splitSlider.changeSplitSlider(targetId);
@@ -1000,16 +1000,16 @@
              */
             changeSplitSlider: function (splitId) {
                 // Update form state
-                $('#split-select').val( splitId );
-                var $selectOption = $('#split-select option:selected');
-                $('#js-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
-                $('#js-pacer-in').prop('disabled', !$selectOption.data('sub-split-in'));
-                $('#js-time-out').prop('disabled', !$selectOption.data('sub-split-out'));
-                $('#js-pacer-out').prop('disabled', !$selectOption.data('sub-split-out'));
-                $('#js-file-split').text( $selectOption.text() );
+                $('#js-group-station-select').val( splitId );
+                var $selectOption = $('#js-group-station-select option:selected');
+                $('#js-group-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
+                $('#js-group-pacer-in').prop('disabled', !$selectOption.data('sub-split-in'));
+                $('#js-group-time-out').prop('disabled', !$selectOption.data('sub-split-out'));
+                $('#js-group-pacer-out').prop('disabled', !$selectOption.data('sub-split-out'));
+                $('#js-group-file-split').text( $selectOption.text() );
                 // Get slider indexes
-                var currentItemId = $('.js-split-slider-item.active.middle').attr('data-index');
-                var selectedItemId = $('.js-split-slider-item[data-split-id="' + splitId + '"]').attr('data-index');
+                var currentItemId = $('.js-group-station-slider-item.active.middle').attr('data-index');
+                var selectedItemId = $('.js-group-station-slider-item[data-split-id="' + splitId + '"]').attr('data-index');
                 if (selectedItemId == currentItemId) {
                     liveEntry.liveEntryForm.fetchEffortData();
                     return;
@@ -1020,19 +1020,19 @@
                     liveEntry.splitSlider.setSplitSlider(selectedItemId - 1);
                 }
                 setTimeout(function () {
-                    $('#js-split-slider').addClass('animate');
+                    $('#js-group-station-slider').addClass('animate');
                     liveEntry.splitSlider.setSplitSlider(selectedItemId);
                     // liveEntry.currentStationIndex = splitId;
                     liveEntry.liveEntryForm.fetchEffortData();
-                    var timeout = $('#js-split-slider').data( 'timeout' );
+                    var timeout = $('#js-group-station-slider').data( 'timeout' );
                     if ( timeout !== null ) {
                         clearTimeout(timeout);
                     }
                     timeout = setTimeout(function () {
-                        $('#js-split-slider').removeClass('animate');
-                        $('#js-split-slider').data( 'timeout', null );
+                        $('#js-group-station-slider').removeClass('animate');
+                        $('#js-group-station-slider').data( 'timeout', null );
                     }, 600);
-                    $('#js-split-slider').data( 'timeout', timeout );
+                    $('#js-group-station-slider').data( 'timeout', timeout );
                 }, 1);
             },
             /**
@@ -1043,30 +1043,30 @@
             setSplitSlider: function (splitIndex) {
 
                 // remove all positioning classes
-                $('#js-split-slider').removeClass('begin end');
-                $('.js-split-slider-item').removeClass('active inactive middle begin end');
-                var $selectedSliderItem = $('.js-split-slider-item[data-index="' + splitIndex + '"]');
+                $('#js-group-station-slider').removeClass('begin end');
+                $('.js-group-station-slider-item').removeClass('active inactive middle begin end');
+                var $selectedSliderItem = $('.js-group-station-slider-item[data-index="' + splitIndex + '"]');
 
                 // Add position classes to the current selected slider item
                 $selectedSliderItem.addClass('active middle');
                 $selectedSliderItem
-                    .next('.js-split-slider-item').addClass('active end')
-                    .next('.js-split-slider-item').addClass('inactive end');
+                    .next('.js-group-station-slider-item').addClass('active end')
+                    .next('.js-group-station-slider-item').addClass('inactive end');
                 $selectedSliderItem
-                    .prev('.js-split-slider-item').addClass('active begin')
-                    .prev('.js-split-slider-item').addClass('inactive begin');
+                    .prev('.js-group-station-slider-item').addClass('active begin')
+                    .prev('.js-group-station-slider-item').addClass('inactive begin');
                 ;
 
                 // Check if the slider is at the beginning
-                if ($selectedSliderItem.prev('.js-split-slider-item').length === 0) {
+                if ($selectedSliderItem.prev('.js-group-station-slider-item').length === 0) {
 
                     // Add appropriate positioning classes
-                    $('#js-split-slider').addClass('begin');
+                    $('#js-group-station-slider').addClass('begin');
                 }
 
                 // Check if the slider is at the end
-                if ($selectedSliderItem.next('.js-split-slider-item').length === 0) {
-                    $('#js-split-slider').addClass('end');
+                if ($selectedSliderItem.next('.js-group-station-slider-item').length === 0) {
+                    $('#js-group-station-slider').addClass('end');
                 }
             }
         }, // END splitSlider

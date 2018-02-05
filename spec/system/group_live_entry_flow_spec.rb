@@ -12,8 +12,8 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
     course_2.reload
     event_2.splits << course_2.splits
   end
-  let(:efforts_1) { create_list(:effort, 3, event: event_1) }
-  let(:efforts_2) { create_list(:effort, 3, event: event_2) }
+  let(:efforts_1) { create_list(:effort, 2, event: event_1) }
+  let(:efforts_2) { create_list(:effort, 2, event: event_2) }
   let(:ordered_splits_1) { event_1.ordered_splits }
 
   let(:add_efforts_form) { find_by_id('js-add-effort-form') }
@@ -35,33 +35,34 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
         login_and_check_setup
         expect(page).not_to have_field('js-lap-number')
 
-        expect(efforts.first.split_times).to be_empty
-        expect(efforts.second.split_times).to be_empty
-        expect(efforts.third.split_times).to be_empty
+        expect(Effort.all.map(&:split_times)).to all be_empty
 
-        fill_in bib_number_field, with: efforts.first.bib_number
+        fill_in bib_number_field, with: efforts_1.first.bib_number
         fill_in time_in_field, with: '08:00'
         add_button.click
         wait_for_css
 
-        expect(local_workspace).to have_content(efforts.first.full_name)
-        expect(local_workspace).not_to have_content(efforts.second.full_name)
-        expect(local_workspace).not_to have_content(efforts.third.full_name)
+        expect(local_workspace).to have_content(efforts_1.first.full_name)
+        expect(local_workspace).not_to have_content(efforts_1.second.full_name)
+        expect(local_workspace).not_to have_content(efforts_2.first.full_name)
+        expect(local_workspace).not_to have_content(efforts_2.second.full_name)
 
-        fill_in bib_number_field, with: efforts.second.bib_number
+        fill_in bib_number_field, with: efforts_2.first.bib_number
         fill_in time_in_field, with: '08:00'
         add_button.click
         wait_for_css
 
-        expect(local_workspace).to have_content(efforts.first.full_name)
-        expect(local_workspace).to have_content(efforts.second.full_name)
-        expect(local_workspace).not_to have_content(efforts.third.full_name)
+        expect(local_workspace).to have_content(efforts_1.first.full_name)
+        expect(local_workspace).not_to have_content(efforts_1.second.full_name)
+        expect(local_workspace).to have_content(efforts_2.first.full_name)
+        expect(local_workspace).not_to have_content(efforts_2.second.full_name)
 
         submit_all_efforts
 
-        expect(efforts.first.split_times).to be_one
-        expect(efforts.second.split_times).to be_one
-        expect(efforts.third.split_times).to be_empty
+        expect(efforts_1.first.split_times).to be_one
+        expect(efforts_1.second.split_times).to be_empty
+        expect(efforts_2.first.split_times).to be_one
+        expect(efforts_2.second.split_times).to be_empty
 
         verify_workspace_is_empty
       end

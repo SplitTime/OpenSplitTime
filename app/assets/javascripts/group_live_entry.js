@@ -1125,11 +1125,13 @@
             }
         }, // END splitSlider
         populateRows: function(response) {
-            for (var i = 0; i < response.returnedRows.length; i++) {
-                var timeRow = response.returnedRows[i];
+            for (let timeRow of response.returnedRows) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
-                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                // Rows coming in from an imported file or from pull_live_times have no stationIndex
+                timeRow.stationIndex = timeRow.stationIndex || liveEntry.splitIdIndexMap[timeRow.splitId];
+
+                let storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                 if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
                     storedTimeRows.push(timeRow);
                     liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);

@@ -87,37 +87,32 @@
 
         pusher: {
             init: function() {
-                // Listen to push notifications
-                var liveTimesPusherKey = $('#js-group-live-times-pusher').data('key');
-                var pusher = new Pusher(liveTimesPusherKey);
-                var channel = {};
-                if (typeof liveEntry.eventLiveEntryData === 'undefined') {
+                if (!liveEntry.currentEventGroupId) {
                     // Just for safety, abort this init if there is no event data
                     // and avoid breaking execution
                     return;
                 }
-                if (typeof liveEntry.eventLiveEntryData.eventId === 'undefined') {
-                    // Just for safety, abort this init if there is no eventID
-                    // and avoid breaking execution
-                    return;
-                }
-                channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
+                // Listen to push notifications
+
+                let liveTimesPusherKey = $('#js-group-live-times-pusher').data('key');
+                let pusher = new Pusher(liveTimesPusherKey);
+                let channel = pusher.subscribe('live-times-available.event_group.' + liveEntry.currentEventGroupId);
+
                 channel.bind('pusher:subscription_succeeded', function() {
                     // Force the server to trigger a push for initial display
                     liveEntry.triggerLiveTimesPush();
                 });
+
                 channel.bind('update', function (data) {
                     // New value pushed from the server
                     // Display updated number of new live times on Pull Times button
-                    if (typeof data.count === 'number') {
-                        liveEntry.pusher.displayNewCount(data.count);
-                        return;
-                    }
-                    liveEntry.pusher.displayNewCount(0);
+                    let new_count = (typeof data.count === 'number') ? data.count : 0;
+                    liveEntry.pusher.displayNewCount(new_count);
                 });
             },
+
             displayNewCount: function(count) {
-                var text = '';
+                let text = '';
                 if (count > 0) {
                     $('#js-group-new-times-alert').fadeTo(500, 1);
                     text = count;
@@ -129,7 +124,7 @@
         },
 
         triggerLiveTimesPush: function() {
-            var endpoint = '/api/v1/events/' + liveEntry.eventLiveEntryData.eventId + ' /trigger_live_times_push';
+            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_live_times_push';
             $.ajax({
                 url: endpoint,
                 cache: false
@@ -780,7 +775,7 @@
                         data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
                         data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
                         data-event-id="'+ timeRow.eventId +'"\>\
-                        <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + liveEntry.stationIndexMap[timeRow.stationIndex.toString()].title + '</td>\
+                        <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + (liveEntry.stationIndexMap[timeRow.stationIndex] || {title: 'Unknown'}).title + '</td>\
                         <td class="bib-number js-group-bib-number ' + liveEntry.bibStatus(timeRow) + '">' + (timeRow.bibNumber || '') + bibNumberIcon + '</td>\
                         <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-group-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
@@ -971,7 +966,7 @@
                         return;
                     }
                     liveEntry.importAsyncBusy = true;
-                    $.ajax('/api/v1/events/' + liveEntry.currentEventGroupId + '/pull_live_time_rows', {
+                    $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_live_time_rows', {
                        error: function(obj, error) {
                             liveEntry.importAsyncBusy = false;
                             liveEntry.timeRowsTable.importLiveError(obj, error);

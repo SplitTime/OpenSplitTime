@@ -66,6 +66,11 @@ class ApiController < ApplicationController
     render json: {errors: ['not authorized']}, status: :unauthorized
   end
 
+  def live_entry_unavailable(resource)
+    {reportText: "Live entry for #{resource.name} is currently unavailable. " +
+        'Please enable live entry access through the admin/settings page.'}
+  end
+
   def set_default_format
     request.format = :json
   end

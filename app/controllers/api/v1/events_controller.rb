@@ -99,7 +99,7 @@ class Api::V1::EventsController < ApiController
     if @event.available_live
       render partial: 'live/events/event_data.json.ruby'
     else
-      render json: live_entry_unavailable, status: :forbidden
+      render json: live_entry_unavailable(@event), status: :forbidden
     end
   end
 
@@ -120,7 +120,7 @@ class Api::V1::EventsController < ApiController
       reporter = LiveDataEntryReporter.new(event: @event, params: params)
       render json: reporter.full_report
     else
-      render json: live_entry_unavailable, status: :forbidden
+      render json: live_entry_unavailable(@event), status: :forbidden
     end
   end
 
@@ -141,7 +141,7 @@ class Api::V1::EventsController < ApiController
         render json: returned_rows
       end
     else
-      render json: live_entry_unavailable, status: :forbidden
+      render json: live_entry_unavailable(@event), status: :forbidden
     end
   end
 
@@ -155,7 +155,7 @@ class Api::V1::EventsController < ApiController
       returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
       render json: {returnedRows: returned_rows}, status: :created
     else
-      render json: live_entry_unavailable, status: :forbidden
+      render json: live_entry_unavailable(@event), status: :forbidden
     end
   end
 
@@ -183,7 +183,7 @@ class Api::V1::EventsController < ApiController
       report_live_times_available(@event)
       render json: {returnedRows: live_time_rows}, status: :ok
     else
-      render json: live_entry_unavailable, status: :forbidden
+      render json: live_entry_unavailable(@event), status: :forbidden
     end
   end
 
@@ -195,10 +195,5 @@ class Api::V1::EventsController < ApiController
 
   def authorize_event
     authorize @event
-  end
-
-  def live_entry_unavailable
-    {reportText: "Live entry for #{@event.name} is currently unavailable. " +
-        'Please enable live entry access through the event stage/admin page.'}
   end
 end

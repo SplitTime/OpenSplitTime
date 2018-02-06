@@ -71,7 +71,7 @@
 
         includedResources: function(resourceType) {
             return liveEntry.eventLiveEntryData.included
-                .filter(function (current) {
+                .filter(function(current) {
                     return current.type === resourceType;
                 })
         },
@@ -80,7 +80,7 @@
          * This kicks off the full UI
          *
          */
-        init: function () {
+        init: function() {
             // Sets the currentEventGroupId once
             var $div = $('#js-event-group-id');
             liveEntry.currentEventGroupId = $div.data('event-group-id');
@@ -143,7 +143,7 @@
          *
          */
         dataSetup: {
-            init: function (response) {
+            init: function(response) {
                 liveEntry.eventLiveEntryData = response;
                 liveEntry.defaultEventId = liveEntry.eventLiveEntryData.data.relationships.events.data[0].id;
                 this.buildBibEventMap();
@@ -154,14 +154,14 @@
 
             buildBibEventMap: function () {
                 liveEntry.bibEventMap = {};
-                liveEntry.includedResources('efforts').forEach(effort => {
+                liveEntry.includedResources('efforts').forEach(function(effort) {
                     liveEntry.bibEventMap[effort.attributes.bibNumber] = effort.attributes.eventId;
                 });
             },
 
             buildEventIdNameMap: function () {
                 liveEntry.eventIdNameMap = {};
-                liveEntry.includedResources('events').forEach(event => {
+                liveEntry.includedResources('events').forEach(function(event) {
                     liveEntry.eventIdNameMap[event.id] = event.attributes.shortName || event.attributes.name;
                 });
             },
@@ -170,7 +170,9 @@
                 liveEntry.splitIdIndexMap = {};
                 liveEntry.splitsAttributes().forEach(function(splitsAttribute, i) {
                     splitsAttribute.entries.forEach(function(entry) {
-                        var entrySplitIds = Object.keys(entry.eventSplitIds).map(k => entry.eventSplitIds[k]);
+                        var entrySplitIds = Object.keys(entry.eventSplitIds).map(function(k) {
+                            return entry.eventSplitIds[k]
+                        });
                         entrySplitIds.forEach(function(splitId) {
                             liveEntry.splitIdIndexMap[splitId] = i;
                         })
@@ -183,9 +185,9 @@
                 liveEntry.splitsAttributes().forEach(function(splitsAttribute, i) {
                     var stationData = {};
                     stationData.title = splitsAttribute.title;
-                    stationData.labels = splitsAttribute.entries.map(entry => entry.label);
-                    stationData.subSplitIn = splitsAttribute.entries.reduce((p, c) => p || c.subSplitKind === 'in', false);
-                    stationData.subSplitOut = splitsAttribute.entries.reduce((p, c) => p || c.subSplitKind === 'out', false);
+                    stationData.labels = splitsAttribute.entries.map(function(entry) { return entry.label });
+                    stationData.subSplitIn = splitsAttribute.entries.reduce(function(p, c) { return p || c.subSplitKind === 'in' }, false);
+                    stationData.subSplitOut = splitsAttribute.entries.reduce(function(p, c) { return p || c.subSplitKind === 'out' }, false);
                     liveEntry.stationIndexMap[i] = stationData
                 })
             }
@@ -356,7 +358,8 @@
 
                 // Enable / Disable lap- and group-specific fields
                 var multiLap = liveEntry.includedResources('events')
-                    .map(event => event.attributes.multiLap).reduce((p, c) => p || c, false);
+                    .map(function(event) { return event.attributes.multiLap })
+                    .reduce(function(p, c) { return p || c }, false);
                 multiLap && $('.lap-disabled').removeClass('lap-disabled');
 
                 var multiGroup = liveEntry.eventLiveEntryData.data.relationships.events.data.length > 1;
@@ -835,14 +838,14 @@
 
                 var eventsObj = {};
 
-                for(var row of timeRows){
+                timeRows.forEach(function(row) {
                     var eventId = row.eventId;
                     if(eventsObj[eventId]) {
                         eventsObj[eventId].push(row);
                     } else {
                         eventsObj[eventId] = [row];
                     }
-                }
+                });
 
                 for(var eventId in eventsObj) {
                     var data = {timeRows: eventsObj[eventId], forceSubmit: forceSubmit};
@@ -1125,7 +1128,7 @@
             }
         }, // END splitSlider
         populateRows: function(response) {
-            for (var timeRow of response.returnedRows) {
+            response.returnedRows.forEach(function(timeRow) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
                 // Rows coming in from an imported file or from pull_live_times have no stationIndex
@@ -1137,7 +1140,7 @@
                     liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
                     liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
                 }
-            }
+            })
         } // END populateRows
     }; // END liveEntry
 

@@ -69,6 +69,13 @@
             }
         },
 
+        includedResources: function(resourceType) {
+            return liveEntry.eventLiveEntryData.included
+                .filter(function (current) {
+                    return current.type === resourceType;
+                })
+        },
+
     /**
          * This kicks off the full UI
          *
@@ -147,20 +154,14 @@
 
             buildBibEventMap: function () {
                 liveEntry.bibEventMap = {};
-                liveEntry.eventLiveEntryData.included
-                    .filter(function (current) {
-                        return current.type === 'efforts';
-                    }).forEach(effort => {
+                liveEntry.includedResources('efforts').forEach(effort => {
                     liveEntry.bibEventMap[effort.attributes.bibNumber] = effort.attributes.eventId;
                 });
             },
 
             buildEventIdNameMap: function () {
                 liveEntry.eventIdNameMap = {};
-                liveEntry.eventLiveEntryData.included
-                    .filter(function (current) {
-                        return current.type === 'events';
-                    }).forEach(event => {
+                liveEntry.includedResources('events').forEach(event => {
                     liveEntry.eventIdNameMap[event.id] = event.attributes.shortName || event.attributes.name;
                 });
             },
@@ -353,9 +354,13 @@
                 $('#js-group-bib-number').inputmask("Regex", {regex: "[0-9|*]{0,6}"});
                 $('#js-group-lap-number').inputmask("integer", { min: 1, max: liveEntry.eventLiveEntryData.maximumLaps || undefined });
 
-                // Enabled / Disable Laps field
-                $('#js-group-bib-number').closest('div').toggleClass('col-xs-3', liveEntry.eventLiveEntryData.multiLap || false);
-                liveEntry.eventLiveEntryData.multiLap && $('.lap-disabled').removeClass('lap-disabled');
+                // Enable / Disable lap- and group-specific fields
+                let multiLap = liveEntry.includedResources('events')
+                    .map(event => event.attributes.multiLap).reduce((p, c) => p || c, false);
+                multiLap && $('.lap-disabled').removeClass('lap-disabled');
+
+                let multiGroup = liveEntry.eventLiveEntryData.data.relationships.events.data.length > 1;
+                multiGroup && $('.group-disabled').removeClass('group-disabled');
 
                 // Styles the Dropped Here button
                 $('#js-group-dropped').on('change', function (event) {
@@ -776,6 +781,7 @@
                         data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
                         data-event-id="'+ timeRow.eventId +'"\>\
                         <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + (liveEntry.stationIndexMap[timeRow.stationIndex] || {title: 'Unknown'}).title + '</td>\
+                        <td class="lap-number js-group-lap-number group-only">' + liveEntry.eventIdNameMap[timeRow.eventId] + '</td>\
                         <td class="bib-number js-group-bib-number ' + liveEntry.bibStatus(timeRow) + '">' + (timeRow.bibNumber || '') + bibNumberIcon + '</td>\
                         <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-group-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\

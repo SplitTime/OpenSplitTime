@@ -340,6 +340,10 @@ Globals
         display: none;
     }
 
+    &.group-disabled .group-only {
+        display: none;
+    }
+
     .provisional-data-table {
         th {
             cursor: pointer;

@@ -31,6 +31,7 @@ class LiveEffortData
     {split_id: subject_split.id,
      effort_id: effort.id,
      event_id: event.id,
+     station_index: params[:station_index],
      lap: lap,
      expected_lap: expected_lap,
      split_name: subject_split.base_name,

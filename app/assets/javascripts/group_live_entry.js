@@ -545,7 +545,6 @@
 
                 let thisTimeRow = {};
                 thisTimeRow.stationIndex = liveEntry.currentStationIndex;
-                thisTimeRow.stationTitle = liveEntry.stationIndexMap[liveEntry.currentStationIndex].title;
                 thisTimeRow.liveBib = $('#js-group-live-bib').val();
                 thisTimeRow.lap = $('#js-group-lap-number').val();
                 thisTimeRow.bibNumber = $('#js-group-bib-number').val();
@@ -579,7 +578,7 @@
                 $('#js-group-dropped').prop('checked', timeRow.droppedHere).change();
                 $('#js-group-live-time-id-in').val(timeRow.liveTimeIdIn);
                 $('#js-group-live-time-id-out').val(timeRow.liveTimeIdOut);
-                liveEntry.splitSlider.changeSplitSlider(liveEntry.splitIdIndexMap[timeRow.splitId]);
+                liveEntry.splitSlider.changeSplitSlider(timeRow.stationIndex);
             },
 
             /**
@@ -765,14 +764,13 @@
                 timeOutIcon += ( timeRow.timeOutExists && timeRow.timeOut ) ? icons['exists'] : '';
 
                 // Base64 encode the stringifyed timeRow to add to the timeRow
-                // This is ie9 incompatible
                 var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
                 var trHtml = '\
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '"\
                         data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
                         data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
                         data-event-id="'+ timeRow.eventId +'"\>\
-                        <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + timeRow.stationTitle + '</td>\
+                        <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + liveEntry.stationIndexMap[timeRow.stationIndex.toString()].title + '</td>\
                         <td class="bib-number js-group-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-group-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
@@ -840,11 +838,11 @@
                     $.post('/api/v1/events/' + eventId + '/set_times_data', data, function (response) {
                         liveEntry.timeRowsTable.removeTimeRows(tableNodes);
                         liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
-                        for (var i = 0; i < response.returnedRows.length; i++) {
-                            var timeRow = response.returnedRows[i];
+                        for (let i = 0; i < response.returnedRows.length; i++) {
+                            let timeRow = response.returnedRows[i];
                             timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
-                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                            let storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                             if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
                                 storedTimeRows.push(timeRow);
                                 liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
@@ -1003,18 +1001,6 @@
             }, 4000);
             return;
         },
-        createTimeFields: function(){
-
-            // Generate time fields
-            var entries = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries;
-            for (var i = 0; i < entries.length; i++) {
-                var field = $('.js-time-field-template').clone();
-                field.find('.js-time-label').innerText = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries[i].label;
-                field.removeClass('js-time-field-template');
-                $('#js-time-fields').append(field);
-            }
-
-        },
         splitSlider: {
 
             /**
@@ -1046,9 +1032,7 @@
                 $('#js-group-station-slider').addClass('begin');
                 $('#js-group-station-select').on('change', function () {
                     let targetIndex = $( this ).val();
-                    liveEntry.currentStationIndex = targetIndex;
                     liveEntry.splitSlider.changeSplitSlider(targetIndex);
-                    liveEntry.createTimeFields();
                 });
             },
 
@@ -1059,7 +1043,8 @@
              */
             changeSplitSlider: function (stationIndex) {
                 // Update form state
-                $('#js-group-station-select').val( stationIndex );
+                liveEntry.currentStationIndex = stationIndex;
+                $('#js-group-station-select').val(stationIndex);
                 var $selectOption = $('#js-group-station-select option:selected');
                 $('#js-group-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
                 $('#js-group-pacer-in').prop('disabled', !$selectOption.data('sub-split-in'));
@@ -1081,7 +1066,6 @@
                 setTimeout(function () {
                     $('#js-group-station-slider').addClass('animate');
                     liveEntry.splitSlider.setSplitSlider(selectedItemIndex);
-                    // liveEntry.currentStationIndex = splitId;
                     liveEntry.liveEntryForm.fetchEffortData();
                     var timeout = $('#js-group-station-slider').data( 'timeout' );
                     if ( timeout !== null ) {

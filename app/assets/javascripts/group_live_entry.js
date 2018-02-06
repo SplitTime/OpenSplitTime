@@ -49,14 +49,14 @@
         },
 
         getSplitId: function (eventId, splitIndex) {
-            let id = String(eventId);
+            var id = String(eventId);
             return liveEntry.splitsAttributes()[splitIndex].entries[0].eventSplitIds[id]
         },
 
         bibStatus: function (rowObject) {
-            let bibSubmitted = rowObject.bibNumber;
-            let bibFound = rowObject.effortId;
-            let splitFound = rowObject.splitId;
+            var bibSubmitted = rowObject.bibNumber;
+            var bibFound = rowObject.effortId;
+            var splitFound = rowObject.splitId;
 
             if (!bibSubmitted) {
                 return null
@@ -82,7 +82,7 @@
          */
         init: function () {
             // Sets the currentEventGroupId once
-            let $div = $('#js-event-group-id');
+            var $div = $('#js-event-group-id');
             liveEntry.currentEventGroupId = $div.data('event-group-id');
             liveEntry.serverURI = $div.data('server-uri');
             liveEntry.getEventLiveEntryData();
@@ -101,9 +101,9 @@
                 }
                 // Listen to push notifications
 
-                let liveTimesPusherKey = $('#js-group-live-times-pusher').data('key');
-                let pusher = new Pusher(liveTimesPusherKey);
-                let channel = pusher.subscribe('live-times-available.event_group.' + liveEntry.currentEventGroupId);
+                var liveTimesPusherKey = $('#js-group-live-times-pusher').data('key');
+                var pusher = new Pusher(liveTimesPusherKey);
+                var channel = pusher.subscribe('live-times-available.event_group.' + liveEntry.currentEventGroupId);
 
                 channel.bind('pusher:subscription_succeeded', function() {
                     // Force the server to trigger a push for initial display
@@ -113,13 +113,13 @@
                 channel.bind('update', function (data) {
                     // New value pushed from the server
                     // Display updated number of new live times on Pull Times button
-                    let new_count = (typeof data.count === 'number') ? data.count : 0;
+                    var new_count = (typeof data.count === 'number') ? data.count : 0;
                     liveEntry.pusher.displayNewCount(new_count);
                 });
             },
 
             displayNewCount: function(count) {
-                let text = '';
+                var text = '';
                 if (count > 0) {
                     $('#js-group-new-times-alert').fadeTo(500, 1);
                     text = count;
@@ -170,7 +170,7 @@
                 liveEntry.splitIdIndexMap = {};
                 liveEntry.splitsAttributes().forEach(function(splitsAttribute, i) {
                     splitsAttribute.entries.forEach(function(entry) {
-                        let entrySplitIds = Object.keys(entry.eventSplitIds).map(k => entry.eventSplitIds[k]);
+                        var entrySplitIds = Object.keys(entry.eventSplitIds).map(k => entry.eventSplitIds[k]);
                         entrySplitIds.forEach(function(splitId) {
                             liveEntry.splitIdIndexMap[splitId] = i;
                         })
@@ -181,7 +181,7 @@
             buildStationIndexMap: function () {
                 liveEntry.stationIndexMap = {};
                 liveEntry.splitsAttributes().forEach(function(splitsAttribute, i) {
-                    let stationData = {};
+                    var stationData = {};
                     stationData.title = splitsAttribute.title;
                     stationData.labels = splitsAttribute.entries.map(entry => entry.label);
                     stationData.subSplitIn = splitsAttribute.entries.reduce((p, c) => p || c.subSplitKind === 'in', false);
@@ -316,12 +316,12 @@
              *
              */
             buildStationSelect: function () {
-                let $select = $('#js-group-station-select');
+                var $select = $('#js-group-station-select');
                 // Populate select list with eventGroup station attributes
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
-                let stationItems = '';
-                for(let i in liveEntry.stationIndexMap) {
-                    let attributes = liveEntry.stationIndexMap[i];
+                var stationItems = '';
+                for(var i in liveEntry.stationIndexMap) {
+                    var attributes = liveEntry.stationIndexMap[i];
                     stationItems += '<option data-sub-split-in="'+ attributes.subSplitIn +'" data-sub-split-out="'+ attributes.subSplitOut +'" value="' + i + '">';
                     stationItems += attributes.title + '</option>';
                 }
@@ -355,11 +355,11 @@
                 $('#js-group-lap-number').inputmask("integer", { min: 1, max: liveEntry.eventLiveEntryData.maximumLaps || undefined });
 
                 // Enable / Disable lap- and group-specific fields
-                let multiLap = liveEntry.includedResources('events')
+                var multiLap = liveEntry.includedResources('events')
                     .map(event => event.attributes.multiLap).reduce((p, c) => p || c, false);
                 multiLap && $('.lap-disabled').removeClass('lap-disabled');
 
-                let multiGroup = liveEntry.eventLiveEntryData.data.relationships.events.data.length > 1;
+                var multiGroup = liveEntry.eventLiveEntryData.data.relationships.events.data.length > 1;
                 multiGroup && $('.group-disabled').removeClass('group-disabled');
 
                 // Styles the Dropped Here button
@@ -432,11 +432,11 @@
 
                 $('#js-group-html-modal').on('show.bs.modal', function(e) {
                     $(this).find('modal-body').html('');
-                    let $source = $(e.relatedTarget);
-                    let $body = $(this).find('.js-modal-content');
+                    var $source = $(e.relatedTarget);
+                    var $body = $(this).find('.js-modal-content');
                     if ($source.attr('data-effort-id')) {
-                        let eventId = $source.attr('data-event-id');
-                        let data = {
+                        var eventId = $source.attr('data-event-id');
+                        var data = {
                             'effortId': $source.attr('data-effort-id')
                         };
                         $.get('/live/events/' + eventId + '/effort_table', data)
@@ -453,7 +453,7 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function() {
-                let timeData;
+                var timeData;
                 if (liveEntry.PopulatingFromRow) {
                     // Do nothing.
                     // This fn is being called from several places based on different actions.
@@ -464,24 +464,24 @@
                     return $.Deferred().resolve();
                 }
                 liveEntry.liveEntryForm.prefillCurrentTime();
-                let bibNumber = $('#js-group-bib-number').val();
-                let bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
-                let splitChanged = ( liveEntry.currentStationIndex != liveEntry.liveEntryForm.lastStationIndex );
+                var bibNumber = $('#js-group-bib-number').val();
+                var bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
+                var splitChanged = ( liveEntry.currentStationIndex != liveEntry.liveEntryForm.lastStationIndex );
                 liveEntry.liveEntryForm.lastBib = bibNumber;
                 liveEntry.liveEntryForm.lastStationIndex = liveEntry.currentStationIndex;
 
-                let eventId = liveEntry.eventIdFromBib(bibNumber) || liveEntry.defaultEventId;
+                var eventId = liveEntry.eventIdFromBib(bibNumber) || liveEntry.defaultEventId;
 
                 // This is the splitEntry data corresponding to the selected AidStation
                 // Looks like: {"title": "Molas Pass (Aid1)",
                 //              "entries": [{"eventSplitIds": {"56": 206, "57": 218}, "subSplitKind": "in","label": "Molas Pass (Aid1) In"},
                 //                          {"eventSplitIds": {"56": 206, "57": 218}, "subSplitKind": "out", "label": "Molas Pass (Aid1) Out"}]}
-                let splitEntries = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries;
+                var splitEntries = liveEntry.splitsAttributes()[liveEntry.currentStationIndex].entries;
 
                 // Each subsplit populates one item in the timeData array to be sent to the server
                 // timeData: [{splitId: x, time: '12:34', subSplitKind: 'in', lap: 1}, {splitId: x, time: '12:34', subSplitKind: 'out', lap: 1}]
                 timeData = splitEntries.map(function(entry) {
-                    let newObj = {};
+                    var newObj = {};
                     newObj.subSplitKind = entry.subSplitKind;
                     newObj.lap = $('#js-group-lap-number').val();
                     // splitId will be null if the eventId is not represented at this entry
@@ -495,7 +495,7 @@
                     timeData[index]['time'] = index === 1 ? $('#js-group-time-out').val() : $('#js-group-time-in').val();
                     timeData[index]['lap'] = $('#js-group-lap-number').val();
                 });
-                let data = {
+                var data = {
                     timeData: timeData,
                     bibNumber: bibNumber,
                 };
@@ -546,7 +546,7 @@
                     return null;
                 }
 
-                let thisTimeRow = {};
+                var thisTimeRow = {};
                 thisTimeRow.stationIndex = liveEntry.currentStationIndex;
                 thisTimeRow.liveBib = $('#js-group-live-bib').val();
                 thisTimeRow.lap = $('#js-group-lap-number').val();
@@ -756,26 +756,26 @@
                 highlight = (typeof highlight == 'undefined') || highlight;
                 liveEntry.timeRowsTable.$dataTable.search('');
                 $('#js-filter-clear').hide();
-                let bib_icons = {
+                var bib_icons = {
                     'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
                     'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
                     'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
                 };
-                let time_icons = {
+                var time_icons = {
                     'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
                     'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
                     'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
                     'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
-                let bibNumberIcon = bib_icons[liveEntry.bibStatus(timeRow)] || '';
-                let timeInIcon = time_icons[timeRow.timeInStatus] || '';
+                var bibNumberIcon = bib_icons[liveEntry.bibStatus(timeRow)] || '';
+                var timeInIcon = time_icons[timeRow.timeInStatus] || '';
                 timeInIcon += ( timeRow.timeInExists && timeRow.timeIn ) ? time_icons['exists'] : '';
-                let timeOutIcon = time_icons[timeRow.timeOutStatus] || '';
+                var timeOutIcon = time_icons[timeRow.timeOutStatus] || '';
                 timeOutIcon += ( timeRow.timeOutExists && timeRow.timeOut ) ? time_icons['exists'] : '';
 
                 // Base64 encode the stringifyed timeRow to add to the timeRow
-                let base64encodedTimeRow = btoa(JSON.stringify(timeRow));
-                let trHtml = '\
+                var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
+                var trHtml = '\
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '"\
                         data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
                         data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
@@ -795,12 +795,12 @@
                             <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
                         </td>\
                     </tr>';
-                let node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
+                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
                 if (highlight) {
                     // Find page that the row was added to
-                    let pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
-                    let index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
-                    let pageIndex = Math.floor(index / pageInfo.length);
+                    var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
+                    var index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
+                    var pageIndex = Math.floor(index / pageInfo.length);
                     liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
                     $(node.node()).effect('highlight', 2000);
                 }
@@ -825,18 +825,18 @@
                 if ( liveEntry.timeRowsTable.busy ) return;
                 liveEntry.timeRowsTable.busy = true;
 
-                let timeRows = [];
+                var timeRows = [];
 
                 $.each(tableNodes, function() {
-                    let $row = $(this).closest('tr');
-                    let timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    var $row = $(this).closest('tr');
+                    var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
                     timeRows.push(timeRow);
                 });
 
-                let eventsObj = {};
+                var eventsObj = {};
 
-                for(let row of timeRows){
-                    let eventId = row.eventId;
+                for(var row of timeRows){
+                    var eventId = row.eventId;
                     if(eventsObj[eventId]) {
                         eventsObj[eventId].push(row);
                     } else {
@@ -844,16 +844,16 @@
                     }
                 }
 
-                for(let eventId in eventsObj) {
-                    let data = {timeRows: eventsObj[eventId], forceSubmit: forceSubmit};
+                for(var eventId in eventsObj) {
+                    var data = {timeRows: eventsObj[eventId], forceSubmit: forceSubmit};
                     $.post('/api/v1/events/' + eventId + '/set_times_data', data, function (response) {
                         liveEntry.timeRowsTable.removeTimeRows(tableNodes);
                         liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
-                        for (let i = 0; i < response.returnedRows.length; i++) {
-                            let timeRow = response.returnedRows[i];
+                        for (var i = 0; i < response.returnedRows.length; i++) {
+                            var timeRow = response.returnedRows[i];
                             timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
-                            let storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                             if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
                                 storedTimeRows.push(timeRow);
                                 liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
@@ -1042,7 +1042,7 @@
                 $('.js-group-station-slider-item').eq(1).addClass('active end');
                 $('#js-group-station-slider').addClass('begin');
                 $('#js-group-station-select').on('change', function () {
-                    let targetIndex = $( this ).val();
+                    var targetIndex = $( this ).val();
                     liveEntry.splitSlider.changeSplitSlider(targetIndex);
                 });
             },
@@ -1125,13 +1125,13 @@
             }
         }, // END splitSlider
         populateRows: function(response) {
-            for (let timeRow of response.returnedRows) {
+            for (var timeRow of response.returnedRows) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
                 // Rows coming in from an imported file or from pull_live_times have no stationIndex
                 timeRow.stationIndex = timeRow.stationIndex || liveEntry.splitIdIndexMap[timeRow.splitId];
 
-                let storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                 if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
                     storedTimeRows.push(timeRow);
                     liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);

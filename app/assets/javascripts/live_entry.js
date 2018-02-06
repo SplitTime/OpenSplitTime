@@ -136,7 +136,7 @@
                     // and avoid breaking execution
                     return;
                 }
-                let channel = pusher.subscribe('live-times-available.event.' + liveEntry.eventLiveEntryData.eventId);
+                var channel = pusher.subscribe('live-times-available.event.' + liveEntry.eventLiveEntryData.eventId);
                 channel.bind('pusher:subscription_succeeded', function() {
                     // Force the server to trigger a push for initial display
                     liveEntry.triggerLiveTimesPush();

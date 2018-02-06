@@ -53,7 +53,23 @@
             return liveEntry.splitsAttributes()[splitIndex].entries[0].eventSplitIds[id]
         },
 
-        /**
+        bibStatus: function (rowObject) {
+            let bibSubmitted = rowObject.bibNumber;
+            let bibFound = rowObject.effortId;
+            let splitFound = rowObject.splitId;
+
+            if (!bibSubmitted) {
+                return null
+            } else if (!bibFound) {
+                return 'bad'
+            } else if (!splitFound) {
+                return 'questionable'
+            } else {
+                return 'good'
+            }
+        },
+
+    /**
          * This kicks off the full UI
          *
          */
@@ -503,8 +519,8 @@
                     }
 
                     $('#js-group-bib-number')
-                        .removeClass('null bad good')
-                        .addClass(bibStatus(response));
+                        .removeClass('null bad questionable good')
+                        .addClass(liveEntry.bibStatus(response));
                     $('#js-group-time-in')
                         .removeClass('exists null bad good questionable')
                         .addClass(response.timeInExists ? 'exists' : '')
@@ -516,20 +532,7 @@
 
                     liveEntry.currentEffortData = response;
                     liveEntry.lastEffortRequest = data;
-                });
-
-                function bibStatus(response) {
-                    let bibSubmitted = response.bibNumber;
-                    let bibFound = response.effortId;
-
-                    if(bibSubmitted && bibFound) {
-                        return 'good'
-                    } else if (bibSubmitted && !bibFound) {
-                        return 'bad'
-                    } else {
-                        return null
-                    }
-                }
+                })
             },
 
     /**
@@ -550,6 +553,7 @@
                 thisTimeRow.bibNumber = $('#js-group-bib-number').val();
                 thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber);
                 thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, liveEntry.currentStationIndex);
+                thisTimeRow.effortId = liveEntry.currentEffortData.effortId;
                 thisTimeRow.effortName = $('#js-group-effort-name').html();
                 thisTimeRow.eventName = $('#js-group-effort-event-name').html();
                 thisTimeRow.timeIn = $('#js-group-time-in:not(:disabled)').val() || '';
@@ -752,26 +756,32 @@
                 highlight = (typeof highlight == 'undefined') || highlight;
                 liveEntry.timeRowsTable.$dataTable.search('');
                 $('#js-filter-clear').hide();
-                var icons = {
+                let bib_icons = {
+                    'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
+                    'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
+                    'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
+                };
+                let time_icons = {
                     'exists' : '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
                     'good' : '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
                     'questionable' : '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
                     'bad' : '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
-                var timeInIcon = icons[timeRow.timeInStatus] || '';
-                timeInIcon += ( timeRow.timeInExists && timeRow.timeIn ) ? icons['exists'] : '';
-                var timeOutIcon = icons[timeRow.timeOutStatus] || '';
-                timeOutIcon += ( timeRow.timeOutExists && timeRow.timeOut ) ? icons['exists'] : '';
+                let bibNumberIcon = bib_icons[liveEntry.bibStatus(timeRow)] || '';
+                let timeInIcon = time_icons[timeRow.timeInStatus] || '';
+                timeInIcon += ( timeRow.timeInExists && timeRow.timeIn ) ? time_icons['exists'] : '';
+                let timeOutIcon = time_icons[timeRow.timeOutStatus] || '';
+                timeOutIcon += ( timeRow.timeOutExists && timeRow.timeOut ) ? time_icons['exists'] : '';
 
                 // Base64 encode the stringifyed timeRow to add to the timeRow
-                var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
-                var trHtml = '\
+                let base64encodedTimeRow = btoa(JSON.stringify(timeRow));
+                let trHtml = '\
                     <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '"\
                         data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
                         data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
                         data-event-id="'+ timeRow.eventId +'"\>\
                         <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + liveEntry.stationIndexMap[timeRow.stationIndex.toString()].title + '</td>\
-                        <td class="bib-number js-group-bib-number">' + timeRow.bibNumber + '</td>\
+                        <td class="bib-number js-group-bib-number ' + liveEntry.bibStatus(timeRow) + '">' + (timeRow.bibNumber || '') + bibNumberIcon + '</td>\
                         <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-group-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
                         <td class="time-out js-group-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
@@ -784,12 +794,12 @@
                             <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
                         </td>\
                     </tr>';
-                var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
+                let node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
                 if (highlight) {
                     // Find page that the row was added to
-                    var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
-                    var index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
-                    var pageIndex = Math.floor(index / pageInfo.length);
+                    let pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
+                    let index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
+                    let pageIndex = Math.floor(index / pageInfo.length);
                     liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
                     $(node.node()).effect('highlight', 2000);
                 }

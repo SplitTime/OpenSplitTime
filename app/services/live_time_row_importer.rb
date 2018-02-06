@@ -10,10 +10,11 @@ class LiveTimeRowImporter
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:event, :time_rows],
-                           exclusive: [:event, :time_rows],
+                           exclusive: [:event, :time_rows, :force_submit],
                            class: self.class)
     @event = args[:event]
     @time_rows = args[:time_rows].values # keys are unneeded ids; values contains all needed data
+    @force_submit = args[:force_submit]&.to_boolean
     @times_container ||= SegmentTimesContainer.new(calc_model: :stats)
     @unsaved_rows = Set.new
     @saved_split_times = {}
@@ -29,11 +30,7 @@ class LiveTimeRowImporter
                                        ordered_splits: ordered_splits,
                                        times_container: times_container)
 
-      # If just one row was submitted, assume the user has noticed if data status is bad or questionable,
-      # or if times will be overwritten, so call bulk_create_or_update with force option. If more than one
-      # row was submitted, call bulk_create_or_update without force option.
-
-      if effort_data.valid? && (effort_data.clean? || force_option?)
+      if effort_data.valid? && (effort_data.clean? || force_submit?)
         create_or_update_times(effort_data)
       else
         unsaved_rows << effort_data.response_row
@@ -51,7 +48,7 @@ class LiveTimeRowImporter
 
   EXTRACTABLE_ATTRIBUTES = %w(time_from_start data_status pacer remarks stopped_here live_time_id)
 
-  attr_reader :event, :time_rows, :times_container
+  attr_reader :event, :time_rows, :force_submit, :times_container
   attr_accessor :unsaved_rows, :saved_split_times
 
   # Returns true if all available times (in or out or both) are created/updated.
@@ -117,8 +114,8 @@ class LiveTimeRowImporter
     @ordered_splits ||= event.ordered_splits
   end
 
-  def force_option?
-    time_rows.size == 1
+  def force_submit?
+    @force_submit
   end
 
   def match_live_times

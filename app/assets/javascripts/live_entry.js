@@ -763,10 +763,10 @@
                 });
             },
 
-            submitTimeRows: function(timeRows) {
+            submitTimeRows: function(timeRows, forceSubmit) {
                 if ( liveEntry.timeRowsTable.busy ) return;
                 liveEntry.timeRowsTable.busy = true;
-                var data = {timeRows:[]}
+                var data = {timeRows:[], forceSubmit: forceSubmit};
                 $.each(timeRows, function(index) {
                     var $row = $(this).closest('tr');
                     var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
@@ -857,7 +857,7 @@
                 });
 
                 $(document).on('click', '.js-submit-effort', function () {
-                    liveEntry.timeRowsTable.submitTimeRows( $(this) );
+                    liveEntry.timeRowsTable.submitTimeRows( $(this), true );
                 });
 
 
@@ -870,7 +870,7 @@
                 $('#js-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    liveEntry.timeRowsTable.submitTimeRows(nodes);
+                    liveEntry.timeRowsTable.submitTimeRows(nodes, false);
                     return false;
                 });
 

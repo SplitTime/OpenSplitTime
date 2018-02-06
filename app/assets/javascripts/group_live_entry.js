@@ -15,38 +15,25 @@
          * @type integer
          */
         currentEventGroupId: null,
-
+        serverURI: null,
         currentEffortData: {},
-
         lastEffortRequest: {},
-
         eventLiveEntryData: null,
-
         lastReportedSplitId: null,
-
         lastReportedBitkey: null,
-
         currentStationIndex: null,
 
         getEventLiveEntryData: function () {
-            return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '?include=events.efforts')
+            return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '?include=events.efforts&fields[efforts]=bibNumber,eventId')
                 .then(function (response) {
-                    liveEntry.eventLiveEntryData = response;
+                    liveEntry.dataSetup.init(response);
                     liveEntry.timeRowsCache.init();
                     liveEntry.header.init();
                     liveEntry.liveEntryForm.init();
                     liveEntry.timeRowsTable.init();
                     liveEntry.splitSlider.init();
                     liveEntry.pusher.init();
-                    liveEntry.bibEventMap = {};
-
-                    response.included
-                        .filter(function(current){
-                            return current.type === 'efforts';
-                        }).forEach(n => {
-                            liveEntry.bibEventMap[n.attributes.bibNumber] = n.attributes.eventId;
-                        });
-                });
+                    });
         },
 
         splitsAttributes: function () {
@@ -71,16 +58,15 @@
          *
          */
         init: function () {
-            // localStorage.clear();
-
             // Sets the currentEventGroupId once
-            liveEntry.currentEventGroupId = $('#js-event-group-id').data('event-group-id');
+            let $div = $('#js-event-group-id');
+            liveEntry.currentEventGroupId = $div.data('event-group-id');
+            liveEntry.serverURI = $div.data('server-uri');
             liveEntry.getEventLiveEntryData();
             liveEntry.importLiveWarning = $('#js-group-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-group-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-group-new-times-alert').hide();
             liveEntry.PopulatingFromRow = false;
-            
         },
 
         pusher: {
@@ -135,6 +121,65 @@
         },
 
         /**
+         * Sets up eventLiveEntryData and other convenience data structures
+         *
+         */
+        dataSetup: {
+            init: function (response) {
+                liveEntry.eventLiveEntryData = response;
+                liveEntry.defaultEventId = liveEntry.eventLiveEntryData.data.relationships.events.data[0].id;
+                this.buildBibEventMap();
+                this.buildEventIdNameMap();
+                this.buildSplitIdIndexMap();
+                this.buildStationIndexMap();
+            },
+
+            buildBibEventMap: function () {
+                liveEntry.bibEventMap = {};
+                liveEntry.eventLiveEntryData.included
+                    .filter(function (current) {
+                        return current.type === 'efforts';
+                    }).forEach(effort => {
+                    liveEntry.bibEventMap[effort.attributes.bibNumber] = effort.attributes.eventId;
+                });
+            },
+
+            buildEventIdNameMap: function () {
+                liveEntry.eventIdNameMap = {};
+                liveEntry.eventLiveEntryData.included
+                    .filter(function (current) {
+                        return current.type === 'events';
+                    }).forEach(event => {
+                    liveEntry.eventIdNameMap[event.id] = event.attributes.shortName || event.attributes.name;
+                });
+            },
+
+            buildSplitIdIndexMap: function () {
+                liveEntry.splitIdIndexMap = {};
+                liveEntry.splitsAttributes().forEach(function(splitsAttribute, i) {
+                    splitsAttribute.entries.forEach(function(entry) {
+                        let entrySplitIds = Object.keys(entry.eventSplitIds).map(k => entry.eventSplitIds[k]);
+                        entrySplitIds.forEach(function(splitId) {
+                            liveEntry.splitIdIndexMap[splitId] = i;
+                        })
+                    })
+                });
+            },
+
+            buildStationIndexMap: function () {
+                liveEntry.stationIndexMap = {};
+                liveEntry.splitsAttributes().forEach(function(splitsAttribute, i) {
+                    let stationData = {};
+                    stationData.title = splitsAttribute.title;
+                    stationData.labels = splitsAttribute.entries.map(entry => entry.label);
+                    stationData.subSplitIn = splitsAttribute.entries.reduce((p, c) => p || c.subSplitKind === 'in', false);
+                    stationData.subSplitOut = splitsAttribute.entries.reduce((p, c) => p || c.subSplitKind === 'out', false);
+                    liveEntry.stationIndexMap[i] = stationData
+                })
+            }
+        },
+
+        /**
          * Contains functionality for the times data cache
          *
          */
@@ -147,9 +192,10 @@
             init: function () {
 
                 // Set the initial cache object in local storage
-                var timeRowsCache = localStorage.getItem('timeRowsCache');
+                this.storageId = 'timeRowsCache/' + liveEntry.serverURI + '/eventGroup/' + liveEntry.currentEventGroupId;
+                var timeRowsCache = localStorage.getItem(this.storageId);
                 if (timeRowsCache === null || timeRowsCache.length == 0) {
-                    localStorage.setItem('timeRowsCache', JSON.stringify([]));
+                    localStorage.setItem(this.storageId, JSON.stringify([]));
                 }
             },
 
@@ -178,7 +224,7 @@
              * @return object Returns object from local storage
              */
             getStoredTimeRows: function () {
-                return JSON.parse(localStorage.getItem('timeRowsCache'))
+                return JSON.parse(localStorage.getItem(this.storageId))
             },
 
             /**
@@ -188,7 +234,7 @@
              * @return null
              */
             setStoredTimeRows: function (timeRowsObject) {
-                localStorage.setItem('timeRowsCache', JSON.stringify(timeRowsObject));
+                localStorage.setItem(this.storageId, JSON.stringify(timeRowsObject));
                 return null;
             },
 
@@ -206,7 +252,7 @@
                         return false;
                     }
                 });
-                localStorage.setItem('timeRowsCache', JSON.stringify(storedTimeRows));
+                localStorage.setItem(this.storageId, JSON.stringify(storedTimeRows));
                 return null;
             },
 
@@ -242,7 +288,7 @@
         header: {
             init: function () {
                 liveEntry.header.updateEventName();
-                liveEntry.header.buildSplitSelect();
+                liveEntry.header.buildStationSelect();
             },
 
             /**
@@ -257,19 +303,17 @@
              * Add the Splits data to the select drop down table on the page
              *
              */
-            buildSplitSelect: function () {
-                var $select = $('#js-group-station-select');
-                // Populate select list with event splits
+            buildStationSelect: function () {
+                let $select = $('#js-group-station-select');
+                // Populate select list with eventGroup station attributes
                 // Sub_split_in and sub_split_out are boolean fields indicating the existence of in and out time fields respectively.
-                var splitItems = '';
-                for (var i = 0; i < liveEntry.splitsAttributes().length; i++) {
-                    let subSplitIn = liveEntry.splitsAttributes()[i].entries.reduce((p, c) => p || c.subSplitKind === 'in', false);
-                    let subSplitOut = liveEntry.splitsAttributes()[i].entries.reduce((p, c) => p || c.subSplitKind === 'out', false);
-                    splitItems += '<option data-sub-split-in="'+ subSplitIn +'" data-sub-split-out="'+ subSplitOut +'" value="' + i + '">';
-                    splitItems += liveEntry.splitsAttributes()[i].title + '</option>';
-
+                let stationItems = '';
+                for(let i in liveEntry.stationIndexMap) {
+                    let attributes = liveEntry.stationIndexMap[i];
+                    stationItems += '<option data-sub-split-in="'+ attributes.subSplitIn +'" data-sub-split-out="'+ attributes.subSplitOut +'" value="' + i + '">';
+                    stationItems += attributes.title + '</option>';
                 }
-                $select.html(splitItems);
+                $select.html(stationItems);
                 // Syncronize Select with splitId
                 $select.children().first().prop('selected', true);
                 liveEntry.currentStationIndex = $select.val();
@@ -282,7 +326,7 @@
          */
         liveEntryForm: {
             lastBib: null,
-            lastSplit: null,
+            lastStationIndex: null,
             init: function () {
                 // Apply input masks on time in / out
                 var maskOptions = {
@@ -300,7 +344,7 @@
 
                 // Enabled / Disable Laps field
                 $('#js-group-bib-number').closest('div').toggleClass('col-xs-3', liveEntry.eventLiveEntryData.multiLap || false);
-               liveEntry.eventLiveEntryData.multiLap && $('.lap-disabled').removeClass('lap-disabled');
+                liveEntry.eventLiveEntryData.multiLap && $('.lap-disabled').removeClass('lap-disabled');
 
                 // Styles the Dropped Here button
                 $('#js-group-dropped').on('change', function (event) {
@@ -393,26 +437,24 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function() {
-                var currentSplit, timeData;
+                let timeData;
                 if (liveEntry.PopulatingFromRow) {
                     // Do nothing.
-                    // This fn is being called from several places based
-                    // on different actions.
-                    // None of them are needed if the form is being populated
-                    // by the system from a Local row's data
-                    // (User clicks on Edit icon in a Local Data Workspace row)
-                    // This flag will be on while the form is populated by that action
-                    // and turnedd of when that's done.
+                    // This fn is being called from several places based on different actions.
+                    // None of them are needed if the form is being populated by the system from a
+                    // local row's data (i.e., if a user clicks on Edit icon in a Local Data Workspace row).
+                    // PopulatingFromRow will be on while the form is populated by that action
+                    // and turned off when that's done.
                     return $.Deferred().resolve();
                 }
                 liveEntry.liveEntryForm.prefillCurrentTime();
-                var bibNumber = $('#js-group-bib-number').val();
-                var bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
-                var splitChanged = ( liveEntry.currentStationIndex != liveEntry.liveEntryForm.lastSplit );
+                let bibNumber = $('#js-group-bib-number').val();
+                let bibChanged = ( bibNumber != liveEntry.liveEntryForm.lastBib );
+                let splitChanged = ( liveEntry.currentStationIndex != liveEntry.liveEntryForm.lastStationIndex );
                 liveEntry.liveEntryForm.lastBib = bibNumber;
-                liveEntry.liveEntryForm.lastSplit = liveEntry.currentStationIndex;
+                liveEntry.liveEntryForm.lastStationIndex = liveEntry.currentStationIndex;
 
-                let eventId = liveEntry.eventIdFromBib(bibNumber);
+                let eventId = liveEntry.eventIdFromBib(bibNumber) || liveEntry.defaultEventId;
 
                 // This is the splitEntry data corresponding to the selected AidStation
                 // Looks like: {"title": "Molas Pass (Aid1)",
@@ -422,12 +464,12 @@
 
                 // Each subsplit populates one item in the timeData array to be sent to the server
                 // timeData: [{splitId: x, time: '12:34', subSplitKind: 'in', lap: 1}, {splitId: x, time: '12:34', subSplitKind: 'out', lap: 1}]
-                timeData = splitEntries.map(function(eachVal) {
-                    var newObj = {};
-                    newObj.subSplitKind = eachVal.subSplitKind;
+                timeData = splitEntries.map(function(entry) {
+                    let newObj = {};
+                    newObj.subSplitKind = entry.subSplitKind;
                     newObj.lap = $('#js-group-lap-number').val();
-                    // splitId defaults to null if no bibNumber was entered or bibNumber was not found
-                    newObj.splitId = eventId !== null ? eachVal.eventSplitIds[eventId] : null;
+                    // splitId will be null if the eventId is not represented at this entry
+                    newObj.splitId = entry.eventSplitIds[eventId];
                     return newObj;
                 });
                 timeData.forEach(function(el, index) {
@@ -437,7 +479,7 @@
                     timeData[index]['time'] = index === 1 ? $('#js-group-time-out').val() : $('#js-group-time-in').val();
                     timeData[index]['lap'] = $('#js-group-lap-number').val();
                 });
-                var data = {
+                let data = {
                     timeData: timeData,
                     bibNumber: bibNumber,
                 };
@@ -445,13 +487,12 @@
                 if ( JSON.stringify(data) == JSON.stringify(liveEntry.lastEffortRequest) ) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-                if (typeof eventId === 'undefined' || eventId === null) {
-                    return $.Deferred().resolve(); // No eventId
-                }
+
                 return $.get('/api/v1/events/' + eventId + '/live_effort_data', data, function (response) {
                     $('#js-group-live-bib').val('true');
                     $('#js-group-effort-name').html( response.effortName ).attr('data-effort-id', response.effortId );
                     $('#js-group-effort-name').html( response.effortName ).attr('data-event-id', eventId );
+                    $('#js-group-effort-event-name').html( response.effortId ? liveEntry.eventIdNameMap[eventId] : 'n/a' );
                     $('#js-group-effort-last-reported').html( response.reportText );
                     $('#js-group-prior-valid-reported').html( response.priorValidReportText );
                     $('#js-group-time-prior-valid-reported').html( response.timeFromPriorValid );
@@ -461,6 +502,9 @@
                         $('#js-group-lap-number:focus').select();
                     }
 
+                    $('#js-group-bib-number')
+                        .removeClass('null bad good')
+                        .addClass(bibStatus(response));
                     $('#js-group-time-in')
                         .removeClass('exists null bad good questionable')
                         .addClass(response.timeInExists ? 'exists' : '')
@@ -473,9 +517,22 @@
                     liveEntry.currentEffortData = response;
                     liveEntry.lastEffortRequest = data;
                 });
+
+                function bibStatus(response) {
+                    let bibSubmitted = response.bibNumber;
+                    let bibFound = response.effortId;
+
+                    if(bibSubmitted && bibFound) {
+                        return 'good'
+                    } else if (bibSubmitted && !bibFound) {
+                        return 'bad'
+                    } else {
+                        return null
+                    }
+                }
             },
 
-            /**
+    /**
              * Retrieves the entire form formatted as a timerow
              * @return {[type]} [description]
              */
@@ -486,20 +543,21 @@
                     return null;
                 }
 
-                var thisTimeRow = {};
+                let thisTimeRow = {};
+                thisTimeRow.stationIndex = liveEntry.currentStationIndex;
+                thisTimeRow.stationTitle = liveEntry.stationIndexMap[liveEntry.currentStationIndex].title;
                 thisTimeRow.liveBib = $('#js-group-live-bib').val();
                 thisTimeRow.lap = $('#js-group-lap-number').val();
-                thisTimeRow.splitName = $('#js-group-station-select option:selected').html();
-                thisTimeRow.effortName = $('#js-group-effort-name').html();
                 thisTimeRow.bibNumber = $('#js-group-bib-number').val();
                 thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber);
-                thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, $('#js-group-station-select').val());
+                thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, liveEntry.currentStationIndex);
+                thisTimeRow.effortName = $('#js-group-effort-name').html();
+                thisTimeRow.eventName = $('#js-group-effort-event-name').html();
                 thisTimeRow.timeIn = $('#js-group-time-in:not(:disabled)').val() || '';
                 thisTimeRow.timeOut = $('#js-group-time-out:not(:disabled)').val() || '';
                 thisTimeRow.pacerIn = $('#js-group-pacer-in:not(:disabled)').prop('checked') || false;
                 thisTimeRow.pacerOut = $('#js-group-pacer-out:not(:disabled)').prop('checked') || false;
                 thisTimeRow.droppedHere = $('#js-group-dropped').prop('checked');
-                thisTimeRow.splitDistance = liveEntry.currentEffortData.splitDistance;
                 thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
                 thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
                 thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
@@ -521,7 +579,7 @@
                 $('#js-group-dropped').prop('checked', timeRow.droppedHere).change();
                 $('#js-group-live-time-id-in').val(timeRow.liveTimeIdIn);
                 $('#js-group-live-time-id-out').val(timeRow.liveTimeIdOut);
-                liveEntry.splitSlider.changeSplitSlider(timeRow.splitId);
+                liveEntry.splitSlider.changeSplitSlider(liveEntry.splitIdIndexMap[timeRow.splitId]);
             },
 
             /**
@@ -530,8 +588,9 @@
              */
             clearSplitsData: function () {
                 $('#js-group-effort-name').html('n/a').removeAttr('href');
-                $('#js-group-effort-last-reported').html('n/a')
-                $('#js-group-prior-valid-reported').html('n/a')
+                $('#js-group-effort-event-name').html('n/a');
+                $('#js-group-effort-last-reported').html('n/a');
+                $('#js-group-prior-valid-reported').html('n/a');
                 $('#js-group-time-prior-valid-reported').html('n/a');
                 $('#js-effort-split-from').html('--:--');
                 $('#js-group-time-spent').html('-- minutes');
@@ -713,7 +772,7 @@
                         data-live-time-id-in="' + timeRow.liveTimeIdIn +'"\
                         data-live-time-id-out="' + timeRow.liveTimeIdOut +'"\
                         data-event-id="'+ timeRow.eventId +'"\>\
-                        <td class="split-name js-split-name" data-order="' + timeRow.splitDistance + '">' + timeRow.splitName + '</td>\
+                        <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + timeRow.stationTitle + '</td>\
                         <td class="bib-number js-group-bib-number">' + timeRow.bibNumber + '</td>\
                         <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-group-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
@@ -753,7 +812,7 @@
                 });
             },
 
-            submitTimeRows: function(tableNodes) {
+            submitTimeRows: function(tableNodes, forceSubmit) {
                 if ( liveEntry.timeRowsTable.busy ) return;
                 liveEntry.timeRowsTable.busy = true;
 
@@ -777,7 +836,7 @@
                 }
 
                 for(let eventId in eventsObj) {
-                    let data = {timeRows: eventsObj[eventId]};
+                    let data = {timeRows: eventsObj[eventId], forceSubmit: forceSubmit};
                     $.post('/api/v1/events/' + eventId + '/set_times_data', data, function (response) {
                         liveEntry.timeRowsTable.removeTimeRows(tableNodes);
                         liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
@@ -864,7 +923,7 @@
                 });
 
                 $(document).on('click', '.js-submit-effort', function () {
-                    liveEntry.timeRowsTable.submitTimeRows( [$(this).closest('tr')] );
+                    liveEntry.timeRowsTable.submitTimeRows( [$(this).closest('tr')], true );
                 });
 
 
@@ -877,7 +936,7 @@
                 $('#js-group-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    liveEntry.timeRowsTable.submitTimeRows(nodes);
+                    liveEntry.timeRowsTable.submitTimeRows(nodes, false);
                     return false;
                 });
 
@@ -954,7 +1013,7 @@
                 field.removeClass('js-time-field-template');
                 $('#js-time-fields').append(field);
             }
-            
+
         },
         splitSlider: {
 
@@ -986,9 +1045,9 @@
                 $('.js-group-station-slider-item').eq(1).addClass('active end');
                 $('#js-group-station-slider').addClass('begin');
                 $('#js-group-station-select').on('change', function () {
-                    var targetId = $( this ).val();
-                    liveEntry.currentStationIndex = targetId;
-                    liveEntry.splitSlider.changeSplitSlider(targetId);
+                    let targetIndex = $( this ).val();
+                    liveEntry.currentStationIndex = targetIndex;
+                    liveEntry.splitSlider.changeSplitSlider(targetIndex);
                     liveEntry.createTimeFields();
                 });
             },
@@ -996,11 +1055,11 @@
             /**
              * Switches the Split Slider to the specified Aid Station
              *
-             * @param  integer splitIndex The station id to switch to
+             * @param  integer stationIndex The station id to switch to
              */
-            changeSplitSlider: function (splitId) {
+            changeSplitSlider: function (stationIndex) {
                 // Update form state
-                $('#js-group-station-select').val( splitId );
+                $('#js-group-station-select').val( stationIndex );
                 var $selectOption = $('#js-group-station-select option:selected');
                 $('#js-group-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
                 $('#js-group-pacer-in').prop('disabled', !$selectOption.data('sub-split-in'));
@@ -1008,20 +1067,20 @@
                 $('#js-group-pacer-out').prop('disabled', !$selectOption.data('sub-split-out'));
                 $('#js-group-file-split').text( $selectOption.text() );
                 // Get slider indexes
-                var currentItemId = $('.js-group-station-slider-item.active.middle').attr('data-index');
-                var selectedItemId = $('.js-group-station-slider-item[data-split-id="' + splitId + '"]').attr('data-index');
-                if (selectedItemId == currentItemId) {
+                var currentItemIndex = $('.js-group-station-slider-item.active.middle').attr('data-index');
+                var selectedItemIndex = $('.js-group-station-slider-item[data-split-id="' + stationIndex + '"]').attr('data-index');
+                if (selectedItemIndex == currentItemIndex) {
                     liveEntry.liveEntryForm.fetchEffortData();
                     return;
                 }
-                if (currentItemId - selectedItemId > 1) {
-                    liveEntry.splitSlider.setSplitSlider(selectedItemId - 0 + 1);
-                } else if (selectedItemId - currentItemId > 1) {
-                    liveEntry.splitSlider.setSplitSlider(selectedItemId - 1);
+                if (currentItemIndex - selectedItemIndex > 1) {
+                    liveEntry.splitSlider.setSplitSlider(selectedItemIndex - 0 + 1);
+                } else if (selectedItemIndex - currentItemIndex > 1) {
+                    liveEntry.splitSlider.setSplitSlider(selectedItemIndex - 1);
                 }
                 setTimeout(function () {
                     $('#js-group-station-slider').addClass('animate');
-                    liveEntry.splitSlider.setSplitSlider(selectedItemId);
+                    liveEntry.splitSlider.setSplitSlider(selectedItemIndex);
                     // liveEntry.currentStationIndex = splitId;
                     liveEntry.liveEntryForm.fetchEffortData();
                     var timeout = $('#js-group-station-slider').data( 'timeout' );

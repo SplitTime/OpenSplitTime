@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
+  <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
 <% end %>
 
 <div class="row header">
@@ -8,7 +8,7 @@
   </div>
   <div class="col-xs-12 col-md-6 page-title">
     <h2></h2>
-    <%= content_tag "div", id: "js-event-group-id", "data-event-group-id": params[:id] do %>
+    <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ENV['BASE_URI']}) do %>
     <% end %>
   </div>
 
@@ -35,11 +35,17 @@
       <div class="form-group form-group-sm clearfix">
         <label class="col-xs-4" for="js-group-bib-number">Bib</label>
         <div class="col-xs-8">
-          <input type="tel" id="js-group-bib-number" name="bibNumber" class="form-control" autocomplete="off" value="" style="text-align: left;">
+          <div class="input-group">
+            <input id="js-group-bib-number" type="tel" name="bibNumber" class="form-control" autocomplete="off" value="" style="text-align: left;">
+            <span class="input-group-addon time-status">
+              <span class="glyphicon glyphicon-ok-sign good text-success" title="Bib Appears Good" data-toggle="tooltip" data-placement="right"></span>
+              <span class="glyphicon glyphicon-remove-sign bad text-danger" title="Bib Appears Bad" data-toggle="tooltip" data-placement="right"></span>
+            </span>
+          </div>
         </div>
         <label class="col-xs-2 lap-only" for="js-group-lap-number">Lap</label>
         <div class="col-xs-3 lap-only">
-          <input type="tel" id="js-group-lap-number" name="lap" class="form-control" autocomplete="off" value="">
+          <input id="js-group-lap-number" type="tel" name="lap" class="form-control" autocomplete="off" value="">
         </div>
       </div>
       <div class="form-group form-group-sm clearfix">
@@ -115,10 +121,14 @@
       <div id="js-group-station-slider" class="splits-slider-plotter">
       </div>
     </div>
-    <div class="splits-slider-data col-xs-12">
+    <div class="splits-slider-data group-splits-slider-data col-xs-12">
       <div class="col-xs-6 data-label active">Name:</div>
       <div class="col-xs-6">
-        <a id="js-group-effort-name" data-toggle="modal" data-target="#js-group-html-modal" data-effort-id="" data-event-id="">&nbsp;</a></div>
+        <a id="js-group-effort-name" data-toggle="modal" data-target="#js-group-html-modal" data-effort-id="" data-event-id="">&nbsp;</a>
+      </div>
+
+      <div class="col-xs-6 data-label">Event:</div>
+      <div id="js-group-effort-event-name" class="col-xs-6 ">&nbsp;</div>
 
       <div class="col-xs-6 data-label">Last Reported:</div>
       <div id="js-group-effort-last-reported" class="col-xs-6 ">&nbsp;</div>

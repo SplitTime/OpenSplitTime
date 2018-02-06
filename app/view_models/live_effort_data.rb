@@ -29,11 +29,12 @@ class LiveEffortData
 
   def response_row
     {split_id: subject_split.id,
+     effort_id: effort.id,
+     event_id: event.id,
      lap: lap,
      expected_lap: expected_lap,
      split_name: subject_split.base_name,
      split_distance: subject_lap_split.distance_from_start,
-     effort_id: effort.id,
      bib_number: effort.bib_number || params[:bib_number],
      effort_name: effort_name,
      dropped_here: stopped_here?,

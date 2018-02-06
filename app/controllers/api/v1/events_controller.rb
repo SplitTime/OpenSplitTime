@@ -131,7 +131,7 @@ class Api::V1::EventsController < ApiController
     # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
 
     if @event.available_live
-      importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:time_rows])
+      importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:time_rows], force_submit: params[:force_submit])
       importer.import
       returned_rows = importer.returned_rows
 

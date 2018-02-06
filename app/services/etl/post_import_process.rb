@@ -55,6 +55,7 @@ module ETL
       if live_times.present? && event.available_live
         LiveTimeSplitTimeCreator.create(event: event, live_times: live_times) if event.auto_live_times?
         report_live_times_available(event)
+        report_live_times_available(event.event_group)
       end
     end
 

@@ -21,6 +21,7 @@ class LiveEffortData
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @indexed_existing_split_times = ordered_existing_split_times.index_by(&:time_point)
     @new_split_times = {}
+    transform_time_data_param
     create_split_times
     assign_stopped_here
     fill_with_null_split_times
@@ -28,11 +29,13 @@ class LiveEffortData
 
   def response_row
     {split_id: subject_split.id,
+     effort_id: effort.id,
+     event_id: event.id,
+     station_index: params[:station_index],
      lap: lap,
      expected_lap: expected_lap,
      split_name: subject_split.base_name,
      split_distance: subject_lap_split.distance_from_start,
-     effort_id: effort.id,
      bib_number: effort.bib_number || params[:bib_number],
      effort_name: effort_name,
      dropped_here: stopped_here?,
@@ -164,6 +167,17 @@ class LiveEffortData
   # by preventing Interactors::SetEffortStatus from rechecking the status of good times
   def confirmed_good_split_times
     ordered_existing_split_times.dup.each { |st| st.data_status = :confirmed if st.good? }
+  end
+  
+  def transform_time_data_param
+    time_data = params[:time_data]&.values
+    return unless time_data.present?
+    params[:split_id] = time_data.first[:split_id]
+    params[:lap] = time_data.first[:lap]
+    time_in_data = time_data.find { |row| row[:sub_split_kind] == 'in' }
+    time_out_data = time_data.find { |row| row[:sub_split_kind] == 'out' }
+    params[:time_in] = time_in_data && time_in_data[:time]
+    params[:time_out] = time_out_data && time_out_data[:time]
   end
 
   def create_split_times

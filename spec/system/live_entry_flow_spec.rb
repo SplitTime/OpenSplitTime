@@ -161,7 +161,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in time_in_field, with: '08:15:00'
         add_button.click
 
-        submit_all_efforts
+        submit_effort(0)
 
         effort.reload
         ordered_split_times = effort.ordered_split_times
@@ -178,7 +178,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         fill_in time_in_field, with: '07:45:00'
         add_button.click
 
-        submit_all_efforts
+        submit_effort(0)
 
         effort.reload
         ordered_split_times = effort.ordered_split_times
@@ -217,6 +217,12 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
   def submit_all_efforts
     sleep(2)
     submit_all_button.click
+    wait_for_ajax
+  end
+
+  def submit_effort(index)
+    sleep(2)
+    local_workspace.find('tbody').all('tr')[index].find('.submit-effort').click
     wait_for_ajax
   end
 

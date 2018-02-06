@@ -12,6 +12,7 @@ class LiveTimeRowConverter
     @event = args[:event]
     @live_times = args[:live_times]
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+    validate_setup
   end
 
   def convert
@@ -57,5 +58,10 @@ class LiveTimeRowConverter
 
   def ordered_splits
     @ordered_splits ||= event.ordered_splits
+  end
+
+  def validate_setup
+    raise ArgumentError, 'All live_times must match the provided event' unless
+        live_times.all? { |lt| lt.event_id == event.id }
   end
 end

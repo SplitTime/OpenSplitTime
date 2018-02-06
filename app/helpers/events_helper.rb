@@ -31,6 +31,12 @@ module EventsHelper
     end
   end
 
+  def link_to_enter_group_live_entry(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object.event_group) && view_object.available_live
+      link_to 'Group Live Entry (Beta)', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
+    end
+  end
+
   def link_to_podium(view_object)
     if view_object.podium_template
       link_to 'Podium', podium_event_path(view_object.event),

@@ -327,12 +327,20 @@ Globals
             clear: left;
         }
     }
+
+    .group-splits-slider-data {
+        margin-top: 55px;
+    }
 }
 
 /******* Provisional Data Table ********/
 .provisional-data {
 
     &.lap-disabled .lap-only {
+        display: none;
+    }
+
+    &.group-disabled .group-only {
         display: none;
     }
 

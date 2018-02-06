@@ -126,7 +126,6 @@
                 // Listen to push notifications
                 var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
                 var pusher = new Pusher(liveTimesPusherKey);
-                var channel = {};
                 if (typeof liveEntry.eventLiveEntryData === 'undefined') {
                     // Just for safety, abort this init if there is no event data
                     // and avoid breaking execution
@@ -137,7 +136,7 @@
                     // and avoid breaking execution
                     return;
                 }
-                channel = pusher.subscribe('live_times_available_' + liveEntry.eventLiveEntryData.eventId);
+                let channel = pusher.subscribe('live-times-available.event.' + liveEntry.eventLiveEntryData.eventId);
                 channel.bind('pusher:subscription_succeeded', function() {
                     // Force the server to trigger a push for initial display
                     liveEntry.triggerLiveTimesPush();
@@ -763,10 +762,10 @@
                 });
             },
 
-            submitTimeRows: function(timeRows) {
+            submitTimeRows: function(timeRows, forceSubmit) {
                 if ( liveEntry.timeRowsTable.busy ) return;
                 liveEntry.timeRowsTable.busy = true;
-                var data = {timeRows:[]}
+                var data = {timeRows:[], forceSubmit: forceSubmit};
                 $.each(timeRows, function(index) {
                     var $row = $(this).closest('tr');
                     var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
@@ -857,7 +856,7 @@
                 });
 
                 $(document).on('click', '.js-submit-effort', function () {
-                    liveEntry.timeRowsTable.submitTimeRows( $(this) );
+                    liveEntry.timeRowsTable.submitTimeRows( $(this), true );
                 });
 
 
@@ -870,7 +869,7 @@
                 $('#js-submit-all-efforts').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    liveEntry.timeRowsTable.submitTimeRows(nodes);
+                    liveEntry.timeRowsTable.submitTimeRows(nodes, false);
                     return false;
                 });
 

@@ -25,4 +25,12 @@ class EventGroupPolicy < ApplicationPolicy
   def post_event_course_org?
     user.authorized_to_edit?(event_group)
   end
+
+  def trigger_live_times_push?
+    user.present?
+  end
+
+  def pull_live_time_rows?
+    user.authorized_to_edit?(event_group)
+  end
 end

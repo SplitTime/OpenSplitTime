@@ -19,7 +19,7 @@ FactoryBot.define do
     end
 
     trait :with_bib_number do
-      bib_number { rand(1..999) }
+      sequence(:bib_number, (1..999).to_a.shuffle.cycle)
     end
 
     trait :with_contact_info do

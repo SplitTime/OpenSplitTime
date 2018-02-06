@@ -129,7 +129,12 @@ Rails.application.routes.draw do
       resources :aid_stations, only: [:show, :create, :update, :destroy]
       resources :courses, only: [:index, :show, :create, :update, :destroy]
       resources :efforts, only: [:show, :create, :update, :destroy]
-      resources :event_groups, only: [:index, :show, :create, :update, :destroy]
+      resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
+        member do
+          patch :pull_live_time_rows
+          get :trigger_live_times_push
+        end
+      end
       resources :events, only: [:index, :show, :create, :update, :destroy] do
         member do
           delete :remove_splits

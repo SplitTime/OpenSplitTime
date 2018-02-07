@@ -369,7 +369,9 @@
                 var multiGroup = liveEntry.eventLiveEntryData.data.relationships.events.data.length > 1;
                 multiGroup && $('.group-disabled').removeClass('group-disabled');
 
-                var pacers = false;
+                var pacers = liveEntry.includedResources('events')
+                    .map(function(event) { return event.attributes.monitorPacers })
+                    .reduce(function(p, c) { return p || c }, false);
                 pacers && $('.pacer-disabled').removeClass('pacer-disabled');
 
                 function anyTimes(subSplitKind) {

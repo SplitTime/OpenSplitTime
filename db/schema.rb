@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180130064155) do
+ActiveRecord::Schema.define(version: 20180207072913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20180130064155) do
     t.string "short_name"
     t.string "podium_template"
     t.boolean "available_live"
+    t.boolean "monitor_pacers", default: false
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
     t.index ["slug"], name: "index_events_on_slug", unique: true

@@ -3,7 +3,7 @@
 
 module WaitForCSS
   def wait_for_css
-    sleep(0.5)
+    sleep(1)
   end
 end
 

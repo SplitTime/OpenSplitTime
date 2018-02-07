@@ -224,8 +224,6 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
     expect(add_efforts_form).to have_field('js-group-bib-number')
     expect(add_efforts_form).to have_field('js-group-time-in', disabled: false)
     expect(add_efforts_form).to have_field('js-group-time-out', disabled: true)
-    expect(add_efforts_form).to have_field('js-group-pacer-in', checked: false, disabled: false)
-    expect(add_efforts_form).to have_field('js-group-pacer-out', checked: false, disabled: true)
     expect(add_efforts_form).to have_select('js-group-station-select', options: ['Start', 'Molas Pass', 'Rolling Pass', 'Finish'])
   end
 

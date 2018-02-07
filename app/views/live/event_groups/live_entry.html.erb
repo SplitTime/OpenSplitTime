@@ -121,19 +121,22 @@
     </form>
   </div>
 
-  <div class="col-xs-12 col-sm-7 col-md-8 splits-slider group-disabled">
+  <div class="col-xs-12 col-sm-7 col-md-8 splits-slider">
     <div class="col-xs-12">
       <div id="js-group-station-slider" class="splits-slider-plotter">
       </div>
     </div>
+
     <div class="splits-slider-data group-splits-slider-data col-xs-12">
       <div class="col-xs-6 data-label active">Name:</div>
       <div class="col-xs-6">
         <a id="js-group-effort-name" data-toggle="modal" data-target="#js-group-html-modal" data-effort-id="" data-event-id="">&nbsp;</a>
       </div>
 
-      <div class="col-xs-6 data-label group-only">Event:</div>
-      <div id="js-group-effort-event-name group-only" class="col-xs-6 ">&nbsp;</div>
+      <div class="group-only">
+        <div class="col-xs-6 data-label">Event:</div>
+        <div id="js-group-effort-event-name" class="col-xs-6 ">&nbsp;</div>
+      </div>
 
       <div class="col-xs-6 data-label">Last Reported:</div>
       <div id="js-group-effort-last-reported" class="col-xs-6 ">&nbsp;</div>
@@ -144,8 +147,10 @@
       <div class="col-xs-6 data-label">Time From Prior Valid Reported:</div>
       <div id="js-group-time-prior-valid-reported" class="col-xs-6">&nbsp;</div>
 
-      <div class="col-xs-6 data-label">Time Spent:</div>
-      <div id="js-group-time-spent" class="col-xs-6">&nbsp;</div>
+      <div class="time-out-only">
+        <div class="col-xs-6 data-label">Time Spent:</div>
+        <div id="js-group-time-spent" class="col-xs-6">&nbsp</div>
+      </div>
     </div>
   </div>
 

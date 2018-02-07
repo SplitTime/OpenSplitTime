@@ -445,12 +445,18 @@
                     $('#js-group-time-in, #js-group-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
                 }).change();
 
-                // Listen for keydown in pacer-in and pacer-out.
-                // Enter checks the box, tab moves to next field.
 
-                $('#js-group-dropped-button').on('click', function (event) {
+                var $droppedHereButton = $('#js-group-dropped-button');
+                $droppedHereButton.on('click', function (event) {
                     event.preventDefault();
                     $('#js-group-dropped').prop('checked', !$('#js-group-dropped').prop('checked')).change();
+                    return false;
+                });
+                $droppedHereButton.keypress(function(event) {
+                    if(event.which === 13) {
+                        event.preventDefault();
+                        $('#js-group-add-to-cache').click()
+                    }
                     return false;
                 });
 

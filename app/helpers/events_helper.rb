@@ -25,15 +25,9 @@ module EventsHelper
     end
   end
 
-  def link_to_enter_live_entry(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.available_live
-      link_to 'Live Entry', live_entry_live_event_path(view_object.event), method: :get, class: 'btn btn-sm btn-warning'
-    end
-  end
-
   def link_to_enter_group_live_entry(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event_group) && view_object.available_live
-      link_to 'New Live Entry (Beta)', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
+      link_to 'Live Entry (Beta)', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
     end
   end
 

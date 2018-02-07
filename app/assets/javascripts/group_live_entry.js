@@ -314,7 +314,7 @@
              *
              */
             updateEventName: function () {
-                $('.page-title h2').text(liveEntry.eventLiveEntryData.data.attributes.name.concat(': Live Data Entry'));
+                $('.page-title h2').text(liveEntry.eventLiveEntryData.data.attributes.name);
             },
 
             /**

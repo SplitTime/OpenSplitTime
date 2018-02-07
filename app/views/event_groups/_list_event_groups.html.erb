@@ -5,7 +5,7 @@
   <tr>
     <th>Name</th>
     <th>Date and Time</th>
-    <th>Details</th>
+    <th></th>
     <% if presenter.show_visibility_columns? %>
       <th class="text-center">Visibility</th>
       <th class="text-center">OST Remote</th>
@@ -18,24 +18,27 @@
   <% event_groups.each do |event_group| %>
     <tr>
       <td><strong><%= link_to event_group.name, event_group_path(event_group) %></strong></td>
-      <td><%= l(event_group.ordered_events.first.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
-      <td><%= "#{pluralize(event_group.effort_count, 'effort')}" %></td>
+      <td><%= l(event_group.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
+      <td><%= "#{pluralize(event_group.effort_count, 'entrant')}" %></td>
       <% if presenter.show_visibility_columns? %>
         <td class="text-center"><%= event_group.concealed? ? 'Private' : 'Public' %></td>
         <td class="text-center"><%= event_group.auto_live_times? ? 'Auto' : 'Manual' %></td>
         <td class="text-center">
           <% if event_group.available_live? && current_user&.authorized_to_edit?(event_group) %>
-            <%= link_to 'Live Entry', live_entry_live_event_path(event_group.ordered_events.first), class: 'btn btn-xs btn-warning' %>
+            <%= link_to 'Live Entry', live_entry_live_event_group_path(event_group), class: 'btn btn-xs btn-warning' %>
           <% end %>
         </td>
       <% end %>
     </tr>
     <% if event_group.events.many? %>
-      <% event_group.events.each do |event| %>
+      <% event_group.ordered_events.each do |event| %>
         <tr class="sub-row">
           <td><%= link_to event.name, event_path(event) %></td>
           <td><%= l(event.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
-          <td><%= "#{pluralize(event.efforts.count, 'effort')}" %></td>
+          <td><%= "#{pluralize(event.efforts.count, 'entrant')}" %></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       <% end %>
     <% end %>

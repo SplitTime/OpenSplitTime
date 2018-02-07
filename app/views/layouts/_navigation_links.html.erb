@@ -1,6 +1,6 @@
 <li><%= link_to 'People', people_path %></li>
-<li><%= link_to 'Events', events_path %></li>
+<li><%= link_to 'Events', event_groups_path %></li>
 <li><%= link_to 'Organizations', organizations_path %></li>
-<% if current_user && current_user.admin? %>
+<% if current_user&.admin? %>
     <li><%= link_to 'Dashboard', admin_root_path %></li>
 <% end %>

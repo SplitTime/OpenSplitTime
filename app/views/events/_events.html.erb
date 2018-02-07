@@ -11,7 +11,7 @@
         <th class="text-center">OST Remote</th>
         <th class="text-center"></th>
     <% end %>
-    <% if %w(join leave).include?(show_grouping_button) && current_user.authorized_fully?(presenter.event_group) %>
+    <% if %w(join leave).include?(show_grouping_button) && current_user&.authorized_fully?(presenter.event_group) %>
         <% if show_grouping_button == 'join' %>
             <th class="text-center">Join</th>
         <% elsif events.many? && show_grouping_button == 'leave' %>
@@ -35,7 +35,7 @@
               <% end %>
             </td>
         <% end %>
-        <% if %w(join leave).include?(show_grouping_button) && current_user.authorized_fully?(presenter.event_group) %>
+        <% if %w(join leave).include?(show_grouping_button) && current_user&.authorized_fully?(presenter.event_group) %>
             <% if show_grouping_button == 'join' %>
                 <td class="text-center"><%= link_to 'Join', event_path(event, event: {event_group_id: presenter.event_group.id}),
                                                     method: :patch,

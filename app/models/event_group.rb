@@ -14,6 +14,7 @@ class EventGroup < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false
 
   delegate :stewards, to: :organization
+  delegate :start_time, :start_time_in_home_zone, to: :first_event
 
   scope :standard_includes, -> { includes(events: :splits) }
 
@@ -21,7 +22,7 @@ class EventGroup < ApplicationRecord
 
   def self.search(search_param)
     return all if search_param.blank?
-    where('event_groups.name ILIKE ?', "%#{search_param}%")
+    joins(:events).where('event_groups.name ILIKE ? OR events.name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
   end
 
   def effort_count
@@ -33,7 +34,11 @@ class EventGroup < ApplicationRecord
   end
 
   def ordered_events
-    events.sort_by { |event| [-event.start_time.to_i, event.name] }
+    events.sort_by { |event| [event.start_time, event.name] }
+  end
+
+  def first_event
+    ordered_events.first
   end
 
   def align_available_live

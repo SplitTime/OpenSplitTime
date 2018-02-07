@@ -1080,6 +1080,11 @@
                 // Update form state
                 liveEntry.currentStationIndex = stationIndex;
                 $('#js-group-station-select').val(stationIndex);
+
+                var entries = liveEntry.splitsAttributes()[stationIndex].entries;
+                $('#js-group-time-in-label').html(entries[0] && entries[0].label || '');
+                $('#js-group-time-out-label').html(entries[1] && entries[1].label || '');
+
                 var $selectOption = $('#js-group-station-select option:selected');
                 $('#js-group-time-in').prop('disabled', !$selectOption.data('sub-split-in'));
                 $('#js-group-pacer-in').prop('disabled', !$selectOption.data('sub-split-in'));

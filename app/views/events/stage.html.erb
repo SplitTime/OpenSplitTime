@@ -7,7 +7,7 @@
   </div>
   <div id='<%= "event_#{@event_stage.id}" %>' class="col-xs-7 page-navigation">
     <div class="row">
-      <%= link_to_enter_live_entry(@event_stage, @current_user) %>
+      <%= link_to_enter_group_live_entry(@event_stage, @current_user) %>
       <%= render 'view_buttons', view_object: @event_stage %>
     </div>
     <div class="row">

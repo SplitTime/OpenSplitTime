@@ -4,9 +4,9 @@ class EventGroupsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @event_groups = policy_class::Scope.new(current_user, controller_class).viewable
-                        .includes(events: :efforts)
-                        .search(params[:search])
+    scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
+    @event_groups = EventGroup.where(id: scoped_event_groups.map(&:id))
+                        .includes(events: :efforts).includes(:organization)
                         .sort_by { |event_group| -event_group.start_time.to_i }
                         .paginate(page: params[:page], per_page: 25)
     @presenter = EventGroupsCollectionPresenter.new(@event_groups, params, current_user)

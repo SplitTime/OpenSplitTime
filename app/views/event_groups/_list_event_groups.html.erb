@@ -35,10 +35,12 @@
         <tr class="sub-row">
           <td><%= link_to event.name, event_path(event) %></td>
           <td><%= l(event.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
-          <td><%= "#{pluralize(event.efforts.count, 'entrant')}" %></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td><%= "#{pluralize(event.efforts.size, 'entrant')}" %></td>
+          <% if presenter.show_visibility_columns? %>
+            <td></td>
+            <td></td>
+            <td></td>
+          <% end %>
         </tr>
       <% end %>
     <% end %>

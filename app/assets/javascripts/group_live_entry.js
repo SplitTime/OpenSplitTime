@@ -76,6 +76,10 @@
                 })
         },
 
+        containsSubSplitKind: function(entries, subSplitKind) {
+            return entries.reduce(function(p, c) { return p || c.subSplitKind === subSplitKind }, false)
+        },
+
     /**
          * This kicks off the full UI
          *
@@ -186,8 +190,8 @@
                     var stationData = {};
                     stationData.title = splitsAttribute.title;
                     stationData.labels = splitsAttribute.entries.map(function(entry) { return entry.label });
-                    stationData.subSplitIn = splitsAttribute.entries.reduce(function(p, c) { return p || c.subSplitKind === 'in' }, false);
-                    stationData.subSplitOut = splitsAttribute.entries.reduce(function(p, c) { return p || c.subSplitKind === 'out' }, false);
+                    stationData.subSplitIn = liveEntry.containsSubSplitKind(splitsAttribute.entries, 'in');
+                    stationData.subSplitOut = liveEntry.containsSubSplitKind(splitsAttribute.entries, 'out');
                     liveEntry.stationIndexMap[i] = stationData
                 })
             }
@@ -356,7 +360,7 @@
                 $('#js-group-bib-number').inputmask("Regex", {regex: "[0-9|*]{0,6}"});
                 $('#js-group-lap-number').inputmask("integer", { min: 1, max: liveEntry.eventLiveEntryData.maximumLaps || undefined });
 
-                // Enable / Disable lap- and group-specific fields
+                // Enable / Disable conditional fields
                 var multiLap = liveEntry.includedResources('events')
                     .map(function(event) { return event.attributes.multiLap })
                     .reduce(function(p, c) { return p || c }, false);
@@ -364,6 +368,23 @@
 
                 var multiGroup = liveEntry.eventLiveEntryData.data.relationships.events.data.length > 1;
                 multiGroup && $('.group-disabled').removeClass('group-disabled');
+
+                var pacers = false;
+                pacers && $('.pacer-disabled').removeClass('pacer-disabled');
+
+                function anyTimes(subSplitKind) {
+                    return liveEntry.splitsAttributes().map(function (splitsAttribute) {
+                        return liveEntry.containsSubSplitKind(splitsAttribute.entries, subSplitKind)
+                    }).reduce(function (p, c) {
+                        return p || c
+                    });
+                }
+
+                var anyTimesIn = anyTimes('in');
+                anyTimesIn && $('.time-in-disabled').removeClass('time-in-disabled');
+
+                var anyTimesOut = anyTimes('out');
+                anyTimesOut && $('.time-out-disabled').removeClass('time-out-disabled');
 
                 // Styles the Dropped Here button
                 $('#js-group-dropped').on('change', function (event) {
@@ -787,9 +808,9 @@
                         <td class="lap-number js-group-lap-number group-only">' + liveEntry.eventIdNameMap[timeRow.eventId] + '</td>\
                         <td class="bib-number js-group-bib-number ' + liveEntry.bibStatus(timeRow) + '">' + (timeRow.bibNumber || '') + bibNumberIcon + '</td>\
                         <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
-                        <td class="time-in js-group-time-in text-nowrap ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
-                        <td class="time-out js-group-time-out text-nowrap ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
-                        <td class="pacer-inout js-pacer-inout">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
+                        <td class="time-in js-group-time-in text-nowrap time-in-only ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
+                        <td class="time-out js-group-time-out text-nowrap time-out-only ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
+                        <td class="pacer-inout js-pacer-inout pacer-only">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
                         <td class="dropped-here js-group-dropped-here">' + (timeRow.droppedHere ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
                         <td class="effort-name js-group-effort-name text-nowrap">' + timeRow.effortName + '</td>\
                         <td class="row-edit-btns">\

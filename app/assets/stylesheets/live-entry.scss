@@ -21,6 +21,21 @@ Globals
 .live_entry .row {
     margin: 0 auto 25px; // Nerfed: Please QA
 }
+.lap-disabled .lap-only {
+    display: none;
+}
+.group-disabled .group-only {
+    display: none;
+}
+.time-in-disabled .time-in-only {
+    display: none;
+}
+.time-out-disabled .time-out-only {
+    display: none;
+}
+.pacer-disabled .pacer-only {
+    display: none;
+}
 
 /******* Header ********/
 .header {
@@ -93,10 +108,6 @@ Globals
     @extend .no-gutter;
     border-bottom: 1px solid $gray;
     width: 100%;
-
-    &.lap-disabled .lap-only {
-        display: none;
-    }
 
     .live-entry {
         margin: 0 auto 25px;
@@ -335,14 +346,6 @@ Globals
 
 /******* Provisional Data Table ********/
 .provisional-data {
-
-    &.lap-disabled .lap-only {
-        display: none;
-    }
-
-    &.group-disabled .group-only {
-        display: none;
-    }
 
     .provisional-data-table {
         th {

@@ -19,7 +19,7 @@
 </div>
 
 
-<div class="row form-split-wrapper lap-disabled group-disabled">
+<div class="row form-split-wrapper lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
 
   <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
     <span id="js-group-live-times-pusher" data-key="<%= ENV['PUSHER_KEY'] %>"></span>
@@ -53,7 +53,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix">
+      <div class="form-group form-group-sm clearfix time-in-only">
         <label class="col-xs-4" for="js-group-time-in">Time In</label>
         <div class="col-xs-8">
           <div class="input-group">
@@ -72,7 +72,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix">
+      <div class="form-group form-group-sm clearfix time-out-only">
         <label class="col-xs-4" for="js-group-time-out">Time Out</label>
         <div class="col-xs-8">
           <div class="input-group">
@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix">
+      <div class="form-group form-group-sm clearfix pacer-only">
         <label class="col-xs-4" for="pacer">Pacer</label>
         <div class="col-xs-8">
           <label class="checkbox-inline" for="js-group-pacer-in">
@@ -121,7 +121,7 @@
     </form>
   </div>
 
-  <div class="col-xs-12 col-sm-7 col-md-8 splits-slider">
+  <div class="col-xs-12 col-sm-7 col-md-8 splits-slider group-disabled">
     <div class="col-xs-12">
       <div id="js-group-station-slider" class="splits-slider-plotter">
       </div>
@@ -132,8 +132,8 @@
         <a id="js-group-effort-name" data-toggle="modal" data-target="#js-group-html-modal" data-effort-id="" data-event-id="">&nbsp;</a>
       </div>
 
-      <div class="col-xs-6 data-label">Event:</div>
-      <div id="js-group-effort-event-name" class="col-xs-6 ">&nbsp;</div>
+      <div class="col-xs-6 data-label group-only">Event:</div>
+      <div id="js-group-effort-event-name group-only" class="col-xs-6 ">&nbsp;</div>
 
       <div class="col-xs-6 data-label">Last Reported:</div>
       <div id="js-group-effort-last-reported" class="col-xs-6 ">&nbsp;</div>
@@ -151,7 +151,7 @@
 
 </div>
 
-<div class="row provisional-data lap-disabled group-disabled">
+<div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
 
   <div class="col-xs-12">
     <h3>Local Data Workspace</h3>
@@ -163,9 +163,9 @@
           <th class="group-only">Event</th>
           <th>Bib</th>
           <th class="lap-only">Lap</th>
-          <th>Time In</th>
-          <th>Time Out</th>
-          <th>Pacer</th>
+          <th class="time-in-only">Time In</th>
+          <th class="time-out-only">Time Out</th>
+          <th class="pacer-only">Pacer</th>
           <th>Dropped</th>
           <th>Name</th>
           <th data-orderable="false">&nbsp;</th>

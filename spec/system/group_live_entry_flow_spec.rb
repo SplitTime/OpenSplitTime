@@ -219,7 +219,6 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
   def check_setup
     expect(page).to have_content(event_group.name)
-    expect(page).to have_content('Live Data Entry')
     verify_workspace_is_empty
     expect(add_efforts_form).to have_field('js-group-bib-number')
     expect(add_efforts_form).to have_field('js-group-time-in', disabled: false)

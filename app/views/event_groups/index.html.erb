@@ -32,7 +32,7 @@
 <div class="row">
   <div class="col-xs-12">
     <% if @presenter.event_groups.present? %>
-      <%= render 'list_event_groups', presenter: @presenter, event_groups: @presenter.event_groups, show_grouping_button: false %>
+      <%= render 'list_event_groups', presenter: @presenter, event_groups: @presenter.event_groups %>
     <% else %>
       <br/>
       <% if params[:search].blank? %>

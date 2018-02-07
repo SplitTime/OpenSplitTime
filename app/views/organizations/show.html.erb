@@ -72,8 +72,8 @@
     <% end %>
 
 <% else %>
-    <% if @presenter.events.present? %>
-        <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
+    <% if @presenter.event_groups.present? %>
+        <%= render 'event_groups/list_event_groups', presenter: @presenter, event_groups: @presenter.event_groups %>
     <% else %>
         <h4>No events are associated with this organization.</h4>
     <% end %>

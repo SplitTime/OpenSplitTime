@@ -1,6 +1,6 @@
 <%= link_to 'Settings', event_group_path(@event_group), class: 'btn btn-sm btn-primary' %>
 <div class="btn-group">
-  <%= link_to 'Live entry', live_entry_live_event_path(@event_group), disabled: page == 'live_entry', class: 'btn btn-sm btn-warning' %>
+  <%= link_to 'Live entry', live_entry_live_event_path(@event_group), disabled: %w(live_entry group_live_entry).include?(page), class: 'btn btn-sm btn-warning' %>
   <%= link_to 'Progress', progress_report_live_event_path(@event_group), disabled: page == 'progress', class: 'btn btn-sm btn-warning' %>
   <%= link_to 'Aid stations', aid_station_report_live_event_path(@event_group), disabled: page == 'aid_summary', class: 'btn btn-sm btn-warning' %>
 </div>

@@ -17,7 +17,7 @@
 <% if @presenter.ordered_events_within_group.many? %>
   <div class="row mid">
     <div class="col-xs-5 page-navigation-left">
-      <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group %>
+      <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
     </div>
   </div>
 <% end %>

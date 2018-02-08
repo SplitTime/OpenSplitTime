@@ -21,16 +21,10 @@
 <div class="row mid">
   <div class="col-xs-5 page-navigation-left">
     <% if @spread_display.ordered_events_within_group.many? %>
-      <div class="btn-group">
-        <% @spread_display.ordered_events_within_group.each do |event| %>
-          <%= link_to "#{event.guaranteed_short_name}",
-                      spread_event_path(event, display_style: @spread_display.display_style),
-                      class: 'btn btn-sm btn-primary',
-                      disabled: event == @spread_display.event %>
-        <% end %>
-      </div>
+      <%= render 'event_groups/event_buttons', events: @spread_display.ordered_events_within_group, current_event: @spread_display.event %>
     <% end %>
   </div>
+
   <div class="col-xs-7 page-navigation">
     <div class="btn-group">
       <%= link_to_spread_gender(@spread_display, 'combined') %>

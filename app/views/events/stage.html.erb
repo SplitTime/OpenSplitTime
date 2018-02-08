@@ -31,16 +31,10 @@
 <div class="row mid">
   <div class="col-xs-5 page-navigation-left">
     <% if @event_stage.ordered_events_within_group.many? %>
-        <div class="btn-group">
-          <% @event_stage.ordered_events_within_group.each do |event| %>
-              <%= link_to "#{event.guaranteed_short_name}",
-                          stage_event_path(event, display_style: @event_stage.display_style),
-                          class: 'btn btn-sm btn-primary',
-                          disabled: event == @event_stage.event %>
-          <% end %>
-        </div>
+      <%= render 'event_groups/event_buttons', events: @event_stage.ordered_events_within_group, current_event: @event_stage.event %>
     <% end %>
   </div>
+
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <div class="btn-group">

@@ -14,14 +14,7 @@
 <% if @aid_stations_display.ordered_events_within_group.many? %>
     <div class="row mid">
       <div class="col-xs-12">
-        <div class="btn-group mid-padding">
-          <% @aid_stations_display.ordered_events_within_group.each do |event| %>
-              <%= link_to "#{event.guaranteed_short_name}",
-                          aid_station_report_live_event_path(event),
-                          class: 'btn btn-sm btn-primary',
-                          disabled: event == @aid_stations_display.event %>
-          <% end %>
-        </div>
+        <%= render 'event_groups/event_buttons', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
       </div>
     </div>
 <% end %>

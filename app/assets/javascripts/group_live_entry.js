@@ -707,6 +707,7 @@
 
                 // Initiate DataTable Plugin
                 liveEntry.timeRowsTable.$dataTable = $('#js-group-local-workspace-table').DataTable({
+                    pageLength: 50,
                     oLanguage: {
                         'sSearch': 'Filter:&nbsp;'
                     }
@@ -815,12 +816,12 @@
                         <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + (liveEntry.stationIndexMap[timeRow.stationIndex] || {title: 'Unknown'}).title + '</td>\
                         <td class="lap-number js-group-lap-number group-only">' + liveEntry.eventIdNameMap[timeRow.eventId] + '</td>\
                         <td class="bib-number js-group-bib-number ' + liveEntry.bibStatus(timeRow) + '">' + (timeRow.bibNumber || '') + bibNumberIcon + '</td>\
+                        <td class="effort-name js-group-effort-name text-nowrap">' + timeRow.effortName + '</td>\
                         <td class="lap-number js-group-lap-number lap-only">' + timeRow.lap + '</td>\
                         <td class="time-in js-group-time-in text-nowrap time-in-only ' + timeRow.timeInStatus + '">' + ( timeRow.timeIn || '' ) + timeInIcon + '</td>\
                         <td class="time-out js-group-time-out text-nowrap time-out-only ' + timeRow.timeOutStatus + '">' + ( timeRow.timeOut || '' ) + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout pacer-only">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
                         <td class="dropped-here js-group-dropped-here">' + (timeRow.droppedHere ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
-                        <td class="effort-name js-group-effort-name text-nowrap">' + timeRow.effortName + '</td>\
                         <td class="row-edit-btns">\
                             <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
                             <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\

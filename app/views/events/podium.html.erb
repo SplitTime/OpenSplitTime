@@ -1,11 +1,10 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Podium - #{@presenter.name}" %>
+  <% "OpenSplitTime: Podium - #{@presenter.name}" %>
 <% end %>
 
 <div class="row header">
   <div class="col-xs-5">
-    <%= render 'event_info', view_object: @presenter, title: 'Podium' %>
-    <h4><%= @presenter.template_name ? "Using template: #{@presenter.template_name}" : "The organizer has not specified a podium template." %></h4>
+    <%= render 'event_info', view_object: @presenter, title: nil %>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
@@ -15,10 +14,20 @@
   </div>
 </div>
 
+<% if @presenter.ordered_events_within_group.many? %>
+  <div class="row mid">
+    <div class="col-xs-5 page-navigation-left">
+      <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group %>
+    </div>
+  </div>
+<% end %>
+
 <% if @presenter.template_name %>
-    <table class="table table-condensed table-striped">
-      <% @presenter.categories.each do |category| %>
-          <%= render 'podium_category', category: category %>
-      <% end %>
-    </table>
+  <table class="table table-condensed table-striped">
+    <% @presenter.categories.each do |category| %>
+      <%= render 'podium_category', category: category %>
+    <% end %>
+  </table>
+<% else %>
+  <h4><%= "The organizer has not specified a podium template." %></h4>
 <% end %>

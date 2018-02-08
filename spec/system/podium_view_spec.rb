@@ -22,8 +22,6 @@ RSpec.describe 'visit the podium page' do
       visit podium_event_path(event)
 
       expect(page).to have_content(event.name)
-      template_name = Results::Templates.find(event.podium_template).name
-      expect(page).to have_content(template_name)
       efforts.first(3).each do |effort|
         expect(page).to have_content(effort.full_name)
       end

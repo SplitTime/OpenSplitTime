@@ -17,7 +17,7 @@ class Effort < ApplicationRecord
   include Matchable
   extend FriendlyId
   strip_attributes collapse_spaces: true
-  strip_attributes only: [:phone], :regex => /[^0-9|+]/
+  strip_attributes only: [:phone, :emergency_phone], :regex => /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
   belongs_to :event
   belongs_to :person
@@ -37,9 +37,9 @@ class Effort < ApplicationRecord
   delegate :stewards, to: :organization
 
   validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
-  validates :email, allow_blank: true, length: {maximum: 105},
-            format: {with: VALID_EMAIL_REGEX}
+  validates :email, allow_blank: true, length: {maximum: 105}, format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
+  validates :emergency_phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
   validates_attachment :photo,

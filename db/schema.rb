@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180207072913) do
+ActiveRecord::Schema.define(version: 20180208175849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,10 +69,8 @@ ActiveRecord::Schema.define(version: 20180207072913) do
     t.date "birthdate"
     t.integer "data_status"
     t.integer "start_offset", default: 0, null: false
-    t.integer "dropped_split_id"
     t.string "beacon_url"
     t.string "report_url"
-    t.integer "dropped_lap"
     t.string "phone", limit: 15
     t.string "email"
     t.string "slug", null: false
@@ -81,6 +79,8 @@ ActiveRecord::Schema.define(version: 20180207072913) do
     t.string "photo_content_type"
     t.integer "photo_file_size"
     t.datetime "photo_updated_at"
+    t.string "emergency_contact"
+    t.string "emergency_phone"
     t.index ["event_id"], name: "index_efforts_on_event_id"
     t.index ["person_id"], name: "index_efforts_on_person_id"
     t.index ["slug"], name: "index_efforts_on_slug", unique: true

@@ -40,6 +40,7 @@
             <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @event_stage.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('From', 'state_code', @event_stage.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Scheduled Start', 'start_offset', @event_stage.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Emergency Contact', 'emergency_contact', @event_stage.existing_sort) %></th>
             <% if @event_stage.started_efforts_count.positive? %>
                 <th><%= link_to_reversing_sort_heading('Data Status', 'data_status', @event_stage.existing_sort) %></th>
             <% end %>
@@ -60,6 +61,7 @@
                 <td><%= effort.bio_historic %></td>
                 <td><%= effort.flexible_geolocation %></td>
                 <td><%= "#{day_time_format(effort.start_time)} (#{offset_format_xxhyym(effort.start_offset)})" %></td>
+                <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(' / ') %></td>
                 <% if @event_stage.started_efforts_count.positive? %>
                     <td><%= effort.data_status %></td>
                 <% end %>

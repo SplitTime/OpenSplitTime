@@ -114,6 +114,7 @@ class EffortsController < ApplicationController
       redirect_to effort_path(effort)
     else
       flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
+      @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
       render 'edit_split_times'
     end
   end

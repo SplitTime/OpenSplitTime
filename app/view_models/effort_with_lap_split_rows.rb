@@ -60,7 +60,7 @@ class EffortWithLapSplitRows
   end
 
   def lap_splits
-    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(last_lap)
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(last_lap + 1)
   end
 
   def last_lap

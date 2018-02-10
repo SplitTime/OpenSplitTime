@@ -175,7 +175,7 @@ class Api::V1::EventsController < ApiController
       live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
 
       scoped_live_times = force_pull ? @event.live_times.unmatched : @event.live_times.unconsidered
-      live_times = scoped_live_times.order(:split_id, :bib_number, :bitkey).limit(live_times_limit)
+      live_times = scoped_live_times.order(:absolute_time, :split_id, :bib_number, :bitkey).limit(live_times_limit)
 
       live_time_rows = LiveTimeRowConverter.convert(event: @event, live_times: live_times)
 

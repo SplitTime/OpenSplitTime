@@ -1,6 +1,7 @@
 class LiveEffortData
   attr_reader :ordered_splits, :effort, :new_split_times, :indexed_existing_split_times
   delegate :person_id, to: :effort
+  ASSUMED_LAP = 1
   SUB_SPLIT_KINDS ||= SubSplit.kinds.map { |kind| kind.downcase.to_sym }
   COMPARISON_KEYS ||= %w(time_from_start pacer stopped_here)
 
@@ -70,7 +71,7 @@ class LiveEffortData
   end
 
   def lap
-    @lap ||= [[(params[:lap].presence.try(:to_i) || expected_lap), 1].max, event.maximum_laps].compact.min
+    @lap ||= [[(params[:lap].presence.try(:to_i) || expected_lap || ASSUMED_LAP), 1].max, event.maximum_laps].compact.min
   end
 
   def expected_lap

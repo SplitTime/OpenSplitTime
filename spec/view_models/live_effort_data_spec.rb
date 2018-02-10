@@ -383,12 +383,12 @@ RSpec.describe LiveEffortData do
   end
 
   describe '#lap' do
-    it 'returns 1 if no lap is provided' do
+    it 'returns the expected lap if no lap is provided' do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '', 'bib_number' => '205',
                 'time_in' => '', 'time_out' => '', 'id' => '4'}
-      expected = 1
+      expected = 2
       validate_lap(event, effort, split_times, params_hash, expected)
     end
 

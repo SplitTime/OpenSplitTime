@@ -28,7 +28,7 @@ class BasePresenter
   end
 
   def per_page
-    params[:per_page] || 25
+    params[:per_page] || 50
   end
 
   def reversing_sort(field_name)

@@ -54,7 +54,7 @@ module Interactors
     end
 
     def start_split_time
-      @start_split_time ||= split_times.find { |st| st.split.start? }
+      @start_split_time ||= split_times.find { |st| st.split.start? && st.lap.one? }
     end
 
     def non_start_split_times

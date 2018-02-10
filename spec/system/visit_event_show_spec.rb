@@ -59,7 +59,7 @@ RSpec.describe 'visit a populated event show page and try various features' do
       expect(page).to have_link('Full spread', href: spread_event_path(event))
       expect(page).to have_link('Admin', href: stage_event_path(event))
       expect(page).to have_link('Event Staging')
-      expect(page).to have_link('Settings', href: event_group_path(event.event_group))
+      expect(page).to have_link('Settings')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
       expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
     end
@@ -76,7 +76,7 @@ RSpec.describe 'visit a populated event show page and try various features' do
       expect(page).to have_link('Full spread', href: spread_event_path(event))
       expect(page).to have_link('Admin', href: stage_event_path(event))
       expect(page).to have_link('Event Staging')
-      expect(page).not_to have_link('Settings', href: event_group_path(event.event_group))
+      expect(page).not_to have_link('Settings')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
       expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
     end
@@ -89,7 +89,7 @@ RSpec.describe 'visit a populated event show page and try various features' do
       expect(page).to have_link('Full spread', href: spread_event_path(event))
       expect(page).to have_link('Admin', href: stage_event_path(event))
       expect(page).to have_link('Event Staging')
-      expect(page).to have_link('Settings', href: event_group_path(event.event_group))
+      expect(page).to have_link('Settings')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
       expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
     end

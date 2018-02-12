@@ -1,23 +1,27 @@
-<% if current_user && current_user.authorized_to_edit?(@effort_show.effort) && lap_split_row.times_from_start.compact.present? %>
+<% if current_user && current_user.authorized_to_edit?(@effort_show.effort) %>
   <td class="text-right">
-    <% lap_split_row.time_data_statuses.each_with_index do |data_status, i| %>
-      <%= link_to "#{(data_status == 'confirmed') ? 'Unconfirm' : 'Confirm'}",
-                  update_split_times_effort_path(@effort_show.effort,
-                                                 effort: {split_times_attributes: {id: lap_split_row.split_time_ids[i],
-                                                                                   data_status: data_status == 'confirmed' ? '' : 'confirmed'}}),
-                  method: :patch,
-                  disabled: lap_split_row.split_time_ids[i].blank?,
-                  class: 'btn btn-xs btn-success' %>
+    <% if lap_split_row.times_from_start.compact.present? %>
+      <% lap_split_row.time_data_statuses.each_with_index do |data_status, i| %>
+        <%= link_to "#{(data_status == 'confirmed') ? 'Unconfirm' : 'Confirm'}",
+                    update_split_times_effort_path(@effort_show.effort,
+                                                   effort: {split_times_attributes: {id: lap_split_row.split_time_ids[i],
+                                                                                     data_status: data_status == 'confirmed' ? '' : 'confirmed'}}),
+                    method: :patch,
+                    disabled: lap_split_row.split_time_ids[i].blank?,
+                    class: 'btn btn-xs btn-success' %>
+      <% end %>
     <% end %>
   </td>
   <td class="text-right">
-    <% lap_split_row.split_time_ids.each do |id| %>
-      <%= link_to 'Delete',
-                  delete_split_times_effort_path(@effort_show.effort, split_time_ids: [id]),
-                  method: :delete,
-                  disabled: id.blank?,
-                  data: {confirm: 'This action cannot be undone. OK to proceed?'},
-                  class: 'btn btn-xs btn-danger' %>
+    <% if lap_split_row.times_from_start.compact.present? %>
+      <% lap_split_row.split_time_ids.each do |id| %>
+        <%= link_to 'Delete',
+                    delete_split_times_effort_path(@effort_show.effort, split_time_ids: [id]),
+                    method: :delete,
+                    disabled: id.blank?,
+                    data: {confirm: 'This action cannot be undone. OK to proceed?'},
+                    class: 'btn btn-xs btn-danger' %>
+      <% end %>
     <% end %>
   </td>
 <% end %>

@@ -24,15 +24,22 @@ class EffortWithLapSplitRows
   end
 
   def lap_split_rows
-    @lap_split_rows ||=
-        lap_splits.map { |lap_split| LapSplitRow.new(lap_split: lap_split,
-                                                     split_times: related_split_times(lap_split),
-                                                     prior_split_time: prior_split_time(lap_split),
-                                                     start_time: start_time,
-                                                     show_laps: event.multiple_laps?) }
+    @lap_split_rows ||= rows_from_lap_splits(lap_splits)
+  end
+
+  def lap_split_rows_plus_one
+    @lap_split_rows_plus_one ||= rows_from_lap_splits(lap_splits_plus_one)
   end
 
   private
+
+  def rows_from_lap_splits(lap_splits)
+    lap_splits.map { |lap_split| LapSplitRow.new(lap_split: lap_split,
+                                                 split_times: related_split_times(lap_split),
+                                                 prior_split_time: prior_split_time(lap_split),
+                                                 start_time: start_time,
+                                                 show_laps: event.multiple_laps?) }
+  end
 
   def related_split_times(lap_split)
     lap_split.time_points.map { |time_point| indexed_split_times[time_point] }
@@ -60,7 +67,15 @@ class EffortWithLapSplitRows
   end
 
   def lap_splits
-    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(last_lap + 1)
+    @lap_splits ||= lap_splits_from_lap(last_lap)
+  end
+
+  def lap_splits_plus_one
+    @lap_splits_plus_one ||= lap_splits_from_lap(last_lap + 1)
+  end
+
+  def lap_splits_from_lap(lap)
+    event.required_lap_splits.presence || event.lap_splits_through(lap)
   end
 
   def last_lap

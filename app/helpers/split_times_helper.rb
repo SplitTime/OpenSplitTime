@@ -7,7 +7,7 @@ module SplitTimesHelper
     time_array = row.times_from_start.zip(row.time_data_statuses, row.stopped_here_flags).map do |time, status, stopped|
       brackets = STATUS_INDICATORS.fetch(status, ['', ''])
       stop_indicator = (stopped && !row.finish?) ? ' [DONE]' : ''
-      time_string = with_seconds ? time_format_xxhyymzzs(time) : time_format_xxhyym(time)
+      time_string = with_seconds ? time_format_hhmmss(time) : time_format_hhmm(time)
       time_string ? "#{brackets.first}#{time_string}#{brackets.last}#{stop_indicator}" : '--:--:--'
     end
 

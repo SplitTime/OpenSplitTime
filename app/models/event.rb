@@ -164,6 +164,10 @@ class Event < ApplicationRecord
     (splits_count < 3) && !multiple_laps?
   end
 
+  def multiple_sub_splits?
+    splits.any? { |split| split.sub_split_bitmap != 1 }
+  end
+
   def ordered_aid_stations
     @ordered_aid_stations ||= aid_stations.sort_by(&:distance_from_start)
   end

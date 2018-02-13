@@ -87,22 +87,6 @@ class Api::V1::EventsController < ApiController
     render json: {message: "Live times push notification sent for #{@event.name}"}
   end
 
-  # This legacy endpoint requires only an event_id, which is passed via the URL as params[:id]
-  # It returns a json containing eventId, eventName, and detailed split info
-  # for all splits associated with the event.
-  #
-  # This endpoint should be replaced by EventsController#show
-  # and live_entry.js should be updated to parse the jsonapi response.
-
-  #GET /api/v1/events/:id/event_data
-  def event_data
-    if @event.available_live
-      render partial: 'live/events/event_data.json.ruby'
-    else
-      render json: live_entry_unavailable(@event), status: :forbidden
-    end
-  end
-
   # This endpoint is called on any of the following conditions:
   # - split selector is changed
   # - bib # field is changed

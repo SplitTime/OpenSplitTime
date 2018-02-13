@@ -112,7 +112,6 @@ Rails.application.routes.draw do
 
   namespace :live do
     resources :events, only: [] do
-      member { get :live_entry }
       member { get :progress_report }
       member { get :aid_station_report }
       member { get :effort_table }
@@ -141,7 +140,6 @@ Rails.application.routes.draw do
           put :associate_splits
           post :import
           get :spread
-          get :event_data
           get :live_effort_data
           post :set_times_data
           post :post_file_effort_data

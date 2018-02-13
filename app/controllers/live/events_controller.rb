@@ -2,11 +2,6 @@ class Live::EventsController < Live::BaseController
 
   before_action :set_event
 
-  def live_entry
-    authorize @event
-    verify_available_live(@event)
-  end
-
   def aid_station_report
     authorize @event
     @aid_stations_display = AidStationsDisplay.new(event: @event)

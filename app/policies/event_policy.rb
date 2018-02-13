@@ -80,19 +80,11 @@ class EventPolicy < ApplicationPolicy
 
   # Policies for live namespace
 
-  def live_entry?
-    user.authorized_to_edit?(event)
-  end
-
   def progress_report?
     user.authorized_to_edit?(event)
   end
 
   def aid_station_report?
-    user.authorized_to_edit?(event)
-  end
-
-  def event_data?
     user.authorized_to_edit?(event)
   end
 

@@ -60,7 +60,7 @@ class EventsController < ApplicationController
     authorize @event
     @event.destroy
 
-    redirect_to events_path
+    redirect_to event_groups_path
   end
 
   # Special views with results

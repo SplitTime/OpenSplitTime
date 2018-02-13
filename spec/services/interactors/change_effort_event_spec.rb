@@ -1,27 +1,34 @@
 require 'rails_helper'
 
-RSpec.describe EffortEventChanger do
+RSpec.describe Interactors::ChangeEffortEvent do
+  subject { Interactors::ChangeEffortEvent.new(effort: effort, new_event: new_event) }
+
   describe '#initialization' do
     let(:effort) { build_stubbed(:effort) }
-    let(:event) { build_stubbed(:event) }
+    let(:new_event) { build_stubbed(:event) }
 
     it 'initializes when provided with an effort and a new event_id' do
-      expect { EffortEventChanger.new(effort: effort, event: event) }
-          .not_to raise_error
+      expect { subject }.not_to raise_error
     end
 
-    it 'raises an error if no effort is provided' do
-      expect { EffortEventChanger.new(effort: nil, event: event) }
-          .to raise_error(/must include effort/)
+    context 'if no effort is provided' do
+      let(:effort) { nil }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error(/must include effort/)
+      end
     end
 
-    it 'raises an error if no model is provided' do
-      expect { EffortEventChanger.new(effort: effort, event: nil) }
-          .to raise_error(/must include event/)
+    context 'if no new_event is provided' do
+      let(:new_event) { nil }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error(/must include new_event/)
+      end
     end
   end
 
-  describe '#assign_event' do
+  describe '#perform!' do
     let(:effort) { create(:effort, event: old_event) }
     let!(:old_event) { create(:event, course: old_course, start_time: '2017-07-01 06:00:00') }
     let(:old_course) { create(:course_with_standard_splits, splits_count: 3) }
@@ -38,23 +45,22 @@ RSpec.describe EffortEventChanger do
 
       it 'updates the effort event_id to the id of the provided event' do
         expect(effort.event_id).not_to eq(new_event.id)
-        changer = EffortEventChanger.new(effort: effort, event: new_event)
-        changer.assign_event
+        response = subject.perform!
         expect(effort.event_id).to eq(new_event.id)
+        expect(response).to be_successful
+        expect(response.message).to match(/was changed to/)
       end
 
       it 'does not change the split_id of any effort split_times' do
         split_times = effort.split_times
         expect(split_times.size).to eq(4)
-        changer = EffortEventChanger.new(effort: effort, event: new_event)
-        changer.assign_event
+        subject.perform!
         expect(split_times.none?(&:changed?)).to be_truthy
       end
 
       it 'updates the effort start offset such that the absolute effort start_time does not change' do
         existing_start_time = effort.start_time
-        changer = EffortEventChanger.new(effort: effort, event: new_event)
-        changer.assign_event
+        subject.perform!
         reloaded_effort = Effort.find(effort.id)
         expect(reloaded_effort.start_time).to eq(existing_start_time)
       end
@@ -79,16 +85,16 @@ RSpec.describe EffortEventChanger do
 
       it 'updates the effort event_id to the id of the provided event' do
         expect(effort.event_id).not_to eq(new_event.id)
-        changer = EffortEventChanger.new(effort: effort, event: new_event)
-        changer.assign_event
+        response = subject.perform!
         expect(effort.event_id).to eq(new_event.id)
+        expect(response).to be_successful
+        expect(response.message).to match(/was changed to/)
       end
 
       it 'changes the split_ids of effort split_times to the corresponding split_ids of the new event' do
         time_points = new_event.required_time_points.first(effort.split_times.size)
         expect(effort.split_times.map(&:time_point)).not_to match_array(time_points)
-        changer = EffortEventChanger.new(effort: effort, event: new_event)
-        changer.assign_event
+        subject.perform!
         effort.reload
         expect(effort.split_times.map(&:time_point)).to match_array(time_points)
       end
@@ -97,23 +103,32 @@ RSpec.describe EffortEventChanger do
         split = new_event.ordered_splits.second
         split.update(distance_from_start: split.distance_from_start - 1)
         new_event.reload
-        expect { EffortEventChanger.new(effort: effort, event: new_event) }
-            .to raise_error(/distances do not coincide/)
+        expect { subject }.to raise_error(/distances do not coincide/)
       end
 
       it 'raises an error if sub_splits do not coincide' do
         split = new_event.ordered_splits.second
         split.update(sub_split_bitmap: 1)
         new_event.reload
-        expect { EffortEventChanger.new(effort: effort, event: new_event) }
-            .to raise_error(/sub splits do not coincide/)
+        expect { subject }.to raise_error(/sub splits do not coincide/)
       end
 
       it 'raises an error if laps are out of range' do
         split_time = effort.ordered_split_times.last
         split_time.update(lap: 2)
-        expect { EffortEventChanger.new(effort: effort, event: new_event) }
-            .to raise_error(/laps exceed maximum required/)
+        expect { subject }.to raise_error(/laps exceed maximum required/)
+      end
+    end
+
+    context 'when the effort cannot be moved to the new event' do
+      let!(:new_event) { create(:event, course: old_course) }
+      let!(:existing_effort) { create(:effort, event: new_event, bib_number: effort.bib_number) }
+
+      it 'returns an error response' do
+        response = subject.perform!
+        expect(response).not_to be_successful
+        expect(response.errors.first[:detail][:messages])
+            .to include("Bib number #{effort.bib_number} already exists for #{existing_effort.full_name}")
       end
     end
 

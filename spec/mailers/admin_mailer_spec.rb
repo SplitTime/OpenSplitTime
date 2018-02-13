@@ -6,7 +6,6 @@ RSpec.describe AdminMailer, type: :mailer do
   let(:event) { create(:event) }
 
   it 'creates a job' do
-    ActiveJob::Base.queue_adapter = :test
     expect { AdminMailer.new_event(event, user).deliver_later }.to have_enqueued_job.on_queue('mailers')
   end
 

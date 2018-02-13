@@ -24,7 +24,5 @@ module OpenSplitTime
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
     config.autoload_paths += ['app/presenters/*.rb']
-
-    config.active_job.queue_adapter = :sidekiq
   end
 end

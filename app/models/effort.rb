@@ -25,8 +25,7 @@ class Effort < ApplicationRecord
   has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
 
   # Reject any new split_time hashes (having no :id) that don't have one of the attributes that will result in a time_from_start
-  accepts_nested_attributes_for :split_times, reject_if:
-      lambda { |hash| %w[id time_from_start elapsed_time military_time day_and_time].all? { |key| hash[key].blank? } }
+  accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
   attr_writer :last_reported_split_time, :event_start_time
@@ -96,6 +95,13 @@ class Effort < ApplicationRecord
   def slug_candidates
     [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
      [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
+  end
+
+  def reject_split_time?(attributes)
+    persisted = attributes[:id].present?
+    without_time = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time).values.all?(&:blank?)
+    attributes.merge!({_destroy: true}) if persisted and without_time
+    without_time && !persisted # reject new split_time if all time attributes are empty
   end
 
   def should_generate_new_friendly_id?

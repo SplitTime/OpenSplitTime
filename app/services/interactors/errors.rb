@@ -10,6 +10,21 @@ module Interactors
        detail: {exception: exception}}
     end
 
+    def distance_mismatch_error(child, new_parent)
+      {title: 'Distances do not match',
+       detail: {messages: ["#{child} cannot be assigned to #{new_parent} because distances do not coincide"]}}
+    end
+
+    def lap_mismatch_error(child, new_parent)
+      {title: 'Distances do not match',
+       detail: {messages: ["#{child} cannot be assigned to #{new_parent} because laps exceed maximum required"]}}
+    end
+
+    def sub_split_mismatch_error(child, new_parent)
+      {title: 'Distances do not match',
+       detail: {messages: ["#{child} cannot be assigned to #{new_parent} because sub splits do not coincide"]}}
+    end
+
     def mismatched_organization_error(old_event_group, new_event_group)
       {title: 'Event group organizations do not match',
        detail: {messages: ["The event cannot be updated because #{old_event_group} is organized under #{old_event_group.organization}, but #{new_event_group} is organized under #{new_event_group.organization}"]}}

@@ -17,11 +17,13 @@ module Interactors
     end
 
     def perform!
-      existing_start_time = effort.start_time
-      effort.event = new_event
-      effort.start_time = existing_start_time
-      split_times.each { |st| st.split = splits_by_distance[st.distance_from_start] }
-      save_changes
+      unless errors.present?
+        existing_start_time = effort.start_time
+        effort.event = new_event
+        effort.start_time = existing_start_time
+        split_times.each { |st| st.split = splits_by_distance[st.distance_from_start] }
+        save_changes
+      end
       Interactors::Response.new(errors, response_message)
     end
 
@@ -58,9 +60,9 @@ module Interactors
     end
 
     def verify_compatibility
-      raise ArgumentError, "#{effort} cannot be assigned to #{new_event} because distances do not coincide" unless split_times.all? { |st| distances.include?(st.distance_from_start) }
-      raise ArgumentError, "#{effort} cannot be assigned to #{new_event} because sub splits do not coincide" unless split_times.all? { |st| splits_by_distance[st.distance_from_start].sub_split_bitkeys.include?(st.bitkey) }
-      raise ArgumentError, "#{effort} cannot be assigned to #{new_event} because laps exceed maximum required" unless split_times.all? { |st| maximum_lap >= st.lap }
+      errors << distance_mismatch_error(effort, new_event) and return unless split_times.all? { |st| distances.include?(st.distance_from_start) }
+      errors << sub_split_mismatch_error(effort, new_event) and return unless split_times.all? { |st| splits_by_distance[st.distance_from_start].sub_split_bitkeys.include?(st.bitkey) }
+      errors << lap_mismatch_error(effort, new_event) unless split_times.all? { |st| maximum_lap >= st.lap }
     end
   end
 end

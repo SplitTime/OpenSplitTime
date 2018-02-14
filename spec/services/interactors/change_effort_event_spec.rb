@@ -7,7 +7,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
     let(:effort) { build_stubbed(:effort) }
     let(:new_event) { build_stubbed(:event) }
 
-    it 'initializes when provided with an effort and a new event_id' do
+    it 'initializes when provided with an effort and a new_event' do
       expect { subject }.not_to raise_error
     end
 
@@ -103,20 +103,26 @@ RSpec.describe Interactors::ChangeEffortEvent do
         split = new_event.ordered_splits.second
         split.update(distance_from_start: split.distance_from_start - 1)
         new_event.reload
-        expect { subject }.to raise_error(/distances do not coincide/)
+        response = subject.perform!
+        expect(response).not_to be_successful
+        expect(response.errors.first[:detail][:messages]).to include(/distances do not coincide/)
       end
 
       it 'raises an error if sub_splits do not coincide' do
         split = new_event.ordered_splits.second
         split.update(sub_split_bitmap: 1)
         new_event.reload
-        expect { subject }.to raise_error(/sub splits do not coincide/)
+        response = subject.perform!
+        expect(response).not_to be_successful
+        expect(response.errors.first[:detail][:messages]).to include(/sub splits do not coincide/)
       end
 
       it 'raises an error if laps are out of range' do
         split_time = effort.ordered_split_times.last
         split_time.update(lap: 2)
-        expect { subject }.to raise_error(/laps exceed maximum required/)
+        response = subject.perform!
+        expect(response).not_to be_successful
+        expect(response.errors.first[:detail][:messages]).to include(/laps exceed maximum required/)
       end
     end
 

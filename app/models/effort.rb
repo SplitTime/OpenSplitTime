@@ -99,8 +99,10 @@ class Effort < ApplicationRecord
 
   def reject_split_time?(attributes)
     persisted = attributes[:id].present?
-    without_time = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time).values.all?(&:blank?)
-    attributes.merge!({_destroy: true}) if persisted and without_time
+    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time).values
+    without_time = time_values.all?(&:blank?)
+    blank_time = without_time && time_values.any? { |value| value == '' }
+    attributes.merge!(_destroy: true) if persisted and blank_time
     without_time && !persisted # reject new split_time if all time attributes are empty
   end
 

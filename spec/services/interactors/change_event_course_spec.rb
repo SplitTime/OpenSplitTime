@@ -50,7 +50,7 @@ RSpec.describe Interactors::ChangeEventCourse do
         old_course.reload
         new_course.reload
         event.splits << old_course.splits
-        create_split_times_for_event
+        create_times_for_event
       end
 
       it 'updates the event course_id to the id of the provided course' do
@@ -61,16 +61,18 @@ RSpec.describe Interactors::ChangeEventCourse do
         expect(response.message).to match(/was changed to/)
       end
 
-      it 'changes the split_ids of event split_times to the corresponding split_ids of the new course' do
+      it 'changes the split_ids of event split_times and live_times to the corresponding split_ids of the new course' do
         sub_splits = new_course.sub_splits.first(efforts.first.split_times.size)
         efforts.each do |effort|
           effort.reload
           expect(effort.split_times.map(&:sub_split)).not_to match_array(sub_splits)
+          expect(LiveTime.where(bib_number: effort.bib_number).map(&:sub_split)).not_to match_array(sub_splits)
         end
         subject.perform!
         efforts.each do |effort|
           effort.reload
           expect(effort.split_times.map(&:sub_split)).to match_array(sub_splits)
+          expect(LiveTime.where(bib_number: effort.bib_number).map(&:sub_split)).to match_array(sub_splits)
         end
       end
 
@@ -93,11 +95,12 @@ RSpec.describe Interactors::ChangeEventCourse do
       end
     end
 
-    def create_split_times_for_event
+    def create_times_for_event
       time_points = event.required_time_points
       efforts.each do |effort|
         time_points.each_with_index do |time_point, i|
           create(:split_time, time_point: time_point, effort: effort, time_from_start: i * 1000)
+          create(:live_time, event_id: event.id, split_id: time_point.split_id, bitkey: time_point.bitkey, bib_number: effort.bib_number, entered_time: '08:00:00', source: 'test')
         end
       end
     end

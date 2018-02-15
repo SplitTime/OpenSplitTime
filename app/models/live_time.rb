@@ -20,6 +20,8 @@ class LiveTime < ApplicationRecord
   scope :unconsidered, -> { where(pulled_by: nil).where(split_time: nil) }
   scope :unmatched, -> { where(split_time: nil) }
 
+  delegate :distance_from_start, to: :split
+
   def absolute_or_entered_time
     if absolute_time.blank? && entered_time.blank?
       errors.add(:base, 'Either absolute_time or entered_time must be present')
@@ -66,6 +68,10 @@ class LiveTime < ApplicationRecord
 
   def sub_split_kind=(sub_split_kind)
     self.bitkey = SubSplit.bitkey(sub_split_kind.to_s)
+  end
+
+  def sub_split
+    {split_id => bitkey}
   end
 
   def effort

@@ -1005,7 +1005,8 @@
                         return;
                     }
                     liveEntry.importAsyncBusy = true;
-                    $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_live_time_rows', {
+                    var forceParam = (event.shiftKey) ? '?forcePull=true' : '';
+                    $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_live_time_rows' + forceParam, {
                        error: function(obj, error) {
                             liveEntry.importAsyncBusy = false;
                             liveEntry.timeRowsTable.importLiveError(obj, error);
@@ -1166,7 +1167,7 @@
             response.returnedRows.forEach(function(timeRow) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
-                // Rows coming in from an imported file or from pull_live_times have no stationIndex
+                // Rows coming in from an imported file or from pull_live_time_rows have no stationIndex
                 timeRow.stationIndex = timeRow.stationIndex || liveEntry.splitIdIndexMap[timeRow.splitId];
 
                 var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();

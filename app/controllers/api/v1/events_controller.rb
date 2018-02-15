@@ -138,34 +138,6 @@ class Api::V1::EventsController < ApiController
     end
   end
 
-  def pull_live_time_rows
-
-    # This endpoint searches for un-pulled live_times related to the event, selects a batch,
-    # marks them as pulled, combines them into live_time_rows, and returns them
-    # to the live entry page.
-
-    # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
-    # If params[:force_pull] == true, live_times without a matching split_time will be pulled
-    # even if they show as already having been pulled.
-
-    if @event.available_live
-      force_pull = params[:force_pull]&.to_boolean
-      live_times_default_limit = 50
-      live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
-
-      scoped_live_times = force_pull ? @event.live_times.unmatched : @event.live_times.unconsidered
-      live_times = scoped_live_times.order(:absolute_time, :split_id, :bib_number, :bitkey).limit(live_times_limit)
-
-      live_time_rows = LiveTimeRowConverter.convert(event: @event, live_times: live_times)
-
-      live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
-      report_live_times_available(@event)
-      render json: {returnedRows: live_time_rows}, status: :ok
-    else
-      render json: live_entry_unavailable(@event), status: :forbidden
-    end
-  end
-
   private
 
   def set_event

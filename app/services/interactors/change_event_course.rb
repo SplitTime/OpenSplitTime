@@ -35,18 +35,22 @@ module Interactors
     def save_changes
       ActiveRecord::Base.transaction do
         event.splits = old_new_split_map.values
-        event.save(validate: false) if event.changed?
-        split_times.each { |st| save_resource(st) }
-        live_times.each { |lt| save_resource(lt) }
-        errors << resource_error_object(event) unless event.valid?
+        save_without_validation(event)
+        split_times.each { |st| save_without_validation(st) }
+        live_times.each { |lt| save_without_validation(lt) }
+        validate_resource(event)
+        split_times.each { |st| validate_resource(st) }
+        live_times.each { |lt| validate_resource(lt) }
         raise ActiveRecord::Rollback if errors.present?
       end
     end
 
-    def save_resource(resource)
-      if resource.changed?
-        errors << resource_error_object(resource) unless resource.save
-      end
+    def save_without_validation(resource)
+      resource.save(validate: false) if resource.changed?
+    end
+
+    def validate_resource(resource)
+      errors << resource_error_object(resource) unless resource.valid?
     end
 
     def old_new_split_map

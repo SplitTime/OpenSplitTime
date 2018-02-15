@@ -68,7 +68,8 @@ RSpec.describe Interactors::ChangeEventCourse do
           expect(effort.split_times.map(&:sub_split)).not_to match_array(sub_splits)
           expect(LiveTime.where(bib_number: effort.bib_number).map(&:sub_split)).not_to match_array(sub_splits)
         end
-        subject.perform!
+        response = subject.perform!
+        expect(response).to be_successful
         efforts.each do |effort|
           effort.reload
           expect(effort.split_times.map(&:sub_split)).to match_array(sub_splits)

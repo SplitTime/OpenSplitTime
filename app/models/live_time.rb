@@ -84,7 +84,7 @@ class LiveTime < ApplicationRecord
   end
 
   def split_base_name
-    split.base_name
+    split&.base_name || '[Split not found]'
   end
 
   def aid_station

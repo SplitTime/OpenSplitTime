@@ -6,4 +6,12 @@ module LiveTimesHelper
       live_time.effort_full_name
     end
   end
+
+  def link_to_live_time_split(live_time)
+    if live_time.aid_station
+      link_to live_time.split_base_name, times_aid_station_path(live_time.aid_station, sub_split_kind: live_time.sub_split_kind)
+    else
+      '[Station not found]'
+    end
+  end
 end

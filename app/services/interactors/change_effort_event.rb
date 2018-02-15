@@ -29,7 +29,7 @@ module Interactors
 
     private
 
-    attr_reader :effort, :new_event, :split_times, :errors
+    attr_reader :effort, :old_event, :new_event, :split_times, :errors
 
     def save_changes
       ActiveRecord::Base.transaction do
@@ -56,7 +56,8 @@ module Interactors
     end
 
     def response_message
-      errors.present? ? "#{effort.name} could not be changed to #{new_event.name}. " : "#{effort.name} was changed to #{new_event.name}. "
+      errors.present? ? "#{effort.name} could not be changed from #{old_event.name} to #{new_event.name}. " :
+          "#{effort.name} was changed from #{old_event.name} to #{new_event.name}. "
     end
 
     def verify_compatibility

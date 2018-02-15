@@ -48,7 +48,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
         response = subject.perform!
         expect(effort.event_id).to eq(new_event.id)
         expect(response).to be_successful
-        expect(response.message).to match(/was changed to/)
+        expect(response.message).to match(/was changed from/)
       end
 
       it 'does not change the split_id of any effort split_times' do
@@ -88,7 +88,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
         response = subject.perform!
         expect(effort.event_id).to eq(new_event.id)
         expect(response).to be_successful
-        expect(response.message).to match(/was changed to/)
+        expect(response.message).to match(/was changed from/)
       end
 
       it 'changes the split_ids of effort split_times to the corresponding split_ids of the new event' do

@@ -58,7 +58,7 @@ RSpec.describe Interactors::ChangeEventCourse do
         response = subject.perform!
         expect(event.course_id).to eq(new_course.id)
         expect(response).to be_successful
-        expect(response.message).to match(/was changed to/)
+        expect(response.message).to match(/was changed from/)
       end
 
       it 'changes the split_ids of event split_times and live_times to the corresponding split_ids of the new course' do
@@ -76,20 +76,30 @@ RSpec.describe Interactors::ChangeEventCourse do
         end
       end
 
-      it 'returns an unsuccessful response with errors if distances do not coincide' do
+      it 'makes no changes and returns an unsuccessful response with errors if distances do not coincide' do
+        existing_aid_stations = event.aid_stations
+        existing_splits = event.splits
         split = new_course.ordered_splits.second
         split.update(distance_from_start: split.distance_from_start - 1)
         new_course.reload
         response = subject.perform!
+        event.reload
+        expect(event.aid_stations).to match_array(existing_aid_stations)
+        expect(event.splits).to match_array(existing_splits)
         expect(response).not_to be_successful
         expect(response.errors.first[:detail][:messages]).to include(/distances do not coincide/)
       end
 
-      it 'raises an error if sub_splits do not coincide' do
+      it 'makes no changes and raises an error if sub_splits do not coincide' do
+        existing_aid_stations = event.aid_stations
+        existing_splits = event.splits
         split = new_course.ordered_splits.second
         split.update(sub_split_bitmap: 1)
         new_course.reload
         response = subject.perform!
+        event.reload
+        expect(event.aid_stations).to match_array(existing_aid_stations)
+        expect(event.splits).to match_array(existing_splits)
         expect(response).not_to be_successful
         expect(response.errors.first[:detail][:messages]).to include(/sub splits do not coincide/)
       end

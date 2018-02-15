@@ -13,6 +13,7 @@ module Interactors
       @old_course = event.course
       @split_times = event.split_times
       @live_times = event.live_times
+      @existing_splits = event.splits
       @errors = []
       verify_compatibility
     end
@@ -20,9 +21,8 @@ module Interactors
     def perform!
       unless errors.present?
         event.course = new_course
-        event.splits = new_course.splits
-        split_times.each { |st| st.split = splits_by_distance[st.distance_from_start] }
-        live_times.each { |lt| lt.split = splits_by_distance[lt.distance_from_start] }
+        split_times.each { |st| st.split = old_new_split_map[st.split_id] }
+        live_times.each { |lt| lt.split = old_new_split_map[lt.split_id] }
         save_changes
       end
       Interactors::Response.new(errors, response_message)
@@ -30,10 +30,11 @@ module Interactors
 
     private
 
-    attr_reader :event, :new_course, :split_times, :live_times, :errors
+    attr_reader :event, :new_course, :old_course, :split_times, :live_times, :existing_splits, :errors
 
     def save_changes
       ActiveRecord::Base.transaction do
+        event.splits = old_new_split_map.values
         event.save(validate: false) if event.changed?
         split_times.each { |st| save_resource(st) }
         live_times.each { |lt| save_resource(lt) }
@@ -48,23 +49,24 @@ module Interactors
       end
     end
 
-    def distances
-      @distances ||= splits_by_distance.keys.to_set
+    def old_new_split_map
+      @old_new_split_map ||= existing_splits.map { |existing_split| [existing_split.id, matching_new_split(existing_split)] }.to_h
     end
 
-    def splits_by_distance
-      @splits_by_distance ||= new_course.splits.index_by(&:distance_from_start)
+    def matching_new_split(existing_split)
+      new_course.splits.find { |split| split.distance_from_start == existing_split.distance_from_start }
     end
 
     def response_message
-      errors.present? ? "#{event.name} could not be changed to #{new_course.name}. " : "#{event.name} was changed to #{new_course.name}. "
+      errors.present? ? "The course for #{event.name} could not be changed from #{old_course.name} to #{new_course.name}. " :
+          "The course for #{event.name} was changed from #{old_course.name} to #{new_course.name}. "
     end
 
     def verify_compatibility
-      errors << distance_mismatch_error(event, new_course) and return unless split_times.all? { |st| distances.include?(st.distance_from_start) }
-      errors << distance_mismatch_error(event, new_course) and return unless live_times.all? { |lt| distances.include?(lt.distance_from_start) }
-      errors << sub_split_mismatch_error(event, new_course) and return unless split_times.all? { |st| splits_by_distance[st.distance_from_start].sub_split_bitkeys.include?(st.bitkey) }
-      errors << sub_split_mismatch_error(event, new_course) unless live_times.all? { |lt| splits_by_distance[lt.distance_from_start].sub_split_bitkeys.include?(lt.bitkey) }
+      errors << distance_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id] }
+      errors << distance_mismatch_error(event, new_course) and return unless live_times.all? { |lt| old_new_split_map[lt.split_id] }
+      errors << sub_split_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id].sub_split_bitkeys.include?(st.bitkey) }
+      errors << sub_split_mismatch_error(event, new_course) unless live_times.all? { |lt| old_new_split_map[lt.split_id].sub_split_bitkeys.include?(lt.bitkey) }
     end
   end
 end

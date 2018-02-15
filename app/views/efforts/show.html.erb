@@ -97,6 +97,8 @@
                             method: :put,
                             class: "btn btn-sm btn-success" %>
             <% end %>
+            <%= link_to 'Entered times', stage_event_path(@effort_show.event, display_style: :times, filter: {bib_number: @effort_show.bib_number}),
+                        class: "btn btn-sm btn-success" %>
             <%= link_to 'Delete effort', effort_path(@effort_show.effort, referrer_path: event_path(@effort_show.event)),
                         method: :delete,
                         data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>

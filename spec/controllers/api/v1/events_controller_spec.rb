@@ -293,7 +293,7 @@ RSpec.describe Api::V1::EventsController do
         it 'sends a push notification that includes the count of available times' do
           allow(Pusher).to receive(:trigger)
           post :import, params: request_params
-          expected_args = ["live-times-available.event.#{event.id}", 'update', {count: 2}]
+          expected_args = ["live-times-available.event_group.#{event_group.id}", 'update', {count: 2}]
           expect(Pusher).to have_received(:trigger).with(*expected_args)
         end
       end
@@ -402,20 +402,6 @@ RSpec.describe Api::V1::EventsController do
         expect(split_times.size).to eq(7)
         expect(split_times.map(&:time_from_start)).to match_array([0.0, 10150.0, 10150.0, 23427.0, 23429.0, 28151.0, 114551.0])
       end
-    end
-  end
-
-  describe '#trigger_live_times_push' do
-    let(:splits) { create_list(:splits_hardrock_ccw, 4, course_id: course.id) }
-    let(:request_params) { {id: event.id} }
-
-    it 'sends a push notification that includes the count of available times' do
-      event.splits << splits
-      create_list(:live_time, 3, event: event, split: splits.first)
-      allow(Pusher).to receive(:trigger)
-      get :trigger_live_times_push, params: request_params
-      expected_args = ["live-times-available.event.#{event.id}", 'update', {count: 3}]
-      expect(Pusher).to have_received(:trigger).with(*expected_args)
     end
   end
 end

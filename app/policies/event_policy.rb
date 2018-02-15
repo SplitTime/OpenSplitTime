@@ -108,10 +108,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def trigger_live_times_push?
-    user.present?
-  end
-
   # Policies for staging namespace
 
   def get_countries?

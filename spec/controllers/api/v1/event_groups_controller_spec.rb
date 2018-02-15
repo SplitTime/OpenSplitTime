@@ -149,4 +149,22 @@ RSpec.describe Api::V1::EventGroupsController do
       expect(response.status).to eq(404)
     end
   end
+
+  describe '#trigger_live_times_push' do
+    let(:course) { create(:course) }
+    let(:split) { create(:split, course_id: course.id) }
+    let(:event) { create(:event, event_group: event_group, course: course) }
+    let(:request_params) { {id: event_group.id} }
+    before do
+      event.splits << split
+      create_list(:live_time, 3, event: event, split: split)
+    end
+
+    it 'sends a push notification that includes the count of available times' do
+      allow(Pusher).to receive(:trigger)
+      get :trigger_live_times_push, params: request_params
+      expected_args = ["live-times-available.event_group.#{event_group.id}", 'update', {count: 3}]
+      expect(Pusher).to have_received(:trigger).with(*expected_args)
+    end
+  end
 end

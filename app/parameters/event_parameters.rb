@@ -6,6 +6,6 @@ class EventParameters < BaseParameters
   end
 
   def self.permitted_query
-    permitted + EffortParameters.permitted_query
+    permitted + EffortParameters.permitted_query + LiveTimeParameters.permitted_query
   end
 end

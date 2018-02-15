@@ -43,7 +43,7 @@ module ETL
         updated_efforts = event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
         Interactors::UpdateEffortsStatus.perform!(updated_efforts)
 
-        if event.available_live?
+        if event.permit_notifications?
           notifier = BulkFollowerNotifier.new(split_times, multi_lap: event.multiple_laps?)
           notifier.notify
         end
@@ -52,9 +52,8 @@ module ETL
 
     def process_live_times
       live_times = grouped_records[LiveTime]
-      if live_times.present? && event.available_live
+      if live_times.present? && event.available_live?
         LiveTimeSplitTimeCreator.create(event: event, live_times: live_times) if event.auto_live_times?
-        report_live_times_available(event)
         report_live_times_available(event.event_group)
       end
     end

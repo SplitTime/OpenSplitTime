@@ -37,7 +37,7 @@ class LiveTimeRowImporter
       end
     end
     match_live_times
-    notify_followers if event.available_live
+    notify_followers if event.permit_notifications?
   end
 
   def returned_rows

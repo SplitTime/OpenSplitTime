@@ -152,6 +152,10 @@ class Event < ApplicationRecord
     efforts.ranked_with_finish_status(args)
   end
 
+  def permit_notifications?
+    available_live? && !finished?
+  end
+
   def pick_partner_with_banner
     partners.with_banners.map { |partner| [partner] * partner.weight }.flatten.shuffle.first
   end

@@ -29,7 +29,7 @@ class LiveTimeSplitTimeCreator
     updated_efforts = Effort.where(id: created_split_times.map(&:effort_id).uniq).includes(split_times: :split)
     Interactors::UpdateEffortsStatus.perform!(updated_efforts)
 
-    if event.available_live
+    if event.permit_notifications?
       indexed_split_times = created_split_times.group_by { |st| st.effort.person_id || 0 }
       indexed_split_times.each do |person_id, split_times|
         NotifyFollowersJob.perform_later(person_id: person_id,

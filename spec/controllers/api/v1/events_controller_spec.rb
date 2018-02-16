@@ -309,7 +309,7 @@ RSpec.describe Api::V1::EventsController do
         let(:effort) { create(:effort, event: event) }
         let(:split) { event.splits.first }
         let(:day_and_time) { time_zone.parse(absolute_time_in) }
-        let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1, day_and_time: absolute_time_in + 1.minute, pacer: true, stopped_here: false) }
+        let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1, day_and_time: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
 
         it 'saves the live_times to the database and does not match any live_time with the existing split_time' do
           expect(SplitTime.count).to eq(1)

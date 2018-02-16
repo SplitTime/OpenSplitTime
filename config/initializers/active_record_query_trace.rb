@@ -1,5 +1,5 @@
 if Rails.env.development? || Rails.env.test?
-  ActiveRecordQueryTrace.enabled = false
+  ActiveRecordQueryTrace.enabled = true
   ActiveRecordQueryTrace.level = :app
   ActiveRecordQueryTrace.ignore_cached_queries = true
   ActiveRecordQueryTrace.colorize = 'light purple'

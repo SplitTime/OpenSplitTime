@@ -42,7 +42,7 @@ module Interactors
     end
 
     def matching_split_time(live_time)
-      live_time.absolute_time && !live_time.matched? && split_times.find { |split_time| matching_record(split_time, live_time) }
+      !live_time.matched? && split_times.find { |split_time| matching_record(split_time, live_time) }
     end
 
     def matching_record(split_time, live_time)
@@ -51,7 +51,12 @@ module Interactors
           (split_time.bib_number.to_s == live_time.bib_number) &&
           ((live_time.stopped_here || false) == (split_time.stopped_here || false)) &&
           ((live_time.with_pacer || false) == (split_time.pacer || false)) &&
-          (split_time.day_and_time - live_time.absolute_time).abs <= tolerance
+          time_matches(split_time, live_time)
+    end
+
+    def time_matches(split_time, live_time)
+      (live_time.absolute_time && (split_time.day_and_time - live_time.absolute_time).abs <= tolerance) ||
+          (live_time.entered_time && (Time.parse(split_time.military_time) - Time.parse(live_time.entered_time)).abs <= tolerance)
     end
 
     def matched_live_times

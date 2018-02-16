@@ -83,7 +83,7 @@ RSpec.describe Interactors::MatchLiveTimes do
       end
     end
 
-    context 'when split and bitkey are the same and time is within tolerance' do
+    context 'when split and bitkey are the same and absolute_time is within tolerance' do
       let(:matching_split_times) { split_times }
       let(:live_times) { [live_time_1, live_time_2, live_time_3] }
       let(:matching_live_times) { live_times }
@@ -97,13 +97,14 @@ RSpec.describe Interactors::MatchLiveTimes do
       end
     end
 
-    context 'when all attributes match but bib_number is different' do
-      let(:matching_split_times) { [split_time_1, split_time_3] }
+    context 'when split and bitkey are the same and entered_time is within tolerance' do
+      let(:matching_split_times) { split_times }
       let(:live_times) { [live_time_1, live_time_2, live_time_3] }
-      let(:matching_live_times) { [live_time_1, live_time_3] }
-      let(:non_matching_live_times) { [live_time_2] }
+      let(:matching_live_times) { live_times }
+      let(:non_matching_live_times) { [] }
+      let(:tolerance) { 1.minute }
 
-      before { live_time_2.update(bib_number: effort.bib_number + 1) }
+      before { live_time_2.update(absolute_time: nil, entered_time: split_time_2.military_time) }
 
       it 'sets split_time for all live_times' do
         verify_live_times
@@ -120,6 +121,33 @@ RSpec.describe Interactors::MatchLiveTimes do
       before { live_time_2.update(absolute_time: split_time_2.day_and_time - 30.seconds) }
 
       it 'sets split_time for matching live_times only' do
+        verify_live_times
+      end
+    end
+
+    context 'when split and bitkey are the same but entered_time is outside of tolerance' do
+      let(:matching_split_times) { [split_time_1, split_time_3] }
+      let(:live_times) { [live_time_1, live_time_2, live_time_3] }
+      let(:matching_live_times) { [live_time_1, live_time_3] }
+      let(:non_matching_live_times) { [live_time_2] }
+      let(:tolerance) { 10.seconds }
+
+      before { live_time_2.update(absolute_time: nil, entered_time: TimeConversion.absolute_to_hms(split_time_2.day_and_time - 30.seconds)) }
+
+      it 'sets split_time for matching live_times only' do
+        verify_live_times
+      end
+    end
+
+    context 'when all attributes match but bib_number is different' do
+      let(:matching_split_times) { [split_time_1, split_time_3] }
+      let(:live_times) { [live_time_1, live_time_2, live_time_3] }
+      let(:matching_live_times) { [live_time_1, live_time_3] }
+      let(:non_matching_live_times) { [live_time_2] }
+
+      before { live_time_2.update(bib_number: effort.bib_number + 1) }
+
+      it 'sets split_time for all live_times' do
         verify_live_times
       end
     end

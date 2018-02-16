@@ -30,13 +30,19 @@ module Interactors
     attr_reader :event, :live_times, :errors, :resources
 
     def match_live_time_to_split_time(live_time)
-      split_time = live_time.absolute_time && event.split_times.where(match_attributes(live_time)).find { |st| st.day_and_time == live_time.absolute_time }
+      split_time = matching_split_time(live_time)
       if split_time
         live_time.update(split_time: split_time)
         matched_live_times << live_time
       else
         unmatched_live_times << live_time
       end
+    end
+
+    def matching_split_time(live_time)
+      live_time.absolute_time &&
+          !live_time.matched? &&
+          event.split_times.where(match_attributes(live_time)).find { |st| st.day_and_time == live_time.absolute_time }
     end
 
     def match_attributes(live_time)

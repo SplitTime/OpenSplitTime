@@ -97,6 +97,19 @@ RSpec.describe Interactors::MatchLiveTimes do
       end
     end
 
+    context 'when all attributes match but bib_number is different' do
+      let(:matching_split_times) { [split_time_1, split_time_3] }
+      let(:live_times) { [live_time_1, live_time_2, live_time_3] }
+      let(:matching_live_times) { [live_time_1, live_time_3] }
+      let(:non_matching_live_times) { [live_time_2] }
+
+      before { live_time_2.update(bib_number: effort.bib_number + 1) }
+
+      it 'sets split_time for all live_times' do
+        verify_live_times
+      end
+    end
+
     context 'when split and bitkey are the same but time is outside of tolerance' do
       let(:matching_split_times) { [split_time_1, split_time_3] }
       let(:live_times) { [live_time_1, live_time_2, live_time_3] }

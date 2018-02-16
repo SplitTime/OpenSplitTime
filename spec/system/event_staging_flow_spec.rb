@@ -18,15 +18,23 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
     click_button 'Add New Organization'
     fill_in 'organization-name-field', with: stubbed_org.name
+    wait_for_fill_in
     fill_in class: 'js-date', with: stubbed_event.start_time.strftime('%m/%d/%Y')
+    wait_for_fill_in
     fill_in class: 'js-time', with: stubbed_event.start_time.strftime('%H:%M')
+    wait_for_fill_in
     select stubbed_event.home_time_zone, from: 'time-zone-select'
     fill_in 'event-name-field', with: stubbed_event.name
+    wait_for_fill_in
     click_button 'Add New Course'
     fill_in 'course-name-field', with: stubbed_course.name
+    wait_for_fill_in
     fill_in 'course-distance-field', with: stubbed_event.name.split.last
+    wait_for_fill_in
     fill_in 'course-vert-gain-field', with: rand(1000..5000)
+    wait_for_fill_in
     fill_in 'course-vert-loss-field', with: rand(1000..5000)
+    wait_for_fill_in
     fill_in 'course-description-field', with: stubbed_course.description
 
     expect(continue_button[:disabled]&.to_boolean).to be_falsey
@@ -161,12 +169,17 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       fill_in 'split-name-field', with: 'New Split Name'
       wait_for_css
       fill_in 'split-description-field', with: 'A critical aid station'
+      wait_for_fill_in
       fill_in 'split-distance-field', with: '15.5'
       page.execute_script("$('#split-in-out-radio').click()")
       fill_in 'split-vert-gain-field', with: '1500'
+      wait_for_fill_in
       fill_in 'split-vert-loss-field', with: '1200'
+      wait_for_fill_in
       fill_in 'split-latitude-field', with: '40.1'
+      wait_for_fill_in
       fill_in 'split-longitude-field', with: '-105.1'
+      wait_for_fill_in
       fill_in 'split-elevation-field', with: '6000'
 
       click_button 'Add Split'
@@ -197,14 +210,19 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
       click_button 'Add'
       fill_in 'effort-first-name-field', with: stubbed_effort.first_name
+      wait_for_fill_in
       fill_in 'effort-last-name-field', with: stubbed_effort.last_name
+      wait_for_fill_in
       page.execute_script("$('#effort-#{stubbed_effort.gender}-radio').click()")
       fill_in 'effort-birthdate-field', with: stubbed_effort.birthdate.strftime('%m/%d/%Y')
+      wait_for_fill_in
       fill_in 'effort-bib-number-field', with: stubbed_effort.bib_number
       select country.name, from: 'effort-country-select'
       select country.subregions.coded(stubbed_effort.state_code).name, from: 'effort-state-select'
       fill_in 'effort-city-field', with: stubbed_effort.city
+      wait_for_fill_in
       fill_in 'effort-email-field', with: stubbed_effort.email
+      wait_for_fill_in
       fill_in 'effort-phone-field', with: stubbed_effort.phone
 
       click_button 'Add Entrant'
@@ -227,7 +245,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       edit_link = find_link(class: 'edit')
       edit_link.click
       fill_in 'effort-first-name-field', with: 'Betty'
-      sleep(0.1)
+      wait_for_fill_in
       fill_in 'effort-bib-number-field', with: '1001'
       click_button 'Done'
       wait_for_ajax

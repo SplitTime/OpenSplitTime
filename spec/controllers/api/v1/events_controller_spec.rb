@@ -196,6 +196,8 @@ RSpec.describe Api::V1::EventsController do
     let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
     let(:absolute_time_in) { time_zone.parse('2016-07-01 10:45:45') }
     let(:absolute_time_out) { time_zone.parse('2016-07-01 10:50:50') }
+    let(:effort) { create(:effort, event: event) }
+    let(:bib_number) { effort.bib_number.to_s }
     let(:unique_key) { nil }
 
     context 'when provided with a file' do
@@ -232,10 +234,10 @@ RSpec.describe Api::V1::EventsController do
       let(:request_params) { {id: event.id, data_format: 'jsonapi_batch', data: data, unique_key: unique_key} }
       let(:data) { [
           {type: 'live_time',
-           attributes: {bibNumber: '101', splitId: split_id, subSplitKind: 'in', absoluteTime: absolute_time_in,
+           attributes: {bibNumber: bib_number, splitId: split_id, subSplitKind: 'in', absoluteTime: absolute_time_in,
                         withPacer: 'true', stoppedHere: 'false', source: source}},
           {type: 'live_time',
-           attributes: {bibNumber: '101', splitId: split_id, subSplitKind: 'out', absoluteTime: absolute_time_out,
+           attributes: {bibNumber: bib_number, splitId: split_id, subSplitKind: 'out', absoluteTime: absolute_time_out,
                         withPacer: 'true', stoppedHere: 'true', source: source}}
       ] }
       let(:source) { 'ost-remote-1234' }
@@ -255,14 +257,14 @@ RSpec.describe Api::V1::EventsController do
 
       it 'assigns attributes correctly' do
         post :import, params: request_params
-        expect(LiveTime.all.map(&:bib_number)).to eq(%w[101 101])
+        expect(LiveTime.all.map(&:bib_number)).to all eq(bib_number)
         expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
         expect(LiveTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
       end
 
       context 'when there is a duplicate live_time in the database' do
         before do
-          create(:live_time, event: event, bib_number: '101', split_id: split_id, bitkey: 1, absolute_time: absolute_time_in, with_pacer: true, stopped_here: false, source: source)
+          create(:live_time, event: event, bib_number: bib_number, split_id: split_id, bitkey: 1, absolute_time: absolute_time_in, with_pacer: true, stopped_here: false, source: source)
         end
 
         context 'when unique_key is set' do
@@ -289,7 +291,6 @@ RSpec.describe Api::V1::EventsController do
       end
 
       context 'when there is a duplicate split_time in the database' do
-        let(:effort) { create(:effort, event: event) }
         let(:split) { event.splits.first }
         let(:day_and_time) { time_zone.parse(absolute_time_in) }
         let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1, day_and_time: absolute_time_in, pacer: true, stopped_here: false) }

@@ -52,8 +52,9 @@ module ETL
 
     def process_live_times
       live_times = grouped_records[LiveTime]
-      if live_times.present? && event.available_live?
-        LiveTimeSplitTimeCreator.create(event: event, live_times: live_times) if event.auto_live_times?
+      if live_times.present?
+        # match_response = Interactors::MatchLiveTimes.perform!(event: event, live_times: live_times)
+        create_response = Interactors::CreateSplitTimesFromLiveTimes.perform!(event: event, live_times: live_times) if event.auto_live_times?
         report_live_times_available(event.event_group)
       end
     end

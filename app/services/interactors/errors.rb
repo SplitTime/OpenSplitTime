@@ -20,6 +20,11 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because laps exceed maximum required"]}}
     end
 
+    def live_time_mismatch_error
+      {title: 'Live times do not match',
+       detail: {messages: ['One or more live times is not related to the provided event']}}
+    end
+
     def sub_split_mismatch_error(child, new_parent)
       {title: 'Distances do not match',
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because sub splits do not coincide"]}}

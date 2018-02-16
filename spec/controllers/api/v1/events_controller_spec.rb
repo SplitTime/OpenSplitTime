@@ -192,9 +192,10 @@ RSpec.describe Api::V1::EventsController do
     let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course: course) }
     let(:event_group) { create(:event_group) }
-    let(:event) { create(:event, start_time: '2016-07-01 00:00:00 GMT', event_group: event_group, course: course, laps_required: 1) }
-    let(:absolute_time_in) { '2016-07-01 10:45:45-06:00' }
-    let(:absolute_time_out) { '2016-07-01 10:50:50-06:00' }
+    let(:event) { create(:event, start_time_in_home_zone: '2016-07-01 06:00:00', event_group: event_group, course: course, laps_required: 1) }
+    let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
+    let(:absolute_time_in) { time_zone.parse('2016-07-01 10:45:45') }
+    let(:absolute_time_out) { time_zone.parse('2016-07-01 10:50:50') }
     let(:unique_key) { nil }
 
     context 'when provided with a file' do
@@ -259,7 +260,7 @@ RSpec.describe Api::V1::EventsController do
         expect(LiveTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
       end
 
-      context 'when there is a duplicate record in the database' do
+      context 'when there is a duplicate live_time in the database' do
         before do
           create(:live_time, event: event, bib_number: '101', split_id: split_id, bitkey: 1, absolute_time: absolute_time_in, with_pacer: true, stopped_here: false, source: source)
         end
@@ -287,10 +288,45 @@ RSpec.describe Api::V1::EventsController do
         end
       end
 
-      context 'when the event_group is available live' do
+      context 'when there is a duplicate split_time in the database' do
+        let(:effort) { create(:effort, event: event) }
+        let(:split) { event.splits.first }
+        let(:day_and_time) { time_zone.parse(absolute_time_in) }
+        let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1, day_and_time: absolute_time_in, pacer: true, stopped_here: false) }
+
+        it 'saves the live_times to the database and matches the duplicate live_time with the existing split_time' do
+          expect(SplitTime.count).to eq(1)
+          expect(LiveTime.count).to eq(0)
+          post :import, params: request_params
+          expect(response.status).to eq(201)
+          expect(SplitTime.count).to eq(1)
+          expect(LiveTime.count).to eq(2)
+          expect(LiveTime.all.map(&:split_time_id)).to match_array([split_time.id, nil])
+        end
+      end
+
+      context 'when there is a non-duplicate split_time in the database' do
+        let(:effort) { create(:effort, event: event) }
+        let(:split) { event.splits.first }
+        let(:day_and_time) { time_zone.parse(absolute_time_in) }
+        let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1, day_and_time: absolute_time_in + 1.minute, pacer: true, stopped_here: false) }
+
+        it 'saves the live_times to the database and does not match any live_time with the existing split_time' do
+          expect(SplitTime.count).to eq(1)
+          expect(LiveTime.count).to eq(0)
+          post :import, params: request_params
+          expect(response.status).to eq(201)
+          expect(SplitTime.count).to eq(1)
+          expect(LiveTime.count).to eq(2)
+          expect(LiveTime.all.map(&:split_time_id)).to all be_nil
+        end
+      end
+
+      context 'when the push notifications are permitted' do
         let(:event_group) { create(:event_group, available_live: true) }
 
         it 'sends a push notification that includes the count of available times' do
+          expect(event.permit_notifications?).to be(true)
           allow(Pusher).to receive(:trigger)
           post :import, params: request_params
           expected_args = ["live-times-available.event_group.#{event_group.id}", 'update', {count: 2}]

@@ -227,6 +227,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       edit_link = find_link(class: 'edit')
       edit_link.click
       fill_in 'effort-first-name-field', with: 'Betty'
+      sleep(0.1)
       fill_in 'effort-bib-number-field', with: '1001'
       click_button 'Done'
       wait_for_ajax

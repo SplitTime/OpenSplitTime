@@ -9,10 +9,11 @@ module Interactors
     def initialize(args)
       ArgsValidator.validate(params: args,
                              required: [:event, :live_times],
-                             exclusive: [:event, :live_times],
+                             exclusive: [:event, :live_times, :tolerance],
                              class: self.class)
       @event = args[:event]
       @live_times = args[:live_times]
+      @tolerance = args[:tolerance] || 1.minute
       @errors = []
       @resources = {matched_live_times: [], unmatched_live_times: []}
       validate_setup
@@ -27,7 +28,7 @@ module Interactors
 
     private
 
-    attr_reader :event, :live_times, :errors, :resources
+    attr_reader :event, :live_times, :tolerance, :errors, :resources
 
     def match_live_time_to_split_time(live_time)
       split_time = matching_split_time(live_time)
@@ -42,7 +43,7 @@ module Interactors
     def matching_split_time(live_time)
       live_time.absolute_time &&
           !live_time.matched? &&
-          event.split_times.where(match_attributes(live_time)).find { |st| st.day_and_time == live_time.absolute_time }
+          event.split_times.where(match_attributes(live_time)).find { |st| (st.day_and_time - live_time.absolute_time).abs <= tolerance }
     end
 
     def match_attributes(live_time)

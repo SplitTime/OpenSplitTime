@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Interactors::MatchLiveTimes do
-  subject { Interactors::MatchLiveTimes.new(event: event, live_times: live_times) }
+  subject { Interactors::MatchLiveTimes.new(event: event, live_times: live_times, tolerance: tolerance) }
+  let(:tolerance) { nil }
   let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0) }
   let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 60.minutes) }
   let!(:split_time_3) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 70.minutes) }
@@ -77,20 +78,35 @@ RSpec.describe Interactors::MatchLiveTimes do
       let(:matching_live_times) { live_times.first(3) }
       let(:non_matching_live_times) { live_times.last(1) }
 
-      it 'creates new split_times for unmatched live_times only' do
+      it 'sets split_time for matching live_times only' do
         verify_live_times
       end
     end
 
-    context 'when split and bitkey are the same but time is different' do
+    context 'when split and bitkey are the same and time is within tolerance' do
+      let(:matching_split_times) { split_times }
+      let(:live_times) { [live_time_1, live_time_2, live_time_3] }
+      let(:matching_live_times) { live_times }
+      let(:non_matching_live_times) { [] }
+      let(:tolerance) { 1.minute }
+
+      before { live_time_2.update(absolute_time: split_time_2.day_and_time - 30.seconds) }
+
+      it 'sets split_time for all live_times' do
+        verify_live_times
+      end
+    end
+
+    context 'when split and bitkey are the same but time is outside of tolerance' do
       let(:matching_split_times) { [split_time_1, split_time_3] }
       let(:live_times) { [live_time_1, live_time_2, live_time_3] }
       let(:matching_live_times) { [live_time_1, live_time_3] }
       let(:non_matching_live_times) { [live_time_2] }
+      let(:tolerance) { 10.seconds }
 
-      before { live_time_2.update(absolute_time: split_time_2.day_and_time + 1.minute) }
+      before { live_time_2.update(absolute_time: split_time_2.day_and_time - 30.seconds) }
 
-      it 'creates new split_times for unmatched live_times only' do
+      it 'sets split_time for matching live_times only' do
         verify_live_times
       end
     end

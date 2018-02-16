@@ -132,7 +132,7 @@ RSpec.describe Interactors::MatchLiveTimes do
 
       before { live_time_2.update(split: split_1) }
 
-      it 'creates new split_times for unmatched live_times only' do
+      it 'sets split_time for matching live_times only' do
         verify_live_times
       end
     end
@@ -145,7 +145,7 @@ RSpec.describe Interactors::MatchLiveTimes do
 
       before { live_time_2.update(bitkey: out_bitkey) }
 
-      it 'creates new split_times for unmatched live_times only' do
+      it 'sets split_time for matching live_times only' do
         verify_live_times
       end
     end
@@ -158,7 +158,7 @@ RSpec.describe Interactors::MatchLiveTimes do
 
       before { live_time_2.update(stopped_here: true) }
 
-      it 'creates new split_times for unmatched live_times only' do
+      it 'sets split_time for matching live_times only' do
         verify_live_times
       end
     end
@@ -171,7 +171,23 @@ RSpec.describe Interactors::MatchLiveTimes do
 
       before { live_time_2.update(with_pacer: true) }
 
-      it 'creates new split_times for unmatched live_times only' do
+      it 'sets split_time for matching live_times only' do
+        verify_live_times
+      end
+    end
+
+    context 'when attributes are the same and split_time.pacer == nil but live_time.with_pacer == false' do
+      let(:matching_split_times) { split_times }
+      let(:live_times) { [live_time_1, live_time_2, live_time_3] }
+      let(:matching_live_times) { live_times }
+      let(:non_matching_live_times) { [] }
+
+      before do
+        split_time_2.update(pacer: nil)
+        live_time_2.update(with_pacer: false)
+      end
+
+      it 'sets split_time for all live_times' do
         verify_live_times
       end
     end

@@ -49,8 +49,8 @@ module Interactors
       (split_time.split_id == live_time.split_id) &&
           (split_time.bitkey == live_time.bitkey) &&
           (split_time.bib_number.to_s == live_time.bib_number) &&
-          (live_time.stopped_here.nil? || (live_time.stopped_here == split_time.stopped_here)) &&
-          (live_time.with_pacer.nil? || (live_time.with_pacer == split_time.pacer)) &&
+          ((live_time.stopped_here || false) == (split_time.stopped_here || false)) &&
+          ((live_time.with_pacer || false) == (split_time.pacer || false)) &&
           (split_time.day_and_time - live_time.absolute_time).abs <= tolerance
     end
 

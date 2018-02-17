@@ -34,7 +34,7 @@ RSpec.describe LiveEffortData do
       it 'returns a hash of {in: SplitTime, out: SplitTime.null_record} when the lap_split contains only an in sub_split' do
         provided_split = event.splits[0]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {class: SplitTime, :null_record? => false},
                       out: {class: SplitTime, :null_record? => true}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -43,7 +43,7 @@ RSpec.describe LiveEffortData do
       it 'returns a hash of sub_split kinds and SplitTimes when the split contains multiple sub_splits' do
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {class: SplitTime, :null_record? => false},
                       out: {class: SplitTime, :null_record? => false}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -52,7 +52,7 @@ RSpec.describe LiveEffortData do
       it 'populates split_times with correct times from start' do
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {time_from_start: 150.minutes},
                       out: {time_from_start: 170.minutes}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -65,7 +65,7 @@ RSpec.describe LiveEffortData do
         split_times = []
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '', 'bib_number' => '',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {time_from_start: nil, data_status: nil},
                       out: {time_from_start: nil, data_status: nil}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -77,7 +77,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[0]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '', 'bib_number' => '',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {class: SplitTime, :null_record? => false},
                       out: {class: SplitTime, :null_record? => true}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -87,7 +87,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '', 'bib_number' => '',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {class: SplitTime, :null_record? => false},
                       out: {class: SplitTime, :null_record? => false}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -97,7 +97,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {time_from_start: 150.minutes},
                       out: {time_from_start: 170.minutes}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -107,7 +107,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '', 'id' => '4'}
         attributes = {in: {time_from_start: 150.minutes},
                       out: {time_from_start: nil}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -117,7 +117,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {time_from_start: nil},
                       out: {time_from_start: 170.minutes}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -127,7 +127,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '', 'time_out' => '', 'id' => '4'}
+                       'time_in' => '', 'time_out' => '', 'id' => '4'}
         attributes = {in: {time_from_start: nil},
                       out: {time_from_start: nil}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -137,7 +137,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {data_status: 'good'},
                       out: {data_status: 'good'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -147,7 +147,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '06:35:00', 'time_out' => '06:40:00', 'id' => '4'}
+                       'time_in' => '06:35:00', 'time_out' => '06:40:00', 'id' => '4'}
         attributes = {in: {data_status: 'questionable'},
                       out: {data_status: 'questionable'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -157,7 +157,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '06:25:00', 'time_out' => '06:30:00', 'id' => '4'}
+                       'time_in' => '06:25:00', 'time_out' => '06:30:00', 'id' => '4'}
         attributes = {in: {data_status: 'bad'},
                       out: {data_status: 'bad'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -167,7 +167,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:20:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:20:00', 'id' => '4'}
         attributes = {in: {data_status: 'good'},
                       out: {data_status: 'bad'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -177,7 +177,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '18:00:00', 'time_out' => '08:20:00', 'id' => '4'}
+                       'time_in' => '18:00:00', 'time_out' => '08:20:00', 'id' => '4'}
         attributes = {in: {data_status: 'bad'},
                       out: {data_status: 'good'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -187,7 +187,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '', 'time_out' => '08:20:00', 'id' => '4'}
+                       'time_in' => '', 'time_out' => '08:20:00', 'id' => '4'}
         attributes = {in: {data_status: nil},
                       out: {data_status: 'good'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -197,7 +197,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(1)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '', 'time_out' => '06:20:00', 'id' => '4'}
+                       'time_in' => '', 'time_out' => '06:20:00', 'id' => '4'}
         attributes = {in: {data_status: nil},
                       out: {data_status: 'bad'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -209,7 +209,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3)
         provided_split = event.splits[1] # Relates to the second and third elements of split_times
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {time_from_start: 150.minutes},
                       out: {time_from_start: 170.minutes}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -219,7 +219,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3)
         provided_split = event.splits[1] # Relates to the second and third elements of split_times
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
         attributes = {in: {data_status: 'good'},
                       out: {data_status: 'good'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -229,7 +229,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3)
         provided_split = event.splits[1] # Relates to the second and third elements of split_times
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '06:20:00', 'time_out' => '06:25:00', 'id' => '4'}
+                       'time_in' => '06:20:00', 'time_out' => '06:25:00', 'id' => '4'}
         attributes = {in: {data_status: 'bad'},
                       out: {data_status: 'bad'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -239,7 +239,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '08:30:00', 'time_out' => '08:20:00', 'id' => '4'}
+                       'time_in' => '08:30:00', 'time_out' => '08:20:00', 'id' => '4'}
         attributes = {in: {data_status: 'good'},
                       out: {data_status: 'bad'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -249,7 +249,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3)
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '18:00:00', 'time_out' => '08:20:00', 'id' => '4'}
+                       'time_in' => '18:00:00', 'time_out' => '08:20:00', 'id' => '4'}
         attributes = {in: {data_status: 'bad'},
                       out: {data_status: 'good'}}
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -259,7 +259,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3) # Existing in and out times are 07:40 and 07:50
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '', 'time_out' => '07:35:00', 'id' => '4'}
+                       'time_in' => '', 'time_out' => '07:35:00', 'id' => '4'}
         attributes = {in: {data_status: nil},
                       out: {data_status: 'bad'}} # Because 07:35 < 07:40 although 1h35m is a reasonable time
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -269,7 +269,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3) # Existing in and out times are 07:40 and 07:50
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '', 'time_out' => '07:45:00', 'id' => '4'}
+                       'time_in' => '', 'time_out' => '07:45:00', 'id' => '4'}
         attributes = {in: {data_status: nil},
                       out: {data_status: 'good'}} # Because 07:45 > 07:40 and 1h45m is a reasonable time
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -279,7 +279,7 @@ RSpec.describe LiveEffortData do
         split_times = effort.split_times.first(3) # Existing in and out times are 07:40 and 07:50
         provided_split = event.splits[1]
         params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                  'time_in' => '', 'time_out' => '06:20:00', 'id' => '4'}
+                       'time_in' => '', 'time_out' => '06:20:00', 'id' => '4'}
         attributes = {in: {data_status: nil},
                       out: {data_status: 'bad'}} # Because 20m is not a reasonable time
         validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -290,7 +290,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(5)
       provided_split = event.splits.fourth
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '11:30:00', 'time_out' => '11:50:00', 'id' => '4'}
+                     'time_in' => '11:30:00', 'time_out' => '11:50:00', 'id' => '4'}
       attributes = {in: {data_status: 'good'},
                     out: {data_status: 'good'}} # 5h30m and 5h50m are good times for the fourth split
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
@@ -305,7 +305,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                     'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       attributes = {in: {time_exists: true}, out: {time_exists: true}}
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
     end
@@ -314,7 +314,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(2)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                     'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       attributes = {in: {time_exists: true}, out: {time_exists: false}}
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
     end
@@ -323,7 +323,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times[2..3]
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                     'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       attributes = {in: {time_exists: false}, out: {time_exists: true}}
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
     end
@@ -332,7 +332,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(5)
       provided_split = event.splits[0]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
+                     'time_in' => '08:30:00', 'time_out' => '08:50:00', 'id' => '4'}
       attributes = {in: {time_exists: true}, out: {time_exists: nil}}
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
     end
@@ -341,7 +341,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4'}
       attributes = {in: {time_exists: true}, out: {time_exists: true}}
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
     end
@@ -350,7 +350,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4', 'pacer_in' => true, 'pacer_out' => false}
+                     'time_in' => '', 'time_out' => '', 'id' => '4', 'pacer_in' => true, 'pacer_out' => false}
       attributes = {in: {pacer: true}, out: {pacer: false}}
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
     end
@@ -359,7 +359,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4', 'pacer_in' => 'true', 'pacer_out' => 'false'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4', 'pacer_in' => 'true', 'pacer_out' => 'false'}
       attributes = {in: {pacer: true}, out: {pacer: false}}
       validate_new_split_times(event, effort, split_times, params_hash, attributes)
     end
@@ -387,7 +387,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4'}
       expected = 2
       validate_lap(event, effort, split_times, params_hash, expected)
     end
@@ -396,7 +396,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '0', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4'}
       expected = 1
       validate_lap(event, effort, split_times, params_hash, expected)
     end
@@ -405,7 +405,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '-1', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4'}
       expected = 1
       validate_lap(event, effort, split_times, params_hash, expected)
     end
@@ -414,7 +414,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '1', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4'}
       expected = 1
       validate_lap(event, effort, split_times, params_hash, expected)
     end
@@ -423,7 +423,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '3', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4'}
       expected = 3
       validate_lap(event, effort, split_times, params_hash, expected)
     end
@@ -432,7 +432,7 @@ RSpec.describe LiveEffortData do
       split_times = effort.split_times.first(3)
       provided_split = event.splits[1]
       params_hash = {'split_id' => provided_split.id.to_s, lap: '4', 'bib_number' => '205',
-                'time_in' => '', 'time_out' => '', 'id' => '4'}
+                     'time_in' => '', 'time_out' => '', 'id' => '4'}
       expected = 3
       validate_lap(event, effort, split_times, params_hash, expected)
     end

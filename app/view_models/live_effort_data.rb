@@ -76,12 +76,12 @@ class LiveEffortData
 
   def expected_lap
     case
-    when event.laps_required == 1
-      1
-    when subject_split.null_record? || effort.null_record?
-      nil
+    when event.laps_required == 1 then 1
+    when subject_split.null_record? || effort.null_record? then nil
     else
-      ExpectedLapFinder.lap(ordered_split_times: ordered_existing_split_times, split: subject_split)
+      military_time = params[:time_in] || params[:time_out] || ''
+      bitkey = (!params[:time_in] && params[:time_out]) ? SubSplit::OUT_BITKEY : SubSplit::IN_BITKEY
+      FindExpectedLap.perform(effort: effort, military_time: military_time, split_id: subject_split.id, bitkey: bitkey)
     end
   end
 

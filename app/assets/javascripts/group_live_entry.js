@@ -117,20 +117,23 @@
                 channel.bind('update', function (data) {
                     // New value pushed from the server
                     // Display updated number of new live times on Pull Times button
-                    var new_count = (typeof data.count === 'number') ? data.count : 0;
-                    liveEntry.pusher.displayNewCount(new_count);
+                    var unconsideredCount = (typeof data.unconsidered === 'number') ? data.unconsidered : 0;
+                    var unmatchedCount = (typeof data.unmatched === 'number') ? data.unmatched : 0;
+                    liveEntry.pusher.displayNewCount(unconsideredCount, unmatchedCount);
                 });
             },
 
-            displayNewCount: function(count) {
-                var text = '';
-                if (count > 0) {
+            displayNewCount: function(unconsideredCount, unmatchedCount) {
+                var unconsideredText = (unconsideredCount > 0) ? unconsideredCount : '';
+                var unmatchedText = (unmatchedCount > 0) ? unmatchedCount : '';
+                $('#js-pull-times-count').text(unconsideredText);
+                $('#js-force-pull-times-count').text(unmatchedText);
+
+                if (unconsideredCount > 0) {
                     $('#js-group-new-times-alert').fadeTo(500, 1);
-                    text = count;
-                } else {
+                } else if($('#js-group-new-times-alert').is(":visible")) {
                     $('#js-group-new-times-alert').fadeTo(500, 0, function() {$('#js-group-new-times-alert').hide()});
                 }
-                $('#js-pull-times-count').text(text);
             }
         },
 
@@ -1018,7 +1021,7 @@
                         return;
                     }
                     liveEntry.importAsyncBusy = true;
-                    var forceParam = (this.id === 'js-import-live-times') ? '?forcePull=true' : '';
+                    var forceParam = (this.id === 'js-force-import-live-times') ? '?forcePull=true' : '';
                     $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_live_time_rows' + forceParam, {
                        error: function(obj, error) {
                             liveEntry.importAsyncBusy = false;

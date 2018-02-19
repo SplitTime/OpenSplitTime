@@ -29,7 +29,8 @@ module BackgroundNotifiable
 
   def report_live_times_available(resource)
     channel = "live-times-available.#{resource.class.to_s.underscore}.#{resource.id}"
-    message = {count: resource.live_times.unconsidered.size}
+    message = {unconsidered: resource.live_times.unconsidered.size,
+               unmatched: resource.live_times.unmatched.size}
     Pusher.trigger(channel, 'update', message)
   end
 

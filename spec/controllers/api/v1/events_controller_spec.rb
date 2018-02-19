@@ -330,7 +330,7 @@ RSpec.describe Api::V1::EventsController do
           expect(event.permit_notifications?).to be(true)
           allow(Pusher).to receive(:trigger)
           post :import, params: request_params
-          expected_args = ["live-times-available.event_group.#{event_group.id}", 'update', {count: 2}]
+          expected_args = ["live-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 2, unmatched: 2}]
           expect(Pusher).to have_received(:trigger).with(*expected_args)
         end
       end

@@ -411,12 +411,15 @@
                     return false;
                 });
 
-                // Listen for keydown on bibNumber
-                $('#js-group-bib-number').on('blur', function (event) {
+                $('#js-group-bib-number').on('blur', function () {
                     liveEntry.liveEntryForm.fetchEffortData();
                 });
 
-                $('#js-group-time-in').on('blur', function (event) {
+                $('#js-group-lap-number').on('blur', function () {
+                    liveEntry.liveEntryForm.fetchEffortData();
+                });
+
+                $('#js-group-time-in').on('blur', function () {
                     var timeIn = $(this).val();
                     timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
                     if (timeIn === false) {
@@ -427,7 +430,7 @@
                     }
                 });
 
-                $('#js-group-time-out').on('blur', function (event) {
+                $('#js-group-time-out').on('blur', function () {
                     var timeIn = $(this).val();
                     timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
                     if (timeIn === false) {

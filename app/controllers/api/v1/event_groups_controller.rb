@@ -20,7 +20,7 @@ class Api::V1::EventGroupsController < ApiController
       live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
 
       scoped_live_times = force_pull ? @resource.live_times.unmatched : @resource.live_times.unconsidered
-      selected_live_times = scoped_live_times.order(:event_id, :split_id, :bib_number, :bitkey).limit(live_times_limit)
+      selected_live_times = scoped_live_times.order(:absolute_time, :event_id, :bib_number, :split_id, :bitkey).limit(live_times_limit)
 
       grouped_live_times = selected_live_times.group_by(&:event_id)
 

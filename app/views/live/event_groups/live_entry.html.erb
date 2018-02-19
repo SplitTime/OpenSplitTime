@@ -4,7 +4,7 @@
 
 <div class="row header">
   <div id="js-group-new-times-alert" class="alert alert-info center" role="alert">
-    <a href="#js-group-import-live-times">New Live Times availale</a>
+    <a href="#js-import-live-times">New Live Times available</a>
   </div>
   <div class="col-xs-12 col-md-6 page-title">
     <h2></h2>
@@ -205,13 +205,15 @@
   </div>
 </div>
 <div class="row provisional-data">
-  <div class="col-xs-12 table-submit-wrapper">
-    <div class="btn-group" role="group">
-      <button id="js-group-import-live-times" class="btn btn-primary">
-        Pull Times
-        <span class="badge" id="js-group-pull-times-count"></span>
-      </button>
-    </div>
+  <div id="js-table-submit-buttons" class="col-xs-12 table-submit-wrapper">
+    <button id="js-import-live-times" class="btn btn-primary">
+      Pull Times
+      <span class="badge" id="js-pull-times-count"></span>
+    </button>
+    <button id="js-force-import-live-times" class="btn btn-danger" style="display: none;">
+      Force Pull
+      <span class="badge" id="js-force-pull-times-count"></span>
+    </button>
     <div class="btn-group" role="group">
       <button id="js-group-file-split" class="btn btn-primary" disabled></button>
       <button class="btn btn-primary fileinput-button">

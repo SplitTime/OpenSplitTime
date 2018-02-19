@@ -130,7 +130,7 @@
                 } else {
                     $('#js-group-new-times-alert').fadeTo(500, 0, function() {$('#js-group-new-times-alert').hide()});
                 }
-                $('#js-group-pull-times-count').text(text);
+                $('#js-pull-times-count').text(text);
             }
         },
 
@@ -999,13 +999,26 @@
                         liveEntry.timeRowsTable.busy = false;
                     }
                 });
-                $('#js-group-import-live-times').on('click', function (event) {
+
+                $(document).on('keydown', function (event) {
+                    if(event.keyCode === 16) {
+                        $('#js-import-live-times').hide();
+                        $('#js-force-import-live-times').show()
+                    }
+                });
+                $(document).on('keyup', function (event) {
+                    if(event.keyCode === 16) {
+                        $('#js-force-import-live-times').hide();
+                        $('#js-import-live-times').show()
+                    }
+                });
+                $('#js-import-live-times, #js-force-import-live-times').on('click', function (event) {
                     event.preventDefault();
                     if (liveEntry.importAsyncBusy) {
                         return;
                     }
                     liveEntry.importAsyncBusy = true;
-                    var forceParam = (event.shiftKey) ? '?forcePull=true' : '';
+                    var forceParam = (this.id === 'js-import-live-times') ? '?forcePull=true' : '';
                     $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_live_time_rows' + forceParam, {
                        error: function(obj, error) {
                             liveEntry.importAsyncBusy = false;

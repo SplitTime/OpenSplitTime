@@ -299,12 +299,12 @@ RSpec.describe Api::V1::StagingController do
   end
 
   describe '#update_event_visibility' do
-    let(:event_group) { create(:event_group, organization: organization, events: events) }
-    let(:event_1) { create(:event, efforts: event_1_efforts) }
-    let(:event_2) { create(:event, efforts: event_2_efforts) }
+    let(:event_group) { create(:event_group, organization: organization) }
+    let(:event_1) { create(:event, event_group: event_group) }
+    let(:event_2) { create(:event, event_group: event_group) }
     let(:events) { [event_1, event_2] }
-    let(:event_1_efforts) { [create(:effort, person: create(:person)), create(:effort, person: create(:person))] }
-    let(:event_2_efforts) { [create(:effort, person: create(:person)), create(:effort, person: create(:person))] }
+    let(:event_1_efforts) { [create(:effort, person: create(:person), event: event_1), create(:effort, person: create(:person), event: event_1)] }
+    let(:event_2_efforts) { [create(:effort, person: create(:person), event: event_2), create(:effort, person: create(:person), event: event_2)] }
     let(:organization) { create(:organization) }
 
     context 'when params[:status] == "public"' do

@@ -62,7 +62,7 @@ RSpec.describe Api::V1::EventGroupsController do
         expected = %w(Bravo Delta)
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['data'].size).to eq(2)
-        expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+        expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to match_array(expected)
       end
     end
   end

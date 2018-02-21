@@ -2,6 +2,12 @@ class Api::V1::EventGroupsController < ApiController
   include BackgroundNotifiable
   before_action :set_resource, except: [:index, :create]
 
+  def show
+    authorize @resource
+    event_group = EventGroup.includes(organization: :stewards).includes(events: :efforts).where(id: @resource.id).first
+    render json: event_group, include: prepared_params[:include], fields: prepared_params[:fields]
+  end
+
   def pull_live_time_rows
 
     # This endpoint searches for un-pulled live_times belonging to the event_group, selects a batch,

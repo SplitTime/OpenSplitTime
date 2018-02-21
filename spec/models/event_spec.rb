@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 # t.integer  "course_id",                                                 null: false
-# t.integer  "organization_id"
 # t.string   "name",            limit: 64,                                null: false
 # t.datetime "start_time"
-# t.boolean  "concealed",                  default: false
-# t.boolean  "available_live",             default: false
 # t.string   "beacon_url"
 # t.integer  "laps_required"
 # t.string   "slug",                                                      null: false
-# t.boolean  "auto_live_times",            default: false
 # t.string   "home_time_zone",                                            null: false
+# t.integer  "event_group_id"
+# t.string   "short_name"
+# t.string   "podium_template"
+# t.boolean  "monitor_pacers", default: false
 
 RSpec.describe Event, type: :model do
   it_behaves_like 'auditable'

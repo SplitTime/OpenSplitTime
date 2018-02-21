@@ -18,8 +18,6 @@ class EventGroup < ApplicationRecord
 
   scope :standard_includes, -> { includes(events: :splits) }
 
-  after_commit :align_available_live # Needed only so long as Event model retains duplicate available_live attribute
-
   def self.search(search_param)
     return all if search_param.blank?
     joins(:events).where('event_groups.name ILIKE ? OR events.name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
@@ -39,9 +37,5 @@ class EventGroup < ApplicationRecord
 
   def first_event
     ordered_events.first
-  end
-
-  def align_available_live
-    events.each { |event| event.update(available_live: available_live) }
   end
 end

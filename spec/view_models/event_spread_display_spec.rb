@@ -47,7 +47,8 @@ RSpec.describe EventSpreadDisplay do
 
     context 'when display_style is provided in the params' do
       let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
-      let(:event) { instance_double('Event', simple?: true, available_live: true) }
+      let(:event) { instance_double('Event', simple?: true, event_group: event_group) }
+      let(:event_group) { instance_double('EventGroup', available_live: true) }
 
       it 'returns the provided display_style' do
         expect(subject.display_style).to eq('ampm')

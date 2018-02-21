@@ -4,7 +4,7 @@ class Api::V1::EventGroupsController < ApiController
 
   def show
     authorize @resource
-    event_group = EventGroup.includes(organization: :stewards).includes(events: :efforts).where(id: @resource.id).first
+    event_group = EventGroup.includes(organization: :stewards, events: [:efforts, :splits]).where(id: @resource.id).first
     render json: event_group, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 

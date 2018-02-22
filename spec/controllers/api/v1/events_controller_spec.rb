@@ -202,30 +202,19 @@ RSpec.describe Api::V1::EventsController do
 
     context 'when provided with a file' do
       let(:request_params) { {id: event.id, data_format: 'csv_efforts', file: file} }
-      let(:file) { file_fixture('test_efforts.csv') }
+      let(:file) { fixture_file_upload(file_fixture('test_efforts_utf_8.csv')) }
 
       it 'returns a successful json response' do
-        skip 'Until Rails 5 upgrade'
         post :import, params: request_params
         expect(response.status).to eq(201)
       end
 
       it 'creates efforts' do
-        skip 'Until Rails 5 upgrade'
         expect(Effort.all.size).to eq(0)
         post :import, params: request_params
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['message']).to match(/Import complete/)
-        expect(Effort.all.size).to eq(5)
-      end
-
-      it 'creates split_time records' do
-        skip 'Until Rails 5 upgrade'
-        expect(SplitTime.all.size).to eq(0)
-        post :import, params: request_params
-        parsed_response = JSON.parse(response.body)
-        expect(parsed_response['message']).to match(/Import complete/)
-        expect(SplitTime.all.size).to eq(23)
+        expect(parsed_response['data'].size).to eq(3)
+        expect(Effort.all.size).to eq(3)
       end
     end
 
@@ -378,42 +367,6 @@ RSpec.describe Api::V1::EventsController do
 
           expect(Interactors::UpdateEffortsStatus).to have_received(:perform!).with(efforts)
         end
-      end
-    end
-
-    context 'when provided with multiple live_times relating the same bib number in a multi-lap event' do
-      let(:data) {
-        [{'type' => 'live_time',
-          'attributes' =>
-              {'source' => source,
-               'sub_split_kind' => 'in',
-               'with_pacer' => 'false',
-               'bib_number' => efforts.first.bib_number,
-               'split_id' => splits.first.id,
-               'stopped_here' => 'false',
-               'absolute_time' => '2018-02-10 11:13:17-7:00'}},
-         {'type' => 'live_time',
-          'attributes' =>
-              {'source' => source,
-               'sub_split_kind' => 'in',
-               'with_pacer' => 'false',
-               'bib_number' => efforts.second.bib_number,
-               'split_id' => splits.first.id,
-               'stopped_here' => 'false',
-               'absolute_time' => '2018-02-10 09:16:07-7:00'}},
-         {'type' => 'live_time',
-          'attributes' =>
-              {'source' => source,
-               'sub_split_kind' => 'in',
-               'with_pacer' => 'false',
-               'bib_number' => efforts.first.bib_number,
-               'split_id' => splits.first.id,
-               'stopped_here' => 'false',
-               'absolute_time' => '2018-02-10 09:21:54-7:00'}}]
-      }
-
-      it 'imports data in the expected order' do
-        skip
       end
     end
 

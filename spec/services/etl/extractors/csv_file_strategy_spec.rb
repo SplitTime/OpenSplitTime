@@ -5,10 +5,32 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
   let(:options) { {} }
 
   describe '#extract' do
-    context 'when file is provided' do
-      let(:file) { file_fixture('test_efforts.csv') }
+    context 'when UTF-8 file is provided' do
+      let(:file) { file_fixture('test_efforts_utf_8.csv') }
 
       it 'returns raw data in OpenStruct format' do
+        raw_data = subject.extract
+        expect(subject.errors).to eq([])
+        expect(raw_data.size).to eq(3)
+        expect(raw_data).to all be_a(OpenStruct)
+      end
+    end
+
+    context 'when ASCII file is provided' do
+      let(:file) { file_fixture('test_efforts_ascii.csv') }
+
+      it 'returns raw data in OpenStruct format' do
+        raw_data = subject.extract
+        expect(subject.errors).to eq([])
+        expect(raw_data.size).to eq(3)
+        expect(raw_data).to all be_a(OpenStruct)
+      end
+    end
+
+    context 'when file has extra empty lines' do
+      let(:file) { file_fixture('test_efforts_empty_lines.csv') }
+
+      it 'returns raw data in OpenStruct format ignoring empty lines' do
         raw_data = subject.extract
         expect(subject.errors).to eq([])
         expect(raw_data.size).to eq(3)

@@ -24,6 +24,10 @@ module ETL
       {title: 'Format not recognized', detail: {messages: ["data_format #{format} is not recognized"]}}
     end
 
+    def invalid_file_error(file)
+      {title: 'Invalid file', detail: {messages: ["#{file} is not a valid file"]}}
+    end
+
     def invalid_json_error(string)
       {title: 'Invalid JSON', detail: {messages: ["#{string} is not valid JSON"]}}
     end

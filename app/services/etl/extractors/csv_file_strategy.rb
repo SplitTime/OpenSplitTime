@@ -17,7 +17,7 @@ module ETL::Extractors
       return if errors.present?
       rows = SmarterCSV.process(file, remove_empty_values: false, row_sep: :auto, force_utf8: true,
                                 strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false, strings_as_keys: true)
-      rows.map { |row| OpenStruct.new(row) }
+      rows.map { |row| OpenStruct.new(row) if row.compact.present? }.compact
     end
 
     private
@@ -27,11 +27,13 @@ module ETL::Extractors
     def file
       case
       when uploaded_file
-        source_data.tempfile
+        File.open(source_data.tempfile.path)
       when source_data.is_a?(Pathname)
         File.open(source_data)
-      else # Assume source_data is a real file
+      when source_data.is_a?(File)
         source_data
+      else
+        errors << invalid_file_error(file)
       end
     end
 

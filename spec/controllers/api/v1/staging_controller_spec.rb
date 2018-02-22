@@ -120,7 +120,7 @@ RSpec.describe Api::V1::StagingController do
       context 'when attributes are provided for an existing event_group' do
         let(:new_event_group_params) { {name: 'Updated Event Group Name'} }
 
-        it 'updates provided attributes for an existing event' do
+        it 'updates provided attributes for the existing event_group' do
           skip 'until front end is fully event_group aware'
 
           status, resources = post_with_params(event_id, params)
@@ -171,7 +171,7 @@ RSpec.describe Api::V1::StagingController do
           skip 'until front end is fully event_group aware'
 
           status, resources = post_with_params(event_id, params)
-          expected_attributes = {event: new_event_params, event_group: existing_event_group_params}
+          expected_attributes = {event: new_event_params, event_group: existing_event_group_params, course: existing_course_params, organization: existing_organization_params}
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)

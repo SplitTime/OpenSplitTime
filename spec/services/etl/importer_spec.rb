@@ -4,7 +4,7 @@ RSpec.describe ETL::Importer do
   subject { ETL::Importer.new(source_data, data_format, options) }
 
   context 'when importing efforts using :csv_efforts' do
-    let(:source_data) { file_fixture('test_efforts.csv') }
+    let(:source_data) { file_fixture('test_efforts_utf_8.csv') }
     let(:data_format) { :csv_efforts }
     let(:options) { {event: event, current_user_id: 1} }
     let(:event) { create(:event) }

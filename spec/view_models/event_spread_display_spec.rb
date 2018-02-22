@@ -1,50 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe EventSpreadDisplay do
-  let(:test_course) { build_stubbed(:course, id: 10, name: 'Testrock Counter-clockwise') }
-  let(:test_event) { build_stubbed(:event, name: 'Testrock 100', id: 50) }
-  let(:split_names_without_start) { ['Cunningham In', 'Cunningham Out', 'Maggie In', 'Maggie Out',
-                                     'Pole Creek In', 'Pole Creek Out', 'Sherman In', 'Sherman Out', 'Burrows In', 'Burrows Out',
-                                     'Grouse In', 'Grouse Out', 'Engineer In', 'Engineer Out', 'Ouray In', 'Ouray Out',
-                                     'Governor In', 'Governor Out', 'Kroger In', 'Kroger Out', 'Telluride In', 'Telluride Out',
-                                     'Chapman In', 'Chapman Out', 'Kamm Traverse In', 'Kamm Traverse Out', 'Putnam In', 'Putnam Out', 'Finish'] }
-  let(:split_names_with_start) { split_names_without_start.unshift('Start') }
+  subject { EventSpreadDisplay.new(event: event, params: prepared_params) }
+  let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
 
-  describe '#split_header_names' do
-    context 'when display_style is ampm' do
-      before { FactoryBot.reload }
+  describe '#split_header_data' do
+    let(:course) { build_stubbed(:course, name: 'Testrock Counter-clockwise', splits: splits) }
+    let(:event) { build_stubbed(:event, name: 'Testrock 100', course: course, splits: splits) }
+    let(:splits) { [split_1, split_2, split_3] }
+    let(:split_1) { build_stubbed(:start_split, base_name: 'Starting Point') }
+    let(:split_2) { build_stubbed(:split, base_name: 'Aid Station 1', distance_from_start: 10000) }
+    let(:split_3) { build_stubbed(:finish_split, base_name: 'Finishing Point', distance_from_start: 20000) }
 
-      let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
-      let(:split_times_100) { build_stubbed_list(:split_times_hardrock_0, 10, effort_id: 100) }
-      let(:split_times_101) { build_stubbed_list(:split_times_hardrock_1, 10, effort_id: 101) }
-      let(:split_times_102) { build_stubbed_list(:split_times_hardrock_2, 10, effort_id: 102) }
-      let(:split_times_103) { build_stubbed_list(:split_times_hardrock_3, 10, effort_id: 103) }
-      let(:split_times_104) { build_stubbed_list(:split_times_hardrock_4, 10, effort_id: 104) }
-      let(:split_times_105) { build_stubbed_list(:split_times_hardrock_5, 10, effort_id: 105) }
-      let(:split_times_106) { build_stubbed_list(:split_times_hardrock_6, 10, effort_id: 106) }
-      let(:split_times_107) { build_stubbed_list(:split_times_hardrock_7, 10, effort_id: 107) }
-      let(:split_times_108) { build_stubbed_list(:split_times_hardrock_8, 10, effort_id: 108) }
-      let(:split_times_109) { build_stubbed_list(:split_times_hardrock_9, 10, effort_id: 109) }
-      let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
-      let(:efforts) { build_stubbed_list(:efforts_hardrock, 10, event_id: 50) }
-
-      it 'returns correct split names with extensions for all splits other than the start_split' do
-        skip
-        event = test_event
-        allow(event).to receive(:ordered_splits).and_return(splits)
-        allow(event).to receive(:efforts).and_return(efforts)
-        spread_display = EventSpreadDisplay.new(event: event, params: prepared_params)
-        allow(spread_display).to receive(:efforts).and_return(efforts)
-        actual = spread_display.split_header_names
-        expected = split_names_without_start
-        expect(actual).to eq(expected)
-      end
+    it 'returns an array of hashes containing title, extensions, and distances' do
+      expected = [
+        {title: 'Starting Point', extensions: [], distance: 0},
+        {title: 'Aid Station 1', extensions: %w(In Out), distance: 10000},
+        {title: 'Finishing Point', extensions: [], distance: 20000}
+      ]
+      expect(subject.split_header_data).to eq(expected)
     end
   end
 
   describe '#display_style' do
-    subject { EventSpreadDisplay.new(event: event, params: prepared_params) }
-
     context 'when display_style is provided in the params' do
       let(:prepared_params) { ActionController::Parameters.new(display_style: 'ampm') }
       let(:event) { instance_double('Event', simple?: true, event_group: event_group) }

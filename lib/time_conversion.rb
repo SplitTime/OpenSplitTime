@@ -64,7 +64,6 @@ class TimeConversion
                    else
                      datetime
                    end
-    # pp "#{event.start_time} #{new_datetime}"
-    TimeDifference.from(event.start_time, new_datetime).in_seconds
+    new_datetime - event.start_time
   end
 end

@@ -7,29 +7,31 @@ RSpec.shared_examples_for 'data_status_methods' do
 
   describe '.valid_status' do
     it 'returns good resources and does not return bad or questionable resources' do
-      skip if model_name == :split_time # Generic SplitTime factory does not create split_times that pass validations
-      good = resource_good
-      bad = resource_bad
-      questionable = resource_questionable
-      expect(model.all.size).to eq(3)
-      expect(model.valid_status.size).to eq(1)
-      expect(model.valid_status.include?(good)).to eq(true)
-      expect(model.valid_status.include?(bad)).to eq(false)
-      expect(model.valid_status.include?(questionable)).to eq(false)
+      if model_name == :effort # Generic SplitTime factory does not create split_times that pass validations
+        good = resource_good
+        bad = resource_bad
+        questionable = resource_questionable
+        expect(model.all.size).to eq(3)
+        expect(model.valid_status.size).to eq(1)
+        expect(model.valid_status.include?(good)).to eq(true)
+        expect(model.valid_status.include?(bad)).to eq(false)
+        expect(model.valid_status.include?(questionable)).to eq(false)
+      end
     end
   end
 
   describe '.invalid_status' do
     it 'returns bad and questionable resources and does not return good resources' do
-      skip if model_name == :split_time # Generic SplitTime factory does not create split_times that pass validations
-      good = resource_good
-      bad = resource_bad
-      questionable = resource_questionable
-      expect(model.all.size).to eq(3)
-      expect(model.invalid_status.size).to eq(2)
-      expect(model.invalid_status.include?(good)).to eq(false)
-      expect(model.invalid_status.include?(bad)).to eq(true)
-      expect(model.invalid_status.include?(questionable)).to eq(true)
+      if model_name == :effort # Generic SplitTime factory does not create split_times that pass validations
+        good = resource_good
+        bad = resource_bad
+        questionable = resource_questionable
+        expect(model.all.size).to eq(3)
+        expect(model.invalid_status.size).to eq(2)
+        expect(model.invalid_status.include?(good)).to eq(false)
+        expect(model.invalid_status.include?(bad)).to eq(true)
+        expect(model.invalid_status.include?(questionable)).to eq(true)
+      end
     end
   end
 

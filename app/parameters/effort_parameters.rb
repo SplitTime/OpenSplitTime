@@ -31,6 +31,6 @@ class EffortParameters < BaseParameters
   end
 
   def self.unique_key
-    [:event_id, :bib_number]
+    [:event_id, :first_name, :last_name, :birthdate]
   end
 end

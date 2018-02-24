@@ -227,6 +227,7 @@
                 if ( !this.lastName ) return false;
                 if ( !this.gender ) return false;
                 if ( !this.bibNumber ) return false;
+                if ( !this.birthdate ) return false;
                 return true;
             }
         }
@@ -287,6 +288,7 @@
     api.define( 'events', {
         attributes: {
             name: { type: String, default: '' },
+            shortName: { type: String, default: '' },
             concealed: { type: Boolean, default: true },
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
@@ -507,7 +509,7 @@
                         } );
                 }
             } else if ( from.name === 'home' ) {
-                var creating = this.__new__;
+                var creating = eventStage.data.eventModel.__new__;
                 eventStage.data.eventModel.post().done( function() {
                     next();
                     if (creating) {

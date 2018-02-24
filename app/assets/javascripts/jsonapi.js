@@ -153,10 +153,7 @@ var JSONAPI = (function ($) {
             }
 
             if ( self instanceof API.Model ) {
-                console.info( 'JSONAPI', 'Parsed JSON API response for \'' + self.__type__ + '\' model.' );
                 self.errors = [];
-            } else {
-                console.info( 'JSONAPI', 'Parsed JSON API response from \'' + url + '\'' );
             }
 
             return ( self instanceof API.Model ) ? self : models;
@@ -471,7 +468,6 @@ var JSONAPI = (function ($) {
                 }
             }
             registrar[ name ] = DefinedModel;
-            console.info( 'JSONAPI', 'The model name \'' + name + '\' has been defined.' );
         }
 
         this.create = function( name, data ) {

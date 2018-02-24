@@ -151,7 +151,6 @@ GEM
     get_process_mem (0.2.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    gmaps4rails (2.1.2)
     gpx (0.9.0)
       nokogiri (~> 1.7)
       rake
@@ -447,7 +446,6 @@ DEPENDENCIES
   ffaker
   font-awesome-rails
   friendly_id (~> 5.1.0)
-  gmaps4rails
   gpx
   jbuilder (~> 2.0)
   jquery-fileupload-rails

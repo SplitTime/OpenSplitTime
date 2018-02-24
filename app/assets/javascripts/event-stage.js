@@ -1243,7 +1243,7 @@
                         </div>\
                     </div>',
                     props: {
-                        value: { required: true, type: Date, default: null }
+                        value: { required: true, default: null }
                     },
                     mounted: function() {
                         // Shared Variables
@@ -1287,6 +1287,45 @@
                             .on( 'dp.change', function( e ) {
                                 timestamp = e.date.format( 'hh:mm a' );
                                 update();
+                            } );
+                    }
+                } );
+
+                Vue.component( 'input-date', {
+                    template: '<div class="input-group">\
+                                    <input type="text" class="js-date form-control"/>\
+                                    <span class="input-group-addon">\
+                                        <span class="glyphicon glyphicon-calendar"></span>\
+                                    </span>\
+                               </div>',
+                    props: {
+                        value: { required: true, default: null }
+                    },
+                    mounted: function() {
+                        // Shared Variables
+                        var self = this;
+                        var datestamp = null;
+                        // Mount Value Watcher
+                        this.$watch( 'value', function() {
+                            if ( this.value ) {
+                                date = moment( this.value );
+                                datestamp = date.format( 'MM/DD/YYYY' );
+                            } else {
+                                // Enforce Default Values
+                                datestamp = null;
+                                self.$emit( 'input', null );
+                            }
+                            $( '.js-date', this.$el ).val( datestamp );
+                        }, { immediate: true } );
+                        // Mount Datepicker
+                        $( '.js-date', this.$el )
+                            .datetimepicker( {
+                                format: 'MM/DD/YYYY',
+                                viewMode: 'years',
+                                defaultDate: '1980-01-01'
+                            } )
+                            .on( 'dp.change', function( e ) {
+                                self.$emit( 'input', e.date.format( 'YYYY-MM-DD' ) );
                             } );
                     }
                 } );

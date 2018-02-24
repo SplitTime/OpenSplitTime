@@ -1617,7 +1617,6 @@
 
     document.addEventListener("turbolinks:load", function() {
         if(Rails.$('.events.app').length > 0) {
-            console.log("Running event-stage vue")
             eventStage.init();
         }
     });

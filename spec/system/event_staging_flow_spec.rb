@@ -214,7 +214,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       fill_in 'effort-last-name-field', with: stubbed_effort.last_name
       wait_for_fill_in
       page.execute_script("$('#effort-#{stubbed_effort.gender}-radio').click()")
-      fill_in 'effort-birthdate-field', with: stubbed_effort.birthdate.strftime('%m/%d/%Y')
+      page.find('#effort-birthdate-field').find('.js-date').set(stubbed_effort.birthdate.strftime('%m/%d/%Y'))
       wait_for_fill_in
       fill_in 'effort-bib-number-field', with: stubbed_effort.bib_number
       select country.name, from: 'effort-country-select'

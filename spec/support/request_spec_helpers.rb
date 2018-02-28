@@ -19,6 +19,7 @@ module RequestSpecHelpers
         else
           raise RuntimeError, "Strategy #{strategy} is not recognized"
         end
+
         module_eval(&block)
       end
     end

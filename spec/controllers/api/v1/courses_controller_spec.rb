@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::CoursesController do
   let(:course) { create(:course) }
+  let(:type) { 'courses' }
 
   describe '#index' do
     subject(:make_request) { get :index, params: params }
@@ -20,7 +21,7 @@ RSpec.describe Api::V1::CoursesController do
         expect(response.status).to eq(200)
       end
 
-      it 'returns each course that the current_user is authorized to edit' do
+      it 'returns each course' do
         make_request
         expect(response.status).to eq(200)
         parsed_response = JSON.parse(response.body)
@@ -79,7 +80,7 @@ RSpec.describe Api::V1::CoursesController do
           make_request
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data']['id'].to_i).to eq(course.id)
-          expect(response.body).to be_jsonapi_response_for('courses')
+          expect(response.body).to be_jsonapi_response_for(type)
         end
       end
 
@@ -101,11 +102,11 @@ RSpec.describe Api::V1::CoursesController do
 
     via_login_and_jwt do
       context 'when provided data is valid' do
-        let(:params) { {data: {type: 'courses', attributes: {name: 'Test Course'}}} }
+        let(:params) { {data: {type: type, attributes: {name: 'Test Course'}}} }
 
         it 'returns a successful json response' do
           make_request
-          expect(response.body).to be_jsonapi_response_for('courses')
+          expect(response.body).to be_jsonapi_response_for(type)
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data']['id']).not_to be_nil
           expect(response.status).to eq(201)
@@ -113,7 +114,7 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'creates a course record' do
           expect(Course.all.count).to eq(0)
-          post :create, params: {data: {type: 'courses', attributes: {name: 'Test Course'}}}
+          make_request
           expect(Course.all.count).to eq(1)
         end
       end
@@ -122,7 +123,7 @@ RSpec.describe Api::V1::CoursesController do
 
   describe '#update' do
     subject(:make_request) { put :update, params: params }
-    let(:params) { {id: course_id, data: {type: 'courses', attributes: attributes}} }
+    let(:params) { {id: course_id, data: {type: type, attributes: attributes}} }
     let(:attributes) { {name: 'Updated Course Name'} }
 
     via_login_and_jwt do
@@ -131,7 +132,7 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'returns a successful json response' do
           make_request
-          expect(response.body).to be_jsonapi_response_for('courses')
+          expect(response.body).to be_jsonapi_response_for(type)
           expect(response.status).to eq(200)
         end
 
@@ -156,12 +157,11 @@ RSpec.describe Api::V1::CoursesController do
   end
 
   describe '#destroy' do
-    subject(:make_request) { delete :destroy, params: params }
-    let(:params) { {id: course_id} }
-    let(:course) { create(:course) }
+    subject(:make_request) { delete :destroy, params: {id: course_id} }
 
     via_login_and_jwt do
       context 'when the record exists' do
+        let!(:course) { create(:course) }
         let(:course_id) { course.id }
 
         it 'returns a successful json response' do
@@ -170,7 +170,6 @@ RSpec.describe Api::V1::CoursesController do
         end
 
         it 'destroys the course record' do
-          course
           expect(Course.all.count).to eq(1)
           make_request
           expect(Course.all.count).to eq(0)

@@ -1,103 +1,146 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::SplitsController do
-  login_admin
-
+  let(:type) { 'splits' }
   let(:split) { create(:split, course: course) }
   let(:course) { create(:course) }
 
   describe '#show' do
-    it 'returns a successful 200 response' do
-      get :show, params: {id: split}
-      expect(response.status).to eq(200)
-    end
+    subject(:make_request) { get :show, params: params }
 
-    it 'returns data of a single split' do
-      get :show, params: {id: split}
-      expect(response.body).to be_jsonapi_response_for('splits')
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data']['id'].to_i).to eq(split.id)
-    end
+    via_login_and_jwt do
+      context 'when an existing split.id is provided' do
+        let(:params) { {id: split} }
 
-    it 'returns an error if the split does not exist' do
-      get :show, params: {id: 0}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to include(/not found/)
-      expect(response.status).to eq(404)
+        it 'returns a successful 200 response' do
+          make_request
+          expect(response.status).to eq(200)
+        end
+
+        it 'returns data of a single split' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['data']['id'].to_i).to eq(split.id)
+          expect(response.body).to be_jsonapi_response_for(type)
+        end
+      end
+
+      context 'if the split does not exist' do
+        let(:params) { {id: 0} }
+
+        it 'returns an error' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors']).to include(/not found/)
+          expect(response.status).to eq(404)
+        end
+      end
     end
   end
 
   describe '#create' do
-    it 'returns a successful json response' do
-      post :create, params: {data: {type: 'splits', attributes: {base_name: 'Test Split', course_id: course.id,
-                                                       distance_from_start: 100,
-                                                       kind: 'intermediate', sub_split_bitkey: 1} }}
-      expect(response.body).to be_jsonapi_response_for('splits')
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data']['id']).not_to be_nil
-      expect(response.status).to eq(201)
-    end
+    subject(:make_request) { post :create, params: params }
+    let(:params) { {data: {type: 'splits', attributes: attributes}} }
 
-    it 'creates a split record' do
-      expect(Split.all.count).to eq(0)
-      post :create, params: {data: {type: 'splits', attributes: {base_name: 'Test Split', course_id: course.id,
-                                                       distance_from_start: 100,
-                                                       kind: 'intermediate', sub_split_bitkey: 1} }}
-      expect(Split.all.count).to eq(1)
+    via_login_and_jwt do
+      context 'when provided data is valid' do
+        let(:attributes) { {base_name: 'Test Split', course_id: course.id, distance_from_start: 100,
+                            kind: 'intermediate', sub_split_bitkey: 1} }
+
+        it 'returns a successful json response' do
+          make_request
+          expect(response.body).to be_jsonapi_response_for(type)
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['data']['id']).not_to be_nil
+          expect(response.status).to eq(201)
+        end
+
+        it 'creates a split record' do
+          expect { make_request }.to change { Split.count }.by(1)
+        end
+      end
     end
   end
 
   describe '#update' do
-    let(:attributes) { {base_name: 'Updated Split Name', latitude: 40, longitude: -105, elevation: 2000 } }
+    subject(:make_request) { put :update, params: params }
+    let(:params) { {id: split_id, data: {type: type, attributes: attributes}} }
+    let(:attributes) { {base_name: 'Updated Split Name', latitude: 40, longitude: -105, elevation: 2000} }
 
-    it 'returns a successful json response' do
-      put :update, params: {id: split, data: {type: 'splits', attributes: attributes }}
-      expect(response.body).to be_jsonapi_response_for('splits')
-      expect(response.status).to eq(200)
-    end
+    via_login_and_jwt do
+      context 'when the split exists' do
+        let(:split_id) { split.id }
 
-    it 'updates the specified fields' do
-      put :update, params: {id: split, data: {type: 'splits', attributes: attributes }}
-      split.reload
-      expect(split.base_name).to eq(attributes[:base_name])
-    end
+        it 'returns a successful json response' do
+          make_request
+          expect(response.body).to be_jsonapi_response_for(type)
+          expect(response.status).to eq(200)
+        end
 
-    it 'returns an error if the split does not exist' do
-      put :update, params: {id: 0, data: {type: 'splits', attributes: attributes }}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to include(/not found/)
-      expect(response.status).to eq(404)
+        it 'updates the specified fields' do
+          make_request
+          split.reload
+          %i(base_name latitude longitude elevation).each do |attr|
+            expect(split.send(attr)).to eq(attributes[attr])
+          end
+        end
+      end
+
+      context 'when the split does not exist' do
+        let(:split_id) { 0 }
+
+        it 'returns an error if the split does not exist' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors']).to include(/not found/)
+          expect(response.status).to eq(404)
+        end
+      end
     end
   end
 
   describe '#destroy' do
-    it 'returns a successful json response' do
-      delete :destroy, params: {id: split}
-      expect(response.status).to eq(200)
-    end
+    subject(:make_request) { delete :destroy, params: {id: split_id} }
 
-    it 'destroys the split record' do
-      test_split = split
-      expect(Split.all.count).to eq(1)
-      delete :destroy, params: {id: test_split}
-      expect(Split.all.count).to eq(0)
-    end
+    via_login_and_jwt do
+      context 'when the record exists' do
+        let!(:split) { create(:split) }
+        let(:split_id) { split.id }
 
-    it 'returns an error message if any split_times are associated with the split' do
-      event = create(:event, course: course)
-      effort = create(:effort, event: event)
-      create(:split_time, split: split, effort: effort)
-      delete :destroy, params: {id: split}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors'].first['detail']['messages']).to include(/Split has 1 associated split times/)
-      expect(response.status).to eq(422)
-    end
+        it 'returns a successful json response' do
+          make_request
+          expect(response.status).to eq(200)
+        end
 
-    it 'returns an error if the split does not exist' do
-      delete :destroy, params: {id: 0}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to include(/not found/)
-      expect(response.status).to eq(404)
+        it 'destroys the split record' do
+          expect { make_request }.to change { Split.count }.by(-1)
+        end
+      end
+
+      context 'when any split_times are associated with the split' do
+        let(:split_id) { split.id }
+
+        it 'returns an error message' do
+          event = create(:event, course: course)
+          effort = create(:effort, event: event)
+          create(:split_time, split: split, effort: effort)
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors'].first['detail']['messages']).to include(/Split has 1 associated split times/)
+          expect(response.status).to eq(422)
+        end
+      end
+
+      context 'when the record does not exist' do
+        let(:split_id) { 0 }
+
+        it 'returns an error if the split does not exist' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors']).to include(/not found/)
+          expect(response.status).to eq(404)
+        end
+      end
     end
   end
 end

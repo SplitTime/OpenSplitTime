@@ -1,105 +1,145 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController do
-  login_admin
-
   let(:user) { create(:user) }
+  let(:type) { 'users' }
 
   describe '#show' do
-    it 'returns a successful 200 response' do
-      get :show, params: {id: user}
-      expect(response.status).to eq(200)
-    end
+    subject(:make_request) { get :show, params: params }
 
-    it 'returns data of a single user' do
-      get :show, params: {id: user}
-      expect(response.body).to be_jsonapi_response_for('users')
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data']['id'].to_i).to eq(user.id)
-    end
+    via_login_and_jwt do
+      context 'when an existing user.id is provided' do
+        let(:params) { {id: user} }
 
-    it 'returns an error if the user does not exist' do
-      get :show, params: {id: 0}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to include(/not found/)
-      expect(response.status).to eq(404)
+        it 'returns a successful 200 response' do
+          make_request
+          expect(response.status).to eq(200)
+        end
+
+        it 'returns data of a single user' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['data']['id'].to_i).to eq(user.id)
+          expect(response.body).to be_jsonapi_response_for(type)
+        end
+      end
+
+      context 'if the user does not exist' do
+        let(:params) { {id: 0} }
+
+        it 'returns an error' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors']).to include(/not found/)
+          expect(response.status).to eq(404)
+        end
+      end
     end
   end
 
   describe '#create' do
-    let(:attributes) { {first_name: 'Test', last_name: 'User', email: 'test_user@example.com', password: 'password'} }
+    subject(:make_request) { post :create, params: params }
+    let(:params) { {data: {type: 'users', attributes: attributes}} }
 
-    it 'returns a successful json response' do
-      post :create, params: {data: {type: 'users', attributes: attributes}}
-      expect(response.body).to be_jsonapi_response_for('users')
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data']['id']).not_to be_nil
-      expect(response.status).to eq(201)
-    end
+    via_login_and_jwt do
+      context 'when provided data is valid' do
+        let(:attributes) { {first_name: 'Test', last_name: 'User', email: 'test_user@example.com', password: 'password'} }
 
-    it 'creates a user record' do
-      expect(User.all.count).to eq(1)
-      post :create, params: {data: {type: 'users', attributes: attributes}}
-      expect(User.all.count).to eq(2)
+        it 'returns a successful json response' do
+          make_request
+          expect(response.body).to be_jsonapi_response_for(type)
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['data']['id']).not_to be_nil
+          expect(response.status).to eq(201)
+        end
+
+        it 'creates a user record' do
+          expect { make_request }.to change { User.count }.by(1)
+        end
+      end
     end
   end
 
   describe '#update' do
-    let(:attributes) { {first_name: 'Updated First Name', pref_distance_unit: 'kilometers', pref_elevation_unit: 'meters'} }
+    subject(:make_request) { put :update, params: params }
+    let(:params) { {id: user_id, data: {type: type, attributes: attributes}} }
+    let(:attributes) { {last_name: 'Updated Last Name'} }
 
-    it 'returns a successful json response' do
-      put :update, params: {id: user, data: {type: 'users', attributes: attributes}}
-      expect(response.body).to be_jsonapi_response_for('users')
-      expect(response.status).to eq(200)
-    end
+    via_login_and_jwt do
+      context 'when the user exists' do
+        let(:user_id) { user.id }
 
-    it 'updates the specified fields' do
-      put :update, params: {id: user, data: {type: 'users', attributes: attributes}}
-      user.reload
-      expect(user.first_name).to eq(attributes[:first_name])
-      expect(user.pref_distance_unit).to eq(attributes[:pref_distance_unit])
-      expect(user.pref_elevation_unit).to eq(attributes[:pref_elevation_unit])
-    end
+        it 'returns a successful json response' do
+          make_request
+          expect(response.body).to be_jsonapi_response_for(type)
+          expect(response.status).to eq(200)
+        end
 
-    it 'returns an error if the user does not exist' do
-      put :update, params: {id: 0, data: {type: 'users', attributes: attributes}}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to include(/not found/)
-      expect(response.status).to eq(404)
+        it 'updates the specified fields' do
+          make_request
+          user.reload
+          expect(user.last_name).to eq(attributes[:last_name])
+        end
+      end
+
+      context 'when the user does not exist' do
+        let(:user_id) { 0 }
+
+        it 'returns an error if the user does not exist' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors']).to include(/not found/)
+          expect(response.status).to eq(404)
+        end
+      end
     end
   end
 
   describe '#destroy' do
-    it 'returns a successful json response' do
-      delete :destroy, params: {id: user}
-      expect(response.status).to eq(200)
-    end
+    subject(:make_request) { delete :destroy, params: {id: user_id} }
 
-    it 'destroys the user record' do
-      test_user = user
-      expect(User.all.count).to eq(2)
-      delete :destroy, params: {id: test_user}
-      expect(User.all.count).to eq(1)
-    end
+    via_login_and_jwt do
+      context 'when the record exists' do
+        let!(:user) { create(:user) }
+        let(:user_id) { user.id }
 
-    it 'returns an error if the user does not exist' do
-      delete :destroy, params: {id: 0}
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['errors']).to include(/not found/)
-      expect(response.status).to eq(404)
+        it 'returns a successful json response' do
+          make_request
+          expect(response.status).to eq(200)
+        end
+
+        it 'destroys the user record' do
+          expect { make_request }.to change { User.count }.by(-1)
+        end
+      end
+
+      context 'when the record does not exist' do
+        let(:user_id) { 0 }
+
+        it 'returns an error if the user does not exist' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors']).to include(/not found/)
+          expect(response.status).to eq(404)
+        end
+      end
     end
   end
 
   describe '#current' do
-    it 'returns a successful json response' do
-      get :current
-      expect(response.status).to eq(200)
-    end
+    let(:make_request) { get :current }
 
-    it 'returns data of the current user' do
-      get :current
-      parsed_response = JSON.parse(response.body)
-      expect(parsed_response['data']['id'].to_i).to eq(subject.current_user.id)
+    via_login_and_jwt do
+      it 'returns a successful json response' do
+        make_request
+        expect(response.status).to eq(200)
+      end
+
+      it 'returns data of the current user' do
+        make_request
+        parsed_response = JSON.parse(response.body)
+        expect(parsed_response['data']['id'].to_i).to eq(subject.current_user.id)
+      end
     end
   end
 end

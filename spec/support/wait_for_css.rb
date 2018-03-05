@@ -1,6 +1,6 @@
 module WaitMethods
   def wait_for_css
-    sleep(1)
+    sleep(1.5)
   end
 
   def wait_for_fill_in

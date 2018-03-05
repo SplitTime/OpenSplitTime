@@ -227,13 +227,13 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
   end
 
   def submit_all_efforts
-    sleep(2)
+    sleep(2.5)
     submit_all_button.click
     sleep(1)
   end
 
   def submit_time_row(index)
-    sleep(2)
+    sleep(2.5)
     local_workspace.find('tbody').all('tr')[index].find('.submit-effort').click
     sleep(1)
   end

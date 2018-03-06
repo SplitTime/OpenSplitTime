@@ -39,6 +39,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
     expect(continue_button[:disabled]&.to_boolean).to be_falsey
     continue_button.click
+    expect(page).to have_content('Create Splits')
     wait_for_ajax
 
     expect(Organization.count).to eq(1)
@@ -46,7 +47,6 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     expect(Split.count).to eq(2)
     expect(EventGroup.count).to eq(1)
     expect(Event.count).to eq(1)
-    expect(AidStation.count).to eq(2)
 
     organization = Organization.first
     expect(organization.name).to eq(stubbed_org.name)
@@ -63,6 +63,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     event = Event.first
     expect(event.name).to eq(stubbed_event.name)
     expect(event.slug).to eq(event.name.parameterize)
+    expect(event.aid_stations.size).to eq(2)
   end
 
   scenario 'Create a new event with an existing Organization and Course' do
@@ -102,6 +103,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
     expect(continue_button[:disabled]&.to_boolean).to be_falsey
     continue_button.click
+    expect(page).to have_content('Create Splits')
     wait_for_ajax
 
     expect(Organization.count).to eq(1)
@@ -109,7 +111,6 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     expect(Split.count).to eq(4)
     expect(EventGroup.count).to eq(1)
     expect(Event.count).to eq(1)
-    expect(AidStation.count).to eq(4)
 
     event_group = EventGroup.first
     expect(event_group.name).to eq(stubbed_event.name)
@@ -118,6 +119,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     event = Event.first
     expect(event.name).to eq(stubbed_event.name)
     expect(event.slug).to eq(event.name.parameterize)
+    expect(event.aid_stations.size).to eq(4)
   end
 
   context 'when there is a previously created event' do
@@ -151,6 +153,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       select 'Arizona', from: 'time-zone-select'
 
       continue_button.click
+      expect(page).to have_content('Create Splits')
       wait_for_ajax
 
       event.reload

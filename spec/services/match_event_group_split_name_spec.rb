@@ -3,35 +3,36 @@ require 'rails_helper'
 RSpec.describe MatchEventGroupSplitName do
   describe '.perform' do
     subject { MatchEventGroupSplitName.perform(event_group, base_name) }
-    let(:event_1) { build_stubbed(:event, splits: event_1_splits) }
-    let(:event_2) { build_stubbed(:event, splits: event_2_splits) }
-    let(:event_3) { build_stubbed(:event, splits: event_3_splits) }
+
+    let(:event_1) { build_stubbed(:event, splits: event_1_splits, aid_stations: event_1_aid_stations) }
+    let(:event_2) { build_stubbed(:event, splits: event_2_splits, aid_stations: event_2_aid_stations) }
+    let(:event_3) { build_stubbed(:event, splits: event_3_splits, aid_stations: event_3_aid_stations) }
 
     let(:event_1_split_1) { build_stubbed(:start_split, base_name: 'Start') }
     let(:event_1_split_2) { build_stubbed(:split, base_name: 'Aid 1') }
     let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2') }
     let(:event_1_split_4) { build_stubbed(:finish_split, base_name: 'Finish') }
     
-    let(:event_1_aid_1) { build_stubbed(:aid_station, event: event_1, split: event_1_split_1) }
-    let(:event_1_aid_2) { build_stubbed(:aid_station, event: event_1, split: event_1_split_2) }
-    let(:event_1_aid_3) { build_stubbed(:aid_station, event: event_1, split: event_1_split_3) }
-    let(:event_1_aid_4) { build_stubbed(:aid_station, event: event_1, split: event_1_split_4) }
+    let(:event_1_aid_1) { build_stubbed(:aid_station, split: event_1_split_1) }
+    let(:event_1_aid_2) { build_stubbed(:aid_station, split: event_1_split_2) }
+    let(:event_1_aid_3) { build_stubbed(:aid_station, split: event_1_split_3) }
+    let(:event_1_aid_4) { build_stubbed(:aid_station, split: event_1_split_4) }
 
     let(:event_2_split_1) { build_stubbed(:start_split, base_name: 'Start') }
     let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2') }
     let(:event_2_split_3) { build_stubbed(:finish_split, base_name: 'Finish') }
 
-    let(:event_2_aid_1) { build_stubbed(:aid_station, event: event_2, split: event_2_split_1) }
-    let(:event_2_aid_2) { build_stubbed(:aid_station, event: event_2, split: event_2_split_2) }
-    let(:event_2_aid_3) { build_stubbed(:aid_station, event: event_2, split: event_2_split_3) }
+    let(:event_2_aid_1) { build_stubbed(:aid_station, split: event_2_split_1) }
+    let(:event_2_aid_2) { build_stubbed(:aid_station, split: event_2_split_2) }
+    let(:event_2_aid_3) { build_stubbed(:aid_station, split: event_2_split_3) }
 
     let(:event_3_split_1) { build_stubbed(:start_split, base_name: 'Start') }
     let(:event_3_split_2) { build_stubbed(:split, base_name: 'Aid 2', sub_split_bitmap: 1) }
     let(:event_3_split_3) { build_stubbed(:finish_split, base_name: 'Finish') }
 
-    let(:event_3_aid_1) { build_stubbed(:aid_station, event: event_3, split: event_3_split_1) }
-    let(:event_3_aid_2) { build_stubbed(:aid_station, event: event_3, split: event_3_split_2) }
-    let(:event_3_aid_3) { build_stubbed(:aid_station, event: event_3, split: event_3_split_3) }
+    let(:event_3_aid_1) { build_stubbed(:aid_station, split: event_3_split_1) }
+    let(:event_3_aid_2) { build_stubbed(:aid_station, split: event_3_split_2) }
+    let(:event_3_aid_3) { build_stubbed(:aid_station, split: event_3_split_3) }
 
     let(:event_1_splits) { [event_1_split_1, event_1_split_2, event_1_split_3, event_1_split_4] }
     let(:event_2_splits) { [event_2_split_1, event_2_split_2, event_2_split_3] }
@@ -40,16 +41,6 @@ RSpec.describe MatchEventGroupSplitName do
     let(:event_1_aid_stations) { [event_1_aid_1, event_1_aid_2, event_1_aid_3, event_1_aid_4] }
     let(:event_2_aid_stations) { [event_2_aid_1, event_2_aid_2, event_2_aid_3] }
     let(:event_3_aid_stations) { [event_3_aid_1, event_3_aid_2, event_3_aid_3] }
-
-    before do
-      allow(event_1).to receive(:ordered_splits).and_return(event_1_splits)
-      allow(event_2).to receive(:ordered_splits).and_return(event_2_splits)
-      allow(event_3).to receive(:ordered_splits).and_return(event_3_splits)
-
-      allow(event_1).to receive(:aid_stations).and_return(event_1_aid_stations)
-      allow(event_2).to receive(:aid_stations).and_return(event_2_aid_stations)
-      allow(event_3).to receive(:aid_stations).and_return(event_3_aid_stations)
-    end
 
 
     context 'when splits with matching names have matching sub_splits' do
@@ -70,6 +61,19 @@ RSpec.describe MatchEventGroupSplitName do
 
       it 'raises an error' do
         expect { subject }.to raise_error(/Splits with matching names must have matching sub_splits/)
+      end
+    end
+
+    context 'when splits with matching names are too far apart in location' do
+      let(:event_group) { build_stubbed(:event_group, events: [event_1, event_2]) }
+      let(:base_name) { 'Aid 2' }
+      before do
+        event_1_split_3.assign_attributes(latitude: 40, longitude: -105)
+        event_2_split_2.assign_attributes(latitude: 41, longitude: -106)
+      end
+
+      it 'raises an error' do
+        expect { subject }.to raise_error(/Splits with matching names must be in the same location/)
       end
     end
   end

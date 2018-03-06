@@ -34,6 +34,7 @@ RSpec.describe 'Visit the best efforts page and search for an effort' do
 
     fill_in 'First name, last name, state, or country', with: effort_1.name
     click_button 'Find someone'
+    wait_for_css
 
     expect(page).to have_content(effort_1.name)
     other_efforts.each do |effort|

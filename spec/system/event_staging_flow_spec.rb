@@ -41,6 +41,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     continue_button.click
     expect(page).to have_content('Create Splits')
     wait_for_ajax
+    wait_for_css
 
     expect(Organization.count).to eq(1)
     expect(Course.count).to eq(1)
@@ -105,6 +106,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     continue_button.click
     expect(page).to have_content('Create Splits')
     wait_for_ajax
+    wait_for_css
 
     expect(Organization.count).to eq(1)
     expect(Course.count).to eq(1)

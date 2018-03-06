@@ -86,6 +86,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     expect(continue_button[:disabled]&.to_boolean).to be_truthy
 
     expect(page).not_to have_field('organization-name-field')
+    wait_for_ajax
     select organization.name, from: 'organization-select'
     expect(page).to have_field('organization-name-field', with: organization.name)
 

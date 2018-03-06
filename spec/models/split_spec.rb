@@ -395,4 +395,25 @@ RSpec.describe Split, kind: :model do
       end
     end
   end
+
+  describe '#distance_from' do
+    subject { build_stubbed(:split, latitude: 40, longitude: -105) }
+
+    context 'when subject split and other split have latitude and longitude' do
+      let(:other_split) { build_stubbed(:split, latitude: 40.1, longitude: -105.1) }
+
+      it 'returns distance from another given split in meters' do
+        expected = 14003.34
+        expect(subject.distance_from(other_split)).to be_within(0.01).of(expected)
+      end
+    end
+
+    context 'when subject split or other split does not have latitude or longitude' do
+      let(:other_split) { build_stubbed(:split, latitude: nil, longitude: nil) }
+
+      it 'returns distance from another given split in meters' do
+        expect(subject.distance_from(other_split)).to be_nil
+      end
+    end
+  end
 end

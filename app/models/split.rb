@@ -1,6 +1,7 @@
 class Split < ApplicationRecord
 
   include Auditable
+  include DistanceMeasurable
   include GuaranteedFindable
   include UnitConversions
   extend FriendlyId

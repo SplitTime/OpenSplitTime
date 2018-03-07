@@ -1,4 +1,4 @@
-RSpec.shared_examples_for 'distance_measurable' do
+RSpec.shared_examples_for 'locatable' do
   describe '#distance_from' do
     subject { described_class.new(latitude: 40, longitude: -105) }
 

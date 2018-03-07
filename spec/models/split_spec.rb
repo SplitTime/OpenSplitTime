@@ -12,7 +12,7 @@ require 'rails_helper'
 RSpec.describe Split, kind: :model do
   it_behaves_like 'unit_conversions'
   it_behaves_like 'auditable'
-  it_behaves_like 'distance_measurable'
+  it_behaves_like 'locatable'
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 

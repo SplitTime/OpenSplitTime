@@ -33,13 +33,13 @@ class ComputeDataEntryNodes
     longitudes = splits.map(&:longitude).compact
     neediest_split = splits.max_by { |split| split.bitkeys.size }
     neediest_split.bitkeys.map do |bitkey|
-      DataEntryNode.new(split_name.parameterize,
-                        SubSplit.kind(bitkey).downcase,
-                        neediest_split.name(bitkey),
-                        latitudes.presence && (latitudes.sum / latitudes.size.to_f),
-                        longitudes.presence && (longitudes.sum / longitudes.size.to_f),
-                        splits_by_event(split_name).transform_values(&:id),
-                        aid_stations_by_event(split_name).transform_values(&:id))
+      DataEntryNode.new(split_name: split_name.parameterize,
+                        sub_split_kind: SubSplit.kind(bitkey).downcase,
+                        label: neediest_split.name(bitkey),
+                        latitude: latitudes.presence && (latitudes.sum / latitudes.size.to_f),
+                        longitude: longitudes.presence && (longitudes.sum / longitudes.size.to_f),
+                        event_split_ids: splits_by_event(split_name).transform_values(&:id),
+                        event_aid_station_ids: aid_stations_by_event(split_name).transform_values(&:id))
     end
   end
 

@@ -36,8 +36,7 @@ RSpec.describe ComputeDataEntryNodes do
 
 
     context 'when splits with matching names have matching sub_splits' do
-
-      it 'returns a Struct having a title and data_entry_nodes' do
+      it 'returns an Array of data_entry_nodes' do
         data_entry_nodes = subject.perform
         expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
@@ -51,7 +50,7 @@ RSpec.describe ComputeDataEntryNodes do
       let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2', sub_split_bitmap: 65) }
       let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', sub_split_bitmap: 1) }
 
-      it 'ignores the difference but returns a Struct having a title and data_entry_nodes' do
+      it 'ignores the difference and returns an Array of data_entry_nodes' do
         data_entry_nodes = subject.perform
         expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
@@ -63,7 +62,7 @@ RSpec.describe ComputeDataEntryNodes do
       let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2', latitude: 40, longitude: -105) }
       let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', latitude: 40, longitude: -105) }
 
-      it 'returns a Struct having a title and data_entry_nodes with latitudes and longitudes' do
+      it 'returns an Array of data_entry_nodes with latitudes and longitudes' do
         data_entry_nodes = subject.perform
         expect(event_1_split_3).to be_same_location(event_2_split_2)
         expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
@@ -78,7 +77,7 @@ RSpec.describe ComputeDataEntryNodes do
       let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2', latitude: 40, longitude: -105) }
       let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', latitude: 40.0001, longitude: -105.0001) }
 
-      it 'returns a Struct having a title and data_entry_nodes with average latitudes and longitudes' do
+      it 'returns an Array of data_entry_nodes with average latitudes and longitudes' do
         data_entry_nodes = subject.perform
         expect(event_1_split_3).to be_same_location(event_2_split_2)
         expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
@@ -93,7 +92,7 @@ RSpec.describe ComputeDataEntryNodes do
       let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2', latitude: 40, longitude: -105) }
       let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', latitude: 40.1, longitude: -105.1) }
 
-      it 'returns an empty array' do
+      it 'returns an empty Array' do
         data_entry_nodes = subject.perform
         expect(event_1_split_3).to be_different_location(event_2_split_2)
         expect(data_entry_nodes).to eq([])

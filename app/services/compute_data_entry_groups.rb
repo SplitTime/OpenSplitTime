@@ -19,8 +19,9 @@ class ComputeDataEntryGroups
 
   def node_groups
     unpaired_nodes, paired_nodes = sub_split_matched_nodes.partition(&:one?)
-    distance_matched_nodes = pairer.pair(objects: unpaired_nodes.flatten, identical_attributes: :location, pairing_criteria: [{}, {}])
-    paired_nodes + distance_matched_nodes.map(&:compact)
+    location_eligible_nodes, singleton_nodes = unpaired_nodes.flatten.partition(&:location)
+    location_matched_nodes = pairer.pair(objects: location_eligible_nodes, identical_attributes: :location, pairing_criteria: [{}, {}])
+    paired_nodes + location_matched_nodes.map(&:compact) + singleton_nodes.map { |node| [node] }
   end
 
   def sub_split_matched_nodes

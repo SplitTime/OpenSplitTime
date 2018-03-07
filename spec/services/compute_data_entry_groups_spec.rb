@@ -61,5 +61,22 @@ RSpec.describe ComputeDataEntryGroups do
         expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start))
       end
     end
+
+    context 'when start and finish have no location' do
+      let(:event_1_split_1) { build_stubbed(:start_split, base_name: 'Start', latitude: nil, longitude: nil) }
+      let(:event_2_split_1) { build_stubbed(:start_split, base_name: 'Start', latitude: nil, longitude: nil) }
+      let(:event_1_split_4) { build_stubbed(:finish_split, base_name: 'Finish', latitude: nil, longitude: nil) }
+      let(:event_2_split_3) { build_stubbed(:finish_split, base_name: 'Finish', latitude: nil, longitude: nil) }
+
+      it 'returns a Struct having a title and data_entry_nodes with start and finish separated' do
+        data_entry_groups = subject.perform
+        expect(data_entry_groups.size).to eq(4)
+        expect(data_entry_groups.map(&:title)).to eq(['Start', 'Aid 1', 'Aid 2', 'Finish'])
+        expect(data_entry_groups.first.data_entry_nodes.size).to eq(1)
+        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(start))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start))
+      end
+    end
   end
 end

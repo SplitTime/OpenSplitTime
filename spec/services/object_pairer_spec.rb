@@ -71,5 +71,15 @@ RSpec.describe ObjectPairer do
         expect(subject.pair).to eq(expected)
       end
     end
+
+    context 'when all objects match both left and right pairing criteria' do
+      let(:objects) { [live_time_1, live_time_2, live_time_3, live_time_4] }
+      let(:pairing_criteria) { [{class: LiveTime}, {class: LiveTime}] }
+
+      it 'alternates objects to left and right' do
+        expected = [[live_time_1, live_time_2], [live_time_3, live_time_4]]
+        expect(subject.pair).to eq(expected)
+      end
+    end
   end
 end

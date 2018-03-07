@@ -19,12 +19,24 @@ class ObjectPairer
   attr_reader :objects, :identical_attributes, :pairing_criteria
 
   def left_right_groups
-    grouped_objects.map { |_, objects| {left_group: select_objects(objects, left_criteria),
-                                        right_group: select_objects(objects, right_criteria)} }
+    grouped_objects.map do |_, objects|
+      result = {left_group: [], right_group: []}
+      eligible = {left_group: select_objects(objects, left_criteria).to_set,
+                  right_group: select_objects(objects, right_criteria).to_set}
+      objects.each do |object|
+        groups = [:left_group, :right_group].sort_by { |group| result[group].size }
+        if eligible[groups.first].include?(object)
+          result[groups.first] << object
+        elsif eligible[groups.second].include?(object)
+          result[groups.second] << object
+        end
+      end
+      result
+    end
   end
 
   def grouped_objects
-    objects.group_by { |object| identical_attributes.map { |attribute| object.send(attribute) } }
+    objects.group_by_equality { |object| identical_attributes.map { |attribute| object.send(attribute) } }
   end
 
   def select_objects(objects, criteria)
@@ -44,4 +56,5 @@ class ObjectPairer
     padded_left_array = (left_shortage > 0) ? (left_array + [nil] * left_shortage) : left_array
     padded_left_array.zip(right_array)
   end
+
 end

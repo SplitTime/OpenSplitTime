@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ComputeDataEntryNodes do
   let(:distance_threshold) { ComputeDataEntryNodes::SPLIT_DISTANCE_THRESHOLD }
 
-  describe '.perform' do
+  describe '#perform' do
     subject { ComputeDataEntryNodes.new(event_group) }
 
     let(:event_group) { build_stubbed(:event_group, events: [event_1, event_2]) }
@@ -42,6 +42,8 @@ RSpec.describe ComputeDataEntryNodes do
         expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
+        expect(data_entry_nodes.first.event_split_ids).to eq({event_1.id => event_1_split_1.id, event_2.id => event_2_split_1.id})
+        expect(data_entry_nodes.first.event_aid_station_ids).to eq({event_1.id => event_1_aid_1.id, event_2.id => event_2_aid_1.id})
       end
     end
 

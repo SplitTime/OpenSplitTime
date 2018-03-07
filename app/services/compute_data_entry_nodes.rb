@@ -1,6 +1,4 @@
 class ComputeDataEntryNodes
-  SPLIT_DISTANCE_THRESHOLD = 100
-
   def self.perform(event_group)
     new(event_group).perform
   end
@@ -15,8 +13,7 @@ class ComputeDataEntryNodes
 
   private
 
-  attr_reader :event_group, :split_name
-  delegate :events, to: :event_group
+  attr_reader :event_group
 
   def splits_by_event(split_name)
     events.map { |event| [event.id, event_splits_by_name[event.id][split_name]] }.to_h.compact
@@ -56,9 +53,8 @@ class ComputeDataEntryNodes
 
   def incompatible_locations
     ordered_split_names.select do |split_name|
-      splits_by_event(split_name).values.select { |split| split.latitude && split.longitude }.combination(2).any? do |split_1, split_2|
-        split_1.distance_from(split_2) > SPLIT_DISTANCE_THRESHOLD
-      end
+      splits_by_event(split_name).values.select { |split| split.latitude && split.longitude }
+          .combination(2).any? { |split_1, split_2| split_1.different_location?(split_2) }
     end
   end
 

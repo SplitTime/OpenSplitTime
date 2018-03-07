@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ComputeDataEntryNodes do
-  let(:distance_threshold) { ComputeDataEntryNodes::SPLIT_DISTANCE_THRESHOLD }
+  let(:distance_threshold) { DataEntryNode::DISTANCE_THRESHOLD }
 
   describe '#perform' do
     subject { ComputeDataEntryNodes.new(event_group) }
@@ -65,6 +65,7 @@ RSpec.describe ComputeDataEntryNodes do
 
       it 'returns a Struct having a title and data_entry_nodes with latitudes and longitudes' do
         data_entry_nodes = subject.perform
+        expect(event_1_split_3).to be_same_location(event_2_split_2)
         expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
@@ -79,7 +80,7 @@ RSpec.describe ComputeDataEntryNodes do
 
       it 'returns a Struct having a title and data_entry_nodes with average latitudes and longitudes' do
         data_entry_nodes = subject.perform
-        expect(event_1_split_3.distance_from(event_2_split_2)).to be < distance_threshold
+        expect(event_1_split_3).to be_same_location(event_2_split_2)
         expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
@@ -94,7 +95,7 @@ RSpec.describe ComputeDataEntryNodes do
 
       it 'returns an empty array' do
         data_entry_nodes = subject.perform
-        expect(event_1_split_3.distance_from(event_2_split_2)).to be > distance_threshold
+        expect(event_1_split_3).to be_different_location(event_2_split_2)
         expect(data_entry_nodes).to eq([])
       end
     end

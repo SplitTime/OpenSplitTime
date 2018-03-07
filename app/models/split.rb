@@ -1,4 +1,5 @@
 class Split < ApplicationRecord
+  DISTANCE_THRESHOLD = 100 # Distance (in meters) below which split locations are deemed equivalent
 
   include Auditable
   include DistanceMeasurable

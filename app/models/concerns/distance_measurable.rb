@@ -13,6 +13,17 @@ module DistanceMeasurable
     RADIUS * c
   end
 
+  def same_location?(other)
+    raise NotImplementedError, 'Including class must implement DISTANCE_THRESHOLD' unless defined?(self.class::DISTANCE_THRESHOLD)
+    distance = distance_from(other)
+    distance && distance <= self.class::DISTANCE_THRESHOLD
+  end
+
+  def different_location?(other)
+    same_location = same_location?(other)
+    same_location.nil? ? nil : !same_location
+  end
+
   protected
 
   def latr

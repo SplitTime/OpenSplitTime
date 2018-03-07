@@ -1,9 +1,9 @@
 RSpec.shared_examples_for 'data_status_methods' do
-  let (:model) { described_class }
-  let (:model_name) { model.to_s.underscore.to_sym }
-  let (:resource_good) { create(model_name, data_status: :good) }
-  let (:resource_bad) { create(model_name, data_status: :bad) }
-  let (:resource_questionable) { create(model_name, data_status: :questionable) }
+  let(:model) { described_class }
+  let(:model_name) { model.to_s.underscore.to_sym }
+  let(:resource_good) { create(model_name, data_status: :good) }
+  let(:resource_bad) { create(model_name, data_status: :bad) }
+  let(:resource_questionable) { create(model_name, data_status: :questionable) }
 
   describe '.valid_status' do
     it 'returns good resources and does not return bad or questionable resources' do

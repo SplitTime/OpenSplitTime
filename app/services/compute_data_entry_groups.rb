@@ -1,5 +1,5 @@
 class ComputeDataEntryGroups
-  def self.perform(event_group, options)
+  def self.perform(event_group, options = {})
     new(event_group, options).perform
   end
 

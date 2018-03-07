@@ -3,10 +3,13 @@ require 'rails_helper'
 RSpec.describe Api::V1::EventGroupsController do
   let(:event_group) { create(:event_group) }
   let(:type) { 'event_groups' }
+  let(:stub_combined_split_attributes) { true }
 
   before do
-    allow(CombineEventGroupSplitAttributes)
-        .to receive(:perform).and_return(['EventGroup#combined_split_attributes is stubbed for testing'])
+    if stub_combined_split_attributes
+      allow(CombineEventGroupSplitAttributes)
+          .to receive(:perform).and_return(['EventGroup#combined_split_attributes is stubbed for testing'])
+    end
   end
 
 
@@ -102,6 +105,72 @@ RSpec.describe Api::V1::EventGroupsController do
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data']['id'].to_i).to eq(event_group.id)
           expect(response.body).to be_jsonapi_response_for(type)
+        end
+
+        context 'when combined_split_attributes is not stubbed' do
+          let(:stub_combined_split_attributes) { false }
+          let(:event_1) { create(:event, event_group: event_group, course: course_1) }
+          let(:event_2) { create(:event, event_group: event_group, course: course_2) }
+          let(:course_1) { create(:course) }
+          let(:course_2) { create(:course) }
+
+          let(:event_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+          let(:event_1_split_2) { create(:split, course: course_1, base_name: 'Aid 1', latitude: 41, longitude: -106) }
+          let(:event_1_split_3) { create(:split, course: course_1, base_name: 'Aid 2', latitude: 42, longitude: -107) }
+          let(:event_1_split_4) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 40, longitude: -105) }
+          let(:event_1_splits) { [event_1_split_1, event_1_split_2, event_1_split_3, event_1_split_4] }
+
+          let(:event_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+          let(:event_2_split_2) { create(:split, course: course_2, base_name: 'Aid 2', latitude: 42, longitude: -107) }
+          let(:event_2_split_3) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 40, longitude: -105) }
+          let(:event_2_splits) { [event_2_split_1, event_2_split_2, event_2_split_3] }
+
+          let(:event_1_id) { event_1.id.to_s }
+          let(:event_2_id) { event_2.id.to_s }
+
+          let(:expected) {
+            [{'title' => 'Start/Finish',
+              'entries' =>
+                  [{'eventSplitIds' => {event_2_id => event_2_split_1.id,
+                                        event_1_id => event_1_split_1.id},
+                    'subSplitKind' => 'in',
+                    'label' => 'Start'},
+                   {'eventSplitIds' => {event_2_id => event_2_split_3.id,
+                                        event_1_id => event_1_split_4.id},
+                    'subSplitKind' => 'in',
+                    'label' => 'Finish'}]},
+             {'title' => 'Aid 1',
+              'entries' =>
+                  [{'eventSplitIds' => {event_1_id => event_1_split_2.id},
+                    'subSplitKind' => 'in',
+                    'label' => 'Aid 1 In'},
+                   {'eventSplitIds' => {event_1_id => event_1_split_2.id},
+                    'subSplitKind' => 'out',
+                    'label' => 'Aid 1 Out'}]},
+             {'title' => 'Aid 2',
+              'entries' =>
+                  [{'eventSplitIds' => {event_2_id => event_2_split_2.id,
+                                        event_1_id => event_1_split_3.id},
+                    'subSplitKind' => 'in',
+                    'label' => 'Aid 2 In'},
+                   {'eventSplitIds' => {event_2_id => event_2_split_2.id,
+                                        event_1_id => event_1_split_3.id},
+                    'subSplitKind' => 'out',
+                    'label' => 'Aid 2 Out'}]}
+            ]
+          }
+
+          before do
+            event_1.splits << event_1_splits
+            event_2.splits << event_2_splits
+          end
+
+          it 'includes a combinedSplitAttributes key containing information mapping events to splits' do
+            make_request
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response['data']['attributes']['combinedSplitAttributes']).to eq(expected)
+            expect(response.body).to be_jsonapi_response_for(type)
+          end
         end
       end
 

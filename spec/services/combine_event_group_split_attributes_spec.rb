@@ -36,12 +36,17 @@ RSpec.describe CombineEventGroupSplitAttributes do
 
       it 'returns an array with matching split names grouped together' do
         expected = [{
-                        'title' => 'Start',
+                        'title' => 'Start/Finish',
                         'entries' => [
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_1.id, event_2.id => event_2_split_1.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Start'
+                            },
+                            {
+                                'event_split_ids' => {event_1.id => event_1_split_4.id, event_2.id => event_2_split_3.id},
+                                'sub_split_kind' => 'in',
+                                'label' => 'Finish'
                             }
                         ]
                     },
@@ -74,27 +79,9 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                 'label' => 'Aid 2 Out'
                             }
                         ]
-                    },
-                    {
-                        'title' => 'Finish',
-                        'entries' => [
-                            {
-                                'event_split_ids' => {event_1.id => event_1_split_4.id, event_2.id => event_2_split_3.id},
-                                'sub_split_kind' => 'in',
-                                'label' => 'Finish'
-                            }
-                        ]
                     }]
 
         expect(subject).to eq(expected)
-      end
-    end
-
-    context 'when splits with matching names do not have matching sub_splits' do
-      let(:event_group) { build_stubbed(:event_group, events: [event_1, event_2, event_3]) }
-
-      it 'raises an error' do
-        expect { subject }.to raise_error(/Splits with matching names must have matching sub_splits/)
       end
     end
   end

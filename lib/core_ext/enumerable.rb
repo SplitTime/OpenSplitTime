@@ -21,4 +21,14 @@ module Enumerable
       end
     end
   end
+
+  def group_by_equality(&block)
+    result = {}
+    each do |element|
+      proposed_key = block.call(element)
+      existing_key = result.keys.find { |key| key == proposed_key }
+      existing_key ? result[existing_key] << element : result[proposed_key] = [element]
+    end
+    result
+  end
 end

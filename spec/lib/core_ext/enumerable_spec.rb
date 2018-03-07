@@ -92,4 +92,17 @@ RSpec.describe Enumerable do
       end
     end
   end
+
+  describe '#group_by_equality' do
+    it 'groups elements of an Array based on equality (rather than hash) of the block evaluation' do
+      array = [1, 1.0, 2]
+      # Whereas array.group_by { |e| e } would result in {1=>[1], 1.0=>[1.0], 2=>[2]}
+      expect(array.group_by_equality { |e| e }).to eq({1=>[1, 1.0], 2=>[2]})
+    end
+
+    it 'functions as group_by when block evaluation is identical' do
+      array = [1, 1.0, 2]
+      expect(array.group_by_equality(&:integer?)).to eq({true => [1, 2], false => [1.0]})
+    end
+  end
 end

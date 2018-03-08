@@ -108,6 +108,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     3.times { wait_for_css }
     expect(page).to have_content('Create Splits')
     wait_for_ajax
+    3.times { wait_for_css }
 
     expect(Organization.count).to eq(1)
     expect(Course.count).to eq(1)

@@ -24,7 +24,8 @@ RSpec.describe CombineEventGroupSplitAttributes do
     end
 
 
-    context 'when the events in the group have start in the same location as finish' do
+    xcontext 'when the events in the group have start in the same location as finish' do
+      # Skipping until EventGroupSerializer is changed to allow grouping by location
       let(:event_group) { build_stubbed(:event_group, events: [event_1, event_2]) }
 
       it 'returns an array with matching split names grouped together' do

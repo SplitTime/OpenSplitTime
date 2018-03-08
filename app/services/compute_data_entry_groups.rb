@@ -7,6 +7,7 @@ class ComputeDataEntryGroups
     @event_group = event_group
     @data_entry_nodes = ComputeDataEntryNodes.perform(event_group)
     @pairer = options[:pairer] || ObjectPairer
+    @pair_by_location = options[:pair_by_location]
   end
 
   def perform
@@ -15,9 +16,10 @@ class ComputeDataEntryGroups
 
   private
 
-  attr_reader :event_group, :data_entry_nodes, :pairer
+  attr_reader :event_group, :data_entry_nodes, :pairer, :pair_by_location
 
   def node_groups
+    return sub_split_matched_nodes unless pair_by_location
     unpaired_nodes, paired_nodes = sub_split_matched_nodes.partition(&:one?)
     location_eligible_nodes, singleton_nodes = unpaired_nodes.flatten.partition(&:location)
     location_matched_nodes = pairer.pair(objects: location_eligible_nodes, identical_attributes: :location, pairing_criteria: [{}, {}])

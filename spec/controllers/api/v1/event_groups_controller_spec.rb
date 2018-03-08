@@ -129,16 +129,12 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:event_2_id) { event_2.id.to_s }
 
           let(:expected) {
-            [{'title' => 'Start/Finish',
+            [{'title' => 'Start',
               'entries' =>
                   [{'eventSplitIds' => {event_2_id => event_2_split_1.id,
                                         event_1_id => event_1_split_1.id},
                     'subSplitKind' => 'in',
-                    'label' => 'Start'},
-                   {'eventSplitIds' => {event_2_id => event_2_split_3.id,
-                                        event_1_id => event_1_split_4.id},
-                    'subSplitKind' => 'in',
-                    'label' => 'Finish'}]},
+                    'label' => 'Start'}]},
              {'title' => 'Aid 1',
               'entries' =>
                   [{'eventSplitIds' => {event_1_id => event_1_split_2.id},
@@ -156,7 +152,13 @@ RSpec.describe Api::V1::EventGroupsController do
                    {'eventSplitIds' => {event_2_id => event_2_split_2.id,
                                         event_1_id => event_1_split_3.id},
                     'subSplitKind' => 'out',
-                    'label' => 'Aid 2 Out'}]}
+                    'label' => 'Aid 2 Out'}]},
+             {'title' => 'Finish',
+              'entries' =>
+                  [{'eventSplitIds' => {event_2_id => event_2_split_3.id,
+                                        event_1_id => event_1_split_4.id},
+                    'subSplitKind' => 'in',
+                    'label' => 'Finish'}]}
             ]
           }
 

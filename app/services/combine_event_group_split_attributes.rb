@@ -1,13 +1,14 @@
 class CombineEventGroupSplitAttributes
 
   # The event_group should be loaded with includes(events: :splits)
-  def self.perform(event_group)
-    new(event_group).perform
+  def self.perform(event_group, options = {})
+    new(event_group, options).perform
   end
 
-  def initialize(event_group)
+  def initialize(event_group, options = {})
     @event_group = event_group
-    @data_entry_groups = ComputeDataEntryGroups.perform(event_group)
+    @pair_by_location = options[:pair_by_location]
+    @data_entry_groups = ComputeDataEntryGroups.perform(event_group, pair_by_location: pair_by_location)
   end
 
   def perform
@@ -16,7 +17,7 @@ class CombineEventGroupSplitAttributes
 
   private
 
-  attr_reader :event_group, :data_entry_groups
+  attr_reader :event_group, :pair_by_location, :data_entry_groups
 
   def entries_from_nodes(data_entry_nodes)
     data_entry_nodes.map { |node| node.to_h.slice(:event_split_ids, :sub_split_kind, :label) }

@@ -4,7 +4,8 @@ RSpec.describe ComputeDataEntryGroups do
   let(:distance_threshold) { Split::DISTANCE_THRESHOLD }
 
   describe '#perform' do
-    subject { ComputeDataEntryGroups.new(event_group) }
+    subject { ComputeDataEntryGroups.new(event_group, pair_by_location: pair_by_location) }
+    let(:pair_by_location) { true }
 
     let(:event_group) { build_stubbed(:event_group, events: [event_1, event_2]) }
     let(:event_1) { build_stubbed(:event, splits: event_1_splits, aid_stations: event_1_aid_stations) }
@@ -44,6 +45,20 @@ RSpec.describe ComputeDataEntryGroups do
         expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(start finish))
         expect(data_entry_groups.first.data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in))
         expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start Finish))
+      end
+    end
+
+    context 'when start and finish are at the same location but pair_by_location is false' do
+      let(:pair_by_location) { false }
+
+      it 'returns a Struct having a title and data_entry_nodes with start and finish separated' do
+        data_entry_groups = subject.perform
+        expect(data_entry_groups.size).to eq(4)
+        expect(data_entry_groups.map(&:title)).to eq(['Start', 'Aid 1', 'Aid 2', 'Finish'])
+        expect(data_entry_groups.first.data_entry_nodes.size).to eq(1)
+        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(start))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start))
       end
     end
 

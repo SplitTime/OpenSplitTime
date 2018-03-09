@@ -6,7 +6,6 @@ class EventGroupSerializer < BaseSerializer
   belongs_to :organization
 
   def combined_split_attributes
-    # Until API clients properly handle location-paired nodes, pair_by_location must be false
-    CombineEventGroupSplitAttributes.perform(object, pair_by_location: false)
+    CombineEventGroupSplitAttributes.perform(object, pair_by_location: true)
   end
 end

@@ -20,6 +20,6 @@ class CombineEventGroupSplitAttributes
   attr_reader :event_group, :pair_by_location, :data_entry_groups
 
   def entries_from_nodes(data_entry_nodes)
-    data_entry_nodes.map { |node| node.to_h.slice(:event_split_ids, :sub_split_kind, :label) }
+    data_entry_nodes.map { |node| node.to_h.slice(:event_split_ids, :sub_split_kind, :label, :split_name) }
   end
 end

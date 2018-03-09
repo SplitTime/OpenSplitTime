@@ -129,36 +129,40 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:event_2_id) { event_2.id.to_s }
 
           let(:expected) {
-            [{'title' => 'Start',
+            [{'title' => 'Start/Finish',
               'entries' =>
                   [{'eventSplitIds' => {event_2_id => event_2_split_1.id,
                                         event_1_id => event_1_split_1.id},
                     'subSplitKind' => 'in',
-                    'label' => 'Start'}]},
+                    'label' => 'Start',
+                    'splitName' => 'start'},
+                   {'eventSplitIds' => {event_2_id => event_2_split_3.id,
+                                        event_1_id => event_1_split_4.id},
+                    'subSplitKind' => 'in',
+                    'label' => 'Finish',
+                    'splitName' => 'finish'}]},
              {'title' => 'Aid 1',
               'entries' =>
                   [{'eventSplitIds' => {event_1_id => event_1_split_2.id},
                     'subSplitKind' => 'in',
-                    'label' => 'Aid 1 In'},
+                    'label' => 'Aid 1 In',
+                    'splitName' => 'aid-1'},
                    {'eventSplitIds' => {event_1_id => event_1_split_2.id},
                     'subSplitKind' => 'out',
-                    'label' => 'Aid 1 Out'}]},
+                    'label' => 'Aid 1 Out',
+                    'splitName' => 'aid-1'}]},
              {'title' => 'Aid 2',
               'entries' =>
                   [{'eventSplitIds' => {event_2_id => event_2_split_2.id,
                                         event_1_id => event_1_split_3.id},
                     'subSplitKind' => 'in',
-                    'label' => 'Aid 2 In'},
+                    'label' => 'Aid 2 In',
+                    'splitName' => 'aid-2'},
                    {'eventSplitIds' => {event_2_id => event_2_split_2.id,
                                         event_1_id => event_1_split_3.id},
                     'subSplitKind' => 'out',
-                    'label' => 'Aid 2 Out'}]},
-             {'title' => 'Finish',
-              'entries' =>
-                  [{'eventSplitIds' => {event_2_id => event_2_split_3.id,
-                                        event_1_id => event_1_split_4.id},
-                    'subSplitKind' => 'in',
-                    'label' => 'Finish'}]}
+                    'label' => 'Aid 2 Out',
+                    'splitName' => 'aid-2'}]}
             ]
           }
 

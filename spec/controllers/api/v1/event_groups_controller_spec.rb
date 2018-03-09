@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::EventGroupsController do
-  let(:event_group) { create(:event_group) }
+  let(:event_group) { create(:event_group, data_entry_grouping_strategy: 'location_grouped') }
   let(:type) { 'event_groups' }
   let(:stub_combined_split_attributes) { true }
 

@@ -12,11 +12,11 @@ class Api::V1::EventGroupsController < ApiController
 
     # This endpoint searches for un-pulled live_times belonging to the event_group, selects a batch,
     # marks them as pulled, combines them into live_time_rows, and returns them
-    # to the live entry page.
+    # to the group live entry page.
 
     # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
     # If params[:force_pull] == true, live_times without a matching split_time will be pulled
-    # even if they show as already having been pulled.
+    # even if they are marked as already having been pulled.
 
     authorize @resource
 
@@ -26,7 +26,10 @@ class Api::V1::EventGroupsController < ApiController
       live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
 
       scoped_live_times = force_pull ? @resource.live_times.unmatched : @resource.live_times.unconsidered
-      selected_live_times = scoped_live_times.order(:absolute_time, :event_id, :bib_number, :split_id, :bitkey).limit(live_times_limit)
+
+      # Order should be by absolute time, and where absolute time is nil, then by entered time.
+      # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
+      selected_live_times = scoped_live_times.order(:absolute_time, :entered_time).limit(live_times_limit)
 
       grouped_live_times = selected_live_times.group_by(&:event_id)
 

@@ -42,7 +42,18 @@
           </div>
         </div>
 
-        <div class="form-group">
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :data_entry_grouping_strategy %>
+        </div>
+        <div class="col-sm-8">
+          <%= f.select(:data_entry_grouping_strategy,
+                       EventGroup.data_entry_grouping_strategies.keys.map { |strategy| [strategy.titleize, strategy] },
+                       {class: "dropdown-select-field"}) %>
+        </div>
+      </div>
+
+      <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@event_group.new_record? ? "Create Event Group" : "Update Event Group", class: 'btn btn-primary btn-large') %>
           </div>

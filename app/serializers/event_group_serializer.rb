@@ -6,6 +6,10 @@ class EventGroupSerializer < BaseSerializer
   belongs_to :organization
 
   def combined_split_attributes
-    CombineEventGroupSplitAttributes.perform(object, pair_by_location: true)
+    CombineEventGroupSplitAttributes.perform(object, pair_by_location: pair_by_location?)
+  end
+
+  def pair_by_location?
+    object.location_grouped?
   end
 end

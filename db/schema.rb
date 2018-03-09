@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221005830) do
+ActiveRecord::Schema.define(version: 20180309161741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20180221005830) do
     t.integer "created_by"
     t.integer "updated_by"
     t.string "slug"
+    t.integer "data_entry_grouping_strategy", default: 0
     t.index ["organization_id"], name: "index_event_groups_on_organization_id"
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true
   end
@@ -186,7 +187,7 @@ ActiveRecord::Schema.define(version: 20180221005830) do
   end
 
   create_table "partners", id: :serial, force: :cascade do |t|
-    t.integer "event_id", null: false
+    t.integer "event_id"
     t.string "banner_link"
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false

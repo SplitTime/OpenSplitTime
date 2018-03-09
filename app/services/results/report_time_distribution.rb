@@ -9,19 +9,15 @@ module Results
     end
 
     def perform
-      split_times.map(&:day_and_time).group_by { |datetime| [datetime.to_date, datetime.hour] }.transform_values(&:size)
+      split_times.map(&:day_and_time).group_by { |datetime| datetime.strftime('%Y-%m-%d %H')+ ':00' }.transform_values(&:size).sort
     end
 
     private
 
     attr_reader :event_group
 
-    def efforts
-      Effort.includes(event: :event_group).where(event: event_group.events)
-    end
-
     def split_times
-      SplitTime.includes(effort: {event: :event_group}).where(effort: efforts)
+      SplitTime.includes(effort: {event: :event_group}).where(effort: {event: {event_groups: {id: event_group}}})
     end
   end
 end

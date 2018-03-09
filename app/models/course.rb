@@ -46,7 +46,7 @@ class Course < ApplicationRecord
     return @track_points if defined?(@track_points)
     file = Paperclip.io_adapters.for(gpx).read
     gpx_file = GPX::GPXFile.new(gpx_data: file)
-    points = gpx_file.tracks.map(&:points).flatten
+    points = gpx_file.tracks.flat_map(&:points)
     @track_points = points.map { |track_point| {lat: track_point.lat, lon: track_point.lon} }
   end
 

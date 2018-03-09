@@ -283,7 +283,7 @@ RSpec.describe Api::V1::StagingController do
     end
 
     def validate_errors(parsed_response, expected_errors)
-      message_array = parsed_response['errors'].map { |error| error['detail']['messages'] }.flatten
+      message_array = parsed_response['errors'].flat_map { |error| error['detail']['messages'] }
 
       expected_errors.each do |error_text|
         expect(message_array).to include(error_text)

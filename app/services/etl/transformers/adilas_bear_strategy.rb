@@ -37,7 +37,7 @@ module ETL::Transformers
     end
 
     def sort_and_fill_times
-      proto_record[:times_of_day] = (0..13).map { |i| proto_record[:times][i] || ['...', '...'] }.flatten
+      proto_record[:times_of_day] = (0..13).flat_map { |i| proto_record[:times][i] || %w(... ...) }
     end
 
     def parse_times

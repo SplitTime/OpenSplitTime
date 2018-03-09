@@ -28,7 +28,7 @@ module Interactors
     attr_reader :efforts, :times_container, :errors
 
     def changed_resources
-      @changed_resources ||= status_responses.map(&:resources).flatten
+      @changed_resources ||= status_responses.flat_map(&:resources)
     end
 
     def changed_efforts

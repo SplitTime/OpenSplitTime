@@ -4,9 +4,7 @@ FactoryBot.define do
 
     # Samoa causes Capybara to throw ambiguous match errors, so remove it before picking
 
-    home_time_zone do
-      ActiveSupport::TimeZone.all.reject { |timezone| timezone.name == 'Samoa' }.shuffle.first.name
-    end
+    home_time_zone { ActiveSupport::TimeZone.all.reject { |timezone| timezone.name == 'Samoa' }.shuffle.first.name }
     start_time { FFaker::Time.datetime }
     laps_required 1
     course
@@ -51,7 +49,7 @@ FactoryBot.define do
       after(:stub) do |event, evaluator|
         course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count)
         splits = course.splits.to_a
-        sub_splits = splits.map(&:sub_splits).flatten
+        sub_splits = splits.flat_map(&:sub_splits)
         event.laps_required = evaluator.laps_required
         laps_generated = event.laps_required.zero? ? evaluator.unlimited_laps_generated : event.laps_required
         time_points = sub_splits.each_with_iteration.first(sub_splits.size * laps_generated)
@@ -66,7 +64,7 @@ FactoryBot.define do
           assign_fg_stub_relations(effort, {split_times: split_times, event: event})
         end
 
-        all_split_times = efforts.map(&:split_times).flatten
+        all_split_times = efforts.flat_map(&:split_times)
         indexed_split_times = all_split_times.group_by(&:split_id)
         splits.each do |split|
           split_times = indexed_split_times[split.id]

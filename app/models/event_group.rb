@@ -26,7 +26,7 @@ class EventGroup < ApplicationRecord
   end
 
   def effort_count
-    events.map(&:efforts).flatten.size
+    events.flat_map(&:efforts).size
   end
 
   def to_s

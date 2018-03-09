@@ -6,7 +6,7 @@ module SplitMethods
   end
 
   def sub_splits
-    ordered_splits.map(&:sub_splits).flatten
+    ordered_splits.flat_map(&:sub_splits)
   end
 
   def ordered_splits_without_start

@@ -36,8 +36,8 @@ class SearchStringParser
   # 'new mexico' and matching_geo_terms includes ['mexico' and 'new mexico'], 'new mexico' needs
   # to be removed first or the remainder will contain 'new'. The final `.sort_by` ensures proper order.
   def matching_geo_terms
-    (matching_countries + matching_states).map { |region| [region.name.downcase, region.code.downcase] }
-        .flatten.sort_by { |string| -string.split.size }
+    (matching_countries + matching_states).flat_map { |region| [region.name.downcase, region.code.downcase] }
+        .sort_by { |string| -string.split.size }
   end
 
   def matching_countries

@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(version: 20180309161741) do
   end
 
   create_table "partners", id: :serial, force: :cascade do |t|
-    t.integer "event_id"
+    t.integer "event_id", null: false
     t.string "banner_link"
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false

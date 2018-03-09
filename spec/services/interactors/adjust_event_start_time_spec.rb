@@ -9,7 +9,7 @@ RSpec.describe Interactors::AdjustEventStartTime do
   let(:new_start_time) { (event.start_time + adjustment).to_s }
 
   before do
-    time_points = event.required_lap_splits.map(&:time_points).flatten
+    time_points = event.required_lap_splits.flat_map(&:time_points)
     SplitTime.create!(effort: efforts.first, time_point: time_points.first, time_from_start: 0)
     SplitTime.create!(effort: efforts.first, time_point: time_points.second, time_from_start: 1000)
     SplitTime.create!(effort: efforts.first, time_point: time_points.third, time_from_start: 2000)

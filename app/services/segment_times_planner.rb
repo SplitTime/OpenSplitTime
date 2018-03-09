@@ -55,9 +55,9 @@ class SegmentTimesPlanner
   end
 
   def time_points
-    lap_splits.map(&:time_points).flatten
-        .select { |tp| SplitTime.where(lap: tp.lap, split_id: tp.split_id, bitkey: tp.bitkey)
-                           .size > SegmentTimeCalculator::STATS_CALC_THRESHOLD}
+    lap_splits.flat_map(&:time_points).select do |tp|
+      SplitTime.where(lap: tp.lap, split_id: tp.split_id, bitkey: tp.bitkey).size > SegmentTimeCalculator::STATS_CALC_THRESHOLD
+    end
   end
 
   def splits

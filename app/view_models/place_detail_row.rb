@@ -33,8 +33,8 @@ class PlaceDetailRow
     split_times.last&.time_point
   end
 
-  def encountered_ids # Preserve multiples to enable frequency testing
-    (passed_segment_ids + passed_by_segment_ids + together_in_aid_ids).flatten
+  def encountered_ids # Preserve duplicates to ensure accurate frequency testing
+    (passed_segment_ids + passed_by_segment_ids + together_in_aid_ids)
   end
 
   CATEGORIES.each do |category|

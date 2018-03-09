@@ -48,7 +48,7 @@ module SpreadHelper
   end
 
   def spread_individual_split_names
-    split_names = @spread_display.split_header_data.map { |header_data| individual_headers(header_data) }.flatten
+    split_names = @spread_display.split_header_data.flat_map { |header_data| individual_headers(header_data) }
     split_names[0] = 'Start Offset' if @spread_display.display_style == 'elapsed'
     split_names
   end
@@ -63,7 +63,7 @@ module SpreadHelper
   end
 
   def time_row_individual_times(effort_times_row)
-    times = effort_times_row.time_clusters.map { |tc| time_cluster_export_data(tc, @spread_display.display_style) }.flatten
+    times = effort_times_row.time_clusters.flat_map { |tc| time_cluster_export_data(tc, @spread_display.display_style) }
     times[0] = time_format_hhmmss(effort_times_row.start_offset) if @spread_display.display_style == 'elapsed'
     times
   end

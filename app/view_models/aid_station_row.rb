@@ -71,7 +71,7 @@ class AidStationRow
   end
 
   def row_missed_lap_keys
-    @row_recorded_later_lap_keys ||= efforts_started.map { |effort| effort_lap_keys_missed(effort) }.flatten
+    @row_recorded_later_lap_keys ||= efforts_started.flat_map { |effort| effort_lap_keys_missed(effort) }
   end
 
   def row_in_aid_lap_keys
@@ -80,7 +80,7 @@ class AidStationRow
   end
 
   def row_expected_lap_keys
-    efforts_in_progress.map { |effort| effort_lap_key_expected(effort) }.flatten
+    efforts_in_progress.flat_map { |effort| effort_lap_key_expected(effort) }
   end
 
   def effort_lap_key_expected(effort) # Returns a single [effort_lap_key] or []

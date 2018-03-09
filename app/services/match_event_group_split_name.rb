@@ -41,7 +41,7 @@ class MatchEventGroupSplitName
   end
 
   def aid_stations_by_split_id
-    @aid_stations_by_split_id ||= events.map(&:aid_stations).flatten.index_by(&:split_id)
+    @aid_stations_by_split_id ||= events.flat_map(&:aid_stations).index_by(&:split_id)
   end
 
   def validate_compatible_splits

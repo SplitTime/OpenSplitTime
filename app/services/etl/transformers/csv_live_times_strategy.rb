@@ -13,7 +13,7 @@ module ETL::Transformers
 
     def transform
       return if errors.present?
-      self.proto_records = parsed_structs.map { |struct| proto_records_from_struct(struct) }.flatten
+      self.proto_records = parsed_structs.flat_map { |struct| proto_records_from_struct(struct) }
       proto_records.each do |proto_record|
         proto_record.record_type = :live_time
         proto_record.underscore_keys!

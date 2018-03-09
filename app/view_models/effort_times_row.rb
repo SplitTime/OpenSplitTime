@@ -73,7 +73,7 @@ class EffortTimesRow
 
   def last_split_time
     @last_split_time ||=
-        lap_splits.map(&:time_points).flatten.map { |time_point| indexed_split_times[time_point] }.compact.last
+        lap_splits.flat_map(&:time_points).map { |time_point| indexed_split_times[time_point] }.compact.last
   end
 
   def lap_split_keys

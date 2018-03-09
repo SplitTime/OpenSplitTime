@@ -160,7 +160,7 @@ class LiveEffortData
   end
 
   def effort_time_points
-    @effort_time_points ||= effort_lap_splits.map(&:time_points).flatten
+    @effort_time_points ||= effort_lap_splits.flat_map(&:time_points)
   end
 
   # Temporarily change good split_times to confirmed; this optimizes #create_split_times

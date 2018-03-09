@@ -36,8 +36,8 @@ class EventLiveTimePairer
   end
 
   def split_ids
-    @split_ids ||= split_pairs.map { |split_pair| [split_pair.first[:split_id], split_pair.second[:split_id]] }
-                       .flatten.compact.to_set
+    @split_ids ||= split_pairs.flat_map { |split_pair| [split_pair.first[:split_id], split_pair.second[:split_id]] }
+                       .compact.to_set
   end
 
   def validate_setup

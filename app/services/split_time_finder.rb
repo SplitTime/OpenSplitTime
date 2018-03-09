@@ -55,7 +55,7 @@ class SplitTimeFinder
   end
 
   def ordered_time_points
-    @ordered_time_points ||= lap_splits.map(&:time_points).flatten
+    @ordered_time_points ||= lap_splits.flat_map(&:time_points)
   end
 
   def indexed_split_times

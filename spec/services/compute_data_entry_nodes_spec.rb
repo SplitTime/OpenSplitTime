@@ -99,5 +99,27 @@ RSpec.describe ComputeDataEntryNodes do
         expect(data_entry_nodes).to eq([])
       end
     end
+
+    context 'when splits have matching names with different capitalization' do
+      let(:event_2_split_2) { build_stubbed(:split, base_name: 'AID 2', distance_from_start: 2000) }
+
+      it 'returns an Array of data_entry_nodes with average latitudes and longitudes' do
+        data_entry_nodes = subject.perform
+        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
+        expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
+      end
+    end
+
+    context 'when splits have matching names with different character separators' do
+      let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid-2', distance_from_start: 2000) }
+
+      it 'returns an Array of data_entry_nodes with average latitudes and longitudes' do
+        data_entry_nodes = subject.perform
+        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
+        expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
+      end
+    end
   end
 end

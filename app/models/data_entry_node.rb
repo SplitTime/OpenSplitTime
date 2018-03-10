@@ -9,14 +9,7 @@ class DataEntryNode
 
   def initialize(args)
     ArgsValidator.validate(params: args, exclusive: NODE_ATTRIBUTES)
-    @split_name = args[:split_name]
-    @sub_split_kind = args[:sub_split_kind]
-    @label = args[:label]
-    @latitude = args[:latitude]
-    @longitude = args[:longitude]
-    @min_distance_from_start = args[:min_distance_from_start]
-    @event_split_ids = args[:event_split_ids]
-    @event_aid_station_ids = args[:event_aid_station_ids]
+    NODE_ATTRIBUTES.each { |attribute| instance_variable_set("@#{attribute}", args[attribute])}
   end
 
   def to_h

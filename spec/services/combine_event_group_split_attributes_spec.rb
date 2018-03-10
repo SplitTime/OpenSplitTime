@@ -39,14 +39,16 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_1.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Start',
-                                'split_name' => 'start'
+                                'split_name' => 'start',
+                                'display_split_name' => 'Start'
                             },
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_4.id, 
                                                       event_2.id => event_2_split_3.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Finish',
-                                'split_name' => 'finish'
+                                'split_name' => 'finish',
+                                'display_split_name' => 'Finish'
                             }
                         ]
                     },
@@ -57,13 +59,15 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                 'event_split_ids' => {event_1.id => event_1_split_2.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Aid 1 In',
-                                'split_name' => 'aid-1'
+                                'split_name' => 'aid-1',
+                                'display_split_name' => 'Aid 1'
                             },
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_2.id},
                                 'sub_split_kind' => 'out',
                                 'label' => 'Aid 1 Out',
-                                'split_name' => 'aid-1'
+                                'split_name' => 'aid-1',
+                                'display_split_name' => 'Aid 1'
                             }
                         ]
                     },
@@ -75,14 +79,16 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_2.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Aid 2 In',
-                                'split_name' => 'aid-2'
+                                'split_name' => 'aid-2',
+                                'display_split_name' => 'Aid 2'
                             },
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_3.id, 
                                                       event_2.id => event_2_split_2.id},
                                 'sub_split_kind' => 'out',
                                 'label' => 'Aid 2 Out',
-                                'split_name' => 'aid-2'
+                                'split_name' => 'aid-2',
+                                'display_split_name' => 'Aid 2'
                             }
                         ]
                     }]
@@ -104,7 +110,8 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_1.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Start',
-                                'split_name' => 'start'
+                                'split_name' => 'start',
+                                'display_split_name' => 'Start'
                             }
                         ]
                     },
@@ -115,13 +122,15 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                 'event_split_ids' => {event_1.id => event_1_split_2.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Aid 1 In',
-                                'split_name' => 'aid-1'
+                                'split_name' => 'aid-1',
+                                'display_split_name' => 'Aid 1'
                             },
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_2.id},
                                 'sub_split_kind' => 'out',
                                 'label' => 'Aid 1 Out',
-                                'split_name' => 'aid-1'
+                                'split_name' => 'aid-1',
+                                'display_split_name' => 'Aid 1'
                             }
                         ]
                     },
@@ -133,14 +142,16 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_2.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Aid 2 In',
-                                'split_name' => 'aid-2'
+                                'split_name' => 'aid-2',
+                                'display_split_name' => 'Aid 2'
                             },
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_3.id,
                                                       event_2.id => event_2_split_2.id},
                                 'sub_split_kind' => 'out',
                                 'label' => 'Aid 2 Out',
-                                'split_name' => 'aid-2'
+                                'split_name' => 'aid-2',
+                                'display_split_name' => 'Aid 2'
                             }
                         ]
                     },
@@ -152,7 +163,8 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_3.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Finish',
-                                'split_name' => 'finish'
+                                'split_name' => 'finish',
+                                'display_split_name' => 'Finish'
                             }
                         ]
                     }]
@@ -175,7 +187,8 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_1.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Start',
-                                'split_name' => 'start'
+                                'split_name' => 'start',
+                                'display_split_name' => 'Start'
                             }
                         ]
                     },
@@ -186,13 +199,15 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                 'event_split_ids' => {event_1.id => event_1_split_2.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Aid 1 In',
-                                'split_name' => 'aid-1'
+                                'split_name' => 'aid-1',
+                                'display_split_name' => 'Aid 1'
                             },
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_2.id},
                                 'sub_split_kind' => 'out',
                                 'label' => 'Aid 1 Out',
-                                'split_name' => 'aid-1'
+                                'split_name' => 'aid-1',
+                                'display_split_name' => 'Aid 1'
                             }
                         ]
                     },
@@ -204,14 +219,16 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_2.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Aid 2 In',
-                                'split_name' => 'aid-2'
+                                'split_name' => 'aid-2',
+                                'display_split_name' => 'Aid 2'
                             },
                             {
                                 'event_split_ids' => {event_1.id => event_1_split_3.id, 
                                                       event_2.id => event_2_split_2.id},
                                 'sub_split_kind' => 'out',
                                 'label' => 'Aid 2 Out',
-                                'split_name' => 'aid-2'
+                                'split_name' => 'aid-2',
+                                'display_split_name' => 'Aid 2'
                             }
                         ]
                     },
@@ -223,7 +240,8 @@ RSpec.describe CombineEventGroupSplitAttributes do
                                                       event_2.id => event_2_split_3.id},
                                 'sub_split_kind' => 'in',
                                 'label' => 'Finish',
-                                'split_name' => 'finish'
+                                'split_name' => 'finish',
+                                'display_split_name' => 'Finish'
                             }
                         ]
                     }]

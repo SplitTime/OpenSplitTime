@@ -24,7 +24,7 @@ class ComputeDataEntryNodes
   end
 
   def ordered_split_names
-    @ordered_split_names ||= events.map { |event| event.ordered_splits.map { |split| split.base_name.parameterize } }.reduce(:|)
+    @ordered_split_names ||= events.map { |event| event.ordered_splits.map(&:parameterized_base_name) }.reduce(:|)
   end
 
   def nodes_for(split_name)
@@ -46,7 +46,7 @@ class ComputeDataEntryNodes
 
   def event_splits_by_name
     @event_splits_by_name ||= events.map do |event|
-      [event.id, event.ordered_splits.index_by { |split| split.base_name.parameterize }]
+      [event.id, event.ordered_splits.index_by(&:parameterized_base_name)]
     end.to_h
   end
 

@@ -67,6 +67,30 @@ RSpec.describe Split, kind: :model do
       expect(split_2.errors[:base_name]).to include('must be unique for a course')
     end
 
+    it 'ignores case when validating uniqueness of names within the same course' do
+      split_1 = create(:split, course: persisted_course)
+      split_2 = build_stubbed(:split, course: persisted_course, base_name: split_1.base_name.upcase)
+      expect(split_1.base_name).not_to eq(split_2.base_name)
+      expect(split_2).not_to be_valid
+      expect(split_2.errors[:base_name]).to include('must be unique for a course')
+    end
+
+    it 'ignores dash separators when validating uniqueness of names within the same course' do
+      split_1 = create(:split, course: persisted_course)
+      split_2 = build_stubbed(:split, course: persisted_course, base_name: split_1.base_name.split.join('-'))
+      expect(split_1.base_name).not_to eq(split_2.base_name)
+      expect(split_2).not_to be_valid
+      expect(split_2.errors[:base_name]).to include('must be unique for a course')
+    end
+
+    it 'ignores extra spaces when validating uniqueness of names within the same course' do
+      split_1 = create(:split, course: persisted_course)
+      split_2 = build_stubbed(:split, course: persisted_course, base_name: split_1.base_name.split.join('  '))
+      expect(split_1.base_name).not_to eq(split_2.base_name)
+      expect(split_2).not_to be_valid
+      expect(split_2.errors[:base_name]).to include('must be unique for a course')
+    end
+
     it 'allows duplicate names among different courses' do
       split_1 = create(:split, course: persisted_course)
       split_2 = build_stubbed(:split, course: course2, base_name: split_1.base_name)
@@ -394,6 +418,14 @@ RSpec.describe Split, kind: :model do
           expect(split.live_entry_attributes).to eq(expected)
         end
       end
+    end
+  end
+
+  describe '#parameterized_base_name' do
+    let(:split) { build_stubbed(:split, base_name: 'Aid Station 1') }
+
+    it 'returns a parameterized version of the base_name' do
+      expect(split.parameterized_base_name).to eq('aid-station-1')
     end
   end
 end

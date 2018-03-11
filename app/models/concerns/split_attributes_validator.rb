@@ -1,6 +1,7 @@
 class SplitAttributesValidator < ActiveModel::Validator
   def validate(split)
     @split = split
+    validate_base_name
     validate_vert
     validate_distance
     validate_location
@@ -10,6 +11,16 @@ class SplitAttributesValidator < ActiveModel::Validator
   private
 
   attr_reader :split
+
+  def validate_base_name
+    course_splits = Split.where(course: split.course).where.not(id: split)
+    if course_splits.present?
+      existing_split_names = course_splits.map(&:parameterized_base_name).to_set
+      if existing_split_names.include?(split.parameterized_base_name)
+        split.errors.add(:base_name, 'must be unique for a course')
+      end
+    end
+  end
 
   def validate_vert
     if split.start?
@@ -36,8 +47,7 @@ class SplitAttributesValidator < ActiveModel::Validator
   end
 
   def validate_order
-    finish_split = split.course&.finish_split
-    finish_split_distance = finish_split&.distance_from_start
+    finish_split_distance = split.course&.finish_split&.distance_from_start
     if split.distance_from_start && finish_split_distance && (split.distance_from_start >= finish_split_distance)
       split.errors.add(:distance_from_start, 'must be less than the finish split distance_from_start')
     end

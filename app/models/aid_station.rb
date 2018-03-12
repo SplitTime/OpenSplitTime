@@ -8,19 +8,13 @@ class AidStation < ApplicationRecord
   validates_uniqueness_of :split_id, scope: :event_id,
                           message: 'only one of any given split permitted within an event'
   validates_presence_of :event_id, :split_id
-  validate :course_is_consistent
+  validates_with AidStationAttributesValidator
 
   attr_accessor :efforts_dropped_at_station, :efforts_in_aid, :efforts_recorded_out,
                 :efforts_passed_without_record, :efforts_expected
   delegate :course, :distance_from_start, to: :split
 
   scope :ordered, -> { includes(:split).order('splits.distance_from_start') }
-
-  def course_is_consistent
-    if event && split && event.course_id != split.course_id
-      errors.add(:event_id, "event's course is not the same as split's course")
-    end
-  end
 
   def to_s
     "#{event.slug} at #{split.slug}"

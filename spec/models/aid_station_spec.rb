@@ -58,6 +58,41 @@ RSpec.describe AidStation, type: :model do
         expect(aid_station.errors.full_messages.first).to include('only one of any given split permitted within an event')
       end
     end
+
+    context 'for event_group split location validations' do
+      let(:event_1) { create(:event, course: course_1, event_group: event_group) }
+      let(:event_2) { create(:event, course: course_2, event_group: event_group) }
+      let(:event_group) { create(:event_group) }
+      let(:course_1) { create(:course) }
+      let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_2) { create(:course) }
+      let(:course_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+      before do
+        event_1.splits << course_1_split_1
+        event_1.splits << course_1_split_2
+        event_2.splits << course_2_split_1
+      end
+
+      context 'when an aid_station is added and all splits remain compatible within the event_group' do
+        let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
+
+        it 'is invalid' do
+          aid_station = create(:aid_station, event: event_2, split: course_2_split_2)
+          expect(aid_station).to be_valid
+        end
+      end
+
+      context 'when an aid_station is added resulting in an incompatible split within the event_group' do
+        let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 41, longitude: -106) }
+
+        it 'is invalid' do
+          aid_station = create(:aid_station, event: event_2, split: course_2_split_2)
+          expect(aid_station).not_to be_valid
+          expect(aid_station.errors.full_messages).to include(/Split Finish is incompatible with similarly named splits within event group/)
+        end
+      end
+    end
   end
 
   describe '#course' do

@@ -90,6 +90,60 @@ RSpec.describe Event, type: :model do
       expect(event).not_to be_valid
       expect(event.errors[:name]).to include('has already been taken')
     end
+
+    context 'when bib numbers are duplicated within the same event_group' do
+      let!(:event_1) { create(:event) }
+      let!(:event_2) { create(:event, event_group: event_group) }
+      let(:event_group) { create(:event_group) }
+      let!(:event_1_effort_1) { create(:effort, event: event_1, bib_number: 101) }
+      let!(:event_1_effort_2) { create(:effort, event: event_1, bib_number: 103) }
+      let!(:event_2_effort_1) { create(:effort, event: event_2, bib_number: 101) }
+      let!(:event_2_effort_2) { create(:effort, event: event_2, bib_number: 102) }
+
+      it 'is invalid' do
+        expect(event_1).to be_valid
+        event_1.update(event_group: event_group)
+        expect(event_1).not_to be_valid
+        expect(event_1.errors.full_messages).to include("Bib number 101 is duplicated within the event group")
+      end
+    end
+
+    context 'for split location validations' do
+      let(:event_1) { create(:event, course: course_1) }
+      let(:event_2) { create(:event, course: course_2, event_group: event_group) }
+      let(:event_group) { create(:event_group) }
+      let(:course_1) { create(:course) }
+      let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_2) { create(:course) }
+      let(:course_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
+      before do
+        event_1.splits << course_1_split_1
+        event_1.splits << course_1_split_2
+        event_2.splits << course_2_split_1
+        event_2.splits << course_2_split_2
+      end
+
+      context 'when split names are duplicated with matching locations within the same event_group' do
+        it 'is valid' do
+          expect(event_1).to be_valid
+          event_1.update(event_group: event_group)
+          expect(event_1).to be_valid
+        end
+      end
+
+      context 'when split names are duplicated with non-matching locations within the same event_group' do
+        let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 41, longitude: -106) }
+
+        it 'is invalid' do
+          expect(event_1).to be_valid
+          event_1.update(event_group: event_group)
+          expect(event_1).not_to be_valid
+          expect(event_1.errors.full_messages).to include(/Location Start is incompatible within the event group/)
+        end
+      end
+    end
   end
 
   describe 'methods that produce lap_splits and time_points' do
@@ -453,9 +507,9 @@ RSpec.describe Event, type: :model do
 
     describe '#sub_splits' do
       it 'returns an array of ordered sub_splits' do
-        expect(event.sub_splits).to eq([{start_split.id => in_bitkey}, 
-                                        {intermediate_split_1.id => in_bitkey}, {intermediate_split_1.id => out_bitkey}, 
-                                        {intermediate_split_2.id => in_bitkey}, {intermediate_split_2.id => out_bitkey}, 
+        expect(event.sub_splits).to eq([{start_split.id => in_bitkey},
+                                        {intermediate_split_1.id => in_bitkey}, {intermediate_split_1.id => out_bitkey},
+                                        {intermediate_split_2.id => in_bitkey}, {intermediate_split_2.id => out_bitkey},
                                         {intermediate_split_3.id => in_bitkey}, {intermediate_split_3.id => out_bitkey},
                                         {finish_split.id => in_bitkey}])
       end

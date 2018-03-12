@@ -25,6 +25,7 @@ class Event < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false
   validate :home_time_zone_exists
   validate :course_is_consistent
+  validates_with GroupedEventValidator
 
   after_destroy :destroy_orphaned_event_group
 

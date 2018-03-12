@@ -7,6 +7,7 @@ class ComputeDataEntryNodes
 
   def initialize(event_group)
     @event_group = event_group
+    @analyzer = EventGroupSplitAnalyzer.new(event_group)
   end
 
   def perform
@@ -15,18 +16,15 @@ class ComputeDataEntryNodes
 
   private
 
-  attr_reader :event_group
-
-  def splits_by_event(split_name)
-    events.map { |event| [event.id, event_splits_by_name[event.id][split_name]] }.to_h.compact
-  end
+  attr_reader :event_group, :analyzer
+  delegate :events, :incompatible_locations, :ordered_split_names, :splits_by_event, to: :analyzer
 
   def aid_stations_by_event(split_name)
     splits_by_event(split_name).transform_values { |split| aid_stations_by_split_id[split.id] }
   end
 
-  def ordered_split_names
-    @ordered_split_names ||= events.map { |event| event.ordered_splits.map(&:parameterized_base_name) }.reduce(:|)
+  def aid_stations_by_split_id
+    events.flat_map(&:aid_stations).index_by(&:split_id)
   end
 
   def nodes_for(split_name)
@@ -44,27 +42,5 @@ class ComputeDataEntryNodes
                         event_split_ids: splits_by_event(split_name).transform_values(&:id),
                         event_aid_station_ids: aid_stations_by_event(split_name).transform_values(&:id))
     end
-  end
-
-  def event_splits_by_name
-    @event_splits_by_name ||= events.map do |event|
-      [event.id, event.ordered_splits.index_by(&:parameterized_base_name)]
-    end.to_h
-  end
-
-  def aid_stations_by_split_id
-    @aid_stations_by_split_id ||= events.flat_map(&:aid_stations).index_by(&:split_id)
-  end
-
-  def incompatible_locations
-    ordered_split_names.select do |split_name|
-      splits_by_event(split_name).values.select { |split| split.latitude && split.longitude }
-          .combination(2).any? { |split_1, split_2| split_1.different_location?(split_2) }
-    end
-  end
-
-  def events
-    # This sort ensures ordered_split_names produces the expected result
-    @events ||= event_group.events.sort_by { |event| -event.splits.size }
   end
 end

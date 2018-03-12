@@ -17,15 +17,7 @@ class ComputeDataEntryNodes
   private
 
   attr_reader :event_group, :analyzer
-  delegate :events, :incompatible_locations, :ordered_split_names, :splits_by_event, to: :analyzer
-
-  def aid_stations_by_event(split_name)
-    splits_by_event(split_name).transform_values { |split| aid_stations_by_split_id[split.id] }
-  end
-
-  def aid_stations_by_split_id
-    events.flat_map(&:aid_stations).index_by(&:split_id)
-  end
+  delegate :incompatible_locations, :ordered_split_names, :splits_by_event, :aid_stations_by_event, to: :analyzer
 
   def nodes_for(split_name)
     splits = splits_by_event(split_name).values

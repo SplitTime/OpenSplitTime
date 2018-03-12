@@ -5,13 +5,12 @@ class EventGroupSplitAnalyzer
     @event_group = event_group
   end
 
-  def events
-    # This sort ensures ordered_split_names produces the expected result
-    @events ||= event_group.events.sort_by { |event| -event.splits.size }
-  end
-
   def splits_by_event(split_name)
     events.map { |event| [event.id, event_splits_by_name[event.id][split_name]] }.to_h.compact
+  end
+
+  def aid_stations_by_event(split_name)
+    splits_by_event(split_name).transform_values { |split| aid_stations_by_split_id[split.id] }
   end
 
   def incompatible_locations
@@ -29,7 +28,16 @@ class EventGroupSplitAnalyzer
 
   attr_reader :event_group
 
+  def events
+    # This sort ensures ordered_split_names produces the expected result
+    @events ||= event_group.events.sort_by { |event| -event.splits.size }
+  end
+
   def event_splits_by_name
     @event_splits_by_name ||= events.map { |event| [event.id, event.ordered_splits.index_by(&:parameterized_base_name)] }.to_h
+  end
+
+  def aid_stations_by_split_id
+    @aid_stations_by_split_id ||= events.flat_map(&:aid_stations).index_by(&:split_id)
   end
 end

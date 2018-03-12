@@ -56,7 +56,7 @@ class AidStationDetail < LiveEventFramework
   end
 
   def event_group_aid_stations
-    MatchEventGroupSplitName.perform(event_group, split_name)[:event_aid_stations]
+    EventGroupSplitAnalyzer.new(event_group).aid_stations_by_event(split_name)
   end
 
   private

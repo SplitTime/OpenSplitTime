@@ -15,7 +15,7 @@ class GroupedEventValidator < ActiveModel::Validator
   delegate :events, :incompatible_locations, to: :analyzer
 
   def validate_bibs
-    efforts_with_bibs = Effort.where(event: events).where.not(bib_number: nil).select(:bib_number)
+    efforts_with_bibs = Effort.where(event: event_group.events).where.not(bib_number: nil).select(:bib_number)
     if efforts_with_bibs.size != efforts_with_bibs.distinct.size
       duplicate_bib_numbers = efforts_with_bibs.pluck(:bib_number).count_by(&:itself)
                                   .select { |_, count| count > 1 }.keys.uniq.sort

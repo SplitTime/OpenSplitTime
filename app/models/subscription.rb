@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Subscription < ApplicationRecord
   enum protocol: [:email, :sms, :http, :https]
   belongs_to :user

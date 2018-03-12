@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Results
   class FillTemplate
     def self.perform(args)

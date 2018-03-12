@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CarmenHelper
 
   def carmen_country_select(model, field, args)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Persist
 
   # This class uses the activerecord-import gem to optimize updates wherein the number of records is large

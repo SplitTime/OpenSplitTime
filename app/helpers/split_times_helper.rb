@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SplitTimesHelper
 
   STATUS_INDICATORS = {bad: %w([* *]), questionable: %w([ ])}.with_indifferent_access

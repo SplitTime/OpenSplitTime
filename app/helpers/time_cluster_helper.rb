@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TimeClusterHelper
 
   def time_cluster_display_data(cluster, display_style)

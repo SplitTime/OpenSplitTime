@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BibSubSplitTimeRow
   DISCREPANCY_THRESHOLD = 5.minutes
   attr_reader :bib_number, :effort

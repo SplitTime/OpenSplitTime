@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SnsClientFactory
 
   # Create a real SNS client if credentials are present; otherwise create a stubbed SNS client

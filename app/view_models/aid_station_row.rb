@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AidStationRow
   include ActionView::Helpers::TextHelper
   attr_reader :aid_station

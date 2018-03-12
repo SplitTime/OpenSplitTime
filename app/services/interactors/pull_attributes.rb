@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Interactors
   class PullAttributes
     def self.perform(source, destination, attributes)

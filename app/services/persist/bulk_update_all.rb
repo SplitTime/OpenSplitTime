@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Persist
 
   # This class uses update_all to optimize updates wherein the number of records is large and the

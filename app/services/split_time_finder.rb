@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SplitTimeFinder
 
   def self.prior(args)

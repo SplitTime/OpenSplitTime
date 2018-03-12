@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EffortsHelper
 
   def data_status_tag(effort_row)

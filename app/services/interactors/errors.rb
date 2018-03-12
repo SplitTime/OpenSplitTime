@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Interactors
   module Errors
     def resource_error_object(record)

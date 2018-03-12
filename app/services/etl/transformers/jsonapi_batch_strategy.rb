@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ETL::Transformers
   class JsonapiBatchStrategy
     include ETL::Errors

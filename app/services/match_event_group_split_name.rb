@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MatchEventGroupSplitName
   def self.perform(event_group, split_name, validate: true)
     new(event_group, split_name, validate: validate).perform

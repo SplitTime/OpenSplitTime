@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizationsPresenter < BasePresenter
   attr_reader :organizations
 

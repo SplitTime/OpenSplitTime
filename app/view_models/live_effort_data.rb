@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LiveEffortData
   attr_reader :ordered_splits, :effort, :new_split_times, :indexed_existing_split_times
   delegate :person_id, to: :effort

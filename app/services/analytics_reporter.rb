@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnalyticsReporter
 
   def self.report_to_ga(args)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortWithTimesPresenter < EffortWithLapSplitRows
 
   delegate :id, :split_times, :event, :event_name, :full_name, :bib_number, :finish_status, :to_param, to: :effort

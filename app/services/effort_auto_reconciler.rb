@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortAutoReconciler
 
   def self.reconcile(event, options = {})

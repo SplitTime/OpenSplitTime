@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortShowView < EffortWithLapSplitRows
 
   delegate :full_name, :bib_number, :gender, :split_times, :finish_status, :report_url, :beacon_url, :photo,

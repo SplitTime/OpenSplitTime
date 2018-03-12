@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotifyFollowersJob < ApplicationJob
   def perform(args)
     ArgsValidator.validate(params: args,

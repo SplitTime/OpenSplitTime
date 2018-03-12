@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Results
   Category = Struct.new(:name, :genders, :low_age, :high_age, :efforts) do
 

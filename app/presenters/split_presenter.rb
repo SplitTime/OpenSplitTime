@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SplitPresenter < BasePresenter
 
   delegate :id, :course, :base_name, :description, :distance_from_start, :vert_gain_from_start, :vert_loss_from_start,

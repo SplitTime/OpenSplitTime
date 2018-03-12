@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ButtonTextHelper
   BEACON_TEXT = {'findmespot.com' => 'SPOT Page',
                  'fastertracks.com' => 'FasterTracks',

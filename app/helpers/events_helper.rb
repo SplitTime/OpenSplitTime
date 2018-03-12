@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EventsHelper
 
   def link_to_edit_event(view_object)

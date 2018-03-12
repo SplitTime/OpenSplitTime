@@ -1,4 +1,6 @@
-# This class replaces the former ActiveRecord class of the same name. 
+# frozen_string_literal: true
+
+# This class replaces the former ActiveRecord class of the same name.
 # A 'bitkey' is an integer representing a single bit.
 # A 'bitmap' is an integer representing a combination of bitkeys.
 # Each instance of SplitTime includes a bitkey indicating the type of time record it represents.

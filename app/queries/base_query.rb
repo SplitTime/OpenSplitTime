@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BaseQuery
 
   def self.sql_safe_integer_list(array)

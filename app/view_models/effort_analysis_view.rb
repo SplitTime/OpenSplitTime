@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortAnalysisView < EffortWithLapSplitRows
 
   attr_reader :effort

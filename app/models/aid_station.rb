@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AidStation < ApplicationRecord
   belongs_to :event
   belongs_to :split

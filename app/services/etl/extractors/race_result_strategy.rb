@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ETL::Extractors
   class RaceResultStrategy
     include ETL::Errors

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortProgressAidDetail < EffortProgressRow
 
   def post_initialize(args)

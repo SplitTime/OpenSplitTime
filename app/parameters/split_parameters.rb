@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SplitParameters < BaseParameters
 
   def self.permitted

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SegmentTimeCalculator
 
   DISTANCE_FACTOR = 0.6 # Multiply distance in meters by this factor to approximate normal travel time on foot

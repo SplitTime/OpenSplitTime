@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MailHelper
 
   def follower_update_body_text(split_time_data)

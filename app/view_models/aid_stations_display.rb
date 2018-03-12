@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AidStationsDisplay < LiveEventFramework
   delegate :course, :organization, :home_time_zone, to: :event
 

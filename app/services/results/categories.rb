@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Results
   class Categories
     def self.find(category_name)

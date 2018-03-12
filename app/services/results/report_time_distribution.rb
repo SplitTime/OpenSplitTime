@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Results
   class ReportTimeDistribution
     def self.perform(event_group)

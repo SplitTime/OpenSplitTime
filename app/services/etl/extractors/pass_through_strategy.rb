@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ETL::Extractors
   class PassThroughStrategy
     include ETL::Errors

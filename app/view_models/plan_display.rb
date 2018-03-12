@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlanDisplay
 
   attr_reader :course, :expected_time, :expected_laps

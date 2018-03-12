@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UnitConversions
   extend ActiveSupport::Concern
 

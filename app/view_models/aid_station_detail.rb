@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AidStationDetail < LiveEventFramework
 
   attr_reader :aid_station, :times_container

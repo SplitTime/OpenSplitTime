@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FindExpectedLap
   def self.perform(args)
     new(args).perform

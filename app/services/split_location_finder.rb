@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SplitLocationFinder
 
   def self.splits(params)

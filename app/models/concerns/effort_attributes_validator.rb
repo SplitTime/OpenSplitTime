@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortAttributesValidator < ActiveModel::Validator
   def validate(effort)
     validate_split_times(effort)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Partner < ApplicationRecord
   belongs_to :event
   scope :with_banners, -> { where.not(banner_file_name: nil).where.not(banner_link: nil) }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReportAnalyticsJob < ApplicationJob
 
   queue_as :default

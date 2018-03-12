@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortSerializer < BaseSerializer
   attributes :id, :event_id, :person_id, :participant_id, :bib_number, :first_name, :last_name, :full_name, :gender,
              :age, :city, :state_code, :country_code, :beacon_url, :report_url, :start_offset

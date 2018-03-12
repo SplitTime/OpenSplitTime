@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventSerializer < BaseSerializer
   attributes :id, :course_id, :organization_id, :name, :start_time, :home_time_zone, :start_time_in_home_zone, :concealed,
              :laps_required, :maximum_laps, :multi_lap, :monitor_pacers, :slug, :short_name, :live_entry_attributes, :multiple_sub_splits

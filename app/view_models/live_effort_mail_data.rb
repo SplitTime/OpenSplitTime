@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LiveEffortMailData
 
   attr_reader :person, :split_times

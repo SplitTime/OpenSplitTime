@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortsMiniTable
 
   def initialize(effort_ids_param)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ETL::Transformable
 
   def add_country_from_state_code!

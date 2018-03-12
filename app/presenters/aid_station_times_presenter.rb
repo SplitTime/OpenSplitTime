@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AidStationTimesPresenter < BasePresenter
   delegate :event_name, :split_name, to: :aid_station
   delegate :home_time_zone, :available_live, :podium_template, :event_group, :ordered_events_within_group, to: :event

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LiveRowNormalizer
   KEY_MAP = {'bib' => 'bib_number', 'bib_#' => 'bib_number', 'drop' => 'dropped_here', 'dropped' => 'dropped_here',
              'stopped_here' => 'dropped_here', 'stopped' => 'dropped_here', 'comments' => 'remarks', 'time' => 'time_in'}

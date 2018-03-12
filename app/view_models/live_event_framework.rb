@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LiveEventFramework
   attr_reader :event
   delegate :multiple_laps?, :home_time_zone, :ordered_events_within_group, to: :event

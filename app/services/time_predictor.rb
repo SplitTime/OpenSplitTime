@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimePredictor
 
   def self.segment_time(args)

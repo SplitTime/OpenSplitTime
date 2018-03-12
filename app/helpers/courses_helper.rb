@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CoursesHelper
   def link_to_best_efforts_gender(view_object, gender)
     link_to gender.titlecase, best_efforts_course_path(view_object,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BulkFollowerNotifier
 
   def initialize(split_times, options)

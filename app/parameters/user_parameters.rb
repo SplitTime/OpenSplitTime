@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserParameters < BaseParameters
 
   def self.permitted_query

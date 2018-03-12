@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminMailer < ApplicationMailer
   def new_event(event, user)
     @event = event

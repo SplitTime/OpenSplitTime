@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This needs to be included after all has_attached_file statements in a class
 # @Paul Odeon https://stackoverflow.com/a/23908552/5961578
 

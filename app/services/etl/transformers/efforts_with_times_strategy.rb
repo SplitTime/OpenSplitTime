@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ETL::Transformers
   class EffortsWithTimesStrategy
     include ETL::Errors

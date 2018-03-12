@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventGroupPresenter < BasePresenter
   attr_reader :event_group
   delegate :to_param, to: :event_group

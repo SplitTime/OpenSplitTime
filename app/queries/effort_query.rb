@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortQuery < BaseQuery
 
   def self.rank_and_finish_status(args = {})

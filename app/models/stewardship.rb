@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Stewardship < ApplicationRecord
   belongs_to :user
   belongs_to :organization

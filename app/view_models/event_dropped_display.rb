@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventDroppedDisplay < EventWithEffortsPresenter
 
   def dropped_effort_rows

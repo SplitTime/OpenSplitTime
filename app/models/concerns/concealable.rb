@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Used for models with a 'concealed' attribute.
 
 # Not used on the Effort module, which needs custom logic entirely based on the

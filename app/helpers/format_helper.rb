@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FormatHelper
   def data_status_text_class
     {'bad' => 'text-danger', 'questionable' => 'text-warning'}

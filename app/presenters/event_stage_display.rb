@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventStageDisplay < EventWithEffortsPresenter
 
   attr_reader :associated_splits

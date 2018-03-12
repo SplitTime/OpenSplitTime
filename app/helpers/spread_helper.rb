@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SpreadHelper
   STYLES_WITH_START_TIME = %w(ampm military)
 

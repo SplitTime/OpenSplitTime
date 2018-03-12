@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LapSplitRow
 
   delegate :distance_from_start, :lap, :split, :key, :time_points, to: :lap_split

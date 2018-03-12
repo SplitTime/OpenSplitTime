@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PartnerPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def post_initialize

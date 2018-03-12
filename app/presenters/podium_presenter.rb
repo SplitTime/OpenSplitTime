@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PodiumPresenter < BasePresenter
 
   attr_reader :event

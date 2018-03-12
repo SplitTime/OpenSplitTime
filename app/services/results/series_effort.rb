@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Results
   class SeriesEffort
     delegate :full_name, :to_param, to: :person

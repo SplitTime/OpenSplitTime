@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LiveTimeRowConverter
 
   def self.convert(args)

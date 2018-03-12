@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Location = Struct.new(:latitude, :longitude, :distance_threshold) do
   D_TO_R = Math::PI / 180.0
   RADIUS = 6_371_000 # Earth's mean radius in meters

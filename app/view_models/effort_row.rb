@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortRow < SimpleDelegator
   ULTRASIGNUP_STATUS_TABLE = {'Finished' => 1, 'Dropped' => 2, 'Not Started' => 3}
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ETL::Transformers
   class GenericResourcesStrategy
     include ETL::Errors

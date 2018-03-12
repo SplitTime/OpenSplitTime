@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ArgsValidator
   class << self
     attr_accessor :console_notifications

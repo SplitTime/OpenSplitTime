@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SnsTopicManager
 
   def self.generate(args)

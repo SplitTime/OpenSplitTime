@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SplitTimeQuery < BaseQuery
 
   def self.typical_segment_time(segment, effort_ids)

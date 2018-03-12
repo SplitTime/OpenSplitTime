@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventGroupsCollectionPresenter < BasePresenter
   attr_reader :event_groups
 

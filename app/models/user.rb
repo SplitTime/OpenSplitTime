@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include PgSearch
   extend FriendlyId
@@ -37,17 +39,7 @@ class User < ApplicationRecord
   def self.current=(user)
     Thread.current[:current_user] = user
   end
-
-  def self.create_with_omniauth(auth)
-    create! do |user|
-      user.provider = auth['provider']
-      user.uid = auth['uid']
-      if auth['info']
-        user.last_name = auth['info']['name'] || "" # TODO: figure out how to use oath with first_name/last_name model
-      end
-    end
-  end
-
+  
   def self.search(search_param)
     search_param.present? ? search_name_email(search_param) : all
   end

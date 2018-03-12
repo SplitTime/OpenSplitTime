@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     attr_reader :current_user

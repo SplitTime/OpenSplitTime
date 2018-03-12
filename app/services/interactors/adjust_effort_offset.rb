@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Interactors
 
   # Some time data is entered based on military time, and in that case the absolute time

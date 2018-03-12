@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LiveTimesHelper
   def link_to_live_time_effort(live_time)
     if live_time.effort

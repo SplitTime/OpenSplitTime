@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BestEffortsDisplay < BasePresenter
 
   delegate :name, :simple?, :to_param, to: :course

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventEffortsDisplay < EventWithEffortsPresenter
 
   def filtered_unstarted_efforts

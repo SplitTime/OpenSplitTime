@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventLiveTimePairer
 
   def self.pair(args)

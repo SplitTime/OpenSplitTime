@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimeCluster
   attr_reader :split_times_data
 

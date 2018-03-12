@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 DataEntryGroup = Struct.new(:data_entry_nodes) do
 
   def min_distance_from_start

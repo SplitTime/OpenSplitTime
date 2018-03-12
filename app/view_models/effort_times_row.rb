@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortTimesRow
   include ActiveModel::Serialization
   include TimeFormats

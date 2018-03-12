@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module ETL::Extractors
   class CsvFileStrategy
     include ETL::Errors
 
     MAX_FILE_SIZE = 500.kilobytes
-    BYTE_ORDER_MARK = "\xEF\xBB\xBF".force_encoding('UTF-8')
+    BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding('UTF-8').freeze
     attr_reader :errors
 
     def initialize(source_data, options)

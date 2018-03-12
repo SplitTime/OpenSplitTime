@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ToggleHelper
 
   def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled)

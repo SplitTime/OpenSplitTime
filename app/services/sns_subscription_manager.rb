@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SnsSubscriptionManager
 
   def self.generate(args)

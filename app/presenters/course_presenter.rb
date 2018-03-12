@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CoursePresenter < BasePresenter
 
   attr_reader :course, :events

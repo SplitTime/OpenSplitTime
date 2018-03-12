@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LiveTimePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def post_initialize

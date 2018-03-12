@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EffortTimesRowSerializer < BaseSerializer
   attributes *EffortTimesRow::EXPORT_ATTRIBUTES, :display_style, :stopped, :dropped, :finished
   attribute :elapsed_times, if: :show_elapsed_times

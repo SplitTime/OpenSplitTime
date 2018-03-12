@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MockEffort < EffortWithLapSplitRows
 
   attr_reader :event, :expected_time, :start_time

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Live::EventsHelper
   def display_progress_info(args)
     split_name = args[:split_name]

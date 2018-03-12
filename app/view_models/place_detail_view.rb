@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlaceDetailView
 
   attr_reader :effort, :place_detail_rows

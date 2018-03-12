@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ComputeDataEntryNodes
   def self.perform(event_group)
     new(event_group).perform

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BackgroundNotifier
 
   PASS_THROUGH_ATTRIBUTES = %i(current_object total_objects action resource)

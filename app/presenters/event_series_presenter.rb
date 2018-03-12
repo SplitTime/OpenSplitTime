@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventSeriesPresenter < BasePresenter
 
   def initialize(events, params)

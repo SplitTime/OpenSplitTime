@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IntendedTimeCalculator
 
   def self.day_and_time(args)

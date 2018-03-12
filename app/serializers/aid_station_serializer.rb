@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AidStationSerializer < BaseSerializer
   attributes :id, :event_id, :split_id, :status, :open_time, :close_time, :captain_name,
              :comms_crew_names, :comms_frequencies

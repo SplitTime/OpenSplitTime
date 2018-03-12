@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlaceDetailRow
   CATEGORIES = [:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid]
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LinkHelper
 
   def reversed_sort_param(presenter, field, default = :asc)

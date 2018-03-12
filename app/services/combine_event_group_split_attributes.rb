@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CombineEventGroupSplitAttributes
 
   # The event_group should be loaded with includes(events: :splits)

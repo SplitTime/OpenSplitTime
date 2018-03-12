@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BirthdateValidator < ActiveModel::Validator
   def validate(record)
     if record.birthdate.present? && (record.birthdate < '1900-01-01'.to_date)

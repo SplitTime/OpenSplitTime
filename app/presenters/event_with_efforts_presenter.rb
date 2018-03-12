@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventWithEffortsPresenter < BasePresenter
 
   attr_reader :event

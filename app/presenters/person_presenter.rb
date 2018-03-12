@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PersonPresenter < BasePresenter
   attr_reader :person
   delegate :to_param, to: :person

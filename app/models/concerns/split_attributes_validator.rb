@@ -8,6 +8,7 @@ class SplitAttributesValidator < ActiveModel::Validator
     validate_distance
     validate_location
     validate_order if split.intermediate?
+    validate_group_split_locations
   end
 
   private
@@ -52,6 +53,18 @@ class SplitAttributesValidator < ActiveModel::Validator
     finish_split_distance = split.course&.finish_split&.distance_from_start
     if split.distance_from_start && finish_split_distance && (split.distance_from_start >= finish_split_distance)
       split.errors.add(:distance_from_start, 'must be less than the finish split distance_from_start')
+    end
+  end
+
+  def validate_group_split_locations
+    events = Event.joins(:splits).where(splits: {id: split.id} )
+    event_groups = EventGroup.where(id: events.map(&:event_group_id)).includes(events: :splits)
+    event_groups.each do |event_group|
+      incompatible_locations = EventGroupSplitAnalyzer.new(event_group).incompatible_locations
+      if incompatible_locations.include?(split.parameterized_base_name)
+        split.errors.add(:base_name, "#{split.base_name} is incompatible with similarly named splits within event group #{event_group}. " +
+            "Splits with duplicate names must have the same locations. ")
+      end
     end
   end
 end

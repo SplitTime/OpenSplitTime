@@ -186,6 +186,54 @@ RSpec.describe Split, kind: :model do
       expect(split).not_to be_valid
       expect(split.errors[:longitude]).to include('must be between -180 and 180')
     end
+
+    context 'for event_group split location validations' do
+      let(:event_1) { create(:event, course: course_1, event_group: event_group) }
+      let(:event_2) { create(:event, course: course_2, event_group: event_group) }
+      let(:event_group) { create(:event_group) }
+      let(:course_1) { create(:course) }
+      let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_2) { create(:course) }
+      let(:course_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
+      before do
+        event_1.splits << course_1_split_1
+        event_1.splits << course_1_split_2
+        event_2.splits << course_2_split_1
+        event_2.splits << course_2_split_2
+      end
+
+      context 'when split names are duplicated with matching locations within the same event_group' do
+        it 'is valid' do
+          expect(course_1_split_2).to be_valid
+          course_1_split_2.update(base_name: 'Finish')
+          expect(course_1_split_2).to be_valid
+        end
+      end
+
+      context 'when split name changes to match a split with a non-matching location within the same event_group' do
+        let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Alternate Finish', latitude: 41, longitude: -106) }
+
+        it 'is invalid' do
+          expect(course_1_split_2).to be_valid
+          course_1_split_2.update(base_name: 'Finish')
+          expect(course_1_split_2).not_to be_valid
+          expect(course_1_split_2.errors.full_messages).to include(/Base name Finish is incompatible with similarly named splits within event group/)
+        end
+      end
+
+      context 'when split location changes to move away from a split with a matching name within the same event_group' do
+        let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+
+        it 'is invalid' do
+          expect(course_1_split_2).to be_valid
+          course_1_split_2.update(latitude: 41)
+          expect(course_1_split_2).not_to be_valid
+          expect(course_1_split_2.errors.full_messages).to include(/Base name Finish is incompatible with similarly named splits within event group/)
+        end
+      end
+    end
   end
 
   describe '#sub_splits' do

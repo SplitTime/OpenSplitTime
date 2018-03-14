@@ -21,8 +21,8 @@
       <% if @plan_display.event && @plan_display.expected_time %>
         <h4>
           <%= "PACING PLAN FOR A #{time_format_hhmm(@plan_display.expected_time)} FINISH TIME" %>
-          <% if @current_user %>
-            <br/><%= "PREPARED FOR #{@current_user.full_name.upcase}" %>
+          <% if current_user %>
+            <br/><%= "PREPARED FOR #{current_user.full_name.upcase}" %>
           <% end %>
         </h4>
       <% end %>

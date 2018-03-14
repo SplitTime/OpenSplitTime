@@ -14,7 +14,7 @@
     <% if @effort_show.multiple_laps? %>
       <th class="text-right">Lap Time</th>
     <% end %>
-    <% if current_user && current_user.authorized_to_edit?(@effort_show.effort) %>
+    <% if current_user&.authorized_to_edit?(@effort_show.effort) %>
       <th class="text-right">Confirm In / Out</th>
       <th class="text-right">Delete In / Out</th>
     <% end %>

@@ -8,7 +8,7 @@
 <% end %>
 <%= link_to pluralize(@person_merge.effort_counts[person.id], 'effort'), person_path(person) %><br/>
 <% if person.claimed? %>
-    <% if person.claimant == @current_user %>
+    <% if person.claimant == current_user %>
         <strong>Hey, this is me!</strong><br/>
     <% else %>
         <%= "Identified as user #{person.claimant.full_name}" %>

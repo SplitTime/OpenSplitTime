@@ -49,7 +49,7 @@ module ToggleHelper
   end
 
   def link_to_toggle_email_subscription(person)
-    if @current_user
+    if current_user
       link_to_toggle_subscription(person: person,
                                   glyphicon: 'envelope',
                                   protocol: 'email',
@@ -63,7 +63,7 @@ module ToggleHelper
   end
 
   def link_to_toggle_sms_subscription(person)
-    if @current_user
+    if current_user
       link_to_toggle_subscription(person: person,
                                   glyphicon: 'phone',
                                   protocol: 'sms',
@@ -80,8 +80,7 @@ module ToggleHelper
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    subscription = @current_user.subscriptions
-                       .find { |sub| (sub.person_id == person.id) && (sub.protocol == protocol) }
+    subscription = current_user&.subscriptions&.find { |sub| (sub.person_id == person.id) && (sub.protocol == protocol) }
 
     if subscription
       url = subscription_path(subscription)
@@ -92,7 +91,7 @@ module ToggleHelper
           data: {confirm: unsubscribe_alert}
       })
     else
-      url = subscriptions_path(subscription: {user_id: @current_user.id,
+      url = subscriptions_path(subscription: {user_id: current_user&.id,
                                               person_id: person.id,
                                               protocol: protocol})
       link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {

@@ -6,13 +6,13 @@
       <h2><br/>Endurance Event Data Lives Here</h2>
       <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it
         easy to collect, store, and play with endurance event data.<br/>
-        <% if @current_user %>
+        <% if current_user %>
             <br/>You are signed in. <strong>Scroll down to start exploring.</strong>
         <% else %>
             <strong>Join the community now.</strong>
         <% end %>
         <p/>
-        <% unless @current_user %>
+        <% unless current_user %>
             <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
               <div class="form-fields clearfix">
                 <div class="form-group col-xs-12 col-sm-6">

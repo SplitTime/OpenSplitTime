@@ -27,7 +27,7 @@
   <div class="article-actions">
     <%= link_to '<< View course', course_path(@presenter.course), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if @current_user && @current_user.authorized_to_edit?(@presenter) %>
+    <% if current_user&.authorized_to_edit?(@presenter.split) %>
         <%= link_to 'Edit this split', edit_split_path(@presenter), class: "btn btn-sm btn-primary" %>
         <%= link_to 'Delete this split',
                     split_path(@presenter),

@@ -3,18 +3,10 @@
 <% end %>
 
 <div class="row header">
-  <div class="col-xs-5">
+  <div class="col-xs-12">
     <h2>
       <strong>Courses</strong>
     </h2>
-  </div>
-  <div class="col-xs-7 page-navigation">
-    <div class="row">
-      <% if @current_user %>
-          <%= link_to 'Create new course', new_course_path,
-                      class: 'btn btn-sm btn-success' %>
-      <% end %>
-    </div>
   </div>
 </div>
 

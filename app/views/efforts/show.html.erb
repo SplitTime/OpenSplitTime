@@ -64,10 +64,10 @@
   </div>
 </div>
 
-<% if @current_user && (@current_user.authorized_to_edit?(@effort_show.effort) | @current_user.authorized_to_edit_personal?(@effort_show.effort)) %>
+<% if current_user&.authorized_to_edit?(@effort_show.effort) || current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
     <div class="row">
       <div class="col-xs-8">
-        <% if @current_user.authorized_to_edit?(@effort_show.effort) %>
+        <% if current_user&.authorized_to_edit?(@effort_show.effort) %>
             <%= link_to 'Edit effort', edit_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
             <%= link_to 'Edit times of day', edit_split_times_effort_path(@effort_show.effort, display_style: 'military_times'),
                         method: :put,
@@ -106,11 +106,11 @@
       </div>
       <div class="col-xs-4">
         <div class="text-right">
-          <% if @effort_show.in_progress? && @current_user.authorized_to_edit?(@effort_show.effort) %>
+          <% if @effort_show.in_progress? && current_user&.authorized_to_edit?(@effort_show.effort) %>
               <strong><%= @effort_show.beacon_url ? 'Modify locator beacon link: ' : 'Add link to locator beacon:' %></strong>
               <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your SPOT or other personal locator site here:"><%= "#{@effort_show.beacon_url}" %></a>
           <% end %>
-          <% if !@effort_show.in_progress? && @current_user.authorized_to_edit_personal?(@effort_show.effort) %>
+          <% if !@effort_show.in_progress? && current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
               <strong><%= @effort_show.report_url ? 'Modify trip report link: ' : 'Add link to trip report:' %></strong>
               <a href="#" id="report-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your Strava page or personal trip report here:"><%= "#{@effort_show.report_url}" %></a>
           <% end %>

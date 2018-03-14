@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SplitPresenter < BasePresenter
-
+  attr_reader :split
   delegate :id, :course, :base_name, :description, :distance_from_start, :vert_gain_from_start, :vert_loss_from_start,
            :latitude, :longitude, :elevation, :to_param, to: :split
   delegate :track_points, to: :course
@@ -18,5 +18,5 @@ class SplitPresenter < BasePresenter
 
   private
 
-  attr_reader :split, :params, :current_user
+  attr_reader :params, :current_user
 end

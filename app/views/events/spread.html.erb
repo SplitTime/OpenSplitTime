@@ -9,11 +9,11 @@
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <%= link_to_beacon_button(@spread_display) %>
-      <%= link_to_enter_group_live_entry(@spread_display, @current_user) %>
+      <%= link_to_enter_group_live_entry(@spread_display, current_user) %>
       <%= render 'view_buttons', view_object: @spread_display %>
     </div>
     <div class="row">
-      <%= link_to_download_spread_csv(@spread_display, @current_user) %>
+      <%= link_to_download_spread_csv(@spread_display, current_user) %>
     </div>
   </div>
 </div>

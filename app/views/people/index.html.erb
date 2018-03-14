@@ -14,7 +14,7 @@
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <% if @current_user && @current_user.admin? %>
+      <% if current_user&.admin? %>
           <%= link_to 'Create a new person', new_person_path,
                       class: 'btn btn-sm btn-success' %>
       <% end %>

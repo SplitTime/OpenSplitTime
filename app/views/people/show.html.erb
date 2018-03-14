@@ -18,10 +18,10 @@
     <h4>
       <%= @presenter.full_bio %><br/>
       <% if @presenter.claimed? %>
-          <% if @presenter.claimant == @current_user %>
+          <% if @presenter.claimant == current_user %>
               <strong>Hey, this is me!</strong><br/>
           <% else %>
-              <% if @current_user && @current_user.admin? %>
+              <% if current_user&.admin? %>
                   <%= "Identified as user #{@presenter.claimant.full_name}" %>
               <% else %>
                   OST Member
@@ -39,16 +39,16 @@
 
   <div class="col-xs-3 page-navigation">
     <div class="row">
-      <% if @current_user %>
-          <% if @presenter.unclaimed? && @current_user.authorized_to_claim?(@presenter) %>
+      <% if current_user %>
+          <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter) %>
               <%= link_to 'This is me', avatar_claim_person_path(@presenter),
                           data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
                           class: "btn btn-sm btn-success" %>
           <% end %>
-          <% if @current_user.admin? %>
+          <% if current_user&.admin? %>
               <%= link_to 'Merge with', merge_person_path(@presenter), class: "btn btn-sm btn-success" %>
           <% end %>
-          <% if @current_user.authorized_to_edit?(@presenter) %>
+          <% if current_user&.authorized_to_edit?(@presenter.person) %>
               <%= link_to 'Edit', edit_person_path(@presenter), class: "btn btn-sm btn-primary" %>
               <%= link_to 'Delete', person_path(@presenter), method: :delete,
                           data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>

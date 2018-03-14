@@ -1,4 +1,4 @@
-<% if current_user && current_user.authorized_to_edit?(@effort_show.effort) %>
+<% if current_user&.authorized_to_edit?(@effort_show.effort) %>
   <td class="text-right">
     <% if lap_split_row.times_from_start.compact.present? %>
       <% lap_split_row.time_data_statuses.each_with_index do |data_status, i| %>

@@ -7,7 +7,7 @@
   </div>
   <div id='<%= "event_#{@event_stage.id}" %>' class="col-xs-7 page-navigation">
     <div class="row">
-      <%= link_to_enter_group_live_entry(@event_stage, @current_user) %>
+      <%= link_to_enter_group_live_entry(@event_stage, current_user) %>
       <%= render 'view_buttons', view_object: @event_stage %>
     </div>
     <div class="row">
@@ -21,7 +21,7 @@
           <% end %>
       <% end %>
       <%= link_to_start_ready_efforts(@event_stage) %>
-      <% if @current_user && @current_user.authorized_fully?(@event_stage.event) %>
+      <% if current_user&.authorized_fully?(@event_stage.event) %>
           <%= link_to_delete_event(@event_stage) %>
       <% end %>
     </div>
@@ -75,7 +75,7 @@
         <% end %>
         <br/>
         <%= link_to 'Create effort', new_effort_path(event_id: @event_stage.id), class: 'btn btn-sm btn-success' %>
-        <% if @event_stage.efforts_count > 0 && @current_user.authorized_fully?(@event_stage.event) %>
+        <% if @event_stage.efforts_count > 0 && current_user&.authorized_fully?(@event_stage.event) %>
             <%= link_to 'Delete all efforts', delete_all_efforts_event_path,
                         method: :delete,
                         data: {confirm: 'NOTE: This will delete all efforts and split times for this event. ' +

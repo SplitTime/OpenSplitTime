@@ -1,0 +1,426 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://bhtr.itsyourrace.com//Results/384/2014/5798/104
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/html; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - ASP.NET_SessionId=wxzpeytxxh1mi3wrebik13ok; domain=.itsyourrace.com; path=/;
+        HttpOnly
+      - SiteId=384; domain=bhtr.itsyourrace.com; path=/
+      X-Aspnet-Version:
+      - 4.0.30319
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 14 Mar 2018 22:30:16 GMT
+      Content-Length:
+      - '10254'
+    body:
+      encoding: ASCII-8BIT
+      string: "\r\n\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head><meta charset=\"utf-8\"
+        /><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" /><meta name=\"viewport\"
+        content=\"width=device-width, initial-scale=1\" /><meta name=\"description\"
+        /><meta name=\"author\" /><meta name=\"google-site-verification\" content=\"l3iJD8enYU434h1nNM1YI2-loi-1TpXi8mX8fB9CWZo\"
+        /><link rel=\"shortcut icon\" href=\"/favicon.ico\" /><link href=\"/content/assets/css/styles.css?v=3\"
+        rel=\"stylesheet\" type=\"text/css\" /><link href=\"//fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,700\"
+        rel=\"stylesheet\" type=\"text/css\" />\r\n\r\n    <style>\r\n        .event-map
+        { margin:10px; width:90%; height:250px; }\r\n    </style>\r\n\r\n    <script
+        src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js\"></script>\r\n
+        \    <script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js\"></script>\r\n
+        \   <script src=\"/content/assets/js/bootstrap.js\"></script>\r\n    <!--
+        the word rotator -->\r\n\r\n    <!-- HTML5 shim and Respond.js IE8 support
+        of HTML5 elements and media queries -->\r\n    <!--[if lt IE 9]>\r\n      <script
+        src=\"https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js\"></script>\r\n
+        \     <script src=\"https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js\"></script>\r\n
+        \   <![endif]-->\r\n\r\n    \r\n    <title>\r\n        Andreas Aguirre Results
+        - Bighorn Trail Run - ITS YOUR RACE</title>\r\n\r\n    <script src=\"/content/assets/js/snapshot-modal.js?v=5\"></script>\r\n<title>\r\n\r\n</title></head>\r\n<body>\r\n
+        \   <form name=\"form1\" method=\"post\" action=\"104\" id=\"form1\">\r\n<div>\r\n<input
+        type=\"hidden\" name=\"RadScriptManager1_TSM\" id=\"RadScriptManager1_TSM\"
+        value=\"\" />\r\n<input type=\"hidden\" name=\"__VIEWSTATE\" id=\"__VIEWSTATE\"
+        value=\"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\"
+        />\r\n</div>\r\n\r\n\r\n<script src=\"/Telerik.Web.UI.WebResource.axd?_TSM_HiddenField_=RadScriptManager1_TSM&amp;compress=1&amp;_TSM_CombinedScripts_=%3b%3bSystem.Web.Extensions%2c+Version%3d4.0.0.0%2c+Culture%3dneutral%2c+PublicKeyToken%3d31bf3856ad364e35%3aen-US%3a5924cf72-83cf-477d-98eb-a608a92942c5%3aea597d4b\"
+        type=\"text/javascript\"></script>\r\n<div>\r\n\r\n\t<input type=\"hidden\"
+        name=\"__EVENTVALIDATION\" id=\"__EVENTVALIDATION\" value=\"/wEdAAga28755LuEMYs2L84qy6Pql4+ILJ/AXgBhls7Ajmqqq2IwDwIs2xH4gaAJPJ6NO1OkYaOd0beI5dWmErk6GVAUqSzCACjCnayRIkJlbkWhgMii4cMIIEUh2vSaOFgYyh4NVrjVGg21o41HBwKz3AjxPp4lMniJ0lFXssBvqDYbfx24xCWWp4j3/TJIzzddJP2ILhES\"
+        />\r\n</div>\r\n\r\n        \r\n\r\n        \r\n    <!-- begins new navbar
+        -->\r\n    <div id=\"pnlLoggedOut\" class=\"navbar navbar-inverse navbar-fixed-top\"
+        role=\"navigation\">\r\n      <div class=\"container\">\r\n        <div class=\"navbar-header\">\r\n
+        \         <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\"
+        data-target=\".navbar-collapse\">\r\n            <span class=\"sr-only\">Toggle
+        navigation</span>\r\n            <span class=\"icon-bar\"></span>\r\n            <span
+        class=\"icon-bar\"></span>\r\n            <span class=\"icon-bar\"></span>\r\n
+        \         </button>\r\n          <a class=\"navbar-brand\" href=\"http://www.itsyourrace.com/\"><img
+        src=\"https://bhtr.itsyourrace.com/content/assets/img/its-your-race-logo.jpg\"
+        alt=\"ITS YOUR RACE logo\" /></a>\r\n          <div class=\"navbar-right secret
+        pad bump-login\">\r\n            <ul id=\"menu-header-menu\" class=\"nav navbar-nav-right\">\r\n
+        \             <li class=\"menu-item menu-item-type-post_type menu-item-object-page
+        current_page_item\">\r\n                <a href=\"https://bhtr.itsyourrace.com/login.aspx\">Log
+        In</a>\r\n              </li>\r\n              <li class=\"menu-item menu-item-type-post_type
+        menu-item-object-page current_page_item\">\r\n                <p class=\"nav-p\">|</p>\r\n
+        \             </li>\r\n              <li class=\"menu-item menu-item-type-post_type
+        menu-item-object-page current_page_item\">\r\n                <a href=\"https://www.itsyourrace.com/signup.aspx\">Sign
+        Up</a>\r\n              </li>\r\n              <li class=\"menu-item menu-item-type-post_type
+        menu-item-object-page current_page_item\">\r\n                <a class=\"btn
+        btn-drk nav-btn-space\" href=\"https://bhtr.itsyourrace.com/admin/CreateEvent.aspx\">Add
+        My Event</a>\r\n              </li>\r\n            </ul>\r\n          </div>\r\n
+        \       </div>\r\n        <div class=\"navbar-collapse collapse\">\r\n          <ul
+        id=\"menu-header-menu\" class=\"nav navbar-nav\">\r\n            <li class=\"menu-item
+        menu-item-type-post_type menu-item-object-page current_page_item\">\r\n              <a
+        href=\"http://www.itsyourrace.com/Search.aspx\">Events / Results</a>\r\n            </li>\r\n
+        \           <li class=\"menu-item menu-item-type-post_type menu-item-object-page\">\r\n
+        \             <a href=\"http://www.itsyourrace.com/pc/eventdirectorsandtimers\">Organizers
+        / Timers</a>\r\n            </li>\r\n            <li class=\"menu-item menu-item-type-post_type
+        menu-item-object-page\">\r\n              <a href=\"http://www.itsyourrace.com/pc/racetimesmagazine\">RaceTimes</a>\r\n
+        \           </li>\r\n          </ul>\r\n            <div class=\"navbar-right
+        bump-login\">\r\n                <ul id=\"menu-header-menu\" class=\"nav navbar-nav-right\">\r\n
+        \                   <li class=\"menu-item menu-item-type-post_type menu-item-object-page
+        current_page_item\">\r\n                        <a href=\"https://bhtr.itsyourrace.com/login.aspx\">Log
+        In</a>\r\n                    </li>\r\n                    <li class=\"menu-item
+        menu-item-type-post_type menu-item-object-page current_page_item\">\r\n                        <p
+        class=\"nav-p\">|</p>\r\n                    </li>\r\n                    <li
+        class=\"menu-item menu-item-type-post_type menu-item-object-page current_page_item\">\r\n
+        \                       <a href=\"https://www.itsyourrace.com/signup.aspx\">Sign
+        Up</a>\r\n                    </li>\r\n                    <li class=\"menu-item
+        menu-item-type-post_type menu-item-object-page current_page_item\">\r\n                        <a
+        class=\"btn btn-drk nav-btn-space\" href=\"http://www.itsyourrace.com/admin/CreateEvent.aspx\">Add
+        My Event</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n
+        \       </div><!--/.navbar-collapse -->\r\n      </div>\r\n    </div>\r\n
+        \   <!-- /new navbar -->\r\n\r\n\r\n\r\n\r\n\r\n        \r\n\r\n    <link
+        href=\"/CustomCss.ashx?id=384\" rel=\"stylesheet\" />\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n<!--
+        Main jumbotron for a primary marketing message or call to action -->\r\n<div
+        id=\"plnJumbotron\" class=\"jumbotron event-header\">\r\n    <div class=\"container\">\r\n
+        \       <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <div
+        class=\"event-logo\">\r\n                    <img id=\"imgLogoMedium\" src=\"/s/384/images/BighornSmallThumb.jpg\"
+        style=\"border-width:0px;\" />\r\n                </div>\r\n\r\n                <h1
+        id=\"event-name\" class=\"main-h1\">Bighorn Trail Run</h1>\r\n                <p
+        id=\"event-citystate\">Dayton, WY</p>\r\n            </div>\r\n        </div>\r\n
+        \   </div>\r\n</div>\r\n\r\n<div id=\"main-container\" class=\"container\">\r\n
+        \   <!-- the event list -->\r\n\r\n    <div class=\"row event-nav\">\r\n\r\n
+        \       <div class=\"event-nav-box\">\r\n            <ul class=\"nav nav-pills\">\r\n
+        \               <li id=\"liAbout\"><a id=\"lnkAbout\" href=\"/event.aspx?id=384\">About</a></li>\r\n
+        \               <li id=\"liEventSchedule\"></li>\r\n                <li id=\"liParticipants\"></li>\r\n
+        \               \r\n                <li id=\"liResults\" class=\"active\"><a
+        id=\"lnkResults\" href=\"/results.aspx?id=384\">Results</a></li>\r\n                <li
+        id=\"liPhotos\"><a id=\"lnkPhotos\" href=\"/photos.aspx?id=384\">Photos</a></li>\r\n
+        \               <li id=\"liAwards\"><a id=\"lnkAwards\" href=\"/Awards.aspx?id=384\">Awards</a></li>\r\n
+        \               \r\n                \r\n                <li id=\"liContact\"><a
+        id=\"lnkContact\" href=\"/EventContact.aspx?id=384\">Contact</a></li>\r\n
+        \               \r\n                \r\n                \r\n                \r\n
+        \               \r\n            </ul>\r\n            <div id=\"pnlRegister\"
+        class=\"register-container\">\r\n                <div class=\"register-btn-box\">\r\n
+        \                   <a id=\"lnkRegister\" class=\"register-btn\" data-target=\"reg\"
+        href=\"https://BHTR.itsyourrace.com/register\">Register Now <span class=\"glyphicon
+        glyphicon-check\"></a>\r\n                </div>\r\n            </div>\r\n
+        \       </div>\r\n\r\n    </div>\r\n\r\n\r\n    <div class=\"row event-group\">\r\n
+        \       <div class=\"col-md-12 body-content\">\r\n            <p class=\"link-back\">\r\n
+        \               <a id=\"lnkBack\" href=\"/results.aspx?id=384\">Race Results</a>\r\n
+        \               <span class=\"breadcrumb-divider\">&raquo;</span>\r\n                Your
+        Results\r\n            </p>\r\n\r\n            <div class=\"indiv-header\">\r\n
+        \               <div class=\"col-md-6 indiv-result-name\">\r\n                    <!--<a
+        href=\"#\"><img class=\"profile-result\" src=\"/images/dynamic/profile-1.jpg\"
+        /></a>-->\r\n                    <h3>\r\n                        Andreas Aguirre</h3>\r\n
+        \                   <p>\r\n                        35 year old male from San
+        Diego, CA</p>\r\n                </div>\r\n                <div class=\"col-md-6
+        indiv-result-info\">\r\n                    <h4>Bib #\r\n                        104</h4>\r\n
+        \                   <h4>\r\n                        </h4>\r\n                </div>\r\n
+        \           </div>\r\n\r\n            \r\n                    <div class=\"filters\">\r\n
+        \                       <ul class=\"nav nav-pills\">\r\n                            <li
+        role=\"presentation\" class=\"dropdown\">\r\n                                <a
+        class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\" role=\"button\"
+        aria-expanded=\"false\">\r\n                                    <!--Year-->\r\n
+        \                                   2014\r\n                                </a>\r\n
+        \                           </li>\r\n                            <li role=\"presentation\"
+        class=\"dropdown\">\r\n                                <a class=\"dropdown-toggle\"
+        data-toggle=\"dropdown\" href=\"#\" role=\"button\" aria-expanded=\"false\">\r\n
+        \                                   <!--Division-->\r\n                                    100M\r\n
+        \                               </a>\r\n                            </li>\r\n
+        \                       </ul>\r\n                        \r\n                    </div>\r\n\r\n
+        \                   <div id=\"pnlStats\" class=\"col-md-12 results-container\"
+        style=\"margin-bottom: 10px;\">\r\n                        <div class=\"row
+        stats-panel\">\r\n                            \r\n                            \r\n
+        \                           <div id=\"pnlPlaceOverall\" class=\"col-md-2 stat-box\">\r\n
+        \                               <span class=\"title\">Overall Finish</span>\r\n
+        \                               <span class=\"number\">\r\n                                    0</span>\r\n
+        \                           </div>\r\n                            <div id=\"pnlPlaceGender\"
+        class=\"col-md-2 stat-box\">\r\n                                <span class=\"title\">Gender
+        Finish</span>\r\n                                <span class=\"number\">\r\n
+        \                                   0</span>\r\n                            </div>\r\n
+        \                           <div id=\"pnlPlaceAgeGroup\" class=\"col-md-2
+        stat-box\">\r\n                                <span class=\"title\">Age Group
+        Finish</span>\r\n                                <span class=\"number\">\r\n
+        \                                   0</span>\r\n                            </div>\r\n
+        \                           \r\n                        </div>\r\n                    </div>\r\n
+        \                   <div style=\"clear: both;\"></div>\r\n                \r\n\r\n
+        \           <div id=\"pnlSplits\" style=\"margin: 0 0 20px 0;\">\r\n                <div
+        class=\"col-md-12 results-container\">\r\n                    <div class=\"row
+        stats-panel\">\r\n                        <div id=\"pnlSplit1\" class=\"col-md-2
+        stat-box\" style=\"border-bottom: 1px solid #cccccc; border-right: 1px solid
+        #cccccc;\">\r\n                            <span class=\"title\">DF In</span>\r\n
+        \                           <span class=\"number\">--</span>\r\n                            <span
+        class=\"title\">Place</span>\r\n                            <span class=\"number\"></span>\r\n
+        \                       </div>\r\n\r\n                        <div id=\"pnlSplit2\"
+        class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid #cccccc; border-right:
+        1px solid #cccccc;\">\r\n                            <span class=\"title\">DF
+        Out</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit3\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">FB In</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit4\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">FB Out</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit5\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">Jaws In</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit6\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">Jaws Out</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit7\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">FBR In</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit8\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">FBR Out</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit9\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">DFR In</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        <div
+        id=\"pnlSplit10\" class=\"col-md-2 stat-box\" style=\"border-bottom: 1px solid
+        #cccccc; border-right: 1px solid #cccccc;\">\r\n                            <span
+        class=\"title\">DFR Out</span>\r\n                            <span class=\"number\">--</span>\r\n
+        \                           <span class=\"title\">Place</span>\r\n                            <span
+        class=\"number\"></span>\r\n                        </div>\r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n\r\n                        \r\n\r\n
+        \                       \r\n\r\n                        \r\n                    </div>\r\n
+        \               </div>\r\n            </div>\r\n\r\n            \r\n\r\n            <div
+        class=\"col-md-12 results-rows\" style=\"margin-top: 20px;\">\r\n                <div
+        id=\"pnlFinisherCertificate\" class=\"col-sm-4 finisher-certificate\">\r\n
+        \                   <h3>Your Finisher Certificate</h3>\r\n                    \r\n
+        \                       <p class=\"text-muted\"><em>Hover over certificate
+        to view / print your personalized certificate</em></p>\r\n                        <div
+        class=\"cert-box\">\r\n                            <img src=\"/images/certificates/green_thumb.jpg\"
+        />\r\n                            <div class=\"image-controls\">\r\n                                <div
+        class=\"mid-image-controls\">\r\n                                    <a id=\"lnkZoomIn\"
+        title=\"Zoom In\" href=\"../../../../PrintCertificateV2.aspx?id=1427050\"
+        target=\"_blank\"><span class=\"glyphicon glyphicon-zoom-in\"></span></a><a
+        id=\"lnkPrint\" title=\"Print\" href=\"../../../../PrintCertificateV2.aspx?id=1427050\"
+        target=\"_blank\"><span class=\"glyphicon glyphicon-print\"></span></a><a
+        href=\"../../../../#\" id=\"lnkShare\" title=\"Share\" onclick=\"shareOnFacebook();
+        return false;\"><span class=\"glyphicon glyphicon-share\"></span></a>\r\n
+        \                               </div>\r\n                            </div>\r\n
+        \                       </div>\r\n                    \r\n\r\n                    \r\n
+        \               </div>\r\n\r\n                \r\n\r\n                \r\n
+        \           </div>\r\n        </div>\r\n        <!-- / master row -->\r\n\r\n\r\n
+        \       <input type=\"hidden\" name=\"ctl00$ContentPlaceHolder1$hdnSiteId\"
+        id=\"hdnSiteId\" value=\"384\" />\r\n        <input type=\"hidden\" name=\"ctl00$ContentPlaceHolder1$hdnYear\"
+        id=\"hdnYear\" value=\"2014\" />\r\n        <input type=\"hidden\" name=\"ctl00$ContentPlaceHolder1$hdnEventId\"
+        id=\"hdnEventId\" value=\"5798\" />\r\n        <input type=\"hidden\" name=\"ctl00$ContentPlaceHolder1$hdnBibNumber\"
+        id=\"hdnBibNumber\" value=\"104\" />\r\n        <input type=\"hidden\" name=\"ctl00$ContentPlaceHolder1$hdnEventCode\"
+        id=\"hdnEventCode\" />\r\n        <input type=\"hidden\" name=\"ctl00$ContentPlaceHolder1$hdnPartId\"
+        id=\"hdnPartId\" value=\"1427050\" />\r\n\r\n        <div id=\"fb-root\"></div>\r\n\r\n
+        \   </div>\r\n    <!-- /container -->\r\n    </div>\r\n    <!-- this closes
+        the div that is opened in the ctrl_EventHeader.ascx file -->\r\n\r\n    <div
+        id=\"galleryModal\" class=\"modal fade gallery-modal\" tabindex=\"-1\" role=\"dialog\"
+        aria-labelledby=\"IYRimgShare\" aria-hidden=\"true\">\r\n        <div class=\"modal-dialog
+        modal-lg\">\r\n            <div class=\"modal-content\">\r\n                <div
+        class=\"modal-header\">\r\n                    <button type=\"button\" class=\"close\"
+        data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>\r\n
+        \                   <h4 class=\"modal-title\" id=\"myModalLabel\">\r\n                        Andreas
+        Aguirre - Bighorn Trail Run 100M</h4>\r\n                </div>\r\n                <div
+        class=\"modal-body\">\r\n                    <div class=\"row\">\r\n                        <div
+        class=\"col-sm-7 img-share-display\">\r\n                            <div
+        class=\"image-holder\">\r\n\r\n                                <div id=\"snapshotCarousel\"
+        class=\"carousel slide\" data-ride=\"carousel\" data-interval=\"false\">\r\n\r\n
+        \                                   <!-- Wrapper for slides -->\r\n                                    <div
+        class=\"carousel-inner\" role=\"listbox\">\r\n                                        \r\n
+        \                                   </div>\r\n\r\n                                </div>\r\n
+        \                               <div class=\"img-slide-ctrl\">\r\n                                    <a
+        id=\"prevImg\" href=\"#snapshotCarousel\" role=\"button\" data-slide=\"prev\">\r\n
+        \                                       <span class=\"glyphicon glyphicon-chevron-left\"
+        title=\"Previous\"></span></a>\r\n                                    <p>1
+        of 8</p>\r\n                                    <a id=\"nextImg\" href=\"#snapshotCarousel\"
+        role=\"button\" data-slide=\"next\">\r\n                                        <span
+        class=\"glyphicon glyphicon-chevron-right\" title=\"Next\"></span>\r\n                                    </a>\r\n
+        \                               </div>\r\n                            </div>\r\n
+        \                       </div>\r\n                            <div class=\"col-sm-5
+        share\">\r\n                                <h3>FREE - Share your photo online!</h3>\r\n
+        \                               <p>Show your photos to family and friends
+        via social media.</p>\r\n                                <button id=\"btnShareOnFacebook\"
+        type=\"button\" class=\"btn btn-primary btn-sm btn-share btn-fb\">\r\n                                    <img
+        src=\"/images/fb-white-icon.png\" />\r\n                                    Facebook</button>\r\n
+        \                               <button type=\"button\" class=\"btn btn-primary
+        btn-sm btn-share btn-tw\" style=\"display:none;\">\r\n                                    <img
+        src=\"/images/tw-white-icon.png\" />\r\n                                    Twitter</button>\r\n
+        \                               <hr />\r\n\r\n                                <h3>Purchase
+        your photos!</h3>\r\n                                <p>You can download your
+        photos one by one, or all at once.</p>\r\n                                <p>You
+        can also purchase prints of your photos. <a id=\"lnkViewAllOptions\" href=\"#\"
+        data-dismiss=\"modal\">View all photo options.</a></p>\r\n                                <p
+        class=\"arrow-down\"><span class=\"glyphicon glyphicon-arrow-down\"></span></p>\r\n\r\n
+        \                           </div>\r\n                    </div>\r\n                    <div
+        class=\"modal-footer\">\r\n                        <input id=\"imgList\" type=\"hidden\"
+        value=\"\" />\r\n                        <h4 id=\"basketCount\">0 items in
+        basket</h4>\r\n                        <button type=\"button\" id=\"choosePhotoOptions\"
+        class=\"btn btn-primary btn-ecom\" disabled=\"disabled\"><span class=\"glyphicon
+        glyphicon-picture\"></span>Choose Photo Options</button>\r\n                        <button
+        type=\"button\" id=\"addToBasket\" class=\"btn btn-primary btn-ecom\"><span
+        class=\"glyphicon glyphicon-download\"></span>Add to Basket</button>\r\n                        <p
+        id=\"removeFromBasket\"><span class=\"removeBasketLink remove-link-spec\">Remove
+        from basket <span class=\"glyphicon glyphicon-remove-circle removeBasketLink\"></span></span></p>\r\n\r\n
+        \                   </div>\r\n\r\n                    <div id=\"fb-root\"></div>\r\n
+        \               </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n
+        \   <input type=\"hidden\" name=\"ctl00$ContentPlaceHolder1$hdnLinkUrl\" id=\"hdnLinkUrl\"
+        value=\"/PhotosOptions.aspx?id=384&amp;pid=1427050\" />\r\n\r\n\r\n\r\n        \r\n\r\n
+        \   <div class=\"footer-wrapper\">\r\n      <div class=\"container\">\r\n
+        \       <div id=\"plStandardFooter\" class=\"row\">\r\n          <footer>\r\n
+        \           <div class=\"col-sm-4\">\r\n              <h4>Main Navigation</h4>\r\n
+        \             <ul>\r\n                <li><a href=\"http://www.itsyourrace.com/search.aspx\">Events
+        / Results</a></li>\r\n                <li><a href=\"http://www.itsyourrace.com/features.aspx\">Features</a></li>\r\n
+        \               <li><a href=\"http://www.itsyourrace.com/pricing.aspx\">Pricing</a></li>\r\n
+        \               <li><a href=\"http://www.itsyourrace.com/event-organizers.aspx\">Event
+        Organizers</a></li>\r\n              </ul>\r\n            </div>\r\n            <div
+        class=\"col-sm-4\">\r\n              <h4>About ITS YOUR RACE</h4>\r\n              <ul>\r\n
+        \               <li><a href=\"http://www.itsyourrace.com/AboutUs.aspx\">About
+        Us</a></li>\r\n                <li><a href=\"http://www.itsyourrace.com/Pricing.aspx\">Pricing</a></li>\r\n
+        \               <!--<li><a href=\"http://www.itsyourrace.com/FAQ.aspx\">FAQ</a></li>-->\r\n
+        \               <li><a href=\"http://www.itsyourrace.com/Contact.aspx\">Contact
+        Us</a></li>\r\n                <li><a href=\"http://blog.itsyourrace.com\"
+        target=\"_blank\">Blog</a></li>\r\n              </ul>\r\n            </div>\r\n
+        \           <div class=\"col-sm-4\">\r\n              <h4>Find Us Online</h4>\r\n
+        \             <ul>\r\n                <li><a href=\"https://facebook.com/itsyourrace\"
+        target=\"_blank\">Facebook</a></li>\r\n                <li><a href=\"https://twitter.com/itsyourrace\"
+        target=\"_blank\">Twitter</a></li>\r\n              </ul>\r\n            </div>\r\n
+        \           <div class=\"col-sm-12 center-div-content\">\r\n              <p>&nbsp;</p>\r\n
+        \             <p>\r\n                  &copy; Innovative Timing Systems, LLC
+        2017. All Rights Reserved\r\n                  <br />\r\n                  <a
+        href=\"/TermsOfUse.aspx\">Terms of Use</a>\r\n                  &nbsp;&nbsp;&nbsp;&nbsp;\r\n
+        \                 <a href=\"/Privacy.aspx\">Privacy Policy</a>\r\n              </p>\r\n
+        \           </div>\r\n          </footer>\r\n        </div><!--/row-->\r\n\r\n
+        \       \r\n      </div>\r\n    </div>\r\n    \r\n    <script type=\"text/javascript\">\r\n
+        \       var clicky_site_ids = clicky_site_ids || [];\r\n        clicky_site_ids.push(100580214);\r\n
+        \       (function () {\r\n            var s = document.createElement('script');\r\n
+        \           s.type = 'text/javascript';\r\n            s.async = true;\r\n
+        \           s.src = '//static.getclicky.com/js';\r\n            (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(s);\r\n        })();\r\n
+        \   </script>\r\n    <noscript>\r\n        <p>\r\n            <img alt=\"Clicky\"
+        width=\"1\" height=\"1\" src=\"//in.getclicky.com/100580214ns.gif\" /></p>\r\n
+        \   </noscript>\r\n    <!-- Bootstrap core JavaScript\r\n    ==================================================
+        -->\r\n    <!-- Placed at the end of the document so the pages load faster
+        -->\r\n    \r\n    <!-- legacy js -->\r\n    \r\n    <!--<script src=\"../../content/assets/legacy/js/bootstrap.min.js\"></script>-->\r\n
+        \   <script src=\"../../content/assets/legacy/js/theme.js\"></script>\r\n
+        \   <script src=\"../../content/assets/legacy/js/jquery.cookie.min.js\"></script>\r\n
+        \   <script src=\"../../content/assets/legacy/js/date.js\"></script>\r\n\r\n
+        \   <script>\r\n        (function (i, s, o, g, r, a, m) {\r\n            i['GoogleAnalyticsObject']
+        = r; i[r] = i[r] || function () {\r\n                (i[r].q = i[r].q || []).push(arguments)\r\n
+        \           }, i[r].l = 1 * new Date(); a = s.createElement(o),\r\n            m
+        = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a,
+        m)\r\n        })(window, document, 'script', '//www.google-analytics.com/analytics.js',
+        'ga');\r\n\r\n        ga('create', 'UA-50023231-1', 'itsyourrace.com');\r\n
+        \       ga('send', 'pageview');\r\n    </script>\r\n    <!-- show location
+        box-->\r\n    <script type=\"text/javascript\">\r\n        $(document).ready(\r\n
+        \       function () {\r\n            // the event row register button highlights\r\n
+        \           $(\".event-row, .results-grouper, .sponsored-grouper\").hover(function
+        () {\r\n                $(this).find(\".event-btn-hover, .results-btn\").toggleClass(\"hide-register\");\r\n
+        \           });\r\n\r\n            $('#txtHeaderSearch').keypress(function
+        (e) {\r\n                var key = e.which;\r\n                if (key ==
+        13)  // the enter key code\r\n                {\r\n                    doSearch();\r\n
+        \                   e.preventDefault();\r\n                }\r\n            });\r\n\r\n
+        \           $('#btnHeaderSearch').click(function (e) {\r\n                doSearch();\r\n
+        \               e.preventDefault();\r\n            });\r\n\r\n            function
+        doSearch() {\r\n                var stateCodeList = ['AK','AL','AR','AZ','CA','CO','CT','DC','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'];\r\n
+        \               var stateList = ['alaska','alabama','arkansas','arizona','california','colorado','connecticut','district
+        of columbia','delaware','florida','georgia','hawaii','iowa','idaho','illinois','indiana','kansas','kentucky','louisiana','massachusetts','maryland','maine','michigan','minnesota','missouri','mississippi','montana','north
+        carolina','north dakota','nebraska','new hamshire','new jersey','new mexico','nevada','new
+        york','ohio','oklahoma','oregon','pennsylvania','rhode island','south carolina','south
+        dakota','tennessee','texas','utah','virginia','vermont','washington','wisconsin','west
+        virginia','wyoming'];\r\n                var searchForUpper = $('#txtHeaderSearch').val().toUpperCase();\r\n
+        \               var searchForLower = $('#txtHeaderSearch').val().toLowerCase();\r\n\r\n
+        \               if (jQuery.inArray(searchForUpper, stateCodeList) > -1) {\r\n
+        \                   //alert('found in stateCodes');\r\n                    window.location
+        = 'search.aspx?srchby=searchByCountry&srch=' + searchForUpper + '&ctry=US';\r\n
+        \               }\r\n                else if (jQuery.inArray(searchForLower,
+        stateList) > -1) {\r\n                    //alert('found in states');\r\n
+        \                   var stateCode = stateCodeList[jQuery.inArray(searchForLower,
+        stateList)];\r\n                    //alert(stateCode);\r\n                    window.location
+        = 'search.aspx?srchby=searchByCountry&srch=' + stateCode + '&ctry=US';\r\n
+        \               }\r\n                else {\r\n                    //alert('not
+        found');\r\n                    if (searchForLower.length == 5 && !isNaN(searchForLower))
+        {\r\n                        window.location = 'search.aspx?srchby=searchByZipCode&srch='
+        + searchForLower;\r\n                    }\r\n                    else {\r\n
+        \                       if (searchForLower.indexOf(',') > -1) {\r\n                            window.location
+        = 'search.aspx?srchby=searchByCityState&srch=' + $('#txtHeaderSearch').val();\r\n
+        \                       }\r\n                        else {\r\n                            window.location
+        = 'search.aspx?srchby=searchByEventName&srch=' + $('#txtHeaderSearch').val();\r\n
+        \                       }\r\n                    }\r\n                }\r\n
+        \           }\r\n\r\n            // search box slider\r\n            //$(\".search-box-li\").css('width',
+        '0px').addClass('hiding').hide();\r\n\r\n            //$('.btn-searchbar').click(function
+        () {\r\n            //    if ($('.search-box-li').hasClass('hiding')) {\r\n
+        \           //        $(\".search-box-li\").animate({\r\n            //            'width':
+        '310px'\r\n            //        }, {\r\n            //            direction:
+        'right',\r\n            //            easing: 'easeInOutCubic',\r\n            //
+        \           duration: 300\r\n            //        });\r\n            //        $(\".search-box-li\").show().removeClass('hiding');\r\n
+        \           //        $('.header-search-box').focus();\r\n            //    }
+        else {\r\n            //        $(\".search-box-li\").animate({\r\n            //
+        \           'width': '0px'\r\n            //        }, {\r\n            //
+        \           direction: 'right',\r\n            //            easing: 'easeInOutCubic',\r\n
+        \           //            duration: 300,\r\n            //            complete:
+        function () {\r\n            //                $(this).hide();\r\n            //
+        \           }\r\n            //        });\r\n            //        $(\".search-box-li\").addClass('hiding');\r\n
+        \           //        $('.header-search-box').blur();\r\n            //    };\r\n
+        \           //});\r\n        });\r\n    </script>\r\n\r\n\r\n    </form>\r\n\r\n
+        \   <!-- Facebook Pixel Code -->\r\n    <script>\r\n    !function(f,b,e,v,n,t,s)\r\n
+        \   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?\r\n    n.callMethod.apply(n,arguments):n.queue.push(arguments)};\r\n
+        \   if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\r\n    n.queue=[];t=b.createElement(e);t.async=!0;\r\n
+        \   t.src=v;s=b.getElementsByTagName(e)[0];\r\n    s.parentNode.insertBefore(t,s)}(window,document,'script',\r\n
+        \   'https://connect.facebook.net/en_US/fbevents.js');\r\n     fbq('init',
+        '184537302017153'); \r\n    fbq('track', 'PageView');\r\n    </script>\r\n
+        \   <noscript>\r\n     <img height=\"1\" width=\"1\" \r\n    src=\"https://www.facebook.com/tr?id=184537302017153&ev=PageView\r\n
+        \   &noscript=1\"/>\r\n    </noscript>\r\n    <!-- End Facebook Pixel Code
+        -->\r\n</body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Wed, 14 Mar 2018 22:30:17 GMT
+recorded_with: VCR 4.0.0

@@ -1,6 +1,12 @@
+require 'rails_helper'
+
 RSpec.describe ETL::Extractors::ItsYourRaceHTMLStrategy do
   subject { ETL::Extractors::ItsYourRaceHTMLStrategy.new(source_data, options) }
-  let(:source_data) { open(url) }
+  let(:source_data) do
+    VCR.use_cassette("itsyourrace/#{url.split('/').last}") do
+      open(url)
+    end
+  end
   let(:options) { {} }
 
   describe '#extract' do

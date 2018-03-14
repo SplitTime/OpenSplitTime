@@ -67,6 +67,8 @@ group :test do
   gem 'ffaker'
   gem 'pry'
   gem 'selenium-webdriver'
+  gem 'vcr', '~> 4.0'
+  gem 'webmock', '~> 3.3'
 end
 
 group :development, :test do

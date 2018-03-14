@@ -1,0 +1,395 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.adilas.biz/bear100/runner_details.cfm?id=314
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/html;charset=UTF-8
+      Server:
+      - Microsoft-IIS/7.5
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 14 Mar 2018 22:23:24 GMT
+      Content-Length:
+      - '30541'
+    body:
+      encoding: UTF-8
+      string: " \r\n\r\n\r\n<script type=\"text/javascript\">\r\n\t<!--\r\n\t// pass
+        in the page to go to as a string.\r\n\tfunction goToPage(pageSelection)\r\n\t{\r\n\t
+        \  window.location.href = pageSelection;\r\n\t}\r\n\t//-->\r\n</script>\r\n\r\n<!DOCTYPE
+        html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html
+        xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=iso-8859-1\" />\r\n\r\n\r\n\r\n<title>Bear 100
+        - Bib1 - Kaci Lickteig</title>\r\n\r\n\r\n<style type=\"text/css\">\r\n\t<!--\r\n\tbody\r\n\t{\r\n\t\tfont-family:\"Times
+        New Roman\", Times, serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t\tbackground-color:#EEEEEE;\r\n\t\tbackground-image:url(../top_secret/images/corp768_AF12F389C8/bear_100_leaf.png);\r\n\t\tbackground-repeat:no-repeat;\r\n\t\tmargin:10px;\r\n\t}\r\n\t.basicText\r\n\t{\r\n\t\tfont-family:\"Times
+        New Roman\", Times, serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t}\r\n\t.timeSlotBasicText\r\n\t{\r\n\t\tfont-family:\"Times
+        New Roman\", Times, serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t}\r\n\t.imgText\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t}\r\n\t.imgText
+        a\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t}\r\n\t.imgText a:hover\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t}\r\n\t.footerText\r\n\t{\r\n\t\tfont-family:\"Times
+        New Roman\", Times, serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#718359;\r\n\t}\r\n\t.headingText\r\n\t{\r\n\t\tfont-family:Arial,
+        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t}\r\n\t.titleText\r\n\t{\r\n\t\tfont-family:Arial,
+        Helvetica, sans-serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#8E3A30;\r\n\t}\r\n\t.callOutRow\r\n\t{\r\n\t\tfont-family:Arial,
+        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#C2C74F;\r\n\t\tbackground-color:#666666;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.callOutRowOther\r\n\t{\r\n\t\tfont-family:Arial,
+        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.messageErrorText\r\n\t{\r\n\t\tfont-family:Arial,
+        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.flagText\r\n\t{\r\n\t\tfont-family:Wingdings,
+        Webdings;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t}\r\n\t.flagText2\r\n\t{\r\n\t\tfont-family:Wingdings,
+        Webdings;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#666666;\r\n\t\tbackground-color:#DDDDFF;\r\n\t}\r\n\t.flagText3\r\n\t{\r\n\t\tfont-family:Arial,
+        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t}\r\n\t.messageText\r\n\t{\r\n\t\tfont-family:Arial,
+        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#C2C74F;\r\n\t\tbackground-color:#666666;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.tableRow1\r\n\t{\r\n\t\tbackground-color:#FFFFFF;\r\n\t}\r\n\t.tableRow2\r\n\t{\r\n\t\tbackground-color:#DDDDFF;\r\n\t}\r\n\t.legendText\r\n\t{\r\n\t\tbackground-color:#DDDDFF;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.basicText
+        a, \r\n\t.timeSlotBasicText a, \r\n\t.footerText a, \r\n\t.headingText a,
+        \r\n\t.titleText a, \r\n\t.callOutRow a, \r\n\t.callOutRowOther a, \r\n\t.messageErrorText
+        a, \r\n\t.flagText a, \r\n\t.flagText2 a, \r\n\t.flagText3 a, \r\n\t.messageText
+        a, \r\n\t.legendText a\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#718359;\r\n\t\tbackground-color:transparent;\r\n\t}\r\n\t.basicText
+        a:hover, \r\n\t.timeSlotBasicText a:hover, \r\n\t.footerText a:hover, \r\n\t.headingText
+        a:hover, \r\n\t.titleText a:hover, \r\n\t.callOutRow a:hover, \r\n\t.callOutRowOther
+        a:hover, \r\n\t.messageErrorText a:hover, \r\n\t.flagText a:hover, \r\n\t.flagText2
+        a:hover, \r\n\t.flagText3 a:hover, \r\n\t.messageText a:hover, \r\n\t.legendText
+        a:hover\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#464646;\r\n\t\tbackground-color:#EEEEEE;\r\n\t}\r\n\t#mainSearch\r\n\t{\r\n\t\tdisplay:none;\r\n\t}\r\n\t\r\n\t-->\r\n</style>\r\n\r\n</head>\r\n<body>\r\n\r\n\r\n\r\n<table
+        width=\"95%\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\r\n\t<tr>\r\n\t\t<td
+        valign=\"top\" class=\"imgText\" width=\"100\">\r\n\t\t\t<a href=\"index.cfm\"><img
+        src=\"../top_secret/images/logos/bear_100.gif\" border=\"0\" width=\"83\"
+        height=\"83\"  alt=\"Click to return to your default homepage.\" /></a>\r\n\t\t</td>\r\n\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t<table width=\"100%\" border=\"0\"
+        cellpadding=\"2\" cellspacing=\"2\">\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t<hr width=\"100%\" color=\"#C46343\"
+        />\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"titleText\">\r\n\t\t\t\t\t\t<div align=\"left\">\r\n\t\t\t\t\t\t\tBear
+        100 - Bib1 - Kaci Lickteig\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"titleText\">\r\n\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t3/14/18\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t<hr width=\"100%\"
+        color=\"#C46343\" />\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t<a href=\"index.cfm\">[runner
+        portal - home]</a>\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t</table>\r\n\t\t</td>\r\n\t</tr>\r\n</table>\r\n<br
+        />\r\n\r\n\r\n\r\n<div align=\"center\" class=\"basicText\">\r\n\t<input type=\"button\"
+        name=\"full_race_btn\" value=\"Full Race View\" onClick=\"goToPage('bear_100_full_race.cfm?id=314');\"
+        />\r\n</div>\r\n\r\n\r\n<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\"
+        align=\"center\">\r\n\t<tr>\r\n\t\t<td valign=\"top\">\r\n\t\t\t<form action=\"runner_details.cfm?id=314\"
+        method=\"post\">\r\n\t\t\t\t<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\"
+        align=\"center\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td valign=\"top\" class=\"callOutRow\"
+        colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\tRunner
+        Information\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tBib/Name:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\tBib1 - Kaci Lickteig\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tStatus:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\tStarted\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tNotes:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\tGender: F<br />\r\n\t\t\t\t\t\t\tAge:
+        30<br />\r\n\t\t\t\t\t\t\tFrom:Omaha, NE\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">&nbsp;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\tAdd
+        A Comment:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\t<textarea
+        rows=\"3\" cols=\"40\" name=\"sub_comments\"></textarea>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\t<input
+        type=\"submit\" name=\"submit_btn\" value=\"Submit\">\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</form>\r\n\t\t</td>\r\n\t\t<td
+        valign=\"top\">\r\n\t\t\t&nbsp;&nbsp;&nbsp;\r\n\t\t</td>\r\n\t\t<td valign=\"top\">\r\n\t\t\t<form
+        action=\"time_photos_action.cfm\" method=\"post\" enctype=\"multipart/form-data\">\r\n\t\t\t\t<table
+        border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"callOutRow\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\tPhotos
+        and Captions\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tFile
+        To Upload:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<input type=\"file\"
+        name=\"image_name\" size=\"65\" />\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tCaption:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<input type=\"text\"
+        name=\"image_caption\" value=\"\" maxlength=\"250\" size=\"35\">\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">&nbsp;</td>\r\n\t\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t\t<input type=\"submit\" name=\"submit_btn\"
+        value=\"Add Photo\" /> \r\n\t\t\t\t\t\t\t(only jpg images)\r\n\t\t\t\t\t\t\t<input
+        type=\"hidden\" name=\"corp_id\" value=\"768\" /> \r\n\t\t\t\t\t\t\t<input
+        type=\"hidden\" name=\"image_number\" value=\"1\" /> \r\n\t\t\t\t\t\t\t<input
+        type=\"hidden\" name=\"mode\" value=\"add\" /> \r\n\t\t\t\t\t\t\t<input type=\"hidden\"
+        name=\"payee_id\" value=\"53547\" /> \r\n\t\t\t\t\t\t\t<input type=\"hidden\"
+        name=\"time_id\" value=\"314\" /> \r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\tThis may
+        take some time depending on the image size.\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</form>\r\n\t\t</td>\r\n\t</tr>\r\n</table>\r\n\r\n\r\n\r\n\t<br
+        />\r\n\t<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t<tr>\r\n\t\t\t<td
+        valign=\"top\" class=\"callOutRow\" colspan=\"3\">\r\n\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\tAdditional
+        Comments/Notes - (7)\r\n\t\t\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tDate\r\n\t\t\t\t</td>\r\n\t\t\t\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tTime\r\n\t\t\t\t</td>\r\n\t\t\t\r\n\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\tComment/Note\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t\r\n\t\t\r\n\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t12:50:02
+        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tMaking
+        it look easy.  Great racing!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t10:10:33
+        pm \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tGo
+        Kaci!!!!!! Pixie Ninja crushing the field!!!!!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t5:35:26
+        pm \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tGo
+        KC GO!!! #PixieNinja\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t10:30:13
+        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tFl;y
+        like a Pixie ; Run like a Ninja\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t8:46:38
+        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tFl;y
+        like a Pixie ; Run like a Ninja\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t7:11:33
+        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tGo
+        kaci!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t7:05:45
+        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tYoure
+        awesome!!!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t</table>\r\n\r\n\t<br
+        />\r\n\t<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t<tr>\r\n\t\t\t<td
+        valign=\"top\" class=\"callOutRow\" colspan=\"7\">\r\n\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\tAid
+        Station Records - (12)\r\n\t\t\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t\r\n\t\t\r\n\t\t\t<tr>\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tAid Station\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tStart Date\r\n\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tStart Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Date\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tDuration\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tNotes\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        2:LEH to 2:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:13\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        1:MDF to 1:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:30 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:31 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.00 Seconds\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:15\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        4:COC to 4:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:13:57 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:15:11 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.23 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        3:RIH to 3:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:12\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        6:TEF to 6:TEF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:56:10 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t2:04:13 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t8.05 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        7:TOG to 7:TOG - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:38:03 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:39:12 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.15 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        5:RHF to 5:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:25:42 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:30:35 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t4.88 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        10:COC to 10:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:21:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.00 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        11:RIH to 11:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:12:57 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:13:55 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t58.00 Seconds\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        12:LEH to 12:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        13:MDF to 13:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:13:49 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:15:38 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.82 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:6\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
+        9:RHF to 9:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:23:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t3.00 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t</table>\r\n\t\r\n\t\r\n\t\t\r\n\t\t<div
+        align=\"center\" class=\"basicText\">\r\n\t\t\t<hr width=\"50%\" color=\"#C46343\"
+        />\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t\r\n\t\t\t\tTotal Time In Hours, Minutes,
+        &amp; Seconds: \r\n\t\t\t\t0:22:07 \r\n\t\t</div>\r\n\t\r\n\t<br />\r\n\t<table
+        border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t<tr>\r\n\t\t\t<td
+        valign=\"top\" class=\"callOutRow\" colspan=\"7\">\r\n\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\tLeg
+        Length - (14)\r\n\t\t\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t\r\n\t\t\r\n\t\t\t<tr>\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tLeg\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tStart Date\r\n\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tStart Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Date\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tDuration\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
+        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tNotes\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        0:STA to 1:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:00:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:30 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.76 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        1:MDF to 2:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:31 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.62 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
+        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        2:LEH to 3:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t27.32 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        3:RIH to 4:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:13:57 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.39 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
+        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        4:COC to 5:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:15:11 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:25:42 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.18 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        5:RHF to 6:TEF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:30:35 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:56:10 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.43 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
+        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        6:TEF to 7:TOG - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t2:04:13 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:38:03 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.56 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        7:TOG to 8:SPC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:39:12 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t...\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t...\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t537.03 Days or 12888.74
+        Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        9:RHF to 10:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:23:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.08 Days or 25.95 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
+        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        10:COC to 11:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:21:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:12:57 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        11:RIH to 12:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:13:55 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t31.38 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        12:LEH to 13:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:13:49 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t2.48 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        13:MDF to 14:FIN - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:15:38 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t2:27:57 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.21 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
+        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
+        8:SPC to 9:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
+        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
+        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t</table>\r\n\t\r\n\t\r\n\t\t\r\n\t\t<div
+        align=\"center\" class=\"basicText\">\r\n\t\t\t<hr width=\"50%\" color=\"#C46343\"
+        />\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t\r\n\t\t\t\tTotal Time In Hours, Minutes,
+        &amp; Seconds: \r\n\t\t\t\t12906:09:15 \r\n\t\t</div>\r\n\t\r\n<br /><br />\r\n\t\r\n<table
+        width=\"95%\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\r\n\t<tr>\r\n\t\t<td
+        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t<hr width=\"100%\"
+        color=\"#C46343\" />\r\n\t\t</td>\r\n\t</tr>\r\n\t<tr>\r\n\t\t<td valign=\"top\"
+        class=\"basicText\">\r\n\t\t\t<div align=\"left\">\r\n\t\t\t\t<a href=\"index.cfm\">Home</a>
+        | \r\n\t\t\t\t<a href=\"javascript:history.back();\">Back</a> | \r\n\t\t\t\t<a
+        href=\"javascript:window.print();\">Print</a> | \r\n\t\t\t\t\r\n\t\t\t\t-
+        &copy; 2018 Bear 100 Mile Race \r\n\t\t\t</div>\t\t\t\r\n\t\t</td>\r\n\t\t<td
+        valign=\"top\" class=\"footerText\">\r\n\t\t\t<div align=\"right\">\r\n\t\t\t\tpowered
+        by adilas.biz\r\n\t\t\t</div>\r\n\t\t</td>\r\n\t</tr>\r\n</table>\r\n\r\n\r\n</body>\r\n</html>"
+    http_version: 
+  recorded_at: Wed, 14 Mar 2018 22:23:29 GMT
+recorded_with: VCR 4.0.0

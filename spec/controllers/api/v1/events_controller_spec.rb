@@ -250,6 +250,9 @@ RSpec.describe Api::V1::EventsController do
       event.splits << splits
     end
 
+    before(:each) { VCR.insert_cassette("api/v1/events_controller", match_requests_on: [:host]) }
+    after(:each) { VCR.eject_cassette }
+
     let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course: course) }
     let(:event_group) { create(:event_group) }
@@ -422,7 +425,11 @@ RSpec.describe Api::V1::EventsController do
 
       context 'when provided with an adilas url and data_format adilas_bear_times' do
         let(:request_params) { {id: event.id, data_format: 'adilas_bear_times', data: source_data} }
-        let(:source_data) { Net::HTTP.get(URI(url)) }
+        let(:source_data) do
+          VCR.use_cassette("adilas/#{url.split('?').last}") do
+            Net::HTTP.get(URI(url))
+          end
+        end
         let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
 
         it 'creates an effort and split_times' do

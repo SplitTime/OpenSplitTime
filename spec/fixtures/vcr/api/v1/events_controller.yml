@@ -1,0 +1,38 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.pusherapp.com/apps/328773/events?auth_key=7996e63c91b42e483b50&auth_signature=d4bca4ec6f08ba3544a2dd9ce1cb1800870d0bbcd9f3d735441e017fe90cc6d2&auth_timestamp=1521071438&auth_version=1.0&body_md5=1ceb9636deddb19883e9c7c33a793d34
+    body:
+      encoding: UTF-8
+      string: '{"name":"update","channels":["live-times-available.event_group.1"],"data":"{\"unconsidered\":2,\"unmatched\":2}"}'
+    headers:
+      User-Agent:
+      - HTTPClient/1.0 (2.8.3, ruby 2.5.0 (2017-12-25))
+      Accept:
+      - "*/*"
+      Date:
+      - Wed, 14 Mar 2018 23:50:38 GMT
+      X-Pusher-Library:
+      - pusher-http-ruby 1.3.1
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/html;charset=utf-8
+      Server:
+      - thin
+      Content-Length:
+      - '2'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: "{}"
+    http_version: 
+  recorded_at: Wed, 14 Mar 2018 23:50:39 GMT
+recorded_with: VCR 4.0.0

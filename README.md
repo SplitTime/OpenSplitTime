@@ -115,7 +115,7 @@ We love Issues but we love Pull Requests more! If you want to change something o
 
 ### Pull Requests
 
-Writing code for something is the fastest way to get feedback. It doesn't matter if the code is a work in progress or just a spike of an idea we'd love to see it. Our testing is weak we know. But it's something we value. If adding a new feature please consider adding tests for it. :heart:
+Writing code for something is the fastest way to get feedback. It doesn't matter if the code is a work in progress or just a spike of an idea we'd love to see it. Testing is critical to our long-term success, so code submissions must include tests covering all critical logic. :heart:
 
 ### Issues
 
@@ -144,3 +144,8 @@ License
 -------
 
 [The MIT License](https://github.com/SplitTime/OpenSplitTime/blob/master/LICENSE)
+
+Copyright
+---------
+
+Copyright (c) 2015-2018 OpenSplitTime Company. See license for details.

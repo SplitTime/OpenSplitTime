@@ -17,6 +17,8 @@ class Split < ApplicationRecord
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
 
+  before_save :transliterate_base_name
+
   validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of :kind, scope: :course_id, if: :start?,
@@ -165,5 +167,11 @@ class Split < ApplicationRecord
   def live_entry_attributes
     {title: base_name,
      entries: sub_split_bitkeys.map { |bitkey| {split_id: id, sub_split_kind: SubSplit.kind(bitkey).downcase, label: name(bitkey)} }}
+  end
+
+  private
+
+  def transliterate_base_name
+    self.base_name = ActiveSupport::Inflector.transliterate(base_name) if base_name
   end
 end

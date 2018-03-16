@@ -11,12 +11,14 @@ class EventGroup < ApplicationRecord
   friendly_id :name, use: [:slugged, :history]
   has_many :events
   has_many :live_times, through: :events
+  has_many :raw_times
   belongs_to :organization
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
 
   delegate :stewards, to: :organization
   delegate :start_time, :start_time_in_home_zone, to: :first_event
+  delegate :ordered_split_names, :splits_by_event, to: :split_analyzer
 
   scope :standard_includes, -> { includes(events: :splits) }
 
@@ -39,5 +41,19 @@ class EventGroup < ApplicationRecord
 
   def first_event
     ordered_events.first
+  end
+
+  def split_and_effort_ids(split_name, bib_number)
+    eg = EventGroup.select('splits.id as split_id, efforts.id as effort_id')
+             .joins(events: [:splits, :efforts])
+             .where(id: self, efforts: {bib_number: bib_number})
+             .where('parameterize(splits.base_name) = ?', split_name.parameterize).first
+    eg ? [eg.split_id, eg.effort_id] : []
+  end
+
+  private
+
+  def split_analyzer
+    EventGroupSplitAnalyzer.new(self)
   end
 end

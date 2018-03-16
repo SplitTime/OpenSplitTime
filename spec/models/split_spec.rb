@@ -187,6 +187,12 @@ RSpec.describe Split, kind: :model do
       expect(split.errors[:longitude]).to include('must be between -180 and 180')
     end
 
+    it 'transliterates base_names before saving' do
+      split = build(:split, base_name: 'Jürgen François')
+      split.save
+      expect(split.base_name).to eq('Jurgen Francois')
+    end
+
     context 'for event_group split location validations' do
       let(:event_1) { create(:event, course: course_1, event_group: event_group) }
       let(:event_2) { create(:event, course: course_2, event_group: event_group) }

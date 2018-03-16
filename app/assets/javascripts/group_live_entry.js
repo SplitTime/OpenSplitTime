@@ -37,7 +37,7 @@
         },
 
         splitsAttributes: function () {
-          return liveEntry.eventLiveEntryData.data.attributes.combinedSplitAttributes
+          return liveEntry.eventLiveEntryData.data.attributes.ungroupedSplitAttributes
         },
 
         eventIdFromBib: function(bibNumber) {

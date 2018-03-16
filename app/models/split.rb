@@ -17,7 +17,7 @@ class Split < ApplicationRecord
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
 
-  before_save :transliterate_base_name
+  before_save :parameterize_base_name
 
   validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
@@ -171,7 +171,7 @@ class Split < ApplicationRecord
 
   private
 
-  def transliterate_base_name
-    self.base_name = ActiveSupport::Inflector.transliterate(base_name) if base_name
+  def parameterize_base_name
+    self.parameterized_base_name = base_name&.parameterize
   end
 end

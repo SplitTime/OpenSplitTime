@@ -46,8 +46,8 @@ class EventGroup < ApplicationRecord
   def split_and_effort_ids(split_name, bib_number)
     eg = EventGroup.select('splits.id as split_id, efforts.id as effort_id')
              .joins(events: [:splits, :efforts])
-             .where(id: self, efforts: {bib_number: bib_number})
-             .where('parameterize(splits.base_name) = ?', split_name.parameterize).first
+             .where(id: self, efforts: {bib_number: bib_number}, splits: {parameterized_base_name: split_name.parameterize})
+             .first
     eg ? [eg.split_id, eg.effort_id] : []
   end
 

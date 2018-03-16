@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316042826) do
+ActiveRecord::Schema.define(version: 20180316150436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,14 +280,17 @@ ActiveRecord::Schema.define(version: 20180316042826) do
     t.integer "created_by"
     t.integer "updated_by"
     t.string "description"
-    t.string "base_name"
+    t.string "base_name", null: false
     t.integer "sub_split_bitmap", default: 1
     t.decimal "latitude", precision: 9, scale: 6
     t.decimal "longitude", precision: 9, scale: 6
     t.float "elevation"
     t.string "slug", null: false
+    t.string "parameterized_base_name", null: false
+    t.index ["base_name", "course_id"], name: "index_splits_on_base_name_and_course_id", unique: true
     t.index ["course_id"], name: "index_splits_on_course_id"
     t.index ["location_id"], name: "index_splits_on_location_id"
+    t.index ["parameterized_base_name", "course_id"], name: "index_splits_on_parameterized_base_name_and_course_id", unique: true
     t.index ["slug"], name: "index_splits_on_slug", unique: true
   end
 

@@ -11,16 +11,3 @@ CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text
     AS $_$
   SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
 $_$;
-
-
--- Credit to Jakub Trmota https://github.com/forrest79/PgSQL-TransliterateUTF8ToAscii
--- Altered to approximate Rails' String#parameterize method (but without transliteration)
--- Transliteration should be performed before data is saved to relevant fields
-
-CREATE OR REPLACE FUNCTION parameterize(in_string character varying)
-  RETURNS character varying AS
-$BODY$
-  SELECT trim(BOTH '-' FROM regexp_replace(lower($1), '[^a-z0-9_]+', '-', 'g'));
-$BODY$
-  LANGUAGE sql IMMUTABLE
-  COST 1;

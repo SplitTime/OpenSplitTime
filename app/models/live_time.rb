@@ -2,6 +2,7 @@
 
 class LiveTime < ApplicationRecord
   include Auditable
+  include LiveRawTimeMethods
 
   belongs_to :event
   belongs_to :split
@@ -14,21 +15,11 @@ class LiveTime < ApplicationRecord
   validates_uniqueness_of :entered_time, scope: [:event_id, :split_id, :bitkey, :bib_number, :source, :with_pacer, :stopped_here, :remarks],
                           message: 'is an exact duplicate of an existing live time',
                           if: Proc.new { |live_time| live_time.entered_time.present? }
-  validate :absolute_or_entered_time
   validate :course_is_consistent
   validate :split_is_associated
   validate :split_is_consistent
 
-  scope :unconsidered, -> { where(pulled_by: nil).where(split_time: nil) }
-  scope :unmatched, -> { where(split_time: nil) }
-
   delegate :distance_from_start, to: :split
-
-  def absolute_or_entered_time
-    if absolute_time.blank? && entered_time.blank?
-      errors.add(:base, 'Either absolute_time or entered_time must be present')
-    end
-  end
 
   def course_is_consistent
     if event && split && (event.course_id != split.course_id)
@@ -91,32 +82,5 @@ class LiveTime < ApplicationRecord
 
   def aid_station
     event.aid_stations.find { |aid_station| aid_station.split_id == split_id }
-  end
-
-  def matched?
-    split_time_id.present?
-  end
-
-  def military_time(zone = nil)
-    (absolute_time && zone) ? TimeConversion.absolute_to_hms(absolute_time.in_time_zone(zone)) : TimeConversion.file_to_military(entered_time)
-  end
-
-  def source_text
-    case
-    when source.start_with?('ost-remote')
-      "OSTR (#{source.last(4)})"
-    when source.start_with?('ost-live-entry')
-      "Live Entry (#{created_by})"
-    else
-      source
-    end
-  end
-
-  def user_full_name
-    created_by ? User.find(created_by)&.full_name : '--'
-  end
-
-  def pulled_full_name
-    pulled_by ? User.find(pulled_by)&.full_name : '--'
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180309161741) do
+ActiveRecord::Schema.define(version: 20180316042826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -227,6 +227,27 @@ ActiveRecord::Schema.define(version: 20180309161741) do
     t.index ["user_id"], name: "index_people_on_user_id"
   end
 
+  create_table "raw_times", force: :cascade do |t|
+    t.bigint "event_group_id", null: false
+    t.bigint "split_time_id"
+    t.string "split_name", null: false
+    t.integer "bitkey", null: false
+    t.string "bib_number", null: false
+    t.datetime "absolute_time"
+    t.string "entered_time"
+    t.boolean "with_pacer", default: false
+    t.boolean "stopped_here", default: false
+    t.string "source", null: false
+    t.integer "pulled_by"
+    t.datetime "pulled_at"
+    t.integer "created_by"
+    t.integer "updated_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
+    t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
+  end
+
   create_table "split_times", id: :serial, force: :cascade do |t|
     t.integer "effort_id", null: false
     t.integer "split_id", null: false
@@ -340,6 +361,8 @@ ActiveRecord::Schema.define(version: 20180309161741) do
   add_foreign_key "live_times", "splits"
   add_foreign_key "partners", "events"
   add_foreign_key "people", "users"
+  add_foreign_key "raw_times", "event_groups"
+  add_foreign_key "raw_times", "split_times"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
   add_foreign_key "splits", "courses"

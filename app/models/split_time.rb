@@ -14,6 +14,7 @@ class SplitTime < ApplicationRecord
   belongs_to :effort
   belongs_to :split
   has_many :live_times, dependent: :nullify
+  has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
   attr_accessor :live_time_id, :time_exists, :imposed_order
 

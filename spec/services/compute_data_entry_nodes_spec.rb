@@ -34,6 +34,9 @@ RSpec.describe ComputeDataEntryNodes do
     let(:event_1_aid_stations) { [event_1_aid_1, event_1_aid_2, event_1_aid_3, event_1_aid_4] }
     let(:event_2_aid_stations) { [event_2_aid_1, event_2_aid_2, event_2_aid_3] }
 
+    before { event_1_splits.each(&:valid?) }
+    before { event_2_splits.each(&:valid?) }
+
 
     context 'when splits with matching names have matching sub_splits' do
       it 'returns an Array of data_entry_nodes' do

@@ -41,6 +41,11 @@ RSpec.describe EventGroupSplitAnalyzer do
   let(:event_2_aid_stations) { [event_2_aid_1, event_2_aid_2, event_2_aid_3] }
   let(:event_3_aid_stations) { [event_3_aid_1, event_3_aid_2, event_3_aid_3] }
 
+  before do
+    event_1_splits.each(&:valid?)
+    event_2_splits.each(&:valid?)
+  end
+
 
   describe '#splits_by_event' do
     context 'when splits with matching names are found' do

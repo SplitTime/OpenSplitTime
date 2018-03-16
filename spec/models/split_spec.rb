@@ -75,12 +75,11 @@ RSpec.describe Split, kind: :model do
       expect(split_2.errors[:base_name]).to include('must be unique for a course')
     end
 
-    it 'ignores dash separators when validating uniqueness of names within the same course' do
+    it 'ignores dash separators when validating uniqueness of parameterized names within the same course' do
       split_1 = create(:split, course: persisted_course)
       split_2 = build_stubbed(:split, course: persisted_course, base_name: split_1.base_name.split.join('-'))
-      expect(split_1.base_name).not_to eq(split_2.base_name)
       expect(split_2).not_to be_valid
-      expect(split_2.errors[:base_name]).to include('must be unique for a course')
+      expect(split_2.errors[:parameterized_base_name]).to include('must be unique for a course')
     end
 
     it 'ignores extra spaces when validating uniqueness of names within the same course' do
@@ -193,6 +192,14 @@ RSpec.describe Split, kind: :model do
       expect(split.parameterized_base_name).to eq('jurgen-francois')
     end
 
+    it 'invalidates a split whose base_name parameterizes to the same as another' do
+      split_1 = create(:split, base_name: 'La Niña')
+      expect(split_1).to be_valid
+      split_2 = build(:split, course: split_1.course, base_name: 'La Nina')
+      expect(split_2).not_to be_valid
+      expect(split_2.errors.full_messages).to include('Parameterized base name must be unique for a course')
+    end
+
     context 'for event_group split location validations' do
       let(:event_1) { create(:event, course: course_1, event_group: event_group) }
       let(:event_2) { create(:event, course: course_2, event_group: event_group) }
@@ -204,10 +211,8 @@ RSpec.describe Split, kind: :model do
       let(:course_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
       let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
       before do
-        event_1.splits << course_1_split_1
-        event_1.splits << course_1_split_2
-        event_2.splits << course_2_split_1
-        event_2.splits << course_2_split_2
+        event_1.splits << [course_1_split_1, course_1_split_2]
+        event_2.splits << [course_2_split_1, course_2_split_2]
       end
 
       context 'when split names are duplicated with matching locations within the same event_group' do
@@ -478,7 +483,8 @@ RSpec.describe Split, kind: :model do
   describe '#parameterized_base_name' do
     let(:split) { build_stubbed(:split, base_name: 'Aid Station 1') }
 
-    it 'returns a parameterized version of the base_name' do
+    it 'before validation is set to a parameterized version of the base_name' do
+      split.valid?
       expect(split.parameterized_base_name).to eq('aid-station-1')
     end
   end

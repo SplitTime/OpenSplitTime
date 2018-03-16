@@ -211,7 +211,7 @@ RSpec.describe Api::V1::EventsController do
           make_request
           parsed_response = JSON.parse(response.body)
           expect(parsed_response.dig('data', 'attributes', 'splitHeaderData').map { |header| header['title'] })
-              .to eq(Split.all.map(&:base_name))
+              .to match_array(Split.all.map(&:base_name))
         end
 
         it 'returns effort data in the expected format' do

@@ -21,6 +21,8 @@ RSpec.describe CombineEventGroupSplitAttributes do
     let(:event_2_splits) { [event_2_split_1, event_2_split_2, event_2_split_3] }
 
     before do
+      event_1_splits.each(&:valid?)
+      event_2_splits.each(&:valid?)
       allow(event_1).to receive(:ordered_splits).and_return(event_1_splits)
       allow(event_2).to receive(:ordered_splits).and_return(event_2_splits)
     end

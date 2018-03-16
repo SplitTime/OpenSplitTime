@@ -35,6 +35,9 @@ RSpec.describe ComputeDataEntryGroups do
     let(:event_1_aid_stations) { [event_1_aid_1, event_1_aid_2, event_1_aid_3, event_1_aid_4] }
     let(:event_2_aid_stations) { [event_2_aid_1, event_2_aid_2, event_2_aid_3] }
 
+    before { event_1_splits.each(&:valid?) }
+    before { event_2_splits.each(&:valid?) }
+    
 
     context 'when start and finish are at the same location' do
       it 'returns a Struct having a title and data_entry_nodes with start and finish combined' do

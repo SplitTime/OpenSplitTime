@@ -17,7 +17,7 @@ class Event < ApplicationRecord
   has_many :live_times, dependent: :delete_all
   has_many :partners, dependent: :destroy
 
-  delegate :concealed, :concealed?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,
+  delegate :concealed, :concealed?, :visible?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,
            :organization, :organization_id, to: :event_group
   delegate :stewards, to: :organization
 
@@ -154,7 +154,7 @@ class Event < ApplicationRecord
   end
 
   def permit_notifications?
-    available_live? && !finished?
+    visible? && available_live? && !finished?
   end
 
   def pick_partner_with_banner

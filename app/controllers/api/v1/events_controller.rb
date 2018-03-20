@@ -52,20 +52,20 @@ class Api::V1::EventsController < ApiController
   def import
     importer = ETL::ImporterFromContext.build(@event, params, current_user)
     importer.import
+    errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
     if importer.strict?
-      if importer.errors.present? || importer.invalid_records.present?
-        render json: {errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
-               status: :unprocessable_entity
+      if errors.present?
+        render json: {errors: errors}, status: :unprocessable_entity
       else
-        ETL::PostImportProcess.perform!(@event, importer)
+        ETL::EventImportProcess.perform!(@event, importer)
         render json: importer.saved_records, status: :created
       end
     else
-      ETL::PostImportProcess.perform!(@event, importer)
+      ETL::EventImportProcess.perform!(@event, importer)
       render json: {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
                     destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
-                    errors: importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }},
+                    errors: errors},
              status: importer.saved_records.present? ? :created : :unprocessable_entity
     end
   end

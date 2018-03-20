@@ -5,7 +5,7 @@ RSpec.describe ETL::Transformers::JsonapiBatchStrategy do
 
   let(:course) { build_stubbed(:course, id: 10) }
   let(:event) { build_stubbed(:event, id: 1, course: course) }
-  let(:options) { {event: event} }
+  let(:options) { {parent: event} }
   let(:proto_records) { subject.transform }
   let(:clean_parsed_structs) { [
       OpenStruct.new(type: 'live_time',

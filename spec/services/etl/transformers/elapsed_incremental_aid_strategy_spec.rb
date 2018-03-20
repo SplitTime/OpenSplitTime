@@ -5,7 +5,7 @@ RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
 
   let(:struct) { OpenStruct.new(attributes) }
   let(:attributes) { {full_name: 'William Abel', gender: 'male', age: '41', city: 'Byron', state_code: 'IL', times: times} }
-  let(:options) { {event: event} }
+  let(:options) { {parent: event} }
 
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }

@@ -5,7 +5,7 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
 
   let(:struct) { OpenStruct.new(attributes) }
   let(:attributes) { {full_name: 'Linda McFadden', bib_number: '187', gender: 'F', age: '54', city: 'Modesto', state_code: 'CA', times: times} }
-  let(:options) { {event: event} }
+  let(:options) { {parent: event} }
 
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
   subject { ETL::Transformers::RaceResultSplitTimesStrategy.new(parsed_structs, options) }
-  let(:options) { {event: event} }
+  let(:options) { {parent: event} }
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }
   let(:second_proto_record) { proto_records.second }
@@ -125,7 +125,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
 
       context 'when parsed_structs do not contain section splits and the provided event has only start and finish splits' do
         let(:event) { build_stubbed(:event_with_standard_splits, id: 1, splits_count: 2) }
-        let(:options) { {event: event} }
+        let(:options) { {parent: event} }
         let(:proto_records) { subject.transform }
         let(:parsed_structs) { [
             OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',

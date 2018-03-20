@@ -6,7 +6,7 @@ RSpec.describe ETL::Importer do
   context 'when importing efforts using :csv_efforts' do
     let(:source_data) { file_fixture('test_efforts_utf_8.csv') }
     let(:data_format) { :csv_efforts }
-    let(:options) { {event: event, current_user_id: 1} }
+    let(:options) { {parent: event, current_user_id: 1} }
     let(:event) { create(:event) }
 
     it 'creates new efforts within the given event' do
@@ -22,7 +22,7 @@ RSpec.describe ETL::Importer do
   context 'when importing splits using :csv_splits into a course with no existing splits' do
     let(:source_data) { file_fixture('test_splits.csv') }
     let(:data_format) { :csv_splits }
-    let(:options) { {event: event, current_user_id: 1} }
+    let(:options) { {parent: event, current_user_id: 1} }
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
 
@@ -39,7 +39,7 @@ RSpec.describe ETL::Importer do
   context 'when importing splits using :csv_splits into a course with existing start and finish splits' do
     let(:source_data) { file_fixture('test_splits.csv') }
     let(:data_format) { :csv_splits }
-    let(:options) { {event: event, current_user_id: 1} }
+    let(:options) { {parent: event, current_user_id: 1} }
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
     before do
@@ -60,7 +60,7 @@ RSpec.describe ETL::Importer do
   context 'when importing minimal splits using :csv_splits into a course with existing start and finish splits' do
     let(:source_data) { file_fixture('test_splits_minimal.csv') }
     let(:data_format) { :csv_splits }
-    let(:options) { {event: event, current_user_id: 1} }
+    let(:options) { {parent: event, current_user_id: 1} }
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
     before do

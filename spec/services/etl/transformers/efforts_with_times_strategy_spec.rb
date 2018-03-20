@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
   subject { ETL::Transformers::EffortsWithTimesStrategy.new(structs, options) }
-  let(:options) { {event: event} }
+  let(:options) { {parent: event} }
   let(:proto_records) { subject.transform }
   let(:keys) { proto_records.first.to_h.keys }
   let(:children) { subject_proto_record.children }
@@ -130,7 +130,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
 
     context 'when given valid data using military times' do
       let(:event) { build_stubbed(:event_with_standard_splits, id: 1, splits_count: 3) }
-      let(:options) { {event: event, time_format: :military} }
+      let(:options) { {parent: event, time_format: :military} }
       let(:structs) { [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: 'Chris', Last_name: 'Dickey', Gender: 'male', Age: 43, State_code: 'CO', Country_code: 'US',
                                       Start: '10:00:00',
                                       Jaws_In: '20:34:03', Jaws_Out: '20:43:20',
@@ -186,7 +186,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
     end
 
     context 'when an event has unlimited laps' do
-      let(:options) { {event: event} }
+      let(:options) { {parent: event} }
       let(:event) { build_stubbed(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 3, laps_required: 0) }
       let(:structs) { [
           OpenStruct.new(First_name: 'Patrick', Last_name: 'McGlade', Gender: 'male', Age: 25, State_code: 'CO', Country_code: 'US',
@@ -264,7 +264,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
       let(:structs) { [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: 'Chris', Last_name: 'Dickey', Gender: 'male', Age: 43, State_code: 'CO', Country_code: 'US',
                                       Start_Offset: '00:00:00',
                                       Finish: '22:24:07')] }
-      let(:options) { {event: event, time_format: :random_format} }
+      let(:options) { {parent: event, time_format: :random_format} }
       let(:event) { build_stubbed(:event_with_standard_splits, splits_count: 2) }
 
       it 'returns an error' do
@@ -276,7 +276,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
 
     context 'when no structs are provided' do
       let(:structs) { [] }
-      let(:options) { {event: event} }
+      let(:options) { {parent: event} }
       let(:event) { build_stubbed(:event_with_standard_splits, splits_count: 2) }
 
       it 'returns an empty array of proto_records without returning an error' do

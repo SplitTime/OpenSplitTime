@@ -59,7 +59,7 @@ class Api::V1::EventsController < ApiController
     data_format = params[:data_format]&.to_sym
     strict = params[:load_records] != 'single'
     unique_key = params[:unique_key].present? ? (params[:unique_key] + ['event_id']).uniq : nil
-    options = {event: @event, current_user_id: current_user.id, strict: strict}
+    options = {parent: @event, current_user_id: current_user.id, strict: strict}
     options[:unique_key] = unique_key if unique_key # unique_key: nil will tromp standard unique_keys
 
     importer = ETL::Importer.new(params[:data], data_format, options)

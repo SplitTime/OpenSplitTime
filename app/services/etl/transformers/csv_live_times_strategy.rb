@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module ETL::Transformers
-  class CsvLiveTimesStrategy
-    include ETL::Errors
-    attr_reader :errors
+  class CsvLiveTimesStrategy < BaseTransformer
     attr_writer :proto_records
 
     def initialize(parsed_structs, options)
@@ -28,7 +26,7 @@ module ETL::Transformers
 
     private
 
-    attr_reader :parsed_structs, :options, :proto_records
+    attr_reader :parsed_structs, :proto_records
 
     def proto_records_from_struct(struct)
       records = [proto_record_in(struct), proto_record_out(struct)]
@@ -47,10 +45,6 @@ module ETL::Transformers
 
     def global_attributes
       {event_id: event.id, split_id: split.id}
-    end
-
-    def event
-      options[:event]
     end
 
     def split

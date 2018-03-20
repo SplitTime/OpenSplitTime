@@ -302,6 +302,7 @@ RSpec.describe Api::V1::EventsController do
           expect(LiveTime.all.map(&:bib_number)).to all eq(bib_number)
           expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
           expect(LiveTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+          expect(LiveTime.all.map(&:event_id)).to all eq(event.id)
         end
 
         context 'when there is a duplicate live_time in the database' do

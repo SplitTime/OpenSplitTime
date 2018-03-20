@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 module ETL::Transformers
-  class RaceResultSplitTimesStrategy
-    include ETL::Errors
-    attr_reader :errors
-
+  class RaceResultSplitTimesStrategy < BaseTransformer
     def initialize(parsed_structs, options)
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options
@@ -29,7 +26,7 @@ module ETL::Transformers
 
     private
 
-    attr_reader :proto_records, :options
+    attr_reader :proto_records
 
     def add_section_times!
       proto_records.each do |proto_record|
@@ -102,10 +99,6 @@ module ETL::Transformers
 
     def global_attributes
       {event_id: event.id}
-    end
-
-    def event
-      options[:event]
     end
 
     def time_points

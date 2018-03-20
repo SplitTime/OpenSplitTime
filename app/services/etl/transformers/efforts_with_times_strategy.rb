@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 module ETL::Transformers
-  class EffortsWithTimesStrategy
-    include ETL::Errors
-    attr_reader :errors
-
+  class EffortsWithTimesStrategy < BaseTransformer
     TIME_ATTRIBUTE_MAP = {elapsed: :time_from_start, military: :military_time}
 
     def initialize(parsed_structs, options)
@@ -26,7 +23,7 @@ module ETL::Transformers
 
     private
 
-    attr_reader :proto_records, :options
+    attr_reader :proto_records
 
     def transform_time_data!(proto_record)
       extract_times(proto_record)
@@ -54,10 +51,6 @@ module ETL::Transformers
 
     def time_format
       options[:time_format]&.to_sym || :elapsed
-    end
-
-    def event
-      options[:event]
     end
 
     def time_attribute

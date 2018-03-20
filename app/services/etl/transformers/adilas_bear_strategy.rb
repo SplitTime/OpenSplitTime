@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 module ETL::Transformers
-  class AdilasBearStrategy
-    include ETL::Errors
-    attr_reader :errors
-
+  class AdilasBearStrategy < BaseTransformer
     def initialize(parsed_struct, options)
       @proto_record = ProtoRecord.new(parsed_struct)
       @options = options
@@ -26,7 +23,7 @@ module ETL::Transformers
 
     private
 
-    attr_reader :proto_record, :options
+    attr_reader :proto_record
 
     def transform_time_data
       sort_and_fill_times
@@ -69,10 +66,6 @@ module ETL::Transformers
 
     def time_points
       @time_points ||= event.required_time_points
-    end
-
-    def event
-      options[:event]
     end
 
     def validate_setup

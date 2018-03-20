@@ -27,7 +27,7 @@ module ETL
         match_response = Interactors::MatchRawTimes.perform!(event_group: event_group, raw_times: raw_times)
         unmatched_raw_times = match_response.resources[:unmatched]
         Interactors::CreateSplitTimesFromRawTimes.perform!(event_group: event_group, raw_times: unmatched_raw_times) if event_group.auto_live_times?
-        report_live_times_available(event_group)
+        report_raw_times_available(event_group)
       end
     end
 

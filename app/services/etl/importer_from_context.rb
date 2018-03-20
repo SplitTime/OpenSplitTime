@@ -43,7 +43,11 @@ module ETL
     end
 
     def unique_key
-      params[:unique_key].present? ? (params[:unique_key] + ['event_id']).uniq : nil
+      params[:unique_key].present? ? (params[:unique_key] + [parent_id_attribute]).uniq : nil
+    end
+
+    def parent_id_attribute
+      "#{parent.class.name.underscore}_id"
     end
   end
 end

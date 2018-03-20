@@ -224,10 +224,10 @@ RSpec.describe Interactors::MatchLiveTimes do
       expect(live_times.map(&:split_time_id)).to all be_nil
       response = subject.perform!
       expect(response).to be_successful
-      expect(response.resources[:matched_live_times]).to match_array(matching_live_times)
-      expect(response.resources[:unmatched_live_times]).to match_array(non_matching_live_times)
-      expect(matching_live_times.map(&:split_time_id)).to match_array(matching_split_times.map(&:id))
-      expect(non_matching_live_times.map(&:split_time_id)).to all be_nil
+      expect(response.resources[:matched]).to match_array(matching_live_times)
+      expect(response.resources[:unmatched]).to match_array(non_matching_live_times)
+      expect(response.resources[:matched].map(&:split_time_id)).to match_array(matching_split_times.map(&:id))
+      expect(response.resources[:unmatched].map(&:split_time_id)).to all be_nil
     end
   end
 end

@@ -130,6 +130,7 @@ Rails.application.routes.draw do
       resources :efforts, only: [:show, :create, :update, :destroy]
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
+          post :import
           patch :pull_live_time_rows
           get :trigger_live_times_push
         end

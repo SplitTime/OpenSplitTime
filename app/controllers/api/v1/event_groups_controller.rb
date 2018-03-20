@@ -8,6 +8,29 @@ class Api::V1::EventGroupsController < ApiController
     render json: event_group, include: prepared_params[:include], fields: prepared_params[:fields]
   end
 
+  def import
+    authorize @resource
+
+    importer = ETL::ImporterFromContext.build(@resource, params, current_user)
+    importer.import
+    errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
+
+    if importer.strict?
+      if errors.present?
+        render json: {errors: errors}, status: :unprocessable_entity
+      else
+        ETL::EventGroupImportProcess.perform!(@resource, importer)
+        render json: importer.saved_records, status: :created
+      end
+    else
+      ETL::EventGroupImportProcess.perform!(@resource, importer)
+      render json: {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                    destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                    errors: errors},
+             status: importer.saved_records.present? ? :created : :unprocessable_entity
+    end
+  end
+
   def pull_live_time_rows
 
     # This endpoint searches for un-pulled live_times belonging to the event_group, selects a batch,

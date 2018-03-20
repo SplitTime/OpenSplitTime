@@ -43,6 +43,14 @@ class EventGroup < ApplicationRecord
     ordered_events.first
   end
 
+  def split_times
+    SplitTime.joins(:effort).where(efforts: {event_id: events})
+  end
+
+  def visible?
+    !concealed?
+  end
+
   def split_and_effort_ids(split_name, bib_number)
     eg = EventGroup.select('splits.id as split_id, efforts.id as effort_id')
              .joins(events: [:splits, :efforts])

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316150436) do
+ActiveRecord::Schema.define(version: 20180320072722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(version: 20180316150436) do
     t.integer "updated_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "parameterized_split_name", null: false
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
   end

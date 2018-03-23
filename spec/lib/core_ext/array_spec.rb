@@ -1,4 +1,16 @@
 RSpec.describe Array do
+  describe '#average' do
+    it 'computes the average of elements in the Array' do
+      array = [1, 2, 3]
+      expect(array.average).to eq(2)
+    end
+
+    it 'works properly when the answer is not an integer' do
+      array = [1, 2]
+      expect(array.average).to eq(1.5)
+    end
+  end
+
   describe '#elements_before' do
     it 'returns all elements in the array indexed prior to the provided parameter' do
       array = %w(cat bird sheep ferret coyote)

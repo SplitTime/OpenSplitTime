@@ -11,9 +11,7 @@ class LiveEffortMailData
                            exclusive: [:person, :person_id, :split_times, :split_time_ids, :multi_lap],
                            class: self.class)
     @person = args[:person] || Person.friendly.find(args[:person_id])
-    @split_times = args[:split_times] || SplitTime.where(id: args[:split_time_ids])
-                                             .eager_load(:split, effort: :event)
-    @multi_lap = args[:multi_lap] || false
+    @split_times = args[:split_times] || SplitTime.where(id: args[:split_time_ids]).includes(:split, effort: :event)
   end
 
   def effort_data
@@ -48,7 +46,7 @@ class LiveEffortMailData
   end
 
   def multi_lap?
-    @multi_lap
+    split_times.any? { |split_time| split_time.lap > 1 }
   end
 
   def split_distance(split_time)

@@ -31,56 +31,62 @@ RSpec.describe LiveEffortMailData do
   end
 
   describe '#effort_data' do
+    subject { LiveEffortMailData.new(person: person, split_times: split_times) }
     let(:person) { build_stubbed(:person) }
     let(:event) { build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
-    let(:test_effort) { event.efforts.first }
-    let(:split_times) { test_effort.split_times }
+    let(:effort) { event.efforts.first }
+    let(:effort_split_times) { effort.split_times }
+    let(:split_times) { [in_split_time, out_split_time] }
+    let(:expected_effort_data) { {full_name: effort.full_name,
+                                  event_name: event.name,
+                                  split_times_data: expected_split_times_data,
+                                  effort_slug: effort.slug,
+                                  event_slug: event.slug} }
+
+    let(:expected_split_times_data) {
+      [{split_name: expected_in_split_name,
+        split_distance: expected_in_distance,
+        day_and_time: in_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+        elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
+        pacer: nil,
+        stopped_here: in_split_time.stopped_here},
+       {split_name: expected_out_split_name,
+        split_distance: expected_out_distance,
+        day_and_time: out_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+        elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
+        pacer: nil,
+        stopped_here: out_split_time.stopped_here}]
+    }
 
     before { FactoryBot.reload }
 
-    it 'returns a hash containing effort and split_time data' do
-      effort = test_effort
-      allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      in_split_time = split_times[1]
-      out_split_time = split_times[2]
-      out_split_time.stopped_here = true
-      multi_lap = false
-      validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
+    context 'when all split_times are in lap 1' do
+      let(:in_split_time) { effort_split_times[1] }
+      let(:out_split_time) { effort_split_times[2] }
+
+      let(:expected_in_split_name) { in_split_time.split_name }
+      let(:expected_out_split_name) { out_split_time.split_name }
+      let(:expected_in_distance) { 10000 }
+      let(:expected_out_distance) { 10000 }
+
+      it 'returns a hash containing effort and split_time data' do
+        expect(subject.effort_data).to eq(expected_effort_data)
+      end
     end
 
-    it 'returns a hash containing effort and split_time data' do
-      effort = test_effort
-      allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      in_split_time = split_times[1]
-      out_split_time = split_times[2]
-      out_split_time.stopped_here = true
-      multi_lap = true
-      validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
-    end
+    context 'when one or more split_times has a lap greater than 1' do
+      let(:in_split_time) { effort_split_times[1] }
+      let(:out_split_time) { effort_split_times[2] }
+      before { out_split_time.lap = 2 }
 
-    def validate_effort_data(effort, in_split_time, out_split_time, multi_lap)
-      split_times = [in_split_time, out_split_time]
-      in_split_name = multi_lap ? in_split_time.split_name_with_lap : in_split_time.split_name
-      out_split_name = multi_lap ? out_split_time.split_name_with_lap : out_split_time.split_name
-      split_times_data = [{split_name: in_split_name,
-                           split_distance: in_split_time.split.distance_from_start,
-                           day_and_time: in_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
-                           elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
-                           pacer: nil,
-                           stopped_here: in_split_time.stopped_here},
-                          {split_name: out_split_name,
-                           split_distance: out_split_time.split.distance_from_start,
-                           day_and_time: out_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
-                           elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
-                           pacer: nil,
-                           stopped_here: out_split_time.stopped_here}]
-      mail_data = LiveEffortMailData.new(person: person, split_times: split_times, multi_lap: multi_lap)
-      expected = {full_name: effort.full_name,
-                  event_name: event.name,
-                  split_times_data: split_times_data,
-                  effort_slug: effort.slug,
-                  event_slug: event.slug}
-      expect(mail_data.effort_data).to eq(expected)
+      let(:expected_in_split_name) { in_split_time.split_name_with_lap }
+      let(:expected_out_split_name) { out_split_time.split_name_with_lap }
+      let(:expected_in_distance) { 10000 }
+      let(:expected_out_distance) { 30000 }
+
+      it 'uses split names with a lap indicator and adjusts distance as expected' do
+        expect(subject.effort_data).to eq(expected_effort_data)
+      end
     end
   end
 end

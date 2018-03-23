@@ -54,9 +54,7 @@ module Interactors
       notify_split_times = SplitTime.where(id: created_split_times.map(&:id)).includes(:effort).where.not(efforts: {person_id: nil})
       indexed_split_times = notify_split_times.group_by { |st| st.effort.person_id }
       indexed_split_times.each do |person_id, split_times|
-        NotifyFollowersJob.perform_later(person_id: person_id,
-                                         split_time_ids: split_times.map(&:id),
-                                         multi_lap: event.multiple_laps?) unless person_id.zero?
+        NotifyFollowersJob.perform_later(person_id: person_id, split_time_ids: split_times.map(&:id)) unless person_id.zero?
       end
     end
 

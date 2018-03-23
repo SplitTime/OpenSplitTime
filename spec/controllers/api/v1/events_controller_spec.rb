@@ -408,10 +408,7 @@ RSpec.describe Api::V1::EventsController do
             split_time_ids = SplitTime.all.ids
             person_id = SplitTime.first.effort.person_id
 
-            expect(NotifyFollowersJob).to have_received(:perform_later)
-                                              .with(person_id: person_id,
-                                                    split_time_ids: split_time_ids.sort,
-                                                    multi_lap: false)
+            expect(NotifyFollowersJob).to have_received(:perform_later).with(person_id: person_id, split_time_ids: split_time_ids.sort)
           end
 
           it 'sends a message to Interactors::UpdateEffortsStatus with the efforts associated with the modified split_times' do

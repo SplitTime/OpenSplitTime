@@ -418,10 +418,10 @@ RSpec.describe Api::V1::EventGroupsController do
           let!(:person) { create(:person) }
           let(:data) { [
               {type: 'raw_time',
-               attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 1, absoluteTime: absolute_time_in,
+               attributes: {bibNumber: '101', splitName: splits.second.base_name, bitkey: 1, absoluteTime: absolute_time_in,
                             withPacer: true, stoppedHere: false, source: source}},
               {type: 'raw_time',
-               attributes: {bibNumber: '101', splitId: splits.second.id, bitkey: 64, absoluteTime: absolute_time_out,
+               attributes: {bibNumber: '101', splitName: splits.second.base_name, bitkey: 64, absoluteTime: absolute_time_out,
                             withPacer: true, stoppedHere: true, source: source}}
           ] }
 
@@ -431,7 +431,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(RawTime.all.size).to eq(2)
             expect(SplitTime.all.size).to eq(2)
 
-            expect(RawTime.all.pluck(:split_time_id).sort).to eq(SplitTime.all.pluck(:id).sort)
+            expect(RawTime.all.pluck(:split_time_id)).to match_array(SplitTime.all.ids)
           end
 
           xit 'sends a message to NotifyFollowersJob with relevant person and split_time data' do

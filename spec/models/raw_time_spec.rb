@@ -33,14 +33,16 @@ RSpec.describe RawTime, type: :model do
     before { event_1.splits << course_1_split }
     before { event_2.splits << course_2_split }
 
-    let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: event_1_efforts.first.bib_number) }
-    let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: event_1_efforts.second.bib_number) }
-    let!(:raw_time_3) { create(:raw_time, event_group: event_group, bib_number: event_2_efforts.first.bib_number) }
-    let!(:raw_time_4) { create(:raw_time, event_group: event_group, bib_number: event_2_efforts.second.bib_number) }
+    let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: event_1_efforts.first.bib_number, split_name: course_1_split.base_name) }
+    let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: event_1_efforts.second.bib_number, split_name: course_1_split.base_name) }
+    let!(:raw_time_3) { create(:raw_time, event_group: event_group, bib_number: event_2_efforts.first.bib_number, split_name: course_2_split.base_name) }
+    let!(:raw_time_4) { create(:raw_time, event_group: event_group, bib_number: event_2_efforts.second.bib_number, split_name: course_2_split.base_name) }
 
-    it 'returns raw_times with split_ids attributes loaded' do
-      raw_times = RawTime.all.with_split_ids
+    it 'returns raw_times with effort_id and split_id attributes loaded' do
+      raw_times = RawTime.all.with_effort_split_ids
       expect(raw_times.size).to eq(4)
+      expect(raw_times.map(&:effort_id)).to match_array(Effort.all.ids)
+      expect(raw_times.map(&:split_id)).to match_array([course_1_split.id, course_1_split.id, course_2_split.id, course_2_split.id])
     end
   end
 

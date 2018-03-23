@@ -6,5 +6,9 @@ FactoryBot.define do
     bib_number { rand(1..999).to_s }
     absolute_time { FFaker::Time.datetime }
     source 'ost-test'
+
+    after(:build, :stub) do |raw_time|
+      raw_time.parameterized_split_name = raw_time.split_name.parameterize
+    end
   end
 end

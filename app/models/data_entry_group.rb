@@ -6,7 +6,11 @@ DataEntryGroup = Struct.new(:data_entry_nodes) do
     data_entry_nodes.map(&:min_distance_from_start).compact.min
   end
 
+  def split_names
+    data_entry_nodes.map(&:split_name)
+  end
+
   def title
-    data_entry_nodes.map { |node| node.split_name.split('-').join(' ').titleize }.uniq.join('/')
+    split_names.map { |name| name.split('-').join(' ').titleize }.uniq.join('/')
   end
 end

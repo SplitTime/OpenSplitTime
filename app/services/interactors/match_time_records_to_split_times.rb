@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interactors
-  class MatchTimeRecords
+  class MatchTimeRecordsToSplitTimes
     include Interactors::Errors
 
     def self.perform!(args)
@@ -22,7 +22,7 @@ module Interactors
 
     def perform!
       unless errors.present?
-        time_records.each { |lt| match_time_record_to_split_time(lt) }
+        time_records.each { |time_record| match_time_record_to_split_time(time_record) }
       end
       Interactors::Response.new(errors, message, resources)
     end
@@ -42,15 +42,15 @@ module Interactors
     end
 
     def matching_split_time(time_record)
-      !time_record.matched? && split_times.find { |split_time| matching_record(split_time, time_record) }
+      time_record.unmatched? && split_times.find { |split_time| matching_record(split_time, time_record) }
     end
 
     def matching_record(split_time, time_record)
       (split_time.split_id == time_record.split_id) &&
           (split_time.bitkey == time_record.bitkey) &&
-          (split_time.bib_number.to_s == time_record.bib_number) &&
-          ((time_record.stopped_here || false) == (split_time.stopped_here || false)) &&
-          ((time_record.with_pacer || false) == (split_time.pacer || false)) &&
+          (split_time.bib_number == time_record.bib_number) &&
+          (!split_time.stopped_here == !time_record.stopped_here) &&
+          (!split_time.pacer == !time_record.with_pacer) &&
           time_matches(split_time, time_record)
     end
 
@@ -68,7 +68,7 @@ module Interactors
     end
 
     def message
-      "Matched #{matched.size} live times. Did not match #{unmatched.size} live times. "
+      "Matched #{matched.size} time records. Did not match #{unmatched.size} time records. "
     end
   end
 end

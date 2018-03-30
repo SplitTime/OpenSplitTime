@@ -18,9 +18,9 @@ require 'rails_helper'
 
 RSpec.describe RawTime, type: :model do
   it_behaves_like 'auditable'
-  it_behaves_like 'live_raw_times_methods'
+  it_behaves_like 'time_recordable'
   
-  describe '.with_split_ids' do
+  describe '.with_relation_ids' do
     let(:event_1_efforts) { create_list(:effort, 2, event: event_1) }
     let(:event_1) { create(:event, course: course_1, event_group: event_group) }
     let(:event_2_efforts) { create_list(:effort, 2, event: event_2) }
@@ -38,11 +38,12 @@ RSpec.describe RawTime, type: :model do
     let!(:raw_time_3) { create(:raw_time, event_group: event_group, bib_number: event_2_efforts.first.bib_number, split_name: course_2_split.base_name) }
     let!(:raw_time_4) { create(:raw_time, event_group: event_group, bib_number: event_2_efforts.second.bib_number, split_name: course_2_split.base_name) }
 
-    it 'returns raw_times with effort_id and split_id attributes loaded' do
-      raw_times = RawTime.all.with_effort_split_ids
+    it 'returns raw_times with effort_id, split_id, and event_id attributes loaded' do
+      raw_times = RawTime.all.with_relation_ids
       expect(raw_times.size).to eq(4)
       expect(raw_times.map(&:effort_id)).to match_array(Effort.all.ids)
       expect(raw_times.map(&:split_id)).to match_array([course_1_split.id, course_1_split.id, course_2_split.id, course_2_split.id])
+      expect(raw_times.map(&:event_id)).to match_array([event_1.id, event_1.id, event_2.id, event_2.id])
     end
   end
 

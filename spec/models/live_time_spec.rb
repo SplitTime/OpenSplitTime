@@ -16,7 +16,7 @@ require 'rails_helper'
 
 RSpec.describe LiveTime, type: :model do
   it_behaves_like 'auditable'
-  it_behaves_like 'live_raw_times_methods'
+  it_behaves_like 'time_recordable'
 
   let(:effort) { build_stubbed(:effort, event: event) }
   let(:event) { build_stubbed(:event, course: course, splits: [split]) }

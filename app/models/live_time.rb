@@ -2,7 +2,7 @@
 
 class LiveTime < ApplicationRecord
   include Auditable
-  include LiveRawTimeMethods
+  include TimeRecordable
 
   belongs_to :event
   belongs_to :split

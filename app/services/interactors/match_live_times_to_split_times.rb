@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interactors
-  class MatchLiveTimes
+  class MatchLiveTimesToSplitTimes
     include Interactors::Errors
 
     def self.perform!(args)
@@ -16,7 +16,7 @@ module Interactors
       @event = args[:event]
       @live_times = args[:live_times]
       @tolerance = args[:tolerance] || 1.minute
-      @split_times = event.split_times.with_live_time_matchers
+      @split_times = event.split_times.with_time_record_matchers
       @errors = []
       validate_setup
     end
@@ -25,7 +25,7 @@ module Interactors
       if errors.present?
         Interactors::Response.new(errors, "Live times could not be matched. ")
       else
-        Interactors::MatchTimeRecords.perform!(time_records: live_times, split_times: split_times, tolerance: tolerance)
+        Interactors::MatchTimeRecordsToSplitTimes.perform!(time_records: live_times, split_times: split_times, tolerance: tolerance)
       end
     end
 

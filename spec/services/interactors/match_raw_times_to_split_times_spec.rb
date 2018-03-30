@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Interactors::MatchRawTimes do
-  subject { Interactors::MatchRawTimes.new(event_group: event_group, raw_times: raw_times, tolerance: tolerance) }
+RSpec.describe Interactors::MatchRawTimesToSplitTimes do
+  subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: event_group, raw_times: raw_times, tolerance: tolerance) }
   let(:tolerance) { nil }
   let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0) }
   let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 60.minutes) }
@@ -37,22 +37,22 @@ RSpec.describe Interactors::MatchRawTimes do
   describe '#initialize' do
     let(:raw_times) { [raw_time_1, raw_time_2, raw_time_3] }
 
-    context 'when event_group and raw_times arguments are provided' do
+    context 'when an event_group and raw_times are provided' do
       it 'initializes' do
         expect { subject }.not_to raise_error
       end
     end
 
-    context 'when no event_group is provided' do
-      subject { Interactors::MatchRawTimes.new(event_group: nil, raw_times: raw_times) }
+    context 'when no event_group argument is provided' do
+      subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: nil, raw_times: raw_times) }
 
       it 'raises an error' do
         expect { subject }.to raise_error(/must include event_group/)
       end
     end
 
-    context 'when no split_time_ids argument is provided' do
-      subject { Interactors::MatchRawTimes.new(event_group: event_group, raw_times: nil) }
+    context 'when no raw_times argument is provided' do
+      subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: event_group, raw_times: nil) }
 
       it 'raises an error' do
         expect { subject }.to raise_error(/must include raw_times/)

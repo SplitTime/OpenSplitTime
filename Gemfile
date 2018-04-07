@@ -45,11 +45,11 @@ gem 'american_date'
 gem 'paperclip', '~> 5.2.0'
 gem 'dalli'
 gem 'record_tag_helper'
-gem 'newrelic_rpm'
 gem 'bootsnap'
 gem 'webpacker', '~> 3.0'
 gem 'gpx'
 gem 'activerecord-import'
+gem 'skylight', '~> 1.6'
 
 
 group :development do

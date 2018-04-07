@@ -186,7 +186,7 @@ GEM
       less (~> 2.6.0)
       sprockets (> 2, < 4)
       tilt
-    loofah (2.2.0)
+    loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -205,7 +205,6 @@ GEM
     msgpack (1.2.2)
     multi_json (1.13.1)
     netrc (0.11.0)
-    newrelic_rpm (4.8.0.341)
     nio4r (2.2.0)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
@@ -352,6 +351,8 @@ GEM
       redis (>= 3.3.5, < 5)
     sitemap_generator (6.0.1)
       builder (~> 3.0)
+    skylight (1.6.0)
+      activesupport (>= 3.0.0)
     smarter_csv (1.2.3)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -451,7 +452,6 @@ DEPENDENCIES
   jquery-ui-rails (~> 6.0)
   jwt
   momentjs-rails
-  newrelic_rpm
   paperclip (~> 5.2.0)
   pg (~> 0.20)
   pg_search
@@ -473,6 +473,7 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq
   sitemap_generator
+  skylight (~> 1.6)
   smarter_csv
   spring
   spring-commands-rspec

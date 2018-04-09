@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EventGroupSerializer < BaseSerializer
-  attributes :id, :name, :organization_id, :concealed, :available_live, :auto_live_times, :slug,
+  attributes :id, :name, :organization_id, :concealed, :available_live, :auto_live_times, :monitor_pacers, :slug,
              :combined_split_attributes, :ungrouped_split_attributes
   link(:self) { api_v1_event_group_path(object) }
 

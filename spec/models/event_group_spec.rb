@@ -6,6 +6,7 @@ require 'rails_helper'
 # t.boolean  "auto_live_times", default: false
 # t.boolean  "concealed",       default: false
 # t.string   "slug"
+# t.boolean  "monitor_pacers", default: false
 
 RSpec.describe EventGroup, type: :model do
 

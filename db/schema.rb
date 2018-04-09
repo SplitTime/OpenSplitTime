@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316150436) do
+ActiveRecord::Schema.define(version: 20180409190456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20180316150436) do
     t.integer "updated_by"
     t.string "slug"
     t.integer "data_entry_grouping_strategy", default: 0
+    t.boolean "monitor_pacers", default: false
     t.index ["organization_id"], name: "index_event_groups_on_organization_id"
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true
   end
@@ -117,7 +118,6 @@ ActiveRecord::Schema.define(version: 20180316150436) do
     t.integer "event_group_id"
     t.string "short_name"
     t.string "podium_template"
-    t.boolean "monitor_pacers", default: false
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
     t.index ["slug"], name: "index_events_on_slug", unique: true
@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(version: 20180316150436) do
   end
 
   create_table "partners", id: :serial, force: :cascade do |t|
-    t.integer "event_id", null: false
+    t.integer "event_id"
     t.string "banner_link"
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(version: 20180316150436) do
     t.integer "updated_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "parameterized_split_name", null: false
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
   end

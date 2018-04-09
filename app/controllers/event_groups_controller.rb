@@ -33,10 +33,10 @@ class EventGroupsController < ApplicationController
       setter = EventConcealedSetter.new(event_group: @event_group, concealed: @event_group.concealed)
       setter.perform
       flash[:danger] = setter.response[:errors] unless setter.status == :ok
-      redirect_to @event_group
+      redirect_to event_group_path(@event_group, force_settings: true)
 
     elsif @event_group.save
-      redirect_to @event_group
+      redirect_to event_group_path(@event_group, force_settings: true)
 
     else
       render 'edit'

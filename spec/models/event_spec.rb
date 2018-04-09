@@ -12,7 +12,6 @@ require 'rails_helper'
 # t.integer  "event_group_id"
 # t.string   "short_name"
 # t.string   "podium_template"
-# t.boolean  "monitor_pacers", default: false
 
 RSpec.describe Event, type: :model do
   it_behaves_like 'auditable'

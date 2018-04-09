@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180320072722) do
+ActiveRecord::Schema.define(version: 20180409190456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20180320072722) do
     t.integer "updated_by"
     t.string "slug"
     t.integer "data_entry_grouping_strategy", default: 0
+    t.boolean "monitor_pacers", default: false
     t.index ["organization_id"], name: "index_event_groups_on_organization_id"
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true
   end
@@ -117,7 +118,6 @@ ActiveRecord::Schema.define(version: 20180320072722) do
     t.integer "event_group_id"
     t.string "short_name"
     t.string "podium_template"
-    t.boolean "monitor_pacers", default: false
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
     t.index ["slug"], name: "index_events_on_slug", unique: true

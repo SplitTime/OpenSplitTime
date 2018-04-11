@@ -24,56 +24,32 @@ RSpec.describe EffortAutoReconciler do
   let(:options) { nil }
 
   describe '#reconcile' do
-    it 'creates new people for unmatched efforts' do
+    it 'creates new people for unmatched efforts, properly assigns efforts to people, and produces an accurate report' do
       subject.reconcile
       expect(Person.all.count).to eq(9)
-    end
-
-    it 'assigns unmatched efforts to newly created people' do
-      subject.reconcile
-      effort6 = Effort.find_by(last_name: 'Fredrickson')
-      effort7 = Effort.find_by(last_name: 'Gottfredson')
-      effort8 = Effort.find_by(last_name: 'Hendrickson')
-      effort9 = Effort.find_by(last_name: 'Isaacson')
 
       person6 = Person.find_by(last_name: 'Fredrickson')
       person7 = Person.find_by(last_name: 'Gottfredson')
       person8 = Person.find_by(last_name: 'Hendrickson')
       person9 = Person.find_by(last_name: 'Isaacson')
 
-      expect(effort6.person).to eq(person6)
-      expect(effort7.person).to eq(person7)
-      expect(effort8.person).to eq(person8)
-      expect(effort9.person).to eq(person9)
-    end
-
-    it 'assigns exact matching efforts to existing people' do
-      subject.reconcile
-      effort1 = Effort.find_by(last_name: 'Abelman')
-      effort2 = Effort.find_by(last_name: 'Benenson')
+      [effort1, effort2, effort3, effort4, effort6, effort6, effort7, effort8, effort9].each(&:reload)
 
       expect(effort1.person).to eq(person1)
       expect(effort2.person).to eq(person2)
-    end
-
-    it 'does not assign close matching efforts to any person' do
-      subject.reconcile
-      effort3 = Effort.find_by(last_name: 'Carlson')
-      effort4 = Effort.find_by(last_name: 'Danielson')
-      effort5 = Effort.find_by(last_name: 'Eagleston')
 
       expect(effort3.person).to be_nil
       expect(effort4.person).to be_nil
       expect(effort5.person).to be_nil
-    end
 
-    describe '#report' do
-      it 'produces an accurate report' do
-        subject.reconcile
-        expect(subject.report).to include('We found 2 people that matched our database.')
-        expect(subject.report).to include('We created 4 people from efforts that had no close matches.')
-        expect(subject.report).to include('We found 3 people that may or may not match our database.')
-      end
+      expect(effort6.person).to eq(person6)
+      expect(effort7.person).to eq(person7)
+      expect(effort8.person).to eq(person8)
+      expect(effort9.person).to eq(person9)
+
+      expect(subject.report).to include('We found 2 people that matched our database.')
+      expect(subject.report).to include('We created 4 people from efforts that had no close matches.')
+      expect(subject.report).to include('We found 3 people that may or may not match our database.')
     end
   end
 end

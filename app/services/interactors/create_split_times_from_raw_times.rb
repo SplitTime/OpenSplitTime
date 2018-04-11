@@ -34,6 +34,7 @@ module Interactors
     private
 
     attr_reader :event_group, :raw_times, :created_split_times, :errors
+    delegate :events, to: :event_group
 
     def create_and_update_resources(split_time)
       if split_time.save
@@ -63,11 +64,18 @@ module Interactors
     end
 
     def creatable_effort_data_objects
-      effort_data_objects.select { |effort_data| effort_data.clean? && effort_data.valid? }
+      @creatable_effort_data_objects ||= effort_data_objects.select { |effort_data| effort_data.clean? && effort_data.valid? }
     end
 
     def effort_data_objects
-      @effort_data_objects ||= LiveTimeRowConverter.new(event: event, raw_times: raw_times).effort_data_objects
+      events.map do |event|
+        event_raw_times = grouped_raw_times[event.id]
+        TimeRecordRowConverter.new(event: event, time_records: event_raw_times).effort_data_objects
+      end.flatten
+    end
+
+    def grouped_raw_times
+      RawTime.where(id: raw_times).with_relation_ids.group_by(&:event_id)
     end
 
     def message

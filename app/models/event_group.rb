@@ -43,6 +43,10 @@ class EventGroup < ApplicationRecord
     ordered_events.first
   end
 
+  def permit_notifications?
+    visible? && available_live?
+  end
+
   def split_times
     SplitTime.joins(:effort).where(efforts: {event_id: events})
   end

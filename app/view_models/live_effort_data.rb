@@ -216,6 +216,7 @@ class LiveEffortData
                   time_from_start: time_from_start(kind),
                   pacer: (param_with_kind('pacer', kind) == true) || (param_with_kind('pacer', kind) == 'true'),
                   live_time_id: param_with_kind('live_time_id', kind).presence,
+                  raw_time_id: param_with_kind('raw_time_id', kind).presence,
                   time_exists: indexed_existing_split_times[time_points[kind]].present?)
   end
 

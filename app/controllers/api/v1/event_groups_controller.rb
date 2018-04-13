@@ -69,9 +69,48 @@ class Api::V1::EventGroupsController < ApiController
     end
   end
 
-  def trigger_live_times_push
+  def pull_raw_time_rows
+
+    # This endpoint searches for un-pulled raw_times belonging to the event_group, selects a batch,
+    # marks them as pulled, combines them into raw_time_rows, and returns them
+    # to the group live entry page.
+
+    # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
+    # If params[:force_pull] == true, raw_times without a matching split_time will be pulled
+    # even if they are marked as already having been pulled.
+
+    authorize @resource
+
+    if @resource.available_live
+      force_pull = params[:force_pull]&.to_boolean
+      raw_times_default_limit = 50
+      raw_times_limit = (params[:page] && params[:page][:size]) || raw_times_default_limit
+
+      scoped_raw_times = force_pull ? @resource.raw_times.unmatched : @resource.raw_times.unconsidered
+
+      # Order should be by absolute time, and where absolute time is nil, then by entered time.
+      # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
+      selected_raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(raw_times_limit)
+
+      grouped_raw_times = selected_raw_times.group_by(&:event_id)
+
+      raw_time_rows = grouped_raw_times.flat_map do |event_id, raw_times|
+        event = Event.where(id: event_id).includes(:splits, :course).first
+        TimeRecordRowConverter.convert(event: event, time_records: raw_times)
+      end
+
+      selected_raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+      report_raw_times_available(@resource)
+      render json: {returnedRows: raw_time_rows}, status: :ok
+    else
+      render json: live_entry_unavailable(@resource), status: :forbidden
+    end
+  end
+
+  def trigger_time_records_push
     authorize @resource
     report_live_times_available(@resource)
-    render json: {message: "Live times push notification sent for #{@resource.name}"}
+    report_raw_times_available(@resource)
+    render json: {message: "Time records push notifications sent for #{@resource.name}"}
   end
 end

@@ -434,7 +434,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(RawTime.all.pluck(:split_time_id)).to match_array(SplitTime.all.ids)
           end
 
-          xit 'sends a message to NotifyFollowersJob with relevant person and split_time data' do
+          it 'sends a message to NotifyFollowersJob with relevant person and split_time data' do
             allow(NotifyFollowersJob).to receive(:perform_later) do |args|
               args[:split_time_ids].sort!
             end
@@ -446,7 +446,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(NotifyFollowersJob).to have_received(:perform_later).with(person_id: person_id, split_time_ids: split_time_ids.sort)
           end
 
-          xit 'sends a message to Interactors::UpdateEffortsStatus with the efforts associated with the modified split_times' do
+          it 'sends a message to Interactors::UpdateEffortsStatus with the efforts associated with the modified split_times' do
             allow(Interactors::UpdateEffortsStatus).to receive(:perform!)
             post :import, params: request_params
             efforts = Effort.where(id: SplitTime.all.pluck(:effort_id).uniq)
@@ -458,14 +458,15 @@ RSpec.describe Api::V1::EventGroupsController do
     end
   end
 
-  xdescribe '#trigger_live_times_push' do
-    subject(:make_request) { get :trigger_live_times_push, params: request_params }
+  describe '#trigger_time_records_push' do
+    subject(:make_request) { get :trigger_time_records_push, params: request_params }
     let(:course) { create(:course) }
     let(:split) { create(:split, course_id: course.id) }
     let(:event) { create(:event, event_group: event_group, course: course) }
     let(:request_params) { {id: event_group.id} }
     before do
       event.splits << split
+      create_list(:live_time, 2, event: event, split: split)
       create_list(:raw_time, 3, event_group: event_group, split_name: split.base_name)
     end
 
@@ -473,8 +474,10 @@ RSpec.describe Api::V1::EventGroupsController do
       it 'sends a push notification that includes the count of available times' do
         allow(Pusher).to receive(:trigger)
         make_request
-        expected_args = ["live-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 3, unmatched: 3}]
-        expect(Pusher).to have_received(:trigger).with(*expected_args)
+        expected_lt_args = ["live-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 2, unmatched: 2}]
+        expected_rt_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 3, unmatched: 3}]
+        expect(Pusher).to have_received(:trigger).with(*expected_lt_args)
+        expect(Pusher).to have_received(:trigger).with(*expected_rt_args)
       end
     end
   end

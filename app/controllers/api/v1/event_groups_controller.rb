@@ -58,7 +58,7 @@ class Api::V1::EventGroupsController < ApiController
 
       live_time_rows = grouped_live_times.flat_map do |event_id, live_times|
         event = Event.where(id: event_id).includes(:splits, :course).first
-        LiveTimeRowConverter.convert(event: event, live_times: live_times)
+        TimeRecordRowConverter.convert(event: event, time_records: live_times)
       end
 
       selected_live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)

@@ -18,7 +18,7 @@ class Event < ApplicationRecord
   has_many :partners, dependent: :destroy
 
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,
-           :organization, :organization_id, to: :event_group
+           :organization, :organization_id, :permit_notifications?, to: :event_group
   delegate :stewards, to: :organization
 
   validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id
@@ -151,10 +151,6 @@ class Event < ApplicationRecord
 
   def efforts_ranked(args = {})
     efforts.ranked_with_finish_status(args)
-  end
-
-  def permit_notifications?
-    visible? && available_live? && !finished?
   end
 
   def pick_partner_with_banner

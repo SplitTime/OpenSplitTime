@@ -1,30 +1,29 @@
 # frozen_string_literal: true
 
-class EventLiveTimePairer
-
+class TimeRecordPairer
   def self.pair(args)
     new(args).pair
   end
 
   def initialize(args)
     @event = args[:event]
-    @live_times = args[:live_times]
+    @time_records = args[:time_records]
     @pairer = args[:pairer] || ObjectPairer
     validate_setup
   end
 
   def pair
-    live_time_pairs.reject(&:blank?).flatten(1)
+    time_record_pairs.reject(&:blank?).flatten(1)
   end
 
   private
 
-  attr_reader :event, :live_times, :pairer
+  attr_reader :event, :time_records, :pairer
 
-  def live_time_pairs
-    @live_time_pairs ||= split_pairs.map { |split_pair| pairer.pair(objects: live_times,
-                                                                    identical_attributes: :bib_number,
-                                                                    pairing_criteria: split_pair) }
+  def time_record_pairs
+    @time_record_pairs ||= split_pairs.map { |split_pair| pairer.pair(objects: time_records,
+                                                                      identical_attributes: :bib_number,
+                                                                      pairing_criteria: split_pair) }
   end
 
   def split_pairs
@@ -43,9 +42,7 @@ class EventLiveTimePairer
   end
 
   def validate_setup
-    raise ArgumentError, 'All live_times must match the provided event' unless
-        live_times.all? { |lt| lt.event_id == event.id }
-    raise ArgumentError, 'All live_times must match the splits available within live_entry_attributes' unless
-        live_times.all? { |lt| split_ids.include?(lt.split_id) }
+    raise ArgumentError, 'All time_records must match the provided event' unless time_records.all? { |lt| lt.event_id == event.id }
+    raise ArgumentError, 'All time_records must match the splits available within live_entry_attributes' unless time_records.all? { |lt| split_ids.include?(lt.split_id) }
   end
 end

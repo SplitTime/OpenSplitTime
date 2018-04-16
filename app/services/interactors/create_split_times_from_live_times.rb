@@ -67,7 +67,7 @@ module Interactors
     end
 
     def effort_data_objects
-      @effort_data_objects ||= LiveTimeRowConverter.new(event: event, live_times: live_times).effort_data_objects
+      @effort_data_objects ||= TimeRecordRowConverter.new(event: event, time_records: live_times).effort_data_objects
     end
 
     def message

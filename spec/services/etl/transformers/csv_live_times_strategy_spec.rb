@@ -14,7 +14,7 @@ RSpec.describe ETL::Transformers::CsvLiveTimesStrategy do
 
   describe '#transform' do
     context 'when data contains both in and out times' do
-      let(:options) { {event: event, split: split} }
+      let(:options) { {parent: event, split: split} }
       let(:parsed_structs) { [
           OpenStruct.new(bib_number: '101', time_in: '10:45', time_out: '10:50', pacer_in: true, pacer_out: true, stopped_here: false),
           OpenStruct.new(bib_number: '102', time_in: '14:10', time_out: '15:05', pacer_in: true, pacer_out: false, stopped_here: true)
@@ -54,7 +54,7 @@ RSpec.describe ETL::Transformers::CsvLiveTimesStrategy do
     end
 
     context 'when data contains only an in time or only an out time' do
-      let(:options) { {event: event, split: split} }
+      let(:options) { {parent: event, split: split} }
       let(:parsed_structs) { [
           OpenStruct.new(bib_number: '101', time_in: '10:45', time_out: '', pacer_in: true, stopped_here: false),
           OpenStruct.new(bib_number: '102', time_in: '', time_out: '15:05', pacer_out: false, stopped_here: true)
@@ -84,7 +84,7 @@ RSpec.describe ETL::Transformers::CsvLiveTimesStrategy do
     end
 
     context 'when data contains no in or out time' do
-      let(:options) { {event: event, split: split} }
+      let(:options) { {parent: event, split: split} }
       let(:parsed_structs) { [
           OpenStruct.new(bib_number: '102', time_in: '', time_out: '', pacer_out: false, stopped_here: true)
       ] }
@@ -94,8 +94,8 @@ RSpec.describe ETL::Transformers::CsvLiveTimesStrategy do
       end
     end
 
-    context 'when no event is provided' do
-      let(:options) { {event: nil, split: split} }
+    context 'when no parent is provided' do
+      let(:options) { {parent: nil, split: split} }
       let(:parsed_structs) { [
           OpenStruct.new(bib_number: '101', time_in: '10:45', time_out: '', pacer_in: true, stopped_here: false)
       ] }
@@ -108,7 +108,7 @@ RSpec.describe ETL::Transformers::CsvLiveTimesStrategy do
     end
 
     context 'when no split is provided' do
-      let(:options) { {event: event, split: nil} }
+      let(:options) { {parent: event, split: nil} }
       let(:parsed_structs) { [
           OpenStruct.new(bib_number: '101', time_in: '10:45', time_out: '', pacer_in: true, stopped_here: false)
       ] }

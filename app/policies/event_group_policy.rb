@@ -28,6 +28,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def import?
+    user.authorized_to_edit?(event_group)
+  end
+
   def trigger_live_times_push?
     user.present?
   end

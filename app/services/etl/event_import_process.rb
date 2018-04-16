@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ETL
-  class PostImportProcess
+  class EventImportProcess
     include BackgroundNotifiable
 
     def self.perform!(event, importer)
@@ -55,8 +55,8 @@ module ETL
     def process_live_times
       live_times = grouped_records[LiveTime]
       if live_times.present?
-        match_response = Interactors::MatchLiveTimes.perform!(event: event, live_times: live_times)
-        unmatched_live_times = match_response.resources[:unmatched_live_times]
+        match_response = Interactors::MatchLiveTimesToSplitTimes.perform!(event: event, live_times: live_times)
+        unmatched_live_times = match_response.resources[:unmatched]
         Interactors::CreateSplitTimesFromLiveTimes.perform!(event: event, live_times: unmatched_live_times) if event.auto_live_times?
         report_live_times_available(event.event_group)
       end

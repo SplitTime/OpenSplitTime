@@ -1,8 +1,40 @@
-RSpec.shared_examples_for 'live_raw_times_methods' do
+RSpec.shared_examples_for 'time_recordable' do
   let(:model) { described_class }
   let(:model_name) { model.name.underscore.to_sym }
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
+
+  describe '#matched?' do
+    context 'when no split_time_id is present' do
+      it 'returns false' do
+        resource = build_stubbed(model_name, split_time_id: nil)
+        expect(resource.matched?).to eq(false)
+      end
+    end
+
+    context 'when a split_time_id is present' do
+      it 'returns true' do
+        resource = build_stubbed(model_name, split_time_id: 1)
+        expect(resource.matched?).to eq(true)
+      end
+    end
+  end
+
+  describe '#unmatched?' do
+    context 'when no split_time_id is present' do
+      it 'returns true' do
+        resource = build_stubbed(model_name, split_time_id: nil)
+        expect(resource.unmatched?).to eq(true)
+      end
+    end
+
+    context 'when a split_time_id is present' do
+      it 'returns false' do
+        resource = build_stubbed(model_name, split_time_id: 1)
+        expect(resource.unmatched?).to eq(false)
+      end
+    end
+  end
 
   describe '#military_time' do
     context 'when absolute_time exists and a zone string argument is passed' do

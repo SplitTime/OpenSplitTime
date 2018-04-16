@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module LiveRawTimeMethods
+module TimeRecordable
   extend ActiveSupport::Concern
 
   included do
@@ -17,6 +17,10 @@ module LiveRawTimeMethods
 
   def matched?
     split_time_id.present?
+  end
+
+  def unmatched?
+    !matched?
   end
 
   def military_time(zone = nil)

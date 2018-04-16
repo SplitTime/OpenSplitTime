@@ -12,7 +12,7 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
 
   describe '#transform' do
     context 'when transforming splits' do
-      let(:options) { {event: event, model: :split} }
+      let(:options) { {parent: event, model: :split} }
       let(:parsed_structs) { [
           OpenStruct.new(name: 'Start', distance: 0, kind: 0, sub_split_bitmap: 1),
           OpenStruct.new(name: 'Aid 1', distance: 5, kind: 2, sub_split_bitmap: 65),
@@ -41,7 +41,7 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
     context 'when transforming efforts' do
       let(:effort_1) { temp_efforts.first }
 
-      let(:options) { {event: event, model: :effort} }
+      let(:options) { {parent: event, model: :effort} }
       let(:temp_efforts) { build_stubbed_list(:effort, 2) }
       let(:parsed_structs) { [
         OpenStruct.new(first: effort_1.first_name, last: effort_1.last_name, sex: effort_1.gender, State: 'Colorado'),

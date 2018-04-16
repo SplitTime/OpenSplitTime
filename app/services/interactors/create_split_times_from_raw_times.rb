@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interactors
-  class CreateSplitTimesFromLiveTimes
+  class CreateSplitTimesFromRawTimes
     include Interactors::Errors
 
     # TODO The parallel logic located in LiveTimeRowImporter#create_or_update_times should be centralized here.
@@ -12,11 +12,11 @@ module Interactors
 
     def initialize(args)
       ArgsValidator.validate(params: args,
-                             required: [:event, :live_times],
-                             exclusive: [:event, :live_times],
+                             required: [:event_group, :raw_times],
+                             exclusive: [:event_group, :raw_times],
                              class: self.class)
-      @event = args[:event]
-      @live_times = args[:live_times]
+      @event_group = args[:event_group]
+      @raw_times = args[:raw_times]
       @created_split_times = []
       @errors = []
       validate_setup
@@ -26,20 +26,20 @@ module Interactors
       unless errors.present?
         creatable_split_times.each { |split_time| create_and_update_resources(split_time) }
         update_efforts_status
-        send_notifications if event.permit_notifications?
+        send_notifications if event_group.permit_notifications?
       end
       Interactors::Response.new(errors, message)
     end
 
     private
 
-    attr_reader :event, :live_times, :created_split_times, :errors
+    attr_reader :event_group, :raw_times, :created_split_times, :errors
 
     def create_and_update_resources(split_time)
       if split_time.save
         created_split_times << split_time
-        live_time = live_times.find { |lt| lt.id == split_time.live_time_id }
-        live_time.update(split_time: split_time) if live_time
+        raw_time = raw_times.find { |raw_time| raw_time.id == split_time.raw_time_id }
+        raw_time.update(split_time: split_time) if raw_time
       else
         errors << resource_error_object(split_time)
       end
@@ -67,7 +67,7 @@ module Interactors
     end
 
     def effort_data_objects
-      @effort_data_objects ||= LiveTimeRowConverter.new(event: event, live_times: live_times).effort_data_objects
+      @effort_data_objects ||= LiveTimeRowConverter.new(event: event, raw_times: raw_times).effort_data_objects
     end
 
     def message
@@ -79,7 +79,7 @@ module Interactors
     end
 
     def validate_setup
-      errors << live_time_mismatch_error unless live_times.all? { |lt| lt.event_id == event.id }
+      errors << raw_time_mismatch_error unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
     end
   end
 end

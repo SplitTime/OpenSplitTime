@@ -1,4 +1,8 @@
 class Array
+  def average
+    sum / size.to_f
+  end
+
   def elements_before(index_element)
     i = index(index_element)
     i ? self[0, i] : []

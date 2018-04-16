@@ -16,7 +16,7 @@ class SplitTime < ApplicationRecord
   has_many :live_times, dependent: :nullify
   has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
-  attr_accessor :live_time_id, :time_exists, :imposed_order
+  attr_accessor :live_time_id, :raw_time_id, :time_exists, :imposed_order
 
   # distance_from_start is not the true distance from start in a multi-lap effort,
   # but instead is the distance from the start of the split, which corresponds to the
@@ -35,7 +35,7 @@ class SplitTime < ApplicationRecord
   scope :from_finished_efforts, -> { joins(effort: {split_times: :split}).where(splits: {kind: 1}) }
   scope :visible, -> { includes(effort: {event: :event_group}).where('event_groups.concealed = ?', 'f') }
   scope :at_time_point, -> (time_point) { where(lap: time_point.lap, split_id: time_point.split_id, bitkey: time_point.bitkey) }
-  scope :with_live_time_matchers, -> { joins(effort: :event).select("split_times.*, (events.start_time + efforts.start_offset * interval '1 second' + time_from_start * interval '1 second') as day_and_time, events.home_time_zone as event_home_zone, efforts.bib_number as bib_number")}
+  scope :with_time_record_matchers, -> { joins(effort: :event).select("split_times.*, (events.start_time + efforts.start_offset * interval '1 second' + time_from_start * interval '1 second') as day_and_time, events.home_time_zone as event_home_zone, efforts.bib_number::text as bib_number")}
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
   # Otherwise it includes split_times from aid_stations other than the given parameter

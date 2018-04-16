@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 module ETL::Transformers
-  class GenericResourcesStrategy
-    include ETL::Errors
-    attr_reader :errors
-
+  class GenericResourcesStrategy < BaseTransformer
     def initialize(parsed_structs, options)
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options
@@ -23,11 +20,7 @@ module ETL::Transformers
 
     private
 
-    attr_reader :proto_records, :options
-
-    def event
-      options[:event]
-    end
+    attr_reader :proto_records
 
     def model
       options[:model].to_sym

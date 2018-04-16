@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Interactors::MatchLiveTimes do
-  subject { Interactors::MatchLiveTimes.new(event: event, live_times: live_times, tolerance: tolerance) }
+RSpec.describe Interactors::MatchLiveTimesToSplitTimes do
+  subject { Interactors::MatchLiveTimesToSplitTimes.new(event: event, live_times: live_times, tolerance: tolerance) }
   let(:tolerance) { nil }
   let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0) }
   let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 60.minutes) }
@@ -44,7 +44,7 @@ RSpec.describe Interactors::MatchLiveTimes do
     end
 
     context 'when no event is provided' do
-      subject { Interactors::MatchLiveTimes.new(event: nil, live_times: live_times) }
+      subject { Interactors::MatchLiveTimesToSplitTimes.new(event: nil, live_times: live_times) }
 
       it 'raises an error' do
         expect { subject }.to raise_error(/must include event/)
@@ -52,7 +52,7 @@ RSpec.describe Interactors::MatchLiveTimes do
     end
 
     context 'when no split_time_ids argument is provided' do
-      subject { Interactors::MatchLiveTimes.new(event: event, live_times: nil) }
+      subject { Interactors::MatchLiveTimesToSplitTimes.new(event: event, live_times: nil) }
 
       it 'raises an error' do
         expect { subject }.to raise_error(/must include live_times/)
@@ -224,10 +224,10 @@ RSpec.describe Interactors::MatchLiveTimes do
       expect(live_times.map(&:split_time_id)).to all be_nil
       response = subject.perform!
       expect(response).to be_successful
-      expect(response.resources[:matched_live_times]).to match_array(matching_live_times)
-      expect(response.resources[:unmatched_live_times]).to match_array(non_matching_live_times)
-      expect(matching_live_times.map(&:split_time_id)).to match_array(matching_split_times.map(&:id))
-      expect(non_matching_live_times.map(&:split_time_id)).to all be_nil
+      expect(response.resources[:matched]).to match_array(matching_live_times)
+      expect(response.resources[:unmatched]).to match_array(non_matching_live_times)
+      expect(response.resources[:matched].map(&:split_time_id)).to match_array(matching_split_times.map(&:id))
+      expect(response.resources[:unmatched].map(&:split_time_id)).to all be_nil
     end
   end
 end

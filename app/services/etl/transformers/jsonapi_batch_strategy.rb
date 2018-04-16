@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 module ETL::Transformers
-  class JsonapiBatchStrategy
-    include ETL::Errors
-    attr_reader :errors
-
+  class JsonapiBatchStrategy < BaseTransformer
     def initialize(parsed_structs, options)
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options
@@ -19,7 +16,7 @@ module ETL::Transformers
         proto_record.attributes_to_keys!
         transform_name_extensions!(proto_record)
         proto_record.slice_permitted!
-        proto_record[:event_id] = event.id if proto_record.record_class.attribute_names.include?('event_id')
+        proto_record[parent_id_attribute] = parent.id if proto_record.record_class.attribute_names.include?(parent_id_attribute)
       end
       proto_records
     end
@@ -32,11 +29,7 @@ module ETL::Transformers
 
     private
 
-    attr_reader :proto_records, :options
-
-    def event
-      options[:event]
-    end
+    attr_reader :proto_records
 
     def validate_setup
     end

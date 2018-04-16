@@ -302,6 +302,7 @@ RSpec.describe Api::V1::EventsController do
           expect(LiveTime.all.map(&:bib_number)).to all eq(bib_number)
           expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
           expect(LiveTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+          expect(LiveTime.all.map(&:event_id)).to all eq(event.id)
         end
 
         context 'when there is a duplicate live_time in the database' do
@@ -377,8 +378,8 @@ RSpec.describe Api::V1::EventsController do
           end
         end
 
-        context 'when the event_group is available live and auto_live_times is true' do
-          let!(:event_group) { create(:event_group, available_live: true, auto_live_times: true) }
+        context 'when the event_group is visible and available live and auto_live_times is true' do
+          let!(:event_group) { create(:event_group, concealed: false, available_live: true, auto_live_times: true) }
           let!(:effort) { create(:effort, event: event, bib_number: 101, person: person) }
           let!(:person) { create(:person) }
           let(:data) { [
@@ -407,10 +408,7 @@ RSpec.describe Api::V1::EventsController do
             split_time_ids = SplitTime.all.ids
             person_id = SplitTime.first.effort.person_id
 
-            expect(NotifyFollowersJob).to have_received(:perform_later)
-                                              .with(person_id: person_id,
-                                                    split_time_ids: split_time_ids.sort,
-                                                    multi_lap: false)
+            expect(NotifyFollowersJob).to have_received(:perform_later).with(person_id: person_id, split_time_ids: split_time_ids.sort)
           end
 
           it 'sends a message to Interactors::UpdateEffortsStatus with the efforts associated with the modified split_times' do

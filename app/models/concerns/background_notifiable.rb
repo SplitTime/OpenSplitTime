@@ -36,6 +36,13 @@ module BackgroundNotifiable
     Pusher.trigger(channel, 'update', message)
   end
 
+  def report_raw_times_available(resource)
+    channel = "raw-times-available.#{resource.class.to_s.underscore}.#{resource.id}"
+    message = {unconsidered: resource.raw_times.unconsidered.size,
+               unmatched: resource.raw_times.unmatched.size}
+    Pusher.trigger(channel, 'update', message)
+  end
+
   private
 
   def notifier

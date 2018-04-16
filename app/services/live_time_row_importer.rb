@@ -130,9 +130,7 @@ class LiveTimeRowImporter
 
   def notify_followers
     saved_split_times.each do |person_id, split_times|
-      NotifyFollowersJob.perform_later(person_id: person_id,
-                                       split_time_ids: split_times.map(&:id),
-                                       multi_lap: event.multiple_laps?) unless person_id.zero?
+      NotifyFollowersJob.perform_later(person_id: person_id, split_time_ids: split_times.map(&:id)) unless person_id.zero?
     end
   end
 

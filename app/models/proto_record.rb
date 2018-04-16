@@ -44,10 +44,9 @@ class ProtoRecord
   private
 
   def run_specific_transforms(model, options)
-    event = options[:event]
-
     case model
       when :effort
+        event = options[:event]
         normalize_gender!
         normalize_country_code!
         normalize_state_code!
@@ -58,6 +57,7 @@ class ProtoRecord
         self[:event_id] = event.id
 
       when :split
+        event = options[:event]
         convert_split_distance!
         align_split_distance!(event.ordered_splits.map(&:distance_from_start))
         self[:course_id] = event.course_id

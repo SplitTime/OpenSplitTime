@@ -19,10 +19,7 @@ class RawTime < ApplicationRecord
                           if: Proc.new { |live_time| live_time.entered_time.present? }
 
   def self.with_relation_ids
-    event_group_ids = self.pluck(:event_group_id).uniq
-    return RawTime.none if event_group_ids.empty?
-    raise RuntimeError, 'raw_times must have the same event_group_id when calling RawTime.with_relations' if event_group_ids.many?
-    query = RawTimeQuery.with_relations(event_group_ids.first)
+    query = RawTimeQuery.with_relations
     self.find_by_sql(query)
   end
 

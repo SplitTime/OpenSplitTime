@@ -1,6 +1,6 @@
 class RawTimeQuery < BaseQuery
 
-  def self.with_relations(event_group_id)
+  def self.with_relations
 
     query = <<-SQL
 
@@ -8,25 +8,24 @@ class RawTimeQuery < BaseQuery
          raw_times_scoped AS (
            SELECT raw_times.*
            FROM raw_times
-           INNER JOIN existing_scope ON existing_scope.id = raw_times.id),
-         relevant_splits AS (
-           SELECT splits.id AS split_id, events.id AS event_id, parameterized_base_name
-           FROM splits
-           INNER JOIN aid_stations ON aid_stations.split_id = splits.id
-           INNER JOIN events ON events.id = aid_stations.event_id
-           WHERE events.event_group_id = #{event_group_id}
-      ), relevant_efforts AS (
-           SELECT efforts.id AS effort_id, efforts.event_id AS event_id, efforts.bib_number::text AS effort_bib_number
-           FROM efforts
-           INNER JOIN events ON events.id = efforts.event_id
-           WHERE events.event_group_id = #{event_group_id}
-    )
+           INNER JOIN existing_scope ON existing_scope.id = raw_times.id)
 
-    SELECT raw_times_scoped.*, relevant_efforts.effort_id AS effort_id, relevant_efforts.event_id AS event_id, relevant_splits.split_id AS split_id
-    FROM raw_times_scoped
-    LEFT JOIN relevant_efforts ON relevant_efforts.effort_bib_number = raw_times_scoped.bib_number
-    LEFT JOIN relevant_splits ON relevant_splits.parameterized_base_name = raw_times_scoped.parameterized_split_name
-        AND relevant_splits.event_id = relevant_efforts.event_id
+    SELECT 
+       r.*
+       , e.id AS effort_id
+       , e.event_id
+       , (SELECT split_id FROM aid_stations a
+          INNER JOIN splits s ON a.split_id = s.id
+          WHERE a.event_id = e.event_id
+          AND s.parameterized_base_name = r.parameterized_split_name
+          limit 1) AS split_id
+    FROM raw_times_scoped r
+    LEFT JOIN efforts e ON r.bib_number = e.bib_number::text
+       AND e.event_id IN 
+          (SELECT id 
+           FROM events 
+           WHERE events.event_group_id = r.event_group_id)
+    ORDER BY r.bib_number, r.id
     SQL
     query.squish
   end

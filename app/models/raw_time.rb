@@ -18,10 +18,13 @@ class RawTime < ApplicationRecord
                           message: 'is an exact duplicate of an existing raw time',
                           if: Proc.new { |live_time| live_time.entered_time.present? }
 
-  scope :with_relation_ids, -> { select('raw_times.*, efforts.id as effort_id, efforts.event_id as event_id, splits.id as split_id')
-                                     .joins(event_group: {events: [:efforts, :splits]})
-                                     .where('efforts.bib_number::text = raw_times.bib_number')
-                                     .where('splits.parameterized_base_name = raw_times.parameterized_split_name') }
+  def self.with_relation_ids
+    event_group_ids = self.pluck(:event_group_id).uniq
+    return RawTime.none if event_group_ids.empty?
+    raise RuntimeError, 'raw_times must have the same event_group_id when calling RawTime.with_relations' if event_group_ids.many?
+    query = RawTimeQuery.with_relations(event_group_ids.first)
+    self.find_by_sql(query)
+  end
 
   def event_id
     attributes.has_key?('event_id') ? attributes['event_id'] : effort&.event_id

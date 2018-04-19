@@ -21,4 +21,27 @@ RSpec.describe EventGroup, type: :model do
       expect(subject).to be_valid
     end
   end
+
+  describe '#multiple_laps?' do
+    subject { build_stubbed(:event_group, events: events) }
+    let(:event_1) { build_stubbed(:event, laps_required: 1) }
+    let(:event_2) { build_stubbed(:event, laps_required: 1) }
+    let(:event_3) { build_stubbed(:event, laps_required: 0) }
+
+    context 'when no events are multi lap' do
+      let(:events) { [event_1, event_2] }
+
+      it 'returns false' do
+        expect(subject.multiple_laps?).to eq(false)
+      end
+    end
+
+    context 'when any event is multi lap' do
+      let(:events) { [event_1, event_3] }
+
+      it 'returns true' do
+        expect(subject.multiple_laps?).to eq(true)
+      end
+    end
+  end
 end

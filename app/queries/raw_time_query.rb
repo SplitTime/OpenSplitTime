@@ -11,7 +11,7 @@ class RawTimeQuery < BaseQuery
            INNER JOIN existing_scope ON existing_scope.id = raw_times.id)
 
     SELECT 
-     r.id, r.event_group_id, r.parameterized_split_name, r.bib_number
+     r.*
    , e.id AS effort_id
    , e.event_id
    , s.split_id

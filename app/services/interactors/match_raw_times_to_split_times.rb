@@ -22,9 +22,7 @@ module Interactors
       if errors.present?
         Interactors::Response.new(errors, "Raw times could not be matched. ")
       else
-        response = Interactors::MatchTimeRecordsToSplitTimes.perform!(time_records: matchable_raw_times, split_times: split_times, tolerance: tolerance)
-        response.resources[:unmatched] += unmatchable_raw_times
-        response
+        Interactors::MatchTimeRecordsToSplitTimes.perform!(time_records: loaded_raw_times, split_times: split_times, tolerance: tolerance)
       end
     end
 
@@ -32,19 +30,8 @@ module Interactors
 
     attr_reader :event_group, :raw_times, :tolerance, :split_times, :errors
     
-    def matchable_raw_times
+    def loaded_raw_times
       RawTime.where(id: raw_times).with_relation_ids
-    end
-
-    # RawTime.with_relation_ids will not return RawTimes that have no matching bib_number or split_name
-    # So we need to go back and get them to include them in resources[:unmatched]
-
-    def unmatchable_raw_times
-      RawTime.where(id: unmatchable_ids)
-    end
-
-    def unmatchable_ids
-      raw_times.map(&:id) - matchable_raw_times.map(&:id)
     end
 
     def validate_setup

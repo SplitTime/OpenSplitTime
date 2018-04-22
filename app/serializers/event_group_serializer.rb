@@ -2,7 +2,7 @@
 
 class EventGroupSerializer < BaseSerializer
   attributes :id, :name, :organization_id, :concealed, :available_live, :auto_live_times, :monitor_pacers, :slug,
-             :combined_split_attributes, :ungrouped_split_attributes
+             :multi_lap, :combined_split_attributes, :ungrouped_split_attributes
   link(:self) { api_v1_event_group_path(object) }
 
   has_many :events
@@ -14,6 +14,10 @@ class EventGroupSerializer < BaseSerializer
 
   def ungrouped_split_attributes
     CombineEventGroupSplitAttributes.perform(object, pair_by_location: false)
+  end
+
+  def multi_lap
+    object.multiple_laps?
   end
 
   def pair_by_location?

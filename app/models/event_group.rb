@@ -43,6 +43,10 @@ class EventGroup < ApplicationRecord
     ordered_events.first
   end
 
+  def multiple_laps?
+    events.any?(&:multiple_laps?)
+  end
+
   def permit_notifications?
     visible? && available_live?
   end

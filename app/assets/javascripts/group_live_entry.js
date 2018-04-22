@@ -111,7 +111,7 @@
 
                 channel.bind('pusher:subscription_succeeded', function() {
                     // Force the server to trigger a push for initial display
-                    liveEntry.triggerLiveTimesPush();
+                    liveEntry.triggerTimeRecordsPush();
                 });
 
                 channel.bind('update', function (data) {
@@ -137,8 +137,8 @@
             }
         },
 
-        triggerLiveTimesPush: function() {
-            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_live_times_push';
+        triggerTimeRecordsPush: function() {
+            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_time_records_push';
             $.ajax({
                 url: endpoint,
                 cache: false

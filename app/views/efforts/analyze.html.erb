@@ -12,7 +12,7 @@
       <br/><%= link_to @effort_analysis.event_name, event_path(@effort_analysis.event) %></strong>
     </h2>
     <h4>
-      <%= "#{@effort_analysis.finish_status} • #{@effort_analysis.overall_rank.ordinalize} Place • #{@effort_analysis.gender_rank.ordinalize} #{@effort_analysis.gender.titleize}" %>
+      <%= "#{@effort_analysis.finish_status} • #{@effort_analysis.overall_rank&.ordinalize} Place • #{@effort_analysis.gender_rank&.ordinalize} #{@effort_analysis.gender.titleize}" %>
       <%= "• Bib ##{@effort_analysis.bib_number}" if @effort_analysis.bib_number %>
     </h4>
   </div>
@@ -30,11 +30,15 @@
   </div>
 </div>
 
-<% if @effort_analysis.analysis_rows.present? %>
-    <strong><%= "Best segments: #{@effort_analysis.best_segments}" %></strong><br/>
-    <strong><%= "Worst segments: #{@effort_analysis.worst_segments}" %></strong>
-    <hr>
-    <%= render 'split_times/split_times_analysis' %>
-<% else %>
-    <strong>Not enough data available to provide a reliable analysis.</strong>
-<% end %>
+<div>
+  <% if @effort_analysis.started? && @effort_analysis.analysis_rows.present? %>
+      <strong><%= "Best segments: #{@effort_analysis.best_segments}" %></strong><br/>
+      <strong><%= "Worst segments: #{@effort_analysis.worst_segments}" %></strong>
+      <hr>
+      <%= render 'split_times/split_times_analysis' %>
+  <% elsif @effort_analysis.started? %>
+      <strong>Not enough data available to provide a reliable analysis.</strong>
+  <% else %>
+      <strong>Cannot analyze an unstarted effort.</strong>
+  <% end %>
+</div>

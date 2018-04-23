@@ -1,3 +1,5 @@
+require_relative '../../app/queries/base_query'
+
 RSpec.describe BaseQuery do
   describe '.sql_order_from_hash' do
     context 'when sort_fields hash is provided with symbols as keys' do

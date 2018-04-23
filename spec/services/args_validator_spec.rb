@@ -1,3 +1,5 @@
+require_relative '../../app/services/args_validator'
+
 RSpec.describe ArgsValidator do
   describe '#initialize' do
     it 'creates a new object using an empty args hash' do

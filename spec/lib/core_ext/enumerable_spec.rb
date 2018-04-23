@@ -1,3 +1,5 @@
+require_relative '../../../lib/core_ext/enumerable'
+
 RSpec.describe Enumerable do
   describe '#each_with_iteration' do
     context 'when called without a block' do

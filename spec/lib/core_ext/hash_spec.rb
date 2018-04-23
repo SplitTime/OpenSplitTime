@@ -1,3 +1,5 @@
+require_relative '../../../lib/core_ext/hash'
+
 RSpec.describe Hash do
   describe '#camelize_keys' do
     it 'changes hash keys from symbolized underscore to symbolized camelCase format' do

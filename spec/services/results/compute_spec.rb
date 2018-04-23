@@ -1,3 +1,8 @@
+require_relative '../../../app/services/results/compute'
+require_relative '../../../app/services/results/categories'
+require_relative '../../../app/services/results/category'
+require 'active_support/all'
+
 RSpec.describe Results::Compute do
   describe '.perform' do
     subject do

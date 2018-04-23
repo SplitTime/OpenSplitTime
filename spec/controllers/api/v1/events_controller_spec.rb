@@ -279,6 +279,22 @@ RSpec.describe Api::V1::EventsController do
         end
       end
 
+      context 'when provided with a file having start_offset or start_time' do
+        let(:request_params) { {id: event.id, data_format: 'csv_efforts', file: file} }
+        let(:file) { fixture_file_upload(file_fixture('test_efforts_start_attributes.csv')) }
+
+        it 'creates efforts and sets start offsets' do
+          expect(Effort.all.size).to eq(0)
+          make_request
+          expect(response.status).to eq(201)
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['data'].size).to eq(3)
+          expect(Effort.all.size).to eq(3)
+
+          expect(Effort.all.pluck(:start_offset)).to match_array([0, 1800, 3600])
+        end
+      end
+
       context 'when provided with an array of live_time hashes and data_format: :jsonapi_batch' do
         let(:split_id) { splits.first.id }
         let(:request_params) { {id: event.id, data_format: 'jsonapi_batch', data: data, unique_key: unique_key} }

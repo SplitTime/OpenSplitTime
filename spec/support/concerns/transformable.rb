@@ -303,6 +303,35 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
+  describe '#fill_nil_values!' do
+    context 'when keys exist and are nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+
+      it 'sets the keys to the given values' do
+        subject.fill_nil_values!(start_time: '', start_offset: 0)
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '', start_offset: 0})
+      end
+    end
+
+    context 'when keys exist and are not nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: '2017-07-01 06:00:00', start_offset: 1800} }
+
+      it 'does not change the keys' do
+        subject.fill_nil_values!(start_time: '', start_offset: 0)
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '2017-07-01 06:00:00', start_offset: 1800})
+      end
+    end
+
+    context 'when keys do not exist' do
+      let(:attributes) { {first_name: 'Joe'} }
+
+      it 'does not add the keys' do
+        subject.fill_nil_values!(start_time: '', start_offset: 0)
+        expect(subject.to_h).to eq({first_name: 'Joe'})
+      end
+    end
+  end
+
   describe '#set_offset_from_start_time!' do
     let(:attributes) { {start_time: '2018-02-01 08:30'} }
     let(:event) { Event.new(start_time: '2018-02-01 06:00', home_time_zone: 'Pacific (US & Canada)') }

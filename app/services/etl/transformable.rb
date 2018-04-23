@@ -104,6 +104,15 @@ module ETL::Transformable
         end
   end
 
+  def fill_nil_values!(attributes)
+    existing_keys = self.to_h.keys.to_set
+    attributes.each do |key, value|
+      if existing_keys.include?(key)
+        self[key] ||= value
+      end
+    end
+  end
+
   def set_effort_offset!(start_time_point)
     start_child_record = children.find { |pr| [pr[:lap], pr[:split_id], pr[:sub_split_bitkey]] == [start_time_point.lap, start_time_point.split_id, start_time_point.bitkey] }
     if start_child_record && start_child_record[:time_from_start]

@@ -1,3 +1,6 @@
+require_relative '../../../lib/core_ext/string'
+require 'active_record'
+
 RSpec.describe String do
   describe '.longest_common_phrase' do
     subject { String.longest_common_phrase(strings) }

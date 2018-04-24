@@ -1,3 +1,5 @@
+require_relative '../../../lib/core_ext/array'
+
 RSpec.describe Array do
   describe '#average' do
     it 'computes the average of elements in the Array' do

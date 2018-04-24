@@ -1,3 +1,7 @@
+require_relative '../../lib/time_conversion'
+require 'date'
+require 'active_support/all'
+
 RSpec.describe TimeConversion do
   before(:context) do
     ENV['TZ'] = 'UTC'

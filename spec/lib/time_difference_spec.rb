@@ -1,3 +1,5 @@
+require_relative '../../lib/time_difference'
+
 RSpec.describe TimeDifference do
   before(:context) do
     ENV['TZ'] = 'UTC'

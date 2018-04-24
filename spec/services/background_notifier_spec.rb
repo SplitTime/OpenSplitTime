@@ -1,3 +1,5 @@
+require_relative '../../app/services/background_notifier'
+
 RSpec.describe BackgroundNotifier do
   let(:channel) { 'progress_1' }
   let(:event) { 'update' }

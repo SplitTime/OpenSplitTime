@@ -472,8 +472,6 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
 
     let(:current_user) { controller.current_user }
-    let(:in_bitkey) { SubSplit::IN_BITKEY }
-    let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
     before do
       event.splits << [start_split, aid_split, finish_split]
@@ -503,9 +501,9 @@ RSpec.describe Api::V1::EventGroupsController do
         end
       end
 
-      context 'when unpulled live_times and raw_times are available' do
-        let!(:live_time_1) { create(:live_time, event: event, bib_number: '111', entered_time: '08:05:00', split: aid_split, bitkey: in_bitkey) }
-        let!(:live_time_2) { create(:live_time, event: event, bib_number: '111', entered_time: '08:10:00', split: aid_split, bitkey: out_bitkey) }
+      context 'when unpulled live_times and raw_times have in and out times that can be paired' do
+        let!(:live_time_1) { create(:live_time, event: event, bib_number: '111', entered_time: '08:05:00', split: aid_split, sub_split_kind: 'in') }
+        let!(:live_time_2) { create(:live_time, event: event, bib_number: '111', entered_time: '08:10:00', split: aid_split, sub_split_kind: 'out') }
         let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 11:22:33', split_name: 'Aid 1', sub_split_kind: 'in') }
         let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Aid 1', sub_split_kind: 'out') }
 
@@ -526,6 +524,28 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(rows.map { |row| row['liveTimeIdOut'] }).to match_array([live_time_2.id, nil])
           expect(rows.map { |row| row['rawTimeIdIn'] }).to match_array([raw_time_1.id, nil])
           expect(rows.map { |row| row['rawTimeIdOut'] }).to match_array([raw_time_2.id, nil])
+        end
+      end
+
+      context 'when unpulled raw_times do not match existing bib numbers' do
+        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 11:22:33', split_name: 'Aid 1', sub_split_kind: 'in') }
+        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 12:23:34', split_name: 'Aid 1', sub_split_kind: 'out') }
+
+        it 'marks the raw_times as having been pulled and returns returnedRows' do
+          response = make_request
+          expect(RawTime.all.pluck(:pulled_by)).to all eq(current_user.id)
+
+          result = JSON.parse(response.body)
+          rows = result['returnedRows']
+          row = rows.first
+
+          expect(rows.size).to eq(1)
+          expect(row['eventId']).to eq(event.id)
+          expect(row['splitId']).to be_nil
+          expect(row['effortId']).to be_nil
+          expect(row['bibNumber']).to eq('999')
+          expect(row['rawTimeIdIn']).to eq(raw_time_1.id)
+          expect(row['rawTimeIdOut']).to eq(raw_time_2.id)
         end
       end
 

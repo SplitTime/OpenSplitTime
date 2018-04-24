@@ -102,7 +102,7 @@ class LiveEffortData
   end
 
   def identical_row_exists?
-    sub_split_kinds.all? { |kind| identical_split_time_exists?(kind) }
+    sub_split_kinds.present? && sub_split_kinds.all? { |kind| identical_split_time_exists?(kind) }
   end
 
   def identical_split_time_exists?(kind)

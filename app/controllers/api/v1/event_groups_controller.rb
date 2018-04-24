@@ -93,12 +93,12 @@ class Api::V1::EventGroupsController < ApiController
       # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
       selected_raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
       selected_live_times = scoped_live_times.order(:absolute_time, :entered_time).limit(record_limit)
-      time_records = selected_raw_times + selected_live_times
+      selected_time_records = selected_raw_times + selected_live_times
 
-      grouped_time_records = time_records.group_by(&:event_id)
+      grouped_time_records = selected_time_records.group_by(&:event_id)
 
       time_rows = grouped_time_records.flat_map do |event_id, time_records|
-        event = Event.where(id: event_id).includes(:splits, :course).first
+        event = Event.where(id: event_id || @resource.first_event).includes(:splits, :course).first
         TimeRecordRowConverter.convert(event: event, time_records: time_records)
       end
 

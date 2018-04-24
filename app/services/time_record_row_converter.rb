@@ -51,7 +51,7 @@ class TimeRecordRowConverter
        pacer_in: left_time_record&.with_pacer,
        pacer_out: right_time_record&.with_pacer,
        dropped_here: left_time_record&.stopped_here || right_time_record&.stopped_here,
-       remarks: [left_time_record&.remarks, right_time_record&.remarks].join(' / ')}
+       remarks: [left_time_record&.remarks, right_time_record&.remarks].compact.join(' / ')}
     end
   end
 
@@ -65,6 +65,6 @@ class TimeRecordRowConverter
 
   def validate_setup
     raise ArgumentError, 'All time_records must match the provided event' unless
-        time_records.all? { |time_record| time_record.event_id == event.id }
+        time_records.all? { |tr| tr.event_id.nil? || tr.event_id == event.id }
   end
 end

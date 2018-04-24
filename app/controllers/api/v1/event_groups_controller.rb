@@ -69,10 +69,10 @@ class Api::V1::EventGroupsController < ApiController
     end
   end
 
-  def pull_raw_time_rows
+  def pull_time_record_rows
 
-    # This endpoint searches for un-pulled raw_times belonging to the event_group, selects a batch,
-    # marks them as pulled, combines them into raw_time_rows, and returns them
+    # This endpoint searches for un-pulled time records (live_times and raw_times) belonging to the event_group, 
+    # selects a batch, marks them as pulled, combines them into time_rows, and returns them
     # to the group live entry page.
 
     # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
@@ -83,25 +83,30 @@ class Api::V1::EventGroupsController < ApiController
 
     if @resource.available_live
       force_pull = params[:force_pull]&.to_boolean
-      raw_times_default_limit = 50
-      raw_times_limit = (params[:page] && params[:page][:size]) || raw_times_default_limit
+      default_record_limit = 50
+      record_limit = (params.dig(:page, :size)) || default_record_limit
 
       scoped_raw_times = force_pull ? @resource.raw_times.unmatched : @resource.raw_times.unconsidered
+      scoped_live_times = force_pull ? @resource.live_times.unmatched : @resource.live_times.unconsidered
 
       # Order should be by absolute time, and where absolute time is nil, then by entered time.
       # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
-      selected_raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(raw_times_limit)
+      selected_raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
+      selected_live_times = scoped_live_times.order(:absolute_time, :entered_time).limit(record_limit)
+      time_records = selected_raw_times + selected_live_times
 
-      grouped_raw_times = selected_raw_times.group_by(&:event_id)
+      grouped_time_records = time_records.group_by(&:event_id)
 
-      raw_time_rows = grouped_raw_times.flat_map do |event_id, raw_times|
+      time_rows = grouped_time_records.flat_map do |event_id, time_records|
         event = Event.where(id: event_id).includes(:splits, :course).first
-        TimeRecordRowConverter.convert(event: event, time_records: raw_times)
+        TimeRecordRowConverter.convert(event: event, time_records: time_records)
       end
 
-      selected_raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+      RawTime.where(id: selected_raw_times).update_all(pulled_by: current_user.id, pulled_at: Time.current)
+      selected_live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+      report_live_times_available(@resource)
       report_raw_times_available(@resource)
-      render json: {returnedRows: raw_time_rows}, status: :ok
+      render json: {returnedRows: time_rows}, status: :ok
     else
       render json: live_entry_unavailable(@resource), status: :forbidden
     end

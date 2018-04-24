@@ -412,7 +412,7 @@ RSpec.describe Api::V1::EventGroupsController do
           end
         end
 
-        context 'when the event_group is visible and available live and auto_live_times is true' do
+        context 'when event_group.permit_notifications? is true and auto_live_times is true' do
           let!(:event_group) { create(:event_group, concealed: false, available_live: true, auto_live_times: true) }
           let!(:effort) { create(:effort, event: event, bib_number: 101, person: person) }
           let!(:person) { create(:person) }
@@ -453,6 +453,42 @@ RSpec.describe Api::V1::EventGroupsController do
 
             expect(Interactors::UpdateEffortsStatus).to have_received(:perform!).with(efforts)
           end
+        end
+      end
+    end
+  end
+
+  describe '#pull_time_record_rows' do
+    subject(:make_request) { patch :pull_time_record_rows, params: request_params }
+    let(:request_params) { {id: event_group.id} }
+
+    let!(:event_group) { create(:event_group, available_live: true) }
+    let!(:course) { create(:course) }
+    let!(:event) { create(:event, event_group: event_group, course: course) }
+    let!(:effort_1) { create(:effort, event: event, bib_number: 111) }
+    let!(:effort_2) { create(:effort, event: event, bib_number: 112) }
+    let!(:start_split) { create(:start_split, course: course, base_name: 'Start') }
+    let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
+
+    before do
+      event.splits << [start_split, finish_split]
+      allow(Pusher).to receive(:trigger)
+    end
+
+    via_login_and_jwt do
+      context 'when unpulled live_times and raw_times are available' do
+        let!(:live_time_1) { create(:live_time, event: event, bib_number: '111', entered_time: '06:00:00', split: start_split) }
+        let!(:live_time_2) { create(:live_time, event: event, bib_number: '112', entered_time: '06:00:00', split: start_split) }
+        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish') }
+        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish') }
+
+        it 'marks the live_times and raw_times as having been pulled and returns returnedRows' do
+          response = make_request
+          expect(LiveTime.all.pluck(:pulled_by)).to all be_present
+          expect(RawTime.all.pluck(:pulled_by)).to all be_present
+
+          result = JSON.parse(response.body)
+          expect(result['returnedRows'].size).to eq(4)
         end
       end
     end

@@ -56,7 +56,7 @@ class TimeRecordRowConverter
   end
 
   def paired_time_records
-    TimeRecordPairer.pair(event: event, time_records: time_records)
+    TimeRecordPairer.pair(time_records: time_records)
   end
 
   def ordered_splits

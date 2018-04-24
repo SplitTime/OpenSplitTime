@@ -39,4 +39,8 @@ class EventGroupPolicy < ApplicationPolicy
   def pull_live_time_rows?
     user.authorized_to_edit?(event_group)
   end
+
+  def pull_time_record_rows?
+    user.authorized_to_edit?(event_group)
+  end
 end

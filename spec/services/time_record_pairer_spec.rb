@@ -15,37 +15,18 @@ RSpec.describe TimeRecordPairer do
   let(:live_time_wildcard_1) { build_stubbed(:live_time, event_id: event.id, bib_number: '10*', split_id: 101, bitkey: 1) }
   let(:live_time_wildcard_2) { build_stubbed(:live_time, event_id: event.id, bib_number: '10*', split_id: 101, bitkey: 64) }
 
-  let(:live_entry_attributes) { [{title: 'Start',
-                                  entries: [{split_id: 100, sub_split_kind: 'in', label: 'Start'}]},
-                                 {title: 'Cunningham',
-                                  entries: [{split_id: 101, sub_split_kind: 'in', label: 'Cunningham In'},
-                                            {split_id: 101, sub_split_kind: 'out', label: 'Cunningham Out'}]},
-                                 {title: 'Maggie',
-                                  entries: [{split_id: 102, sub_split_kind: 'in', label: 'Maggie In'},
-                                            {split_id: 102, sub_split_kind: 'out', label: 'Maggie Out'}]}] }
-
   describe '#pair' do
     context 'when all time_records can be paired' do
       let(:live_times) { [live_time_1, live_time_2, live_time_3, live_time_4, live_time_5, live_time_6, live_time_7] }
 
       it 'returns an array of paired time_record arrays' do
-        allow(event).to receive(:live_entry_attributes).and_return(live_entry_attributes)
         expected = [[live_time_1, live_time_2], [nil, live_time_7], [live_time_3, live_time_4], [live_time_5, live_time_6]]
         expect(subject.pair).to eq(expected)
       end
 
       it 'retains boolean attributes' do
-        allow(event).to receive(:live_entry_attributes).and_return(live_entry_attributes)
         expect(subject.pair.first.map(&:stopped_here)).to eq([false, true])
         expect(subject.pair.third.map(&:with_pacer)).to eq([true, true])
-      end
-    end
-
-    context 'when any time_record contains an invalid split_id' do
-      let(:live_times) { [live_time_bad_split] }
-
-      it 'returns an array of paired live_time arrays' do
-        expect { subject }.to raise_error(/All time_records must match the splits available/)
       end
     end
 
@@ -53,7 +34,6 @@ RSpec.describe TimeRecordPairer do
       let(:live_times) { [live_time_1, live_time_2, live_time_wildcard_1, live_time_wildcard_2] }
 
       it 'pairs matching wildcard bib_numbers with each other but not with any other time_record' do
-        allow(event).to receive(:live_entry_attributes).and_return(live_entry_attributes)
         expected = [[live_time_1, live_time_2], [live_time_wildcard_1, live_time_wildcard_2]]
         expect(subject.pair).to eq(expected)
       end

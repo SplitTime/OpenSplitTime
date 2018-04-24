@@ -132,6 +132,7 @@ Rails.application.routes.draw do
         member do
           post :import
           patch :pull_live_time_rows
+          patch :pull_time_record_rows
           get :trigger_time_records_push
         end
       end

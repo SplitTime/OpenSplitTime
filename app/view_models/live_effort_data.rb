@@ -43,6 +43,8 @@ class LiveEffortData
      dropped_here: stopped_here?,
      live_time_id_in: params[:live_time_id_in],
      live_time_id_out: params[:live_time_id_out],
+     raw_time_id_in: params[:raw_time_id_in],
+     raw_time_id_out: params[:raw_time_id_out],
      time_in: new_split_times[:in].military_time || params[:time_in],
      time_out: new_split_times[:out].military_time || params[:time_out],
      pacer_in: new_split_times[:in].pacer,

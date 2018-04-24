@@ -102,10 +102,10 @@ class Api::V1::EventGroupsController < ApiController
         TimeRecordRowConverter.convert(event: event, time_records: time_records)
       end
 
-      RawTime.where(id: selected_raw_times).update_all(pulled_by: current_user.id, pulled_at: Time.current)
-      selected_live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
-      report_live_times_available(@resource)
-      report_raw_times_available(@resource)
+      [RawTime.where(id: selected_raw_times), selected_live_times].each do |records|
+        records.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+      end
+      report_time_records_available
       render json: {returnedRows: time_rows}, status: :ok
     else
       render json: live_entry_unavailable(@resource), status: :forbidden
@@ -114,8 +114,14 @@ class Api::V1::EventGroupsController < ApiController
 
   def trigger_time_records_push
     authorize @resource
+    report_time_records_available
+    render json: {message: "Time records push notifications sent for #{@resource.name}"}
+  end
+
+  private
+
+  def report_time_records_available
     report_live_times_available(@resource)
     report_raw_times_available(@resource)
-    render json: {message: "Time records push notifications sent for #{@resource.name}"}
   end
 end

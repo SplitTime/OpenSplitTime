@@ -76,6 +76,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
+  def export_to_summit?
+    user.authorized_to_edit?(event)
+  end
+
   def aid_station_detail?
     user.authorized_to_edit?(event)
   end

@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       get :drop_list
       get :edit_start_time
       get :export_to_ultrasignup
+      get :export_to_summit
       get :podium
       get :reconcile
       get :spread

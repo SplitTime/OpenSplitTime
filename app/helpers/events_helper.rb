@@ -125,6 +125,11 @@ module EventsHelper
     link_to 'Stewards', organization_path(view_object.organization, display_style: 'stewards'), class: 'btn btn-sm btn-warning' if view_object.organization
   end
 
+  def link_to_summit_export(view_object)
+    link_to 'Export to summit', export_to_summit_event_path(view_object.event, format: :csv),
+            class: 'btn btn-sm btn-success'
+  end
+
   def link_to_ultrasignup_export(view_object)
     link_to 'Export to ultrasignup', export_to_ultrasignup_event_path(view_object.event, format: :csv),
             class: 'btn btn-sm btn-success'

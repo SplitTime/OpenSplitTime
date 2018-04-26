@@ -44,6 +44,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_fully?(event)
   end
 
+  def delete_all_times?
+    user.authorized_fully?(event)
+  end
+
   def associate_people?
     user.authorized_to_edit?(event)
   end

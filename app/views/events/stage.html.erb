@@ -82,6 +82,11 @@
                         data: {confirm: 'NOTE: This will delete all efforts and split times for this event. ' +
                             'This action cannot be undone. Are you sure you want to go ahead?'},
                         class: 'btn btn-sm btn-danger' %>
+            <%= link_to 'Delete all times', delete_all_times_event_path,
+                        method: :delete,
+                        data: {confirm: 'NOTE: This will delete all split times and time records for this event. ' +
+                            'This action cannot be undone. Are you sure you want to go ahead?'},
+                        class: 'btn btn-sm btn-danger' %>
         <% end %>
         <% if @event_stage.unreconciled_efforts? %>
             <%= link_to 'Reconcile efforts', reconcile_event_path, class: 'btn btn-sm btn-success' %>

@@ -79,6 +79,7 @@ Rails.application.routes.draw do
       patch :update_start_time
       patch :update_all_efforts
       delete :delete_all_efforts
+      delete :delete_all_times
     end
   end
 

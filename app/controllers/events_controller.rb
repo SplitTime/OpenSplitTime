@@ -134,6 +134,13 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
+  def delete_all_times
+    authorize @event
+    response = Interactors::BulkDeleteEventTimes.perform!(@event)
+    set_flash_message(response)
+    redirect_to stage_event_path(@event)
+  end
+
 # Actions related to the event/effort/split_time relationship
 
   def set_data_status

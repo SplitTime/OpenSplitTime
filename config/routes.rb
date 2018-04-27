@@ -86,6 +86,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :live_times, only: [:update, :destroy]
+
   resources :organizations
 
   resources :people do

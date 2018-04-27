@@ -137,8 +137,11 @@ class LiveTimeRowImporter
   def validate_time_rows
     split_ids = time_rows.map { |row| row[:split_id].presence }.compact.uniq
     effort_ids = time_rows.map { |row| row[:effort_id].presence }.compact.uniq
-    live_time_ids = time_rows.flat_map { |row| [row[:live_time_id_in].presence, row[:live_time_id_out].presence] }
-                        .compact.uniq
+    live_time_ids = time_rows.flat_map { |row| [row[:live_time_id_in].presence, row[:live_time_id_out].presence] }.compact.uniq
+    matched_live_time_ids = LiveTime.where(id: live_time_ids).ids
+    deleted_live_time_ids = live_time_ids - matched_live_time_ids
+    remove_live_time_ids(deleted_live_time_ids)
+
     begin
       Split.find(split_ids)
     rescue ActiveRecord::RecordNotFound
@@ -150,11 +153,13 @@ class LiveTimeRowImporter
     rescue ActiveRecord::RecordNotFound
       errors << effort_not_found_error
     end
+  end
 
-    begin
-      LiveTime.find(live_time_ids)
-    rescue ActiveRecord::RecordNotFound
-      errors << live_time_not_found_error
+  def remove_live_time_ids(live_time_ids)
+    time_rows.each do |row|
+      [:live_time_id_in, :live_time_id_out].each do |attribute|
+        row[attribute] = nil if live_time_ids.include?(row[attribute])
+      end
     end
   end
 
@@ -166,10 +171,5 @@ class LiveTimeRowImporter
   def effort_not_found_error
     {title: 'Effort not found',
      detail: {messages: ['One or more effort_ids submitted in timeRows was not found']}}
-  end
-
-  def live_time_not_found_error
-    {title: 'LiveTime not found',
-     detail: {messages: ['One or more live_time_ids submitted in timeRows was not found']}}
   end
 end

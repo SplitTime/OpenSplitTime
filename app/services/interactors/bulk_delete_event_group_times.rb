@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module Interactors
-  class BulkDeleteEventTimes
+  class BulkDeleteEventGroupTimes
     include ActionView::Helpers::TextHelper
+    include Interactors::Errors
 
     def self.perform!(event_group)
       new(event_group).perform!
@@ -25,37 +26,32 @@ module Interactors
 
     private
 
-    attr_reader :event, :effort_initial_count, :errors
+    attr_reader :event_group, :errors
 
     def delete_live_times
-      LiveTime.where(event_id: event_group.events).delete_all
+      @live_time_count = LiveTime.where(event_id: event_group.events).delete_all
     rescue ActiveRecord::ActiveRecordError => exception
-      errors << Interactors::Errors.active_record_error(exception)
+      errors << active_record_error(exception)
+    end
+
+    def delete_raw_times
+      @raw_time_count = RawTime.where(event_group_id: event_group).delete_all
+    rescue ActiveRecord::ActiveRecordError => exception
+      errors << active_record_error(exception)
     end
 
     def delete_split_times
-      split_times.delete_all
+      efforts = Effort.where(event_id: event_group.events)
+      @split_time_count = SplitTime.where(effort_id: efforts).delete_all
     rescue ActiveRecord::ActiveRecordError => exception
-      errors << Interactors::Errors.active_record_error(exception)
-    end
-
-    def delete_efforts
-      efforts.delete_all
-    rescue ActiveRecord::ActiveRecordError => exception
-      errors << Interactors::Errors.active_record_error(exception)
-    end
-
-    def split_times
-      @split_times ||= SplitTime.where(effort_id: efforts.map(&:id))
+      errors << active_record_error(exception)
     end
 
     def message
       if errors.present?
-        "Unable to delete efforts"
-      elsif effort_initial_count.zero?
-        "No efforts were provided"
+        "Unable to delete times"
       else
-        "Deleted #{pluralize(effort_initial_count, 'effort')}"
+        "Deleted #{pluralize(@live_time_count, 'live time')}, #{pluralize(@raw_time_count, 'raw time')}, and #{pluralize(@live_time_count, 'split time')}"
       end
     end
   end

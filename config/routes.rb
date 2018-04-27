@@ -58,7 +58,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy]
+  resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
+    member do
+      delete :delete_all_times
+    end
+  end
 
   resources :events do
     collection { get :series }
@@ -79,7 +83,6 @@ Rails.application.routes.draw do
       patch :update_start_time
       patch :update_all_efforts
       delete :delete_all_efforts
-      delete :delete_all_times
     end
   end
 

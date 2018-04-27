@@ -21,11 +21,13 @@ module LiveTimesHelper
     if live_time.pulled_by || live_time.pulled_at
       link_to '', live_time_path(live_time, live_time: {pulled_by: nil, pulled_at: nil}, referrer_path: request.params),
               method: :patch,
-              class: 'fa fa-pencil btn btn-sm btn-primary'
+              data: {toggle: :tooltip, placement: :bottom, 'original-title' => 'Mark as not pulled'},
+              class: 'fa fa-cloud-download btn btn-sm btn-primary has-tooltip'
     else
       link_to '', live_time_path(live_time, live_time: {pulled_by: current_user.id, pulled_at: Time.current}, referrer_path: request.params),
               method: :patch,
-              class: 'fa fa-pencil btn btn-sm btn-default'
+              data: {toggle: :tooltip, placement: :bottom, 'original-title' => 'Mark as pulled'},
+              class: 'fa fa-cloud-download btn btn-sm btn-default has-tooltip'
     end
   end
 
@@ -33,12 +35,13 @@ module LiveTimesHelper
     if live_time.split_time_id
       link_to '', live_time_path(live_time, live_time: {split_time_id: nil}, referrer_path: request.params),
               method: :patch,
-              class: 'fa fa-check btn btn-sm btn-primary'
+              data: {toggle: :tooltip, placement: :bottom, 'original-title' => 'Unlink from matching split time', confirm: 'Are you sure?'},
+              class: 'fa fa-exchange btn btn-sm btn-success has-tooltip'
     else
       link_to '', live_time_path(live_time, live_time: {pulled_by: current_user.id, pulled_at: Time.current}, referrer_path: request.params),
               method: :patch,
               disabled: true,
-              class: 'fa fa-check btn btn-sm btn-default'
+              class: 'fa fa-exchange btn btn-sm btn-default'
     end
   end
 

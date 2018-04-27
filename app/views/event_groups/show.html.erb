@@ -19,7 +19,7 @@
         <%= link_to 'Edit group', edit_event_group_path(@presenter), class: 'btn btn-sm btn-primary' %>
         <%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter),
                     method: :delete,
-                    data: {confirm: 'NOTE: This will delete all split times and time records for this event group. ' +
+                    data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
                             'This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
         <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: events_path),

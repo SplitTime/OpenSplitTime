@@ -53,7 +53,7 @@
             <td><%= live_time.pulled_at ? l(live_time.pulled_at.in_time_zone(view_model.home_time_zone), format: :short_day_and_time) : '--' %></td>
             <td><%= live_time.matched? ? 'Yes' : 'No' %></td>
             <td>
-              <div class="col-xs-12">
+              <div class="col-xs-12 text-nowrap">
                 <%= link_to_toggle_live_time_pull(live_time) %>
                 <%= link_to_toggle_live_time_match(live_time) %>
                 <%= link_to_live_time_delete(live_time) %>

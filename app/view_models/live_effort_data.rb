@@ -139,6 +139,7 @@ class LiveEffortData
                               split: subject_split,
                               bib_number: effort.bib_number,
                               with_pacer: param_with_kind('pacer', kind) == 'true',
+                              stopped_here: new_split_times[kind].stopped_here,
                               bitkey: SubSplit.bitkey(kind),
                               source: 'ost-live-entry',
                               entered_time: param_with_kind('time', kind))]

@@ -24,7 +24,7 @@ class LiveTimesController < ApplicationController
   end
 
   def redirect_to_event
-      redirect_to params[:referrer_path].permit(:action, :controller, :id, :display_style, :sort) ||
+      redirect_to params[:referrer_path].permit(:action, :controller, :id, :display_style, :sort, :page) ||
                     stage_event_path(@live_time.event_id, display_style: :times)
   end
 end

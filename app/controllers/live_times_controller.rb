@@ -24,8 +24,6 @@ class LiveTimesController < ApplicationController
   end
 
   def redirect_to_event
-    # TODO This causes a full page reload rather than a turbolinks refresh
-
     redirect_to params[:referrer_path].permit(:action, :controller, :id, :display_style) ||
                     stage_event_path(@live_time.event_id, display_style: :times)
   end

@@ -20,6 +20,10 @@ class EventGroupPolicy < ApplicationPolicy
     @event_group = event_group
   end
 
+  def delete_all_times?
+    user.authorized_fully?(event_group)
+  end
+
   def live_entry?
     user.authorized_to_edit?(event_group)
   end

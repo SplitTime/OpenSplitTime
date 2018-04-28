@@ -53,8 +53,15 @@ class EventGroupsController < ApplicationController
       @event_group.destroy
       flash[:success] = 'Event group deleted.'
       session[:return_to] = params[:referrer_path] if params[:referrer_path]
-      redirect_to session.delete(:return_to) || events_path
+      redirect_to session.delete(:return_to) || event_groups_path
     end
+  end
+
+  def delete_all_times
+    authorize @event_group
+    response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to event_group_path(@event_group, force_settings: true)
   end
 
   private

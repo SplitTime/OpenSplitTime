@@ -24,6 +24,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_fully?(event_group)
   end
 
+  def export_to_summit?
+    user.authorized_to_edit?(event_group)
+  end
+
   def live_entry?
     user.authorized_to_edit?(event_group)
   end

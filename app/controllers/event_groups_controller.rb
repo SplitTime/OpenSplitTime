@@ -64,6 +64,21 @@ class EventGroupsController < ApplicationController
     redirect_to event_group_path(@event_group, force_settings: true)
   end
 
+  def export_to_summit
+    authorize @event_group
+
+    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
+
+    respond_to do |format|
+      format.html { redirect_to event_group_path(@event_group, force_settings: true) }
+      format.csv do
+        csv_stream = render_to_string(partial: 'summit.csv.ruby')
+        send_data(csv_stream, type: 'text/csv',
+                  filename: "#{@event_group.name}-for-summit-#{Date.today}.csv")
+      end
+    end
+  end
+
   private
 
   def set_event_group

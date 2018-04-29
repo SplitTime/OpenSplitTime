@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
     member do
+      get :export_to_summit
       delete :delete_all_times
     end
   end
@@ -70,7 +71,6 @@ Rails.application.routes.draw do
       get :drop_list
       get :edit_start_time
       get :export_to_ultrasignup
-      get :export_to_summit
       get :podium
       get :reconcile
       get :spread

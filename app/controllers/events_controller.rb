@@ -206,20 +206,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def export_to_summit
-    authorize @event
-    params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
-    respond_to do |format|
-      format.html { redirect_to stage_event_path(@event) }
-      format.csv do
-        csv_stream = render_to_string(partial: 'summit.csv.ruby')
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event.name}-for-summit-#{Date.today}.csv")
-      end
-    end
-  end
-
   private
 
   def set_event

@@ -49,6 +49,6 @@ module TimeRecordable
   private
 
   def create_sortable_bib_number
-    self.sortable_bib_number = bib_number.gsub(/\D/, '0').to_i
+    self.sortable_bib_number = bib_number&.gsub(/\D/, '0').to_i
   end
 end

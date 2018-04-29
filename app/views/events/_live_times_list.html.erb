@@ -11,7 +11,7 @@
     <table class="table table-condensed table-striped">
       <thead>
       <tr>
-        <th><%= link_to_reversing_sort_heading('Bib', 'bib_number', view_model.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, view_model.existing_sort) %></th>
         <th>Name</th>
         <th>Aid Station</th>
         <% if view_model.multiple_sub_splits? %>

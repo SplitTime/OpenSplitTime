@@ -8,7 +8,8 @@ FactoryBot.define do
     source 'ost-test'
 
     after(:build, :stub) do |raw_time|
-      raw_time.parameterized_split_name = raw_time.split_name.parameterize
+      raw_time.send(:parameterize_split_name)
+      raw_time.send(:create_sortable_bib_number)
     end
   end
 end

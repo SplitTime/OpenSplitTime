@@ -8,6 +8,7 @@ class RawTime < ApplicationRecord
   belongs_to :split_time
 
   before_validation :parameterize_split_name
+  before_validation :create_sortable_bib_number
 
   validates_presence_of :event_group, :split_name, :bitkey, :bib_number, :source
   validates :bib_number, length: {maximum: 6}, format: {with: /\A[\d\*]+\z/, message: 'may contain only digits and asterisks'}

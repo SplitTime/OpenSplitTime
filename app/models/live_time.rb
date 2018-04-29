@@ -7,6 +7,9 @@ class LiveTime < ApplicationRecord
   belongs_to :event
   belongs_to :split
   belongs_to :split_time
+
+  before_validation :create_sortable_bib_number
+
   validates_presence_of :event, :split, :bib_number, :bitkey, :source
   validates :bib_number, length: {maximum: 6}, format: {with: /\A[\d\*]+\z/, message: 'may contain only digits and asterisks'}
   validates_uniqueness_of :absolute_time, scope: [:event_id, :split_id, :bitkey, :bib_number, :source, :with_pacer, :stopped_here, :remarks],

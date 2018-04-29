@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180411180034) do
+ActiveRecord::Schema.define(version: 20180429031518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(version: 20180411180034) do
     t.integer "pulled_by"
     t.datetime "pulled_at"
     t.string "entered_time"
+    t.integer "sortable_bib_number", null: false
     t.index ["absolute_time", "event_id", "split_id", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "live_time_unique_absolute_times_index", unique: true
     t.index ["entered_time", "event_id", "split_id", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "live_time_unique_entered_times_index", unique: true
     t.index ["event_id"], name: "index_live_times_on_event_id"
@@ -246,6 +247,7 @@ ActiveRecord::Schema.define(version: 20180411180034) do
     t.datetime "updated_at", null: false
     t.string "parameterized_split_name", null: false
     t.string "remarks"
+    t.integer "sortable_bib_number", null: false
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
   end

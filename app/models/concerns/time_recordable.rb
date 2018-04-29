@@ -45,4 +45,10 @@ module TimeRecordable
   def pulled_full_name
     pulled_by ? User.find(pulled_by)&.full_name : '--'
   end
+
+  private
+
+  def create_sortable_bib_number
+    self.sortable_bib_number = bib_number.gsub(/\D/, '0').to_i
+  end
 end

@@ -31,19 +31,19 @@ module LiveTimesHelper
     end
   end
 
-  def link_to_toggle_live_time_match(live_time)
-    if live_time.split_time_id
-      link_to '', live_time_path(live_time, live_time: {split_time_id: nil}, referrer_path: request.params),
-              method: :patch,
-              data: {toggle: :tooltip, placement: :bottom, 'original-title' => 'Unlink from matching split time', confirm: 'Are you sure?'},
-              class: 'fa fa-exchange btn btn-sm btn-success has-tooltip'
-    else
-      link_to '', live_time_path(live_time, live_time: {pulled_by: current_user.id, pulled_at: Time.current}, referrer_path: request.params),
-              method: :patch,
-              disabled: true,
-              class: 'fa fa-exchange btn btn-sm btn-default'
-    end
-  end
+  # def link_to_toggle_live_time_match(live_time)
+  #   if live_time.split_time_id
+  #     link_to '', live_time_path(live_time, live_time: {split_time_id: nil}, referrer_path: request.params),
+  #             method: :patch,
+  #             data: {toggle: :tooltip, placement: :bottom, 'original-title' => 'Unlink from matching split time', confirm: 'Are you sure?'},
+  #             class: 'fa fa-exchange btn btn-sm btn-success has-tooltip'
+  #   else
+  #     link_to '', live_time_path(live_time, live_time: {pulled_by: current_user.id, pulled_at: Time.current}, referrer_path: request.params),
+  #             method: :patch,
+  #             disabled: true,
+  #             class: 'fa fa-exchange btn btn-sm btn-default'
+  #   end
+  # end
 
   def link_to_live_time_delete(live_time)
     link_to '', live_time_path(live_time, referrer_path: request.params),

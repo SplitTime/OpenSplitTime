@@ -47,9 +47,10 @@ class EffortsController < ApplicationController
 
     if @effort.update(permitted_params)
       if params[:button] == 'check_in'
-        event = @effort.event
+        effort = effort_with_splits
+        event = effort.event
         @stage_display = EventStageDisplay.new(event: event, params: {})
-        render :toggle_check_in, locals: {effort: @effort}
+        render :toggle_check_in, locals: {effort: effort}
       else
         redirect_to params[:commit] == 'Disassociate' ? request.referrer : effort_path(@effort)
       end
@@ -78,7 +79,7 @@ class EffortsController < ApplicationController
 
   def start
     authorize @effort
-    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+    effort = effort_with_splits
 
     response = Interactors::StartEfforts.perform!([effort], current_user.id)
     set_flash_message(response)
@@ -87,12 +88,13 @@ class EffortsController < ApplicationController
 
   def unstart
     authorize @effort
-    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+    effort = effort_with_splits
     event = effort.event
 
     response = Interactors::UnstartEfforts.perform!([effort])
     if response.successful?
       @stage_display = EventStageDisplay.new(event: event, params: {})
+      effort = effort_with_splits # Need to reload to update split_times
       render :toggle_check_in, locals: {effort: effort}
     else
       set_flash_message(response)
@@ -102,7 +104,7 @@ class EffortsController < ApplicationController
 
   def stop
     authorize @effort
-    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+    effort = effort_with_splits
 
     stop_response = Interactors::UpdateEffortsStop.perform!(effort)
     update_response = Interactors::UpdateEffortsStatus.perform!(effort)
@@ -119,7 +121,7 @@ class EffortsController < ApplicationController
 
   def update_split_times
     authorize @effort
-    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+    effort = effort_with_splits
 
     if effort.update(permitted_params)
       flash[:success] = "Updated split times. "
@@ -182,6 +184,10 @@ class EffortsController < ApplicationController
   end
 
   private
+
+  def effort_with_splits
+    Effort.where(id: @effort.id).includes(split_times: :split).first
+  end
 
   def set_effort
     @effort = Effort.friendly.find(params[:id])

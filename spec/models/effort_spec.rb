@@ -262,6 +262,55 @@ RSpec.describe Effort, type: :model do
     end
   end
 
+  describe '#beyond_start?' do
+    let(:subject) { build_stubbed(:effort, split_times: split_times) }
+    let(:start_split) { build_stubbed(:start_split) }
+    let(:aid_1) { build_stubbed(:split) }
+    let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: start_split) }
+    let(:split_time_2) { build_stubbed(:split_time, lap: 1, split: aid_1) }
+    let(:split_time_3) { build_stubbed(:split_time, lap: 2, split: start_split) }
+
+    context 'when the effort has no split_times' do
+      let(:split_times) { [] }
+
+      it 'returns false' do
+        expect(subject.beyond_start?).to eq(false)
+      end
+    end
+
+    context 'when the effort has only a start split_time' do
+      let(:split_times) { [split_time_1] }
+
+      it 'returns false' do
+        expect(subject.beyond_start?).to eq(false)
+      end
+    end
+
+    context 'when the effort has a start split_time and an intermediate split_time' do
+      let(:split_times) { [split_time_1, split_time_2] }
+
+      it 'returns true' do
+        expect(subject.beyond_start?).to eq(true)
+      end
+    end
+
+    context 'when the effort has no start split_time but has an intermediate split_time' do
+      let(:split_times) { [split_time_2] }
+
+      it 'returns true' do
+        expect(subject.beyond_start?).to eq(true)
+      end
+    end
+
+    context 'when the effort has a start split_time for a lap greater than 1' do
+      let(:split_times) { [split_time_3] }
+
+      it 'returns true' do
+        expect(subject.beyond_start?).to eq(true)
+      end
+    end
+  end
+
   describe '#finished?' do
     context 'for an event with a fixed lap requirement' do
       let(:laps_required) { 2 }

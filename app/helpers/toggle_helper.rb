@@ -4,19 +4,24 @@ module ToggleHelper
 
   def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
-                      request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, 'filter[search]' => '', page:  nil),
+                      request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, 'filter[search]' => '', page: nil),
                       {class: 'btn btn-sm btn-primary',
                        disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled})
   end
 
-  def link_to_toggle_check_in(effort, started)
-    if started
+  def link_to_toggle_check_in(effort)
+    case
+    when effort.beyond_start?
+      link_to_with_icon("glyphicon glyphicon-expand", 'Beyond start', '#', {
+          disabled: true,
+          class: 'check-in btn btn-sm btn-primary btn-block'})
+    when effort.started?
       url = unstart_effort_path(effort)
       link_to_with_icon("glyphicon glyphicon-expand", 'Started', url, {
           method: :patch,
           remote: true,
           class: 'check-in btn btn-sm btn-primary btn-block'})
-    elsif effort.checked_in?
+    when effort.checked_in?
       url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
       link_to_with_icon("glyphicon glyphicon-check", 'Checked in', url, {
           method: :patch,

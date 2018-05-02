@@ -205,6 +205,10 @@ class Effort < ApplicationRecord
     started? && !stopped?
   end
 
+  def beyond_start?
+    split_times.find { |st| !st.start? || st.lap > 1 }.present?
+  end
+
   def finish_status
     case
     when !started?

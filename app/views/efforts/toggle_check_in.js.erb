@@ -1,2 +1,2 @@
-$('#effort_<%= effort.id %> .check-in').replaceWith("<%=j link_to_toggle_check_in(effort, @stage_display.effort_started?(effort)) %>");
+$('#effort_<%= effort.id %> .check-in').replaceWith("<%=j link_to_toggle_check_in(effort) %>");
 $('#event_<%= @stage_display.id %> .start-ready-efforts').replaceWith("<%=j link_to_start_ready_efforts(@stage_display) %>");

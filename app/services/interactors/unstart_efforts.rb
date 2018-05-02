@@ -45,10 +45,8 @@ module Interactors
     end
 
     def validate_efforts
-      efforts.each do |effort|
-        if effort.split_times.intermediate.present? || effort.split_times.finish.present?
-          errors << cannot_unstart_error(effort)
-        end
+      efforts.select(&:beyond_start?).each do |effort|
+        errors << cannot_unstart_error(effort)
       end
     end
   end

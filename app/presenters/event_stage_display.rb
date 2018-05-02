@@ -11,6 +11,7 @@ class EventStageDisplay < EventWithEffortsPresenter
 
   def filtered_efforts
     @filtered_efforts ||= scoped_efforts
+                              .includes(split_times: :split)
                               .search(search_text)
                               .where(filter_hash)
                               .order(sort_hash.presence || :bib_number)

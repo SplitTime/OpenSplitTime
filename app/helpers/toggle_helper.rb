@@ -11,19 +11,22 @@ module ToggleHelper
 
   def link_to_toggle_check_in(effort, started)
     if started
-      link_to_with_icon("glyphicon glyphicon-expand", 'Started', '#', {
-          disabled: true, class: 'btn btn-sm btn-primary btn-block'})
+      url = unstart_effort_path(effort)
+      link_to_with_icon("glyphicon glyphicon-expand", 'Started', url, {
+          method: :patch,
+          remote: true,
+          class: 'check-in btn btn-sm btn-primary btn-block'})
     elsif effort.checked_in?
       url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
       link_to_with_icon("glyphicon glyphicon-check", 'Checked in', url, {
-          method: 'patch',
+          method: :patch,
           remote: true,
           class: 'check-in btn btn-sm btn-success btn-block'
       })
     else
       url = effort_path(effort, effort: {checked_in: true}, button: :check_in)
       link_to_with_icon("glyphicon glyphicon-unchecked", 'Check in', url, {
-          method: 'patch',
+          method: :patch,
           remote: true,
           class: 'check-in btn btn-sm btn-default btn-block'
       })

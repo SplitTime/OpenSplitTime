@@ -49,7 +49,7 @@ class EffortsController < ApplicationController
       if params[:button] == 'check_in'
         event = @effort.event
         @stage_display = EventStageDisplay.new(event: event, params: {})
-        render :toggle_check_in
+        render :toggle_check_in, locals: {effort: @effort}
       else
         redirect_to params[:commit] == 'Disassociate' ? request.referrer : effort_path(@effort)
       end
@@ -83,6 +83,21 @@ class EffortsController < ApplicationController
     response = Interactors::StartEfforts.perform!([effort], current_user.id)
     set_flash_message(response)
     redirect_to effort_path(effort)
+  end
+
+  def unstart
+    authorize @effort
+    effort = Effort.where(id: @effort.id).includes(split_times: :split).first
+    event = effort.event
+
+    response = Interactors::UnstartEfforts.perform!([effort])
+    if response.successful?
+      @stage_display = EventStageDisplay.new(event: event, params: {})
+      render :toggle_check_in, locals: {effort: effort}
+    else
+      set_flash_message(response)
+      redirect_to stage_event_path(event)
+    end
   end
 
   def stop

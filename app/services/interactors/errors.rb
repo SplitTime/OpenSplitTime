@@ -12,6 +12,11 @@ module Interactors
        detail: {exception: exception}}
     end
 
+    def cannot_unstart_error(effort)
+      {title: "Cannot mark #{effort} as DNS",
+       detail: {messages: ['The effort has one or more intermediate or finish times recorded. Times must be deleted from the effort view.']}}
+    end
+
     def distance_mismatch_error(child, new_parent)
       {title: 'Distances do not match',
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because distances do not coincide"]}}

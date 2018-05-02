@@ -41,7 +41,7 @@ class EventGroupPresenter < BasePresenter
 
   def finish_live_times
     finish_splits = Split.joins(:events).where(events: {event_group_id: event_group.id}, kind: :finish)
-    event_group.live_times.includes(:event).where(split_id: finish_splits).order(:absolute_time, :entered_time)
+    event_group.live_times.includes(:event).where(split_id: finish_splits)
   end
 
   def method_missing(method)

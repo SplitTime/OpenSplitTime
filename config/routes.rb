@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       put :edit_split_times
       put :set_data_status
       put :start
+      patch :unstart
       put :stop
       delete :delete_split_times
     end

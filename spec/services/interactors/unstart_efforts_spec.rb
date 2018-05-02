@@ -38,8 +38,8 @@ RSpec.describe Interactors::UnstartEfforts do
         expect(SplitTime.count).to eq(3)
         expect(response).not_to be_successful
         expect(response.message).to eq('No efforts were changed to DNS')
-        expect(response.errors.first[:detail])
-            .to match(/The effort has one or more intermediate or finish times recorded/)
+        expect(response.errors.first[:detail][:messages])
+            .to include(/The effort has one or more intermediate or finish times recorded/)
       end
     end
   end

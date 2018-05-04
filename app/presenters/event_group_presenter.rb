@@ -14,8 +14,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def events
-    @events ||= EventPolicy::Scope.new(current_user, Event).viewable
-                     .where(event_group: event_group).select_with_params('').order(:start_time).to_a
+    @events ||= event_group.events.select_with_params('').order(:start_time).to_a
   end
 
   def event_group_names
@@ -32,7 +31,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def authorized_to_edit?
-    current_user&.authorized_to_edit?(event_group)
+    @authorized_to_edit ||= current_user&.authorized_to_edit?(event_group)
   end
 
   def show_visibility_columns?

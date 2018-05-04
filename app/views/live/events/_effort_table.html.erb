@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-xs-9">
     <h3>
-      <%= @presenter.full_name %>
+      <%= link_to @presenter.full_name, effort_path(@presenter.effort), target: '_blank' %>
       <%= "(#{@presenter.bib_number})" if @presenter.bib_number %>
       • <%= @presenter.event_name %>
     </h3>

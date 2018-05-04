@@ -4,6 +4,8 @@
               disabled: action_name == 'live_entry', class: 'btn btn-sm btn-warning' %>
   <%= link_to 'Progress', progress_report_live_event_path(event),
               disabled: action_name == 'progress_report', class: 'btn btn-sm btn-warning' %>
+  <%= link_to 'Drop list', drop_list_event_path(event),
+              disabled: action_name == 'drop_list', class: 'btn btn-sm btn-warning' %>
   <%= link_to 'Aid stations', aid_station_report_live_event_path(event),
               disabled: action_name == 'aid_station_report', class: 'btn btn-sm btn-warning' %>
 </div>

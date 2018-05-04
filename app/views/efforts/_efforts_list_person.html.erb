@@ -19,7 +19,7 @@
       <td class="text-right"><%= effort.finish_status %></td>
       <% if current_user&.admin? %>
           <td class="text-right"><%= link_to 'Disassociate',
-                                             effort_path(effort, effort: {person_id: nil}, commit: 'Disassociate'),
+                                             effort_path(effort, effort: {person_id: nil}, button: :disassociate),
                                              method: :patch,
                                              class: 'btn btn-xs btn-danger' %></td>
       <% end %>

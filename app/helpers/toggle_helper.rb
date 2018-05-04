@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module ToggleHelper
-
   def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
                       request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, 'filter[search]' => '', page: nil),
@@ -9,33 +8,41 @@ module ToggleHelper
                        disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled})
   end
 
-  def link_to_toggle_check_in(effort)
+  def link_to_toggle_check_in(effort, block: true)
+    block_string = block ? 'btn-block' : ''
     case
     when effort.beyond_start?
-      link_to_with_icon("glyphicon glyphicon-expand", 'Beyond start', '#', {
-          disabled: true,
-          class: 'check-in btn btn-sm btn-primary btn-block'})
+      glyphicon_string = "glyphicon glyphicon-expand"
+      button_text = 'Beyond start'
+      url = '#'
+      disabled = true
+      class_string = "check-in btn btn-sm btn-primary #{block_string}"
     when effort.started?
+      glyphicon_string = "glyphicon glyphicon-expand"
+      button_text = 'Started'
       url = unstart_effort_path(effort)
-      link_to_with_icon("glyphicon glyphicon-expand", 'Started', url, {
-          method: :patch,
-          remote: true,
-          class: 'check-in btn btn-sm btn-primary btn-block'})
+      disabled = false
+      class_string = "check-in btn btn-sm btn-primary #{block_string}"
     when effort.checked_in?
       url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
-      link_to_with_icon("glyphicon glyphicon-check", 'Checked in', url, {
-          method: :patch,
-          remote: true,
-          class: 'check-in btn btn-sm btn-success btn-block'
-      })
+      glyphicon_string = "glyphicon glyphicon-check"
+      button_text = 'Checked in'
+      disabled = false
+      class_string = "check-in btn btn-sm btn-success #{block_string}"
     else
+      glyphicon_string = "glyphicon glyphicon-unchecked"
       url = effort_path(effort, effort: {checked_in: true}, button: :check_in)
-      link_to_with_icon("glyphicon glyphicon-unchecked", 'Check in', url, {
-          method: :patch,
-          remote: true,
-          class: 'check-in btn btn-sm btn-default btn-block'
-      })
+      button_text = 'Check in'
+      disabled = false
+      class_string = "check-in btn btn-sm btn-default #{block_string}"
     end
+
+    link_to_with_icon(glyphicon_string, button_text, url, {
+        method: :patch,
+        remote: true,
+        disabled: disabled,
+        class: class_string
+    })
   end
 
   def link_to_check_in_all(view_object)

@@ -66,7 +66,7 @@
 
 <% if current_user&.authorized_to_edit?(@effort_show.effort) || current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
     <div class="row">
-      <div class="col-xs-8">
+      <div class="col-xs-7">
         <% if current_user&.authorized_to_edit?(@effort_show.effort) %>
             <%= link_to 'Edit effort', edit_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
             <%= link_to 'Edit times of day', edit_split_times_effort_path(@effort_show.effort, display_style: 'military_times'),
@@ -75,21 +75,16 @@
             <%= link_to 'Edit elapsed times', edit_split_times_effort_path(@effort_show.effort),
                         method: :put,
                         class: "btn btn-sm btn-primary" %>
+            <% unless @effort_show.has_start_time? %>
+              <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
+                          method: :put,
+                          class: "btn btn-sm btn-success" %>
+            <% end %>
             <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),
                         method: :put,
                         class: "btn btn-sm btn-success" %>
-            <% if @effort_show.missing_start_time? %>
-                <%= link_to 'Create start time', start_effort_path(@effort_show.effort),
-                            method: :put,
-                            class: "btn btn-sm btn-success" %>
-            <% end %>
             <% if @effort_show.next_problem_effort %>
                 <%= link_to 'Find a problem effort', effort_path(@effort_show.next_problem_effort),
-                            class: "btn btn-sm btn-success" %>
-            <% end %>
-            <% unless @effort_show.has_start_time? %>
-                <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
-                            method: :put,
                             class: "btn btn-sm btn-success" %>
             <% end %>
             <% if @effort_show.needs_final_stop? %>
@@ -97,14 +92,19 @@
                             method: :put,
                             class: "btn btn-sm btn-success" %>
             <% end %>
-            <%= link_to 'Entered times', stage_event_path(@effort_show.event, display_style: :times, filter: {bib_number: @effort_show.bib_number}),
+            <%= link_to 'Raw time records', stage_event_path(@effort_show.event, display_style: :times, filter: {bib_number: @effort_show.bib_number}),
                         class: "btn btn-sm btn-success" %>
             <%= link_to 'Delete effort', effort_path(@effort_show.effort, referrer_path: event_path(@effort_show.event)),
                         method: :delete,
                         data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
         <% end %>
       </div>
-      <div class="col-xs-4">
+      <div class="col-xs-2">
+        <%= div_for(@effort_show.effort) do %>
+          <%= link_to_toggle_check_in(@effort_show.effort) %>
+        <% end %>
+      </div>
+      <div class="col-xs-3">
         <div class="text-right">
           <% if @effort_show.in_progress? && current_user&.authorized_to_edit?(@effort_show.effort) %>
               <strong><%= @effort_show.beacon_url ? 'Modify locator beacon link: ' : 'Add link to locator beacon:' %></strong>

@@ -46,13 +46,19 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.update(permitted_params)
-      if params[:button] == 'check_in'
+      case params[:button]
+      when 'check_in'
         effort = effort_with_splits
         event = effort.event
         @stage_display = EventStageDisplay.new(event: event, params: {})
-        render :toggle_check_in, locals: {effort: effort}
+        render :toggle_check_in, locals: {effort: effort, view_object: @stage_display}
+      when 'check_in_effort_show'
+        @effort_show = EffortShowView.new(effort: effort)
+        render :toggle_check_in, locals: {effort: effort, view_object: nil}
+      when 'disassociate'
+        redirect_to request.referrer
       else
-        redirect_to params[:commit] == 'Disassociate' ? request.referrer : effort_path(@effort)
+        redirect_to effort_path(@effort)
       end
     else
       render 'edit'
@@ -95,7 +101,7 @@ class EffortsController < ApplicationController
     if response.successful?
       @stage_display = EventStageDisplay.new(event: event, params: {})
       effort = effort_with_splits # Need to reload to update split_times
-      render :toggle_check_in, locals: {effort: effort}
+      render :toggle_check_in, locals: {effort: effort, view_object: @stage_display}
     else
       set_flash_message(response)
       redirect_to stage_event_path(event)

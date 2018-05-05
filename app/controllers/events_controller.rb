@@ -49,8 +49,13 @@ class EventsController < ApplicationController
     response = Interactors::UpdateEventAndGrouping.perform!(@event)
 
     if response.successful?
-      set_flash_message(response)
-      redirect_to session.delete(:return_to) || stage_event_path(@event)
+      case params[:button]
+      when 'join_leave'
+        redirect_to request.referrer
+      else
+        set_flash_message(response)
+        redirect_to session.delete(:return_to) || stage_event_path(@event)
+      end
     else
       render 'edit'
     end
@@ -134,7 +139,7 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-# Actions related to the event/effort/split_time relationship
+  # Actions related to the event/effort/split_time relationship
 
   def set_data_status
     authorize @event
@@ -169,8 +174,8 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-# This action updates the event start_time and adjusts time_from_start on all
-# existing non-start split_times to keep absolute time consistent.
+  # This action updates the event start_time and adjusts time_from_start on all
+  # existing non-start split_times to keep absolute time consistent.
 
   def edit_start_time
     authorize @event

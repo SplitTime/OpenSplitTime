@@ -7,7 +7,7 @@ class EventPolicy < ApplicationPolicy
 
     def delegated_records
       if user
-        scope.includes(event_group: {organization: :stewardships}).delegated(user.id)
+        scope.joins(event_group: {organization: :stewardships}).includes(event_group: {organization: :stewardships}).delegated(user.id)
       else
         scope.none
       end

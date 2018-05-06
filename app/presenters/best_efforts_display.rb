@@ -62,6 +62,10 @@ class BestEffortsDisplay < BasePresenter
     segment_is_full_course? ? 'Course Time' : 'Segment Time'
   end
 
+  def segment_is_full_course?
+    segment.full_course?
+  end
+
   private
 
   attr_reader :course, :events, :params
@@ -87,10 +91,6 @@ class BestEffortsDisplay < BasePresenter
 
   def split_2_id
     params[:split2]
-  end
-
-  def segment_is_full_course?
-    segment.full_course?
   end
 
   def filter_ids

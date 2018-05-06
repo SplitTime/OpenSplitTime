@@ -8,6 +8,9 @@
     <th>Category</th>
     <th>From</th>
     <th>Year</th>
+    <% unless @best_display.segment_is_full_course? %>
+      <th class="text-center">Finished?</th>
+    <% end %>
     <th class="text-right"><%= @best_display.time_header_text %></th>
   </tr>
   </thead>
@@ -21,6 +24,9 @@
         <td><%= effort_row.bio_historic %></td>
         <td><%= effort_row.flexible_geolocation %></td>
         <td><%= effort_row.year_and_lap %></td>
+        <% unless @best_display.segment_is_full_course? %>
+          <td class="text-center"><%= effort_row.finished? %></td>
+        <% end %>
         <td class="text-right"><%= time_format_hhmmss(effort_row.segment_seconds) %></td>
       </tr>
   <% end %>

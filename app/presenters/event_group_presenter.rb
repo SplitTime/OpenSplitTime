@@ -94,6 +94,10 @@ class EventGroupPresenter < BasePresenter
     params[:unreconciled]&.to_boolean
   end
 
+  def problem_filter?
+    params[:problem]&.to_boolean
+  end
+
   def event_group_efforts
     event_group.efforts.includes(:event)
   end
@@ -115,7 +119,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def matches_criteria?(effort)
-    matches_checked_in_criteria?(effort) && matches_start_criteria?(effort) && matches_unreconciled_criteria?(effort)
+    matches_checked_in_criteria?(effort) && matches_start_criteria?(effort) && matches_unreconciled_criteria?(effort) && matches_problem_criteria?(effort)
   end
 
   def matches_checked_in_criteria?(effort)
@@ -151,7 +155,14 @@ class EventGroupPresenter < BasePresenter
     end
   end
 
-  def scoped_efforts
-    display_style == 'problems' ? event_group_efforts.invalid_status : event_group_efforts
+  def matches_problem_criteria?(effort)
+    case problem_filter?
+    when true
+      !effort.valid_status?
+    when false
+      effort.valid_status?
+    else # value is nil so do not filter
+      true
+    end
   end
 end

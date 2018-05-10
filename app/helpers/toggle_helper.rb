@@ -8,6 +8,13 @@ module ToggleHelper
                        disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled})
   end
 
+  def link_to_group_check_in_filters(glyphicon, text, checked_in, started, unreconciled, problem)
+    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
+                      request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, problem: problem, filter: {search: ''}, page: nil),
+                      {class: 'btn btn-sm btn-primary',
+                       disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled && params[:problem]&.to_boolean == problem})
+  end
+
   def link_to_toggle_check_in(effort, button_param: :check_in_group, block: true)
     block_string = block ? 'btn-block' : ''
     case

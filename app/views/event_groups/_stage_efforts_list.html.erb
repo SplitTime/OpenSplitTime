@@ -7,12 +7,13 @@
       </div>
       <div class="col-xs-7 text-right">
         <div class="btn-group">
-          <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true) %>
-          <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil) %>
-          <%= link_to_check_in_filters('check', 'Checked in', true, false, nil) %>
-          <%= link_to_check_in_filters('expand', 'Started', nil, true, nil) %>
+          <%= link_to_group_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
+          <%= link_to_group_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
+          <%= link_to_group_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
+          <%= link_to_group_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
+          <%= link_to_group_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
         </div>
-        <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil, nil) %>
+        <%= link_to_group_check_in_filters('asterisk', 'Clear filter', nil, nil, nil, nil) %>
       </div>
     </div>
 
@@ -39,6 +40,7 @@
           <thead>
           <tr>
             <th class="text-center"><%= link_to_reversing_sort_heading('Reconciled?', 'person_id,bib_number', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Event', 'event_id,bib_number', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
@@ -46,12 +48,12 @@
             <th><%= link_to_reversing_sort_heading('Scheduled Start', 'start_offset', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Emergency Contact', 'emergency_contact', @presenter.existing_sort) %></th>
             <% if @presenter.started_efforts.present? %>
-                <th><%= link_to_reversing_sort_heading('Data Status', 'data_status', @presenter.existing_sort) %></th>
+                <th><%= link_to_reversing_sort_heading('Status', 'data_status', @presenter.existing_sort) %></th>
             <% end %>
             <th>
               <% if @presenter.unstarted_efforts.present? %>
-                  <%= link_to_check_in_all(@presenter) %>
-                  <%= link_to_check_out_all(@presenter) %>
+                  <%= link_to_group_check_in_all(@presenter) %>
+                  <%= link_to_group_check_out_all(@presenter) %>
               <% end %>
             </th>
           </tr>
@@ -60,6 +62,7 @@
           <% @presenter.filtered_ranked_efforts.each do |effort| %>
               <tr>
                 <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
+                <td><%= effort.event.short_name %></td>
                 <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
                 <td><%= effort.bib_number %></td>
                 <td><%= effort.bio_historic %></td>

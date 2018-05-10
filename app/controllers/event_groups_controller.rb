@@ -57,6 +57,21 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  def roster
+    authorize @event_group
+
+    event_group = EventGroup.where(id: @event_group).includes(events: :efforts).first
+    @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def start_ready_efforts
+    authorize @event_group
+    efforts = Effort.where(event_id: @event_group.events).ready_to_start
+    response = Interactors::StartEfforts.perform!(efforts, current_user.id)
+    set_flash_message(response)
+    redirect_to roster_event_group_path(@event_group)
+  end
+
   def delete_all_times
     authorize @event_group
     response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)

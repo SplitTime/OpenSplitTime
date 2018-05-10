@@ -101,7 +101,7 @@
       </div>
       <div class="col-xs-2">
         <%= div_for(@effort_show.effort) do %>
-          <%= link_to_toggle_check_in(@effort_show.effort) %>
+          <%= link_to_toggle_check_in(@effort_show.effort, button_param: :check_in_effort_show) %>
         <% end %>
       </div>
       <div class="col-xs-3">

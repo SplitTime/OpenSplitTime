@@ -65,6 +65,11 @@ class Effort < ApplicationRecord
         group("efforts.id").
         having("COUNT(splits.id) = 0")
   end
+  scope :with_start_status, -> do
+    left_joins(:split_times)
+        .select('efforts.*, case when split_times.id is null then false else true end as started')
+        .distinct
+  end
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')
@@ -85,6 +90,12 @@ class Effort < ApplicationRecord
   def self.ranked_with_finish_status(args = {})
     return [] if EffortQuery.existing_scope_sql.blank?
     query = EffortQuery.rank_and_finish_status(args)
+    self.find_by_sql(query)
+  end
+
+  def self.ranked_with_status(args = {})
+    return [] if EffortQuery.existing_scope_sql.blank?
+    query = EffortQuery.rank_and_status(args)
     self.find_by_sql(query)
   end
 

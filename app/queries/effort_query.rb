@@ -10,7 +10,85 @@ class EffortQuery < BaseQuery
         existing_scope AS (#{existing_scope_sql}),
         efforts_scoped AS (SELECT efforts.*
                                        FROM efforts
-                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id)
+                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id),
+        stopped_split_time_subquery AS (SELECT split_times.id as stopped_split_time_id, 
+                                             split_times.lap as stopped_lap, 
+                                             split_times.split_id as stopped_split_id, 
+                                             split_times.sub_split_bitkey as stopped_bitkey, 
+                                             split_times.time_from_start as stopped_time, 
+                                             split_times.effort_id
+                                        FROM split_times
+                                        WHERE split_times.stopped_here = true),
+        course_subquery AS (SELECT courses.id as course_id, splits.distance_from_start as course_distance
+                        FROM courses
+                        INNER JOIN splits ON splits.course_id = courses.id
+                        WHERE splits.kind = 1),
+        base_subquery AS (SELECT DISTINCT ON(efforts_scoped.id) 
+                              efforts_scoped.*,
+                              events.laps_required,
+                              events.start_time as event_start_time,
+                              events.home_time_zone as event_home_zone,
+                              splits.base_name as final_split_name,
+                              splits.distance_from_start as final_lap_distance,
+                              split_times.lap as final_lap,
+                              split_times.split_id as final_split_id, 
+                              split_times.sub_split_bitkey as final_bitkey,
+                              split_times.time_from_start as final_time,
+                              split_times.id as final_split_time_id,
+                              stopped_split_time_id,
+                              stopped_lap,
+                              stopped_split_id,
+                              stopped_bitkey,
+                              stopped_time,
+                              CASE
+                                  when splits.kind = 1 then true 
+                                  else false 
+                                  end 
+                                AS final_lap_complete,
+                                course_distance
+                          FROM efforts_scoped
+                              INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
+                              INNER JOIN splits ON splits.id = split_times.split_id
+                              INNER JOIN events ON events.id = efforts_scoped.event_id
+                              INNER JOIN course_subquery ON events.course_id = course_subquery.course_id
+                              LEFT JOIN stopped_split_time_subquery ON split_times.effort_id = stopped_split_time_subquery.effort_id
+                          ORDER BY  efforts_scoped.id, 
+                                    final_lap desc,
+                                    final_lap_distance desc, 
+                                    final_bitkey desc,
+                                    stopped_time desc),
+        distance_subquery AS (SELECT *, 
+                                  true AS started,
+                                  final_lap AS laps_started,
+                                  CASE
+                                    when final_lap_complete is true then final_lap 
+                                    else final_lap - 1 
+                                  end 
+                                  AS laps_finished,
+                                  (final_lap - 1) * course_distance + final_lap_distance AS final_distance,
+                                  event_start_time
+                              FROM base_subquery),
+        finished_subquery AS (SELECT *,
+                                  CASE 
+                                  when laps_required = 0 then
+                                    CASE when stopped_split_time_id is null then false else true END  
+                                  else
+                                    CASE when laps_finished >= laps_required then true else false END 
+                                  END
+                                  AS finished
+                              FROM distance_subquery),
+        stopped_subquery AS (SELECT *,
+                                  CASE
+                                    when finished or stopped_split_time_id is not null then true else false 
+                                  end 
+                                  AS stopped
+                              FROM finished_subquery),
+        main_subquery AS (SELECT *,
+                                CASE
+                                  when stopped and not finished then true else false
+                                END
+                                AS dropped
+                             FROM stopped_subquery)
 
       SELECT #{select_sql},
           rank() over 
@@ -32,90 +110,124 @@ class EffortQuery < BaseQuery
                       gender desc, 
                       age desc) 
           AS gender_rank
-      FROM
-        (SELECT *,
-          CASE
-            when stopped and not finished then true else false
-          END
-          AS dropped
-        FROM
-          (SELECT *,
-              CASE
-                when finished or stopped_split_time_id is not null then true else false 
-              end 
-              AS stopped
-          FROM
-            (SELECT *,
-                CASE 
-                when laps_required = 0 then
-                  CASE when stopped_split_time_id is null then false else true END  
-                else
-                  CASE when laps_finished >= laps_required then true else false END 
-                END
-                AS finished
-            FROM
-              (SELECT *, 
-                  true AS started,
-                  final_lap AS laps_started,
-                  CASE
-                    when final_lap_complete is true then final_lap 
-                    else final_lap - 1 
-                  end 
-                  AS laps_finished,
-                  (final_lap - 1) * course_distance + final_lap_distance AS final_distance,
-                  event_start_time
-              FROM 
-                (SELECT DISTINCT ON(efforts_scoped.id) 
-                    efforts_scoped.*,
-                    events.laps_required,
-                    events.start_time as event_start_time,
-                    events.home_time_zone as event_home_zone,
-                    splits.base_name as final_split_name,
-                    splits.distance_from_start as final_lap_distance,
-                    split_times.lap as final_lap,
-                    split_times.split_id as final_split_id, 
-                    split_times.sub_split_bitkey as final_bitkey,
-                    split_times.time_from_start as final_time,
-                    split_times.id as final_split_time_id,
-                    stopped_split_time_id,
-                    stopped_lap,
-                    stopped_split_id,
-                    stopped_bitkey,
-                    stopped_time,
-                    CASE
-                        when splits.kind = 1 then true 
-                        else false 
-                        end 
-                      AS final_lap_complete,
-                      course_distance
-                FROM efforts_scoped
-                    INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
-                    INNER JOIN splits ON splits.id = split_times.split_id
-                    INNER JOIN events ON events.id = efforts_scoped.event_id
-                    INNER JOIN (SELECT courses.id as course_id, splits.distance_from_start as course_distance
+      FROM main_subquery
+      ORDER BY #{order_sql}
+    SQL
+    query.squish
+  end
+
+  def self.rank_and_status(args = {})
+    select_sql = sql_select_from_string(args[:fields], permitted_column_names, '*')
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'overall_rank')
+    query = <<-SQL
+      WITH
+        existing_scope AS (#{existing_scope_sql}),
+        efforts_scoped AS (SELECT efforts.*
+                                       FROM efforts
+                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id),
+        stopped_split_time_subquery AS (SELECT split_times.id as stopped_split_time_id, 
+                                             split_times.lap as stopped_lap, 
+                                             split_times.split_id as stopped_split_id, 
+                                             split_times.sub_split_bitkey as stopped_bitkey, 
+                                             split_times.time_from_start as stopped_time, 
+                                             split_times.effort_id
+                                        FROM split_times
+                                        WHERE split_times.stopped_here = true),
+        course_subquery AS (SELECT courses.id as course_id, splits.distance_from_start as course_distance
                         FROM courses
                         INNER JOIN splits ON splits.course_id = courses.id
-                        WHERE splits.kind = 1)
-                  AS course_subquery ON events.course_id = course_subquery.course_id
-                  LEFT OUTER JOIN (SELECT split_times.id as stopped_split_time_id, 
-                             split_times.lap as stopped_lap, 
-                             split_times.split_id as stopped_split_id, 
-                             split_times.sub_split_bitkey as stopped_bitkey, 
-                             split_times.time_from_start as stopped_time, 
-                             split_times.effort_id
-                        FROM split_times
-                        WHERE split_times.stopped_here = true)
-                  AS stopped_subquery ON split_times.effort_id = stopped_subquery.effort_id
-                ORDER BY  efforts_scoped.id, 
-                      final_lap desc,
-                          final_lap_distance desc, 
-                          final_bitkey desc,
-                          stopped_time desc)
-                AS base_subquery)
-              AS distance_subquery)
-            AS finished_subquery)
-          AS stopped_subquery)
-        AS dropped_subquery
+                        WHERE splits.kind = 1),
+        base_subquery AS (SELECT DISTINCT ON(efforts_scoped.id) 
+                              efforts_scoped.*,
+                              events.laps_required,
+                              events.start_time as event_start_time,
+                              events.home_time_zone as event_home_zone,
+                              splits.base_name as final_split_name,
+                              splits.distance_from_start as final_lap_distance,
+                              split_times.lap as final_lap,
+                              split_times.split_id as final_split_id, 
+                              split_times.sub_split_bitkey as final_bitkey,
+                              split_times.time_from_start as final_time,
+                              split_times.id as final_split_time_id,
+                              stopped_split_time_id,
+                              stopped_lap,
+                              stopped_split_id,
+                              stopped_bitkey,
+                              stopped_time,
+                              course_distance,
+                              CASE
+                                when splits.kind = 1 then true else false 
+                              end 
+                              AS final_lap_complete,
+                              CASE 
+                                when split_times.lap > 1 OR splits.kind IN (1, 2) then true else false
+                              end
+                              AS beyond_start
+                          FROM efforts_scoped
+                              LEFT JOIN split_times ON split_times.effort_id = efforts_scoped.id 
+                              LEFT JOIN splits ON splits.id = split_times.split_id
+                              LEFT JOIN events ON events.id = efforts_scoped.event_id
+                              LEFT JOIN course_subquery ON events.course_id = course_subquery.course_id
+                              LEFT JOIN stopped_split_time_subquery ON split_times.effort_id = stopped_split_time_subquery.effort_id
+                          ORDER BY  efforts_scoped.id, 
+                                    final_lap desc,
+                                    final_lap_distance desc, 
+                                    final_bitkey desc,
+                                    stopped_time desc),
+        distance_subquery AS (SELECT *, 
+                                  CASE when final_lap is null then false else true end AS started,
+                                  final_lap AS laps_started,
+                                  CASE
+                                    when final_lap_complete is true then final_lap 
+                                    else final_lap - 1 
+                                  end 
+                                  AS laps_finished,
+                                  (final_lap - 1) * course_distance + final_lap_distance AS final_distance,
+                                  event_start_time
+                              FROM base_subquery),
+        finished_subquery AS (SELECT *,
+                                  CASE 
+                                  when laps_required = 0 then
+                                    CASE when stopped_split_time_id is null then false else true END  
+                                  else
+                                    CASE when laps_finished >= laps_required then true else false END 
+                                  END
+                                  AS finished
+                              FROM distance_subquery),
+        stopped_subquery AS (SELECT *,
+                                  CASE
+                                    when finished or stopped_split_time_id is not null then true else false 
+                                  end 
+                                  AS stopped
+                              FROM finished_subquery),
+        main_subquery AS (SELECT *,
+                                CASE
+                                  when stopped and not finished then true else false
+                                END
+                                AS dropped
+                             FROM stopped_subquery)
+
+      SELECT #{select_sql},
+          rank() over 
+            (ORDER BY dropped, 
+                      final_lap desc NULLS LAST, 
+                      final_lap_distance desc, 
+                      final_bitkey desc, 
+                      final_time, 
+                      gender desc, 
+                      age desc) 
+          AS overall_rank, 
+          rank() over 
+            (PARTITION BY gender 
+             ORDER BY dropped, 
+                      final_lap desc NULLS LAST, 
+                      final_lap_distance desc, 
+                      final_bitkey desc, 
+                      final_time, 
+                      gender desc, 
+                      age desc) 
+          AS gender_rank
+      FROM main_subquery
       ORDER BY #{order_sql}
     SQL
     query.squish

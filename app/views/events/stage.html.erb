@@ -62,7 +62,7 @@
 <% elsif @event_stage.display_style == 'times' %>
     <%= render 'live_times_list', live_times: @event_stage.filtered_live_times, view_model: @event_stage %>
 <% elsif @event_stage.display_style == 'problems' %>
-    <%= render 'stage_efforts_list' %>
+    <%= render 'events/stage_efforts_list' %>
 <% else %>
     <div class="row mid">
       <div class="col-xs-4 page-navigation-left">
@@ -106,7 +106,7 @@
       </div>
     </div>
 
-    <%= render 'stage_efforts_list' %>
+    <%= render 'events/stage_efforts_list' %>
 <% end %>
 
 <script>

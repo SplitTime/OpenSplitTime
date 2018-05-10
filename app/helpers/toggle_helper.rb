@@ -8,7 +8,7 @@ module ToggleHelper
                        disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled})
   end
 
-  def link_to_toggle_check_in(effort, block: true)
+  def link_to_toggle_check_in(effort, button_param: :check_in_group, block: true)
     block_string = block ? 'btn-block' : ''
     case
     when effort.beyond_start?
@@ -20,19 +20,19 @@ module ToggleHelper
     when effort.started?
       glyphicon_string = "glyphicon glyphicon-expand"
       button_text = 'Started'
-      url = unstart_effort_path(effort)
+      url = unstart_effort_path(effort, button: button_param)
       disabled = false
       class_string = "check-in btn btn-sm btn-primary #{block_string}"
     when effort.checked_in?
-      url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
       glyphicon_string = "glyphicon glyphicon-check"
       button_text = 'Checked in'
+      url = effort_path(effort, effort: {checked_in: false}, button: button_param)
       disabled = false
       class_string = "check-in btn btn-sm btn-success #{block_string}"
     else
       glyphicon_string = "glyphicon glyphicon-unchecked"
-      url = effort_path(effort, effort: {checked_in: true}, button: :check_in)
       button_text = 'Check in'
+      url = effort_path(effort, effort: {checked_in: true}, button: button_param)
       disabled = false
       class_string = "check-in btn btn-sm btn-default #{block_string}"
     end

@@ -46,16 +46,21 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.update(permitted_params)
-      case params[:button]
-      when 'check_in'
+      case params[:button]&.to_sym
+      when :check_in_event
         effort = effort_with_splits
         event = effort.event
-        @stage_display = EventStageDisplay.new(event: event, params: {})
-        render :toggle_check_in, locals: {effort: effort, view_object: @stage_display}
-      when 'check_in_effort_show'
+        view_object = EventStageDisplay.new(event: event, params: {})
+        render :toggle_check_in, locals: {effort: effort, view_object: view_object}
+      when :check_in_group
+        effort = effort_with_splits
+        event_group = effort.event_group
+        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
+      when :check_in_effort_show
         @effort_show = EffortShowView.new(effort: effort)
-        render :toggle_check_in, locals: {effort: effort, view_object: nil}
-      when 'disassociate'
+        render :toggle_group_check_in, locals: {effort: effort, view_object: nil}
+      when :disassociate
         redirect_to request.referrer
       else
         redirect_to effort_path(@effort)
@@ -95,16 +100,28 @@ class EffortsController < ApplicationController
   def unstart
     authorize @effort
     effort = effort_with_splits
-    event = effort.event
 
     response = Interactors::UnstartEfforts.perform!([effort])
+    effort.reload
     if response.successful?
-      @stage_display = EventStageDisplay.new(event: event, params: {})
-      effort = effort_with_splits # Need to reload to update split_times
-      render :toggle_check_in, locals: {effort: effort, view_object: @stage_display}
+      case params[:button]&.to_sym
+      when :check_in_event
+        event = effort.event
+        view_object = EventStageDisplay.new(event: event, params: {})
+        render :toggle_check_in, locals: {effort: effort, view_object: view_object}
+      when :check_in_group
+        event_group = effort.event_group
+        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
+      when :check_in_effort_show
+        @effort_show = EffortShowView.new(effort: effort)
+        render :toggle_group_check_in, locals: {effort: effort, view_object: nil}
+      else
+        redirect_to request.referrer
+      end
     else
       set_flash_message(response)
-      redirect_to stage_event_path(event)
+      redirect_to request.referrer
     end
   end
 

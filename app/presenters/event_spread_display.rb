@@ -23,7 +23,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     @effort_times_rows ||=
         filtered_ranked_efforts.map { |effort| EffortTimesRow.new(effort: effort,
                                                                   lap_splits: lap_splits,
-                                                                  split_times: split_times_by_effort[effort.id],
+                                                                  split_times: split_times_by_effort[effort.id] || [],
                                                                   display_style: display_style) }
   end
 

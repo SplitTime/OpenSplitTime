@@ -62,15 +62,11 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def event_finished?
-    event.finished?
+    @event_finished ||= event.finished?
   end
 
   def event_start_time
     @event_start_time ||= event.start_time_in_home_zone
-  end
-
-  def existing_sort
-    params.original_params[:sort]
   end
 
   private

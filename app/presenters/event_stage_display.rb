@@ -71,6 +71,10 @@ class EventStageDisplay < EventWithEffortsPresenter
     concealed? ? '(private)' : nil
   end
 
+  def check_in_button_param
+    :check_in_event
+  end
+
   private
 
   def matches_criteria?(effort)

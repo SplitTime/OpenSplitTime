@@ -67,7 +67,7 @@
                 <% end %>
                 <td>
                   <%= div_for(effort) do %>
-                      <%= link_to_toggle_check_in(effort) %>
+                      <%= link_to_toggle_check_in(effort, button_param: @event_stage.check_in_button_param) %>
                   <% end %>
                 </td>
               </tr>

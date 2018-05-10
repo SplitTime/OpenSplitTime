@@ -13,6 +13,41 @@ class EventGroupPresenter < BasePresenter
     @current_user = current_user
   end
 
+  def ranked_efforts
+    event_group_efforts.ranked_with_status(sort: sort_hash)
+  end
+
+  def filtered_ranked_efforts
+    @filtered_ranked_efforts ||=
+        ranked_efforts
+            .select { |effort| filtered_ids.include?(effort.id) && matches_criteria?(effort) }
+            .paginate(page: page, per_page: per_page)
+  end
+
+  def filtered_ranked_efforts_count
+    filtered_ranked_efforts.total_entries
+  end
+
+  def efforts_count
+    event_group_efforts.size
+  end
+
+  def started_efforts
+    @started_efforts ||= filtered_ranked_efforts.select(&:started?)
+  end
+
+  def unstarted_efforts
+    @unstarted_efforts ||= filtered_ranked_efforts.reject(&:started?)
+  end
+
+  def ready_efforts
+    @ready_efforts ||= event_group_efforts.joins(:event).group('events.id').ready_to_start
+  end
+
+  def ready_efforts_count
+    ready_efforts.size
+  end
+
   def events
     @events ||= event_group.events.select_with_params('').order(:start_time).to_a
   end
@@ -43,6 +78,30 @@ class EventGroupPresenter < BasePresenter
     event_group.live_times.includes(:event).where(split_id: finish_splits)
   end
 
+  def display_style
+    params[:display_style]
+  end
+
+  def checked_in_filter?
+    params[:checked_in]&.to_boolean
+  end
+
+  def started_filter?
+    params[:started]&.to_boolean
+  end
+
+  def unreconciled_filter?
+    params[:unreconciled]&.to_boolean
+  end
+
+  def event_group_efforts
+    Effort.includes(:event).where(event_id: event_group.events)
+  end
+
+  def check_in_button_param
+    :check_in_group
+  end
+
   def method_missing(method)
     event_group.send(method)
   end
@@ -50,4 +109,49 @@ class EventGroupPresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+
+  def filtered_ids
+    @filtered_ids ||= event_group_efforts.where(filter_hash).search(search_text).ids.to_set
+  end
+
+  def matches_criteria?(effort)
+    matches_checked_in_criteria?(effort) && matches_start_criteria?(effort) && matches_unreconciled_criteria?(effort)
+  end
+
+  def matches_checked_in_criteria?(effort)
+    case checked_in_filter?
+    when true
+      effort.checked_in
+    when false
+      !effort.checked_in
+    else # value is nil so do not filter
+      true
+    end
+  end
+
+  def matches_start_criteria?(effort)
+    case started_filter?
+    when true
+      effort.started?
+    when false
+      !effort.started?
+    else # value is nil so do not filter
+      true
+    end
+  end
+
+  def matches_unreconciled_criteria?(effort)
+    case unreconciled_filter?
+    when true
+      effort.unreconciled?
+    when false
+      !effort.unreconciled?
+    else # value is nil so do not filter
+      true
+    end
+  end
+
+  def scoped_efforts
+    display_style == 'problems' ? event_group_efforts.invalid_status : event_group_efforts
+  end
 end

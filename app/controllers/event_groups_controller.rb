@@ -69,7 +69,7 @@ class EventGroupsController < ApplicationController
     efforts = Effort.where(event_id: @event_group.events).ready_to_start
     response = Interactors::StartEfforts.perform!(efforts, current_user.id)
     set_flash_message(response)
-    redirect_to roster_event_group_path(@event_group)
+    redirect_to request.referrer
   end
 
   def delete_all_times

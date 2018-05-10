@@ -22,9 +22,9 @@
         <div class="row">
           <div class="col-xs-8">
             <% if @presenter.filtered_ranked_efforts_count == @presenter.efforts_count %>
-              <strong><%= "#{@presenter.efforts_count} efforts for #{@presenter.name}" %></strong>
+              <strong><%= "#{@presenter.efforts_count} efforts" %></strong>
             <% else %>
-              <strong><%= "Showing #{@presenter.filtered_ranked_efforts_count} of #{@presenter.efforts_count} efforts for #{@presenter.name}" %></strong>
+              <strong><%= "Showing #{@presenter.filtered_ranked_efforts_count} of #{@presenter.efforts_count} efforts" %></strong>
             <% end %>
           </div>
         </div>

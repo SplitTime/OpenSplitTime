@@ -215,6 +215,7 @@ class Effort < ApplicationRecord
   end
 
   def beyond_start?
+    return attributes['beyond_start'] if attributes.has_key?('beyond_start')
     split_times.find { |st| !st.start? || st.lap > 1 }.present?
   end
 

@@ -64,6 +64,7 @@ Rails.application.routes.draw do
       get :roster
       get :export_to_summit
       put :start_ready_efforts
+      patch :update_all_efforts
       delete :delete_all_times
     end
   end

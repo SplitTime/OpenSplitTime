@@ -72,6 +72,15 @@ class EventGroupsController < ApplicationController
     redirect_to request.referrer
   end
 
+  def update_all_efforts
+    authorize @event_group
+
+    attributes = params.require(:efforts).permit(:checked_in).to_hash
+    @event_group.efforts.update_all(attributes)
+
+    redirect_to request.referrer
+  end
+
   def delete_all_times
     authorize @event_group
     response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)

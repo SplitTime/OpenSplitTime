@@ -14,7 +14,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def ranked_efforts
-    event_group_efforts.ranked_with_status(sort: sort_hash)
+    event_group_efforts.ranked_with_status(sort: sort_hash.presence || {bib_number: :asc})
   end
 
   def filtered_ranked_efforts
@@ -33,11 +33,11 @@ class EventGroupPresenter < BasePresenter
   end
 
   def started_efforts
-    @started_efforts ||= filtered_ranked_efforts.select(&:started?)
+    @started_efforts ||= ranked_efforts.select(&:started?)
   end
 
   def unstarted_efforts
-    @unstarted_efforts ||= filtered_ranked_efforts.reject(&:started?)
+    @unstarted_efforts ||= ranked_efforts.reject(&:started?)
   end
 
   def ready_efforts

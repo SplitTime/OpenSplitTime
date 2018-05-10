@@ -10,11 +10,12 @@
   <%= link_to_podium(view_object) %>
   <%= link_to_classic_admin(view_object, current_user) %>
   <%= link_to_event_staging(view_object, current_user) %>
+  <%= link_to_roster(view_object, current_user) %>
 
 </div>
 
 <% if current_user&.authorized_fully?(view_object.event_group) %>
     <%= link_to 'Settings', event_group_path(view_object.event_group, force_settings: true),
-                disabled: view_object.class == EventGroupPresenter,
+                disabled: controller.controller_name == 'event_groups' && controller.action_name == 'show',
                 class: 'btn btn-sm btn-warning' %>
 <% end %>

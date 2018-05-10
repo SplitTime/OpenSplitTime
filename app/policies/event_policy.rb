@@ -56,10 +56,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def start_ready_efforts?
-    user.authorized_to_edit?(event)
-  end
-
   def update_all_efforts?
     user.authorized_to_edit?(event)
   end

@@ -83,7 +83,6 @@ Rails.application.routes.draw do
       put :associate_people
       put :set_data_status
       put :set_stops
-      put :start_ready_efforts
       patch :update_start_time
       patch :update_all_efforts
       delete :delete_all_efforts

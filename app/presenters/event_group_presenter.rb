@@ -14,7 +14,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def ranked_efforts
-    event_group_efforts.ranked_with_status(sort: sort_hash.presence || {bib_number: :asc})
+    @ranked_efforts ||= event_group_efforts.ranked_with_status(sort: sort_hash.presence || {bib_number: :asc})
   end
 
   def filtered_ranked_efforts

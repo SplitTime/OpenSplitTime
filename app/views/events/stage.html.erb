@@ -20,7 +20,6 @@
               <%= link_to_ultrasignup_export(@event_stage) %>
           <% end %>
       <% end %>
-      <%= link_to_start_ready_efforts(@event_stage) %>
       <% if current_user&.authorized_fully?(@event_stage.event) %>
           <%= link_to_delete_event(@event_stage) %>
       <% end %>
@@ -38,9 +37,8 @@
   <div class="col-xs-7 page-navigation">
     <div class="row">
       <div class="btn-group">
+        <%= link_to_display_style(@event_stage, 'manage', 'Manage') %>
         <%= link_to_display_style(@event_stage, 'splits', 'Splits') %>
-        <%= link_to_display_style(@event_stage, 'efforts', 'Efforts') %>
-        <%= link_to_display_style(@event_stage, 'problems', 'Problem efforts') %>
         <%= link_to_display_style(@event_stage, 'partners', 'Partners') %>
         <%= link_to_display_style(@event_stage, 'times', 'Entered times') %>
       </div>
@@ -61,8 +59,6 @@
     <%= render 'partner_list', partners: @event_stage.partners, view_model: @event_stage %>
 <% elsif @event_stage.display_style == 'times' %>
     <%= render 'live_times_list', live_times: @event_stage.filtered_live_times, view_model: @event_stage %>
-<% elsif @event_stage.display_style == 'problems' %>
-    <%= render 'events/stage_efforts_list' %>
 <% else %>
     <div class="row mid">
       <div class="col-xs-4 page-navigation-left">
@@ -105,8 +101,6 @@
         <% end %>
       </div>
     </div>
-
-    <%= render 'events/stage_efforts_list' %>
 <% end %>
 
 <script>

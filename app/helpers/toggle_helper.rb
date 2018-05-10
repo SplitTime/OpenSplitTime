@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
 module ToggleHelper
-  def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled)
-    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
-                      request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, filter: {search: ''}, page: nil),
-                      {class: 'btn btn-sm btn-primary',
-                       disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled})
-  end
-
   def link_to_group_check_in_filters(glyphicon, text, checked_in, started, unreconciled, problem)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
                       request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, problem: problem, filter: {search: ''}, page: nil),
@@ -49,24 +42,6 @@ module ToggleHelper
         remote: true,
         disabled: disabled,
         class: class_string
-    })
-  end
-
-  def link_to_check_in_all(view_object)
-    url = update_all_efforts_event_path(view_object.event, efforts: {checked_in: true}, button: :check_in_all)
-    link_to_with_icon("glyphicon glyphicon-check", 'Check in all', url, {
-        method: 'patch',
-        data: {confirm: 'This will check in all entrants, making them eligible to start. Do you want to proceed?'},
-        class: 'btn btn-sm btn-success'
-    })
-  end
-
-  def link_to_check_out_all(view_object)
-    url = update_all_efforts_event_path(view_object.event, efforts: {checked_in: false}, button: :check_out_all)
-    link_to_with_icon("glyphicon glyphicon-unchecked", 'Check out all', url, {
-        method: 'patch',
-        data: {confirm: 'This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?'},
-        class: 'btn btn-sm btn-default'
     })
   end
 

@@ -158,14 +158,6 @@ class EventsController < ApplicationController
     redirect_to stage_event_path(@event)
   end
 
-  def start_ready_efforts
-    authorize @event
-    efforts = @event.efforts.ready_to_start
-    response = Interactors::StartEfforts.perform!(efforts, current_user.id)
-    set_flash_message(response)
-    redirect_to stage_event_path(@event)
-  end
-
   def update_all_efforts
     authorize @event
     attributes = params.require(:efforts).permit(:checked_in).to_hash

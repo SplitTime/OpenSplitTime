@@ -56,6 +56,14 @@ module EventsHelper
     end
   end
 
+  def link_to_roster(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object.event_group)
+      link_to 'Roster', "#{roster_event_group_path(view_object.event_group)}",
+              disabled: controller.action_name == 'roster',
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
   def link_to_download_spread_csv(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',

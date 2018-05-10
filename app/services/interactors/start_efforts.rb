@@ -31,7 +31,7 @@ module Interactors
     def start_effort(effort)
       return if effort.split_times.any?(&:start?)
       split_time = SplitTime.new(effort_id: effort.id,
-                                 time_point: TimePoint.new(1, start_split_id, SubSplit::IN_BITKEY),
+                                 time_point: TimePoint.new(1, effort.start_split_id, SubSplit::IN_BITKEY),
                                  time_from_start: 0,
                                  created_by: current_user_id)
       if split_time.save
@@ -39,10 +39,6 @@ module Interactors
       else
         errors << resource_error_object(split_time)
       end
-    end
-
-    def start_split_id
-      @start_split_id ||= efforts.first.event.start_split.id
     end
 
     def response_message

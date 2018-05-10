@@ -11,6 +11,7 @@ class EventGroup < ApplicationRecord
   friendly_id :name, use: [:slugged, :history]
   has_many :events
   has_many :live_times, through: :events
+  has_many :efforts, through: :events
   has_many :raw_times
   belongs_to :organization
   validates_presence_of :name

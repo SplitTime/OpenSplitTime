@@ -41,7 +41,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def ready_efforts
-    @ready_efforts ||= event_group_efforts.joins(:event).group('events.id').ready_to_start
+    @ready_efforts ||= event_group_efforts.ready_to_start
   end
 
   def ready_efforts_count
@@ -95,7 +95,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def event_group_efforts
-    Effort.includes(:event).where(event_id: event_group.events)
+    event_group.efforts.includes(:event)
   end
 
   def check_in_button_param

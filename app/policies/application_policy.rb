@@ -27,7 +27,7 @@ class ApplicationPolicy
       elsif user.nil?
         visible_records
       else
-        scope.where(id: (visible_records + created_records + delegated_records))
+        scope.where(id: (visible_records + created_records + delegated_records).uniq)
       end
     end
     alias_method :viewable, :resolve_viewable

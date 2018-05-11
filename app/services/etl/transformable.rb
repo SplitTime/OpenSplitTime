@@ -73,19 +73,25 @@ module ETL::Transformable
   end
 
   def normalize_date!(attribute)
-    return unless self[attribute].present?
-    self[attribute] = modernize_date(self[attribute].to_date).to_s
+    date = self[attribute].to_date
+    self[attribute] = modernize_date(date).to_s
+  rescue NoMethodError, ArgumentError
+    # Do not attempt to transform the date
   end
 
   def normalize_datetime!(attribute)
-    return unless self[attribute].present?
-    self[attribute] = modernize_date(self[attribute].to_datetime).strftime('%Y-%m-%d %H:%M:%S')
+    datetime = self[attribute].to_datetime
+    self[attribute] = modernize_date(datetime).strftime('%Y-%m-%d %H:%M:%S')
+  rescue NoMethodError, ArgumentError
+    # Do not attempt to transform the datetime
   end
 
   def normalize_gender!
-    return unless self[:gender].present?
-    gender = self[:gender]
-    self[:gender] = gender.downcase.start_with?('m') ? 'male' : 'female'
+    if self[:gender].respond_to?(:downcase)
+      self[:gender] = self[:gender].downcase.start_with?('m') ? 'male' : 'female'
+    else
+      self[:gender] = nil
+    end
   end
 
   def normalize_state_code!

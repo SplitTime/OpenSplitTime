@@ -55,6 +55,15 @@ module ETL::Transformable
     end
   end
 
+  def fill_nil_values!(attributes)
+    existing_keys = self.to_h.keys.to_set
+    attributes.each do |key, value|
+      if existing_keys.include?(key)
+        self[key] ||= value
+      end
+    end
+  end
+
   def map_keys!(map)
     map.each do |old_key, new_key|
       self[new_key] = delete_field(old_key) if attributes.respond_to?(old_key)
@@ -87,8 +96,12 @@ module ETL::Transformable
   end
 
   def normalize_gender!
-    if self[:gender].respond_to?(:downcase)
-      self[:gender] = self[:gender].downcase.start_with?('m') ? 'male' : 'female'
+    if self[:gender].presence.respond_to?(:downcase)
+      self[:gender] = case self[:gender].downcase.first
+                      when 'm' then 'male'
+                      when 'f' then 'female'
+                      else nil
+                      end
     else
       self[:gender] = nil
     end
@@ -108,15 +121,6 @@ module ETL::Transformable
           subregion = country.subregions.coded(state_data) || country.subregions.named(state_data)
           subregion ? subregion.code : state_data
         end
-  end
-
-  def fill_nil_values!(attributes)
-    existing_keys = self.to_h.keys.to_set
-    attributes.each do |key, value|
-      if existing_keys.include?(key)
-        self[key] ||= value
-      end
-    end
   end
 
   def set_effort_offset!(start_time_point)

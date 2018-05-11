@@ -337,7 +337,7 @@ RSpec.shared_examples_for 'transformable' do
       end
     end
 
-    context 'when existing gender does not start with "M"' do
+    context 'when existing gender starts with "F"' do
       let(:attributes) { {first_name: 'Joe', gender: 'F'} }
 
       it 'changes the value to "female"' do
@@ -346,8 +346,26 @@ RSpec.shared_examples_for 'transformable' do
       end
     end
 
+    context 'when existing gender starts with neither "M" nor "F"' do
+      let(:attributes) { {first_name: 'Joe', gender: 'Hello'} }
+
+      it 'changes the value to nil' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq(nil)
+      end
+    end
+
     context 'when existing gender is not a string' do
       let(:attributes) { {first_name: 'Joe', gender: 1} }
+
+      it 'changes the value to nil' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq(nil)
+      end
+    end
+
+    context 'when existing gender is an empty string' do
+      let(:attributes) { {first_name: 'Joe', gender: ''} }
 
       it 'changes the value to nil' do
         subject.normalize_gender!

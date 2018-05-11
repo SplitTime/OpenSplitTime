@@ -29,7 +29,7 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def start_ready_efforts?
-    user.authorized_fully?(event_group)
+    user.authorized_to_edit?(event_group)
   end
 
   def update_all_efforts?

@@ -172,6 +172,11 @@ class Effort < ApplicationRecord
     start_split_times.first
   end
 
+  def start_split_id
+    return attributes['start_split_id'] if attributes.has_key?('start_split_id')
+    event.course.start_split.id
+  end
+
   def laps_finished
     return attributes['laps_finished'] if attributes['laps_finished'].present?
     last_split_time = last_reported_split_time

@@ -62,7 +62,7 @@
           <% @presenter.filtered_ranked_efforts.each do |effort| %>
               <tr>
                 <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
-                <td><%= effort.event.short_name %></td>
+                <td><%= effort.event.guaranteed_short_name %></td>
                 <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
                 <td><%= effort.bib_number %></td>
                 <td><%= effort.bio_historic %></td>

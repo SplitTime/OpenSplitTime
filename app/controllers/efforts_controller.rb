@@ -8,9 +8,7 @@ class EffortsController < ApplicationController
     Carmen.i18n_backend.locale = locale if locale
   end
 
-  def index
-
-  end
+  def index; end
 
   def show
     @effort_show = EffortShowView.new(effort: @effort)
@@ -27,8 +25,8 @@ class EffortsController < ApplicationController
   end
 
   def edit
-    @event = Event.friendly.find(@effort.event_id)
     authorize @effort
+    @effort = Effort.where(id: @effort).includes(event: {event_group: :events}).first
   end
 
   def create
@@ -45,21 +43,29 @@ class EffortsController < ApplicationController
   def update
     authorize @effort
 
-    if @effort.update(permitted_params)
+    effort = effort_with_splits
+    new_event_id = permitted_params.delete(:event_id)
+
+    if effort.update(permitted_params)
       case params[:button]&.to_sym
       when :check_in_group
-        effort = effort_with_splits
         event_group = effort.event_group
         view_object = EventGroupPresenter.new(event_group, {}, current_user)
         render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
       when :check_in_effort_show
         effort = effort_with_splits
-        @effort_show = EffortShowView.new(effort: effort)
+        @effort_show = EffortShowView.new(effort: effort) # Is this necessary?
         render :toggle_group_check_in, locals: {effort: effort, view_object: nil}
       when :disassociate
         redirect_to request.referrer
       else
-        redirect_to effort_path(@effort)
+        redirect_to effort_path(effort)
+      end
+
+      if new_event_id && new_event_id != effort.event_id
+        new_event = Event.find(new_event_id)
+        response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
+        set_flash_message(response)
       end
     else
       render 'edit'
@@ -89,7 +95,7 @@ class EffortsController < ApplicationController
     effort = effort_with_splits
 
     response = Interactors::StartEfforts.perform!([effort], current_user.id)
-    set_flash_message(response)
+    set_flash_message(response) unless response.successful?
     redirect_to effort_path(effort)
   end
 
@@ -105,9 +111,6 @@ class EffortsController < ApplicationController
         event_group = effort.event_group
         view_object = EventGroupPresenter.new(event_group, {}, current_user)
         render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
-      when :check_in_effort_show
-        @effort_show = EffortShowView.new(effort: effort)
-        render :toggle_group_check_in, locals: {effort: effort, view_object: nil}
       else
         redirect_to request.referrer
       end

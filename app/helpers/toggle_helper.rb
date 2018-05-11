@@ -47,7 +47,7 @@ module ToggleHelper
 
   def link_to_group_check_in_all(view_object)
     url = update_all_efforts_event_group_path(view_object.event_group, efforts: {checked_in: true}, button: :check_in_all)
-    link_to_with_icon("glyphicon glyphicon-check", 'Check in all', url, {
+    link_to_with_icon("glyphicon glyphicon-check", 'All in', url, {
         method: 'patch',
         data: {confirm: 'This will check in all entrants, making them eligible to start. Do you want to proceed?'},
         class: 'btn btn-sm btn-success'
@@ -56,7 +56,7 @@ module ToggleHelper
 
   def link_to_group_check_out_all(view_object)
     url = update_all_efforts_event_group_path(view_object.event_group, efforts: {checked_in: false}, button: :check_out_all)
-    link_to_with_icon("glyphicon glyphicon-unchecked", 'Check out all', url, {
+    link_to_with_icon("glyphicon glyphicon-unchecked", 'All out', url, {
         method: 'patch',
         data: {confirm: 'This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?'},
         class: 'btn btn-sm btn-default'

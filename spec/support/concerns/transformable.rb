@@ -157,8 +157,10 @@ RSpec.shared_examples_for 'transformable' do
   end
 
   describe '#normalize_date!' do
+    let(:attributes) { {birthdate: birthdate} }
+
     context 'when provided with an American mm/dd/yy format' do
-      let(:attributes) { {birthdate: '09/29/67'} }
+      let(:birthdate) { '09/29/67'}
 
       it 'corrects the year to between 1920 and 2019' do
         subject.normalize_date!(:birthdate)
@@ -169,7 +171,7 @@ RSpec.shared_examples_for 'transformable' do
     context 'when provided with a two-digit year above the mod 100 of the current year' do
       let(:two_digit_year) { Date.today.year % 100 + 1 }
       let(:four_digit_year) { Date.today.year - 99 }
-      let(:attributes) { {birthdate: "09/29/#{two_digit_year}"} }
+      let(:birthdate) { "09/29/#{two_digit_year}" }
 
       it 'assumes a year in the past' do
         subject.normalize_date!(:birthdate)
@@ -180,11 +182,38 @@ RSpec.shared_examples_for 'transformable' do
     context 'when provided with a two-digit year equal to or lower than the mod 100 of the current year' do
       let(:two_digit_year) { Date.today.year % 100 }
       let(:four_digit_year) { Date.today.year }
-      let(:attributes) { {birthdate: "09/29/#{two_digit_year}"} }
+      let(:birthdate) { "09/29/#{two_digit_year}"}
 
       it 'assumes the current year' do
         subject.normalize_date!(:birthdate)
         expect(subject[:birthdate]).to eq("#{four_digit_year}-09-29")
+      end
+    end
+
+    context 'when provided with an integer' do
+      let(:birthdate) { 27662 }
+
+      it 'does not attempt to transform the value' do
+        subject.normalize_date!(:birthdate)
+        expect(subject[:birthdate]).to eq(27662)
+      end
+    end
+
+    context 'when provided with a string that cannot be transformed into a date' do
+      let(:birthdate) { 'hello' }
+
+      it 'does not attempt to transform the value' do
+        subject.normalize_date!(:birthdate)
+        expect(subject[:birthdate]).to eq('hello')
+      end
+    end
+
+    context 'when provided with nil' do
+      let(:birthdate) { nil }
+
+      it 'does not attempt to transform the value' do
+        subject.normalize_date!(:birthdate)
+        expect(subject[:birthdate]).to be_nil
       end
     end
   end

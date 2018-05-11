@@ -145,6 +145,8 @@
             stateCode: String,
             countryCode: String,
             beaconUrl: String,
+            emergencyContact: String,
+            emergencyPhone: String,
             concealed: { type: Boolean, default: true },
             startOffset: { type: Number, default: 0 },
             startMinutes: {

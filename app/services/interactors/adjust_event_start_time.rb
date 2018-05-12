@@ -23,6 +23,7 @@ module Interactors
         ActiveRecord::Base.transaction do
           errors << resource_error_object(event) unless event.update(start_time: new_start_time)
           update_split_times unless errors.present?
+          update_efforts unless errors.present?
           raise ActiveRecord::Rollback if errors.present?
         end
       end
@@ -35,8 +36,8 @@ module Interactors
     attr_reader :event, :new_start_time, :background_channel, :errors
 
     def update_split_times
-      total_count = non_start_split_times.size
-      non_start_split_times.each.with_index(1) do |st, index|
+      total_count = adjustable_split_times.size
+      adjustable_split_times.each.with_index(1) do |st, index|
         report_progress(action: 'processed', resource: 'split time', current: index, total: total_count)
         next if errors.present?
         st.time_from_start -= start_time_shift
@@ -44,8 +45,22 @@ module Interactors
       end
     end
 
-    def non_start_split_times
-      @non_start_split_times ||= event.split_times.includes(:split).where.not(splits: {kind: :start})
+    def update_efforts
+      total_count = adjustable_efforts.size
+      adjustable_efforts.each.with_index(1) do |effort, index|
+        report_progress(action: 'processed', resource: 'effort', current: index, total: total_count)
+        next if errors.present?
+        effort.start_offset -= start_time_shift
+        errors << resource_error_object(effort) unless effort.save
+      end
+    end
+
+    def adjustable_split_times
+      @adjustable_split_times ||= event.split_times.includes(:split).where.not(splits: {kind: :start}).where(efforts: {start_offset: 0})
+    end
+
+    def adjustable_efforts
+      @adjustable_efforts ||= event.efforts.where.not(start_offset: 0)
     end
 
     def start_time_shift

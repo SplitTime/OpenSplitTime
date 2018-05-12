@@ -6,7 +6,7 @@ module BackgroundNotifiable
   def report_progress(args)
     current = args[:current]
     total = args[:total]
-    records_per_update = total / 20
+    records_per_update = (total / 20).clamp(1, 100)
     if background_channel && ((current % records_per_update == 0) || (current == 1) || (current == total))
       notifier.publish(channel: background_channel, event: 'update', action: args[:action],
                        resource: args[:resource], current_object: current, total_objects: total)

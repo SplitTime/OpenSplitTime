@@ -155,6 +155,7 @@
           <div class="col-sm-3">
             <div class="input-group date" id="datetimepicker">
               <%= f.text_field :start_time,
+                               disabled: @effort.split_times.present?,
                                value: @effort.start_time&.strftime('%m/%d/%Y %H:%M:%S'),
                                placeholder: 'mm/dd/yyyy hh:mm:ss',
                                class: 'form-control',

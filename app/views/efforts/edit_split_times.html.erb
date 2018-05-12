@@ -17,7 +17,7 @@
   </div>
 </div>
 <hr>
-<%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter), :html => {class: 'form-horizontal', role: 'form'}) do |f| %>
+<%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter, display_style: @presenter.display_style), html: {class: 'form-horizontal', role: 'form'}) do |f| %>
     <div class="row">
       <div class="col-sm-6">
         <table class="table table-condensed table-striped">
@@ -26,13 +26,17 @@
           <th><h4><%= @presenter.table_header %></h4></th>
           </thead>
           <tbody>
-          <% @presenter.lap_split_rows_plus_one[1..-1].each do |row| %>
+          <% @presenter.lap_split_rows_plus_one.each do |row| %>
               <tr class="<%= data_status_text_class[row.data_status] %>">
               <td class="text-nowrap"><strong><%= "#{row.name}" %></strong></td>
               <% row.time_points.each do |time_point| %>
                   <%= f.fields_for :split_times, @presenter.guaranteed_split_time(time_point) do |builder| %>
                       <td>
-                        <%= builder.text_field @presenter.working_field, class: 'form-control', placeholder: 'hh:mm:ss' %>
+                        <%= builder.text_field @presenter.working_field,
+                                               class: 'form-control',
+                                               placeholder: 'hh:mm:ss',
+                                               disabled: @presenter.disable_for_time_point?(time_point),
+                                               autofocus: @presenter.autofocus_for_time_point?(time_point) %>
                         <%= builder.hidden_field :lap, {value: time_point.lap} %>
                         <%= builder.hidden_field :split_id, {value: time_point.split_id} %>
                         <%= builder.hidden_field :sub_split_bitkey, {value: time_point.bitkey} %>

@@ -8,9 +8,7 @@ class EffortsController < ApplicationController
     Carmen.i18n_backend.locale = locale if locale
   end
 
-  def index
-
-  end
+  def index; end
 
   def show
     @effort_show = EffortShowView.new(effort: @effort)
@@ -128,17 +126,25 @@ class EffortsController < ApplicationController
   def update_split_times
     authorize @effort
     effort = effort_with_splits
+    effort.assign_attributes(permitted_params)
+    offset_response = Interactors::AdjustEffortOffset.perform(effort)
 
-    if effort.update(permitted_params)
-      flash[:success] = "Updated split times. "
-      response = Interactors::UpdateEffortsStatus.perform!(effort)
-      set_flash_message(response)
+    if offset_response.successful?
+      if effort.save
+        status_response = Interactors::UpdateEffortsStatus.perform!(effort)
+        combined_response = status_response.merge(offset_response)
+        set_flash_message(combined_response)
 
-      redirect_to effort_path(effort)
+        redirect_to effort_path(effort)
+      else
+        flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
+        @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
+        render 'edit_split_times', display_style: params[:display_style]
+      end
     else
-      flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
+      set_flash_message(offset_response)
       @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
-      render 'edit_split_times'
+      render 'edit_split_times', display_style: params[:display_style]
     end
   end
 

@@ -77,7 +77,7 @@ module Interactors
       elsif start_time_shift.zero?
         "Start time for #{event.name} was not changed. "
       else
-        "Start time for #{event.name} was changed to #{event.start_time_in_home_zone}. Split times were adjusted #{adjustment_amount} to maintain absolute times. "
+        "Start time for #{event.name} was changed to #{event.start_time_in_home_zone}. Absolute split times were kept constant. "
       end
     end
 

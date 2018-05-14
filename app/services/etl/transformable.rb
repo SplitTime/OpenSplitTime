@@ -55,6 +55,15 @@ module ETL::Transformable
     end
   end
 
+  def fill_nil_values!(attributes)
+    existing_keys = self.to_h.keys.to_set
+    attributes.each do |key, value|
+      if existing_keys.include?(key)
+        self[key] ||= value
+      end
+    end
+  end
+
   def map_keys!(map)
     map.each do |old_key, new_key|
       self[new_key] = delete_field(old_key) if attributes.respond_to?(old_key)
@@ -73,19 +82,29 @@ module ETL::Transformable
   end
 
   def normalize_date!(attribute)
-    return unless self[attribute].present?
-    self[attribute] = modernize_date(self[attribute].to_date).to_s
+    date = self[attribute].to_date
+    self[attribute] = modernize_date(date).to_s
+  rescue NoMethodError, ArgumentError
+    # Do not attempt to transform the date
   end
 
   def normalize_datetime!(attribute)
-    return unless self[attribute].present?
-    self[attribute] = modernize_date(self[attribute].to_datetime).strftime('%Y-%m-%d %H:%M:%S')
+    datetime = self[attribute].to_datetime
+    self[attribute] = modernize_date(datetime).strftime('%Y-%m-%d %H:%M:%S')
+  rescue NoMethodError, ArgumentError
+    # Do not attempt to transform the datetime
   end
 
   def normalize_gender!
-    return unless self[:gender].present?
-    gender = self[:gender]
-    self[:gender] = gender.downcase.start_with?('m') ? 'male' : 'female'
+    if self[:gender].presence.respond_to?(:downcase)
+      self[:gender] = case self[:gender].downcase.first
+                      when 'm' then 'male'
+                      when 'f' then 'female'
+                      else nil
+                      end
+    else
+      self[:gender] = nil
+    end
   end
 
   def normalize_state_code!
@@ -102,15 +121,6 @@ module ETL::Transformable
           subregion = country.subregions.coded(state_data) || country.subregions.named(state_data)
           subregion ? subregion.code : state_data
         end
-  end
-
-  def fill_nil_values!(attributes)
-    existing_keys = self.to_h.keys.to_set
-    attributes.each do |key, value|
-      if existing_keys.include?(key)
-        self[key] ||= value
-      end
-    end
   end
 
   def set_effort_offset!(start_time_point)

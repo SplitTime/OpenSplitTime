@@ -58,7 +58,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
         end
 
         it 'returns genders transformed to "male" or "female"' do
-          expect(proto_records.map { |pr| pr[:gender] }).to eq(['male', 'female', 'female', 'male', 'female', ''])
+          expect(proto_records.map { |pr| pr[:gender] }).to eq(['male', 'female', 'female', 'male', 'female', nil])
         end
 
         it 'splits full names into first names and last names' do

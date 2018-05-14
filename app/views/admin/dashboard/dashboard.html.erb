@@ -3,7 +3,7 @@
 <% end %>
 <div class="row">
   <div class="col-xs-6">
-    <h2>OpenSplitTime Dashboard</h2>
+    <h2><strong>OpenSplitTime Dashboard</strong></h2>
   </div>
 </div>
 <hr>
@@ -17,6 +17,9 @@
     <%= "Courses: #{Course.all.size}" %><br/>
     <%= "Splits: #{Split.all.size}" %><br/>
     <%= "Users: #{User.all.size}" %><br/>
+    <%= "Live Times: #{LiveTime.all.size}" %><br/>
+    <%= "Raw Times: #{RawTime.all.size}" %><br/>
+    <%= "Subscriptions: #{Subscription.all.size} consisting of #{Subscription.sms.size} SMS, #{Subscription.email.size} email, #{Subscription.http.size} http, #{Subscription.https.size} https" %><br/>
   </div>
 </div>
 <hr>

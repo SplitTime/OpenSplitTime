@@ -10,6 +10,19 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
     @params = args[:params] || {}
   end
 
+  def autofocus_for_time_point?(time_point)
+    military_times? ? time_point == time_points.first : time_point == time_points.second
+  end
+
+  def disable_for_time_point?(time_point)
+    return false if military_times?
+    time_point == time_points.first
+  end
+
+  def display_style
+    params[:display_style]
+  end
+
   def guaranteed_split_time(time_point)
     split_times.find { |st| st.time_point == time_point } || SplitTime.new(time_point: time_point, effort_id: id)
   end

@@ -218,6 +218,68 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
+  describe '#normalize_datetime!' do
+    let(:attributes) { {start_time: start_time} }
+
+    context 'when provided with an American mm/dd/yy hh:mm:ss format' do
+      let(:start_time) { '09/29/67 06:30:00'}
+
+      it 'corrects the year to between 1920 and 2019' do
+        subject.normalize_datetime!(:start_time)
+        expect(subject[:start_time]).to eq('1967-09-29 06:30:00')
+      end
+    end
+
+    context 'when provided with a two-digit year above the mod 100 of the current year' do
+      let(:two_digit_year) { Date.today.year % 100 + 1 }
+      let(:four_digit_year) { Date.today.year - 99 }
+      let(:start_time) { "09/29/#{two_digit_year} 06:30:00" }
+
+      it 'assumes a year in the past' do
+        subject.normalize_datetime!(:start_time)
+        expect(subject[:start_time]).to eq("#{four_digit_year}-09-29 06:30:00")
+      end
+    end
+
+    context 'when provided with a two-digit year equal to or lower than the mod 100 of the current year' do
+      let(:two_digit_year) { Date.today.year % 100 }
+      let(:four_digit_year) { Date.today.year }
+      let(:start_time) { "09/29/#{two_digit_year} 06:30:00"}
+
+      it 'assumes the current year' do
+        subject.normalize_datetime!(:start_time)
+        expect(subject[:start_time]).to eq("#{four_digit_year}-09-29 06:30:00")
+      end
+    end
+
+    context 'when provided with an integer' do
+      let(:start_time) { 27662 }
+
+      it 'does not attempt to transform the value' do
+        subject.normalize_datetime!(:start_time)
+        expect(subject[:start_time]).to eq(27662)
+      end
+    end
+
+    context 'when provided with a string that cannot be transformed into a date' do
+      let(:start_time) { 'hello' }
+
+      it 'does not attempt to transform the value' do
+        subject.normalize_datetime!(:start_time)
+        expect(subject[:start_time]).to eq('hello')
+      end
+    end
+
+    context 'when provided with nil' do
+      let(:start_time) { nil }
+
+      it 'does not attempt to transform the value' do
+        subject.normalize_datetime!(:start_time)
+        expect(subject[:start_time]).to be_nil
+      end
+    end
+  end
+
   describe '#normalize_country_code!' do
     context 'when provided with ISO 3166 2-character code' do
       let(:attributes) { {country_code: 'US'} }
@@ -275,12 +337,39 @@ RSpec.shared_examples_for 'transformable' do
       end
     end
 
-    context 'when existing gender does not start with "M"' do
+    context 'when existing gender starts with "F"' do
       let(:attributes) { {first_name: 'Joe', gender: 'F'} }
 
       it 'changes the value to "female"' do
         subject.normalize_gender!
         expect(subject[:gender]).to eq('female')
+      end
+    end
+
+    context 'when existing gender starts with neither "M" nor "F"' do
+      let(:attributes) { {first_name: 'Joe', gender: 'Hello'} }
+
+      it 'changes the value to nil' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq(nil)
+      end
+    end
+
+    context 'when existing gender is not a string' do
+      let(:attributes) { {first_name: 'Joe', gender: 1} }
+
+      it 'changes the value to nil' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq(nil)
+      end
+    end
+
+    context 'when existing gender is an empty string' do
+      let(:attributes) { {first_name: 'Joe', gender: ''} }
+
+      it 'changes the value to nil' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq(nil)
       end
     end
 

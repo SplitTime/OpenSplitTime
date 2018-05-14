@@ -8,7 +8,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def cache_expire
-    simple? ? 5.seconds : 1.minute
+    simple? ? 5.seconds : 20.seconds
   end
 
   def cache_key

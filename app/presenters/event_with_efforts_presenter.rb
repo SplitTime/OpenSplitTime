@@ -19,11 +19,7 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def ranked_effort_rows
-    @ranked_effort_rows ||= filtered_ranked_efforts.map do |effort|
-      person = indexed_people[effort.person_id]
-      effort.person = person if person
-      EffortRow.new(effort)
-    end
+    @ranked_effort_rows ||= filtered_ranked_efforts.map { |effort| EffortRow.new(effort) }
   end
 
   def filtered_ranked_efforts
@@ -39,14 +35,6 @@ class EventWithEffortsPresenter < BasePresenter
 
   def efforts_count
     event_efforts.size
-  end
-
-  def started_efforts_count
-    started_effort_ids.size
-  end
-
-  def unstarted_efforts_count
-    efforts_count - started_efforts_count
   end
 
   def filtered_ranked_efforts_count
@@ -74,19 +62,7 @@ class EventWithEffortsPresenter < BasePresenter
   attr_reader :params
 
   def ranked_efforts
-    @ranked_efforts ||= event_efforts.ranked_with_finish_status(sort: sort_hash)
-  end
-
-  def unstarted_efforts
-    @unstarted_efforts ||= event_efforts.where(id: unstarted_effort_ids).eager_load(:person)
-  end
-
-  def unstarted_effort_ids
-    @unstarted_effort_ids ||= event_efforts.ids - started_effort_ids
-  end
-
-  def started_effort_ids
-    @started_effort_ids ||= ranked_efforts.map(&:id)
+    @ranked_efforts ||= event_efforts.ranked_with_status(sort: sort_hash)
   end
 
   def filtered_ids

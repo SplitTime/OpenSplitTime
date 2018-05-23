@@ -79,7 +79,7 @@ module ToggleHelper
 
   def link_to_toggle_sms_subscription(person)
     if current_user
-      link_to_toggle_subscription(person: person,
+      link_to_toggle_subscription(person_id: person.id,
                                   glyphicon: 'phone',
                                   protocol: 'sms',
                                   subscribe_alert: "Receive live text message updates for #{person.full_name}?",
@@ -90,12 +90,12 @@ module ToggleHelper
   end
 
   def link_to_toggle_subscription(args)
-    person = args[:person]
+    person_id = args[:person_id]
     glyphicon = args[:glyphicon]
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    subscription = current_user&.subscriptions&.find { |sub| (sub.person_id == person.id) && (sub.protocol == protocol) }
+    subscription = current_user&.subscriptions&.find { |sub| (sub.person_id == person_id) && (sub.protocol == protocol) }
 
     if subscription
       url = subscription_path(subscription)
@@ -107,7 +107,7 @@ module ToggleHelper
       })
     else
       url = subscriptions_path(subscription: {user_id: current_user&.id,
-                                              person_id: person.id,
+                                              person_id: person_id,
                                               protocol: protocol})
       link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
           method: 'post',

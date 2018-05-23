@@ -22,7 +22,7 @@
   <tbody>
   <% @event_display.ranked_effort_rows.each do |effort_row| %>
       <%= data_status_tag(effort_row) %>
-      <td><%= effort_row.overall_rank %></td>
+      <td><%= effort_row.display_overall_rank %></td>
       <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
       <% if @event_display.available_live %>
           <td><%= effort_row.bib_number %></td>
@@ -30,9 +30,9 @@
       <td><%= effort_row.bio_historic %></td>
       <td><%= effort_row.flexible_geolocation %></td>
       <td><%= effort_row.run_status %></td>
-      <td><%= "#{effort_row.final_lap_split_name} (#{pdu('singular')} #{d(effort_row.final_distance)})" %></td>
-      <td><%= "#{day_time_format_hhmmss(effort_row.final_day_and_time)}" %></td>
-      <td><%= "#{time_format_hhmmss(effort_row.final_time)}" %></td>
+      <td><%= last_reported_location(effort_row) %></td>
+      <td><%= last_reported_time_of_day(effort_row) %></td>
+      <td><%= last_reported_elapsed_time(effort_row) %></td>
       <td>
         <%= div_for(effort_row.person) do %>
             <%= link_to_toggle_email_subscription(effort_row.person) %>

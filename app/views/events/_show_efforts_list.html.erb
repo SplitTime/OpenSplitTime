@@ -1,18 +1,17 @@
 <% # Requires parameters unfiltered_efforts_count, filtered_efforts_count, and filtered_efforts %>
 
 <% if unfiltered_efforts_count.zero? %>
-    <h4><strong><%= no_efforts_text_helper(@event_display) %></strong></h4>
+    <h4><strong>No entrants have been added to this event.</strong></h4>
 <% else %>
 
     <%= render 'effort_lookup', event: @event_display.event %>
     <hr>
 
-    <% if filtered_efforts.size > 0 %>
+    <% if filtered_efforts.present? %>
         <div class="row">
           <div class="col-xs-8">
             <h4><strong>
-              <%= "#{@event_display.display_style.titleize} efforts:" %>
-              <%= filtered_efforts_count == unfiltered_efforts_count ? unfiltered_efforts_count : "Returned #{filtered_efforts_count} of #{unfiltered_efforts_count}" %>
+              <%= filtered_efforts_count == unfiltered_efforts_count ? "#{unfiltered_efforts_count} entrants" : "Returned #{filtered_efforts_count} of #{unfiltered_efforts_count} entrants" %>
             </strong></h4>
           </div>
         </div>
@@ -22,11 +21,7 @@
           </div>
         </div>
 
-        <% if @event_display.display_style == 'started' %>
-            <%= render 'efforts/efforts_list' %>
-        <% else %>
-            <%= render 'efforts/efforts_not_started' %>
-        <% end %>
+        <%= render 'efforts/efforts_list' %>
 
         <div class="row">
           <div class="col-xs-8">

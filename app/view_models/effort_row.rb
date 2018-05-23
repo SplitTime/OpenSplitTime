@@ -3,6 +3,14 @@
 class EffortRow < SimpleDelegator
   ULTRASIGNUP_STATUS_TABLE = {'Finished' => 1, 'Dropped' => 2, 'Not Started' => 3}
 
+  def display_overall_rank
+    started? ? overall_rank : '--'
+  end
+
+  def display_gender_rank
+    started? ? gender_rank : '--'
+  end
+
   def final_lap_split_name
     multiple_laps? ? "#{final_split_name} Lap #{final_lap}" : final_split_name
   end

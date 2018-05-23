@@ -13,7 +13,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
+    @event_display = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     render 'show'
   end
 
@@ -192,7 +192,7 @@ class EventsController < ApplicationController
   def export_to_ultrasignup
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
+    @event_display = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     respond_to do |format|
       format.html { redirect_to stage_event_path(@event) }
       format.csv do

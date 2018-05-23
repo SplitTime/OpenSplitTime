@@ -572,7 +572,7 @@
                             },
                             suggestedName: function() {
                                 if (this.eventModel.eventGroup.organization && this.eventModel.virtualStartTime) {
-                                    return this.eventModel.eventGroup.organization.name + ' ' + this.eventModel.virtualStartTime.getFullYear();
+                                    return this.eventModel.virtualStartTime.getFullYear() + ' ' + this.eventModel.eventGroup.organization.name;
                                 }
                                 return '';
                             },

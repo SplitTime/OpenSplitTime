@@ -6,7 +6,7 @@ module ETL::Extractors
     attr_reader :errors
 
     def initialize(raw_data, options)
-      @raw_data = raw_data
+      @raw_data = JSON.parse(raw_data)
       @options = options
       @errors = []
       validate_raw_data
@@ -35,7 +35,7 @@ module ETL::Extractors
     end
 
     def expression_or_section(header)
-      expression, label = [header['Expression'], header['Label']].map(&:underscore)
+      expression, label = [header['expression'], header['label']].map(&:underscore)
       expression.start_with?('section') ? expression : label
     end
 
@@ -44,7 +44,7 @@ module ETL::Extractors
     end
 
     def data_fields
-      @data_fields ||= raw_data['list'] && raw_data['list']['Fields']
+      @data_fields ||= raw_data.dig('list', 'fields')
     end
 
     def validate_raw_data

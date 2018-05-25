@@ -6,7 +6,7 @@ module ETL::Extractors
     attr_reader :errors
 
     def initialize(raw_data, options)
-      @raw_data = JSON.parse(raw_data)
+      @raw_data = raw_data
       @options = options
       @errors = []
       validate_raw_data

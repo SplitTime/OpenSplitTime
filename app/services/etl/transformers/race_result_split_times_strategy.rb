@@ -38,7 +38,7 @@ module ETL::Transformers
     def transform_time_data!(proto_record)
       extract_times!(proto_record)
       transform_times!(proto_record)
-      proto_record.create_split_time_children!(time_points, preserve_nils: true)
+      proto_record.create_split_time_children!(time_points, preserve_nils: preserve_nils?)
       mark_for_destruction!(proto_record)
       set_stop!(proto_record)
     end
@@ -103,6 +103,10 @@ module ETL::Transformers
 
     def time_points
       @time_points ||= event.required_time_points
+    end
+
+    def preserve_nils?
+      options[:delete_blank_times]
     end
 
     def validate_setup

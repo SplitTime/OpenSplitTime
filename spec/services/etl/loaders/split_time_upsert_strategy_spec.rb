@@ -146,7 +146,6 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'finds existing records based on a unique key and deletes times where blanks exist' do
-        skip 'Not running this test while the feature is disabled. Feature may be eliminated or enabled with a flag.'
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(5)
         expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])

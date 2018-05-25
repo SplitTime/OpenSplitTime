@@ -59,16 +59,16 @@ module ETL::Loaders
     end
 
     def eliminate(record)
-      # if record.new_record?
+      if record.new_record?
         ignored_records << record
-      # else
-      #   begin
-      #     destroyed_records << record if record.destroy
-      #   rescue ActiveRecord::ActiveRecordError => exception
-      #     record.errors.add(exception)
-      #     invalid_records << record
-      #   end
-      # end
+      else
+        begin
+          destroyed_records << record if record.destroy
+        rescue ActiveRecord::ActiveRecordError => exception
+          record.errors.add(exception)
+          invalid_records << record
+        end
+      end
     end
 
     def upsert(child_record, parent_record)

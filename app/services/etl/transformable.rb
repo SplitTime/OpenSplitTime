@@ -96,6 +96,7 @@ module ETL::Transformable
   end
 
   def normalize_gender!
+    return unless self.has_key?(:gender)
     if self[:gender].presence.respond_to?(:downcase)
       self[:gender] = case self[:gender].downcase.first
                       when 'm' then 'male'

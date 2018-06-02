@@ -16,6 +16,10 @@ class ProtoRecord
 
   delegate :[], :[]=, :to_h, :delete_field, to: :attributes
 
+  def has_key?(key)
+    attributes.to_h.has_key?(key)
+  end
+
   def record_class
     record_type&.to_s&.classify&.constantize
   end

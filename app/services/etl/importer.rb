@@ -24,6 +24,8 @@ module ETL
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::InsertStrategy, {delete_blank_times: true}.merge(options))
       when :race_result_times
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, {delete_blank_times: false}.merge(options))
+      when :race_result_api_times
+        import_with(source_data, Extractors::RaceResultApiStrategy, Transformers::RaceResultApiSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, {delete_blank_times: false}.merge(options))
       when :adilas_bear_times
         import_with(source_data, Extractors::AdilasBearHTMLStrategy, Transformers::AdilasBearStrategy, Loaders::InsertStrategy, options)
       when :its_your_race_times

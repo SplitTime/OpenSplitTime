@@ -124,11 +124,12 @@ module ETL::Transformable
         end
   end
 
-  def set_effort_offset!(start_time_point)
+  def set_effort_offset!(start_time_point, options = {})
     start_child_record = children.find { |pr| [pr[:lap], pr[:split_id], pr[:sub_split_bitkey]] == [start_time_point.lap, start_time_point.split_id, start_time_point.bitkey] }
     if start_child_record && start_child_record[:time_from_start]
       self[:start_offset] = start_child_record[:time_from_start]
-      start_child_record[:time_from_start] = 0
+      children_to_adjust = options[:adjust_all] ? children.select { |child| child[:time_from_start] } : [start_child_record]
+      children_to_adjust.each { |child| child[:time_from_start] -= self[:start_offset] }
     end
   end
 

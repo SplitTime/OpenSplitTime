@@ -67,12 +67,11 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
       end
 
       it 'returns rows with effort headers transformed to match the database' do
-        expect(first_proto_record.to_h.keys)
-            .to match_array(%i(bib_number event_id))
+        expect(first_proto_record.to_h.keys).to match_array(%i(bib_number event_id start_offset))
       end
 
       it 'assigns event.id to :event_id key' do
-        expect(proto_records.map { |pr| pr[:event_id] }).to eq([event.id] * parsed_structs.size)
+        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
       end
 
       it 'sorts split headers and returns an array of children' do
@@ -82,7 +81,7 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
         expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
         expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:military_time] }).to eq(%w(07:05:05 08:05:19 08:50:50 09:37:57 10:30:59 11:11:22 12:04:37))
+        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 3614.0, 6345.0, 9172.0, 12354.0, 14777.0, 17972.0])
       end
 
       context 'when options[:delete_blank_times] is true' do
@@ -92,12 +91,12 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
           records = third_proto_record.children
           expect(records.size).to eq(7)
           expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(records.map { |pr| pr[:military_time] }).to eq(["07:05:42", "08:22:41", "09:15:25", "10:07:56", "10:54:19", nil, nil])
+          expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 4619.0, 7783.0, 10934.0, 13717.0, nil, nil])
         end
 
         it 'returns expected military times when middle segment times are missing' do
           records = second_proto_record.children
-          expect(records.map { |pr| pr[:military_time] }).to eq(["07:05:29", "08:11:19", "08:58:41", "09:45:39", nil, "11:22:34", "12:18:13"])
+          expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 3950.0, 6792.0, 9610.0, nil, 15425.0, 18764.0])
         end
 
         it 'marks records for destruction when time_from_start is not present' do
@@ -107,7 +106,7 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
 
         it 'returns expected times_from_start array when no times are present' do
           records = last_proto_record.children
-          expect(records.map { |pr| pr[:military_time] }).to eq([nil] * records.size)
+          expect(records.map { |pr| pr[:time_from_start] }).to all eq(nil)
         end
 
         it 'returns expected split_id array when no times are present' do
@@ -118,7 +117,7 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
 
         it 'sets [:stopped_here] attribute on the final child record if [:status] == "DNF" or "DSQ"' do
           records = third_proto_record.children
-          expect(records.reverse.find { |pr| pr[:military_time].present? }[:stopped_here]).to eq(true)
+          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
           expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true, nil, nil])
         end
 
@@ -136,7 +135,7 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
           records = third_proto_record.children
           expect(records.size).to eq(5)
           expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id).first(5))
-          expect(records.map { |pr| pr[:military_time] }).to eq(%w(07:05:42 08:22:41 09:15:25 10:07:56 10:54:19))
+          expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 4619.0, 7783.0, 10934.0, 13717.0])
         end
 
         it 'creates no child records when no times are present' do
@@ -146,7 +145,7 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
 
         it 'sets [:stopped_here] attribute on the final child record if [:time] == "DNF" or "DSQ"' do
           records = third_proto_record.children
-          expect(records.reverse.find { |pr| pr[:military_time].present? }[:stopped_here]).to eq(true)
+          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
           expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true])
         end
 

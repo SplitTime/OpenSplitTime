@@ -30,10 +30,10 @@ module ETL::Transformers
     def transform_time_data!(proto_record)
       extract_times!(proto_record)
       transform_times!(proto_record)
-      proto_record.create_split_time_children!(time_points, time_attribute: :military_time, preserve_nils: preserve_nils?)
+      proto_record.create_split_time_children!(time_points, time_attribute: :time_from_start, preserve_nils: preserve_nils?)
       mark_for_destruction!(proto_record)
       set_stop!(proto_record)
-      proto_record.set_effort_offset!(time_points.first)
+      proto_record.set_effort_offset!(time_points.first, adjust_all: true)
     end
 
     def extract_times!(proto_record)
@@ -41,21 +41,21 @@ module ETL::Transformers
     end
 
     def transform_times!(proto_record)
-      proto_record[:military_times] = proto_record[:times_of_day].map do |time|
-        TimeConversion.absolute_to_hms(Time.parse(time)) if time.present?
+      proto_record[:times_from_start] = proto_record[:times_of_day].map do |time|
+        Time.parse(time).seconds_since_midnight - event_seconds_since_midnight if time.present?
       end
     end
 
     def mark_for_destruction!(proto_record)
       proto_record.children.each do |child_record|
-        child_record.record_action = :destroy if child_record[:military_time].blank?
+        child_record.record_action = :destroy if child_record[:time_from_start].blank?
       end
     end
 
     def set_stop!(proto_record)
       stop_indicators = %w(DNF DSQ)
       if stop_indicators.include?(proto_record[:status])
-        stopped_child_record = proto_record.children.reverse.find { |pr| pr[:military_time].present? }
+        stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
         (stopped_child_record[:stopped_here] = true) if stopped_child_record
       end
     end
@@ -74,6 +74,10 @@ module ETL::Transformers
 
     def time_points
       @time_points ||= event.required_time_points
+    end
+    
+    def event_seconds_since_midnight
+      @event_seconds_since_midnight ||= event.start_time_in_home_zone.seconds_since_midnight
     end
 
     def preserve_nils?

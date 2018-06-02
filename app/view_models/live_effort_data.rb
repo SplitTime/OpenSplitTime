@@ -156,7 +156,7 @@ class LiveEffortData
 
   def effort_from_params
     # ActiveRecord will find bib_number 12 if we use Effort.where(bib_number: '12*')
-    return Effort.null_record if params[:bib_number].include?('*')
+    return Effort.null_record if params[:bib_number]&.include?('*')
     event.efforts.find_guaranteed(attributes: {bib_number: params[:bib_number]}, includes: {split_times: :split})
   end
 

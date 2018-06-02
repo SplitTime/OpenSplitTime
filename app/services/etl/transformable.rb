@@ -160,7 +160,10 @@ module ETL::Transformable
   end
 
   def strip_white_space!
-    to_h.each { |k, v| self[k] = v&.strip.presence || v.presence }
+    to_h.each do |k, v|
+      next unless v.respond_to?(:strip)
+      self[k] = v.strip.presence || v.presence
+    end
   end
 
   def underscore_keys!

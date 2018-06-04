@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class LiveFileTransformer
-  require 'csv'
+  BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding('UTF-8').freeze
+
 
   def self.returned_rows(args)
     new(args).returned_rows
@@ -26,6 +27,7 @@ class LiveFileTransformer
   end
 
   def transformed_rows
+    pp "File rows are: \n#{file_rows}"
     @transformed_rows ||= file_rows.map do |file_row|
       LiveEffortData.response_row(event: event,
                                   params: file_row,
@@ -40,7 +42,9 @@ class LiveFileTransformer
   attr_accessor :file_rows
 
   def create_rows_from_file
-    CSV.foreach(file.path, headers: true) do |row|
+    rows = SmarterCSV.process(file.path, remove_empty_values: false, row_sep: :auto, force_utf8: true,
+                              strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false, strings_as_keys: true)
+    rows.each do |row|
       next if row.empty?
       file_row = LiveRowNormalizer.normalize(row)
       file_row[:split_id] = split_id

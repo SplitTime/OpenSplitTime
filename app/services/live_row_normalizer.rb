@@ -40,7 +40,7 @@ class LiveRowNormalizer
   end
 
   def normalize_times
-    TIME_PARAMS.each { |time_param| proto_record[time_param] = TimeConversion.file_to_military(proto_record[time_param]) }
+    TIME_PARAMS.each { |time_param| proto_record[time_param] = TimeConversion.file_to_military(proto_record[time_param].to_s) }
   end
 
   def normalize_booleans

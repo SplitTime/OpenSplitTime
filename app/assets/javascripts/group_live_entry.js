@@ -988,9 +988,9 @@
 
                 $('#js-group-file-upload').fileupload({
                     dataType: 'json',
-                    url: '/api/v1/events/' + liveEntry.currentEventGroupId + '/post_file_effort_data',
+                    url: '/api/v1/events/' + liveEntry.defaultEventId + '/post_file_effort_data',
                     submit: function (e, data) {
-                        data.formData = {splitId: liveEntry.currentStationIndex};
+                        data.formData = {splitId: liveEntry.getSplitId(liveEntry.defaultEventId, liveEntry.currentStationIndex)};
                         liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {

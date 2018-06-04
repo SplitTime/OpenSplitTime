@@ -66,11 +66,11 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
     context 'when no matching parent records exist' do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
-      it 'does not import any records and places all child records into ignored_records' do
+      it 'does not import any records and places all parent records into ignored_records' do
         subject.load_records
         expect(Effort.all.size).to eq(0)
         expect(SplitTime.all.size).to eq(0)
-        expect(subject.ignored_records.size).to eq(21)
+        expect(subject.ignored_records.size).to eq(3)
       end
     end
 
@@ -83,6 +83,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
         split_times = SplitTime.all
         expect(split_times.size).to eq(0)
         subject.load_records
+
         expect(split_times.size).to eq(7)
         expect(split_times.map(&:split_id).sort).to eq(split_ids.cycle.first(split_times.size).sort)
         expect(split_times.map(&:time_from_start)).to eq([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
@@ -90,15 +91,15 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
         expect(split_times.map(&:created_by)).to all eq(options[:current_user_id])
       end
 
-      it 'returns saved child records in the saved_records array' do
+      it 'returns saved parent records in the saved_records array' do
         subject.load_records
-        expect(subject.saved_records.size).to eq(7)
-        expect(subject.saved_records.map(&:id).sort).to eq(SplitTime.all.ids.sort)
+        expect(subject.saved_records.size).to eq(2)
+        expect(subject.saved_records.map(&:id)).to match_array(Effort.all.ids)
       end
 
-      it 'returns unsaved child records in the ignored_records array' do
+      it 'returns unsaved parent records in the ignored_records array' do
         subject.load_records
-        expect(subject.ignored_records.size).to eq(14)
+        expect(subject.ignored_records.size).to eq(1)
         expect(subject.ignored_records.map(&:id)).to all be_nil
       end
     end
@@ -118,7 +119,10 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(2)
         expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 1000])
+
         subject.load_records
+
+        expect(subject.saved_records.size).to eq(1)
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(7)
         expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
@@ -146,7 +150,6 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'finds existing records based on a unique key and deletes times where blanks exist' do
-        skip 'Not running this test while the feature is disabled. Feature may be eliminated or enabled with a flag.'
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(5)
         expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])
@@ -154,8 +157,6 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(3)
         expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 4916.63, 14398.48])
-        expect(subject.destroyed_records.size).to eq(2)
-        expect(subject.destroyed_records.map(&:split_id)).to eq([fourth_child[:split_id], fifth_child[:split_id]])
       end
     end
 
@@ -181,7 +182,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       it 'includes invalid records in the invalid_records array' do
         subject.load_records
         expect(subject.invalid_records.size).to eq(1)
-        expect(subject.invalid_records.first.time_from_start).to eq(-999)
+        expect(subject.invalid_records.first.errors.full_messages).to include('Split times time from start must be greater than or equal to 0')
       end
     end
   end

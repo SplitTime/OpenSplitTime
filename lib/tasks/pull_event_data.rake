@@ -67,7 +67,7 @@ namespace :pull_event do
 
     # Fetch source data from provided URI
 
-    source_uri = args[:source_uri]
+    source_uri = args[:source_uri].to_s
     puts "Fetching data from #{source_uri}"
 
     begin

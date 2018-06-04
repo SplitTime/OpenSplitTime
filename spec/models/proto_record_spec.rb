@@ -3,6 +3,14 @@ require 'rails_helper'
 RSpec.describe ProtoRecord, type: :model do
   it_behaves_like 'transformable'
 
+  describe '#[]=' do
+    it 'may be used to add a key to an existing proto_record' do
+      pr = ProtoRecord.new(first_name: 'Joe', age: 21, gender: 'male')
+      pr[:id] = 1
+      expect(pr[:id]).to eq(1)
+    end
+  end
+
   describe '#attributes' do
     it 'may be set during initialization' do
       pr = ProtoRecord.new(first_name: 'Joe', age: 21, gender: 'male')

@@ -96,6 +96,7 @@ module ETL::Transformable
   end
 
   def normalize_gender!
+    return unless self.has_key?(:gender)
     if self[:gender].presence.respond_to?(:downcase)
       self[:gender] = case self[:gender].downcase.first
                       when 'm' then 'male'
@@ -123,11 +124,12 @@ module ETL::Transformable
         end
   end
 
-  def set_effort_offset!(start_time_point)
+  def set_effort_offset!(start_time_point, options = {})
     start_child_record = children.find { |pr| [pr[:lap], pr[:split_id], pr[:sub_split_bitkey]] == [start_time_point.lap, start_time_point.split_id, start_time_point.bitkey] }
     if start_child_record && start_child_record[:time_from_start]
       self[:start_offset] = start_child_record[:time_from_start]
-      start_child_record[:time_from_start] = 0
+      children_to_adjust = options[:adjust_all] ? children.select { |child| child[:time_from_start] } : [start_child_record]
+      children_to_adjust.each { |child| child[:time_from_start] -= self[:start_offset] }
     end
   end
 
@@ -158,7 +160,10 @@ module ETL::Transformable
   end
 
   def strip_white_space!
-    to_h.each { |k, v| self[k] = v&.strip.presence || v.presence }
+    to_h.each do |k, v|
+      next unless v.respond_to?(:strip)
+      self[k] = v.strip.presence || v.presence
+    end
   end
 
   def underscore_keys!

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class EffortParameters < BaseParameters
+  def self.csv_attributes
+    %w(first_name last_name gender birthdate bib_number city state country phone email emergency_contact emergency_phone start_time)
+  end
 
   def self.permitted_query
     enriched_query

@@ -11,9 +11,9 @@ class SplitsController < ApplicationController
         @splits = @splits.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
       end
       format.csv do
-        builder = CsvBuilder.new(@splits)
+        builder = CsvBuilder.new(Split, @splits)
         send_data(builder.full_string, type: 'text/csv',
-                  filename: "#{@splits.first&.course}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+                  filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
       end
     end
   end

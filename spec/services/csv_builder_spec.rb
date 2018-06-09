@@ -1,21 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe CsvBuilder do
-  let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 2) }
+  subject { CsvBuilder.new(model_class, resources) }
+  let(:model_class) { Split }
+  let(:resources) { build_stubbed_list(:splits_hardrock_ccw, 2) }
   before { FactoryBot.reload }
 
   describe '#initialize' do
-    subject { CsvBuilder.new(splits) }
-
-    it 'initializes given resources' do
+    it 'initializes given a model_class and resources' do
       expect { subject }.not_to raise_error
     end
   end
 
-  context 'when provided with resources whose model has csv attributes defined' do
-    subject { CsvBuilder.new(splits) }
-
-    describe '#full_string' do
+  describe '#full_string' do
+    context 'when provided with resources whose model has csv attributes defined' do
       let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 2) }
 
       it 'returns a full string with headers in csv format' do
@@ -24,60 +22,53 @@ RSpec.describe CsvBuilder do
       end
     end
 
-    describe '#model_class_name' do
-      it 'returns the name of the model belonging to the provided resources' do
-        expect(subject.model_class_name).to eq('splits')
+    context 'when provided with resources whose model has no csv attributes defined' do
+      before do
+        allow(subject).to receive(:params_class).and_return(BaseParameters)
       end
-    end
-  end
 
-  context 'when provided with resources whose model has no csv attributes defined' do
-    subject { CsvBuilder.new(splits) }
-    before do
-      allow(subject).to receive(:params_class).and_return(BaseParameters)
-    end
-
-    describe '#full_string' do
       it 'returns a message indicating there are no csv attributes for the provided resource class' do
         expect(subject.full_string).to eq('No csv attributes defined for Split')
       end
     end
 
-    describe '#model_class_name' do
-      it 'returns the name of the model belonging to the provided resources' do
+    context 'when model_class is nil' do
+      let(:model_class) { nil }
+
+      it 'returns a message indicating the model class was not provided' do
+        expect(subject.full_string).to eq('No model class was provided')
+      end
+    end
+
+    context 'when resources is an empty array' do
+      let(:resources) { [] }
+
+      it 'returns headers only' do
+        expect(subject.full_string).to eq("Base name,Distance,Kind,Vert gain,Vert loss,Latitude,Longitude,Elevation,Sub split kinds\n")
+      end
+    end
+
+    context 'when resources is nil' do
+      let(:resources) { nil }
+
+      it 'returns headers only' do
+        expect(subject.full_string).to eq("Base name,Distance,Kind,Vert gain,Vert loss,Latitude,Longitude,Elevation,Sub split kinds\n")
+      end
+    end
+  end
+
+  describe '#model_class_name' do
+    context 'when model_class is provided' do
+      it 'returns a downcased and pluralized version of the provided model_name' do
         expect(subject.model_class_name).to eq('splits')
       end
     end
-  end
 
-  context 'when provided with an empty array' do
-    subject { CsvBuilder.new([]) }
+    context 'when model_class is not provided' do
+      let(:model_class) { nil }
 
-    describe '#full_string' do
-      it 'returns a message indicating there are no records' do
-        expect(subject.full_string).to eq('No resources were provided for export')
-      end
-    end
-
-    describe '#model_class_name' do
-      it 'returns "unknown_class"' do
-        expect(subject.model_class_name).to eq('unknown_class')
-      end
-    end
-  end
-
-  context 'when provided with nil' do
-    subject { CsvBuilder.new(nil) }
-
-    describe '#full_string' do
-      it 'returns a message indicating there are no records' do
-        expect(subject.full_string).to eq('No resources were provided for export')
-      end
-    end
-
-    describe '#model_class_name' do
-      it 'returns "unknown_class"' do
-        expect(subject.model_class_name).to eq('unknown_class')
+      it 'returns nil' do
+        expect(subject.model_class_name).to be_nil
       end
     end
   end

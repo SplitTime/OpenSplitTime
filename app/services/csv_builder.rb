@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class CsvBuilder
-
-  def initialize(resources)
+  def initialize(model_class, resources)
+    @model_class = model_class
     @resources = resources || []
   end
 
@@ -16,12 +16,12 @@ class CsvBuilder
   end
 
   def model_class_name
-    @model_class_name ||= model_class&.name&.underscore&.pluralize || 'unknown_class'
+    @model_class_name ||= model_class&.name&.underscore&.pluralize
   end
 
   private
 
-  attr_reader :resources
+  attr_reader :model_class, :resources
 
   def serialize_resource(resource)
     export_attributes.map do |attribute|
@@ -39,15 +39,11 @@ class CsvBuilder
   end
 
   def params_class
-    @params_class ||= model_class ? "#{model_class}Parameters".constantize : BaseParameters
-  end
-
-  def model_class
-    @model_class ||= resources.first&.class
+    @params_class ||= "#{model_class}Parameters".constantize
   end
 
   def error_message
-    return 'No resources were provided for export' unless resources.present?
+    return 'No model class was provided' unless model_class.present?
     "No csv attributes defined for #{model_class}" unless export_attributes.present?
   end
 end

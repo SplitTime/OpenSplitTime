@@ -1,0 +1,7 @@
+﻿first_name,last_name,gender,birthdate,email,phone,city,state,country,age,bib_number,Start,Aid 1,Aid 2,Finish
+Jim,Baker,M,,,,,OK,USA,61,510,0:00:00,2:58:00,5:03:00,16:45:00
+Jean-Francois,Geiss,M,,,,,,,58,502,0:00:00,2:45:00,5:29:00,16:48:00
+Allen,Wrinkle,M,,,,,TX,USA,47,505,0:00:00,2:46:00,5:42:00,16:51:00
+Markus,Wiaderek,M,,,,,,,,518,0:00:00,2:45:00,5:15:00,16:53:00
+Rick,Pearcy,M,,,,,CO,USA,58,511,0:00:00,3:03:00,5:50:00,18:21:00
+Marty,Fritzhand,M,,,,,OH,USA,,507,0:00:00,2:48:00,5:42:00,18:22:00

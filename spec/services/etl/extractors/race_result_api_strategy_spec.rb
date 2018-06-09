@@ -51,7 +51,6 @@ RSpec.describe ETL::Extractors::RaceResultApiStrategy do
       expect(attribute_rows.last[:bib]).to eq('250')
       expect(attribute_rows.last[:status]).to eq('DNS')
       expect(attribute_rows.last[:time_0]).to eq('')
-      pp attribute_rows.map(&:to_h)
     end
   end
 

@@ -135,8 +135,15 @@ class EventsController < ApplicationController
   def delete_all_efforts
     authorize @event
     response = Interactors::BulkDeleteEfforts.perform!(@event.efforts)
-    set_flash_message(response)
-    redirect_to stage_event_path(@event)
+    set_flash_message(response) unless response.successful?
+    redirect_to case request.referrer
+                when nil
+                  event_staging_app_path(@event)
+                when event_staging_app_url(@event)
+                  request.referrer + '#/entrants'
+                else
+                  request.referrer
+                end
   end
 
   # Actions related to the event/effort/split_time relationship

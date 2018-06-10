@@ -15,12 +15,18 @@ module ETL::Loaders
         effort = find_effort(proto_effort) || Effort.new(proto_effort.to_h)
 
         if effort.persisted?
-          proto_effort.children.each { |proto_split_time| prepare_attributes(proto_split_time, effort) }.compact
+          proto_effort.children.each { |proto_split_time| prepare_attributes(proto_split_time, effort) }
+          effort.assign_attributes(proto_effort.parent_child_attributes)
+          Interactors::SetEffortStop.perform(effort) if effort.split_times.select(&:stopped_here?).many?
 
-          if effort.update(proto_effort.parent_child_attributes)
-            saved_records << effort
+          if effort.changed?
+            if effort.save
+              saved_records << effort
+            else
+              invalid_records << effort
+            end
           else
-            invalid_records << effort
+            ignored_records << effort
           end
         else
           ignored_records << effort

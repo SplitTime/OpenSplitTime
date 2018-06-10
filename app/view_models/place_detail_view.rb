@@ -7,7 +7,7 @@ class PlaceDetailView
            :overall_rank, :gender_rank, to: :effort
 
   def initialize(args_effort)
-    @effort = args_effort.enriched || args_effort
+    @effort = args_effort.enriched
     @place_detail_rows = []
     create_place_detail_rows
   end

@@ -150,7 +150,10 @@ class Event < ApplicationRecord
   end
 
   def efforts_ranked(args = {})
-    efforts.ranked_with_finish_status(args)
+    @efforts_ranked ||= Hash.new do |h, key|
+      h[key] = efforts.ranked_with_status(args)
+    end
+    @efforts_ranked[args]
   end
 
   def pick_partner_with_banner

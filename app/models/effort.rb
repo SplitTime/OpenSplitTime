@@ -85,12 +85,6 @@ class Effort < ApplicationRecord
         .bib_number_among(parser.number_component)
   end
 
-  def self.ranked_with_finish_status(args = {})
-    return [] if EffortQuery.existing_scope_sql.blank?
-    query = EffortQuery.rank_and_finish_status(args)
-    self.find_by_sql(query)
-  end
-
   def self.ranked_with_status(args = {})
     return [] if EffortQuery.existing_scope_sql.blank?
     query = EffortQuery.rank_and_status(args)
@@ -267,11 +261,11 @@ class Effort < ApplicationRecord
   end
 
   def overall_rank
-    (attributes['overall_rank'] || self.enriched.attributes['overall_rank']) if started?
+    attributes['overall_rank'] || self.enriched.attributes['overall_rank']
   end
 
   def gender_rank
-    (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
+    attributes['gender_rank'] || self.enriched.attributes['overall_rank']
   end
 
   def current_age_approximate
@@ -288,7 +282,7 @@ class Effort < ApplicationRecord
   end
 
   def enriched
-    event.efforts.ranked_with_finish_status.find { |e| e.id == id }
+    event.efforts.ranked_with_status.find { |e| e.id == id }
   end
 
   # Methods related to stopped split_time

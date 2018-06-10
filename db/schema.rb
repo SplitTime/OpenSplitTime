@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180429031518) do
+ActiveRecord::Schema.define(version: 20180609174718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,7 +188,6 @@ ActiveRecord::Schema.define(version: 20180429031518) do
   end
 
   create_table "partners", id: :serial, force: :cascade do |t|
-    t.integer "event_id"
     t.string "banner_link"
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false
@@ -198,7 +197,8 @@ ActiveRecord::Schema.define(version: 20180429031518) do
     t.integer "banner_file_size"
     t.datetime "banner_updated_at"
     t.string "name", null: false
-    t.index ["event_id"], name: "index_partners_on_event_id"
+    t.bigint "event_group_id", null: false
+    t.index ["event_group_id"], name: "index_partners_on_event_group_id"
   end
 
   create_table "people", id: :serial, force: :cascade do |t|
@@ -366,7 +366,6 @@ ActiveRecord::Schema.define(version: 20180429031518) do
   add_foreign_key "live_times", "events"
   add_foreign_key "live_times", "split_times"
   add_foreign_key "live_times", "splits"
-  add_foreign_key "partners", "events"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"
   add_foreign_key "raw_times", "split_times"

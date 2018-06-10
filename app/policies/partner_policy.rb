@@ -13,18 +13,18 @@ class PartnerPolicy < ApplicationPolicy
   end
 
   def create?
-    user.authorized_to_edit?(partner.event)
+    user.authorized_to_edit?(partner.event_group)
   end
 
   def edit?
-    user.authorized_to_edit?(partner.event)
+    user.authorized_to_edit?(partner.event_group)
   end
 
   def update?
-    user.authorized_to_edit?(partner.event)
+    user.authorized_to_edit?(partner.event_group)
   end
 
   def destroy?
-    user.authorized_to_edit?(partner.event)
+    user.authorized_to_edit?(partner.event_group)
   end
 end

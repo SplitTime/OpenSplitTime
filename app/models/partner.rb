@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Partner < ApplicationRecord
-  belongs_to :event
+  belongs_to :event_group
   scope :with_banners, -> { where.not(banner_file_name: nil).where.not(banner_link: nil) }
 
   strip_attributes collapse_spaces: true
@@ -15,5 +15,5 @@ class Partner < ApplicationRecord
                        file_name: { matches: [/png\z/, /jpe?g\z/] },
                        size: { in: 0..500.kilobytes }
 
-  validates_presence_of :event, :name, :weight
+  validates_presence_of :event_group, :name, :weight
 end

@@ -13,6 +13,7 @@ class EventGroup < ApplicationRecord
   has_many :live_times, through: :events
   has_many :efforts, through: :events
   has_many :raw_times
+  has_many :partners
   belongs_to :organization
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false

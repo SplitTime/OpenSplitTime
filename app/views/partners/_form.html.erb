@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <%= f.hidden_field :event_id, value: @partner.event_id %>
+        <%= f.hidden_field :event_group_id, value: @partner.event_group_id %>
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
@@ -52,7 +52,7 @@
         </div>
 
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', stage_event_path(@partner.event, view: 'partners') %> ]
+          [ <%= link_to 'Cancel', event_group_path(@partner.event_group_id, display_style: 'partners', force_settings: true) %> ]
         </div>
     <% end %>
   </div>

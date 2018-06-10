@@ -41,17 +41,25 @@ module EventsHelper
     end
   end
 
-  def link_to_classic_admin(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event)
-      link_to 'Admin', stage_event_path(view_object.event),
-              disabled: view_object.class == EventStageDisplay,
+  def link_to_raw_times(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object.event_group)
+      link_to 'Raw times', raw_times_event_group_path(view_object.event_group),
+              disabled: controller.action_name == 'raw_times',
               class: 'btn btn-sm btn-primary'
     end
   end
 
   def link_to_event_staging(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event)
-      link_to 'Event Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
+      link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
+  def link_to_event_admin(view_object, current_user)
+    if current_user && current_user.authorized_to_edit?(view_object.event)
+      link_to 'Admin', admin_event_path(view_object.event),
+              disabled: controller.action_name == 'admin',
               class: 'btn btn-sm btn-primary'
     end
   end
@@ -181,7 +189,7 @@ module EventsHelper
   end
 
   def link_to_display_style(view_object, display_style, title)
-    link_to title, request.path_parameters.merge(display_style: display_style),
+    link_to title, request.params.merge(display_style: display_style),
             disabled: view_object.display_style == display_style,
             class: 'btn btn-sm btn-primary'
   end

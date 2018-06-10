@@ -32,20 +32,35 @@
   </div>
 </div>
 
-<div>
-  <% if @presenter.events.present? %>
-    <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: 'leave' %>
-  <% else %>
-    <h4>No events exist within this event group.</h4>
-  <% end %>
+<div class="row mid">
+  <div class="col-xs-12 page-navigation">
+    <div class="row">
+      <div class="btn-group">
+        <%= link_to_display_style(@presenter, 'events', 'Events') %>
+        <%= link_to_display_style(@presenter, 'partners', 'Partners') %>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div>
-  <% if @presenter.candidate_events.present? %>
-    <hr>
-    <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
+<% if @presenter.display_style == 'events' %>
+    <div>
+      <% if @presenter.events.present? %>
+        <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: 'leave' %>
+      <% else %>
+        <h4>No events exist within this event group.</h4>
+      <% end %>
+    </div>
 
-    <%= render 'events/events', presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: 'join' %>
+    <div>
+      <% if @presenter.candidate_events.present? %>
+        <hr>
+        <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
 
-  <% end %>
-</div>
+        <%= render 'events/events', presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: 'join' %>
+
+      <% end %>
+    </div>
+<% elsif @presenter.display_style == 'partners' %>
+  <%= render 'partner_list', partners: @presenter.partners, view_model: @presenter %>
+<% end %>

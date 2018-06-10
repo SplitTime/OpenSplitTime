@@ -120,7 +120,7 @@
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', @event.new_record? ? events_path : stage_event_path(@event) %> ]
+          [ <%= link_to 'Cancel', @event.new_record? ? events_path : admin_event_path(@event) %> ]
         </div>
     <% end %>
   </div>

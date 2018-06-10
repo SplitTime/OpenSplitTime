@@ -61,6 +61,7 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
     member do
+      get :raw_times
       get :roster
       get :export_to_summit
       put :start_ready_efforts
@@ -78,7 +79,7 @@ Rails.application.routes.draw do
       get :podium
       get :reconcile
       get :spread
-      get :stage
+      get :admin
       post :create_people
       put :associate_people
       put :set_data_status

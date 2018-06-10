@@ -92,7 +92,7 @@
                             method: :put,
                             class: "btn btn-sm btn-success" %>
             <% end %>
-            <%= link_to 'Raw time records', stage_event_path(@effort_show.event, display_style: :times, filter: {bib_number: @effort_show.bib_number}),
+            <%= link_to 'Raw time records', raw_times_event_group_path(@effort_show.event_group, filter: {bib_number: @effort_show.bib_number}),
                         class: "btn btn-sm btn-success" %>
             <%= link_to 'Delete effort', effort_path(@effort_show.effort, referrer_path: event_path(@effort_show.event)),
                         method: :delete,

@@ -29,7 +29,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def stage?
+  def admin?
     user.authorized_to_edit?(event)
   end
 

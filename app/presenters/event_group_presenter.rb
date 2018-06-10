@@ -6,6 +6,7 @@ class EventGroupPresenter < BasePresenter
   delegate :podium_template, to: :event
 
   CANDIDATE_SEPARATION_LIMIT = 7.days
+  DEFAULT_DISPLAY_STYLE = 'events'
 
   def initialize(event_group, params, current_user)
     @event_group = event_group
@@ -79,7 +80,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def display_style
-    params[:display_style]
+    params[:display_style] || DEFAULT_DISPLAY_STYLE
   end
 
   def checked_in_filter?

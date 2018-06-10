@@ -51,10 +51,8 @@
                 <th><%= link_to_reversing_sort_heading('Status', 'data_status', @presenter.existing_sort) %></th>
             <% end %>
             <th>
-              <% if @presenter.unstarted_efforts.present? %>
-                  <%= link_to_group_check_in_all(@presenter) %>
-                  <%= link_to_group_check_out_all(@presenter) %>
-              <% end %>
+                <%= link_to_group_check_in_all(@presenter) %>
+                <%= link_to_group_check_out_all(@presenter) %>
             </th>
           </tr>
           </thead>
@@ -62,7 +60,7 @@
           <% @presenter.filtered_ranked_efforts.each do |effort| %>
               <tr>
                 <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
-                <td><%= effort.event.guaranteed_short_name %></td>
+                <td><%= link_to effort.event.guaranteed_short_name, admin_event_path(effort.event) %></td>
                 <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
                 <td><%= effort.bib_number %></td>
                 <td><%= effort.bio_historic %></td>

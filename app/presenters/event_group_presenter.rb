@@ -15,7 +15,10 @@ class EventGroupPresenter < BasePresenter
   end
 
   def ranked_efforts
-    @ranked_efforts ||= event_group_efforts.ranked_with_status(sort: sort_hash.presence || {bib_number: :asc})
+    return @ranked_efforts if defined?(@ranked_efforts)
+    @ranked_efforts = event_group_efforts.ranked_with_status(sort: sort_hash.presence || {bib_number: :asc})
+    @ranked_efforts.each { |effort| effort.event = indexed_events[effort.event_id] }
+    @ranked_efforts
   end
 
   def filtered_ranked_efforts
@@ -30,7 +33,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def efforts_count
-    event_group_efforts.size
+    ranked_efforts.size
   end
 
   def started_efforts
@@ -42,7 +45,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def ready_efforts
-    @ready_efforts ||= event_group_efforts.ready_to_start
+    @ready_efforts ||= ranked_efforts.select(&:ready_to_start)
   end
 
   def ready_efforts_count
@@ -117,6 +120,10 @@ class EventGroupPresenter < BasePresenter
 
   def filtered_ids
     @filtered_ids ||= event_group_efforts.where(filter_hash).search(search_text).ids.to_set
+  end
+
+  def indexed_events
+    @indexed_events = events.index_by(&:id)
   end
 
   def matches_criteria?(effort)

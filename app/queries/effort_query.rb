@@ -68,8 +68,7 @@ class EffortQuery < BaseQuery
                                     else final_lap - 1 
                                   end 
                                   AS laps_finished,
-                                  (final_lap - 1) * course_distance + final_lap_distance AS final_distance,
-                                  event_start_time
+                                  (final_lap - 1) * course_distance + final_lap_distance AS final_distance
                               FROM base_subquery),
         finished_subquery AS (SELECT *,
                                   CASE 
@@ -78,7 +77,11 @@ class EffortQuery < BaseQuery
                                   else
                                     CASE when laps_finished >= laps_required then true else false END 
                                   END
-                                  AS finished
+                                  AS finished,
+                                  CASE
+                                    when not started and checked_in and (event_start_time + start_offset * interval '1 second') AT TIME ZONE 'UTC' < current_timestamp then true else false
+                                  END
+                                  AS ready_to_start
                               FROM distance_subquery),
         stopped_subquery AS (SELECT *,
                                   CASE

@@ -57,7 +57,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     effort = effort_with_splits
-    new_event_id = permitted_params.delete(:event_id)
+    new_event_id = permitted_params.delete(:event_id)&.to_i
 
     if effort.update(permitted_params)
       case params[:button]&.to_sym

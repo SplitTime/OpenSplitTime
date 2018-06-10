@@ -13,7 +13,8 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event_display = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
+    event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
+    @event_display = EventWithEffortsPresenter.new(event: event, params: prepared_params)
     render 'show'
   end
 

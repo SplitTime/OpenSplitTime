@@ -19,7 +19,10 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def ranked_effort_rows
-    @ranked_effort_rows ||= filtered_ranked_efforts.map { |effort| EffortRow.new(effort) }
+    @ranked_effort_rows ||= filtered_ranked_efforts.map do |effort|
+      effort.person = indexed_people[effort.person_id]
+      EffortRow.new(effort)
+    end
   end
 
   def filtered_ranked_efforts
@@ -74,6 +77,6 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def person_ids
-    @person_ids ||= (filtered_ranked_efforts.map(&:person_id) + filtered_unstarted_efforts.map(&:person_id)).compact
+    @person_ids ||= (filtered_ranked_efforts.map(&:person_id)).compact
   end
 end

@@ -46,7 +46,7 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def filtered_raw_times_count
-    filtered_raw_times.size
+    filtered_raw_times.total_entries
   end
 
   def finish_raw_times

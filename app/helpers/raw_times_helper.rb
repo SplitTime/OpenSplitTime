@@ -9,6 +9,14 @@ module RawTimesHelper
     end
   end
 
+  def link_to_raw_time_event(raw_time)
+    if raw_time.event
+      link_to raw_time.event.guaranteed_short_name, admin_event_path(raw_time.event)
+    else
+      raw_time.event.guaranteed_short_name
+    end
+  end
+
   def link_to_raw_time_split(raw_time)
     if raw_time.split
       raw_time.split_name

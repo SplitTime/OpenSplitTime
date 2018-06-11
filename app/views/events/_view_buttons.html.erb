@@ -10,12 +10,14 @@
               class: 'btn btn-sm btn-primary' %>
 
   <%= link_to_podium(view_object) %>
-  <%= link_to_event_staging(view_object, current_user) %>
   <%= link_to_event_admin(view_object, current_user) %>
+  <%= link_to_event_staging(view_object, current_user) %>
   <%= link_to_raw_times(view_object, current_user) %>
   <%= link_to_roster(view_object, current_user) %>
 
-  <%= link_to 'Settings', event_group_path(view_object.event_group, force_settings: true),
-              disabled: controller.controller_name == 'event_groups' && controller.action_name == 'show',
-              class: 'btn btn-sm btn-primary' %>
+  <% if view_object.multiple_events? || view_object.authorized_to_edit? %>
+    <%= link_to 'Group', event_group_path(view_object.event_group, force_settings: true),
+                disabled: controller.controller_name == 'event_groups' && controller.action_name == 'show',
+                class: 'btn btn-sm btn-primary' %>
+  <% end %>
 </div>

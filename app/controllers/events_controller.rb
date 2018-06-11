@@ -14,7 +14,7 @@ class EventsController < ApplicationController
 
   def show
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
-    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params)
+    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params, current_user: current_user)
   end
 
   def new
@@ -71,7 +71,7 @@ class EventsController < ApplicationController
   # Special views with results
 
   def spread
-    @presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
+    @presenter = EventSpreadDisplay.new(event: @event, params: prepared_params, current_user: current_user)
     respond_to do |format|
       format.html
       format.csv do
@@ -101,7 +101,7 @@ class EventsController < ApplicationController
   def admin
     authorize @event
     event = Event.where(id: @event.id).includes(:course, :splits, :efforts, event_group: :events).first
-    @presenter = EventStageDisplay.new(event: event, params: prepared_params)
+    @presenter = EventStageDisplay.new(event: event, params: prepared_params, current_user: current_user)
     params[:view] ||= 'efforts'
     session[:return_to] = admin_event_path(@event)
   end
@@ -192,7 +192,7 @@ class EventsController < ApplicationController
   end
 
   def drop_list
-    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params)
+    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params, current_user: current_user)
     session[:return_to] = event_path(@event)
   end
 

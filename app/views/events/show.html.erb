@@ -16,17 +16,17 @@
       <%= link_to_beacon_button(@presenter) %>
       <%= render 'view_buttons', view_object: @presenter %>
     </div>
-    <div class="row">
-      <%= render 'feature_buttons', view_object: @presenter %>
-    </div>
   </div>
 </div>
 
 <div class="row mid">
-  <div class="col-xs-12 page-navigation-left">
+  <div class="col-xs-6 page-navigation-left">
     <% if @presenter.ordered_events_within_group.many? %>
       <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
     <% end %>
+  </div>
+  <div class="col-xs-6 page-navigation">
+    <%= render 'feature_buttons', view_object: @presenter %>
   </div>
 </div>
 

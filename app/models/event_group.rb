@@ -45,6 +45,10 @@ class EventGroup < ApplicationRecord
     ordered_events.first
   end
 
+  def multiple_events?
+    events.many?
+  end
+
   def multiple_laps?
     events.any?(&:multiple_laps?)
   end

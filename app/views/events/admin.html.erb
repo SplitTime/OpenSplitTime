@@ -10,30 +10,28 @@
     <div class="row">
       <%= render 'view_buttons', view_object: @presenter %>
     </div>
-    <div class="row">
-      <%= link_to_edit_event(@presenter) %>
-      <% if @presenter.started? %>
-          <%= link_to_update_start_time(@presenter) %>
-          <%= link_to_set_data_status(@presenter) %>
-          <% unless @presenter.available_live %>
-              <%= link_to_set_stops(@presenter) %>
-              <%= link_to_ultrasignup_export(@presenter) %>
-          <% end %>
-      <% end %>
-      <% if current_user&.authorized_fully?(@presenter.event) %>
-          <%= link_to_delete_event(@presenter) %>
-      <% end %>
-    </div>
   </div>
 </div>
 
-<% if @presenter.ordered_events_within_group.many? %>
     <div class="row mid">
       <div class="col-xs-5 page-navigation-left">
           <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       </div>
+      <div class="col-xs-7 page-navigation">
+        <%= link_to_edit_event(@presenter) %>
+        <% if @presenter.started? %>
+          <%= link_to_update_start_time(@presenter) %>
+          <%= link_to_set_data_status(@presenter) %>
+          <% unless @presenter.available_live %>
+            <%= link_to_set_stops(@presenter) %>
+            <%= link_to_ultrasignup_export(@presenter) %>
+          <% end %>
+        <% end %>
+        <% if current_user&.authorized_fully?(@presenter.event) %>
+          <%= link_to_delete_event(@presenter) %>
+        <% end %>
+      </div>
     </div>
-<% end %>
 
 <script>
     document.addEventListener("turbolinks:load", function () {

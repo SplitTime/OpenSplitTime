@@ -10,7 +10,19 @@
     <div class="row">
       <%= render 'events/view_buttons', view_object: @presenter %>
     </div>
-    <div class="row">
+  </div>
+</div>
+
+<% if @presenter.authorized_to_edit? %>
+  <div class="row">
+    <div class="col-xs-3">
+        <div class="btn-group">
+          <%= link_to_display_style(@presenter, 'events', 'Events') %>
+          <%= link_to_display_style(@presenter, 'partners', 'Partners') %>
+        </div>
+    </div>
+
+    <div class="col-xs-9 text-right">
       <% if current_user&.authorized_fully?(@presenter.event_group) %>
         <%= link_to_stewards(@presenter) %>
         <%= link_to_toggle_public_private(@presenter) %>
@@ -21,7 +33,7 @@
         <%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter),
                     method: :delete,
                     data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
-                            'This action cannot be undone. Are you sure you want to go ahead?'},
+                        'This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
         <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path),
                     method: :delete,
@@ -30,18 +42,8 @@
       <% end %>
     </div>
   </div>
-</div>
-
-<div class="row mid">
-  <div class="col-xs-12 page-navigation">
-    <div class="row">
-      <div class="btn-group">
-        <%= link_to_display_style(@presenter, 'events', 'Events') %>
-        <%= link_to_display_style(@presenter, 'partners', 'Partners') %>
-      </div>
-    </div>
-  </div>
-</div>
+  <hr/>
+<% end %>
 
 <% if @presenter.display_style == 'events' %>
     <div>

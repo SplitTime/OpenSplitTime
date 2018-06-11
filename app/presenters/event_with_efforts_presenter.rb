@@ -6,16 +6,18 @@ class EventWithEffortsPresenter < BasePresenter
   delegate :id, :name, :course, :course_id, :simple?, :beacon_url, :home_time_zone, :finish_split,
            :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, :event_group,
            :ordered_events_within_group, :podium_template, to: :event
-  delegate :available_live, :available_live?, :concealed, :concealed?, :organization, :monitor_pacers?, to: :event_group
+  delegate :available_live, :available_live?, :concealed, :concealed?, :organization, :monitor_pacers?,
+           :multiple_events?, to: :event_group
 
   def initialize(args)
     @event = args[:event]
     @params = args[:params] || {}
+    @current_user = args[:current_user]
     post_initialize(args)
   end
 
   def post_initialize(args)
-    ArgsValidator.validate(params: args, required: [:event, :params], exclusive: [:event, :params], class: self.class)
+    ArgsValidator.validate(params: args, required: [:event, :params], exclusive: [:event, :params, :current_user], class: self.class)
   end
 
   def ranked_effort_rows
@@ -60,9 +62,13 @@ class EventWithEffortsPresenter < BasePresenter
     @event_start_time ||= event.start_time_in_home_zone
   end
 
+  def authorized_to_edit?
+    @authorized_to_edit ||= current_user&.authorized_to_edit?(event_group)
+  end
+
   private
 
-  attr_reader :params
+  attr_reader :params, :current_user
 
   def ranked_efforts
     @ranked_efforts ||= event_efforts.ranked_with_status(sort: sort_hash)

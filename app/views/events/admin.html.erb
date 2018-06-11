@@ -3,7 +3,7 @@
 <% end %>
 <div class="row header">
   <div class="col-xs-5">
-    <%= render 'event_info', view_object: @presenter, title: "#{@presenter.concealed_text}" %>
+    <%= render 'event_info', view_object: @presenter, title: @presenter.concealed_text %>
     <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Admin' %></div>
   </div>
   <div class="col-xs-7 page-navigation">
@@ -15,7 +15,9 @@
 
     <div class="row mid">
       <div class="col-xs-5 page-navigation-left">
-          <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+          <% if @presenter.multiple_events? %>
+            <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+          <% end %>
       </div>
       <div class="col-xs-7 page-navigation">
         <%= link_to_edit_event(@presenter) %>

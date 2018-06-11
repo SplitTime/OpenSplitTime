@@ -7,9 +7,14 @@ class PodiumPresenter < BasePresenter
            :event_group, :podium_template, :ordered_events_within_group, to: :event
   delegate :available_live, :multiple_events?, to: :event_group
 
-  def initialize(event, template)
+  def initialize(event, template, current_user)
     @event = event
     @template = template
+    @current_user = current_user
+  end
+
+  def authorized_to_edit?
+    current_user&.authorized_to_edit?(event_group)
   end
   
   def event_start_time
@@ -26,5 +31,5 @@ class PodiumPresenter < BasePresenter
 
   private
 
-  attr_reader :template
+  attr_reader :template, :current_user
 end

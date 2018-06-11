@@ -85,7 +85,7 @@ class EventsController < ApplicationController
 
   def podium
     template = Results::FillTemplate.perform(event: @event, template_name: @event.podium_template)
-    @presenter = PodiumPresenter.new(@event, template)
+    @presenter = PodiumPresenter.new(@event, template, current_user)
   end
 
   def series

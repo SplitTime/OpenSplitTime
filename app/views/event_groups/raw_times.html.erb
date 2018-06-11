@@ -1,0 +1,22 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event group roster - #{@presenter.name}" %>
+<% end %>
+<div class="row header">
+  <div class="col-xs-5">
+    <h2><strong><%= "#{@presenter.name}" %></strong></h2>
+  </div>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <%= link_to_enter_group_live_entry(@presenter, current_user) %>
+      <%= render 'events/view_buttons', view_object: @presenter %>
+    </div>
+  </div>
+</div>
+
+<div>
+  <% if @presenter.raw_times.present? %>
+    <%= render 'event_groups/raw_times_list', view_object: @presenter %>
+  <% else %>
+    <h4>No raw times exist for this event group.</h4>
+  <% end %>
+</div>

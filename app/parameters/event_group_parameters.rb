@@ -7,6 +7,6 @@ class EventGroupParameters < BaseParameters
   end
 
   def self.permitted_query
-    permitted + EffortParameters.permitted_query
+    permitted + EffortParameters.permitted_query + RawTimeParameters.permitted_query
   end
 end

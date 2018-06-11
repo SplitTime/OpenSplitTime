@@ -1,6 +1,7 @@
 class RawTimeQuery < BaseQuery
 
-  def self.with_relations
+  def self.with_relations(args = {})
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'sortable_bib_number')
 
     query = <<-SQL
 
@@ -11,13 +12,14 @@ class RawTimeQuery < BaseQuery
            INNER JOIN existing_scope ON existing_scope.id = raw_times.id)
 
     SELECT 
-     r.*
-   , e.id AS effort_id
-   , e.event_id
-   , s.split_id
+     r.*, 
+     e.id AS effort_id,
+     e.last_name AS effort_last_name,
+     e.event_id, 
+     s.split_id
     FROM raw_times_scoped r
     LEFT JOIN (
-                SELECT ef.id, ef.event_id, ef.bib_number, ev.event_group_id
+                SELECT ef.id, ef.event_id, ef.bib_number, ef.last_name, ev.event_group_id
                 FROM efforts ef
                 INNER JOIN events ev ON ef.event_id = ev.id
                ) e ON r.bib_number = e.bib_number::text
@@ -28,7 +30,7 @@ class RawTimeQuery < BaseQuery
                 WHERE a.event_id = e.event_id
                 AND s.parameterized_base_name = r.parameterized_split_name
                 limit 1) s ON TRUE
-    ORDER BY r.bib_number, r.id
+    ORDER BY #{order_sql}, r.id
     SQL
     query.squish
   end
@@ -36,5 +38,9 @@ class RawTimeQuery < BaseQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     RawTime.connection.unprepared_statement { RawTime.reorder(nil).select('id').to_sql }
+  end
+
+  def self.permitted_column_names
+    RawTimeParameters.enriched_query
   end
 end

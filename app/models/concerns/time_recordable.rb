@@ -9,10 +9,28 @@ module TimeRecordable
     validate :absolute_or_entered_time
   end
 
+  attr_writer :creator, :puller
+
   def absolute_or_entered_time
     if absolute_time.blank? && entered_time.blank?
       errors.add(:base, 'Either absolute_time or entered_time must be present')
     end
+  end
+
+  def creator_full_name
+    creator&.full_name || '--'
+  end
+
+  def puller_full_name
+    puller&.full_name || '--'
+  end
+
+  def effort_full_name
+    effort&.full_name || '[Bib not found]'
+  end
+
+  def split_base_name
+    split&.base_name || '[Split not found]'
   end
 
   def matched?
@@ -38,12 +56,14 @@ module TimeRecordable
     end
   end
 
-  def user_full_name
-    created_by ? User.find(created_by)&.full_name : '--'
+  def creator
+    return @creator if defined?(@creator)
+    User.find_by(id: created_by) if created_by
   end
 
-  def pulled_full_name
-    pulled_by ? User.find(pulled_by)&.full_name : '--'
+  def puller
+    return @puller if defined?(@puller)
+    User.find_by(id: pulled_by) if pulled_by
   end
 
   private

@@ -19,7 +19,7 @@ class EventGroup < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false
 
   delegate :stewards, to: :organization
-  delegate :start_time, :start_time_in_home_zone, to: :first_event
+  delegate :start_time, :home_time_zone, :start_time_in_home_zone, to: :first_event
   delegate :ordered_split_names, :splits_by_event, to: :split_analyzer
 
   scope :standard_includes, -> { includes(events: :splits) }
@@ -47,6 +47,10 @@ class EventGroup < ApplicationRecord
 
   def multiple_laps?
     events.any?(&:multiple_laps?)
+  end
+
+  def multiple_sub_splits?
+    events.any?(&:multiple_sub_splits?)
   end
 
   def permit_notifications?

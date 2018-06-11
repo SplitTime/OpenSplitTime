@@ -202,7 +202,6 @@ class EventsController < ApplicationController
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
     @event_display = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     respond_to do |format|
-      format.html { redirect_to admin_event_path(@event) }
       format.csv do
         csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby')
         send_data(csv_stream, type: 'text/csv',

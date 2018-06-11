@@ -75,14 +75,6 @@ class LiveTime < ApplicationRecord
     event.efforts.find { |effort| effort.bib_number.to_s == bib_number }
   end
 
-  def effort_full_name
-    effort&.full_name || '[Bib not found]'
-  end
-
-  def split_base_name
-    split&.base_name || '[Split not found]'
-  end
-
   def aid_station
     event.aid_stations.find { |aid_station| aid_station.split_id == split_id }
   end

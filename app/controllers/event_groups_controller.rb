@@ -57,11 +57,17 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  def raw_times
+    authorize @event_group
+
+    event_group = EventGroup.where(id: @event_group).includes(:organization, :efforts, events: :splits).references(:organization, :efforts, events: :splits).first
+    @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
+  end
+
   def roster
     authorize @event_group
 
-    event_group = EventGroup.where(id: @event_group).includes(events: :efforts).first
-    @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+    @presenter = EventGroupPresenter.new(@event_group, prepared_params, current_user)
   end
 
   def start_ready_efforts
@@ -94,7 +100,6 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
 
     respond_to do |format|
-      format.html { redirect_to event_group_path(@event_group, force_settings: true) }
       format.csv do
         csv_stream = render_to_string(partial: 'summit.csv.ruby')
         send_data(csv_stream, type: 'text/csv',

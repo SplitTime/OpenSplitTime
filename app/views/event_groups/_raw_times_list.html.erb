@@ -1,0 +1,98 @@
+<%# Requires parameter view_object %>
+
+<% if view_object.raw_times.blank? %>
+  <strong>No raw times have been submitted for this event group.</strong>
+<% else %>
+  <div class="row">
+    <div class="col-xs-5">
+      <%= render 'raw_times_search' %>
+    </div>
+    <div class="col-xs-7 text-right">
+      <div class="btn-group">
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <% if view_object.filtered_raw_times.present? %>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <% if view_object.filtered_raw_times_count == view_object.raw_times_count %>
+          <strong><%= "#{view_object.raw_times_count} raw times" %></strong>
+        <% else %>
+          <strong><%= "Showing #{view_object.filtered_raw_times_count} of #{view_object.raw_times_count} raw times" %></strong>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
+    <table class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Name', :effort_last_name, view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Split Name', 'split_name,sortable_bib_number', view_object.existing_sort) %></th>
+        <% if view_object.multiple_sub_splits? %>
+          <th class="text-center"><%= link_to_reversing_sort_heading('In/Out', 'bitkey,sortable_bib_number', view_object.existing_sort) %></th>
+        <% end %>
+        <th><%= link_to_reversing_sort_heading('Time', :absolute_time, view_object.existing_sort) %></th>
+        <% if view_object.monitor_pacers? %>
+          <th class="text-center">Pacer</th>
+        <% end %>
+        <th class="text-center"><%= link_to_reversing_sort_heading('Stop', 'stopped_here,sortable_bib_number', view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Source', 'source,sortable_bib_number', view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Created by', 'created_by,sortable_bib_number', view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Created at', 'created_at,sortable_bib_number', view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Pulled by', 'pulled_by,sortable_bib_number', view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Pulled at', 'pulled_at,sortable_bib_number', view_object.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Match?', 'split_time_id,sortable_bib_number', view_object.existing_sort) %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% view_object.filtered_raw_times.each do |raw_time| %>
+        <tr>
+          <td><%= raw_time.bib_number %></td>
+          <td><%= link_to_raw_time_effort(raw_time) %></td>
+          <td><%= link_to_raw_time_split(raw_time) %></td>
+          <% if view_object.multiple_sub_splits? %>
+            <td class="text-center"><%= raw_time.sub_split_kind %></td>
+          <% end %>
+          <td><%= raw_time.military_time(view_object.home_time_zone) %></td>
+          <% if view_object.monitor_pacers? %>
+            <td class="text-center"><%= "#{raw_time.with_pacer? ? 'Yes' : 'No'}" %></td>
+          <% end %>
+          <td class="text-center"><%= "#{raw_time.stopped_here? ? 'Yes' : 'No'}" %></td>
+          <td><%= raw_time.source_text %></td>
+          <td><%= raw_time.creator_full_name %></td>
+          <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
+          <td><%= raw_time.puller_full_name %></td>
+          <td><%= raw_time.pulled_at ? l(raw_time.pulled_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
+          <td><%= raw_time.matched? ? 'Yes' : 'No' %></td>
+          <td>
+            <div class="col-xs-12 text-nowrap">
+              <%= link_to_toggle_raw_time_pull(raw_time) %>
+              <%= link_to_raw_time_delete(raw_time) %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0) %>
+      </div>
+    </div>
+
+  <% else %>
+    <strong>No results match that search.</strong>
+  <% end %>
+<% end %>

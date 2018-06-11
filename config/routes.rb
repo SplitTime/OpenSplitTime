@@ -103,6 +103,7 @@ Rails.application.routes.draw do
   end
 
   resources :partners
+  resources :raw_times, only: [:update, :destroy]
   resources :split_times
   resources :splits
   resources :stewardships, only: [:create, :destroy]

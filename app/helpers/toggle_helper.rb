@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
 module ToggleHelper
-  def link_to_group_check_in_filters(glyphicon, text, checked_in, started, unreconciled, problem)
+  def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled, problem)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
                       request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, problem: problem, filter: {search: ''}, page: nil),
                       {class: 'btn btn-sm btn-primary',
                        disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled && params[:problem]&.to_boolean == problem})
+  end
+
+  def link_to_raw_time_filters(glyphicon, text, stopped, pulled, matched)
+    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
+                      request.params.merge(stopped: stopped, pulled: pulled, matched: matched, filter: {search: ''}, page: nil),
+                      {class: 'btn btn-sm btn-primary',
+                       disabled: params[:stopped]&.to_boolean == stopped && params[:pulled]&.to_boolean == pulled && params[:matched]&.to_boolean == matched})
   end
 
   def link_to_toggle_check_in(effort, button_param: :check_in_group, block: true)
@@ -45,7 +52,7 @@ module ToggleHelper
     })
   end
 
-  def link_to_group_check_in_all(view_object)
+  def link_to_check_in_all(view_object)
     url = update_all_efforts_event_group_path(view_object.event_group, efforts: {checked_in: true}, button: :check_in_all)
     link_to_with_icon("glyphicon glyphicon-check", 'All in', url, {
         method: 'patch',
@@ -54,7 +61,7 @@ module ToggleHelper
     })
   end
 
-  def link_to_group_check_out_all(view_object)
+  def link_to_check_out_all(view_object)
     url = update_all_efforts_event_group_path(view_object.event_group, efforts: {checked_in: false}, button: :check_out_all)
     link_to_with_icon("glyphicon glyphicon-unchecked", 'All out', url, {
         method: 'patch',

@@ -9,7 +9,13 @@
     </div>
     <div class="col-xs-7 text-right">
       <div class="btn-group">
+        <%= link_to_raw_time_filters('stop', 'Stopped', true, nil, nil) %>
+        <%= link_to_raw_time_filters('cloud-download', 'Pulled', nil, true, nil) %>
+        <%= link_to_raw_time_filters('cloud-upload', 'Unpulled', nil, false, nil) %>
+        <%= link_to_raw_time_filters('check', 'Matched', nil, nil, true) %>
+        <%= link_to_raw_time_filters('unchecked', 'Unmatched', nil, nil, false) %>
       </div>
+      <%= link_to_raw_time_filters('asterisk', 'Clear filter', nil, nil, nil) %>
     </div>
   </div>
 

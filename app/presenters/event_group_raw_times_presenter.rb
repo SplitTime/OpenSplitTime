@@ -34,6 +34,7 @@ class EventGroupRawTimesPresenter < BasePresenter
   def filtered_raw_times
     return @filtered_raw_times if defined?(@filtered_raw_times)
     scoped_raw_times = raw_times.where(filter_hash).search(search_text).with_relation_ids(sort: sort_hash)
+                           .select { |raw_time| matches_criteria?(raw_time) }
     scoped_raw_times.each do |raw_time|
       raw_time.effort = raw_time.has_effort_id? ? indexed_efforts[raw_time.effort_id] : nil
       raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
@@ -83,5 +84,42 @@ class EventGroupRawTimesPresenter < BasePresenter
 
   def user_ids
     @user_ids ||= raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.pulled_by] }.compact.uniq
+  end
+
+  def matches_criteria?(raw_time)
+    matches_stopped_criteria?(raw_time) && matches_pulled_criteria?(raw_time) && matches_matched_criteria?(raw_time)
+  end
+
+  def matches_stopped_criteria?(raw_time)
+    case params[:stopped]&.to_boolean
+    when true
+      raw_time.stopped_here
+    when false
+      !raw_time.stopped_here
+    else # value is nil so do not filter
+      true
+    end
+  end
+  
+  def matches_pulled_criteria?(raw_time)
+    case params[:pulled]&.to_boolean
+    when true
+      raw_time.pulled_by.present?
+    when false
+      raw_time.pulled_by.blank?
+    else # value is nil so do not filter
+      true
+    end
+  end
+
+  def matches_matched_criteria?(raw_time)
+    case params[:matched]&.to_boolean
+    when true
+      raw_time.split_time_id.present?
+    when false
+      raw_time.split_time_id.blank?
+    else # value is nil so do not filter
+      true
+    end
   end
 end

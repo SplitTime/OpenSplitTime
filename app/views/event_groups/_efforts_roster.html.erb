@@ -7,13 +7,13 @@
       </div>
       <div class="col-xs-7 text-right">
         <div class="btn-group">
-          <%= link_to_group_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
-          <%= link_to_group_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
-          <%= link_to_group_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
-          <%= link_to_group_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
-          <%= link_to_group_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
+          <%= link_to_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
+          <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
+          <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
+          <%= link_to_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
+          <%= link_to_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
         </div>
-        <%= link_to_group_check_in_filters('asterisk', 'Clear filter', nil, nil, nil, nil) %>
+        <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil, nil, nil) %>
       </div>
     </div>
 
@@ -56,8 +56,8 @@
                 <th><%= link_to_reversing_sort_heading('Status', 'data_status', @presenter.existing_sort) %></th>
             <% end %>
             <th>
-                <%= link_to_group_check_in_all(@presenter) %>
-                <%= link_to_group_check_out_all(@presenter) %>
+                <%= link_to_check_in_all(@presenter) %>
+                <%= link_to_check_out_all(@presenter) %>
             </th>
           </tr>
           </thead>

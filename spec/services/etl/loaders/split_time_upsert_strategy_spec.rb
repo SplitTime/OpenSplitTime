@@ -125,7 +125,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
         expect(subject.saved_records.size).to eq(1)
         expect(Effort.count).to eq(1)
         expect(SplitTime.count).to eq(7)
-        expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 4916.63, 17736.45])
+        expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
       end
     end
 

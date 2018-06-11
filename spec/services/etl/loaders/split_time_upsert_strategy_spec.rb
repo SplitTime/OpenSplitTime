@@ -68,8 +68,8 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
 
       it 'does not import any records and places all parent records into ignored_records' do
         subject.load_records
-        expect(Effort.all.size).to eq(0)
-        expect(SplitTime.all.size).to eq(0)
+        expect(Effort.count).to eq(0)
+        expect(SplitTime.count).to eq(0)
         expect(subject.ignored_records.size).to eq(3)
       end
     end
@@ -150,13 +150,14 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'finds existing records based on a unique key and deletes times where blanks exist' do
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(5)
-        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(5)
+        expect(existing_effort.ordered_split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])
         subject.load_records
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(3)
-        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 4916.63, 14398.48])
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(3)
+        existing_effort.reload
+        expect(existing_effort.ordered_split_times.pluck(:time_from_start)).to eq([0.0, 4916.63, 14398.48])
       end
     end
 
@@ -172,15 +173,15 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'sets the stop on the last split_time' do
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(2)
         expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 1000])
 
         subject.load_records
 
         expect(subject.saved_records.size).to eq(1)
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(3)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(3)
         expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 4916.63, 14398.48])
         expect(existing_effort.split_times.pluck(:stopped_here)).to match_array([false, false, true])
       end
@@ -198,11 +199,11 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(proto_with_invalid_child, options) }
 
       it 'does not create any child records for the related parent record' do
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(2)
         subject.load_records
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(2)
       end
 
       it 'includes invalid records in the invalid_records array' do

@@ -5,7 +5,7 @@ module RawTimesHelper
     if raw_time.effort
       link_to raw_time.effort_full_name, effort_path(raw_time.effort)
     else
-      raw_time.effort_full_name
+      '--'
     end
   end
 
@@ -13,7 +13,7 @@ module RawTimesHelper
     if raw_time.event
       link_to raw_time.event.guaranteed_short_name, admin_event_path(raw_time.event)
     else
-      raw_time.event.guaranteed_short_name
+      '--'
     end
   end
 

@@ -15,7 +15,7 @@ class RawTimeFromLiveTime
   def build
     raw_time = RawTime.new(event_group_id: live_time.event.event_group_id,
                            split_time_id: live_time.split_time_id,
-                           split_name: live_time.split.base_name)
+                           split_name: live_time.split&.base_name || '[Unknown]')
     IDENTICAL_ATTRIBUTES.each { |attr| raw_time[attr] = live_time.send(attr) }
 
     raw_time

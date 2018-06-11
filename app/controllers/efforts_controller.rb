@@ -136,8 +136,9 @@ class EffortsController < ApplicationController
   def stop
     authorize @effort
     effort = effort_with_splits
+    stop_status = params[:status]&.to_boolean
 
-    stop_response = Interactors::UpdateEffortsStop.perform!(effort)
+    stop_response = Interactors::UpdateEffortsStop.perform!(effort, stop_status: stop_status)
     update_response = Interactors::UpdateEffortsStatus.perform!(effort)
     set_flash_message(stop_response.merge(update_response))
     redirect_to effort_path(effort)

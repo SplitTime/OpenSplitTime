@@ -58,7 +58,14 @@ module ETL
         match_response = Interactors::MatchLiveTimesToSplitTimes.perform!(event: event, live_times: live_times)
         unmatched_live_times = match_response.resources[:unmatched]
         Interactors::CreateSplitTimesFromLiveTimes.perform!(event: event, live_times: unmatched_live_times) if event.auto_live_times?
-        report_live_times_available(event.event_group)
+
+        updated_live_times = LiveTime.where(id: live_times).includes(:event, :split)
+        updated_live_times.each do |lt|
+          raw_time = RawTimeFromLiveTime.build(lt)
+          raw_time.save!
+        end
+
+        report_raw_times_available(event.event_group)
       end
     end
 

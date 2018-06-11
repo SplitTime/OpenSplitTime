@@ -5,14 +5,9 @@ namespace :convert do
 
     puts "Converting #{LiveTime.count} live_times to raw_times"
 
-    IDENTICAL_ATTRIBUTES = %i[bitkey bib_number absolute_time entered_time with_pacer stopped_here source pulled_by pulled_at created_by updated_by remarks]
-
     ActiveRecord::Base.transaction do
       LiveTime.includes(:event, :split).find_each.with_index(1) do |live_time, i|
-        raw_time = RawTime.new(event_group_id: live_time.event.event_group_id,
-                               split_time_id: live_time.split_time_id,
-                               split_name: live_time.split.base_name)
-        IDENTICAL_ATTRIBUTES.each { |attr| raw_time[attr] = live_time.send(attr) }
+        raw_time = RawTimeFromLiveTime.build(live_time)
 
         unless raw_time.save
           abort "Could not convert #{live_time}: #{raw_time.errors.full_messages}"

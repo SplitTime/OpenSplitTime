@@ -34,7 +34,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def partner_with_banner
-    @partner_with_banner ||= event.pick_partner_with_banner
+    @partner_with_banner ||= event_group.pick_partner_with_banner
   end
 
   def segment_total_header_data

@@ -156,10 +156,6 @@ class Event < ApplicationRecord
     @efforts_ranked[args]
   end
 
-  def pick_partner_with_banner
-    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
-  end
-
   def live_entry_attributes
     ordered_splits.map(&:live_entry_attributes)
   end

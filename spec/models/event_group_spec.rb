@@ -44,4 +44,49 @@ RSpec.describe EventGroup, type: :model do
       end
     end
   end
+
+  describe '#pick_partner_with_banner' do
+    context 'where multiple partners exist for both the subject event_group and another event_group' do
+      let!(:event_group) { create(:event_group) }
+      let!(:wrong_event_group) { create(:event_group) }
+      let!(:related_partners_with_banners) { create_list(:partner, 3, :with_banner, event_group: event_group) }
+      let!(:related_partners_without_banners) { create_list(:partner, 3, event_group: event_group) }
+      let!(:unrelated_partners_with_banners) { create_list(:partner, 3, :with_banner, event_group: wrong_event_group) }
+      let!(:unrelated_partners_without_banners) { create_list(:partner, 3, event_group: wrong_event_group) }
+
+      it 'returns a random partner with a banner for the event_group' do
+        partners = []
+        100.times { partners << event_group.pick_partner_with_banner }
+        expect(partners.map(&:event_group).uniq).to eq([event_group])
+        expect(partners.map(&:banner_file_name)).to all (be_present)
+      end
+    end
+
+    context 'where multiple partners with banners for the event_group exist and one is weighted more heavily' do
+      # Four partners with weight: 1 and one partner with weight: 10 means the weighted partner should receive,
+      # on average, about 71% of hits.
+      let!(:event_group) { create(:event_group) }
+      let!(:weighted_partner) { create(:partner, :with_banner, event_group: event_group, weight: 10) }
+      let!(:unweighted_partners) { create_list(:partner, 4, :with_banner, event_group: event_group) }
+
+      it 'returns a random partner giving weight to the weighted partner' do
+        partners = []
+        100.times { partners << event_group.pick_partner_with_banner }
+        partners_count = partners.count_by(&:id)
+        expect(partners_count[weighted_partner.id]).to be > 50
+        unweighted_partners.each do |unweighted_partner|
+          expect(partners_count[unweighted_partner.id]).to be_between(1, 20).inclusive
+        end
+      end
+    end
+
+    context 'where no partners with banners for the event_group exist' do
+      let!(:event_group) { create(:event_group) }
+
+      it 'returns nil' do
+        create(:partner, event_group: event_group) # Without a banner
+        expect(event_group.pick_partner_with_banner).to be_nil
+      end
+    end
+  end
 end

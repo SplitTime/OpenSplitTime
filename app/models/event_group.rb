@@ -57,6 +57,10 @@ class EventGroup < ApplicationRecord
     visible? && available_live?
   end
 
+  def pick_partner_with_banner
+    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
+  end
+
   def split_times
     SplitTime.joins(:effort).where(efforts: {event_id: events})
   end

@@ -60,14 +60,15 @@ class EventGroupsController < ApplicationController
   def raw_times
     authorize @event_group
 
-    event_group = EventGroup.where(id: @event_group).includes(:organization, :efforts, events: :splits).references(:organization, :efforts, events: :splits).first
+    event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).references(:efforts, organization: :stewards, events: :splits).first
     @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
   end
 
   def roster
     authorize @event_group
 
-    @presenter = EventGroupPresenter.new(@event_group, prepared_params, current_user)
+    event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).references(organization: :stewards, events: :splits).first
+    @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
   def start_ready_efforts

@@ -100,7 +100,7 @@ class EventsController < ApplicationController
 
   def admin
     authorize @event
-    event = Event.where(id: @event.id).includes(:course, :splits, :efforts, event_group: :events).first
+    event = Event.where(id: @event.id).includes(:course, event_group: [:events, organization: :stewards]).references(:course, event_group: [:events, organization: :stewards]).first
     @presenter = EventStageDisplay.new(event: event, params: prepared_params, current_user: current_user)
     params[:view] ||= 'efforts'
     session[:return_to] = admin_event_path(@event)

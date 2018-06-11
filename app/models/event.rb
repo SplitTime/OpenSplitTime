@@ -134,7 +134,7 @@ class Event < ApplicationRecord
   end
 
   def started?
-    SplitTime.where(effort: efforts).present?
+    SplitTime.joins(:effort).where(efforts: {event_id: id}).limit(1).present?
   end
 
   def required_lap_splits

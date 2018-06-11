@@ -53,6 +53,10 @@ class EventGroupRawTimesPresenter < BasePresenter
     raw_times.includes(:event_group).where(parameterized_split_name: finish_split_names)
   end
 
+  def authorized_to_edit?
+    current_user.authorized_to_edit?(event_group)
+  end
+
   def method_missing(method)
     event_group.send(method)
   end

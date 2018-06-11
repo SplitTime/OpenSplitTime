@@ -43,7 +43,9 @@
           <thead>
           <tr>
             <th class="text-center"><%= link_to_reversing_sort_heading('Reconciled?', 'person_id,bib_number', @presenter.existing_sort) %></th>
-            <th><%= link_to_reversing_sort_heading('Event', 'event_id,bib_number', @presenter.existing_sort) %></th>
+            <% if @presenter.multiple_events? %>
+              <th><%= link_to_reversing_sort_heading('Event', 'event_id,bib_number', @presenter.existing_sort) %></th>
+            <% end %>
             <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
@@ -63,7 +65,9 @@
           <% @presenter.filtered_ranked_efforts.each do |effort| %>
               <tr>
                 <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
-                <td><%= link_to effort.event.guaranteed_short_name, admin_event_path(effort.event) %></td>
+                <% if @presenter.multiple_events? %>
+                  <td><%= link_to effort.event.guaranteed_short_name, admin_event_path(effort.event) %></td>
+                <% end %>
                 <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
                 <td><%= effort.bib_number %></td>
                 <td><%= effort.bio_historic %></td>

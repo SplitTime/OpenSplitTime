@@ -4,7 +4,7 @@
     <h4><strong>No entrants have been added to this event.</strong></h4>
 <% else %>
 
-    <%= render 'effort_lookup', event: @event_display.event %>
+    <%= render 'effort_lookup', event: view_object.event %>
     <hr>
 
     <% if filtered_efforts.present? %>
@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <%= render 'efforts/efforts_list' %>
+        <%= render 'efforts/efforts_list', view_object: view_object %>
 
         <div class="row">
           <div class="col-xs-8">

@@ -29,7 +29,7 @@ module EventsHelper
 
   def link_to_enter_group_live_entry(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event_group) && view_object.available_live
-      link_to 'Live Entry (Beta)', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
+      link_to 'Live Entry', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
     end
   end
 
@@ -52,6 +52,7 @@ module EventsHelper
   def link_to_event_staging(view_object, current_user)
     if current_user && current_user.authorized_to_edit?(view_object.event)
       link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
+              disabled: controller.action_name == 'app',
               class: 'btn btn-sm btn-primary'
     end
   end

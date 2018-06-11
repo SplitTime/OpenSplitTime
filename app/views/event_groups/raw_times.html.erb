@@ -4,10 +4,10 @@
 <div class="row header">
   <div class="col-xs-5">
     <h2><strong><%= "#{@presenter.name}" %></strong></h2>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= 'Raw times' %></div>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <%= link_to_enter_group_live_entry(@presenter, current_user) %>
       <%= render 'events/view_buttons', view_object: @presenter %>
     </div>
   </div>

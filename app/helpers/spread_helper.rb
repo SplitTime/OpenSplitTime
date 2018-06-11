@@ -11,7 +11,7 @@ module SpreadHelper
   end
 
   def clustered_segment_total_header
-    clustered_header(@spread_display.segment_total_header_data)
+    clustered_header(@presenter.segment_total_header_data)
   end
 
   def clustered_segment_total_data(row)
@@ -27,7 +27,7 @@ module SpreadHelper
   end
 
   def individual_segment_total_headers
-    individual_headers(@spread_display.segment_total_header_data)
+    individual_headers(@presenter.segment_total_header_data)
   end
 
   def individual_segment_total_data(row)
@@ -37,12 +37,12 @@ module SpreadHelper
   end
 
   def spread_relevant_elements(array)
-    STYLES_WITH_START_TIME.include?(@spread_display.display_style) ? array : array[1..-1]
+    STYLES_WITH_START_TIME.include?(@presenter.display_style) ? array : array[1..-1]
   end
 
   def spread_export_headers
     spread_export_attributes + spread_individual_split_names +
-        (@spread_display.show_segment_totals? ? individual_segment_total_headers : [])
+        (@presenter.show_segment_totals? ? individual_segment_total_headers : [])
   end
 
   def spread_export_attributes
@@ -50,14 +50,14 @@ module SpreadHelper
   end
 
   def spread_individual_split_names
-    split_names = @spread_display.split_header_data.flat_map { |header_data| individual_headers(header_data) }
-    split_names[0] = 'Start Offset' if @spread_display.display_style == 'elapsed'
+    split_names = @presenter.split_header_data.flat_map { |header_data| individual_headers(header_data) }
+    split_names[0] = 'Start Offset' if @presenter.display_style == 'elapsed'
     split_names
   end
 
   def time_row_export_row(effort_times_row)
     time_row_export_attributes(effort_times_row) + time_row_individual_times(effort_times_row) +
-        (@spread_display.show_segment_totals? ? individual_segment_total_data(effort_times_row) : [])
+        (@presenter.show_segment_totals? ? individual_segment_total_data(effort_times_row) : [])
   end
 
   def time_row_export_attributes(effort_times_row)
@@ -65,8 +65,8 @@ module SpreadHelper
   end
 
   def time_row_individual_times(effort_times_row)
-    times = effort_times_row.time_clusters.flat_map { |tc| time_cluster_export_data(tc, @spread_display.display_style) }
-    times[0] = time_format_hhmmss(effort_times_row.start_offset) if @spread_display.display_style == 'elapsed'
+    times = effort_times_row.time_clusters.flat_map { |tc| time_cluster_export_data(tc, @presenter.display_style) }
+    times[0] = time_format_hhmmss(effort_times_row.start_offset) if @presenter.display_style == 'elapsed'
     times
   end
 end

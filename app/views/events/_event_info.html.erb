@@ -3,7 +3,4 @@
   <%= "Start Time: #{l(view_object.event_start_time, format: :full_day_time_and_zone)}" %>
   <br/>
   Run on <%= link_to view_object.course_name, course_path(view_object.course) %>
-  <% if view_object.organization %>
-      <br/>Organized by <%= link_to view_object.organization_name, organization_path(view_object.organization) %>
-  <% end %>
 </h4>

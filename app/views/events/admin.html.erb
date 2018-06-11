@@ -1,41 +1,39 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Administer event - #{@event_stage.name}" %>
+    <% "OpenSplitTime: Administer event - #{@presenter.name}" %>
 <% end %>
 <div class="row header">
   <div class="col-xs-5">
-    <%= render 'event_info', view_object: @event_stage, title: "Admin #{@event_stage.concealed_text}" %>
+    <%= render 'event_info', view_object: @presenter, title: "#{@presenter.concealed_text}" %>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Admin' %></div>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <%= link_to_enter_group_live_entry(@event_stage, current_user) %>
-      <%= render 'view_buttons', view_object: @event_stage %>
+      <%= render 'view_buttons', view_object: @presenter %>
     </div>
     <div class="row">
-      <%= link_to_edit_event(@event_stage) %>
-      <% if @event_stage.started? %>
-          <%= link_to_update_start_time(@event_stage) %>
-          <%= link_to_set_data_status(@event_stage) %>
-          <% unless @event_stage.available_live %>
-              <%= link_to_set_stops(@event_stage) %>
-              <%= link_to_ultrasignup_export(@event_stage) %>
+      <%= link_to_edit_event(@presenter) %>
+      <% if @presenter.started? %>
+          <%= link_to_update_start_time(@presenter) %>
+          <%= link_to_set_data_status(@presenter) %>
+          <% unless @presenter.available_live %>
+              <%= link_to_set_stops(@presenter) %>
+              <%= link_to_ultrasignup_export(@presenter) %>
           <% end %>
       <% end %>
-      <% if current_user&.authorized_fully?(@event_stage.event) %>
-          <%= link_to_delete_event(@event_stage) %>
+      <% if current_user&.authorized_fully?(@presenter.event) %>
+          <%= link_to_delete_event(@presenter) %>
       <% end %>
     </div>
   </div>
 </div>
 
-<% if @event_stage.ordered_events_within_group.many? %>
+<% if @presenter.ordered_events_within_group.many? %>
     <div class="row mid">
       <div class="col-xs-5 page-navigation-left">
-          <%= render 'event_groups/event_buttons', events: @event_stage.ordered_events_within_group, current_event: @event_stage.event %>
+          <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       </div>
     </div>
 <% end %>
-
-<%= render 'live_times_list', live_times: @event_stage.filtered_live_times, view_model: @event_stage %>
 
 <script>
     document.addEventListener("turbolinks:load", function () {

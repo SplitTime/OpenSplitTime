@@ -7,7 +7,6 @@
     <h4><%= "Aid station time report as of #{day_time_current_military_full(@presenter.home_time_zone)}" %></h4>
   </div>
   <div class="row">
-    <%= link_to_enter_group_live_entry(@presenter, current_user) %>
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </div>

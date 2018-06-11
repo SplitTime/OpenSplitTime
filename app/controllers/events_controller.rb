@@ -14,8 +14,7 @@ class EventsController < ApplicationController
 
   def show
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
-    @event_display = EventWithEffortsPresenter.new(event: event, params: prepared_params)
-    render 'show'
+    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params)
   end
 
   def new
@@ -72,14 +71,14 @@ class EventsController < ApplicationController
   # Special views with results
 
   def spread
-    @spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
+    @presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
     respond_to do |format|
       format.html
       format.csv do
         authorize @event
         csv_stream = render_to_string(partial: 'spread.csv.ruby')
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
+                  filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
     end
   end
@@ -94,15 +93,15 @@ class EventsController < ApplicationController
     @presenter = EventSeriesPresenter.new(events, prepared_params)
   rescue ActiveRecord::RecordNotFound => exception
     flash[:danger] = "#{exception}"
-    redirect_to events_path
+    redirect_to event_groups_path
   end
 
   # Event admin actions
 
   def admin
     authorize @event
-    @event = Event.where(id: @event.id).includes(:course).includes(:splits).includes(:efforts).includes(event_group: :events).first
-    @event_stage = EventStageDisplay.new(event: @event, params: prepared_params)
+    event = Event.where(id: @event.id).includes(:course, :splits, :efforts, event_group: :events).first
+    @presenter = EventStageDisplay.new(event: event, params: prepared_params)
     params[:view] ||= 'efforts'
     session[:return_to] = admin_event_path(@event)
   end

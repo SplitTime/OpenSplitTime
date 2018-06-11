@@ -4,6 +4,7 @@ class EventStaging::EventsController < EventStaging::BaseController
   def app
     if @event
       authorize @event, :event_staging_app?
+      @presenter = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     else
       authorize Event, :new_staging?
     end

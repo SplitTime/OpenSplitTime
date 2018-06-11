@@ -23,10 +23,13 @@
         <div class="row">
           <div class="col-xs-8">
             <% if @presenter.filtered_ranked_efforts_count == @presenter.efforts_count %>
-              <strong><%= "#{@presenter.efforts_count} efforts" %></strong>
+              <h4><%= "#{@presenter.efforts_count} efforts" %></h4>
             <% else %>
-              <strong><%= "Showing #{@presenter.filtered_ranked_efforts_count} of #{@presenter.efforts_count} efforts" %></strong>
+              <h4><%= "Showing #{@presenter.filtered_ranked_efforts_count} of #{@presenter.efforts_count} efforts" %></h4>
             <% end %>
+          </div>
+          <div class="col-xs-4 text-right">
+            <%= link_to_start_ready_group_efforts(@presenter) %>
           </div>
         </div>
 

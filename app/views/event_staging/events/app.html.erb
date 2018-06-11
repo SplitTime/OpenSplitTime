@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Event staging - #{@event&.name || 'New event'}" %>
+  <% "OpenSplitTime: Event staging - #{@presenter&.name || 'New event'}" %>
 <% end %>
 
 <% content_for(:container_type) do %>
@@ -21,7 +21,7 @@
         <router-link to="/splits" id="continue-side-1" class="btn btn-primary" :disabled="!isEventValid()">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
         </router-link>
       </p>
-      <p><span class="brackets"><a href=<%= events_path %>>Cancel</a></span></p>
+      <p><span class="brackets"><a href=<%= event_groups_path %>>Cancel</a></span></p>
     </aside>
     <article class="col-xs-12 col-sm-8">
       <div class="form-group">
@@ -272,7 +272,7 @@
               <li><%= link_to 'Download Template', splits_path(format: :csv, params: {filter: {id: 0}}) %></li>
             </ul>
           </div>
-          <div class="float-left-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @event&.course_id}), class: 'btn btn-default' %></div>
+          <div class="float-left-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-default' %></div>
           <router-link to="/entrants" id="continue-bottom-2" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>
         </div>
@@ -487,10 +487,10 @@
                 <li><%= link_to 'Download Template', efforts_path(format: :csv, params: {filter: {id: 0}}) %></li>
               </ul>
             </div>
-            <% if @event %>
-                <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @event.id}), class: 'btn btn-default' %></div>
-                <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_path(@event), class: 'btn btn-default' %></div>
-                <div class="float-left-button"><%= link_to 'Delete All', delete_all_efforts_event_path(@event), class: 'btn btn-danger', method: :delete, data: {confirm: 'This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to proceed?'} %></div>
+            <% if @presenter %>
+                <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @presenter.id}), class: 'btn btn-default' %></div>
+                <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_path(@presenter), class: 'btn btn-default' %></div>
+                <div class="float-left-button"><%= link_to 'Delete All', delete_all_efforts_event_path(@presenter), class: 'btn btn-danger', method: :delete, data: {confirm: 'This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to proceed?'} %></div>
             <% end %>
           <div class="pull-right"><router-link to="/confirmation" id="continue-bottom-3" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link></div>
@@ -748,19 +748,27 @@
     window._rails_assets.dotCheckered = "<%= asset_path( 'icons/dot-checkered.svg' ) %>";
     window._rails_assets.marker = "<%= asset_path( 'icons/green.svg' ) %>";
 </script>
-<div id="event-app" data-id="<%= @event&.id %>">
+<div id="event-app" data-id="<%= @presenter&.id %>">
   <div class="container-fluid header">
     <div class="container">
-      <h2>
-        <strong v-if="!isReady">Loading...</strong>
-        <strong v-else-if="eventModel.__new__">Create Event</strong>
-        <strong v-else>
-          {{ eventModel.name }}
-          <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
-          <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
-        </strong>
-        <%= link_to 'Roster', roster_event_group_path(@event.event_group), class: "btn btn-sm btn-primary pull-right" if @event&.event_group %>
-      </h2>
+      <div class="row">
+        <div class="col-xs-5">
+          <h2>
+            <strong v-if="!isReady">Loading...</strong>
+            <strong v-else-if="eventModel.__new__">Create Event</strong>
+            <strong v-else>
+              {{ eventModel.name }}
+              <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
+              <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
+            </strong>
+          </h2>
+        </div>
+        <div class="col-xs-7 page-navigation">
+          <% if @presenter&.event %>
+            <%= render 'events/view_buttons', view_object: @presenter %>
+          <% end %>
+        </div>
+      </div>
       <nav class="progress-bar-nav">
         <ul>
           <li is="router-link" to="/" tag="li" exact><a href="#"><span>Your Event</span></a></li>

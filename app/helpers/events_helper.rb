@@ -28,7 +28,7 @@ module EventsHelper
   end
 
   def link_to_enter_group_live_entry(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event_group) && view_object.available_live
+    if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
       link_to 'Live Entry', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
     end
   end
@@ -42,7 +42,7 @@ module EventsHelper
   end
 
   def link_to_raw_times(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event_group)
+    if current_user&.authorized_to_edit?(view_object.event_group)
       link_to 'Raw times', raw_times_event_group_path(view_object.event_group),
               disabled: controller.action_name == 'raw_times',
               class: 'btn btn-sm btn-primary'
@@ -50,7 +50,7 @@ module EventsHelper
   end
 
   def link_to_split_raw_times(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event_group)
+    if current_user&.authorized_to_edit?(view_object.event_group)
       link_to 'Split raw times', split_raw_times_event_group_path(view_object.event_group),
               disabled: controller.action_name == 'split_raw_times',
               class: 'btn btn-sm btn-primary'
@@ -58,7 +58,7 @@ module EventsHelper
   end
 
   def link_to_event_staging(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event)
+    if current_user&.authorized_to_edit?(view_object.event)
       link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
               disabled: controller.action_name == 'app',
               class: 'btn btn-sm btn-primary'
@@ -66,7 +66,7 @@ module EventsHelper
   end
 
   def link_to_event_admin(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event)
+    if current_user&.authorized_to_edit?(view_object.event)
       link_to 'Admin', admin_event_path(view_object.event),
               disabled: controller.action_name == 'admin',
               class: 'btn btn-sm btn-primary'
@@ -74,15 +74,23 @@ module EventsHelper
   end
 
   def link_to_roster(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event_group)
+    if current_user&.authorized_to_edit?(view_object.event_group)
       link_to 'Roster', "#{roster_event_group_path(view_object.event_group)}",
               disabled: controller.action_name == 'roster',
               class: 'btn btn-sm btn-primary'
     end
   end
 
+  def link_to_event_group(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group) || view_object.multiple_events?
+      link_to 'Group', event_group_path(view_object.event_group, force_settings: true),
+              disabled: controller.controller_name == 'event_groups' && controller.action_name == 'show',
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
   def link_to_download_spread_csv(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.event_finished?
+    if current_user&.authorized_to_edit?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',
               spread_event_path(view_object.event, format: :csv, display_style: view_object.display_style, sort: view_object.sort_hash),
               method: :get, class: 'btn btn-sm btn-success'

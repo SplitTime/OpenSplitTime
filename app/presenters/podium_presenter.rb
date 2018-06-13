@@ -13,10 +13,6 @@ class PodiumPresenter < BasePresenter
     @current_user = current_user
   end
 
-  def authorized_to_edit?
-    current_user&.authorized_to_edit?(event_group)
-  end
-  
   def event_start_time
     event.start_time
   end

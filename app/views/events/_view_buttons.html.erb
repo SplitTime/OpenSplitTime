@@ -6,7 +6,7 @@
               disabled: controller.controller_name == 'events' && controller.action_name == 'show',
               class: 'btn btn-sm btn-primary' %>
   <%= link_to 'Full spread', spread_event_path(view_object.event),
-              disabled: view_object.class == EventSpreadDisplay,
+              disabled: controller.action_name == 'spread',
               class: 'btn btn-sm btn-primary' %>
 
   <%= link_to_podium(view_object) %>
@@ -15,10 +15,6 @@
   <%= link_to_raw_times(view_object, current_user) %>
   <%= link_to_split_raw_times(view_object, current_user) %>
   <%= link_to_roster(view_object, current_user) %>
+  <%= link_to_event_group(view_object, current_user) %>
 
-  <% if view_object.multiple_events? || view_object.authorized_to_edit? %>
-    <%= link_to 'Group', event_group_path(view_object.event_group, force_settings: true),
-                disabled: controller.controller_name == 'event_groups' && controller.action_name == 'show',
-                class: 'btn btn-sm btn-primary' %>
-  <% end %>
 </div>

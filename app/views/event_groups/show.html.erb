@@ -13,7 +13,7 @@
   </div>
 </div>
 
-<% if @presenter.authorized_to_edit? %>
+<% if current_user&.authorized_to_edit?(@presenter.event_group) %>
   <div class="row">
     <div class="col-xs-3">
         <div class="btn-group">

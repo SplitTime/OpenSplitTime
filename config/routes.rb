@@ -28,9 +28,7 @@ Rails.application.routes.draw do
     member { put :update_preferences }
   end
 
-  resources :aid_stations, only: [:show, :create, :update, :destroy] do
-    member { get :times }
-  end
+  resources :aid_stations, only: [:show, :create, :update, :destroy]
 
   resources :courses do
     member { get :best_efforts }

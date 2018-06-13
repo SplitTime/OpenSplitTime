@@ -19,8 +19,4 @@ class AidStationPolicy < ApplicationPolicy
   def destroy?
     user.authorized_to_edit?(aid_station.event)
   end
-
-  def times?
-    user.authorized_to_edit?(aid_station.event)
-  end
 end

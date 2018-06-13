@@ -24,6 +24,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def split_raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
   def roster?
     user.authorized_to_edit?(event_group)
   end

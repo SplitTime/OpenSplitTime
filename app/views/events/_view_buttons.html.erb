@@ -13,6 +13,7 @@
   <%= link_to_event_admin(view_object, current_user) %>
   <%= link_to_event_staging(view_object, current_user) %>
   <%= link_to_raw_times(view_object, current_user) %>
+  <%= link_to_split_raw_times(view_object, current_user) %>
   <%= link_to_roster(view_object, current_user) %>
 
   <% if view_object.multiple_events? || view_object.authorized_to_edit? %>

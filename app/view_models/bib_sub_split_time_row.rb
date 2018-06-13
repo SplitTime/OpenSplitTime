@@ -7,17 +7,17 @@ class BibSubSplitTimeRow
   def initialize(args)
     @bib_number = args[:bib_number]
     @effort = args[:effort] || Effort.null_record
-    @live_times = args[:live_times] || []
+    @time_records = args[:time_records] || []
     @split_times = args[:split_times] || []
     @event = args[:event]
   end
 
   def full_name
-    effort.full_name
+    effort.full_name.strip.presence || '[Bib not found]'
   end
 
   def recorded_times
-    live_times.group_by(&:source_text).transform_values do |times_array|
+    time_records.group_by(&:source_text).transform_values do |times_array|
       {military_times: times_array.map { |lt| lt.military_time(time_zone) },
        split_time_ids: times_array.map(&:split_time_id)}
     end
@@ -44,7 +44,7 @@ class BibSubSplitTimeRow
 
   private
 
-  attr_reader :live_times, :split_times, :event
+  attr_reader :time_records, :split_times, :event
 
   def time_and_optional_lap(split_time)
     event.multiple_laps? ? "Lap #{split_time.lap}: #{split_time.military_time}" : split_time.military_time
@@ -55,6 +55,6 @@ class BibSubSplitTimeRow
   end
 
   def joined_military_times
-    split_times.map(&:military_time) | live_times.map { |lt| lt.military_time(time_zone) }
+    split_times.map(&:military_time) | time_records.map { |lt| lt.military_time(time_zone) }
   end
 end

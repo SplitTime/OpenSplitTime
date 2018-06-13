@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
     member do
       get :raw_times
+      get :split_raw_times
       get :roster
       get :export_to_summit
       put :start_ready_efforts

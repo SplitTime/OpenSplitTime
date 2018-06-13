@@ -45,16 +45,10 @@ class EventGroupsController < ApplicationController
 
   def destroy
     authorize @event_group
-    if @event_group.events.present?
-      flash[:danger] = 'Event group cannot be deleted if events are present within the event group. ' +
-          'Delete the related events individually and then delete the event group.'
-      redirect_to @event_group
-    else
-      @event_group.destroy
-      flash[:success] = 'Event group deleted.'
-      session[:return_to] = params[:referrer_path] if params[:referrer_path]
-      redirect_to session.delete(:return_to) || event_groups_path
-    end
+
+    @event_group.destroy
+    flash[:success] = 'Event group deleted.'
+    redirect_to event_groups_path
   end
 
   def raw_times

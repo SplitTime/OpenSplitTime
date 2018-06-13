@@ -4,7 +4,7 @@
 <div class="row header">
   <div class="col-xs-5">
     <h2><strong><%= "#{@presenter.name}" %></strong></h2>
-    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= "Times / #{@presenter.split_text}" %></div>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= "Times / #{@presenter.split_name}" %></div>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
@@ -18,12 +18,12 @@
   <div class="col-xs-6">
     <div class="dropdown float-left-button">
       <button class="btn btn-default dropdown-toggle" type="button" id="split-name-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <strong><%= @presenter.split_text %></strong>
+        <strong><%= @presenter.split_name %></strong>
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="split-name-dropdown">
         <% @presenter.ordered_split_names.each do |split_name| %>
-          <li><%= link_to split_name.titleize, request.params.merge(split_name: split_name.parameterize) %></li>
+          <li class="<%= "disabled" if split_name.parameterize == @presenter.split_name.parameterize %>"><%= link_to split_name.titleize, request.params.merge(split_name: split_name.parameterize) %></li>
         <% end %>
       </ul>
     </div>
@@ -31,12 +31,12 @@
     <% if @presenter.sub_split_kinds.many? %>
       <div class="dropdown float-left-button">
         <button class="btn btn-default dropdown-toggle" type="button" id="sub-split-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <strong><%= @presenter.sub_split_kind %></strong>
+          <strong><%= @presenter.sub_split_kind.titleize %></strong>
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="sub-split-dropdown">
           <% @presenter.sub_split_kinds.each do |kind| %>
-            <li><%= link_to kind.titleize, request.params.merge(sub_split_kind: kind.parameterize) %></li>
+            <li class="<%= "disabled" if kind.parameterize == @presenter.sub_split_kind.parameterize %>"><%= link_to kind.titleize, request.params.merge(sub_split_kind: kind.parameterize) %></li>
           <% end %>
         </ul>
       </div>

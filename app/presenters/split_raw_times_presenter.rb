@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SplitRawTimesPresenter < BasePresenter
-  attr_reader :event_group
+  attr_reader :event_group, :split_name
   delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, to: :event_group
   delegate :podium_template, to: :event
 
@@ -20,16 +20,13 @@ class SplitRawTimesPresenter < BasePresenter
     @sources ||= raw_times.map(&:source_text).uniq.sort
   end
 
-  def split_text
-    splits.any? { |split| split.sub_split_kinds.many? } ? "#{split_name} #{sub_split_kind}" : split_name
-  end
-
   def sub_split_kind
-    params[:sub_split_kind] || 'In'
+    param_kind = params[:sub_split_kind].parameterize || 'in'
+    sub_split_kinds.include?(param_kind) ? param_kind : 'in'
   end
 
   def sub_split_kinds
-    splits.flat_map(&:sub_split_kinds).uniq
+    @sub_split_kinds ||= splits.flat_map(&:sub_split_kinds).map(&:parameterize).uniq
   end
 
   def event
@@ -37,12 +34,16 @@ class SplitRawTimesPresenter < BasePresenter
   end
 
   def ordered_split_names
-    event_group.ordered_split_names.map(&:titleize)
+    @ordered_split_names ||= event_group.ordered_split_names.map(&:titleize)
+  end
+
+  def parameterized_split_name
+    @parameterized_split_name ||= split_name.parameterize
   end
 
   private
 
-  attr_reader :split_name, :params, :current_user
+  attr_reader :params, :current_user
 
   def bib_row(bib_number)
     BibSubSplitTimeRow.new(bib_number: bib_number,
@@ -87,9 +88,5 @@ class SplitRawTimesPresenter < BasePresenter
 
   def bitkey
     @bitkey ||= SubSplit.bitkey(sub_split_kind)
-  end
-
-  def parameterized_split_name
-    @parameterized_split_name ||= split_name.parameterize
   end
 end

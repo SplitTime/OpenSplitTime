@@ -21,7 +21,7 @@ class SplitRawTimesPresenter < BasePresenter
   end
 
   def sub_split_kind
-    param_kind = params[:sub_split_kind].parameterize || 'in'
+    param_kind = (params[:sub_split_kind] || 'in').parameterize
     sub_split_kinds.include?(param_kind) ? param_kind : 'in'
   end
 

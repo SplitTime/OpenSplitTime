@@ -43,7 +43,7 @@
     <% end %>
   </div>
 
-  <div class="col-xs-6 page-navigation">
+  <div class="col-xs-6">
     <div class="row">
     </div>
   </div>
@@ -62,8 +62,8 @@
           <th class="border-left"></th>
         </tr>
         <tr>
-          <th><%= link_to_reversing_sort_heading 'Bib', 'sortable_bib_number', @presenter.existing_sort %></th>
-          <th><%= link_to_reversing_sort_heading 'Name', 'effort_last_name', @presenter.existing_sort %></th>
+          <th>Bib</th>
+          <th>Name</th>
           <th class="text-center border-right">Grid time</th>
           <% @presenter.sources.each do |source| %>
               <th class="text-center"><%= source %></th>

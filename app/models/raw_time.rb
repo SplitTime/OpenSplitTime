@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RawTime < ApplicationRecord
+  enum data_status: [:bad, :questionable, :good]
+
   include Auditable
   include TimeRecordable
 
@@ -30,6 +32,7 @@ class RawTime < ApplicationRecord
     where(bib_number: bib_numbers)
   end
 
+  attr_accessor :existing_time_count, :lap
   attr_writer :effort, :event, :split
 
   def effort

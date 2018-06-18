@@ -64,4 +64,17 @@ RSpec.describe RawTime, type: :model do
       expect(raw_time.split_time).to be_nil
     end
   end
+
+  describe '#time_status' do
+    subject { build_stubbed(:raw_time) }
+
+    it 'acts as an ActiveRecord enum' do
+      expect(subject.time_status).to be_nil
+
+      subject.assign_attributes(time_status: :bad)
+      expect(subject.time_status).to eq(:bad)
+      expect(subject).to be_bad
+    end
+
+  end
 end

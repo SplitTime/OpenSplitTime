@@ -16,6 +16,7 @@ class FindExpectedLap
   end
 
   def perform
+    return 1 if maximum_lap == 1
     missing_lap || (location_highest_lap + 1).clamp(1, maximum_lap)
   end
 

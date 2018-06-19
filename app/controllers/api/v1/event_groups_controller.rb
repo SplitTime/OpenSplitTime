@@ -42,6 +42,7 @@ class Api::V1::EventGroupsController < ApiController
     # even if they are marked as already having been pulled.
 
     authorize @resource
+    event_group = EventGroup.where(id: @resource.id).includes(:events).first
 
     force_pull = params[:force_pull]&.to_boolean
     default_record_limit = 50
@@ -53,7 +54,7 @@ class Api::V1::EventGroupsController < ApiController
     # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
     time_records = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
 
-    time_rows = RowifyTimeRecords.build(event_group: @resource, time_records: time_records)
+    time_rows = RowifyTimeRecords.build(event_group: event_group, time_records: time_records)
 
     time_records.update_all(pulled_by: current_user.id, pulled_at: Time.current)
     report_raw_times_available(@resource)

@@ -65,16 +65,21 @@ RSpec.describe RawTime, type: :model do
     end
   end
 
-  describe '#time_status' do
+  describe '#data_status' do
     subject { build_stubbed(:raw_time) }
 
     it 'acts as an ActiveRecord enum' do
-      expect(subject.time_status).to be_nil
+      expect(subject.data_status).to be_nil
 
-      subject.assign_attributes(time_status: :bad)
-      expect(subject.time_status).to eq(:bad)
+      subject.assign_attributes(data_status: :bad)
+      expect(subject.data_status).to eq('bad')
       expect(subject).to be_bad
-    end
+      expect(subject).not_to be_good
 
+      subject.assign_attributes(data_status: :good)
+      expect(subject.data_status).to eq('good')
+      expect(subject).to be_good
+      expect(subject).not_to be_bad
+    end
   end
 end

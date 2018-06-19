@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# args[:effort] should be loaded with {split_times: :split} and event
+
 class VerifyTimeRecords
   def self.perform(args)
     new(args).perform
@@ -21,14 +23,16 @@ class VerifyTimeRecords
   attr_reader :effort, :time_records
   delegate :split_times, :event, to: :effort
 
+  def find_expected_laps
+
+  end
+
   def computed_lap
     case
     when event.laps_required == 1 then 1
-    when subject_split.null_record? || effort.null_record? then nil
+    when subject_split_id.nil? || effort&.id.nil? then nil
     else
-      military_time = params[:time_in] || params[:time_out] || ''
-      bitkey = (!params[:time_in] && params[:time_out]) ? SubSplit::OUT_BITKEY : SubSplit::IN_BITKEY
-      FindExpectedLap.perform(effort: effort, military_time: military_time, split_id: subject_split.id, bitkey: bitkey)
+      FindExpectedLap.perform(effort: effort, military_time: military_time, split_id: subject_split_id, bitkey: bitkey)
     end
   end
 
@@ -45,7 +49,7 @@ class VerifyTimeRecords
   end
 
   def subject_split_id
-
+    raw_times.first.split_id
   end
 
   def validate_setup

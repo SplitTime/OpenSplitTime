@@ -1,12 +1,7 @@
 <% # Requires parameters unfiltered_efforts_count, filtered_efforts_count, and filtered_efforts %>
-
 <% if unfiltered_efforts_count.zero? %>
     <h4><strong>No entrants have been added to this event.</strong></h4>
 <% else %>
-
-    <%= render 'effort_lookup', event: view_object.event %>
-    <hr>
-
     <% if filtered_efforts.present? %>
         <div class="row">
           <div class="col-xs-8">

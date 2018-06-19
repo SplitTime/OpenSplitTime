@@ -29,23 +29,25 @@ module EventsHelper
 
   def link_to_enter_group_live_entry(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
-      link_to 'Live Entry', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
+      content_tag :li do
+        link_to 'Live Entry', live_entry_live_event_group_path(view_object.event_group), method: :get
+      end
     end
   end
 
   def link_to_podium(view_object)
     if view_object.podium_template
-      link_to 'Podium', podium_event_path(view_object.event),
-              disabled: controller.action_name == 'podium',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller.action_name == 'podium'}" do
+        link_to 'Podium', podium_event_path(view_object.event)
+      end
     end
   end
 
   def link_to_raw_times(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group)
-      link_to 'Raw times', raw_times_event_group_path(view_object.event_group),
-              disabled: controller.action_name == 'raw_times',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller.action_name == 'raw_times'}" do
+        link_to 'Raw times', raw_times_event_group_path(view_object.event_group)
+      end
     end
   end
 
@@ -59,25 +61,25 @@ module EventsHelper
 
   def link_to_event_staging(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event)
-      link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
-              disabled: controller.action_name == 'app',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller.action_name == 'app'}" do
+        link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}"
+      end
     end
   end
 
   def link_to_event_admin(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event)
-      link_to 'Admin', admin_event_path(view_object.event),
-              disabled: controller.action_name == 'admin',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller.action_name == 'admin'}" do
+        link_to 'Admin', admin_event_path(view_object.event)
+      end
     end
   end
 
   def link_to_roster(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group)
-      link_to 'Roster', "#{roster_event_group_path(view_object.event_group)}",
-              disabled: controller.action_name == 'roster',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller.action_name == 'roster'}" do
+        link_to 'Roster', "#{roster_event_group_path(view_object.event_group)}"
+      end
     end
   end
 

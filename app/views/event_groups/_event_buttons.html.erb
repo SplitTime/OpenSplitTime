@@ -1,10 +1,9 @@
 <!--Requires locals :events and :current_event-->
 
-<div class="btn-group mid-padding">
+<div class="btn-group btn-group-ost">
   <% events.each do |event| %>
     <%= link_to event.guaranteed_short_name,
                 request.params.merge(id: event.to_param, page: nil),
-                class: 'btn btn-sm btn-primary',
-                disabled: event == current_event %>
+                class: "btn btn-ost #{ event == current_event ? 'btn-default' : 'btn-ost-primary' }" %>
   <% end %>
 </div>

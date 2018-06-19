@@ -37,7 +37,8 @@
                     class: 'btn btn-sm btn-danger' %>
         <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path),
                     method: :delete,
-                    data: {confirm: 'This action cannot be undone. Are you sure you want to go ahead?'},
+                    data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
+                        'This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
       <% end %>
     </div>

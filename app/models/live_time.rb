@@ -23,6 +23,7 @@ class LiveTime < ApplicationRecord
   validate :split_is_consistent
 
   delegate :distance_from_start, to: :split
+  attr_accessor :lap
 
   def course_is_consistent
     if event && split && (event.course_id != split.course_id)
@@ -64,10 +65,6 @@ class LiveTime < ApplicationRecord
 
   def sub_split_kind=(sub_split_kind)
     self.bitkey = SubSplit.bitkey(sub_split_kind.to_s)
-  end
-
-  def sub_split
-    {split_id => bitkey}
   end
 
   def effort

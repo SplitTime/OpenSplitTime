@@ -56,6 +56,10 @@ module TimeRecordable
     end
   end
 
+  def sub_split
+    {split_id => bitkey}
+  end
+
   def creator
     return @creator if defined?(@creator)
     User.find_by(id: created_by) if created_by

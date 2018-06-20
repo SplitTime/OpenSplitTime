@@ -31,9 +31,9 @@ class Api::V1::EventGroupsController < ApiController
     end
   end
 
-  def pull_time_records
+  def pull_raw_times
 
-    # This endpoint searches for un-pulled time records (raw_times) belonging to the event_group,
+    # This endpoint searches for un-pulled raw_times belonging to the event_group,
     # selects a batch, marks them as pulled, combines them into time_rows, and returns them
     # to the live entry page.
 
@@ -48,16 +48,16 @@ class Api::V1::EventGroupsController < ApiController
     default_record_limit = 50
     record_limit = params.dig(:page, :size) || default_record_limit
 
-    scoped_raw_times = force_pull ? @resource.raw_times.unmatched : @resource.raw_times.unconsidered
+    scoped_raw_times = force_pull ? event_group.raw_times.unmatched : event_group.raw_times.unconsidered
 
     # Order should be by absolute time ascending, and where absolute time is nil, then by entered time ascending.
     # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
-    time_records = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
+    raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
 
-    time_rows = RowifyTimeRecords.build(event_group: event_group, time_records: time_records)
+    time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: raw_times)
 
-    time_records.update_all(pulled_by: current_user.id, pulled_at: Time.current)
-    report_raw_times_available(@resource)
+    raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+    report_raw_times_available(event_group)
     render json: time_rows, status: :ok
   end
 

@@ -2,46 +2,33 @@
 
 # args[:effort] should be loaded with {split_times: :split} and event
 
-class VerifyTimeRecords
+class VerifyRawTimes
   def self.perform(args)
     new(args).perform
   end
   
   def initialize(args)
-    ArgsValidator.validate(params: args, required: [:effort, :time_records], exclusive: [:effort, :time_records], class: self.class)
+    ArgsValidator.validate(params: args, required: [:effort, :raw_times], exclusive: [:effort, :raw_times], class: self.class)
     @effort = args[:effort]
-    @time_records = args[:time_records]
+    @raw_times = args[:raw_times]
     validate_setup
   end
-  
+
   def perform
-    find_expected_laps
+
   end
   
   private
   
-  attr_reader :effort, :time_records
+  attr_reader :effort, :raw_times
   delegate :split_times, :event, to: :effort
-
-  def find_expected_laps
-
-  end
-
-  def computed_lap
-    case
-    when event.laps_required == 1 then 1
-    when subject_split_id.nil? || effort&.id.nil? then nil
-    else
-      FindExpectedLap.perform(effort: effort, military_time: military_time, split_id: subject_split_id, bitkey: bitkey)
-    end
-  end
 
   def splits
     split_times.map(&:split)
   end
 
   def temporary_split_times
-    time_records.map { |time_record| SplitTimeFromTimeRecord.build(time_record) }
+    raw_times.map { |raw_time| SplitTimeFromRawTime.build(raw_time) }
   end
 
   def subject_split

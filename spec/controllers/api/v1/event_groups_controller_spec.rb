@@ -581,9 +581,7 @@ RSpec.describe Api::V1::EventGroupsController do
       it 'sends a push notification that includes the count of available times' do
         allow(Pusher).to receive(:trigger)
         make_request
-        expected_lt_args = ["live-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 2, unmatched: 2}]
         expected_rt_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 3, unmatched: 3}]
-        expect(Pusher).to have_received(:trigger).with(*expected_lt_args)
         expect(Pusher).to have_received(:trigger).with(*expected_rt_args)
       end
     end

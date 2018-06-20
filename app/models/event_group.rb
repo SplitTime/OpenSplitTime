@@ -65,6 +65,10 @@ class EventGroup < ApplicationRecord
     partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
   end
 
+  def single_lap?
+    !multiple_laps?
+  end
+
   def split_times
     SplitTime.joins(:effort).where(efforts: {event_id: events})
   end

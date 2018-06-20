@@ -32,7 +32,7 @@ class RawTime < ApplicationRecord
     where(bib_number: bib_numbers)
   end
 
-  attr_accessor :existing_time_count, :lap
+  attr_accessor :existing_times_count, :lap
   attr_writer :effort, :event, :split
 
   def effort

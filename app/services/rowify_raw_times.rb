@@ -9,25 +9,20 @@ class RowifyRawTimes
     ArgsValidator.validate(params: args, required: [:event_group, :raw_times], exclusive: [:event_group, :raw_times], class: self.class)
     @event_group = args[:event_group]
     @raw_times = args[:raw_times]
+    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     validate_setup
   end
 
   def build
     add_lap_to_raw_times
     raw_time_pairs = RawTimePairer.pair(event_group: event_group, raw_times: raw_times).map(&:compact)
-
-    raw_time_pairs.each do |raw_time_pair|
-      raw_time = raw_time_pair.compact.first
-      effort = indexed_efforts[raw_time.effort_id]
-      event = indexed_events[raw_time.event_id]
-      VerifyRawTimes.perform(effort: effort, event: event, raw_times: raw_time_pair) if effort
-    end
+    raw_time_pairs.each { |raw_time_pair| verify_times(raw_time_pair) }
     raw_time_pairs
   end
 
   private
 
-  attr_reader :event_group, :raw_times
+  attr_reader :event_group, :raw_times, :times_container
 
   def add_lap_to_raw_times
     raw_times.each do |raw_time|
@@ -39,6 +34,13 @@ class RowifyRawTimes
         raw_time.lap ||= FindExpectedLap.perform(effort: indexed_efforts[raw_time.effort_id])
       end
     end
+  end
+
+  def verify_times(raw_time_pair)
+    raw_time = raw_time_pair.compact.first
+    effort = indexed_efforts[raw_time.effort_id]
+    event = indexed_events[raw_time.event_id]
+    VerifyRawTimes.perform(raw_times: raw_time_pair, effort: effort, event: event, times_container: times_container) if effort
   end
 
   def single_lap_event_group?

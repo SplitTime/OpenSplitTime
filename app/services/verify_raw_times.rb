@@ -21,7 +21,7 @@ class VerifyRawTimes
 
   def perform
     add_existing_count
-    add_split_times
+    append_split_times
     set_data_status
     raw_times
   end
@@ -38,7 +38,7 @@ class VerifyRawTimes
     end
   end
 
-  def add_split_times
+  def append_split_times
     raw_times.each { |raw_time| raw_time.split_time = SplitTimeFromRawTime.build(raw_time, effort: effort, event: event) }
   end
 

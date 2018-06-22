@@ -197,14 +197,12 @@ module EventsHelper
 
   def link_to_spread_gender(view_object, gender)
     link_to gender.titlecase, request.params.merge(filter: {gender: gender}),
-            disabled: view_object.gender_text == gender,
-            class: 'btn btn-sm btn-primary'
+            disabled: view_object.gender_text == gender
   end
 
   def link_to_spread_display_style(view_object, display_style, title)
     link_to title, request.params.merge(display_style: display_style),
-            disabled: view_object.display_style == display_style,
-            class: 'btn btn-sm btn-primary'
+            disabled: view_object.display_style == display_style
   end
 
   def link_to_display_style(view_object, display_style, title)

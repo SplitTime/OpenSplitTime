@@ -1,23 +1,29 @@
 <% if @presenter.event_group_efforts.blank? %>
+  <article class="container">
     <strong>No efforts have been added to this event group.</strong>
+  </article>
 <% else %>
-    <div class="row">
-      <div class="col-xs-5">
-        <%= render 'effort_lookup_stage' %>
-      </div>
-      <div class="col-xs-7 text-right">
-        <div class="btn-group">
-          <%= link_to_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
-          <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
-          <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
-          <%= link_to_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
-          <%= link_to_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
+  <aside class="ost-toolbar container-fluid">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-5">
+          <%= render 'effort_lookup_stage' %>
         </div>
-        <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil, nil, nil) %>
+        <div class="col-xs-7 text-right">
+          <div class="btn-group">
+            <%= link_to_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
+            <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
+            <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
+            <%= link_to_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
+            <%= link_to_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
+          </div>
+          <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil, nil, nil) %>
+        </div>
       </div>
     </div>
-
-    <hr>
+  </aside>
+  
+  <article class="container">
     <% if @presenter.filtered_ranked_efforts.present? %>
 
         <div class="row">
@@ -96,4 +102,5 @@
     <% else %>
         <strong>No results match that search.</strong>
     <% end %>
+  </article>
 <% end %>

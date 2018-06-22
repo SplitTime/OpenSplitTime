@@ -2,7 +2,9 @@
   <% "OpenSplitTime: Podium - #{@presenter.name}" %>
 <% end %>
 
-<div class="row header">
+<% content_for(:container_type) do %>skip<% end %>
+
+<!--<div class="row header">
   <div class="col-xs-5">
     <%= render 'event_info', view_object: @presenter, title: nil %>
     <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Podium' %></div>
@@ -12,16 +14,34 @@
       <%= render 'events/view_buttons', view_object: @presenter %>
     </div>
   </div>
-</div>
+</div>-->
 
-<% if @presenter.ordered_events_within_group.many? %>
-  <div class="row mid">
-    <div class="col-xs-5 page-navigation-left">
-      <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+<header class="ost-header container-fluid">
+  <div class="container">
+    <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+    <ul class="breadcrumb breadcrumb-ost">
+      <li><%= link_to 'Organizations', organizations_path %></li>
+      <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+      <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+      <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
+    </ul>
+    <%= render 'view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<aside class="ost-toolbar container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-4 page-navigation-left form-inline">
+        <% if @presenter.ordered_events_within_group.many? %>
+          <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+        <% end %>
+      </div>
     </div>
   </div>
-<% end %>
+</aside>
 
+<article class="container">
 <% if @presenter.template_name %>
   <table class="table table-condensed table-striped">
     <% @presenter.categories.each do |category| %>
@@ -31,3 +51,4 @@
 <% else %>
   <h4><%= "The organizer has not specified a podium template." %></h4>
 <% end %>
+</article>

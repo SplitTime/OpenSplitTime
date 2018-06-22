@@ -31,7 +31,11 @@ class RowifyRawTimes
       elsif raw_time.effort_id.nil?
         raw_time.lap = nil
       else
-        raw_time.lap ||= FindExpectedLap.perform(effort: indexed_efforts[raw_time.effort_id])
+        raw_time.lap ||= FindExpectedLap.perform(effort: indexed_efforts[raw_time.effort_id],
+                                                 subject_attribute: :day_and_time,
+                                                 subject_value: raw_time.absolute_time,
+                                                 split_id: raw_time.split_id,
+                                                 bitkey: raw_time.bitkey)
       end
     end
   end

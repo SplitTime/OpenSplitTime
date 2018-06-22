@@ -1,12 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe FindExpectedLap do
-  subject { FindExpectedLap.new(effort: effort, military_time: military_time, split_id: split_id, bitkey: bitkey) }
+  subject { FindExpectedLap.new(effort: effort, subject_attribute: subject_attribute, subject_value: subject_value, split_id: split_id, bitkey: bitkey) }
+  let(:subject_attribute) { :military_time }
+
   let(:effort) { build_stubbed(:effort, split_times: split_times, event: event) }
   let(:split_id) { split.id }
   let(:bitkey) { in_bitkey }
 
-  let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, start_time_in_home_zone: '06:00:00') }
+  let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, start_time_in_home_zone: '2018-06-22 06:00:00') }
   let(:splits) { [split_1, split_2, split_3, split_4] }
   let(:split_1) { build_stubbed(:start_split, base_name: 'Start') }
   let(:split_2) { build_stubbed(:split, base_name: 'Aid 1') }
@@ -33,10 +35,10 @@ RSpec.describe FindExpectedLap do
 
   describe '#initialize' do
     let(:split_times) { [] }
-    let(:military_time) { '07:00:00' }
+    let(:subject_value) { '07:00:00' }
     let(:split) { split_1 }
 
-    it 'initializes with effort, military_time, split_id, and bitkey in an args hash' do
+    it 'initializes with effort, subject_attribute, subject_value, split_id, and bitkey in an args hash' do
       expect { subject }.not_to raise_error
     end
 
@@ -48,11 +50,19 @@ RSpec.describe FindExpectedLap do
       end
     end
 
-    context 'if no military_time is given' do
-      let(:military_time) { nil }
+    context 'if no subject_attribute is given' do
+      let(:subject_attribute) { nil }
 
       it 'raises an ArgumentError' do
-        expect { subject }.to raise_error(/must include military_time/)
+        expect { subject }.to raise_error(/must include subject_attribute/)
+      end
+    end
+
+    context 'if no subject_value is given' do
+      let(:subject_value) { nil }
+
+      it 'raises an ArgumentError' do
+        expect { subject }.to raise_error(/must include subject_value/)
       end
     end
 
@@ -81,7 +91,7 @@ RSpec.describe FindExpectedLap do
 
     context 'when effort has no split_times' do
       let(:split_times) { [] }
-      let(:military_time) { '07:00:00' }
+      let(:subject_value) { '07:00:00' }
       let(:split) { split_1 }
 
       it 'returns 1' do
@@ -91,7 +101,7 @@ RSpec.describe FindExpectedLap do
 
     context 'when split_times are present but none exist for the specified split' do
       let(:split) { split_3 }
-      let(:military_time) { '07:00:00' }
+      let(:subject_value) { '07:00:00' }
       let(:split_times) { all_split_times.first(3) } # Start and Aid 1 (in/out)
 
       it 'returns 1' do
@@ -101,7 +111,7 @@ RSpec.describe FindExpectedLap do
 
     context 'when split_times exist on lap 1 for the specified split' do
       let(:split) { split_3 }
-      let(:military_time) { '07:00:00' }
+      let(:subject_value) { '07:00:00' }
       let(:split_times) { all_split_times.first(5) } # Start, Aid 1 (in/out), Aid 2 (in/out)
 
       it 'returns 2' do
@@ -111,7 +121,7 @@ RSpec.describe FindExpectedLap do
 
     context 'when split_times exist on lap 2 but not on lap 1 for the specified split and time fills the hole' do
       let(:split) { split_3 }
-      let(:military_time) { '09:15:00' }
+      let(:subject_value) { '09:15:00' }
       let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
 
       it 'returns 1' do
@@ -121,10 +131,32 @@ RSpec.describe FindExpectedLap do
 
     context 'when split_times exist on lap 2 but not on lap 1 for the specified split and time does not fill the hole' do
       let(:split) { split_3 }
-      let(:military_time) { '10:15:00' }
+      let(:subject_value) { '10:15:00' }
+      let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
+
+      it 'returns 3' do
+        expect(subject.perform).to eq(3)
+      end
+    end
+
+    context 'when subject_attribute is day_and_time and specified split and time fills a hole' do
+      let(:split) { split_3 }
+      let(:subject_attribute) { :day_and_time }
+      let(:subject_value) { ActiveSupport::TimeZone.new(event.home_time_zone).parse('2018-06-22 09:15:00') }
       let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
 
       it 'returns 1' do
+        expect(subject.perform).to eq(1)
+      end
+    end
+
+    context 'when subject_attribute is day_and_time and specified split and time does not fill a hole' do
+      let(:split) { split_3 }
+      let(:subject_attribute) { :day_and_time }
+      let(:subject_value) { ActiveSupport::TimeZone.new(event.home_time_zone).parse('2018-06-22 10:15:00') }
+      let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
+
+      it 'returns 3' do
         expect(subject.perform).to eq(3)
       end
     end

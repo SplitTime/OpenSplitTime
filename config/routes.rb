@@ -142,8 +142,7 @@ Rails.application.routes.draw do
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
           post :import
-          patch :pull_live_time_rows
-          patch :pull_time_record_rows
+          patch :pull_raw_times
           get :trigger_time_records_push
         end
       end

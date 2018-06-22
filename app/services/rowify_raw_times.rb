@@ -29,14 +29,20 @@ class RowifyRawTimes
         raw_time.lap = 1
       elsif raw_time.effort_id.nil?
         raw_time.lap = nil
+      elsif raw_time.absolute_time
+        raw_time.lap = expected_lap(raw_time, :day_and_time, raw_time.absolute_time)
       else
-        raw_time.lap ||= FindExpectedLap.perform(effort: indexed_efforts[raw_time.effort_id],
-                                                 subject_attribute: :day_and_time,
-                                                 subject_value: raw_time.absolute_time,
-                                                 split_id: raw_time.split_id,
-                                                 bitkey: raw_time.bitkey)
+        raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
       end
     end
+  end
+
+  def expected_lap(raw_time, subject_attribute, subject_value)
+    FindExpectedLap.perform(effort: indexed_efforts[raw_time.effort_id],
+                            subject_attribute: subject_attribute,
+                            subject_value: subject_value,
+                            split_id: raw_time.split_id,
+                            bitkey: raw_time.bitkey)
   end
 
   def build_time_row(raw_time_pair)

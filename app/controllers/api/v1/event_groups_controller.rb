@@ -52,13 +52,15 @@ class Api::V1::EventGroupsController < ApiController
 
     # Order should be by absolute time ascending, and where absolute time is nil, then by entered time ascending.
     # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
-    raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
+    raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit)
+    enriched_raw_times = raw_times.with_relation_ids
 
-    raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: raw_times)
+    raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: enriched_raw_times)
 
     raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
     report_raw_times_available(event_group)
-    render json: raw_time_rows, status: :ok
+
+    render json: {data: raw_time_rows.map { |row| row.serialize }}, status: :ok
   end
 
   def trigger_time_records_push

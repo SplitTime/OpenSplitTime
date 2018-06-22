@@ -53,9 +53,9 @@ module EventsHelper
 
   def link_to_split_raw_times(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group)
-      link_to 'Split raw times', split_raw_times_event_group_path(view_object.event_group),
-              disabled: controller.action_name == 'split_raw_times',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller.action_name == 'split_raw_times'}" do
+        link_to 'Split raw times', split_raw_times_event_group_path(view_object.event_group)
+      end
     end
   end
 
@@ -85,9 +85,9 @@ module EventsHelper
 
   def link_to_event_group(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group) || view_object.multiple_events?
-      link_to 'Group', event_group_path(view_object.event_group, force_settings: true),
-              disabled: controller.controller_name == 'event_groups' && controller.action_name == 'show',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller.controller_name == 'event_groups' && controller.action_name == 'show'}" do
+        link_to 'Group', event_group_path(view_object.event_group, force_settings: true)
+      end
     end
   end
 

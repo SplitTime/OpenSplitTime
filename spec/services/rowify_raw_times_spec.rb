@@ -18,6 +18,9 @@ RSpec.describe RowifyRawTimes do
   let!(:raw_time_7) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'cunningham', bitkey: 64) }
   let!(:raw_time_8) { create(:raw_time, event_group: event_group, bib_number: '55', split_name: 'cunningham', bitkey: 64) }
 
+  let(:raw_time_rows) { subject.build }
+  let(:raw_time_pairs) { raw_time_rows.map(&:raw_times) }
+
   before do
     allow(VerifyRawTimes).to receive(:perform)
     allow(FindExpectedLap).to receive(:perform)
@@ -32,7 +35,11 @@ RSpec.describe RowifyRawTimes do
         let(:raw_times) { RawTime.where(bib_number: %w(10 11)).with_relation_ids }
 
         it 'groups raw_times by split name, adds lap to them, and verifies them' do
-          raw_time_pairs = subject.build
+          expect(raw_time_rows.size).to eq(4)
+          expect(raw_time_rows).to all be_a(RawTimeRow)
+          expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1])
+          expect(raw_time_rows.map(&:event)).to match_array([event_1, event_2, event_1, event_1])
+
           expect(raw_time_pairs.size).to eq(4)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7]])
           expect(raw_time_pairs.flatten.map(&:lap)).to all eq(1)
@@ -45,7 +52,11 @@ RSpec.describe RowifyRawTimes do
         let(:raw_times) { RawTime.where(bib_number: %w(10 11 55)).with_relation_ids }
 
         it 'groups raw_times by split name, adds lap to them, and verifies only those with a matching bib number' do
-          raw_time_pairs = subject.build
+          expect(raw_time_rows.size).to eq(5)
+          expect(raw_time_rows).to all be_a(RawTimeRow)
+          expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1, nil])
+          expect(raw_time_rows.map(&:event)).to match_array([event_1, event_2, event_1, event_1, nil])
+
           expect(raw_time_pairs.size).to eq(5)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7], [raw_time_8]])
           expect(raw_time_pairs.flatten.map(&:lap)).to all eq(1)
@@ -63,7 +74,11 @@ RSpec.describe RowifyRawTimes do
         let(:raw_times) { RawTime.where(bib_number: %w(10 11)).with_relation_ids }
 
         it 'groups raw_times by split name, calls FindExpectedLap only when necessary, and verifies them' do
-          raw_time_pairs = subject.build
+          expect(raw_time_rows.size).to eq(4)
+          expect(raw_time_rows).to all be_a(RawTimeRow)
+          expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1])
+          expect(raw_time_rows.map(&:event)).to match_array([event_1, event_2, event_1, event_1])
+
           expect(raw_time_pairs.size).to eq(4)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7]])
           expect(VerifyRawTimes).to have_received(:perform).exactly(4).times

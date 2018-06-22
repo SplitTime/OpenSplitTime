@@ -16,8 +16,7 @@ class RowifyRawTimes
   def build
     add_lap_to_raw_times
     raw_time_pairs = RawTimePairer.pair(event_group: event_group, raw_times: raw_times).map(&:compact)
-    raw_time_pairs.each { |raw_time_pair| verify_times(raw_time_pair) }
-    raw_time_pairs
+    raw_time_pairs.map { |raw_time_pair| build_time_row(raw_time_pair) }
   end
 
   private
@@ -40,11 +39,13 @@ class RowifyRawTimes
     end
   end
 
-  def verify_times(raw_time_pair)
+  def build_time_row(raw_time_pair)
     raw_time = raw_time_pair.compact.first
     effort = indexed_efforts[raw_time.effort_id]
     event = indexed_events[raw_time.event_id]
+    split = indexed_splits[raw_time.split_id]
     VerifyRawTimes.perform(raw_times: raw_time_pair, effort: effort, event: event, times_container: times_container) if effort
+    RawTimeRow.new(effort, event, split, raw_time_pair)
   end
 
   def single_lap_event_group?
@@ -57,6 +58,10 @@ class RowifyRawTimes
 
   def indexed_events
     @indexed_events ||= event_group.events.includes(:splits).index_by(&:id)
+  end
+
+  def indexed_splits
+    @indexed_splits ||= indexed_events.values.flat_map(&:splits).index_by(&:id)
   end
 
   def indexed_efforts

@@ -54,11 +54,11 @@ class Api::V1::EventGroupsController < ApiController
     # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
     raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
 
-    time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: raw_times)
+    raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: raw_times)
 
     raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
     report_raw_times_available(event_group)
-    render json: time_rows, status: :ok
+    render json: raw_time_rows, status: :ok
   end
 
   def trigger_time_records_push

@@ -72,7 +72,7 @@ module ToggleHelper
 
   def link_to_toggle_email_subscription(person)
     if current_user
-      link_to_toggle_subscription(person: person,
+      link_to_toggle_subscription(person_id: person.id,
                                   glyphicon: 'envelope',
                                   protocol: 'email',
                                   subscribe_alert: "Receive live email updates for #{person.full_name}? " +

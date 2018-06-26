@@ -4,19 +4,23 @@ RSpec.describe RowifyRawTimes do
   subject { RowifyRawTimes.new(event_group: event_group, raw_times: raw_times) }
 
   let!(:event_group) { create(:event_group) }
+  let!(:event) { create(:event, event_group: event_group, course: course) }
   let!(:course) { create(:course) }
+  let!(:cunningham_split) { create(:split, course: course, base_name: 'Cunningham') }
+  let!(:maggie_split) { create(:split, course: course, base_name: 'Maggie') }
+  let(:splits) { [cunningham_split, maggie_split] }
 
   let!(:effort_1) { create(:effort, event: event_1, bib_number: 10) }
   let!(:effort_2) { create(:effort, event: event_2, bib_number: 11) }
 
-  let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'cunningham', bitkey: 1, stopped_here: false) }
-  let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'cunningham', bitkey: 64, stopped_here: true) }
-  let!(:raw_time_3) { create(:raw_time, event_group: event_group, bib_number: '11', split_name: 'cunningham', bitkey: 1, with_pacer: true) }
-  let!(:raw_time_4) { create(:raw_time, event_group: event_group, bib_number: '11', split_name: 'cunningham', bitkey: 64, with_pacer: true) }
-  let!(:raw_time_5) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'maggie', bitkey: 1) }
-  let!(:raw_time_6) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'maggie', bitkey: 64) }
-  let!(:raw_time_7) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'cunningham', bitkey: 64) }
-  let!(:raw_time_8) { create(:raw_time, event_group: event_group, bib_number: '55', split_name: 'cunningham', bitkey: 64) }
+  let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
+  let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'Cunningham', bitkey: 64, stopped_here: true) }
+  let!(:raw_time_3) { create(:raw_time, event_group: event_group, bib_number: '11', split_name: 'Cunningham', bitkey: 1, with_pacer: true) }
+  let!(:raw_time_4) { create(:raw_time, event_group: event_group, bib_number: '11', split_name: 'Cunningham', bitkey: 64, with_pacer: true) }
+  let!(:raw_time_5) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'Maggie', bitkey: 1) }
+  let!(:raw_time_6) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'Maggie', bitkey: 64) }
+  let!(:raw_time_7) { create(:raw_time, event_group: event_group, bib_number: '10', split_name: 'Cunningham', bitkey: 64) }
+  let!(:raw_time_8) { create(:raw_time, event_group: event_group, bib_number: '55', split_name: 'Cunningham', bitkey: 64) }
 
   let(:raw_time_rows) { subject.build }
   let(:raw_time_pairs) { raw_time_rows.map(&:raw_times) }
@@ -24,6 +28,7 @@ RSpec.describe RowifyRawTimes do
   before do
     allow(VerifyRawTimes).to receive(:perform)
     allow(FindExpectedLap).to receive(:perform)
+    event.splits << splits
   end
 
   describe '#build' do

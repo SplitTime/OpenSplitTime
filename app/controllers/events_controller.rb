@@ -148,14 +148,6 @@ class EventsController < ApplicationController
 
   # Actions related to the event/effort/split_time relationship
 
-  def set_data_status
-    authorize @event
-    event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first
-    response = Interactors::UpdateEffortsStatus.perform!(event.efforts)
-    set_flash_message(response)
-    redirect_to admin_event_path(@event)
-  end
-
   def set_stops
     authorize @event
     event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first

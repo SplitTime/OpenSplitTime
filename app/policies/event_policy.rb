@@ -49,10 +49,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def set_data_status?
-    user.authorized_to_edit?(event)
-  end
-
   def set_stops?
     user.authorized_to_edit?(event)
   end

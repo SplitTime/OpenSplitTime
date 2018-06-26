@@ -63,6 +63,7 @@ Rails.application.routes.draw do
       get :split_raw_times
       get :roster
       get :export_raw_times
+      put :set_data_status
       put :start_ready_efforts
       patch :update_all_efforts
       delete :delete_all_times
@@ -81,7 +82,6 @@ Rails.application.routes.draw do
       get :admin
       post :create_people
       put :associate_people
-      put :set_data_status
       put :set_stops
       patch :update_start_time
       patch :update_all_efforts

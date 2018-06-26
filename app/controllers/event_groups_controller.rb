@@ -72,6 +72,14 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
+  def set_data_status
+    authorize @event_group
+    event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
+    response = Interactors::UpdateEffortsStatus.perform!(event_group.efforts)
+    set_flash_message(response)
+    redirect_to roster_event_group_path(@event_group)
+  end
+
   def start_ready_efforts
     authorize @event_group
     efforts = Effort.where(event_id: @event_group.events).ready_to_start

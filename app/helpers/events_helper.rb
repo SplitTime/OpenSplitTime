@@ -169,12 +169,6 @@ module EventsHelper
             class: 'btn btn-sm btn-success'
   end
 
-  def link_to_set_data_status(view_object)
-    link_to 'Set data status', set_data_status_event_path(view_object.event),
-            method: :put,
-            class: 'btn btn-sm btn-success'
-  end
-
   def link_to_start_ready_efforts(view_object)
     if view_object.ready_efforts.present?
       link_to "Start #{pluralize(view_object.ready_efforts_count, 'effort')}",

@@ -6,10 +6,10 @@
   <aside class="ost-toolbar container-fluid">
     <div class="container">
       <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-4">
           <%= render 'effort_lookup_stage' %>
         </div>
-        <div class="col-xs-7 text-right">
+        <div class="col-xs-8 text-right">
           <div class="btn-group">
             <%= link_to_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
             <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
@@ -35,6 +35,7 @@
             <% end %>
           </div>
           <div class="col-xs-4 text-right">
+            <%= link_to_set_data_status(@presenter) %>
             <%= link_to_start_ready_group_efforts(@presenter) %>
           </div>
         </div>

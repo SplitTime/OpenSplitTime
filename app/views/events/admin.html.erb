@@ -41,7 +41,6 @@
         <%= link_to_edit_event(@presenter) %>
         <% if @presenter.started? %>
           <%= link_to_update_start_time(@presenter) %>
-          <%= link_to_set_data_status(@presenter) %>
           <% unless @presenter.available_live %>
             <%= link_to_set_stops(@presenter) %>
             <%= link_to_ultrasignup_export(@presenter) %>

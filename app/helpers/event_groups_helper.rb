@@ -27,4 +27,52 @@ module EventGroupsHelper
     link_to 'Export', export_raw_times_event_group_path(view_object.event_group, split_name: split_name, csv_template: csv_template, format: :csv),
             class: 'btn btn-md btn-success pull-right'
   end
+
+  def link_to_raw_times(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group)
+      content_tag :li, class: "#{'active' if controller.action_name == 'raw_times'}" do
+        link_to 'Raw times', raw_times_event_group_path(view_object.event_group)
+      end
+    end
+  end
+
+  def link_to_split_raw_times(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group)
+      content_tag :li, class: "#{'active' if controller.action_name == 'split_raw_times'}" do
+        link_to 'Split raw times', split_raw_times_event_group_path(view_object.event_group)
+      end
+    end
+  end
+
+  def link_to_enter_group_live_entry(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
+      content_tag :li do
+        link_to 'Live Entry', live_entry_live_event_group_path(view_object.event_group)
+      end
+    end
+  end
+
+  def link_to_progress_report(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
+      content_tag :li do
+        link_to 'Progress', progress_report_live_event_path(view_object.event)
+      end
+    end
+  end
+
+  def link_to_drop_list(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
+      content_tag :li do
+        link_to 'Drops', drop_list_event_path(view_object.event)
+      end
+    end
+  end
+
+  def link_to_aid_station_list(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
+      content_tag :li do
+        link_to 'Aid stations', aid_station_report_live_event_path(view_object.event)
+      end
+    end
+  end
 end

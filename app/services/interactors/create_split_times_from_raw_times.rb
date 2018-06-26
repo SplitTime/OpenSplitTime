@@ -69,7 +69,7 @@ module Interactors
 
     def effort_data_objects
       events.map do |event|
-        event_raw_times = grouped_raw_times[event.id]
+        event_raw_times = grouped_raw_times[event.id] || []
         TimeRecordRowConverter.new(event: event, time_records: event_raw_times).effort_data_objects
       end.flatten
     end

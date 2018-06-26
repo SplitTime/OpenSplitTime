@@ -46,11 +46,9 @@ class RowifyRawTimes
   end
 
   def build_time_row(raw_time_pair)
-    raw_time = raw_time_pair.compact.first
-    effort = indexed_efforts[raw_time.effort_id]
-    event = indexed_events[raw_time.event_id]
-    split = indexed_splits[raw_time.split_id]
-    VerifyRawTimes.perform(raw_times: raw_time_pair, effort: effort, event: event, times_container: times_container) if effort
+    raw_time = raw_time_pair.first
+    effort, event, split = indexed_efforts[raw_time.effort_id], indexed_events[raw_time.event_id], indexed_splits[raw_time.split_id]
+    VerifyRawTimes.perform(raw_times: raw_time_pair, effort: effort, event: event, times_container: times_container) if effort && event && split
     RawTimeRow.new(effort, event, split, raw_time_pair)
   end
 

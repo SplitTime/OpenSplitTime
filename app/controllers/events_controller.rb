@@ -37,7 +37,7 @@ class EventsController < ApplicationController
 
     if @event.save
       @event.set_all_course_splits
-      redirect_to admin_event_path(@event)
+      redirect_to event_group_path(@event.event_group)
     else
       render 'new'
     end
@@ -54,7 +54,7 @@ class EventsController < ApplicationController
         redirect_to request.referrer
       else
         set_flash_message(response)
-        redirect_to session.delete(:return_to) || admin_event_path(@event)
+        redirect_to event_group_path(@event.event_group, force_settings: true)
       end
     else
       render 'edit'
@@ -154,15 +154,7 @@ class EventsController < ApplicationController
     stop_status = params[:stop_status].blank? ? true : params[:stop_status].to_boolean
     response = Interactors::UpdateEffortsStop.perform!(event.efforts, stop_status: stop_status)
     set_flash_message(response)
-    redirect_to admin_event_path(@event)
-  end
-
-  def update_all_efforts
-    authorize @event
-    attributes = params.require(:efforts).permit(:checked_in).to_hash
-    @event.efforts.update_all(attributes)
-
-    redirect_to admin_event_path(@event)
+    redirect_to event_group_path(@event.event_group, force_settings: true)
   end
 
   # This action updates the event start_time and adjusts time_from_start on all
@@ -180,7 +172,7 @@ class EventsController < ApplicationController
 
     EventUpdateStartTimeJob.perform_later(@event, new_start_time: new_start_time,
                                           background_channel: background_channel, current_user: User.current)
-    redirect_to admin_event_path(@event)
+    redirect_to event_group_path(@event.event_group, force_settings: true)
   end
 
   def drop_list

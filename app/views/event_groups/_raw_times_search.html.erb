@@ -1,18 +1,14 @@
 <%= form_tag raw_times_event_group_path(@presenter.event_group), method: :get do %>
-    <div class="row">
-      <div class="col-xs-8">
-        <div class="input-group">
-          <span class="input-group-btn">
-            <%= text_field_tag 'filter[search]',
-                               @presenter.search_text,
-                               placeholder: 'Bib #',
-                               autofocus: true,
-                               class: 'form-control search-box input-sm' %>
-            <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
-                <i class='fa fa-search'></i> Find bib
-            <% end %>
-          </span>
-        </div>
-      </div>
-    </div>
+  <div class="input-group">
+    <%= text_field_tag 'filter[search]',
+                       @presenter.search_text,
+                       placeholder: 'Bib #',
+                       autofocus: true,
+                       class: 'form-control search-box' %>
+    <span class="input-group-btn">
+        <%= button_tag(type: :submit, class: 'btn btn-ost btn-primary') do %>
+            <i class='fa fa-search'></i>
+        <% end %>
+      </span>
+  </div>
 <% end %>

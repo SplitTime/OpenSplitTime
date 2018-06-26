@@ -6,10 +6,6 @@ module EventsHelper
     link_to 'Edit event', edit_event_path(view_object.event), class: 'btn btn-sm btn-primary'
   end
 
-  def link_to_update_start_time(view_object)
-    link_to 'Change start time', edit_start_time_event_path(view_object.event), class: 'btn btn-sm btn-primary'
-  end
-
   def link_to_delete_event(view_object)
     link_to 'Delete event', event_path(view_object.event, referrer_path: events_path),
             method: :delete,
@@ -154,19 +150,6 @@ module EventsHelper
             data: {confirm: confirm_text},
             method: :put,
             class: 'btn btn-sm btn-warning'
-  end
-
-  def link_to_ultrasignup_export(view_object)
-    link_to 'Export to ultrasignup', export_to_ultrasignup_event_path(view_object.event, format: :csv),
-            class: 'btn btn-sm btn-success'
-  end
-
-  def link_to_set_stops(view_object)
-    link_to 'Establish drops', set_stops_event_path(view_object.event),
-            method: :put,
-            data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
-                'at the last aid station for which times are available. Are you sure you want to proceed?'},
-            class: 'btn btn-sm btn-success'
   end
 
   def link_to_start_ready_efforts(view_object)

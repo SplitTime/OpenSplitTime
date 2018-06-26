@@ -1,8 +1,9 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Event group roster - #{@presenter.name}" %>
+  <% "OpenSplitTime: Raw Times - #{@presenter.name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
+<% content_for(:container_type) do %>skip
+<% end %>
 
 <!--<div class="row header">
   <div class="col-xs-5">
@@ -24,14 +25,12 @@
       <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
       <li class="active"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
     </ul>
-      <%= render 'events/view_buttons', view_object: @presenter %>
+    <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
 
-<article class="container">
-  <% if @presenter.raw_times.present? %>
-    <%= render 'event_groups/raw_times_list', view_object: @presenter %>
-  <% else %>
-    <h4>No raw times exist for this event group.</h4>
-  <% end %>
-</article>
+<% if @presenter.raw_times.present? %>
+  <%= render 'event_groups/raw_times_list', view_object: @presenter %>
+<% else %>
+  <h4>No raw times exist for this event group.</h4>
+<% end %>

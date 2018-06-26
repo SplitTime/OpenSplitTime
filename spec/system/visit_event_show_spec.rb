@@ -26,7 +26,6 @@ RSpec.describe 'visit a populated event show page and try various features' do
 
       expect(page).to have_content(event.name)
       expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).not_to have_link('Admin', href: admin_event_path(event))
       expect(page).not_to have_link('Staging')
       expect(page).not_to have_link('Group', href: event_group_path(event.event_group))
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
@@ -39,7 +38,6 @@ RSpec.describe 'visit a populated event show page and try various features' do
 
       expect(page).to have_content(event.name)
       expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).not_to have_link('Admin', href: admin_event_path(event))
       expect(page).not_to have_link('Staging')
       expect(page).not_to have_link('Group', href: event_group_path(event.event_group))
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
@@ -57,7 +55,6 @@ RSpec.describe 'visit a populated event show page and try various features' do
 
       expect(page).to have_content(event.name)
       expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).to have_link('Admin', href: admin_event_path(event))
       expect(page).to have_link('Staging')
       expect(page).to have_link('Group')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
@@ -74,7 +71,6 @@ RSpec.describe 'visit a populated event show page and try various features' do
 
       expect(page).to have_content(event.name)
       expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).to have_link('Admin', href: admin_event_path(event))
       expect(page).to have_link('Staging')
       expect(page).to have_link('Group')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
@@ -87,7 +83,6 @@ RSpec.describe 'visit a populated event show page and try various features' do
 
       expect(page).to have_content(event.name)
       expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).to have_link('Admin', href: admin_event_path(event))
       expect(page).to have_link('Staging')
       expect(page).to have_link('Group')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))

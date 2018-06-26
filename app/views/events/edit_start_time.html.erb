@@ -57,7 +57,7 @@
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', admin_event_path(@event) %> ]
+          [ <%= link_to 'Cancel', event_group_path(@event.event_group, force_settings: true) %> ]
         </div>
     <% end %>
   </div>

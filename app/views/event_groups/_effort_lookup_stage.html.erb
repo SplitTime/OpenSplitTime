@@ -1,15 +1,15 @@
 <%= form_tag roster_event_group_path(@presenter.event_group), method: :get do %>
-    <%= hidden_field_tag 'display_style', @presenter.display_style %>
-    <div class="input-group">
-        <%= text_field_tag 'filter[search]',
-                            @presenter.search_text,
-                            placeholder: 'Bib #, first name, last name, state, or country',
-                            autofocus: true,
-                            class: 'form-control search-box' %>
-      <span class="input-group-btn">
+  <%= hidden_field_tag 'display_style', @presenter.display_style %>
+  <div class="input-group">
+    <%= text_field_tag 'filter[search]',
+                       @presenter.search_text,
+                       placeholder: 'Bib #, first name, last name, state, or country',
+                       autofocus: true,
+                       class: 'form-control search-box' %>
+    <span class="input-group-btn">
         <%= button_tag(type: :submit, class: 'btn btn-ost btn-primary') do %>
-            <i class='fa fa-search'></i> Find someone
+            <i class='fa fa-search'></i>
         <% end %>
       </span>
-    </div>
+  </div>
 <% end %>

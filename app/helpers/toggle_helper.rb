@@ -11,7 +11,7 @@ module ToggleHelper
   def link_to_raw_time_filters(glyphicon, text, stopped, pulled, matched)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
                       request.params.merge(stopped: stopped, pulled: pulled, matched: matched, filter: {search: ''}, page: nil),
-                      {class: 'btn btn-sm btn-primary',
+                      {class: 'btn btn-md btn-primary',
                        disabled: params[:stopped]&.to_boolean == stopped && params[:pulled]&.to_boolean == pulled && params[:matched]&.to_boolean == matched})
   end
 

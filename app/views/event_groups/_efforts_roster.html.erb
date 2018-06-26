@@ -16,13 +16,13 @@
             <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
             <%= link_to_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
             <%= link_to_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
+            <%= link_to_check_in_filters('asterisk', 'All', nil, nil, nil, nil) %>
           </div>
-          <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil, nil, nil) %>
         </div>
       </div>
     </div>
   </aside>
-  
+
   <article class="container">
     <% if @presenter.filtered_ranked_efforts.present? %>
 
@@ -73,7 +73,7 @@
               <tr>
                 <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
                 <% if @presenter.multiple_events? %>
-                  <td><%= link_to effort.event.guaranteed_short_name, admin_event_path(effort.event) %></td>
+                  <td><%= effort.event.guaranteed_short_name %></td>
                 <% end %>
                 <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
                 <td><%= effort.bib_number %></td>

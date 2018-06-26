@@ -84,7 +84,6 @@ Rails.application.routes.draw do
       put :associate_people
       put :set_stops
       patch :update_start_time
-      patch :update_all_efforts
       delete :delete_all_efforts
     end
   end

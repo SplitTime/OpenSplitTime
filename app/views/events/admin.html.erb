@@ -38,16 +38,10 @@
         <% end %>
       </div>
       <div class="col-xs-7 page-navigation">
-        <%= link_to_edit_event(@presenter) %>
         <% if @presenter.started? %>
-          <%= link_to_update_start_time(@presenter) %>
           <% unless @presenter.available_live %>
-            <%= link_to_set_stops(@presenter) %>
             <%= link_to_ultrasignup_export(@presenter) %>
           <% end %>
-        <% end %>
-        <% if current_user&.authorized_fully?(@presenter.event) %>
-          <%= link_to_delete_event(@presenter) %>
         <% end %>
       </div>
     </div>

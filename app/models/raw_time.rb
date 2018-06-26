@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RawTime < ApplicationRecord
+  enum data_status: [:bad, :questionable, :good]
+
   include Auditable
   include TimeRecordable
 
@@ -30,10 +32,13 @@ class RawTime < ApplicationRecord
     where(bib_number: bib_numbers)
   end
 
+  attr_accessor :existing_times_count, :lap
   attr_writer :effort, :event, :split
 
   def effort
+    @effort = nil if bib_number.nil? || bib_number.include?('*')
     return @effort if defined?(@effort)
+
     if attributes['effort_id']
       @effort = Effort.find(attributes['effort_id'])
     else
@@ -50,7 +55,9 @@ class RawTime < ApplicationRecord
   end
 
   def event
+    @event = nil if bib_number.nil? || bib_number.include?('*')
     return @event if defined?(@event)
+
     if attributes['event_id']
       @event = Event.find(attributes['event_id'])
     else
@@ -67,7 +74,9 @@ class RawTime < ApplicationRecord
   end
 
   def split
+    @split = nil if bib_number.nil? || bib_number.include?('*')
     return @split if defined?(@split)
+
     if attributes['split_id']
       @split = Split.find(attributes['split_id'])
     else

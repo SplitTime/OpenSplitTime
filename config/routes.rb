@@ -28,9 +28,7 @@ Rails.application.routes.draw do
     member { put :update_preferences }
   end
 
-  resources :aid_stations, only: [:show, :create, :update, :destroy] do
-    member { get :times }
-  end
+  resources :aid_stations, only: [:show, :create, :update, :destroy]
 
   resources :courses do
     member { get :best_efforts }
@@ -62,6 +60,7 @@ Rails.application.routes.draw do
   resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
     member do
       get :raw_times
+      get :split_raw_times
       get :roster
       get :export_to_summit
       put :start_ready_efforts
@@ -143,8 +142,7 @@ Rails.application.routes.draw do
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
           post :import
-          patch :pull_live_time_rows
-          patch :pull_time_record_rows
+          patch :pull_raw_times
           get :trigger_time_records_push
         end
       end

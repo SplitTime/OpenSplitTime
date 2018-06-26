@@ -1,6 +1,6 @@
 class AidStationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_aid_station, except: :times
+  before_action :set_aid_station
   after_action :verify_authorized
 
   def show
@@ -34,14 +34,6 @@ class AidStationsController < ApplicationController
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]
     redirect_to session.delete(:return_to) || aid_stations_path
-  end
-
-  def times
-    @aid_station = AidStation.where(id: params[:id]).includes(:split).includes(event: :splits)
-                       .includes(event: {event_group: {events: :splits}}).first
-    raise ActiveRecord::RecordNotFound unless @aid_station
-    authorize @aid_station
-    @presenter = AidStationTimesPresenter.new(@aid_station, prepared_params, current_user)
   end
 
   private

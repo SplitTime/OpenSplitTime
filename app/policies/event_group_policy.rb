@@ -24,6 +24,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def split_raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
   def roster?
     user.authorized_to_edit?(event_group)
   end
@@ -60,7 +64,7 @@ class EventGroupPolicy < ApplicationPolicy
     user.present?
   end
 
-  def pull_live_time_rows?
+  def pull_raw_times?
     user.authorized_to_edit?(event_group)
   end
 

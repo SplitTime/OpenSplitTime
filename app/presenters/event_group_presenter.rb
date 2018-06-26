@@ -69,12 +69,8 @@ class EventGroupPresenter < BasePresenter
         .select { |event| (event.start_time - events.first.start_time).abs < CANDIDATE_SEPARATION_LIMIT }
   end
 
-  def authorized_to_edit?
-    @authorized_to_edit ||= current_user&.authorized_to_edit?(event_group)
-  end
-
   def show_visibility_columns?
-    authorized_to_edit?
+    current_user&.authorized_to_edit?(event_group)
   end
 
   def finish_live_times

@@ -11,6 +11,10 @@ module LapsRequiredMethods
     laps_required != 1
   end
 
+  def single_lap?
+    !multiple_laps?
+  end
+
   def maximum_laps
     laps_required unless laps_unlimited?
   end

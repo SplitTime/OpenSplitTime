@@ -13,14 +13,8 @@
   <%= link_to_event_admin(view_object, current_user) %>
   <%= link_to_event_staging(view_object, current_user) %>
   <%= link_to_raw_times(view_object, current_user) %>
+  <%= link_to_split_raw_times(view_object, current_user) %>
   <%= link_to_roster(view_object, current_user) %>
-  <%= link_to_enter_group_live_entry(view_object, current_user) %>
+  <%= link_to_event_group(view_object, current_user) %>
 
-
-  <% if view_object.multiple_events? || view_object.authorized_to_edit? %>
-    <%= content_tag :li, 
-                class: "#{'active' if controller.controller_name == 'event_groups' && controller.action_name == 'show' }" do
-      link_to 'Group', event_group_path(view_object.event_group, force_settings: true)
-      end -%>
-  <% end %>
-</ul>
+</div>

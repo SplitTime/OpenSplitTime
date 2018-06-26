@@ -7,21 +7,23 @@ class FindExpectedLap
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:effort, :military_time, :split_id, :bitkey],
-                           exclusive: [:effort, :military_time, :split_id, :bitkey])
+                           required: [:effort, :subject_attribute, :subject_value, :split_id, :bitkey],
+                           exclusive: [:effort, :subject_attribute, :subject_value, :split_id, :bitkey])
     @effort = args[:effort]
-    @military_time = args[:military_time]
+    @subject_attribute = args[:subject_attribute]
+    @subject_value = args[:subject_value]
     @split_id = args[:split_id]
     @bitkey = args[:bitkey]
   end
 
   def perform
+    return 1 if maximum_lap == 1
     missing_lap || (location_highest_lap + 1).clamp(1, maximum_lap)
   end
 
   private
 
-  attr_reader :effort, :military_time, :split_id, :bitkey
+  attr_reader :effort, :subject_attribute, :subject_value, :split_id, :bitkey
   delegate :event, to: :effort
 
   def missing_lap
@@ -30,25 +32,25 @@ class FindExpectedLap
 
   def time_fits_missing(lap)
     return if indexed_location_times[lap]
-    previous_time = previous_military_time(lap)
-    next_time = next_military_time(lap)
-    previous_time && next_time && military_time.between?(previous_time, next_time)
+    previous_time = previous_value(lap)
+    next_time = next_value(lap)
+    previous_time && next_time && subject_value.between?(previous_time, next_time)
   end
 
-  def previous_military_time(lap)
-    SplitTimeFinder.prior(time_point: subject_time_point(lap), effort: effort, lap_splits: lap_splits)&.military_time || start_military_time
+  def previous_value(lap)
+    SplitTimeFinder.prior(time_point: subject_time_point(lap), effort: effort, lap_splits: lap_splits)&.send(subject_attribute) || start_value
   end
 
-  def next_military_time(lap)
-    SplitTimeFinder.next(time_point: subject_time_point(lap), effort: effort, lap_splits: lap_splits)&.military_time
+  def next_value(lap)
+    SplitTimeFinder.next(time_point: subject_time_point(lap), effort: effort, lap_splits: lap_splits)&.send(subject_attribute)
   end
 
   def subject_time_point(lap)
     TimePoint.new(lap, split_id, bitkey)
   end
 
-  def start_military_time
-    @start_military_time ||= TimeConversion.absolute_to_hms(effort.start_time)
+  def start_value
+    @start_value ||= TimeConversion.absolute_to_hms(effort.start_time)
   end
 
   def indexed_location_times

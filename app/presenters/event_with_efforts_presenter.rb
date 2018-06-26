@@ -62,10 +62,6 @@ class EventWithEffortsPresenter < BasePresenter
     @event_start_time ||= event.start_time_in_home_zone
   end
 
-  def authorized_to_edit?
-    @authorized_to_edit ||= current_user&.authorized_to_edit?(event_group)
-  end
-
   private
 
   attr_reader :params, :current_user

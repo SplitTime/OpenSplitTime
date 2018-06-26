@@ -9,7 +9,7 @@ class EventGroup < ApplicationRecord
   extend FriendlyId
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
-  has_many :events
+  has_many :events, dependent: :destroy
   has_many :live_times, through: :events
   has_many :efforts, through: :events
   has_many :raw_times
@@ -63,6 +63,10 @@ class EventGroup < ApplicationRecord
 
   def pick_partner_with_banner
     partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
+  end
+
+  def single_lap?
+    !multiple_laps?
   end
 
   def split_times

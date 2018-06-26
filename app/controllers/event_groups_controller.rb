@@ -45,23 +45,24 @@ class EventGroupsController < ApplicationController
 
   def destroy
     authorize @event_group
-    if @event_group.events.present?
-      flash[:danger] = 'Event group cannot be deleted if events are present within the event group. ' +
-          'Delete the related events individually and then delete the event group.'
-      redirect_to @event_group
-    else
-      @event_group.destroy
-      flash[:success] = 'Event group deleted.'
-      session[:return_to] = params[:referrer_path] if params[:referrer_path]
-      redirect_to session.delete(:return_to) || event_groups_path
-    end
+
+    @event_group.destroy
+    flash[:success] = 'Event group deleted.'
+    redirect_to event_groups_path
   end
 
   def raw_times
     authorize @event_group
+    params[:sort] ||= '-created_at'
 
     event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).references(:efforts, organization: :stewards, events: :splits).first
     @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def split_raw_times
+    authorize @event_group
+
+    @presenter = SplitRawTimesPresenter.new(@event_group, params[:split_name], prepared_params, current_user)
   end
 
   def roster

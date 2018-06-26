@@ -85,7 +85,7 @@ class LiveEffortData
     else
       military_time = params[:time_in] || params[:time_out] || ''
       bitkey = (!params[:time_in] && params[:time_out]) ? SubSplit::OUT_BITKEY : SubSplit::IN_BITKEY
-      FindExpectedLap.perform(effort: effort, military_time: military_time, split_id: subject_split.id, bitkey: bitkey)
+      FindExpectedLap.perform(effort: effort, subject_attribute: :military_time, subject_value: military_time, split_id: subject_split.id, bitkey: bitkey)
     end
   end
 

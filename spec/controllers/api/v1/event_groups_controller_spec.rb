@@ -458,8 +458,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
   end
 
-  describe '#pull_time_record_rows' do
-    subject(:make_request) { patch :pull_time_record_rows, params: request_params }
+  describe '#pull_raw_times' do
+    subject(:make_request) { patch :pull_raw_times, params: request_params }
     let(:request_params) { {id: event_group.id} }
 
     let!(:event_group) { create(:event_group, available_live: true) }
@@ -470,6 +470,8 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:start_split) { create(:start_split, course: course, base_name: 'Start') }
     let!(:aid_split) { create(:split, course: course, base_name: 'Aid 1') }
     let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
+    let!(:effort_1_split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: start_split, bitkey: 1, time_from_start: 0) }
+    let!(:effort_1_split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: aid_split, bitkey: 1, time_from_start: 5000) }
 
     let(:current_user) { controller.current_user }
 
@@ -478,88 +480,81 @@ RSpec.describe Api::V1::EventGroupsController do
       allow(Pusher).to receive(:trigger)
     end
 
-    via_login_and_jwt do
-      context 'when unpulled live_times and raw_times are available' do
-        let!(:live_time_1) { create(:live_time, event: event, bib_number: '111', entered_time: '06:00:00', split: start_split) }
-        let!(:live_time_2) { create(:live_time, event: event, bib_number: '112', entered_time: '06:00:00', split: start_split) }
-        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish') }
-        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish') }
+    context 'when unpulled raw_times are available' do
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish') }
+      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish') }
 
-        it 'marks the live_times and raw_times as having been pulled and returns returnedRows' do
+      via_login_and_jwt do
+        it 'marks the raw_times as having been pulled and returns rawTimeRows in jsonapi format' do
           response = make_request
-          expect(LiveTime.all.pluck(:pulled_by)).to all eq(current_user.id)
           expect(RawTime.all.pluck(:pulled_by)).to all eq(current_user.id)
 
           result = JSON.parse(response.body)
-          rows = result['returnedRows']
 
-          expect(rows.size).to eq(4)
-          expect(rows.map { |row| row['eventId'] }).to all eq(event.id)
-          expect(rows.map { |row| row['splitId'] }).to match_array([start_split.id, start_split.id, finish_split.id, finish_split.id])
-          expect(rows.map { |row| row['effortId'] }).to match_array([effort_1.id, effort_2.id, effort_1.id, effort_2.id])
-          expect(rows.map { |row| row['bibNumber'] }).to match_array([111, 112, 111, 112])
+          time_rows = result['data']
+          expect(time_rows.size).to eq(2)
+          expect(time_rows.map { |row| row.dig('event', 'name') }).to all eq(event.name)
+          expect(time_rows.map { |row| row.dig('split', 'base_name') }).to all eq(finish_split.name)
+          expect(time_rows.map { |row| row.dig('effort', 'bib_number') }).to match_array([effort_1.bib_number, effort_2.bib_number])
+          expect(time_rows.map { |row| row.dig('effort', 'split_times').size }).to match_array([2, 0])
+          expect(time_rows.map { |row| row.dig('raw_times').size }).to match_array([1, 1])
         end
       end
+    end
 
-      context 'when unpulled live_times and raw_times have in and out times that can be paired' do
-        let!(:live_time_1) { create(:live_time, event: event, bib_number: '111', entered_time: '08:05:00', split: aid_split, sub_split_kind: 'in') }
-        let!(:live_time_2) { create(:live_time, event: event, bib_number: '111', entered_time: '08:10:00', split: aid_split, sub_split_kind: 'out') }
-        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 11:22:33', split_name: 'Aid 1', sub_split_kind: 'in') }
-        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Aid 1', sub_split_kind: 'out') }
+    context 'when unpulled live_times and raw_times have in and out times that can be paired' do
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 11:22:33', split_name: 'Aid 1', sub_split_kind: 'in') }
+      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Aid 1', sub_split_kind: 'out') }
 
-        it 'marks the live_times and raw_times as having been pulled and returns combined returnedRows' do
+      via_login_and_jwt do
+        it 'marks the raw_times as having been pulled and returns them in a single raw_time_row' do
           response = make_request
-          expect(LiveTime.all.pluck(:pulled_by)).to all eq(current_user.id)
           expect(RawTime.all.pluck(:pulled_by)).to all eq(current_user.id)
 
           result = JSON.parse(response.body)
-          rows = result['returnedRows']
 
-          expect(rows.size).to eq(2)
-          expect(rows.map { |row| row['eventId'] }).to all eq(event.id)
-          expect(rows.map { |row| row['splitId'] }).to all eq(aid_split.id)
-          expect(rows.map { |row| row['effortId'] }).to match_array([effort_1.id, effort_2.id])
-          expect(rows.map { |row| row['bibNumber'] }).to match_array([111, 112])
-          expect(rows.map { |row| row['liveTimeIdIn'] }).to match_array([live_time_1.id, nil])
-          expect(rows.map { |row| row['liveTimeIdOut'] }).to match_array([live_time_2.id, nil])
-          expect(rows.map { |row| row['rawTimeIdIn'] }).to match_array([raw_time_1.id, nil])
-          expect(rows.map { |row| row['rawTimeIdOut'] }).to match_array([raw_time_2.id, nil])
+          time_rows = result['data']
+          expect(time_rows.size).to eq(1)
+          expect(time_rows.map { |row| row.dig('event', 'name') }).to all eq(event.name)
+          expect(time_rows.map { |row| row.dig('split', 'base_name') }).to all eq(aid_split.base_name)
+          expect(time_rows.map { |row| row.dig('effort', 'bib_number') }).to match_array([effort_2.bib_number])
+          expect(time_rows.map { |row| row.dig('effort', 'split_times').size }).to match_array([0])
+          expect(time_rows.map { |row| row.dig('raw_times').size }).to match_array([2])
         end
       end
+    end
 
-      context 'when unpulled raw_times do not match existing bib numbers' do
-        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 11:22:33', split_name: 'Aid 1', sub_split_kind: 'in') }
-        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 12:23:34', split_name: 'Aid 1', sub_split_kind: 'out') }
+    context 'when unpulled raw_times do not match existing bib numbers' do
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 11:22:33', split_name: 'Aid 1', sub_split_kind: 'in') }
+      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 12:23:34', split_name: 'Aid 1', sub_split_kind: 'out') }
 
+      via_login_and_jwt do
         it 'marks the raw_times as having been pulled and returns returnedRows' do
           response = make_request
           expect(RawTime.all.pluck(:pulled_by)).to all eq(current_user.id)
 
           result = JSON.parse(response.body)
-          rows = result['returnedRows']
-          row = rows.first
 
-          expect(rows.size).to eq(1)
-          expect(row['eventId']).to eq(event.id)
-          expect(row['splitId']).to be_nil
-          expect(row['effortId']).to be_nil
-          expect(row['bibNumber']).to eq('999')
-          expect(row['rawTimeIdIn']).to eq(raw_time_1.id)
-          expect(row['rawTimeIdOut']).to eq(raw_time_2.id)
+          time_rows = result['data']
+          expect(time_rows.size).to eq(1)
+          expect(time_rows.map { |row| row.dig('event', 'name') }).to all eq(nil)
+          expect(time_rows.map { |row| row.dig('split', 'base_name') }).to all eq(nil)
+          expect(time_rows.map { |row| row.dig('effort', 'bib_number') }).to all eq(nil)
+          expect(time_rows.map { |row| row.dig('raw_times').size }).to match_array([2])
         end
       end
+    end
 
-      context 'when no unpulled live_times and raw_times are available' do
-        let!(:live_time_1) { create(:live_time, event: event, bib_number: '111', entered_time: '06:00:00', split: start_split, pulled_by: 1, pulled_at: Time.now) }
-        let!(:live_time_2) { create(:live_time, event: event, bib_number: '112', entered_time: '06:00:00', split: start_split, pulled_by: 1, pulled_at: Time.now) }
-        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish', pulled_by: 1, pulled_at: Time.now) }
-        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish', pulled_by: 1, pulled_at: Time.now) }
+    context 'when no unpulled live_times and raw_times are available' do
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish', pulled_by: 1, pulled_at: Time.now) }
+      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish', pulled_by: 1, pulled_at: Time.now) }
 
-        it 'returns returnedRows: []' do
+      via_login_and_jwt do
+        it 'returns an empty array: []' do
           response = make_request
           result = JSON.parse(response.body)
 
-          expect(result['returnedRows']).to eq([])
+          expect(result['data']).to eq([])
         end
       end
     end
@@ -581,9 +576,7 @@ RSpec.describe Api::V1::EventGroupsController do
       it 'sends a push notification that includes the count of available times' do
         allow(Pusher).to receive(:trigger)
         make_request
-        expected_lt_args = ["live-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 2, unmatched: 2}]
         expected_rt_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 3, unmatched: 3}]
-        expect(Pusher).to have_received(:trigger).with(*expected_lt_args)
         expect(Pusher).to have_received(:trigger).with(*expected_rt_args)
       end
     end

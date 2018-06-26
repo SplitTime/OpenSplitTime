@@ -28,7 +28,7 @@ module EventsHelper
   end
 
   def link_to_enter_group_live_entry(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event_group) && view_object.available_live
+    if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
       content_tag :li do
         link_to 'Live Entry', live_entry_live_event_group_path(view_object.event_group), method: :get
       end
@@ -37,22 +37,30 @@ module EventsHelper
 
   def link_to_podium(view_object)
     if view_object.podium_template
-      content_tag :li, class: "#{'active' if view_object.class == PodiumPresenter}" do
+      content_tag :li, class: "#{'active' if controller.action_name == 'podium'}" do
         link_to 'Podium', podium_event_path(view_object.event)
       end
     end
   end
 
   def link_to_raw_times(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event_group)
+    if current_user&.authorized_to_edit?(view_object.event_group)
       content_tag :li, class: "#{'active' if controller.action_name == 'raw_times'}" do
         link_to 'Raw times', raw_times_event_group_path(view_object.event_group)
       end
     end
   end
 
+  def link_to_split_raw_times(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group)
+      content_tag :li, class: "#{'active' if controller.action_name == 'split_raw_times'}" do
+        link_to 'Split raw times', split_raw_times_event_group_path(view_object.event_group)
+      end
+    end
+  end
+
   def link_to_event_staging(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event)
+    if current_user&.authorized_to_edit?(view_object.event)
       content_tag :li, class: "#{'active' if controller.action_name == 'app'}" do
         link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}"
       end
@@ -60,7 +68,7 @@ module EventsHelper
   end
 
   def link_to_event_admin(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event)
+    if current_user&.authorized_to_edit?(view_object.event)
       content_tag :li, class: "#{'active' if controller.action_name == 'admin'}" do
         link_to 'Admin', admin_event_path(view_object.event)
       end
@@ -68,15 +76,23 @@ module EventsHelper
   end
 
   def link_to_roster(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event_group)
+    if current_user&.authorized_to_edit?(view_object.event_group)
       content_tag :li, class: "#{'active' if controller.action_name == 'roster'}" do
         link_to 'Roster', "#{roster_event_group_path(view_object.event_group)}"
       end
     end
   end
 
+  def link_to_event_group(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group) || view_object.multiple_events?
+      content_tag :li, class: "#{'active' if controller.controller_name == 'event_groups' && controller.action_name == 'show'}" do
+        link_to 'Group', event_group_path(view_object.event_group, force_settings: true)
+      end
+    end
+  end
+
   def link_to_download_spread_csv(view_object, current_user)
-    if current_user && current_user.authorized_to_edit?(view_object.event) && view_object.event_finished?
+    if current_user&.authorized_to_edit?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',
               spread_event_path(view_object.event, format: :csv, display_style: view_object.display_style, sort: view_object.sort_hash),
               method: :get, class: 'btn btn-sm btn-success'
@@ -181,14 +197,12 @@ module EventsHelper
 
   def link_to_spread_gender(view_object, gender)
     link_to gender.titlecase, request.params.merge(filter: {gender: gender}),
-            disabled: view_object.gender_text == gender,
-            class: 'btn btn-sm btn-primary'
+            disabled: view_object.gender_text == gender
   end
 
   def link_to_spread_display_style(view_object, display_style, title)
     link_to title, request.params.merge(display_style: display_style),
-            disabled: view_object.display_style == display_style,
-            class: 'btn btn-sm btn-primary'
+            disabled: view_object.display_style == display_style
   end
 
   def link_to_display_style(view_object, display_style, title)

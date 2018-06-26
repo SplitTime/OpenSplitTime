@@ -17,8 +17,8 @@ module EventGroupsHelper
     end
   end
 
-  def link_to_summit_export(view_object)
-    link_to 'Export to summit', export_to_summit_event_group_path(view_object.event_group, format: :csv),
-            class: 'btn btn-sm btn-success'
+  def link_to_export_raw_times(view_object, split_name, csv_template)
+    link_to 'Export', export_raw_times_event_group_path(view_object.event_group, split_name: split_name, csv_template: csv_template, format: :csv),
+            class: 'btn btn-md btn-success pull-right'
   end
 end

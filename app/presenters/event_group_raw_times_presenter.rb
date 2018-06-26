@@ -49,11 +49,6 @@ class EventGroupRawTimesPresenter < BasePresenter
     filtered_raw_times.total_entries
   end
 
-  def finish_raw_times
-    finish_split_names = Split.joins(:events).where(events: {event_group_id: event_group.id}, kind: :finish).pluck(:parameterized_base_name)
-    raw_times.includes(:event_group).where(parameterized_split_name: finish_split_names)
-  end
-
   def method_missing(method)
     event_group.send(method)
   end

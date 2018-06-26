@@ -22,8 +22,7 @@
     <ul class="breadcrumb breadcrumb-ost">
       <li><%= link_to 'Organizations', organizations_path %></li>
       <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-      <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-      <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
+      <li class="active"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
     </ul>
       <%= render 'events/view_buttons', view_object: @presenter %>
   </div>

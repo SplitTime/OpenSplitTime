@@ -62,7 +62,7 @@ Rails.application.routes.draw do
       get :raw_times
       get :split_raw_times
       get :roster
-      get :export_to_summit
+      get :export_raw_times
       put :start_ready_efforts
       patch :update_all_efforts
       delete :delete_all_times

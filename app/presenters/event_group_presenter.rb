@@ -73,11 +73,6 @@ class EventGroupPresenter < BasePresenter
     current_user&.authorized_to_edit?(event_group)
   end
 
-  def finish_live_times
-    finish_splits = Split.joins(:events).where(events: {event_group_id: event_group.id}, kind: :finish)
-    event_group.live_times.includes(:event).where(split_id: finish_splits)
-  end
-
   def display_style
     params[:display_style] || DEFAULT_DISPLAY_STYLE
   end

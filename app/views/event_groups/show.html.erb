@@ -22,8 +22,7 @@
     <ul class="breadcrumb breadcrumb-ost">
       <li><%= link_to 'Organizations', organizations_path %></li>
       <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-      <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-      <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
+      <li class="active"><%= @presenter.event_group.name %></li>
     </ul>
       <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
@@ -41,22 +40,31 @@
       </div>
       <div class="col-xs-9 text-right">
         <% if current_user&.authorized_fully?(@presenter.event_group) %>
-          <%= link_to_stewards(@presenter) %>
           <%= link_to_toggle_public_private(@presenter) %>
           <%= link_to_toggle_ost_remote(@presenter) %>
           <%= link_to_toggle_live_entry(@presenter) %>
-          <%= link_to_summit_export(@presenter) %>
-          <%= link_to 'Edit group', edit_event_group_path(@presenter), class: 'btn btn-sm btn-primary' %>
-          <%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter),
-                      method: :delete,
-                      data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
-                          'This action cannot be undone. Are you sure you want to go ahead?'},
-                      class: 'btn btn-sm btn-danger' %>
-          <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path),
-                      method: :delete,
-                      data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
-                          'This action cannot be undone. Are you sure you want to go ahead?'},
-                      class: 'btn btn-sm btn-danger' %>
+          <div class="btn-group pull-right">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+              Edit
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'Edit group', edit_event_group_path(@presenter) %></li>
+              <li><%= link_to 'Add/remove stewards', organization_path(@presenter.organization, display_style: 'stewards') %></li>
+              <li role="separator" class="divider"></li>
+              <li><%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter),
+                              method: :delete,
+                              data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
+                                      'This action cannot be undone. Are you sure you want to go ahead?'} %></li>
+              <li><%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path),
+                              method: :delete,
+                              data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
+                                      'This action cannot be undone. Are you sure you want to go ahead?'} %></li>
+            </ul>
+          </div>
+
+
+
         <% end %>
       </div>
     </div>

@@ -96,16 +96,17 @@ class EventGroupsController < ApplicationController
     redirect_to event_group_path(@event_group, force_settings: true)
   end
 
-  def export_to_summit
+  def export_raw_times
     authorize @event_group
-
-    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
+    split_name = params[:split_name].to_s.parameterize
+    csv_template = params[:csv_template]
+    @raw_times = @event_group.raw_times.where(parameterized_split_name: split_name)
 
     respond_to do |format|
       format.csv do
-        csv_stream = render_to_string(partial: 'summit.csv.ruby')
+        csv_stream = render_to_string(partial: "#{csv_template}.csv.ruby")
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event_group.name}-for-summit-#{Date.today}.csv")
+                  filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
       end
     end
   end

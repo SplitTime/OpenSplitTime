@@ -1,11 +1,11 @@
 CSV.generate do |csv|
-  csv << %w(Bib Finish Combined)
-  if @presenter.finish_live_times.present?
-    @presenter.finish_live_times.sort_by { |lt| lt.military_time(lt.event.home_time_zone) }.each do |lt|
-      time = "#{lt.military_time(lt.event.home_time_zone)}"
-      csv << [lt.bib_number, time, "#{time} (#{lt.bib_number})"]
+  csv << %w(Bib Kind Time Combined)
+  if @raw_times.present?
+    @raw_times.sort_by { |rt| rt.military_time(rt.event_group.home_time_zone) }.each do |rt|
+      time = "#{rt.military_time(rt.event_group.home_time_zone)}"
+      csv << [rt.bib_number, rt.sub_split_kind, time, "#{time} (#{rt.bib_number})"]
     end
   else
-    csv << ['No finish live times are available.']
+    csv << ['No raw times were located.']
   end
 end

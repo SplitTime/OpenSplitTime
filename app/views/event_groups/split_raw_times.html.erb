@@ -22,8 +22,7 @@
     <ul class="breadcrumb breadcrumb-ost">
       <li><%= link_to 'Organizations', organizations_path %></li>
       <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-      <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-      <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
+      <li class="active"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
     </ul>
       <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
@@ -32,7 +31,7 @@
 <aside class="ost-toolbar container-fluid">
   <div class="container">
     <div class="row">
-      <div class="col-xs-4">
+      <div class="col-xs-12">
         <div class="dropdown float-left-button">
           <button class="btn btn-default dropdown-toggle" type="button" id="split-name-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <strong><%= @presenter.split_name %></strong>
@@ -58,6 +57,7 @@
             </ul>
           </div>
         <% end %>
+        <%= link_to_export_raw_times(@presenter, @presenter.split_name, :summit) %>
       </div>
     </div>
   </div>

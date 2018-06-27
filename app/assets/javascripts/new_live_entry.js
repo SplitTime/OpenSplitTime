@@ -1197,10 +1197,10 @@
         } // END populateRows
     }; // END liveEntry
 
-    // document.addEventListener("turbolinks:load", function () {
-    //     if (Rails.$('.event_groups.live_entry')[0] === document.body) {
-    //         liveEntry.init();
-    //     }
-    // });
+    document.addEventListener("turbolinks:load", function () {
+        if (Rails.$('.event_groups.live_entry')[0] === document.body) {
+            liveEntry.init();
+        }
+    });
 
 })(jQuery);

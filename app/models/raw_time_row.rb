@@ -4,7 +4,7 @@ RawTimeRow = Struct.new(:effort, :event, :split, :raw_times) do
   include ActiveModel::Serializers::JSON
 
   RAW_TIME_ATTRIBUTES = [:absolute_time, :bib_number, :split_name, :sub_split_kind, :data_status, :stopped_here, :with_pacer, :remarks]
-  RAW_TIME_METHODS = [:lap, :military_time]
+  RAW_TIME_METHODS = [:lap, :military_time, :sub_split_kind]
 
   def serialize
     basic_attributes.deep_transform_keys { |key| key.camelize(:lower) }

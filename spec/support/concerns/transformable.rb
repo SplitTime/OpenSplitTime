@@ -421,6 +421,38 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
+  describe '#delete_nil_keys!' do
+    context 'when a single key exists and value is nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+
+      it 'deletes the keys' do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:start_offset)
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: nil})
+      end
+    end
+
+    context 'when multiple keys exist and values are nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+
+      it 'deletes the keys' do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:start_time, :start_offset)
+        expect(subject.to_h).to eq({first_name: 'Joe'})
+      end
+    end
+
+    context 'when any value is not nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+
+      it 'deletes the keys' do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:first_name, :start_offset)
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: nil})
+      end
+    end
+  end
+
   describe '#fill_blank_values!' do
     context 'when keys exist and are nil' do
       let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }

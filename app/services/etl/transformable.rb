@@ -54,6 +54,15 @@ module ETL::Transformable
       end
     end
   end
+  
+  def delete_nil_keys!(*keys)
+    existing_keys = self.to_h.keys.to_set
+    keys.each do |key|
+      if existing_keys.include?(key) && self[key].nil?
+        self.delete_field(key)
+      end
+    end
+  end
 
   def fill_blank_values!(attributes)
     existing_keys = self.to_h.keys.to_set

@@ -152,11 +152,12 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       it 'finds existing records based on a unique key and deletes times where blanks exist' do
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(5)
-        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])
+        expect(existing_effort.ordered_split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])
         subject.load_records
         expect(Effort.all.size).to eq(1)
         expect(SplitTime.all.size).to eq(3)
-        expect(existing_effort.split_times.pluck(:time_from_start)).to eq([0.0, 4916.63, 14398.48])
+        existing_effort.reload
+        expect(existing_effort.ordered_split_times.pluck(:time_from_start)).to eq([0.0, 4916.63, 14398.48])
       end
     end
 

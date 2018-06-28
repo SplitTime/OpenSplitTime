@@ -21,7 +21,7 @@ class TimeConversion
   end
 
   def self.absolute_to_hms(absolute)
-    return '' unless absolute
+    return '' unless absolute.present?
     time = absolute.is_a?(Date) ? absolute.to_time : absolute
     to_hms(time.hour, time.min, time.sec)
   end
@@ -61,9 +61,11 @@ class TimeConversion
                      time_zone.local(*datetime.values)
                    when datetime.is_a?(String)
                      time_zone.parse(datetime)
-                   else
+                   when datetime.is_a?(Time)
                      datetime
+                   else
+                     nil
                    end
-    new_datetime - event.start_time
+    new_datetime ? new_datetime - event.start_time : 0
   end
 end

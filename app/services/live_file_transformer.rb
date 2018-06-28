@@ -27,7 +27,6 @@ class LiveFileTransformer
   end
 
   def transformed_rows
-    pp "File rows are: \n#{file_rows}"
     @transformed_rows ||= file_rows.map do |file_row|
       LiveEffortData.response_row(event: event,
                                   params: file_row,

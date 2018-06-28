@@ -13,6 +13,7 @@ module ETL::Transformers
       return if errors.present?
       proto_records.each do |proto_record|
         proto_record.transform_as(model, event: event)
+        proto_record.delete_nil_keys!(:start_offset) # For efforts, default value is 0; this ensures it is not overwritten by nil
         proto_record.slice_permitted!
       end
       proto_records

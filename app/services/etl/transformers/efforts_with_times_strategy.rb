@@ -16,6 +16,7 @@ module ETL::Transformers
       proto_records.each do |proto_record|
         proto_record.transform_as(:effort, event: event)
         transform_time_data!(proto_record)
+        proto_record.delete_nil_keys!(:start_offset) # Default value is 0; this ensures it is not overwritten by nil
         proto_record.slice_permitted!
       end
       proto_records

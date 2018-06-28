@@ -57,7 +57,7 @@ class ProtoRecord
         create_country_from_state!
         normalize_date!(:birthdate)
         normalize_datetime!(:start_time)
-        fill_nil_values!(start_time: '', start_offset: 0)
+        fill_blank_values!(start_time: '', start_offset: 0)
         set_offset_from_start_time!(event)
         self[:event_id] = event.id
 

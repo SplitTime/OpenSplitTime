@@ -55,11 +55,11 @@ module ETL::Transformable
     end
   end
 
-  def fill_nil_values!(attributes)
+  def fill_blank_values!(attributes)
     existing_keys = self.to_h.keys.to_set
     attributes.each do |key, value|
       if existing_keys.include?(key)
-        self[key] ||= value
+        self[key] = value if self[key].blank?
       end
     end
   end

@@ -78,13 +78,13 @@ RSpec.describe EnrichRawTimeRow do
         let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '55', split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: false) }
         let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '55', split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: true) }
 
-        it 'adds lap to raw_times but does not attempt to verify them' do
+        it 'adds lap to raw_times' do
           expect(request_raw_times.map(&:lap)).to all be_nil
 
           result_row = subject.perform
           expect(result_row).to be_a(RawTimeRow)
           expect(result_row.raw_times.map(&:lap)).to all eq(1)
-          expect(VerifyRawTimeRow).to have_received(:perform).exactly(0).times
+          expect(VerifyRawTimeRow).to have_received(:perform).exactly(1).times
           expect(FindExpectedLap).to have_received(:perform).exactly(0).times
         end
       end
@@ -93,13 +93,13 @@ RSpec.describe EnrichRawTimeRow do
         let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', split_name: 'Nonexistent', sub_split_kind: 'in', stopped_here: false) }
         let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', split_name: 'Nonexistent', sub_split_kind: 'out', stopped_here: true) }
 
-        it 'adds lap to raw_times but does not attempt to verify raw_times' do
+        it 'adds lap to raw_times' do
           expect(request_raw_times.map(&:lap)).to all be_nil
 
           result_row = subject.perform
           expect(result_row).to be_a(RawTimeRow)
           expect(result_row.raw_times.map(&:lap)).to all eq(1)
-          expect(VerifyRawTimeRow).to have_received(:perform).exactly(0).times
+          expect(VerifyRawTimeRow).to have_received(:perform).exactly(1).times
           expect(FindExpectedLap).to have_received(:perform).exactly(0).times
         end
       end

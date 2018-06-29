@@ -25,7 +25,8 @@ RSpec.describe VerifyRawTimeRow do
   let(:raw_time_5) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:31:00', effort: effort, lap: 1, bib_number: '10', split: maggie_split, split_name: 'Maggie', bitkey: 64, stopped_here: true) }
   let(:raw_time_6) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:31:00', effort: effort, lap: 1, bib_number: '11', split: maggie_split, split_name: 'Maggie', bitkey: 64, stopped_here: true) }
 
-  let(:event_time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
+  let(:time_zone) { event&.home_time_zone || 'Arizona' }
+  let(:event_time_zone) { ActiveSupport::TimeZone[time_zone] }
 
   before { split_times.each { |st| st.effort = effort } }
 
@@ -225,6 +226,69 @@ RSpec.describe VerifyRawTimeRow do
 
         result_row = subject.perform
         expect(result_row.errors).to include('mismatched bib numbers')
+
+        result_raw_times = result_row.raw_times
+        expect(result_raw_times.size).to eq(2)
+        expect(result_raw_times).to all be_a(RawTime)
+        expect(result_raw_times.map(&:existing_times_count)).to all be_nil
+
+        new_split_times = result_raw_times.map(&:new_split_time)
+        expect(new_split_times).to all be_nil
+
+        expect(Interactors::SetEffortStatus).not_to have_received(:perform)
+      end
+    end
+
+    context 'when raw_times are not present' do
+      let(:split_times) { [split_time_1, split_time_2] }
+      let(:raw_times) { [] }
+
+      it 'returns a raw_time_row with a descriptive error' do
+        allow(Interactors::SetEffortStatus).to receive(:perform)
+
+        result_row = subject.perform
+        expect(result_row.errors).to include('missing raw times')
+
+        result_raw_times = result_row.raw_times
+        expect(result_raw_times.size).to eq(0)
+
+        expect(Interactors::SetEffortStatus).not_to have_received(:perform)
+      end
+    end
+
+    context 'when effort is not present' do
+      let(:split_times) { [split_time_1, split_time_2] }
+      let(:raw_times) { [raw_time_1, raw_time_2] }
+      let(:effort) { nil }
+
+      it 'returns a raw_time_row with a descriptive error' do
+        allow(Interactors::SetEffortStatus).to receive(:perform)
+
+        result_row = subject.perform
+        expect(result_row.errors).to include('missing effort')
+
+        result_raw_times = result_row.raw_times
+        expect(result_raw_times.size).to eq(2)
+        expect(result_raw_times).to all be_a(RawTime)
+        expect(result_raw_times.map(&:existing_times_count)).to all be_nil
+
+        new_split_times = result_raw_times.map(&:new_split_time)
+        expect(new_split_times).to all be_nil
+
+        expect(Interactors::SetEffortStatus).not_to have_received(:perform)
+      end
+    end
+
+    context 'when event is not present' do
+      let(:split_times) { [split_time_1, split_time_2] }
+      let(:raw_times) { [raw_time_1, raw_time_2] }
+      let(:event) { nil }
+
+      it 'returns a raw_time_row with a descriptive error' do
+        allow(Interactors::SetEffortStatus).to receive(:perform)
+
+        result_row = subject.perform
+        expect(result_row.errors).to include('missing event')
 
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)

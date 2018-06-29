@@ -58,7 +58,7 @@ RSpec.describe RowifyRawTimes do
       context 'when some bib_numbers do not match' do
         let(:raw_times) { RawTime.where(bib_number: %w(10 11 55)).with_relation_ids }
 
-        it 'groups raw_times by split name, adds lap to them, and verifies only those with a matching bib number' do
+        it 'groups raw_times by split name, adds lap to them, and verifies them' do
           expect(raw_time_rows.size).to eq(5)
           expect(raw_time_rows).to all be_a(RawTimeRow)
           expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1, nil])
@@ -67,7 +67,7 @@ RSpec.describe RowifyRawTimes do
           expect(raw_time_pairs.size).to eq(5)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7], [raw_time_8]])
           expect(raw_time_pairs.flatten.map(&:lap)).to all eq(1)
-          expect(VerifyRawTimeRow).to have_received(:perform).exactly(4).times
+          expect(VerifyRawTimeRow).to have_received(:perform).exactly(5).times
           expect(FindExpectedLap).not_to have_received(:perform)
         end
       end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# args[:effort] should be loaded with {split_times: :split} and event
+# raw_time_row.effort should be loaded with {split_times: :split}
+# raw_time_row.event should be loaded with :splits
 
 class VerifyRawTimeRow
   def self.perform(raw_time_row, options = {})

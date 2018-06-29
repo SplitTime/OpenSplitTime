@@ -60,7 +60,7 @@ class Api::V1::EventGroupsController < ApiController
     raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
     report_raw_times_available(event_group)
 
-    render json: {data: {raw_time_rows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
+    render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
   end
 
   def enrich_raw_time_row
@@ -78,7 +78,7 @@ class Api::V1::EventGroupsController < ApiController
 
     result_row = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row)
 
-    render json: {data: {raw_time_row: result_row.serialize_with_effort_overview}}, status: :ok
+    render json: {data: {rawTimeRow: result_row.serialize_with_effort_overview}}, status: :ok
   end
 
   def trigger_time_records_push

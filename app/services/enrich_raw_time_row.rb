@@ -48,8 +48,9 @@ class EnrichRawTimeRow
   end
 
   def build_time_row(raw_time_pair)
+    raw_time_pair.each { |rtr| rtr.effort, rtr.event, rtr.split = effort, event, split }
     raw_time_row = RawTimeRow.new(raw_time_pair, effort, event, split, errors)
-    VerifyRawTimeRow.perform(raw_time_row, times_container: times_container) if effort && event && split
+    VerifyRawTimeRow.perform(raw_time_row, times_container: times_container)
     raw_time_row
   end
 

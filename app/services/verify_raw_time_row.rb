@@ -41,6 +41,7 @@ class VerifyRawTimeRow
   end
 
   def set_data_status
+    return if new_split_times.none?(&:time_from_start)
     Interactors::SetEffortStatus.perform(effort, ordered_split_times: ordered_split_times, lap_splits: effort_lap_splits, times_container: times_container)
     raw_times.each do |raw_time|
       raw_time.data_status = raw_time.new_split_time.data_status
@@ -48,10 +49,14 @@ class VerifyRawTimeRow
   end
 
   def ordered_split_times
-    indexed_existing_split_times = effort.split_times.dup.each { |st| st.data_status = :confirmed if st.good? }.index_by(&:time_point).freeze
-    indexed_new_split_times = raw_times.map(&:new_split_time).index_by(&:time_point)
+    indexed_existing_split_times = effort.split_times.each { |st| st.data_status = :confirmed if st.good? }.index_by(&:time_point).freeze
+    indexed_new_split_times = new_split_times.select(&:time_from_start).index_by(&:time_point)
     indexed_split_times = indexed_existing_split_times.merge(indexed_new_split_times)
     effort_time_points.map { |time_point| indexed_split_times[time_point] }.compact
+  end
+
+  def new_split_times # Do not memoize
+    raw_times.map(&:new_split_time)
   end
 
   def effort_lap_splits

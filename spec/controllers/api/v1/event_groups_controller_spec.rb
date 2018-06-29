@@ -695,6 +695,34 @@ RSpec.describe Api::V1::EventGroupsController do
       end
     end
 
+    context 'when a an entered_time is invalid' do
+      let(:raw_time_attributes_1) { {bib_number: '111', entered_time: '11:mm:ss', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'in'} }
+      let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '11:23:34', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
+
+      via_login_and_jwt do
+        it 'returns the raw_time without a military_time attribute' do
+          response = make_request
+          result = JSON.parse(response.body)
+          raw_time_row = result.dig('data', 'rawTimeRow')
+
+          expect(raw_time_row['errors']).to eq([])
+          expect(raw_time_row['effortOverview']).to eq([])
+
+          raw_times = raw_time_row['rawTimes']
+          expect(raw_times.size).to eq(2)
+          expect(raw_times.map { |rt| rt['bibNumber'] }).to eq(%w(111 111))
+          expect(raw_times.map { |rt| rt['lap'] }).to eq([1, 1])
+          expect(raw_times.map { |rt| rt['splitName'] }).to eq(['Aid 1', 'Aid 1'])
+          expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
+          expect(raw_times.map { |rt| rt['militaryTime'] }).to eq([nil, '11:23:34'])
+          expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:mm:ss 11:23:34))
+          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([1, 1])
+          expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
+          expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
+        end
+      end
+    end
+
     context 'when the bib number is not found' do
       let(:raw_time_attributes_1) { {bib_number: '999', entered_time: '11:22:33', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'in'} }
       let(:raw_time_attributes_2) { {bib_number: '999', entered_time: '11:23:34', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }

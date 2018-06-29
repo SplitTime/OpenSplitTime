@@ -24,7 +24,7 @@ class RowifyRawTimes
   attr_reader :event_group, :raw_times, :times_container
 
   def add_lap_to_raw_times
-    raw_times.each do |raw_time|
+    raw_times.reject(&:lap).each do |raw_time|
       if single_lap_event_group? || single_lap_event?(raw_time)
         raw_time.lap = 1
       elsif raw_time.effort_id.nil?
@@ -48,8 +48,9 @@ class RowifyRawTimes
   def build_time_row(raw_time_pair)
     raw_time = raw_time_pair.first
     effort, event, split = indexed_efforts[raw_time.effort_id], indexed_events[raw_time.event_id], indexed_splits[raw_time.split_id]
-    VerifyRawTimes.perform(raw_times: raw_time_pair, effort: effort, event: event, times_container: times_container) if effort && event && split
-    RawTimeRow.new(effort, event, split, raw_time_pair)
+    raw_time_row = RawTimeRow.new(raw_time_pair, effort, event, split, [])
+    VerifyRawTimeRow.perform(raw_time_row, times_container: times_container)
+    raw_time_row
   end
 
   def single_lap_event_group?

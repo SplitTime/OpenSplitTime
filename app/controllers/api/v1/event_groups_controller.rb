@@ -60,7 +60,25 @@ class Api::V1::EventGroupsController < ApiController
     raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
     report_raw_times_available(event_group)
 
-    render json: {data: raw_time_rows.map { |row| row.serialize }}, status: :ok
+    render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
+  end
+
+  def enrich_raw_time_row
+
+    # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
+    # with data_status, existing_times_count, lap, and other attributes set
+    # and with an effort_overview object (existing splits and time data for the related effort)
+
+    authorize @resource
+    event_group = EventGroup.where(id: @resource.id).includes(:events).first
+    raw_times_data = params[:data] || []
+    raw_times_attributes = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)[:raw_times]
+    raw_times = raw_times_attributes.map { |attributes| RawTime.new(attributes) }
+    request_row = RawTimeRow.new(raw_times)
+
+    result_row = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row)
+
+    render json: {data: {rawTimeRow: result_row.serialize_with_effort_overview}}, status: :ok
   end
 
   def trigger_time_records_push

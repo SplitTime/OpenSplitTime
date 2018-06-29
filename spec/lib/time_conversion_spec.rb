@@ -106,44 +106,75 @@ RSpec.describe TimeConversion do
   end
 
   describe '.absolute_to_hms' do
-    it 'returns an empty string when passed a nil parameter' do
-      absolute = nil
-      expect(TimeConversion.absolute_to_hms(absolute)).to eq('')
+    subject { TimeConversion.absolute_to_hms(absolute) }
+
+    context 'when passed nil' do
+      let(:absolute) { nil }
+      it('returns an empty string') { expect(subject).to eq('') }
     end
 
-    it 'returns 00:00:00 when passed a date without time values' do
-      absolute = Date.new(2016, 1, 1)
-      expect(TimeConversion.absolute_to_hms(absolute)).to eq('00:00:00')
+    context 'when passed a date without time values' do
+      let(:absolute) { Date.new(2016, 1, 1) }
+      it('returns 00:00:00') { expect(subject).to eq('00:00:00') }
     end
 
     with_each_class do |clazz|
-      it 'returns a string in the form of hh:mm:ss when passed a time object' do
-        absolute = clazz.new(2016, 7, 1, 6, 30, 45)
-        expect(TimeConversion.absolute_to_hms(absolute)).to eq('06:30:45')
+      context 'when passed a time object' do
+        let(:absolute) { clazz.new(2016, 7, 1, 6, 30, 45) }
+        it('returns a string in the form of hh:mm:ss') { expect(subject).to eq('06:30:45') }
       end
     end
 
     with_each_class do |clazz|
-      it 'functions properly when time is past 12:59:59' do
-        absolute = clazz.new(2016, 7, 1, 15, 30, 45)
-        expect(TimeConversion.absolute_to_hms(absolute)).to eq('15:30:45')
+      context 'when time is past 12:59:59' do
+        let(:absolute) { clazz.new(2016, 7, 1, 15, 30, 45) }
+        it('returns a string in the form of hh:mm:ss') { expect(subject).to eq('15:30:45') }
       end
     end
 
     with_each_class do |clazz|
-      it 'functions properly with an ActiveSupport::TimeWithZone object' do
-        absolute = clazz.new(2016, 7, 1, 15, 30, 45).in_time_zone
-        expected = format('%02d:%02d:%02d', absolute.hour, absolute.min, absolute.sec)
-        expect(TimeConversion.absolute_to_hms(absolute)).to eq(expected)
+      context 'when time is an ActiveSupport::TimeWithZone object' do
+        let(:absolute) { clazz.new(2016, 7, 1, 15, 30, 45).in_time_zone }
+        it('functions properly') { expect(subject).to eq(format('%02d:%02d:%02d', absolute.hour, absolute.min, absolute.sec)) }
       end
     end
 
     with_each_class do |clazz|
-      it 'functions as expected in different time zones' do
-        absolute = clazz.parse('2017-08-01 12:00:00 GMT').in_time_zone('Arizona')
-        expected = '05:00:00'
-        expect(TimeConversion.absolute_to_hms(absolute)).to eq(expected)
+      context 'when time is in different time zones' do
+        let(:absolute) { clazz.parse('2017-08-01 12:00:00 GMT').in_time_zone('Arizona') }
+        it('functions properly') { expect(subject).to eq('05:00:00') }
       end
+    end
+  end
+
+  describe '.absolute_to_offset' do
+    subject { TimeConversion.absolute_to_offset(absolute, event) }
+    let(:event) { Event.new(home_time_zone: 'Arizona', start_time_in_home_zone: '2018-06-30 06:00:00') }
+    let(:time_zone) { ActiveSupport::TimeZone['Arizona'] }
+
+    context 'when passed a datetime string' do
+      let(:absolute) { '2018-06-30 07:00:00' }
+      it('returns the difference in time from event start_time') { expect(subject).to eq(1.hour) }
+    end
+
+    context 'when passed a datetime object' do
+      let(:absolute) { time_zone.parse('2018-06-30 07:00:00') }
+      it('returns the difference in time from event start_time') { expect(subject).to eq(1.hour) }
+    end
+
+    context 'when passed nil' do
+      let(:absolute) { nil }
+      it('returns 0') { expect(subject).to eq(0) }
+    end
+
+    context 'when passed an empty string' do
+      let(:absolute) { '' }
+      it('returns 0') { expect(subject).to eq(0) }
+    end
+
+    context 'when passed a nonsense string' do
+      let(:absolute) { 'hello' }
+      it('returns 0') { expect(subject).to eq(0) }
     end
   end
 

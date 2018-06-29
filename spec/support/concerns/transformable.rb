@@ -421,21 +421,62 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
-  describe '#fill_nil_values!' do
+  describe '#delete_nil_keys!' do
+    context 'when a single key exists and value is nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+
+      it 'deletes the keys' do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:start_offset)
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: nil})
+      end
+    end
+
+    context 'when multiple keys exist and values are nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+
+      it 'deletes the keys' do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:start_time, :start_offset)
+        expect(subject.to_h).to eq({first_name: 'Joe'})
+      end
+    end
+
+    context 'when any value is not nil' do
+      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+
+      it 'deletes the keys' do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:first_name, :start_offset)
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: nil})
+      end
+    end
+  end
+
+  describe '#fill_blank_values!' do
     context 'when keys exist and are nil' do
       let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
 
       it 'sets the keys to the given values' do
-        subject.fill_nil_values!(start_time: '', start_offset: 0)
+        subject.fill_blank_values!(start_time: '', start_offset: 0)
         expect(subject.to_h).to eq({first_name: 'Joe', start_time: '', start_offset: 0})
       end
     end
 
-    context 'when keys exist and are not nil' do
+    context 'when keys exist and are blank' do
+      let(:attributes) { {first_name: 'Joe', start_time: '', start_offset: ''} }
+
+      it 'sets the keys to the given values' do
+        subject.fill_blank_values!(start_time: '', start_offset: 0)
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '', start_offset: 0})
+      end
+    end
+
+    context 'when keys exist and are present' do
       let(:attributes) { {first_name: 'Joe', start_time: '2017-07-01 06:00:00', start_offset: 1800} }
 
       it 'does not change the keys' do
-        subject.fill_nil_values!(start_time: '', start_offset: 0)
+        subject.fill_blank_values!(start_time: '', start_offset: 0)
         expect(subject.to_h).to eq({first_name: 'Joe', start_time: '2017-07-01 06:00:00', start_offset: 1800})
       end
     end
@@ -444,7 +485,7 @@ RSpec.shared_examples_for 'transformable' do
       let(:attributes) { {first_name: 'Joe'} }
 
       it 'does not add the keys' do
-        subject.fill_nil_values!(start_time: '', start_offset: 0)
+        subject.fill_blank_values!(start_time: '', start_offset: 0)
         expect(subject.to_h).to eq({first_name: 'Joe'})
       end
     end

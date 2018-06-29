@@ -123,7 +123,7 @@ class Effort < ApplicationRecord
 
   def start_time=(datetime)
     return unless datetime.present? && event.present?
-    self.start_offset = TimeConversion.absolute_to_offset(datetime, event)
+    self.start_offset = TimeConversion.absolute_to_offset(datetime, event) || 0
   end
 
   def day_and_time(time_from_start)

@@ -1,33 +1,31 @@
 # frozen_string_literal: true
 
-RawTimeRow = Struct.new(:effort, :event, :split, :raw_times) do
+RawTimeRow = Struct.new(:raw_times, :effort, :event, :split, :errors) do
   include ActiveModel::Serializers::JSON
 
-  RAW_TIME_ATTRIBUTES = [:absolute_time, :bib_number, :split_name, :sub_split_kind, :data_status, :stopped_here, :with_pacer, :remarks]
-  RAW_TIME_METHODS = [:lap, :military_time]
+  RAW_TIME_ATTRIBUTES = [:absolute_time, :entered_time, :bib_number, :split_name, :sub_split_kind, :data_status,
+                         :stopped_here, :with_pacer, :remarks]
+  RAW_TIME_METHODS = [:existing_times_count, :lap, :military_time, :sub_split_kind]
 
   def serialize
     basic_attributes.deep_transform_keys { |key| key.camelize(:lower) }
   end
 
-  def serialize_with_effort_summary
-    basic_attributes.merge('effort_summary' => effort_summary).deep_transform_keys { |key| key.camelize(:lower) }
+  def serialize_with_effort_overview
+    basic_attributes.merge('effort_overview' => effort_overview).deep_transform_keys { |key| key.camelize(:lower) }
   end
 
   private
 
   def basic_attributes
-    {'effort_name' => effort&.name,
-     'event_name' => event&.name,
-     'event_short_name' => event&.guaranteed_short_name,
-     'raw_times' => raw_times_array}
+    {'raw_times' => raw_times_array, 'errors' => (errors || [])}
   end
 
-  def effort_summary
+  def effort_overview
     []
   end
 
   def raw_times_array
-    raw_times.map { |rt| rt.serializable_hash(only: RAW_TIME_ATTRIBUTES, methods: RAW_TIME_METHODS) }
+    (raw_times || []).map { |rt| rt.serializable_hash(only: RAW_TIME_ATTRIBUTES, methods: RAW_TIME_METHODS) }
   end
 end

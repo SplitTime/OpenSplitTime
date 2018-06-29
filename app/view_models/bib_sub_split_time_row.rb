@@ -9,7 +9,7 @@ class BibSubSplitTimeRow
     @effort = args[:effort] || Effort.null_record
     @time_records = args[:time_records] || []
     @split_times = args[:split_times] || []
-    @event = args[:event]
+    @event_group = args[:event_group]
   end
 
   def full_name
@@ -18,7 +18,7 @@ class BibSubSplitTimeRow
 
   def recorded_times
     time_records.group_by(&:source_text).transform_values do |times_array|
-      {military_times: times_array.map { |lt| lt.military_time(time_zone) },
+      {military_times: times_array.map { |tr| tr.military_time(time_zone) || tr.entered_time },
        split_time_ids: times_array.map(&:split_time_id)}
     end
   end
@@ -44,17 +44,17 @@ class BibSubSplitTimeRow
 
   private
 
-  attr_reader :time_records, :split_times, :event
+  attr_reader :time_records, :split_times, :event_group
 
   def time_and_optional_lap(split_time)
-    event.multiple_laps? ? "Lap #{split_time.lap}: #{split_time.military_time}" : split_time.military_time
+    event_group.multiple_laps? ? "Lap #{split_time.lap}: #{split_time.military_time}" : split_time.military_time
   end
 
   def time_zone
-    event.home_time_zone
+    event_group.home_time_zone
   end
 
   def joined_military_times
-    split_times.map(&:military_time) | time_records.map { |lt| lt.military_time(time_zone) }
+    split_times.map(&:military_time) | time_records.map { |tr| tr.military_time(time_zone) }.compact
   end
 end

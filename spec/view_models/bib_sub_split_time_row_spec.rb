@@ -2,11 +2,12 @@ require 'rails_helper'
 include TimeZoneHelpers
 
 RSpec.describe BibSubSplitTimeRow do
-  subject { BibSubSplitTimeRow.new(bib_number: bib_number, effort: effort, time_records: time_records, split_times: split_times, event: event) }
+  subject { BibSubSplitTimeRow.new(bib_number: bib_number, effort: effort, time_records: time_records, split_times: split_times, event_group: event_group) }
   let(:bib_number) { '123' }
   let(:effort) { build_stubbed(:effort, event: event) }
   let(:event) { build_stubbed(:event, splits: [split]) }
   let(:split) { build_stubbed(:split) }
+  let(:event_group) { build_stubbed(:event_group, events: [event]) }
 
   let(:time_records) { [live_time_1, live_time_2, live_time_3] }
   let(:live_time_1) { build_stubbed(:live_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 08:00:00'), source: source_1) }

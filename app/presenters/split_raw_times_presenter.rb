@@ -50,7 +50,7 @@ class SplitRawTimesPresenter < BasePresenter
                            effort: indexed_efforts[bib_number],
                            time_records: grouped_raw_times[bib_number],
                            split_times: fetch_split_times(bib_number),
-                           event: event_group)
+                           event_group: event_group)
   end
 
   def fetch_split_times(bib_number)

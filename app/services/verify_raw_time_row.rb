@@ -1,0 +1,97 @@
+# frozen_string_literal: true
+
+# args[:effort] should be loaded with {split_times: :split} and event
+
+class VerifyRawTimeRow
+  def self.perform(raw_time_row, options = {})
+    new(raw_time_row, options).perform
+  end
+
+  def initialize(raw_time_row, options = {})
+    @raw_time_row = raw_time_row
+    @times_container = options[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+    validate_setup
+  end
+
+  def perform
+    if errors.empty?
+      add_existing_count
+      append_split_times
+      set_data_status
+    end
+    raw_time_row
+  end
+
+  private
+
+  attr_reader :raw_time_row, :times_container
+  delegate :raw_times, :effort, :event, :errors, to: :raw_time_row
+
+  def add_existing_count
+    raw_times.each do |raw_time|
+      raw_time.existing_times_count = effort.split_times.select do |split_time|
+        split_time.split_id == raw_time.split_id && split_time.bitkey == raw_time.bitkey
+      end.size
+    end
+  end
+
+  def append_split_times
+    raw_times.each { |raw_time| raw_time.new_split_time = SplitTimeFromRawTime.build(raw_time, effort: effort, event: event) }
+  end
+
+  def set_data_status
+    Interactors::SetEffortStatus.perform(effort, ordered_split_times: ordered_split_times, lap_splits: effort_lap_splits, times_container: times_container)
+    raw_times.each do |raw_time|
+      raw_time.data_status = raw_time.new_split_time.data_status
+    end
+  end
+
+  def ordered_split_times
+    indexed_existing_split_times = effort.split_times.dup.each { |st| st.data_status = :confirmed if st.good? }.index_by(&:time_point).freeze
+    indexed_new_split_times = raw_times.map(&:new_split_time).index_by(&:time_point)
+    indexed_split_times = indexed_existing_split_times.merge(indexed_new_split_times)
+    effort_time_points.map { |time_point| indexed_split_times[time_point] }.compact
+  end
+
+  def effort_lap_splits
+    @effort_lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(raw_times_laps.first)
+  end
+
+  def effort_time_points
+    @effort_time_points ||= effort_lap_splits.flat_map(&:time_points)
+  end
+
+  def validate_setup
+    raw_time_row.errors ||= []
+
+    errors << 'missing raw times' unless raw_times.present?
+    errors << 'missing effort' unless effort.present?
+    errors << 'missing event' unless event.present?
+
+    if errors.empty?
+      errors << 'mismatched bib numbers' if raw_times_bib_numbers.uniq.many? || raw_times_bib_numbers.first != effort.bib_number.to_s
+      errors << 'missing lap attribute' unless raw_times_laps.all?
+      errors << 'mismatched laps' if raw_times_laps.uniq.many?
+      errors << 'lap exceeds event limit' if event.maximum_laps && raw_times_laps.first > event.maximum_laps
+      errors << 'mismatched split names' if raw_times_split_names.uniq.many?
+      errors << 'invalid split name' unless event_split_names.include?(raw_times_split_names.first.parameterize)
+      errors << 'duplicate sub-split kinds' unless raw_times.map(&:bitkey) == raw_times.map(&:bitkey).uniq
+    end
+  end
+
+  def event_split_names
+    @event_split_names ||= event.ordered_splits.map(&:parameterized_base_name)
+  end
+
+  def raw_times_bib_numbers
+    @raw_times_bib_numbers ||= raw_times.map(&:bib_number)
+  end
+
+  def raw_times_laps
+    @raw_times_laps ||= raw_times.map(&:lap)
+  end
+
+  def raw_times_split_names
+    @raw_times_split_names ||= raw_times.map(&:split_name)
+  end
+end

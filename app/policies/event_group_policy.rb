@@ -68,6 +68,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def enrich_raw_time_row?
+    user.present?
+  end
+
   def pull_time_record_rows?
     user.authorized_to_edit?(event_group)
   end

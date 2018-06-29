@@ -485,7 +485,7 @@ RSpec.describe Api::V1::EventGroupsController do
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, effort: effort_2, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish') }
 
       via_login_and_jwt do
-        it 'marks the raw_times as having been pulled and returns rawTimeRows in jsonapi format' do
+        it 'marks the raw_times as having been pulled and returns raw_time_rows' do
           response = make_request
           expect(RawTime.all.pluck(:pulled_by)).to all eq(current_user.id)
 
@@ -494,8 +494,6 @@ RSpec.describe Api::V1::EventGroupsController do
           time_rows = result['data']
 
           expect(time_rows.size).to eq(2)
-          expect(time_rows.map { |row| row['eventName'] }).to all eq(event.name)
-          expect(time_rows.map { |row| row['effortName'] }).to match_array([effort_1.full_name, effort_2.full_name])
           expect(time_rows.map { |row| row['rawTimes'].size }).to match_array([1, 1])
           expect(time_rows.map { |row| row['rawTimes'].first['splitName'] }).to all eq(finish_split.base_name)
           expect(time_rows.map { |row| row['rawTimes'].first['bibNumber'] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
@@ -517,8 +515,6 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(time_rows.size).to eq(1)
 
           time_row = time_rows.first
-          expect(time_row['eventName']).to eq(event.name)
-          expect(time_row['effortName']).to eq(effort_2.full_name)
           expect(time_row['rawTimes'].size).to eq(2)
           expect(time_row['rawTimes'].map { |rt| rt['splitName'] }).to match_array([aid_split.base_name, aid_split.base_name])
           expect(time_row['rawTimes'].map { |rt| rt['bibNumber'] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
@@ -540,8 +536,6 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(time_rows.size).to eq(1)
 
           time_row = time_rows.first
-          expect(time_row['eventName']).to be_nil
-          expect(time_row['effortName']).to be_nil
           expect(time_row['rawTimes'].size).to eq(2)
           expect(time_row['rawTimes'].map { |rt| rt['splitName'] }).to match_array([aid_split.base_name, aid_split.base_name])
           expect(time_row['rawTimes'].map { |rt| rt['bibNumber'] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
@@ -563,8 +557,6 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(time_rows.size).to eq(1)
 
           time_row = time_rows.first
-          expect(time_row['eventName']).to eq(event.name)
-          expect(time_row['effortName']).to eq(effort_1.full_name)
           expect(time_row['rawTimes'].size).to eq(2)
           expect(time_row['rawTimes'].map { |rt| rt['splitName'] }).to match_array([raw_time_1.split_name, raw_time_2.split_name])
           expect(time_row['rawTimes'].map { |rt| rt['bibNumber'] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
@@ -582,6 +574,59 @@ RSpec.describe Api::V1::EventGroupsController do
           result = JSON.parse(response.body)
 
           expect(result['data']).to eq([])
+        end
+      end
+    end
+  end
+
+  describe '#enrich_raw_time_row' do
+    subject(:make_request) { get :enrich_raw_time_row, params: request_params }
+    let(:request_params) { {id: event_group.id, data: {raw_time_row: raw_time_row}} }
+    let(:raw_time_row) { {raw_times: raw_time_attributes} }
+    let(:raw_time_attributes) { [raw_time_attributes_1, raw_time_attributes_2].compact }
+    let(:errors) { [] }
+
+    let!(:event_group) { create(:event_group, available_live: true) }
+    let!(:course) { create(:course) }
+    let!(:event_1) { create(:event, event_group: event_group, course: course) }
+    let!(:event_2) { create(:event, event_group: event_group, course: course) }
+    let!(:effort_1) { create(:effort, event: event_1, bib_number: 111) }
+    let!(:effort_2) { create(:effort, event: event_2, bib_number: 112) }
+
+    let!(:start_split) { create(:start_split, course: course, base_name: 'Start') }
+    let!(:aid_split) { create(:split, course: course, base_name: 'Aid 1') }
+    let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
+    let(:splits) { [start_split, aid_split, finish_split] }
+
+    let!(:effort_1_split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: start_split, bitkey: 1, time_from_start: 0) }
+    let!(:effort_1_split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: aid_split, bitkey: 1, time_from_start: 5000) }
+    let!(:effort_1_split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: aid_split, bitkey: 64, time_from_start: 6000) }
+    let!(:effort_1_split_time_4) { create(:split_time, effort: effort_1, lap: 1, split: finish_split, bitkey: 1, time_from_start: 10000) }
+    let!(:effort_2_split_time_1) { create(:split_time, effort: effort_2, lap: 1, split: start_split, bitkey: 1, time_from_start: 0) }
+    let!(:effort_2_split_time_2) { create(:split_time, effort: effort_2, lap: 1, split: aid_split, bitkey: 1, time_from_start: 7000) }
+
+    before do
+      event_1.splits << splits
+      event_2.splits << splits
+    end
+
+    context 'when a valid raw_time_row is submitted' do
+      let(:raw_time_attributes_1) { {bib_number: '111', entered_time: '11:22:33', split_name: 'Aid 1', sub_split_kind: 'in'} }
+      let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '11:23:34', split_name: 'Aid 1', sub_split_kind: 'out'} }
+
+      via_login_and_jwt do
+        it 'adds existing_times_count and data_status' do
+          response = make_request
+
+          result = JSON.parse(response.body)
+
+          raw_time_row = result.dig('data')
+          pp result
+
+          expect(time_rows.size).to eq(2)
+          expect(time_rows.map { |row| row['rawTimes'].size }).to match_array([1, 1])
+          expect(time_rows.map { |row| row['rawTimes'].first['splitName'] }).to all eq(finish_split.base_name)
+          expect(time_rows.map { |row| row['rawTimes'].first['bibNumber'] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
         end
       end
     end

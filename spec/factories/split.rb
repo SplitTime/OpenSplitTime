@@ -25,9 +25,7 @@ FactoryBot.define do
       longitude { rand(-140..140) }
     end
 
-    after(:build, :stub) do |split|
-      split.parameterized_base_name = split.base_name.parameterize
-    end
+    after(:build, :stub) { |split| split.send(:parameterize_base_name) }
   end
 
   factory :start_split, class: Split do
@@ -39,9 +37,7 @@ FactoryBot.define do
     kind :start
     course
 
-    after(:build, :stub) do |split|
-      split.parameterized_base_name = split.base_name.parameterize
-    end
+    after(:build, :stub) { |split| split.send(:parameterize_base_name) }
   end
 
   factory :finish_split, class: Split do
@@ -53,9 +49,7 @@ FactoryBot.define do
     kind :finish
     course
 
-    after(:build, :stub) do |split|
-      split.parameterized_base_name = split.base_name.parameterize
-    end
+    after(:build, :stub) { |split| split.send(:parameterize_base_name) }
   end
 
   # This factory builds a realistic set of splits representing the Hardrock counter-clockwise course.
@@ -71,8 +65,6 @@ FactoryBot.define do
     sequence(:vert_loss_from_start, [0.0, 844.3, 1362.5, 1770.9, 2749.3, 2749.3, 4025.8, 4397.7, 5792.1, 5806.7, 5806.7, 7144.8, 8086.6, 8833.4, 9276.9, 10073.6].cycle)
     course
 
-    after(:build, :stub) do |split|
-      split.parameterized_base_name = split.base_name.parameterize
-    end
+    after(:build, :stub) { |split| split.send(:parameterize_base_name) }
   end
 end

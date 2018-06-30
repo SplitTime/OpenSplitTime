@@ -600,10 +600,19 @@
                 lastRequestComp = liveEntry.rawTimeRow.compData(liveEntry.rawTimeRow.lastRequest);
 
                 if (JSON.stringify(currentFormComp) === JSON.stringify(lastRequestComp)) {
+                    console.log('Comp data is identical');
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
 
-                return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/verify_raw_times', data, function (response) {
+                console.log('Comp data has changed');
+                var data = {
+                    data: {
+                        rawTimeRow: liveEntry.rawTimeRow.currentForm()
+                    }
+                };
+
+                return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', data, function (response) {
+                    console.log(response);
                     $('#js-live-bib').val('true');
                     if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
                         $('#js-lap-number').val(response.lap);

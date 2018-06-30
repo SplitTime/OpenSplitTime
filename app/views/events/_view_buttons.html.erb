@@ -1,23 +1,48 @@
 <ul class="nav nav-tabs nav-tabs-ost">
 
-  <%= content_tag :li,
-                  class: "#{'active' if controller_name == 'events' && action_name == 'show' }" do
-    link_to 'Results', event_path(view_object.event)
-  end -%>
-  <%= content_tag :li,
-                  class: "#{'active' if action_name == 'spread' }" do
-    link_to 'Spread', spread_event_path(view_object.event)
-  end -%>
+  <li>
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      Results&nbsp;/&nbsp;List
+      <i class="glyphicon glyphicon-chevron-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+      <%= content_tag :li,
+                      class: "#{'active' if controller_name == 'events' && action_name == 'show' }" do
+        link_to 'List', event_path(view_object.event)
+      end -%>
+      <%= content_tag :li,
+                      class: "#{'active' if action_name == 'spread' }" do
+        link_to 'Spread', spread_event_path(view_object.event)
+      end -%>
+      <%= link_to_podium(view_object) %>
+    </ul>
+  </li>
 
-  <%= link_to_podium(view_object) %>
+  <li>
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      Raw Times&nbsp;/&nbsp;List
+      <i class="glyphicon glyphicon-chevron-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+      <%= link_to_raw_times(view_object, current_user) %>
+      <%= link_to_split_raw_times(view_object, current_user) %>
+    </ul>
+  </li>
+
   <%= link_to_event_staging(view_object, current_user) %>
-  <%= link_to_raw_times(view_object, current_user) %>
-  <%= link_to_split_raw_times(view_object, current_user) %>
   <%= link_to_roster(view_object, current_user) %>
   <%= link_to_event_group(view_object, current_user) %>
-  <%= link_to_enter_group_live_entry(view_object, current_user) %>
-  <%= link_to_progress_report(view_object, current_user) %>
-  <%= link_to_drop_list(view_object, current_user) %>
-  <%= link_to_aid_station_list(view_object, current_user) %>
 
+  <li>
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      Live&nbsp;/&nbsp;Live Entry
+      <i class="glyphicon glyphicon-chevron-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+      <%= link_to_enter_group_live_entry(view_object, current_user) %>
+      <%= link_to_drop_list(view_object, current_user) %>
+      <%= link_to_progress_report(view_object, current_user) %>
+      <%= link_to_aid_station_list(view_object, current_user) %>
+    </ul>
+  </li>
 </ul>

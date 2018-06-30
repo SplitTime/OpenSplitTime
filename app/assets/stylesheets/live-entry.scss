@@ -16,11 +16,11 @@ Placeholders
 /******
 Globals
 *******/
-.row.header,
-.row.mid,
-.live_entry .row {
-    margin: 0 auto 25px; // Nerfed: Please QA
-}
+// .row.header,
+// .row.mid,
+// .live_entry .row {
+//     margin: 0 auto 25px; // Nerfed: Please QA
+// }
 .lap-disabled .lap-only {
     display: none;
 }
@@ -104,13 +104,13 @@ Globals
 
 /******* Live Entry Form ********/
 .form-split-wrapper {
-    display: table;
+    // display: table;
     @extend .no-gutter;
-    border-bottom: 1px solid $gray;
+    // border-bottom: 1px solid $gray;
     width: 100%;
 
     .live-entry {
-        margin: 0 auto 25px;
+        margin: 0 auto 0;
 
         label {
             text-align: right;
@@ -403,10 +403,23 @@ Globals
         }
     }
 
+    .dataTables_empty {
+        text-align: center;
+    }
+
     .dataTables_length, .dataTables_filter {
         select, .input-group {
             margin: 0 5px;
         }
+    }
+
+    .dataTables_info {
+        line-height: 34px;
+    }
+
+    .dataTables_paginate {
+        text-align: right;
+        ul { margin-top: 0; }
     }
 
     .row-edit-btns {

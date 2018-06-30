@@ -1,23 +1,42 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Aid station report - #{@aid_stations_display.event_name}" %>
 <% end %>
-<div class="row header">
-  <div class="col-xs-7">
-    <h2><%= "#{@aid_stations_display.event_name}: Aid Station Report" %></h2>
-    <h4><%= "as of #{day_time_current_military_full(@aid_stations_display.home_time_zone)}" %></h4>
-  </div>
-  <div class="col-xs-5 page-navigation">
-    <%= render 'live/event_groups/live_entry_button_cluster', event: @aid_stations_display.event %>
-  </div>
-</div>
 
-<% if @aid_stations_display.ordered_events_within_group.many? %>
-    <div class="row mid">
-      <div class="col-xs-12">
-        <%= render 'event_groups/event_buttons', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
+<% content_for(:container_type) do %>skip<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="ost-title col-sm-5">
+        <h1><strong><%= "#{@aid_stations_display.event_name}: Progress Report" %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <li><a><%= @presenter.event_group.name %></a></li>
+          <li class="active">Progress Report</li>
+        </ul>
+      </div>
+      <aside class="ost-alerts col-sm-7">
+      </aside>
+    </div>
+    <h5>As of: <strong><%= "#{day_time_current_military_full(@aid_stations_display.home_time_zone)}" %></strong></h5>
+    <%= render 'events/view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<aside class="ost-toolbar container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-4 page-navigation-left form-inline">
+        <% if @aid_stations_display.ordered_events_within_group.many? %>
+          <%= render 'event_groups/event_buttons', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
+        <% end %>
       </div>
     </div>
-<% end %>
+  </div>
+</aside>
+
+<article class="container">
 
 <div class="row">
   <div class="col-xs-6">
@@ -56,3 +75,5 @@
     </table>
   </div>
 </div>
+
+</article>

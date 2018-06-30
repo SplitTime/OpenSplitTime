@@ -2,24 +2,38 @@
   <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
 <% end %>
 
-<div class="row header">
-  <div id="js-group-new-times-alert" class="alert alert-info center" role="alert">
-    <a href="#js-import-live-times">New time records available</a>
-  </div>
-  <div class="col-xs-12 col-md-6 page-title">
-    <h2></h2>
+<% content_for(:container_type) do %>skip<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="ost-title col-sm-5">
+        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <li><a><%= @presenter.event_group.name %></a></li>
+          <li class="active">Live Entry</li>
+        </ul>
+      </div>
+      <aside class="ost-alerts col-sm-7">
+        <div id="js-group-new-times-alert" class="alert alert-orange float-right" role="alert">
+          <a href="#js-import-live-times" class="alert-body">
+            <i class="glyphicon glyphicon-time alert-icon"></i>
+            <strong>New Live Times Available</strong><br/>
+            Click to pull times.
+          </a>
+        </div>
+      </aside>
+    </div>
     <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ENV['BASE_URI']}) do %>
     <% end %>
+    <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
+</header>
 
-  <div class="col-xs-12 col-md-6 page-navigation">
-    <%= render 'live_entry_button_cluster', event: @event_group.ordered_events.first %>
-  </div>
-
-</div>
-
-
-<div class="row form-split-wrapper lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+<article class="container">
+<div class="form-split-wrapper lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
 
   <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
     <span id="js-group-live-times-pusher" data-key="<%= ENV['PUSHER_KEY'] %>"></span>
@@ -155,91 +169,109 @@
   </div>
 
 </div>
+</article>
 
-<div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-
-  <div class="col-xs-12">
-    <h3>Local Data Workspace</h3>
-    <div class="provisional-table-wrapper">
-      <table id="js-group-local-workspace-table" class="table table-striped provisional-data-table">
-        <thead>
-        <tr>
-          <th>Aid Station</th>
-          <th class="group-only">Event</th>
-          <th>Bib</th>
-          <th>Name</th>
-          <th class="lap-only">Lap</th>
-          <th class="time-in-only">Time In</th>
-          <th class="time-out-only">Time Out</th>
-          <th class="pacer-only">Pacer</th>
-          <th>Dropped</th>
-          <th data-orderable="false">&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr style="display: none">
-          <td data-order="0"></td>
-          <td class="group-only"></td>
-          <td></td>
-          <td></td>
-          <td class="lap-only"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        </tbody>
-      </table>
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3><strong>Local Data Workspace</strong></h3>
+      </div>
+      <div class="col-sm-6 form-inline text-right">
+        Show 
+        <select class="form-control">
+          <option>10</option>
+        </select>
+        Entries
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12" id="js-group-live-messages">
-    <div class="alert alert-warning" role="alert" id="js-group-import-live-warning">
-      <strong>You're up to date</strong> No live time data available to pull.
-    </div>
-    <div class="alert alert-danger" role="alert" id="js-group-import-live-error">
-      <strong>Error</strong> Couldn't read data from the server.
+</header>
+
+<article class="container">
+  <div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+    <div class="col-xs-12">
+      <div class="provisional-table-wrapper">
+        <table id="js-group-local-workspace-table" class="table table-striped provisional-data-table">
+          <thead>
+          <tr>
+            <th>Aid Station</th>
+            <th class="group-only">Event</th>
+            <th>Bib</th>
+            <th>Name</th>
+            <th class="lap-only">Lap</th>
+            <th class="time-in-only">Time In</th>
+            <th class="time-out-only">Time Out</th>
+            <th class="pacer-only">Pacer</th>
+            <th>Dropped</th>
+            <th data-orderable="false">&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr style="display: none">
+            <td data-order="0"></td>
+            <td class="group-only"></td>
+            <td></td>
+            <td></td>
+            <td class="lap-only"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
-<div class="row provisional-data">
-  <div id="js-table-submit-buttons" class="col-xs-12 table-submit-wrapper">
-    <button id="js-import-live-times" class="btn btn-primary">
-      Pull Times
-      <span class="badge" id="js-pull-times-count"></span>
-    </button>
-    <button id="js-force-import-live-times" class="btn btn-danger" style="display: none;">
-      Force Pull
-      <span class="badge" id="js-force-pull-times-count"></span>
-    </button>
-    <div class="btn-group" role="group">
-      <button id="js-group-file-split" class="btn btn-primary" disabled></button>
-      <button class="btn btn-primary fileinput-button">
-        <span>Import File</span>
-        <input id="js-group-file-upload" type="file" name="file"/>
+  <div class="row">
+    <div class="col-xs-12" id="js-group-live-messages">
+      <div class="alert alert-warning" role="alert" id="js-group-import-live-warning">
+        <strong>You're up to date</strong> No live time data available to pull.
+      </div>
+      <div class="alert alert-danger" role="alert" id="js-group-import-live-error">
+        <strong>Error</strong> Couldn't read data from the server.
+      </div>
+    </div>
+  </div>
+  <div class="row provisional-data">
+    <div id="js-table-submit-buttons" class="col-xs-12 table-submit-wrapper">
+      <button id="js-import-live-times" class="btn btn-primary btn-relative float-left">
+        Pull Times
+        <span class="badge badge-floating" id="js-pull-times-count"></span>
       </button>
+      <button id="js-force-import-live-times" class="btn btn-danger btn-relative float-left" style="display: none;">
+        Force Pull
+        <span class="badge badge-floating" id="js-force-pull-times-count"></span>
+      </button>
+      <div class="btn-group float-left" role="group">
+        <button id="js-group-file-split" class="btn btn-primary" disabled></button>
+        <button class="btn btn-primary fileinput-button">
+          <span>Import File</span>
+          <input id="js-group-file-upload" type="file" name="file"/>
+        </button>
+      </div>
+      <div class="btn-group" role="group">
+        <button id="js-group-delete-all-efforts" class="btn btn-danger">Discard All</button>
+        <button id="js-group-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
+      </div>
+      <button id="js-group-submit-all-efforts" class="btn btn-primary">Submit All</button>
     </div>
-    <div class="btn-group" role="group">
-      <button id="js-group-delete-all-efforts" class="btn btn-danger">Discard All</button>
-      <button id="js-group-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
+
+    <div id="debug">
     </div>
-    <button id="js-group-submit-all-efforts" class="btn btn-success">Submit All</button>
-  </div>
 
-  <div id="debug">
-  </div>
-
-  <div id="js-group-html-modal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <div class="js-modal-content"></div>
+    <div id="js-group-html-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <div class="js-modal-content"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</article>

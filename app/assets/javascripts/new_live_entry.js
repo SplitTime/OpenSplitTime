@@ -41,8 +41,8 @@
 
         // Remove
         eventIdFromBib: function (bibNumber) {
-            if (typeof liveEntry.bibEventMap !== 'undefined' && bibNumber !== '') {
-                return liveEntry.bibEventMap[bibNumber]
+            if (typeof liveEntry.bibEventIdMap !== 'undefined' && bibNumber !== '') {
+                return liveEntry.bibEventIdMap[bibNumber]
             } else {
                 return null
             }
@@ -54,14 +54,18 @@
             return liveEntry.splitsAttributes()[splitIndex].entries[0].eventSplitIds[id]
         },
 
-        bibStatus: function (bibNumber) {
+        bibStatus: function (bibNumber, splitName) {
             var bibNotSubmitted = bibNumber.length === 0;
             var bibNotFound = typeof liveEntry.bibEffortMap[bibNumber] === 'undefined';
+            var eventSplits = liveEntry.events[liveEntry.bibEventIdMap[bibNumber]].splitNames;
+            var splitNotFound = !eventSplits.includes(splitName);
 
             if (bibNotSubmitted) {
                 return null
             } else if (bibNotFound) {
                 return 'bad'
+            } else if (splitNotFound) {
+                return 'questionable'
             } else {
                 return 'good'
             }
@@ -156,35 +160,34 @@
                 liveEntry.eventGroupResponse = response;
                 liveEntry.eventGroupAttributes = liveEntry.eventGroupResponse.data.attributes;
                 liveEntry.defaultEventId = liveEntry.eventGroupResponse.data.relationships.events.data[0].id; // Remove
-                this.buildBibEventMap(); // Remove
-                this.buildEventIdNameMap();
+                this.buildBibEventIdMap();
+                this.buildEvents();
                 this.buildBibEffortMap();
                 this.buildSplitIdIndexMap(); // Remove
                 this.buildSplitNameIndexMap();
-                console.log(liveEntry.splitNameIndexMap)
             },
 
-            // Remove
-            buildBibEventMap: function () {
-                liveEntry.bibEventMap = {};
+            buildBibEventIdMap: function () {
+                liveEntry.bibEventIdMap = {};
                 liveEntry.includedResources('efforts').forEach(function (effort) {
-                    liveEntry.bibEventMap[effort.attributes.bibNumber] = effort.attributes.eventId;
+                    liveEntry.bibEventIdMap[effort.attributes.bibNumber] = effort.attributes.eventId;
                 });
             },
 
-            buildEventIdNameMap: function () {
-                liveEntry.eventIdNameMap = {};
+            buildEvents: function () {
+                liveEntry.events = {};
                 liveEntry.includedResources('events').forEach(function (event) {
-                    liveEntry.eventIdNameMap[event.id] = event.attributes.shortName || event.attributes.name;
+                    liveEntry.events[event.id] = {
+                        name: event.attributes.shortName || event.attributes.name,
+                        splitNames: event.splitNames
+                    }
                 });
             },
 
             buildBibEffortMap: function () {
                 liveEntry.bibEffortMap = {};
                 liveEntry.includedResources('efforts').forEach(function (effort) {
-                    var bib = effort.attributes.bibNumber;
-                    liveEntry.bibEffortMap[bib] = effort;
-                    liveEntry.bibEffortMap[bib]['attributes']['eventName'] = liveEntry.eventIdNameMap[effort.attributes.eventId];
+                    liveEntry.bibEffortMap[effort.attributes.bibNumber] = effort;
                 });
             },
 
@@ -207,12 +210,16 @@
                 liveEntry.splitNameIndexMap = {};
                 liveEntry.splitsAttributes().forEach(function (splitsAttribute, i) {
                     var stationData = {};
+                    var subSplitKinds = [];
                     stationData.title = splitsAttribute.title;
                     stationData.labels = splitsAttribute.entries.map(function (entry) {
                         return entry.label
                     });
                     stationData.subSplitIn = liveEntry.containsSubSplitKind(splitsAttribute.entries, 'in');
                     stationData.subSplitOut = liveEntry.containsSubSplitKind(splitsAttribute.entries, 'out');
+                    if(stationData.subSplitIn) subSplitKinds.push('in');
+                    if(stationData.subSplitOut) subSplitKinds.push('out');
+                    stationData.subSplitKinds = subSplitKinds;
                     liveEntry.splitNameIndexMap[i] = stationData
                 })
             }
@@ -331,7 +338,7 @@
             },
 
             /**
-             * Populate the h2 with the eventName
+             * Populate the h2 with the eventGroup name
              *
              */
             updateEventName: function () {
@@ -561,7 +568,7 @@
                         fullName = effort.attributes.fullName;
                         effortId = effort.id;
                         eventId = effort.attributes.eventId;
-                        eventName = effort.attributes.eventName;
+                        eventName = liveEntry.events[eventId].name;
                         // url = effort.links.self;
                     } else {
                         fullName = 'Bib not found';
@@ -602,11 +609,9 @@
                 lastRequestComp = liveEntry.rawTimeRow.compData(liveEntry.rawTimeRow.lastRequest);
 
                 if (JSON.stringify(currentFormComp) === JSON.stringify(lastRequestComp)) {
-                    console.log('Comp data is identical');
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
 
-                console.log('Comp data has changed');
                 var data = {
                     data: {
                         rawTimeRow: liveEntry.rawTimeRow.currentForm()
@@ -614,20 +619,15 @@
                 };
 
                 return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', data, function (response) {
-                    var rawTimes;
-                    var rawTime;
-                    var inRawTime;
-                    var outRawTime;
-
                     $('#js-live-bib').val('true');
-                    rawTimes = response.data.rawTimeRow.rawTimes;
-                    rawTime = rawTimes[0];
-                    inRawTime = rawTimes.find(function(rawTime) {
+                    var rawTimes = response.data.rawTimeRow.rawTimes;
+                    var rawTime = rawTimes[0];
+                    var inRawTime = rawTimes.find(function(rawTime) {
                         return rawTime.subSplitKind.toLowerCase() === 'in'
-                    });
-                    outRawTime = rawTimes.find(function(rawTime) {
+                    }) || {};
+                    var outRawTime = rawTimes.find(function(rawTime) {
                         return rawTime.subSplitKind.toLowerCase() === 'out'
-                    });
+                    }) || {};
 
                     if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
                         $('#js-lap-number').val(rawTime.lap);
@@ -636,12 +636,12 @@
 
                     $('#js-time-in')
                         .removeClass('exists null bad good questionable')
-                        .addClass(response.timeInExists ? 'exists' : '')
-                        .addClass(response.timeInStatus);
+                        .addClass(inRawTime.existingTimesCount > 0 ? 'exists' : '')
+                        .addClass(inRawTime.dataStatus);
                     $('#js-time-out')
                         .removeClass('exists null bad good questionable')
-                        .addClass(response.timeOutExists ? 'exists' : '')
-                        .addClass(response.timeOutStatus);
+                        .addClass(outRawTime.existingTimesCount > 0 ? 'exists' : '')
+                        .addClass(outRawTime.dataStatus);
 
                     liveEntry.currentEffortData = response;
                     liveEntry.rawTimeRow.lastRequest = currentFormComp;
@@ -890,7 +890,7 @@
                         data-live-time-id-out="' + timeRow.liveTimeIdOut + '"\
                         data-event-id="' + timeRow.eventId + '"\>\
                         <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + (liveEntry.splitNameIndexMap[timeRow.stationIndex] || {title: 'Unknown'}).title + '</td>\
-                        <td class="lap-number js-lap-number group-only">' + liveEntry.eventIdNameMap[timeRow.eventId] + '</td>\
+                        <td class="lap-number js-lap-number group-only">' + liveEntry.events[timeRow.eventId].name + '</td>\
                         <td class="bib-number js-bib-number ' + liveEntry.bibStatus(timeRow) + '">' + (timeRow.bibNumber || '') + bibNumberIcon + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
                         <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
@@ -1141,7 +1141,7 @@
             },
 
             currentForm: function () {
-                var subSplitKinds = ['in', 'out'];
+                var subSplitKinds = liveEntry.splitNameIndexMap[liveEntry.currentStationIndex].subSplitKinds;
 
                 return {
                     rawTimes: subSplitKinds.map(function (kind) {

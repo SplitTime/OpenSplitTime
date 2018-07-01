@@ -39,6 +39,7 @@
             return liveEntry.eventGroupAttributes.ungroupedSplitAttributes
         },
 
+        // Remove
         eventIdFromBib: function (bibNumber) {
             if (typeof liveEntry.bibEventMap !== 'undefined' && bibNumber !== '') {
                 return liveEntry.bibEventMap[bibNumber]
@@ -47,22 +48,20 @@
             }
         },
 
+        // Remove
         getSplitId: function (eventId, splitIndex) {
             var id = String(eventId);
             return liveEntry.splitsAttributes()[splitIndex].entries[0].eventSplitIds[id]
         },
 
-        bibStatus: function (rowObject) {
-            var bibSubmitted = rowObject.bibNumber;
-            var bibFound = rowObject.effortId;
-            var splitFound = rowObject.splitId;
+        bibStatus: function (bibNumber) {
+            var bibNotSubmitted = bibNumber.length === 0;
+            var bibNotFound = typeof liveEntry.bibEffortMap[bibNumber] === 'undefined';
 
-            if (!bibSubmitted) {
+            if (bibNotSubmitted) {
                 return null
-            } else if (!bibFound) {
+            } else if (bibNotFound) {
                 return 'bad'
-            } else if (!splitFound) {
-                return 'questionable'
             } else {
                 return 'good'
             }
@@ -555,7 +554,7 @@
                 var url = '#';
                 var bib = $('#js-bib-number').val();
 
-                if (bib !== '') {
+                if (bib.length > 0) {
                     var effort = liveEntry.bibEffortMap[bib];
 
                     if (effort !== null && typeof effort === 'object') {
@@ -571,7 +570,10 @@
 
                 $('#js-effort-name').html(fullName).attr('data-effort-id', effortId).attr('data-event-id', eventId);
                 // $('#js-effort-name').attr("href", url);
-                $('#js-effort-event-name').html(eventName)
+                $('#js-effort-event-name').html(eventName);
+                $('#js-bib-number')
+                    .removeClass('null bad questionable good')
+                    .addClass(liveEntry.bibStatus(bib));
             },
 
             /**
@@ -612,16 +614,26 @@
                 };
 
                 return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', data, function (response) {
-                    console.log(response);
+                    var rawTimes;
+                    var rawTime;
+                    var inRawTime;
+                    var outRawTime;
+
                     $('#js-live-bib').val('true');
+                    rawTimes = response.data.rawTimeRow.rawTimes;
+                    rawTime = rawTimes[0];
+                    inRawTime = rawTimes.find(function(rawTime) {
+                        return rawTime.subSplitKind.toLowerCase() === 'in'
+                    });
+                    outRawTime = rawTimes.find(function(rawTime) {
+                        return rawTime.subSplitKind.toLowerCase() === 'out'
+                    });
+
                     if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
-                        $('#js-lap-number').val(response.lap);
+                        $('#js-lap-number').val(rawTime.lap);
                         $('#js-lap-number:focus').select();
                     }
 
-                    $('#js-bib-number')
-                        .removeClass('null bad questionable good')
-                        .addClass(liveEntry.bibStatus(response));
                     $('#js-time-in')
                         .removeClass('exists null bad good questionable')
                         .addClass(response.timeInExists ? 'exists' : '')
@@ -652,8 +664,8 @@
                 thisTimeRow.liveBib = $('#js-live-bib').val();
                 thisTimeRow.lap = $('#js-lap-number').val();
                 thisTimeRow.bibNumber = $('#js-bib-number').val();
-                thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber);
-                thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, liveEntry.currentStationIndex);
+                thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber); // Remove
+                thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, liveEntry.currentStationIndex); // Remove
                 thisTimeRow.effortId = liveEntry.currentEffortData.effortId;
                 thisTimeRow.effortName = $('#js-effort-name').html();
                 thisTimeRow.eventName = $('#js-effort-event-name').html();
@@ -1111,56 +1123,62 @@
 
         rawTimeRow: {
             currentResponse: {},
-            lastRequest: {},
+            lastRequest: {rawTimes: []},
 
             compData: function (row) {
-                row['rawTimes'].map(function (rawTime) {
-                    return {
-                        bibNumber: rawTime.bibNumber,
-                        enteredTime: rawTime.enteredTime,
-                        lap: rawTime.lap,
-                        splitName: rawTime.splitName,
-                        subSplitKind: rawTime.subSplitKind,
-                        stoppedHere: rawTime.stoppedHere
-                    }
-                })
+                return {
+                    rawTimes: row['rawTimes'].map(function (rawTime) {
+                        return {
+                            bibNumber: rawTime.bibNumber,
+                            enteredTime: rawTime.enteredTime,
+                            lap: rawTime.lap,
+                            splitName: rawTime.splitName,
+                            subSplitKind: rawTime.subSplitKind,
+                            stoppedHere: rawTime.stoppedHere
+                        }
+                    })
+                }
             },
 
             currentForm: function () {
                 var subSplitKinds = ['in', 'out'];
 
-                subSplitKinds.map(function(kind) {
-                    return {
-                        rawTimes: {
-                            eventGroupId: liveEntry.currentEventGroupId,
-                            bibNumber: $('#js-bib-number').val(),
-                            enteredTime: $('#js-time-' + kind).val(),
-                            lap: $('js-lap').val(),
-                            splitName: liveEntry.splitNameIndexMap[liveEntry.currentStationIndex].title,
-                            subSplitKind: kind,
-                            stoppedHere: $('#js-dropped').prop('checked'),
-                            withPacer: $('#js-pacer-' + kind).prop('checked')
+                return {
+                    rawTimes: subSplitKinds.map(function (kind) {
+                            return {
+                                eventGroupId: liveEntry.currentEventGroupId,
+                                bibNumber: $('#js-bib-number').val(),
+                                enteredTime: $('#js-time-' + kind).val(),
+                                lap: $('js-lap').val(),
+                                splitName: liveEntry.splitNameIndexMap[liveEntry.currentStationIndex].title,
+                                subSplitKind: kind,
+                                stoppedHere: $('#js-dropped').prop('checked'),
+                                withPacer: $('#js-pacer-' + kind).prop('checked')
+                            }
                         }
-                    }
-
-                })
-            }
+                    )
+                }
+            } // END currentForm
         }, // END rawTimeRow
 
-        displayAndHideMessage: function (msgElement, selector) {
-            // Fade in and fade out Bootstrap Alert
-            // @param msgElement object jQuery element containing the alert
-            // @param selector string jQuery selector to access the alert element
-            $('#js-live-messages').append(msgElement);
-            msgElement.fadeTo(500, 1);
-            window.setTimeout(function () {
-                msgElement.fadeTo(500, 0).slideUp(500, function () {
-                    msgElement = $(selector).hide().detach();
-                    liveEntry.importAsyncBusy = false;
-                });
-            }, 4000);
-            return;
-        },
+        displayAndHideMessage:
+
+            function (msgElement, selector) {
+                // Fade in and fade out Bootstrap Alert
+                // @param msgElement object jQuery element containing the alert
+                // @param selector string jQuery selector to access the alert element
+                $('#js-live-messages').append(msgElement);
+                msgElement.fadeTo(500, 1);
+                window.setTimeout(function () {
+                    msgElement.fadeTo(500, 0).slideUp(500, function () {
+                        msgElement = $(selector).hide().detach();
+                        liveEntry.importAsyncBusy = false;
+                    });
+                }, 4000);
+                return;
+            }
+
+        ,
         populateRows: function (response) {
             response.returnedRows.forEach(function (timeRow) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
@@ -1184,4 +1202,5 @@
         }
     });
 
-})(jQuery);
+})
+(jQuery);

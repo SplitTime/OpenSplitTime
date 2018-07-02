@@ -41,7 +41,7 @@ RSpec.describe ComputeDataEntryNodes do
     context 'when splits with matching names have matching sub_splits' do
       it 'returns an Array of data_entry_nodes' do
         data_entry_nodes = subject.perform
-        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:split_name)).to eq(['Start', 'Aid 1', 'Aid 1', 'Aid 2', 'Aid 2', 'Finish'])
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
         expect(data_entry_nodes.map(&:min_distance_from_start)).to eq([0, 1000, 1000, 2000, 2000, 4000])
@@ -56,7 +56,7 @@ RSpec.describe ComputeDataEntryNodes do
 
       it 'ignores the difference and returns an Array of data_entry_nodes' do
         data_entry_nodes = subject.perform
-        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:split_name)).to eq(['Start', 'Aid 1', 'Aid 1', 'Aid 2', 'Aid 2', 'Finish'])
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
       end
@@ -69,7 +69,7 @@ RSpec.describe ComputeDataEntryNodes do
       it 'returns an Array of data_entry_nodes with latitudes and longitudes' do
         data_entry_nodes = subject.perform
         expect(event_1_split_3).to be_same_location(event_2_split_2)
-        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:split_name)).to eq(['Start', 'Aid 1', 'Aid 1', 'Aid 2', 'Aid 2', 'Finish'])
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
         expect(data_entry_nodes.map(&:latitude)).to eq([nil, nil, nil, 40.0, 40.0, nil])
@@ -84,7 +84,7 @@ RSpec.describe ComputeDataEntryNodes do
       it 'returns an Array of data_entry_nodes with average latitudes and longitudes' do
         data_entry_nodes = subject.perform
         expect(event_1_split_3).to be_same_location(event_2_split_2)
-        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:split_name)).to eq(['Start', 'Aid 1', 'Aid 1', 'Aid 2', 'Aid 2', 'Finish'])
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
         expect(data_entry_nodes.map(&:latitude)).to eq([nil, nil, nil, 40.00005, 40.00005, nil])
@@ -106,9 +106,9 @@ RSpec.describe ComputeDataEntryNodes do
     context 'when splits have matching names with different capitalization' do
       let(:event_2_split_2) { build_stubbed(:split, base_name: 'AID 2', distance_from_start: 2000) }
 
-      it 'returns an Array of data_entry_nodes with average latitudes and longitudes' do
+      it 'returns an Array of data_entry_nodes using the capitalization of the first split' do
         data_entry_nodes = subject.perform
-        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:split_name)).to eq(['Start', 'Aid 1', 'Aid 1', 'Aid 2', 'Aid 2', 'Finish'])
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
       end
@@ -119,7 +119,7 @@ RSpec.describe ComputeDataEntryNodes do
 
       it 'returns an Array of data_entry_nodes with average latitudes and longitudes' do
         data_entry_nodes = subject.perform
-        expect(data_entry_nodes.map(&:split_name)).to eq(%w(start aid-1 aid-1 aid-2 aid-2 finish))
+        expect(data_entry_nodes.map(&:split_name)).to eq(['Start', 'Aid 1', 'Aid 1', 'Aid 2', 'Aid 2', 'Finish'])
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
       end

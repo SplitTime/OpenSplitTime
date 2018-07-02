@@ -45,7 +45,7 @@ RSpec.describe ComputeDataEntryGroups do
         expect(data_entry_groups.size).to eq(3)
         expect(data_entry_groups.map(&:title)).to eq(['Start/Finish', 'Aid 1', 'Aid 2'])
         expect(data_entry_groups.first.data_entry_nodes.size).to eq(2)
-        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(start finish))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(Start Finish))
         expect(data_entry_groups.first.data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in))
         expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start Finish))
       end
@@ -59,7 +59,7 @@ RSpec.describe ComputeDataEntryGroups do
         expect(data_entry_groups.size).to eq(4)
         expect(data_entry_groups.map(&:title)).to eq(['Start', 'Aid 1', 'Aid 2', 'Finish'])
         expect(data_entry_groups.first.data_entry_nodes.size).to eq(1)
-        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(start))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(Start))
         expect(data_entry_groups.first.data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in))
         expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start))
       end
@@ -74,7 +74,7 @@ RSpec.describe ComputeDataEntryGroups do
         expect(data_entry_groups.size).to eq(4)
         expect(data_entry_groups.map(&:title)).to eq(['Start', 'Aid 1', 'Aid 2', 'Finish'])
         expect(data_entry_groups.first.data_entry_nodes.size).to eq(1)
-        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(start))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(Start))
         expect(data_entry_groups.first.data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in))
         expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start))
       end
@@ -91,7 +91,7 @@ RSpec.describe ComputeDataEntryGroups do
         expect(data_entry_groups.size).to eq(4)
         expect(data_entry_groups.map(&:title)).to eq(['Start', 'Aid 1', 'Aid 2', 'Finish'])
         expect(data_entry_groups.first.data_entry_nodes.size).to eq(1)
-        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(start))
+        expect(data_entry_groups.first.data_entry_nodes.map(&:split_name)).to eq(%w(Start))
         expect(data_entry_groups.first.data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in))
         expect(data_entry_groups.first.data_entry_nodes.map(&:label)).to eq(%w(Start))
       end

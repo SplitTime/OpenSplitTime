@@ -4,11 +4,13 @@ class Live::EventsController < Live::BaseController
 
   def aid_station_report
     authorize @event
+    @presenter = EventWithEffortsPresenter.new(event: @event, params: params, current_user: current_user)
     @aid_stations_display = AidStationsDisplay.new(event: @event)
   end
 
   def progress_report
     authorize @event
+    @presenter = EventWithEffortsPresenter.new(event: @event, params: params, current_user: current_user)
     @progress_display = LiveProgressDisplay.new(event: @event, past_due_threshold: params[:past_due_threshold])
   end
 

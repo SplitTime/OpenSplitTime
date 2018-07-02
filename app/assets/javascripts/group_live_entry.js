@@ -711,9 +711,14 @@
 
                 // Initiate DataTable Plugin
                 liveEntry.timeRowsTable.$dataTable = $('#js-group-local-workspace-table').DataTable({
+                    autoWidth: false,
                     pageLength: 50,
                     oLanguage: {
-                        'sSearch': 'Filter:&nbsp;'
+                        'sSearch': 'Filter:&nbsp;',
+                        oPaginate: {
+                            'sNext': '>',
+                            'sPrevious': '<'
+                        },
                     }
                 });
                 liveEntry.timeRowsTable.$dataTable.clear().draw();

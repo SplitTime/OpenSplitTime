@@ -5,7 +5,9 @@ RSpec.describe DataEntryNode do
 
   subject { DataEntryNode.new(attributes) }
 
-  let(:attributes) { {split_name: 'name',
+  let(:attributes) { {split_name: 'Split Name',
+                      parameterized_split_name: 'split-name',
+                      display_split_name: 'Split Name',
                       sub_split_kind: 'in',
                       label: 'label',
                       latitude: 40,
@@ -22,7 +24,7 @@ RSpec.describe DataEntryNode do
 
   describe '#split_name' do
     it 'returns the split_name' do
-      expect(subject.split_name).to eq('name')
+      expect(subject.split_name).to eq('Split Name')
     end
   end
 end

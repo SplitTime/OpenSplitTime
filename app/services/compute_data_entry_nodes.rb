@@ -25,7 +25,9 @@ class ComputeDataEntryNodes
     longitudes = splits.map(&:longitude).compact
     neediest_split = splits.max_by { |split| split.bitkeys.size }
     neediest_split.bitkeys.map do |bitkey|
-      DataEntryNode.new(split_name: split_name,
+      DataEntryNode.new(split_name: neediest_split.base_name,
+                        display_split_name: neediest_split.base_name,
+                        parameterized_split_name: neediest_split.parameterized_base_name,
                         sub_split_kind: SubSplit.kind(bitkey).downcase,
                         label: neediest_split.name(bitkey),
                         latitude: latitudes.presence && latitudes.average,

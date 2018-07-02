@@ -8,8 +8,14 @@ class CombineEventGroupSplitAttributes
   end
 
   def initialize(event_group, options = {})
+    ArgsValidator.validate(subject: event_group,
+                           params: options,
+                           required: [:pair_by_location, :node_attributes],
+                           exclusive: [:pair_by_location, :node_attributes],
+                           class: self.class)
     @event_group = event_group
     @pair_by_location = options[:pair_by_location]
+    @node_attributes = options[:node_attributes]
     @data_entry_groups = ComputeDataEntryGroups.perform(event_group, pair_by_location: pair_by_location)
   end
 
@@ -19,11 +25,11 @@ class CombineEventGroupSplitAttributes
 
   private
 
-  attr_reader :event_group, :pair_by_location, :data_entry_groups
+  attr_reader :event_group, :pair_by_location, :node_attributes, :data_entry_groups
 
   def entries_from_nodes(data_entry_nodes)
     data_entry_nodes.map do |node|
-      node.to_h.slice(:event_split_ids, :sub_split_kind, :label, :split_name).merge(display_split_name: node.split_name.titleize)
+      node.to_h.slice(*node_attributes)
     end
   end
 end

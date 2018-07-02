@@ -71,15 +71,21 @@ class Api::V1::EventGroupsController < ApiController
 
     authorize @resource
     event_group = EventGroup.where(id: @resource.id).includes(:events).first
-    raw_times_data = params[:data] || []
-    raw_times_attributes = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)[:raw_times]
 
-    raw_times = raw_times_attributes.values.map { |attributes| RawTime.new(attributes) }
-    request_row = RawTimeRow.new(raw_times)
+    raw_times_data = params[:data] || ActionController::Parameters.new({})
+    if raw_times_data[:raw_time_row]
+      raw_time_row = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
+      raw_times_attributes = raw_time_row[:raw_times] || {}
 
-    result_row = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row)
+      raw_times = raw_times_attributes.values.map { |attributes| RawTime.new(attributes) }
+      request_row = RawTimeRow.new(raw_times)
 
-    render json: {data: {rawTimeRow: result_row.serialize_with_effort_overview}}, status: :ok
+      result_row = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row)
+
+      render json: {data: {rawTimeRow: result_row.serialize_with_effort_overview}}, status: :ok
+    else
+      render json: {errors: [{title: 'Request must be in the form of {data: {rawTimeRow: {rawTimes: {...}}}}'}]}, status: :unprocessable_entity
+    end
   end
 
   def trigger_time_records_push

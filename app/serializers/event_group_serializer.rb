@@ -9,19 +9,27 @@ class EventGroupSerializer < BaseSerializer
   belongs_to :organization
 
   def combined_split_attributes
-    CombineEventGroupSplitAttributes.perform(object, pair_by_location: pair_by_location?)
+    CombineEventGroupSplitAttributes.perform(object,
+                                             pair_by_location: pair_by_location?,
+                                             node_attributes: [:event_split_ids, :sub_split_kind, :label, :split_name, :display_split_name])
   end
 
   def ungrouped_split_attributes
-    CombineEventGroupSplitAttributes.perform(object, pair_by_location: false)
+    CombineEventGroupSplitAttributes.perform(object,
+                                             pair_by_location: false,
+                                             node_attributes: [:event_split_ids, :sub_split_kind, :label, :split_name, :display_split_name])
   end
 
   def data_entry_groups
-    CombineEventGroupSplitAttributes.perform(object, pair_by_location: pair_by_location?, node_attributes: [:sub_split_kind, :label, :split_name])
+    CombineEventGroupSplitAttributes.perform(object,
+                                             pair_by_location: pair_by_location?,
+                                             node_attributes: [:sub_split_kind, :label, :split_name, :parameterized_split_name])
   end
 
   def unpaired_data_entry_groups
-    CombineEventGroupSplitAttributes.perform(object, pair_by_location: false, node_attributes: [:sub_split_kind, :label, :split_name])
+    CombineEventGroupSplitAttributes.perform(object,
+                                             pair_by_location: false,
+                                             node_attributes: [:sub_split_kind, :label, :split_name, :parameterized_split_name])
   end
 
   def multi_lap

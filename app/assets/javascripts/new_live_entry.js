@@ -16,12 +16,12 @@
          */
         currentEventGroupId: null,
         serverURI: null,
-        currentEffortData: {}, // Remove
-        lastEffortRequest: {}, // Remove
         eventGroupResponse: null,
         lastReportedSplitId: null,
         lastReportedBitkey: null,
         currentStationIndex: null,
+        currentFormResponse: {},
+        lastFormRequest: {rawTimes: []},
 
         getEventLiveEntryData: function () {
             return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '?include=events.efforts&fields[efforts]=bibNumber,eventId,fullName')
@@ -55,9 +55,11 @@
         },
 
         bibStatus: function (bibNumber, splitName) {
+            debugger;
             var bibNotSubmitted = bibNumber.length === 0;
             var bibNotFound = typeof liveEntry.bibEffortMap[bibNumber] === 'undefined';
-            var eventSplits = liveEntry.events[liveEntry.bibEventIdMap[bibNumber]].splitNames;
+            var event = liveEntry.events[liveEntry.bibEventIdMap[bibNumber]];
+            var eventSplits = (event && event.splitNames) || [];
             var splitNotFound = !eventSplits.includes(splitName);
 
             if (bibNotSubmitted) {
@@ -68,6 +70,30 @@
                 return 'questionable'
             } else {
                 return 'good'
+            }
+        },
+
+        currentStation: function () {
+            return liveEntry.splitNameIndexMap[liveEntry.currentStationIndex]
+        },
+
+        currentForm: function () {
+            var subSplitKinds = liveEntry.currentStation().subSplitKinds;
+
+            return {
+                rawTimes: subSplitKinds.map(function (kind) {
+                        return {
+                            eventGroupId: liveEntry.currentEventGroupId,
+                            bibNumber: $('#js-bib-number').val(),
+                            enteredTime: $('#js-time-' + kind).val(),
+                            lap: $('js-lap').val(),
+                            splitName: liveEntry.currentStation().title,
+                            subSplitKind: kind,
+                            stoppedHere: $('#js-dropped').prop('checked'),
+                            withPacer: $('#js-pacer-' + kind).prop('checked')
+                        }
+                    }
+                )
             }
         },
 
@@ -393,7 +419,8 @@
 
                 if (liveEntry.currentStationIndex !== stationIndex) {
                     liveEntry.currentStationIndex = stationIndex;
-                    liveEntry.liveEntryForm.fetchEffortData()
+                    liveEntry.liveEntryForm.fetchEffortData();
+                    liveEntry.liveEntryForm.updateEffortLocal()
                 }
             }
         },
@@ -561,8 +588,7 @@
                 var eventName = '';
                 var url = '#';
                 var bib = $('#js-bib-number').val();
-                var splitName = liveEntry.rawTimeRow.currentForm().splitName;
-                console.log(splitName);
+                var splitName = liveEntry.currentStation().title;
 
                 if (bib.length > 0) {
                     var effort = liveEntry.bibEffortMap[bib];
@@ -590,8 +616,6 @@
              * Fetches any available information for the data entered.
              */
             fetchEffortData: function () {
-                var currentFormComp;
-                var lastRequestComp;
                 if (liveEntry.PopulatingFromRow) {
                     // Do nothing.
                     // This fn is being called from several places based on different actions.
@@ -608,20 +632,19 @@
                 liveEntry.liveEntryForm.lastBib = bibNumber;
                 liveEntry.liveEntryForm.lastStationIndex = liveEntry.currentStationIndex;
 
-                currentFormComp = liveEntry.rawTimeRow.compData(liveEntry.rawTimeRow.currentForm());
-                lastRequestComp = liveEntry.rawTimeRow.compData(liveEntry.rawTimeRow.lastRequest);
+                var currentFormComp = liveEntry.rawTimeRow.compData(liveEntry.currentForm());
+                var lastRequestComp = liveEntry.rawTimeRow.compData(liveEntry.lastFormRequest);
 
                 if (JSON.stringify(currentFormComp) === JSON.stringify(lastRequestComp)) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
-
-                var data = {
+                var requestData = {
                     data: {
-                        rawTimeRow: liveEntry.rawTimeRow.currentForm()
+                        rawTimeRow: liveEntry.currentForm()
                     }
                 };
 
-                return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', data, function (response) {
+                return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', requestData, function (response) {
                     $('#js-live-bib').val('true');
                     var rawTimes = response.data.rawTimeRow.rawTimes;
                     var rawTime = rawTimes[0];
@@ -646,8 +669,8 @@
                         .addClass(outRawTime.existingTimesCount > 0 ? 'exists' : '')
                         .addClass(outRawTime.dataStatus);
 
-                    liveEntry.currentEffortData = response;
-                    liveEntry.rawTimeRow.lastRequest = currentFormComp;
+                    liveEntry.currentFormResponse = response;
+                    liveEntry.lastFormRequest = requestData.data.rawTimeRow;
                 })
             },
 
@@ -669,7 +692,7 @@
                 thisTimeRow.bibNumber = $('#js-bib-number').val();
                 thisTimeRow.eventId = liveEntry.eventIdFromBib(thisTimeRow.bibNumber); // Remove
                 thisTimeRow.splitId = liveEntry.getSplitId(thisTimeRow.eventId, liveEntry.currentStationIndex); // Remove
-                thisTimeRow.effortId = liveEntry.currentEffortData.effortId;
+                thisTimeRow.effortId = liveEntry.currentFormResponse.effortId;
                 thisTimeRow.effortName = $('#js-effort-name').html();
                 thisTimeRow.eventName = $('#js-effort-event-name').html();
                 thisTimeRow.timeIn = $('#js-time-in:not(:disabled)').val() || '';
@@ -677,18 +700,18 @@
                 thisTimeRow.pacerIn = $('#js-pacer-in:not(:disabled)').prop('checked') || false;
                 thisTimeRow.pacerOut = $('#js-pacer-out:not(:disabled)').prop('checked') || false;
                 thisTimeRow.droppedHere = $('#js-dropped').prop('checked');
-                thisTimeRow.timeInStatus = liveEntry.currentEffortData.timeInStatus;
-                thisTimeRow.timeOutStatus = liveEntry.currentEffortData.timeOutStatus;
-                thisTimeRow.timeInExists = liveEntry.currentEffortData.timeInExists;
-                thisTimeRow.timeOutExists = liveEntry.currentEffortData.timeOutExists;
+                thisTimeRow.timeInStatus = liveEntry.currentFormResponse.timeInStatus;
+                thisTimeRow.timeOutStatus = liveEntry.currentFormResponse.timeOutStatus;
+                thisTimeRow.timeInExists = liveEntry.currentFormResponse.timeInExists;
+                thisTimeRow.timeOutExists = liveEntry.currentFormResponse.timeOutExists;
                 thisTimeRow.liveTimeIdIn = $('#js-live-time-id-in').val() || '';
                 thisTimeRow.liveTimeIdOut = $('#js-live-time-id-out').val() || '';
                 return thisTimeRow;
             },
 
             loadTimeRow: function (timeRow) {
-                liveEntry.lastEffortRequest = {};
-                liveEntry.currentEffortData = timeRow;
+                liveEntry.lastFormRequest = {};
+                liveEntry.currentFormResponse = timeRow;
                 $('#js-bib-number').val(timeRow.bibNumber).focus();
                 $('#js-lap-number').val(timeRow.lap);
                 $('#js-time-in').val(timeRow.timeIn);
@@ -710,7 +733,7 @@
                 $('#js-effort-event-name').html('');
                 $('#js-time-in').removeClass('exists null bad good questionable');
                 $('#js-time-out').removeClass('exists null bad good questionable');
-                liveEntry.lastEffortRequest = {};
+                liveEntry.lastFormRequest = {};
                 $('#js-time-in').val('');
                 $('#js-time-out').val('');
                 $('#js-live-bib').val('');
@@ -1125,9 +1148,6 @@
         }, // END timeRowsTable
 
         rawTimeRow: {
-            currentResponse: {},
-            lastRequest: {rawTimes: []},
-
             compData: function (row) {
                 return {
                     rawTimes: row['rawTimes'].map(function (rawTime) {
@@ -1141,27 +1161,7 @@
                         }
                     })
                 }
-            },
-
-            currentForm: function () {
-                var subSplitKinds = liveEntry.splitNameIndexMap[liveEntry.currentStationIndex].subSplitKinds;
-
-                return {
-                    rawTimes: subSplitKinds.map(function (kind) {
-                            return {
-                                eventGroupId: liveEntry.currentEventGroupId,
-                                bibNumber: $('#js-bib-number').val(),
-                                enteredTime: $('#js-time-' + kind).val(),
-                                lap: $('js-lap').val(),
-                                splitName: liveEntry.splitNameIndexMap[liveEntry.currentStationIndex].title,
-                                subSplitKind: kind,
-                                stoppedHere: $('#js-dropped').prop('checked'),
-                                withPacer: $('#js-pacer-' + kind).prop('checked')
-                            }
-                        }
-                    )
-                }
-            } // END currentForm
+            }
         }, // END rawTimeRow
 
         displayAndHideMessage:

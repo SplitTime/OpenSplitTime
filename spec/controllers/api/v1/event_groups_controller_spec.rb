@@ -135,25 +135,25 @@ RSpec.describe Api::V1::EventGroupsController do
                                         event_1_id => event_1_split_1.id},
                     'subSplitKind' => 'in',
                     'label' => 'Start',
-                    'splitName' => 'start',
+                    'splitName' => 'Start',
                     'displaySplitName' => 'Start'},
                    {'eventSplitIds' => {event_2_id => event_2_split_3.id,
                                         event_1_id => event_1_split_4.id},
                     'subSplitKind' => 'in',
                     'label' => 'Finish',
-                    'splitName' => 'finish',
+                    'splitName' => 'Finish',
                     'displaySplitName' => 'Finish'}]},
              {'title' => 'Aid 1',
               'entries' =>
                   [{'eventSplitIds' => {event_1_id => event_1_split_2.id},
                     'subSplitKind' => 'in',
                     'label' => 'Aid 1 In',
-                    'splitName' => 'aid-1',
+                    'splitName' => 'Aid 1',
                     'displaySplitName' => 'Aid 1'},
                    {'eventSplitIds' => {event_1_id => event_1_split_2.id},
                     'subSplitKind' => 'out',
                     'label' => 'Aid 1 Out',
-                    'splitName' => 'aid-1',
+                    'splitName' => 'Aid 1',
                     'displaySplitName' => 'Aid 1'}]},
              {'title' => 'Aid 2',
               'entries' =>
@@ -161,13 +161,13 @@ RSpec.describe Api::V1::EventGroupsController do
                                         event_1_id => event_1_split_3.id},
                     'subSplitKind' => 'in',
                     'label' => 'Aid 2 In',
-                    'splitName' => 'aid-2',
+                    'splitName' => 'Aid 2',
                     'displaySplitName' => 'Aid 2'},
                    {'eventSplitIds' => {event_2_id => event_2_split_2.id,
                                         event_1_id => event_1_split_3.id},
                     'subSplitKind' => 'out',
                     'label' => 'Aid 2 Out',
-                    'splitName' => 'aid-2',
+                    'splitName' => 'Aid 2',
                     'displaySplitName' => 'Aid 2'}]}
             ]
           }
@@ -583,7 +583,7 @@ RSpec.describe Api::V1::EventGroupsController do
     subject(:make_request) { get :enrich_raw_time_row, params: request_params }
     let(:request_params) { {id: event_group.id, data: {raw_time_row: raw_time_row}} }
     let(:raw_time_row) { {raw_times: raw_time_attributes} }
-    let(:raw_time_attributes) { [raw_time_attributes_1, raw_time_attributes_2].compact }
+    let(:raw_time_attributes) { {0 => raw_time_attributes_1, 1 => raw_time_attributes_2}.compact }
     let(:errors) { [] }
 
     let!(:event_group) { create(:event_group, available_live: true) }

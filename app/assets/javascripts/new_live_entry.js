@@ -165,6 +165,7 @@
                 this.buildBibEffortMap();
                 this.buildSplitIdIndexMap(); // Remove
                 this.buildSplitNameIndexMap();
+                console.log(liveEntry.splitNameIndexMap)
             },
 
             buildBibEventIdMap: function () {
@@ -179,7 +180,7 @@
                 liveEntry.includedResources('events').forEach(function (event) {
                     liveEntry.events[event.id] = {
                         name: event.attributes.shortName || event.attributes.name,
-                        splitNames: event.splitNames
+                        splitNames: event.attributes.splitNames
                     }
                 });
             },
@@ -560,6 +561,8 @@
                 var eventName = '';
                 var url = '#';
                 var bib = $('#js-bib-number').val();
+                var splitName = liveEntry.rawTimeRow.currentForm().splitName;
+                console.log(splitName);
 
                 if (bib.length > 0) {
                     var effort = liveEntry.bibEffortMap[bib];
@@ -580,7 +583,7 @@
                 $('#js-effort-event-name').html(eventName);
                 $('#js-bib-number')
                     .removeClass('null bad questionable good')
-                    .addClass(liveEntry.bibStatus(bib));
+                    .addClass(liveEntry.bibStatus(bib, splitName));
             },
 
             /**

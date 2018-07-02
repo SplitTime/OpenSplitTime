@@ -11,6 +11,6 @@ DataEntryGroup = Struct.new(:data_entry_nodes) do
   end
 
   def title
-    split_names.map { |name| name.split('-').join(' ').titleize }.uniq.join('/')
+    split_names.map(&:parameterize).uniq.many? ? split_names.join('/') : split_names.first
   end
 end

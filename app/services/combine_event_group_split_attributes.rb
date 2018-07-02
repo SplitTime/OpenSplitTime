@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class CombineEventGroupSplitAttributes
-  DEFAULT_NODE_ATTRIBUTES = [:event_split_ids, :sub_split_kind, :label, :split_name, :display_split_name]
 
   # The event_group should be loaded with includes(events: :splits)
   def self.perform(event_group, options = {})
@@ -9,9 +8,14 @@ class CombineEventGroupSplitAttributes
   end
 
   def initialize(event_group, options = {})
+    ArgsValidator.validate(subject: event_group,
+                           params: options,
+                           required: [:pair_by_location, :node_attributes],
+                           exclusive: [:pair_by_location, :node_attributes],
+                           class: self.class)
     @event_group = event_group
     @pair_by_location = options[:pair_by_location]
-    @node_attributes = options[:node_attributes] || DEFAULT_NODE_ATTRIBUTES
+    @node_attributes = options[:node_attributes]
     @data_entry_groups = ComputeDataEntryGroups.perform(event_group, pair_by_location: pair_by_location)
   end
 

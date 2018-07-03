@@ -200,14 +200,15 @@ Progress Bar Navigation
 	position: relative;
 	width: 100%;
 	padding: 0 3px;
-	
+	margin-top: 1em;
+	margin-bottom: -1em;
+
 	$progress-bar-nav: (
 		'bar-margin': 50px,
 		'bar-height': 1em,
 		'indicator-height': 0.4em,
 		'bubble-height': 1.5em
 	);
-
 
 	&:before {
 		display: block;

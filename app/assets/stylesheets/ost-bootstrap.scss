@@ -133,6 +133,10 @@
     border-bottom: 2px solid $darkerGray;
 }
 
+.ost-article {
+    margin-top: 20px;
+}
+
 .ost-select-wrapper {
     position: relative;
 
@@ -152,9 +156,15 @@
     }
 }
 
-.table-fixed-height {
+.table-fixed {
     & > tbody > tr {
         height: 60px;
+    }
+}
+
+.table-fixed-sm {
+    & > tbody > tr {
+        height: 48px;
     }
 }
 

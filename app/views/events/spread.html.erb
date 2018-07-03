@@ -82,9 +82,9 @@
   <%= render 'partner_banner', partner: @presenter.partner_with_banner, organization_name: @presenter.organization_name %>
 <% end %>
 
-<article class="container">
+<article class="ost-article container">
 <% cache "#{@presenter.cache_key}/html", expires_in: @presenter.cache_expire do %>
-  <table class="table table-striped table-centered table-fixed-height">
+  <table class="table table-striped table-centered table-fixed">
     <thead>
     <tr>
       <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>

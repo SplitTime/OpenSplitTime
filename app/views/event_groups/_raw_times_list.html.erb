@@ -1,7 +1,7 @@
 <%# Requires parameter view_object %>
 
 <% if view_object.raw_times.blank? %>
-  <article class="container">
+  <article class="ost-article container">
     <strong>No raw times have been submitted for this event group.</strong>
   </article>
 <% else %>
@@ -25,7 +25,7 @@
     </div>
   </aside>
 
-  <article class="container">
+  <article class="ost-article container">
     <% if view_object.filtered_raw_times.present? %>
 
       <div class="row">

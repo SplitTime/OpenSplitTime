@@ -1,5 +1,5 @@
 <% if @presenter.event_group_efforts.blank? %>
-  <article class="container">
+  <article class="ost-article container">
     <strong>No efforts have been added to this event group.</strong>
   </article>
 <% else %>
@@ -23,7 +23,7 @@
     </div>
   </aside>
 
-  <article class="container">
+  <article class="ost-article container">
     <% if @presenter.filtered_ranked_efforts.present? %>
 
         <div class="row">

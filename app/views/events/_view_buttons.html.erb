@@ -3,7 +3,7 @@
   <li>
     <a class="dropdown-toggle" data-toggle="dropdown">
       Results&nbsp;/&nbsp;List
-      <i class="glyphicon glyphicon-chevron-down"></i>
+      <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
       <%= content_tag :li,
@@ -21,7 +21,7 @@
   <li>
     <a class="dropdown-toggle" data-toggle="dropdown">
       Raw Times&nbsp;/&nbsp;List
-      <i class="glyphicon glyphicon-chevron-down"></i>
+      <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
       <%= link_to_raw_times(view_object, current_user) %>
@@ -36,7 +36,7 @@
   <li>
     <a class="dropdown-toggle" data-toggle="dropdown">
       Live&nbsp;/&nbsp;Live Entry
-      <i class="glyphicon glyphicon-chevron-down"></i>
+      <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
       <%= link_to_enter_group_live_entry(view_object, current_user) %>

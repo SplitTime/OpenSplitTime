@@ -11,6 +11,7 @@ class Api::V1::EventGroupsController < ApiController
   def import
     authorize @resource
 
+    limited_response = params[:limited_response]&.to_boolean
     importer = ETL::ImporterFromContext.build(@resource, params, current_user)
     importer.import
     errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
@@ -20,14 +21,16 @@ class Api::V1::EventGroupsController < ApiController
         render json: {errors: errors}, status: :unprocessable_entity
       else
         ETL::EventGroupImportProcess.perform!(@resource, importer)
-        render json: importer.saved_records, status: :created
+        response = limited_response ? {} : importer.saved_records
+        render json: response, status: :created
       end
     else
       ETL::EventGroupImportProcess.perform!(@resource, importer)
-      render json: {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
-                    destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
-                    errors: errors},
-             status: importer.saved_records.present? ? :created : :unprocessable_entity
+      response = limited_response ? {} :
+                     {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                      destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
+                      errors: errors}
+      render json: response, status: importer.saved_records.present? ? :created : :unprocessable_entity
     end
   end
 

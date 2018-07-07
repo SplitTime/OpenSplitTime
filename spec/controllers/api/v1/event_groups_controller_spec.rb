@@ -135,25 +135,25 @@ RSpec.describe Api::V1::EventGroupsController do
                                         event_1_id => event_1_split_1.id},
                     'subSplitKind' => 'in',
                     'label' => 'Start',
-                    'splitName' => 'start',
+                    'splitName' => 'Start',
                     'displaySplitName' => 'Start'},
                    {'eventSplitIds' => {event_2_id => event_2_split_3.id,
                                         event_1_id => event_1_split_4.id},
                     'subSplitKind' => 'in',
                     'label' => 'Finish',
-                    'splitName' => 'finish',
+                    'splitName' => 'Finish',
                     'displaySplitName' => 'Finish'}]},
              {'title' => 'Aid 1',
               'entries' =>
                   [{'eventSplitIds' => {event_1_id => event_1_split_2.id},
                     'subSplitKind' => 'in',
                     'label' => 'Aid 1 In',
-                    'splitName' => 'aid-1',
+                    'splitName' => 'Aid 1',
                     'displaySplitName' => 'Aid 1'},
                    {'eventSplitIds' => {event_1_id => event_1_split_2.id},
                     'subSplitKind' => 'out',
                     'label' => 'Aid 1 Out',
-                    'splitName' => 'aid-1',
+                    'splitName' => 'Aid 1',
                     'displaySplitName' => 'Aid 1'}]},
              {'title' => 'Aid 2',
               'entries' =>
@@ -161,13 +161,13 @@ RSpec.describe Api::V1::EventGroupsController do
                                         event_1_id => event_1_split_3.id},
                     'subSplitKind' => 'in',
                     'label' => 'Aid 2 In',
-                    'splitName' => 'aid-2',
+                    'splitName' => 'Aid 2',
                     'displaySplitName' => 'Aid 2'},
                    {'eventSplitIds' => {event_2_id => event_2_split_2.id,
                                         event_1_id => event_1_split_3.id},
                     'subSplitKind' => 'out',
                     'label' => 'Aid 2 Out',
-                    'splitName' => 'aid-2',
+                    'splitName' => 'Aid 2',
                     'displaySplitName' => 'Aid 2'}]}
             ]
           }
@@ -310,12 +310,14 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:absolute_time_out) { time_zone.parse('2016-07-01 10:50:50') }
     let(:effort) { create(:effort, event: event) }
     let(:bib_number) { effort.bib_number.to_s }
+    let(:strict) { nil }
     let(:unique_key) { nil }
+    let(:limited_response) { nil }
 
     via_login_and_jwt do
       context 'when provided with an array of raw_time hashes and data_format: :jsonapi_batch' do
         let(:split_name) { splits.first.name }
-        let(:request_params) { {id: event_group.id, data_format: 'jsonapi_batch', data: data, unique_key: unique_key} }
+        let(:request_params) { {id: event_group.id, data_format: 'jsonapi_batch', data: data, strict: strict, unique_key: unique_key, limited_response: limited_response} }
         let(:data) { [
             {type: 'raw_time',
              attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: 'in', absoluteTime: absolute_time_in,
@@ -337,6 +339,60 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(RawTime.all.map(&:bitkey)).to eq([1, 64])
           expect(RawTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
           expect(RawTime.all.map(&:event_group_id)).to all eq(event_group.id)
+        end
+
+        context 'when one raw_time is valid and another raw_time is invalid' do
+          let(:data) { [
+              {type: 'raw_time',
+               attributes: {bibNumber: nil, splitName: split_name, subSplitKind: 'in', absoluteTime: absolute_time_in,
+                            withPacer: 'true', stoppedHere: 'false', source: source}},
+              {type: 'raw_time',
+               attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: 'out', absoluteTime: absolute_time_out,
+                            withPacer: 'true', stoppedHere: 'true', source: source}}
+          ] }
+
+          it 'does not create any raw_times and returns 422' do
+            expect(RawTime.all.size).to eq(0)
+            make_request
+            expect(response.status).to eq(422)
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response['errors'].first.dig('detail', 'messages')).to include("Bib number can't be blank")
+            expect(RawTime.all.size).to eq(0)
+          end
+        end
+
+        context 'when params[:strict] is "true"' do
+          let(:strict) { true }
+
+          it 'creates raw_times and returns 201' do
+            expect(RawTime.all.size).to eq(0)
+            make_request
+            expect(response.status).to eq(201)
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response['data'].map { |record| record['type'] }).to all (eq('rawTimes'))
+            expect(RawTime.all.size).to eq(2)
+            expect(RawTime.all.map(&:bib_number)).to all eq(bib_number)
+            expect(RawTime.all.map(&:bitkey)).to eq([1, 64])
+            expect(RawTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(RawTime.all.map(&:event_group_id)).to all eq(event_group.id)
+          end
+        end
+
+        context 'when params[:limited_response] is "true"' do
+          let(:limited_response) { true }
+
+          it 'creates raw_times and returns 201 without sending other data' do
+            expect(RawTime.all.size).to eq(0)
+            make_request
+            expect(response.status).to eq(201)
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response).to (eq({}))
+            expect(RawTime.all.size).to eq(2)
+            expect(RawTime.all.map(&:bib_number)).to all eq(bib_number)
+            expect(RawTime.all.map(&:bitkey)).to eq([1, 64])
+            expect(RawTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(RawTime.all.map(&:event_group_id)).to all eq(event_group.id)
+          end
         end
 
         context 'when there is a duplicate raw_time in the database' do

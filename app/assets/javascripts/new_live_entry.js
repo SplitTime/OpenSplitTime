@@ -899,8 +899,7 @@
                 var rowData = liveEntry.timeRowsTable.trToData(trHtml);
                 var $row = $('#workspace-' + rawTimeRow.uniqueId);
                 $row.removeClass('highlight');
-                var row = liveEntry.timeRowsTable.$dataTable.row($row);
-                row.data(rowData).draw // This does not work
+                liveEntry.timeRowsTable.$dataTable.row($row).data(rowData).draw
             },
 
             removeTimeRows: function (timeRows) {
@@ -1001,7 +1000,14 @@
             trToData: function (row) {
                 var rowData = {};
                 $(row).find('td').each(function (i, el) {
-                    rowData[i] = el.innerHTML;
+                    if (i === 0) {
+                        rowData[i] = {
+                            display: el.innerHTML,
+                            '@data-order': null
+                        }
+                    } else {
+                        rowData[i] = el.innerHTML
+                    }
                 });
                 return rowData
             },

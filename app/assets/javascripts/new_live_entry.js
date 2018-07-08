@@ -46,12 +46,12 @@
             return liveEntry.splitsAttributes()[splitIndex].entries[0].eventSplitIds[id]
         },
 
-        bibStatus: function (bibNumber, parameterizedSplitName) {
+        bibStatus: function (bibNumber, splitName) {
             var bibNotSubmitted = bibNumber.length === 0;
             var bibNotFound = typeof liveEntry.bibEffortMap[bibNumber] === 'undefined';
             var event = liveEntry.events[liveEntry.bibEventIdMap[bibNumber]];
-            var parameterizedSplitNames = (event && event.parameterizedSplitNames) || [];
-            var splitNotFound = !parameterizedSplitNames.includes(parameterizedSplitName);
+            var splitNames = (event && event.splitNames) || [];
+            var splitNotFound = !splitNames.includes(splitName);
 
             if (bibNotSubmitted) {
                 return null
@@ -81,9 +81,13 @@
             }, false)
         },
 
-        currentRawTime: function(kind) {
+        currentRawTime: function (kind) {
             if (typeof liveEntry.currentFormResponse.data === 'undefined') return {};
-            var rawTimes = liveEntry.currentFormResponse.data.rawTimeRow.rawTimes;
+            return liveEntry.rawTimeFromRow(liveEntry.currentFormResponse.data.rawTimeRow, kind)
+        },
+
+        rawTimeFromRow: function (timeRow, kind) {
+            var rawTimes = timeRow.rawTimes;
             if (kind === 'in') {
                 return rawTimes.find(function (rawTime) {
                     return rawTime.subSplitKind.toLowerCase() === 'in'
@@ -93,7 +97,7 @@
                     return rawTime.subSplitKind.toLowerCase() === 'out'
                 }) || {}
             } else {
-                return rawTimes[0]
+                return rawTimes[0] || {}
             }
         },
 
@@ -176,7 +180,6 @@
                 this.buildBibEventIdMap();
                 this.buildEvents();
                 this.buildBibEffortMap();
-                // this.buildSplitIdIndexMap(); // Remove
                 this.buildStationIndexMap();
                 liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
             },
@@ -193,7 +196,7 @@
                 liveEntry.includedResources('events').forEach(function (event) {
                     liveEntry.events[event.id] = {
                         name: event.attributes.shortName || event.attributes.name,
-                        parameterizedSplitNames: event.attributes.parameterizedSplitNames
+                        splitNames: event.attributes.splitNames
                     }
                 });
             },
@@ -205,21 +208,6 @@
                 });
             },
 
-            // Remove
-            // buildSplitIdIndexMap: function () {
-            //     liveEntry.splitIdIndexMap = {};
-            //     liveEntry.splitsAttributes().forEach(function (splitsAttribute, i) {
-            //         splitsAttribute.entries.forEach(function (entry) {
-            //             var entrySplitIds = Object.keys(entry.eventSplitIds).map(function (k) {
-            //                 return entry.eventSplitIds[k]
-            //             });
-            //             entrySplitIds.forEach(function (splitId) {
-            //                 liveEntry.splitIdIndexMap[splitId] = i;
-            //             })
-            //         })
-            //     });
-            // },
-
             buildStationIndexMap: function () {
                 liveEntry.stationIndexMap = {};
                 liveEntry.indexStationMap = {};
@@ -228,7 +216,7 @@
                     var stationData = {};
                     stationData.subSplitKinds = [];
                     stationData.title = splitsAttribute.title;
-                    stationData.parameterizedSplitName = splitsAttribute.entries[0].parameterizedSplitName;
+                    stationData.splitName = splitsAttribute.entries[0].splitName;
                     stationData.labelIn = splitsAttribute.entries[0] && splitsAttribute.entries[0].label || '';
                     stationData.labelOut = splitsAttribute.entries[1] && splitsAttribute.entries[1].label || '';
                     stationData.subSplitIn = liveEntry.containsSubSplitKind(splitsAttribute.entries, 'in');
@@ -242,7 +230,7 @@
                         if (!liveEntry.subSplitKinds.includes('out')) liveEntry.subSplitKinds.push('out')
                     }
                     liveEntry.stationIndexMap[i] = stationData;
-                    liveEntry.indexStationMap[stationData.title] = i
+                    liveEntry.indexStationMap[stationData.splitName] = i
                 })
             }
         },
@@ -322,6 +310,35 @@
                 });
                 localStorage.setItem(this.storageId, JSON.stringify(storedTimeRows));
                 return null;
+            },
+
+            /**
+             * Update or insert the rawTimeRow, as appropriate
+             *
+             * @param rawTimeRow    Pass in the rawTimeRow we want to upsert.
+             * @return null
+             */
+            upsertTimeRow: function (rawTimeRow) {
+                var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                var newRow = true;
+
+                $.each(storedTimeRows, function (index) {
+                    if (this.uniqueId === rawTimeRow.uniqueId) {
+                        storedTimeRows[index] = rawTimeRow;
+                        liveEntry.timeRowsTable.updateTimeRowInTable(rawTimeRow);
+                        newRow = false;
+                        return false
+                    }
+                });
+
+                if (newRow) {
+                    if (!liveEntry.timeRowsCache.isMatchedTimeRow(rawTimeRow)) {
+                        storedTimeRows.push(rawTimeRow);
+                        liveEntry.timeRowsTable.addTimeRowToTable(rawTimeRow);
+                    }
+                }
+
+                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
             },
 
             /**
@@ -556,7 +573,7 @@
                 var eventName = '';
                 var url = '#';
                 var bib = $('#js-bib-number').val();
-                var parameterizedSplitName = liveEntry.currentStation().parameterizedSplitName;
+                var splitName = liveEntry.currentStation().splitName;
 
                 if (bib.length > 0) {
                     var effort = liveEntry.bibEffortMap[bib];
@@ -569,15 +586,18 @@
                         // url = effort.links.self;
                     } else {
                         fullName = '[Bib not found]';
+                        eventName = '--'
                     }
                 }
 
                 $('#js-effort-name').html(fullName).attr('data-effort-id', effortId).attr('data-event-id', eventId);
                 // $('#js-effort-name').attr("href", url);
                 $('#js-effort-event-name').html(eventName);
+                var bibStatus = liveEntry.bibStatus(bib, splitName);
                 $('#js-bib-number')
                     .removeClass('null bad questionable good')
-                    .addClass(liveEntry.bibStatus(bib, parameterizedSplitName));
+                    .addClass(bibStatus)
+                    .attr('data-bib-status', bibStatus);
             },
 
             /**
@@ -625,15 +645,9 @@
                         $('#js-lap-number:focus').select();
                     }
 
-                    $('#js-time-in')
-                        .removeClass('exists null bad good questionable')
-                        .addClass(inRawTime.existingTimesCount > 0 ? 'exists' : '')
-                        .addClass(inRawTime.dataStatus);
-                    $('#js-time-out')
-                        .removeClass('exists null bad good questionable')
-                        .addClass(outRawTime.existingTimesCount > 0 ? 'exists' : '')
-                        .addClass(outRawTime.dataStatus)
-                    })
+                    liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), inRawTime);
+                    liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), outRawTime);
+                })
             },
 
             /**
@@ -641,28 +655,33 @@
              * @return object a single rawTimeRow
              */
             getTimeRow: function () {
-                if ($('#js-bib-number').val() === '' &&
+                if ($('#js-unique-id').val() === '' &&
+                    $('#js-bib-number').val() === '' &&
                     $('#js-time-in').val() === '' &&
                     $('#js-time-out').val() === '') {
                     return liveEntry.emptyRawTimeRow;
                 }
 
                 var subSplitKinds = liveEntry.currentStation().subSplitKinds;
+                var uniqueId = parseInt($('#js-unique-id').val());
+                if (isNaN(uniqueId)) uniqueId = null;
 
                 return {
+                    uniqueId: uniqueId,
                     rawTimes: subSplitKinds.map(function (kind) {
+                            var $timeField = $('#js-time-' + kind);
                             return {
                                 id: $('#js-raw-time-id-' + kind).val() || '',
                                 eventGroupId: liveEntry.currentEventGroupId,
                                 bibNumber: $('#js-bib-number').val(),
-                                enteredTime: $('#js-time-' + kind).val(),
+                                enteredTime: $timeField.val(),
                                 lap: $('js-lap').val(),
                                 splitName: liveEntry.currentStation().title,
                                 subSplitKind: kind,
                                 stoppedHere: $('#js-dropped').prop('checked'),
                                 withPacer: $('#js-pacer-' + kind).prop('checked'),
-                                dataStatus: liveEntry.currentRawTime(kind).dataStatus,
-                                existingTimesCount: liveEntry.currentRawTime(kind).existingTimesCount,
+                                dataStatus: $timeField.attr('data-time-status'),
+                                existingTimesCount: $timeField.attr('data-existing-times-count')
                             }
                         }
                     )
@@ -673,20 +692,25 @@
                 liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
                 liveEntry.currentFormResponse = rawTimeRow;
 
-                var rawTime = liveEntry.currentRawTime();
-                var inRawTime = liveEntry.currentRawTime('in');
-                var outRawTime = liveEntry.currentRawTime('out');
+                var rawTime = liveEntry.rawTimeFromRow(rawTimeRow);
+                var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
+                var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
                 var stationIndex = liveEntry.indexStationMap[rawTime.splitName];
+                var $inTimeField = $('#js-time-in');
+                var $outTimeField = $('#js-time-out');
 
+                $('#js-unique-id').val(rawTimeRow.uniqueId);
+                $('#js-raw-time-id-in').val(inRawTime.id);
+                $('#js-raw-time-id-out').val(outRawTime.id);
                 $('#js-bib-number').val(rawTime.bibNumber).focus();
                 $('#js-lap-number').val(rawTime.lap);
-                $('#js-time-in').val(inRawTime.enteredTime);
-                $('#js-time-out').val(outRawTime.enteredTime);
+                $inTimeField.val(inRawTime.enteredTime);
+                $outTimeField.val(outRawTime.enteredTime);
                 $('#js-pacer-in').prop('checked', inRawTime.withPacer);
                 $('#js-pacer-out').prop('checked', outRawTime.withPacer);
                 $('#js-dropped').prop('checked', inRawTime.stoppedHere || outRawTime.stoppedHere).change();
-                $('#js-raw-time-id-in').val(inRawTime.id);
-                $('#js-raw-time-id-out').val(outRawTime.id);
+                liveEntry.liveEntryForm.updateTimeField($inTimeField, inRawTime);
+                liveEntry.liveEntryForm.updateTimeField($outTimeField, outRawTime);
                 liveEntry.header.changeStationSelect(stationIndex);
             },
 
@@ -698,6 +722,9 @@
                 liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
                 $('#js-effort-name').html('').removeAttr('href');
                 $('#js-effort-event-name').html('');
+                $('#js-unique-id').val('');
+                $('#js-raw-time-id-in').val('');
+                $('#js-raw-time-id-out').val('');
                 $('#js-time-in').removeClass('exists null bad good questionable');
                 $('#js-time-out').removeClass('exists null bad good questionable');
                 $('#js-time-in').val('');
@@ -742,19 +769,19 @@
                     $('.rapid-mode #js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
                     $('.rapid-mode #js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
                 }
+            },
+
+            updateTimeField: function ($field, rawTime) {
+                $field.removeClass('exists null bad good questionable')
+                    .addClass(rawTime.existingTimesCount > 0 ? 'exists' : '')
+                    .addClass(rawTime.dataStatus)
+                    .attr('data-time-status', rawTime.dataStatus)
+                    .attr('data-existing-times-count', rawTime.existingTimesCount)
             }
         }, // END liveEntryForm form
 
         /**
          * Contains functionality for times data cache table
-         *
-         * timeRows need to send back the following fields:
-         *      - effortId
-         *      - splitId
-         *      - timeIn (military)
-         *      - timeOut (military)
-         *      - PacerIn: (bool)
-         *      - PacerOut: (bool)
          */
         timeRowsTable: {
 
@@ -827,18 +854,12 @@
             addTimeRowFromForm: function () {
                 // Retrieve form data
                 liveEntry.liveEntryForm.fetchEffortData().always(function () {
-                    var thisTimeRow = liveEntry.liveEntryForm.getTimeRow();
-                    if (thisTimeRow === liveEntry.emptyRawTimeRow) {
-                        return;
-                    }
-                    thisTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+                    var rawTimeRow = liveEntry.liveEntryForm.getTimeRow();
 
-                    var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                    if (!liveEntry.timeRowsCache.isMatchedTimeRow(thisTimeRow)) {
-                        storedTimeRows.push(thisTimeRow);
-                        liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                        liveEntry.timeRowsTable.addTimeRowToTable(thisTimeRow);
-                    }
+                    if (rawTimeRow === liveEntry.emptyRawTimeRow) return;
+                    if (rawTimeRow.uniqueId === null) rawTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+
+                    liveEntry.timeRowsCache.upsertTimeRow(rawTimeRow);
 
                     // Clear data and put focus on bibNumber field once we've collected all the data
                     liveEntry.liveEntryForm.clearEffortData();
@@ -852,49 +873,13 @@
              * @param object timeRow Pass in the object of the timeRow to add
              * @param boolean highlight If true, the new row will flash when it is added.
              */
-            addTimeRowToTable: function (timeRow, highlight) {
+            addTimeRowToTable: function (rawTimeRow, highlight) {
                 highlight = (typeof highlight == 'undefined') || highlight;
                 liveEntry.timeRowsTable.$dataTable.search('');
                 $('#js-filter-clear').hide();
-                var bib_icons = {
-                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
-                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
-                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
-                };
-                var time_icons = {
-                    'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
-                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
-                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
-                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
-                };
-                var bibNumberIcon = bib_icons[liveEntry.bibStatus(timeRow)] || '';
-                var timeInIcon = time_icons[timeRow.timeInStatus] || '';
-                timeInIcon += (timeRow.timeInExists && timeRow.timeIn) ? time_icons['exists'] : '';
-                var timeOutIcon = time_icons[timeRow.timeOutStatus] || '';
-                timeOutIcon += (timeRow.timeOutExists && timeRow.timeOut) ? time_icons['exists'] : '';
 
-                // Base64 encode the stringifyed timeRow to add to the timeRow
-                var base64encodedTimeRow = btoa(JSON.stringify(timeRow));
-                var trHtml = '\
-                    <tr class="effort-station-row js-effort-station-row" data-unique-id="' + timeRow.uniqueId + '" data-encoded-effort="' + base64encodedTimeRow + '"\
-                        data-live-time-id-in="' + timeRow.liveTimeIdIn + '"\
-                        data-live-time-id-out="' + timeRow.liveTimeIdOut + '"\
-                        data-event-id="' + timeRow.eventId + '"\>\
-                        <td class="station-title js-station-title" data-order="' + timeRow.stationIndex + '">' + (liveEntry.stationIndexMap[timeRow.stationIndex] || {title: 'Unknown'}).title + '</td>\
-                        <td class="lap-number js-lap-number group-only">' + liveEntry.events[timeRow.eventId].name + '</td>\
-                        <td class="bib-number js-bib-number ' + liveEntry.bibStatus(timeRow) + '">' + (timeRow.bibNumber || '') + bibNumberIcon + '</td>\
-                        <td class="effort-name js-effort-name text-nowrap">' + timeRow.effortName + '</td>\
-                        <td class="lap-number js-lap-number lap-only">' + timeRow.lap + '</td>\
-                        <td class="time-in js-time-in text-nowrap time-in-only ' + timeRow.timeInStatus + '">' + (timeRow.timeIn || '') + timeInIcon + '</td>\
-                        <td class="time-out js-time-out text-nowrap time-out-only ' + timeRow.timeOutStatus + '">' + (timeRow.timeOut || '') + timeOutIcon + '</td>\
-                        <td class="pacer-inout js-pacer-inout pacer-only">' + (timeRow.pacerIn ? 'Yes' : 'No') + ' / ' + (timeRow.pacerOut ? 'Yes' : 'No') + '</td>\
-                        <td class="dropped-here js-dropped-here">' + (timeRow.droppedHere ? '<span class="btn btn-warning btn-xs disabled">Dropped Here</span>' : '') + '</td>\
-                        <td class="row-edit-btns">\
-                            <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
-                            <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
-                            <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
-                        </td>\
-                    </tr>';
+                var trHtml = liveEntry.timeRowsTable.buildTrHtml(rawTimeRow);
+
                 var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
                 if (highlight) {
                     // Find page that the row was added to
@@ -902,14 +887,25 @@
                     var index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
                     var pageIndex = Math.floor(index / pageInfo.length);
                     liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
-                    $(node.node()).effect('highlight', 2000);
+                    $(node.node()).effect('highlight', 1000);
                 }
             },
 
+            updateTimeRowInTable: function (rawTimeRow) {
+                liveEntry.timeRowsTable.$dataTable.search('');
+                $('#js-filter-clear').hide();
+
+                var trHtml = liveEntry.timeRowsTable.buildTrHtml(rawTimeRow);
+                var rowData = liveEntry.timeRowsTable.trToData(trHtml);
+                var $row = $('#workspace-' + rawTimeRow.uniqueId);
+                $row.removeClass('highlight');
+                liveEntry.timeRowsTable.$dataTable.row($row).data(rowData).draw
+            },
+
             removeTimeRows: function (timeRows) {
-                $.each(timeRows, function (index) {
+                $.each(timeRows, function () {
                     var $row = $(this).closest('tr');
-                    var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    var timeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
 
                     // remove timeRow from cache
                     liveEntry.timeRowsCache.deleteStoredTimeRow(timeRow);
@@ -929,41 +925,91 @@
 
                 $.each(tableNodes, function () {
                     var $row = $(this).closest('tr');
-                    var timeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    var timeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
                     timeRows.push(timeRow);
                 });
 
-                var eventsObj = {};
+                var data = {timeRows: timeRows, forceSubmit: forceSubmit};
+                $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/import?data_format=live_entry_submit', data, function (response) {
+                    liveEntry.timeRowsTable.removeTimeRows(tableNodes);
+                    liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
+                    var returnedRows = response.savedRows; // Change this so it selects only those rows that have status problems
+                    for (var i = 0; i < returnedRows.length; i++) {
+                        var timeRow = returnedRows[i];
+                        timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
-                timeRows.forEach(function (row) {
-                    var eventId = row.eventId;
-                    if (eventsObj[eventId]) {
-                        eventsObj[eventId].push(row);
+                        var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+                        if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
+                            storedTimeRows.push(timeRow);
+                            liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                            liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
+                        }
+                    }
+                }).always(function () {
+                    liveEntry.timeRowsTable.busy = false;
+                });
+            },
+
+            buildTrHtml: function (rawTimeRow) {
+                var bibIcons = {
+                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
+                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
+                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
+                };
+                var timeIcons = {
+                    'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
+                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
+                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
+                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
+                };
+                var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
+                var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
+                var rawTime = liveEntry.rawTimeFromRow(rawTimeRow);
+
+                var bibStatus = liveEntry.bibStatus(rawTime.bibNumber, rawTime.splitName);
+                var bibIcon = bibIcons[bibStatus];
+                var timeInIcon = timeIcons[inRawTime.dataStatus] || '';
+                timeInIcon += (inRawTime.existingTimesCount > 0) ? timeIcons['exists'] : '';
+                var timeOutIcon = timeIcons[outRawTime.dataStatus] || '';
+                timeOutIcon += (outRawTime.existingTimesCount > 0) ? timeIcons['exists'] : '';
+
+                // Base64 encode the stringified timeRow to add to the timeRow
+                var base64encodedTimeRow = btoa(JSON.stringify(rawTimeRow));
+                var event = liveEntry.events[liveEntry.bibEventIdMap[rawTime.bibNumber]] || {name: '--'};
+                var effort = liveEntry.bibEffortMap[rawTime.bibNumber];
+                var trHtml = '\
+                    <tr id="workspace-' + rawTimeRow.uniqueId + '" class="effort-station-row js-effort-station-row" data-encoded-raw-time-row="' + base64encodedTimeRow + '">\
+                        <td class="station-title js-station-title">' + rawTime.splitName + '</td>\
+                        <td class="event-name js-event-name group-only">' + event.name + '</td>\
+                        <td class="bib-number js-bib-number ' + bibStatus + '">' + (rawTime.bibNumber || '') + bibIcon + '</td>\
+                        <td class="effort-name js-effort-name text-nowrap">' + (effort ? '<a href="/efforts/' + effort.id + '">' + effort.attributes.fullName + '</a>' : '[Bib not found]') + '</td>\
+                        <td class="lap-number js-lap-number lap-only">' + rawTime.lap + '</td>\
+                        <td class="time-in js-time-in text-nowrap time-in-only ' + inRawTime.dataStatus + '">' + (inRawTime.enteredTime || '') + timeInIcon + '</td>\
+                        <td class="time-out js-time-out text-nowrap time-out-only ' + outRawTime.dataStatus + '">' + (outRawTime.enteredTime || '') + timeOutIcon + '</td>\
+                        <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
+                        <td class="dropped-here js-dropped-here">' + (inRawTime.stoppedHere || outRawTime.stoppedHere ? '<span class="btn btn-warning btn-xs disabled">Done</span>' : '') + '</td>\
+                        <td class="row-edit-btns">\
+                            <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
+                            <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
+                            <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
+                        </td>\
+                    </tr>';
+                return trHtml
+            },
+
+            trToData: function (row) {
+                var rowData = {};
+                $(row).find('td').each(function (i, el) {
+                    if (i === 0) {
+                        rowData[i] = {
+                            display: el.innerHTML,
+                            '@data-order': null
+                        }
                     } else {
-                        eventsObj[eventId] = [row];
+                        rowData[i] = el.innerHTML
                     }
                 });
-
-                for (var eventId in eventsObj) {
-                    var data = {timeRows: eventsObj[eventId], forceSubmit: forceSubmit};
-                    $.post('/api/v1/events/' + eventId + '/set_times_data', data, function (response) {
-                        liveEntry.timeRowsTable.removeTimeRows(tableNodes);
-                        liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
-                        for (var i = 0; i < response.returnedRows.length; i++) {
-                            var timeRow = response.returnedRows[i];
-                            timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-
-                            var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-                            if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
-                                storedTimeRows.push(timeRow);
-                                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                                liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
-                            }
-                        }
-                    }).always(function () {
-                        liveEntry.timeRowsTable.busy = false;
-                    });
-                }
+                return rowData
             },
 
             /**
@@ -1018,10 +1064,9 @@
                     event.preventDefault();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     var $row = $(this).closest('tr');
-                    var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-effort')));
+                    var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
 
-                    liveEntry.timeRowsTable.removeTimeRows($(this));
-
+                    $row.addClass('highlight');
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
                     liveEntry.PopulatingFromRow = false;
                     liveEntry.liveEntryForm.fetchEffortData();
@@ -1150,9 +1195,6 @@
         populateRows: function (response) {
             response.returnedRows.forEach(function (timeRow) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-
-                // Rows coming in from an imported file or from pull_live_time_rows have no stationIndex
-                // timeRow.stationIndex = timeRow.stationIndex || liveEntry.splitIdIndexMap[timeRow.splitId];
 
                 var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
                 if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {

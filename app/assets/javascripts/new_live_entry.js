@@ -979,7 +979,7 @@
                 var effort = liveEntry.bibEffortMap[rawTime.bibNumber];
                 var trHtml = '\
                     <tr id="workspace-' + rawTimeRow.uniqueId + '" class="effort-station-row js-effort-station-row" data-encoded-raw-time-row="' + base64encodedTimeRow + '">\
-                        <td class="station-title js-station-title">' + rawTime.splitName + '</td>\
+                        <td class="station-title js-station-title" data-order="' + rawTime.splitName + '">' + rawTime.splitName + '</td>\
                         <td class="event-name js-event-name group-only">' + event.name + '</td>\
                         <td class="bib-number js-bib-number ' + bibStatus + '">' + (rawTime.bibNumber || '') + bibIcon + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + (effort ? '<a href="/efforts/' + effort.id + '">' + effort.attributes.fullName + '</a>' : '[Bib not found]') + '</td>\
@@ -1003,7 +1003,7 @@
                     if (i === 0) {
                         rowData[i] = {
                             display: el.innerHTML,
-                            '@data-order': null
+                            '@data-order': el.innerHTML
                         }
                     } else {
                         rowData[i] = el.innerHTML

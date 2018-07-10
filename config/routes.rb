@@ -137,7 +137,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :aid_stations, only: [:show, :create, :update, :destroy]
       resources :courses, only: [:index, :show, :create, :update, :destroy]
-      resources :efforts, only: [:show, :create, :update, :destroy]
+      resources :efforts, only: [:show, :create, :update, :destroy] do
+        member do
+          get :with_times_row
+        end
+      end
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
           post :import

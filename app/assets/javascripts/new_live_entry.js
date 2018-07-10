@@ -101,6 +101,10 @@
             }
         },
 
+        serverConnection: function () {
+            return true // This should test to see if an internet connection is available
+        },
+
         /**
          * This kicks off the full UI
          *
@@ -422,7 +426,7 @@
                 if (liveEntry.currentStationIndex !== stationIndex) {
                     liveEntry.currentStationIndex = stationIndex;
                     liveEntry.liveEntryForm.fetchEffortData();
-                    liveEntry.liveEntryForm.updateEffortLocal()
+                    liveEntry.liveEntryForm.updateEffortDisplay()
                 }
             }
         },
@@ -486,7 +490,7 @@
                 });
 
                 $('#js-bib-number').on('blur', function () {
-                    liveEntry.liveEntryForm.updateEffortLocal();
+                    liveEntry.liveEntryForm.updateEffortDisplay();
                     liveEntry.liveEntryForm.fetchEffortData();
                 });
 
@@ -563,21 +567,20 @@
             },
 
             /**
-             * Updates effort information from memory without hitting the server.
+             * Updates effort display data.
              */
 
-            updateEffortLocal: function () {
+            updateEffortDisplay: function () {
+                var bib = $('#js-bib-number').val();
+                var effort = liveEntry.bibEffortMap[bib];
                 var fullName = '';
                 var effortId = '';
                 var eventId = '';
                 var eventName = '';
                 var url = '#';
-                var bib = $('#js-bib-number').val();
                 var splitName = liveEntry.currentStation().splitName;
 
                 if (bib.length > 0) {
-                    var effort = liveEntry.bibEffortMap[bib];
-
                     if (effort !== null && typeof effort === 'object') {
                         fullName = effort.attributes.fullName;
                         effortId = effort.id;
@@ -598,6 +601,14 @@
                     .removeClass('null bad questionable good')
                     .addClass(bibStatus)
                     .attr('data-bib-status', bibStatus);
+
+                if (effort !== null && typeof effort === 'object' && liveEntry.serverConnection()) {
+                    return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
+                        // Use response to update effort detail
+                    })
+                } else {
+                    // Clear effort detail
+                }
             },
 
             /**

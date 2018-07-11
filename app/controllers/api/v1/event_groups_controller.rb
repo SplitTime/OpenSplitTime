@@ -87,7 +87,7 @@ class Api::V1::EventGroupsController < ApiController
 
       render json: {data: {rawTimeRow: result_row.serialize_with_effort_overview}}, status: :ok
     else
-      render json: {errors: [{title: 'Request must be in the form of {data: {rawTimeRow: {rawTimes: {...}}}}'}]}, status: :unprocessable_entity
+      render json: {errors: [{title: 'Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}'}]}, status: :unprocessable_entity
     end
   end
 

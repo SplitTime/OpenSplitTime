@@ -425,8 +425,8 @@
 
                 if (liveEntry.currentStationIndex !== stationIndex) {
                     liveEntry.currentStationIndex = stationIndex;
-                    liveEntry.liveEntryForm.fetchEffortData();
-                    liveEntry.liveEntryForm.updateEffortDisplay()
+                    liveEntry.liveEntryForm.updateEffortInfo();
+                    liveEntry.liveEntryForm.enrichTimeData();
                 }
             }
         },
@@ -436,7 +436,8 @@
          *
          */
         liveEntryForm: {
-            lastBib: null,
+            lastEnrichTimeBib: null,
+            lastEffortInfoBib: null,
             lastStationIndex: null,
             init: function () {
                 // Apply input masks on time in / out
@@ -490,12 +491,12 @@
                 });
 
                 $('#js-bib-number').on('blur', function () {
-                    liveEntry.liveEntryForm.updateEffortDisplay();
-                    liveEntry.liveEntryForm.fetchEffortData();
+                    liveEntry.liveEntryForm.updateEffortInfo();
+                    liveEntry.liveEntryForm.enrichTimeData();
                 });
 
                 $('#js-lap-number').on('blur', function () {
-                    liveEntry.liveEntryForm.fetchEffortData();
+                    liveEntry.liveEntryForm.enrichTimeData();
                 });
 
                 $('#js-time-in').on('blur', function () {
@@ -506,7 +507,7 @@
                     } else {
                         $(this).val(timeIn);
                     }
-                    liveEntry.liveEntryForm.fetchEffortData();
+                    liveEntry.liveEntryForm.enrichTimeData();
                 });
 
                 $('#js-time-out').on('blur', function () {
@@ -517,7 +518,7 @@
                     } else {
                         $(this).val(timeIn);
                     }
-                    liveEntry.liveEntryForm.fetchEffortData();
+                    liveEntry.liveEntryForm.enrichTimeData();
                 });
 
                 $('#js-rapid-time-in,#js-rapid-time-out').on('click', function () {
@@ -531,7 +532,6 @@
                     liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
                     $('#js-time-in, #js-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
                 }).change();
-
 
                 var $droppedHereButton = $('#js-dropped-button');
                 $droppedHereButton.on('click', function (event) {
@@ -567,20 +567,21 @@
             },
 
             /**
-             * Updates effort display data.
+             * Updates local effort data from memory and, if bib has changed, makes a request to the server.
              */
 
-            updateEffortDisplay: function () {
-                var bib = $('#js-bib-number').val();
-                var effort = liveEntry.bibEffortMap[bib];
+            updateEffortInfo: function () {
                 var fullName = '';
                 var effortId = '';
                 var eventId = '';
                 var eventName = '';
                 var url = '#';
                 var splitName = liveEntry.currentStation().splitName;
+                var bibNumber = $('#js-bib-number').val();
+                var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEffortInfoBib);
+                var effort = liveEntry.bibEffortMap[bibNumber];
 
-                if (bib.length > 0) {
+                if (bibNumber.length > 0) {
                     if (effort !== null && typeof effort === 'object') {
                         fullName = effort.attributes.fullName;
                         effortId = effort.id;
@@ -596,25 +597,30 @@
                 $('#js-effort-name').html(fullName).attr('data-effort-id', effortId).attr('data-event-id', eventId);
                 // $('#js-effort-name').attr("href", url);
                 $('#js-effort-event-name').html(eventName);
-                var bibStatus = liveEntry.bibStatus(bib, splitName);
+                var bibStatus = liveEntry.bibStatus(bibNumber, splitName);
                 $('#js-bib-number')
                     .removeClass('null bad questionable good')
                     .addClass(bibStatus)
                     .attr('data-bib-status', bibStatus);
 
-                if (effort !== null && typeof effort === 'object' && liveEntry.serverConnection()) {
-                    return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
-                        // Use response to update effort detail
-                    })
-                } else {
-                    // Clear effort detail
+                if (bibChanged) {
+                    if (effort !== null && typeof effort === 'object' && liveEntry.serverConnection()) {
+                        return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
+                            liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
+                            $('#js-effort-table').html(response.data.id)
+                            // Use response to update effort detail
+                        })
+                    } else {
+                        $('#js-effort-table').html('[Blurred dummy data here]')
+                        // Clear effort detail
+                    }
                 }
             },
 
             /**
-             * Fetches any available information for the data entered.
+             * Adds dataStatus and existingTimesCount to rawTimes in the form.
              */
-            fetchEffortData: function () {
+            enrichTimeData: function () {
                 if (liveEntry.PopulatingFromRow) {
                     // Do nothing.
                     // This fn is being called from several places based on different actions.
@@ -626,9 +632,9 @@
                 }
                 liveEntry.liveEntryForm.prefillCurrentTime();
                 var bibNumber = $('#js-bib-number').val();
-                var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastBib);
+                var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
                 var splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
-                liveEntry.liveEntryForm.lastBib = bibNumber;
+                liveEntry.liveEntryForm.lastEnrichTimeBib = bibNumber;
                 liveEntry.liveEntryForm.lastStationIndex = liveEntry.currentStationIndex;
 
                 var currentFormComp = liveEntry.rawTimeRow.compData(liveEntry.liveEntryForm.getTimeRow());
@@ -637,6 +643,11 @@
                 if (JSON.stringify(currentFormComp) === JSON.stringify(lastRequestComp)) {
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
+
+                // Clear out dataStatus and existingTimesCount from the last request
+                liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), {dataStatus: null, existingTimesCount: null});
+                liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), {dataStatus: null, existingTimesCount: null});
+
                 var requestData = {
                     data: {
                         rawTimeRow: liveEntry.liveEntryForm.getTimeRow()
@@ -666,13 +677,6 @@
              * @return object a single rawTimeRow
              */
             getTimeRow: function () {
-                if ($('#js-unique-id').val() === '' &&
-                    $('#js-bib-number').val() === '' &&
-                    $('#js-time-in').val() === '' &&
-                    $('#js-time-out').val() === '') {
-                    return liveEntry.emptyRawTimeRow;
-                }
-
                 var subSplitKinds = liveEntry.currentStation().subSplitKinds;
                 var uniqueId = parseInt($('#js-unique-id').val());
                 if (isNaN(uniqueId)) uniqueId = null;
@@ -745,7 +749,8 @@
                 $('#js-pacer-in').prop('checked', false);
                 $('#js-pacer-out').prop('checked', false);
                 $('#js-dropped').prop('checked', false).change();
-                liveEntry.liveEntryForm.fetchEffortData();
+                liveEntry.liveEntryForm.updateEffortInfo();
+                liveEntry.liveEntryForm.enrichTimeData();
             },
 
             /**
@@ -773,10 +778,10 @@
              * Prefills the time fields with the current time
              */
             prefillCurrentTime: function () {
-                if ($('#js-bib-number').val() == '') {
+                if ($('#js-bib-number').val() === '') {
                     $('.rapid-mode #js-time-in').val('');
                     $('.rapid-mode #js-time-out').val('');
-                } else if ($('#js-bib-number').val() != liveEntry.liveEntryForm.lastBib) {
+                } else if ($('#js-bib-number').val() !== liveEntry.liveEntryForm.lastEnrichTimeBib) {
                     $('.rapid-mode #js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
                     $('.rapid-mode #js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
                 }
@@ -864,7 +869,7 @@
 
             addTimeRowFromForm: function () {
                 // Retrieve form data
-                liveEntry.liveEntryForm.fetchEffortData().always(function () {
+                liveEntry.liveEntryForm.enrichTimeData().always(function () {
                     var rawTimeRow = liveEntry.liveEntryForm.getTimeRow();
 
                     if (rawTimeRow === liveEntry.emptyRawTimeRow) return;
@@ -1080,7 +1085,7 @@
                     $row.addClass('highlight');
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
                     liveEntry.PopulatingFromRow = false;
-                    liveEntry.liveEntryForm.fetchEffortData();
+                    liveEntry.liveEntryForm.enrichTimeData();
                 });
 
                 $(document).on('click', '.js-delete-effort', function () {

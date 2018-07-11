@@ -18,6 +18,7 @@ class EnrichRawTimeRow
 
   def perform
     add_lap_to_raw_times
+    remove_enriched_attributes
     build_time_row(raw_time_pair)
   end
 
@@ -45,6 +46,12 @@ class EnrichRawTimeRow
                             subject_value: subject_value,
                             split_id: split&.id,
                             bitkey: raw_time.bitkey)
+  end
+
+  def remove_enriched_attributes
+    raw_time_pair.each do |raw_time|
+      raw_time.assign_attributes(data_status: nil, existing_times_count: nil)
+    end
   end
 
   def build_time_row(raw_time_pair)

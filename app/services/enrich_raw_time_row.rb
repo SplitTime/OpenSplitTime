@@ -52,7 +52,7 @@ class EnrichRawTimeRow
 
   def remove_enriched_attributes
     raw_time_pair.each do |raw_time|
-      raw_time.assign_attributes(data_status: nil, existing_times_count: nil)
+      raw_time.assign_attributes(data_status: nil, split_time_exists: nil)
     end
   end
 

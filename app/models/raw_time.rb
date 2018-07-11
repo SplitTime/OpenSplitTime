@@ -9,6 +9,12 @@ class RawTime < ApplicationRecord
   belongs_to :event_group
   belongs_to :split_time
 
+  attribute :lap, :integer
+  attribute :split_time_exists, :boolean
+
+  attr_accessor :new_split_time
+  attr_writer :effort, :event, :split
+
   before_validation :parameterize_split_name
   before_validation :create_sortable_bib_number
 
@@ -31,9 +37,6 @@ class RawTime < ApplicationRecord
     bib_numbers = search_text.split(/[\s,]+/)
     where(bib_number: bib_numbers)
   end
-
-  attr_accessor :existing_times_count, :lap, :new_split_time
-  attr_writer :effort, :event, :split
 
   def effort
     @effort = nil if bib_number.nil? || bib_number.include?('*')
@@ -88,6 +91,10 @@ class RawTime < ApplicationRecord
 
   def split_id
     attributes['split_id'] || split&.id
+  end
+
+  def time_point
+    TimePoint.new(lap, split_id, bitkey)
   end
 
   def has_split_id?

@@ -42,10 +42,10 @@ RSpec.describe VerifyRawTimeRow do
       let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:00:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
       let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:01:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
 
-      it 'returns a raw_time_row with existing_times_count attribute equal to 1 and adds new_split_time to each raw_time' do
+      it 'returns a raw_time_row with split_time_exists attribute equal to true and adds new_split_time to each raw_time' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         expect(result_row.errors).to be_empty
@@ -53,7 +53,7 @@ RSpec.describe VerifyRawTimeRow do
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to eq([1, 1])
+        expect(result_raw_times.map(&:split_time_exists)).to eq([true, true])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_a(SplitTime)
@@ -76,16 +76,16 @@ RSpec.describe VerifyRawTimeRow do
       let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:01:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
       let(:raw_time_2) { nil }
 
-      it 'returns a raw_time_row with existing_times_count attribute equal to 1 and adds new_split_time to each raw_time' do
+      it 'returns a raw_time_row with split_time_exists attribute equal to 1 and adds new_split_time to each raw_time' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(1)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to eq([1])
+        expect(result_raw_times.map(&:split_time_exists)).to eq([true])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_a(SplitTime)
@@ -111,13 +111,13 @@ RSpec.describe VerifyRawTimeRow do
       it 'returns a raw_time_row with attributes set and calculates time_from_start correctly' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to eq([1, 1])
+        expect(result_raw_times.map(&:split_time_exists)).to eq([true, true])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_a(SplitTime)
@@ -143,13 +143,13 @@ RSpec.describe VerifyRawTimeRow do
       it 'returns a raw_time_row with attributes set, attaches a split_time with time_from_start: nil, and does not set effort status' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(1)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to eq([1])
+        expect(result_raw_times.map(&:split_time_exists)).to eq([true])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times.size).to eq(1)
@@ -169,13 +169,13 @@ RSpec.describe VerifyRawTimeRow do
       it 'returns a raw_time_row with attributes set, attaches a split_time with time_from_start: nil, and does not set effort status' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(raw_times.map(&:existing_times_count)).to eq([1, 1])
+        expect(raw_times.map(&:split_time_exists)).to eq([true, true])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times.size).to eq(2)
@@ -194,16 +194,16 @@ RSpec.describe VerifyRawTimeRow do
       let(:split_times) { [split_time_1] }
       let(:raw_times) { [raw_time_2, raw_time_3] }
 
-      it 'returns a raw_time_row with existing_times_count attribute equal to 0' do
+      it 'returns a raw_time_row with split_time_exists attribute equal to 0' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to eq([0, 0])
+        expect(result_raw_times.map(&:split_time_exists)).to eq([false, false])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_a(SplitTime)
@@ -221,16 +221,16 @@ RSpec.describe VerifyRawTimeRow do
       let(:split_times) { [split_time_1, split_time_3] }
       let(:raw_times) { [raw_time_2, raw_time_3] }
 
-      it 'returns a raw_time_row with existing_times_count attribute equal to expected values' do
+      it 'returns a raw_time_row with split_time_exists attribute equal to expected values' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to eq([0, 1])
+        expect(result_raw_times.map(&:split_time_exists)).to eq([false, true])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_a(SplitTime)
@@ -248,16 +248,16 @@ RSpec.describe VerifyRawTimeRow do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1] }
 
-      it 'returns a a raw_time_row with expected existing_times_count and new_split_time' do
+      it 'returns a a raw_time_row with expected split_time_exists and new_split_time' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
-        expect(raw_times.map(&:existing_times_count)).to all be_nil
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
 
         result_row = subject.perform
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(1)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to eq([1])
+        expect(result_raw_times.map(&:split_time_exists)).to eq([true])
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_a(SplitTime)
@@ -284,7 +284,7 @@ RSpec.describe VerifyRawTimeRow do
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to all be_nil
+        expect(result_raw_times.map(&:split_time_exists)).to all be_nil
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_nil
@@ -306,7 +306,7 @@ RSpec.describe VerifyRawTimeRow do
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to all be_nil
+        expect(result_raw_times.map(&:split_time_exists)).to all be_nil
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_nil
@@ -346,7 +346,7 @@ RSpec.describe VerifyRawTimeRow do
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to all be_nil
+        expect(result_raw_times.map(&:split_time_exists)).to all be_nil
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_nil
@@ -369,7 +369,7 @@ RSpec.describe VerifyRawTimeRow do
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
         expect(result_raw_times).to all be_a(RawTime)
-        expect(result_raw_times.map(&:existing_times_count)).to all be_nil
+        expect(result_raw_times.map(&:split_time_exists)).to all be_nil
 
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times).to all be_nil

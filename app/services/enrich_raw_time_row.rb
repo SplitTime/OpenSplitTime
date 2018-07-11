@@ -34,8 +34,10 @@ class EnrichRawTimeRow
         raw_time.lap = nil
       elsif raw_time.absolute_time
         raw_time.lap = expected_lap(raw_time, :day_and_time, raw_time.absolute_time)
-      else
+      elsif raw_time.military_time
         raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
+      else
+        raw_time.lap = nil
       end
     end
   end

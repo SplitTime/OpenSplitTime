@@ -485,7 +485,7 @@
                 // Clears the live entry form when the clear button is clicked
                 $('#js-discard-entry-form').on('click', function (event) {
                     event.preventDefault();
-                    liveEntry.liveEntryForm.clearEffortData();
+                    liveEntry.liveEntryForm.clear();
                     $('#js-bib-number').focus();
                     return false;
                 });
@@ -733,13 +733,18 @@
              * Clears out the entry form and effort detail data fields
              * @param  {Boolean} clearForm Determines if the form is cleared as well.
              */
-            clearEffortData: function () {
+            clear: function () {
                 liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
-                $('#js-effort-name').html('').removeAttr('href');
-                $('#js-effort-event-name').html('');
-                $('#js-unique-id').val('');
+                var $uniqueId = $('#js-unique-id');
+                if ($uniqueId.val() !== '') {
+                    var $row = $('#workspace-' + $uniqueId.val());
+                    $row.removeClass('highlight');
+                    $uniqueId.val('');
+                }
                 $('#js-raw-time-id-in').val('');
                 $('#js-raw-time-id-out').val('');
+                $('#js-effort-name').html('').removeAttr('href');
+                $('#js-effort-event-name').html('');
                 $('#js-time-in').removeClass('exists null bad good questionable');
                 $('#js-time-out').removeClass('exists null bad good questionable');
                 $('#js-time-in').val('');
@@ -878,7 +883,7 @@
                     liveEntry.timeRowsCache.upsertTimeRow(rawTimeRow);
 
                     // Clear data and put focus on bibNumber field once we've collected all the data
-                    liveEntry.liveEntryForm.clearEffortData();
+                    liveEntry.liveEntryForm.clear();
                     $('#js-bib-number').focus();
                 });
             },
@@ -916,6 +921,7 @@
                 var $row = $('#workspace-' + rawTimeRow.uniqueId);
                 $row.removeClass('highlight');
                 liveEntry.timeRowsTable.$dataTable.row($row).data(rowData).draw
+                $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
             },
 
             removeTimeRows: function (timeRows) {
@@ -1078,7 +1084,6 @@
                 $(document).on('click', '.js-edit-effort', function (event) {
                     liveEntry.PopulatingFromRow = true;
                     event.preventDefault();
-                    liveEntry.timeRowsTable.addTimeRowFromForm();
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
 
@@ -1190,24 +1195,21 @@
             }
         }, // END rawTimeRow
 
-        displayAndHideMessage:
+        displayAndHideMessage: function (msgElement, selector) {
+            // Fade in and fade out Bootstrap Alert
+            // @param msgElement object jQuery element containing the alert
+            // @param selector string jQuery selector to access the alert element
+            $('#js-live-messages').append(msgElement);
+            msgElement.fadeTo(500, 1);
+            window.setTimeout(function () {
+                msgElement.fadeTo(500, 0).slideUp(500, function () {
+                    msgElement = $(selector).hide().detach();
+                    liveEntry.importAsyncBusy = false;
+                });
+            }, 4000);
+            return;
+        },
 
-            function (msgElement, selector) {
-                // Fade in and fade out Bootstrap Alert
-                // @param msgElement object jQuery element containing the alert
-                // @param selector string jQuery selector to access the alert element
-                $('#js-live-messages').append(msgElement);
-                msgElement.fadeTo(500, 1);
-                window.setTimeout(function () {
-                    msgElement.fadeTo(500, 0).slideUp(500, function () {
-                        msgElement = $(selector).hide().detach();
-                        liveEntry.importAsyncBusy = false;
-                    });
-                }, 4000);
-                return;
-            }
-
-        ,
         populateRows: function (response) {
             response.returnedRows.forEach(function (timeRow) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();

@@ -72,6 +72,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.present?
   end
 
+  def submit_raw_time_rows?
+    user.authorized_to_edit?(event_group)
+  end
+
   def pull_time_record_rows?
     user.authorized_to_edit?(event_group)
   end

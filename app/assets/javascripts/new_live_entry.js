@@ -101,10 +101,6 @@
             }
         },
 
-        serverConnection: function () {
-            return true // This should test to see if an internet connection is available
-        },
-
         /**
          * This kicks off the full UI
          *
@@ -604,7 +600,7 @@
                     .attr('data-bib-status', bibStatus);
 
                 if (bibChanged) {
-                    if (effort !== null && typeof effort === 'object' && liveEntry.serverConnection()) {
+                    if (effort !== null && typeof effort === 'object') {
                         return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
                             liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
                             $('#js-effort-table').html(response.data.id)
@@ -696,7 +692,7 @@
                                 stoppedHere: $('#js-dropped').prop('checked'),
                                 withPacer: $('#js-pacer-' + kind).prop('checked'),
                                 dataStatus: $timeField.attr('data-time-status'),
-                                splitTimeExists: $timeField.attr('data-split-time-exists')
+                                splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true')
                             }
                         }
                     )
@@ -948,14 +944,14 @@
                 $.each(tableNodes, function () {
                     var $row = $(this).closest('tr');
                     var timeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
-                    timeRows.push(timeRow);
+                    timeRows.push({rawTimeRow: timeRow});
                 });
 
-                var data = {timeRows: timeRows, forceSubmit: forceSubmit};
-                $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/import?data_format=live_entry_submit', data, function (response) {
+                var data = {data: timeRows, forceSubmit: forceSubmit};
+                $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/submit_raw_time_rows', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(tableNodes);
                     liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
-                    var returnedRows = response.savedRows; // Change this so it selects only those rows that have status problems
+                    var returnedRows = response.data.rawTimeRows;
                     for (var i = 0; i < returnedRows.length; i++) {
                         var timeRow = returnedRows[i];
                         timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
@@ -1048,7 +1044,7 @@
                 });
                 return function (canDelete) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    var $deleteButton = $('#js-delete-all-efforts');
+                    var $deleteButton = $('#js-delete-all-time-rows');
                     $deleteButton.prop('disabled', true);
                     $(document).off('click', callback);
                     $deleteWarning.insertAfter($deleteButton).animate({
@@ -1102,13 +1098,13 @@
                 });
 
 
-                $('#js-delete-all-efforts').on('click', function (event) {
+                $('#js-delete-all-time-rows').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.timeRowsTable.toggleDiscardAll(true);
                     return false;
                 });
 
-                $('#js-submit-all-efforts').on('click', function (event) {
+                $('#js-submit-all-time-rows').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     liveEntry.timeRowsTable.submitTimeRows(nodes, false);

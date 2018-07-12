@@ -148,6 +148,7 @@ Rails.application.routes.draw do
           post :import
           patch :pull_raw_times
           get :enrich_raw_time_row
+          post :submit_raw_time_rows
           get :trigger_time_records_push
         end
       end

@@ -618,7 +618,7 @@
             },
 
             /**
-             * Adds dataStatus and existingTimesCount to rawTimes in the form.
+             * Adds dataStatus and splitTimeExists to rawTimes in the form.
              */
             enrichTimeData: function () {
                 if (liveEntry.PopulatingFromRow) {
@@ -644,9 +644,9 @@
                     return $.Deferred().resolve(); // We already have the information for this data.
                 }
 
-                // Clear out dataStatus and existingTimesCount from the last request
-                liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), {dataStatus: null, existingTimesCount: null});
-                liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), {dataStatus: null, existingTimesCount: null});
+                // Clear out dataStatus and splitTimeExists from the last request
+                liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), {dataStatus: null, splitTimeExists: null});
+                liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), {dataStatus: null, splitTimeExists: null});
 
                 var requestData = {
                     data: {
@@ -690,13 +690,13 @@
                                 eventGroupId: liveEntry.currentEventGroupId,
                                 bibNumber: $('#js-bib-number').val(),
                                 enteredTime: $timeField.val(),
-                                lap: $('js-lap').val(),
+                                lap: $('#js-lap-number').val(),
                                 splitName: liveEntry.currentStation().title,
                                 subSplitKind: kind,
                                 stoppedHere: $('#js-dropped').prop('checked'),
                                 withPacer: $('#js-pacer-' + kind).prop('checked'),
                                 dataStatus: $timeField.attr('data-time-status'),
-                                existingTimesCount: $timeField.attr('data-existing-times-count')
+                                splitTimeExists: $timeField.attr('data-split-time-exists')
                             }
                         }
                     )
@@ -794,10 +794,10 @@
 
             updateTimeField: function ($field, rawTime) {
                 $field.removeClass('exists null bad good questionable')
-                    .addClass(rawTime.existingTimesCount > 0 ? 'exists' : '')
+                    .addClass(rawTime.splitTimeExists ? 'exists' : '')
                     .addClass(rawTime.dataStatus)
                     .attr('data-time-status', rawTime.dataStatus)
-                    .attr('data-existing-times-count', rawTime.existingTimesCount)
+                    .attr('data-split-time-exists', rawTime.splitTimeExists)
             }
         }, // END liveEntryForm form
 
@@ -991,9 +991,9 @@
                 var bibStatus = liveEntry.bibStatus(rawTime.bibNumber, rawTime.splitName);
                 var bibIcon = bibIcons[bibStatus];
                 var timeInIcon = timeIcons[inRawTime.dataStatus] || '';
-                timeInIcon += (inRawTime.existingTimesCount > 0) ? timeIcons['exists'] : '';
+                timeInIcon += (inRawTime.splitTimeExists ? timeIcons['exists'] : '');
                 var timeOutIcon = timeIcons[outRawTime.dataStatus] || '';
-                timeOutIcon += (outRawTime.existingTimesCount > 0) ? timeIcons['exists'] : '';
+                timeOutIcon += (outRawTime.splitTimeExists ? timeIcons['exists'] : '');
 
                 // Base64 encode the stringified timeRow to add to the timeRow
                 var base64encodedTimeRow = btoa(JSON.stringify(rawTimeRow));

@@ -672,7 +672,7 @@ RSpec.describe Api::V1::EventGroupsController do
       let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '11:23:34', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
 
       via_login_and_jwt do
-        it 'adds existing_times_count and correctly interprets all attributes, returning no errors' do
+        it 'adds split_time_exists and correctly interprets all attributes, returning no errors' do
           response = make_request
           result = JSON.parse(response.body)
           raw_time_row = result.dig('data', 'rawTimeRow')
@@ -688,7 +688,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq(%w(11:22:33 11:23:34))
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:33 11:23:34))
-          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([1, 1])
+          expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([true, true])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
         end
@@ -700,7 +700,7 @@ RSpec.describe Api::V1::EventGroupsController do
       let(:raw_time_attributes_2) { nil }
 
       via_login_and_jwt do
-        it 'adds existing_times_count and data_status' do
+        it 'adds split_time_exists and data_status' do
           response = make_request
           result = JSON.parse(response.body)
           raw_time_row = result.dig('data', 'rawTimeRow')
@@ -716,7 +716,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(['In'])
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq(%w(11:22:33))
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:33))
-          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([1])
+          expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([true])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true])
         end
@@ -728,7 +728,7 @@ RSpec.describe Api::V1::EventGroupsController do
       let(:raw_time_attributes_2) { {bib_number: '112', entered_time: '11:23:34', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
 
       via_login_and_jwt do
-        it 'correctly computes existing_times_count' do
+        it 'correctly computes split_time_exists' do
           response = make_request
           result = JSON.parse(response.body)
           raw_time_row = result.dig('data', 'rawTimeRow')
@@ -744,7 +744,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq(%w(11:22:33 11:23:34))
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:33 11:23:34))
-          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([1, 0])
+          expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([true, false])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
         end
@@ -772,7 +772,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq([nil, '11:23:34'])
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:mm:ss 11:23:34))
-          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([1, 1])
+          expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([true, true])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
         end
@@ -784,7 +784,7 @@ RSpec.describe Api::V1::EventGroupsController do
       let(:raw_time_attributes_2) { {bib_number: '999', entered_time: '11:23:34', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
 
       via_login_and_jwt do
-        it 'returns data without adding existing_times_count' do
+        it 'returns data without adding split_time_exists' do
           response = make_request
           result = JSON.parse(response.body)
           raw_time_row = result.dig('data', 'rawTimeRow')
@@ -800,7 +800,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq(%w(11:22:33 11:23:34))
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:33 11:23:34))
-          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([nil, nil])
+          expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([nil, nil])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
         end
@@ -812,7 +812,7 @@ RSpec.describe Api::V1::EventGroupsController do
       let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '11:23:34', split_name: 'Nonexistent', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
 
       via_login_and_jwt do
-        it 'returns data without adding existing_times_count and adds a descriptive error' do
+        it 'returns data without adding split_time_exists and adds a descriptive error' do
           response = make_request
           result = JSON.parse(response.body)
           raw_time_row = result.dig('data', 'rawTimeRow')
@@ -828,7 +828,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq(%w(11:22:33 11:23:34))
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:33 11:23:34))
-          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([nil, nil])
+          expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([nil, nil])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
         end
@@ -840,7 +840,7 @@ RSpec.describe Api::V1::EventGroupsController do
       let(:raw_time_attributes_2) { {bib_number: '9*9', entered_time: '11:23:34', split_name: 'Aid 1', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
 
       via_login_and_jwt do
-        it 'returns data without adding existing_times_count' do
+        it 'returns data without adding split_time_exists' do
           response = make_request
           result = JSON.parse(response.body)
           raw_time_row = result.dig('data', 'rawTimeRow')
@@ -856,7 +856,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq(%w(11:22:33 11:23:34))
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:33 11:23:34))
-          expect(raw_times.map { |rt| rt['existingTimesCount'] }).to eq([nil, nil])
+          expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([nil, nil])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
         end

@@ -16,7 +16,7 @@ class VerifyRawTimeRow
 
   def perform
     if errors.empty?
-      add_existing_count
+      set_split_time_exists
       append_split_times
       set_data_status
     end
@@ -28,11 +28,9 @@ class VerifyRawTimeRow
   attr_reader :raw_time_row, :times_container
   delegate :raw_times, :effort, :event, :errors, to: :raw_time_row
 
-  def add_existing_count
+  def set_split_time_exists
     raw_times.each do |raw_time|
-      raw_time.existing_times_count = effort.split_times.select do |split_time|
-        split_time.split_id == raw_time.split_id && split_time.bitkey == raw_time.bitkey
-      end.size
+      raw_time.split_time_exists = effort.split_times.any? { |split_time| split_time.time_point == raw_time.time_point }
     end
   end
 

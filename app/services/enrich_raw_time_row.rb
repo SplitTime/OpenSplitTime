@@ -34,8 +34,10 @@ class EnrichRawTimeRow
         raw_time.lap = nil
       elsif raw_time.absolute_time
         raw_time.lap = expected_lap(raw_time, :day_and_time, raw_time.absolute_time)
-      else
+      elsif raw_time.military_time
         raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
+      else
+        raw_time.lap = nil
       end
     end
   end
@@ -50,7 +52,7 @@ class EnrichRawTimeRow
 
   def remove_enriched_attributes
     raw_time_pair.each do |raw_time|
-      raw_time.assign_attributes(data_status: nil, existing_times_count: nil)
+      raw_time.assign_attributes(data_status: nil, split_time_exists: nil)
     end
   end
 

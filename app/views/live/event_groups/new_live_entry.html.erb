@@ -4,7 +4,7 @@
 
 <div class="row header">
   <div id="js-new-times-alert" class="alert alert-info center" role="alert">
-    <a href="#js-import-live-times">New time records available</a>
+    <a href="#js-pull-times">New time records available</a>
   </div>
   <div class="col-xs-12 col-md-6 page-title">
     <h2></h2>
@@ -182,7 +182,7 @@
 <div class="row">
   <div class="col-xs-12" id="js-live-messages">
     <div class="alert alert-warning" role="alert" id="js-import-live-warning">
-      <strong>You're up to date</strong> No live time data available to pull.
+      <strong>You're up to date.</strong> No raw time data available to pull.
     </div>
     <div class="alert alert-danger" role="alert" id="js-import-live-error">
       <strong>Error</strong> Couldn't read data from the server.
@@ -191,11 +191,11 @@
 </div>
 <div class="row provisional-data">
   <div id="js-table-submit-buttons" class="col-xs-12 table-submit-wrapper">
-    <button id="js-import-live-times" class="btn btn-primary">
+    <button id="js-pull-times" class="btn btn-primary">
       Pull Times
       <span class="badge" id="js-pull-times-count"></span>
     </button>
-    <button id="js-force-import-live-times" class="btn btn-danger" style="display: none;">
+    <button id="js-force-pull-times" class="btn btn-danger" style="display: none;">
       Force Pull
       <span class="badge" id="js-force-pull-times-count"></span>
     </button>

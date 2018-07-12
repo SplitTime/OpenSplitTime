@@ -1135,37 +1135,38 @@
 
                 $(document).on('keydown', function (event) {
                     if (event.keyCode === 16) {
-                        $('#js-import-live-times').hide();
-                        $('#js-force-import-live-times').show()
+                        $('#js-pull-times').hide();
+                        $('#js-force-pull-times').show()
                     }
                 });
                 $(document).on('keyup', function (event) {
                     if (event.keyCode === 16) {
-                        $('#js-force-import-live-times').hide();
-                        $('#js-import-live-times').show()
+                        $('#js-force-pull-times').hide();
+                        $('#js-pull-times').show()
                     }
                 });
-                $('#js-import-live-times, #js-force-import-live-times').on('click', function (event) {
+                $('#js-pull-times, #js-force-pull-times').on('click', function (event) {
                     event.preventDefault();
                     if (liveEntry.importAsyncBusy) {
                         return;
                     }
                     liveEntry.importAsyncBusy = true;
-                    var forceParam = (this.id === 'js-force-import-live-times') ? '?forcePull=true' : '';
-                    $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_live_time_rows' + forceParam, {
+                    var forceParam = (this.id === 'js-force-pull-times') ? '?forcePull=true' : '';
+                    $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_raw_times' + forceParam, {
                         error: function (obj, error) {
                             liveEntry.importAsyncBusy = false;
                             liveEntry.timeRowsTable.importLiveError(obj, error);
                         },
                         dataType: 'json',
-                        success: function (data) {
-                            if (data.returnedRows.length === 0) {
+                        success: function (response) {
+                            var rawTimeRows = response.data.rawTimeRows;
+                            if (rawTimeRows.length === 0) {
                                 liveEntry.displayAndHideMessage(
                                     liveEntry.importLiveWarning,
                                     '#js-import-live-warning');
                                 return;
                             }
-                            liveEntry.populateRows(data);
+                            liveEntry.populateRows(rawTimeRows);
                             liveEntry.importAsyncBusy = false;
                         },
                         type: 'PATCH'
@@ -1210,8 +1211,8 @@
             return;
         },
 
-        populateRows: function (response) {
-            response.returnedRows.forEach(function (timeRow) {
+        populateRows: function (rawTimeRows) {
+            rawTimeRows.forEach(function (timeRow) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
                 var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();

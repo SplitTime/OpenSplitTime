@@ -128,11 +128,11 @@
 
                 var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
                 var pusher = new Pusher(liveTimesPusherKey);
-                var channel = pusher.subscribe('live-times-available.event_group.' + liveEntry.currentEventGroupId);
+                var channel = pusher.subscribe('raw-times-available.event_group.' + liveEntry.currentEventGroupId);
 
                 channel.bind('pusher:subscription_succeeded', function () {
                     // Force the server to trigger a push for initial display
-                    liveEntry.triggerTimeRecordsPush();
+                    liveEntry.triggerRawTimesPush();
                 });
 
                 channel.bind('update', function (data) {
@@ -160,8 +160,8 @@
             }
         },
 
-        triggerTimeRecordsPush: function () {
-            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_time_records_push';
+        triggerRawTimesPush: function () {
+            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_raw_times_push';
             $.ajax({
                 url: endpoint,
                 cache: false

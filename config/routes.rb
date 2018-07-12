@@ -149,7 +149,7 @@ Rails.application.routes.draw do
           patch :pull_raw_times
           get :enrich_raw_time_row
           post :submit_raw_time_rows
-          get :trigger_time_records_push
+          get :trigger_raw_times_push
         end
       end
       resources :events, only: [:index, :show, :create, :update, :destroy] do

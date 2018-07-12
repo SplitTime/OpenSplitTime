@@ -60,7 +60,7 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def trigger_time_records_push?
+  def trigger_raw_times_push?
     user.present?
   end
 

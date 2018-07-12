@@ -864,8 +864,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
   end
 
-  describe '#trigger_time_records_push' do
-    subject(:make_request) { get :trigger_time_records_push, params: request_params }
+  describe '#trigger_raw_times_push' do
+    subject(:make_request) { get :trigger_raw_times_push, params: request_params }
     let(:course) { create(:course) }
     let(:split) { create(:split, course_id: course.id) }
     let(:event) { create(:event, event_group: event_group, course: course) }

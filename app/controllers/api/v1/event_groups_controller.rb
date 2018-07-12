@@ -143,7 +143,7 @@ class Api::V1::EventGroupsController < ApiController
     end
   end
 
-  def trigger_time_records_push
+  def trigger_raw_times_push
     authorize @resource
     report_raw_times_available(@resource)
     render json: {message: "Time records push notifications sent for #{@resource.name}"}

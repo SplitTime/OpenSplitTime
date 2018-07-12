@@ -30,17 +30,71 @@ RSpec.describe EnrichRawTimeRow do
       let!(:event_2) { create(:event, event_group: event_group, course: course, laps_required: 1) }
 
       context 'when bib_number and split_name are found' do
-        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: false) }
-        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: true) }
+        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:00:00', split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: false) }
+        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:05:00', split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: true) }
 
         it 'adds lap to raw_times, and verifies them' do
           expect(request_raw_times.map(&:lap)).to all be_nil
+          expect(request_raw_times.map(&:stopped_here)).to eq([false, true])
 
           result_row = subject.perform
           expect(result_row).to be_a(RawTimeRow)
           expect(result_row.raw_times.map(&:lap)).to all eq(1)
+          expect(result_row.raw_times.map(&:stopped_here)).to eq([false, true])
           expect(VerifyRawTimeRow).to have_received(:perform).once.with(RawTimeRow.new(request_raw_times, effort_1, event_1, cunningham_split, errors), times_container: times_container)
           expect(FindExpectedLap).to have_received(:perform).exactly(0).times
+        end
+      end
+
+      context 'when a stop is set on the first of two complete raw_times' do
+        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:00:00', split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: true) }
+        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:05:00', split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
+
+        it 'moves the stop to the second raw_time' do
+          expect(request_raw_times.map(&:stopped_here)).to eq([true, false])
+
+          result_row = subject.perform
+          expect(result_row).to be_a(RawTimeRow)
+          expect(result_row.raw_times.map(&:stopped_here)).to eq([false, true])
+        end
+      end
+
+      context 'when a stop is set on the first raw_time and the second raw_time has no entered_time' do
+        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:00:00', split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: true) }
+        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
+
+        it 'leaves the stop on the first raw_time' do
+          expect(request_raw_times.map(&:stopped_here)).to eq([true, false])
+
+          result_row = subject.perform
+          expect(result_row).to be_a(RawTimeRow)
+          expect(result_row.raw_times.map(&:stopped_here)).to eq([true, false])
+        end
+      end
+
+      context 'when a stop is set but no time has an entered_time' do
+        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: true) }
+        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
+
+        it 'removes the stop' do
+          expect(request_raw_times.map(&:stopped_here)).to eq([true, false])
+
+          result_row = subject.perform
+          expect(result_row).to be_a(RawTimeRow)
+          expect(result_row.raw_times.map(&:stopped_here)).to eq([false, false])
+        end
+      end
+
+      context 'when no stop is set' do
+        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:00:00', split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: false) }
+        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:05:00', split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
+
+        it 'does not set a stop' do
+          expect(request_raw_times.map(&:stopped_here)).to eq([false, false])
+
+          result_row = subject.perform
+          expect(result_row).to be_a(RawTimeRow)
+          expect(result_row.raw_times.map(&:stopped_here)).to eq([false, false])
         end
       end
 

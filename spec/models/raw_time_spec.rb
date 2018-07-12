@@ -126,4 +126,51 @@ RSpec.describe RawTime, type: :model do
       expect(subject).not_to be_bad
     end
   end
+
+  describe '#clean?' do
+    subject { build_stubbed(:raw_time, data_status: data_status, split_time_exists: split_time_exists) }
+    let(:data_status) { nil }
+    let(:split_time_exists) { false }
+
+    context 'when data_status is good and split_time_exists is false' do
+      let(:data_status) { :good }
+
+      it 'returns true' do
+        expect(subject.clean?).to eq(true)
+      end
+    end
+
+    context 'when data_status is questionable and split_time_exists is false' do
+      let(:data_status) { :questionable }
+
+      it 'returns true' do
+        expect(subject.clean?).to eq(true)
+      end
+    end
+
+    context 'when data_status is bad and split_time_exists is false' do
+      let(:data_status) { :bad }
+
+      it 'returns false' do
+        expect(subject.clean?).to eq(false)
+      end
+    end
+
+    context 'when data_status is nil and split_time_exists is false' do
+      let(:data_status) { nil }
+
+      it 'returns true' do
+        expect(subject.clean?).to eq(true)
+      end
+    end
+
+    context 'when split_time_exists is true regardless of data_status' do
+      let(:data_status) { :good }
+      let(:split_time_exists) { true }
+
+      it 'returns false' do
+        expect(subject.clean?).to eq(false)
+      end
+    end
+  end
 end

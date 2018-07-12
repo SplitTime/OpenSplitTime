@@ -104,13 +104,13 @@ Globals
 
 /******* Live Entry Form ********/
 .form-split-wrapper {
-    // display: table;
+    display: flex;
     @extend .no-gutter;
     // border-bottom: 1px solid $gray;
     width: 100%;
 
     .live-entry {
-        margin: 0 auto 0;
+        margin: 20px auto;
 
         label {
             text-align: right;
@@ -211,136 +211,78 @@ Globals
 
 /******* Splits Slider ********/
 .splits-slider {
-    background: $lightGray;
-    display: table-cell;
-    padding: 20px 75px 40px;
-    height: 100%;
-    &-plotter {
+    background: $darkGray;
+    position: relative;
+
+    .table-wrapper {
         position: relative;
-        top: 35px;
-        height: 75px;
-        margin: 0 30px;
-
-        &:before {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            left: 0;
-            background: $gray;
-            position: relative;
-        }
-
-        &.begin:before {
-            width: 50%;
-            left: 50%;
-        }
-
-        &.end:before {
-            width: 50%;
-            left: 0;
-        }
-
-        &.animate {
-            &:before,
-            .split-slider-item {
-                transition: all 0.6s ease-in-out;
-            }
-        }
-
-        .split-slider-item {
+        &:after {
+            content: '';
             position: absolute;
-            top: -8px;
-            display: none;
-            max-width: 120px;
-            min-width: 80px;
-
-            &-name, &-distance {
-                min-width: 100%;
-            }
-
-            &-dot {
-                position: relative;
-                display: block;
-                background: $gray;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                margin: 0 auto;
-                &:after {
-                    display: block;
-                    content: "\000A";
-                    white-space: pre;
-                }
-            }
-
-            &.active,
-            &.inactive {
-                display: block;
-                opacity: 100%;
-
-                &.begin {
-                    left: 0;
-                    @include transform(translateX(-50%));
-                    text-align: left;
-                    .split-slider-item-name,
-                    .split-slider-item-distance {
-                        @include transform(translateX(50%));
-                    }
-                }
-
-                &.middle {
-                    left: 50%;
-                    @include transform(translateX(-50%));
-                    text-align: center;
-                }
-
-                &.end {
-                    left: 100%;
-                    @include transform(translateX(-50%));
-                    text-align: right;
-                    .split-slider-item-name,
-                    .split-slider-item-distance {
-                        @include transform(translateX(-50%));
-                    }
-                }
-            }
-
-            &.inactive {
-                opacity: 0;
-            }
-
-            &-name,
-            &-distance {
-                display: inline-block;
-            }
-
-            &-name {
-                font-weight: bold;
-                padding-top: 15px;
-            }
-
-            &-distance {
-                display: block;
-            }
+            display: block;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            box-shadow: 0 0 5px 4px $darkGray;
         }
     }
 
-    .splits-slider-data {
-        margin-top: 75px;
+    .table {
+        color: $white;
 
+        thead {
+            transform: translateY(0);
+            position: relative;
+
+            &:before {
+                content: '';
+                position: absolute;
+                display: block;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 5px;
+                background: $darkGray;
+                z-index: -1;
+                box-shadow: 0 0 5px 4px $darkGray;
+            }
+        }
+
+        td, th {
+            border: none;
+        }
+    }
+
+    .table-striped > tbody > tr:nth-of-type(even) {
+        background: #333;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background: #555;
+    }
+
+    .splits-slider-data {
         [data-toggle="modal"] {
             cursor: pointer;
+        }
+
+        color: $white;
+        position: absolute;
+        top: 0; left: 0;
+        right: 0; bottom: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+
+        .table-wrapper {
+            overflow: auto;
         }
 
         .data-label {
             text-align: right;
             clear: left;
         }
-    }
-
-    .group-splits-slider-data {
-        margin-top: 55px;
     }
 }
 

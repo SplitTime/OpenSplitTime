@@ -607,12 +607,37 @@
                     if (effort !== null && typeof effort === 'object' && liveEntry.serverConnection()) {
                         return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
                             liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
-                            $('#js-effort-table').html(response.data.id)
-                            // Use response to update effort detail
+                            var attributes = response.included[0].attributes;
+                            $('#js-effort-table').empty();
+                            $.each(response.data.attributes.eventSplitHeaderData, function(i, split) {
+                                var elapsedTimes = attributes.elapsedTimes[i];
+                                var absoluteTimes = attributes.absoluteTimes[i];
+                                $('#js-effort-table').append('\
+                                    <tr>\
+                                        <td>' + split.title + '</td>\
+                                        <td>' + distanceToPreferred(split.distance).toFixed(1) + '</td>\
+                                        <td>' + absoluteTimes.map(function(time) {
+                                            if (time === null) return '--- --:--';
+                                            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
+                                            var d = new Date(time);
+                                            var minutes = ('0' + d.getMinutes()).slice(-2);
+                                            return days[d.getDay()] + ' ' + d.getHours() + ':' + minutes;
+                                        }).join(' / ') + '</td>\
+                                        <td>' + elapsedTimes.map(function(time) {
+                                            if (time === null) return '--:--';
+                                            var hours = Math.floor(time / (60 * 60));
+                                            var minutes = Math.floor((time / 60) % 60);
+                                            // var seconds = Math.floor(time % 60);
+                                            return hours + ':' + ('0' + minutes).slice(-2);
+                                        }).join(' / ') + '</td>\
+                                        <td class="pacer-only"></td>\
+                                    </tr>\
+                                ');
+                            });
                         })
                     } else {
-                        $('#js-effort-table').html('[Blurred dummy data here]')
-                        // Clear effort detail
+                        $('#js-effort-table').empty();
+                        // $('#js-effort-table').html('[Blurred dummy data here]')
                     }
                 }
             },

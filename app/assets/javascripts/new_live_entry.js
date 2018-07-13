@@ -607,6 +607,7 @@
                             // Use response to update effort detail
                         })
                     } else {
+                        liveEntry.liveEntryForm.lastEffortInfoBib = null;
                         $('#js-effort-table').html('[Blurred dummy data here]')
                         // Clear effort detail
                     }

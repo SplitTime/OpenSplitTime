@@ -25,7 +25,11 @@ module Interactors
       return self unless other
       combined_errors = errors + other.errors
       combined_message = [message, other.message].join("\n")
-      combined_resources = [resources, other.resources].compact.flatten
+      combined_resources = if resources.is_a?(Hash) && other.resources.is_a?(Hash)
+                             resources.merge(other.resources)
+                           else
+                             [resources, other.resources].compact.flatten
+                           end
       Interactors::Response.new(combined_errors, combined_message, combined_resources)
     end
 

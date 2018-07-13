@@ -87,8 +87,12 @@ class Api::V1::EventGroupsController < ApiController
 
   def submit_raw_time_rows
 
-    # This endpoint accepts an array of raw_time_rows, verifies them,
-    # saves those that are good and not duplicates, and returns the others.
+    # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
+    # related split_time data where appropriate, and returns the others.
+    #
+    # In all instances, raw_times having bad split_name or bib_number data will be returned.
+    # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
+    # When params[:force_submit] is true, bad and duplicate times will be forced through.
 
     authorize @resource
     event_group = EventGroup.where(id: @resource.id).includes(:events).first
@@ -96,10 +100,11 @@ class Api::V1::EventGroupsController < ApiController
     data = params[:data] || ActionController::Parameters.new({})
     errors = []
     enriched_raw_time_rows = []
+    times_container = SegmentTimesContainer.new(calc_model: :stats)
 
     data.values.each do |raw_times_data|
       if raw_times_data[:raw_time_row]
-        result_row = parse_raw_times_data(ActionController::Parameters.new(raw_times_data), event_group)
+        result_row = parse_raw_times_data(ActionController::Parameters.new(raw_times_data), event_group, times_container)
         enriched_raw_time_rows << result_row
       else
         errors << {title: 'Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}',
@@ -108,35 +113,10 @@ class Api::V1::EventGroupsController < ApiController
     end
 
     if errors.empty?
-      partition_method = params[:force_submit]&.to_boolean ? :itself : :clean?
-      clean_rows, problem_rows = enriched_raw_time_rows.partition(&partition_method)
-      saved_rows = []
+      response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: enriched_raw_time_rows, params: params, current_user_id: current_user.id)
+      problem_rows = response.resources[:problem_rows]
+      report_raw_times_available(event_group)
 
-      clean_rows.each do |rtr|
-        ActiveRecord::Base.transaction do
-          rtr_errors = []
-
-          rtr.raw_times.each do |raw_time|
-            raw_time.event_group_id = event_group.id
-            raw_time.source ||= "Live Entry (#{current_user.id})"
-            unless raw_time.save
-              rtr_errors << jsonapi_error_object(raw_time)
-            end
-          end
-
-          if rtr_errors.present?
-            rtr.errors ||= []
-            rtr.errors << rtr_errors
-            problem_rows << rtr
-            raise ActiveRecord::Rollback
-          else
-            saved_rows << rtr
-          end
-        end
-      end
-
-      importer = OpenStruct.new(saved_records: saved_rows.flat_map(&:raw_times))
-      ETL::EventGroupImportProcess.perform!(event_group, importer)
       render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}
     else
       render json: {errors: errors}, status: :unprocessable_entity
@@ -151,11 +131,11 @@ class Api::V1::EventGroupsController < ApiController
 
   private
 
-  def parse_raw_times_data(raw_times_data, event_group)
-    raw_time_row = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
-    raw_times_attributes = raw_time_row[:raw_times] || {}
+  def parse_raw_times_data(raw_times_data, event_group, times_container = nil)
+    raw_time_row_attributes = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
+    raw_times_attributes = raw_time_row_attributes[:raw_times] || {}
     raw_times = raw_times_attributes.values.map { |attributes| RawTime.new(attributes) }
     request_row = RawTimeRow.new(raw_times)
-    EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row)
+    EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row, times_container: times_container)
   end
 end

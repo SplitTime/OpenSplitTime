@@ -48,7 +48,7 @@ RSpec.describe Interactors::CreateSplitTimesFromRawTimes do
       end
     end
 
-    context 'when no split_time_ids argument is provided' do
+    context 'when no raw_times argument is provided' do
       subject { Interactors::CreateSplitTimesFromRawTimes.new(event_group: event_group, raw_times: nil) }
 
       it 'raises an error' do

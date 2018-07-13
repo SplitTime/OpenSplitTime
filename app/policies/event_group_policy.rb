@@ -64,7 +64,7 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def trigger_time_records_push?
+  def trigger_raw_times_push?
     user.present?
   end
 
@@ -74,6 +74,10 @@ class EventGroupPolicy < ApplicationPolicy
 
   def enrich_raw_time_row?
     user.present?
+  end
+
+  def submit_raw_time_rows?
+    user.authorized_to_edit?(event_group)
   end
 
   def pull_time_record_rows?

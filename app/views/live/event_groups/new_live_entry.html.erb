@@ -17,8 +17,8 @@
         </ul>
       </div>
       <aside class="ost-alerts col-sm-7">
-        <div id="js-group-new-times-alert" class="alert alert-orange float-right" role="alert">
-          <a href="#js-import-live-times" class="alert-body">
+        <div id="js-new-times-alert" class="alert alert-orange float-right" role="alert">
+          <a href="#js-pull-times" class="alert-body">
             <i class="glyphicon glyphicon-time alert-icon"></i>
             <strong>New Live Times Available</strong><br/>
             Click to pull times.
@@ -167,7 +167,7 @@
         <h3><strong>Local Data Workspace</strong></h3>
       </div>
       <div class="col-sm-6 form-inline text-right">
-        Show 
+        Show
         <select class="form-control">
           <option>10</option>
         </select>
@@ -217,7 +217,7 @@
 <div class="row">
   <div class="col-xs-12" id="js-live-messages">
     <div class="alert alert-warning" role="alert" id="js-import-live-warning">
-      <strong>You're up to date</strong> No live time data available to pull.
+      <strong>You're up to date.</strong> No raw time data available to pull.
     </div>
     <div class="alert alert-danger" role="alert" id="js-import-live-error">
       <strong>Error</strong> Couldn't read data from the server.
@@ -226,11 +226,11 @@
 </div>
 <div class="row provisional-data">
   <div id="js-table-submit-buttons" class="col-xs-12 table-submit-wrapper">
-    <button id="js-import-live-times" class="btn btn-primary">
+    <button id="js-pull-times" class="btn btn-primary">
       Pull Times
       <span class="badge" id="js-pull-times-count"></span>
     </button>
-    <button id="js-force-import-live-times" class="btn btn-danger" style="display: none;">
+    <button id="js-force-pull-times" class="btn btn-danger" style="display: none;">
       Force Pull
       <span class="badge" id="js-force-pull-times-count"></span>
     </button>
@@ -242,10 +242,10 @@
       </button>
     </div>
     <div class="btn-group" role="group">
-      <button id="js-delete-all-efforts" class="btn btn-danger">Discard All</button>
+      <button id="js-delete-all-time-rows" class="btn btn-danger">Discard All</button>
       <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
     </div>
-    <button id="js-submit-all-efforts" class="btn btn-success">Submit All</button>
+    <button id="js-submit-all-time-rows" class="btn btn-success">Submit All</button>
   </div>
 
   <div id="debug">

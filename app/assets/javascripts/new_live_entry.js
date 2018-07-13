@@ -101,10 +101,6 @@
             }
         },
 
-        serverConnection: function () {
-            return true // This should test to see if an internet connection is available
-        },
-
         /**
          * This kicks off the full UI
          *
@@ -132,11 +128,11 @@
 
                 var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
                 var pusher = new Pusher(liveTimesPusherKey);
-                var channel = pusher.subscribe('live-times-available.event_group.' + liveEntry.currentEventGroupId);
+                var channel = pusher.subscribe('raw-times-available.event_group.' + liveEntry.currentEventGroupId);
 
                 channel.bind('pusher:subscription_succeeded', function () {
                     // Force the server to trigger a push for initial display
-                    liveEntry.triggerTimeRecordsPush();
+                    liveEntry.triggerRawTimesPush();
                 });
 
                 channel.bind('update', function (data) {
@@ -164,8 +160,8 @@
             }
         },
 
-        triggerTimeRecordsPush: function () {
-            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_time_records_push';
+        triggerRawTimesPush: function () {
+            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_raw_times_push';
             $.ajax({
                 url: endpoint,
                 cache: false
@@ -604,7 +600,7 @@
                     .attr('data-bib-status', bibStatus);
 
                 if (bibChanged) {
-                    if (effort !== null && typeof effort === 'object' && liveEntry.serverConnection()) {
+                    if (effort !== null && typeof effort === 'object') {
                         return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
                             liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
                             var attributes = response.included[0].attributes;
@@ -636,8 +632,9 @@
                             });
                         })
                     } else {
+                        liveEntry.liveEntryForm.lastEffortInfoBib = null;
                         $('#js-effort-table').empty();
-                        // $('#js-effort-table').html('[Blurred dummy data here]')
+                        // Clear effort detail
                     }
                 }
             },
@@ -721,7 +718,7 @@
                                 stoppedHere: $('#js-dropped').prop('checked'),
                                 withPacer: $('#js-pacer-' + kind).prop('checked'),
                                 dataStatus: $timeField.attr('data-time-status'),
-                                splitTimeExists: $timeField.attr('data-split-time-exists')
+                                splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true')
                             }
                         }
                     )
@@ -973,14 +970,14 @@
                 $.each(tableNodes, function () {
                     var $row = $(this).closest('tr');
                     var timeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
-                    timeRows.push(timeRow);
+                    timeRows.push({rawTimeRow: timeRow});
                 });
 
-                var data = {timeRows: timeRows, forceSubmit: forceSubmit};
-                $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/import?data_format=live_entry_submit', data, function (response) {
+                var data = {data: timeRows, forceSubmit: forceSubmit};
+                $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/submit_raw_time_rows', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(tableNodes);
                     liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
-                    var returnedRows = response.savedRows; // Change this so it selects only those rows that have status problems
+                    var returnedRows = response.data.rawTimeRows;
                     for (var i = 0; i < returnedRows.length; i++) {
                         var timeRow = returnedRows[i];
                         timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
@@ -1073,7 +1070,7 @@
                 });
                 return function (canDelete) {
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-                    var $deleteButton = $('#js-delete-all-efforts');
+                    var $deleteButton = $('#js-delete-all-time-rows');
                     $deleteButton.prop('disabled', true);
                     $(document).off('click', callback);
                     $deleteWarning.insertAfter($deleteButton).animate({
@@ -1127,13 +1124,13 @@
                 });
 
 
-                $('#js-delete-all-efforts').on('click', function (event) {
+                $('#js-delete-all-time-rows').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.timeRowsTable.toggleDiscardAll(true);
                     return false;
                 });
 
-                $('#js-submit-all-efforts').on('click', function (event) {
+                $('#js-submit-all-time-rows').on('click', function (event) {
                     event.preventDefault();
                     var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
                     liveEntry.timeRowsTable.submitTimeRows(nodes, false);
@@ -1160,37 +1157,38 @@
 
                 $(document).on('keydown', function (event) {
                     if (event.keyCode === 16) {
-                        $('#js-import-live-times').hide();
-                        $('#js-force-import-live-times').show()
+                        $('#js-pull-times').hide();
+                        $('#js-force-pull-times').show()
                     }
                 });
                 $(document).on('keyup', function (event) {
                     if (event.keyCode === 16) {
-                        $('#js-force-import-live-times').hide();
-                        $('#js-import-live-times').show()
+                        $('#js-force-pull-times').hide();
+                        $('#js-pull-times').show()
                     }
                 });
-                $('#js-import-live-times, #js-force-import-live-times').on('click', function (event) {
+                $('#js-pull-times, #js-force-pull-times').on('click', function (event) {
                     event.preventDefault();
                     if (liveEntry.importAsyncBusy) {
                         return;
                     }
                     liveEntry.importAsyncBusy = true;
-                    var forceParam = (this.id === 'js-force-import-live-times') ? '?forcePull=true' : '';
-                    $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_live_time_rows' + forceParam, {
+                    var forceParam = (this.id === 'js-force-pull-times') ? '?forcePull=true' : '';
+                    $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_raw_times' + forceParam, {
                         error: function (obj, error) {
                             liveEntry.importAsyncBusy = false;
                             liveEntry.timeRowsTable.importLiveError(obj, error);
                         },
                         dataType: 'json',
-                        success: function (data) {
-                            if (data.returnedRows.length === 0) {
+                        success: function (response) {
+                            var rawTimeRows = response.data.rawTimeRows;
+                            if (rawTimeRows.length === 0) {
                                 liveEntry.displayAndHideMessage(
                                     liveEntry.importLiveWarning,
                                     '#js-import-live-warning');
                                 return;
                             }
-                            liveEntry.populateRows(data);
+                            liveEntry.populateRows(rawTimeRows);
                             liveEntry.importAsyncBusy = false;
                         },
                         type: 'PATCH'
@@ -1235,8 +1233,8 @@
             return;
         },
 
-        populateRows: function (response) {
-            response.returnedRows.forEach(function (timeRow) {
+        populateRows: function (rawTimeRows) {
+            rawTimeRows.forEach(function (timeRow) {
                 timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
                 var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();

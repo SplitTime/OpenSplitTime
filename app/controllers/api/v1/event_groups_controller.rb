@@ -77,13 +77,7 @@ class Api::V1::EventGroupsController < ApiController
 
     raw_times_data = params[:data] || ActionController::Parameters.new({})
     if raw_times_data[:raw_time_row]
-      raw_time_row = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
-      raw_times_attributes = raw_time_row[:raw_times] || {}
-
-      raw_times = raw_times_attributes.values.map { |attributes| RawTime.new(attributes) }
-      request_row = RawTimeRow.new(raw_times)
-
-      result_row = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row)
+      result_row = parse_raw_times_data(raw_times_data, event_group)
 
       render json: {data: {rawTimeRow: result_row.serialize}}, status: :ok
     else
@@ -91,9 +85,57 @@ class Api::V1::EventGroupsController < ApiController
     end
   end
 
-  def trigger_time_records_push
+  def submit_raw_time_rows
+
+    # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
+    # related split_time data where appropriate, and returns the others.
+    #
+    # In all instances, raw_times having bad split_name or bib_number data will be returned.
+    # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
+    # When params[:force_submit] is true, bad and duplicate times will be forced through.
+
+    authorize @resource
+    event_group = EventGroup.where(id: @resource.id).includes(:events).first
+
+    data = params[:data] || ActionController::Parameters.new({})
+    errors = []
+    enriched_raw_time_rows = []
+    times_container = SegmentTimesContainer.new(calc_model: :stats)
+
+    data.values.each do |raw_times_data|
+      if raw_times_data[:raw_time_row]
+        result_row = parse_raw_times_data(ActionController::Parameters.new(raw_times_data), event_group, times_container)
+        enriched_raw_time_rows << result_row
+      else
+        errors << {title: 'Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}',
+                   detail: {attributes: raw_times_data}}
+      end
+    end
+
+    if errors.empty?
+      response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: enriched_raw_time_rows, params: params, current_user_id: current_user.id)
+      problem_rows = response.resources[:problem_rows]
+      report_raw_times_available(event_group)
+
+      render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}
+    else
+      render json: {errors: errors}, status: :unprocessable_entity
+    end
+  end
+
+  def trigger_raw_times_push
     authorize @resource
     report_raw_times_available(@resource)
     render json: {message: "Time records push notifications sent for #{@resource.name}"}
+  end
+
+  private
+
+  def parse_raw_times_data(raw_times_data, event_group, times_container = nil)
+    raw_time_row_attributes = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
+    raw_times_attributes = raw_time_row_attributes[:raw_times] || {}
+    raw_times = raw_times_attributes.values.map { |attributes| RawTime.new(attributes) }
+    request_row = RawTimeRow.new(raw_times)
+    EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: request_row, times_container: times_container)
   end
 end

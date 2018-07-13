@@ -32,6 +32,11 @@ module Interactors
        detail: {messages: ['One or more live times is not related to the provided event']}}
     end
 
+    def missing_new_split_time_error(raw_time)
+      {title: 'Raw time does not contain a new_split_time',
+      detail: {messages: ["#{raw_time} does not have a new_split_time"]}}
+    end
+
     def raw_time_mismatch_error
       {title: 'Raw times do not match',
        detail: {messages: ['One or more raw times is not related to the provided event group']}}

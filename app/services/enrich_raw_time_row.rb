@@ -19,7 +19,8 @@ class EnrichRawTimeRow
   def perform
     add_lap_to_raw_times
     remove_enriched_attributes
-    build_time_row(raw_time_pair)
+    set_stops
+    build_time_row
   end
 
   private
@@ -56,7 +57,13 @@ class EnrichRawTimeRow
     end
   end
 
-  def build_time_row(raw_time_pair)
+  def set_stops
+    return unless raw_time_pair.any?(&:stopped_here)
+    raw_time_pair.each { |raw_time| raw_time.stopped_here = false }
+    raw_time_pair.select(&:entered_time).last&.assign_attributes(stopped_here: true)
+  end
+
+  def build_time_row
     raw_time_pair.each { |rtr| rtr.effort, rtr.event, rtr.split = effort, event, split }
     raw_time_row = RawTimeRow.new(raw_time_pair, effort, event, split, errors)
     VerifyRawTimeRow.perform(raw_time_row, times_container: times_container)

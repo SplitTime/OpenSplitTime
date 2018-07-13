@@ -8,7 +8,11 @@ RawTimeRow = Struct.new(:raw_times, :effort, :event, :split, :errors) do
   RAW_TIME_METHODS = [:military_time, :sub_split_kind]
 
   def serialize
-    basic_attributes.deep_transform_keys { |key| key.camelize(:lower) }
+    basic_attributes.deep_transform_keys { |key| key.to_s.camelize(:lower) }
+  end
+
+  def clean?
+    raw_times.all?(&:clean?)
   end
 
   private

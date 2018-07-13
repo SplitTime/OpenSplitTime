@@ -2,8 +2,10 @@
 
 class RawTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good]
+  VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:questionable]]
 
   include Auditable
+  include DataStatusMethods
   include TimeRecordable
 
   belongs_to :event_group
@@ -36,6 +38,10 @@ class RawTime < ApplicationRecord
     return all unless search_text.present?
     bib_numbers = search_text.split(/[\s,]+/)
     where(bib_number: bib_numbers)
+  end
+
+  def clean?
+    valid_status? && !split_time_exists?
   end
 
   def effort

@@ -1,10 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe Interactors::UpsertSplitTimesFromRawTimes do
-  subject { Interactors::UpsertSplitTimesFromRawTimes.new(event_group: event_group, raw_times: raw_times) }
+RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
+  subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: event_group, raw_time_row: raw_time_row, times_container: times_container) }
+  let(:event_group) { create(:event_group, available_live: true) }
+  let(:raw_time_row) { RawTimeRow.new(raw_times, effort) }
+  let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
+  let(:effort) { effort_1 }
+
   let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
   let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
   let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
+  let!(:split_time_4) { create(:split_time, effort: effort_1, lap: 1, split: split_3, bitkey: out_bitkey, time_from_start: 20000, stopped_here: false) }
 
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }
@@ -13,7 +19,6 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimes do
   let(:event_1) { create(:event, course: course, event_group: event_group, start_time_in_home_zone: '2018-02-10 06:00:00') }
   let(:event_2) { create(:event, course: course, event_group: event_group, start_time_in_home_zone: '2018-02-10 07:00:00') }
   let(:course) { create(:course) }
-  let(:event_group) { create(:event_group, available_live: true) }
   let(:split_1) { create(:start_split, course: course) }
   let(:split_2) { create(:split, course: course) }
   let(:split_3) { create(:split, course: course) }
@@ -39,7 +44,8 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimes do
   before do
     event_1.splits << splits
     event_2.splits << splits
-    allow(Interactors::UpdateEffortsStatus).to receive(:perform!).and_return(nil)
+    allow(Interactors::AdjustEffortOffset).to receive(:perform).and_return(Interactors::Response.new([], '', {}))
+    allow(Interactors::SetEffortStatus).to receive(:perform).and_return(Interactors::Response.new([], '', {}))
   end
 
   describe '#initialize' do
@@ -56,7 +62,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimes do
     end
 
     context 'when no event_group is provided' do
-      subject { Interactors::UpsertSplitTimesFromRawTimes.new(event_group: nil, raw_times: raw_times) }
+      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: nil, raw_times: raw_times) }
 
       it 'raises an error' do
         expect { subject }.to raise_error(/must include event_group/)
@@ -64,10 +70,10 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimes do
     end
 
     context 'when no raw_times argument is provided' do
-      subject { Interactors::UpsertSplitTimesFromRawTimes.new(event_group: event_group, raw_times: nil) }
+      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: event_group, raw_times: nil) }
 
       it 'raises an error' do
-        expect { subject }.to raise_error(/must include raw_times/)
+        expect { subject }.to raise_error(/must include raw_time_row/)
       end
     end
   end
@@ -83,53 +89,43 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimes do
       end
 
       it 'updates the existing split_times' do
-        expect(SplitTime.count).to eq(3)
-        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 10000, 11000])
+        expect(SplitTime.count).to eq(4)
+        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 10000, 11000, 20000])
 
         response = subject.perform!
         expect(response).to be_successful
-        expect(SplitTime.count).to eq(3)
+        expect(SplitTime.count).to eq(4)
 
-        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 5000, 5100])
+        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 5000, 5100, 20000])
       end
 
-      it 'updates the status of affected efforts' do
+      it 'updates the offset and status of affected efforts' do
         subject.perform!
-        expect(Interactors::UpdateEffortsStatus).to have_received(:perform!).with([effort_1])
-      end
-
-      context 'if the effort has an associated person' do
-        let(:person) { create(:person) }
-        before { effort_1.update(person: person) }
-
-        it 'notifies followers' do
-          expect { subject.perform! }.to have_enqueued_job.on_queue('default')
-        end
+        expect(Interactors::AdjustEffortOffset).to have_received(:perform).with(effort_1)
+        expect(Interactors::SetEffortStatus).to have_received(:perform).with(effort_1, times_container: times_container)
       end
     end
 
     context 'when some new_split_times are located at time_points not occupied by existing split_times' do
-      let(:raw_times) { [raw_time_3, raw_time_4, raw_time_5] }
-      let(:new_split_time_1) { SplitTime.new(time_from_start: 12000, effort_id: effort_1.id, lap: 1, split_id: split_2.id, bitkey: out_bitkey, pacer: true) }
-      let(:new_split_time_2) { SplitTime.new(time_from_start: 20000, effort_id: effort_1.id, lap: 1, split_id: split_3.id, bitkey: in_bitkey, pacer: true) }
-      let(:new_split_time_3) { SplitTime.new(time_from_start: 21000, effort_id: effort_1.id, lap: 1, split_id: split_3.id, bitkey: out_bitkey, pacer: true) }
+      let(:raw_times) { [raw_time_4, raw_time_5] }
+      let(:new_split_time_2) { SplitTime.new(time_from_start: 25000, effort_id: effort_1.id, lap: 1, split_id: split_3.id, bitkey: in_bitkey, pacer: true) }
+      let(:new_split_time_3) { SplitTime.new(time_from_start: 26000, effort_id: effort_1.id, lap: 1, split_id: split_3.id, bitkey: out_bitkey, pacer: true) }
       before do
-        raw_time_3.new_split_time = new_split_time_1
         raw_time_4.new_split_time = new_split_time_2
         raw_time_5.new_split_time = new_split_time_3
       end
 
       it 'updates existing split_times for occupied time_points and creates new split_times for unoccupied time_points' do
-        expect(SplitTime.count).to eq(3)
-        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 10000, 11000])
-        expect(SplitTime.all.map(&:pacer)).to match_array([nil, nil, nil])
+        expect(SplitTime.count).to eq(4)
+        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 10000, 11000, 20000])
+        expect(SplitTime.all.map(&:pacer)).to match_array([nil, nil, nil, nil])
 
         response = subject.perform!
         expect(response).to be_successful
         expect(SplitTime.count).to eq(5)
 
-        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 10000, 12000, 20000, 21000])
-        expect(SplitTime.all.map(&:pacer)).to match_array([nil, nil, true, true, true])
+        expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 10000, 11000, 25000, 26000])
+        expect(SplitTime.all.map(&:pacer)).to match_array([nil, nil, nil, true, true])
       end
     end
   end

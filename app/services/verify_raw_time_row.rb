@@ -9,6 +9,7 @@ class VerifyRawTimeRow
   end
 
   def initialize(raw_time_row, options = {})
+    ArgsValidator.validate(subject: raw_time_row, params: options, exclusive: [:times_container], class: self.class)
     @raw_time_row = raw_time_row
     @times_container = options[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     validate_setup

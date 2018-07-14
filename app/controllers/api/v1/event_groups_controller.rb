@@ -45,7 +45,7 @@ class Api::V1::EventGroupsController < ApiController
     # even if they are marked as already having been pulled.
 
     authorize @resource
-    event_group = EventGroup.where(id: @resource.id).includes(:events).first
+    event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
 
     force_pull = params[:force_pull]&.to_boolean
     default_record_limit = 50
@@ -59,6 +59,8 @@ class Api::V1::EventGroupsController < ApiController
     enriched_raw_times = raw_times.with_relation_ids
 
     raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: enriched_raw_times)
+    times_container = SegmentTimesContainer.new(calc_model: :stats)
+    raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
 
     raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
     report_raw_times_available(event_group)
@@ -70,7 +72,6 @@ class Api::V1::EventGroupsController < ApiController
 
     # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
     # with data_status, split_time_exists, lap, and other attributes set
-    # and with an effort_overview object (existing splits and time data for the related effort)
 
     authorize @resource
     event_group = EventGroup.where(id: @resource.id).includes(:events).first
@@ -90,7 +91,7 @@ class Api::V1::EventGroupsController < ApiController
 
     # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
     # related split_time data where appropriate, and returns the others.
-    #
+
     # In all instances, raw_times having bad split_name or bib_number data will be returned.
     # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
     # When params[:force_submit] is true, bad and duplicate times will be forced through.
@@ -113,7 +114,8 @@ class Api::V1::EventGroupsController < ApiController
 
     if errors.empty?
       force_submit = !!params[:force_submit]&.to_boolean
-      response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows, force_submit: force_submit, current_user_id: current_user.id)
+      response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
+                                                         force_submit: force_submit, mark_as_pulled: true, current_user_id: current_user.id)
       problem_rows = response.resources[:problem_rows]
       report_raw_times_available(event_group)
 

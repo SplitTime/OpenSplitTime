@@ -10,12 +10,13 @@ module Interactors
 
     def initialize(args)
       ArgsValidator.validate(params: args,
-                             required: [:raw_time_rows, :event_group, :force_submit],
-                             exclusive: [:raw_time_rows, :event_group, :force_submit, :current_user_id],
+                             required: [:raw_time_rows, :event_group, :force_submit, :mark_as_pulled],
+                             exclusive: [:raw_time_rows, :event_group, :force_submit, :mark_as_pulled, :current_user_id],
                              class: self.class)
       @raw_time_rows = args[:raw_time_rows]
       @event_group = args[:event_group]
       @force_submit = args[:force_submit]
+      @mark_as_pulled = args[:mark_as_pulled]
       @current_user_id = args[:current_user_id]
       @times_container = SegmentTimesContainer.new(calc_model: :stats)
       @problem_rows = []
@@ -24,10 +25,10 @@ module Interactors
     end
 
     def perform!
-      raw_time_rows.each do |bare_rtr|
+      raw_time_rows.each do |rtr|
         ActiveRecord::Base.transaction do
-          find_effort(bare_rtr)
-          rtr = enriched_raw_time_row(bare_rtr)
+          append_effort(rtr) unless rtr.effort
+          enrich_raw_time_row(rtr)
           save_raw_times(rtr) unless rtr.errors.present?
           upsert_split_times(rtr) unless rtr.errors.present?
           if rtr.errors.present?
@@ -43,11 +44,10 @@ module Interactors
 
     private
 
-    attr_reader :raw_time_rows, :event_group, :force_submit, :current_user_id, :times_container, :problem_rows,
+    attr_reader :raw_time_rows, :event_group, :force_submit, :mark_as_pulled, :current_user_id, :times_container, :problem_rows,
                 :upserted_split_times, :errors
-    alias_method :force_submit?, :force_submit
 
-    def find_effort(rtr)
+    def append_effort(rtr)
       raw_time = rtr.raw_times.first
       return unless raw_time
       raw_bib = raw_time.bib_number
@@ -55,20 +55,20 @@ module Interactors
       rtr.effort = indexed_efforts[integer_bib]
     end
 
-    def enriched_raw_time_row(bare_rtr)
-      if bare_rtr.effort
-        enriched_rtr = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: bare_rtr, times_container: times_container)
-        enriched_rtr.errors << 'row is not clean' unless (enriched_rtr.clean? || force_submit?)
-        enriched_rtr
+    def enrich_raw_time_row(rtr)
+      if rtr.effort
+        EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: rtr, times_container: times_container)
+        rtr.errors << 'bad or duplicate time' unless (rtr.clean? || force_submit)
       else
-        VerifyRawTimeRow.perform(bare_rtr.dup, times_container: times_container) # Adds relevant errors to the raw_time_row
+        VerifyRawTimeRow.perform(rtr, times_container: times_container) # Adds relevant errors to the raw_time_row
       end
     end
 
     def save_raw_times(rtr)
-      rtr.raw_times.select! { |raw_time| raw_time.entered_time.present? } # Throw away empty raw_times
+      rtr.raw_times.select! { |rt| rt.entered_time.present? || rt.absolute_time? } # Throw away empty raw_times
       rtr.raw_times.each do |raw_time|
-        raw_time.assign_attributes(event_group_id: event_group.id, pulled_by: current_user_id, pulled_at: Time.current)
+        raw_time.event_group_id = event_group.id
+        raw_time.assign_attributes(pulled_by: current_user_id, pulled_at: Time.current) if mark_as_pulled
         unless raw_time.save
           rtr.errors << resource_error_object(raw_time)
         end

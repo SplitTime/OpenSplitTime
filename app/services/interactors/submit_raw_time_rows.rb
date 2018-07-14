@@ -10,14 +10,14 @@ module Interactors
 
     def initialize(args)
       ArgsValidator.validate(params: args,
-                             required: [:raw_time_rows, :event_group, :params, :current_user_id],
-                             exclusive: [:raw_time_rows, :event_group, :params, :current_user_id],
+                             required: [:raw_time_rows, :event_group, :force_submit],
+                             exclusive: [:raw_time_rows, :event_group, :force_submit, :current_user_id],
                              class: self.class)
       @raw_time_rows = args[:raw_time_rows]
       @event_group = args[:event_group]
-      @params = args[:params]
+      @force_submit = args[:force_submit]
       @current_user_id = args[:current_user_id]
-      @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+      @times_container = SegmentTimesContainer.new(calc_model: :stats)
       @problem_rows = []
       @upserted_split_times = []
       @errors = []
@@ -43,8 +43,9 @@ module Interactors
 
     private
 
-    attr_reader :raw_time_rows, :event_group, :params, :current_user_id, :times_container, :problem_rows,
+    attr_reader :raw_time_rows, :event_group, :force_submit, :current_user_id, :times_container, :problem_rows,
                 :upserted_split_times, :errors
+    alias_method :force_submit?, :force_submit
 
     def find_effort(rtr)
       raw_time = rtr.raw_times.first
@@ -57,7 +58,7 @@ module Interactors
     def enriched_raw_time_row(bare_rtr)
       if bare_rtr.effort
         enriched_rtr = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: bare_rtr, times_container: times_container)
-        enriched_rtr.errors << 'row is not clean' unless (enriched_rtr.clean? || force?)
+        enriched_rtr.errors << 'row is not clean' unless (enriched_rtr.clean? || force_submit?)
         enriched_rtr
       else
         VerifyRawTimeRow.perform(bare_rtr.dup, times_container: times_container) # Adds relevant errors to the raw_time_row
@@ -68,7 +69,6 @@ module Interactors
       rtr.raw_times.select! { |raw_time| raw_time.entered_time.present? } # Throw away empty raw_times
       rtr.raw_times.each do |raw_time|
         raw_time.assign_attributes(event_group_id: event_group.id, pulled_by: current_user_id, pulled_at: Time.current)
-        raw_time.source ||= "Live Entry (#{current_user_id})"
         unless raw_time.save
           rtr.errors << resource_error_object(raw_time)
         end
@@ -99,10 +99,6 @@ module Interactors
 
     def resources
       {problem_rows: problem_rows, upserted_split_times: upserted_split_times}
-    end
-
-    def force?
-      params[:force_submit]&.to_boolean
     end
   end
 end

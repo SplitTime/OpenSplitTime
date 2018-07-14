@@ -693,7 +693,8 @@
                                 stoppedHere: $('#js-dropped').prop('checked'),
                                 withPacer: $('#js-pacer-' + kind).prop('checked'),
                                 dataStatus: $timeField.attr('data-time-status'),
-                                splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true')
+                                splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true'),
+                                source: 'Live Entry (0)' // Replace 0 with current_user.id
                             }
                         }
                     )

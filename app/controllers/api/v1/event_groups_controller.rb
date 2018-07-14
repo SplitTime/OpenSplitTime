@@ -112,7 +112,8 @@ class Api::V1::EventGroupsController < ApiController
     end
 
     if errors.empty?
-      response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows, params: params, current_user_id: current_user.id)
+      force_submit = !!params[:force_submit]&.to_boolean
+      response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows, force_submit: force_submit, current_user_id: current_user.id)
       problem_rows = response.resources[:problem_rows]
       report_raw_times_available(event_group)
 

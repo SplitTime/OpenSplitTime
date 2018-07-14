@@ -32,6 +32,11 @@ module Interactors
        detail: {messages: ['One or more live times is not related to the provided event']}}
     end
 
+    def missing_effort_error
+      {title: 'Missing effort',
+      detail: {messages: ['The raw_time is missing an effort']}}
+    end
+
     def missing_new_split_time_error(raw_time)
       {title: 'Raw time does not contain a new_split_time',
       detail: {messages: ["#{raw_time} does not have a new_split_time"]}}

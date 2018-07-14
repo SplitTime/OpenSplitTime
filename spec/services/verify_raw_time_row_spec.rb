@@ -63,11 +63,13 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:bitkey)).to eq([1, 64])
         expect(new_split_times.map(&:time_from_start)).to eq([60.minutes, 61.minutes])
 
-        expected_split_times = [split_time_1, new_split_times.first, new_split_times.second, split_time_4, split_time_5]
-        expect(Interactors::SetEffortStatus).to have_received(:perform).once.with(effort,
-                                                                                  ordered_split_times: expected_split_times,
-                                                                                  lap_splits: expected_lap_splits,
-                                                                                  times_container: times_container)
+        expect(Interactors::SetEffortStatus).to have_received(:perform).once
+      end
+
+      it 'does not change the data_status of the split_times on the effort' do
+        expect(effort.split_times.map(&:data_status)).to all be_nil
+        subject.perform
+        expect(effort.split_times.map(&:data_status)).to all be_nil
       end
     end
 
@@ -95,11 +97,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:bitkey)).to eq([64])
         expect(new_split_times.map(&:time_from_start)).to eq([61.minutes])
 
-        expected_split_times = [split_time_1, split_time_2, new_split_times.first, split_time_4, split_time_5]
-        expect(Interactors::SetEffortStatus).to have_received(:perform).once.with(effort,
-                                                                                  ordered_split_times: expected_split_times,
-                                                                                  lap_splits: expected_lap_splits,
-                                                                                  times_container: times_container)
+        expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
     end
 
@@ -127,11 +125,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:bitkey)).to eq([1, 64])
         expect(new_split_times.map(&:time_from_start)).to eq([150.minutes, 151.minutes])
 
-        expected_split_times = [split_time_1, split_time_2, split_time_3, new_split_times.first, new_split_times.second]
-        expect(Interactors::SetEffortStatus).to have_received(:perform).once.with(effort,
-                                                                                  ordered_split_times: expected_split_times,
-                                                                                  lap_splits: expected_lap_splits,
-                                                                                  times_container: times_container)
+        expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
     end
 
@@ -182,11 +176,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times).to all be_a(SplitTime)
         expect(new_split_times.map(&:time_from_start)).to eq([nil, 2.hours])
 
-        expected_split_times = [split_time_1, split_time_2, new_split_times.second, split_time_4, split_time_5]
-        expect(Interactors::SetEffortStatus).to have_received(:perform).once.with(effort,
-                                                                                  ordered_split_times: expected_split_times,
-                                                                                  lap_splits: expected_lap_splits,
-                                                                                  times_container: times_container)
+        expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
     end
 

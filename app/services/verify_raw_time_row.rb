@@ -47,7 +47,8 @@ class VerifyRawTimeRow
   end
 
   def ordered_split_times
-    indexed_existing_split_times = effort.split_times.each { |st| st.data_status = :confirmed if st.good? }.index_by(&:time_point).freeze
+    existing_split_times = effort.split_times.map(&:dup)
+    indexed_existing_split_times = existing_split_times.each { |st| st.data_status = :confirmed if st.good? }.index_by(&:time_point).freeze
     indexed_new_split_times = new_split_times.select(&:time_from_start).index_by(&:time_point)
     indexed_split_times = indexed_existing_split_times.merge(indexed_new_split_times)
     effort_time_points.map { |time_point| indexed_split_times[time_point] }.compact

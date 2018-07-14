@@ -68,6 +68,7 @@ module Interactors
     end
 
     def update_effort(effort, upserted_split_times)
+      stop_response = nil
       if upserted_split_times.any?(&:stopped_here?)
         stop_response = Interactors::SetEffortStop.perform(effort, split_time_id: upserted_split_times.last.id)
       end

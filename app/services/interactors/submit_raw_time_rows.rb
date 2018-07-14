@@ -31,14 +31,14 @@ module Interactors
           save_raw_times(rtr) unless rtr.errors.present?
           upsert_split_times(rtr) unless rtr.errors.present?
           if rtr.errors.present?
-            rtr << problem_rows
+            problem_rows << rtr
             raise ActiveRecord::Rollback
           end
         end
       end
       send_notifications if event_group.permit_notifications?
 
-      Interactors::Response.new(errors, '', resources).merge(upsert_response)
+      Interactors::Response.new(errors, '', resources)
     end
 
     private
@@ -60,7 +60,7 @@ module Interactors
         enriched_rtr.errors << 'row is not clean' unless (enriched_rtr.clean? || force?)
         enriched_rtr
       else
-        VerifyRawTimeRow.perform(bare_rtr.dup) # Adds relevant errors to the raw_time_row
+        VerifyRawTimeRow.perform(bare_rtr.dup, times_container: times_container) # Adds relevant errors to the raw_time_row
       end
     end
 
@@ -94,7 +94,7 @@ module Interactors
 
     def bib_numbers
       # Remove bib numbers that contain non-digits, then convert to integers
-      raw_time_rows.flat_map { |rtr| rtr.raw_times.bib_number }.uniq.reject { |raw_bib| raw_bib =~ /\D/ }.map(&:to_i)
+      raw_time_rows.flat_map { |rtr| rtr.raw_times.map(&:bib_number) }.uniq.reject { |raw_bib| raw_bib =~ /\D/ }.map(&:to_i)
     end
 
     def resources

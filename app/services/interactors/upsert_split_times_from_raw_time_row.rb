@@ -9,7 +9,7 @@
 module Interactors
   class UpsertSplitTimesFromRawTimeRow
     include Interactors::Errors
-    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split_id sub_split_bitkey time_from_start stopped_here pacer remarks]
+    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey time_from_start stopped_here pacer remarks]
 
     def self.perform!(args)
       new(args).perform!
@@ -55,6 +55,8 @@ module Interactors
       new_split_time = raw_time.new_split_time
       upsert_split_time = effort.split_times.find { |st| st.time_point == new_split_time.time_point } || effort.split_times.new
       upsert_split_time.assign_attributes(new_split_time.attributes.slice(*ASSIGNABLE_ATTRIBUTES))
+      offset_response = Interactors::AdjustEffortOffset.perform(effort)
+      offset_response.errors.each { |offset_response_error| errors << offset_response_error }
 
       if upsert_split_time.save
         if raw_time.update(split_time_id: upsert_split_time.id)
@@ -72,9 +74,8 @@ module Interactors
       if upserted_split_times.any?(&:stopped_here?)
         stop_response = Interactors::SetEffortStop.perform(effort, split_time_id: upserted_split_times.last.id)
       end
-      offset_response = Interactors::AdjustEffortOffset.perform(effort)
       status_response = Interactors::SetEffortStatus.perform(effort, times_container: times_container)
-      combined_response = status_response.merge(offset_response).merge(stop_response)
+      combined_response = status_response.merge(stop_response)
       if combined_response.successful?
         unless effort.save
           errors << resource_error_object(effort)

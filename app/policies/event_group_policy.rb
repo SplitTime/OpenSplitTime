@@ -72,6 +72,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.present?
   end
 
+  def import_csv_raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
   def submit_raw_time_rows?
     user.authorized_to_edit?(event_group)
   end

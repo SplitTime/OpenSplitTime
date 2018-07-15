@@ -1115,13 +1115,14 @@
 
                 $('#js-file-upload').fileupload({
                     dataType: 'json',
-                    url: '/api/v1/events/' + liveEntry.defaultEventId + '/post_file_effort_data',
+                    url: '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/import_csv_raw_times',
                     submit: function (e, data) {
-                        data.formData = {splitId: liveEntry.getSplitId(liveEntry.defaultEventId, liveEntry.currentStationIndex)};
+                        data.formData = {splitName: liveEntry.currentStation().splitName};
                         liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {
-                        liveEntry.populateRows(data.result);
+                        var rawTimeRows = data.result.data.rawTimeRows;
+                        liveEntry.populateRows(rawTimeRows);
                     },
                     fail: function (e, data) {
                         $('#debug').empty().append(data.response().jqXHR.responseText);

@@ -34,6 +34,27 @@ class Api::V1::EventGroupsController < ApiController
     end
   end
 
+  def import_csv_raw_times
+    authorize @resource
+    event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
+
+    params[:data_format] = :csv_raw_times
+    importer = ETL::ImporterFromContext.build(@resource, params, current_user)
+    importer.import
+    errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
+    raw_times = RawTime.where(id: importer.saved_records)
+
+    enriched_raw_times = raw_times.with_relation_ids
+
+    raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: enriched_raw_times)
+    times_container = SegmentTimesContainer.new(calc_model: :stats)
+    raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
+
+    raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+
+    render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}, errors: errors}, status: :ok
+  end
+
   def pull_raw_times
 
     # This endpoint searches for un-pulled raw_times belonging to the event_group,

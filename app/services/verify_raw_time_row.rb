@@ -37,7 +37,7 @@ class VerifyRawTimeRow
 
   def append_split_times
     raw_times.each do |raw_time|
-      if time_point_exists(raw_time)
+      if time_point_exists?(raw_time)
         raw_time.new_split_time = SplitTimeFromRawTime.build(raw_time, effort: effort, event: event)
       end
     end
@@ -63,9 +63,9 @@ class VerifyRawTimeRow
     raw_times.map(&:new_split_time).compact
   end
 
-  def time_point_exists(raw_time)
+  def time_point_exists?(raw_time)
     split = raw_time_row.split || raw_time.split
-    raw_time.lap <= event.maximum_laps &&
+    raw_time.lap && (raw_time.lap <= event.maximum_laps) &&
         split&.bitkeys&.include?(raw_time.bitkey)
   end
 

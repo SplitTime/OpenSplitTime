@@ -64,9 +64,9 @@ class VerifyRawTimeRow
   end
 
   def time_point_exists(raw_time)
+    split = raw_time_row.split || raw_time.split
     raw_time.lap <= event.maximum_laps &&
-        raw_time_row.split &&
-        raw_time_row.split.bitkeys.include?(raw_time.bitkey)
+        split&.bitkeys&.include?(raw_time.bitkey)
   end
 
   def effort_lap_splits

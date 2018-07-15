@@ -55,8 +55,10 @@ module Interactors
       new_split_time = raw_time.new_split_time
       upsert_split_time = effort.split_times.find { |st| st.time_point == new_split_time.time_point } || effort.split_times.new
       upsert_split_time.assign_attributes(new_split_time.attributes.slice(*ASSIGNABLE_ATTRIBUTES))
-      offset_response = Interactors::AdjustEffortOffset.perform(effort)
-      offset_response.errors.each { |offset_response_error| errors << offset_response_error }
+      if upsert_split_time.start?
+        offset_response = Interactors::AdjustEffortOffset.perform(effort)
+        offset_response.errors.each { |offset_response_error| errors << offset_response_error }
+      end
 
       if upsert_split_time.save
         if raw_time.update(split_time_id: upsert_split_time.id)

@@ -99,6 +99,20 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
         expect(SplitTime.all.map(&:time_from_start)).to match_array([0, 5000, 5100, 20000])
       end
 
+      it 'updates the status of affected efforts but does not attempt to adjust the offset' do
+        subject.perform!
+        expect(Interactors::AdjustEffortOffset).not_to have_received(:perform).with(effort_1)
+        expect(Interactors::SetEffortStatus).to have_received(:perform).with(effort_1, times_container: times_container)
+      end
+    end
+
+    context 'when the new_split_time is a start time' do
+      let(:raw_times) { [raw_time_1] }
+      let(:new_split_time_1) { SplitTime.new(time_from_start: 0, effort_id: effort_1.id, lap: 1, split_id: split_1.id, bitkey: in_bitkey) }
+      before do
+        raw_time_1.new_split_time = new_split_time_1
+      end
+
       it 'updates the offset and status of affected efforts' do
         subject.perform!
         expect(Interactors::AdjustEffortOffset).to have_received(:perform).with(effort_1)

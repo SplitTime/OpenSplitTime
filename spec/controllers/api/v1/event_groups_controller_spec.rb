@@ -508,7 +508,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(RawTime.all.size).to eq(2)
             expect(SplitTime.all.size).to eq(2)
             expect(SplitTime.all.map(&:day_and_time)).to match_array([absolute_time_in, absolute_time_out])
-            expect(SplitTime.all.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
+            expect(SplitTime.all.map(&:bitkey)).to match_array([in_bitkey, out_bitkey])
 
             expect(RawTime.all.pluck(:split_time_id)).to match_array(SplitTime.all.ids)
           end

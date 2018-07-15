@@ -35,6 +35,7 @@ module ETL
     def options
       result = {parent: parent, current_user_id: current_user.id, strict: strict}
       result[:unique_key] = unique_key if unique_key
+      result[:split_name] = params[:split_name] if params[:split_name]
       result
     end
 

@@ -6,6 +6,10 @@ class BasePresenter
     raise NotImplementedError, "#{self.class.name} is an abstract class."
   end
 
+  def existing_sort
+    params.original_params[:sort]
+  end
+
   def filter_hash
     params[:filter] || {}
   end
@@ -53,9 +57,5 @@ class BasePresenter
 
   def params
     raise NotImplementedError, "#{self.class.name} must implement a params method."
-  end
-
-  def existing_sort
-    params.original_params[:sort]
   end
 end

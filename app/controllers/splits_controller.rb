@@ -11,9 +11,9 @@ class SplitsController < ApplicationController
         @splits = @splits.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
       end
       format.csv do
-        builder = CsvBuilder.new(@splits)
+        builder = CsvBuilder.new(Split, @splits)
         send_data(builder.full_string, type: 'text/csv',
-                  filename: "#{@splits.first&.course}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+                  filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
       end
     end
   end
@@ -23,12 +23,11 @@ class SplitsController < ApplicationController
   end
 
   def new
-    @split = Split.new
+    @split = Split.new(course_id: params[:course_id])
     authorize @split
   end
 
   def edit
-    @course = @split.course
     authorize @split
   end
 
@@ -37,14 +36,7 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.save
-      if params[:event_id]
-        @event = Event.friendly.find(params[:event_id])
-        @event.splits << @split
-        @event.save
-        redirect_to stage_event_path(@event)
-      else
-        redirect_to session.delete(:return_to) || @split.course
-      end
+      redirect_to split_path(@split)
     else
       if @event
         render 'new', event_id: @event.id
@@ -60,12 +52,7 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.update(permitted_params)
-      if params[:event_id]
-        @event = Event.friendly.find(params[:event_id])
-        @event.splits << @split
-        @event.save
-      end
-      redirect_to session.delete(:return_to) || @split.course
+      redirect_to split_path(@split)
     else
       @course = Course.friendly.find(@split.course_id) if @split.course_id
       render 'edit'
@@ -74,10 +61,9 @@ class SplitsController < ApplicationController
 
   def destroy
     authorize @split
-    course = @split.course
     @split.destroy
 
-    redirect_to course_path(course, display_style: :splits)
+    redirect_to course_path(@split.course, display_style: :splits)
   end
 
   private

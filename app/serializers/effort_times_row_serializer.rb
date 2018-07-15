@@ -7,15 +7,15 @@ class EffortTimesRowSerializer < BaseSerializer
   attribute :segment_times, if: :show_segment_times
 
   def show_elapsed_times
-    %w(elapsed).include?(object.display_style)
+    %w(elapsed all).include?(object.display_style)
   end
 
   def show_absolute_times
-    %w(ampm military absolute).include?(object.display_style)
+    %w(ampm military absolute all).include?(object.display_style)
   end
 
   def show_segment_times
-    %w(segment).include?(object.display_style)
+    %w(segment all).include?(object.display_style)
   end
 
   def elapsed_times

@@ -4,14 +4,13 @@
   <div class="col-md-12">
     <%= form_for(@effort, :html => {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-group">
-          <% if @event %>
-              <div class="col-sm-8 col-sm-offset-2">
-                <%= f.hidden_field :event_id, value: @event.id %>
-                <h4><%= "Associated with #{@event.name}" %></h4>
-              </div>
-          <% else %>
-              <p>You must create new efforts from the event screen.</p>
-          <% end %>
+          <div class="control-label col-sm-2">
+            <%= f.label :event %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.select :event_id, @effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
+                         {prompt: true}, {class: "dropdown-select-field"} %>
+          </div>
         </div>
 
         <div class="form-group">

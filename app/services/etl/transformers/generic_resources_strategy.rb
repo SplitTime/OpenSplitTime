@@ -12,7 +12,7 @@ module ETL::Transformers
     def transform
       return if errors.present?
       proto_records.each do |proto_record|
-        proto_record.transform_as(model, event: event)
+        proto_record.transform_as(model, event: event, event_group: event_group, split_name: options[:split_name])
         proto_record.delete_nil_keys!(:start_offset) # For efforts, default value is 0; this ensures it is not overwritten by nil
         proto_record.slice_permitted!
       end
@@ -28,7 +28,7 @@ module ETL::Transformers
     end
 
     def validate_setup
-      errors << missing_event_error unless event.present?
+      errors << missing_parent_error unless parent.present?
     end
   end
 end

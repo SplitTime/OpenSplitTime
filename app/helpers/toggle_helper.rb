@@ -1,14 +1,21 @@
 # frozen_string_literal: true
 
 module ToggleHelper
-  def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled)
+  def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled, problem)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
-                      request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, 'filter[search]' => '', page: nil),
+                      request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, problem: problem, filter: {search: ''}, page: nil),
                       {class: 'btn btn-sm btn-primary',
-                       disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled})
+                       disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled && params[:problem]&.to_boolean == problem})
   end
 
-  def link_to_toggle_check_in(effort, block: true)
+  def link_to_raw_time_filters(glyphicon, text, stopped, pulled, matched)
+    link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
+                      request.params.merge(stopped: stopped, pulled: pulled, matched: matched, filter: {search: ''}, page: nil),
+                      {class: 'btn btn-sm btn-primary',
+                       disabled: params[:stopped]&.to_boolean == stopped && params[:pulled]&.to_boolean == pulled && params[:matched]&.to_boolean == matched})
+  end
+
+  def link_to_toggle_check_in(effort, button_param: :check_in_group, block: true)
     block_string = block ? 'btn-block' : ''
     case
     when effort.beyond_start?
@@ -20,19 +27,19 @@ module ToggleHelper
     when effort.started?
       glyphicon_string = "glyphicon glyphicon-expand"
       button_text = 'Started'
-      url = unstart_effort_path(effort)
+      url = unstart_effort_path(effort, button: button_param)
       disabled = false
       class_string = "check-in btn btn-sm btn-primary #{block_string}"
     when effort.checked_in?
-      url = effort_path(effort, effort: {checked_in: false}, button: :check_in)
       glyphicon_string = "glyphicon glyphicon-check"
       button_text = 'Checked in'
+      url = effort_path(effort, effort: {checked_in: false}, button: button_param)
       disabled = false
       class_string = "check-in btn btn-sm btn-success #{block_string}"
     else
       glyphicon_string = "glyphicon glyphicon-unchecked"
-      url = effort_path(effort, effort: {checked_in: true}, button: :check_in)
       button_text = 'Check in'
+      url = effort_path(effort, effort: {checked_in: true}, button: button_param)
       disabled = false
       class_string = "check-in btn btn-sm btn-default #{block_string}"
     end
@@ -46,8 +53,8 @@ module ToggleHelper
   end
 
   def link_to_check_in_all(view_object)
-    url = update_all_efforts_event_path(view_object.event, efforts: {checked_in: true}, button: :check_in_all)
-    link_to_with_icon("glyphicon glyphicon-check", 'Check in all', url, {
+    url = update_all_efforts_event_group_path(view_object.event_group, efforts: {checked_in: true}, button: :check_in_all)
+    link_to_with_icon("glyphicon glyphicon-check", 'All in', url, {
         method: 'patch',
         data: {confirm: 'This will check in all entrants, making them eligible to start. Do you want to proceed?'},
         class: 'btn btn-sm btn-success'
@@ -55,10 +62,10 @@ module ToggleHelper
   end
 
   def link_to_check_out_all(view_object)
-    url = update_all_efforts_event_path(view_object.event, efforts: {checked_in: false}, button: :check_out_all)
-    link_to_with_icon("glyphicon glyphicon-unchecked", 'Check out all', url, {
+    url = update_all_efforts_event_group_path(view_object.event_group, efforts: {checked_in: false}, button: :check_out_all)
+    link_to_with_icon("glyphicon glyphicon-unchecked", 'All out', url, {
         method: 'patch',
-        data: {confirm: 'This will check out all entrants, making them ineligible to start. Do you want to proceed?'},
+        data: {confirm: 'This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?'},
         class: 'btn btn-sm btn-default'
     })
   end
@@ -79,7 +86,7 @@ module ToggleHelper
 
   def link_to_toggle_sms_subscription(person)
     if current_user
-      link_to_toggle_subscription(person: person,
+      link_to_toggle_subscription(person_id: person.id,
                                   glyphicon: 'phone',
                                   protocol: 'sms',
                                   subscribe_alert: "Receive live text message updates for #{person.full_name}?",
@@ -90,12 +97,12 @@ module ToggleHelper
   end
 
   def link_to_toggle_subscription(args)
-    person = args[:person]
+    person_id = args[:person_id]
     glyphicon = args[:glyphicon]
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    subscription = current_user&.subscriptions&.find { |sub| (sub.person_id == person.id) && (sub.protocol == protocol) }
+    subscription = current_user&.subscriptions&.find { |sub| (sub.person_id == person_id) && (sub.protocol == protocol) }
 
     if subscription
       url = subscription_path(subscription)
@@ -107,7 +114,7 @@ module ToggleHelper
       })
     else
       url = subscriptions_path(subscription: {user_id: current_user&.id,
-                                              person_id: person.id,
+                                              person_id: person_id,
                                               protocol: protocol})
       link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
           method: 'post',

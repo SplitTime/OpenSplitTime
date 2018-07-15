@@ -55,15 +55,18 @@ class Effort < ApplicationRecord
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
-  scope :ready_to_start,
-        -> { joins(:event).without_start_time.checked_in.where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now) }
+  scope :ready_to_start, -> do
+    select('efforts.*, splits.id as start_split_id')
+        .without_start_time.checked_in
+        .where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now)
+  end
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
   scope :without_start_time, -> do
-    joins("LEFT JOIN split_times ON split_times.effort_id = efforts.id").
-        joins("LEFT OUTER JOIN splits ON split_times.split_id = splits.id AND splits.kind = 0").
-        group("efforts.id").
-        having("COUNT(splits.id) = 0")
+    joins(event: :course)
+        .joins("INNER JOIN splits ON splits.course_id = courses.id AND splits.kind = 0")
+        .joins("LEFT JOIN split_times ON split_times.effort_id = efforts.id AND split_times.lap = 1 AND split_times.split_id = splits.id")
+        .where(split_times: {id: nil})
   end
 
   def self.null_record
@@ -82,9 +85,9 @@ class Effort < ApplicationRecord
         .bib_number_among(parser.number_component)
   end
 
-  def self.ranked_with_finish_status(args = {})
+  def self.ranked_with_status(args = {})
     return [] if EffortQuery.existing_scope_sql.blank?
-    query = EffortQuery.rank_and_finish_status(args)
+    query = EffortQuery.rank_and_status(args)
     self.find_by_sql(query)
   end
 
@@ -163,6 +166,11 @@ class Effort < ApplicationRecord
     start_split_times.first
   end
 
+  def start_split_id
+    return attributes['start_split_id'] if attributes.has_key?('start_split_id')
+    event.start_split.id
+  end
+
   def laps_finished
     return attributes['laps_finished'] if attributes['laps_finished'].present?
     last_split_time = last_reported_split_time
@@ -206,6 +214,7 @@ class Effort < ApplicationRecord
   end
 
   def beyond_start?
+    return attributes['beyond_start'] if attributes.has_key?('beyond_start')
     split_times.find { |st| !st.start? || st.lap > 1 }.present?
   end
 
@@ -252,11 +261,11 @@ class Effort < ApplicationRecord
   end
 
   def overall_rank
-    (attributes['overall_rank'] || self.enriched.attributes['overall_rank']) if started?
+    attributes['overall_rank'] || self.enriched.attributes['overall_rank']
   end
 
   def gender_rank
-    (attributes['gender_rank'] || self.enriched.attributes['overall_rank']) if started?
+    attributes['gender_rank'] || self.enriched.attributes['overall_rank']
   end
 
   def current_age_approximate
@@ -273,7 +282,7 @@ class Effort < ApplicationRecord
   end
 
   def enriched
-    event.efforts.ranked_with_finish_status.find { |e| e.id == id }
+    event.efforts.ranked_with_status.find { |e| e.id == id }
   end
 
   # Methods related to stopped split_time

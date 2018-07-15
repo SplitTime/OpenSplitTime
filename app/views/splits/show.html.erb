@@ -25,7 +25,7 @@
     </li>
   </ul>
   <div class="article-actions">
-    <%= link_to '<< View course', course_path(@presenter.course), class: "btn btn-sm btn-default" %>
+    <%= link_to '<< View course', course_path(@presenter.course, display_style: :splits), class: "btn btn-sm btn-default" %>
     <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
     <% if current_user&.authorized_to_edit?(@presenter.split) %>
         <%= link_to 'Edit this split', edit_split_path(@presenter), class: "btn btn-sm btn-primary" %>

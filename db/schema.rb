@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180429031518) do
+ActiveRecord::Schema.define(version: 20180714181220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,7 +188,6 @@ ActiveRecord::Schema.define(version: 20180429031518) do
   end
 
   create_table "partners", id: :serial, force: :cascade do |t|
-    t.integer "event_id"
     t.string "banner_link"
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false
@@ -198,7 +197,8 @@ ActiveRecord::Schema.define(version: 20180429031518) do
     t.integer "banner_file_size"
     t.datetime "banner_updated_at"
     t.string "name", null: false
-    t.index ["event_id"], name: "index_partners_on_event_id"
+    t.bigint "event_group_id", null: false
+    t.index ["event_group_id"], name: "index_partners_on_event_group_id"
   end
 
   create_table "people", id: :serial, force: :cascade do |t|
@@ -248,7 +248,9 @@ ActiveRecord::Schema.define(version: 20180429031518) do
     t.string "parameterized_split_name", null: false
     t.string "remarks"
     t.integer "sortable_bib_number", null: false
+    t.integer "data_status"
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
+    t.index ["parameterized_split_name"], name: "index_raw_times_on_parameterized_split_name"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
   end
 
@@ -295,6 +297,7 @@ ActiveRecord::Schema.define(version: 20180429031518) do
     t.index ["course_id"], name: "index_splits_on_course_id"
     t.index ["location_id"], name: "index_splits_on_location_id"
     t.index ["parameterized_base_name", "course_id"], name: "index_splits_on_parameterized_base_name_and_course_id", unique: true
+    t.index ["parameterized_base_name"], name: "index_splits_on_parameterized_base_name"
     t.index ["slug"], name: "index_splits_on_slug", unique: true
   end
 
@@ -366,7 +369,6 @@ ActiveRecord::Schema.define(version: 20180429031518) do
   add_foreign_key "live_times", "events"
   add_foreign_key "live_times", "split_times"
   add_foreign_key "live_times", "splits"
-  add_foreign_key "partners", "events"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"
   add_foreign_key "raw_times", "split_times"

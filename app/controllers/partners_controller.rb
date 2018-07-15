@@ -7,7 +7,7 @@ class PartnersController < ApplicationController
   end
 
   def new
-    @partner = Partner.new(event_id: params[:event_id])
+    @partner = Partner.new(event_group_id: params[:event_group_id])
     authorize @partner
   end
 
@@ -20,7 +20,7 @@ class PartnersController < ApplicationController
     authorize @partner
 
     if @partner.save
-      redirect_to partner_event_path
+      redirect_to partner_event_group_path
     else
       render 'new'
     end
@@ -30,7 +30,7 @@ class PartnersController < ApplicationController
     authorize @partner
 
     if @partner.update(permitted_params)
-      redirect_to partner_event_path
+      redirect_to partner_event_group_path
     else
       render 'edit'
     end
@@ -40,13 +40,13 @@ class PartnersController < ApplicationController
     authorize @partner
     @partner.destroy
     flash[:success] = 'Partner deleted.'
-    redirect_to partner_event_path
+    redirect_to partner_event_group_path
   end
 
   private
 
-  def partner_event_path
-    stage_event_path(@partner.event, display_style: 'partners')
+  def partner_event_group_path
+    event_group_path(@partner.event_group, display_style: 'partners', force_settings: true)
   end
 
   def set_partner

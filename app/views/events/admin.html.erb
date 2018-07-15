@@ -1,0 +1,60 @@
+<% content_for :title do %>
+    <% "OpenSplitTime: Administer event - #{@presenter.name}" %>
+<% end %>
+<div class="row header">
+  <div class="col-xs-5">
+    <%= render 'event_info', view_object: @presenter, title: @presenter.concealed_text %>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Admin' %></div>
+  </div>
+  <div class="col-xs-7 page-navigation">
+    <div class="row">
+      <%= render 'view_buttons', view_object: @presenter %>
+    </div>
+  </div>
+</div>
+
+    <div class="row mid">
+      <div class="col-xs-5 page-navigation-left">
+          <% if @presenter.multiple_events? %>
+            <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+          <% end %>
+      </div>
+      <div class="col-xs-7 page-navigation">
+        <%= link_to_edit_event(@presenter) %>
+        <% if @presenter.started? %>
+          <%= link_to_update_start_time(@presenter) %>
+          <%= link_to_set_data_status(@presenter) %>
+          <% unless @presenter.available_live %>
+            <%= link_to_set_stops(@presenter) %>
+            <%= link_to_ultrasignup_export(@presenter) %>
+          <% end %>
+        <% end %>
+        <% if current_user&.authorized_fully?(@presenter.event) %>
+          <%= link_to_delete_event(@presenter) %>
+        <% end %>
+      </div>
+    </div>
+
+<script>
+    document.addEventListener("turbolinks:load", function () {
+
+        var uID = '<%= session.id %>';
+        var pusher = new Pusher('<%= ENV['PUSHER_KEY'] %>');
+        var channel = pusher.subscribe('progress_' + uID);
+        var firstUpdate = true;
+
+        channel.bind('update', function (data) {
+            if (firstUpdate) {
+                progressDiv.removeClass('hide');
+                firstUpdate = false;
+            }
+            progressBar.width(data.progress + "%");
+            messageBox.html(data.message);
+        });
+
+        var progressDiv = $('#progress-bar-with-messages');
+        var messageBox = $('#progress-bar-with-messages').children('.progress-bar-title');
+        var progressBar = $('#realtime-progress-bar');
+    })
+
+</script>

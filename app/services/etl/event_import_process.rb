@@ -55,10 +55,23 @@ module ETL
     def process_live_times
       live_times = grouped_records[LiveTime]
       if live_times.present?
-        match_response = Interactors::MatchLiveTimesToSplitTimes.perform!(event: event, live_times: live_times)
-        unmatched_live_times = match_response.resources[:unmatched]
-        Interactors::CreateSplitTimesFromLiveTimes.perform!(event: event, live_times: unmatched_live_times) if event.auto_live_times?
-        report_live_times_available(event.event_group)
+        updated_live_times = LiveTime.where(id: live_times).includes(:event, :split)
+        raw_times = updated_live_times.map do |lt|
+          raw_time = RawTimeFromLiveTime.build(lt)
+          raw_time.save!
+          raw_time
+        end
+
+        event_group = event.event_group
+
+        match_response = Interactors::MatchRawTimesToSplitTimes.perform!(event_group: event_group, raw_times: raw_times)
+        if event_group.auto_live_times?
+          unmatched_raw_times = match_response.resources[:unmatched]
+          raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: unmatched_raw_times)
+          Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
+                                                  force_submit: false, mark_as_pulled: false)
+        end
+        report_raw_times_available(event_group)
       end
     end
 

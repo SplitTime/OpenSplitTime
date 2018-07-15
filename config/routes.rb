@@ -28,9 +28,7 @@ Rails.application.routes.draw do
     member { put :update_preferences }
   end
 
-  resources :aid_stations, only: [:show, :create, :update, :destroy] do
-    member { get :times }
-  end
+  resources :aid_stations, only: [:show, :create, :update, :destroy]
 
   resources :courses do
     member { get :best_efforts }
@@ -61,7 +59,12 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
     member do
+      get :raw_times
+      get :split_raw_times
+      get :roster
       get :export_to_summit
+      put :start_ready_efforts
+      patch :update_all_efforts
       delete :delete_all_times
     end
   end
@@ -75,12 +78,11 @@ Rails.application.routes.draw do
       get :podium
       get :reconcile
       get :spread
-      get :stage
+      get :admin
       post :create_people
       put :associate_people
       put :set_data_status
       put :set_stops
-      put :start_ready_efforts
       patch :update_start_time
       patch :update_all_efforts
       delete :delete_all_efforts
@@ -100,6 +102,7 @@ Rails.application.routes.draw do
   end
 
   resources :partners
+  resources :raw_times, only: [:update, :destroy]
   resources :split_times
   resources :splits
   resources :stewardships, only: [:create, :destroy]
@@ -135,24 +138,27 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :aid_stations, only: [:show, :create, :update, :destroy]
       resources :courses, only: [:index, :show, :create, :update, :destroy]
-      resources :efforts, only: [:show, :create, :update, :destroy]
+      resources :efforts, only: [:show, :create, :update, :destroy] do
+        member do
+          get :with_times_row
+        end
+      end
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
+          get :enrich_raw_time_row
+          get :trigger_raw_times_push
           post :import
-          patch :pull_live_time_rows
-          patch :pull_time_record_rows
-          get :trigger_time_records_push
+          post :import_csv_raw_times
+          post :submit_raw_time_rows
+          patch :pull_raw_times
         end
       end
       resources :events, only: [:index, :show, :create, :update, :destroy] do
         member do
-          delete :remove_splits
-          put :associate_splits
-          post :import
           get :spread
-          get :live_effort_data
-          post :set_times_data
-          post :post_file_effort_data
+          post :import
+          put :associate_splits
+          delete :remove_splits
         end
       end
       resources :live_times, only: [:index, :show, :create, :update, :destroy]

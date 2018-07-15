@@ -71,8 +71,8 @@ RSpec.describe Interactors::AdjustEventStartTime do
       event.reload
 
       expect(event.start_time).to eq(original_start_time)
-      expect(effort_1.split_times.pluck(:time_from_start)).to eq([0, 1000, 2000, 3000])
-      expect(effort_2.split_times.pluck(:time_from_start)).to eq([0, 1500, 2500])
+      expect(effort_1.ordered_split_times.pluck(:time_from_start)).to eq([0, 1000, 2000, 3000])
+      expect(effort_2.ordered_split_times.pluck(:time_from_start)).to eq([0, 1500, 2500])
       expect(response.message).to include("Start time for #{event.name} was not changed")
     end
   end

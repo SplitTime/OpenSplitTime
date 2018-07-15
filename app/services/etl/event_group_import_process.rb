@@ -25,8 +25,12 @@ module ETL
       raw_times = grouped_records[RawTime]
       if raw_times.present?
         match_response = Interactors::MatchRawTimesToSplitTimes.perform!(event_group: event_group, raw_times: raw_times)
-        unmatched_raw_times = match_response.resources[:unmatched]
-        Interactors::CreateSplitTimesFromRawTimes.perform!(event_group: event_group, raw_times: unmatched_raw_times) if event_group.auto_live_times?
+        if event_group.auto_live_times?
+          unmatched_raw_times = match_response.resources[:unmatched]
+          raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: unmatched_raw_times)
+          Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
+                                                  force_submit: false, mark_as_pulled: false)
+        end
         report_raw_times_available(event_group)
       end
     end

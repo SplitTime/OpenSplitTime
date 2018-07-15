@@ -19,7 +19,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
                       first_name: 'Castest', last_name: 'Pertest', event_id: event.id,
                       children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, time_from_start: 0.0),
                                  ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, time_from_start: 4916.63),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: 14398.48),
+                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, time_from_start: 14398.48, stopped_here: true),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, time_from_start: nil),
                                  ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, time_from_start: nil),
@@ -68,8 +68,8 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
 
       it 'does not import any records and places all parent records into ignored_records' do
         subject.load_records
-        expect(Effort.all.size).to eq(0)
-        expect(SplitTime.all.size).to eq(0)
+        expect(Effort.count).to eq(0)
+        expect(SplitTime.count).to eq(0)
         expect(subject.ignored_records.size).to eq(3)
       end
     end
@@ -116,15 +116,15 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'finds existing records based on a unique key and updates provided fields' do
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(2)
         expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 1000])
 
         subject.load_records
 
         expect(subject.saved_records.size).to eq(1)
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(7)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(7)
         expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.45])
       end
     end
@@ -150,14 +150,40 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'finds existing records based on a unique key and deletes times where blanks exist' do
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(5)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(5)
         expect(existing_effort.ordered_split_times.pluck(:time_from_start)).to eq([0.0, 1000.0, 2000.0, 3000.0, 4000.0])
         subject.load_records
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(3)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(3)
         existing_effort.reload
         expect(existing_effort.ordered_split_times.pluck(:time_from_start)).to eq([0.0, 4916.63, 14398.48])
+      end
+    end
+
+    context 'when update results in more than one split_time having a stopped_here flag set' do
+      let(:first_child) { valid_proto_records.first.children.first }
+      let(:second_child) { valid_proto_records.first.children.second }
+      let!(:existing_effort) { create(:effort, event: event, bib_number: valid_proto_records.second[:bib_number]) }
+      let!(:split_time_1) { create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
+                                   bitkey: first_child[:sub_split_bitkey], time_from_start: 0) }
+      let!(:split_time_2) { create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
+                                   bitkey: second_child[:sub_split_bitkey], time_from_start: 1000, stopped_here: true) }
+
+      subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
+
+      it 'sets the stop on the last split_time' do
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(2)
+        expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 1000])
+
+        subject.load_records
+
+        expect(subject.saved_records.size).to eq(1)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(3)
+        expect(existing_effort.split_times.pluck(:time_from_start)).to match_array([0.0, 4916.63, 14398.48])
+        expect(existing_effort.split_times.pluck(:stopped_here)).to match_array([false, false, true])
       end
     end
 
@@ -173,11 +199,11 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(proto_with_invalid_child, options) }
 
       it 'does not create any child records for the related parent record' do
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(2)
         subject.load_records
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
+        expect(Effort.count).to eq(1)
+        expect(SplitTime.count).to eq(2)
       end
 
       it 'includes invalid records in the invalid_records array' do

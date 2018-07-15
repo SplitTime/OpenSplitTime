@@ -20,7 +20,7 @@ class TimeRecordPairer
 
   def time_record_pairs
     @time_record_pairs ||= pairer.pair(objects: time_records,
-                                       identical_attributes: [:event_id, :bib_number, :split_id],
+                                       identical_attributes: [:event_id, :bib_number, :lap, :split_id],
                                        pairing_criteria: [{bitkey: 1}, {bitkey: 64}])
   end
 end

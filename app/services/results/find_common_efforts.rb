@@ -32,7 +32,7 @@ module Results
     end
 
     def indexed_all_efforts
-      @indexed_all_efforts ||= events.map { |event| [event.id, event.efforts.ranked_with_finish_status.select(&:finished?)] }.to_h
+      @indexed_all_efforts ||= events.map { |event| [event.id, event.efforts.ranked_with_status.select(&:finished?)] }.to_h
     end
 
     def find_effort(person_id, event)

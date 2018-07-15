@@ -4,10 +4,10 @@
   <div class="col-md-12">
     <%= form_for(@split, :html => {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-group">
-          <% if @course %>
+          <% if @split.course_id %>
               <div class="col-sm-8 col-sm-offset-2">
-                <%= f.hidden_field :course_id, value: @course.id %>
-                <h4><%= "Located on #{@course.name}" %></h4>
+                <%= f.hidden_field :course_id, value: @split.course_id %>
+                <h4><%= "Located on #{@split.course_name}" %></h4>
               </div>
           <% else %>
               <div class="control-label col-sm-2">
@@ -88,20 +88,14 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <% if @event.nil? %>
-                <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
-            <% else %>
-                <%= f.button(@split.new_record? ? "Create Split" : "Update Split", name: "event_id", value: @event.id, class: 'btn btn-primary btn-large') %>
-            <% end %>
+            <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          <% if @split.id? %>
+          <% if @split.id %>
               [ <%= link_to 'Cancel', split_path(@split) %> ]
-          <% elsif @event %>
-              [ <%= link_to 'Cancel', event_path(@event) %> ]
-          <% elsif @course %>
-              [ <%= link_to 'Cancel', course_path(@course) %> ]
+          <% elsif @split.course_id %>
+              [ <%= link_to 'Cancel', course_path(@split.course) %> ]
           <% else %>
               [ <%= link_to 'Cancel', courses_path %> ]
           <% end %>

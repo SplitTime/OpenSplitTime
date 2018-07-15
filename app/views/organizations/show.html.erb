@@ -4,6 +4,7 @@
 <div class="row header">
   <div class="col-xs-7">
     <h2><strong><%= @presenter.name %></strong></h2>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= @presenter.organization.name %></div>
   </div>
   <div class="col-xs-5 page-navigation">
     <div class="row">

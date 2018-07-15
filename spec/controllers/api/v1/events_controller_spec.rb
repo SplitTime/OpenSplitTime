@@ -308,17 +308,17 @@ RSpec.describe Api::V1::EventsController do
         ] }
         let(:source) { 'ost-remote-1234' }
 
-        it 'creates live_times' do
-          expect(LiveTime.all.size).to eq(0)
+        it 'creates raw_times' do
+          expect(RawTime.all.size).to eq(0)
           make_request
           expect(response.status).to eq(201)
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |record| record['type'] }).to all (eq('liveTimes'))
-          expect(LiveTime.all.size).to eq(2)
-          expect(LiveTime.all.map(&:bib_number)).to all eq(bib_number)
-          expect(LiveTime.all.map(&:bitkey)).to eq([1, 64])
-          expect(LiveTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
-          expect(LiveTime.all.map(&:event_id)).to all eq(event.id)
+          expect(RawTime.all.size).to eq(2)
+          expect(RawTime.all.map(&:bib_number)).to all eq(bib_number)
+          expect(RawTime.all.map(&:bitkey)).to eq([1, 64])
+          expect(RawTime.all.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+          expect(RawTime.all.map(&:event_id)).to all eq(event.id)
         end
 
         context 'when there is a duplicate live_time in the database' do
@@ -354,14 +354,14 @@ RSpec.describe Api::V1::EventsController do
           let(:day_and_time) { time_zone.parse(absolute_time_in) }
           let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1, day_and_time: absolute_time_in, pacer: true, stopped_here: false) }
 
-          it 'saves the live_times to the database and matches the duplicate live_time with the existing split_time' do
+          it 'saves the live_times to the database as raw_times and matches the duplicate raw_time with the existing split_time' do
             expect(SplitTime.count).to eq(1)
-            expect(LiveTime.count).to eq(0)
+            expect(RawTime.count).to eq(0)
             make_request
             expect(response.status).to eq(201)
             expect(SplitTime.count).to eq(1)
-            expect(LiveTime.count).to eq(2)
-            expect(LiveTime.all.map(&:split_time_id)).to match_array([split_time.id, nil])
+            expect(RawTime.count).to eq(2)
+            expect(RawTime.all.map(&:split_time_id)).to match_array([split_time.id, nil])
           end
         end
 
@@ -371,14 +371,14 @@ RSpec.describe Api::V1::EventsController do
           let(:day_and_time) { time_zone.parse(absolute_time_in) }
           let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1, day_and_time: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
 
-          it 'saves the live_times to the database and does not match any live_time with the existing split_time' do
+          it 'saves raw_times to the database and does not match any raw_time with the existing split_time' do
             expect(SplitTime.count).to eq(1)
-            expect(LiveTime.count).to eq(0)
+            expect(RawTime.count).to eq(0)
             make_request
             expect(response.status).to eq(201)
             expect(SplitTime.count).to eq(1)
-            expect(LiveTime.count).to eq(2)
-            expect(LiveTime.all.map(&:split_time_id)).to all be_nil
+            expect(RawTime.count).to eq(2)
+            expect(RawTime.all.map(&:split_time_id)).to all be_nil
           end
         end
 
@@ -389,7 +389,7 @@ RSpec.describe Api::V1::EventsController do
             expect(event.permit_notifications?).to be(true)
             allow(Pusher).to receive(:trigger)
             make_request
-            expected_args = ["live-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 2, unmatched: 2}]
+            expected_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 2, unmatched: 2}]
             expect(Pusher).to have_received(:trigger).with(*expected_args)
           end
         end
@@ -409,10 +409,10 @@ RSpec.describe Api::V1::EventsController do
 
           it 'creates new split_times matching the live_times' do
             make_request
-            expect(LiveTime.all.size).to eq(2)
+            expect(RawTime.all.size).to eq(2)
             expect(SplitTime.all.size).to eq(2)
 
-            expect(LiveTime.all.pluck(:split_time_id).sort).to eq(SplitTime.all.pluck(:id).sort)
+            expect(RawTime.all.pluck(:split_time_id).sort).to eq(SplitTime.all.pluck(:id).sort)
           end
 
           it 'sends a message to NotifyFollowersJob with relevant person and split_time data' do
@@ -427,12 +427,11 @@ RSpec.describe Api::V1::EventsController do
             expect(NotifyFollowersJob).to have_received(:perform_later).with(person_id: person_id, split_time_ids: split_time_ids.sort)
           end
 
-          it 'sends a message to Interactors::UpdateEffortsStatus with the efforts associated with the modified split_times' do
-            allow(Interactors::UpdateEffortsStatus).to receive(:perform!)
+          it 'sends a message to Interactors::SetEffortStatus with the efforts associated with the modified split_times' do
+            allow(Interactors::SetEffortStatus).to receive(:perform).and_return(Interactors::Response.new([], '', {}))
             post :import, params: request_params
-            efforts = Effort.where(id: SplitTime.all.pluck(:effort_id).uniq)
 
-            expect(Interactors::UpdateEffortsStatus).to have_received(:perform!).with(efforts)
+            expect(Interactors::SetEffortStatus).to have_received(:perform).exactly(2).times
           end
         end
       end

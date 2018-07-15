@@ -70,62 +70,6 @@ class Api::V1::EventsController < ApiController
     end
   end
 
-  # This endpoint is called on any of the following conditions:
-  # - split selector is changed
-  # - bib # field is changed
-  # - time in or time out field is changed
-
-  def live_effort_data
-
-    # Params should include at least splitId and bibNumber. Params may also include timeIn and timeOut.
-    # This endpoint returns as many of the following as it can determine:
-    # { effortId (integer), name (string), reportedText (string), dropped (bool), finished (bool),
-    # timeFromLastReported ("hh:mm"), timeInAid ("mm minutes"), timeInExists (bool), timeOutExists (bool),
-    # timeInStatus ('good', 'questionable', 'bad'), timeOutStatus ('good', 'questionable', 'bad') }
-
-    if @event.available_live
-      reporter = LiveDataEntryReporter.new(event: @event, params: params)
-      render json: reporter.full_report
-    else
-      render json: live_entry_unavailable(@event), status: :forbidden
-    end
-  end
-
-  def set_times_data
-
-    # Each time_row should include splitId, lap, bibNumber, timeIn (military), timeOut (military),
-    # pacerIn (boolean), pacerOut (boolean), and droppedHere (boolean). This action ingests time_rows, converts and
-    # verifies data, creates new split_times for valid time_rows, and returns invalid time_rows intact.
-
-    if @event.available_live
-      importer = LiveTimeRowImporter.new(event: @event, time_rows: params[:time_rows], force_submit: params[:force_submit])
-      importer.import
-      returned_rows = importer.returned_rows
-
-      if importer.errors.present?
-        render json: {errors: importer.errors}, status: :unprocessable_entity
-      else
-        render json: returned_rows
-      end
-    else
-      render json: live_entry_unavailable(@event), status: :forbidden
-    end
-  end
-
-  def post_file_effort_data
-
-    # Params should be an unaltered CSV file and a splitId.
-    # This endpoint interprets and verifies rows from the file and returns
-    # return_rows containing all data necessary to populate the local data workspace.
-
-    if @event.available_live
-      returned_rows = LiveFileTransformer.returned_rows(event: @event, file: params[:file], split_id: params[:split_id])
-      render json: {returnedRows: returned_rows}, status: :created
-    else
-      render json: live_entry_unavailable(@event), status: :forbidden
-    end
-  end
-
   private
 
   def set_event

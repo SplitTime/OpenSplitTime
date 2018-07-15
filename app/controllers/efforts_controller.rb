@@ -8,7 +8,20 @@ class EffortsController < ApplicationController
     Carmen.i18n_backend.locale = locale if locale
   end
 
-  def index; end
+  def index
+    @efforts = Effort.order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+                  .where(prepared_params[:filter])
+    respond_to do |format|
+      format.html do
+        @efforts = @efforts.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
+      end
+      format.csv do
+        builder = CsvBuilder.new(Effort, @efforts)
+        send_data(builder.full_string, type: 'text/csv',
+                  filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+      end
+    end
+  end
 
   def show
     @effort_show = EffortShowView.new(effort: @effort)
@@ -25,8 +38,8 @@ class EffortsController < ApplicationController
   end
 
   def edit
-    @event = Event.friendly.find(@effort.event_id)
     authorize @effort
+    @effort = Effort.where(id: @effort).includes(event: {event_group: :events}).first
   end
 
   def create
@@ -43,20 +56,29 @@ class EffortsController < ApplicationController
   def update
     authorize @effort
 
-    if @effort.update(permitted_params)
-      case params[:button]
-      when 'check_in'
+    effort = effort_with_splits
+    new_event_id = permitted_params.delete(:event_id)&.to_i
+
+    if effort.update(permitted_params)
+      case params[:button]&.to_sym
+      when :check_in_group
+        event_group = effort.event_group
+        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
+      when :check_in_effort_show
         effort = effort_with_splits
-        event = effort.event
-        @stage_display = EventStageDisplay.new(event: event, params: {})
-        render :toggle_check_in, locals: {effort: effort, view_object: @stage_display}
-      when 'check_in_effort_show'
-        @effort_show = EffortShowView.new(effort: effort)
-        render :toggle_check_in, locals: {effort: effort, view_object: nil}
-      when 'disassociate'
+        @effort_show = EffortShowView.new(effort: effort) # Is this necessary?
+        render :toggle_group_check_in, locals: {effort: effort, view_object: nil}
+      when :disassociate
         redirect_to request.referrer
       else
-        redirect_to effort_path(@effort)
+        redirect_to effort_path(effort)
+      end
+
+      if new_event_id && new_event_id != effort.event_id
+        new_event = Event.find(new_event_id)
+        response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
+        set_flash_message(response)
       end
     else
       render 'edit'
@@ -86,31 +108,37 @@ class EffortsController < ApplicationController
     effort = effort_with_splits
 
     response = Interactors::StartEfforts.perform!([effort], current_user.id)
-    set_flash_message(response)
+    set_flash_message(response) unless response.successful?
     redirect_to effort_path(effort)
   end
 
   def unstart
     authorize @effort
     effort = effort_with_splits
-    event = effort.event
 
     response = Interactors::UnstartEfforts.perform!([effort])
+    effort.reload
     if response.successful?
-      @stage_display = EventStageDisplay.new(event: event, params: {})
-      effort = effort_with_splits # Need to reload to update split_times
-      render :toggle_check_in, locals: {effort: effort, view_object: @stage_display}
+      case params[:button]&.to_sym
+      when :check_in_group
+        event_group = effort.event_group
+        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
+      else
+        redirect_to request.referrer
+      end
     else
       set_flash_message(response)
-      redirect_to stage_event_path(event)
+      redirect_to request.referrer
     end
   end
 
   def stop
     authorize @effort
     effort = effort_with_splits
+    stop_status = params[:status]&.to_boolean
 
-    stop_response = Interactors::UpdateEffortsStop.perform!(effort)
+    stop_response = Interactors::UpdateEffortsStop.perform!(effort, stop_status: stop_status)
     update_response = Interactors::UpdateEffortsStatus.perform!(effort)
     set_flash_message(stop_response.merge(update_response))
     redirect_to effort_path(effort)

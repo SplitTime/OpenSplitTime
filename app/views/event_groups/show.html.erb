@@ -4,13 +4,25 @@
 <div class="row header">
   <div class="col-xs-5">
     <h2><strong><%= "#{@presenter.name}" %></strong></h2>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= @presenter.event_group.name %></div>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <%= link_to_enter_group_live_entry(@presenter, current_user) %>
       <%= render 'events/view_buttons', view_object: @presenter %>
     </div>
-    <div class="row">
+  </div>
+</div>
+
+<% if current_user&.authorized_to_edit?(@presenter.event_group) %>
+  <div class="row">
+    <div class="col-xs-3">
+        <div class="btn-group">
+          <%= link_to_display_style(@presenter, 'events', 'Events') %>
+          <%= link_to_display_style(@presenter, 'partners', 'Partners') %>
+        </div>
+    </div>
+
+    <div class="col-xs-9 text-right">
       <% if current_user&.authorized_fully?(@presenter.event_group) %>
         <%= link_to_stewards(@presenter) %>
         <%= link_to_toggle_public_private(@presenter) %>
@@ -21,31 +33,37 @@
         <%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter),
                     method: :delete,
                     data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
-                            'This action cannot be undone. Are you sure you want to go ahead?'},
+                        'This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
-        <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: events_path),
+        <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path),
                     method: :delete,
-                    data: {confirm: 'This action cannot be undone. Are you sure you want to go ahead?'},
+                    data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
+                        'This action cannot be undone. Are you sure you want to go ahead?'},
                     class: 'btn btn-sm btn-danger' %>
       <% end %>
     </div>
   </div>
-</div>
+  <hr/>
+<% end %>
 
-<div>
-  <% if @presenter.events.present? %>
-    <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: 'leave' %>
-  <% else %>
-    <h4>No events exist within this event group.</h4>
-  <% end %>
-</div>
+<% if @presenter.display_style == 'events' %>
+    <div>
+      <% if @presenter.events.present? %>
+        <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: 'leave' %>
+      <% else %>
+        <h4>No events exist within this event group.</h4>
+      <% end %>
+    </div>
 
-<div>
-  <% if @presenter.candidate_events.present? %>
-    <hr>
-    <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
+    <div>
+      <% if @presenter.candidate_events.present? %>
+        <hr>
+        <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
 
-    <%= render 'events/events', presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: 'join' %>
+        <%= render 'events/events', presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: 'join' %>
 
-  <% end %>
-</div>
+      <% end %>
+    </div>
+<% elsif @presenter.display_style == 'partners' %>
+  <%= render 'partner_list', partners: @presenter.partners, view_model: @presenter %>
+<% end %>

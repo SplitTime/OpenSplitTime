@@ -21,7 +21,7 @@ module Results
     end
 
     def efforts
-      event.efforts.ranked_with_finish_status.select(&:finished)
+      event.efforts.ranked_with_status.select(&:finished)
     end
 
     private

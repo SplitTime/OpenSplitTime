@@ -2,13 +2,14 @@ require 'rails_helper'
 include TimeZoneHelpers
 
 RSpec.describe BibSubSplitTimeRow do
-  subject { BibSubSplitTimeRow.new(bib_number: bib_number, effort: effort, live_times: live_times, split_times: split_times, event: event) }
+  subject { BibSubSplitTimeRow.new(bib_number: bib_number, effort: effort, time_records: time_records, split_times: split_times, event_group: event_group) }
   let(:bib_number) { '123' }
   let(:effort) { build_stubbed(:effort, event: event) }
   let(:event) { build_stubbed(:event, splits: [split]) }
   let(:split) { build_stubbed(:split) }
+  let(:event_group) { build_stubbed(:event_group, events: [event]) }
 
-  let(:live_times) { [live_time_1, live_time_2, live_time_3] }
+  let(:time_records) { [live_time_1, live_time_2, live_time_3] }
   let(:live_time_1) { build_stubbed(:live_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 08:00:00'), source: source_1) }
   let(:live_time_2) { build_stubbed(:live_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 08:00:15'), source: source_2) }
   let(:live_time_3) { build_stubbed(:live_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 09:00:00'), source: source_1) }
@@ -30,7 +31,7 @@ RSpec.describe BibSubSplitTimeRow do
   end
 
   describe '#recorded_times' do
-    it 'returns military times from all live_times grouped by source' do
+    it 'returns military times from all time_records grouped by source' do
       expected = {'OSTR (abcd)' => {military_times: %w(08:00:00 09:00:00), split_time_ids: [nil, nil]},
                   'OSTR (wxyz)' => {military_times: ['08:00:15'], split_time_ids: [nil]}}
       expect(subject.recorded_times).to eq(expected)

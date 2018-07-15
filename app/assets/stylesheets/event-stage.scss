@@ -79,6 +79,10 @@
         }
     }
 
+    .page-navigation {
+      margin-top: 20px;
+    }
+
 	.middle-or {
 		display: block;
 		margin: 10px 0;
@@ -250,6 +254,11 @@
 .form-control-clickable {
     pointer-events: auto;
     cursor: pointer;
+}
+
+.float-left-button {
+    float: left;
+    margin-right: 5px;
 }
 
 /** Split Modal Styles **/

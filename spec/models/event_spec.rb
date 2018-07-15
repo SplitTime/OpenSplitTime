@@ -247,51 +247,6 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#pick_partner_with_banner' do
-    context 'where multiple partners exist for both the subject event and another event' do
-      let!(:event) { create(:event) }
-      let!(:wrong_event) { create(:event) }
-      let!(:related_partners_with_banners) { create_list(:partner, 3, :with_banner, event: event) }
-      let!(:related_partners_without_banners) { create_list(:partner, 3, event: event) }
-      let!(:unrelated_partners_with_banners) { create_list(:partner, 3, :with_banner, event: wrong_event) }
-      let!(:unrelated_partners_without_banners) { create_list(:partner, 3, event: wrong_event) }
-
-      it 'returns a random partner with a banner for the event' do
-        partners = []
-        100.times { partners << event.pick_partner_with_banner }
-        expect(partners.map(&:event).uniq).to eq([event])
-        expect(partners.map(&:banner_file_name)).to all (be_present)
-      end
-    end
-
-    context 'where multiple partners with banners for the event exist and one is weighted more heavily' do
-      # Four partners with weight: 1 and one partner with weight: 10 means the weighted partner should receive,
-      # on average, about 71% of hits.
-      let!(:event) { create(:event) }
-      let!(:weighted_partner) { create(:partner, :with_banner, event: event, weight: 10) }
-      let!(:unweighted_partners) { create_list(:partner, 4, :with_banner, event: event) }
-
-      it 'returns a random partner giving weight to the weighted partner' do
-        partners = []
-        100.times { partners << event.pick_partner_with_banner }
-        partners_count = partners.count_by(&:id)
-        expect(partners_count[weighted_partner.id]).to be > 50
-        unweighted_partners.each do |unweighted_partner|
-          expect(partners_count[unweighted_partner.id]).to be_between(1, 20).inclusive
-        end
-      end
-    end
-
-    context 'where no partners with banners for the event exist' do
-      let!(:event) { create(:event) }
-
-      it 'returns nil' do
-        create(:partner, event: event) # Without a banner
-        expect(event.pick_partner_with_banner).to be_nil
-      end
-    end
-  end
-
   describe '#live_entry_attributes' do
     let(:event) { build_stubbed(:event_with_standard_splits) }
     let(:splits) { event.splits.sort_by(&:distance_from_start) }

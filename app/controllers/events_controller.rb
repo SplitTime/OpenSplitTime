@@ -13,8 +13,8 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
-    render 'show'
+    event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
+    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params, current_user: current_user)
   end
 
   def new
@@ -37,7 +37,7 @@ class EventsController < ApplicationController
 
     if @event.save
       @event.set_all_course_splits
-      redirect_to stage_event_path(@event)
+      redirect_to admin_event_path(@event)
     else
       render 'new'
     end
@@ -54,7 +54,7 @@ class EventsController < ApplicationController
         redirect_to request.referrer
       else
         set_flash_message(response)
-        redirect_to session.delete(:return_to) || stage_event_path(@event)
+        redirect_to session.delete(:return_to) || admin_event_path(@event)
       end
     else
       render 'edit'
@@ -71,21 +71,21 @@ class EventsController < ApplicationController
   # Special views with results
 
   def spread
-    @spread_display = EventSpreadDisplay.new(event: @event, params: prepared_params)
+    @presenter = EventSpreadDisplay.new(event: @event, params: prepared_params, current_user: current_user)
     respond_to do |format|
       format.html
       format.csv do
         authorize @event
         csv_stream = render_to_string(partial: 'spread.csv.ruby')
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event.name}-#{@spread_display.display_style}-#{Date.today}.csv")
+                  filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
     end
   end
 
   def podium
     template = Results::FillTemplate.perform(event: @event, template_name: @event.podium_template)
-    @presenter = PodiumPresenter.new(@event, template)
+    @presenter = PodiumPresenter.new(@event, template, current_user)
   end
 
   def series
@@ -93,17 +93,17 @@ class EventsController < ApplicationController
     @presenter = EventSeriesPresenter.new(events, prepared_params)
   rescue ActiveRecord::RecordNotFound => exception
     flash[:danger] = "#{exception}"
-    redirect_to events_path
+    redirect_to event_groups_path
   end
 
-  # Event staging actions
+  # Event admin actions
 
-  def stage
+  def admin
     authorize @event
-    @event = Event.where(id: @event.id).includes(:course).includes(:splits).includes(:efforts).includes(event_group: :events).first
-    @event_stage = EventStageDisplay.new(event: @event, params: prepared_params)
+    event = Event.where(id: @event.id).includes(:course, event_group: [:events, organization: :stewards]).references(:course, event_group: [:events, organization: :stewards]).first
+    @presenter = EventStageDisplay.new(event: event, params: prepared_params, current_user: current_user)
     params[:view] ||= 'efforts'
-    session[:return_to] = stage_event_path(@event)
+    session[:return_to] = admin_event_path(@event)
   end
 
   def reconcile
@@ -111,7 +111,7 @@ class EventsController < ApplicationController
     @unreconciled_batch = @event.unreconciled_efforts.order(:last_name).limit(20)
     if @unreconciled_batch.empty?
       flash[:success] = 'All efforts have been reconciled'
-      redirect_to request.referrer.include?('event_staging') ? "#{event_staging_app_path(@event)}#/entrants" : stage_event_path(@event)
+      redirect_to request.referrer&.include?('event_staging') ? "#{event_staging_app_path(@event)}#/entrants" : roster_event_group_path(@event.event_group)
     else
       @unreconciled_batch.each { |effort| effort.suggest_close_match }
     end
@@ -135,8 +135,15 @@ class EventsController < ApplicationController
   def delete_all_efforts
     authorize @event
     response = Interactors::BulkDeleteEfforts.perform!(@event.efforts)
-    set_flash_message(response)
-    redirect_to stage_event_path(@event)
+    set_flash_message(response) unless response.successful?
+    redirect_to case request.referrer
+                when nil
+                  event_staging_app_path(@event)
+                when event_staging_app_url(@event)
+                  request.referrer + '#/entrants'
+                else
+                  request.referrer
+                end
   end
 
   # Actions related to the event/effort/split_time relationship
@@ -146,7 +153,7 @@ class EventsController < ApplicationController
     event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first
     response = Interactors::UpdateEffortsStatus.perform!(event.efforts)
     set_flash_message(response)
-    redirect_to stage_event_path(@event)
+    redirect_to admin_event_path(@event)
   end
 
   def set_stops
@@ -155,15 +162,7 @@ class EventsController < ApplicationController
     stop_status = params[:stop_status].blank? ? true : params[:stop_status].to_boolean
     response = Interactors::UpdateEffortsStop.perform!(event.efforts, stop_status: stop_status)
     set_flash_message(response)
-    redirect_to stage_event_path(@event)
-  end
-
-  def start_ready_efforts
-    authorize @event
-    efforts = @event.efforts.ready_to_start
-    response = Interactors::StartEfforts.perform!(efforts, current_user.id)
-    set_flash_message(response)
-    redirect_to stage_event_path(@event)
+    redirect_to admin_event_path(@event)
   end
 
   def update_all_efforts
@@ -171,7 +170,7 @@ class EventsController < ApplicationController
     attributes = params.require(:efforts).permit(:checked_in).to_hash
     @event.efforts.update_all(attributes)
 
-    redirect_to stage_event_path(@event)
+    redirect_to admin_event_path(@event)
   end
 
   # This action updates the event start_time and adjusts time_from_start on all
@@ -189,20 +188,19 @@ class EventsController < ApplicationController
 
     EventUpdateStartTimeJob.perform_later(@event, new_start_time: new_start_time,
                                           background_channel: background_channel, current_user: User.current)
-    redirect_to stage_event_path(@event)
+    redirect_to admin_event_path(@event)
   end
 
   def drop_list
-    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params)
+    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params, current_user: current_user)
     session[:return_to] = event_path(@event)
   end
 
   def export_to_ultrasignup
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @event_display = EventEffortsDisplay.new(event: @event, params: prepared_params)
+    @event_display = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     respond_to do |format|
-      format.html { redirect_to stage_event_path(@event) }
       format.csv do
         csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby')
         send_data(csv_stream, type: 'text/csv',

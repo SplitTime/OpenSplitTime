@@ -15,7 +15,7 @@ class Event < ApplicationRecord
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
   has_many :live_times, dependent: :delete_all
-  has_many :partners, dependent: :destroy
+  has_many :partners, through: :event_group
 
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,
            :organization, :organization_id, :permit_notifications?, to: :event_group
@@ -134,7 +134,7 @@ class Event < ApplicationRecord
   end
 
   def started?
-    SplitTime.where(effort: efforts).present?
+    SplitTime.joins(:effort).where(efforts: {event_id: id}).limit(1).present?
   end
 
   def required_lap_splits
@@ -150,11 +150,10 @@ class Event < ApplicationRecord
   end
 
   def efforts_ranked(args = {})
-    efforts.ranked_with_finish_status(args)
-  end
-
-  def pick_partner_with_banner
-    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
+    @efforts_ranked ||= Hash.new do |h, key|
+      h[key] = efforts.ranked_with_status(args)
+    end
+    @efforts_ranked[args]
   end
 
   def live_entry_attributes

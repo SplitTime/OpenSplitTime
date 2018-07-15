@@ -1,0 +1,99 @@
+<% if @presenter.event_group_efforts.blank? %>
+    <strong>No efforts have been added to this event group.</strong>
+<% else %>
+    <div class="row">
+      <div class="col-xs-5">
+        <%= render 'effort_lookup_stage' %>
+      </div>
+      <div class="col-xs-7 text-right">
+        <div class="btn-group">
+          <%= link_to_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
+          <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
+          <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
+          <%= link_to_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
+          <%= link_to_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
+        </div>
+        <%= link_to_check_in_filters('asterisk', 'Clear filter', nil, nil, nil, nil) %>
+      </div>
+    </div>
+
+    <hr>
+    <% if @presenter.filtered_ranked_efforts.present? %>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <% if @presenter.filtered_ranked_efforts_count == @presenter.efforts_count %>
+              <h4><%= "#{@presenter.efforts_count} efforts" %></h4>
+            <% else %>
+              <h4><%= "Showing #{@presenter.filtered_ranked_efforts_count} of #{@presenter.efforts_count} efforts" %></h4>
+            <% end %>
+          </div>
+          <div class="col-xs-4 text-right">
+            <%= link_to_start_ready_group_efforts(@presenter) %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@presenter.filtered_ranked_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th class="text-center"><%= link_to_reversing_sort_heading('Reconciled?', 'person_id,bib_number', @presenter.existing_sort) %></th>
+            <% if @presenter.multiple_events? %>
+              <th><%= link_to_reversing_sort_heading('Event', 'event_id,bib_number', @presenter.existing_sort) %></th>
+            <% end %>
+            <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('From', 'state_code', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Scheduled Start', 'start_offset', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Emergency Contact', 'emergency_contact', @presenter.existing_sort) %></th>
+            <% if @presenter.started_efforts.present? %>
+                <th><%= link_to_reversing_sort_heading('Status', 'data_status', @presenter.existing_sort) %></th>
+            <% end %>
+            <th>
+                <%= link_to_check_in_all(@presenter) %>
+                <%= link_to_check_out_all(@presenter) %>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @presenter.filtered_ranked_efforts.each do |effort| %>
+              <tr>
+                <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
+                <% if @presenter.multiple_events? %>
+                  <td><%= link_to effort.event.guaranteed_short_name, admin_event_path(effort.event) %></td>
+                <% end %>
+                <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+                <td><%= effort.bib_number %></td>
+                <td><%= effort.bio_historic %></td>
+                <td><%= effort.flexible_geolocation %></td>
+                <td><%= "#{day_time_format(effort.start_time)} (#{offset_format_xxhyym(effort.start_offset)})" %></td>
+                <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(' / ') %></td>
+                <% if @presenter.started_efforts.present? %>
+                    <td><%= effort.data_status %></td>
+                <% end %>
+                <td>
+                  <%= div_for(effort) do %>
+                      <%= link_to_toggle_check_in(effort, button_param: @presenter.check_in_button_param) %>
+                  <% end %>
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <%= will_paginate(@presenter.filtered_ranked_efforts, inner_window: 2, outer_window: 0) %>
+          </div>
+        </div>
+
+    <% else %>
+        <strong>No results match that search.</strong>
+    <% end %>
+<% end %>

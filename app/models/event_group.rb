@@ -9,15 +9,17 @@ class EventGroup < ApplicationRecord
   extend FriendlyId
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
-  has_many :events
+  has_many :events, dependent: :destroy
   has_many :live_times, through: :events
+  has_many :efforts, through: :events
   has_many :raw_times
+  has_many :partners
   belongs_to :organization
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
 
   delegate :stewards, to: :organization
-  delegate :start_time, :start_time_in_home_zone, to: :first_event
+  delegate :start_time, :home_time_zone, :start_time_in_home_zone, to: :first_event
   delegate :ordered_split_names, :splits_by_event, to: :split_analyzer
 
   scope :standard_includes, -> { includes(events: :splits) }
@@ -43,12 +45,28 @@ class EventGroup < ApplicationRecord
     ordered_events.first
   end
 
+  def multiple_events?
+    events.many?
+  end
+
   def multiple_laps?
     events.any?(&:multiple_laps?)
   end
 
+  def multiple_sub_splits?
+    events.any?(&:multiple_sub_splits?)
+  end
+
   def permit_notifications?
     visible? && available_live?
+  end
+
+  def pick_partner_with_banner
+    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
+  end
+
+  def single_lap?
+    !multiple_laps?
   end
 
   def split_times

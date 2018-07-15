@@ -34,97 +34,130 @@ class Api::V1::EventGroupsController < ApiController
     end
   end
 
-  def pull_live_time_rows
-
-    # This endpoint searches for un-pulled live_times belonging to the event_group, selects a batch,
-    # marks them as pulled, combines them into live_time_rows, and returns them
-    # to the group live entry page.
-
-    # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
-    # If params[:force_pull] == true, live_times without a matching split_time will be pulled
-    # even if they are marked as already having been pulled.
-
+  def import_csv_raw_times
     authorize @resource
+    event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
 
-    if @resource.available_live
-      force_pull = params[:force_pull]&.to_boolean
-      live_times_default_limit = 50
-      live_times_limit = (params[:page] && params[:page][:size]) || live_times_default_limit
+    params[:data_format] = :csv_raw_times
+    importer = ETL::ImporterFromContext.build(@resource, params, current_user)
+    importer.import
+    errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
+    raw_times = RawTime.where(id: importer.saved_records)
 
-      scoped_live_times = force_pull ? @resource.live_times.unmatched : @resource.live_times.unconsidered
+    enriched_raw_times = raw_times.with_relation_ids
 
-      # Order should be by absolute time, and where absolute time is nil, then by entered time.
-      # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
-      selected_live_times = scoped_live_times.order(:absolute_time, :entered_time).limit(live_times_limit)
+    raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: enriched_raw_times)
+    times_container = SegmentTimesContainer.new(calc_model: :stats)
+    raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
 
-      grouped_live_times = selected_live_times.group_by(&:event_id)
+    raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
 
-      live_time_rows = grouped_live_times.flat_map do |event_id, live_times|
-        event = Event.where(id: event_id).includes(:splits, :course).first
-        TimeRecordRowConverter.convert(event: event, time_records: live_times)
-      end
-
-      selected_live_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
-      report_live_times_available(@resource)
-      render json: {returnedRows: live_time_rows}, status: :ok
-    else
-      render json: live_entry_unavailable(@resource), status: :forbidden
-    end
+    render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}, errors: errors}, status: :ok
   end
 
-  def pull_time_record_rows
+  def pull_raw_times
 
-    # This endpoint searches for un-pulled time records (live_times and raw_times) belonging to the event_group, 
+    # This endpoint searches for un-pulled raw_times belonging to the event_group,
     # selects a batch, marks them as pulled, combines them into time_rows, and returns them
-    # to the group live entry page.
+    # to the live entry page.
 
     # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
     # If params[:force_pull] == true, raw_times without a matching split_time will be pulled
     # even if they are marked as already having been pulled.
 
     authorize @resource
+    event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
 
-    if @resource.available_live
-      force_pull = params[:force_pull]&.to_boolean
-      default_record_limit = 50
-      record_limit = (params.dig(:page, :size)) || default_record_limit
+    force_pull = params[:force_pull]&.to_boolean
+    default_record_limit = 50
+    record_limit = params.dig(:page, :size) || default_record_limit
 
-      scoped_raw_times = force_pull ? @resource.raw_times.unmatched : @resource.raw_times.unconsidered
-      scoped_live_times = force_pull ? @resource.live_times.unmatched : @resource.live_times.unconsidered
+    scoped_raw_times = force_pull ? event_group.raw_times.unmatched : event_group.raw_times.unconsidered
 
-      # Order should be by absolute time, and where absolute time is nil, then by entered time.
-      # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
-      selected_raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit).with_relation_ids
-      selected_live_times = scoped_live_times.order(:absolute_time, :entered_time).limit(record_limit)
-      selected_time_records = selected_raw_times + selected_live_times
+    # Order should be by absolute time ascending, and where absolute time is nil, then by entered time ascending.
+    # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
+    raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit)
+    enriched_raw_times = raw_times.with_relation_ids
 
-      grouped_time_records = selected_time_records.group_by(&:event_id)
+    raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: enriched_raw_times)
+    times_container = SegmentTimesContainer.new(calc_model: :stats)
+    raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
 
-      time_rows = grouped_time_records.flat_map do |event_id, time_records|
-        event = Event.where(id: event_id || @resource.first_event).includes(:splits, :course).first
-        TimeRecordRowConverter.convert(event: event, time_records: time_records)
-      end
+    raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+    report_raw_times_available(event_group)
 
-      [RawTime.where(id: selected_raw_times), selected_live_times].each do |records|
-        records.update_all(pulled_by: current_user.id, pulled_at: Time.current)
-      end
-      report_time_records_available
-      render json: {returnedRows: time_rows}, status: :ok
+    render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
+  end
+
+  def enrich_raw_time_row
+
+    # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
+    # with data_status, split_time_exists, lap, and other attributes set
+
+    authorize @resource
+    event_group = EventGroup.where(id: @resource.id).includes(:events).first
+
+    raw_times_data = params[:data] || ActionController::Parameters.new({})
+    if raw_times_data[:raw_time_row]
+      parsed_row = parse_raw_times_data(raw_times_data)
+      enriched_row = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: parsed_row)
+
+      render json: {data: {rawTimeRow: enriched_row.serialize}}, status: :ok
     else
-      render json: live_entry_unavailable(@resource), status: :forbidden
+      render json: {errors: [{title: 'Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}'}]}, status: :unprocessable_entity
     end
   end
 
-  def trigger_time_records_push
+  def submit_raw_time_rows
+
+    # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
+    # related split_time data where appropriate, and returns the others.
+
+    # In all instances, raw_times having bad split_name or bib_number data will be returned.
+    # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
+    # When params[:force_submit] is true, bad and duplicate times will be forced through.
+
     authorize @resource
-    report_time_records_available
+    event_group = EventGroup.where(id: @resource.id).includes(:events).first
+
+    data = params[:data] || ActionController::Parameters.new({})
+    errors = []
+    raw_time_rows = []
+
+    data.values.each do |raw_times_data|
+      if raw_times_data[:raw_time_row]
+        raw_time_rows << parse_raw_times_data(ActionController::Parameters.new(raw_times_data))
+      else
+        errors << {title: 'Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}',
+                   detail: {attributes: raw_times_data}}
+      end
+    end
+
+    if errors.empty?
+      force_submit = !!params[:force_submit]&.to_boolean
+      response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
+                                                         force_submit: force_submit, mark_as_pulled: true, current_user_id: current_user.id)
+      problem_rows = response.resources[:problem_rows]
+      report_raw_times_available(event_group)
+
+      render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}
+    else
+      render json: {errors: errors}, status: :unprocessable_entity
+    end
+  end
+
+  def trigger_raw_times_push
+    authorize @resource
+    report_raw_times_available(@resource)
     render json: {message: "Time records push notifications sent for #{@resource.name}"}
   end
 
   private
 
-  def report_time_records_available
-    report_live_times_available(@resource)
-    report_raw_times_available(@resource)
+  def parse_raw_times_data(raw_times_data)
+    raw_time_row_attributes = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
+    raw_times_attributes = raw_time_row_attributes[:raw_times] || {}
+    raw_times = raw_times_attributes.values.map { |attributes| RawTime.new(attributes) }
+    RawTimeRow.new(raw_times)
   end
 end

@@ -1,65 +1,65 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Full results - #{@spread_display.name}" %>
+  <% "OpenSplitTime: Full results - #{@presenter.name}" %>
 <% end %>
 
 <div class="row header">
   <div class="col-xs-5">
-    <%= render 'event_info', view_object: @spread_display, title: 'Full results' %>
+    <%= render 'event_info', view_object: @presenter, title: nil %>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Full Results' %></div>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <%= link_to_beacon_button(@spread_display) %>
-      <%= link_to_enter_group_live_entry(@spread_display, current_user) %>
-      <%= render 'view_buttons', view_object: @spread_display %>
+      <%= link_to_beacon_button(@presenter) %>
+      <%= render 'view_buttons', view_object: @presenter %>
     </div>
     <div class="row">
-      <%= link_to_download_spread_csv(@spread_display, current_user) %>
+      <%= link_to_download_spread_csv(@presenter, current_user) %>
     </div>
   </div>
 </div>
 
 <div class="row mid">
   <div class="col-xs-5 page-navigation-left">
-    <% if @spread_display.ordered_events_within_group.many? %>
-      <%= render 'event_groups/event_buttons', events: @spread_display.ordered_events_within_group, current_event: @spread_display.event %>
+    <% if @presenter.ordered_events_within_group.many? %>
+      <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
     <% end %>
   </div>
 
   <div class="col-xs-7 page-navigation">
     <div class="btn-group">
-      <%= link_to_spread_gender(@spread_display, 'combined') %>
-      <%= link_to_spread_gender(@spread_display, 'male') %>
-      <%= link_to_spread_gender(@spread_display, 'female') %>
+      <%= link_to_spread_gender(@presenter, 'combined') %>
+      <%= link_to_spread_gender(@presenter, 'male') %>
+      <%= link_to_spread_gender(@presenter, 'female') %>
     </div>
 
     <div class="btn-group">
-      <%= link_to_spread_display_style(@spread_display, 'elapsed', 'Elapsed') %>
-      <%= link_to_spread_display_style(@spread_display, 'ampm', 'AM / PM') %>
-      <%= link_to_spread_display_style(@spread_display, 'military', '24-Hour') %>
-      <%= link_to_spread_display_style(@spread_display, 'segment', 'Segment') %>
+      <%= link_to_spread_display_style(@presenter, 'elapsed', 'Elapsed') %>
+      <%= link_to_spread_display_style(@presenter, 'ampm', 'AM / PM') %>
+      <%= link_to_spread_display_style(@presenter, 'military', '24-Hour') %>
+      <%= link_to_spread_display_style(@presenter, 'segment', 'Segment') %>
     </div>
   </div>
 </div>
 
-<% if @spread_display.show_partner_banners? %>
-  <%= render 'partner_banner', partner: @spread_display.partner_with_banner, organization_name: @spread_display.organization_name %>
+<% if @presenter.show_partner_banners? %>
+  <%= render 'partner_banner', partner: @presenter.partner_with_banner, organization_name: @presenter.organization_name %>
 <% end %>
 
-<% cache "#{@spread_display.cache_key}/html", expires_in: @spread_display.cache_expire do %>
+<% cache "#{@presenter.cache_key}/html", expires_in: @presenter.cache_expire do %>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
-      <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @spread_display.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @spread_display.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @spread_display.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @spread_display.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('From', :state_code, @spread_display.existing_sort) %></th>
-      <% spread_relevant_elements(@spread_display.split_header_data).each do |header| %>
+      <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>
+      <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @presenter.existing_sort) %></th>
+      <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
+      <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
+      <th><%= link_to_reversing_sort_heading('From', :state_code, @presenter.existing_sort) %></th>
+      <% spread_relevant_elements(@presenter.split_header_data).each do |header| %>
         <th class="text-nowrap text-center">
           <%= clustered_header(header) %>
         </th>
       <% end %>
-      <% if @spread_display.show_segment_totals? %>
+      <% if @presenter.show_segment_totals? %>
         <th class="text-center text-nowrap">
           <%= clustered_segment_total_header %>
         </th>
@@ -67,7 +67,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @spread_display.effort_times_rows.each do |row| %>
+    <% @presenter.effort_times_rows.each do |row| %>
       <tr>
         <td><%= "#{row.overall_rank}/#{row.gender_rank}" %></td>
         <td><%= row.bib_number %></td>
@@ -79,11 +79,11 @@
             <% if cluster.drop_display? %>
               <strong><==DONE</strong>
             <% else %>
-              <%= time_cluster_display_data(cluster, @spread_display.display_style) %>
+              <%= time_cluster_display_data(cluster, @presenter.display_style) %>
             <% end %>
           </td>
         <% end %>
-        <% if @spread_display.show_segment_totals? %>
+        <% if @presenter.show_segment_totals? %>
           <td class="text-center text-nowrap">
             <%= clustered_segment_total_data(row) %>
           </td>

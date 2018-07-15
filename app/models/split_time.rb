@@ -16,6 +16,7 @@ class SplitTime < ApplicationRecord
   has_many :live_times, dependent: :nullify
   has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
+  alias_attribute :with_pacer, :pacer
   attr_accessor :live_time_id, :raw_time_id, :time_exists, :imposed_order
 
   # distance_from_start is not the true distance from start in a multi-lap effort,

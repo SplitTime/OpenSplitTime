@@ -5,6 +5,7 @@ class Live::EventGroupsController < Live::BaseController
   def live_entry
     authorize @event_group
     verify_available_live(@event_group)
+    render :new_live_entry
   end
 
   private

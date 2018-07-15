@@ -47,9 +47,9 @@
             <% end %>
             <td class="text-center"><%= "#{live_time.stopped_here ? 'Yes' : 'No'}" %></td>
             <td><%= live_time.source_text %></td>
-            <td><%= live_time.user_full_name %></td>
+            <td><%= live_time.creator_full_name %></td>
             <td><%= live_time.created_at ? l(live_time.created_at.in_time_zone(view_model.home_time_zone), format: :short_day_and_time) : '--' %></td>
-            <td><%= live_time.pulled_full_name %></td>
+            <td><%= live_time.puller_full_name %></td>
             <td><%= live_time.pulled_at ? l(live_time.pulled_at.in_time_zone(view_model.home_time_zone), format: :short_day_and_time) : '--' %></td>
             <td><%= live_time.matched? ? 'Yes' : 'No' %></td>
             <td>

@@ -13,7 +13,6 @@ module Interactors
       @event_group = args[:event_group]
       @raw_times = args[:raw_times]
       @tolerance = args[:tolerance] || 1.minute
-      @split_times = event_group.split_times.with_time_record_matchers
       @errors = []
       validate_setup
     end
@@ -28,7 +27,11 @@ module Interactors
 
     private
 
-    attr_reader :event_group, :raw_times, :tolerance, :split_times, :errors
+    attr_reader :event_group, :raw_times, :tolerance, :errors
+
+    def split_times
+      SplitTime.where(effort_id: loaded_raw_times.map(&:effort_id)).with_time_record_matchers
+    end
     
     def loaded_raw_times
       RawTime.where(id: raw_times).with_relation_ids

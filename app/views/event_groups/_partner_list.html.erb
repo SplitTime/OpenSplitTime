@@ -1,6 +1,6 @@
 <%# Requires parameters partners, view_model %>
 
-<%= link_to 'Add Partner', new_partner_path(event_id: view_model.id), class: 'btn btn-sm btn-success' %>
+<%= link_to 'Add Partner', new_partner_path(event_group_id: view_model.id), class: 'btn btn-sm btn-success' %>
 
 <% if partners.present? %>
 

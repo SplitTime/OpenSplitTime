@@ -45,16 +45,48 @@ class EventGroupsController < ApplicationController
 
   def destroy
     authorize @event_group
-    if @event_group.events.present?
-      flash[:danger] = 'Event group cannot be deleted if events are present within the event group. ' +
-          'Delete the related events individually and then delete the event group.'
-      redirect_to @event_group
-    else
-      @event_group.destroy
-      flash[:success] = 'Event group deleted.'
-      session[:return_to] = params[:referrer_path] if params[:referrer_path]
-      redirect_to session.delete(:return_to) || event_groups_path
-    end
+
+    @event_group.destroy
+    flash[:success] = 'Event group deleted.'
+    redirect_to event_groups_path
+  end
+
+  def raw_times
+    authorize @event_group
+    params[:sort] ||= '-created_at'
+
+    event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).references(:efforts, organization: :stewards, events: :splits).first
+    @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def split_raw_times
+    authorize @event_group
+
+    @presenter = SplitRawTimesPresenter.new(@event_group, params[:split_name], prepared_params, current_user)
+  end
+
+  def roster
+    authorize @event_group
+
+    event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).references(organization: :stewards, events: :splits).first
+    @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def start_ready_efforts
+    authorize @event_group
+    efforts = Effort.where(event_id: @event_group.events).ready_to_start
+    response = Interactors::StartEfforts.perform!(efforts, current_user.id)
+    set_flash_message(response)
+    redirect_to request.referrer
+  end
+
+  def update_all_efforts
+    authorize @event_group
+
+    attributes = params.require(:efforts).permit(:checked_in).to_hash
+    @event_group.efforts.update_all(attributes)
+
+    redirect_to request.referrer
   end
 
   def delete_all_times
@@ -70,7 +102,6 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
 
     respond_to do |format|
-      format.html { redirect_to event_group_path(@event_group, force_settings: true) }
       format.csv do
         csv_stream = render_to_string(partial: 'summit.csv.ruby')
         send_data(csv_stream, type: 'text/csv',

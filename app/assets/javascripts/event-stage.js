@@ -1583,10 +1583,10 @@
             },
             init: function() {
                 Vue.component( 'ajax-import', {
-                    template:   '<button class="btn btn-default fileinput-button" v-bind:class="{ \'btn-danger\': error }" :disabled="busy || error">\
+                    template:   '<a class="fileinput-button" v-bind:class="{ \'btn-danger\': error }" :disabled="busy || error">\
                                     <slot></slot>\
                                     <input type="file" name="file"/>\
-                                </button>',
+                                </a>',
                     props: {
                         url: { type: String, required: true, default: '' }
                     },

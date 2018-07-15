@@ -1,51 +1,39 @@
 <% content_for :title do %>
     <% if params[:search].present? %>
-        <% "OpenSplitTime: #{@event_display.name} - Results - #{params[:search]}" %>
+        <% "OpenSplitTime: #{@presenter.name} - Results - #{params[:search]}" %>
     <% else %>
-        <% "OpenSplitTime: #{@event_display.name} - Results" %>
+        <% "OpenSplitTime: #{@presenter.name} - Results" %>
     <% end %>
 <% end %>
 
 <div class="row header">
   <div class="col-xs-5">
-    <%= render 'event_info', view_object: @event_display, title: 'Results' %>
+    <%= render 'event_info', view_object: @presenter, title: nil %>
+    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= @presenter.event.guaranteed_short_name %></div>
   </div>
   <div class="col-xs-7 page-navigation">
     <div class="row">
-      <%= link_to_beacon_button(@event_display) %>
-      <%= link_to_enter_group_live_entry(@event_display, current_user) %>
-      <%= render 'view_buttons', view_object: @event_display %>
-    </div>
-    <div class="row">
-      <%= render 'feature_buttons', view_object: @event_display %>
+      <%= link_to_beacon_button(@presenter) %>
+      <%= render 'view_buttons', view_object: @presenter %>
     </div>
   </div>
 </div>
 
 <div class="row mid">
-  <div class="col-xs-5 page-navigation-left">
-    <% if @event_display.ordered_events_within_group.many? %>
-      <%= render 'event_groups/event_buttons', events: @event_display.ordered_events_within_group, current_event: @event_display.event %>
+  <div class="col-xs-6 page-navigation-left">
+    <% if @presenter.ordered_events_within_group.many? %>
+      <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
     <% end %>
   </div>
-
-  <div class="col-xs-7 page-navigation">
-    <div class="btn-group">
-      <%= link_to_display_style(@event_display, 'started', 'Started') %>
-      <%= link_to_display_style(@event_display, 'unstarted', 'Unstarted') %>
-    </div>
+  <div class="col-xs-6 page-navigation">
+    <%= render 'feature_buttons', view_object: @presenter %>
   </div>
 </div>
 
-<% if @event_display.display_style == 'started' %>
-    <%= render 'show_efforts_list',
-               unfiltered_efforts_count: @event_display.started_efforts_count,
-               filtered_efforts_count: @event_display.filtered_ranked_efforts_count,
-               filtered_efforts: @event_display.filtered_ranked_efforts %>
-<% else %>
-
-    <%= render 'show_efforts_list',
-               unfiltered_efforts_count: @event_display.unstarted_efforts_count,
-               filtered_efforts_count: @event_display.filtered_unstarted_efforts_count,
-               filtered_efforts: @event_display.filtered_unstarted_efforts %>
-<% end %>
+<div>
+  <%= render 'show_efforts_list',
+             view_object: @presenter,
+             unfiltered_efforts_count: @presenter.efforts_count,
+             filtered_efforts_count: @presenter.filtered_ranked_efforts_count,
+             filtered_efforts: @presenter.filtered_ranked_efforts %>
+</div>

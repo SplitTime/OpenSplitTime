@@ -20,8 +20,28 @@ class EventGroupPolicy < ApplicationPolicy
     @event_group = event_group
   end
 
+  def raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def split_raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def roster?
+    user.authorized_to_edit?(event_group)
+  end
+
   def delete_all_times?
     user.authorized_fully?(event_group)
+  end
+
+  def start_ready_efforts?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def update_all_efforts?
+    user.authorized_to_edit?(event_group)
   end
 
   def export_to_summit?
@@ -40,11 +60,23 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def trigger_time_records_push?
+  def trigger_raw_times_push?
     user.present?
   end
 
-  def pull_live_time_rows?
+  def pull_raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def enrich_raw_time_row?
+    user.present?
+  end
+
+  def import_csv_raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def submit_raw_time_rows?
     user.authorized_to_edit?(event_group)
   end
 

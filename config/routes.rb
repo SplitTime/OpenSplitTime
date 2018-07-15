@@ -144,22 +144,20 @@ Rails.application.routes.draw do
       end
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
-          post :import
-          patch :pull_raw_times
           get :enrich_raw_time_row
-          post :submit_raw_time_rows
           get :trigger_raw_times_push
+          post :import
+          post :import_csv_raw_times
+          post :submit_raw_time_rows
+          patch :pull_raw_times
         end
       end
       resources :events, only: [:index, :show, :create, :update, :destroy] do
         member do
-          delete :remove_splits
-          put :associate_splits
-          post :import
           get :spread
-          get :live_effort_data
-          post :set_times_data
-          post :post_file_effort_data
+          post :import
+          put :associate_splits
+          delete :remove_splits
         end
       end
       resources :live_times, only: [:index, :show, :create, :update, :destroy]

@@ -49,25 +49,31 @@ class ProtoRecord
 
   def run_specific_transforms(model, options)
     case model
-      when :effort
-        event = options[:event]
-        normalize_gender!
-        normalize_country_code!
-        normalize_state_code!
-        create_country_from_state!
-        normalize_date!(:birthdate)
-        normalize_datetime!(:start_time)
-        set_offset_from_start_time!(event)
-        self[:event_id] = event.id
+    when :effort
+      event = options[:event]
+      normalize_gender!
+      normalize_country_code!
+      normalize_state_code!
+      create_country_from_state!
+      normalize_date!(:birthdate)
+      normalize_datetime!(:start_time)
+      set_offset_from_start_time!(event)
+      self[:event_id] = event.id
 
-      when :split
-        event = options[:event]
-        convert_split_distance!
-        align_split_distance!(event.ordered_splits.map(&:distance_from_start))
-        self[:course_id] = event.course_id
+    when :split
+      event = options[:event]
+      convert_split_distance!
+      align_split_distance!(event.ordered_splits.map(&:distance_from_start))
+      self[:course_id] = event.course_id
 
-      else
-        return
+    when :raw_time
+      event_group = options[:event_group]
+      self[:split_name] ||= options[:split_name]
+      self[:source] = 'File import'
+      self[:event_group_id] = event_group.id
+
+    else
+      return
     end
   end
 

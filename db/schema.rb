@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180618140332) do
+ActiveRecord::Schema.define(version: 20180714181220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -249,8 +249,6 @@ ActiveRecord::Schema.define(version: 20180618140332) do
     t.string "remarks"
     t.integer "sortable_bib_number", null: false
     t.integer "data_status"
-    t.index ["absolute_time", "event_group_id", "parameterized_split_name", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "raw_time_unique_absolute_times_index", unique: true
-    t.index ["entered_time", "event_group_id", "parameterized_split_name", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "raw_time_unique_entered_times_index", unique: true
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
     t.index ["parameterized_split_name"], name: "index_raw_times_on_parameterized_split_name"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"

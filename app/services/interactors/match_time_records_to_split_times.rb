@@ -34,8 +34,12 @@ module Interactors
     def match_time_record_to_split_time(time_record)
       split_time = matching_split_time(time_record)
       if split_time
-        time_record.update(split_time: split_time)
-        matched << time_record
+        if time_record.update(split_time: split_time)
+          matched << time_record
+        else
+          errors << resource_error_object(time_record)
+          unmatched << time_record
+        end
       else
         unmatched << time_record
       end

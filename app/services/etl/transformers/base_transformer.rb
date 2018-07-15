@@ -13,6 +13,10 @@ module ETL::Transformers
       parent if parent.is_a?(Event)
     end
 
+    def event_group
+      parent if parent.is_a?(EventGroup)
+    end
+
     def parent
       options[:parent]
     end

@@ -1,27 +1,34 @@
 # frozen_string_literal: true
 
+# event_group should include events: :splits
+# raw_times must include effort_ids (e.g., by using RawTime.with_relation_ids)
+
 class RowifyRawTimes
   def self.build(args)
     new(args).build
   end
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: [:event_group, :raw_times], exclusive: [:event_group, :raw_times], class: self.class)
+    ArgsValidator.validate(params: args,
+                           required: [:event_group, :raw_times],
+                           exclusive: [:event_group, :raw_times],
+                           class: self.class)
     @event_group = args[:event_group]
     @raw_times = args[:raw_times]
-    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     validate_setup
   end
 
   def build
     add_lap_to_raw_times
+    add_entered_time_from_absolute
     raw_time_pairs = RawTimePairer.pair(event_group: event_group, raw_times: raw_times).map(&:compact)
     raw_time_pairs.map { |raw_time_pair| build_time_row(raw_time_pair) }
   end
 
   private
 
-  attr_reader :event_group, :raw_times, :times_container
+  attr_reader :event_group, :raw_times
+  delegate :home_time_zone, to: :event_group
 
   def add_lap_to_raw_times
     raw_times.reject(&:lap).each do |raw_time|
@@ -45,12 +52,16 @@ class RowifyRawTimes
                             bitkey: raw_time.bitkey)
   end
 
+  def add_entered_time_from_absolute
+    raw_times.each do |rt|
+      rt.entered_time = rt.military_time(home_time_zone)
+    end
+  end
+
   def build_time_row(raw_time_pair)
     raw_time = raw_time_pair.first
     effort, event, split = indexed_efforts[raw_time.effort_id], indexed_events[raw_time.event_id], indexed_splits[raw_time.split_id]
-    raw_time_row = RawTimeRow.new(raw_time_pair, effort, event, split, [])
-    VerifyRawTimeRow.perform(raw_time_row, times_container: times_container)
-    raw_time_row
+    RawTimeRow.new(raw_time_pair, effort, event, split, [])
   end
 
   def single_lap_event_group?
@@ -62,7 +73,7 @@ class RowifyRawTimes
   end
 
   def indexed_events
-    @indexed_events ||= event_group.events.includes(:splits).index_by(&:id)
+    @indexed_events ||= event_group.events.index_by(&:id)
   end
 
   def indexed_splits

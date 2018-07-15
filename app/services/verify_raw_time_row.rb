@@ -9,6 +9,7 @@ class VerifyRawTimeRow
   end
 
   def initialize(raw_time_row, options = {})
+    ArgsValidator.validate(subject: raw_time_row, params: options, exclusive: [:times_container], class: self.class)
     @raw_time_row = raw_time_row
     @times_container = options[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     validate_setup
@@ -35,7 +36,11 @@ class VerifyRawTimeRow
   end
 
   def append_split_times
-    raw_times.each { |raw_time| raw_time.new_split_time = SplitTimeFromRawTime.build(raw_time, effort: effort, event: event) }
+    raw_times.each do |raw_time|
+      if time_point_exists(raw_time)
+        raw_time.new_split_time = SplitTimeFromRawTime.build(raw_time, effort: effort, event: event)
+      end
+    end
   end
 
   def set_data_status
@@ -47,14 +52,21 @@ class VerifyRawTimeRow
   end
 
   def ordered_split_times
-    indexed_existing_split_times = effort.split_times.each { |st| st.data_status = :confirmed if st.good? }.index_by(&:time_point).freeze
+    existing_split_times = effort.split_times.map(&:dup)
+    indexed_existing_split_times = existing_split_times.each { |st| st.data_status = :confirmed if st.good? }.index_by(&:time_point).freeze
     indexed_new_split_times = new_split_times.select(&:time_from_start).index_by(&:time_point)
     indexed_split_times = indexed_existing_split_times.merge(indexed_new_split_times)
     effort_time_points.map { |time_point| indexed_split_times[time_point] }.compact
   end
 
   def new_split_times # Do not memoize
-    raw_times.map(&:new_split_time)
+    raw_times.map(&:new_split_time).compact
+  end
+
+  def time_point_exists(raw_time)
+    split = raw_time_row.split || raw_time.split
+    raw_time.lap <= event.maximum_laps &&
+        split&.bitkeys&.include?(raw_time.bitkey)
   end
 
   def effort_lap_splits

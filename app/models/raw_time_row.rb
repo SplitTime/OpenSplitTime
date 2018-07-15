@@ -3,7 +3,7 @@
 RawTimeRow = Struct.new(:raw_times, :effort, :event, :split, :errors) do
   include ActiveModel::Serializers::JSON
 
-  RAW_TIME_ATTRIBUTES = [:absolute_time, :entered_time, :bib_number, :split_name, :sub_split_kind, :data_status,
+  RAW_TIME_ATTRIBUTES = [:id, :absolute_time, :entered_time, :bib_number, :split_name, :sub_split_kind, :data_status,
                          :split_time_exists, :lap, :stopped_here, :with_pacer, :remarks]
   RAW_TIME_METHODS = [:military_time, :sub_split_kind]
 

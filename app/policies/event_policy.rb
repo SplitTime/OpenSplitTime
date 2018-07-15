@@ -87,19 +87,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def live_effort_data?
-    user.authorized_to_edit?(event)
-  end
-
   def effort_table?
-    user.authorized_to_edit?(event)
-  end
-
-  def post_file_effort_data?
-    user.authorized_to_edit?(event)
-  end
-
-  def set_times_data?
     user.authorized_to_edit?(event)
   end
 

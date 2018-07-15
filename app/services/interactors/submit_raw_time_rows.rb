@@ -52,7 +52,7 @@ module Interactors
       return unless raw_time
       raw_bib = raw_time.bib_number
       integer_bib = raw_bib =~ /\D/ ? nil : raw_bib.to_i
-      rtr.effort = indexed_efforts[integer_bib]
+      rtr.effort ||= indexed_efforts[integer_bib]
     end
 
     def enrich_raw_time_row(rtr)

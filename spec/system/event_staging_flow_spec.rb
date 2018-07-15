@@ -98,6 +98,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
     expect(page).not_to have_field('course-name-field')
     select course.name, from: 'course-select'
+    3.times { wait_for_fill_in }
     expect(page).to have_field('course-name-field', with: course.name)
     expect(page).to have_field('course-distance-field', with: course.finish_split.distance_from_start.meters.to.miles.round(2))
     expect(page).to have_field('course-vert-gain-field', with: course.finish_split.vert_gain_from_start.meters.to.feet.round(1))

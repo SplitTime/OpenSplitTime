@@ -68,7 +68,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     # expect(event.aid_stations.size).to eq(2)
   end
 
-  scenario 'Create a new event with an existing Organization and Course' do
+  xscenario 'Create a new event with an existing Organization and Course' do
     organization = create(:organization, created_by: user.id)
     course = create(:course_with_standard_splits, :with_description, created_by: user.id)
     course.reload

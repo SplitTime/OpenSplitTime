@@ -261,6 +261,34 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
+    context 'when an event has unlimited laps' do
+      let(:event) { build_stubbed(:event, splits: splits, course: course, start_time_in_home_zone: '2018-06-23 06:00:00', laps_required: 0) }
+      let(:split_times) { [split_time_1, split_time_2] }
+      let(:raw_times) { [raw_time_1] }
+
+      it 'returns a a raw_time_row with expected split_time_exists and new_split_time' do
+        allow(Interactors::SetEffortStatus).to receive(:perform)
+        expect(raw_times.size).to eq(1)
+        expect(raw_times.map(&:split_time_exists)).to all be_nil
+
+        result_row = subject.perform
+        result_raw_times = result_row.raw_times
+        expect(result_raw_times.size).to eq(1)
+        expect(result_raw_times).to all be_a(RawTime)
+        expect(result_raw_times.map(&:split_time_exists)).to eq([true])
+
+        new_split_times = result_raw_times.map(&:new_split_time)
+        expect(new_split_times).to all be_a(SplitTime)
+        expect(new_split_times.map(&:effort_id)).to all eq(effort.id)
+        expect(new_split_times.map(&:lap)).to all eq(1)
+        expect(new_split_times.map(&:split_id)).to all eq(start_split.id)
+        expect(new_split_times.map(&:bitkey)).to eq([1])
+        expect(new_split_times.map(&:time_from_start)).to eq([0])
+
+        expect(Interactors::SetEffortStatus).to have_received(:perform).once
+      end
+    end
+
     context 'when raw_times are not from the same split' do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1, raw_time_2] }

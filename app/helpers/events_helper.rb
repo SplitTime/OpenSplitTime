@@ -25,6 +25,23 @@ module EventsHelper
 
   def link_to_podium(view_object)
     if view_object.podium_template
+      link_to 'Podium', podium_event_path(view_object.event),
+              disabled: controller.action_name == 'podium',
+              class: 'btn btn-sm btn-primary'
+    end
+  end
+
+  def link_to_traffic(view_object)
+      link_to 'Traffic', traffic_event_group_path(view_object.event_group),
+              disabled: controller.action_name == 'traffic',
+              class: 'btn btn-sm btn-primary'
+  end
+
+  def link_to_raw_times(view_object, current_user)
+    if current_user&.authorized_to_edit?(view_object.event_group)
+      link_to 'Raw times', raw_times_event_group_path(view_object.event_group),
+              disabled: controller.action_name == 'raw_times',
+              class: 'btn btn-sm btn-primary'
       content_tag :li, class: "#{'active' if action_name == 'podium'}" do
         link_to 'Podium', podium_event_path(view_object.event)
       end

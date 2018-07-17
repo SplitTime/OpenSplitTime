@@ -718,7 +718,8 @@
                                 stoppedHere: $('#js-dropped').prop('checked'),
                                 withPacer: $('#js-pacer-' + kind).prop('checked'),
                                 dataStatus: $timeField.attr('data-time-status'),
-                                splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true')
+                                splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true'),
+                                source: 'Live Entry (0)' // Replace 0 with current_user.id
                             }
                         }
                     )
@@ -1139,13 +1140,14 @@
 
                 $('#js-file-upload').fileupload({
                     dataType: 'json',
-                    url: '/api/v1/events/' + liveEntry.defaultEventId + '/post_file_effort_data',
+                    url: '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/import_csv_raw_times',
                     submit: function (e, data) {
-                        data.formData = {splitId: liveEntry.getSplitId(liveEntry.defaultEventId, liveEntry.currentStationIndex)};
+                        data.formData = {splitName: liveEntry.currentStation().splitName};
                         liveEntry.timeRowsTable.busy = true;
                     },
                     done: function (e, data) {
-                        liveEntry.populateRows(data.result);
+                        var rawTimeRows = data.result.data.rawTimeRows;
+                        liveEntry.populateRows(rawTimeRows);
                     },
                     fail: function (e, data) {
                         $('#debug').empty().append(data.response().jqXHR.responseText);

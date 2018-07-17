@@ -1,7 +1,7 @@
 class EventGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :traffic]
   before_action :set_event_group, except: [:index]
-  after_action :verify_authorized, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show, :traffic]
 
   def index
     scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
@@ -70,6 +70,12 @@ class EventGroupsController < ApplicationController
 
     event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).references(organization: :stewards, events: :splits).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def traffic
+    split_name = params[:split_name]
+    band_width = params[:band_width].present? ? params[:band_width].to_i : nil
+    @presenter = EventGroupTrafficPresenter.new(@event_group, split_name, band_width)
   end
 
   def set_data_status

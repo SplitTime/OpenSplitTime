@@ -86,6 +86,10 @@ class SplitTime < ApplicationRecord
     self.bitkey = sub_split.bitkey
   end
 
+  def sub_split_kind
+    SubSplit.kind(bitkey)
+  end
+
   def time_point
     TimePoint.new(lap, split_id, bitkey)
   end

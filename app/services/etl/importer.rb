@@ -32,6 +32,8 @@ module ETL
         import_with(source_data, Extractors::ItsYourRaceHTMLStrategy, Transformers::ElapsedIncrementalAidStrategy, Loaders::InsertStrategy, options)
       when :csv_splits
         import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, {model: :split}.merge(default_unique_key(:split)).merge(options))
+      when :csv_raw_times
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, {model: :raw_time}.merge(default_unique_key(:raw_time)).merge(options))
       when :csv_efforts
         import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, {model: :effort}.merge(default_unique_key(:effort)).merge(options))
       when :csv_efforts_elapsed_times

@@ -98,7 +98,8 @@ class EffortQuery < BaseQuery
 
       SELECT #{select_sql},
           rank() over 
-            (ORDER BY dropped, 
+            (ORDER BY started desc,
+                      dropped, 
                       final_lap desc NULLS LAST, 
                       final_lap_distance desc, 
                       final_bitkey desc, 
@@ -108,7 +109,8 @@ class EffortQuery < BaseQuery
           AS overall_rank, 
           rank() over 
             (PARTITION BY gender 
-             ORDER BY dropped, 
+             ORDER BY started desc,
+                      dropped, 
                       final_lap desc NULLS LAST, 
                       final_lap_distance desc, 
                       final_bitkey desc, 

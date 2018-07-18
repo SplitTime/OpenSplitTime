@@ -58,6 +58,10 @@ class TimeCluster
     @stopped_here_flags ||= split_times_data.map { |st| st && st[:stopped_here] }
   end
 
+  def pacer_flags
+    @pacer_flags ||= split_times_data.map { |st| st && st[:pacer] }
+  end
+
   private
 
   attr_reader :split, :start_time, :prior_split_time, :immediate_prior_split_time

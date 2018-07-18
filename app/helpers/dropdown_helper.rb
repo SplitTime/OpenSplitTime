@@ -1,28 +1,29 @@
 # frozen_string_literal: true
 
 module DropdownHelper
-  def build_dropdown_menu(title, items)
+  def build_dropdown_menu(title, items, options = {})
     main_active = items.any? { |item| item[:active] } ? 'active' : nil
 
-    content_tag :li, class: main_active do
-      a_tag = content_tag :a, class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
+    container_tag = options[:button] ? :div : :li
+    container_class = options[:button] ? 'btn-group' : main_active
+    content_tag container_tag, class: [container_class, options[:class]].join(' ') do
+      toggle_tag = options[:button] ? :button : :a
+      toggle_class = (options[:button] ? 'btn btn-default' : '') + ' dropdown-toggle'
+      concat content_tag(toggle_tag, class: toggle_class, data: {toggle: 'dropdown'}) {
         active_name = items.find { |item| item[:active] }&.dig(:name)
-        string = [title, active_name].compact.join(' / ')
-        span = content_tag(:span, '', class: 'caret')
-        [string, '&nbsp;', span].join.html_safe
-      end
+        safe_concat [title, active_name].compact.join(' / ')
+        safe_concat '&nbsp;'
+        concat content_tag(:span, '', class: 'caret')
+      }
 
-      ul_tag = content_tag :ul, class: 'dropdown-menu' do
-        html_items = items.map do |item|
+      concat content_tag(:ul, class: 'dropdown-menu') {
+        items.each do |item|
           active = item[:active] ? 'active' : nil
-          content_tag :li, class: active do
-            (link_to item[:name], item[:link]).html_safe
-          end
+          concat content_tag(:li, class: active) {
+            link_to item[:name], item[:link]
+          }
         end
-        html_items.join.html_safe
-      end
-
-      a_tag + ul_tag
+      }
     end
   end
 
@@ -77,5 +78,28 @@ module DropdownHelper
         visible: true
       }
     ])
+  end
+
+
+  def check_in_filter_dropdown_menu(items)
+    dropdown_items = items.map do |item|
+      {
+        name: content_tag(:i, nil, class: "glyphicon glyphicon-#{item[:icon]}") + ' ' + item[:name],
+        link: request.params.merge(
+            checked_in: item[:checked_in],
+            started: item[:started],
+            unreconciled: item[:unreconciled],
+            problem: item[:problem],
+            filter: {search: ''},
+            page: nil
+        ),
+        active: params[:checked_in]&.to_boolean == item[:checked_in] && 
+                params[:started]&.to_boolean == item[:started] && 
+                params[:unreconciled]&.to_boolean == item[:unreconciled] && 
+                params[:problem]&.to_boolean == item[:problem],
+        visible: true
+      }
+    end
+    build_dropdown_menu(nil, dropdown_items, class: 'pull-right', button: true)
   end
 end

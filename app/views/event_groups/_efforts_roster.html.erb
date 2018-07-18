@@ -3,21 +3,23 @@
     <strong>No efforts have been added to this event group.</strong>
   </article>
 <% else %>
-  <aside class="ost-toolbar container-fluid">
+  <aside class="ost-toolbar">
     <div class="container">
       <div class="row">
         <div class="col-xs-4">
           <%= render 'effort_lookup_stage' %>
         </div>
-        <div class="col-xs-8 text-right">
-          <div class="btn-group">
-            <%= link_to_check_in_filters('exclamation-sign', 'Problems', nil, nil, nil, true) %>
-            <%= link_to_check_in_filters('question-sign', 'Unreconciled', nil, nil, true, nil) %>
-            <%= link_to_check_in_filters('unchecked', 'Not checked', false, false, nil, nil) %>
-            <%= link_to_check_in_filters('check', 'Checked in', true, false, nil, nil) %>
-            <%= link_to_check_in_filters('expand', 'Started', nil, true, nil, nil) %>
-            <%= link_to_check_in_filters('asterisk', 'All', nil, nil, nil, nil) %>
-          </div>
+        <div class="col-xs-8 btn-toolbar">
+          <%= check_in_filter_dropdown_menu([
+              {icon: 'exclamation-sign', name: 'Problems', problem: true},
+              {icon: 'question-sign', name: 'Unreconciled', unreconciled: true},
+              {icon: 'unchecked', name: 'Not checked', checked_in: false, started: false},
+              {icon: 'check', name: 'Checked in', checked_in: true, started: false},
+              {icon: 'expand', name: 'Started', started: true},
+              {icon: 'asterisk', name: 'All'}
+            ]) %>
+          <%= link_to_start_ready_group_efforts(@presenter) %>
+          <%= link_to_set_data_status(@presenter) %>
         </div>
       </div>
     </div>
@@ -35,8 +37,6 @@
             <% end %>
           </div>
           <div class="col-xs-4 text-right">
-            <%= link_to_set_data_status(@presenter) %>
-            <%= link_to_start_ready_group_efforts(@presenter) %>
           </div>
         </div>
 
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <table class="table table-condensed table-striped">
+        <table class="table table-centered table-fixed-sm table-striped">
           <thead>
           <tr>
             <th class="text-center"><%= link_to_reversing_sort_heading('Reconciled?', 'person_id,bib_number', @presenter.existing_sort) %></th>

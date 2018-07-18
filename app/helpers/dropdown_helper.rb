@@ -54,4 +54,28 @@ module DropdownHelper
       }
     ])
   end
+
+  def results_dropdown_menu(view_object)
+    build_dropdown_menu('Results',
+                        [{name: 'List', link: event_path(view_object.event), active: controller_name == 'events' && action_name == 'show', visible: true},
+                         {name: 'Spread', link: spread_event_path(view_object.event), active: action_name == 'spread', visible: true},
+                        {name: 'Podium', link: podium_event_path(view_object.event), active: action_name == 'podium', visible: true}])
+  end
+
+  def raw_times_dropdown_menu(view_object)
+    build_dropdown_menu('Raw Times', [
+      {
+        name: 'Raw Times',
+        link: raw_times_event_group_path(view_object.event_group),
+        active: action_name == 'raw_times',
+        visible: true
+      },
+      {
+        name: 'Split Raw Times',
+        link: split_raw_times_event_group_path(view_object.event_group),
+        active: action_name == 'split_raw_times',
+        visible: true
+      }
+    ])
+  end
 end

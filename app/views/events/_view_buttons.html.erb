@@ -1,43 +1,8 @@
 <ul class="nav nav-tabs nav-tabs-ost">
-  <% event = view_object.event %>
-  <% event_group = view_object.event_group %>
-
-  <%= build_dropdown_menu('Results',
-                          [{name: 'List', link: event_path(event), active: true, visible: true},
-                           {name: 'Spread', link: spread_event_path(event), active: false, visible: true}]) %>
-  <li>
-    <a class="dropdown-toggle" data-toggle="dropdown">
-      Results&nbsp;/&nbsp;List
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <%= content_tag :li,
-                      class: "#{'active' if controller_name == 'events' && action_name == 'show' }" do
-        link_to 'List', event_path(view_object.event)
-      end -%>
-      <%= content_tag :li,
-                      class: "#{'active' if action_name == 'spread' }" do
-        link_to 'Spread', spread_event_path(view_object.event)
-      end -%>
-      <%= link_to_podium(view_object) %>
-    </ul>
-  </li>
-
-  <li>
-    <a class="dropdown-toggle" data-toggle="dropdown">
-      Raw Times&nbsp;/&nbsp;List
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <%= link_to_raw_times(view_object, current_user) %>
-      <%= link_to_split_raw_times(view_object, current_user) %>
-    </ul>
-  </li>
-
+  <%= results_dropdown_menu(view_object) %>
+  <%= raw_times_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
   <%= link_to_event_staging(view_object, current_user) %>
   <%= link_to_roster(view_object, current_user) %>
   <%= link_to_event_group(view_object, current_user) %>
-
   <%= live_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live %>
-
 </ul>

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Group live entry app flow', type: :system, js: true do
+RSpec.describe 'Live entry app flow', type: :system, js: true do
   let!(:user) { create(:user) }
   let!(:course_1) { create(:course, :with_description, created_by: user.id) }
   let!(:course_2) { create(:course, :with_description, created_by: user.id) }
@@ -26,16 +26,16 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
   let!(:ordered_splits_1) { event_1.ordered_splits }
   let!(:ordered_splits_2) { event_2.ordered_splits }
 
-  let(:add_efforts_form) { find_by_id('js-group-add-effort-form') }
-  let(:local_workspace) { find_by_id('js-group-local-workspace-table_wrapper') }
+  let(:add_efforts_form) { find_by_id('js-add-effort-form') }
+  let(:local_workspace) { find_by_id('js-local-workspace-table_wrapper') }
 
-  let(:bib_number_field) { 'js-group-bib-number' }
-  let(:time_in_field) { 'js-group-time-in' }
-  let(:time_out_field) { 'js-group-time-out' }
-  let(:add_button) { find_by_id('js-group-add-to-cache') }
-  let(:slider_effort_name) { find_by_id('js-group-effort-name') }
-  let(:submit_all_button) { find_by_id('js-group-submit-all-efforts') }
-  let(:discard_all_button) { find_by_id('js-group-delete-all-efforts') }
+  let(:bib_number_field) { 'js-bib-number' }
+  let(:time_in_field) { 'js-time-in' }
+  let(:time_out_field) { 'js-time-out' }
+  let(:add_button) { find_by_id('js-add-to-cache') }
+  let(:slider_effort_name) { find_by_id('js-effort-name') }
+  let(:submit_all_button) { find_by_id('js-submit-all-time-rows') }
+  let(:discard_all_button) { find_by_id('js-delete-all-time-rows') }
 
   context 'For single-lap events' do
     let!(:event_1) { create(:event, event_group: event_group, course: course_1, laps_required: 1, start_time_in_home_zone: '2017-10-10 08:00:00') }
@@ -44,7 +44,7 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
     context 'for previously unstarted efforts' do
       scenario 'Add and submit times' do
         login_and_check_setup
-        expect(page).not_to have_field('js-group-lap-number')
+        expect(page).not_to have_field('js-lap-number')
 
         expect(Effort.all.map(&:split_times)).to all be_empty
 
@@ -60,7 +60,7 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
         expect(local_workspace).not_to have_content(efforts_2.second.full_name)
 
         fill_in bib_number_field, with: efforts_2.first.bib_number
-        fill_in time_in_field, with: '08:00'
+        fill_in time_in_field, with: '09:00'
         add_button.click
         wait_for_css
 
@@ -94,12 +94,12 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
       scenario 'Add and submit times' do
         login_and_check_setup
-        expect(page).not_to have_field('js-group-lap-number')
+        expect(page).not_to have_field('js-lap-number')
 
         expect(efforts_1.map(&:split_times).map(&:size)).to all eq(2)
         expect(efforts_2.map(&:split_times).map(&:size)).to all eq(1)
 
-        select ordered_splits_1.third.base_name, from: 'js-group-station-select'
+        select ordered_splits_1.third.base_name, from: 'js-station-select'
 
         fill_in bib_number_field, with: efforts_1.first.bib_number
         fill_in time_in_field, with: '10:45:45'
@@ -128,12 +128,12 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
       scenario 'Add and discard times' do
         login_and_check_setup
-        expect(page).not_to have_field('js-group-lap-number')
+        expect(page).not_to have_field('js-lap-number')
 
         expect(efforts_1.map(&:split_times).map(&:size)).to all eq(2)
         expect(efforts_2.map(&:split_times).map(&:size)).to all eq(1)
 
-        select ordered_splits_1.third.base_name, from: 'js-group-station-select'
+        select ordered_splits_1.third.base_name, from: 'js-station-select'
 
         fill_in bib_number_field, with: efforts_1.first.bib_number
         fill_in time_in_field, with: '08:45:45'
@@ -160,17 +160,16 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
       scenario 'Change a start split_time forwards and backwards' do
         login_and_check_setup
-        expect(page).not_to have_field('js-group-lap-number')
+        expect(page).not_to have_field('js-lap-number')
 
         effort = efforts_1.first
         ordered_split_times = effort.ordered_split_times
 
         expect(ordered_split_times.size).to eq(2)
-        expect(ordered_split_times.first.time_from_start).to eq(0)
+        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 3600])
         expect(ordered_split_times.first.military_time).to eq('08:00:00')
-        expect(ordered_split_times.second.time_from_start).to eq(3600)
 
-        select ordered_splits_1.first.base_name, from: 'js-group-station-select'
+        select ordered_splits_1.first.base_name, from: 'js-station-select'
 
         fill_in bib_number_field, with: effort.bib_number
         fill_in time_in_field, with: '08:15:00'
@@ -181,10 +180,9 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
         effort.reload
         ordered_split_times = effort.ordered_split_times
         expect(ordered_split_times.size).to eq(2)
-        expect(ordered_split_times.first.time_from_start).to eq(0)
 
         # Because starting split time_from_start was moved forward by 900 seconds
-        expect(ordered_split_times.second.time_from_start).to eq(2700) # 3600 - 900
+        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 2700]) # 3600 - 900 = 2700
         expect(effort.start_offset).to eq(900)
 
         verify_workspace_is_empty
@@ -198,10 +196,9 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
         effort.reload
         ordered_split_times = effort.ordered_split_times
         expect(ordered_split_times.size).to eq(2)
-        expect(ordered_split_times.first.time_from_start).to eq(0)
 
         # Because starting split time_from_start was moved back by 1800 seconds
-        expect(ordered_split_times.second.time_from_start).to eq(4500) # 2700 + 1800
+        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 4500]) # 2700 + 1800 = 4500
         expect(effort.start_offset).to eq(-900)
 
         verify_workspace_is_empty
@@ -220,10 +217,10 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
   def check_setup
     expect(page).to have_content(event_group.name)
     verify_workspace_is_empty
-    expect(add_efforts_form).to have_field('js-group-bib-number')
-    expect(add_efforts_form).to have_field('js-group-time-in', disabled: false)
-    expect(add_efforts_form).to have_field('js-group-time-out', disabled: true)
-    expect(add_efforts_form).to have_select('js-group-station-select', options: ['Start', 'Molas Pass', 'Rolling Pass', 'Finish'])
+    expect(add_efforts_form).to have_field('js-bib-number')
+    expect(add_efforts_form).to have_field('js-time-in', disabled: false)
+    expect(add_efforts_form).to have_field('js-time-out', disabled: true)
+    expect(add_efforts_form).to have_select('js-station-select', options: ['Start', 'Molas Pass', 'Rolling Pass', 'Finish'])
   end
 
   def submit_all_efforts
@@ -240,7 +237,7 @@ RSpec.describe 'Group live entry app flow', type: :system, js: true do
 
   def discard_all_efforts
     discard_all_button.click
-    expect(page).to have_button('js-group-delete-all-warning', disabled: true)
+    expect(page).to have_button('js-delete-all-warning', disabled: true)
     wait_for_css
     discard_all_button.click
   end

@@ -59,6 +59,11 @@ module ETL
        detail: {messages: ['This import requires that an event be provided']}}
     end
 
+    def missing_parent_error
+      {title: 'Parent is missing',
+       detail: {messages: ['This import requires that a parent be provided']}}
+    end
+
     def missing_fields_error(raw_data)
       {title: 'Invalid fields',
        detail: {messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +

@@ -25,7 +25,6 @@ RSpec.describe RowifyRawTimes do
   let(:raw_time_pairs) { raw_time_rows.map(&:raw_times) }
 
   before do
-    allow(VerifyRawTimeRow).to receive(:perform)
     allow(FindExpectedLap).to receive(:perform)
     event_1.splits << splits
     event_2.splits << splits
@@ -39,7 +38,7 @@ RSpec.describe RowifyRawTimes do
       context 'when all bib_numbers match' do
         let(:raw_times) { RawTime.where(bib_number: %w(10 11)).with_relation_ids }
 
-        it 'groups raw_times by split name, adds lap to them, and verifies them' do
+        it 'groups raw_times by split name and adds lap to them' do
           raw_time_rows = subject.build
           expect(raw_time_rows.size).to eq(4)
           expect(raw_time_rows).to all be_a(RawTimeRow)
@@ -50,7 +49,6 @@ RSpec.describe RowifyRawTimes do
           expect(raw_time_pairs.size).to eq(4)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7]])
           expect(raw_time_pairs.flatten.map(&:lap)).to all eq(1)
-          expect(VerifyRawTimeRow).to have_received(:perform).exactly(4).times
           expect(FindExpectedLap).not_to have_received(:perform)
         end
       end
@@ -58,7 +56,7 @@ RSpec.describe RowifyRawTimes do
       context 'when some bib_numbers do not match' do
         let(:raw_times) { RawTime.where(bib_number: %w(10 11 55)).with_relation_ids }
 
-        it 'groups raw_times by split name, adds lap to them, and verifies them' do
+        it 'groups raw_times by split name and adds lap to them' do
           expect(raw_time_rows.size).to eq(5)
           expect(raw_time_rows).to all be_a(RawTimeRow)
           expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1, nil])
@@ -67,7 +65,6 @@ RSpec.describe RowifyRawTimes do
           expect(raw_time_pairs.size).to eq(5)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7], [raw_time_8]])
           expect(raw_time_pairs.flatten.map(&:lap)).to all eq(1)
-          expect(VerifyRawTimeRow).to have_received(:perform).exactly(5).times
           expect(FindExpectedLap).not_to have_received(:perform)
         end
       end
@@ -80,7 +77,7 @@ RSpec.describe RowifyRawTimes do
       context 'when some bib_numbers are in a single-lap event' do
         let(:raw_times) { RawTime.where(bib_number: %w(10 11)).with_relation_ids }
 
-        it 'groups raw_times by split name, calls FindExpectedLap only when necessary, and verifies them' do
+        it 'groups raw_times by split name and calls FindExpectedLap only when necessary' do
           expect(raw_time_rows.size).to eq(4)
           expect(raw_time_rows).to all be_a(RawTimeRow)
           expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1])
@@ -88,7 +85,6 @@ RSpec.describe RowifyRawTimes do
 
           expect(raw_time_pairs.size).to eq(4)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7]])
-          expect(VerifyRawTimeRow).to have_received(:perform).exactly(4).times
           expect(raw_times.size).to eq(7)
           expect(FindExpectedLap).to have_received(:perform).exactly(2).times # Only for bib 11, which is in event_2
         end
@@ -98,7 +94,7 @@ RSpec.describe RowifyRawTimes do
         let(:raw_times) { RawTime.where(bib_number: '11').with_relation_ids }
         before { raw_times.each { |rt| rt.lap = 2 } }
 
-        it 'groups raw_times by split name, does not call FindExpectedLap, and verifies them' do
+        it 'groups raw_times by split name but does not call FindExpectedLap' do
           expect(raw_time_rows.size).to eq(1)
           raw_time_row = raw_time_rows.first
           expect(raw_time_row).to be_a(RawTimeRow)
@@ -107,7 +103,6 @@ RSpec.describe RowifyRawTimes do
 
           expect(raw_time_pairs.size).to eq(1)
           expect(raw_time_pairs).to eq([[raw_time_3, raw_time_4]])
-          expect(VerifyRawTimeRow).to have_received(:perform).exactly(1).times
           expect(raw_times.size).to eq(2)
           expect(FindExpectedLap).to have_received(:perform).exactly(0).times # Because lap was already assigned
         end

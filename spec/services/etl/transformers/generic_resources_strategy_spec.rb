@@ -63,14 +63,14 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
       end
     end
 
-    context 'when an event is not provided' do
+    context 'when a parent is not provided' do
       let(:parsed_structs) { [] }
       let(:options) { {} }
 
       it 'returns nil and adds an error' do
         expect(proto_records).to be_nil
         expect(subject.errors.size).to eq(1)
-        expect(subject.errors.first[:title]).to match(/Event is missing/)
+        expect(subject.errors.first[:title]).to match(/Parent is missing/)
       end
     end
   end

@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# event_group should be loaded with :events
+# raw_time_row may be a bare minimum raw_time without any attributes
+# This service mutates the given raw_time_row by adding laps, fixing problems with stopped_here,
+# and verifying the raw_time_row
+
 class EnrichRawTimeRow
   def self.perform(args)
     new(args).perform
@@ -11,7 +16,7 @@ class EnrichRawTimeRow
                            exclusive: [:event_group, :raw_time_row, :times_container],
                            class: self.class)
     @event_group = args[:event_group]
-    @raw_time_pair = args[:raw_time_row].raw_times
+    @raw_time_row = args[:raw_time_row]
     @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
     @errors = []
   end
@@ -20,12 +25,13 @@ class EnrichRawTimeRow
     add_lap_to_raw_times
     remove_enriched_attributes
     set_stops
-    build_time_row
+    add_attributes_and_verify
+    raw_time_row
   end
 
   private
 
-  attr_reader :event_group, :raw_time_pair, :times_container, :errors
+  attr_reader :event_group, :raw_time_row, :times_container, :errors
 
   def add_lap_to_raw_times
     raw_time_pair.reject(&:lap).each do |raw_time|
@@ -63,11 +69,12 @@ class EnrichRawTimeRow
     raw_time_pair.select(&:entered_time).last&.assign_attributes(stopped_here: true)
   end
 
-  def build_time_row
-    raw_time_pair.each { |rtr| rtr.effort, rtr.event, rtr.split = effort, event, split }
-    raw_time_row = RawTimeRow.new(raw_time_pair, effort, event, split, errors)
+  def add_attributes_and_verify
+    raw_time_pair.each { |raw_time| raw_time.effort, raw_time.event, raw_time.split = effort, event, split }
+    raw_time_row.effort, raw_time_row.event, raw_time_row.split = effort, event, split
+    raw_time_row.errors ||= []
+    raw_time_row.errors += errors
     VerifyRawTimeRow.perform(raw_time_row, times_container: times_container)
-    raw_time_row
   end
 
   def single_lap_event_group?
@@ -78,8 +85,13 @@ class EnrichRawTimeRow
     event&.single_lap?
   end
 
+  def raw_time_pair
+    @raw_time_pair ||= raw_time_row.raw_times
+  end
+
   def effort
-    @effort ||= Effort.where(event: event_group.events, bib_number: bib_number).includes(event: :splits, split_times: :split).first
+    @effort = raw_time_row.effort || Effort.where(event: event_group.events, bib_number: bib_number)
+                                         .includes(event: :splits, split_times: :split).first
   end
 
   def event

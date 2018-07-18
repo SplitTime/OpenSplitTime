@@ -25,4 +25,15 @@ module DropdownHelper
       a_tag + ul_tag
     end
   end
+
+  def results_dropdown_menu(view_object)
+    build_dropdown_menu('Results',
+                        [{name: 'List', link: event_path(view_object.event), active: controller_name == 'events' && action_name == 'show', visible: true},
+                         {name: 'Spread', link: spread_event_path(view_object.event), active: action_name == 'spread', visible: true},
+                        {name: 'Podium', link: podium_event_path(view_object.event), active: action_name == 'podium', visible: true}])
+  end
+
+  def raw_times_dropdown_menu(view_object)
+
+  end
 end

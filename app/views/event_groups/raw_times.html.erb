@@ -35,8 +35,10 @@
   </div>
 </header>
 
+<article class="ost-article container">
 <% if @presenter.raw_times.present? %>
   <%= render 'event_groups/raw_times_list', view_object: @presenter %>
 <% else %>
   <h4>No raw times exist for this event group.</h4>
 <% end %>
+</article>

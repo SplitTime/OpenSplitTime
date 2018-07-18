@@ -1,5 +1,10 @@
 <ul class="nav nav-tabs nav-tabs-ost">
+  <% event = view_object.event %>
+  <% event_group = view_object.event_group %>
 
+  <%= build_dropdown_menu('Results',
+                          [{name: 'List', link: event_path(event), active: true, visible: true},
+                           {name: 'Spread', link: spread_event_path(event), active: false, visible: true}]) %>
   <li>
     <a class="dropdown-toggle" data-toggle="dropdown">
       Results&nbsp;/&nbsp;List

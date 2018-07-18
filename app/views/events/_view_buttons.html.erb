@@ -1,8 +1,6 @@
 <ul class="nav nav-tabs nav-tabs-ost">
   <%= results_dropdown_menu(view_object) %>
   <%= raw_times_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
-  <%= link_to_event_staging(view_object, current_user) %>
-  <%= link_to_roster(view_object, current_user) %>
-  <%= link_to_event_group(view_object, current_user) %>
+  <%= admin_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
   <%= live_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live %>
 </ul>

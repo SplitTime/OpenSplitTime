@@ -214,6 +214,26 @@ Globals
     background: $darkGray;
     position: relative;
 
+    #js-effort-name:empty {
+        opacity: 0.5;
+        pointer-events: none;
+        color: $white;
+        
+        &:before {
+            content: 'Name';
+        }
+    }
+
+    #js-effort-event-name:empty {
+        opacity: 0.5;
+        pointer-events: none;
+        color: $white;
+        
+        &:before {
+            content: 'Event';
+        }
+    }
+
     .table-wrapper {
         position: relative;
         &:after {
@@ -231,23 +251,23 @@ Globals
     .table {
         color: $white;
 
-        thead {
-            transform: translateY(0);
-            position: relative;
+        // thead {
+        //     transform: translateY(0);
+        //     position: relative;
 
-            &:before {
-                content: '';
-                position: absolute;
-                display: block;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 5px;
-                background: $darkGray;
-                z-index: -1;
-                box-shadow: 0 0 5px 4px $darkGray;
-            }
-        }
+        //     &:before {
+        //         content: '';
+        //         position: absolute;
+        //         display: block;
+        //         top: 0;
+        //         left: 0;
+        //         right: 0;
+        //         bottom: 5px;
+        //         background: $darkGray;
+        //         z-index: -1;
+        //         box-shadow: 0 0 5px 4px $darkGray;
+        //     }
+        // }
 
         td, th {
             border: none;

@@ -543,6 +543,10 @@
                     return false;
                 });
 
+                $('#js-effort-table').scroll(function() {
+                    console.log($(this).scrollTop);
+                });
+
                 $('#js-html-modal').on('show.bs.modal', function (e) {
                     $(this).find('modal-body').html('');
                     var $source = $(e.relatedTarget);

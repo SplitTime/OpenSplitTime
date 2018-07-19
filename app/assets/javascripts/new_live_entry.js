@@ -612,6 +612,7 @@
                             $.each(response.data.attributes.eventSplitHeaderData, function(i, split) {
                                 var elapsedTimes = attributes.elapsedTimes[i];
                                 var absoluteTimes = attributes.absoluteTimes[i];
+                                var pacers = attributes.pacerFlags[i];
                                 $('#js-effort-table').append('\
                                     <tr>\
                                         <td>' + split.title + '</td>\
@@ -630,7 +631,28 @@
                                             // var seconds = Math.floor(time % 60);
                                             return hours + ':' + ('0' + minutes).slice(-2);
                                         }).join(' / ') + '</td>\
-                                        <td class="pacer-only"></td>\
+                                        <td class="pacer-only">\
+                                            <div class="d-flex flex-row text-center">\
+                                                <span class="flex-1">' +
+                                                    (pacers[0] ? 
+                                                        '<i class="fa fa-wheelchair-alt"></i>' : 
+                                                        (pacers[1] ? 
+                                                            '<i class="fa fa-share"></i>' : 
+                                                            '')) +
+                                                '</span>' +
+                                                (pacers.length == 2 ?
+                                                    '<span class="flex-1">' +
+                                                        (pacers[1] ?
+                                                            (pacers[0] ?
+                                                                '<i class="fa fa-long-arrow-right"></i>' :
+                                                                '<i class="fa fa-wheelchair-alt"></i>') :
+                                                            (pacers[1] === false && pacers[0] ?
+                                                                '<i class="fa fa-share fa-rotate-90"></i>' :
+                                                                '')) +
+                                                    '</span>' : 
+                                                    '') +
+                                            '</div>\
+                                        </td>\
                                     </tr>\
                                 ');
                             });

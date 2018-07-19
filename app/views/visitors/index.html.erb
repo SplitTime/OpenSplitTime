@@ -27,8 +27,7 @@
             </form>
         <% end %>
         <br/>
-        <%= link_to '2018 Quad Rock 50', spread_event_path('quad-rock-50-2018'), class: 'btn btn-info cta' %>
-        <%= link_to '2018 Quad Rock 25', spread_event_path('quad-rock-25-2018'), class: 'btn btn-info cta' %>
+        <%= link_to '2018 Hardrock', event_path('hardrock-100-2018'), class: 'btn btn-info cta' %>
         </div>
     <div class="gradient"></div>
     <a data-toggle="static-popover-dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
@@ -43,8 +42,8 @@
         OpenSplitTime will tell you where you need to be and when.<br/>
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
-      <%= link_to '2018 Dirty 30', plan_effort_course_path('golden-gate-dirty-30-course'), class: 'btn btn-info cta' %>
       <%= link_to '2018 Hardrock', plan_effort_course_path('hardrock-100-clockwise'), class: 'btn btn-info cta' %>
+      <%= link_to '2018 Never Summer 100K', plan_effort_course_path('never-summer-100k-course'), class: 'btn btn-info cta' %>
     </div>
   </div>
   <div class="row third" >
@@ -52,10 +51,10 @@
       <h2>Search the Archives</h2>
       <p>Browse and play with endurance event data like you've never done before. Analyze your efforts, discover
         your best segments, and find your peers. Much more is yet to come as the community gathers its data here.<br/>
-        <strong>For starters we've loaded 22 years of Hardrock, because...Hardrock.</strong></p>
+        <strong>You can find every Hardrock effort ever run.</strong></p>
       <br/>
       <%= link_to 'Find Someone', people_path, class: 'btn btn-info cta' %>
-      <%= link_to 'Search Hardrock Archives', organization_path(1), class: 'btn btn-info cta' %>
+      <%= link_to 'Search Hardrock Archives', organization_path('hardrock'), class: 'btn btn-info cta' %>
     </div>
     <div class="gradient"></div>
     <a data-toggle="static-popover-dark" data-placement="left" data-content="Descending from Grant-Swamp Pass, photo by Bill Wright" class="photo-credit">Photo
@@ -76,7 +75,7 @@
   <div class="row fifth">
     <div class="over-text">
       <h2>Unprecedented Live Tracking Tools</h2>
-      <p>OST Live is revolutionary. It learns from your time data. It gives you race progress for each aid station. It
+      <p>OST Live Entry is revolutionary. It learns from your time data. It gives you race progress for each aid station. It
         tells you instantly where your runners last reported, where they are due next, and who you ought to look
         for.<br/>
         <strong>Omniscience is pretty cool.</strong></p>

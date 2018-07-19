@@ -646,7 +646,7 @@
                                             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
                                             var d = new Date(time);
                                             var minutes = ('0' + d.getMinutes()).slice(-2);
-                                            var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]];
+                                            var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]] || '';
                                             return days[d.getDay()] + ' ' + d.getHours() + ':' + minutes + status;
                                         }).join(' / ') + '</td>\
                                         <td>' + elapsedTimes.map(function(time) {

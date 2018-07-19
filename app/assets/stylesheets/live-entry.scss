@@ -272,6 +272,10 @@ Globals
         td, th {
             border: none;
         }
+
+        .active {
+            color: $black;
+        }
     }
 
     .table-striped > tbody > tr:nth-of-type(even) {

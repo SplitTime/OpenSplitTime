@@ -14,9 +14,9 @@ RSpec.describe EventSpreadDisplay do
 
     it 'returns an array of hashes containing title, extensions, and distances' do
       expected = [
-        {title: 'Starting Point', extensions: [], distance: 0},
-        {title: 'Aid Station 1', extensions: %w(In Out), distance: 10000},
-        {title: 'Finishing Point', extensions: [], distance: 20000}
+        {title: 'Starting Point', extensions: [], distance: 0, split_name: 'Starting Point', lap: 1},
+        {title: 'Aid Station 1', extensions: %w(In Out), distance: 10000, split_name: 'Aid Station 1', lap: 1},
+        {title: 'Finishing Point', extensions: [], distance: 20000, split_name: 'Finishing Point', lap: 1}
       ]
       expect(subject.split_header_data).to eq(expected)
     end

@@ -26,10 +26,10 @@ class AnalyzeTrafficFrequency
 
   def message
     case
-    when row_limit_exceeded?
-      "Too many rows to analyze. Use a lower frequency."
     when split_times.empty?
       "No entrants have arrived at this aid station."
+    when row_limit_exceeded?
+      "Too many rows to analyze. Use a lower frequency."
     else
       "Traffic at #{split_name} in increments of #{band_width / 1.minute} minutes"
     end
@@ -40,7 +40,7 @@ class AnalyzeTrafficFrequency
   end
 
   def table
-    return [] if row_limit_exceeded?
+    return [] if split_times.empty? || row_limit_exceeded?
     split_times.each do |split_time|
       low_time = band_time(split_time)
       bands[low_time][split_time.sub_split_kind.downcase.to_sym] += 1

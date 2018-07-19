@@ -492,6 +492,7 @@
                 });
 
                 $('#js-lap-number').on('blur', function () {
+                    liveEntry.liveEntryForm.updateEffortInfo();
                     liveEntry.liveEntryForm.enrichTimeData();
                 });
 
@@ -578,6 +579,7 @@
                 var url = '#';
                 var splitName = liveEntry.currentStation().splitName;
                 var bibNumber = $('#js-bib-number').val();
+                var lapNumber = $('#js-lap-number').val();
                 var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEffortInfoBib);
                 var effort = liveEntry.bibEffortMap[bibNumber];
 
@@ -603,6 +605,20 @@
                     .addClass(bibStatus)
                     .attr('data-bib-status', bibStatus);
 
+                function highlightSplit() {
+                    var $rows = $('#js-effort-table tr').removeClass('active');
+                    $rows = $rows.filter('[data-title="' + splitName + '"]');
+                    $rows = (lapNumber) ? $rows.filter('[data-lap="' + lapNumber + '"]') : $rows;
+                    $rows.addClass('active');
+                    if ($rows.length > 0) {
+                        var $wrapper = $('#js-effort-table').parents('.table-wrapper');
+                        var offset = $wrapper.height() / 2 - $wrapper.scrollTop();
+                        $wrapper.animate({
+                            scrollTop: $rows.first().position().top - offset
+                        }, 500);
+                    }
+                }
+
                 if (bibChanged) {
                     if (effort !== null && typeof effort === 'object') {
                         return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
@@ -614,7 +630,7 @@
                                 var absoluteTimes = attributes.absoluteTimes[i];
                                 var pacers = attributes.pacerFlags[i];
                                 $('#js-effort-table').append('\
-                                    <tr>\
+                                    <tr data-title="' + split.splitName + '" data-lap="'+ split.lap +'">\
                                         <td>' + split.title + '</td>\
                                         <td>' + distanceToPreferred(split.distance).toFixed(1) + '</td>\
                                         <td>' + absoluteTimes.map(function(time) {
@@ -635,7 +651,7 @@
                                             <div class="d-flex flex-row text-center">\
                                                 <span class="flex-1">' +
                                                     (pacers[0] ? 
-                                                        '<i class="fa fa-wheelchair-alt"></i>' : 
+                                                        '<i class="icon-running"></i>' : 
                                                         (pacers[1] ? 
                                                             '<i class="fa fa-share"></i>' : 
                                                             '')) +
@@ -645,7 +661,7 @@
                                                         (pacers[1] ?
                                                             (pacers[0] ?
                                                                 '<i class="fa fa-long-arrow-right"></i>' :
-                                                                '<i class="fa fa-wheelchair-alt"></i>') :
+                                                                '<i class="icon-running"></i>') :
                                                             (pacers[1] === false && pacers[0] ?
                                                                 '<i class="fa fa-share fa-rotate-90"></i>' :
                                                                 '')) +
@@ -656,6 +672,7 @@
                                     </tr>\
                                 ');
                             });
+                            highlightSplit();
                         })
                     } else {
                         liveEntry.liveEntryForm.lastEffortInfoBib = null;
@@ -663,6 +680,7 @@
                         // Clear effort detail
                     }
                 }
+                highlightSplit();
             },
 
             /**

@@ -46,7 +46,7 @@ module DropdownHelper
 
   def live_dropdown_menu(view_object)
     build_dropdown_menu('Live', [
-        {name: 'Live Entry',
+        {name: 'Time Entry',
          link: live_entry_live_event_group_path(view_object.event_group),
          active: action_name == 'live_entry',
          visible: true},

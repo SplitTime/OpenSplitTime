@@ -105,7 +105,7 @@ module EventsHelper
             event_group_path(view_object.event_group, event_group: {available_live: !view_object.available_live?}),
             data: {confirm: confirm_text},
             method: :put,
-            class: 'btn btn-sm btn-warning'
+            class: 'btn btn-md btn-warning'
   end
 
   def link_to_toggle_public_private(view_object)
@@ -123,7 +123,7 @@ module EventsHelper
             event_group_path(view_object.event_group, event_group: {concealed: !view_object.concealed?}),
             data: {confirm: confirm_text},
             method: :put,
-            class: 'btn btn-sm btn-warning'
+            class: 'btn btn-md btn-warning'
   end
 
   def link_to_toggle_ost_remote(view_object)
@@ -142,7 +142,7 @@ module EventsHelper
             event_group_path(view_object.event_group, event_group: {auto_live_times: !view_object.auto_live_times?}),
             data: {confirm: confirm_text},
             method: :put,
-            class: 'btn btn-sm btn-warning'
+            class: 'btn btn-md btn-warning'
   end
 
   def link_to_start_ready_efforts(view_object)

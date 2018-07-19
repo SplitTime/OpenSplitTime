@@ -636,6 +636,7 @@
                                 var elapsedTimes = attributes.elapsedTimes[i];
                                 var absoluteTimes = attributes.absoluteTimes[i];
                                 var timeDataStatuses = attributes.timeDataStatuses[i];
+                                var stopped = attributes.stoppedHereFlags[i];
                                 var pacers = attributes.pacerFlags[i];
                                 $('#js-effort-table').append('\
                                     <tr data-title="' + split.splitName + '" data-lap="'+ split.lap +'">\
@@ -656,11 +657,12 @@
                                             // var seconds = Math.floor(time % 60);
                                             return hours + ':' + ('0' + minutes).slice(-2);
                                         }).join(' / ') + '</td>\
+                                        <td>' + (stopped.some(function(b){ return b; }) ? '<i class="icon-stopped"></i>' : '') + '</td>\
                                         <td class="pacer-only">\
                                             <div class="d-flex flex-row text-center">\
                                                 <span class="flex-1">' +
                                                     (pacers[0] ? 
-                                                        '<i class="icon-running"></i>' : 
+                                                        '<i class="icon-pacer"></i>' : 
                                                         (pacers[1] ? 
                                                             '<i class="fa fa-share"></i>' : 
                                                             '')) +
@@ -670,7 +672,7 @@
                                                         (pacers[1] ?
                                                             (pacers[0] ?
                                                                 '<i class="fa fa-long-arrow-right"></i>' :
-                                                                '<i class="icon-running"></i>') :
+                                                                '<i class="icon-pacer"></i>') :
                                                             (pacers[1] === false && pacers[0] ?
                                                                 '<i class="fa fa-share fa-rotate-90"></i>' :
                                                                 '')) +

@@ -7,6 +7,7 @@ class EffortTimesRowSerializer < BaseSerializer
   attribute :segment_times, if: :show_segment_times
   attribute :pacer_flags, if: :show_pacer_flags
   attribute :stopped_here_flags, if: :show_stopped_here_flags
+  attribute :time_data_statuses, if: :show_time_data_statuses
 
   def show_elapsed_times
     %w(elapsed all).include?(object.display_style)
@@ -28,6 +29,10 @@ class EffortTimesRowSerializer < BaseSerializer
     object.display_style == 'all'
   end
 
+  def show_time_data_statuses
+    object.display_style == 'all'
+  end
+
   def elapsed_times
     object.time_clusters.map(&:times_from_start)
   end
@@ -38,6 +43,10 @@ class EffortTimesRowSerializer < BaseSerializer
 
   def segment_times
     object.time_clusters.map { |tc| [tc.segment_time, tc.time_in_aid] }
+  end
+
+  def time_data_statuses
+    object.time_clusters.map(&:time_data_statuses)
   end
 
   def pacer_flags

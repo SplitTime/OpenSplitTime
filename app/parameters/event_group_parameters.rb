@@ -3,7 +3,7 @@
 class EventGroupParameters < BaseParameters
 
   def self.permitted
-    [:id, :slug, :name, :organization_id, :concealed, :available_live, :auto_live_times, :data_entry_grouping_strategy]
+    [:id, :slug, :name, :organization_id, :concealed, :available_live, :monitor_pacers, :auto_live_times, :data_entry_grouping_strategy]
   end
 
   def self.permitted_query

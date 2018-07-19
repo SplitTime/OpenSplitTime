@@ -35,6 +35,15 @@
 
         <div class="form-group">
           <div class="control-label col-sm-2">
+            <%= f.label :monitor_pacers, "Monitor pacers for this event?" %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.check_box :monitor_pacers %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="control-label col-sm-2">
             <%= f.label :auto_live_times, "Submit OST Remote times automatically without review?" %>
           </div>
           <div class="col-sm-8">
@@ -59,7 +68,7 @@
           </div>
         </div>
         <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', @event_group.new_record? ? event_groups_path : @event_group %> ]
+          [ <%= link_to 'Cancel', @event_group.new_record? ? event_groups_path : event_group_path(@event_group, force_settings: true) %> ]
         </div>
     <% end %>
   </div>

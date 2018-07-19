@@ -1,5 +1,12 @@
 (function ($) {
 
+    var timeIcons = {
+        'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
+        'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
+        'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
+        'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
+    };
+
     /**
      * UI object for the live event view
      *
@@ -628,17 +635,19 @@
                             $.each(response.data.attributes.eventSplitHeaderData, function(i, split) {
                                 var elapsedTimes = attributes.elapsedTimes[i];
                                 var absoluteTimes = attributes.absoluteTimes[i];
+                                var timeDataStatuses = attributes.timeDataStatuses[i];
                                 var pacers = attributes.pacerFlags[i];
                                 $('#js-effort-table').append('\
                                     <tr data-title="' + split.splitName + '" data-lap="'+ split.lap +'">\
                                         <td>' + split.title + '</td>\
                                         <td>' + distanceToPreferred(split.distance).toFixed(1) + '</td>\
-                                        <td>' + absoluteTimes.map(function(time) {
+                                        <td>' + absoluteTimes.map(function(time, i) {
                                             if (time === null) return '--- --:--';
                                             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
                                             var d = new Date(time);
                                             var minutes = ('0' + d.getMinutes()).slice(-2);
-                                            return days[d.getDay()] + ' ' + d.getHours() + ':' + minutes;
+                                            var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]];
+                                            return days[d.getDay()] + ' ' + d.getHours() + ':' + minutes + status;
                                         }).join(' / ') + '</td>\
                                         <td>' + elapsedTimes.map(function(time) {
                                             if (time === null) return '--:--';
@@ -1044,12 +1053,6 @@
                     'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
                     'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
                     'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
-                };
-                var timeIcons = {
-                    'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
-                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
-                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
-                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
                 var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
                 var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');

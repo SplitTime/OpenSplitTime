@@ -78,6 +78,14 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupTrafficPresenter.new(@event_group, split_name, band_width)
   end
 
+  def set_data_status
+    authorize @event_group
+    event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
+    response = Interactors::UpdateEffortsStatus.perform!(event_group.efforts)
+    set_flash_message(response)
+    redirect_to roster_event_group_path(@event_group)
+  end
+
   def start_ready_efforts
     authorize @event_group
     efforts = Effort.where(event_id: @event_group.events).ready_to_start
@@ -102,16 +110,17 @@ class EventGroupsController < ApplicationController
     redirect_to event_group_path(@event_group, force_settings: true)
   end
 
-  def export_to_summit
+  def export_raw_times
     authorize @event_group
-
-    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
+    split_name = params[:split_name].to_s.parameterize
+    csv_template = params[:csv_template]
+    @raw_times = @event_group.raw_times.where(parameterized_split_name: split_name)
 
     respond_to do |format|
       format.csv do
-        csv_stream = render_to_string(partial: 'summit.csv.ruby')
+        csv_stream = render_to_string(partial: "#{csv_template}.csv.ruby")
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event_group.name}-for-summit-#{Date.today}.csv")
+                  filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
       end
     end
   end

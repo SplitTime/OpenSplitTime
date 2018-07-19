@@ -10,7 +10,7 @@
 
 <script type="text/x-template" id="event">
   <div>
-    <aside class="col-xs-12 col-sm-4 full-bg">
+    <aside class="col-xs-12">
       <h3>
         <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="An Event is run on a Course. An Event happens once, while a Course can be reused for many Events."><i class="glyphicon glyphicon-question-sign"></i></span>
         <strong>Provide Information About Your Event</strong>
@@ -23,7 +23,7 @@
       </p>
       <p><span class="brackets"><a href=<%= event_groups_path %>>Cancel</a></span></p>
     </aside>
-    <article class="col-xs-12 col-sm-8">
+    <article class="col-xs-12">
       <div class="form-group">
         <label class="required">What is your organization called?</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="glyphicon glyphicon-question-sign"></i></span>
@@ -169,7 +169,7 @@
 
 <script type="text/x-template" id="splits">
   <div>
-    <aside class="col-xs-12 col-sm-4 full-bg">
+    <aside class="col-xs-12">
       <h3>
         <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="From this screen you can create new Splits, delete unused Splits, and associate or disassociate Course Splits with your Event."><i class="glyphicon glyphicon-question-sign"></i></span>
         <strong>Create Splits For Your Event</strong>
@@ -183,7 +183,7 @@
         </router-link>
       </p>
     </aside>
-    <article class="col-xs-12 col-sm-8" v-if="eventModel.course">
+    <article class="col-xs-12" v-if="eventModel.course">
       <div class="row">
         <div class="col-xs-12 col-sm-7">
           <h5>
@@ -410,7 +410,7 @@
 
 <script type="text/x-template" id="entrants">
   <div>
-    <aside class="col-xs-12 col-sm-4 full-bg">
+    <aside class="col-xs-12">
       <h3>
         <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Entrants are all those people competing in the Event."><i class="glyphicon glyphicon-question-sign"></i></span>
         <strong>Provide A List of Your Entrants</strong>
@@ -423,7 +423,7 @@
         </router-link>
       </p>
     </aside>
-    <article class="col-xs-12 col-sm-8">
+    <article class="col-xs-12">
       <div class="row">
         <div class="col-xs-12 col-sm-7">
           <h5><strong>Your Entrants:</strong></h5>
@@ -641,7 +641,7 @@
 
 <script type="text/x-template" id="confirmation">
   <div>
-    <aside class="col-xs-12 col-sm-4 full-bg">
+    <aside class="col-xs-12">
       <h3><strong>Confirm Your Event Information</strong></h3>
       <p>Take a moment to make sure everything is right before you make your Event public.</p>
       <p>
@@ -651,7 +651,7 @@
         </router-link>
       </p>
     </aside>
-    <article class="col-xs-12 col-sm-8">
+    <article class="col-xs-12">
       <table class="table confirmation-table">
         <tbody>
         <tr>
@@ -749,11 +749,11 @@
     window._rails_assets.marker = "<%= asset_path( 'icons/green.svg' ) %>";
 </script>
 <div id="event-app" data-id="<%= @presenter&.id %>">
-  <div class="container-fluid header">
+  <header class="ost-header">
     <div class="container">
       <div class="row">
-        <div class="col-xs-5">
-          <h2>
+        <div class="ost-title col-sm-7">
+          <h1>
             <strong v-if="!isReady">Loading...</strong>
             <strong v-else-if="eventModel.__new__">Create Event</strong>
             <strong v-else>
@@ -761,14 +761,23 @@
               <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
               <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
             </strong>
-          </h2>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li><%= link_to 'Organizations', organizations_path %></li>
+            <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li><a><%= @presenter.event_group.name %></a></li>
+            <li class="active">Staging</li>
+          </ul>
         </div>
-        <div class="col-xs-7 page-navigation">
-          <% if @presenter&.event %>
-            <%= render 'events/view_buttons', view_object: @presenter %>
-          <% end %>
-        </div>
+        <aside class="ost-alerts col-sm-5">
+        </aside>
       </div>
+      <%= render 'events/view_buttons', view_object: @presenter %>
+    </div>
+  </header>
+
+  <aside class="ost-toolbar">
+    <div class="container">
       <nav class="progress-bar-nav">
         <ul>
           <li is="router-link" to="/" tag="li" exact><a href="#"><span>Your Event</span></a></li>
@@ -779,7 +788,7 @@
         </ul>
       </nav>
     </div>
-  </div>
+  </aside>
 
   <div class="container">
     <div class="row" v-if="!isReady" style="padding: 150px;">

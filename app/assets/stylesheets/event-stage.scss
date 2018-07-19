@@ -2,31 +2,9 @@
 @import "mixins";
 
 .events.app { // TODO: Increase Specificity
-
-	nav.navbar {
-		margin-bottom: 0;
-	}
-
-	.header {
-		background: #F1F1F1;
-		border: none;
-
-		h2 {
-			margin: 40px 0;
-		}
-	}
-
-	aside {
-		background: $darkGray;
-		color: $white;
-		padding-top: 25px;
-		@include breakpoint( $break-medium ) {
-			padding-top: 75px;
-		}
-	}
-
+	
 	article {
-		padding-top: 50px;
+		padding-top: 20px;
 		background: $white;
 	}
 

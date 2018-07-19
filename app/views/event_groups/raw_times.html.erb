@@ -1,7 +1,11 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Event group roster - #{@presenter.name}" %>
+  <% "OpenSplitTime: Raw Times - #{@presenter.name}" %>
 <% end %>
-<div class="row header">
+
+<% content_for(:container_type) do %>skip
+<% end %>
+
+<!--<div class="row header">
   <div class="col-xs-5">
     <h2><strong><%= "#{@presenter.name}" %></strong></h2>
     <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= 'Raw times' %></div>
@@ -11,12 +15,30 @@
       <%= render 'events/view_buttons', view_object: @presenter %>
     </div>
   </div>
-</div>
+</div>-->
 
-<div>
-  <% if @presenter.raw_times.present? %>
-    <%= render 'event_groups/raw_times_list', view_object: @presenter %>
-  <% else %>
-    <h4>No raw times exist for this event group.</h4>
-  <% end %>
-</div>
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="ost-title col-sm-5">
+        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <li class="active"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+        </ul>
+      </div>
+      <aside class="ost-alerts col-sm-7">
+      </aside>
+    </div>
+    <%= render 'events/view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+<% if @presenter.raw_times.present? %>
+  <%= render 'event_groups/raw_times_list', view_object: @presenter %>
+<% else %>
+  <h4>No raw times exist for this event group.</h4>
+<% end %>
+</article>

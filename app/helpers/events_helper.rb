@@ -6,10 +6,6 @@ module EventsHelper
     link_to 'Edit event', edit_event_path(view_object.event), class: 'btn btn-sm btn-primary'
   end
 
-  def link_to_update_start_time(view_object)
-    link_to 'Change start time', edit_start_time_event_path(view_object.event), class: 'btn btn-sm btn-primary'
-  end
-
   def link_to_delete_event(view_object)
     link_to 'Delete event', event_path(view_object.event, referrer_path: events_path),
             method: :delete,
@@ -24,12 +20,6 @@ module EventsHelper
               url_with_protocol(view_object.beacon_url),
               class: 'btn btn-sm btn-default',
               target: '_blank'
-    end
-  end
-
-  def link_to_enter_group_live_entry(view_object, current_user)
-    if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live
-      link_to 'Live Entry', live_entry_live_event_group_path(view_object.event_group), method: :get, class: 'btn btn-sm btn-warning'
     end
   end
 
@@ -52,46 +42,41 @@ module EventsHelper
       link_to 'Raw times', raw_times_event_group_path(view_object.event_group),
               disabled: controller.action_name == 'raw_times',
               class: 'btn btn-sm btn-primary'
-    end
-  end
-
-  def link_to_split_raw_times(view_object, current_user)
-    if current_user&.authorized_to_edit?(view_object.event_group)
-      link_to 'Split raw times', split_raw_times_event_group_path(view_object.event_group),
-              disabled: controller.action_name == 'split_raw_times',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if action_name == 'podium'}" do
+        link_to 'Podium', podium_event_path(view_object.event)
+      end
     end
   end
 
   def link_to_event_staging(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event)
-      link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
-              disabled: controller.action_name == 'app',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if action_name == 'app'}" do
+        link_to 'Staging', "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}"
+      end
     end
   end
 
   def link_to_event_admin(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event)
-      link_to 'Admin', admin_event_path(view_object.event),
-              disabled: controller.action_name == 'admin',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if action_name == 'admin'}" do
+        link_to 'Admin', admin_event_path(view_object.event)
+      end
     end
   end
 
   def link_to_roster(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group)
-      link_to 'Roster', "#{roster_event_group_path(view_object.event_group)}",
-              disabled: controller.action_name == 'roster',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if action_name == 'roster'}" do
+        link_to 'Roster', "#{roster_event_group_path(view_object.event_group)}"
+      end
     end
   end
 
   def link_to_event_group(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group) || view_object.multiple_events?
-      link_to 'Group', event_group_path(view_object.event_group, force_settings: true),
-              disabled: controller.controller_name == 'event_groups' && controller.action_name == 'show',
-              class: 'btn btn-sm btn-primary'
+      content_tag :li, class: "#{'active' if controller_name == 'event_groups' && action_name == 'show'}" do
+        link_to 'Group', event_group_path(view_object.event_group, force_settings: true)
+      end
     end
   end
 
@@ -120,7 +105,7 @@ module EventsHelper
             event_group_path(view_object.event_group, event_group: {available_live: !view_object.available_live?}),
             data: {confirm: confirm_text},
             method: :put,
-            class: 'btn btn-sm btn-warning'
+            class: 'btn btn-md btn-warning'
   end
 
   def link_to_toggle_public_private(view_object)
@@ -138,7 +123,7 @@ module EventsHelper
             event_group_path(view_object.event_group, event_group: {concealed: !view_object.concealed?}),
             data: {confirm: confirm_text},
             method: :put,
-            class: 'btn btn-sm btn-warning'
+            class: 'btn btn-md btn-warning'
   end
 
   def link_to_toggle_ost_remote(view_object)
@@ -157,30 +142,7 @@ module EventsHelper
             event_group_path(view_object.event_group, event_group: {auto_live_times: !view_object.auto_live_times?}),
             data: {confirm: confirm_text},
             method: :put,
-            class: 'btn btn-sm btn-warning'
-  end
-
-  def link_to_stewards(view_object)
-    link_to 'Stewards', organization_path(view_object.organization, display_style: 'stewards'), class: 'btn btn-sm btn-warning' if view_object.organization
-  end
-
-  def link_to_ultrasignup_export(view_object)
-    link_to 'Export to ultrasignup', export_to_ultrasignup_event_path(view_object.event, format: :csv),
-            class: 'btn btn-sm btn-success'
-  end
-
-  def link_to_set_stops(view_object)
-    link_to 'Establish drops', set_stops_event_path(view_object.event),
-            method: :put,
-            data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
-                'at the last aid station for which times are available. Are you sure you want to proceed?'},
-            class: 'btn btn-sm btn-success'
-  end
-
-  def link_to_set_data_status(view_object)
-    link_to 'Set data status', set_data_status_event_path(view_object.event),
-            method: :put,
-            class: 'btn btn-sm btn-success'
+            class: 'btn btn-md btn-warning'
   end
 
   def link_to_start_ready_efforts(view_object)
@@ -201,20 +163,18 @@ module EventsHelper
 
   def link_to_spread_gender(view_object, gender)
     link_to gender.titlecase, request.params.merge(filter: {gender: gender}),
-            disabled: view_object.gender_text == gender,
-            class: 'btn btn-sm btn-primary'
+            disabled: view_object.gender_text == gender
   end
 
   def link_to_spread_display_style(view_object, display_style, title)
     link_to title, request.params.merge(display_style: display_style),
-            disabled: view_object.display_style == display_style,
-            class: 'btn btn-sm btn-primary'
+            disabled: view_object.display_style == display_style
   end
 
   def link_to_display_style(view_object, display_style, title)
     link_to title, request.params.merge(display_style: display_style),
             disabled: view_object.display_style == display_style,
-            class: 'btn btn-sm btn-primary'
+            class: 'btn btn-md btn-primary'
   end
 
   def suggested_match_id_hash(efforts)

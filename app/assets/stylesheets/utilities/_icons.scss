@@ -1,0 +1,27 @@
+.icon-pacer {
+    width: 1.68em;
+    height: 1.2em;
+    display: inline-block;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: asset-url('icons/pacer-white.svg');
+
+    .active & {
+        background-image: asset-url('icons/pacer-black.svg');
+    }
+}
+
+.icon-stopped {
+    width: 0.93em;
+    height: 1.2em;
+    display: inline-block;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: asset-url('icons/stopped-white.svg');
+
+    .active & {
+        background-image: asset-url('icons/stopped-black.svg');
+    }
+}

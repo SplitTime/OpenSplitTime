@@ -2,7 +2,9 @@
   <% "OpenSplitTime: Full results - #{@presenter.name}" %>
 <% end %>
 
-<div class="row header">
+<% content_for(:container_type) do %>skip<% end %>
+
+<!--<div class="row header">
   <div class="col-xs-5">
     <%= render 'event_info', view_object: @presenter, title: nil %>
     <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Full Results' %></div>
@@ -16,37 +18,73 @@
       <%= link_to_download_spread_csv(@presenter, current_user) %>
     </div>
   </div>
-</div>
+</div>-->
 
-<div class="row mid">
-  <div class="col-xs-5 page-navigation-left">
-    <% if @presenter.ordered_events_within_group.many? %>
-      <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
-    <% end %>
-  </div>
-
-  <div class="col-xs-7 page-navigation">
-    <div class="btn-group">
-      <%= link_to_spread_gender(@presenter, 'combined') %>
-      <%= link_to_spread_gender(@presenter, 'male') %>
-      <%= link_to_spread_gender(@presenter, 'female') %>
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="ost-title col-sm-5">
+        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+          <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
+        </ul>
+      </div>
+      <aside class="ost-alerts col-sm-7">
+      </aside>
     </div>
+    <%= render 'view_buttons', view_object: @presenter %>
+  </div>
+</header>
 
-    <div class="btn-group">
-      <%= link_to_spread_display_style(@presenter, 'elapsed', 'Elapsed') %>
-      <%= link_to_spread_display_style(@presenter, 'ampm', 'AM / PM') %>
-      <%= link_to_spread_display_style(@presenter, 'military', '24-Hour') %>
-      <%= link_to_spread_display_style(@presenter, 'segment', 'Segment') %>
+<aside class="ost-toolbar container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-4 page-navigation-left form-inline">
+        <% if @presenter.ordered_events_within_group.many? %>
+          <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+        <% end %>
+
+      </div>
+      <div class="col-xs-12 col-sm-8 btn-toolbar">
+        <div class="btn-group pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            <%= @presenter.gender_text.titleize %>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><%= link_to_spread_gender(@presenter, 'combined') %></li>
+            <li><%= link_to_spread_gender(@presenter, 'male') %></li>
+            <li><%= link_to_spread_gender(@presenter, 'female') %></li>
+          </ul>
+        </div>
+
+        <div class="btn-group pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            <%= @presenter.display_style_text %>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><%= link_to_spread_display_style(@presenter, 'elapsed', 'Elapsed') %></li>
+            <li><%= link_to_spread_display_style(@presenter, 'ampm', 'AM/PM') %></li>
+            <li><%= link_to_spread_display_style(@presenter, 'military', '24-Hour') %></li>
+            <li><%= link_to_spread_display_style(@presenter, 'segment', 'Segment') %></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</aside>
 
 <% if @presenter.show_partner_banners? %>
   <%= render 'partner_banner', partner: @presenter.partner_with_banner, organization_name: @presenter.organization_name %>
 <% end %>
 
+<article class="ost-article container">
 <% cache "#{@presenter.cache_key}/html", expires_in: @presenter.cache_expire do %>
-  <table class="table table-condensed table-striped">
+  <table class="table table-striped table-centered table-fixed">
     <thead>
     <tr>
       <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>
@@ -93,3 +131,4 @@
     </tbody>
   </table>
 <% end %>
+</article>

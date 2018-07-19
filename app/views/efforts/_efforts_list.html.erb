@@ -1,6 +1,6 @@
 <% # Requires local parameter view_object %>
-
-<table class="table table-condensed table-striped">
+ 
+<table class="table table-striped table-centered table-fixed">
   <thead>
   <tr>
     <th><%= link_to_reversing_sort_heading('Rank', '', view_object.existing_sort) %></th>
@@ -25,7 +25,7 @@
   <% view_object.ranked_effort_rows.each do |effort_row| %>
       <%= data_status_tag(effort_row) %>
       <td><%= effort_row.display_overall_rank %></td>
-      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
+      <td><%= link_to effort_row.full_name, effort_path(effort_row) %></td>
       <% if view_object.available_live %>
           <td><%= effort_row.bib_number %></td>
       <% end %>

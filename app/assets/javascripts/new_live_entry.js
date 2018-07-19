@@ -1,5 +1,12 @@
 (function ($) {
 
+    var timeIcons = {
+        'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
+        'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
+        'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
+        'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
+    };
+
     /**
      * UI object for the live event view
      *
@@ -492,6 +499,7 @@
                 });
 
                 $('#js-lap-number').on('blur', function () {
+                    liveEntry.liveEntryForm.updateEffortInfo();
                     liveEntry.liveEntryForm.enrichTimeData();
                 });
 
@@ -543,6 +551,10 @@
                     return false;
                 });
 
+                $('#js-effort-table').scroll(function() {
+                    console.log($(this).scrollTop);
+                });
+
                 $('#js-html-modal').on('show.bs.modal', function (e) {
                     $(this).find('modal-body').html('');
                     var $source = $(e.relatedTarget);
@@ -574,6 +586,7 @@
                 var url = '#';
                 var splitName = liveEntry.currentStation().splitName;
                 var bibNumber = $('#js-bib-number').val();
+                var lapNumber = $('#js-lap-number').val();
                 var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEffortInfoBib);
                 var effort = liveEntry.bibEffortMap[bibNumber];
 
@@ -599,19 +612,86 @@
                     .addClass(bibStatus)
                     .attr('data-bib-status', bibStatus);
 
+                function highlightSplit() {
+                    var $rows = $('#js-effort-table tr').removeClass('active');
+                    $rows = $rows.filter('[data-title="' + splitName + '"]');
+                    $rows = (lapNumber) ? $rows.filter('[data-lap="' + lapNumber + '"]') : $rows;
+                    $rows.addClass('active');
+                    if ($rows.length > 0) {
+                        var $wrapper = $('#js-effort-table').parents('.table-wrapper');
+                        var offset = $wrapper.height() / 2 - $wrapper.scrollTop();
+                        $wrapper.animate({
+                            scrollTop: $rows.first().position().top - offset
+                        }, 500);
+                    }
+                }
+
                 if (bibChanged) {
                     if (effort !== null && typeof effort === 'object') {
                         return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
                             liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
-                            $('#js-effort-table').html(response.data.id)
-                            // Use response to update effort detail
+                            var attributes = response.included[0].attributes;
+                            $('#js-effort-table').empty();
+                            $.each(response.data.attributes.eventSplitHeaderData, function(i, split) {
+                                var elapsedTimes = attributes.elapsedTimes[i];
+                                var absoluteTimes = attributes.absoluteTimes[i];
+                                var timeDataStatuses = attributes.timeDataStatuses[i];
+                                var stopped = attributes.stoppedHereFlags[i];
+                                var pacers = attributes.pacerFlags[i];
+                                $('#js-effort-table').append('\
+                                    <tr data-title="' + split.splitName + '" data-lap="'+ split.lap +'">\
+                                        <td>' + split.title + '</td>\
+                                        <td>' + distanceToPreferred(split.distance).toFixed(1) + '</td>\
+                                        <td>' + absoluteTimes.map(function(time, i) {
+                                            if (time === null) return '--- --:--';
+                                            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
+                                            var d = new Date(time);
+                                            var minutes = ('0' + d.getMinutes()).slice(-2);
+                                            var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]] || '';
+                                            return days[d.getDay()] + ' ' + d.getHours() + ':' + minutes + status;
+                                        }).join(' / ') + '</td>\
+                                        <td>' + elapsedTimes.map(function(time) {
+                                            if (time === null) return '--:--';
+                                            var hours = Math.floor(time / (60 * 60));
+                                            var minutes = Math.floor((time / 60) % 60);
+                                            // var seconds = Math.floor(time % 60);
+                                            return hours + ':' + ('0' + minutes).slice(-2);
+                                        }).join(' / ') + '</td>\
+                                        <td>' + (stopped.some(function(b){ return b; }) ? '<i class="icon-stopped"></i>' : '') + '</td>\
+                                        <td class="pacer-only">\
+                                            <div class="d-flex flex-row text-center">\
+                                                <span class="flex-1">' +
+                                                    (pacers[0] ? 
+                                                        '<i class="icon-pacer"></i>' : 
+                                                        (pacers[1] ? 
+                                                            '<i class="fa fa-share"></i>' : 
+                                                            '')) +
+                                                '</span>' +
+                                                (pacers.length == 2 ?
+                                                    '<span class="flex-1">' +
+                                                        (pacers[1] ?
+                                                            (pacers[0] ?
+                                                                '<i class="fa fa-long-arrow-right"></i>' :
+                                                                '<i class="icon-pacer"></i>') :
+                                                            (pacers[1] === false && pacers[0] ?
+                                                                '<i class="fa fa-share fa-rotate-90"></i>' :
+                                                                '')) +
+                                                    '</span>' : 
+                                                    '') +
+                                            '</div>\
+                                        </td>\
+                                    </tr>\
+                                ');
+                            });
+                            highlightSplit();
                         })
                     } else {
                         liveEntry.liveEntryForm.lastEffortInfoBib = null;
-                        $('#js-effort-table').html('[Blurred dummy data here]')
+                        $('#js-effort-table').empty();
                         // Clear effort detail
                     }
                 }
+                highlightSplit();
             },
 
             /**
@@ -975,12 +1055,6 @@
                     'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
                     'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
                     'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
-                };
-                var timeIcons = {
-                    'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
-                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
-                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
-                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
                 };
                 var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
                 var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');

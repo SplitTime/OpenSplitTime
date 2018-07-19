@@ -2,25 +2,38 @@
   <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
 <% end %>
 
-<div class="row header">
-  <div id="js-new-times-alert" class="alert alert-info center" role="alert">
-    <a href="#js-pull-times">New time records available</a>
-  </div>
-  <div class="col-xs-12 col-md-6 page-title">
-    <h2></h2>
+<% content_for(:container_type) do %>skip<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="ost-title col-sm-5">
+        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <li><a><%= @presenter.event_group.name %></a></li>
+          <li class="active">Live Entry</li>
+        </ul>
+      </div>
+      <aside class="ost-alerts col-sm-7">
+        <div id="js-new-times-alert" class="alert alert-orange float-right" role="alert">
+          <a href="#js-pull-times" class="alert-body">
+            <i class="glyphicon glyphicon-time alert-icon"></i>
+            <strong>New Live Times Available</strong><br/>
+            Click to pull times.
+          </a>
+        </div>
+      </aside>
+    </div>
     <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ENV['BASE_URI']}) do %>
     <% end %>
+    <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
+</header>
 
-  <div class="col-xs-12 col-md-6 page-navigation">
-    <%= render 'live_entry_button_cluster', event: @event_group.ordered_events.first %>
-  </div>
-
-</div>
-
-
-<div class="row form-split-wrapper lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-
+<article class="container">
+<div class="form-split-wrapper lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
   <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
     <span id="js-live-times-pusher" data-key="<%= ENV['PUSHER_KEY'] %>"></span>
     <form id="js-add-effort-form">
@@ -123,28 +136,51 @@
   </div>
 
   <div class="col-xs-12 col-sm-7 col-md-8 splits-slider">
-    <div class="splits-slider-data group-splits-slider-data col-xs-12">
-      <div class="col-xs-6 data-label active">Name:</div>
-      <div class="col-xs-6">
-        <a id="js-effort-name" data-toggle="modal" data-target="#js-html-modal" data-effort-id="" data-event-id="">&nbsp;</a>
-      </div>
-
-      <div class="group-only">
-        <div class="col-xs-6 data-label">Event:</div>
-        <div id="js-effort-event-name" class="col-xs-6 ">&nbsp;</div>
-      </div>
-      <div id="js-effort-table" class="col-xs-12">
-        [Blurred dummy data here]
+    <div class="splits-slider-data group-splits-slider-data">
+      <h4>
+        <a id="js-effort-name" data-toggle="modal" data-target="#js-html-modal" data-effort-id="" data-event-id=""></a>
+        <span class="group-only">&nbsp;(<span id="js-effort-event-name"></span>)</span>
+      </h4>
+      <div class="table-wrapper">
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Split</th>
+              <th><%= pdu('singular').titlecase %></th>
+              <th>Time of Day</th>
+              <th>Elapsed Time</th>
+              <th></th>
+              <th class="pacer-only text-center" colspan="2">Pacer</th>
+            </tr>
+          </thead>
+          <tbody id="js-effort-table"></tbody>
+        </table>
       </div>
     </div>
   </div>
-
 </div>
+</article>
 
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3><strong>Local Data Workspace</strong></h3>
+      </div>
+      <!--<div class="col-sm-6 form-inline text-right">
+        Show
+        <select class="form-control">
+          <option>10</option>
+        </select>
+        Entries
+      </div>-->
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
 <div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-
   <div class="col-xs-12">
-    <h3>Local Data Workspace</h3>
     <div class="provisional-table-wrapper">
       <table id="js-local-workspace-table" class="table table-striped provisional-data-table">
         <thead>
@@ -228,3 +264,4 @@
     </div>
   </div>
 </div>
+</article>

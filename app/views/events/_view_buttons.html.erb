@@ -1,21 +1,6 @@
-<%= link_to_enter_group_live_entry(view_object, current_user) %>
-
-<div class="btn-group">
-
-  <%= link_to 'Results', event_path(view_object.event),
-              disabled: controller.controller_name == 'events' && controller.action_name == 'show',
-              class: 'btn btn-sm btn-primary' %>
-  <%= link_to 'Full spread', spread_event_path(view_object.event),
-              disabled: controller.action_name == 'spread',
-              class: 'btn btn-sm btn-primary' %>
-
-  <%= link_to_podium(view_object) %>
-  <%= link_to_traffic(view_object) %>
-  <%= link_to_event_admin(view_object, current_user) %>
-  <%= link_to_event_staging(view_object, current_user) %>
-  <%= link_to_raw_times(view_object, current_user) %>
-  <%= link_to_split_raw_times(view_object, current_user) %>
-  <%= link_to_roster(view_object, current_user) %>
-  <%= link_to_event_group(view_object, current_user) %>
-
-</div>
+<ul class="nav nav-tabs nav-tabs-ost">
+  <%= results_dropdown_menu(view_object) %>
+  <%= raw_times_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
+  <%= admin_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
+  <%= live_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live %>
+</ul>

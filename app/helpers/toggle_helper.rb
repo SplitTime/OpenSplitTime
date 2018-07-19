@@ -4,14 +4,14 @@ module ToggleHelper
   def link_to_check_in_filters(glyphicon, text, checked_in, started, unreconciled, problem)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
                       request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, problem: problem, filter: {search: ''}, page: nil),
-                      {class: 'btn btn-sm btn-primary',
+                      {class: 'btn btn-md btn-primary',
                        disabled: params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started && params[:unreconciled]&.to_boolean == unreconciled && params[:problem]&.to_boolean == problem})
   end
 
   def link_to_raw_time_filters(glyphicon, text, stopped, pulled, matched)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", text,
                       request.params.merge(stopped: stopped, pulled: pulled, matched: matched, filter: {search: ''}, page: nil),
-                      {class: 'btn btn-sm btn-primary',
+                      {class: 'btn btn-md btn-primary',
                        disabled: params[:stopped]&.to_boolean == stopped && params[:pulled]&.to_boolean == pulled && params[:matched]&.to_boolean == matched})
   end
 
@@ -72,7 +72,7 @@ module ToggleHelper
 
   def link_to_toggle_email_subscription(person)
     if current_user
-      link_to_toggle_subscription(person: person,
+      link_to_toggle_subscription(person_id: person.id,
                                   glyphicon: 'envelope',
                                   protocol: 'email',
                                   subscribe_alert: "Receive live email updates for #{person.full_name}? " +

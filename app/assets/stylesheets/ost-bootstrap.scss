@@ -1,0 +1,194 @@
+/*
+ * OpenSplitTime Styled Bootstrap Components
+ * These do NOT override bootstrap styling
+ * without the necessary ost- classes.
+ */
+
+@import "variables";
+
+.btn-ost {
+    border-radius: 3px;
+
+    &-primary {
+        color: $white;
+        background: $blue;
+
+        &:hover {
+            color: $white;
+            background: darken($blue, 5%);
+        }
+    }
+}
+
+.nav-tabs-ost {
+    margin-bottom: 0;
+    border-bottom: none;
+
+    & > li {
+        margin-bottom: -2px;
+        
+        & > a {
+            line-height: 33px;
+            color: $black !important;
+            font-weight: bold;
+            border: none !important; // Override Bootstrap
+            border-radius: 0 !important;
+            background: none !important;
+            padding: 10px 25px;
+            cursor: pointer;
+        }
+
+        &.active {
+            background: $white;
+
+            &:before {
+                content: '';
+                display: block;
+                background: $blue;
+                height: 5px;
+                left: 0;
+                right: 0;
+                top: 0;
+                position: absolute;
+            }
+        }
+    }
+}
+
+.breadcrumb-ost {
+    background: none;
+    padding: 0;
+    
+    a {
+        color: $mediumGray;
+    }
+
+    > .active {
+        color: $black;
+    }
+}
+
+.btn-group-ost {
+    .btn-ost {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+.ost-header {
+    background: $lightishGray;
+    border-bottom: 2px solid $darkerGray;
+
+    &:first-child {
+        margin-top: -20px;
+    }
+
+    padding-top: 25px;
+
+    .ost-title {
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        * {
+            margin: 0;
+        }
+    }
+
+    .nav-tabs-ost {
+        margin-top: 25px;
+    }
+
+    .ost-alerts {
+        .alert {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0;
+            height: 55px;
+            max-width: 235px;
+        }
+
+        .alert-orange {
+            background: $orange;
+            color: $white;
+            
+            a {
+                text-decoration: none;
+                color: $white;
+            }
+        }
+
+
+        .alert-icon {
+            float: left;
+            font-size: 1.2em;
+            padding: 0 0.5em 1em 0;
+        }
+    }
+}
+
+.ost-toolbar {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    border-bottom: 2px solid $darkerGray;
+}
+
+.ost-article {
+    margin-top: 20px;
+}
+
+.ost-select-wrapper {
+    position: relative;
+
+    select {
+        padding-right: 24px;
+    }
+
+    label {
+        display: block;
+        content: '';
+    }
+}
+
+.table-centered {
+    & > tbody > tr > td {
+        vertical-align: middle;
+    }
+}
+
+.table-fixed {
+    & > tbody > tr {
+        height: 60px;
+    }
+}
+
+.table-fixed-sm {
+    & > tbody > tr {
+        height: 48px;
+    }
+}
+
+.btn-relative {
+    position: relative;
+}
+
+.badge.badge-floating {
+    background-color: $orange;
+    border-radius: 13px;
+    border: 1px solid $white;
+    box-shadow: 0 0 4px 1px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+    color: $white;
+    height: 26px;
+    line-height: 24px;
+    min-width: 26px;
+    padding: 0 4px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%, -50%);
+}
+
+.dropdown-toggle .glyphicon {
+    color: $blue;
+}

@@ -1,7 +1,10 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Administer event - #{@presenter.name}" %>
 <% end %>
-<div class="row header">
+
+<% content_for(:container_type) do %>skip<% end %>
+
+<!--<div class="row header">
   <div class="col-xs-5">
     <%= render 'event_info', view_object: @presenter, title: @presenter.concealed_text %>
     <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Admin' %></div>
@@ -11,29 +14,45 @@
       <%= render 'view_buttons', view_object: @presenter %>
     </div>
   </div>
-</div>
+</div>-->
 
-    <div class="row mid">
-      <div class="col-xs-5 page-navigation-left">
-          <% if @presenter.multiple_events? %>
-            <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
-          <% end %>
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="ost-title col-sm-5">
+        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+          <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
+        </ul>
+      </div>
+      <aside class="ost-alerts col-sm-7">
+      </aside>
+    </div>
+    <%= render 'view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<aside class="ost-toolbar container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-4 page-navigation-left form-inline">
+        <% if @presenter.ordered_events_within_group.many? %>
+          <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+        <% end %>
       </div>
       <div class="col-xs-7 page-navigation">
-        <%= link_to_edit_event(@presenter) %>
         <% if @presenter.started? %>
-          <%= link_to_update_start_time(@presenter) %>
-          <%= link_to_set_data_status(@presenter) %>
           <% unless @presenter.available_live %>
-            <%= link_to_set_stops(@presenter) %>
             <%= link_to_ultrasignup_export(@presenter) %>
           <% end %>
         <% end %>
-        <% if current_user&.authorized_fully?(@presenter.event) %>
-          <%= link_to_delete_event(@presenter) %>
-        <% end %>
       </div>
     </div>
+  </div>
+</aside>
 
 <script>
     document.addEventListener("turbolinks:load", function () {

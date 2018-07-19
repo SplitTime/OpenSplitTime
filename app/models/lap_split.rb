@@ -19,11 +19,11 @@ class LapSplit
   end
 
   def split_id
-    split.try(:id)
+    split&.id
   end
 
   def start?
-    split.try(:start?) && lap == 1
+    split&.start? && lap == 1
   end
 
   def names
@@ -39,7 +39,7 @@ class LapSplit
   end
 
   def base_name_without_lap
-    split.try(:base_name) || '[unknown split]'
+    split&.base_name || '[unknown split]'
   end
 
   def name(bitkey = nil)

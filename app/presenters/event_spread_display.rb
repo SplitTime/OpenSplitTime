@@ -53,7 +53,9 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   def split_header_data
     lap_splits.map { |lap_split| {title: header_name(lap_split),
                                   extensions: header_extensions(lap_split),
-                                  distance: lap_split.distance_from_start} }
+                                  distance: lap_split.distance_from_start,
+                                  split_name: lap_split.base_name_without_lap,
+                                  lap: lap_split.lap} }
   end
 
   private

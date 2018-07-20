@@ -606,7 +606,7 @@
                         effortId = effort.id;
                         eventId = effort.attributes.eventId;
                         eventName = liveEntry.events[eventId].name;
-                        // url = effort.links.self;
+                        url = '/efforts/' + eventId;
                     } else {
                         fullName = '[Bib not found]';
                         eventName = '--'
@@ -614,7 +614,7 @@
                 }
 
                 $('#js-effort-name').html(fullName).attr('data-effort-id', effortId).attr('data-event-id', eventId);
-                // $('#js-effort-name').attr("href", url);
+                $('#js-effort-name').attr("href", url);
                 $('#js-effort-event-name').html(eventName);
                 var bibStatus = liveEntry.bibStatus(bibNumber, splitName);
                 $('#js-bib-number')

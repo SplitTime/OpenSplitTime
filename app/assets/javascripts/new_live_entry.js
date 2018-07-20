@@ -30,6 +30,7 @@
         currentFormResponse: {},
         emptyRawTimeRow: {rawTimes: []},
         lastFormRequest: {},
+        currentUser: 0,
 
         getEventLiveEntryData: function () {
             return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '?include=events.efforts&fields[efforts]=bibNumber,eventId,fullName')
@@ -41,6 +42,14 @@
                     liveEntry.timeRowsTable.init();
                     liveEntry.pusher.init();
                 });
+        },
+
+        setCurrentUser: function() {
+            var script_tag = document.getElementById('current_user');
+            if (script_tag) {
+                let data = JSON.parse(script_tag.innerHTML);
+                liveEntry.currentUser = data.id;
+            }
         },
 
         splitsAttributes: function () {
@@ -118,6 +127,7 @@
             liveEntry.currentEventGroupId = $div.data('event-group-id');
             liveEntry.serverURI = $div.data('server-uri');
             liveEntry.getEventLiveEntryData();
+            liveEntry.setCurrentUser();
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
@@ -774,7 +784,7 @@
                                 withPacer: $('#js-pacer-' + kind).prop('checked'),
                                 dataStatus: $timeField.attr('data-time-status'),
                                 splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true'),
-                                source: 'Live Entry (0)' // Replace 0 with current_user.id
+                                source: 'Live Entry (' + liveEntry.currentUser + ')'
                             }
                         }
                     )

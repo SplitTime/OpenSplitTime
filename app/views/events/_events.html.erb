@@ -17,7 +17,7 @@
             <th class="text-center">Leave Group</th>
         <% end %>
     <% end %>
-    <% if current_user&.authorized_to_edit?(presenter.event_group) %>
+    <% if presenter.respond_to?(:event_group) && current_user&.authorized_to_edit?(presenter.event_group) %>
       <th class="text-center"></th>
     <% end %>
   </tr>
@@ -46,7 +46,7 @@
                                                     class: 'btn btn-xs btn-success' %></td>
             <% end %>
         <% end %>
-        <% if current_user&.authorized_to_edit?(presenter.event_group) %>
+        <% if presenter.respond_to?(:event_group) && current_user&.authorized_to_edit?(presenter.event_group) %>
           <td class="text-center">
             <div class="btn-group pull-right">
               <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">

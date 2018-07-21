@@ -965,7 +965,7 @@
                 liveEntry.liveEntryForm.enrichTimeData().always(function () {
                     var rawTimeRow = liveEntry.liveEntryForm.getTimeRow();
 
-                    if (rawTimeRow === liveEntry.emptyRawTimeRow) return;
+                    if (liveEntry.rawTimeRow.empty(rawTimeRow)) return;
                     if (rawTimeRow.uniqueId === null) rawTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
                     liveEntry.timeRowsCache.upsertTimeRow(rawTimeRow);
@@ -1173,6 +1173,7 @@
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
                     liveEntry.PopulatingFromRow = false;
                     liveEntry.liveEntryForm.enrichTimeData();
+                    liveEntry.liveEntryForm.updateEffortInfo();
                 });
 
                 $(document).on('click', '.js-delete-effort', function () {
@@ -1276,7 +1277,19 @@
                         }
                     })
                 }
-            }
+            },
+
+            empty: function(row) {
+                var rawTimeIn = liveEntry.rawTimeFromRow(row, 'in');
+                var rawTimeOut = liveEntry.rawTimeFromRow(row, 'out');
+
+                var emptyIn = (rawTimeIn.bibNumber === undefined && rawTimeIn.enteredTime === undefined) ||
+                    (rawTimeIn.bibNumber === '' && rawTimeIn.enteredTime === '');
+                var emptyOut = (rawTimeOut.bibNumber === undefined && rawTimeOut.enteredTime === undefined) ||
+                    (rawTimeOut.bibNumber === '' && rawTimeOut.enteredTime === '');
+
+                return emptyIn && emptyOut
+                }
         }, // END rawTimeRow
 
         displayAndHideMessage: function (msgElement, selector) {

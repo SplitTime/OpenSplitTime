@@ -2,5 +2,5 @@
   <%= results_dropdown_menu(view_object) %>
   <%= raw_times_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
   <%= admin_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
-  <%= live_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) && view_object.available_live %>
+  <%= live_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
 </ul>

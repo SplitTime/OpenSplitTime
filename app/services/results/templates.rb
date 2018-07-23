@@ -17,6 +17,10 @@ module Results
                                        [:men_overall, :women_overall, :men_under_40, :women_under_40,
                                         :men_40s_masters, :women_40s_masters, :men_grandmasters, :women_grandmasters]
                                            .map { |name| Results::Categories.find(name) }),
+       masters_and_grandmasters: Results::Template.new('Masters and Grandmasters', :inclusive, 3,
+                                       [:men_overall, :women_overall, :men_40s_masters, :women_40s_masters,
+                                        :men_grandmasters, :women_grandmasters]
+                                           .map { |name| Results::Categories.find(name) }),
        simple: Results::Template.new('Simple', :inclusive, 3,
                                      [:men_overall, :women_overall]
                                          .map { |name| Results::Categories.find(name) })

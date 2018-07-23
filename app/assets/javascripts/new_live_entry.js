@@ -606,7 +606,7 @@
                         effortId = effort.id;
                         eventId = effort.attributes.eventId;
                         eventName = liveEntry.events[eventId].name;
-                        url = '/efforts/' + eventId;
+                        url = '/efforts/' + effort.id;
                     } else {
                         fullName = '[Bib not found]';
                         eventName = '--'

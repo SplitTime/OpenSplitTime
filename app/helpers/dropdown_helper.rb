@@ -103,7 +103,6 @@ module DropdownHelper
     ])
   end
 
-
   def check_in_filter_dropdown_menu(items)
     dropdown_items = items.map do |item|
       {
@@ -124,6 +123,16 @@ module DropdownHelper
       }
     end
     build_dropdown_menu(nil, dropdown_items, class: 'pull-right', button: true)
+  end
+
+  def explore_dropdown_menu(view_object)
+    dropdown_items = [{name: 'Plan my effort',
+                       link: plan_effort_course_path(view_object.course),
+                       visible: true},
+                      {name: 'All-time best',
+                       link: best_efforts_course_path(view_object.course),
+                       visible: true}]
+    build_dropdown_menu('Explore', dropdown_items, button: true)
   end
 
   def event_staging_app_page(view_object)

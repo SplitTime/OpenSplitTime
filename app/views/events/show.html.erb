@@ -1,12 +1,13 @@
 <% content_for :title do %>
-    <% if params[:search].present? %>
-        <% "OpenSplitTime: #{@presenter.name} - Results - #{params[:search]}" %>
-    <% else %>
-        <% "OpenSplitTime: #{@presenter.name} - Results" %>
-    <% end %>
+  <% if params[:search].present? %>
+    <% "OpenSplitTime: #{@presenter.name} - Results - #{params[:search]}" %>
+  <% else %>
+    <% "OpenSplitTime: #{@presenter.name} - Results" %>
+  <% end %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
+<% content_for(:container_type) do %>skip
+<% end %>
 
 <!--<div class="row header">
   <div class="col-xs-5">
@@ -15,7 +16,7 @@
   </div>
   <div class="col-xs-12 page-navigation">
     <%= link_to_beacon_button(@presenter) %>
-    <%= render 'view_buttons', view_object: @presenter %>
+<%= render 'view_buttons', view_object: @presenter %>
   </div>
 </div>-->
 
@@ -48,10 +49,8 @@
         <% if @presenter.ordered_events_within_group.many? %>
           <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
         <% end %>
+        <%= explore_dropdown_menu(@presenter) %>
       </div>
-      <!--<div class="col-xs-6 page-navigation">
-        <%= render 'feature_buttons', view_object: @presenter %>
-      </div>-->
       <div class="col-xs-12 col-sm-6">
         <%= render 'effort_lookup', event: @presenter.event %>
       </div>

@@ -4,18 +4,6 @@
 
 <% content_for(:container_type) do %>skip<% end %>
 
-<!--<div class="row header">
-  <div class="col-xs-5">
-    <%= render 'event_info', view_object: @presenter, title: nil %>
-    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %> / <%= 'Podium' %></div>
-  </div>
-  <div class="col-xs-7 page-navigation">
-    <div class="row">
-      <%= render 'events/view_buttons', view_object: @presenter %>
-    </div>
-  </div>
-</div>-->
-
 <header class="ost-header">
   <div class="container">
     <div class="row">
@@ -42,6 +30,7 @@
         <% if @presenter.ordered_events_within_group.many? %>
           <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
         <% end %>
+        <%= explore_dropdown_menu(@presenter) %>
       </div>
     </div>
   </div>

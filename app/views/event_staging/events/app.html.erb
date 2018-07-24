@@ -257,17 +257,21 @@
           </data-tables>
         </div>
         <div class="col-xs-12">
-          <div class="float-left-button"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
-          </button></div>
+          <div class="float-left-button">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
+            </button>
+          </div>
           <div class="dropdown float-left-button">
             <button class="btn btn-default dropdown-toggle" type="button" id="split-import-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               Import
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="split-import-dropdown">
-              <li><ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_splits'" v-on:import="eventModel.fetch()">
-                <span>Import Splits</span>
-              </ajax-import></li>
+              <li>
+                <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_splits'" v-on:import="eventModel.fetch()">
+                  <span>Import Splits</span>
+                </ajax-import>
+              </li>
               <li role="separator" class="divider"></li>
               <li><%= link_to 'Download Template', splits_path(format: :csv, params: {filter: {id: 0}}) %></li>
             </ul>
@@ -466,34 +470,44 @@
           </data-tables>
         </div>
         <div class="col-xs-12">
-            <div class="float-left-button"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-participant-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
-            </button></div>
-            <div class="dropdown float-left-button">
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Import
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
+          <div class="float-left-button">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-participant-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="glyphicon glyphicon-plus"></i>
+            </button>
+          </div>
+          <div class="dropdown float-left-button">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Import
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <li>
+                <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
                   <span>Without Times</span>
-                </ajax-import></li>
-                <li><ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts_elapsed_times'" v-on:import="eventModel.fetch()">
+                </ajax-import>
+              </li>
+              <li>
+                <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts_elapsed_times'" v-on:import="eventModel.fetch()">
                   <span>With Elapsed Times</span>
-                </ajax-import></li>
-                <li><ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts_military_times'" v-on:import="eventModel.fetch()">
+                </ajax-import>
+              </li>
+              <li>
+                <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts_military_times'" v-on:import="eventModel.fetch()">
                   <span>With Absolute Times</span>
-                </ajax-import></li>
-                <li role="separator" class="divider"></li>
-                <li><%= link_to 'Download Template', efforts_path(format: :csv, params: {filter: {id: 0}}) %></li>
-              </ul>
-            </div>
-            <% if @presenter %>
-                <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @presenter.id}), class: 'btn btn-default' %></div>
-                <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_path(@presenter), class: 'btn btn-default' %></div>
-                <div class="float-left-button"><%= link_to 'Delete All', delete_all_efforts_event_path(@presenter), class: 'btn btn-danger', method: :delete, data: {confirm: 'This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to proceed?'} %></div>
-            <% end %>
-          <div class="pull-right"><router-link to="/confirmation" id="continue-bottom-3" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
-          </router-link></div>
+                </ajax-import>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li><%= link_to 'Download Template', efforts_path(format: :csv, params: {filter: {id: 0}}) %></li>
+            </ul>
+          </div>
+          <% if @presenter %>
+            <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @presenter.id}), class: 'btn btn-default' %></div>
+            <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_path(@presenter), class: 'btn btn-default' %></div>
+            <div class="float-left-button"><%= link_to 'Delete All', delete_all_efforts_event_path(@presenter), class: 'btn btn-danger', method: :delete, data: {confirm: 'This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to proceed?'} %></div>
+          <% end %>
+          <div class="pull-right">
+            <router-link to="/confirmation" id="continue-bottom-3" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+            </router-link>
+          </div>
         </div>
       </div>
     </article>
@@ -741,7 +755,7 @@
 
 <!-- Vue.js Applet -->
 <script>
-    window._rails_assets || ( window._rails_assets = {} )
+    window._rails_assets || (window._rails_assets = {})
     window._rails_assets.dotGreen = "<%= asset_path( 'icons/dot-green.svg' ) %>";
     window._rails_assets.dotBlue = "<%= asset_path( 'icons/dot-blue.svg' ) %>";
     window._rails_assets.dotLBlue = "<%= asset_path( 'icons/dot-lblue.svg' ) %>";
@@ -763,16 +777,20 @@
             </strong>
           </h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li><%= link_to 'Organizations', organizations_path %></li>
-            <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <li><a><%= @presenter.event_group.name %></a></li>
+            <% if @presenter&.organization %>
+              <li><%= link_to 'Organizations', organizations_path %></li>
+              <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+              <li><a><%= @presenter.event_group.name %></a></li>
+            <% end %>
             <li class="active">Staging</li>
           </ul>
         </div>
         <aside class="ost-alerts col-sm-5">
         </aside>
       </div>
-      <%= render 'events/view_buttons', view_object: @presenter %>
+      <% if @presenter %>
+        <%= render 'events/view_buttons', view_object: @presenter %>
+      <% end %>
     </div>
   </header>
 

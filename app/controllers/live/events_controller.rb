@@ -24,6 +24,7 @@ class Live::EventsController < Live::BaseController
   def aid_station_detail
     authorize @event
     @event = Event.where(id: @event.id).includes(:splits).includes(:event_group).first
+    @presenter = EventWithEffortsPresenter.new(event: @event, params: params, current_user: current_user)
     aid_station = @event.aid_stations.find_by(id: params[:aid_station]) || @event.ordered_aid_stations.first
     @aid_station_detail = AidStationDetail.new(event: @event, aid_station: aid_station, params: prepared_params)
   end

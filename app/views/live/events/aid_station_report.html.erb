@@ -8,16 +8,16 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-5">
+      <div class="ost-title col-sm-9">
         <h1><strong><%= "#{@aid_stations_display.event_name}: Aid Station Summary" %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
           <li><%= link_to 'Organizations', organizations_path %></li>
           <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
           <li><a><%= @presenter.event_group.name %></a></li>
-          <li class="active">Aid Station Summary</li>
+          <li class="active">Aid Stations</li>
         </ul>
       </div>
-      <aside class="ost-alerts col-sm-7">
+      <aside class="ost-alerts col-sm-3">
       </aside>
     </div>
     <h5>As of: <strong><%= "#{day_time_current_military_full(@aid_stations_display.home_time_zone)}" %></strong></h5>

@@ -3,8 +3,9 @@
 class PlaceDetailView
 
   attr_reader :effort, :place_detail_rows
-  delegate :full_name, :event_name, :person, :bib_number, :finish_status, :gender,
-           :overall_rank, :gender_rank, to: :effort
+  delegate :full_name, :event_name, :person, :bib_number, :finish_status, :gender, 
+           :start_time, :overall_rank, :gender_rank, to: :effort
+  delegate :simple?, :event_group, to: :event
 
   def initialize(args_effort)
     @effort = args_effort.enriched

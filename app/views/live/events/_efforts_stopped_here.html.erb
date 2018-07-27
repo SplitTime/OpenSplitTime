@@ -1,33 +1,30 @@
-<div class="row">
-  <div class="col-xs-10">
-    <% if @aid_station_detail.effort_data.empty? %>
-        <h4><%= "No efforts stopped at #{@aid_station_detail.split_name} as of #{day_time_current_military_full(@aid_station_detail.home_time_zone)}" %></h4>
-    <% else %>
-        <h4><%= "#{pluralize(@aid_station_detail.effort_data.size, 'effort')} stopped at #{@aid_station_detail.split_name} as of #{day_time_current_military_full(@aid_station_detail.home_time_zone)}" %></h4>
-        <table class="table table-condensed table-striped">
-          <thead>
+
+<% if @aid_station_detail.effort_data.empty? %>
+    <h4><%= "No efforts stopped at #{@aid_station_detail.split_name} as of #{day_time_current_military_full(@aid_station_detail.home_time_zone)}" %></h4>
+<% else %>
+    <h4><%= "#{pluralize(@aid_station_detail.effort_data.size, 'effort')} stopped at #{@aid_station_detail.split_name} as of #{day_time_current_military_full(@aid_station_detail.home_time_zone)}" %></h4>
+    <table class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :bib_number, @aid_station_detail.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Name', :full_name, @aid_station_detail.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Category', :bio_historic, @aid_station_detail.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('From', :state_and_country, @aid_station_detail.existing_sort) %></th>
+        <th class="text-center"><%= link_to_reversing_sort_heading('Reported Prior to Stop', :prior_to_here_info, @aid_station_detail.existing_sort) %>
+        <th class="text-center"><%= link_to_reversing_sort_heading("Stopped at #{@aid_station_detail.split_name}", :stopped_here_info, @aid_station_detail.existing_sort) %>
+      </tr>
+      </thead>
+      <tbody>
+      <% @aid_station_detail.effort_data.each do |row| %>
           <tr>
-            <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :bib_number, @aid_station_detail.existing_sort) %></th>
-            <th><%= link_to_reversing_sort_heading('Name', :full_name, @aid_station_detail.existing_sort) %></th>
-            <th><%= link_to_reversing_sort_heading('Category', :bio_historic, @aid_station_detail.existing_sort) %></th>
-            <th><%= link_to_reversing_sort_heading('From', :state_and_country, @aid_station_detail.existing_sort) %></th>
-            <th class="text-center"><%= link_to_reversing_sort_heading('Reported Prior to Stop', :prior_to_here_info, @aid_station_detail.existing_sort) %>
-            <th class="text-center"><%= link_to_reversing_sort_heading("Stopped at #{@aid_station_detail.split_name}", :stopped_here_info, @aid_station_detail.existing_sort) %>
+            <td class="text-center"><%= row[:bib_number] %></td>
+            <td class="text-nowrap"><strong><%= link_to row[:full_name], effort_path(row[:effort_slug]) %></strong></td>
+            <td class="text-nowrap"><%= row[:bio_historic] %></td>
+            <td class="text-nowrap"><%= row[:state_and_country] %></td>
+            <td class="text-center text-nowrap"><%= display_progress_info(row[:prior_to_here_info]) %></td>
+            <td class="text-center text-nowrap"><%= display_progress_times_only(row[:stopped_here_info]) %></td>
           </tr>
-          </thead>
-          <tbody>
-          <% @aid_station_detail.effort_data.each do |row| %>
-              <tr>
-                <td class="text-center"><%= row[:bib_number] %></td>
-                <td class="text-nowrap"><strong><%= link_to row[:full_name], effort_path(row[:effort_slug]) %></strong></td>
-                <td class="text-nowrap"><%= row[:bio_historic] %></td>
-                <td class="text-nowrap"><%= row[:state_and_country] %></td>
-                <td class="text-center text-nowrap"><%= display_progress_info(row[:prior_to_here_info]) %></td>
-                <td class="text-center text-nowrap"><%= display_progress_times_only(row[:stopped_here_info]) %></td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
-    <% end %>
-  </div>
-</div>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>

@@ -842,8 +842,19 @@
                 $('#js-pacer-in').prop('checked', false);
                 $('#js-pacer-out').prop('checked', false);
                 $('#js-dropped').prop('checked', false).change();
+                liveEntry.liveEntryForm.buttonAddMode();
                 liveEntry.liveEntryForm.updateEffortInfo();
                 liveEntry.liveEntryForm.enrichTimeData();
+            },
+
+            buttonAddMode: function() {
+                $('#js-add-to-cache').html('Add');
+                $('#js-discard-entry-form').html('Discard');
+            },
+
+            buttonUpdateMode: function() {
+                $('#js-add-to-cache').html('Update');
+                $('#js-discard-entry-form').html('Cancel');
             },
 
             /**
@@ -927,6 +938,7 @@
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
                     event.preventDefault();
+                    liveEntry.liveEntryForm.buttonAddMode();
                     liveEntry.liveEntryForm.prefillCurrentTime();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     return false;
@@ -1170,6 +1182,7 @@
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
 
                     $row.addClass('highlight');
+                    liveEntry.liveEntryForm.buttonUpdateMode();
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
                     liveEntry.PopulatingFromRow = false;
                     liveEntry.liveEntryForm.enrichTimeData();

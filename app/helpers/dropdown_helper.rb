@@ -65,6 +65,10 @@ module DropdownHelper
         {name: 'Aid Stations',
          link: aid_station_report_live_event_path(view_object.event),
          active: action_name == 'aid_station_report',
+         visible: true},
+        {name: 'Aid Detail',
+         link: aid_station_detail_live_event_path(view_object.event),
+         active: action_name == 'aid_station_detail',
          visible: true}
     ])
   end

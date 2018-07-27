@@ -157,7 +157,13 @@ class Api::V1::EventGroupsController < ApiController
   def parse_raw_times_data(raw_times_data)
     raw_time_row_attributes = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
     raw_times_attributes = raw_time_row_attributes[:raw_times] || {}
-    raw_times = raw_times_attributes.values.map { |attributes| RawTime.new(attributes) }
+
+    raw_times = raw_times_attributes.values.map do |attributes|
+      raw_time = attributes[:id].blank? ? RawTime.new : RawTime.find_or_initialize_by(id: attributes[:id])
+      raw_time.assign_attributes(attributes.except(:id))
+      raw_time
+    end
+
     RawTimeRow.new(raw_times)
   end
 end

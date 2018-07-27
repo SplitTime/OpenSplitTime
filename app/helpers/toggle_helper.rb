@@ -23,25 +23,25 @@ module ToggleHelper
       button_text = 'Beyond start'
       url = '#'
       disabled = true
-      class_string = "check-in btn btn-sm btn-primary #{block_string}"
+      class_string = "check-in btn btn-md btn-primary #{block_string}"
     when effort.started?
       glyphicon_string = "glyphicon glyphicon-expand"
       button_text = 'Started'
       url = unstart_effort_path(effort, button: button_param)
       disabled = false
-      class_string = "check-in btn btn-sm btn-primary #{block_string}"
+      class_string = "check-in btn btn-md btn-primary #{block_string}"
     when effort.checked_in?
       glyphicon_string = "glyphicon glyphicon-check"
       button_text = 'Checked in'
       url = effort_path(effort, effort: {checked_in: false}, button: button_param)
       disabled = false
-      class_string = "check-in btn btn-sm btn-success #{block_string}"
+      class_string = "check-in btn btn-md btn-success #{block_string}"
     else
       glyphicon_string = "glyphicon glyphicon-unchecked"
       button_text = 'Check in'
       url = effort_path(effort, effort: {checked_in: true}, button: button_param)
       disabled = false
-      class_string = "check-in btn btn-sm btn-default #{block_string}"
+      class_string = "check-in btn btn-md btn-default #{block_string}"
     end
 
     link_to_with_icon(glyphicon_string, button_text, url, {

@@ -19,8 +19,9 @@ module DropdownHelper
       concat content_tag(:ul, class: 'dropdown-menu') {
         items.select { |item| item[:visible] }.each do |item|
           active = item[:active] ? 'active' : nil
-          concat content_tag(:li, class: active) {
-            link_to item[:name], item[:link]
+          divider = item[:role] == :separator ? 'divider' : nil
+          concat content_tag(:li, class: [active, divider].join(' '), role: item[:role]) {
+            link_to item[:name], item[:link], item[:item_options]
           }
         end
       }
@@ -137,6 +138,28 @@ module DropdownHelper
                        link: best_efforts_course_path(view_object.course),
                        visible: true}]
     build_dropdown_menu('Explore', dropdown_items, button: true)
+  end
+
+  def effort_actions_dropdown_menu(view_object)
+    dropdown_items =
+        [{name: 'Effort',
+          link: edit_effort_path(view_object.effort),
+          visible: true},
+         {name: 'Times of day',
+          link: edit_split_times_effort_path(view_object.effort, display_style: :military_times),
+          visible: true},
+         {name: 'Elapsed times',
+          link: edit_split_times_effort_path(view_object.effort),
+          visible: true},
+         {name: '',
+         link: '#',
+         visible: true,
+         role: :separator},
+         {name: 'Delete effort',
+         link: effort_path(view_object.effort),
+         visible: true,
+         item_options: {method: :delete, data: {confirm: 'This action cannot be undone. Proceed?'}}}]
+    build_dropdown_menu('Edit', dropdown_items, button: true)
   end
 
   def event_staging_app_page(view_object)

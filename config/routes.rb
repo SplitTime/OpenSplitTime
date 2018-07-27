@@ -47,8 +47,8 @@ Rails.application.routes.draw do
       get :analyze
       get :place
       get :show_photo
+      get :edit_split_times
       patch :update_split_times
-      put :edit_split_times
       put :set_data_status
       put :start
       patch :unstart

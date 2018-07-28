@@ -25,11 +25,12 @@ RSpec.describe 'visit a populated event show page and try various features' do
       visit event_path(event)
 
       expect(page).to have_content(event.name)
-      expect(page).to have_link('Full spread', href: spread_event_path(event))
+      expect(page).to have_link('Spread', href: spread_event_path(event))
       expect(page).not_to have_link('Staging')
-      expect(page).not_to have_link('Group', href: event_group_path(event.event_group))
+      expect(page).not_to have_link('Roster')
+      expect(page).not_to have_link('Settings')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
+      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
     end
 
     scenario 'The user is a user who did not create the event and is not a steward' do
@@ -37,11 +38,12 @@ RSpec.describe 'visit a populated event show page and try various features' do
       visit event_path(event)
 
       expect(page).to have_content(event.name)
-      expect(page).to have_link('Full spread', href: spread_event_path(event))
+      expect(page).to have_link('Spread', href: spread_event_path(event))
       expect(page).not_to have_link('Staging')
-      expect(page).not_to have_link('Group', href: event_group_path(event.event_group))
+      expect(page).not_to have_link('Roster')
+      expect(page).not_to have_link('Settings')
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
+      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
     end
 
     scenario 'The user is a user who created the event' do
@@ -54,39 +56,46 @@ RSpec.describe 'visit a populated event show page and try various features' do
       visit event_path(event)
 
       expect(page).to have_content(event.name)
-      expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).to have_link('Staging')
-      expect(page).to have_link('Group')
+      expect(page).to have_link('Spread', href: spread_event_path(event))
+      expect(page).to have_link('Staging', href: "#{event_staging_app_path(event)}#/entrants")
+      expect(page).to have_link('Roster', href: roster_event_group_path(event_group))
+      expect(page).to have_link('Settings', href: event_group_path(event_group, force_settings: true))
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
+      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
       event = Event.first
       organization = event.event_group.organization
       organization.stewards << steward
+      event_group = event.event_group
 
       login_as steward, scope: :user
       visit event_path(event)
 
       expect(page).to have_content(event.name)
-      expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).to have_link('Staging')
-      expect(page).to have_link('Group')
+      expect(page).to have_link('Spread', href: spread_event_path(event))
+      expect(page).to have_link('Staging', href: "#{event_staging_app_path(event)}#/entrants")
+      expect(page).to have_link('Roster', href: roster_event_group_path(event_group))
+      expect(page).to have_link('Settings', href: event_group_path(event_group, force_settings: true))
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
+      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
     end
 
     scenario 'The user is an admin' do
+      event_group = event.event_group
+
       login_as admin, scope: :user
       visit event_path(event)
 
       expect(page).to have_content(event.name)
-      expect(page).to have_link('Full spread', href: spread_event_path(event))
-      expect(page).to have_link('Staging')
-      expect(page).to have_link('Group')
+      expect(page).to have_content(event.name)
+      expect(page).to have_link('Spread', href: spread_event_path(event))
+      expect(page).to have_link('Staging', href: "#{event_staging_app_path(event)}#/entrants")
+      expect(page).to have_link('Roster', href: roster_event_group_path(event_group))
+      expect(page).to have_link('Settings', href: event_group_path(event_group, force_settings: true))
       expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best efforts', href: best_efforts_course_path(course))
+      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
     end
 
     scenario 'The user searches for a name' do
@@ -97,7 +106,7 @@ RSpec.describe 'visit a populated event show page and try various features' do
         expect(page).to have_content(effort.full_name)
       end
 
-      fill_in 'Bib #, first name, last name, state, or country', with: effort_1.full_name
+      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.full_name
       click_button 'Find someone'
 
       expect(page).to have_content(effort_1.full_name)
@@ -105,7 +114,7 @@ RSpec.describe 'visit a populated event show page and try various features' do
         expect(page).not_to have_content(effort.full_name)
       end
 
-      fill_in 'Bib #, first name, last name, state, or country', with: effort_1.bib_number
+      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.bib_number
       click_button 'Find someone'
 
       expect(page).to have_content(effort_1.full_name)
@@ -128,7 +137,7 @@ RSpec.describe 'visit a populated event show page and try various features' do
         expect(page).to have_content(effort.name)
       end
 
-      fill_in 'Bib #, first name, last name, state, or country', with: effort_1.full_name
+      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.full_name
       click_button 'Find someone'
 
       expect(page).to have_content(effort_1.full_name)
@@ -136,7 +145,7 @@ RSpec.describe 'visit a populated event show page and try various features' do
         expect(page).not_to have_content(effort.full_name)
       end
 
-      fill_in 'Bib #, first name, last name, state, or country', with: effort_1.bib_number
+      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.bib_number
       click_button 'Find someone'
 
       expect(page).to have_content(effort_1.full_name)

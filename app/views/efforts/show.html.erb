@@ -87,40 +87,31 @@
         <div class="row">
         <div class="col-xs-7">
             <% if current_user&.authorized_to_edit?(@effort_show.effort) %>
-                <%= link_to 'Edit effort', edit_effort_path(@effort_show.effort), class: "btn btn-sm btn-primary" %>
-                <%= link_to 'Edit times of day', edit_split_times_effort_path(@effort_show.effort, display_style: 'military_times'),
-                            method: :put,
-                            class: "btn btn-sm btn-primary" %>
-                <%= link_to 'Edit elapsed times', edit_split_times_effort_path(@effort_show.effort),
-                            method: :put,
-                            class: "btn btn-sm btn-primary" %>
+                <%= effort_actions_dropdown_menu(@effort_show) %>
                 <% unless @effort_show.has_start_time? %>
                 <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
                             method: :put,
-                            class: "btn btn-sm btn-success" %>
+                            class: "btn btn-md btn-success" %>
                 <% end %>
                 <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),
                             method: :put,
-                            class: "btn btn-sm btn-success" %>
+                            class: "btn btn-md btn-success" %>
                 <% if @effort_show.next_problem_effort %>
                     <%= link_to 'Find a problem effort', effort_path(@effort_show.next_problem_effort),
-                                class: "btn btn-sm btn-success" %>
+                                class: "btn btn-md btn-success" %>
                 <% end %>
                 <% if @effort_show.needs_final_stop? %>
                     <%= link_to 'Set stop', stop_effort_path(@effort_show.effort),
                                 method: :put,
-                                class: "btn btn-sm btn-success" %>
+                                class: "btn btn-md btn-success" %>
                 <% end %>
                 <% if @effort_show.stopped? %>
                     <%= link_to 'Remove stop', stop_effort_path(@effort_show.effort, status: false),
                                 method: :put,
-                                class: "btn btn-sm btn-success" %>
+                                class: "btn btn-md btn-success" %>
                 <% end %>
                 <%= link_to 'Raw time records', raw_times_event_group_path(@effort_show.event_group, filter: {bib_number: @effort_show.bib_number}),
-                            class: "btn btn-sm btn-success" %>
-                <%= link_to 'Delete effort', effort_path(@effort_show.effort, referrer_path: event_path(@effort_show.event)),
-                            method: :delete,
-                            data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+                            class: "btn btn-md btn-success" %>
             <% end %>
         </div>
         <div class="col-xs-2">

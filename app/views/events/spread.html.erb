@@ -31,6 +31,7 @@
           <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
         <% end %>
         <%= explore_dropdown_menu(@presenter) %>
+        <%= link_to_download_spread_csv(@presenter, current_user) %>
       </div>
       <div class="col-xs-12 col-sm-8 btn-toolbar">
         <div class="btn-group pull-right">

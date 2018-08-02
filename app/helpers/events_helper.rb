@@ -84,7 +84,7 @@ module EventsHelper
     if current_user&.authorized_to_edit?(view_object.event) && view_object.event_finished?
       link_to 'Export spreadsheet',
               spread_event_path(view_object.event, format: :csv, display_style: view_object.display_style, sort: view_object.sort_hash),
-              method: :get, class: 'btn btn-sm btn-success'
+              method: :get, class: 'btn btn-md btn-success'
     end
   end
 

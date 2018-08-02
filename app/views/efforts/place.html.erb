@@ -25,13 +25,22 @@
       <aside class="ost-alerts col-sm-3">
       </aside>
     </div>
-    <h5><%= l(@effort_place.start_time, format: :full_day_time_and_zone) %></h5>
-    <h5>
-      <%= @effort_place.finish_status %>
-      <%= "• #{@effort_place.overall_rank.ordinalize} Place " if @effort_place.overall_rank %>
-      <%= "• #{@effort_place.gender_rank.ordinalize} #{@effort_place.gender.titleize}" if @effort_place.gender_rank %>
-      <%= "• Bib ##{@effort_place.bib_number}" if @effort_place.bib_number %>
+    <h5>Start Time: <strong><%= l(@effort_place.start_time, format: :full_day_time_and_zone) %></strong></h5>
+    <h5>Status:
+      <strong>
+        <%= @effort_place.finish_status %>
+        <%= "• #{@effort_place.overall_rank.ordinalize} Place " if @effort_place.overall_rank %>
+        <%= "• #{@effort_place.gender_rank.ordinalize} #{@effort_place.gender.titleize}" if @effort_place.gender_rank %>
+        <%= "• Bib ##{@effort_place.bib_number}" if @effort_place.bib_number %>
+      </strong>
     </h5>
+    <% unless @effort_place.simple? %>
+        <ul class="nav nav-tabs nav-tabs-ost">
+            <li><%= link_to "Split times", effort_path(@effort_place.effort) %></li>
+            <li><%= link_to "Analyze times", analyze_effort_path(@effort_place.effort) %></li>
+            <li class="active"><%= link_to "Places + peers", place_effort_path(@effort_place.effort) %></li>
+        </ul>
+    <% end %>
   </div>
 </header>
 
@@ -39,13 +48,15 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 btn-toolbar">
-        <div class="btn-group btn-group-ost">
-            <% unless @effort_place.simple? %>
-                <%= link_to "Times", effort_path(@effort_place.effort), class: "btn btn-ost btn-default" %>
-                <%= link_to "Analyze", analyze_effort_path(@effort_place.effort), class: "btn btn-ost btn-default" %>
-                <%= link_to "Places + peers", place_effort_path(@effort_place.effort), class: "btn btn-ost btn-primary" %>
+        <% if @effort_place.person %>
+            <%= div_for(@effort_place.person) do %>
+                <div class="btn-group btn-group-ost">
+                    <div class="btn btn-xs btn-default" disabled>Notify Me Live:</div>
+                    <%= link_to_toggle_email_subscription(@effort_place.person) %>
+                    <%= link_to_toggle_sms_subscription(@effort_place.person) %>
+                </div>
             <% end %>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>

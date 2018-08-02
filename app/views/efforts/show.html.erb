@@ -1,38 +1,46 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Show effort - #{@effort_show.full_name} - #{@effort_show.event_name}" %>
+    <% "OpenSplitTime: Show effort - #{@effort_show.full_name} - #{@effort_show.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
+<% content_for(:container_type) do %>skip<% end %>
 
 <header class="ost-header">
   <div class="container">
     <div class="row">
       <div class="ost-title col-sm-9">
         <h1><strong>
-          <% if @effort_show.person %>
-            <%= link_to @effort_show.full_name, person_path(@effort_show.person) %>
-          <% else %>
-            <%= @effort_show.full_name %>
-          <% end %>
+            <% if @effort_show.person %>
+                <%= link_to @effort_show.full_name, person_path(@effort_show.person) %>
+            <% else %>
+                <%= @effort_show.full_name %>
+            <% end %>
         </strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @effort_show.event_group.organization.name, organization_path(@effort_show.event_group.organization) %></li>
-          <li><%= link_to @effort_show.event_group.name, event_group_path(@effort_show.event_group) %></li>
-          <li><%= @effort_show.full_name %></li>
+            <li><%= link_to 'Organizations', organizations_path %></li>
+            <li><%= link_to @effort_show.event_group.organization.name, organization_path(@effort_show.event_group.organization) %></li>
+            <li><%= link_to @effort_show.event_group.name, event_group_path(@effort_show.event_group) %></li>
+            <li><%= @effort_show.full_name %></li>
         </ul>
       </div>
       <aside class="ost-alerts col-sm-3">
       </aside>
     </div>
-    <h5><%= l(@effort_show.start_time, format: :full_day_time_and_zone) %></h5>
-    <h5>
-      <%= @effort_show.finish_status %>
-      <%= "• #{@effort_show.overall_rank.ordinalize} Place " if @effort_show.overall_rank %>
-      <%= "• #{@effort_show.gender_rank.ordinalize} #{@effort_show.gender.titleize}" if @effort_show.gender_rank %>
-      <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
+    <h5>Start Time: <strong><%= l(@effort_show.start_time, format: :full_day_time_and_zone) %></strong></h5>
+    <h5>Status:
+      <strong>
+        <%= @effort_show.finish_status %>
+        <%= "• #{@effort_show.overall_rank.ordinalize} Place " if @effort_show.overall_rank %>
+        <%= "• #{@effort_show.gender_rank.ordinalize} #{@effort_show.gender.titleize}" if @effort_show.gender_rank %>
+        <%= "• Bib ##{@effort_show.bib_number}" if @effort_show.bib_number %>
+      </strong>
     </h5>
+    <% unless @effort_show.simple? || @effort_show.not_analyzable? %>
+        <ul class="nav nav-tabs nav-tabs-ost">
+            <li class="active"><%= link_to "Split times", effort_path(@effort_show.effort) %></li>
+            <li><%= link_to "Analyze times", analyze_effort_path(@effort_show.effort) %></li>
+            <li><%= link_to "Places + peers", place_effort_path(@effort_show.effort) %></li>
+        </ul>
+    <% end %>
   </div>
 </header>
 
@@ -40,24 +48,27 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 btn-toolbar">
-        <div class="btn-group btn-group-ost">
-          <% unless @effort_show.simple? || @effort_show.not_analyzable? %>
-            <%= link_to "Times", effort_path(@effort_show.effort), class: "btn btn-ost btn-primary" %>
-            <%= link_to "Analyze", analyze_effort_path(@effort_show.effort), class: "btn btn-ost btn-default" %>
-            <%= link_to "Places + peers", place_effort_path(@effort_show.effort), class: "btn btn-ost btn-default" %>
-          <% end %>
-        </div>
+        <% if @effort_show.person %>
+            <%= div_for(@effort_show.person) do %>
+                <div class="btn-group btn-group-ost">
+                    <div class="btn btn-xs btn-default" disabled>Notify Me Live:</div>
+                    <%= link_to_toggle_email_subscription(@effort_show.person) %>
+                    <%= link_to_toggle_sms_subscription(@effort_show.person) %>
+                </div>
+            <% end %>
+        <% end %>
+
         <% if @effort_show.beacon_url %>
-          <%= link_to effort_beacon_button_text(@effort_show.beacon_url),
-                      url_with_protocol(@effort_show.beacon_url),
-                      class: "btn btn-ost btn-default",
-                      target: "_blank" %>
+            <%= link_to effort_beacon_button_text(@effort_show.beacon_url),
+                        url_with_protocol(@effort_show.beacon_url),
+                        class: "btn btn-ost btn-default",
+                        target: "_blank" %>
         <% end %>
         <% if @effort_show.report_url %>
-          <%= link_to effort_report_button_text(@effort_show.report_url),
-                      url_with_protocol(@effort_show.report_url),
-                      class: "btn btn-ost btn-default",
-                      target: "_blank" %>
+            <%= link_to effort_report_button_text(@effort_show.report_url),
+                        url_with_protocol(@effort_show.report_url),
+                        class: "btn btn-ost btn-default",
+                        target: "_blank" %>
         <% end %>
       </div>
     </div>
@@ -65,79 +76,68 @@
 </aside>
 
 <article class="ost-article container">
-  <div class="row">
-    <div class="col-xs-3">
-      <% if @effort_show.person %>
-        <%= div_for(@effort_show.person) do %>
-          <h4>
-            Notify Me Live:
-            <%= link_to_toggle_email_subscription(@effort_show.person) %>
-            <%= link_to_toggle_sms_subscription(@effort_show.person) %>
-          </h4>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="col-xs-3">
-      <% if @effort_show.photo.present? %>
-        <%= link_to image_tag(@effort_show.photo.url(:thumb)), {action: :show_photo} %>
-      <% end %>
-    </div>
-  </div>
-  <% if current_user&.authorized_to_edit?(@effort_show.effort) || current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
     <div class="row">
-      <div class="col-xs-7">
-        <% if current_user&.authorized_to_edit?(@effort_show.effort) %>
-          <%= effort_actions_dropdown_menu(@effort_show) %>
-          <% unless @effort_show.has_start_time? %>
-            <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
-                        method: :put,
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),
-                      method: :put,
-                      class: "btn btn-md btn-success" %>
-          <% if @effort_show.next_problem_effort %>
-            <%= link_to 'Find a problem effort', effort_path(@effort_show.next_problem_effort),
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <% if @effort_show.needs_final_stop? %>
-            <%= link_to 'Set stop', stop_effort_path(@effort_show.effort),
-                        method: :put,
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <% if @effort_show.stopped? %>
-            <%= link_to 'Remove stop', stop_effort_path(@effort_show.effort, status: false),
-                        method: :put,
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <%= link_to 'Raw time records', raw_times_event_group_path(@effort_show.event_group, filter: {bib_number: @effort_show.bib_number}),
-                      class: "btn btn-md btn-success" %>
-        <% end %>
-      </div>
-      <div class="col-xs-2">
-        <%= div_for(@effort_show.effort) do %>
-          <%= link_to_toggle_check_in(@effort_show.effort, button_param: :check_in_effort_show) %>
-        <% end %>
-      </div>
-      <div class="col-xs-3">
-        <div class="text-right">
-          <% if @effort_show.in_progress? && current_user&.authorized_to_edit?(@effort_show.effort) %>
-            <strong><%= @effort_show.beacon_url ? 'Modify locator beacon link: ' : 'Add link to locator beacon:' %></strong>
-            <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your SPOT or other personal locator site here:"><%= "#{@effort_show.beacon_url}" %></a>
-          <% end %>
-          <% if !@effort_show.in_progress? && current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
-            <strong><%= @effort_show.report_url ? 'Modify trip report link: ' : 'Add link to trip report:' %></strong>
-            <a href="#" id="report-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your Strava page or personal trip report here:"><%= "#{@effort_show.report_url}" %></a>
-          <% end %>
+        <div class="col-xs-3">
+            <% if @effort_show.photo.present? %>
+                <%= link_to image_tag(@effort_show.photo.url(:thumb)), {action: :show_photo} %>
+            <% end %>
         </div>
-      </div>
     </div>
-    <hr>
-  <% end %>
+    <% if current_user&.authorized_to_edit?(@effort_show.effort) || current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
+        <div class="row">
+        <div class="col-xs-7">
+            <% if current_user&.authorized_to_edit?(@effort_show.effort) %>
+                <%= effort_actions_dropdown_menu(@effort_show) %>
+                <% unless @effort_show.has_start_time? %>
+                <%= link_to 'Start effort', start_effort_path(@effort_show.effort),
+                            method: :put,
+                            class: "btn btn-md btn-success" %>
+                <% end %>
+                <%= link_to 'Set data status', set_data_status_effort_path(@effort_show.effort),
+                            method: :put,
+                            class: "btn btn-md btn-success" %>
+                <% if @effort_show.next_problem_effort %>
+                    <%= link_to 'Find a problem effort', effort_path(@effort_show.next_problem_effort),
+                                class: "btn btn-md btn-success" %>
+                <% end %>
+                <% if @effort_show.needs_final_stop? %>
+                    <%= link_to 'Set stop', stop_effort_path(@effort_show.effort),
+                                method: :put,
+                                class: "btn btn-md btn-success" %>
+                <% end %>
+                <% if @effort_show.stopped? %>
+                    <%= link_to 'Remove stop', stop_effort_path(@effort_show.effort, status: false),
+                                method: :put,
+                                class: "btn btn-md btn-success" %>
+                <% end %>
+                <%= link_to 'Raw time records', raw_times_event_group_path(@effort_show.event_group, filter: {bib_number: @effort_show.bib_number}),
+                            class: "btn btn-md btn-success" %>
+            <% end %>
+        </div>
+        <div class="col-xs-2">
+            <%= div_for(@effort_show.effort) do %>
+            <%= link_to_toggle_check_in(@effort_show.effort, button_param: :check_in_effort_show) %>
+            <% end %>
+        </div>
+        <div class="col-xs-3">
+            <div class="text-right">
+            <% if @effort_show.in_progress? && current_user&.authorized_to_edit?(@effort_show.effort) %>
+                <strong><%= @effort_show.beacon_url ? 'Modify locator beacon link: ' : 'Add link to locator beacon:' %></strong>
+                <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your SPOT or other personal locator site here:"><%= "#{@effort_show.beacon_url}" %></a>
+            <% end %>
+            <% if !@effort_show.in_progress? && current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
+                <strong><%= @effort_show.report_url ? 'Modify trip report link: ' : 'Add link to trip report:' %></strong>
+                <a href="#" id="report-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your Strava page or personal trip report here:"><%= "#{@effort_show.report_url}" %></a>
+            <% end %>
+            </div>
+        </div>
+        </div>
+        <hr>
+    <% end %>
 
-  <% if @effort_show.lap_split_rows.present? %>
-    <%= render 'split_times/split_times_list' %>
-  <% end %>
+    <% if @effort_show.lap_split_rows.present? %>
+        <%= render 'split_times/split_times_list' %>
+    <% end %>
 </article>
 
 <script>

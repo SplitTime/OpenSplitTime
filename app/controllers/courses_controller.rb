@@ -77,19 +77,20 @@ class CoursesController < ApplicationController
   end
 
   def plan_effort
-    unless @course.events
+    if @course.visible_events.empty?
       flash[:danger] = 'No events yet held on this course'
       redirect_to course_path(@course)
-    end
-    @plan_display = PlanDisplay.new(@course, params)
-    respond_to do |format|
-      format.html do
-        session[:return_to] = plan_effort_course_path(@course)
-      end
-      format.csv do
-        csv_stream = render_to_string(partial: 'plan.csv.ruby')
-        filename = "#{@course.name}-pacing-plan-#{@plan_display.cleaned_time}-#{Date.today}.csv"
-        send_data(csv_stream, type: 'text/csv', filename: filename)
+    else
+      @plan_display = PlanDisplay.new(@course, params)
+      respond_to do |format|
+        format.html do
+          session[:return_to] = plan_effort_course_path(@course)
+        end
+        format.csv do
+          csv_stream = render_to_string(partial: 'plan.csv.ruby')
+          filename = "#{@course.name}-pacing-plan-#{@plan_display.cleaned_time}-#{Date.today}.csv"
+          send_data(csv_stream, type: 'text/csv', filename: filename)
+        end
       end
     end
   end

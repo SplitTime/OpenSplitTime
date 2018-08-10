@@ -16,12 +16,12 @@ class MockEffort < EffortWithLapSplitRows
     @comparison_time_points = args[:comparison_time_points]
     @expected_laps = args[:expected_laps]
     @effort_finder = args[:effort_finder] || SimilarEffortFinder.new(time_point: finish_time_point,
-                                                              time_from_start: expected_time,
-                                                              finished: true)
-    @times_planner = args[:times_planner] || SegmentTimesPlanner.new(lap_splits: lap_splits,
-                                                                     expected_time: expected_time,
-                                                                     similar_effort_ids: relevant_effort_ids,
-                                                                     calc_model: :focused)
+                                                                     time_from_start: expected_time,
+                                                                     finished: true)
+    @times_planner = args[:times_planner] || SegmentTimesPlanner.new(expected_time: expected_time,
+                                                                     event: event,
+                                                                     laps: expected_laps,
+                                                                     similar_effort_ids: relevant_effort_ids)
   end
 
   def effort
@@ -29,7 +29,7 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def lap_split_rows
-     plan_times.present? ? super : []
+    plan_times.present? ? super : []
   end
 
   def total_segment_time
@@ -62,7 +62,7 @@ class MockEffort < EffortWithLapSplitRows
 
   def ordered_split_times
     @ordered_split_times ||= comparison_time_points.present? ?
-        comparison_ordered_split_times : all_ordered_split_times
+                                 comparison_ordered_split_times : all_ordered_split_times
   end
 
   def comparison_ordered_split_times

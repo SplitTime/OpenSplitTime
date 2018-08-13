@@ -46,7 +46,7 @@ class VerifyRawTimeRow
   def set_data_status
     return if new_split_times.none?(&:time_from_start)
     Interactors::SetEffortStatus.perform(effort, ordered_split_times: ordered_split_times, lap_splits: effort_lap_splits, times_container: times_container)
-    raw_times.each do |raw_time|
+    raw_times.select(&:new_split_time).each do |raw_time|
       raw_time.data_status = raw_time.new_split_time.data_status
     end
   end

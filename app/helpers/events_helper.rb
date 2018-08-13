@@ -134,7 +134,7 @@ module EventsHelper
     else
       button_text = 'OST Remote Auto'
       confirm_text = "NOTE: Times imported from OST Remote into #{view_object.event_group_names} " +
-          'will be automatically updated, with only duplicate and questionable times requiring attention ' +
+          'will be automatically updated, with only duplicate and bad times requiring attention ' +
           'in the Live Entry view. Are you sure you want to proceed?'
     end
 

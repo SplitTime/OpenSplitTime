@@ -51,6 +51,6 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     course = create(:course)
     visit plan_effort_course_path(course)
 
-    expect(page).to have_content('No events have been run on this course.')
+    expect(page).to have_content('No events have been held on this course.')
   end
 end

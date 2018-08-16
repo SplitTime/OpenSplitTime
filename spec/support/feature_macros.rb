@@ -8,8 +8,8 @@ module FeatureMacros
     create_list(:split_times_hardrock_36, 30, effort: efforts.first)
     create_list(:split_times_hardrock_38, 30, effort: efforts.second)
     create_list(:split_times_hardrock_41, 30, effort: efforts.third)
-    create_list(:split_times_hardrock_43, 30, effort: efforts.fourth)
-    create_list(:split_times_hardrock_45, 30, effort: efforts.fifth)
+    create_list(:split_times_hardrock_43, 15, effort: efforts.fourth)
+    create_list(:split_times_hardrock_45, 0, effort: efforts.fifth)
   end
 
   def clean_up_database

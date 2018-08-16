@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # These tests will fail if the test database is rebuilt using db:schema:load

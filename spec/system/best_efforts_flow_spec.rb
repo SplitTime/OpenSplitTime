@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 include FeatureMacros
 
@@ -28,7 +30,10 @@ RSpec.describe 'Visit the best efforts page and search for an effort' do
     visit best_efforts_course_path(course)
 
     expect(page).to have_content(course.name)
-    Effort.all.each do |effort|
+    finished_efforts = Effort.ranked_with_status.select(&:finished)
+    expect(finished_efforts.size).to eq(4)
+
+    finished_efforts.each do |effort|
       expect(page).to have_content(effort.full_name)
     end
 

@@ -84,7 +84,8 @@ class EffortAnalysisView < EffortWithLapSplitRows
         MockEffort.new(event: event,
                        expected_time: mock_finish_time,
                        start_time: effort_start_time,
-                       comparison_time_points: ordered_split_times.map(&:time_point))
+                       comparison_time_points: ordered_split_times.map(&:time_point),
+                       expected_laps: ordered_split_times.last.lap)
   end
 
   def indexed_typical_rows

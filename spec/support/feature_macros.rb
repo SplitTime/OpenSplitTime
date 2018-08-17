@@ -4,12 +4,15 @@ module FeatureMacros
     splits = create_list(:splits_hardrock_ccw, 16, course: course)
     event = create(:event, course: course)
     event.splits << splits
-    efforts = create_list(:effort, 5, :with_birthdate, event: event)
-    create_list(:split_times_hardrock_36, 30, effort: efforts.first)
-    create_list(:split_times_hardrock_38, 30, effort: efforts.second)
-    create_list(:split_times_hardrock_41, 30, effort: efforts.third)
-    create_list(:split_times_hardrock_43, 15, effort: efforts.fourth)
-    create_list(:split_times_hardrock_45, 0, effort: efforts.fifth)
+    efforts = create_list(:effort, 8, :with_birthdate, event: event)
+    create_list(:split_times_hardrock_31, 30, effort: efforts[0])
+    create_list(:split_times_hardrock_33, 30, effort: efforts[1])
+    create_list(:split_times_hardrock_35, 30, effort: efforts[2])
+    create_list(:split_times_hardrock_36, 30, effort: efforts[3])
+    create_list(:split_times_hardrock_38, 30, effort: efforts[4])
+    create_list(:split_times_hardrock_41, 30, effort: efforts[5])
+    create_list(:split_times_hardrock_43, 15, effort: efforts[6])
+    create_list(:split_times_hardrock_45, 0, effort: efforts[7])
   end
 
   def clean_up_database

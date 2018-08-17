@@ -18,7 +18,7 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
 
   scenario 'The user is a visitor' do
     visit plan_effort_course_path(course)
-    fill_in 'hh:mm', with: '42:00'
+    fill_in 'hh:mm', with: '38:00'
     click_button 'Create my plan'
 
     expect(page).to have_content(course.name)
@@ -31,7 +31,7 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     login_as user, scope: :user
 
     visit plan_effort_course_path(course)
-    fill_in 'hh:mm', with: '42:00'
+    fill_in 'hh:mm', with: '38:00'
     click_button 'Create my plan'
 
     expect(page).to have_content(course.name)
@@ -49,7 +49,7 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     expect(page).to have_content('Insufficient data to create a plan.')
   end
 
-  scenario 'The course has had no events run on it' do
+  scenario 'The course has had no events held on it' do
     course = create(:course)
     visit plan_effort_course_path(course)
 

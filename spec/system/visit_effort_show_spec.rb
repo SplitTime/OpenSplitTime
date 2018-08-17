@@ -19,9 +19,9 @@ RSpec.describe 'visit a an effort show page' do
 
   let(:event) { Event.first }
   let(:course) { Course.first }
-  let(:completed_effort) { Effort.first }
-  let(:partial_effort) { Effort.fourth }
-  let(:unstarted_effort) { Effort.fifth }
+  let(:completed_effort) { Effort.all[0] }
+  let(:partial_effort) { Effort.all[6] }
+  let(:unstarted_effort) { Effort.all[7] }
 
   context 'When the effort is finished' do
     let(:effort) { completed_effort }

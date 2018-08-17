@@ -31,14 +31,14 @@ RSpec.describe 'Visit the best efforts page and search for an effort' do
 
     expect(page).to have_content(course.name)
     finished_efforts = Effort.ranked_with_status.select(&:finished)
-    expect(finished_efforts.size).to eq(4)
+    expect(finished_efforts.size).to eq(6)
 
     finished_efforts.each do |effort|
       expect(page).to have_content(effort.full_name)
     end
 
     fill_in 'First name, last name, state, or country', with: effort_1.name
-    click_button 'Find someone'
+    click_button 'search-submit'
     wait_for_css
 
     expect(page).to have_content(effort_1.name)

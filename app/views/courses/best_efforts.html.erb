@@ -19,15 +19,6 @@
       <aside class="ost-alerts col-sm-3">
       </aside>
     </div>
-    <h5>
-      <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %></strong>
-    </h5>
-    <% if @best_display.events_count > 0 %>
-      <h5><strong>
-        <%= "Searched #{pluralize(@best_display.events_count, 'event')}
-      from #{[@best_display.earliest_event_date, @best_display.most_recent_event_date].compact.join(' to ')}" %>
-      </strong></h5>
-    <% end %>
     <%= render 'course_navigation', presenter: @best_display %>
   </div>
 </header>
@@ -62,7 +53,15 @@
 </aside>
 
 <article class="ost-article container">
+  <h4>
+    <strong><%= "#{@best_display.segment_name}: #{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %></strong>
+  </h4>
   <% if @best_display.all_efforts_count > 0 %>
+    <h5>
+      <%= "Searched #{pluralize(@best_display.events_count, 'event')}
+      from #{[@best_display.earliest_event_date, @best_display.most_recent_event_date].compact.join(' to ')}" %>
+    </h5>
+
     <% if @best_display.filtered_efforts_count > 0 %>
       <%= render 'efforts/efforts_list_segment' %>
 

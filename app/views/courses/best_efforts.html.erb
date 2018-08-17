@@ -1,9 +1,10 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Best efforts - #{@best_display.name} - #{@best_display.segment_name}" %>
+  <% "OpenSplitTime: Best efforts - #{@best_display.name} - #{@best_display.segment_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
-  
+<% content_for(:container_type) do %>skip
+<% end %>
+
 <header class="ost-header">
   <div class="container">
     <div class="row">
@@ -18,7 +19,9 @@
       <aside class="ost-alerts col-sm-3">
       </aside>
     </div>
-    <h5><strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %></strong></h5>
+    <h5>
+      <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %></strong>
+    </h5>
     <% if @best_display.events_count > 0 %>
       <h5><strong>
         <%= "Searched #{pluralize(@best_display.events_count, 'event')}
@@ -28,7 +31,7 @@
     <%= render 'course_navigation', presenter: @best_display %>
   </div>
 </header>
-  
+
 <aside class="ost-toolbar container-fluid">
   <div class="container">
     <div class="row">
@@ -39,7 +42,8 @@
       </div>
       <div class="col-xs-12 col-sm-5 btn-toolbar">
         <% unless @best_display.simple? %>
-            <%= link_to 'Choose a segment', segment_picker_course_path(@best_display), class: "btn btn-primary pull-right" %>
+          <%= segment_start_dropdown(@best_display) %>
+          <%= segment_finish_dropdown(@best_display) %>
         <% end %>
         <div class="btn-group pull-right">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -56,24 +60,24 @@
     </div>
   </div>
 </aside>
-  
+
 <article class="ost-article container">
   <% if @best_display.all_efforts_count > 0 %>
-      <% if @best_display.filtered_efforts_count > 0 %>
-          <%= render 'efforts/efforts_list_segment' %>
+    <% if @best_display.filtered_efforts_count > 0 %>
+      <%= render 'efforts/efforts_list_segment' %>
 
-          <div class="row">
-            <div class="col-xs-8">
-              <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
-            </div>
-          </div>
-      <% elsif params[:search].present? && params[:search].length < 3 %>
-          <h4>Search parameter is too short</h4>
-      <% else %>
+      <div class="row">
+        <div class="col-xs-8">
+          <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
+        </div>
+      </div>
+    <% elsif params[:search].present? && params[:search].length < 3 %>
+      <h4>Search parameter is too short</h4>
+    <% else %>
 
-          <h4>No efforts match this search</h4>
-      <% end %>
+      <h4>No efforts match this search</h4>
+    <% end %>
   <% else %>
-      <h4>No efforts have been measured on this segment.</h4>
+    <h4>No efforts have been measured on this segment.</h4>
   <% end %>
 </article>

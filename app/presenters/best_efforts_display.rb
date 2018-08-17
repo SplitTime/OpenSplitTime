@@ -2,7 +2,7 @@
 
 class BestEffortsDisplay < BasePresenter
   attr_reader :course
-  delegate :name, :simple?, :to_param, to: :course
+  delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
            :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
@@ -66,13 +66,21 @@ class BestEffortsDisplay < BasePresenter
     segment.full_course?
   end
 
-  private
-
-  attr_reader :events, :params
-
   def ordered_splits
     @ordered_splits ||= course.ordered_splits
   end
+
+  def split1
+    params[:split1] || ordered_splits.first.to_param
+  end
+
+  def split2
+    params[:split2] || ordered_splits.last.to_param
+  end
+
+  private
+
+  attr_reader :events, :params
 
   def segment
     return @segment if defined?(@segment)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BestEffortsDisplay < BasePresenter
-
+  attr_reader :course
   delegate :name, :simple?, :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
            :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
@@ -68,7 +68,7 @@ class BestEffortsDisplay < BasePresenter
 
   private
 
-  attr_reader :course, :events, :params
+  attr_reader :events, :params
 
   def ordered_splits
     @ordered_splits ||= course.ordered_splits

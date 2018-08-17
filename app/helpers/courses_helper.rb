@@ -7,8 +7,7 @@ module CoursesHelper
                                                        split2: view_object.end_id,
                                                        'filter[gender]' => gender,
                                                        'filter[search]' => view_object.search_text),
-            disabled: view_object.gender_text == gender,
-            class: 'btn btn-sm btn-primary'
+            disabled: view_object.gender_text == gender
   end
 
   def plan_export_headers

@@ -1,54 +1,50 @@
-<%= form_tag plan_effort_course_path, :html => {class: "form-horizontal", role: "form"}, method: :get do %>
+<%= form_with url: plan_effort_course_path, local: true, method: :get do |form| %>
     <div class="row">
-      <div class="col-xs-2 plan-label">
-        <%= label :start_time, 'Event start time' %>
+      <div class="col-xs-3 plan-label">
+        <%= form.label :start_time, 'Event start time' %>
       </div>
+      
       <div class="col-xs-6">
-        <%= datetime_select 'start_time',
-                            'date',
-                            {use_short_month: true,
-                             start_year: (Date.today + 5.years).year,
-                             end_year: (Date.today - 5.years).year,
-                             ampm: true,
-                             default: @plan_display.start_time,
-                             order: [:month, :day, :year]},
-                            {class: "dropdown-select-field"} %>
+
+        <div class="input-group date" id="datetimepicker">
+          <%= form.text_field :start_time, 
+                            value: @plan_display.start_time&.strftime('%m/%d/%Y %H:%M:%S'),
+                            placeholder: 'mm/dd/yyyy hh:mm:ss',
+                            class: 'form-control',
+                            data: {provide: 'datetimepicker',
+                                  date_format: 'MM/DD/YYYY HH:mm:ss',
+                                  date_default_date: @plan_display.start_time&.strftime('%m/%d/%Y %H:%M:%S')} %>
+          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
       </div>
     </div>
     <% if @plan_display.multiple_laps? %>
         <div class="row">
-          <div class="col-xs-2 plan-label">
+          <div class="col-xs-3 plan-label">
             <strong>Expected laps</strong>
           </div>
-          <div class="col-xs-2 plan-label">
-            <div class="input-group">
-              <%= text_field_tag :expected_laps,
-                                 @plan_display.expected_laps,
-                                 placeholder: 'number of laps',
-                                 autofocus: true,
-                                 class: 'form-control input-sm' %>
-            </div>
+          <div class="col-xs-2">
+            <%= form.text_field_tag :expected_laps,
+                                @plan_display.expected_laps,
+                                placeholder: 'number of laps',
+                                autofocus: true,
+                                class: 'form-control input-sm' %>
           </div>
         </div>
     <% end %>
     <div class="row">
-      <div class="col-xs-2 plan-label">
-        <strong>Expected time</strong>
+      <div class="col-xs-3 plan-label">
+        <strong><%= label :expected_time, 'Expected time' %></strong>
       </div>
-      <div class="col-xs-2 plan-label">
-        <div class="input-group">
-          <span class="input-group-btn">
-            <%= label :expected_time, 'Expected time' %>
-            <%= text_field_tag :expected_time,
-                               @plan_display.cleaned_time,
-                               placeholder: 'hh:mm',
-                               autofocus: true,
-                               class: 'form-control search-box input-sm' %>
-            <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
-              Create my plan
-          <% end %>
-          </span>
-        </div>
+      <div class="col-xs-2">
+        <%= form.text_field_tag :expected_time,
+                            @plan_display.cleaned_time,
+                            placeholder: 'hh:mm',
+                            autofocus: true,
+                            class: 'form-control search-box input-sm' %>
       </div>
     </div>
+    <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
+      Create my plan
+    <% end %>
 <% end %>

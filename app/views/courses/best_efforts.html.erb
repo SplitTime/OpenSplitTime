@@ -1,61 +1,79 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Best efforts - #{@best_display.name} - #{@best_display.segment_name}" %>
 <% end %>
-<div class="row header">
-  <div class="col-xs-7">
-    <h2><strong><%= link_to @best_display.name, course_path(@best_display) -%>: All-time best</strong></h2>
-    <strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %>
-      <br/>
-      <% if @best_display.events_count > 0 %>
 
-          <%= "Searched #{pluralize(@best_display.events_count, 'event')}
-        from #{[@best_display.earliest_event_date, @best_display.most_recent_event_date].compact.join(' to ')}" %>
-          <br/>
-      <% end %>
-    </strong>
-  </div>
-
-  <div class="col-xs-5 page-navigation">
+<% content_for(:container_type) do %>skip<% end %>
+  
+<header class="ost-header">
+  <div class="container">
     <div class="row">
-      <div class="btn-group">
-        <%= link_to_best_efforts_gender(@best_display, 'combined') %>
-        <%= link_to_best_efforts_gender(@best_display, 'male') %>
-        <%= link_to_best_efforts_gender(@best_display, 'female') %>
+      <div class="ost-title col-sm-9">
+        <h1><strong><%= [@best_display.name, "All-time Best"].compact.join(': ') %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Courses', courses_path %></li>
+          <li><%= link_to @best_display.name, course_path(@best_display) %></li>
+          <li class="active">All-Time best</li>
+        </ul>
       </div>
-      <% unless @best_display.simple? %>
-          <%= link_to 'Choose a segment', segment_picker_course_path(@best_display), class: "btn btn-sm btn-primary" %>
-      <% end %>
+      <aside class="ost-alerts col-sm-3">
+      </aside>
     </div>
-    <div class="page-navigation-text">
-      <h4> <%= @best_display.title_text %></h4>
+    <h5><strong><%= "#{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %></strong></h5>
+    <% if @best_display.events_count > 0 %>
+      <h5><strong>
+        <%= "Searched #{pluralize(@best_display.events_count, 'event')}
+      from #{[@best_display.earliest_event_date, @best_display.most_recent_event_date].compact.join(' to ')}" %>
+      </strong></h5>
+    <% end %>
+    <%= render 'course_navigation', presenter: @best_display %>
+  </div>
+</header>
+  
+<aside class="ost-toolbar container-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-7">
+        <% if @best_display.all_efforts_count > 0 %>
+          <%= render 'best_efforts_lookup' %>
+        <% end %>
+      </div>
+      <div class="col-xs-12 col-sm-5 btn-toolbar">
+        <% unless @best_display.simple? %>
+            <%= link_to 'Choose a segment', segment_picker_course_path(@best_display), class: "btn btn-primary pull-right" %>
+        <% end %>
+        <div class="btn-group pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            <%= @best_display.gender_text.capitalize %>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><%= link_to_best_efforts_gender(@best_display, 'combined') %></li>
+            <li><%= link_to_best_efforts_gender(@best_display, 'male') %></li>
+            <li><%= link_to_best_efforts_gender(@best_display, 'female') %></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</aside>
+  
+<article class="ost-article container">
+  <% if @best_display.all_efforts_count > 0 %>
+      <% if @best_display.filtered_efforts_count > 0 %>
+          <%= render 'efforts/efforts_list_segment' %>
 
-<% if @best_display.all_efforts_count > 0 %>
-
-    <%= render 'best_efforts_lookup' %>
-
-    <% if @best_display.filtered_efforts_count > 0 %>
-        <div class="row">
-          <div class="col-xs-8">
-            <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
+          <div class="row">
+            <div class="col-xs-8">
+              <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
+            </div>
           </div>
-        </div>
+      <% elsif params[:search].present? && params[:search].length < 3 %>
+          <h4>Search parameter is too short</h4>
+      <% else %>
 
-        <%= render 'efforts/efforts_list_segment' %>
-
-        <div class="row">
-          <div class="col-xs-8">
-            <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
-          </div>
-        </div>
-    <% elsif params[:search].present? && params[:search].length < 3 %>
-        <h4>Search parameter is too short</h4>
-    <% else %>
-
-        <h4>No efforts match this search</h4>
-    <% end %>
-<% else %>
-    <h4>No efforts have been measured on this segment.</h4>
-<% end %>
+          <h4>No efforts match this search</h4>
+      <% end %>
+  <% else %>
+      <h4>No efforts have been measured on this segment.</h4>
+  <% end %>
+</article>

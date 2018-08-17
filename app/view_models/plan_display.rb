@@ -4,6 +4,7 @@ class PlanDisplay
 
   attr_reader :course, :expected_time, :expected_laps
 
+  delegate :simple?, to: :course
   delegate :relevant_events, :relevant_efforts, :lap_split_rows, :total_segment_time, :total_time_in_aid,
            :relevant_efforts_count, :event_years_analyzed, to: :mock_effort
   delegate :multiple_laps?, to: :event
@@ -30,7 +31,7 @@ class PlanDisplay
   end
 
   def start_time
-    params[:start_time].present? ? TimeConversion.components_to_absolute(params[:start_time]) : default_start_time
+    params[:start_time].present? ? DateTime.parse(params[:start_time]) : default_start_time
   end
 
   def course_name

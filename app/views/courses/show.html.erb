@@ -1,81 +1,74 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Show course - #{@presenter.name}" %>
 <% end %>
-<div class="row header">
-  <div class="col-xs-7">
-    <h2><strong><%= @presenter.name %></strong></h2>
-  </div>
-  <div class="col-xs-5 page-navigation">
-    <div class="row">
-      <% if current_user&.authorized_to_edit?(@presenter.course) %>
-          <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
-          <%= link_to 'New split', new_split_path(course_id: @presenter.id), class: 'btn btn-sm btn-success' %>
-          <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
-                      method: :delete,
-                      data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
-                      class: 'btn btn-sm btn-danger' %>
-      <% end %>
-      <% unless @presenter.simple? %>
-          <%= link_to 'Plan my effort', plan_effort_course_path(@presenter.course), method: :get, class: 'btn btn-sm btn-primary' %>
-      <% end %>
-      <%= link_to 'All-time best', best_efforts_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
-    </div>
-  </div>
-</div>
 
-<div class="row">
-  <% if @presenter.description %>
-      <div class="col-md-4">
+
+
+<% content_for(:container_type) do %>skip<% end %>
+  
+<header class="ost-header">
+  <div class="container">
+    <div class="row">
+      <div class="ost-title col-sm-9">
+        <h1><strong><%= @presenter.name %></strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li><%= link_to 'Courses', courses_path %></li>
+          <li><%= link_to @presenter.name, course_path(@presenter.course) %></li>
+          <li class="active"><%= @presenter.display_style.titleize %></li>
+        </ul>
+      </div>
+      <aside class="ost-alerts col-sm-3">
+      </aside>
+    </div>
+    <% if @presenter.description %>
+      <h5>
         <%= @presenter.description %>
-      </div>
-  <% end %>
-  <% if @presenter.course_has_location_data? %>
-      <div class="col-md-8">
-        <div id="map" style="width: 550px; height: 350px;"></div>
-
-        <script>
-            document.addEventListener("turbolinks:load", function () {
-                var locations = <%= @presenter.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
-                var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
-
-                gmap_show(locations, trackPoints);    // init show map
-            });
-        </script>
-
-      </div>
-  <% end %>
-</div>
-
-<div class="row header">
-  <div class="col-xs-5">
-    <h3><%= @presenter.display_style.titleize %></h3>
+      </h5>
+    <% end %>
+    <%= render 'course_navigation', presenter: @presenter %>
   </div>
-  <div class="col-xs-7 page-navigation">
+</header>
+  
+<aside class="ost-toolbar container-fluid">
+  <div class="container">
     <div class="row">
-      <div class="btn-group">
-        <%= link_to 'Splits',
-                    request.params.merge(display_style: 'splits'),
-                    disabled: @presenter.display_style == 'splits',
-                    class: 'btn btn-sm btn-primary' %>
-        <%= link_to 'Events',
-                    request.params.merge(display_style: 'events'),
-                    disabled: @presenter.display_style == 'events',
-                    class: 'btn btn-sm btn-primary' %>
+      <div class="col-xs-12 btn-toolbar">
+        <% if current_user&.authorized_to_edit?(@presenter.course) %>
+          <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
+          <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
+                        method: :delete,
+                        data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
+                        class: 'btn btn-sm btn-danger' %>
+        <% end %>
       </div>
     </div>
   </div>
-</div>
+</aside>
 
-<% if @presenter.display_style == 'splits' %>
+<article class="ost-article container">
+  <% if @presenter.course_has_location_data? %>
+    <div id="map" style="width: 100%; height: 350px;"></div>
+    <script>
+      document.addEventListener("turbolinks:load", function () {
+        var locations = <%= @presenter.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
+        var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
+        gmap_show(locations, trackPoints);    // init show map
+      });
+    </script>
+  <% end %>
+  <br/>
+
+  <% if @presenter.display_style == 'splits' %>
     <% if @presenter.ordered_splits.present? %>
-        <%= render 'splits/splits', splits: @presenter.ordered_splits, referred_by: course_path(@presenter) %>
+      <%= render 'splits/splits', splits: @presenter.ordered_splits, referred_by: course_path(@presenter) %>
     <% else %>
-        <h4>No splits are associated with this course.</h4>
+      <h4>No splits are associated with this course.</h4>
     <% end %>
-<% else %>
+  <% else %>
     <% if @presenter.events.present? %>
-        <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
+      <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
     <% else %>
-        <h4>No events have been held on this course.</h4>
+      <h4>No events have been held on this course.</h4>
     <% end %>
-<% end %>
+  <% end %>
+</article>

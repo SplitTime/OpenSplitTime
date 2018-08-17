@@ -1,0 +1,16 @@
+<ul class="nav nav-tabs nav-tabs-ost">
+  <%= content_tag :li, class: action_name == 'show' && presenter.display_style == 'splits' ? 'active' : '' do %>
+    <%= link_to "Splits", course_path(presenter.course, display_style: 'splits') %>
+  <% end %>
+  <%= content_tag :li, class: action_name == 'show' && presenter.display_style == 'events' ? 'active' : '' do %>
+     <%= link_to "Events", course_path(presenter.course, display_style: 'events') %>
+  <% end %>
+  <%= content_tag :li, class: action_name == 'best_efforts' ? 'active' : '' do %>
+     <%= link_to "All-Time Best", best_efforts_course_path(presenter.course) %>
+  <% end %>
+  <% unless presenter.simple? %>
+    <%= content_tag :li, class: action_name == 'plan_effort' ? 'active' : '' do %>
+      <%= link_to 'Plan my effort', plan_effort_course_path(presenter.course) %>
+    <% end %>
+  <% end %>
+</ul>

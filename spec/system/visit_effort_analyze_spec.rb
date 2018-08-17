@@ -19,9 +19,11 @@ RSpec.describe 'visit a an effort analyze page' do
 
   let(:event) { Event.first }
   let(:course) { Course.first }
-  let(:completed_effort) { Effort.all[0] }
-  let(:partial_effort) { Effort.all[6] }
-  let(:unstarted_effort) { Effort.all[7] }
+
+  let(:enriched_efforts) { Effort.ranked_with_status }
+  let(:completed_effort) { enriched_efforts.find(&:finished) }
+  let(:partial_effort) { enriched_efforts.select(&:started).reject(&:finished).first }
+  let(:unstarted_effort) { enriched_efforts.reject(&:started).first }
 
   context 'When the effort is finished' do
     let(:effort) { completed_effort }

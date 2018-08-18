@@ -24,7 +24,7 @@ class EffortsController < ApplicationController
   end
 
   def show
-    @effort_show = EffortShowView.new(effort: @effort)
+    @presenter = EffortShowView.new(effort: @effort)
     session[:return_to] = effort_path(@effort)
   end
 
@@ -67,7 +67,6 @@ class EffortsController < ApplicationController
         render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
       when :check_in_effort_show
         effort = effort_with_splits
-        @effort_show = EffortShowView.new(effort: effort) # Is this necessary?
         render :toggle_group_check_in, locals: {effort: effort, view_object: nil}
       when :disassociate
         redirect_to request.referrer
@@ -93,12 +92,12 @@ class EffortsController < ApplicationController
   end
 
   def analyze
-    @effort_analysis = EffortAnalysisView.new(@effort)
+    @presenter = EffortAnalysisView.new(@effort)
     session[:return_to] = analyze_effort_path(@effort)
   end
 
   def place
-    @effort_place = PlaceDetailView.new(@effort)
+    @presenter = PlaceDetailView.new(@effort)
     session[:return_to] = place_effort_path(@effort)
   end
 

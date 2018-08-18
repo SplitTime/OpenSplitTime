@@ -11,7 +11,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @effort_place.place_detail_rows.each do |place_detail_row| %>
+  <% view_object.place_detail_rows.each do |place_detail_row| %>
       <tr>
         <td><%= place_detail_row.name %></td>
         <td class="text-right"><%= d(place_detail_row.distance_from_start) %></td>

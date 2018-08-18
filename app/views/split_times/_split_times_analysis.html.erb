@@ -4,36 +4,36 @@
     <th>Split</th>
     <th class="text-right"><%= pdu('singular').titleize %></th>
     <th class="text-center">Segment<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{@effort_analysis.full_name}'s actual segment times" %>">Time</a>
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times" %>">Time</a>
       /
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average segment times for a typical #{time_format_xxhyym(@effort_analysis.farthest_recorded_time)} time to #{@effort_analysis.farthest_recorded_split_name}" %>">Expected</a>
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average segment times for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
     </th>
     <th class="text-center">Segment<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{@effort_analysis.full_name}'s segments were over or (under) typical times" %>">Over
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segments were over or (under) typical times" %>">Over
         (Under)</a>
     </th>
     <th class="text-center">In Aid<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{@effort_analysis.full_name}'s actual times in aid" %>">Time</a>
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual times in aid" %>">Time</a>
       /
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average times in aid for a typical #{time_format_xxhyym(@effort_analysis.farthest_recorded_time)} time to #{@effort_analysis.farthest_recorded_split_name}" %>">Expected</a>
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
     </th>
     <th class="text-center">In Aid<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{@effort_analysis.full_name}'s times in aid were over or (under) typical times" %>">Over
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s times in aid were over or (under) typical times" %>">Over
         (Under)</a>
     </th>
     <th class="text-center">Combined<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{@effort_analysis.full_name}'s actual segment times + times in aid" %>">Time</a>
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times + times in aid" %>">Time</a>
       /
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average segment times + times in aid for a typical #{time_format_xxhyym(@effort_analysis.farthest_recorded_time)} time to #{@effort_analysis.farthest_recorded_split_name}" %>">Expected</a>
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average segment times + times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
     </th>
     <th class="text-center">Combined<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{@effort_analysis.full_name}'s segment times + times in aid were over or (under) typical times" %>">Over
+      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segment times + times in aid were over or (under) typical times" %>">Over
         (Under)</a>
     </th>
   </tr>
   </thead>
   <tbody>
-  <% @effort_analysis.analysis_rows.each do |analysis_row| %>
+  <% view_object.analysis_rows.each do |analysis_row| %>
       <tr>
         <td><%= analysis_row.name %></td>
         <td class="text-right"><%= d(analysis_row.distance_from_start) %></td>
@@ -49,22 +49,22 @@
     <td><strong>Totals</strong></td>
     <td></td>
     <td class="text-center">
-      <strong><%= [time_format_xxhyym(@effort_analysis.total_segment_time), time_format_xxhyym(@effort_analysis.total_segment_time_typical)].join(' / ') %></strong>
+      <strong><%= [time_format_xxhyym(view_object.total_segment_time), time_format_xxhyym(view_object.total_segment_time_typical)].join(' / ') %></strong>
     </td>
     <td class="text-center">
-      <strong><%= time_format_minutes(@effort_analysis.total_segment_time_over_under) %></strong>
+      <strong><%= time_format_minutes(view_object.total_segment_time_over_under) %></strong>
     </td>
     <td class="text-center">
-      <strong><%= [time_format_xxhyym(@effort_analysis.total_time_in_aid), time_format_xxhyym(@effort_analysis.total_time_in_aid_typical)].join(' / ') %></strong>
+      <strong><%= [time_format_xxhyym(view_object.total_time_in_aid), time_format_xxhyym(view_object.total_time_in_aid_typical)].join(' / ') %></strong>
     </td>
     <td class="text-center">
-      <strong><%= time_format_minutes(@effort_analysis.total_time_in_aid_over_under) %></strong>
+      <strong><%= time_format_minutes(view_object.total_time_in_aid_over_under) %></strong>
     </td>
     <td class="text-center">
-      <strong><%= [time_format_xxhyym(@effort_analysis.total_time_combined), time_format_xxhyym(@effort_analysis.typical_finish_tfs)].join(' / ') %></strong>
+      <strong><%= [time_format_xxhyym(view_object.total_time_combined), time_format_xxhyym(view_object.typical_finish_tfs)].join(' / ') %></strong>
     </td>
     <td class="text-center">
-      <strong><%= time_format_minutes(@effort_analysis.total_combined_time_over_under) %></strong>
+      <strong><%= time_format_minutes(view_object.total_combined_time_over_under) %></strong>
     </td>
   </tr>
   </tbody>

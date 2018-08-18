@@ -7,7 +7,7 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-9">
+      <div class="ost-title col-xs-12 col-sm-7">
         <h1><strong>
             <% if @effort_show.person %>
                 <%= link_to @effort_show.full_name, person_path(@effort_show.person) %>
@@ -21,6 +21,11 @@
             <li><%= link_to @effort_show.event_group.name, event_group_path(@effort_show.event_group) %></li>
             <li><%= @effort_show.full_name %></li>
         </ul>
+      </div>
+      <div class="col-xs-12 col-sm-2">
+        <% if @effort_show.photo.present? %>
+          <%= link_to image_tag(@effort_show.photo.url(:thumb)), {action: :show_photo} %>
+        <% end %>
       </div>
       <aside class="ost-alerts col-sm-3">
       </aside>
@@ -76,13 +81,6 @@
 </aside>
 
 <article class="ost-article container">
-    <div class="row">
-        <div class="col-xs-3">
-            <% if @effort_show.photo.present? %>
-                <%= link_to image_tag(@effort_show.photo.url(:thumb)), {action: :show_photo} %>
-            <% end %>
-        </div>
-    </div>
     <% if current_user&.authorized_to_edit?(@effort_show.effort) || current_user&.authorized_to_edit_personal?(@effort_show.effort) %>
         <div class="row">
         <div class="col-xs-7">

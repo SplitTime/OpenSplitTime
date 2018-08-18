@@ -3,7 +3,7 @@
 require 'rails_helper'
 include FeatureMacros
 
-RSpec.describe 'visit a an effort analyze page' do
+RSpec.describe 'visit an effort analyze page' do
   before(:context) do
     create_hardrock_event
   end
@@ -80,7 +80,7 @@ RSpec.describe 'visit a an effort analyze page' do
     end
   end
 
-  context 'when the effort is partially finished' do
+  xcontext 'when the effort is partially finished' do
     let(:effort) { partial_effort }
     before { expect(effort.split_times.size).to eq(15) }
 

@@ -3,7 +3,7 @@
 require 'rails_helper'
 include FeatureMacros
 
-RSpec.describe 'visit a an effort show page' do
+RSpec.describe 'visit an effort show page' do
   before(:context) do
     create_hardrock_event
   end

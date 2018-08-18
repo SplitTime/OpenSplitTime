@@ -2,13 +2,12 @@
   <% "OpenSplitTime: Show effort - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
+<% content_for(:container_type) do %>skip<% end %>
 
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-9">
+      <div class="ost-title col-xs-12 col-sm-7">
         <h1><strong>
           <% if @presenter.person %>
             <%= link_to @presenter.full_name, person_path(@presenter.person) %>
@@ -25,6 +24,11 @@
           <li><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
           <li><%= @presenter.full_name %></li>
         </ul>
+      </div>
+      <div class="col-xs-12 col-sm-2">
+        <% if @effort_show.photo.present? %>
+          <%= link_to image_tag(@effort_show.photo.url(:thumb)), {action: :show_photo} %>
+        <% end %>
       </div>
       <aside class="ost-alerts col-sm-3">
       </aside>
@@ -80,13 +84,6 @@
 </aside>
 
 <article class="ost-article container">
-  <div class="row">
-    <div class="col-xs-3">
-      <% if @presenter.photo.present? %>
-        <%= link_to image_tag(@presenter.photo.url(:thumb)), {action: :show_photo} %>
-      <% end %>
-    </div>
-  </div>
   <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
     <div class="row">
       <div class="col-xs-7">

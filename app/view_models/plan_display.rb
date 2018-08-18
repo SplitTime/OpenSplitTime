@@ -2,7 +2,7 @@
 
 class PlanDisplay
 
-  attr_reader :course, :expected_time, :expected_laps
+  attr_reader :course
 
   delegate :simple?, to: :course
   delegate :relevant_events, :relevant_efforts, :lap_split_rows, :total_segment_time, :total_time_in_aid,
@@ -31,7 +31,16 @@ class PlanDisplay
   end
 
   def start_time
-    params[:start_time].present? ? DateTime.parse(params[:start_time]) : default_start_time
+    case
+    when params[:start_time].blank?
+      default_start_time
+    when params[:start_time].is_a?(String)
+      DateTime.parse(params[:start_time])
+    when params[:start_time].is_a?(ActionController::Parameters)
+      TimeConversion.components_to_absolute(params[:start_time])
+    else
+      default_start_time
+    end
   end
 
   def course_name

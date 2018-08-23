@@ -23,6 +23,7 @@ class EventCourseOrgSetter
       submitted_resources.each do |resource|
         update_resource(resource)
       end
+      event.splits << course.splits if event.splits.empty?
       raise ActiveRecord::Rollback if status
     end
     self.status ||= :ok

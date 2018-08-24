@@ -192,3 +192,36 @@
 .dropdown-toggle .glyphicon {
     color: $blue;
 }
+
+.alert {
+    &.alert-orange {
+        background: $orange;
+        color: $white;
+        
+        a {
+            text-decoration: none;
+            color: $white;
+        }
+    }
+
+    [data-notify="dismiss"] {
+        color: $white;
+    }
+
+    [data-notify="wrapper"]{
+        display: flex;
+    }
+
+    [data-notify="content"] {
+        text-align: left;
+    }
+
+    [data-notify="title"] {
+        font-weight: bold;
+    }
+
+    [data-notify="icon"] {
+        font-size: 1.2em;
+        padding-right: 0.5em;
+    }
+}

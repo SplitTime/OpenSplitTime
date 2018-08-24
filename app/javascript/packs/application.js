@@ -12,3 +12,5 @@ global.preferredDistanceUnit = preferredDistanceUnit;
 global.preferredElevationUnit = preferredElevationUnit;
 global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
+
+import 'utils/growl';

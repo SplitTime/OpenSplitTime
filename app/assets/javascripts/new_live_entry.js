@@ -159,6 +159,10 @@
                     var unmatchedCount = (typeof data.unmatched === 'number') ? data.unmatched : 0;
                     liveEntry.pusher.displayNewCount(unconsideredCount, unmatchedCount);
                 });
+
+                $(document).on('click', '[href="#js-pull-times"]', function() {
+                    
+                });
             },
 
             displayNewCount: function (unconsideredCount, unmatchedCount) {
@@ -167,12 +171,19 @@
                 $('#js-pull-times-count').text(unconsideredText);
                 $('#js-force-pull-times-count').text(unmatchedText);
 
+                var notifier = liveEntry.pusher.notification;
                 if (unconsideredCount > 0) {
-                    $('#js-new-times-alert').fadeTo(500, 1);
-                } else if ($('#js-new-times-alert').is(":visible")) {
-                    $('#js-new-times-alert').fadeTo(500, 0, function () {
-                        $('#js-new-times-alert').hide()
-                    });
+                    if (!notifier || !notifier.$ele.is(':visible') || notifier.$ele.data('closing')) {
+                        liveEntry.pusher.notification = $.notify({
+                            icon: 'glyphicon glyphicon-time',
+                            title:'New Live Times Available',
+                            message: 'Click to pull times.',
+                            url: '#js-pull-times',
+                            target: '_self'
+                        }, {delay: 0});
+                    }
+                } else if (notifier) {
+                    notifier.close();
                 }
             }
         },
@@ -1049,6 +1060,27 @@
                             liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
                         }
                     }
+                    // If any time rows were bounced back...
+                    if (returnedRows.length >= 1) {
+                        // If submitting one node...
+                        if (tableNodes.length <= 1) {
+                            $.notify({
+                                title: 'Failed to submit time row!',
+                                message: returnedRows[0].errors.join(', ')
+                            }, { 
+                                type: 'danger'
+                            });
+                        // If submitting multiple nodes...
+                        } else {
+                            $.notify({
+                                title: 'Failed to submit ' + returnedRows.length +
+                                    ' of ' + tableNodes.length + ' time rows!',
+                                message: ''
+                            }, { 
+                                type: 'danger'
+                            });
+                        }
+                    }
                 }).always(function () {
                     liveEntry.timeRowsTable.busy = false;
                 });
@@ -1321,6 +1353,8 @@
             liveEntry.init();
         }
     });
+
+    window.liveEntry = liveEntry;
 
 })
 (jQuery);

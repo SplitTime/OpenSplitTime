@@ -2,14 +2,7 @@ import 'bootstrap-notify';
 
 var originalNotify = $.notify;
 $.notify = function(content, options) {
-    // if (options['onClick'] && !content['url']) {
-    //     content['url'] = '#js';
-    // }
     var retval = originalNotify(content, options);
-    // if ($.isPlainObject(retval)) {
-
-    //     console.log(retval.$ele);
-    // }
     return retval;
 }
 

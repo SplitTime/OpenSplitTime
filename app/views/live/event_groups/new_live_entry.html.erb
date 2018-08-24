@@ -7,7 +7,7 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-5">
+      <div class="ost-title col-xs-12">
         <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
           <li><%= link_to 'Organizations', organizations_path %></li>
@@ -16,15 +16,6 @@
           <li class="active">Live Entry</li>
         </ul>
       </div>
-      <aside class="ost-alerts col-sm-7">
-        <div id="js-new-times-alert" class="alert alert-orange float-right" role="alert">
-          <a href="#js-pull-times" class="alert-body">
-            <i class="glyphicon glyphicon-time alert-icon"></i>
-            <strong>New Live Times Available</strong><br/>
-            Click to pull times.
-          </a>
-        </div>
-      </aside>
     </div>
     <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ENV['BASE_URI']}) do %>
     <% end %>

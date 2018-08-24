@@ -8,7 +8,7 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-9">
+      <div class="ost-title col-xs-12">
         <h1><strong>
           <% if @presenter.person %>
             <%= link_to @presenter.full_name, person_path(@presenter.person) %>
@@ -27,8 +27,6 @@
           <li>Analyze</li>
         </ul>
       </div>
-      <aside class="ost-alerts col-sm-3">
-      </aside>
     </div>
     <h5>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h5>
     <h5>Status:

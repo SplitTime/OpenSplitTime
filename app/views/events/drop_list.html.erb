@@ -7,14 +7,12 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-5">
+      <div class="ost-title col-xs-12">
         <h1><strong><%= "#{@event_dropped_display.name}: Drop List" %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
           <li class="active">Progress Report</li>
         </ul>
       </div>
-      <aside class="ost-alerts col-sm-7">
-      </aside>
     </div>
     <%= render 'events/view_buttons', view_object: @event_dropped_display %>
   </div>

@@ -20,7 +20,7 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-5">
+      <div class="ost-title col-xs-12">
         <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
           <li><%= link_to 'Organizations', organizations_path %></li>
@@ -28,8 +28,6 @@
           <li class="active"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
         </ul>
       </div>
-      <aside class="ost-alerts col-sm-7">
-      </aside>
     </div>
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>

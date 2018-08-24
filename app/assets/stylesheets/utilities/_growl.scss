@@ -17,6 +17,18 @@
 
     // Customized alert styles for growl
     &.alert {
+        &-success {
+            background: $btn-success-bg;
+            border-color: $btn-success-border;
+            color: $white;
+        }
+
+        &-info {
+            background: $btn-info-bg;
+            border-color: $btn-info-border;
+            color: $white;
+        }
+
         &-danger {
             background: $btn-danger-bg;
             border-color: $btn-danger-border;

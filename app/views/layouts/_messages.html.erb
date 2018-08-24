@@ -1,4 +1,5 @@
 <%# Rails flash messages styled for Bootstrap 3.0 %>
+<!--
 <% flash.each do |name, msg| %>
   <% if msg.is_a?(String) %>
     <div class="alert alert-<%= name %> alert-dismissible">
@@ -6,4 +7,23 @@
       <%= content_tag :div, msg, :id => "flash_#{name}" unless msg.blank?%>
     </div>
   <% end %>
+<% end %>
+-->
+
+<%# New Growl Style Flash Messages %>
+<% if ! flash.empty? %>
+<script type="text/javascript">
+  $(function() {
+    <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) %>
+        $.notify({
+          message: '<%= j msg %>'
+        }, {
+          type: '<%= j name %>',
+          delay: 0 // Prevent automatic dismissal
+        });
+      <% end %>
+    <% end %>
+  });
+</script>
 <% end %>

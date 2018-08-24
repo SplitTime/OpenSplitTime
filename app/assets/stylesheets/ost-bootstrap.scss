@@ -203,9 +203,18 @@
             color: $white;
         }
     }
+}
+
+.growl {
+    padding-right: 25px;
 
     [data-notify="dismiss"] {
         color: $white;
+        opacity: 0.6;
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 
     [data-notify="wrapper"]{

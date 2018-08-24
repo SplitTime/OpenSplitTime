@@ -19,5 +19,6 @@
  *= require jquery.fileupload
  *= require jquery.fileupload-ui
  *= require font-awesome
+ *= require animate.css
  *= require bootstrap-datetimepicker
  */

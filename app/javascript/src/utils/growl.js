@@ -2,7 +2,7 @@ import 'bootstrap-notify';
 
 $.notifyDefaults({
     template: 
-'<div data-notify="container" class="col-xs-11 col-sm-4 alert alert-{0}" role="alert">\
+'<aside data-notify="container" class="col-xs-11 col-sm-4 alert growl alert-{0}" role="alert">\
     <button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>\
     <span data-notify="wrapper">\
         <span data-notify="icon"></span>\
@@ -15,5 +15,6 @@ $.notifyDefaults({
             <a href="{3}" target="{4}" data-notify="url"></a>\
         </span>\
     </span>\
-</div>',
+</aside>',
+    type: 'orange'
 });

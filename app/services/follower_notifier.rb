@@ -19,6 +19,7 @@ class FollowerNotifier
       response
     else
       logger.info "Unable to publish to #{topic_arn}"
+      response
     end
   end
 

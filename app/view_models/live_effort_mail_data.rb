@@ -11,7 +11,7 @@ class LiveEffortMailData
                            exclusive: [:person, :person_id, :split_times, :split_time_ids, :multi_lap],
                            class: self.class)
     @person = args[:person] || Person.friendly.find(args[:person_id])
-    @split_times = args[:split_times] || SplitTime.where(id: args[:split_time_ids]).includes(:split, effort: :event)
+    @split_times = args[:split_times] || SplitTime.where(id: args[:split_time_ids]).includes(:split, effort: :event).ordered
   end
 
   def effort_data

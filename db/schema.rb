@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180714181220) do
+ActiveRecord::Schema.define(version: 20180826145506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,6 +173,18 @@ ActiveRecord::Schema.define(version: 20180714181220) do
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.integer "updated_by"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "effort_id", null: false
+    t.integer "distance", null: false
+    t.integer "bitkey", null: false
+    t.integer "follower_ids", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by"
+    t.integer "updated_by"
+    t.index ["effort_id"], name: "index_notifications_on_effort_id"
   end
 
   create_table "organizations", id: :serial, force: :cascade do |t|
@@ -369,6 +381,7 @@ ActiveRecord::Schema.define(version: 20180714181220) do
   add_foreign_key "live_times", "events"
   add_foreign_key "live_times", "split_times"
   add_foreign_key "live_times", "splits"
+  add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"
   add_foreign_key "raw_times", "split_times"

@@ -27,11 +27,6 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because laps exceed maximum required"]}}
     end
 
-    def live_time_mismatch_error
-      {title: 'Live times do not match',
-       detail: {messages: ['One or more live times is not related to the provided event']}}
-    end
-
     def missing_effort_error
       {title: 'Missing effort',
       detail: {messages: ['The raw_time is missing an effort']}}

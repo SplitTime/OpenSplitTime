@@ -16,7 +16,6 @@ module Interactors
 
     def perform!
       ActiveRecord::Base.transaction do
-        unlink_live_times
         delete_split_times
         delete_efforts
         raise ActiveRecord::Rollback if errors.present?
@@ -27,12 +26,6 @@ module Interactors
     private
 
     attr_reader :efforts, :effort_initial_count, :errors
-
-    def unlink_live_times
-      LiveTime.where(split_time_id: split_times.map(&:id)).update_all(split_time_id: nil)
-    rescue ActiveRecord::ActiveRecordError => exception
-      errors << Interactors::Errors.active_record_error(exception)
-    end
 
     def delete_split_times
       split_times.delete_all

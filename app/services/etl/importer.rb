@@ -42,8 +42,6 @@ module ETL
         import_with(source_data, Extractors::CsvFileStrategy, Transformers::EffortsWithTimesStrategy, Loaders::InsertStrategy, {time_format: :military}.merge(default_unique_key(:effort)).merge(options))
       when :jsonapi_batch
         import_with(source_data, Extractors::PassThroughStrategy, Transformers::JsonapiBatchStrategy, Loaders::UpsertStrategy, options)
-      when :csv_live_times
-        import_with(source_data, Extractors::CsvFileStrategy, Transformers::CsvLiveTimesStrategy, Loaders::UpsertStrategy, options)
       else
         self.errors << format_not_recognized_error(format)
       end

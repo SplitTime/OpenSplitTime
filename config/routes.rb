@@ -88,8 +88,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :live_times, only: [:update, :destroy]
-
   resources :organizations
 
   resources :people do
@@ -160,7 +158,6 @@ Rails.application.routes.draw do
           delete :remove_splits
         end
       end
-      resources :live_times, only: [:index, :show, :create, :update, :destroy]
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :people, only: [:index, :show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]

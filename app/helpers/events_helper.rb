@@ -56,14 +56,6 @@ module EventsHelper
     end
   end
 
-  def link_to_event_admin(view_object, current_user)
-    if current_user&.authorized_to_edit?(view_object.event)
-      content_tag :li, class: "#{'active' if action_name == 'admin'}" do
-        link_to 'Admin', admin_event_path(view_object.event)
-      end
-    end
-  end
-
   def link_to_roster(view_object, current_user)
     if current_user&.authorized_to_edit?(view_object.event_group)
       content_tag :li, class: "#{'active' if action_name == 'roster'}" do
@@ -187,18 +179,6 @@ module EventsHelper
 
   def data_status(status_int)
     Effort.data_statuses.key(status_int)
-  end
-
-  def explore_button_disabled?(klass)
-    klass == EventEffortsDisplay
-  end
-
-  def spread_button_disabled?(klass)
-    klass == EventSpreadDisplay
-  end
-
-  def stage_button_disabled?(klass)
-    klass == EventStageDisplay
   end
 
   def event_staging_app_page(view_object)

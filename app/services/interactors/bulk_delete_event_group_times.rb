@@ -16,7 +16,6 @@ module Interactors
 
     def perform!
       ActiveRecord::Base.transaction do
-        delete_live_times
         delete_raw_times
         delete_split_times
         raise ActiveRecord::Rollback if errors.present?
@@ -27,12 +26,6 @@ module Interactors
     private
 
     attr_reader :event_group, :errors
-
-    def delete_live_times
-      @live_time_count = LiveTime.where(event_id: event_group.events).delete_all
-    rescue ActiveRecord::ActiveRecordError => exception
-      errors << active_record_error(exception)
-    end
 
     def delete_raw_times
       @raw_time_count = RawTime.where(event_group_id: event_group).delete_all
@@ -51,7 +44,7 @@ module Interactors
       if errors.present?
         "Unable to delete times"
       else
-        "Deleted #{pluralize(@live_time_count, 'live time')}, #{pluralize(@raw_time_count, 'raw time')}, and #{pluralize(@live_time_count, 'split time')}"
+        "Deleted #{pluralize(@raw_time_count, 'raw time')} and #{pluralize(@split_time_count, 'split time')}"
       end
     end
   end

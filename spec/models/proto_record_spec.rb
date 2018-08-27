@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ProtoRecord, type: :model do
@@ -95,7 +97,7 @@ RSpec.describe ProtoRecord, type: :model do
 
   describe '#resource_attributes' do
     it 'returns attributes in the format returned by the record_class' do
-      pr = ProtoRecord.new(record_type: :live_time, bib_number: '101', absolute_time: '2017-10-31 08:00:00-06:00', sub_split_kind: 'in')
+      pr = ProtoRecord.new(record_type: :raw_time, bib_number: '101', absolute_time: '2017-10-31 08:00:00-06:00', sub_split_kind: 'in')
       expect(pr.resource_attributes).to eq(bib_number: '101', absolute_time: '2017-10-31 14:00:00 +0000', sub_split_kind: 'In')
     end
   end

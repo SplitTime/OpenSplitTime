@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180826145506) do
+ActiveRecord::Schema.define(version: 20180827185437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,34 +133,6 @@ ActiveRecord::Schema.define(version: 20180826145506) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
-  end
-
-  create_table "live_times", id: :serial, force: :cascade do |t|
-    t.integer "event_id", null: false
-    t.integer "split_id", null: false
-    t.string "wave"
-    t.string "bib_number", null: false
-    t.datetime "absolute_time"
-    t.boolean "with_pacer"
-    t.boolean "stopped_here"
-    t.string "remarks"
-    t.string "batch"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "created_by"
-    t.integer "updated_by"
-    t.integer "split_time_id"
-    t.integer "bitkey", null: false
-    t.string "source", null: false
-    t.integer "pulled_by"
-    t.datetime "pulled_at"
-    t.string "entered_time"
-    t.integer "sortable_bib_number", null: false
-    t.index ["absolute_time", "event_id", "split_id", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "live_time_unique_absolute_times_index", unique: true
-    t.index ["entered_time", "event_id", "split_id", "bitkey", "bib_number", "source", "with_pacer", "stopped_here", "remarks"], name: "live_time_unique_entered_times_index", unique: true
-    t.index ["event_id"], name: "index_live_times_on_event_id"
-    t.index ["split_id"], name: "index_live_times_on_split_id"
-    t.index ["split_time_id"], name: "index_live_times_on_split_time_id"
   end
 
   create_table "locations", id: :serial, force: :cascade do |t|
@@ -378,9 +350,6 @@ ActiveRecord::Schema.define(version: 20180826145506) do
   add_foreign_key "event_groups", "organizations"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
-  add_foreign_key "live_times", "events"
-  add_foreign_key "live_times", "split_times"
-  add_foreign_key "live_times", "splits"
   add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"

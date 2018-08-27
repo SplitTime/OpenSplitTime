@@ -78,18 +78,18 @@ RSpec.shared_examples_for 'time_recordable' do
 
   describe '#sub_split_kind' do
     context 'when bitkey is the in_bitkey' do
-      let(:live_time) { LiveTime.new(bitkey: in_bitkey) }
+      let(:raw_time) { RawTime.new(bitkey: in_bitkey) }
 
       it 'returns "in" when bitkey is the in_bitkey' do
-        expect(live_time.sub_split_kind).to eq('In')
+        expect(raw_time.sub_split_kind).to eq('In')
       end
     end
 
     context 'when bitkey is the out_bitkey' do
-      let(:live_time) { LiveTime.new(bitkey: out_bitkey) }
+      let(:raw_time) { RawTime.new(bitkey: out_bitkey) }
 
       it 'returns "in" when bitkey is the in_bitkey' do
-        expect(live_time.sub_split_kind).to eq('Out')
+        expect(raw_time.sub_split_kind).to eq('Out')
       end
     end
   end
@@ -99,8 +99,8 @@ RSpec.shared_examples_for 'time_recordable' do
       let(:sub_split_kind) { 'in' }
 
       it 'sets the bitkey to the in_bitkey' do
-        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
-        expect(live_time.bitkey).to eq(in_bitkey)
+        raw_time = RawTime.new(sub_split_kind: sub_split_kind)
+        expect(raw_time.bitkey).to eq(in_bitkey)
       end
     end
 
@@ -108,8 +108,8 @@ RSpec.shared_examples_for 'time_recordable' do
       let(:sub_split_kind) { 'out' }
 
       it 'sets the bitkey to the in_bitkey' do
-        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
-        expect(live_time.bitkey).to eq(out_bitkey)
+        raw_time = RawTime.new(sub_split_kind: sub_split_kind)
+        expect(raw_time.bitkey).to eq(out_bitkey)
       end
     end
 
@@ -117,8 +117,8 @@ RSpec.shared_examples_for 'time_recordable' do
       let(:sub_split_kind) { 'OUT' }
 
       it 'sets the bitkey as expected' do
-        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
-        expect(live_time.bitkey).to eq(out_bitkey)
+        raw_time = RawTime.new(sub_split_kind: sub_split_kind)
+        expect(raw_time.bitkey).to eq(out_bitkey)
       end
     end
 
@@ -126,8 +126,8 @@ RSpec.shared_examples_for 'time_recordable' do
       let(:sub_split_kind) { :out }
 
       it 'sets the bitkey as expected' do
-        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
-        expect(live_time.bitkey).to eq(out_bitkey)
+        raw_time = RawTime.new(sub_split_kind: sub_split_kind)
+        expect(raw_time.bitkey).to eq(out_bitkey)
       end
     end
 
@@ -135,8 +135,8 @@ RSpec.shared_examples_for 'time_recordable' do
       let(:sub_split_kind) { '' }
 
       it 'sets the bitkey to nil' do
-        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
-        expect(live_time.bitkey).to eq(nil)
+        raw_time = RawTime.new(sub_split_kind: sub_split_kind)
+        expect(raw_time.bitkey).to eq(nil)
       end
     end
 
@@ -144,8 +144,8 @@ RSpec.shared_examples_for 'time_recordable' do
       let(:sub_split_kind) { nil }
 
       it 'sets the bitkey to nil' do
-        live_time = LiveTime.new(sub_split_kind: sub_split_kind)
-        expect(live_time.bitkey).to eq(nil)
+        raw_time = RawTime.new(sub_split_kind: sub_split_kind)
+        expect(raw_time.bitkey).to eq(nil)
       end
     end
   end

@@ -14,7 +14,6 @@ module Interactors
       @new_course = args[:new_course]
       @old_course = event.course
       @split_times = event.split_times
-      @live_times = event.live_times
       @existing_splits = event.splits
       @errors = []
       verify_compatibility
@@ -24,7 +23,6 @@ module Interactors
       unless errors.present?
         event.course = new_course
         split_times.each { |st| st.split = old_new_split_map[st.split_id] }
-        live_times.each { |lt| lt.split = old_new_split_map[lt.split_id] }
         save_changes
       end
       Interactors::Response.new(errors, response_message)
@@ -32,17 +30,15 @@ module Interactors
 
     private
 
-    attr_reader :event, :new_course, :old_course, :split_times, :live_times, :existing_splits, :errors
+    attr_reader :event, :new_course, :old_course, :split_times, :existing_splits, :errors
 
     def save_changes
       ActiveRecord::Base.transaction do
         event.splits = old_new_split_map.values
         save_without_validation(event)
         split_times.each { |st| save_without_validation(st) }
-        live_times.each { |lt| save_without_validation(lt) }
         validate_resource(event)
         split_times.each { |st| validate_resource(st) }
-        live_times.each { |lt| validate_resource(lt) }
         raise ActiveRecord::Rollback if errors.present?
       end
     end
@@ -70,9 +66,7 @@ module Interactors
 
     def verify_compatibility
       errors << distance_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id] }
-      errors << distance_mismatch_error(event, new_course) and return unless live_times.all? { |lt| old_new_split_map[lt.split_id] }
       errors << sub_split_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id].sub_split_bitkeys.include?(st.bitkey) }
-      errors << sub_split_mismatch_error(event, new_course) unless live_times.all? { |lt| old_new_split_map[lt.split_id].sub_split_bitkeys.include?(lt.bitkey) }
     end
   end
 end

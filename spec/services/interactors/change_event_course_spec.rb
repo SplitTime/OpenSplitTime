@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Interactors::ChangeEventCourse do
@@ -61,19 +63,17 @@ RSpec.describe Interactors::ChangeEventCourse do
         expect(response.message).to match(/was changed from/)
       end
 
-      it 'changes the split_ids of event split_times and live_times to the corresponding split_ids of the new course' do
+      it 'changes the split_ids of event split_times to the corresponding split_ids of the new course' do
         sub_splits = new_course.sub_splits.first(efforts.first.split_times.size)
         efforts.each do |effort|
           effort.reload
           expect(effort.split_times.map(&:sub_split)).not_to match_array(sub_splits)
-          expect(LiveTime.where(bib_number: effort.bib_number).map(&:sub_split)).not_to match_array(sub_splits)
         end
         response = subject.perform!
         expect(response).to be_successful
         efforts.each do |effort|
           effort.reload
           expect(effort.split_times.map(&:sub_split)).to match_array(sub_splits)
-          expect(LiveTime.where(bib_number: effort.bib_number).map(&:sub_split)).to match_array(sub_splits)
         end
       end
 
@@ -111,7 +111,6 @@ RSpec.describe Interactors::ChangeEventCourse do
       efforts.each do |effort|
         time_points.each_with_index do |time_point, i|
           create(:split_time, time_point: time_point, effort: effort, time_from_start: i * 1000)
-          create(:live_time, event_id: event.id, split_id: time_point.split_id, bitkey: time_point.bitkey, bib_number: effort.bib_number, entered_time: '08:00:00', source: 'test')
         end
       end
     end

@@ -10,7 +10,6 @@ class EventGroup < ApplicationRecord
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
   has_many :events, dependent: :destroy
-  has_many :live_times, through: :events
   has_many :efforts, through: :events
   has_many :raw_times
   has_many :partners

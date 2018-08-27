@@ -14,7 +14,6 @@ class Event < ApplicationRecord
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
-  has_many :live_times, dependent: :delete_all
   has_many :partners, through: :event_group
 
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,

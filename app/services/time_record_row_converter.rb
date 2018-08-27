@@ -42,8 +42,6 @@ class TimeRecordRowConverter
     paired_time_records.map do |left_time_record, right_time_record|
       {split_id: left_time_record&.split_id || right_time_record&.split_id,
        bib_number: left_time_record&.bib_number || right_time_record&.bib_number,
-       live_time_id_in: left_time_record.is_a?(LiveTime) ? left_time_record.id : nil,
-       live_time_id_out: right_time_record.is_a?(LiveTime) ? right_time_record.id : nil,
        raw_time_id_in: left_time_record.is_a?(RawTime) ? left_time_record.id : nil,
        raw_time_id_out: right_time_record.is_a?(RawTime) ? right_time_record.id : nil,
        time_in: left_time_record&.military_time(home_time_zone),

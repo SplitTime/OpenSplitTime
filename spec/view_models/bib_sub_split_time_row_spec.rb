@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 include TimeZoneHelpers
 
@@ -9,10 +11,10 @@ RSpec.describe BibSubSplitTimeRow do
   let(:split) { build_stubbed(:split) }
   let(:event_group) { build_stubbed(:event_group, events: [event]) }
 
-  let(:time_records) { [live_time_1, live_time_2, live_time_3] }
-  let(:live_time_1) { build_stubbed(:live_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 08:00:00'), source: source_1) }
-  let(:live_time_2) { build_stubbed(:live_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 08:00:15'), source: source_2) }
-  let(:live_time_3) { build_stubbed(:live_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 09:00:00'), source: source_1) }
+  let(:time_records) { [raw_time_1, raw_time_2, raw_time_3] }
+  let(:raw_time_1) { build_stubbed(:raw_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 08:00:00'), source: source_1) }
+  let(:raw_time_2) { build_stubbed(:raw_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 08:00:15'), source: source_2) }
+  let(:raw_time_3) { build_stubbed(:raw_time, bib_number: '123', absolute_time: time_in_zone(event, '2017-10-31 09:00:00'), source: source_1) }
 
   let(:source_1) { 'ost-remote-abcd' }
   let(:source_2) { 'ost-remote-wxyz' }
@@ -21,8 +23,8 @@ RSpec.describe BibSubSplitTimeRow do
   let(:source_text_2) { 'OSTR (wxyz)' }
 
   let(:split_times) { [split_time_1, split_time_2] }
-  let(:split_time_1) { build_stubbed(:split_time, effort: effort, lap: 1, split: split, data_status: 'good', time_from_start: live_time_1.absolute_time - event.start_time) }
-  let(:split_time_2) { build_stubbed(:split_time, effort: effort, lap: 1, split: split, data_status: 'bad', time_from_start: live_time_2.absolute_time - event.start_time) }
+  let(:split_time_1) { build_stubbed(:split_time, effort: effort, lap: 1, split: split, data_status: 'good', time_from_start: raw_time_1.absolute_time - event.start_time) }
+  let(:split_time_2) { build_stubbed(:split_time, effort: effort, lap: 1, split: split, data_status: 'bad', time_from_start: raw_time_2.absolute_time - event.start_time) }
 
   describe '#full_name' do
     it 'returns the full name of the effort provided' do
@@ -52,9 +54,9 @@ RSpec.describe BibSubSplitTimeRow do
     end
 
     context 'when times are on either side of midnight' do
-      let(:live_time_1) { build_stubbed(:live_time, bib_number: '123', absolute_time: nil, entered_time: '23:50:00', source: source_1) }
-      let(:live_time_2) { build_stubbed(:live_time, bib_number: '123', absolute_time: nil, entered_time: '00:20:00', source: source_2) }
-      let(:live_time_3) { build_stubbed(:live_time, bib_number: '123', absolute_time: nil, entered_time: '00:10:00', source: source_1) }
+      let(:raw_time_1) { build_stubbed(:raw_time, bib_number: '123', absolute_time: nil, entered_time: '23:50:00', source: source_1) }
+      let(:raw_time_2) { build_stubbed(:raw_time, bib_number: '123', absolute_time: nil, entered_time: '00:20:00', source: source_2) }
+      let(:raw_time_3) { build_stubbed(:raw_time, bib_number: '123', absolute_time: nil, entered_time: '00:10:00', source: source_1) }
 
       let(:split_times) { [] }
 

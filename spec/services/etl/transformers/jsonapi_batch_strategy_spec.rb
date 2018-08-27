@@ -8,16 +8,16 @@ RSpec.describe ETL::Transformers::JsonapiBatchStrategy do
   let(:options) { {parent: event} }
   let(:proto_records) { subject.transform }
   let(:clean_parsed_structs) { [
-      OpenStruct.new(type: 'live_time',
-                     attributes: {'bibNumber' => '101', 'splitId' => 1001, 'bitkey' => 1,
+      OpenStruct.new(type: 'raw_time',
+                     attributes: {'bibNumber' => '101', 'splitName' => 'Aid 1', 'bitkey' => 1,
                                   'absoluteTime' => '10:45:45-06:00', 'withPacer' => true, 'stoppedHere' => false}),
-      OpenStruct.new(type: 'live_time',
-                     attributes: {'bibNumber' => '101', 'splitId' => 1001, 'bitkey' => 64,
+      OpenStruct.new(type: 'raw_time',
+                     attributes: {'bibNumber' => '101', 'splitName' => 'Aid 1', 'bitkey' => 64,
                                   'absoluteTime' => '10:45:45-06:00', 'withPacer' => true, 'stoppedHere' => true}),
   ] }
   let(:dirty_parsed_structs) { [
-    OpenStruct.new(type: 'live_time',
-                   attributes: {'bibNumber' => '101', 'splitId' => 1001, 'name_extension' => 'in',
+    OpenStruct.new(type: 'raw_time',
+                   attributes: {'bibNumber' => '101', 'splitName' => 'Aid 1', 'name_extension' => 'in',
                                 'absoluteTime' => '10:45:45-06:00', 'withPacer' => true, 'stoppedHere' => false}),
   ] }
 
@@ -33,12 +33,12 @@ RSpec.describe ETL::Transformers::JsonapiBatchStrategy do
       end
 
       it 'sets the record_type based on the provided type' do
-        expect(proto_records.map(&:record_type)).to all(eq(:live_time))
+        expect(proto_records.map(&:record_type)).to all(eq(:raw_time))
       end
 
       it 'moves all attributes into the ProtoRecord attributes struct' do
-        expect(first_proto_record.to_h.keys.sort)
-            .to eq(%i(absolute_time bib_number bitkey event_id split_id stopped_here with_pacer))
+        expect(first_proto_record.to_h.keys)
+            .to match_array(%i(absolute_time bib_number bitkey split_name stopped_here with_pacer))
       end
     end
 

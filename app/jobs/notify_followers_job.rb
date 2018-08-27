@@ -17,9 +17,9 @@ class NotifyFollowersJob < ApplicationJob
     response = FollowerNotifier.publish(topic_arn: live_data.topic_resource_key, effort_data: live_data.effort_data)
     if response.successful?
       live_data.split_times.each do |split_time|
-        notification = Notification.new(effort: split_time.effort, distance: split_time.distance_from_start, bitkey: split_time.bitkey, follower_ids: live_data.followers.ids)
+        notification = Notification.new(effort: split_time.effort, distance: split_time.total_distance, bitkey: split_time.bitkey, follower_ids: live_data.followers.ids)
         unless notification.save
-          logger.info "Unable to create notification for #{split_time.effort} at #{split_time.distance_from_start}"
+          logger.info "Unable to create notification for #{split_time.effort} at #{split_time.total_distance}"
           logger.info notification.errors.full_messages
         end
       end
@@ -31,8 +31,7 @@ class NotifyFollowersJob < ApplicationJob
   def farther_notification_exists?(split_time)
     farthest_notification = farthest_notification(split_time.effort)
     return false unless farthest_notification
-
-    proposed_distance = split_time.lap_split.distance_from_start
+    proposed_distance = split_time.total_distance
 
     farthest_notification.distance > proposed_distance ||
         (farthest_notification.distance == proposed_distance && farthest_notification.bitkey > split_time.bitkey)

@@ -248,7 +248,7 @@ class Effort < ApplicationRecord
     elsif split_times.all?(&:imposed_order)
       split_times.sort_by(&:imposed_order)
     else
-      split_times.sort_by { |st| [st.lap, st.distance_from_start, st.bitkey] }
+      split_times.sort_by { |st| [st.lap, st.distance_from_start_of_lap, st.bitkey] }
     end
   end
 

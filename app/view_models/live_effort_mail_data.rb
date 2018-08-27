@@ -50,7 +50,7 @@ class LiveEffortMailData
   end
 
   def split_distance(split_time)
-    split_time.lap_split.distance_from_start
+    split_time.total_distance
   end
 
   def split_name(split_time)

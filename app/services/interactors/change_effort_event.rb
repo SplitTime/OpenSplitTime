@@ -23,7 +23,7 @@ module Interactors
         existing_start_time = effort.start_time
         effort.event = new_event
         effort.start_time = existing_start_time
-        split_times.each { |st| st.split = splits_by_distance[st.distance_from_start] }
+        split_times.each { |st| st.split = splits_by_distance[st.distance_from_start_of_lap] }
         save_changes
       end
       Interactors::Response.new(errors, response_message)
@@ -63,8 +63,8 @@ module Interactors
     end
 
     def verify_compatibility
-      errors << distance_mismatch_error(effort, new_event) and return unless split_times.all? { |st| distances.include?(st.distance_from_start) }
-      errors << sub_split_mismatch_error(effort, new_event) and return unless split_times.all? { |st| splits_by_distance[st.distance_from_start].sub_split_bitkeys.include?(st.bitkey) }
+      errors << distance_mismatch_error(effort, new_event) and return unless split_times.all? { |st| distances.include?(st.distance_from_start_of_lap) }
+      errors << sub_split_mismatch_error(effort, new_event) and return unless split_times.all? { |st| splits_by_distance[st.distance_from_start_of_lap].sub_split_bitkeys.include?(st.bitkey) }
       errors << lap_mismatch_error(effort, new_event) unless split_times.all? { |st| maximum_lap >= st.lap }
     end
   end

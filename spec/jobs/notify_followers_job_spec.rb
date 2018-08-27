@@ -19,7 +19,7 @@ RSpec.describe NotifyFollowersJob do
     let(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: splits.second, bitkey: in_bitkey) }
     let(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: splits.second, bitkey: out_bitkey) }
     let(:notification_split_times) { [split_time_1, split_time_2] }
-    let(:split_time_total_distance) { split_time_2.lap_split.distance_from_start }
+    let(:split_time_total_distance) { split_time_2.total_distance }
 
     context 'when arguments are valid and no farther notifications exist' do
       it 'sends a message to FollowerNotifier' do
@@ -32,7 +32,7 @@ RSpec.describe NotifyFollowersJob do
         subject.perform(person_id: person_id, split_time_ids: split_time_ids)
         expect(Notification.count).to eq(2)
         expect(Notification.all.pluck(:effort_id)).to all eq(effort.id)
-        expect(Notification.all.pluck(:distance)).to match_array([split_time_1.lap_split.distance_from_start, split_time_2.lap_split.distance_from_start])
+        expect(Notification.all.pluck(:distance)).to match_array([split_time_1.total_distance, split_time_2.total_distance])
         expect(Notification.all.pluck(:bitkey)).to match_array([in_bitkey, out_bitkey])
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe NotifyFollowersJob do
     let(:lap) { 1 }
     let(:split) { splits.second }
     let(:bitkey) { in_bitkey }
-    let(:split_time_total_distance) { split_time.lap_split.distance_from_start }
+    let(:split_time_total_distance) { split_time.total_distance }
 
     context 'when no notifications exist' do
       it 'returns false' do

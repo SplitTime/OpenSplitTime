@@ -40,9 +40,9 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to_spread_gender(@presenter, 'combined') %></li>
-            <li><%= link_to_spread_gender(@presenter, 'male') %></li>
-            <li><%= link_to_spread_gender(@presenter, 'female') %></li>
+            <li><%= link_to_select_gender(@presenter, 'combined') %></li>
+            <li><%= link_to_select_gender(@presenter, 'male') %></li>
+            <li><%= link_to_select_gender(@presenter, 'female') %></li>
           </ul>
         </div>
 
@@ -52,10 +52,10 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to_spread_display_style(@presenter, 'elapsed', 'Elapsed') %></li>
-            <li><%= link_to_spread_display_style(@presenter, 'ampm', 'AM/PM') %></li>
-            <li><%= link_to_spread_display_style(@presenter, 'military', '24-Hour') %></li>
-            <li><%= link_to_spread_display_style(@presenter, 'segment', 'Segment') %></li>
+            <li><%= link_to_select_display_style(@presenter, 'elapsed', 'Elapsed') %></li>
+            <li><%= link_to_select_display_style(@presenter, 'ampm', 'AM/PM') %></li>
+            <li><%= link_to_select_display_style(@presenter, 'military', '24-Hour') %></li>
+            <li><%= link_to_select_display_style(@presenter, 'segment', 'Segment') %></li>
           </ul>
         </div>
       </div>

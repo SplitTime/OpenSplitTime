@@ -564,24 +564,6 @@
                 $('#js-effort-table').scroll(function() {
                     console.log($(this).scrollTop);
                 });
-
-                $('#js-html-modal').on('show.bs.modal', function (e) {
-                    $(this).find('modal-body').html('');
-                    var $source = $(e.relatedTarget);
-                    var $body = $(this).find('.js-modal-content');
-                    if ($source.attr('data-effort-id')) {
-                        var eventId = $source.attr('data-event-id');
-                        var data = {
-                            'effortId': $source.attr('data-effort-id')
-                        };
-                        $.get('/live/events/' + eventId + '/effort_table', data)
-                            .done(function (a, b, c) {
-                                $body.html(a);
-                            });
-                    } else {
-                        e.preventDefault();
-                    }
-                });
             },
 
             /**

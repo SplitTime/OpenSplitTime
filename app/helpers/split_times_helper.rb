@@ -23,8 +23,4 @@ module SplitTimesHelper
   def combined_days_times_military(row)
     row.days_and_times.map { |time| day_time_military_format(time) }.join(' / ')
   end
-
-  def combined_pacer(row)
-    row.pacer_in_out.compact.map { |boolean| humanize_boolean(boolean) }.join(' / ')
-  end
 end

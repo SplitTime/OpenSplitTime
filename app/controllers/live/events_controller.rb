@@ -14,13 +14,6 @@ class Live::EventsController < Live::BaseController
     @progress_display = LiveProgressDisplay.new(event: @event, past_due_threshold: params[:past_due_threshold])
   end
 
-  def effort_table
-    authorize @event
-    effort = Effort.friendly.find(params[:effort_id])
-    @presenter = EffortShowView.new(effort: effort)
-    render partial: 'effort_table'
-  end
-
   def aid_station_detail
     authorize @event
     @event = Event.where(id: @event.id).includes(:splits).includes(:event_group).first

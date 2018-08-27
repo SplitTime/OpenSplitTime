@@ -120,10 +120,11 @@ Rails.application.routes.draw do
 
   namespace :live do
     resources :events, only: [] do
-      member { get :progress_report }
-      member { get :aid_station_report }
-      member { get :effort_table }
-      member { get :aid_station_detail }
+      member do
+        get :progress_report
+        get :aid_station_report
+        get :aid_station_detail
+      end
     end
 
     resources :event_groups, only: [] do

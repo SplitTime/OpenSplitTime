@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 module CoursesHelper
-  def link_to_best_efforts_gender(view_object, gender)
-    link_to gender.titlecase, request.params.merge('filter[gender]' => gender),
-            disabled: view_object.gender_text == gender
-  end
-
   def segment_start_dropdown(view_object)
     ordered_split_params = view_object.ordered_splits.map(&:to_param)
     items = view_object.ordered_splits_without_finish.map do |split|

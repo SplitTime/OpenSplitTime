@@ -12,7 +12,7 @@
         <ul class="breadcrumb breadcrumb-ost">
           <li><%= link_to 'Organizations', organizations_path %></li>
           <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li><a><%= @presenter.event_group.name %></a></li>
+          <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group, force_settings: true) %></li>
           <li class="active">Live Entry</li>
         </ul>
       </div>

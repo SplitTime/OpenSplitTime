@@ -6,7 +6,7 @@ RSpec.describe 'Visitor signs up' do
   scenario 'with valid first_name, last_name, email, and password' do
     sign_up_with 'Joe', 'Example', 'valid@example.com', 'password'
 
-    expect(page).to have_content('A message with a confirmation link has been sent to your email address.')
+    expect(page).to have_content(:all, 'A message with a confirmation link has been sent to your email address.')
   end
 
   scenario 'without first name' do

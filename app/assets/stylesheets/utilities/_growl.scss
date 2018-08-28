@@ -29,6 +29,7 @@
             color: $white;
         }
 
+        &-alert,
         &-danger {
             background: $btn-danger-bg;
             border-color: $btn-danger-border;

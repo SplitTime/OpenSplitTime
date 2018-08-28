@@ -29,6 +29,13 @@
             color: $white;
         }
 
+        &-notice,
+        &-warning {
+            background: $btn-warning-bg;
+            border-color: $btn-warning-border;
+            color: $white;
+        }
+
         &-alert,
         &-danger {
             background: $btn-danger-bg;

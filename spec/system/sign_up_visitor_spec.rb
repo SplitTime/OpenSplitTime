@@ -12,13 +12,13 @@ RSpec.describe 'Visitor signs up' do
   scenario 'without first name' do
     sign_up_with '', 'Example', 'valid@example.com', 'password'
 
-    expect(page).to have_content(:all, "First name can't be blank")
+    expect(page).to have_content(:all, /First name can.{1,5}t be blank/)
   end
 
   scenario 'without last name' do
     sign_up_with 'Joe', '', 'valid@example.com', 'password'
 
-    expect(page).to have_content(:all, "Last name can't be blank")
+    expect(page).to have_content(:all, /Last name can.{1,5}t be blank/)
   end
 
   scenario 'with invalid email' do
@@ -36,7 +36,7 @@ RSpec.describe 'Visitor signs up' do
   scenario 'with blank password' do
     sign_up_with 'Joe', 'Example', 'valid@example.com', ''
 
-    expect(page).to have_content(:all, "Password can't be blank")
+    expect(page).to have_content(:all, /Password can.{1,5}t be blank/)
   end
 
   scenario 'with too short password' do

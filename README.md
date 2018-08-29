@@ -20,7 +20,7 @@ Ruby on Rails
 
 This application requires:
 
-- Ruby 2.5.0
+- Ruby 2.5.1
 - Rails 5.1.5
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
@@ -36,8 +36,8 @@ Getting Started
 3. `$ brew install rbenv`
 4. `$ cd` into your local `OpenSplitTime` directory
 5. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-6. `$ rbenv install 2.5.0`
-7. `$ rbenv local 2.5.0` (to make sure this is correct, run `$ rbenv verision`)
+6. `$ rbenv install 2.5.1`
+7. `$ rbenv local 2.5.1` (to make sure this is correct, run `$ rbenv verision`)
 8. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**

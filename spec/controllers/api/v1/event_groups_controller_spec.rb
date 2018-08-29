@@ -469,7 +469,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
       context 'when push notifications are permitted' do
         via_login_and_jwt do
-          let(:event_group) { create(:event_group, available_live: true) }
+          let(:event_group) { create(:event_group, available_live: true, concealed: false) }
 
           it 'sends a push notification that includes the count of available raw times' do
             expect(event.permit_notifications?).to be(true)

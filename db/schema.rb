@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180827185437) do
+ActiveRecord::Schema.define(version: 20180829214601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,8 +90,8 @@ ActiveRecord::Schema.define(version: 20180827185437) do
     t.string "name"
     t.integer "organization_id"
     t.boolean "available_live", default: false
-    t.boolean "auto_live_times", default: false
-    t.boolean "concealed", default: false
+    t.boolean "auto_live_times", default: true
+    t.boolean "concealed", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by"
@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(version: 20180827185437) do
     t.string "home_time_zone", null: false
     t.integer "event_group_id"
     t.string "short_name"
-    t.string "podium_template"
+    t.string "podium_template", default: "simple"
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
     t.index ["slug"], name: "index_events_on_slug", unique: true
@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(version: 20180827185437) do
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.integer "updated_by"
-    t.boolean "concealed", default: false
+    t.boolean "concealed", default: true
     t.string "slug", null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
   end

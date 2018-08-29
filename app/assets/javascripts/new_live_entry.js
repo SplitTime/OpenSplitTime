@@ -53,7 +53,7 @@
         },
 
         splitsAttributes: function () {
-            return liveEntry.eventGroupAttributes.dataEntryGroups
+            return liveEntry.eventGroupAttributes.unpairedDataEntryGroups
         },
 
         // Remove

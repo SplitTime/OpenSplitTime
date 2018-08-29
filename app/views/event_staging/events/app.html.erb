@@ -766,7 +766,7 @@
   <header class="ost-header">
     <div class="container">
       <div class="row">
-        <div class="ost-title col-sm-7">
+        <div class="ost-title col-xs-12">
           <h1>
             <strong v-if="!isReady">Loading...</strong>
             <strong v-else-if="eventModel.__new__">Create Event</strong>
@@ -785,8 +785,6 @@
             <li class="active">Staging</li>
           </ul>
         </div>
-        <aside class="ost-alerts col-sm-5">
-        </aside>
       </div>
       <% if @presenter %>
         <%= render 'events/view_buttons', view_object: @presenter %>

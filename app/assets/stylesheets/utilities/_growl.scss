@@ -1,0 +1,72 @@
+@import "variables";
+
+.alert {
+    &.alert-orange {
+        background: $orange;
+        color: $white;
+        
+        a {
+            text-decoration: none;
+            color: $white;
+        }
+    }
+}
+
+.growl {
+    padding-right: 25px;
+
+    // Customized alert styles for growl
+    &.alert {
+        &-success {
+            background: $btn-success-bg;
+            border-color: $btn-success-border;
+            color: $white;
+        }
+
+        &-info {
+            background: $btn-info-bg;
+            border-color: $btn-info-border;
+            color: $white;
+        }
+
+        &-notice,
+        &-warning {
+            background: $btn-warning-bg;
+            border-color: $btn-warning-border;
+            color: $white;
+        }
+
+        &-alert,
+        &-danger {
+            background: $btn-danger-bg;
+            border-color: $btn-danger-border;
+            color: $white;
+        }
+    }
+
+    [data-notify="dismiss"] {
+        color: $white;
+        opacity: 0.6;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    [data-notify="wrapper"]{
+        display: flex;
+    }
+
+    [data-notify="content"] {
+        text-align: left;
+    }
+
+    [data-notify="title"] {
+        font-weight: bold;
+    }
+
+    [data-notify="icon"] {
+        font-size: 1.2em;
+        padding-right: 0.5em;
+    }
+}

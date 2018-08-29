@@ -97,34 +97,6 @@
     .nav-tabs-ost {
         margin-top: 25px;
     }
-
-    .ost-alerts {
-        .alert {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            margin: 0;
-            height: 55px;
-            max-width: 235px;
-        }
-
-        .alert-orange {
-            background: $orange;
-            color: $white;
-            
-            a {
-                text-decoration: none;
-                color: $white;
-            }
-        }
-
-
-        .alert-icon {
-            float: left;
-            font-size: 1.2em;
-            padding: 0 0.5em 1em 0;
-        }
-    }
 }
 
 .ost-toolbar {

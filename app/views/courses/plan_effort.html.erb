@@ -8,7 +8,7 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-9">
+      <div class="ost-title col-xs-12">
         <h1><strong><%= [@plan_display.course_name, "Plan My Effort"].compact.join(': ') %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
           <li><%= link_to 'Courses', courses_path %></li>
@@ -16,8 +16,6 @@
           <li class="active">Plan My Effort</li>
         </ul>
       </div>
-      <aside class="ost-alerts col-sm-3">
-      </aside>
     </div>
     <%= render 'course_navigation', presenter: @plan_display %>
   </div>

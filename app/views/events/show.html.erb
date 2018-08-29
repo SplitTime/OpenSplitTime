@@ -23,7 +23,7 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-sm-5">
+      <div class="ost-title col-xs-12">
         <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
           <li><%= link_to 'Organizations', organizations_path %></li>
@@ -32,8 +32,6 @@
           <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
         </ul>
       </div>
-      <aside class="ost-alerts col-sm-7">
-      </aside>
     </div>
     <h5>Start Time: <strong><%= l(@presenter.event_start_time, format: :full_day_time_and_zone) %></strong></h5>
     <h5>Run on: <strong><%= link_to @presenter.course_name, course_path(@presenter.course) %></strong></h5>

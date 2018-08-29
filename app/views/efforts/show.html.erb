@@ -7,7 +7,7 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="ost-title col-xs-12 col-sm-7">
+      <div class="ost-title col-xs-12">
         <h1><strong>
           <% if @presenter.person %>
             <%= link_to @presenter.full_name, person_path(@presenter.person) %>
@@ -30,8 +30,6 @@
           <%= link_to image_tag(@presenter.photo.url(:thumb)), {action: :show_photo} %>
         <% end %>
       </div>
-      <aside class="ost-alerts col-sm-3">
-      </aside>
     </div>
     <h5>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h5>
     <h5>Status:

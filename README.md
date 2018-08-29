@@ -37,12 +37,12 @@ Getting Started
 4. `$ cd` into your local `OpenSplitTime` directory
 5. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
 6. `$ rbenv install 2.5.1`
-7. `$ rbenv local 2.5.1` (to make sure this is correct, run `$ rbenv verision`)
+7. `$ rbenv local 2.5.1` (to make sure this is correct, run `$ rbenv version`)
 8. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**
 
-1. `$ gem install bundler` You should not need to `sudo` this if it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
+1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
 2. `$ gem install rails`
 3. `$ brew install postgres`
 3. `$ bundle install`
@@ -58,6 +58,8 @@ Getting Started
 5. You can also locally import a sample race by downloading [Hardrock CCW Splits](https://github.com/SplitTime/OpenSplitTime/raw/master/hardrock-ccw-splits.csv) and [Hardrock 2015 Efforts](https://github.com/SplitTime/OpenSplitTime/raw/master/hardrock-2015-efforts.csv)
 
 *Test Users*
+
+After you setup/seed your database, you should have two test users:
 ```
 | Role  | Email              | Password |
 | ----- | ------------------ | -------- |
@@ -67,13 +69,7 @@ Getting Started
 
 *Postgres Search*
 
-OpenSplitTime relies on metaphone searching using a Postgres add-on function. The function is available in the migrations, but because of fundamental changes in database structure, it is no longer possible to run all migrations using the existing codebase, so your dev and test databases will need to be set up using a `db:schema:load` strategy, like `rails db:setup`. After setting up your dev and test databases, you will need to run the following SQL query directly against the database:
-```
-CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text LANGUAGE SQL IMMUTABLE STRICT AS $function$
-  SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
-$function$;
-```
-This is a one-time operation for each database.
+OpenSplitTime relies on metaphone searching using a Postgres add-on function. The function is available in `db/structure.sql`. After setting up your dev and test databases, you will need to run `rails db:structure:load RAILS_ENV=development` and `rails db:structure:load RAILS_ENV=test`. This is a one-time operation for each database.
 
 **AWS**
 

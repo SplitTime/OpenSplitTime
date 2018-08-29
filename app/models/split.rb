@@ -161,11 +161,6 @@ class Split < ApplicationRecord
     events.visible.most_recent&.start_time
   end
 
-  def live_entry_attributes
-    {title: base_name,
-     entries: sub_split_bitkeys.map { |bitkey| {split_id: id, sub_split_kind: SubSplit.kind(bitkey).downcase, label: name(bitkey)} }}
-  end
-
   private
 
   def parameterize_base_name

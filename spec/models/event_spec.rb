@@ -247,22 +247,6 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#live_entry_attributes' do
-    let(:event) { build_stubbed(:event_with_standard_splits) }
-    let(:splits) { event.splits.sort_by(&:distance_from_start) }
-
-    it 'returns an array of information for building live entry screens' do
-      allow(event).to receive(:ordered_splits).and_return(splits)
-      split = splits.second
-      expected = {title: split.base_name,
-                  entries: [{split_id: split.id, sub_split_kind: 'in', label: "#{split.base_name} In"},
-                            {split_id: split.id, sub_split_kind: 'out', label: "#{split.base_name} Out"}]}
-      attributes = event.live_entry_attributes
-      expect(attributes.size).to eq(splits.size)
-      expect(attributes.second).to eq(expected)
-    end
-  end
-
   describe '#start_time_in_home_zone' do
     context 'when the event specifies a valid home_time_zone' do
       let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }

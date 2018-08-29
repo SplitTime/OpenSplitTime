@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::V1::EventGroupsController do
@@ -130,46 +132,37 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:event_2_id) { event_2.id.to_s }
 
           let(:expected) {
-            [{'title' => 'Start/Finish',
-              'entries' =>
-                  [{'eventSplitIds' => {event_2_id => event_2_split_1.id,
-                                        event_1_id => event_1_split_1.id},
-                    'subSplitKind' => 'in',
-                    'label' => 'Start',
-                    'splitName' => 'Start',
-                    'displaySplitName' => 'Start'},
-                   {'eventSplitIds' => {event_2_id => event_2_split_3.id,
-                                        event_1_id => event_1_split_4.id},
-                    'subSplitKind' => 'in',
-                    'label' => 'Finish',
-                    'splitName' => 'Finish',
-                    'displaySplitName' => 'Finish'}]},
-             {'title' => 'Aid 1',
-              'entries' =>
-                  [{'eventSplitIds' => {event_1_id => event_1_split_2.id},
-                    'subSplitKind' => 'in',
-                    'label' => 'Aid 1 In',
-                    'splitName' => 'Aid 1',
-                    'displaySplitName' => 'Aid 1'},
-                   {'eventSplitIds' => {event_1_id => event_1_split_2.id},
-                    'subSplitKind' => 'out',
-                    'label' => 'Aid 1 Out',
-                    'splitName' => 'Aid 1',
-                    'displaySplitName' => 'Aid 1'}]},
-             {'title' => 'Aid 2',
-              'entries' =>
-                  [{'eventSplitIds' => {event_2_id => event_2_split_2.id,
-                                        event_1_id => event_1_split_3.id},
-                    'subSplitKind' => 'in',
-                    'label' => 'Aid 2 In',
-                    'splitName' => 'Aid 2',
-                    'displaySplitName' => 'Aid 2'},
-                   {'eventSplitIds' => {event_2_id => event_2_split_2.id,
-                                        event_1_id => event_1_split_3.id},
-                    'subSplitKind' => 'out',
-                    'label' => 'Aid 2 Out',
-                    'splitName' => 'Aid 2',
-                    'displaySplitName' => 'Aid 2'}]}
+            [
+                {'title' => 'Start/Finish',
+                 'entries' =>
+                     [{'subSplitKind' => 'in',
+                       'label' => 'Start',
+                       'splitName' => 'Start',
+                       'parameterizedSplitName' => 'start'},
+                      {'subSplitKind' => 'in',
+                       'label' => 'Finish',
+                       'splitName' => 'Finish',
+                       'parameterizedSplitName' => 'finish'}]},
+                {'title' => 'Aid 1',
+                 'entries' =>
+                     [{'subSplitKind' => 'in',
+                       'label' => 'Aid 1 In',
+                       'splitName' => 'Aid 1',
+                       'parameterizedSplitName' => 'aid-1'},
+                      {'subSplitKind' => 'out',
+                       'label' => 'Aid 1 Out',
+                       'splitName' => 'Aid 1',
+                       'parameterizedSplitName' => 'aid-1'}]},
+                {'title' => 'Aid 2',
+                 'entries' =>
+                     [{'subSplitKind' => 'in',
+                       'label' => 'Aid 2 In',
+                       'splitName' => 'Aid 2',
+                       'parameterizedSplitName' => 'aid-2'},
+                      {'subSplitKind' => 'out',
+                       'label' => 'Aid 2 Out',
+                       'splitName' => 'Aid 2',
+                       'parameterizedSplitName' => 'aid-2'}]}
             ]
           }
 
@@ -178,10 +171,10 @@ RSpec.describe Api::V1::EventGroupsController do
             event_2.splits << event_2_splits
           end
 
-          it 'includes a combinedSplitAttributes key containing information mapping events to splits' do
+          it 'includes a dataEntryGroups key containing information mapping aid station names to relevant data entry information' do
             make_request
             parsed_response = JSON.parse(response.body)
-            expect(parsed_response['data']['attributes']['combinedSplitAttributes']).to eq(expected)
+            expect(parsed_response['data']['attributes']['dataEntryGroups']).to eq(expected)
             expect(response.body).to be_jsonapi_response_for(type)
           end
         end

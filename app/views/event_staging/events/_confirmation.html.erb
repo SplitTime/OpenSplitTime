@@ -1,0 +1,85 @@
+<script type="text/x-template" id="confirmation">
+  <div>
+    <aside class="col-xs-12">
+      <h3><strong>Confirm Your Event Information</strong></h3>
+      <p>Take a moment to make sure everything is right before you make your Event public.</p>
+      <p>
+        <router-link to="/entrants" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
+        </router-link>
+        <router-link to="/published" class="btn btn-primary">Publish&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+        </router-link>
+      </p>
+    </aside>
+    <article class="col-xs-12">
+      <table class="table confirmation-table">
+        <tbody>
+        <tr>
+          <th>Event Name</th>
+          <td>{{ eventModel.name }}</td>
+          <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
+        </tr>
+        <tr>
+          <th>Start Date</th>
+          <td>{{ eventModel.virtualStartTime ? eventModel.virtualStartTime.toLocaleString() : 'NaN' }}</td>
+          <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td>{{ eventModel.description }}</td>
+          <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
+        </tr>
+        <tr v-if="eventModel.course">
+          <th>Course</th>
+          <td>{{ eventModel.course.name }}</td>
+          <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
+        </tr>
+        <tr v-if="eventModel.course">
+          <th>Distance</th>
+          <td :class="'unit-' + units.distance">{{ units.round( eventModel.course.endSplit( 'finish' ).distanceFromStart
+            * units.forDistance(), 2 ) }}
+          </td>
+          <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
+        </tr>
+        <tr v-if="eventModel.course">
+          <th>Vertical Gain</th>
+          <td :class="'unit-' + units.elevation">{{ units.round( eventModel.course.endSplit( 'finish'
+            ).vertGainFromStart * units.forElevation(), 2 ) }}
+          </td>
+          <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
+        </tr>
+        <tr v-if="eventModel.course">
+          <th>Vertical Loss</th>
+          <td :class="'unit-' + units.elevation">{{ units.round( eventModel.course.endSplit( 'finish'
+            ).vertLossFromStart * units.forElevation(), 1 ) }}
+          </td>
+          <td><span class="brackets"><router-link to="/">Edit</router-link></span></td>
+        </tr>
+        <tr v-if="eventModel.course">
+          <th><span>Your Course and Splits</span></th>
+          <td>
+            <google-map fit :route="eventModel.course.splits"></google-map>
+          </td>
+          <td><span class="brackets"><router-link to="/splits">Edit</router-link></span></td>
+        </tr>
+        <tr>
+          <th>
+            <span>Entrants<br><span class="participants-count">({{ eventModel.efforts.length }})</span></span>
+          </th>
+          <td>
+						<span class="row-content" v-for="participant in eventModel.efforts">
+							{{ participant.firstName }} {{ participant.lastName }}<span v-if="eventModel.efforts.length > 1">,</span>
+						</span>
+          </td>
+          <td><span class="brackets"><router-link to="/entrants">Edit</router-link></span></td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-xs-12">
+          <router-link to="/published" class="btn btn-primary pull-right">Publish&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
+          </router-link>
+        </div>
+      </div>
+    </article>
+  </div>
+</script>

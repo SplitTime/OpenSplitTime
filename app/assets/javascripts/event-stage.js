@@ -403,7 +403,14 @@
                     return self.fetch();
                 } ).fail( function( e ) {
                     if ( e.responseJSON && e.responseJSON.errors ) {
-                        $( document ).trigger( 'global-error', [ e.responseJSON.errors ] );
+                        e.responseJSON.errors.forEach(error => {
+                            $.notify({
+                                title: error.title,
+                                message: error.detail.messages.join(', ')
+                            }, {
+                                type: 'danger'
+                            });
+                        });
                     }
                 } );
             }
@@ -472,10 +479,12 @@
                     }
                 } )
             ).fail( function() {
-                $( document ).trigger( 'global-error', [ [ { 
+                $.notify({
                     title: 'Failed to Load Locale Data:',
-                    detail: 'Please try reloading the app.'
-                } ] ] );
+                    message: 'Please try reloading the app.'
+                }, {
+                    type: 'danger'
+                });
             } );
         },
 
@@ -484,10 +493,12 @@
                 units.distance = model.prefDistanceUnit;
                 units.elevation = model.prefElevationUnit;
             } ).fail( function() {
-                $( document ).trigger( 'global-error', [ [ { 
+                $.notify({
                     title: 'Failed to Load User Data:',
-                    detail: 'Please try reloading the app.'
-                } ] ] );
+                    message: 'Please try reloading the app.'
+                }, {
+                    type: 'danger'
+                });
             } );
         },
 
@@ -1567,13 +1578,20 @@
                             var errors = data.jqXHR.responseJSON.errors;
                             for ( var i = 0; i < errors.length; i++ ) {
                                 errors[i].dump = errors[i].detail.attributes;
+                                $.notify({
+                                    title: errors[i].title,
+                                    message: errors[i].detail.messages.join(', ')
+                                }, {
+                                    type: 'danger'
+                                });
                             }
-                            $( document ).trigger( 'global-error', [ errors ] );
                         } else {
-                            $( document ).trigger( 'global-error', [ [ {
+                            $.notify({
                                 title: 'Failed to Upload File',
-                                detail: 'Unknown Server Error'
-                            } ] ] );
+                                message: 'Unknown Server Error'
+                            }, {
+                                type: 'danger'
+                            });
                         }
                     },
                     always: function () {

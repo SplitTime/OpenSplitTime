@@ -186,7 +186,14 @@ var JSONAPI = (function ($) {
                 } , function( a,b,c ) {
                     if ( a.responseJSON && a.responseJSON.errors ) {
                         console.error( 'JSONAPI', 'Server reported errors \'' + self.__type__ + '\' model.' )
-                        $( document ).trigger( 'global-error', [ a.responseJSON.errors ] );
+                        a.responseJSON.errors.forEach(error => {
+                            $.notify({
+                                title: error.title,
+                                message: error.detail.messages.join(', ')
+                            }, {
+                                type: 'danger'
+                            });
+                        });
                         return error( self, 'ERRORS' );
                     } else if ( a.status === 404 ) {
                         console.warn( 'JSONAPI', 'Server does not recognize the \'' + self.__type__ + '\' model ID.' );

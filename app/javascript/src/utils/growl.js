@@ -22,5 +22,29 @@ $.notifyDefaults({
         </span>\
     </span>\
 </aside>',
-    type: 'orange'
+    type: 'orange',
+    z_index: 1071 // Bootstrap uses up to 1070
+});
+
+$(document).on("turbolinks:load", () => {
+    $(document).on('ajax:error', (e) => {
+        let errors = e.detail[0].errors;
+        if ($.isArray(errors)) {
+            errors.forEach(error => {
+                $.notify({
+                    title: error.title,
+                    message: error.detail.messages.join(', ')
+                }, {
+                    type: 'danger'
+                });
+            });
+        } else if (e.detail[2].status === 0) {
+            $.notify({
+                title: 'Communication Error:',
+                message: 'Server is not responding'
+            }, {
+                type: 'danger'
+            });
+        }
+    });
 });

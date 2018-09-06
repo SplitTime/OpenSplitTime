@@ -145,7 +145,7 @@ GEM
       factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
     ffaker (2.8.1)
-    ffi (1.9.23)
+    ffi (1.9.25)
     font-awesome-rails (4.7.0.3)
       railties (>= 3.2, < 5.2)
     friendly_id (5.1.0)

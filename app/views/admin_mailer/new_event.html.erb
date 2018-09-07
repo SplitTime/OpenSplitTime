@@ -1,4 +1,4 @@
 <p>
-  <%= "#{@user.full_name} has created a new event called" %>
+  <%= "#{@user.full_name} (#{@user.email}) has created a new event called" %>
   <%= link_to @event.name, event_url(@event) %>
 </p>

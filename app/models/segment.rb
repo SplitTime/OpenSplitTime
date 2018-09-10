@@ -139,6 +139,10 @@ class Segment
     begin_lap_split.start? && zero_segment?
   end
 
+  def ends_at_finish?
+    end_split.finish?
+  end
+
   def special_limits_type
     case
     when zero_start?

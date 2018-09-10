@@ -1,6 +1,6 @@
 <%= form_tag best_efforts_course_path(@best_display), method: :get do %>
-    <%= hidden_field_tag 'split1', @best_display.begin_id %>
-    <%= hidden_field_tag 'split2', @best_display.end_id %>
+    <%= hidden_field_tag 'split1', @best_display.split1 %>
+    <%= hidden_field_tag 'split2', @best_display.split2 %>
     <%= hidden_field_tag 'filter[gender]', @best_display.gender_text %>
     <div class="input-group">
       <%= text_field_tag 'filter[search]',

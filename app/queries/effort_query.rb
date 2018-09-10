@@ -133,46 +133,90 @@ class EffortQuery < BaseQuery
     query = <<-SQL
       WITH
         existing_scope AS (#{existing_scope_sql}),
+        
         efforts_scoped AS (SELECT efforts.*
                                        FROM efforts
-                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id)
-
-      SELECT *, 
+                                       INNER JOIN existing_scope ON existing_scope.id = efforts.id),
+                                       
+        stopped_split_time_subquery AS (SELECT split_times.id as stopped_split_time_id, 
+                                           split_times.lap as stopped_lap, 
+                                           split_times.split_id as stopped_split_id, 
+                                           split_times.sub_split_bitkey as stopped_bitkey, 
+                                           split_times.time_from_start as stopped_time, 
+                                           split_times.effort_id
+                                      FROM split_times
+                                      WHERE split_times.stopped_here = true),
+                                      
+        farthest_split_time_subquery AS (SELECT DISTINCT ON(split_times.effort_id)
+                            split_times.effort_id, 
+                                    splits.distance_from_start as final_lap_distance,
+                                    split_times.lap as final_lap,
+                                    split_times.sub_split_bitkey as final_bitkey,
+                                    CASE
+                                      when splits.kind = 1 then true else false 
+                                    end 
+                                    AS final_lap_complete
+                                FROM split_times
+                                    LEFT JOIN splits ON splits.id = split_times.split_id
+                                ORDER BY  split_times.effort_id, 
+                                          final_lap desc,
+                                          final_lap_distance desc, 
+                                          final_bitkey desc),
+                                          
+        final_split_time_subquery AS (SELECT *,                       
+                            CASE
+                          when final_lap_complete is true then final_lap 
+                          else final_lap - 1 
+                          end 
+                          AS laps_finished
+                        FROM farthest_split_time_subquery),
+      
+      
+        main_subquery AS   (SELECT e1.*, (tfs_end - tfs_begin) as segment_seconds
+                  FROM 
+                      (SELECT efforts_scoped.*, 
+                              events.start_time as event_start_time, 
+                              events.home_time_zone as event_home_zone, 
+                              split_times.effort_id, 
+                              split_times.time_from_start as tfs_begin, 
+                              split_times.lap, 
+                              split_times.split_id, 
+                              split_times.sub_split_bitkey,
+                              events.laps_required,
+                              event_groups.concealed as event_group_concealed
+                      FROM efforts_scoped
+                        INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
+                        INNER JOIN events ON events.id = efforts_scoped.event_id
+                        INNER JOIN event_groups ON event_groups.id = events.event_group_id
+                      WHERE split_times.split_id = #{begin_id} AND split_times.sub_split_bitkey = #{begin_bitkey}) 
+                  as e1, 
+                      (SELECT efforts_scoped.id, 
+                              split_times.effort_id, 
+                              split_times.time_from_start as tfs_end, 
+                              split_times.lap, 
+                              split_times.split_id, 
+                              split_times.sub_split_bitkey 
+                      FROM efforts_scoped
+                      INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
+                      WHERE split_times.split_id = #{end_id} AND split_times.sub_split_bitkey = #{end_bitkey}) 
+                  as e2 
+                  WHERE (e1.effort_id = e2.effort_id AND e1.lap = e2.lap))
+                
+      
+      SELECT main_subquery.*, 
               lap, 
               rank() over (order by segment_seconds, gender, -age, lap) as overall_rank, 
               rank() over (partition by gender order by segment_seconds, -age) as gender_rank,
-              true as started
-      FROM 
-        (SELECT e1.*, (tfs_end - tfs_begin) as segment_seconds 
-        FROM 
-            (SELECT efforts_scoped.*, 
-                    events.start_time as event_start_time, 
-                    events.home_time_zone as event_home_zone, 
-                    split_times.effort_id, 
-                    split_times.time_from_start as tfs_begin, 
-                    split_times.lap, 
-                    split_times.split_id, 
-                    split_times.sub_split_bitkey,
-                    events.laps_required,
-                    event_groups.concealed as event_group_concealed
-            FROM efforts_scoped
-              INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
-              INNER JOIN events ON events.id = efforts_scoped.event_id
-              INNER JOIN event_groups ON event_groups.id = events.event_group_id
-            WHERE split_times.split_id = #{begin_id} AND split_times.sub_split_bitkey = #{begin_bitkey}) 
-        as e1, 
-            (SELECT efforts_scoped.id, 
-                    split_times.effort_id, 
-                    split_times.time_from_start as tfs_end, 
-                    split_times.lap, 
-                    split_times.split_id, 
-                    split_times.sub_split_bitkey 
-            FROM efforts_scoped
-            INNER JOIN split_times ON split_times.effort_id = efforts_scoped.id 
-            WHERE split_times.split_id = #{end_id} AND split_times.sub_split_bitkey = #{end_bitkey}) 
-        as e2 
-        WHERE (e1.effort_id = e2.effort_id AND e1.lap = e2.lap)) 
-      as efforts 
+              CASE 
+              when main_subquery.laps_required = 0 then
+                CASE when stopped_split_time_id is null then false else true END  
+              else
+                CASE when laps_finished >= laps_required then true else false END 
+              END
+              as finished
+      FROM main_subquery 
+        LEFT JOIN stopped_split_time_subquery ON stopped_split_time_subquery.effort_id = main_subquery.effort_id
+        LEFT JOIN final_split_time_subquery ON final_split_time_subquery.effort_id = main_subquery.effort_id
       WHERE event_group_concealed = 'f'
       ORDER BY overall_rank
     SQL

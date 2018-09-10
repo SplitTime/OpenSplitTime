@@ -66,6 +66,10 @@ class BestEffortsDisplay < BasePresenter
     segment.full_course?
   end
 
+  def segment_ends_at_finish?
+    segment.ends_at_finish?
+  end
+
   def ordered_splits
     @ordered_splits ||= course.ordered_splits
   end

@@ -22,7 +22,7 @@ module ETL::Extractors
     attr_reader :html, :options
 
     def row
-      {full_name: full_name, bib_number: bib_number, gender: gender, age: age, city: city, state_code: state_code, times: times}
+      {full_name: full_name, bib_number: bib_number, gender: gender, age: age, city: city, state_code: state_code, times: times, dnf: dnf?}
     end
 
     def full_name
@@ -65,8 +65,16 @@ module ETL::Extractors
       times_table.xpath('tr')[2..-1].map { |tr| times_from_tr(tr) }.to_h
     end
 
+    def dnf?
+      records_table.text.include?('DNF')
+    end
+
     def times_table
       html.search('[text()*="Leg Length"]')&.first&.parent&.parent&.parent
+    end
+
+    def records_table
+      html.search('[text()*="Aid Station Records"]')&.first&.parent&.parent&.parent
     end
 
     def times_from_tr(tr)

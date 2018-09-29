@@ -32,7 +32,7 @@ module ETL::Transformers
       fix_negative_times
       proto_record[:start_offset] = effort_start_time - event.start_time
       proto_record.create_split_time_children!(time_points)
-      proto_record.set_split_time_stop!
+      proto_record.set_split_time_stop! if proto_record[:dnf]
     end
 
     def sort_and_fill_times

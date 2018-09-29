@@ -4,7 +4,8 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
   subject { ETL::Transformers::AdilasBearStrategy.new(struct, options) }
 
   let(:struct) { OpenStruct.new(attributes) }
-  let(:attributes) { {full_name: 'Linda McFadden', bib_number: '187', gender: 'F', age: '54', city: 'Modesto', state_code: 'CA', times: times} }
+  let(:attributes) { {full_name: 'Linda McFadden', bib_number: '187', gender: 'F', age: '54', city: 'Modesto', state_code: 'CA', times: times, dnf: dnf} }
+  let(:dnf) { true }
   let(:options) { {parent: event} }
 
   let(:proto_records) { subject.transform }
@@ -64,10 +65,24 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
         expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 10150.0, 10150.0, 23427.0, 23429.0, 114551.0, 28151.0])
       end
 
-      it 'sets [:stopped_here] attribute on the final child record' do
-        records = first_proto_record.children
-        expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
-        expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, nil, nil, true])
+      context 'when dnf is true' do
+        let(:dnf) { true }
+
+        it 'sets [:stopped_here] attribute on the final child record' do
+          records = first_proto_record.children
+          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
+          expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, nil, nil, true])
+        end
+      end
+
+      context 'when dnf is false' do
+        let(:dnf) { false }
+
+        it 'does not set [:stopped_here] attribute on the final child record' do
+          records = first_proto_record.children
+          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(nil)
+          expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, nil, nil, nil])
+        end
       end
     end
 

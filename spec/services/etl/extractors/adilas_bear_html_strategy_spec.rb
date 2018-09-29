@@ -13,7 +13,7 @@ RSpec.describe ETL::Extractors::AdilasBearHTMLStrategy do
     context 'when complete and valid HTML data is provided' do
 
       let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=314' }
-      let(:attributes) { {full_name: 'Kaci Lickteig', bib_number: '1', gender: 'F', age: '30', city: 'Omaha', state_code: 'NE', times: times} }
+      let(:attributes) { {full_name: 'Kaci Lickteig', bib_number: '1', gender: 'F', age: '30', city: 'Omaha', state_code: 'NE', times: times, dnf: false} }
       let(:times) { {0 => ['9/23/2016 6:00:00 am', '9/23/2016 7:45:30 am'],
                      1 => ['9/23/2016 7:45:31 am', '9/23/2016 9:23:00 am'],
                      2 => ['9/23/2016 9:23:00 am', '9/23/2016 9:50:19 am'],
@@ -36,13 +36,13 @@ RSpec.describe ETL::Extractors::AdilasBearHTMLStrategy do
 
     context 'when incomplete but valid HTML data is provided' do
       let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
-      let(:attributes) { {full_name: 'Linda McFadden', bib_number: '187', gender: 'F', age: '54', city: 'Modesto', state_code: 'CA', times: times} }
+      let(:attributes) { {full_name: 'Linda McFadden', bib_number: '187', gender: 'F', age: '54', city: 'Modesto', state_code: 'CA', times: times, dnf: true} }
       let(:times) { {0 => ['9/23/2016 6:00:00 am', '9/23/2016 8:49:10 am'],
                      1 => ['9/23/2016 8:49:10 am', '9/23/2016 12:30:27 pm'],
                      2 => ['9/23/2016 12:30:29 pm', '9/24/2016 1:49:11 pm'],
                      3 => ['9/23/2016 1:49:11 pm', '... ...']} }
 
-      it 'returns an OpenStruct containing effort and time information' do
+      it 'returns an OpenStruct containing effort and time information with dnf set to true' do
         expect(subject.extract).to eq(OpenStruct.new(attributes))
       end
     end

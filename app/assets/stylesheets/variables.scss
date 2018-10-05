@@ -1,5 +1,3 @@
-@import "bootstrap/variables";
-
 /***********
 Variables
 ************/
@@ -18,9 +16,9 @@ $orange: #F0AD4E;
 $lightishGray: #F1F1F1;
 
 // Boostrap breakpoints
-$break-small: $screen-sm-min;
-$break-medium: $screen-md-min;
-$break-large: $screen-lg-min;
+$break-small: sm;
+$break-medium: md;
+$break-large: lg;
 $max-width: 1200px;
 
 /***********

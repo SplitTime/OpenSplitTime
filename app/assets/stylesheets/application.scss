@@ -10,15 +10,23 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= stub variables
- *= stub mixins
- *= require switchery
- *= require devise_bootstrap_views
- *= require_tree .
- *= require_self
- *= require jquery.fileupload
- *= require jquery.fileupload-ui
- *= require font-awesome
- *= require animate.css
- *= require bootstrap-datetimepicker
  */
+
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+
+@import "*";
+@import "**/*";
+@import "switchery";
+@import "devise_bootstrap_views";
+@import "jquery.fileupload";
+@import "jquery.fileupload-ui";
+@import "font-awesome";
+@import "animate";
+@import "bootstrap-datetimepicker";
+
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+@import "bootstrap";
+
+@import "variables";
+@import "mixins";

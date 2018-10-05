@@ -1,16 +1,13 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
       <%= link_to 'OpenSplitTime', root_path, class: 'navbar-brand', id: 'logo' %>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav mr-auto mt-2 mt-lg-0">
         <%= render 'layouts/navigation_links' %>
       </ul>
       <ul class="nav navbar-nav navbar-right">

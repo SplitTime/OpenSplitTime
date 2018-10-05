@@ -1,8 +1,6 @@
-$brand-primary: #3A9DD1;
-
 // make all images responsive by default
 img {
-  @extend .img-responsive;
+  @extend .img-fluid;
   margin: 0 auto;
   }
 
@@ -23,11 +21,6 @@ img {
 .navbar-brand {
   font-size: inherit;
   }
-
-.navbar-icon {
-  margin-top: 10px;
-  margin-right: 10px;
-}
 
 // THESE ARE EXAMPLES YOU CAN MODIFY
 // create your own classes
@@ -71,8 +64,7 @@ section {
   margin: 0 auto;
 }
 .authform form {
-  @extend .well;
-  @extend .well-lg;
+  @extend .card;
   padding-bottom: 40px;
 }
 .authform .right {
@@ -83,7 +75,7 @@ section {
   @extend .btn-primary;
 }
 .authform fieldset {
-  @extend .well;
+  @extend .card;
 }
 .object-list-actions {
   border-top: 1px solid #eaeaea;
@@ -170,6 +162,13 @@ tfoot {
   @extend .btn;
   @extend .btn-primary;
   @extend .btn-xs;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding  : .25rem .4rem;
+  font-size  : .875rem;
+  line-height  : .5;
+  border-radius : .2rem;
 }
 
 .alert-alert {

@@ -18,28 +18,28 @@
     // Customized alert styles for growl
     &.alert {
         &-success {
-            background: $btn-success-bg;
-            border-color: $btn-success-border;
+            background: map_get($theme-colors, 'success');
+            border-color: map_get($theme-colors, 'success');
             color: $white;
         }
 
         &-info {
-            background: $btn-info-bg;
-            border-color: $btn-info-border;
+            background: map_get($theme-colors, 'info');
+            border-color: map_get($theme-colors, 'info');
             color: $white;
         }
 
         &-notice,
         &-warning {
-            background: $btn-warning-bg;
-            border-color: $btn-warning-border;
+            background: map_get($theme-colors, 'warning');
+            border-color: map_get($theme-colors, 'warning');
             color: $white;
         }
 
         &-alert,
         &-danger {
-            background: $btn-danger-bg;
-            border-color: $btn-danger-border;
+            background: map_get($theme-colors, 'danger');
+            border-color: map_get($theme-colors, 'danger');
             color: $white;
         }
     }

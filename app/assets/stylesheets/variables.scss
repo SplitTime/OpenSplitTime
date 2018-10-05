@@ -1,6 +1,9 @@
 /***********
 Variables
 ************/
+
+$font-family-sans-serif: "Gibson-Semibold";
+
 $gray: #777;
 $mediumGray: #aaa;
 
@@ -15,10 +18,15 @@ $orange: #F0AD4E;
 
 $lightishGray: #F1F1F1;
 
+$primary: #3A9DD1;
+$theme-colors: (
+        primary: $primary
+);
+
 // Boostrap breakpoints
-$break-small: sm;
-$break-medium: md;
-$break-large: lg;
+$break-small: map-get($grid-breakpoints, 'sm');
+$break-medium: map-get($grid-breakpoints, 'md');
+$break-large: map-get($grid-breakpoints, 'lg');
 $max-width: 1200px;
 
 // Imported from Bootstrap 3

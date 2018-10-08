@@ -84,6 +84,11 @@ class EventGroup < ApplicationRecord
     eg ? [eg.split_id, eg.effort_id] : []
   end
 
+  def not_expected_bibs(split_name)
+    query = EventGroupQuery.not_expected_bibs(id, split_name)
+    ActiveRecord::Base.connection.execute(query).values.flatten
+  end
+
   private
 
   def split_analyzer

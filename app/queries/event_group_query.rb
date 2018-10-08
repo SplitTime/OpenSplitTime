@@ -43,6 +43,7 @@ class EventGroupQuery < BaseQuery
          or farthest_distance is null
          or subject_distance is null
          or farthest_distance >= subject_distance
+      order by bib_number
     SQL
     query.squish
   end

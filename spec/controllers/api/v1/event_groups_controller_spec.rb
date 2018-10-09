@@ -875,8 +875,8 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe '#submit_raw_time_rows' do
     subject(:make_request) { post :submit_raw_time_rows, params: request_params }
-    let(:request_params) { {id: event_group.id, data: raw_time_attributes, force_submit: force_submit} }
-    let(:raw_time_attributes) { {"0" => {"raw_time_row" => {"raw_times" => {"0" => raw_time_attributes_1, "1" => raw_time_attributes_2}}}} }
+    let(:request_params) { {id: event_group.id, data: raw_time_data, force_submit: force_submit} }
+    let(:raw_time_data) { {"0" => {"raw_time_row" => {"raw_times" => {"0" => raw_time_attributes_1, "1" => raw_time_attributes_2}}}} }
 
     let!(:event_group) { create(:event_group, available_live: true) }
     let!(:course_1) { create(:course) }
@@ -885,14 +885,14 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
 
     let!(:course_1_start_split) { create(:start_split, course: course_1, base_name: 'Start') }
-    let!(:course_1_aid_1_split) { create(:split, course: course_1, base_name: 'Aid 1') }
-    let!(:course_1_finish_split) { create(:finish_split, course: course_1, base_name: 'Finish') }
+    let!(:course_1_aid_1_split) { create(:split, course: course_1, base_name: 'Aid 1', distance_from_start: 10000) }
+    let!(:course_1_finish_split) { create(:finish_split, course: course_1, base_name: 'Finish', distance_from_start: 20000) }
     let(:course_1_splits) { [course_1_start_split, course_1_aid_1_split, course_1_finish_split] }
 
     let!(:course_2_start_split) { create(:start_split, course: course_2, base_name: 'Start') }
-    let!(:course_2_aid_1_split) { create(:split, course: course_2, base_name: 'Aid 1') }
-    let!(:course_2_aid_2_split) { create(:split, course: course_2, base_name: 'Aid 2') }
-    let!(:course_2_finish_split) { create(:finish_split, course: course_2, base_name: 'Finish') }
+    let!(:course_2_aid_1_split) { create(:split, course: course_2, base_name: 'Aid 1', distance_from_start: 10000) }
+    let!(:course_2_aid_2_split) { create(:split, course: course_2, base_name: 'Aid 2', distance_from_start: 20000) }
+    let!(:course_2_finish_split) { create(:finish_split, course: course_2, base_name: 'Finish', distance_from_start: 30000) }
     let(:course_2_splits) { [course_2_start_split, course_2_aid_1_split, course_2_aid_2_split, course_2_finish_split] }
 
     let!(:effort_1) { create(:effort, event: event_1, bib_number: 111) }

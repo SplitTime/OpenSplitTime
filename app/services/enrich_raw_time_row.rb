@@ -37,7 +37,7 @@ class EnrichRawTimeRow
     raw_time_pair.reject(&:lap).each do |raw_time|
       if single_lap_event_group? || single_lap_event?
         raw_time.lap = 1
-      elsif effort.nil?
+      elsif effort.nil? || split.nil?
         raw_time.lap = nil
       elsif raw_time.absolute_time
         raw_time.lap = expected_lap(raw_time, :day_and_time, raw_time.absolute_time)
@@ -53,7 +53,7 @@ class EnrichRawTimeRow
     FindExpectedLap.perform(effort: effort,
                             subject_attribute: subject_attribute,
                             subject_value: subject_value,
-                            split_id: split&.id,
+                            split_id: split.id,
                             bitkey: raw_time.bitkey)
   end
 

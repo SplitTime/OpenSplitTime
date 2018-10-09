@@ -34,12 +34,14 @@ class RowifyRawTimes
     raw_times.reject(&:lap).each do |raw_time|
       if single_lap_event_group? || single_lap_event?(raw_time)
         raw_time.lap = 1
-      elsif raw_time.effort_id.nil?
+      elsif raw_time.effort_id.nil? || raw_time.split_id.nil?
         raw_time.lap = nil
       elsif raw_time.absolute_time
         raw_time.lap = expected_lap(raw_time, :day_and_time, raw_time.absolute_time)
-      else
+      elsif raw_time.military_time
         raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
+      else
+        raw_time.lap = nil
       end
     end
   end

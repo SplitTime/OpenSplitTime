@@ -873,6 +873,164 @@ RSpec.describe Api::V1::EventGroupsController do
     end
   end
 
+  describe '#submit_raw_time_rows' do
+    subject(:make_request) { post :submit_raw_time_rows, params: request_params }
+    let(:request_params) { {id: event_group.id, data: raw_time_data, force_submit: force_submit} }
+    let(:raw_time_data) { {"0" => {"raw_time_row" => {"raw_times" => {"0" => raw_time_attributes_1, "1" => raw_time_attributes_2}}}} }
+
+    let!(:event_group) { create(:event_group, available_live: true) }
+    let!(:course_1) { create(:course) }
+    let!(:course_2) { create(:course) }
+    let!(:event_1) { create(:event, event_group: event_group, course: course_1, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
+    let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
+
+    let!(:course_1_start_split) { create(:start_split, course: course_1, base_name: 'Start') }
+    let!(:course_1_aid_1_split) { create(:split, course: course_1, base_name: 'Aid 1', distance_from_start: 10000) }
+    let!(:course_1_finish_split) { create(:finish_split, course: course_1, base_name: 'Finish', distance_from_start: 20000) }
+    let(:course_1_splits) { [course_1_start_split, course_1_aid_1_split, course_1_finish_split] }
+
+    let!(:course_2_start_split) { create(:start_split, course: course_2, base_name: 'Start') }
+    let!(:course_2_aid_1_split) { create(:split, course: course_2, base_name: 'Aid 1', distance_from_start: 10000) }
+    let!(:course_2_aid_2_split) { create(:split, course: course_2, base_name: 'Aid 2', distance_from_start: 20000) }
+    let!(:course_2_finish_split) { create(:finish_split, course: course_2, base_name: 'Finish', distance_from_start: 30000) }
+    let(:course_2_splits) { [course_2_start_split, course_2_aid_1_split, course_2_aid_2_split, course_2_finish_split] }
+
+    let!(:effort_1) { create(:effort, event: event_1, bib_number: 111) }
+    let!(:effort_2) { create(:effort, event: event_2, bib_number: 112) }
+
+    let!(:effort_1_split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: course_1_start_split, bitkey: in_bitkey, time_from_start: 0) }
+    let!(:effort_1_split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: course_1_aid_1_split, bitkey: in_bitkey, time_from_start: 5000) }
+    let!(:effort_1_split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: course_1_aid_1_split, bitkey: out_bitkey, time_from_start: 6000) }
+    let!(:effort_1_split_time_4) { create(:split_time, effort: effort_1, lap: 1, split: course_1_finish_split, bitkey: in_bitkey, time_from_start: 10000) }
+    let!(:effort_2_split_time_1) { create(:split_time, effort: effort_2, lap: 1, split: course_2_start_split, bitkey: in_bitkey, time_from_start: 0) }
+    let!(:effort_2_split_time_2) { create(:split_time, effort: effort_2, lap: 1, split: course_2_aid_1_split, bitkey: in_bitkey, time_from_start: 7000) }
+
+    before do
+      event_1.splits << course_1_splits
+      event_2.splits << course_2_splits
+    end
+
+    context 'when data is valid and force_submit is true' do
+      let(:raw_time_attributes_1) { {bib_number: '111', entered_time: '09:00:00', split_name: 'Aid 1', sub_split_kind: 'in', source: 'Live Entry (1)'} }
+      let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '09:05:00', split_name: 'Aid 1', sub_split_kind: 'out', source: 'Live Entry (1)'} }
+      let(:force_submit) { 'true' }
+
+      via_login_and_jwt do
+        it 'overwrites existing duplicate split_times, creates raw_times, and does not return raw_time_rows' do
+          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 5000, 6000, 10000])
+          response = make_request
+          result = JSON.parse(response.body)
+          expect(result.dig('data', 'rawTimeRows')).to eq([])
+          effort_1.reload
+          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 3600, 3900, 10000])
+          expect(RawTime.count).to eq(2)
+        end
+      end
+    end
+
+    context 'when data is valid and force_submit is false' do
+      let(:raw_time_attributes_1) { {bib_number: '111', entered_time: '09:00:00', split_name: 'Aid 1', sub_split_kind: 'in', source: 'Live Entry (1)'} }
+      let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '09:05:00', split_name: 'Aid 1', sub_split_kind: 'out', source: 'Live Entry (1)'} }
+      let(:force_submit) { 'false' }
+      let(:expected) { [{'rawTimes' =>
+                             [{'id' => nil,
+                               'splitName' => 'Aid 1',
+                               'bibNumber' => '111',
+                               'absoluteTime' => nil,
+                               'enteredTime' => '09:00:00',
+                               'withPacer' => false,
+                               'stoppedHere' => false,
+                               'source' => 'Live Entry (1)',
+                               'remarks' => nil,
+                               'dataStatus' => nil,
+                               'lap' => 1,
+                               'splitTimeExists' => true,
+                               'militaryTime' => '09:00:00',
+                               'subSplitKind' => 'In'},
+                              {'id' => nil,
+                               'splitName' => 'Aid 1',
+                               'bibNumber' => '111',
+                               'absoluteTime' => nil,
+                               'enteredTime' => '09:05:00',
+                               'withPacer' => false,
+                               'stoppedHere' => false,
+                               'source' => 'Live Entry (1)',
+                               'remarks' => nil,
+                               'dataStatus' => nil,
+                               'lap' => 1,
+                               'splitTimeExists' => true,
+                               'militaryTime' => '09:05:00',
+                               'subSplitKind' => 'Out'}],
+                         'errors' => ['bad or duplicate time']}] }
+
+      via_login_and_jwt do
+        it 'does not overwrite existing duplicate split_times, does not create raw_times, and returns raw_time_rows' do
+          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 5000, 6000, 10000])
+          response = make_request
+          result = JSON.parse(response.body)
+          expect(result.dig('data', 'rawTimeRows')).to eq(expected)
+          effort_1.reload
+          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 5000, 6000, 10000])
+          expect(RawTime.count).to eq(0)
+        end
+      end
+    end
+
+    context 'when the bib number does not belong at the split' do
+      let(:raw_time_attributes_1) { {bib_number: '111', entered_time: '09:00:00', split_name: 'Aid 2', sub_split_kind: 'in', source: 'Live Entry (1)'} }
+      let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '09:05:00', split_name: 'Aid 2', sub_split_kind: 'out', source: 'Live Entry (1)'} }
+      let(:force_submit) { true }
+
+      via_login_and_jwt do
+        it 'does not create raw_times or split_times and returns raw_time_rows with descriptive errors' do
+          expect(SplitTime.count).to eq(6)
+          response = make_request
+          result = JSON.parse(response.body)
+          expect(RawTime.count).to eq(0)
+          expect(SplitTime.count).to eq(6)
+          expect(result.dig('data', 'rawTimeRows').first['rawTimes'].size).to eq(2)
+          expect(result.dig('data', 'rawTimeRows').first['errors']).to include('invalid split name')
+        end
+      end
+    end
+
+    context 'when the bib number is invalid' do
+      let(:raw_time_attributes_1) { {bib_number: '999', entered_time: '09:00:00', split_name: 'Aid 2', sub_split_kind: 'in', source: 'Live Entry (1)'} }
+      let(:raw_time_attributes_2) { {bib_number: '999', entered_time: '09:05:00', split_name: 'Aid 2', sub_split_kind: 'out', source: 'Live Entry (1)'} }
+      let(:force_submit) { true }
+
+      via_login_and_jwt do
+        it 'does not create raw_times or split_times and returns raw_time_rows with a descriptive error' do
+          expect(SplitTime.count).to eq(6)
+          response = make_request
+          result = JSON.parse(response.body)
+          expect(RawTime.count).to eq(0)
+          expect(SplitTime.count).to eq(6)
+          expect(result.dig('data', 'rawTimeRows').first['rawTimes'].size).to eq(2)
+          expect(result.dig('data', 'rawTimeRows').first['errors']).to include('missing effort')
+        end
+      end
+    end
+
+    context 'when the split_name is invalid' do
+      let(:raw_time_attributes_1) { {bib_number: '111', entered_time: '09:00:00', split_name: 'Nonexistent', sub_split_kind: 'in', source: 'Live Entry (1)'} }
+      let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '09:05:00', split_name: 'Nonexistent', sub_split_kind: 'out', source: 'Live Entry (1)'} }
+      let(:force_submit) { true }
+
+      via_login_and_jwt do
+        it 'does not create raw_times or split_times and returns raw_time_rows with a descriptive error' do
+          expect(SplitTime.count).to eq(6)
+          response = make_request
+          result = JSON.parse(response.body)
+          expect(RawTime.count).to eq(0)
+          expect(SplitTime.count).to eq(6)
+          expect(result.dig('data', 'rawTimeRows').first['rawTimes'].size).to eq(2)
+          expect(result.dig('data', 'rawTimeRows').first['errors']).to include('invalid split name')
+        end
+      end
+    end
+  end
+
   describe '#trigger_raw_times_push' do
     subject(:make_request) { get :trigger_raw_times_push, params: request_params }
     let(:course) { create(:course) }

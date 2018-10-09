@@ -145,6 +145,7 @@ Rails.application.routes.draw do
         member do
           get :enrich_raw_time_row
           get :trigger_raw_times_push
+          get :not_expected
           post :import
           post :import_csv_raw_times
           post :submit_raw_time_rows

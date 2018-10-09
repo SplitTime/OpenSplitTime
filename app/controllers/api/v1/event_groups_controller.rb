@@ -152,6 +152,18 @@ class Api::V1::EventGroupsController < ApiController
     render json: {message: "Time records push notifications sent for #{@resource.name}"}
   end
 
+  def not_expected
+    authorize @resource
+    event_group = EventGroup.where(id: @resource).includes(events: :splits).first
+    response = FindNotExpectedBibs.perform(event_group, params[:split_name])
+
+    if response.errors.present?
+      render json: {errors: response.errors}, status: :unprocessable_entity
+    else
+      render json: {data: {bib_numbers: response.bib_numbers}}, status: :ok
+    end
+  end
+
   private
 
   def parse_raw_times_data(raw_times_data)

@@ -22,6 +22,11 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because distances do not coincide"]}}
     end
 
+    def invalid_split_name_error(split_name, valid_split_names)
+      {title: 'Invalid split name',
+       detail: {messages: ["#{split_name} is invalid; valid names are: #{valid_split_names.to_sentence}"]}}
+    end
+
     def lap_mismatch_error(child, new_parent)
       {title: 'Distances do not match',
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because laps exceed maximum required"]}}

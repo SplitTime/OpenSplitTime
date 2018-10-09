@@ -77,20 +77,26 @@ class RawTime < ApplicationRecord
   end
 
   def split
-    @split = nil if bib_number.nil? || bib_number.include?('*')
+    @split = nil if bib_number.nil? || bib_number.include?('*') ||
+        (attributes.has_key?('split_id') && attributes['split_id'].nil?)
     return @split if defined?(@split)
 
     if attributes['split_id']
       @split = Split.find(attributes['split_id'])
     else
-      @split = Split.joins(course: {events: :efforts}).find_by(parameterized_base_name: parameterized_split_name,
-                                                               efforts: {bib_number: bib_number},
-                                                               events: {event_group_id: event_group_id})
+      rt = RawTime.where(id: self).with_relation_ids.first
+      if rt&.split_id
+        @split = Split.find(rt.split_id)
+      else
+        @split = nil
+      end
     end
   end
 
   def split_id
-    attributes['split_id'] || split&.id
+    # We need to return nil if the split_id key exists and is nil
+    return attributes['split_id'] if attributes.has_key?('split_id')
+    split&.id
   end
 
   def time_point

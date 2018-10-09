@@ -17,6 +17,8 @@ module Results
           women_40s_masters: Results::Category.new('Masters Women (40-49)', %w[female], 40, 49),
           men_grandmasters: Results::Category.new('Grandmasters Men (50+)', %w[male], 50),
           women_grandmasters: Results::Category.new('Grandmasters Women (50+)', %w[female], 50),
+          men_seniors: Results::Category.new('Senior Grandmasters Men (60+)', %w[male], 60),
+          women_seniors: Results::Category.new('Senior Grandmasters Women (60+)', %w[female], 60),
           men_under_20: Results::Category.new('Under 20 Men', %w[male], nil, 19),
           women_under_20: Results::Category.new('Under 20 Women', %w[female], nil, 19),
           men_20s: Results::Category.new('20 to 29 Men', %w[male], 20, 29),
@@ -29,6 +31,8 @@ module Results
           women_50s: Results::Category.new('50 to 59 Women', %w[female], 50, 59),
           men_60s: Results::Category.new('60 to 69 Men', %w[male], 60, 69),
           women_60s: Results::Category.new('60 to 69 Women', %w[female], 60, 69),
+          men_under_30: Results::Category.new('Under 30 Men', %w[male], nil, 29),
+          women_under_30: Results::Category.new('Under 30 Women', %w[female], nil, 29),
           men_under_40: Results::Category.new('Under 40 Men', %w[male], nil, 39),
           women_under_40: Results::Category.new('Under 40 Women', %w[female], nil, 39)
       }.with_indifferent_access

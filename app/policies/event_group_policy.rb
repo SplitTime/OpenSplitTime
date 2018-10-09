@@ -87,4 +87,8 @@ class EventGroupPolicy < ApplicationPolicy
   def pull_time_record_rows?
     user.authorized_to_edit?(event_group)
   end
+
+  def not_expected?
+    user.authorized_to_edit?(event_group)
+  end
 end

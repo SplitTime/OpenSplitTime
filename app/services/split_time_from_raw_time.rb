@@ -14,6 +14,12 @@ class SplitTimeFromRawTime
       split_time.military_time = raw_time.military_time
     end
 
+    if split_time.time_from_start == 349200
+      pp raw_time.military_time
+      pp event.start_time
+      pp event.start_time_in_home_zone
+    end
+
     split_time
   end
 end

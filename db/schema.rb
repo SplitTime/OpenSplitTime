@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181010133335) do
+ActiveRecord::Schema.define(version: 20181012001720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 20181010133335) do
     t.string "country_code", limit: 2
     t.date "birthdate"
     t.integer "data_status"
-    t.integer "start_offset", default: 0, null: false
     t.string "beacon_url"
     t.string "report_url"
     t.string "phone", limit: 15
@@ -241,7 +240,6 @@ ActiveRecord::Schema.define(version: 20181010133335) do
   create_table "split_times", id: :serial, force: :cascade do |t|
     t.integer "effort_id", null: false
     t.integer "split_id", null: false
-    t.float "time_from_start", null: false
     t.integer "data_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

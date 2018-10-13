@@ -1,7 +1,9 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :spread, :podium, :series, :place, :analyze, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
   before_action :set_event, except: [:index, :new, :create, :series]
-  after_action :verify_authorized, except: [:index, :show, :spread, :podium, :series, :place, :analyze, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
+
+  MAX_SUMMARY_EFFORTS = 1000
 
   def index
     @events = policy_class::Scope.new(current_user, controller_class).viewable
@@ -81,6 +83,13 @@ class EventsController < ApplicationController
                   filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
     end
+  end
+
+
+  def summary
+    event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
+    params[:per_page] ||= MAX_SUMMARY_EFFORTS
+    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params, current_user: current_user)
   end
 
   def podium

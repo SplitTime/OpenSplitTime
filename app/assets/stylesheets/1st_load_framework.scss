@@ -176,6 +176,12 @@ section {
   @extend .alert-warning;
 }
 
+.table-tight {
+    > tbody > tr {
+        font-size: 13px;
+    }
+}
+
 .podium tbody > tr:last-child {
     background-color: transparent;
 }

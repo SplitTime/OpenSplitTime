@@ -25,6 +25,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
+  def summary?
+    user.authorized_to_edit?(event)
+  end
+
   def import?
     user.authorized_to_edit?(event)
   end

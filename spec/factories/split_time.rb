@@ -6,9 +6,6 @@ FactoryBot.define do
                                  slow: [0, 9000, 9600, 18000, 18600, 27000, 27600, 36000, 36600, 45000, 45600, 54000, 54600, 63000, 63600, 72000, 72600, 81000, 81600, 90000]}
 
   factory :split_time do
-    sequence(:split_id, STANDARD_SPLIT_IDS.cycle)
-    sequence(:bitkey, STANDARD_BITKEYS.cycle)
-    sequence(:time_from_start, STANDARD_TIMES_FROM_START[:normal].cycle)
     lap 1
     effort
   end

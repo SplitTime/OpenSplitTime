@@ -10,7 +10,7 @@ class RemoveTimeFromStartFromSplitTimes < ActiveRecord::Migration[5.1]
 
     offset_sql = <<-SQL
       with offset_subquery as 
-         (select efforts.id, efforts.start_offset, extract(epoch from st.absolute_time - events.start_time) as computed_offset
+         (select efforts.id, extract(epoch from st.absolute_time - events.start_time) as computed_offset
            from split_times st
            inner join efforts on efforts.id = st.effort_id
            inner join events on events.id = efforts.event_id

@@ -16,6 +16,7 @@ RSpec.describe SplitTime, kind: :model do
 
   describe 'validations' do
     context 'for validations that do not depend on existing records in the database' do
+      subject(:split_time) { build_stubbed(:split_time, effort: effort, split: start_split, bitkey: in_bitkey, absolute_time: event.start_time) }
       let(:course) { build_stubbed(:course) }
       let(:start_split) { build_stubbed(:start_split, course: course) }
       let(:intermediate_split) { build_stubbed(:split, course: course) }
@@ -23,44 +24,57 @@ RSpec.describe SplitTime, kind: :model do
       let(:effort) { build_stubbed(:effort, event: event) }
 
       it 'is valid when created with an effort, a split, a sub_split, a time_from_start, and a lap' do
-        split_time = build_stubbed(:split_time, effort: effort, split: start_split)
-
         expect(split_time.effort).to be_present
         expect(split_time.split).to be_present
         expect(split_time.sub_split).to be_present
-        expect(split_time.time_from_start).to be_present
+        expect(split_time.absolute_time).to be_present
         expect(split_time.lap).to be_present
         expect(split_time).to be_valid
       end
 
-      it 'is invalid without an effort' do
-        split_time = build_stubbed(:split_time, effort: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:effort]).to include("can't be blank")
+      context 'when no effort exists' do
+        before { split_time.effort = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:effort]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a split_id' do
-        split_time = build_stubbed(:split_time, split: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:split]).to include("can't be blank")
+      context 'when no split exists' do
+        before { split_time.split = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:split]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a sub_split_bitkey' do
-        split_time = build_stubbed(:split_time, sub_split_bitkey: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:sub_split_bitkey]).to include("can't be blank")
+      context 'when no sub_split_bitkey exists' do
+        before { split_time.sub_split_bitkey = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:sub_split_bitkey]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a time_from_start' do
-        split_time = build_stubbed(:split_time, time_from_start: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:time_from_start]).to include("can't be blank")
+      context 'when no absolute_time exists' do
+        before { split_time.absolute_time = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:absolute_time]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a lap' do
-        split_time = build_stubbed(:split_time, lap: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:lap]).to include("can't be blank")
+      context 'when no lap exists' do
+        before { split_time.lap = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:lap]).to include("can't be blank")
+        end
       end
     end
 
@@ -71,11 +85,15 @@ RSpec.describe SplitTime, kind: :model do
       let(:event) { create(:event, course: course) }
       let(:effort) { build(:effort, event: event) }
 
-      it 'does not allow more than one of a given split_id/sub_split/lap combination within an effort' do
-        create(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        split_time = build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:split_id]).to include('only one of any given time_point permitted within an effort')
+      before { create(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.start_time + 1.hour) }
+
+      context 'when more than one of a given time_point exists within an effort' do
+        let(:split_time) { build_stubbed(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.start_time + 2.hours) }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:split_id]).to include('only one of any given time_point permitted within an effort')
+        end
       end
 
       it 'allows within an effort one of a given split_id/lap combination for each sub_split' do

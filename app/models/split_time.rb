@@ -18,8 +18,6 @@ class SplitTime < ApplicationRecord
   alias_attribute :with_pacer, :pacer
   attr_accessor :raw_time_id, :time_exists, :imposed_order
 
-  delegate :start?, to: :split
-
   scope :ordered, -> { joins(:split).order('split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }
   scope :intermediate, -> { includes(:split).where(splits: {kind: Split.kinds[:intermediate]}) }
@@ -41,10 +39,9 @@ class SplitTime < ApplicationRecord
 
   before_validation :destroy_if_blank
 
-  validates_presence_of :effort, :split, :sub_split_bitkey, :time_from_start, :lap
+  validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
                           message: 'only one of any given time_point permitted within an effort'
-  validates :time_from_start, numericality: {greater_than_or_equal_to: 0}
   validate :course_is_consistent
 
   def self.null_record
@@ -116,7 +113,11 @@ class SplitTime < ApplicationRecord
   end
 
   def elapsed_time(options = {})
-    return nil unless time_from_start
+    return nil unless absolute_time
+    return 0 if starting_split_time?
+    start_time = effort_start_split_time&.absolute_time
+    return nil unless start_time
+    time_from_start = absolute_time - start_time
     time = options[:with_fractionals] ? time_from_start : time_from_start.round(0)
     TimeConversion.seconds_to_hms(time)
   end
@@ -124,17 +125,17 @@ class SplitTime < ApplicationRecord
   alias_method :formatted_time_hhmmss, :elapsed_time
 
   def elapsed_time=(elapsed_time)
+    return if starting_split_time?
     self.time_from_start = TimeConversion.hms_to_seconds(elapsed_time)
   end
 
   def day_and_time
-    @day_and_time ||= attributes['day_and_time']&.in_time_zone(event_home_zone) ||
-        time_from_start && (event_start_time + effort_start_offset + time_from_start)
+    @day_and_time ||= absolute_time&.in_time_zone(event_home_zone)
   end
 
-  def day_and_time=(absolute_time)
-    self.time_from_start = absolute_time.present? ?
-        absolute_time - event_start_time - effort_start_offset : nil
+  def day_and_time=(date_with_time)
+    time_string = date_with_time.to_s
+    self.absolute_time = ActiveSupport::TimeZone.new(event_home_zone).parse(time_string)
   end
 
   def military_time
@@ -179,7 +180,15 @@ class SplitTime < ApplicationRecord
     @event_name ||= effort&.event_name || '[unknown event]'
   end
 
+  def start?
+    !!split&.start?
+  end
+
   private
+
+  def starting_split_time?
+    self.start? && lap == 1
+  end
 
   def event_start_time
     @event_start_time ||= effort.event_start_time
@@ -191,6 +200,10 @@ class SplitTime < ApplicationRecord
 
   def effort_start_offset
     @effort_start_offset ||= effort.start_offset
+  end
+
+  def effort_start_split_time
+    effort.start_split_time
   end
 
   def destroy_if_blank

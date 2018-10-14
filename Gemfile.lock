@@ -186,6 +186,7 @@ GEM
       less (~> 2.6.0)
       sprockets (> 2, < 4)
       tilt
+    local_time (2.1.0)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -451,6 +452,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails (~> 6.0)
   jwt
+  local_time
   momentjs-rails
   paperclip (~> 5.2.0)
   pg (~> 0.20)

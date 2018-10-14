@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Podium - #{@presenter.name}" %>
+  <% "OpenSplitTime: Summary - #{@presenter.name}" %>
 <% end %>
 
 <% content_for(:container_type) do %>skip<% end %>
@@ -36,13 +36,9 @@
 </aside>
 
 <article class="ost-article container">
-<% if @presenter.template_name %>
-  <table class="table table-condensed table-striped">
-    <% @presenter.categories.each do |category| %>
-      <%= render 'podium_category', category: category %>
-    <% end %>
-  </table>
-<% else %>
-  <h4><%= "The organizer has not specified a podium template." %></h4>
-<% end %>
+  <% if @presenter.ranked_effort_rows.present? %>
+    <%= render 'efforts/efforts_list_summary', view_object: @presenter %>
+  <% else %>
+    <h4><strong>No entrants have been added to this event.</strong></h4>
+  <% end %>
 </article>

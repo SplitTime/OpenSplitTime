@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require 'support/concerns/locatable'
 
 RSpec.describe DataEntryNode do
   it_behaves_like 'locatable'

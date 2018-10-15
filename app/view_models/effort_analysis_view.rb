@@ -111,7 +111,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def effort_start_time
-    effort.event_start_time + effort.start_offset
+    effort.start_split_time&.absolute_time
   end
 
   def effort_finish_tfs

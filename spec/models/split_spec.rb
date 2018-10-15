@@ -1,23 +1,35 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-# t.integer  "course_id"
-# t.string   "base_name"
-# t.integer  "distance_from_start"
-# t.integer  "vert_gain_from_start"
-# t.integer  "vert_loss_from_start"
-# t.integer  "kind"
-# t.string   "description"
-# t.integer  "sub_split_bitmap"
+# t.integer "course_id", null: false
+# t.integer "location_id"
+# t.integer "distance_from_start", null: false
+# t.float "vert_gain_from_start"
+# t.float "vert_loss_from_start"
+# t.integer "kind", null: false
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
+# t.integer "created_by"
+# t.integer "updated_by"
+# t.string "description"
+# t.string "base_name", null: false
+# t.integer "sub_split_bitmap", default: 1
+# t.decimal "latitude", precision: 9, scale: 6
+# t.decimal "longitude", precision: 9, scale: 6
+# t.float "elevation"
+# t.string "slug", null: false
+# t.string "parameterized_base_name", null: false
 
 RSpec.describe Split, kind: :model do
+  include BitkeyDefinitions
+
   it_behaves_like 'unit_conversions'
   it_behaves_like 'auditable'
   it_behaves_like 'locatable'
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
   let(:persisted_course) { create(:course) }
   let(:course1) { build_stubbed(:course, name: 'Test Course') }
   let(:course2) { build_stubbed(:course, name: 'Test Course 2') }
@@ -97,8 +109,8 @@ RSpec.describe Split, kind: :model do
     end
 
     it 'does not allow more than one start split within the same course' do
-      create(:start_split, course: persisted_course)
-      split = build_stubbed(:start_split, course: persisted_course)
+      create(:split, :start, course: persisted_course)
+      split = build_stubbed(:split, :start, course: persisted_course)
       expect(split).not_to be_valid
       expect(split.errors[:kind]).to include('only one start split permitted on a course')
     end
@@ -205,11 +217,11 @@ RSpec.describe Split, kind: :model do
       let(:event_2) { create(:event, course: course_2, event_group: event_group) }
       let(:event_group) { create(:event_group) }
       let(:course_1) { create(:course) }
-      let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
-      let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
       let(:course_2) { create(:course) }
-      let(:course_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
-      let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_2_split_1) { create(:split, :start, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
       before do
         event_1.splits << [course_1_split_1, course_1_split_2]
         event_2.splits << [course_2_split_1, course_2_split_2]
@@ -224,7 +236,7 @@ RSpec.describe Split, kind: :model do
       end
 
       context 'when split name changes to match a split with a non-matching location within the same event_group' do
-        let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Alternate Finish', latitude: 41, longitude: -106) }
+        let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: 'Alternate Finish', latitude: 41, longitude: -106) }
 
         it 'is invalid' do
           expect(course_1_split_2).to be_valid
@@ -235,7 +247,7 @@ RSpec.describe Split, kind: :model do
       end
 
       context 'when split location changes to move away from a split with a matching name within the same event_group' do
-        let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+        let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
 
         it 'is invalid' do
           expect(course_1_split_2).to be_valid
@@ -249,7 +261,7 @@ RSpec.describe Split, kind: :model do
 
   describe '#sub_splits' do
     it 'returns a single key_hash for a start split' do
-      split = build_stubbed(:start_split)
+      split = build_stubbed(:split, :start)
       expect(split.sub_splits.size).to eq(1)
       expect(split.sub_splits.first).to eq({split.id => in_bitkey})
     end
@@ -261,7 +273,7 @@ RSpec.describe Split, kind: :model do
     end
 
     it 'returns a single key_hash for a finish split' do
-      split = build_stubbed(:finish_split)
+      split = build_stubbed(:split, :finish)
       expect(split.sub_splits.size).to eq(1)
       expect(split.sub_splits.first).to eq({split.id => in_bitkey})
     end

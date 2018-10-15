@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 RSpec.describe LapSplitRow, type: :model do
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
+  require 'support/bitkey_definitions'
+  include BitkeyDefinitions
 
   let(:course) { Course.new(name: 'Test Course 100') }
   let(:event) { Event.new(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00", laps_required: 1) }

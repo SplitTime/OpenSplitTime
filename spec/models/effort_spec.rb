@@ -1,37 +1,40 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-# t.integer  "event_id",                                      null: false
-# t.integer  "person_id"
-# t.string   "wave"
-# t.integer  "bib_number"
-# t.string   "city",               limit: 64
-# t.string   "state_code",         limit: 64
-# t.integer  "age"
-# t.datetime "created_at",                                    null: false
-# t.datetime "updated_at",                                    null: false
-# t.integer  "created_by"
-# t.integer  "updated_by"
-# t.string   "first_name"
-# t.string   "last_name"
-# t.integer  "gender"
-# t.string   "country_code",       limit: 2
-# t.date     "birthdate"
-# t.integer  "data_status"
-# t.integer  "start_offset",                  default: 0,     null: false
-# t.integer  "dropped_split_id"
-# t.string   "beacon_url"
-# t.string   "report_url"
-# t.integer  "dropped_lap"
-# t.string   "phone",              limit: 15
-# t.string   "email"
-# t.string   "slug",                                          null: false
-# t.boolean  "checked_in",                    default: false
-# t.string   "photo_file_name"
-# t.string   "photo_content_type"
-# t.integer  "photo_file_size"
+# t.integer "event_id", null: false
+# t.integer "person_id"
+# t.string "wave"
+# t.integer "bib_number"
+# t.string "city", limit: 64
+# t.string "state_code", limit: 64
+# t.integer "age"
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
+# t.integer "created_by"
+# t.integer "updated_by"
+# t.string "first_name"
+# t.string "last_name"
+# t.integer "gender"
+# t.string "country_code", limit: 2
+# t.date "birthdate"
+# t.integer "data_status"
+# t.string "beacon_url"
+# t.string "report_url"
+# t.string "phone", limit: 15
+# t.string "email"
+# t.string "slug", null: false
+# t.boolean "checked_in", default: false
+# t.string "photo_file_name"
+# t.string "photo_content_type"
+# t.integer "photo_file_size"
 # t.datetime "photo_updated_at"
+# t.string "emergency_contact"
+# t.string "emergency_phone"
 
 RSpec.describe Effort, type: :model do
+  include BitkeyDefinitions
+
   it_behaves_like 'data_status_methods'
   it_behaves_like 'auditable'
   it_behaves_like 'matchable'
@@ -148,38 +151,6 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe '#time_in_aid' do
-    before { FactoryBot.reload }
-
-    it 'returns nil when the split has no split_times' do
-      split_times = SplitTime.none
-      effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
-      split = build(:split)
-      expect(effort).to receive(:ordered_split_times).and_return(split_times)
-      expect(effort.time_in_aid(split)).to be_nil
-    end
-
-    it 'returns nil when the split has only one split_time' do
-      split_times = build_stubbed_list(:split_times_in_only, 4)
-      effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
-      split = build(:split, id: 202)
-      matching_split_times = split_times.select { |split_time| split_time.split_id == split.id }
-      expect(matching_split_times.count).to eq(1)
-      expect(effort).to receive(:ordered_split_times).and_return(matching_split_times)
-      expect(effort.time_in_aid(split)).to be_nil
-    end
-
-    it 'returns the difference between in and out times when the split has in and out split_times' do
-      split_times = build_stubbed_list(:split_times_in_out, 4)
-      effort = Effort.new(first_name: 'Joe', last_name: 'Tester', gender: 'male')
-      split = build(:split, id: 102)
-      matching_split_times = split_times.select { |split_time| split_time.split_id == split.id }
-      expect(matching_split_times.count).to eq(2)
-      expect(effort).to receive(:ordered_split_times).and_return(matching_split_times)
-      expect(effort.time_in_aid(split)).to eq(600)
-    end
-  end
-
   describe '#total_time_in_aid' do
     it 'returns zero when the event has no splits' do
       split_times = []
@@ -264,7 +235,7 @@ RSpec.describe Effort, type: :model do
 
   describe '#beyond_start?' do
     let(:subject) { build_stubbed(:effort, split_times: split_times) }
-    let(:start_split) { build_stubbed(:start_split) }
+    let(:start_split) { build_stubbed(:split, :start) }
     let(:aid_1) { build_stubbed(:split) }
     let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: start_split) }
     let(:split_time_2) { build_stubbed(:split_time, lap: 1, split: aid_1) }
@@ -589,8 +560,6 @@ RSpec.describe Effort, type: :model do
 
   describe '#ordered_split_times' do
     subject { effort.ordered_split_times(lap_split) }
-    let(:in_bitkey) { SubSplit::IN_BITKEY }
-    let(:out_bitkey) { SubSplit::OUT_BITKEY }
     let(:effort) { build_stubbed(:effort, split_times: split_times) }
     let(:splits) { build_stubbed_list(:split, 3) }
     let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: splits.second, bitkey: in_bitkey) }

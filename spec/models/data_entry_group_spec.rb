@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe DataEntryGroup do
   subject { DataEntryGroup.new(data_entry_nodes) }
   let(:data_entry_nodes) { [node_1, node_2] }

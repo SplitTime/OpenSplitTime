@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # t.bigint "event_group_id", null: false
@@ -97,7 +99,7 @@ RSpec.describe RawTime, type: :model do
     let(:event_group) { create(:event_group) }
     let(:split) { create(:split, course: course) }
     let(:course) { create(:course) }
-    let(:split_time) { create(:split_time, effort: effort, split: split) }
+    let(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1) }
     before { event.splits << split }
 
     it 'when related split_time is deleted, sets raw_time.split_time to nil' do

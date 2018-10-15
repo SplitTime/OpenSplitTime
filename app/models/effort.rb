@@ -35,7 +35,7 @@ class Effort < ApplicationRecord
   delegate :organization, :concealed?, to: :event_group
   delegate :stewards, to: :organization
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
+  validates_presence_of :event_id, :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105}, format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates :emergency_phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
@@ -102,7 +102,7 @@ class Effort < ApplicationRecord
 
   def reject_split_time?(attributes)
     persisted = attributes[:id].present?
-    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time).values
+    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time, :absolute_time).values
     without_time = time_values.all?(&:blank?)
     blank_time = without_time && time_values.any? { |value| value == '' }
     attributes.merge!(_destroy: true) if persisted and blank_time
@@ -118,17 +118,17 @@ class Effort < ApplicationRecord
   end
 
   def start_time
-    event_start_time + start_offset
+    start_split_time&.absolute_time
   end
 
-  def start_time=(datetime)
-    return unless datetime.present? && event.present?
-    self.start_offset = TimeConversion.absolute_to_offset(datetime, event) || 0
-  end
+  # def start_time=(datetime)
+  #   return unless datetime.present? && event.present?
+  #   self.start_offset = TimeConversion.absolute_to_offset(datetime, event) || 0
+  # end
 
-  def day_and_time(time_from_start)
-    time_from_start && (start_time + time_from_start)
-  end
+  # def day_and_time(time_from_start)
+  #   time_from_start && (start_time + time_from_start)
+  # end
 
   def event_start_time
     @event_start_time ||= attributes['event_start_time']&.in_time_zone(event_home_zone) || event&.start_time_in_home_zone
@@ -150,20 +150,12 @@ class Effort < ApplicationRecord
     @last_reported_split_time ||= ordered_split_times.last
   end
 
-  def finish_split_times
-    @finish_split_times ||= split_times.finish.ordered
-  end
-
-  def start_split_times
-    @start_split_times ||= split_times.start.ordered
-  end
-
   def finish_split_time
     @finish_split_time ||= last_reported_split_time if finished?
   end
 
   def start_split_time
-    start_split_times.first
+    @start_split_time ||= split_times.find(&:starting_split_time?)
   end
 
   def start_split_id
@@ -230,11 +222,6 @@ class Effort < ApplicationRecord
     else
       'In progress'
     end
-  end
-
-  def time_in_aid(lap_split)
-    time_array = ordered_split_times(lap_split).map(&:time_from_start)
-    time_array.size > 1 ? time_array.last - time_array.first : nil
   end
 
   def total_time_in_aid

@@ -113,20 +113,30 @@ class SplitTime < ApplicationRecord
   end
 
   def elapsed_time(options = {})
+    return nil unless time_from_start
+    seconds = options[:with_fractionals] ? time_from_start : time_from_start.round(0)
+    TimeConversion.seconds_to_hms(seconds)
+  end
+
+  alias_method :formatted_time_hhmmss , :elapsed_time
+
+  def elapsed_time=(elapsed_time)
+    self.time_from_start = TimeConversion.hms_to_seconds(elapsed_time)
+  end
+
+  def time_from_start
     return nil unless absolute_time
     return 0 if starting_split_time?
     start_time = effort_start_split_time&.absolute_time
     return nil unless start_time
-    time_from_start = absolute_time - start_time
-    time = options[:with_fractionals] ? time_from_start : time_from_start.round(0)
-    TimeConversion.seconds_to_hms(time)
+    absolute_time - start_time
   end
 
-  alias_method :formatted_time_hhmmss, :elapsed_time
-
-  def elapsed_time=(elapsed_time)
+  def time_from_start=(seconds)
     return if starting_split_time?
-    self.time_from_start = TimeConversion.hms_to_seconds(elapsed_time)
+    start_time = effort_start_split_time&.absolute_time
+    return unless start_time
+    self.absolute_time = seconds ? start_time + seconds : nil
   end
 
   def day_and_time
@@ -184,11 +194,11 @@ class SplitTime < ApplicationRecord
     !!split&.start?
   end
 
-  private
-
   def starting_split_time?
     self.start? && lap == 1
   end
+
+  private
 
   def event_start_time
     @event_start_time ||= effort.event_start_time

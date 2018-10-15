@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :event do
     name { "#{rand(2010..2020)} #{FFaker::Company.name} #{rand(1..10) * 25}" }
@@ -57,7 +59,7 @@ FactoryBot.define do
         efforts = build_stubbed_list(:effort, evaluator.efforts_count)
 
         efforts.each do |effort|
-          split_times = build_stubbed_list(:split_times_in_out, 20, effort: effort).first(time_points.size)
+          split_times = Array.new(time_points.size) { SplitTime.new }
           split_times.each_with_index do |split_time, i|
             split_time.time_point = time_points[i]
           end

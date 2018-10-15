@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   STANDARD_SPLIT_IDS ||= [101, 102, 102, 103, 103, 104, 104, 105, 105, 106, 106, 107, 107, 108, 108, 109, 109, 110, 110, 111]
   STANDARD_BITKEYS ||= [1, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1]
@@ -6,8 +8,9 @@ FactoryBot.define do
                                  slow: [0, 9000, 9600, 18000, 18600, 27000, 27600, 36000, 36600, 45000, 45600, 54000, 54600, 63000, 63600, 72000, 72600, 81000, 81600, 90000]}
 
   factory :split_time do
-    lap 1
+    absolute_time { Time.current + rand(-100_000..100_000) }
     effort
+    lap 1
   end
 
   factory :split_times_in_out, class: SplitTime do

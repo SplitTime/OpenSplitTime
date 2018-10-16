@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       get :admin
       get :drop_list
       get :edit_start_time
+      get :export_finishers
       get :export_to_ultrasignup
       get :podium
       get :reconcile

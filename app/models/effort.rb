@@ -24,7 +24,6 @@ class Effort < ApplicationRecord
   has_many :split_times, dependent: :destroy
   has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
 
-  # Reject any new split_time hashes (having no :id) that don't have one of the attributes that will result in a time_from_start
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
@@ -55,11 +54,6 @@ class Effort < ApplicationRecord
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
-  scope :ready_to_start, -> do
-    select('efforts.*, splits.id as start_split_id')
-        .without_start_time.checked_in
-        .where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now)
-  end
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
   scope :without_start_time, -> do
@@ -120,15 +114,6 @@ class Effort < ApplicationRecord
   def start_time
     start_split_time&.absolute_time
   end
-
-  # def start_time=(datetime)
-  #   return unless datetime.present? && event.present?
-  #   self.start_offset = TimeConversion.absolute_to_offset(datetime, event) || 0
-  # end
-
-  # def day_and_time(time_from_start)
-  #   time_from_start && (start_time + time_from_start)
-  # end
 
   def event_start_time
     @event_start_time ||= attributes['event_start_time']&.in_time_zone(event_home_zone) || event&.start_time_in_home_zone
@@ -225,8 +210,10 @@ class Effort < ApplicationRecord
   end
 
   def total_time_in_aid
-    @total_time_in_aid ||= ordered_split_times.group_by(&:split_id)
-                               .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
+    @total_time_in_aid ||=
+        ordered_split_times.select(&:absolute_time).group_by(&:split_id).inject(0) do |total, (_, group)|
+          total + (group.last.absolute_time - group.first.absolute_time)
+        end
   end
 
   def ordered_split_times(lap_split = nil)

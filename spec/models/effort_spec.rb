@@ -152,84 +152,37 @@ RSpec.describe Effort, type: :model do
   end
 
   describe '#total_time_in_aid' do
-    it 'returns zero when the event has no splits' do
-      split_times = []
-      effort = build(:effort)
-      expect(effort).to receive(:ordered_split_times).and_return(split_times)
-      expect(effort.total_time_in_aid).to eq(0)
+    subject(:effort) { event.efforts.first }
+    let(:event) { build_stubbed(:event_functional, in_sub_splits_only: in_sub_splits_only, efforts_count: 1) }
+    let(:in_sub_splits_only) { false }
+    let(:split_times) { effort.ordered_split_times }
+    let(:time_increment) { 1000 }
+
+    before do
+      split_times.each_with_index { |st, i| st.absolute_time = event.start_time + (i * time_increment) }
     end
 
-    it 'returns zero when the event has only "in" splits' do
-      split_times = build_stubbed_list(:split_times_in_only, 12)
-      effort = build(:effort)
-      expect(effort).to receive(:ordered_split_times).and_return(split_times)
-      expect(effort.total_time_in_aid).to eq(0)
-    end
+    context 'when the effort has no split_times' do
+      subject(:effort) { build_stubbed(:effort, split_times: []) }
 
-    it 'correctly calculates time in aid based on times in and out of splits' do
-      split_times = build_stubbed_list(:split_times_in_out, 12)
-      effort = build(:effort)
-      expect(effort).to receive(:ordered_split_times).and_return(split_times)
-      expect(effort.total_time_in_aid).to eq(3000)
-    end
-  end
-
-  describe '#day_and_time' do
-    it 'returns a day and time based on the effort start plus the provided time_from_start' do
-      event = build_stubbed(:event, start_time: '2017-03-15 06:00:00')
-      effort = build_stubbed(:effort, start_offset: 0)
-      allow(effort).to receive(:event).and_return(event)
-      time_from_start = 3.hours
-      expect(effort.day_and_time(time_from_start)).to eq(effort.start_time + 3.hours)
-    end
-  end
-
-  describe '#start_time=' do
-    let(:event) { build_stubbed(:event, start_time_in_home_zone: '2017-03-15 06:00:00', home_time_zone: 'Eastern Time (US & Canada)') }
-    let(:effort) { build_stubbed(:effort, event: event, start_offset: 0) }
-
-    it 'sets start_offset to the difference between the provided parameter and event start time' do
-      expected_offset = 3.hours
-      effort_start_time = event.start_time_in_home_zone + expected_offset
-      verify_start_offset(effort_start_time, expected_offset)
-    end
-
-    it 'works properly when the effort starts before the event' do
-      expected_offset = -3.hours
-      effort_start_time = event.start_time_in_home_zone + expected_offset
-      verify_start_offset(effort_start_time, expected_offset)
-    end
-
-    it 'works properly when the offset is large' do
-      expected_offset = 24.hours * 365
-      effort_start_time = event.start_time_in_home_zone + expected_offset
-      verify_start_offset(effort_start_time, expected_offset)
-    end
-
-    it 'works properly when the start_time is provided as a string' do
-      expected_offset = 3.hours
-      effort_start_time = '2017-03-15 09:00:00'
-      verify_start_offset(effort_start_time, expected_offset)
-    end
-
-    it 'works properly when the start_time is provided as an American formatted string' do
-      expected_offset = 3.hours
-      effort_start_time = '3/15/2017 09:00'
-      verify_start_offset(effort_start_time, expected_offset)
-    end
-
-    context 'when event is not present' do
-      let(:event) { nil }
-
-      it 'returns without setting any attributes' do
-        effort.start_time = '2017-03-15 09:00:00'
-        expect(effort.start_offset).to eq(0)
+      it 'returns zero' do
+        expect(effort.total_time_in_aid).to eq(0)
       end
     end
 
-    def verify_start_offset(effort_start_time, expected_offset)
-      effort.start_time = effort_start_time
-      expect(effort.start_offset).to eq(expected_offset)
+    context 'when the effort has split_times with only "in" sub_splits' do
+      let(:in_sub_splits_only) { true }
+
+      it 'returns zero' do
+        expect(effort.total_time_in_aid).to eq(0)
+      end
+    end
+
+    context 'when the effort has split_times with "in" and "out" sub_splits' do
+      it 'correctly calculates time in aid based on times in and out of splits' do
+        intermediate_splits_count = event.splits.select(&:intermediate?).size
+        expect(effort.total_time_in_aid).to eq(time_increment * intermediate_splits_count)
+      end
     end
   end
 

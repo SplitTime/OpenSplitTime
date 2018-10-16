@@ -6,14 +6,14 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
   let!(:user) { create(:user) }
   let!(:course_1) { create(:course, :with_description, created_by: user.id) }
   let!(:course_2) { create(:course, :with_description, created_by: user.id) }
-  let!(:start_split_1) { create(:start_split, base_name: 'Start') }
+  let!(:start_split_1) { create(:split, :start, base_name: 'Start') }
   let!(:aid_1_split_1) { create(:split, base_name: 'Molas Pass', distance_from_start: 8000) }
   let!(:aid_2_split_1) { create(:split, base_name: 'Rolling Pass', distance_from_start: 15000) }
-  let!(:finish_split_1) { create(:finish_split, base_name: 'Finish', distance_from_start: 20000) }
+  let!(:finish_split_1) { create(:split, :finish, base_name: 'Finish', distance_from_start: 20000) }
   let!(:splits_1) { [start_split_1, aid_1_split_1, aid_2_split_1, finish_split_1] }
-  let!(:start_split_2) { create(:start_split, base_name: 'Start') }
+  let!(:start_split_2) { create(:split, :start, base_name: 'Start') }
   let!(:aid_1_split_2) { create(:split, base_name: 'Rolling Pass', distance_from_start: 6000) }
-  let!(:finish_split_2) { create(:finish_split, base_name: 'Finish', distance_from_start: 10000) }
+  let!(:finish_split_2) { create(:split, :finish, base_name: 'Finish', distance_from_start: 10000) }
   let!(:splits_2) { [start_split_2, aid_1_split_2, finish_split_2] }
   let!(:organization) { create(:organization, created_by: user.id) }
   let!(:event_group) { create(:event_group, organization: organization, available_live: true) }

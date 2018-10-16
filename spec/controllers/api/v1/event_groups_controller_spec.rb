@@ -117,15 +117,15 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:course_1) { create(:course) }
           let(:course_2) { create(:course) }
 
-          let(:event_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+          let(:event_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
           let(:event_1_split_2) { create(:split, course: course_1, base_name: 'Aid 1', latitude: 41, longitude: -106) }
           let(:event_1_split_3) { create(:split, course: course_1, base_name: 'Aid 2', latitude: 42, longitude: -107) }
-          let(:event_1_split_4) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 40, longitude: -105) }
+          let(:event_1_split_4) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 40, longitude: -105) }
           let(:event_1_splits) { [event_1_split_1, event_1_split_2, event_1_split_3, event_1_split_4] }
 
-          let(:event_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+          let(:event_2_split_1) { create(:split, :start, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
           let(:event_2_split_2) { create(:split, course: course_2, base_name: 'Aid 2', latitude: 42, longitude: -107) }
-          let(:event_2_split_3) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 40, longitude: -105) }
+          let(:event_2_split_3) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 40, longitude: -105) }
           let(:event_2_splits) { [event_2_split_1, event_2_split_2, event_2_split_3] }
 
           let(:event_1_id) { event_1.id.to_s }
@@ -538,9 +538,9 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event) { create(:event, event_group: event_group, course: course, home_time_zone: 'Arizona') }
     let!(:effort_1) { create(:effort, event: event, bib_number: 111) }
     let!(:effort_2) { create(:effort, event: event, bib_number: 112) }
-    let!(:start_split) { create(:start_split, course: course, base_name: 'Start') }
+    let!(:start_split) { create(:split, :start, course: course, base_name: 'Start') }
     let!(:aid_split) { create(:split, course: course, base_name: 'Aid 1') }
-    let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
+    let!(:finish_split) { create(:split, :finish, course: course, base_name: 'Finish') }
     let!(:effort_1_split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: start_split, bitkey: in_bitkey, time_from_start: 0) }
     let!(:effort_1_split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: aid_split, bitkey: in_bitkey, time_from_start: 5000) }
 
@@ -663,9 +663,9 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event_1) { create(:event, event_group: event_group, course: course) }
     let!(:event_2) { create(:event, event_group: event_group, course: course) }
 
-    let!(:start_split) { create(:start_split, course: course, base_name: 'Start') }
+    let!(:start_split) { create(:split, :start, course: course, base_name: 'Start') }
     let!(:aid_split) { create(:split, course: course, base_name: 'Aid 1') }
-    let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
+    let!(:finish_split) { create(:split, :finish, course: course, base_name: 'Finish') }
     let(:splits) { [start_split, aid_split, finish_split] }
 
     let!(:effort_1) { create(:effort, event: event_1, bib_number: 111) }
@@ -884,15 +884,15 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event_1) { create(:event, event_group: event_group, course: course_1, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
     let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
 
-    let!(:course_1_start_split) { create(:start_split, course: course_1, base_name: 'Start') }
+    let!(:course_1_start_split) { create(:split, :start, course: course_1, base_name: 'Start') }
     let!(:course_1_aid_1_split) { create(:split, course: course_1, base_name: 'Aid 1', distance_from_start: 10000) }
-    let!(:course_1_finish_split) { create(:finish_split, course: course_1, base_name: 'Finish', distance_from_start: 20000) }
+    let!(:course_1_finish_split) { create(:split, :finish, course: course_1, base_name: 'Finish', distance_from_start: 20000) }
     let(:course_1_splits) { [course_1_start_split, course_1_aid_1_split, course_1_finish_split] }
 
-    let!(:course_2_start_split) { create(:start_split, course: course_2, base_name: 'Start') }
+    let!(:course_2_start_split) { create(:split, :start, course: course_2, base_name: 'Start') }
     let!(:course_2_aid_1_split) { create(:split, course: course_2, base_name: 'Aid 1', distance_from_start: 10000) }
     let!(:course_2_aid_2_split) { create(:split, course: course_2, base_name: 'Aid 2', distance_from_start: 20000) }
-    let!(:course_2_finish_split) { create(:finish_split, course: course_2, base_name: 'Finish', distance_from_start: 30000) }
+    let!(:course_2_finish_split) { create(:split, :finish, course: course_2, base_name: 'Finish', distance_from_start: 30000) }
     let(:course_2_splits) { [course_2_start_split, course_2_aid_1_split, course_2_aid_2_split, course_2_finish_split] }
 
     let!(:effort_1) { create(:effort, event: event_1, bib_number: 111) }

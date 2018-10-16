@@ -7,7 +7,7 @@ RSpec.describe Interactors::UnstartEfforts do
     let(:efforts) { [effort_1, effort_2] }
 
     let(:event) { create(:event, course: course) }
-    let(:start_split) { create(:start_split, course: course) }
+    let(:start_split) { create(:split, :start, course: course) }
     let(:aid_1) { create(:split, course: course) }
     let(:course) { create(:course) }
 

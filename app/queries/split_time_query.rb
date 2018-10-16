@@ -14,16 +14,16 @@ class SplitTimeQuery < BaseQuery
     end_bitkey = segment.end_bitkey.to_i
 
     query = <<-SQL
-      SELECT AVG(st2.time_from_start - st1.time_from_start) AS segment_time,
-             COUNT(st1.time_from_start) AS effort_count
-      FROM (SELECT st.effort_id, st.time_from_start
+      SELECT AVG(st2.absolute_time - st1.absolute_time) AS segment_time,
+             COUNT(st1.absolute_time) AS effort_count
+      FROM (SELECT st.effort_id, st.absolute_time
            FROM split_times st 
            WHERE st.lap = #{begin_lap} 
              AND st.split_id = #{begin_id} 
              AND st.sub_split_bitkey = #{begin_bitkey}
              AND (st.data_status IN (#{valid_statuses_list}) OR st.data_status IS NULL))
            AS st1,
-           (SELECT st.effort_id, st.time_from_start
+           (SELECT st.effort_id, st.absolute_time
            FROM split_times st 
            WHERE st.lap = #{end_lap} 
              AND st.split_id = #{end_id} 
@@ -37,36 +37,51 @@ class SplitTimeQuery < BaseQuery
     SplitTime.connection.execute(query.squish).values.flatten.map(&:to_i)
   end
 
-  def self.with_time_point_rank(split_time_fields: '*')
+  def self.with_time_point_rank
     query = <<-SQL
-      WITH
-        existing_scope AS (#{existing_scope_sql}),
-        split_times_scoped AS (SELECT split_times.*
-                                       FROM split_times
-                                       INNER JOIN existing_scope ON existing_scope.id = split_times.id)
+      with
+        existing_scope as (#{existing_scope_sql}),
 
-      SELECT *, 
+        split_times_scoped as 
+          (select split_times.*
+           from split_times
+           inner join existing_scope on existing_scope.id = split_times.id),
+
+        start_split_times as
+          (select split_times.id, effort_id, absolute_time
+           from split_times
+           inner join splits on splits.id = split_times.split_id
+           where lap = 1 and kind = 0 and effort_id in (select effort_id from split_times_scoped)
+           order by effort_id),
+
+        main_subquery as
+          (select split_times_scoped.effort_id, lap, split_id, sub_split_bitkey,
+            extract(epoch from (split_times_scoped.absolute_time - sst.absolute_time)) as seconds_from_start,
+            split_times_scoped.absolute_time, 
+            efforts.gender as effort_gender, 
+            efforts.age as effort_age, 
+            efforts.id as tiebreaker_id, 
+            events.home_time_zone as event_home_zone
+          from split_times_scoped
+          inner join efforts on efforts.id = split_times_scoped.effort_id
+          inner join events on events.id = efforts.event_id
+          left join start_split_times sst on sst.effort_id = split_times_scoped.effort_id 
+          where sst.id != split_times_scoped.id)
+
+      select *, 
             rank() over 
-                (PARTITION BY lap, 
+                (partition by lap, 
                               split_id, 
                               sub_split_bitkey 
-                ORDER BY subquery_time, 
+                order by seconds_from_start, 
                          effort_gender desc, 
                          effort_age desc,
                          tiebreaker_id) 
             as time_point_rank,
-            day_and_time,
+            absolute_time,
             event_home_zone
-      FROM
-          (SELECT time_from_start as subquery_time, #{split_time_fields}, 
-            (events.start_time + efforts.start_offset * interval '1 second' + time_from_start * interval '1 second') as day_and_time,
-            efforts.gender as effort_gender, efforts.age as effort_age, efforts.id as tiebreaker_id, events.home_time_zone as event_home_zone
-          FROM split_times_scoped
-          INNER JOIN efforts ON efforts.id = split_times_scoped.effort_id
-          INNER JOIN events ON events.id = efforts.event_id
-          WHERE time_from_start > 0) 
-          AS subquery
-      ORDER BY time_point_rank
+      from main_subquery 
+      order by time_point_rank
     SQL
     query.squish
   end

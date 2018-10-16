@@ -71,7 +71,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
     context 'when the new event has different splits from the old' do
       let(:new_event) { create(:event, course: new_course) }
       let(:new_course) { create(:course, splits: new_splits) }
-      let(:new_split_1) { create(:start_split) }
+      let(:new_split_1) { create(:split, :start) }
       let(:new_split_2) { create(:split, distance_from_start: old_course.ordered_splits.second.distance_from_start) }
       let(:new_split_3) { create(:split, distance_from_start: old_course.ordered_splits.third.distance_from_start) }
       let(:new_split_4) { create(:split, distance_from_start: new_split_3.distance_from_start + 10000) }

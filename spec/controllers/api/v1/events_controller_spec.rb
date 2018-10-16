@@ -197,9 +197,9 @@ RSpec.describe Api::V1::EventsController do
       context 'when split and effort data are available' do
         before do
           FactoryBot.reload
-          create(:start_split, id: 101, course: course)
+          create(:split, :start, id: 101, course: course)
           create(:split, id: 102, course: course)
-          create(:finish_split, id: 103, course: course)
+          create(:split, :finish, id: 103, course: course)
           event.splits << Split.all
           create_list(:effort, 3, event: event)
           create_list(:split_times_in_out, 4, effort: Effort.first)

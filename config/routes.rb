@@ -64,7 +64,7 @@ Rails.application.routes.draw do
       put :set_data_status
       get :split_raw_times
       get :traffic
-      put :start_ready_efforts
+      put :start_efforts
       patch :update_all_efforts
       delete :delete_all_times
     end

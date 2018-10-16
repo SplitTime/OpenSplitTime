@@ -86,9 +86,9 @@ class EventGroupsController < ApplicationController
     redirect_to roster_event_group_path(@event_group)
   end
 
-  def start_ready_efforts
+  def start_efforts
     authorize @event_group
-    efforts = Effort.where(event_id: @event_group.events).ready_to_start
+    efforts = Effort.where(event_id: @event_group.events, id: params[:ids])
     response = Interactors::StartEfforts.perform!(efforts, current_user.id)
     set_flash_message(response)
     redirect_to request.referrer

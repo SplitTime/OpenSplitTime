@@ -40,7 +40,7 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def start_ready_efforts?
+  def start_efforts?
     user.authorized_to_edit?(event_group)
   end
 

@@ -46,10 +46,11 @@ FactoryBot.define do
         efforts_count 5
         laps_required 1
         unlimited_laps_generated 3
+        in_sub_splits_only false
       end
 
       after(:stub) do |event, evaluator|
-        course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count)
+        course = build_stubbed(:course_with_standard_splits, in_sub_splits_only: evaluator.in_sub_splits_only, splits_count: evaluator.splits_count)
         splits = course.splits.to_a
         sub_splits = splits.flat_map(&:sub_splits)
         event.laps_required = evaluator.laps_required

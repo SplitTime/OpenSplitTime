@@ -13,10 +13,10 @@ RSpec.describe Interactors::UpdateEffortsStop do
   let(:effort_2) { create(:effort, event: event) }
   let(:event) { create(:event, course: course) }
   let(:course) { create(:course) }
-  let(:split_1) { create(:start_split, course: course) }
+  let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }
   let(:split_3) { create(:split, course: course) }
-  let(:split_4) { create(:finish_split, course: course) }
+  let(:split_4) { create(:split, :finish, course: course) }
 
   describe '#initialize' do
     context 'when efforts is provided' do

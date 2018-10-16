@@ -6,7 +6,7 @@ RSpec.describe Interactors::StartEfforts do
     context 'when all provided efforts can be started' do
       let(:efforts) { create_list(:effort, 2, event: event) }
       let(:event) { create(:event, course: course) }
-      let(:start_split) { create(:start_split, course: course) }
+      let(:start_split) { create(:split, :start, course: course) }
       let(:course) { create(:course) }
       let(:current_user_id) { rand(1..100) }
 
@@ -27,7 +27,7 @@ RSpec.describe Interactors::StartEfforts do
       let(:effort) { create(:effort, event: event) }
       let(:event) { create(:event, course: course) }
       let(:course) { create(:course) }
-      let(:start_split) { create(:start_split, course: course) }
+      let(:start_split) { create(:split, :start, course: course) }
 
       let(:invalid_effort) { create(:effort, event: invalid_event) }
       let(:invalid_event) { create(:event, course: invalid_course) }

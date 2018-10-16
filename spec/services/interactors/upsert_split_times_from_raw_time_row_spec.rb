@@ -19,10 +19,10 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
   let(:event_1) { create(:event, course: course, event_group: event_group, start_time_in_home_zone: '2018-02-10 06:00:00') }
   let(:event_2) { create(:event, course: course, event_group: event_group, start_time_in_home_zone: '2018-02-10 07:00:00') }
   let(:course) { create(:course) }
-  let(:split_1) { create(:start_split, course: course) }
+  let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }
   let(:split_3) { create(:split, course: course) }
-  let(:split_4) { create(:finish_split, course: course) }
+  let(:split_4) { create(:split, :finish, course: course) }
   let(:splits) { [split_1, split_2, split_3, split_4] }
 
   let(:time_zone) { ActiveSupport::TimeZone[event_1.home_time_zone] }

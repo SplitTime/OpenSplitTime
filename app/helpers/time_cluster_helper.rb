@@ -3,8 +3,11 @@
 module TimeClusterHelper
 
   def time_cluster_display_data(cluster, display_style)
-    time_cluster_data(cluster, display_style)
+    times = time_cluster_data(cluster, display_style)
         .map { |time| cluster_display_formatted_time(time, cluster, display_style) }.join(' / ')
+    show_stop_indicator = cluster.split_times_data.compact.any?(&:stopped_here?) && !cluster.finish?
+    stop_indicator = show_stop_indicator ? ' [STOP]' : ''
+    times + stop_indicator
   end
 
   def time_cluster_export_data(cluster, display_style)
@@ -26,6 +29,7 @@ module TimeClusterHelper
   end
 
   def cluster_display_formatted_time(time, cluster, display_style)
+    time = DateTime.parse(time) if time.is_a?(String)
     case display_style
     when 'segment'
       cluster.finish? ? time_format_xxhyymzzs(time) : time_format_xxhyym(time)

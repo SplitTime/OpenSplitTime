@@ -97,11 +97,7 @@
         <td class="text-nowrap"><%= row.flexible_geolocation %></td>
         <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
           <td class="text-nowrap text-center">
-            <% if cluster.drop_display? %>
-              <strong><==DONE</strong>
-            <% else %>
-              <%= time_cluster_display_data(cluster, @presenter.display_style) %>
-            <% end %>
+            <%= time_cluster_display_data(cluster, @presenter.display_style) %>
           </td>
         <% end %>
         <% if @presenter.show_segment_totals? %>

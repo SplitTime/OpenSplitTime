@@ -10,7 +10,6 @@ class SplitTime < ApplicationRecord
   include Auditable
   include DataStatusMethods
   include GuaranteedFindable
-  include Structpluck
   belongs_to :effort
   belongs_to :split
   has_many :raw_times, dependent: :nullify
@@ -125,6 +124,7 @@ class SplitTime < ApplicationRecord
   end
 
   def time_from_start
+    return attributes['time_from_start'] if attributes.has_key?('time_from_start')
     return nil unless absolute_time
     return 0 if starting_split_time?
     start_time = effort_start_split_time&.absolute_time

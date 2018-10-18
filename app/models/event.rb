@@ -124,6 +124,11 @@ class Event < ApplicationRecord
     SplitTime.includes(:effort).where(efforts: {event_id: id})
   end
 
+  def split_times_data
+    query = SplitTimeQuery.with_time_detail(self)
+    ActiveRecord::Base.connection.execute(query).values.map { |row| SplitTimeData.new(*row) }
+  end
+
   def course_name
     course.name
   end

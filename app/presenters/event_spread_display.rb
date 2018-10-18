@@ -92,7 +92,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def highest_lap
-    split_times.map(&:lap).max || 1
+    split_times.max_by(&:lap)&.lap || 1
   end
 
   def per_page
@@ -100,11 +100,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def split_times
-    @split_times ||=
-        event.split_times.struct_pluck(:effort_id, :lap, :split_id, :sub_split_bitkey, :time_from_start, :stopped_here)
+    @split_times ||= event.split_times_data
   end
 
   def split_times_by_effort
-    @split_times_by_effort ||= split_times.group_by(&:effort_id)
+    @split_times_by_effort ||= split_times.group_by { |st| st[:effort_id] }
   end
 end

@@ -7,7 +7,7 @@ class EffortTimesRow
 
   include PersonalInfo
 
-  attr_reader :effort, :display_style, :time_clusters
+  attr_reader :effort, :display_style
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset,
            :stopped?, :dropped?, :finished?, to: :effort
@@ -21,8 +21,6 @@ class EffortTimesRow
     @lap_splits = args[:lap_splits]
     @split_times = args[:split_times]
     @display_style = args[:display_style]
-    @time_clusters = []
-    create_time_clusters
   end
 
   def total_time_in_aid
@@ -33,28 +31,20 @@ class EffortTimesRow
     time_clusters.map(&:segment_time).compact.sum
   end
 
+  def time_clusters
+    @time_clusters ||= lap_splits.map do |lap_split|
+      TimeCluster.new(finish: finish_cluster?(lap_split),
+                      split_times_data: related_split_times(lap_split))
+    end
+  end
+
   private
 
   attr_reader :lap_splits, :split_times
 
   def indexed_split_times
     @indexed_split_times ||=
-        split_times.index_by { |row| TimePoint.new(row.lap, row.split_id, row.sub_split_bitkey) }
-  end
-
-  def create_time_clusters
-    prior_split_time = nil
-    immediate_prior_split_time = nil
-    lap_splits.each do |lap_split|
-      time_cluster = TimeCluster.new(finish: finish_cluster?(lap_split),
-                                     split_times_data: related_split_times(lap_split),
-                                     prior_split_time: prior_split_time,
-                                     immediate_prior_split_time: immediate_prior_split_time,
-                                     start_time: effort.start_time)
-      time_clusters << time_cluster
-      prior_split_time = time_cluster.split_times_data.compact.last if time_cluster.split_times_data.compact.present?
-      immediate_prior_split_time = time_cluster.split_times_data.compact.last
-    end
+        split_times.index_by { |st| TimePoint.new(st.lap, st.split_id, st.sub_split_bitkey) }
   end
 
   def finish_cluster?(lap_split)
@@ -70,7 +60,7 @@ class EffortTimesRow
   end
 
   def related_split_times(lap_split)
-    lap_split.time_points.map { |time_point| indexed_split_times[time_point] }
+    lap_split.time_points.map { |time_point| indexed_split_times[time_point] || SplitTimeData.new }
   end
 
   def last_split_time

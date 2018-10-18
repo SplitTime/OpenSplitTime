@@ -10,7 +10,7 @@ RSpec.describe LapSplitRow, type: :model do
 
   let(:effort_1) { Effort.new(event: event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
   let(:effort_2) { Effort.new(event: event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male') }
-  let(:effort_3) { Effort.new(event: event, bib_number: 3, start_offset: 3600, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male') }
+  let(:effort_3) { Effort.new(event: event, bib_number: 3, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male') }
   let(:effort_4) { Effort.new(event: event_multi, bib_number: 4, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male') }
 
   let(:split_1) { Split.new(course: course, base_name: 'Starting Line', distance_from_start: 0, sub_split_bitmap: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0) }
@@ -27,27 +27,27 @@ RSpec.describe LapSplitRow, type: :model do
   let(:lap_2_split_3) { LapSplit.new(2, split_3) }
   let(:lap_2_split_4) { LapSplit.new(2, split_4) }
 
-  let(:split_time_1) { SplitTime.new(effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, data_status: 2) }
-  let(:split_time_2) { SplitTime.new(effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 4000, data_status: 2) }
-  let(:split_time_3) { SplitTime.new(effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 4100, data_status: 2) }
-  let(:split_time_4) { SplitTime.new(effort: effort_1, lap: 1, split: split_3, bitkey: in_bitkey, time_from_start: 15200, data_status: 2) }
-  let(:split_time_6) { SplitTime.new(effort: effort_1, lap: 1, split: split_3, bitkey: out_bitkey, time_from_start: 15100, data_status: 0) }
-  let(:split_time_7) { SplitTime.new(effort: effort_1, lap: 1, split: split_4, bitkey: in_bitkey, time_from_start: 21000, data_status: 2) }
-  let(:split_time_8) { SplitTime.new(effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, data_status: 2) }
-  let(:split_time_9) { SplitTime.new(effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 120, data_status: 0) }
-  let(:split_time_10) { SplitTime.new(effort: effort_2, lap: 1, split: split_3, bitkey: in_bitkey, time_from_start: 24000, data_status: 2) }
-  let(:split_time_12) { SplitTime.new(effort: effort_2, lap: 1, split: split_3, bitkey: out_bitkey, time_from_start: 150000, data_status: 0) }
-  let(:split_time_13) { SplitTime.new(effort: effort_2, lap: 1, split: split_4, bitkey: in_bitkey, time_from_start: 40000, data_status: 1) }
-  let(:split_time_14) { SplitTime.new(effort: effort_3, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, data_status: 2) }
-  let(:split_time_15) { SplitTime.new(effort: effort_3, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 5000, data_status: 2) }
-  let(:split_time_16) { SplitTime.new(effort: effort_3, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 5000, data_status: 2) }
-  let(:split_time_17) { SplitTime.new(effort: effort_3, lap: 1, split: split_3, bitkey: in_bitkey, time_from_start: 12200, data_status: 2) }
-  let(:split_time_21) { SplitTime.new(effort: effort_1, lap: 2, split: split_1, bitkey: in_bitkey, time_from_start: 30000, data_status: 2) }
-  let(:split_time_22) { SplitTime.new(effort: effort_1, lap: 2, split: split_2, bitkey: in_bitkey, time_from_start: 34000, data_status: 2) }
-  let(:split_time_23) { SplitTime.new(effort: effort_1, lap: 2, split: split_2, bitkey: out_bitkey, time_from_start: 34100, data_status: 2) }
-  let(:split_time_24) { SplitTime.new(effort: effort_1, lap: 2, split: split_3, bitkey: in_bitkey, time_from_start: 45200, data_status: 2) }
-  let(:split_time_25) { SplitTime.new(effort: effort_1, lap: 2, split: split_3, bitkey: out_bitkey, time_from_start: 45200, data_status: 2) }
-  let(:split_time_26) { SplitTime.new(effort: effort_1, lap: 2, split: split_4, bitkey: in_bitkey, time_from_start: 51000, data_status: 2) }
+  let(:split_time_1) { SplitTime.new(effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 0, data_status: 2) }
+  let(:split_time_2) { SplitTime.new(effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: event.start_time + 4000, data_status: 2) }
+  let(:split_time_3) { SplitTime.new(effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 4100, data_status: 2) }
+  let(:split_time_4) { SplitTime.new(effort: effort_1, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 15200, data_status: 2) }
+  let(:split_time_6) { SplitTime.new(effort: effort_1, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: event.start_time + 15100, data_status: 0) }
+  let(:split_time_7) { SplitTime.new(effort: effort_1, lap: 1, split: split_4, bitkey: in_bitkey, absolute_time: event.start_time + 21000, data_status: 2) }
+  let(:split_time_8) { SplitTime.new(effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 0, data_status: 2) }
+  let(:split_time_9) { SplitTime.new(effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 120, data_status: 0) }
+  let(:split_time_10) { SplitTime.new(effort: effort_2, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 24000, data_status: 2) }
+  let(:split_time_12) { SplitTime.new(effort: effort_2, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: event.start_time + 150000, data_status: 0) }
+  let(:split_time_13) { SplitTime.new(effort: effort_2, lap: 1, split: split_4, bitkey: in_bitkey, absolute_time: event.start_time + 40000, data_status: 1) }
+  let(:split_time_14) { SplitTime.new(effort: effort_3, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 0, data_status: 2) }
+  let(:split_time_15) { SplitTime.new(effort: effort_3, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: event.start_time + 5000, data_status: 2) }
+  let(:split_time_16) { SplitTime.new(effort: effort_3, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 5000, data_status: 2) }
+  let(:split_time_17) { SplitTime.new(effort: effort_3, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 12200, data_status: 2) }
+  let(:split_time_21) { SplitTime.new(effort: effort_1, lap: 2, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 30000, data_status: 2) }
+  let(:split_time_22) { SplitTime.new(effort: effort_1, lap: 2, split: split_2, bitkey: in_bitkey, absolute_time: event.start_time + 34000, data_status: 2) }
+  let(:split_time_23) { SplitTime.new(effort: effort_1, lap: 2, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 34100, data_status: 2) }
+  let(:split_time_24) { SplitTime.new(effort: effort_1, lap: 2, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 45200, data_status: 2) }
+  let(:split_time_25) { SplitTime.new(effort: effort_1, lap: 2, split: split_3, bitkey: out_bitkey, absolute_time: event.start_time + 45200, data_status: 2) }
+  let(:split_time_26) { SplitTime.new(effort: effort_1, lap: 2, split: split_4, bitkey: in_bitkey, absolute_time: event.start_time + 51000, data_status: 2) }
 
   let(:event_start_time) { event.start_time }
   let(:effort_1_start_time) { event_start_time + effort_1.start_offset }
@@ -55,33 +55,78 @@ RSpec.describe LapSplitRow, type: :model do
   let(:effort_3_start_time) { event_start_time + effort_3.start_offset }
   let(:effort_4_start_time) { event_start_time + effort_4.start_offset }
 
-  let(:split_row_1) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_1], prior_split_time: nil, start_time: effort_1_start_time) }
-  let(:split_row_2) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_2, split_time_3], prior_split_time: split_time_1, start_time: effort_1_start_time) }
-  let(:split_row_3) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_4, split_time_6], prior_split_time: split_time_3, start_time: effort_1_start_time) }
-  let(:split_row_4) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [split_time_7], prior_split_time: split_time_6, start_time: effort_1_start_time) }
-  let(:split_row_5) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_8], prior_split_time: nil, start_time: effort_2_start_time) }
-  let(:split_row_6) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [nil, split_time_9], prior_split_time: split_time_8, start_time: effort_2_start_time) }
-  let(:split_row_7) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_10, split_time_12], prior_split_time: nil, start_time: effort_2_start_time) }
-  let(:split_row_8) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [split_time_13], prior_split_time: split_time_12, start_time: effort_2_start_time) }
-  let(:split_row_9) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_14], prior_split_time: nil, start_time: effort_3_start_time) }
-  let(:split_row_10) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_15, split_time_16], prior_split_time: split_time_14, start_time: effort_3_start_time) }
-  let(:split_row_11) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_17, nil], prior_split_time: split_time_16, start_time: effort_3_start_time) }
-  let(:split_row_12) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [nil, nil], prior_split_time: split_time_17, start_time: effort_3_start_time) }
-  let(:split_row_21) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_21], prior_split_time: split_time_17, start_time: effort_4_start_time, show_laps: true) }
-  let(:split_row_22) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_22, split_time_23], prior_split_time: split_time_17, start_time: effort_4_start_time, show_laps: true) }
-  let(:split_row_23) { LapSplitRow.new(lap_split: lap_2_split_1, split_times: [split_time_21], prior_split_time: split_time_17, start_time: effort_4_start_time, show_laps: true) }
-  let(:split_row_24) { LapSplitRow.new(lap_split: lap_2_split_2, split_times: [split_time_22, split_time_23], prior_split_time: split_time_17, start_time: effort_4_start_time, show_laps: true) }
+  let(:split_row_1) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_1]) }
+  let(:split_row_2) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_2, split_time_3]) }
+  let(:split_row_3) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_4, split_time_6]) }
+  let(:split_row_4) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [split_time_7]) }
+  let(:split_row_5) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_8]) }
+  let(:split_row_6) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [nil, split_time_9]) }
+  let(:split_row_7) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_10, split_time_12]) }
+  let(:split_row_8) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [split_time_13]) }
+  let(:split_row_9) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_14]) }
+  let(:split_row_10) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_15, split_time_16]) }
+  let(:split_row_11) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_17, nil]) }
+  let(:split_row_12) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [nil, nil]) }
+  let(:split_row_21) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_21], show_laps: true) }
+  let(:split_row_22) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_22, split_time_23], show_laps: true) }
+  let(:split_row_23) { LapSplitRow.new(lap_split: lap_2_split_1, split_times: [split_time_21], show_laps: true) }
+  let(:split_row_24) { LapSplitRow.new(lap_split: lap_2_split_2, split_times: [split_time_22, split_time_23], show_laps: true) }
 
-  describe 'initialization' do
-    it 'instantiates new objects properly' do
-      expect(split_row_1.present?).to eq(true)
-      expect(split_row_4.present?).to eq(true)
-      expect(split_row_6.present?).to eq(true)
-      expect(split_row_10.present?).to eq(true)
+  describe '#initialize' do
+    subject(:lap_split_row) { LapSplitRow.new(lap_split: lap_split, split_times: split_times, show_laps: true) }
+
+    context 'when initialized with a lap_split and valid split_times for a split with in and out sub_splits' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_2, split_time_3] }
+
+      it 'does not raise an error' do
+        expect { subject }.not_to raise_error
+      end
     end
 
-    it 'instantiates a LapSplitRow even if no split_times are provided' do
-      expect(split_row_12.present?).to eq(true)
+    context 'when initialized with a lap_split and a single split_time for a split with only an in sub_split' do
+      let(:lap_split) { lap_1_split_1 }
+      let(:split_times) { [split_time_1] }
+
+      it 'does not raise an error' do
+        expect { subject }.not_to raise_error
+      end
+    end
+
+    context 'when initialized with a lap_split and a single split_time for a split with in and out sub_splits' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_2] }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error ArgumentError, (/split_time objects must be provided for each sub_split/)
+      end
+    end
+
+    context 'when initialized with a lap_split and an empty split_time array' do
+      let(:lap_split) { lap_1_split_1 }
+      let(:split_times) { [] }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error ArgumentError, (/split_time objects must be provided for each sub_split/)
+      end
+    end
+
+    context 'when initialized without a lap_split' do
+      let(:lap_split) { nil }
+      let(:split_times) { [split_time_2, split_time_3] }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error ArgumentError, (/must include lap_split/)
+      end
+    end
+
+    context 'when initialized without split_times' do
+      let(:lap_split) { lap_1_split_1 }
+      let(:split_times) { nil }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error ArgumentError, (/must include split_times/)
+      end
     end
   end
 
@@ -98,7 +143,7 @@ RSpec.describe LapSplitRow, type: :model do
   end
 
   describe '#days_and_times' do
-    it 'returns an array of datetime values based on event start_time and effort start_offset' do
+    it 'returns an array of datetime values' do
       event_start_time = event.start_time
       effort_start_offset = effort_3.start_offset
       expect(split_row_1.days_and_times).to eq([event_start_time])

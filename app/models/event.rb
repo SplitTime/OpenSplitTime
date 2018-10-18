@@ -125,8 +125,9 @@ class Event < ApplicationRecord
   end
 
   def split_times_data
-    query = SplitTimeQuery.with_time_detail(self)
-    ActiveRecord::Base.connection.execute(query).values.map { |row| SplitTimeData.new(*row) }
+    return @split_times_data if defined?(@split_times_data)
+    query = SplitTimeQuery.time_detail(scope: {efforts: {event_id: id}}, home_time_zone: home_time_zone)
+    @split_times_data = ActiveRecord::Base.connection.execute(query).map { |row| SplitTimeData.new(row) }
   end
 
   def course_name

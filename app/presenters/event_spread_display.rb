@@ -33,7 +33,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
         filtered_ranked_efforts.select(&:started?).map do |effort|
           EffortTimesRow.new(effort: effort,
                              lap_splits: lap_splits,
-                             split_times: split_times_by_effort[effort.id] || [],
+                             split_times: split_times_by_effort.fetch(effort.id, []),
                              display_style: display_style)
         end
   end

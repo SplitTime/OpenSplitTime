@@ -219,6 +219,12 @@ class Effort < ApplicationRecord
         end
   end
 
+  def split_times_data
+    return @split_times_data if defined?(@split_times_data)
+    query = SplitTimeQuery.time_detail(scope: {efforts: {id: id}}, home_time_zone: event_home_zone)
+    @split_times_data = ActiveRecord::Base.connection.execute(query).map { |row| SplitTimeData.new(row) }
+  end
+
   def ordered_split_times(lap_split = nil)
     if lap_split
       split_times.select { |st| st.lap_split == lap_split }.sort_by(&:bitkey)

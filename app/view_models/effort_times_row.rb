@@ -43,8 +43,7 @@ class EffortTimesRow
   attr_reader :lap_splits, :split_times
 
   def indexed_split_times
-    @indexed_split_times ||=
-        split_times.index_by { |st| TimePoint.new(st.lap, st.split_id, st.sub_split_bitkey) }
+    @indexed_split_times ||= split_times.index_by(&:time_point)
   end
 
   def finish_cluster?(lap_split)
@@ -60,7 +59,7 @@ class EffortTimesRow
   end
 
   def related_split_times(lap_split)
-    lap_split.time_points.map { |time_point| indexed_split_times[time_point] || SplitTimeData.new }
+    lap_split.time_points.map { |time_point| indexed_split_times.fetch(time_point, SplitTimeData.new) }
   end
 
   def last_split_time

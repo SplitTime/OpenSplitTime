@@ -40,8 +40,16 @@ class TimeCluster
     @time_data_statuses ||= split_times_data.map(&:data_status)
   end
 
+  def stopped_here_flags
+    @stopped_here_flags ||= split_times_data.map(&:stopped_here?)
+  end
+
+  def split_time_ids
+    @split_time_ids ||= split_times_data.map(&:id)
+  end
+
   def stopped_here?
-    @stopped_here ||= split_times_data.any?(&:stopped_here?)
+    @stopped_here ||= stopped_here_flags.any?
   end
 
   private

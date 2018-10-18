@@ -86,26 +86,33 @@ class SplitTimeQuery < BaseQuery
     query.squish
   end
 
-  def self.with_time_detail(event)
-    event_id = event.id.to_i
+  def self.time_detail(args)
+    scope = args[:scope].map do |table, criteria|
+      criteria.map { |field, value| "#{table}.#{field} = #{value}" }.join(' and ')
+    end.join(' and ')
 
-    time_zone = ActiveSupport::TimeZone.find_tzinfo(event.home_time_zone).identifier
+    home_time_zone = args[:home_time_zone]
+    time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
 
     query = <<~SQL
+      set timezone='#{time_zone}';
+
       with start_split_times as
         (select effort_id, absolute_time
          from split_times
          inner join splits on splits.id = split_times.split_id
-         where lap = 1 and kind = 0 and effort_id in (select id from efforts where event_id = #{event_id})
+         where lap = 1 and kind = 0 and effort_id in (select id from efforts where #{scope})
          order by effort_id)
      
-      select st.effort_id,
+      select st.id,
+             st.effort_id,
              st.lap,
              st.split_id,
-             st.sub_split_bitkey,
+             st.sub_split_bitkey as bitkey,
              st.stopped_here,
-             st.absolute_time,
-             (st.absolute_time at time zone 'UTC') at time zone '#{time_zone}' as day_and_time,
+             st.data_status as data_status_numeric,
+             st.absolute_time as absolute_time_string,
+             to_char((st.absolute_time at time zone 'UTC'), 'YYYY-MM-DD HH:MI:SS OF') as day_and_time_string,
              extract(epoch from (st.absolute_time - sst.absolute_time)) as time_from_start,
              case 
                when st.effort_id = lag(st.effort_id) over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey) 
@@ -117,7 +124,7 @@ class SplitTimeQuery < BaseQuery
       inner join splits on splits.id = st.split_id
       inner join efforts on efforts.id = st.effort_id
       left join start_split_times sst on sst.effort_id = st.effort_id
-      where efforts.event_id = #{event_id}
+      where #{scope}
     SQL
     query.squish
   end

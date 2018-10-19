@@ -4,14 +4,13 @@ RSpec.describe LapSplitRow, type: :model do
   require 'support/bitkey_definitions'
   include BitkeyDefinitions
 
-  let(:course) { Course.new(name: 'Test Course 100') }
-  let(:event) { Event.new(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00", laps_required: 1) }
-  let(:event_multi) { Event.new(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00", laps_required: 2) }
+  subject(:lap_split_row) { LapSplitRow.new(lap_split: lap_split, split_times: split_times, show_laps: show_laps) }
+  let(:show_laps) { false }
 
-  let(:effort_1) { Effort.new(event: event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
-  let(:effort_2) { Effort.new(event: event, bib_number: 2, city: 'Boulder', state_code: 'CO', country_code: 'US', age: 23, first_name: 'Joe', last_name: 'Hardman', gender: 'male') }
-  let(:effort_3) { Effort.new(event: event, bib_number: 3, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male') }
-  let(:effort_4) { Effort.new(event: event_multi, bib_number: 4, city: 'Denver', state_code: 'CO', country_code: 'US', age: 24, first_name: 'Mark', last_name: 'Runner', gender: 'male') }
+  let(:course) { Course.new(name: 'Test Course 100') }
+  let(:event) { Event.new(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00", home_time_zone: 'Mountain Time (US & Canada)', laps_required: 1) }
+
+  let(:effort) { Effort.new(event: event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
 
   let(:split_1) { Split.new(course: course, base_name: 'Starting Line', distance_from_start: 0, sub_split_bitmap: 1, vert_gain_from_start: 0, vert_loss_from_start: 0, kind: 0) }
   let(:split_2) { Split.new(course: course, base_name: 'Aid Station 1', distance_from_start: 6000, sub_split_bitmap: 65, vert_gain_from_start: 500, vert_loss_from_start: 0, kind: 2) }
@@ -22,62 +21,50 @@ RSpec.describe LapSplitRow, type: :model do
   let(:lap_1_split_2) { LapSplit.new(1, split_2) }
   let(:lap_1_split_3) { LapSplit.new(1, split_3) }
   let(:lap_1_split_4) { LapSplit.new(1, split_4) }
-  let(:lap_2_split_1) { LapSplit.new(2, split_1) }
   let(:lap_2_split_2) { LapSplit.new(2, split_2) }
-  let(:lap_2_split_3) { LapSplit.new(2, split_3) }
-  let(:lap_2_split_4) { LapSplit.new(2, split_4) }
+  
+  let(:tfs_1) { 0 }
+  let(:tfs_2) { 4000 }
+  let(:tfs_3) { 4100 }
+  let(:tfs_4) { 15_200 }
+  let(:tfs_5) { 15_100 }
+  let(:tfs_6) { 21_000 }
 
-  let(:split_time_1) { SplitTime.new(effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 0, data_status: 2) }
-  let(:split_time_2) { SplitTime.new(effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: event.start_time + 4000, data_status: 2) }
-  let(:split_time_3) { SplitTime.new(effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 4100, data_status: 2) }
-  let(:split_time_4) { SplitTime.new(effort: effort_1, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 15200, data_status: 2) }
-  let(:split_time_6) { SplitTime.new(effort: effort_1, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: event.start_time + 15100, data_status: 0) }
-  let(:split_time_7) { SplitTime.new(effort: effort_1, lap: 1, split: split_4, bitkey: in_bitkey, absolute_time: event.start_time + 21000, data_status: 2) }
-  let(:split_time_8) { SplitTime.new(effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 0, data_status: 2) }
-  let(:split_time_9) { SplitTime.new(effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 120, data_status: 0) }
-  let(:split_time_10) { SplitTime.new(effort: effort_2, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 24000, data_status: 2) }
-  let(:split_time_12) { SplitTime.new(effort: effort_2, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: event.start_time + 150000, data_status: 0) }
-  let(:split_time_13) { SplitTime.new(effort: effort_2, lap: 1, split: split_4, bitkey: in_bitkey, absolute_time: event.start_time + 40000, data_status: 1) }
-  let(:split_time_14) { SplitTime.new(effort: effort_3, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 0, data_status: 2) }
-  let(:split_time_15) { SplitTime.new(effort: effort_3, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: event.start_time + 5000, data_status: 2) }
-  let(:split_time_16) { SplitTime.new(effort: effort_3, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 5000, data_status: 2) }
-  let(:split_time_17) { SplitTime.new(effort: effort_3, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 12200, data_status: 2) }
-  let(:split_time_21) { SplitTime.new(effort: effort_1, lap: 2, split: split_1, bitkey: in_bitkey, absolute_time: event.start_time + 30000, data_status: 2) }
-  let(:split_time_22) { SplitTime.new(effort: effort_1, lap: 2, split: split_2, bitkey: in_bitkey, absolute_time: event.start_time + 34000, data_status: 2) }
-  let(:split_time_23) { SplitTime.new(effort: effort_1, lap: 2, split: split_2, bitkey: out_bitkey, absolute_time: event.start_time + 34100, data_status: 2) }
-  let(:split_time_24) { SplitTime.new(effort: effort_1, lap: 2, split: split_3, bitkey: in_bitkey, absolute_time: event.start_time + 45200, data_status: 2) }
-  let(:split_time_25) { SplitTime.new(effort: effort_1, lap: 2, split: split_3, bitkey: out_bitkey, absolute_time: event.start_time + 45200, data_status: 2) }
-  let(:split_time_26) { SplitTime.new(effort: effort_1, lap: 2, split: split_4, bitkey: in_bitkey, absolute_time: event.start_time + 51000, data_status: 2) }
+  let(:split_time_data_blank) { SplitTimeData.new }
+  let(:split_time_data_1) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_1.id, bitkey: in_bitkey, time_from_start: tfs_1, segment_time: nil,
+                                              absolute_time_string: (event_start_time + tfs_1).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_1).to_s,
+                                              data_status_numeric: 2) }
+  let(:split_time_data_2) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: in_bitkey, time_from_start: tfs_2, segment_time: tfs_2 - tfs_1,
+                                              absolute_time_string: (event_start_time + tfs_2).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_2).to_s,
+                                              data_status_numeric: 2) }
+  let(:split_time_data_3) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: out_bitkey, time_from_start: tfs_3, segment_time: tfs_3 - tfs_2,
+                                              absolute_time_string: (event_start_time + tfs_3).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_3).to_s,
+                                              data_status_numeric: 2) }
+  let(:split_time_data_4) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: in_bitkey, time_from_start: tfs_4, segment_time: tfs_4 - tfs_3,
+                                              absolute_time_string: (event_start_time + tfs_4).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_4).to_s,
+                                              data_status_numeric: 2) }
+  let(:split_time_data_5) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: out_bitkey, time_from_start: tfs_5, segment_time: tfs_5 - tfs_4,
+                                              absolute_time_string: (event_start_time + tfs_5).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_5).to_s,
+                                              data_status_numeric: 0) }
+  let(:split_time_data_6) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_4.id, bitkey: in_bitkey, time_from_start: tfs_6, segment_time: tfs_6 - tfs_5,
+                                              absolute_time_string: (event_start_time + tfs_6).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_6).to_s,
+                                              data_status_numeric: 2) }
 
   let(:event_start_time) { event.start_time }
-  let(:effort_1_start_time) { event_start_time + effort_1.start_offset }
-  let(:effort_2_start_time) { event_start_time + effort_2.start_offset }
-  let(:effort_3_start_time) { event_start_time + effort_3.start_offset }
-  let(:effort_4_start_time) { event_start_time + effort_4.start_offset }
-
-  let(:split_row_1) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_1]) }
-  let(:split_row_2) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_2, split_time_3]) }
-  let(:split_row_3) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_4, split_time_6]) }
-  let(:split_row_4) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [split_time_7]) }
-  let(:split_row_5) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_8]) }
-  let(:split_row_6) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [nil, split_time_9]) }
-  let(:split_row_7) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_10, split_time_12]) }
-  let(:split_row_8) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [split_time_13]) }
-  let(:split_row_9) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_14]) }
-  let(:split_row_10) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_15, split_time_16]) }
-  let(:split_row_11) { LapSplitRow.new(lap_split: lap_1_split_3, split_times: [split_time_17, nil]) }
-  let(:split_row_12) { LapSplitRow.new(lap_split: lap_1_split_4, split_times: [nil, nil]) }
-  let(:split_row_21) { LapSplitRow.new(lap_split: lap_1_split_1, split_times: [split_time_21], show_laps: true) }
-  let(:split_row_22) { LapSplitRow.new(lap_split: lap_1_split_2, split_times: [split_time_22, split_time_23], show_laps: true) }
-  let(:split_row_23) { LapSplitRow.new(lap_split: lap_2_split_1, split_times: [split_time_21], show_laps: true) }
-  let(:split_row_24) { LapSplitRow.new(lap_split: lap_2_split_2, split_times: [split_time_22, split_time_23], show_laps: true) }
 
   describe '#initialize' do
-    subject(:lap_split_row) { LapSplitRow.new(lap_split: lap_split, split_times: split_times, show_laps: true) }
-
     context 'when initialized with a lap_split and valid split_times for a split with in and out sub_splits' do
       let(:lap_split) { lap_1_split_2 }
-      let(:split_times) { [split_time_2, split_time_3] }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
+
+      it 'does not raise an error' do
+        expect { subject }.not_to raise_error
+      end
+    end
+
+    context 'when initialized with a lap_split and valid split_time_data objects for a split with in and out sub_splits' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
 
       it 'does not raise an error' do
         expect { subject }.not_to raise_error
@@ -86,7 +73,7 @@ RSpec.describe LapSplitRow, type: :model do
 
     context 'when initialized with a lap_split and a single split_time for a split with only an in sub_split' do
       let(:lap_split) { lap_1_split_1 }
-      let(:split_times) { [split_time_1] }
+      let(:split_times) { [split_time_data_1] }
 
       it 'does not raise an error' do
         expect { subject }.not_to raise_error
@@ -95,7 +82,7 @@ RSpec.describe LapSplitRow, type: :model do
 
     context 'when initialized with a lap_split and a single split_time for a split with in and out sub_splits' do
       let(:lap_split) { lap_1_split_2 }
-      let(:split_times) { [split_time_2] }
+      let(:split_times) { [split_time_data_2] }
 
       it 'raises an error' do
         expect { subject }.to raise_error ArgumentError, (/split_time objects must be provided for each sub_split/)
@@ -113,7 +100,7 @@ RSpec.describe LapSplitRow, type: :model do
 
     context 'when initialized without a lap_split' do
       let(:lap_split) { nil }
-      let(:split_times) { [split_time_2, split_time_3] }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
 
       it 'raises an error' do
         expect { subject }.to raise_error ArgumentError, (/must include lap_split/)
@@ -131,101 +118,235 @@ RSpec.describe LapSplitRow, type: :model do
   end
 
   describe '#times_from_start' do
-    it 'returns an array of times_from_start' do
-      expect(split_row_1.times_from_start).to eq([0])
-      expect(split_row_2.times_from_start).to eq([4000, 4100])
-      expect(split_row_3.times_from_start).to eq([15200, 15100])
-      expect(split_row_4.times_from_start).to eq([21000])
-      expect(split_row_6.times_from_start).to eq([nil, 120])
-      expect(split_row_11.times_from_start).to eq([12200, nil])
-      expect(split_row_12.times_from_start).to eq([nil, nil])
+    context 'when provided with two valid split_time_data objects' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
+
+      it 'returns an array of times_from_start' do
+        expect(subject.times_from_start).to eq([tfs_2, tfs_3])
+      end
+    end
+
+    context 'when provided with on valid split_time_data object' do
+      let(:lap_split) { lap_1_split_4 }
+      let(:split_times) { [split_time_data_6] }
+
+      it 'returns an array of a single time_from_start' do
+        expect(subject.times_from_start).to eq([tfs_6])
+      end
+    end
+
+    context 'when provided with one valid split_time_data object and one blank split_time_data object' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_blank] }
+
+      it 'returns an array of one seconds from start and a nil' do
+        expect(subject.times_from_start).to eq([tfs_2, nil])
+      end
     end
   end
 
   describe '#days_and_times' do
-    it 'returns an array of datetime values' do
-      event_start_time = event.start_time
-      effort_start_offset = effort_3.start_offset
-      expect(split_row_1.days_and_times).to eq([event_start_time])
-      expect(split_row_2.days_and_times).to eq([event_start_time + 4000, event_start_time + 4100])
-      expect(split_row_4.days_and_times).to eq([event_start_time + 21000])
-      expect(split_row_6.days_and_times).to eq([nil, event_start_time + 120])
-      expect(split_row_9.days_and_times).to eq([event_start_time + effort_start_offset])
-      expect(split_row_10.days_and_times).to eq([event_start_time + effort_start_offset + 5000, event_start_time + effort_start_offset + 5000])
-      expect(split_row_11.days_and_times).to eq([event_start_time + effort_start_offset + 12200, nil])
-      expect(split_row_12.days_and_times).to eq([nil, nil])
+    context 'when provided with two valid split_time_data objects' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
+
+      it 'returns an array of datetime objects' do
+        expect(subject.days_and_times).to all be_a(DateTime)
+        expect(subject.days_and_times.map(&:to_s)).to eq(%w(2015-07-01T01:06:40-06:00 2015-07-01T01:08:20-06:00))
+      end
+    end
+
+    context 'when provided with one valid split_time_data object and one blank split_time_data object' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_blank] }
+
+      it 'returns a datetime object and a nil' do
+        expect(subject.days_and_times.map(&:class)).to eq([DateTime, NilClass])
+        expect(subject.days_and_times.map(&:to_s)).to eq(['2015-07-01T01:06:40-06:00', ''])
+      end
     end
   end
 
   describe '#time_data_statuses' do
-    it 'returns an array of data statuses' do
-      expect(split_row_1.time_data_statuses).to eq(['good'])
-      expect(split_row_2.time_data_statuses).to eq(['good', 'good'])
-      expect(split_row_3.time_data_statuses).to eq(['good', 'bad'])
-      expect(split_row_4.time_data_statuses).to eq(['good'])
-      expect(split_row_6.time_data_statuses).to eq([nil, 'bad'])
-      expect(split_row_8.time_data_statuses).to eq(['questionable'])
-      expect(split_row_11.time_data_statuses).to eq(['good', nil])
-      expect(split_row_12.time_data_statuses).to eq([nil, nil])
+    context 'when provided with two valid split_time_data objects' do
+      let(:lap_split) { lap_1_split_3 }
+      let(:split_times) { [split_time_data_4, split_time_data_5] }
+
+      it 'returns an array of data statuses in word format' do
+        expect(subject.time_data_statuses).to eq(%w(good bad))
+      end
+    end
+
+    context 'when provided with one valid split_time_data object and one blank split_time_data object' do
+      let(:lap_split) { lap_1_split_3 }
+      let(:split_times) { [split_time_data_4, split_time_data_blank] }
+
+      it 'returns an array of data statuses in word format' do
+        expect(subject.time_data_statuses).to eq(['good', nil])
+      end
     end
   end
 
   describe '#data_status' do
-    it 'returns the worst of the time_data_statuses in the lap_split_row' do
-      expect(split_row_1.data_status).to eq('good')
-      expect(split_row_2.data_status).to eq('good')
-      expect(split_row_3.data_status).to eq('bad')
-      expect(split_row_4.data_status).to eq('good')
-      expect(split_row_6.data_status).to eq('bad')
-      expect(split_row_8.data_status).to eq('questionable')
-      expect(split_row_11.data_status).to eq(nil)
-      expect(split_row_12.data_status).to eq(nil)
+    context 'when provided with two good objects' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
+
+      it 'returns good' do
+        expect(subject.data_status).to eq('good')
+      end
+    end
+
+    context 'when provided with one good and one bad object' do
+      let(:lap_split) { lap_1_split_3 }
+      let(:split_times) { [split_time_data_4, split_time_data_5] }
+
+      it 'returns bad' do
+        expect(subject.data_status).to eq('bad')
+      end
+    end
+
+    context 'when provided with one good and one nil object' do
+      let(:lap_split) { lap_1_split_3 }
+      let(:split_times) { [split_time_data_4, split_time_data_blank] }
+
+      it 'returns nil' do
+        expect(subject.data_status).to eq(nil)
+      end
+    end
+
+    context 'when provided with one bad and one nil object' do
+      let(:lap_split) { lap_1_split_3 }
+      let(:split_times) { [split_time_data_blank, split_time_data_5] }
+
+      it 'returns bad' do
+        expect(subject.data_status).to eq('bad')
+      end
+    end
+
+    context 'when provided with two nil objects' do
+      let(:lap_split) { lap_1_split_3 }
+      let(:split_times) { [split_time_data_blank, split_time_data_blank] }
+
+      it 'returns nil' do
+        expect(subject.data_status).to eq(nil)
+      end
     end
   end
 
   describe '#segment_time' do
-    it 'returns nil when prior_time is nil' do
-      expect(split_row_1.segment_time).to be_nil
-      expect(split_row_5.segment_time).to be_nil
-      expect(split_row_7.segment_time).to be_nil
-      expect(split_row_9.segment_time).to be_nil
+    context 'when provided with two populated split_times_data objects' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
+
+      it 'returns the segment_time of the first object' do
+        expect(subject.segment_time).to eq(split_times.first.segment_time)
+      end
     end
 
-    it 'returns nil when times_from_start contains only nil values' do
-      expect(split_row_12.segment_time).to be_nil
+    context 'when provided with one populated split_times_data object followed by a blank object' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_blank] }
+
+      it 'returns the segment_time of the first object' do
+        expect(subject.segment_time).to eq(split_times.first.segment_time)
+      end
     end
 
-    it 'returns the correct segment_time when prior_time is provided and at least one time_from_start is available' do
-      expect(split_row_2.segment_time).to eq(4000)
-      expect(split_row_3.segment_time).to eq(11100)
-      expect(split_row_4.segment_time).to eq(5900)
-      expect(split_row_11.segment_time).to eq(7200)
+    context 'when provided with one blank split_times_data object followed by a populated object' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_blank, split_time_data_3] }
+
+      it 'returns the segment_time of the second object' do
+        expect(subject.segment_time).to eq(split_times.second.segment_time)
+      end
+    end
+
+    context 'when provided with two blank split_times_data objects' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_blank, split_time_data_blank] }
+
+      it 'returns nil' do
+        expect(subject.segment_time).to eq(nil)
+      end
+    end
+
+    context 'when provided with a single split_times_data object' do
+      let(:lap_split) { lap_1_split_4 }
+      let(:split_times) { [split_time_data_6] }
+
+      it 'returns the segment_time of the object' do
+        expect(subject.segment_time).to eq(split_time_data_6.segment_time)
+      end
     end
   end
 
   describe '#time_in_aid' do
-    it 'returns nil when fewer than two split_times are provided' do
-      expect(split_row_1.time_in_aid).to be_nil
-      expect(split_row_4.time_in_aid).to be_nil
-      expect(split_row_6.time_in_aid).to be_nil
-      expect(split_row_11.time_in_aid).to be_nil
+    context 'when provided with two populated split_times_data objects' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_3] }
+
+      it 'returns the time_in_aid of the second object' do
+        expect(subject.time_in_aid).to eq(split_times.second.segment_time)
+      end
     end
 
-    it 'returns the time difference between first and last split_times when two or more are provided' do
-      expect(split_row_2.time_in_aid).to eq(100)
-      expect(split_row_3.time_in_aid).to eq(-100)
-      expect(split_row_7.time_in_aid).to eq(150000 - 24000)
+    context 'when provided with one populated split_times_data object followed by a blank object' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_2, split_time_data_blank] }
+
+      it 'returns nil' do
+        expect(subject.time_in_aid).to eq(nil)
+      end
+    end
+
+    context 'when provided with one blank split_times_data object followed by a populated object' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_blank, split_time_data_3] }
+
+      it 'returns nil' do
+        expect(subject.time_in_aid).to eq(nil)
+      end
+    end
+
+    context 'when provided with two blank split_times_data objects' do
+      let(:lap_split) { lap_1_split_2 }
+      let(:split_times) { [split_time_data_blank, split_time_data_blank] }
+
+      it 'returns nil' do
+        expect(subject.time_in_aid).to eq(nil)
+      end
+    end
+
+    context 'when provided with a single split_times_data object' do
+      let(:lap_split) { lap_1_split_4 }
+      let(:split_times) { [split_time_data_6] }
+
+      it 'returns nil' do
+        expect(subject.time_in_aid).to eq(nil)
+      end
     end
   end
 
   describe '#name' do
-    it 'returns the split name if :show_laps is not provided' do
-      expect(split_row_1.name).to eq('Starting Line')
+    let(:lap_split) { lap_2_split_2 }
+    let(:split_times) { [split_time_data_2, split_time_data_3] }
+
+    context 'if :show_laps is not provided' do
+      let(:show_laps) { false }
+
+      it 'returns the split name' do
+        expect(subject.name).to eq('Aid Station 1 In / Out')
+      end
     end
 
-    it 'returns the split name with lap if show_laps: true' do
-      expect(split_row_21.name).to eq('Starting Line Lap 1')
-      expect(split_row_24.name).to eq('Aid Station 1 In / Out Lap 2')
+    context 'if :show_laps is provided' do
+      let(:show_laps) { true }
+
+      it 'returns the split name with lap' do
+        expect(subject.name).to eq('Aid Station 1 In / Out Lap 2')
+      end
     end
   end
 end

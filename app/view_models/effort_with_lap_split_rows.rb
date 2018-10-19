@@ -72,4 +72,8 @@ class EffortWithLapSplitRows
   def last_lap
     ordered_split_times.map(&:lap).last || 1
   end
+
+  def loaded_effort
+    @loaded_effort ||= Effort.where(id: effort.id).includes(split_times: :split).includes(:event).includes(:person).first
+  end
 end

@@ -89,7 +89,9 @@ class EventGroupsController < ApplicationController
   def start_efforts
     authorize @event_group
     efforts = Effort.where(event_id: @event_group.events, id: params[:ids])
-    response = Interactors::StartEfforts.perform!(efforts, current_user.id)
+    start_time = params[:start_time]
+
+    response = Interactors::StartEfforts.perform!(efforts: efforts, start_time: start_time, current_user_id: current_user.id)
     set_flash_message(response)
     redirect_to request.referrer
   end

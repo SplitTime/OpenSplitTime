@@ -94,7 +94,7 @@ RSpec.describe Event, type: :model do
 
     context 'when bib numbers are duplicated within the same event_group' do
       let!(:event_1) { create(:event) }
-      let!(:event_2) { create(:event, event_group: event_group) }
+      let!(:event_2) { create(:event, event_group: event_group, home_time_zone: event_1.home_time_zone) }
       let(:event_group) { create(:event_group) }
       let!(:event_1_effort_1) { create(:effort, event: event_1, bib_number: 101) }
       let!(:event_1_effort_2) { create(:effort, event: event_1, bib_number: 103) }
@@ -105,13 +105,13 @@ RSpec.describe Event, type: :model do
         expect(event_1).to be_valid
         event_1.update(event_group: event_group)
         expect(event_1).not_to be_valid
-        expect(event_1.errors.full_messages).to include("Bib number 101 is duplicated within the event group")
+        expect(event_1.errors.full_messages).to include('Bib number 101 is duplicated within the event group')
       end
     end
 
     context 'for split location validations' do
       let(:event_1) { create(:event, course: course_1) }
-      let(:event_2) { create(:event, course: course_2, event_group: event_group) }
+      let(:event_2) { create(:event, course: course_2, event_group: event_group, home_time_zone: event_1.home_time_zone) }
       let(:event_group) { create(:event_group) }
       let(:course_1) { create(:course) }
       let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
@@ -142,6 +142,33 @@ RSpec.describe Event, type: :model do
           event_1.update(event_group: event_group)
           expect(event_1).not_to be_valid
           expect(event_1.errors.full_messages).to include(/Location Start is incompatible within the event group/)
+        end
+      end
+    end
+
+    context 'for home_time_zone validation' do
+      let!(:event_1) { create(:event, home_time_zone: time_zone) }
+      let!(:event_2) { create(:event, event_group: event_group, home_time_zone: 'Arizona') }
+      let!(:event_group) { create(:event_group) }
+
+      context 'when time zones are consistent' do
+        let(:time_zone) { 'Arizona' }
+
+        it 'is valid' do
+          expect(event_1).to be_valid
+          event_1.update(event_group: event_group)
+          expect(event_1).to be_valid
+        end
+      end
+
+      context 'when time zones are not consistent' do
+        let(:time_zone) { 'Mountain Time (US & Canada)' }
+
+        it 'is invalid' do
+          expect(event_1).to be_valid
+          event_1.update(event_group: event_group)
+          expect(event_1).not_to be_valid
+          expect(event_1.errors.full_messages).to include(/Home time zone is inconsistent with others within the event group/)
         end
       end
     end

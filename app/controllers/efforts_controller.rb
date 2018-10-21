@@ -104,8 +104,9 @@ class EffortsController < ApplicationController
   def start
     authorize @effort
     effort = effort_with_splits
+    start_time = params[:start_time]
 
-    response = Interactors::StartEfforts.perform!([effort], current_user.id)
+    response = Interactors::StartEfforts.perform!(efforts: [effort], start_time: start_time, current_user_id: current_user.id)
     set_flash_message(response) unless response.successful?
     redirect_to effort_path(effort)
   end

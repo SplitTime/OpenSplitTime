@@ -1,5 +1,7 @@
 <% content_for :title do %>Home
 <% end %>
+<% content_for(:container_type) do %>skip
+<% end %>
 <div class="homepage">
   <div class="row first" >
     <div class="over-text">
@@ -14,11 +16,11 @@
         <p/>
         <% unless current_user %>
             <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
-              <div class="form-fields clearfix">
-                <div class="form-group col-xs-12 col-sm-6">
+              <div class="form-fields row clearfix">
+                <div class="form-group col-xs-12 col-md-6">
                   <input type="text" name="email" placeholder="Email Address"/>
                 </div>
-                <div class="form-group col-xs-12 col-sm-6">
+                <div class="form-group col-xs-12 col-md-6">
                   <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
                 </div>
               </div>

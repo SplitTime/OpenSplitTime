@@ -115,7 +115,7 @@ class Effort < ApplicationRecord
     return @start_time if defined?(@start_time)
     @start_time = attributes.has_key?('start_time') ?
                       attributes['start_time']&.in_time_zone(event_home_zone) :
-                      start_split_time&.absolute_time.in_time_zone(event_home_zone)
+                      start_split_time&.absolute_time&.in_time_zone(event_home_zone)
   end
 
   def event_start_time

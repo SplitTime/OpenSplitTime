@@ -121,7 +121,7 @@ class Event < ApplicationRecord
   end
 
   def split_times
-    SplitTime.includes(:effort).where(efforts: {event_id: id})
+    SplitTime.joins(:effort).where(efforts: {event_id: id})
   end
 
   def split_times_data

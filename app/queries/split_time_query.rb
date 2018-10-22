@@ -87,10 +87,7 @@ class SplitTimeQuery < BaseQuery
   end
 
   def self.time_detail(args)
-    scope = args[:scope].map do |table, criteria|
-      criteria.map { |field, value| "#{table}.#{field} = #{value}" }.join(' and ')
-    end.join(' and ')
-
+    scope = where_string_from_hash(args[:scope])
     home_time_zone = args[:home_time_zone]
     time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
 
@@ -125,6 +122,19 @@ class SplitTimeQuery < BaseQuery
       inner join efforts on efforts.id = st.effort_id
       left join start_split_times sst on sst.effort_id = st.effort_id
       where #{scope}
+    SQL
+    query.squish
+  end
+
+  def self.starting_split_times(args)
+    scope = where_string_from_hash(args[:scope])
+
+    query = <<~SQL
+      left join (select effort_id, absolute_time
+                 from split_times
+                   inner join splits on splits.id = split_times.split_id
+                 where lap = 1 and kind = 0 and effort_id in (select id from efforts where #{scope})) sst
+                 on sst.effort_id = split_times.effort_id
     SQL
     query.squish
   end

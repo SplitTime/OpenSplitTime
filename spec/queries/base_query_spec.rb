@@ -102,4 +102,48 @@ RSpec.describe BaseQuery do
       end
     end
   end
+
+  describe '.where_string_from_hash' do
+    subject { BaseQuery.where_string_from_hash(hash) }
+
+    context 'when the hash contains a single table and attribute/value pair' do
+      let(:hash) { {efforts: {event_id: 10}} }
+
+      it 'parses the result correctly' do
+        expect(subject).to eq('efforts.event_id = 10')
+      end
+    end
+
+    context 'when the hash contains a single table with multiple attribute/value pairs' do
+      let(:hash) { {efforts: {event_id: 10, gender: 0}} }
+
+      it 'parses the result correctly' do
+        expect(subject).to eq('efforts.event_id = 10 and efforts.gender = 0')
+      end
+    end
+
+    context 'when a value is a string' do
+      let(:hash) { {efforts: {first_name: 'Bill'}} }
+
+      it 'adds single quotes to the value' do
+        expect(subject).to eq("efforts.first_name = 'Bill'")
+      end
+    end
+
+    context 'when a value is an array' do
+      let(:hash) { {efforts: {event_id: [10, 11]}} }
+
+      it 'uses the IN operator and joins values' do
+        expect(subject).to eq("efforts.event_id in (10, 11)")
+      end
+    end
+
+    context 'when the hash is complex' do
+      let(:hash) { {efforts: {event_id: [10, 11], gender: 0}, events: {home_time_zone: 'Arizona'}} }
+
+      it 'parses the result correctly' do
+        expect(subject).to eq("efforts.event_id in (10, 11) and efforts.gender = 0 and events.home_time_zone = 'Arizona'")
+      end
+    end
+  end
 end

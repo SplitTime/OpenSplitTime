@@ -49,8 +49,8 @@ class RawTimeQuery < BaseQuery
                                   bib_number, 
                                   parameterized_split_name, 
                                   bitkey, 
-                                  absolute_time, 
-                                  entered_time, 
+                                  absolute_time,
+                                  case when absolute_time is null then entered_time else null end,
                                   stopped_here, 
                                   with_pacer, 
                                   source

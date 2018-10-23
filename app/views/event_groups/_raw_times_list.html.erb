@@ -8,10 +8,13 @@
   <aside class="ost-toolbar container-fluid">
     <div class="container">
       <div class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-3">
           <%= render 'raw_times_search' %>
         </div>
-        <div class="col-xs-8 text-right">
+        <div class="col-xs-2">
+          <%= link_to 'Delete Duplicates', delete_duplicate_raw_times_event_group_path(view_object.event_group), method: :delete, class: 'btn btn-md btn-warning' %>
+        </div>
+        <div class="col-xs-7 text-right">
           <div class="btn-group">
             <%= link_to_raw_time_filters('stop', 'Stopped', true, nil, nil) %>
             <%= link_to_raw_time_filters('cloud-download', 'Pulled', nil, true, nil) %>

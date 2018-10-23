@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       put :start_ready_efforts
       patch :update_all_efforts
       delete :delete_all_times
+      delete :delete_duplicate_raw_times
     end
   end
 

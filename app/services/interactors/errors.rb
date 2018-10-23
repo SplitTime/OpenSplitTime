@@ -12,6 +12,11 @@ module Interactors
        detail: {exception: exception}}
     end
 
+    def database_error(error_message)
+      {title: 'A database error occurred',
+       detail: {error_message: error_message}}
+    end
+
     def cannot_unstart_error(effort)
       {title: "Cannot mark #{effort} as DNS",
        detail: {messages: ['The effort has one or more intermediate or finish times recorded. Times must be deleted from the effort view.']}}

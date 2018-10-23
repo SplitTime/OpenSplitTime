@@ -125,6 +125,14 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  def delete_duplicate_raw_times
+    authorize @event_group
+
+    response = Interactors::DeleteDuplicateRawTimes.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to raw_times_event_group_path(@event_group)
+  end
+
   private
 
   def set_event_group

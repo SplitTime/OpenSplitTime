@@ -3,7 +3,7 @@
 class SegmentTimeCalculator
 
   DISTANCE_FACTOR = 0.6 # Multiply distance in meters by this factor to approximate normal travel time on foot
-  VERT_GAIN_FACTOR = 4.0 # Multiply vert_gain in meters by this factor to approximate normal travel time on foot
+  UP_VERT_GAIN_FACTOR = 4.0 # Multiply positive vert_gain in meters by this factor to approximate normal travel time on foot
   STATS_CALC_THRESHOLD = 4
 
   def self.typical_time(args)
@@ -37,7 +37,8 @@ class SegmentTimeCalculator
   attr_reader :segment, :effort_ids, :calc_model
 
   def typical_time_by_terrain
-    (segment.distance * DISTANCE_FACTOR) + (segment.vert_gain * VERT_GAIN_FACTOR)
+    vert_factor = segment.vert_gain.positive? ? UP_VERT_GAIN_FACTOR : 0
+    (segment.distance * DISTANCE_FACTOR) + (segment.vert_gain * vert_factor)
   end
 
   def typical_time_by_stats(effort_ids = nil)

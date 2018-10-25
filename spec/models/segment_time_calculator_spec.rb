@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SegmentTimeCalculator do
@@ -51,7 +53,7 @@ RSpec.describe SegmentTimeCalculator do
 
   describe '#typical_time (terrain)' do
     let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
-    let(:vert_gain_factor) { SegmentTimeCalculator::VERT_GAIN_FACTOR }
+    let(:vert_gain_factor) { SegmentTimeCalculator::UP_VERT_GAIN_FACTOR }
 
     it 'calculates a segment time in seconds using the specified calc_model' do
       segment = lap_1_start_to_lap_1_aid_1

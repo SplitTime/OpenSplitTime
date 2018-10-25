@@ -10,12 +10,12 @@ class BaseQuery
     (column_names_array & allowed).join(', ').presence || default
   end
 
-  def self.sql_order_from_hash(sort_fields, allowed, default)
-    sort_fields = sort_fields&.symbolize_keys || {}
-    allowed = allowed.map(&:to_sym).to_set
-    filtered_fields = sort_fields.reject { |field, _| allowed.exclude?(field) }
-    filtered_string = filtered_fields.map { |field, direction| "#{field} #{direction}" }.join(', ')
-    filtered_string.present? ? filtered_string : default
+  def self.sql_order_from_hash(sort, allowed, default)
+    sort_fields = (sort || {}).symbolize_keys
+    allowed_fields = allowed.map(&:to_sym).to_set
+    filtered_fields = sort_fields.slice(*allowed_fields)
+    filtered_string = filtered_fields.map { |field, direction| "#{field} #{direction}"}.join(', ')
+    filtered_string.presence || default.to_s
   end
 
   # Converts an ActiveRecord-style hash to a SQL string for a WHERE clause

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       put :start_efforts
       patch :update_all_efforts
       delete :delete_all_times
+      delete :delete_duplicate_raw_times
     end
   end
 
@@ -76,6 +77,7 @@ Rails.application.routes.draw do
       get :admin
       get :drop_list
       get :edit_start_time
+      get :export_finishers
       get :export_to_ultrasignup
       get :podium
       get :reconcile

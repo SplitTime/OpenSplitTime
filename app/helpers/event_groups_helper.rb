@@ -27,4 +27,11 @@ module EventGroupsHelper
     link_to 'Export', export_raw_times_event_group_path(view_object.event_group, split_name: split_name, csv_template: csv_template, format: :csv),
             class: 'btn btn-md btn-success pull-right'
   end
+
+  def lap_and_time_builder(bib_row)
+    bib_row.split_times.map do |st|
+      lap_prefix = bib_row.single_lap ? '' : "Lap #{st.lap}:  "
+      lap_prefix + st.military_time
+    end.join("\n")
+  end
 end

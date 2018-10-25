@@ -55,7 +55,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
     params[:sort] ||= '-created_at'
 
-    event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).references(:efforts, organization: :stewards, events: :splits).first
+    event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).first
     @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
   end
 

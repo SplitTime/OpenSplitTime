@@ -75,7 +75,7 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def user_ids
-    @user_ids ||= raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.pulled_by] }.compact.uniq
+    @user_ids ||= filtered_raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.pulled_by] }.compact.uniq
   end
 
   def matches_criteria?(raw_time)

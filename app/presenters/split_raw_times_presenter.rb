@@ -55,7 +55,7 @@ class SplitRawTimesPresenter < BasePresenter
 
   def fetch_split_times(bib_number)
     effort_id = indexed_efforts[bib_number]&.id
-    grouped_split_times.fetch(effort_id, [])
+    grouped_split_times.fetch(effort_id, []).sort_by(&:lap)
   end
 
   def all_raw_times

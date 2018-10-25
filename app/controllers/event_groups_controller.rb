@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :traffic]
   before_action :set_event_group, except: [:index]
@@ -62,7 +64,8 @@ class EventGroupsController < ApplicationController
   def split_raw_times
     authorize @event_group
 
-    @presenter = SplitRawTimesPresenter.new(@event_group, params[:split_name], prepared_params, current_user)
+    event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
+    @presenter = SplitRawTimesPresenter.new(event_group, params[:split_name], prepared_params, current_user)
   end
 
   def roster

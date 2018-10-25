@@ -2,7 +2,7 @@
 
 class SplitRawTimesPresenter < BasePresenter
   attr_reader :event_group, :split_name
-  delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, to: :event_group
+  delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, :single_lap?, to: :event_group
   delegate :podium_template, to: :event
 
   def initialize(event_group, split_name, params, current_user)
@@ -13,11 +13,14 @@ class SplitRawTimesPresenter < BasePresenter
   end
 
   def bib_rows
-    bib_numbers.map { |bib_number| bib_row(bib_number) }
+    return @bib_rows if defined?(@bib_rows)
+    query = EventGroupQuery.bib_sub_split_rows(event_group: event_group, split_name: split_name, bitkey: bitkey, sort: params[:sort_hash])
+    result = ActiveRecord::Base.connection.execute(query)
+    @bib_rows = result.map { |row| BibTimeRow.new(row.merge(universal_bib_row_attributes)) }
   end
 
   def sources
-    @sources ||= raw_times.map(&:source_text).uniq.sort
+    @sources ||= bib_rows.flat_map(&:raw_times).map(&:source_text).uniq.sort
   end
 
   def sub_split_kind
@@ -45,48 +48,15 @@ class SplitRawTimesPresenter < BasePresenter
 
   attr_reader :params, :current_user
 
-  def bib_row(bib_number)
-    BibSubSplitTimeRow.new(bib_number: bib_number,
-                           effort: indexed_efforts[bib_number],
-                           time_records: grouped_raw_times[bib_number],
-                           split_times: fetch_split_times(bib_number),
-                           event_group: event_group)
-  end
-
-  def fetch_split_times(bib_number)
-    effort_id = indexed_efforts[bib_number]&.id
-    grouped_split_times.fetch(effort_id, []).sort_by(&:lap)
-  end
-
-  def all_raw_times
-    RawTime.where(event_group: event_group, parameterized_split_name: parameterized_split_name)
-  end
-
-  def raw_times
-    @raw_times ||= all_raw_times.where(bitkey: bitkey).with_relation_ids(sort: sort_hash)
-  end
-
-  def bib_numbers
-    @bib_numbers ||= grouped_raw_times.keys.sort_by(&:to_i)
-  end
-
-  def indexed_efforts
-    @indexed_efforts = event_group.efforts.index_by { |effort| effort.bib_number.to_s }
-  end
-
-  def grouped_split_times
-    @grouped_split_times ||= event_group.split_times.includes(effort: :event).where(split: splits, bitkey: bitkey).group_by(&:effort_id)
-  end
-
-  def grouped_raw_times
-    @grouped_raw_times ||= raw_times.group_by(&:bib_number)
-  end
-
   def splits
-    Split.joins(:events).where(events: {id: event_group.events}, parameterized_base_name: parameterized_split_name)
+    event_group.events.flat_map(&:splits).select { |split| split.parameterized_base_name == parameterized_split_name }
   end
 
   def bitkey
     @bitkey ||= SubSplit.bitkey(sub_split_kind)
+  end
+
+  def universal_bib_row_attributes
+    {single_lap: single_lap?}
   end
 end

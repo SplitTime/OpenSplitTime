@@ -52,6 +52,7 @@ class EventGroupQuery < BaseQuery
     event_group = args[:event_group]
     parameterized_split_name = args[:split_name].parameterize
     bitkey = args[:bitkey]
+    order_sql = sql_order_from_hash(args[:sort], permitted_sort_fields, :sortable_bib_number)
     home_time_zone = event_group.home_time_zone
     time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
 
@@ -59,18 +60,24 @@ class EventGroupQuery < BaseQuery
       set timezone='#{time_zone}';
   
       with raw_times_subquery as
-        (select ef.id as effort_id, ef.first_name, ef.last_name, rt.bib_number,
+        (select ef.id as effort_id, ef.first_name, ef.last_name, rt.bib_number, rt.sortable_bib_number,
                          json_agg(json_build_object('id', rt.id,
-                                                    'military_time', case when rt.absolute_time is null then rt.entered_time else to_char((rt.absolute_time at time zone 'UTC'), 'HH:MI:SS') end,
-                                                    'source', rt.source)
-                                  order by case when rt.absolute_time is null then rt.entered_time else to_char((rt.absolute_time at time zone 'UTC'), 'HH:MI:SS') end) as raw_time_attributes
+                                                    'military_time', case when rt.absolute_time is null then rt.entered_time else to_char((rt.absolute_time at time zone 'UTC'), 'HH24:MI:SS') end,
+                                                    'source', rt.source,
+                                                    'created_by', rt.created_by)
+                                  order by case when rt.absolute_time is null then rt.entered_time else to_char((rt.absolute_time at time zone 'UTC'), 'HH24:MI:SS') end) as raw_times_attributes
         from raw_times rt
         left join efforts ef on ef.event_id in (select id from events where events.event_group_id = #{event_group.id}) and ef.bib_number::text = rt.bib_number
-        where rt.event_group_id = 92 and rt.parameterized_split_name = '#{parameterized_split_name}' and rt.bitkey = #{bitkey}
-        group by ef.id, ef.first_name, ef.last_name, rt.bib_number),
+        where rt.event_group_id = #{event_group.id} and rt.parameterized_split_name = '#{parameterized_split_name}' and rt.bitkey = #{bitkey}
+        group by ef.id, ef.first_name, ef.last_name, rt.bib_number, rt.sortable_bib_number),
   
       split_times_subquery as
-        (select ef.id as effort_id, json_agg(json_build_object('id', st.id, 'lap', st.lap, 'military_time', to_char((ev.start_time at time zone 'UTC' + ef.start_offset * interval '1 second' + st.time_from_start * interval '1 second'), 'HH:MI:SS')) order by st.lap) as split_time_attributes
+        (select ef.id as effort_id, 
+                min(ev.start_time at time zone 'UTC' + ef.start_offset * interval '1 second' + st.time_from_start * interval '1 second') as sortable_time,
+                json_agg(json_build_object('id', st.id, 
+                                           'lap', st.lap, 
+                                           'military_time', to_char((ev.start_time at time zone 'UTC' + ef.start_offset * interval '1 second' + st.time_from_start * interval '1 second'), 'HH24:MI:SS')) 
+                                  order by st.lap) as split_times_attributes
         from split_times st
           inner join efforts ef on ef.id = st.effort_id
           inner join events ev on ev.id = ef.event_id
@@ -78,11 +85,15 @@ class EventGroupQuery < BaseQuery
         where ef.event_id in (select id from events where events.event_group_id = #{event_group.id}) and s.parameterized_base_name = '#{parameterized_split_name}' and st.sub_split_bitkey = #{bitkey}
         group by ef.id)
   
-      select rts.*, sts.split_time_attributes
+      select rts.*, sts.sortable_time, sts.split_times_attributes
       from raw_times_subquery rts
         left join split_times_subquery sts on rts.effort_id = sts.effort_id
-      order by rts.bib_number
+      order by #{order_sql}
     SQL
     query.squish
+  end
+
+  def self.permitted_sort_fields
+    [:sortable_bib_number, :sortable_time, :first_name, :last_name]
   end
 end

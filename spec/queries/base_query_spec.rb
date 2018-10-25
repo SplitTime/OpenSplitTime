@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require_relative '../../app/queries/base_query'
 
 RSpec.describe BaseQuery do
   describe '.sql_order_from_hash' do
-    subject { BaseQuery.sql_order_from_hash(sort_fields, allowed, default) }
+    subject { BaseQuery.sql_order_from_hash(sort, allowed, default) }
     let(:default) { 'name asc' }
     let(:allowed) { %w(name age) }
 
     context 'when sort_fields hash is provided with symbols as keys' do
-      let(:sort_fields) { {name: :asc, age: :desc} }
+      let(:sort) { {name: :asc, age: :desc} }
 
       it 'returns a string of fields in SQL format' do
         expect(subject).to eq('name asc, age desc')
@@ -15,7 +17,7 @@ RSpec.describe BaseQuery do
     end
 
     context 'when sort_fields hash is provided with strings as keys' do
-      let(:sort_fields) { {'name' => :asc, 'age' => :desc} }
+      let(:sort) { {'name' => :asc, 'age' => :desc} }
       let(:allowed) { %w(name age) }
 
       it 'returns a string of fields in SQL format' do
@@ -24,7 +26,7 @@ RSpec.describe BaseQuery do
     end
 
     context 'when sort_fields hash is provided with strings as keys and allowed is provided as an array of symbols' do
-      let(:sort_fields) { {'name' => :asc, 'age' => :desc} }
+      let(:sort) { {'name' => :asc, 'age' => :desc} }
       let(:allowed) { %i(name age) }
 
       it 'returns a string of fields in SQL format' do
@@ -33,7 +35,7 @@ RSpec.describe BaseQuery do
     end
 
     context 'when sort is nil' do
-      let(:sort_fields) { nil }
+      let(:sort) { nil }
 
       it 'returns the default string' do
         expect(subject).to eq('name asc')
@@ -41,7 +43,7 @@ RSpec.describe BaseQuery do
     end
 
     context 'when sort is an empty hash' do
-      let(:sort_fields) { {} }
+      let(:sort) { {} }
 
       it 'returns the default string' do
         expect(subject).to eq('name asc')

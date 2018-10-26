@@ -140,7 +140,7 @@ class Api::V1::EventGroupsController < ApiController
       problem_rows = response.resources[:problem_rows]
       report_raw_times_available(event_group)
 
-      render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}
+      render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}, status: :created
     else
       render json: {errors: errors}, status: :unprocessable_entity
     end

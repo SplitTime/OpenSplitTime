@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
@@ -10,13 +12,15 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
   let(:last_proto_record) { proto_records.last }
 
   describe '#transform' do
+    let(:start_time) { event.start_time }
+
     context 'when event is present and splits count matches split fields count' do
       before do
         _, time_points = lap_splits_and_time_points(event)
         allow(event).to receive(:required_time_points).and_return(time_points)
       end
 
-      let(:event) { build_stubbed(:event_with_standard_splits, id: 1, in_sub_splits_only: true, splits_count: 7) }
+      let(:event) { build_stubbed(:event_with_standard_splits, start_time_in_home_zone: '2018-10-31 07:00:00', in_sub_splits_only: true, splits_count: 7) }
       let(:time_points) { event.required_time_points }
       let(:parsed_structs) { [
           OpenStruct.new(time_0: '7:05:05 AM',
@@ -61,98 +65,149 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
                          rr_id: '250')
       ] }
 
+      let(:expected_times) { times_with_zone(time_strings) }
+
       it 'returns the same number of ProtoRecords as it is given OpenStructs' do
         expect(proto_records.size).to eq(4)
         expect(proto_records.all? { |row| row.is_a?(ProtoRecord) }).to eq(true)
       end
 
       it 'returns rows with effort headers transformed to match the database' do
-        expect(first_proto_record.to_h.keys).to match_array(%i(bib_number event_id start_offset))
+        expect(first_proto_record.to_h.keys).to match_array(%i(bib_number event_id))
       end
 
       it 'assigns event.id to :event_id key' do
         expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
       end
 
-      it 'sorts split headers and returns an array of children' do
-        records = first_proto_record.children
-        expect(records.size).to eq(7)
-        expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-        expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-        expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-        expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 3614.0, 6345.0, 9172.0, 12354.0, 14777.0, 17972.0])
+      context 'when all times are present' do
+        let(:records) { first_proto_record.children }
+        let(:time_strings) { ['2018-10-31 07:05:05',
+                              '2018-10-31 08:05:19',
+                              '2018-10-31 08:50:50',
+                              '2018-10-31 09:37:57',
+                              '2018-10-31 10:30:59',
+                              '2018-10-31 11:11:22',
+                              '2018-10-31 12:04:37'] }
+
+        it 'sorts split headers and returns an array of children' do
+          expect(records.size).to eq(7)
+          expect(records.map(&:record_type)).to eq([:split_time] * records.size)
+          expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
+          expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+          expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
+          expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+        end
       end
 
       context 'when options[:delete_blank_times] is true' do
         let(:options) { {parent: event, delete_blank_times: true} }
 
-        it 'returns expected times_from_start array and marks blank records for destruction when some times are not present' do
-          records = third_proto_record.children
-          expect(records.size).to eq(7)
-          expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 4619.0, 7783.0, 10934.0, 13717.0, nil, nil])
+        context 'when end times are not present' do
+          let(:records) { third_proto_record.children }
+          let(:time_strings) { ['2018-10-31 07:05:42',
+                                '2018-10-31 08:22:41',
+                                '2018-10-31 09:15:25',
+                                '2018-10-31 10:07:56',
+                                '2018-10-31 10:54:19',
+                                nil,
+                                nil] }
+          it 'returns expected absolute_times array and marks blank records for destruction' do
+            expect(records.size).to eq(7)
+            expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+            expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+            expect(records.map(&:record_action)).to eq([nil] * 5 + [:destroy] * 2)
+          end
         end
 
-        it 'returns expected military times when middle segment times are missing' do
-          records = second_proto_record.children
-          expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 3950.0, 6792.0, 9610.0, nil, 15425.0, 18764.0])
+        context 'when middle segment times are missing' do
+          let(:records) { second_proto_record.children }
+          let(:time_strings) { ['2018-10-31 07:05:29',
+                                '2018-10-31 08:11:19',
+                                '2018-10-31 08:58:41',
+                                '2018-10-31 09:45:39',
+                                nil,
+                                '2018-10-31 11:22:34',
+                                '2018-10-31 12:18:13'] }
+
+          it 'returns expected absolute_times' do
+            expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+            expect(records.map(&:record_action)).to eq([nil] * 4 + [:destroy] + [nil] * 2)
+          end
         end
 
-        it 'marks records for destruction when time_from_start is not present' do
-          records = third_proto_record.children
-          expect(records.map { |pr| pr.record_action }).to eq([nil] * 5 + [:destroy] * 2)
+        context 'when no times are present' do
+          let(:records) { last_proto_record.children }
+          let(:time_points) { event.required_time_points }
+
+          it 'returns expected times_from_start array' do
+            expect(records.map { |pr| pr[:absolute_time] }).to all eq(nil)
+          end
+
+          it 'returns expected split_id array when no times are present' do
+            expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+          end
         end
 
-        it 'returns expected times_from_start array when no times are present' do
-          records = last_proto_record.children
-          expect(records.map { |pr| pr[:time_from_start] }).to all eq(nil)
+        context 'when [:status] == "DNF" or "DSQ"' do
+          let(:records) { third_proto_record.children }
+
+          it 'sets [:stopped_here] attribute on the final child record' do
+            expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+            expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true, nil, nil])
+          end
         end
 
-        it 'returns expected split_id array when no times are present' do
-          records = last_proto_record.children
-          time_points = event.required_time_points
-          expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-        end
-
-        it 'sets [:stopped_here] attribute on the final child record if [:status] == "DNF" or "DSQ"' do
-          records = third_proto_record.children
-          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
-          expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true, nil, nil])
-        end
-
-        it 'does not set [:stopped_here] attribute if [:status] is "OK" or "DNS"' do
-          expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-          expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-          expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+        context 'when [:status] is "OK" or "DNS"' do
+          it 'does not set [:stopped_here] attribute' do
+            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+          end
         end
       end
 
       context 'when options[:delete_blank_times] is false' do
         let(:options) { {parent: event, delete_blank_times: false} }
 
-        it 'returns expected times_from_start array when some times are not present' do
-          records = third_proto_record.children
-          expect(records.size).to eq(5)
-          expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id).first(5))
-          expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 4619.0, 7783.0, 10934.0, 13717.0])
+        context 'when some times are not present' do
+          let(:records) { third_proto_record.children }
+          let(:time_strings) { ['2018-10-31 07:05:42',
+                                '2018-10-31 08:22:41',
+                                '2018-10-31 09:15:25',
+                                '2018-10-31 10:07:56',
+                                '2018-10-31 10:54:19'] }
+
+          it 'returns expected absolute_times array' do
+            expect(records.size).to eq(5)
+            expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id).first(5))
+            expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+          end
         end
 
-        it 'creates no child records when no times are present' do
-          records = last_proto_record.children
-          expect(records.size).to eq(0)
+        context 'when no times are present' do
+          let(:records) { last_proto_record.children }
+
+          it 'creates no child records' do
+            expect(records.size).to eq(0)
+          end
         end
 
-        it 'sets [:stopped_here] attribute on the final child record if [:time] == "DNF" or "DSQ"' do
-          records = third_proto_record.children
-          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
-          expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true])
+        context 'when [:status] == "DNF" or "DSQ"' do
+          let(:records) { third_proto_record.children }
+
+          it 'sets [:stopped_here] attribute on the final child record' do
+            expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+            expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true])
+          end
         end
 
-        it 'does not set [:stopped_here] attribute if [:time] != "DNF"' do
-          expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-          expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-          expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+        context 'when [:status] is "OK" or "DNS"' do
+          it 'does not set [:stopped_here] attribute' do
+            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+          end
         end
       end
     end
@@ -200,6 +255,10 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
         expect(subject.errors.size).to eq(1)
         expect(subject.errors.first[:title]).to match(/Split mismatch error/)
       end
+    end
+
+    def times_with_zone(time_strings)
+      time_strings.map { |ts| ActiveSupport::TimeZone[event.home_time_zone].parse(ts) if ts }
     end
   end
 end

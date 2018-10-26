@@ -9,7 +9,7 @@
 module Interactors
   class UpsertSplitTimesFromRawTimeRow
     include Interactors::Errors
-    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey time_from_start stopped_here pacer remarks]
+    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey absolute_time stopped_here pacer remarks]
 
     def self.perform!(args)
       new(args).perform!

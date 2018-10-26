@@ -8,22 +8,20 @@ RSpec.describe IntendedTimeCalculator do
                                        time_point: time_point,
                                        prior_valid_split_time: prior_valid_split_time,
                                        expected_time_from_prior: expected_time_from_prior) }
-  let(:effort) { build_stubbed(:effort, event: event) }
-  let(:event) { build_stubbed(:event, start_time_in_home_zone: '2016-07-01 06:00:00') }
-  let(:home_time_zone) { event.home_time_zone }
-  let(:military_time) { '15:30:45' }
+  let(:effort) { build_stubbed(:effort) }
   let(:time_point) { TimePoint.new(1, 45, 1) }
-  let(:prior_valid_split_time) { build_stubbed(:split_time, time_point: time_point, absolute_time: event.start_time_in_home_zone) }
-  let(:expected_time_from_prior) { 10_000 }
+  let(:military_time) { '15:30:45' }
+  let(:prior_valid_split_time) { SplitTime.new }
+  let(:expected_time_from_prior) { 0 }
 
   describe '#initialize' do
-    context 'when a military time, an effort, and a sub_split are provided' do
-      it 'initializes with no errors' do
+    context 'with a military time, an effort, and a sub_split in an args hash' do
+      it 'initializes' do
         expect { subject }.not_to raise_error
       end
     end
 
-    context 'when no military_time is provided' do
+    context 'when no military time is given' do
       let(:military_time) { nil }
 
       it 'raises an ArgumentError' do
@@ -31,7 +29,7 @@ RSpec.describe IntendedTimeCalculator do
       end
     end
 
-    context 'when no effort is provided' do
+    context 'when no effort is given' do
       let(:effort) { nil }
 
       it 'raises an ArgumentError' do
@@ -39,9 +37,8 @@ RSpec.describe IntendedTimeCalculator do
       end
     end
 
-    context 'when no time_point is provided' do
+    context 'when no time_point is given' do
       let(:time_point) { nil }
-      let(:prior_valid_split_time) { SplitTime.new }
 
       it 'raises an ArgumentError' do
         expect { subject }.to raise_error(/must include time_point/)
@@ -50,47 +47,53 @@ RSpec.describe IntendedTimeCalculator do
   end
 
   describe '#day_and_time' do
-    context 'when military_time provided is blank' do
+    let(:effort) { build_stubbed(:effort, event: event, id: 101) }
+    let(:event) { build_stubbed(:event, start_time_in_home_zone: '2016-07-01 06:00:00') }
+    let(:home_time_zone) { event.home_time_zone }
+    let(:start_time) { event.start_time }
+    let(:time_point) { TimePoint.new(1, 44, 1) }
+    let(:prior_valid_split_time) { build_stubbed(:split_time, time_point: time_point, absolute_time: start_time) }
+    let(:expected_time) { ActiveSupport::TimeZone[home_time_zone].parse(expected_time_string) }
+
+    before { FactoryBot.reload }
+
+    context 'if military_time provided is blank' do
       let(:military_time) { '' }
 
       it 'returns nil' do
-        expect(subject.day_and_time).to eq(nil)
+        expect(subject.day_and_time).to be_nil
       end
     end
 
-    context 'when the effort has not yet started' do
-      let(:military_time) { '9:30:45' }
+    context 'for an effort that has not yet started' do
+      context 'for a same-day time' do
+        let(:military_time) { '9:30:45' }
+        let(:expected_time_from_prior) { 3.hours }
+        let(:expected_time_string) { '2016-07-01 09:30:45' }
 
-      it 'calculates the likely intended day and time for a same-day time based on inputs' do
-        expected = '2016-07-01 09:30:45'.in_time_zone(home_time_zone)
-        expect(subject.day_and_time).to eq(expected)
+        it 'calculates the likely intended day and time' do
+          expect(subject.day_and_time).to eq(expected_time)
+        end
       end
 
-      it 'calculates the likely intended day and time for a multi-day time based on inputs' do
-        military_time = '15:30:45'
-        expected_time_from_prior = 200000
-        expected = ActiveSupport::TimeZone[home_time_zone].parse('2016-07-03 15:30:45')
-        validate_day_and_time(military_time, time_point, expected_time_from_prior, prior_valid_split_time, expected)
+      context 'for a multi-day time' do
+        let(:military_time) { '15:30:45' }
+        let(:expected_time_from_prior) { 50.hours }
+        let(:expected_time_string) { '2016-07-03 15:30:45' }
+
+        it 'calculates the likely intended day and time' do
+          expect(subject.day_and_time).to eq(expected_time)
+        end
       end
 
-      it 'calculates the likely intended day and time for a many-day time based on inputs' do
-        military_time = '15:30:45'
-        expected_time_from_prior = 400000
-        expected = ActiveSupport::TimeZone[home_time_zone].parse('2016-07-05 15:30:45')
-        validate_day_and_time(military_time, time_point, expected_time_from_prior, prior_valid_split_time, expected)
-      end
+      context 'for a many-day time' do
+        let(:military_time) { '15:30:45' }
+        let(:expected_time_from_prior) { 100.hours }
+        let(:expected_time_string) { '2016-07-05 15:30:45' }
 
-      it 'may be called using convenience class method IntendedTimeCalculator.day_and_time' do
-        military_time = '15:30:45'
-        expected_time_from_prior = 400000
-        expected = ActiveSupport::TimeZone[home_time_zone].parse('2016-07-05 15:30:45')
-
-        day_and_time = IntendedTimeCalculator.day_and_time(effort: effort,
-                                                           military_time: military_time,
-                                                           time_point: time_point,
-                                                           expected_time_from_prior: expected_time_from_prior,
-                                                           prior_valid_split_time: prior_valid_split_time)
-        expect(day_and_time).to eq(expected)
+        it 'calculates the likely intended day and time' do
+          expect(subject.day_and_time).to eq(expected_time)
+        end
       end
     end
 
@@ -99,12 +102,24 @@ RSpec.describe IntendedTimeCalculator do
       let(:time_points) { split_times.map(&:time_point) }
       let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
 
+      context 'for a same-day time' do
+        let(:military_time) { '18:00:00' }
+        let(:time_point) { time_points[9] } # Burrows In
+        let(:prior_valid_split_time) { split_times[8] } # Sherman Out
+        let(:expected_time_from_prior) { 1.hour }
+        let(:expected_time_string) { '2016-07-01 18:00:00' }
+
+        it 'calculates the likely intended day and time' do
+          expect(subject.day_and_time).to eq(expected_time)
+        end
+      end
+
       it 'calculates the likely intended day and time based on inputs' do
         military_time = '18:00:00'
         time_point = time_points[9] # Burrows In
         expected_time_from_prior = 1.hour
         prior_valid_split_time = split_times[8]
-        expected = ActiveSupport::TimeZone[home_time_zone].parse('2016-07-01 18:00:00')
+        expected = ActiveSupport::TimeZone[home_time_zone].parse()
         validate_day_and_time(military_time, time_point, expected_time_from_prior, prior_valid_split_time, expected)
       end
 
@@ -195,5 +210,14 @@ RSpec.describe IntendedTimeCalculator do
                                           prior_valid_split_time: prior_valid_split_time) }
           .to raise_error(/out of range/)
     end
+  end
+
+  def validate_day_and_time(military_time, time_point, expected_from_prior, prior_valid, expected)
+    calculator = IntendedTimeCalculator.new(effort: effort,
+                                            military_time: military_time,
+                                            time_point: time_point,
+                                            expected_time_from_prior: expected_from_prior,
+                                            prior_valid_split_time: prior_valid)
+    expect(calculator.day_and_time).to eq(expected)
   end
 end

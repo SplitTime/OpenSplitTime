@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe LapSplit, type: :model do
@@ -34,7 +36,7 @@ RSpec.describe LapSplit, type: :model do
     let(:lap_1) { 1 }
     let(:lap_2) { 2 }
     let(:lap_3) { 3 }
-    let(:split_1) { build_stubbed(:start_split) }
+    let(:split_1) { build_stubbed(:split, :start) }
     let(:split_2) { build_stubbed(:split, distance_from_start: 20000) }
     let(:split_3) { build_stubbed(:split, distance_from_start: 30000) }
 
@@ -113,7 +115,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#names' do
     it 'returns the split name and lap number in an array if the split has one sub_split' do
       lap = 1
-      split = build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:split, :start, base_name: 'Test Start')
       lap_split = LapSplit.new(lap, split)
       expected = ['Test Start Lap 1']
       expect(lap_split.names).to eq(expected)
@@ -131,7 +133,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#names_without_laps' do
     it 'returns the split name in an array if the split has one sub_split' do
       lap = 1
-      split = build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:split, :start, base_name: 'Test Start')
       lap_split = LapSplit.new(lap, split)
       expected = ['Test Start']
       expect(lap_split.names_without_laps).to eq(expected)
@@ -149,7 +151,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#name' do
     it 'returns the split name and lap number if the split has one sub_split' do
       lap = 1
-      split = build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:split, :start, base_name: 'Test Start')
       lap_split = LapSplit.new(lap, split)
       expected = 'Test Start Lap 1'
       expect(lap_split.name).to eq(expected)
@@ -192,7 +194,7 @@ RSpec.describe LapSplit, type: :model do
   describe '#name_without_lap' do
     it 'returns the split name if the split has one sub_split' do
       lap = 1
-      split = build_stubbed(:start_split, base_name: 'Test Start')
+      split = build_stubbed(:split, :start, base_name: 'Test Start')
       expected = 'Test Start'
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.name_without_lap).to eq(expected)
@@ -280,7 +282,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'for a split with a single bitkey, returns an array of one TimePoint using the lap and split.id and bitkey' do
       lap = 1
-      split = build_stubbed(:start_split, id: 123)
+      split = build_stubbed(:split, :start, id: 123)
       lap_split = LapSplit.new(lap, split)
       expected = [TimePoint.new(lap, split.id, in_bitkey)]
       expect(lap_split.time_points).to eq(expected)
@@ -314,7 +316,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'for a split with only an out bitkey, returns nil for time_point_in and a TimePoint for time_point_out' do
       lap = 1
-      split = build_stubbed(:start_split, sub_split_bitmap: 64, id: 123)
+      split = build_stubbed(:split, :start, sub_split_bitmap: 64, id: 123)
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.time_point_in).to be_nil
       expected = TimePoint.new(lap, split.id, out_bitkey)
@@ -323,7 +325,7 @@ RSpec.describe LapSplit, type: :model do
 
     it 'for a split with only an in bitkey, returns nil for time_point_out and a TimePoint for time_point_in' do
       lap = 1
-      split = build_stubbed(:start_split, sub_split_bitmap: 1, id: 123)
+      split = build_stubbed(:split, :start, sub_split_bitmap: 1, id: 123)
       lap_split = LapSplit.new(lap, split)
       expect(lap_split.time_point_out).to be_nil
       expected = TimePoint.new(lap, split.id, in_bitkey)
@@ -499,7 +501,7 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#start?' do
-    let(:start_split) { build_stubbed(:start_split) }
+    let(:start_split) { build_stubbed(:split, :start) }
     let(:intermediate_split) { build_stubbed(:split) }
 
     it 'returns true when split is a start split and lap == 1' do

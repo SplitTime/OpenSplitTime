@@ -2,7 +2,7 @@
 
 module ETL::Transformers
   class EffortsWithTimesStrategy < BaseTransformer
-    TIME_ATTRIBUTE_MAP = {elapsed: :time_from_start, military: :military_time}
+    TIME_ATTRIBUTE_MAP = {elapsed: :absolute_time, military: :military_time}
 
     def initialize(parsed_structs, options)
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
@@ -16,7 +16,6 @@ module ETL::Transformers
       proto_records.each do |proto_record|
         proto_record.transform_as(:effort, event: event)
         transform_time_data!(proto_record)
-        proto_record.delete_nil_keys!(:start_offset) # Default value is 0; this ensures it is not overwritten by nil
         proto_record.slice_permitted!
       end
       proto_records
@@ -31,7 +30,6 @@ module ETL::Transformers
       transform_times(proto_record)
       proto_record.create_split_time_children!(time_points, time_attribute: time_attribute)
       proto_record.set_split_time_stop!
-      proto_record.set_effort_offset!(time_points.first)
     end
 
     def extract_times(proto_record)
@@ -40,7 +38,10 @@ module ETL::Transformers
 
     def transform_times(proto_record)
       if time_format == :elapsed
-        proto_record[:times_from_start] = proto_record[:times].map { |time_string| TimeConversion.hms_to_seconds(time_string) }
+        proto_record[:absolute_times] = proto_record[:times].map do |time_string|
+          seconds = TimeConversion.hms_to_seconds(time_string)
+          seconds ? event.start_time + seconds : nil
+        end
       elsif time_format == :military
         proto_record[:military_times] = proto_record[:times].map(&:presence)
       end

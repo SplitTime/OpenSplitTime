@@ -55,7 +55,7 @@ RSpec.describe Course, type: :model do
       context 'when called with first(0)' do
         let(:number) { 0 }
 
-        it 'returns an empty array when called with first(0)' do
+        it 'returns an empty array' do
           expect(lap_splits).to eq([])
         end
       end

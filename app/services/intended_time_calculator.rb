@@ -48,7 +48,7 @@ class IntendedTimeCalculator
   end
 
   def prior_day_and_time
-    @prior_day_and_time ||= effort.start_time + prior_valid_split_time.time_from_start
+    @prior_day_and_time ||= prior_valid_split_time.absolute_time.in_time_zone(time_zone)
   end
 
   def expected_day_and_time
@@ -84,6 +84,10 @@ class IntendedTimeCalculator
 
   def event
     @event ||= effort.event
+  end
+
+  def time_zone
+    event.home_time_zone
   end
 
   def seconds_into_day

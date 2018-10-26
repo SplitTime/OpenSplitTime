@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :traffic]
   before_action :set_event_group, except: [:index]
@@ -55,14 +57,15 @@ class EventGroupsController < ApplicationController
     authorize @event_group
     params[:sort] ||= '-created_at'
 
-    event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).references(:efforts, organization: :stewards, events: :splits).first
+    event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).first
     @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
   end
 
   def split_raw_times
     authorize @event_group
 
-    @presenter = SplitRawTimesPresenter.new(@event_group, params[:split_name], prepared_params, current_user)
+    event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
+    @presenter = SplitRawTimesPresenter.new(event_group, params[:split_name], prepared_params, current_user)
   end
 
   def roster
@@ -125,6 +128,14 @@ class EventGroupsController < ApplicationController
                   filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
       end
     end
+  end
+
+  def delete_duplicate_raw_times
+    authorize @event_group
+
+    response = Interactors::DeleteDuplicateRawTimes.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to raw_times_event_group_path(@event_group)
   end
 
   private

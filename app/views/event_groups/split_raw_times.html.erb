@@ -4,18 +4,6 @@
 
 <% content_for(:container_type) do %>skip<% end %>
 
-<!--<div class="row header">
-  <div class="col-xs-5">
-    <h2><strong><%= "#{@presenter.name}" %></strong></h2>
-    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %> / <%= "Times / #{@presenter.split_name}" %></div>
-  </div>
-  <div class="col-xs-7 page-navigation">
-    <div class="row">
-      <%= render 'events/view_buttons', view_object: @presenter %>
-    </div>
-  </div>
-</div>-->
-
 <header class="ost-header">
   <div class="container">
     <div class="row">
@@ -68,7 +56,7 @@
 </aside>
 
 <article class="ost-article container">
-<% if @presenter.bib_rows.present? %>
+  <% if @presenter.bib_rows.present? %>
     <table class="table table-condensed table-striped">
       <thead>
       <tr>
@@ -76,33 +64,40 @@
         <th></th>
         <th class="border-right"></th>
         <th class="text-center" colspan="<%= @presenter.sources.size %>">Raw Time Sources</th>
-        <th class="border-left"></th>
+        <% if @presenter.single_lap? %>
+          <th class="border-left"></th>
+        <% end %>
       </tr>
       <tr>
-        <th>Bib</th>
-        <th>Name</th>
-        <th class="text-center border-right">Grid time</th>
+        <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Name', :last_name, @presenter.existing_sort) %></th>
+        <th class="text-center border-right"><%= link_to_reversing_sort_heading(@presenter.single_lap? ? 'Grid time' : 'Grid times', :sortable_time, @presenter.existing_sort) %></th>
         <% @presenter.sources.each do |source| %>
-            <th class="text-center"><%= source %></th>
+          <th class="text-center"><%= source %></th>
         <% end %>
-        <th class="text-center border-left">Discrepancy</th>
+        <% if @presenter.single_lap? %>
+          <th class="text-center border-left">Discrepancy</th>
+        <% end %>
       </tr>
       </thead>
+
       <tbody>
       <% @presenter.bib_rows.each do |row| %>
-          <tr class="<%= 'highlight' if row.problem? %>">
-            <td><%= row.bib_number %></td>
-            <td><%= link_to row.full_name, row.effort %></td>
-            <td class="text-center font-weight-bold border-right" style="white-space:pre-wrap; word-wrap:break-word"><%= row.result_times.map { |result_time| result_time[:time_and_optional_lap] }.join("\n") %></td>
-            <% @presenter.sources.each do |source| %>
-                <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.recorded_times.dig(source, :military_times)&.join("\n") %></td>
-            <% end %>
-            <td class="text-center border-left"><%= TimeConversion.seconds_to_hms(row.largest_discrepancy) %></td>
-          </tr>
+        <tr class="<%= 'highlight' if row.problem? %>">
+          <td class="text-center"><%= row.bib_number %></td>
+          <td><%= row.effort_id ? (link_to row.full_name, effort_path(row.effort_id)) : row.full_name %></td>
+          <td class="text-center font-weight-bold border-right" style="white-space:pre-wrap; word-wrap:break-word"><%= lap_and_time_builder(row) %></td>
+          <% @presenter.sources.each do |source| %>
+            <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.grouped_raw_times.fetch(source, []).map(&:military_time).join("\n") %></td>
+          <% end %>
+          <% if @presenter.single_lap? %>
+            <td class="text-center border-left"><%= TimeConversion.seconds_to_hms(row.largest_discrepancy, blank_zero: true) %></td>
+          <% end %>
+        </tr>
       <% end %>
       </tbody>
     </table>
-<% else %>
+  <% else %>
     <h4>No raw times have been entered for this aid station.</h4>
-<% end %>
+  <% end %>
 </article>

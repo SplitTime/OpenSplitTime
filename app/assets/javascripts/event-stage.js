@@ -1077,7 +1077,7 @@
                     center: defaultBounds.getCenter(),
                     mapTypeId: 'terrain',
                     zoom: 4,
-                    maxZoom: 16,
+                    maxZoom: 24,
                     draggableCursor: ( this.editable == undefined ) ? null : 'crosshair',
                     zoomControl: this.locked == undefined,
                     draggable: this.locked == undefined,

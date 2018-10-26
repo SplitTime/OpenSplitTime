@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TimePredictor do
   before { FactoryBot.reload }
 
   let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
-  let(:vert_gain_factor) { SegmentTimeCalculator::VERT_GAIN_FACTOR }
+  let(:vert_gain_factor) { SegmentTimeCalculator::UP_VERT_GAIN_FACTOR }
   let(:test_event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4, efforts_count: 1) }
   let(:test_effort) { test_event.efforts.first }
   let(:test_split_times) { test_effort.split_times }

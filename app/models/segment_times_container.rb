@@ -18,13 +18,13 @@ class SegmentTimesContainer
   end
 
   def segment_time(segment)
-    @segment_times[segment] ||=
-        SegmentTimeCalculator.typical_time(segment: segment, effort_ids: effort_ids, calc_model: calc_model)
+    return @segment_times[segment] if @segment_times.has_key?(segment)
+    @segment_times[segment] = SegmentTimeCalculator.typical_time(segment: segment, effort_ids: effort_ids, calc_model: calc_model)
   end
 
   def limits(segment)
-    @limits_hashes[segment] ||=
-        segment_time(segment) ? DataStatus.limits(segment_time(segment), limits_type(segment)) : {}
+    return @limits_hashes[segment] if @limits_hashes.has_key?(segment)
+    @limits_hashes[segment] = segment_time(segment) ? DataStatus.limits(segment_time(segment), limits_type(segment)) : {}
   end
 
   def data_status(segment, seconds)

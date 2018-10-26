@@ -61,6 +61,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
+  def export_finishers?
+    user.authorized_to_edit?(event)
+  end
+
   def export_to_ultrasignup?
     user.authorized_to_edit?(event)
   end

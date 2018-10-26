@@ -35,6 +35,33 @@ class RawTimeQuery < BaseQuery
     query.squish
   end
 
+  def self.delete_duplicates(event_group, scope = {})
+    hash = {rt: {event_group_id: event_group.id}}.merge(scope)
+    scope_string = BaseQuery.where_string_from_hash(hash)
+
+    query = <<~SQL
+      delete from raw_times
+      where id in
+        (select id from
+          (select id, event_group_id,
+                  row_number() over
+                    (partition by event_group_id, 
+                                  bib_number, 
+                                  parameterized_split_name, 
+                                  bitkey, 
+                                  absolute_time,
+                                  case when absolute_time is null then entered_time else null end,
+                                  stopped_here, 
+                                  with_pacer, 
+                                  source
+                     order by id)
+              as row_num
+           from raw_times) rt
+        where rt.row_num > 1 and #{scope_string})
+    SQL
+    query.squish
+  end
+
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     RawTime.connection.unprepared_statement { RawTime.reorder(nil).select('id').to_sql }

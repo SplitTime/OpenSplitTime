@@ -10,14 +10,16 @@ class TimeConversion
     numeric_method = milliseconds_present ? :to_f : :to_i
     units = %w(hours minutes seconds)
     seconds = components.zip(units).map { |component, unit| component.send(numeric_method).send(unit) }
-        .sum.send(numeric_method)
+                  .sum.send(numeric_method)
     negative ? -seconds : seconds
   end
 
-  def self.seconds_to_hms(seconds_elapsed)
-    seconds_elapsed ? to_hms(seconds_elapsed / 1.hour,
-                             (seconds_elapsed / 1.minute) % 1.minute,
-                             seconds_elapsed % 1.minute) : ''
+  def self.seconds_to_hms(seconds_elapsed, options = {})
+    return '' unless seconds_elapsed
+    return '--:--:--' if options[:blank_zero] && seconds_elapsed == 0
+    to_hms(seconds_elapsed / 1.hour,
+           (seconds_elapsed / 1.minute) % 1.minute,
+           seconds_elapsed % 1.minute)
   end
 
   def self.absolute_to_hms(absolute)

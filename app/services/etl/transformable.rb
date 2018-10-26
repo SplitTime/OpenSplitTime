@@ -42,9 +42,7 @@ module ETL::Transformable
     time_attribute = options[:time_attribute] || :time_from_start
     times_array = time_attribute.to_s.sub('time', 'times').to_sym
 
-    split_time_attributes = self[times_array].zip(time_points).select(&:last).map.with_index do |time_and_time_point, i|
-      time = time_and_time_point.first
-      time_point = time_and_time_point.last
+    split_time_attributes = self[times_array].zip(time_points).select(&:last).map.with_index do |(time, time_point), i|
       {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_attribute => time, imposed_order: i}
     end
 
@@ -133,22 +131,8 @@ module ETL::Transformable
         end
   end
 
-  def set_effort_offset!(start_time_point, options = {})
-    start_child_record = children.find { |pr| [pr[:lap], pr[:split_id], pr[:sub_split_bitkey]] == [start_time_point.lap, start_time_point.split_id, start_time_point.bitkey] }
-    if start_child_record && start_child_record[:time_from_start]
-      self[:start_offset] = start_child_record[:time_from_start]
-      children_to_adjust = options[:adjust_all] ? children.select { |child| child[:time_from_start] } : [start_child_record]
-      children_to_adjust.each { |child| child[:time_from_start] -= self[:start_offset] }
-    end
-  end
-
-  def set_offset_from_start_time!(event)
-    return unless self[:start_time].present?
-    self[:start_offset] = TimeConversion.absolute_to_offset(self.delete_field(:start_time), event)
-  end
-
   def set_split_time_stop!
-    stopped_child_record = children.reverse.find { |pr| pr[:time_from_start].present? }
+    stopped_child_record = children.reverse.find { |pr| pr[:absolute_time].present? }
     (stopped_child_record[:stopped_here] = true) if stopped_child_record
   end
 

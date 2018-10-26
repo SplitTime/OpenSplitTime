@@ -12,10 +12,10 @@ RSpec.describe Interactors::SetEffortStop do
   let(:effort) { build_stubbed(:effort, event: event) }
   let(:event) { build_stubbed(:event, course: course) }
   let(:course) { build_stubbed(:course) }
-  let(:split_1) { build_stubbed(:start_split, course: course) }
+  let(:split_1) { build_stubbed(:split, :start, course: course) }
   let(:split_2) { build_stubbed(:split, course: course) }
   let(:split_3) { build_stubbed(:split, course: course) }
-  let(:split_4) { build_stubbed(:finish_split, course: course) }
+  let(:split_4) { build_stubbed(:split, :finish, course: course) }
 
   describe '#initialize' do
     context 'when an effort is provided' do

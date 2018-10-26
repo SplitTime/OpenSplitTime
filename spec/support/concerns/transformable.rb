@@ -491,17 +491,6 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
-  describe '#set_offset_from_start_time!' do
-    let(:attributes) { {start_time: '2018-02-01 08:30'} }
-    let(:event) { Event.new(start_time: '2018-02-01 06:00', home_time_zone: 'Pacific (US & Canada)') }
-
-    it 'sets the start_offset attribute and deletes the start_time attribute' do
-      subject.set_offset_from_start_time!(event)
-      expect(subject[:start_offset]).to eq(2.5.hours)
-      expect(subject[:start_time]).to be_nil
-    end
-  end
-
   describe '#slice_permitted!' do
     context 'when provided with a set of permitted parameters' do
       let(:attributes) { {first_name: 'Joe', age: 55, role: 'admin'} }

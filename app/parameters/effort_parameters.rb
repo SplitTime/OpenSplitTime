@@ -24,7 +24,7 @@ class EffortParameters < BaseParameters
 
   def self.permitted
     [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
-     :city, :state_code, :country_code, :finished, :start_time, :start_offset,
+     :city, :state_code, :country_code, :finished,
      :beacon_url, :report_url, :photo, :phone, :email, :checked_in, :emergency_contact, :emergency_phone,
      split_times_attributes: [*SplitTimeParameters.permitted]]
   end

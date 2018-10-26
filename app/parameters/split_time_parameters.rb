@@ -3,7 +3,7 @@
 class SplitTimeParameters < BaseParameters
 
   def self.permitted
-    [:id, :effort_id, :lap, :split_id, :time_from_start, :bitkey, :sub_split_bitkey,
+    [:id, :effort_id, :lap, :split_id, :bitkey, :sub_split_bitkey, :time_from_start, :absolute_time,
      :stopped_here, :elapsed_time, :time_of_day, :military_time, :data_status, :imposed_order]
   end
 

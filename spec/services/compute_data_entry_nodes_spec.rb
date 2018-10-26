@@ -10,19 +10,19 @@ RSpec.describe ComputeDataEntryNodes do
     let(:event_1) { build_stubbed(:event, splits: event_1_splits, aid_stations: event_1_aid_stations) }
     let(:event_2) { build_stubbed(:event, splits: event_2_splits, aid_stations: event_2_aid_stations) }
 
-    let(:event_1_split_1) { build_stubbed(:start_split, base_name: 'Start') }
+    let(:event_1_split_1) { build_stubbed(:split, :start, base_name: 'Start') }
     let(:event_1_split_2) { build_stubbed(:split, base_name: 'Aid 1', distance_from_start: 1000) }
     let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2', distance_from_start: 3000) }
-    let(:event_1_split_4) { build_stubbed(:finish_split, base_name: 'Finish', distance_from_start: 5000) }
+    let(:event_1_split_4) { build_stubbed(:split, :finish, base_name: 'Finish', distance_from_start: 5000) }
 
     let(:event_1_aid_1) { build_stubbed(:aid_station, split: event_1_split_1) }
     let(:event_1_aid_2) { build_stubbed(:aid_station, split: event_1_split_2) }
     let(:event_1_aid_3) { build_stubbed(:aid_station, split: event_1_split_3) }
     let(:event_1_aid_4) { build_stubbed(:aid_station, split: event_1_split_4) }
 
-    let(:event_2_split_1) { build_stubbed(:start_split, base_name: 'Start') }
+    let(:event_2_split_1) { build_stubbed(:split, :start, base_name: 'Start') }
     let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', distance_from_start: 2000) }
-    let(:event_2_split_3) { build_stubbed(:finish_split, base_name: 'Finish', distance_from_start: 4000) }
+    let(:event_2_split_3) { build_stubbed(:split, :finish, base_name: 'Finish', distance_from_start: 4000) }
 
     let(:event_2_aid_1) { build_stubbed(:aid_station, split: event_2_split_1) }
     let(:event_2_aid_2) { build_stubbed(:aid_station, split: event_2_split_2) }

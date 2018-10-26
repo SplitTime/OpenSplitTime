@@ -1,66 +1,14 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  STANDARD_SPLIT_IDS ||= [101, 102, 102, 103, 103, 104, 104, 105, 105, 106, 106, 107, 107, 108, 108, 109, 109, 110, 110, 111]
   STANDARD_BITKEYS ||= [1, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1, 64, 1]
-  STANDARD_TIMES_FROM_START ||= {normal: [0, 6000, 6600, 12000, 12600, 18000, 18600, 24000, 24600, 30000, 30600, 36000, 36600, 42000, 42600, 48000, 48600, 54000, 54600, 60000],
-                                 fast: [0, 4200, 4500, 8400, 8700, 12600, 12900, 16800, 17100, 21000, 21300, 25200, 25500, 29400, 29700, 33600, 33900, 37800, 38100, 42000],
-                                 slow: [0, 9000, 9600, 18000, 18600, 27000, 27600, 36000, 36600, 45000, 45600, 54000, 54600, 63000, 63600, 72000, 72600, 81000, 81600, 90000]}
+  STANDARD_TIMES_FROM_START ||= [0, 6000, 6600, 12000, 12600, 18000, 18600, 24000, 24600, 30000, 30600, 36000, 36600, 42000, 42600, 48000, 48600, 54000, 54600, 60000]
 
   factory :split_time do
-    absolute_time { Time.current + rand(-100_000..100_000) }
+    absolute_time { Time.now + rand(-100_000..100_000) }
     effort
     lap 1
-  end
-
-  factory :split_times_in_out, class: SplitTime do
-    sequence(:split_id, STANDARD_SPLIT_IDS.cycle)
-    sequence(:bitkey, STANDARD_BITKEYS.cycle)
-    sequence(:time_from_start, STANDARD_TIMES_FROM_START[:normal].cycle)
-    lap 1
-    effort
-  end
-
-  factory :split_times_in_out_fast, class: SplitTime do
-    sequence(:split_id, STANDARD_SPLIT_IDS.cycle)
-    sequence(:bitkey, STANDARD_BITKEYS.cycle)
-    sequence(:time_from_start, STANDARD_TIMES_FROM_START[:fast].cycle)
-    lap 1
-    effort
-  end
-
-  factory :split_times_in_out_slow, class: SplitTime do
-    sequence(:split_id, STANDARD_SPLIT_IDS.cycle)
-    sequence(:bitkey, STANDARD_BITKEYS.cycle)
-    sequence(:time_from_start, STANDARD_TIMES_FROM_START[:slow].cycle)
-    lap 1
-    effort
-  end
-
-  factory :split_times_in_only, class: SplitTime do
-    sequence(:split_id, (201..220).cycle)
-    sequence(:bitkey, SubSplit::IN_BITKEY)
-    sequence(:time_from_start, (0..19).cycle) { |n| n * 1000 }
-    lap 1
-    effort
-  end
-
-  # The split_times_multi_lap factory builds a split times for up to three laps of a multi-lap course.
-  # Build 18 split_times at once to keep sequences in sync. If you need fewer than 18, call .first(n) on the result.
-
-  MULTI_LAP_SPLIT_IDS ||= [101, 102, 102, 103, 103, 104]
-  MULTI_LAP_BITKEYS ||= [1, 1, 64, 1, 64, 1]
-  MULTI_LAP_LAPS ||= [1] * 6 + [2] * 6 + [3] * 6
-  MULTI_LAP_TIMES_FROM_START ||= {normal: [0, 1000, 1100, 2000, 2100, 3000, 3100, 4000, 4100, 5000, 5100, 6000, 6100, 7000, 7100, 8000, 8100, 9000],
-                                  fast: [0, 700, 750, 1400, 1450, 2100, 2150, 2800, 2850, 3500, 3550, 4200, 4250, 4900, 4950, 5600, 5650, 6300],
-                                  slow: [0, 1500, 1600, 3000, 3100, 4500, 4600, 6000, 6100, 7500, 7600, 9000, 9100, 10500, 10600, 12000, 12100, 13500]}
-
-  factory :split_times_multi_lap, class: SplitTime do
-    sequence(:split_id, MULTI_LAP_SPLIT_IDS.cycle)
-    sequence(:bitkey, MULTI_LAP_BITKEYS.cycle)
-    sequence(:lap, MULTI_LAP_LAPS.cycle)
-    sequence(:time_from_start, MULTI_LAP_TIMES_FROM_START[:normal].cycle)
-    effort
+    bitkey 1
   end
 
   # These factories build realistic sets of split_times representing a efforts on the Hardrock counter-clockwise course.
@@ -84,7 +32,7 @@ FactoryBot.define do
   factory :split_times_hardrock_45, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_45].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_45].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -92,7 +40,7 @@ FactoryBot.define do
   factory :split_times_hardrock_43, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_43].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_43].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -100,7 +48,7 @@ FactoryBot.define do
   factory :split_times_hardrock_41, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_41].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_41].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -108,7 +56,7 @@ FactoryBot.define do
   factory :split_times_hardrock_38, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_38].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_38].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -116,7 +64,7 @@ FactoryBot.define do
   factory :split_times_hardrock_36, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_36].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_36].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -124,7 +72,7 @@ FactoryBot.define do
   factory :split_times_hardrock_35, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_35].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_35].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -132,7 +80,7 @@ FactoryBot.define do
   factory :split_times_hardrock_33, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_33].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_33].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -140,7 +88,7 @@ FactoryBot.define do
   factory :split_times_hardrock_31, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_31].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_31].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -148,7 +96,7 @@ FactoryBot.define do
   factory :split_times_hardrock_28, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_28].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_28].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end
@@ -156,7 +104,7 @@ FactoryBot.define do
   factory :split_times_hardrock_25, class: SplitTime do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
-    sequence(:time_from_start, HARDROCK_TIMES_FROM_START[:hours_25].cycle)
+    sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_25].map { |e| DateTime.parse('2018-07-20 06:00 MDT') + e }.cycle)
     lap 1
     effort
   end

@@ -7,27 +7,27 @@ RSpec.describe EventGroupSplitAnalyzer do
   let(:event_2) { build_stubbed(:event, splits: event_2_splits, aid_stations: event_2_aid_stations) }
   let(:event_3) { build_stubbed(:event, splits: event_3_splits, aid_stations: event_3_aid_stations) }
 
-  let(:event_1_split_1) { build_stubbed(:start_split, base_name: 'Start') }
+  let(:event_1_split_1) { build_stubbed(:split, :start, base_name: 'Start') }
   let(:event_1_split_2) { build_stubbed(:split, base_name: 'Aid 1') }
   let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2') }
-  let(:event_1_split_4) { build_stubbed(:finish_split, base_name: 'Finish') }
+  let(:event_1_split_4) { build_stubbed(:split, :finish, base_name: 'Finish') }
 
   let(:event_1_aid_1) { build_stubbed(:aid_station, split: event_1_split_1) }
   let(:event_1_aid_2) { build_stubbed(:aid_station, split: event_1_split_2) }
   let(:event_1_aid_3) { build_stubbed(:aid_station, split: event_1_split_3) }
   let(:event_1_aid_4) { build_stubbed(:aid_station, split: event_1_split_4) }
 
-  let(:event_2_split_1) { build_stubbed(:start_split, base_name: 'Start') }
+  let(:event_2_split_1) { build_stubbed(:split, :start, base_name: 'Start') }
   let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2') }
-  let(:event_2_split_3) { build_stubbed(:finish_split, base_name: 'Finish') }
+  let(:event_2_split_3) { build_stubbed(:split, :finish, base_name: 'Finish') }
 
   let(:event_2_aid_1) { build_stubbed(:aid_station, split: event_2_split_1) }
   let(:event_2_aid_2) { build_stubbed(:aid_station, split: event_2_split_2) }
   let(:event_2_aid_3) { build_stubbed(:aid_station, split: event_2_split_3) }
 
-  let(:event_3_split_1) { build_stubbed(:start_split, base_name: 'Start') }
+  let(:event_3_split_1) { build_stubbed(:split, :start, base_name: 'Start') }
   let(:event_3_split_2) { build_stubbed(:split, base_name: 'Aid 2', sub_split_bitmap: 1) }
-  let(:event_3_split_3) { build_stubbed(:finish_split, base_name: 'Finish') }
+  let(:event_3_split_3) { build_stubbed(:split, :finish, base_name: 'Finish') }
 
   let(:event_3_aid_1) { build_stubbed(:aid_station, split: event_3_split_1) }
   let(:event_3_aid_2) { build_stubbed(:aid_station, split: event_3_split_2) }

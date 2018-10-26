@@ -10,10 +10,10 @@ RSpec.describe FindExpectedLap do
 
   let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, start_time_in_home_zone: '2018-06-22 06:00:00') }
   let(:splits) { [split_1, split_2, split_3, split_4] }
-  let(:split_1) { build_stubbed(:start_split, base_name: 'Start') }
+  let(:split_1) { build_stubbed(:split, :start, base_name: 'Start') }
   let(:split_2) { build_stubbed(:split, base_name: 'Aid 1') }
   let(:split_3) { build_stubbed(:split, base_name: 'Aid 2') }
-  let(:split_4) { build_stubbed(:finish_split, base_name: 'Finish') }
+  let(:split_4) { build_stubbed(:split, :finish, base_name: 'Finish') }
 
   let(:in_bitkey) { SubSplit::IN_BITKEY }
   let(:out_bitkey) { SubSplit::OUT_BITKEY }

@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 class SimilarEffortFinder
-
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required_alternatives: [:split_time, [:time_point, :time_from_start]],
-                           exclusive: [:split_time, :time_point, :time_from_start, :min, :max, :finished],
+                           required: [:time_point, :time_from_start],
+                           exclusive: [:time_point, :time_from_start, :min, :max, :finished],
                            class: self.class)
-    @time_point = args[:time_point] || args[:split_time].time_point
+    @time_point = args[:time_point]
     @time_from_start = args[:time_from_start] || args[:split_time].time_from_start
     @minimum_efforts = args[:min] || 20
     @maximum_efforts = args[:max] || 200
@@ -50,22 +49,10 @@ class SimilarEffortFinder
   end
 
   def effort_times
-    @effort_times ||= scoped_split_times
-                          .order('events.start_time desc')
-                          .limit(maximum_efforts * POSSIBLE_EFFORT_FACTOR)
-                          .pluck(:effort_id, :time_from_start).to_h
-  end
-
-  def scoped_split_times
-    finished ? ranged_finished_split_times : ranged_split_times
-  end
-
-  def ranged_finished_split_times
-    ranged_split_times.from_finished_efforts
-  end
-
-  def ranged_split_times
-    SplitTime.valid_status.visible.at_time_point(time_point).within_time_range(lowest_time, highest_time)
+    @effort_times ||= SplitTime.effort_times(time_point: time_point,
+                                             time_range: lowest_time..highest_time,
+                                             finished_only: finished,
+                                             limit: maximum_efforts * POSSIBLE_EFFORT_FACTOR)
   end
 
   def lowest_time

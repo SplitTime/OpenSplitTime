@@ -24,14 +24,11 @@ class SplitTime < ApplicationRecord
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
-  scope :within_time_range, -> (low_time, high_time) { where(time_from_start: low_time..high_time) }
-  scope :from_finished_efforts, -> { joins(effort: {split_times: :split}).where(splits: {kind: 1}) }
   scope :with_time_from_start, -> do
     select('split_times.*, extract(epoch from split_times.absolute_time - sst.absolute_time) as time_from_start')
         .joins(SplitTimeQuery.starting_split_times(scope: {efforts: {id: current_scope.map(&:effort_id).uniq}}))
   end
   scope :visible, -> { includes(effort: {event: :event_group}).where('event_groups.concealed = ?', 'f') }
-  scope :at_time_point, -> (time_point) { where(lap: time_point.lap, split_id: time_point.split_id, bitkey: time_point.bitkey) }
   scope :with_time_record_matchers, -> { joins(effort: :event).select("split_times.*, events.home_time_zone as event_home_zone, efforts.bib_number::text as bib_number") }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
@@ -53,6 +50,11 @@ class SplitTime < ApplicationRecord
 
   def self.confirmed!
     all.each { |resource| resource.confirmed! }
+  end
+
+  def self.effort_times(args)
+    query = SplitTimeQuery.effort_times(args)
+    ActiveRecord::Base.connection.execute(query)
   end
 
   def self.with_time_point_rank

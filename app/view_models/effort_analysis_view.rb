@@ -85,7 +85,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
                        expected_time: mock_finish_time,
                        start_time: effort_start_time,
                        comparison_time_points: ordered_split_times.map(&:time_point),
-                       expected_laps: ordered_split_times.last.lap)
+                       expected_laps: last_split_time.lap)
   end
 
   def indexed_typical_rows
@@ -107,7 +107,12 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def similar_effort_ids
-    @similar_effort_ids ||= SimilarEffortFinder.new(split_time: ordered_split_times.last).effort_ids
+    @similar_effort_ids ||= SimilarEffortFinder.new(time_point: last_split_time.time_point,
+                                                    time_from_start: last_split_time.time_from_start).effort_ids
+  end
+
+  def last_split_time
+    ordered_split_times.last
   end
 
   def effort_start_time

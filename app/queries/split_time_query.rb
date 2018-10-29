@@ -126,6 +126,58 @@ class SplitTimeQuery < BaseQuery
     query.squish
   end
 
+  def self.effort_times(args)
+    lap, split_id, bitkey = args[:time_point].values
+    lowest_time, highest_time = args[:time_range].begin, args[:time_range].end
+    finished_only = args[:finished_only]
+    limit = args[:limit]
+
+    query = <<~SQL
+      with
+        split_times_scoped as
+          (select * 
+           from split_times
+           inner join efforts on efforts.id = split_times.effort_id
+           inner join events on events.id = efforts.event_id
+           inner join event_groups on event_groups.id = events.event_group_id
+           where lap = #{lap} and split_id = #{split_id} and sub_split_bitkey = #{bitkey} 
+             and event_groups.concealed = 'f'
+             and (split_times.data_status in (2, 3) or split_times.data_status is null)),
+
+        starting_split_times as
+          (select effort_id, absolute_time
+           from split_times
+           inner join splits on splits.id = split_times.split_id
+           where lap = 1 and kind = 0 and effort_id in (select effort_id from split_times_scoped)
+           order by effort_id),
+
+        finished_effort_ids as
+          (select effort_id
+           from split_times
+           inner join splits on splits.id = split_times.split_id
+           where lap = #{lap} and kind = 1 and effort_id in (select effort_id from split_times_scoped)
+           order by effort_id),
+
+        main_subquery as
+          (select st.effort_id, 
+                  extract(epoch from(st.absolute_time - sst.absolute_time)) as time_from_start, 
+                  sst.absolute_time as start_time,
+                  fe.effort_id is not null as finished
+           from split_times_scoped st
+             inner join starting_split_times sst on sst.effort_id = st.effort_id
+             left join finished_effort_ids fe on fe.effort_id = st.effort_id
+           order by st.effort_id)
+
+      select effort_id, time_from_start
+      from main_subquery
+        where time_from_start between #{lowest_time} and #{highest_time}
+        and (#{finished_only} = false or finished)
+      order by start_time desc
+      limit #{limit}
+    SQL
+    query.squish
+  end
+
   def self.starting_split_times(args)
     scope = where_string_from_hash(args[:scope])
 

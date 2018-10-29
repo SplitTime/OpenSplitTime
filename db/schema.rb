@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181012001720) do
+ActiveRecord::Schema.define(version: 20181029165154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(version: 20181012001720) do
     t.datetime "absolute_time"
     t.index ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true
     t.index ["effort_id"], name: "index_split_times_on_effort_id"
+    t.index ["lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_time_point"
     t.index ["split_id"], name: "index_split_times_on_split_id"
     t.index ["sub_split_bitkey"], name: "index_split_times_on_sub_split_bitkey"
   end

@@ -66,7 +66,7 @@ FactoryBot.define do
             completed_lap_distance = (time_point.lap - 1) * course.distance
             distance_from_start = completed_lap_distance + indexed_splits[time_point.split_id].distance_from_start
             absolute_time = event.start_time + distance_from_start * SegmentTimeCalculator::DISTANCE_FACTOR
-            SplitTime.new(time_point: time_point, absolute_time: absolute_time)
+            SplitTime.new(effort_id: effort.id, time_point: time_point, absolute_time: absolute_time)
           end
           assign_fg_stub_relations(effort, {split_times: split_times, event: event})
         end

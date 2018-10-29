@@ -3,17 +3,22 @@
 require 'rails_helper'
 
 RSpec.describe TimePredictor do
-  before { FactoryBot.reload }
+  subject { TimePredictor.new(segment: segment, lap_splits: lap_splits, completed_split_time: completed_split_time) }
+  let(:segment) { build(:segment) }
+  let(:lap_splits) { event.lap_splits_through(laps_required) }
+  let(:completed_split_time) { split_times&.last }
+  let(:laps_required) { 3 }
 
   let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
   let(:vert_gain_factor) { SegmentTimeCalculator::UP_VERT_GAIN_FACTOR }
-  let(:test_event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4, efforts_count: 1) }
-  let(:test_effort) { test_event.efforts.first }
-  let(:test_split_times) { test_effort.split_times }
-  let(:start) { test_event.splits.first }
-  let(:aid_1) { test_event.splits.second }
-  let(:aid_2) { test_event.splits.third }
-  let(:finish) { test_event.splits.last }
+  let(:event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4, efforts_count: 1) }
+  let(:effort) { event.efforts.first }
+  let(:split_times) { effort&.split_times }
+  let(:start) { event.splits.first }
+  let(:aid_1) { event.splits.second }
+  let(:aid_2) { event.splits.third }
+  let(:finish) { event.splits.last }
+
   let(:lap_1_zero_start) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                  end_lap: 1, end_split: start, end_in_out: 'in') }
   let(:aid_1_in_to_aid_1_in) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',
@@ -38,142 +43,153 @@ RSpec.describe TimePredictor do
                                          end_lap: completed_split_time.lap, end_split: completed_split_time.split,
                                          end_in_out: SubSplit.kind(completed_split_time.bitkey)) }
 
+  let(:pace_factor) { subject.send(:pace_factor) }
+
+  before { FactoryBot.reload }
+
   describe '#initialize' do
-    it 'initializes with a segment, lap_splits, and completed_split_time in an args hash' do
-      segment = build(:segment)
-      lap_splits, _ = lap_splits_and_time_points(test_event)
-      completed_split_time = test_split_times.last
-      expect { TimePredictor.new(segment: segment,
-                                 lap_splits: lap_splits,
-                                 completed_split_time: completed_split_time) }
-          .not_to raise_error
+    context 'with a segment, lap_splits, and completed_split_time in an args hash' do
+      it 'initializes' do
+        expect { subject }.not_to raise_error
+      end
     end
 
-    it 'raises an ArgumentError if no segment is given' do
-      lap_splits, _ = lap_splits_and_time_points(test_event)
-      completed_split_time = test_split_times.last
-      expect { TimePredictor.new(lap_splits: lap_splits,
-                                 completed_split_time: completed_split_time) }
-          .to raise_error(/must include segment/)
+    context 'when no segment is given' do
+      let(:segment) { nil }
+
+      it 'raises an ArgumentError' do
+        expect { subject }.to raise_error(/must include segment/)
+      end
     end
 
-    it 'raises an ArgumentError if no effort or lap_splits are given' do
-      segment = build(:segment)
-      completed_split_time = test_split_times.last
-      expect { TimePredictor.new(segment: segment,
-                                 completed_split_time: completed_split_time) }
-          .to raise_error(/must include one of effort or lap_splits and completed_split_time/)
+    context 'when no effort or lap_splits are given' do
+      let(:effort) { nil }
+      let(:lap_splits) { nil }
+
+      it 'raises an ArgumentError' do
+        expect { subject }.to raise_error(/must include one of effort or lap_splits and completed_split_time/)
+      end
     end
 
-    it 'raises an ArgumentError if no effort or completed_split_time are given' do
-      segment = build(:segment)
-      lap_splits, _ = lap_splits_and_time_points(test_event)
-      expect { TimePredictor.new(segment: segment, lap_splits: lap_splits) }
-          .to raise_error(/must include one of effort or lap_splits and completed_split_time/)
+    context 'when no effort or completed_split_time are given' do
+      let(:effort) { nil }
+      let(:completed_split_time) { nil }
+
+      it 'raises an ArgumentError' do
+        expect { subject }.to raise_error(/must include one of effort or lap_splits and completed_split_time/)
+      end
     end
   end
 
   describe '#segment_time' do
     context 'for a partially completed effort' do
-      let(:completed_split_time) { test_split_times.first(5).last }
+      let(:completed_split_time) { split_times.first(5).last }
 
-      it 'predicts zero time for a zero start segment' do
-        segment = lap_1_zero_start
-        expected = 0
-        verify_segment_time(segment, expected)
+      context 'for a zero start segment' do
+        let(:segment) { lap_1_zero_start }
+
+        it 'predicts zero time' do
+          expect(subject.segment_time).to eq(0)
+        end
       end
 
-      it 'predicts zero time for a zero intermediate segment' do
-        segment = aid_1_in_to_aid_1_in
-        expected = 0
-        verify_segment_time(segment, expected)
+      context 'for a zero intermediate segment' do
+        let(:segment) { aid_1_in_to_aid_1_in }
+
+        it 'predicts zero time' do
+          expect(subject.segment_time).to eq(0)
+        end
       end
 
-      it 'predicts zero time for a a segment in aid' do
-        segment = lap_1_in_aid_2
-        expected = 0
-        verify_segment_time(segment, expected)
+      context 'for a segment in aid' do
+        let(:segment) { lap_1_in_aid_2 }
+
+        it 'predicts zero time' do
+          expect(subject.segment_time).to eq(0)
+        end
       end
 
-      it 'predicts the actual segment time for the segment beginning with start and ending with the completed split time' do
-        segment = lap_1_start_to_completed
-        expected = completed_split_time.time_from_start
-        verify_segment_time(segment, expected)
+      context 'for the segment beginning with start and ending with the completed split time' do
+        let(:segment) { lap_1_start_to_completed }
+
+        it 'predicts the actual segment time' do
+          expect(subject.segment_time).to eq(completed_split_time.time_from_start)
+        end
       end
 
-      it 'predicts the correct segment time for a segment beginning with start and ending before the completed split time' do
-        segment = lap_1_start_to_lap_1_aid_1
-        expected = 6300
-        verify_segment_time(segment, expected)
+      context 'for a segment beginning with start and ending before the completed split time' do
+        let(:segment) { lap_1_start_to_lap_1_aid_1 }
+
+        it 'predicts the correct segment time taking pace factor into account' do
+          expect(pace_factor).to eq(0.9375)
+          expect(subject.segment_time).to eq(6400 * pace_factor)
+        end
       end
 
-      it 'predicts the correct segment time for a segment beginning with start and ending after the completed split time' do
-        segment = lap_1_start_to_lap_1_finish
-        expected = 18900
-        verify_segment_time(segment, expected)
+      context 'for a segment beginning with start and ending after the completed split time' do
+        let(:segment) { lap_1_start_to_lap_1_finish }
+
+        it 'predicts the correct segment time' do
+          expect(subject.segment_time).to eq(19_200 * pace_factor)
+        end
       end
 
-      it 'functions properly for segments starting before the completed split time and ending at the completed split time' do
-        segment = lap_1_aid_1_to_lap_1_aid_2_inclusive
-        expected = 6300
-        verify_segment_time(segment, expected)
+      context 'for a segment starting before the completed split time and ending at the completed split time' do
+        let(:segment) { lap_1_aid_1_to_lap_1_aid_2_inclusive }
+
+        it 'predicts the correct segment time' do
+          expect(subject.segment_time).to eq(6400 * pace_factor)
+        end
       end
 
-      it 'functions properly for segments starting at the completed split time and ending after the completed split time' do
-        segment = lap_1_aid_2_to_lap_1_finish
-        expected = 6300
-        verify_segment_time(segment, expected)
+      context 'for a segment starting at the completed split time and ending after the completed split time' do
+        let(:segment) { lap_1_aid_2_to_lap_1_finish }
+
+        it 'predicts the correct segment time' do
+          expect(subject.segment_time).to eq(6400 * pace_factor)
+        end
       end
 
-      it 'functions properly for segments starting before the completed split time and ending after the completed split time' do
-        segment = lap_1_aid_1_to_lap_1_finish
-        expected = 12600
-        verify_segment_time(segment, expected)
+      context 'for a segment starting before the completed split time and ending after the completed split time' do
+        let(:segment) { lap_1_aid_1_to_lap_1_finish }
+
+        it 'predicts the correct segment time' do
+          expect(subject.segment_time).to eq(12_800 * pace_factor)
+        end
       end
 
-      it 'functions properly for segments starting on one lap and ending on another' do
-        segment = lap_1_start_to_lap_2_aid_1
-        expected = 25200
-        verify_segment_time(segment, expected)
+      context 'for a segment starting on one lap and ending on another' do
+        let(:segment) { lap_1_start_to_lap_2_aid_1 }
+
+        it 'predicts the correct segment time' do
+          expect(subject.segment_time).to eq(25_600 * pace_factor)
+        end
       end
 
-      it 'functions properly for segments containing multiple finished laps' do
-        segment = lap_1_start_to_lap_3_finish
-        expected = 56700
-        verify_segment_time(segment, expected)
+      context 'for a segment containing multiple finished laps' do
+        let(:segment) { lap_1_start_to_lap_3_finish }
+
+        it 'predicts the correct segment time' do
+          expect(subject.segment_time).to eq(57_600 * pace_factor)
+        end
       end
     end
 
     context 'for an unstarted effort' do
-      let(:completed_split_time) { test_split_times.first }
+      let(:completed_split_time) { split_times.first }
 
-      it 'predicts zero time for a zero segment' do
-        segment = lap_1_zero_start
-        expected = 0
-        verify_segment_time(segment, expected)
+      context 'for a zero segment' do
+        let(:segment) { lap_1_zero_start }
+
+        it 'predicts zero time' do
+          expect(subject.segment_time).to eq(0)
+        end
       end
-    end
-
-    def verify_segment_time(segment, expected)
-      course = test_event.course
-      allow(course).to receive(:distance).and_return(finish.distance_from_start)
-      allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
-      allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
-      lap_splits, _ = lap_splits_and_time_points(test_event)
-      [segment.end_lap_split, segment.begin_lap_split]
-          .each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }
-      margin = expected * 0.01
-      predictor = TimePredictor.new(segment: segment,
-                                    effort: test_effort,
-                                    lap_splits: lap_splits,
-                                    completed_split_time: completed_split_time,
-                                    calc_model: :terrain)
-      expect(predictor.segment_time).to be_within(margin).of(expected)
     end
   end
 
   describe '#data_status' do
-    let(:completed_split_time) { test_split_times.first(5).last }
+    let(:completed_split_time) { split_times.first(5).last }
     let(:completed_segment) { lap_1_start_to_completed }
     let(:limit_factors) { DataStatus::LIMIT_FACTORS }
     let(:typical_time_in_aid) { DataStatus::TYPICAL_TIME_IN_AID }
@@ -215,17 +231,17 @@ RSpec.describe TimePredictor do
     end
 
     def verify_data_status(segment, expected)
-      course = test_event.course
+      course = event.course
       allow(course).to receive(:distance).and_return(finish.distance_from_start)
       allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
       allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
-      lap_splits, _ = lap_splits_and_time_points(test_event)
+      lap_splits, _ = lap_splits_and_time_points(event)
       [segment.end_lap_split, segment.begin_lap_split]
           .each { |lap_split| allow(lap_split).to receive(:course).and_return(course) }
       seconds = 999
       allow(DataStatus).to receive(:determine)
       TimePredictor.new(segment: segment,
-                        effort: test_effort,
+                        effort: effort,
                         lap_splits: lap_splits,
                         completed_split_time: completed_split_time,
                         calc_model: :terrain).data_status(seconds)
@@ -233,7 +249,7 @@ RSpec.describe TimePredictor do
     end
 
     def imputed_pace(segment)
-      course = test_event.course
+      course = event.course
       allow(course).to receive(:distance).and_return(finish.distance_from_start)
       allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
       allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)

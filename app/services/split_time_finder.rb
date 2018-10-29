@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SplitTimeFinder
-
   def self.prior(args)
     new(args).prior
   end
@@ -65,7 +64,7 @@ class SplitTimeFinder
   end
 
   def scoped_split_times
-    valid ? split_times.select { |st| st.time_from_start && st.valid_status? } : split_times
+    valid ? split_times.select { |st| st.absolute_time && st.valid_status? } : split_times
   end
 
   def validate_setup

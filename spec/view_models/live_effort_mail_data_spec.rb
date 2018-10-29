@@ -3,42 +3,32 @@
 require 'rails_helper'
 
 RSpec.describe LiveEffortMailData do
-  let(:split_times_101) { build_stubbed_list(:split_times_in_out, 5, effort_id: 101) }
-  let(:split_ids) { split_times_101.map(&:split_id).uniq }
-  let(:split1) { build_stubbed(:split, :start, id: split_ids[0], course_id: 10, distance_from_start: 0) }
-  let(:split2) { build_stubbed(:split, id: split_ids[1], course_id: 10, distance_from_start: 1000) }
-  let(:split3) { build_stubbed(:split, id: split_ids[2], course_id: 10, distance_from_start: 2000) }
-  let(:split4) { build_stubbed(:split, id: split_ids[3], course_id: 10, distance_from_start: 3000) }
-  let(:split5) { build_stubbed(:split, id: split_ids[4], course_id: 10, distance_from_start: 4000) }
-  let(:split6) { build_stubbed(:split, :finish, id: split_ids[5], course_id: 10, distance_from_start: 5000) }
+  subject { LiveEffortMailData.new(person: person, split_times: split_times) }
+  let(:person) { build_stubbed(:person) }
+  let(:event) { build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
+  let(:effort) { event.efforts.first }
+  let(:effort_split_times) { effort.split_times }
+  let(:split_times) { [in_split_time, out_split_time] }
+  let(:in_split_time) { effort_split_times[1] }
+  let(:out_split_time) { effort_split_times[2] }
 
   describe '#initialize' do
-    it 'initializes with a person and split_times in an args hash' do
-      person = build_stubbed(:person)
-      split_times = split_times_101
-      expect { LiveEffortMailData.new(person: person, split_times: split_times) }.not_to raise_error
+    context 'with a person and split_times in an args hash' do
+      it 'initializes' do
+        expect { subject }.not_to raise_error
+      end
     end
 
-    it 'raises an ArgumentError if no person or person_id is given' do
-      split_times = split_times_101
-      expect { LiveEffortMailData.new(split_times: split_times) }.to raise_error(/must include one of person or person_id/)
-    end
+    context 'if no person or person_id is given' do
+      let(:person) { nil }
 
-    it 'raises an ArgumentError if any parameter other than person, person_id, split_times, or split_times_ids are given' do
-      person = build_stubbed(:person)
-      split_times = split_times_101
-      expect { LiveEffortMailData.new(person: person, split_times: split_times, random_param: 123) }
-          .to raise_error(/may not include random_param/)
+      it 'raises an ArgumentError' do
+        expect { subject }.to raise_error(/must include one of person or person_id/)
+      end
     end
   end
 
   describe '#effort_data' do
-    subject { LiveEffortMailData.new(person: person, split_times: split_times) }
-    let(:person) { build_stubbed(:person) }
-    let(:event) { build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
-    let(:effort) { event.efforts.first }
-    let(:effort_split_times) { effort.split_times }
-    let(:split_times) { [in_split_time, out_split_time] }
     let(:expected_effort_data) { {full_name: effort.full_name,
                                   event_name: event.name,
                                   split_times_data: expected_split_times_data,
@@ -63,9 +53,6 @@ RSpec.describe LiveEffortMailData do
     before { FactoryBot.reload }
 
     context 'when all split_times are in lap 1' do
-      let(:in_split_time) { effort_split_times[1] }
-      let(:out_split_time) { effort_split_times[2] }
-
       let(:expected_in_split_name) { in_split_time.split_name }
       let(:expected_out_split_name) { out_split_time.split_name }
       let(:expected_in_distance) { 10000 }

@@ -93,7 +93,7 @@ class AidStationDetail < LiveEventFramework
 
   def event_split_times
     @event_split_times ||= event.split_times.ordered
-                               .select(:effort_id, :lap, :split_id, :sub_split_bitkey, :time_from_start)
+                               .select(:effort_id, :lap, :split_id, :sub_split_bitkey, :absolute_time)
   end
 
   def split_times_here

@@ -44,7 +44,7 @@ class IntendedTimeCalculator
   end
 
   def threshold_day_and_time
-    time_point_start? ? effort.start_time - 6.hours : prior_day_and_time - 3.hours
+    time_point_start? ? event.start_time - 6.hours : prior_day_and_time - 3.hours
   end
 
   def prior_day_and_time

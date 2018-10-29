@@ -14,7 +14,7 @@ class SplitTimeQuery < BaseQuery
     end_bitkey = segment.end_bitkey.to_i
 
     query = <<-SQL
-      SELECT AVG(st2.absolute_time - st1.absolute_time) AS segment_time,
+      SELECT AVG(extract(epoch from(st2.absolute_time - st1.absolute_time))) AS segment_time,
              COUNT(st1.absolute_time) AS effort_count
       FROM (SELECT st.effort_id, st.absolute_time
            FROM split_times st 

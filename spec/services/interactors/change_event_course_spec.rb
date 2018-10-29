@@ -64,6 +64,7 @@ RSpec.describe Interactors::ChangeEventCourse do
       end
 
       it 'changes the split_ids of event split_times to the corresponding split_ids of the new course' do
+        efforts.first.reload
         sub_splits = new_course.sub_splits.first(efforts.first.split_times.size)
         efforts.each do |effort|
           effort.reload

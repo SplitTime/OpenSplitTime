@@ -53,6 +53,8 @@ FactoryBot.define do
         course = build_stubbed(:course_with_standard_splits, in_sub_splits_only: evaluator.in_sub_splits_only, splits_count: evaluator.splits_count)
         splits = course.splits.to_a
         sub_splits = splits.flat_map(&:sub_splits)
+        indexed_splits = splits.index_by(&:id)
+
         event.laps_required = evaluator.laps_required
         laps_generated = event.laps_required.zero? ? evaluator.unlimited_laps_generated : event.laps_required
         time_points = sub_splits.each_with_iteration.first(sub_splits.size * laps_generated)
@@ -60,9 +62,11 @@ FactoryBot.define do
         efforts = build_stubbed_list(:effort, evaluator.efforts_count)
 
         efforts.each do |effort|
-          split_times = Array.new(time_points.size) { SplitTime.new }
-          split_times.each_with_index do |split_time, i|
-            split_time.time_point = time_points[i]
+          split_times = time_points.map do |time_point|
+            completed_lap_distance = (time_point.lap - 1) * course.distance
+            distance_from_start = completed_lap_distance + indexed_splits[time_point.split_id].distance_from_start
+            absolute_time = event.start_time + distance_from_start * SegmentTimeCalculator::DISTANCE_FACTOR
+            SplitTime.new(time_point: time_point, absolute_time: absolute_time)
           end
           assign_fg_stub_relations(effort, {split_times: split_times, event: event})
         end

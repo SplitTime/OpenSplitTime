@@ -111,9 +111,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
       end
     end
 
-    # Skip until military_time conversion is finished
-
-    xcontext 'when valid records have children with military_time attributes' do
+    context 'when valid records have children with military_time attributes' do
       let(:proto_records) { proto_with_military_times }
       before { FactoryBot.reload }
 

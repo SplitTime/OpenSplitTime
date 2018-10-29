@@ -522,7 +522,7 @@ RSpec.describe Api::V1::EventGroupsController do
             allow(Interactors::SetEffortStatus).to receive(:perform).and_return(Interactors::Response.new([], '', {}))
             make_request
 
-            expect(Interactors::SetEffortStatus).to have_received(:perform).exactly(2).times
+            expect(Interactors::SetEffortStatus).to have_received(:perform)
           end
         end
       end

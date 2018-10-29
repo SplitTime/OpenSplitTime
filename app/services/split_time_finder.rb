@@ -52,7 +52,11 @@ class SplitTimeFinder
   end
 
   def mock_start_split_time
-    SplitTime.new(effort: effort, time_point: ordered_time_points.first, time_from_start: 0)
+    SplitTime.new(effort: effort, time_point: ordered_time_points.first, absolute_time: effort_start_time)
+  end
+
+  def effort_start_time
+    effort.start_time || effort.event.start_time
   end
 
   def ordered_time_points

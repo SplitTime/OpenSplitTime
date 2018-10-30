@@ -214,10 +214,6 @@ class SplitTime < ApplicationRecord
     @event_home_zone ||= attributes['event_home_zone'] || effort.event_home_zone
   end
 
-  def effort_start_offset
-    @effort_start_offset ||= effort.start_offset
-  end
-
   def effort_start_split_time
     effort.start_split_time
   end

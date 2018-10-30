@@ -69,7 +69,7 @@ class Effort < ApplicationRecord
 
   def self.attributes_for_import
     [:first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate, :city, :state_code, :country_code,
-     :start_time, :start_offset, :beacon_url, :report_url, :photo, :phone, :email]
+     :start_time, :beacon_url, :report_url, :photo, :phone, :email]
   end
 
   def self.search(param)

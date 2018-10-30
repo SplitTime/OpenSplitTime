@@ -129,7 +129,7 @@ class EffortQuery < BaseQuery
     query.squish
   end
 
-    def self.over_segment(segment)
+  def self.over_segment(segment)
     begin_id = segment.begin_id
     begin_bitkey = segment.begin_bitkey
     end_id = segment.end_id
@@ -147,7 +147,7 @@ class EffortQuery < BaseQuery
                                            split_times.lap as stopped_lap, 
                                            split_times.split_id as stopped_split_id, 
                                            split_times.sub_split_bitkey as stopped_bitkey, 
-                                           split_times.time_from_start as stopped_time, 
+                                           split_times.absolute_time as stopped_time, 
                                            split_times.effort_id
                                       FROM split_times
                                       WHERE stopped_here = true),
@@ -177,13 +177,13 @@ class EffortQuery < BaseQuery
                         FROM farthest_split_time_subquery),
       
       
-        main_subquery AS   (SELECT e1.*, (tfs_end - tfs_begin) as segment_seconds
+        main_subquery AS   (SELECT e1.*, extract(epoch from(absolute_time_end - absolute_time_begin)) as segment_seconds
                   FROM 
                       (SELECT efforts_scoped.*, 
                               events.start_time as event_start_time, 
                               events.home_time_zone as event_home_zone, 
                               split_times.effort_id, 
-                              split_times.time_from_start as tfs_begin, 
+                              split_times.absolute_time as absolute_time_begin, 
                               split_times.lap, 
                               split_times.split_id, 
                               split_times.sub_split_bitkey,
@@ -197,7 +197,7 @@ class EffortQuery < BaseQuery
                   as e1, 
                       (SELECT efforts_scoped.id, 
                               split_times.effort_id, 
-                              split_times.time_from_start as tfs_end, 
+                              split_times.absolute_time as absolute_time_end, 
                               split_times.lap, 
                               split_times.split_id, 
                               split_times.sub_split_bitkey 
@@ -211,7 +211,7 @@ class EffortQuery < BaseQuery
       SELECT main_subquery.*, 
               lap, 
               rank() over (order by segment_seconds, gender, -age, lap) as overall_rank, 
-              rank() over (partition by gender order by segment_seconds, -age) as gender_rank,
+              rank() over (partition by gender order by segment_seconds, -age, lap) as gender_rank,
               CASE 
               when main_subquery.laps_required = 0 then
                 CASE when stopped_split_time_id is null then false else true END  

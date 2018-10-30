@@ -58,7 +58,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def farthest_recorded_time
-    effort.final_time
+    effort.final_time_from_start
   end
 
   def farthest_recorded_split_name
@@ -113,10 +113,6 @@ class EffortAnalysisView < EffortWithLapSplitRows
 
   def last_split_time
     ordered_split_times.last
-  end
-
-  def effort_start_time
-    effort.start_split_time&.absolute_time
   end
 
   def effort_finish_tfs

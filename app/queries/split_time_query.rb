@@ -107,6 +107,7 @@ class SplitTimeQuery < BaseQuery
              st.split_id,
              st.sub_split_bitkey as bitkey,
              st.stopped_here,
+             st.pacer,
              st.data_status as data_status_numeric,
              st.absolute_time as absolute_time_string,
              to_char((st.absolute_time at time zone 'UTC'), 'YYYY-MM-DD HH24:MI:SS OF') as day_and_time_string,

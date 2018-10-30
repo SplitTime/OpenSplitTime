@@ -15,7 +15,7 @@ class SplitTime < ApplicationRecord
   has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
   alias_attribute :with_pacer, :pacer
-  attr_accessor :raw_time_id, :time_exists, :imposed_order
+  attr_accessor :raw_time_id, :time_exists, :imposed_order, :segment_time
 
   scope :ordered, -> { joins(:split).order('split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }
@@ -54,7 +54,7 @@ class SplitTime < ApplicationRecord
 
   def self.effort_times(args)
     query = SplitTimeQuery.effort_times(args)
-    ActiveRecord::Base.connection.execute(query)
+    ActiveRecord::Base.connection.execute(query).values.to_h
   end
 
   def self.with_time_point_rank

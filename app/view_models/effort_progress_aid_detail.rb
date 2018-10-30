@@ -47,7 +47,7 @@ class EffortProgressAidDetail < EffortProgressRow
   attr_reader :lap, :effort_split_times
 
   def predicted_start_to_aid
-    predicted_time_to_aid && (effort.final_time + predicted_time_to_aid)
+    predicted_time_to_aid && (effort.final_time_from_start + predicted_time_to_aid)
   end
 
   def predicted_time_to_aid

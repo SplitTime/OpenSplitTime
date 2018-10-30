@@ -38,15 +38,15 @@ class EffortProgressRow
            :times_container, to: :event_framework
 
   def last_reported_split_time
-    SplitTime.new(effort: effort, time_point: last_reported_time_point, time_from_start: effort.final_time)
+    SplitTime.new(effort: effort, time_point: last_reported_time_point, absolute_time: effort.final_absolute_time)
   end
 
   def due_next_split_time
-    SplitTime.new(effort: effort, time_point: due_next_time_point, time_from_start: time_from_start_to_next)
+    SplitTime.new(effort: effort, time_point: due_next_time_point, absolute_time: next_absolute_time)
   end
 
-  def time_from_start_to_next
-    predicted_upcoming_time && (predicted_upcoming_time + effort.final_time)
+  def next_absolute_time
+    predicted_upcoming_time && (effort.final_absolute_time + predicted_upcoming_time)
   end
 
   def predicted_upcoming_time

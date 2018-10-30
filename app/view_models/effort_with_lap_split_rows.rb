@@ -33,6 +33,10 @@ class EffortWithLapSplitRows
     @lap_split_rows_plus_one ||= rows_from_lap_splits(lap_splits_plus_one)
   end
 
+  def effort_start_time
+    effort.start_time || event.start_time
+  end
+
   private
 
   def rows_from_lap_splits(lap_splits)
@@ -43,6 +47,11 @@ class EffortWithLapSplitRows
 
   def related_split_times(lap_split)
     lap_split.time_points.map { |time_point| indexed_split_times.fetch(time_point, SplitTimeData.new) }
+  end
+
+  def prior_split_time(lap_split)
+    prior_time_points = time_points.elements_before(lap_split.time_point_in).to_set
+    ordered_split_times.reverse.find { |st| prior_time_points.include?(st.time_point) }
   end
 
   def ordered_split_times

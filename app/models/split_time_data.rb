@@ -7,7 +7,7 @@
 # both of which it converts to DateTime objects as absolute_time and day_and_time
 # for consistency with the SplitTime model.
 
-SplitTimeData = Struct.new(:id, :effort_id, :lap, :split_id, :bitkey, :stopped_here, :data_status_numeric, :absolute_time_string,
+SplitTimeData = Struct.new(:id, :effort_id, :lap, :split_id, :bitkey, :stopped_here, :pacer, :data_status_numeric, :absolute_time_string,
                            :day_and_time_string, :time_from_start, :segment_time, :military_time, keyword_init: true) do
 
   def absolute_time

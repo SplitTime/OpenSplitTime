@@ -205,7 +205,7 @@ class Effort < ApplicationRecord
     when dropped?
       'DNF'
     when finished?
-      return TimeConversion.seconds_to_hms(attributes['final_time']) if attributes.has_key?('final_time')
+      return TimeConversion.seconds_to_hms(attributes['final_time_from_start']) if attributes.has_key?('final_time_from_start')
       finish_split_time.formatted_time_hhmmss
     else
       'In progress'

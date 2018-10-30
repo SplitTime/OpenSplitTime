@@ -5,7 +5,7 @@ if records.present?
         csv << %w(place time first last age gender city state bib)
         records.each do |record|
             csv << [record.overall_rank,
-                    record.final_time && time_format_hhmmss(record.final_time),
+                    record.final_time_from_start && time_format_hhmmss(record.final_time_from_start),
                     record.first_name,
                     record.last_name,
                     record.age,

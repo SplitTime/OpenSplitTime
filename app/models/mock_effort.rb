@@ -25,7 +25,7 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def effort
-    Effort.new
+    Effort.new(event: event)
   end
 
   def lap_split_rows
@@ -74,11 +74,11 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def plan_split_time(time_point)
-    SplitTime.new(time_point: time_point, time_from_start: plan_times[time_point])
+    SplitTime.new(effort: effort, time_point: time_point, absolute_time: plan_times[time_point])
   end
 
   def plan_times
-    @plan_times ||= times_planner.times_from_start(round_to: 1.minute)
+    @plan_times ||= times_planner.absolute_times(round_to: 1.minute)
   end
 
   def finish_time_point

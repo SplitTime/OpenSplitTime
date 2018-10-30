@@ -5,7 +5,7 @@ FactoryBot.define do
   STANDARD_TIMES_FROM_START ||= [0, 6000, 6600, 12000, 12600, 18000, 18600, 24000, 24600, 30000, 30600, 36000, 36600, 42000, 42600, 48000, 48600, 54000, 54600, 60000]
 
   factory :split_time do
-    absolute_time { Time.now + rand(-100_000..100_000) }
+    absolute_time { Date.today.at_midnight + rand(-100_000..100_000) }
     effort
     lap 1
     bitkey 1

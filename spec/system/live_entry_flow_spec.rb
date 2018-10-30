@@ -179,7 +179,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         ordered_split_times = effort.ordered_split_times
 
         expect(ordered_split_times.size).to eq(2)
-        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 3600])
+        expect(ordered_split_times.map(&:absolute_time)).to eq([0, 3600].map { |e| start_time_1 + e })
         expect(ordered_split_times.first.military_time).to eq('08:00:00')
 
         select ordered_splits_1.first.base_name, from: 'js-station-select'
@@ -194,9 +194,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         ordered_split_times = effort.ordered_split_times
         expect(ordered_split_times.size).to eq(2)
 
-        # Because starting split time_from_start was moved forward by 900 seconds
-        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 2700]) # 3600 - 900 = 2700
-        expect(effort.start_offset).to eq(900)
+        expect(ordered_split_times.map(&:absolute_time)).to eq([900, 3600].map { |e| start_time_1 + e })
 
         verify_workspace_is_empty
 
@@ -210,9 +208,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         ordered_split_times = effort.ordered_split_times
         expect(ordered_split_times.size).to eq(2)
 
-        # Because starting split time_from_start was moved back by 1800 seconds
-        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 4500]) # 2700 + 1800 = 4500
-        expect(effort.start_offset).to eq(-900)
+        expect(ordered_split_times.map(&:absolute_time)).to eq([-900, 3600].map { |e| start_time_1 + e })
 
         verify_workspace_is_empty
       end

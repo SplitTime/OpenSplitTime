@@ -25,7 +25,7 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def effort
-    Effort.new(event: event)
+    @effort ||= Effort.new(event: event)
   end
 
   def lap_split_rows
@@ -37,7 +37,7 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def finish_time_from_start
-    ordered_split_times.map(&:time_from_start).last
+    ordered_split_times.last.time_from_start
   end
 
   def relevant_efforts_count
@@ -66,19 +66,42 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def comparison_ordered_split_times
-    all_ordered_split_times.select { |st| comparison_time_points.include?(st.time_point) }
+    comparison_time_points.map { |tp| plan_split_times_data[tp] }
   end
 
   def all_ordered_split_times
-    time_points.map { |time_point| plan_split_time(time_point) }
+    plan_split_times_data.values
   end
 
-  def plan_split_time(time_point)
-    SplitTime.new(effort: effort, time_point: time_point, absolute_time: plan_times[time_point])
+  # Normally SplitTimeData objects are created directly from a database query.
+  # Because we are computing these SplitTimeData objects from data in memory,
+  # we have to go through some gyrations to initialize the objects.
+
+  def plan_split_times_data
+    @plan_split_times_data ||= time_points_with_dummy.each_cons(2).map do |prior_time_point, time_point|
+      prior_absolute_time = plan_times[prior_time_point]
+      absolute_time = plan_times[time_point]
+      absolute_time_string = absolute_time.to_s
+      day_and_time = absolute_time.in_time_zone(time_zone)
+
+      [time_point, SplitTimeData.new(effort_id: effort.id,
+                                     lap: time_point.lap,
+                                     split_id: time_point.split_id,
+                                     bitkey: time_point.bitkey,
+                                     absolute_time_string: absolute_time_string,
+                                     day_and_time_string: day_and_time.to_s,
+                                     time_from_start: absolute_time - start_time,
+                                     segment_time: absolute_time - prior_absolute_time,
+                                     military_time: day_and_time.strftime('%H:%M:%S'))]
+    end.to_h
   end
 
   def plan_times
     @plan_times ||= times_planner.absolute_times(round_to: 1.minute)
+  end
+
+  def time_points_with_dummy
+    [time_points.first] + time_points
   end
 
   def finish_time_point
@@ -91,5 +114,9 @@ class MockEffort < EffortWithLapSplitRows
 
   def last_lap
     expected_laps || (comparison_time_points && comparison_time_points.map(&:lap).last) || 1
+  end
+
+  def time_zone
+    event.home_time_zone
   end
 end

@@ -130,7 +130,7 @@ class SplitTimeQuery < BaseQuery
   def self.effort_times(args)
     lap, split_id, bitkey = args[:time_point].values
     lowest_time, highest_time = args[:time_range].begin, args[:time_range].end
-    finished_only = args[:finished_only]
+    finished_only = !!args[:finished_only]
     limit = args[:limit]
 
     query = <<~SQL

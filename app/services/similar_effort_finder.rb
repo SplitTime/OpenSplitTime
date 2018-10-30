@@ -10,7 +10,7 @@ class SimilarEffortFinder
     @time_from_start = args[:time_from_start] || args[:split_time].time_from_start
     @minimum_efforts = args[:min] || 20
     @maximum_efforts = args[:max] || 200
-    @finished = args[:finished]
+    @finished = !!args[:finished]
   end
 
   def events

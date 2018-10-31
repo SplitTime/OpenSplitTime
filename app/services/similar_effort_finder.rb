@@ -7,7 +7,7 @@ class SimilarEffortFinder
                            exclusive: [:time_point, :time_from_start, :min, :max, :finished],
                            class: self.class)
     @time_point = args[:time_point]
-    @time_from_start = args[:time_from_start] || args[:split_time].time_from_start
+    @time_from_start = args[:time_from_start]
     @minimum_efforts = args[:min] || 20
     @maximum_efforts = args[:max] || 200
     @finished = !!args[:finished]

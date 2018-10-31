@@ -37,7 +37,7 @@ class MockEffort < EffortWithLapSplitRows
   end
 
   def finish_time_from_start
-    ordered_split_times.last.time_from_start
+    ordered_split_times.last.absolute_time - start_time
   end
 
   def relevant_efforts_count

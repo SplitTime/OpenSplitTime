@@ -191,13 +191,21 @@ class SplitTimeQuery < BaseQuery
 
       with 
         scoped_split_times as
-          (select st.id, ef.last_name, st.lap, s.base_name, st.sub_split_bitkey, st.absolute_time at time zone 'UTC' as day_and_time
+          (select st.effort_id, st.sub_split_bitkey, st.lap, st.absolute_time at time zone 'UTC' as day_and_time
            from split_times st
              inner join efforts ef on ef.id = st.effort_id
              inner join events ev on ev.id = ef.event_id
              inner join splits s on s.id = st.split_id
            where event_group_id = #{event_group.id} and s.parameterized_base_name = '#{parameterized_split_name}'
            order by absolute_time),
+
+        finish_split_times as
+          (select effort_id, lap
+           from efforts ef
+             inner join split_times st on st.effort_id = ef.id
+             inner join splits s on s.id = st.split_id
+           where ef.id in (select effort_id from scoped_split_times) and s.kind = 1
+           order by ef.id),
            
         interval_starts as
           (select *
@@ -212,8 +220,12 @@ class SplitTimeQuery < BaseQuery
       select to_char(i.start_time, 'Dy HH24:MI') as start_time, 
              to_char(i.end_time, 'Dy HH24:MI') as end_time, 
              count(case when st.sub_split_bitkey = 1 then 1 else null end) as in_count, 
-             count(case when st.sub_split_bitkey = 64 then 1 else null end) as out_count
+             count(case when st.sub_split_bitkey = 64 then 1 else null end) as out_count,
+             count(case when st.sub_split_bitkey = 1 and fst.effort_id is not null then 1 else null end) as finished_in_count,
+             count(case when st.sub_split_bitkey = 64 and fst.effort_id is not null then 1 else null end) as finished_out_count
       from scoped_split_times st
+        left join finish_split_times fst
+          on fst.effort_id = st.effort_id and fst.lap = st.lap
         right join intervals i
           on st.day_and_time >= i.start_time and st.day_and_time < i.end_time
       where i.end_time is not null

@@ -18,7 +18,10 @@ class EventGroupTrafficPresenter < BasePresenter
   def table
     @table ||= row_limit_exceeded? ? [] : query_result.map do |row|
       OpenStruct.new(range: "#{row['start_time']} to #{row['end_time']}",
-                     count: OpenStruct.new(in: row['in_count'], out: row['out_count']))
+                     count: OpenStruct.new(in: row['in_count'],
+                                           out: row['out_count'],
+                                           finished_in: row['finished_in_count'],
+                                           finished_out: row['finished_out_count']))
     end
   end
 

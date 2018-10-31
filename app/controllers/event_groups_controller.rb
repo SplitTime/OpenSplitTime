@@ -78,7 +78,8 @@ class EventGroupsController < ApplicationController
   def traffic
     split_name = params[:split_name]
     band_width = params[:band_width].present? ? params[:band_width].to_i : nil
-    @presenter = EventGroupTrafficPresenter.new(@event_group, split_name, band_width)
+    event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
+    @presenter = EventGroupTrafficPresenter.new(event_group, split_name, band_width)
   end
 
   def set_data_status

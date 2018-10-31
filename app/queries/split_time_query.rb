@@ -182,7 +182,7 @@ class SplitTimeQuery < BaseQuery
   def self.split_traffic(args)
     event_group = args[:event_group]
     parameterized_split_name = args[:split_name].parameterize
-    band_width = args[:band_width] / 1.minute
+    band_width = args[:band_width] / 1.second
     home_time_zone = event_group.home_time_zone
     time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
 
@@ -201,9 +201,9 @@ class SplitTimeQuery < BaseQuery
            
         interval_starts as
           (select *
-           from generate_series((select min(date_trunc('hour', day_and_time)) from scoped_split_times), 
-                      (select max(date_trunc('hour', day_and_time)) + interval '1 hour' from scoped_split_times), 
-                      interval '#{band_width} minutes') time),
+           from generate_series((select min(to_timestamp(floor((extract(epoch from day_and_time)) / #{band_width}) * #{band_width})) from scoped_split_times), 
+                                (select max(to_timestamp(floor((extract(epoch from day_and_time)) / #{band_width}) * #{band_width})) + interval '#{band_width} seconds' from scoped_split_times), 
+                                 interval '#{band_width} seconds') time),
            
         intervals as
           (select time as start_time, lead(time) over(order by time) as end_time 

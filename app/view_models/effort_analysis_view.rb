@@ -116,7 +116,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def effort_finish_tfs
-    indexed_split_times[finish_time_point].try(:time_from_start)
+    indexed_split_times[finish_time_point]&.time_from_start
   end
 
   def finish_time_point

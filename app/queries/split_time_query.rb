@@ -110,7 +110,7 @@ class SplitTimeQuery < BaseQuery
              st.pacer,
              st.data_status as data_status_numeric,
              st.absolute_time as absolute_time_string,
-             to_char((st.absolute_time at time zone 'UTC'), 'YYYY-MM-DD HH24:MI:SS OF') as day_and_time_string,
+             trim(both '"' from to_json(st.absolute_time at time zone 'UTC')::text) as day_and_time_string,
              extract(epoch from (st.absolute_time - sst.absolute_time)) as time_from_start,
              case 
                when st.effort_id = lag(st.effort_id) over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey) 

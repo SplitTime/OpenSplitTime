@@ -36,6 +36,10 @@ class TimeCluster
     @days_and_times ||= split_times_data.map(&:day_and_time)
   end
 
+  def day_and_time_strings
+    @days_and_times ||= split_times_data.map(&:day_and_time_string)
+  end
+
   def time_data_statuses
     @time_data_statuses ||= split_times_data.map(&:data_status)
   end

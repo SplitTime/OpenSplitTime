@@ -5,31 +5,36 @@
         <% "OpenSplitTime: Search events" %>
     <% end %>
 <% end %>
-<div class="row header">
-  <div class="col-xs-5">
-    <h2>
-      <strong>Events</strong>
-    </h2>
-  </div>
-  <div class="col-xs-7 page-navigation">
+
+<header class="ost-header">
+  <div class="container">
     <div class="row">
-      <% if current_user %>
-          <%= link_to 'Create event', event_staging_app_path('new'),
-                      class: 'btn btn-sm btn-success' %>
-      <% end %>
+      <div class="ost-title col">
+        <h1><strong>Events</strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li class="breadcrumb-item active">Events</li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+</header>
 
-<%= render 'lookup' %>
-
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col form-inline justify-content-between">
+        <%= render 'lookup' %>
+        <% if current_user %>
+            <%= link_to 'Create event', event_staging_app_path('new'),
+                        class: 'btn btn-sm btn-success' %>
+        <% end %>
+      </div>
+    </div>
   </div>
-</div>
+</aside>
 
-<div class="row">
+<article class="ost-article container">
+  <%= will_paginate(inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
   <div class="col-xs-12">
     <% if @events.present? %>
         <%= render 'events', presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
@@ -42,11 +47,5 @@
         <% end %>
     <% end %>
   </div>
-</div>
-
-<hr>
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
-  </div>
-</div>
+  <%= will_paginate(inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+</article>

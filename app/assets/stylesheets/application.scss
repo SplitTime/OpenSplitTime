@@ -12,11 +12,12 @@
  *
  */
 
+@import "variables";
+@import "mixins";
+
 @import "bootstrap/functions";
-@import "bootstrap/variables";
 
 @import "*";
-@import "**/*";
 @import "switchery";
 @import "devise_bootstrap_views";
 @import "jquery.fileupload";
@@ -28,5 +29,4 @@
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
 
-@import "variables";
-@import "mixins";
+@import "utilities/*";

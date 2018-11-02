@@ -1,0 +1,7 @@
+.btn-label {
+    pointer-events: none;
+}
+
+.btn-outline-subtle {
+    @include button-outline-variant($gray-300);
+}

@@ -43,7 +43,7 @@
 
       <div class="row">
         <div class="col-xs-8">
-          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0) %>
+          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
         </div>
       </div>
 
@@ -105,7 +105,7 @@
 
       <div class="row">
         <div class="col-xs-8">
-          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0) %>
+          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
         </div>
       </div>
 

@@ -18,7 +18,7 @@
 
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate(@resources, inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+    <%= will_paginate(@resources, inner_window: 2, outer_window: 0) %>
   </div>
 </div>
 <div class="row">
@@ -37,6 +37,6 @@
 <hr>
 <div class="row">
   <div class="col-xs-8">
-    <%= will_paginate(@resources, inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+    <%= will_paginate(@resources, inner_window: 2, outer_window: 0) %>
   </div>
 </div>

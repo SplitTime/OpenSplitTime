@@ -1,43 +1,45 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Show course - #{@presenter.name}" %>
 <% end %>
-
-
-
-<% content_for(:container_type) do %>skip<% end %>
   
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= @presenter.name %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Courses', courses_path %></li>
-          <li><%= link_to @presenter.name, course_path(@presenter.course) %></li>
-          <li class="active"><%= @presenter.display_style.titleize %></li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @presenter.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.display_style.titleize %></li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <% if @presenter.description %>
+            <h5>
+              <%= @presenter.description %>
+            </h5>
+          <% end %>
+        </div>
       </div>
     </div>
-    <% if @presenter.description %>
-      <h5>
-        <%= @presenter.description %>
-      </h5>
-    <% end %>
     <%= render 'course_navigation', presenter: @presenter %>
   </div>
 </header>
   
-<aside class="ost-toolbar container-fluid">
+<aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 btn-toolbar">
-        <% if current_user&.authorized_to_edit?(@presenter.course) %>
-          <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
-          <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
-                        method: :delete,
-                        data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
-                        class: 'btn btn-sm btn-danger' %>
-        <% end %>
+      <div class="col">
+        <div>
+          <% if current_user&.authorized_to_edit?(@presenter.course) %>
+            <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-sm btn-primary' %>
+            <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
+                          method: :delete,
+                          data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
+                          class: 'btn btn-sm btn-danger' %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

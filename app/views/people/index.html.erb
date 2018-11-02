@@ -34,7 +34,7 @@
 </aside>
 
 <article class="ost-article container">
-  <%= will_paginate(inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+  <%= will_paginate(inner_window: 2, outer_window: 0) %>
   <% if @people.present? %>
       <%= render 'people_list' %>
   <% else %>
@@ -47,5 +47,5 @@
           <p><strong>No people match this search</strong></p>
       <% end %>
   <% end %>
-  <%= will_paginate(inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+  <%= will_paginate(inner_window: 2, outer_window: 0) %>
 </article>

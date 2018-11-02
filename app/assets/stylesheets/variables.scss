@@ -23,6 +23,11 @@ $orange: #F0AD4E;
 $primary: #3A9DD1;
 $dark: #101010;
 
+// Breadcrumb Overrides
+$breadcrumb-bg: transparent;
+$breadcrumb-padding-y: 0;
+$breadcrumb-padding-x: 0;
+
 // Navbar Overrides
 $navbar-brand-padding-y: 0;
 $navbar-dark-color: $white;

@@ -7,43 +7,47 @@
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= [@best_display.name, "All-time Best"].compact.join(': ') %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Courses', courses_path %></li>
-          <li><%= link_to @best_display.name, course_path(@best_display) %></li>
-          <li class="active">All-Time best</li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= [@best_display.name, "All-time Best"].compact.join(': ') %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Courses', courses_path %></li>
+            <li class="breadcrumb-item"><%= link_to @best_display.name, course_path(@best_display) %></li>
+            <li class="breadcrumb-item active">All-Time best</li>
+          </ul>
+        </div>
       </div>
     </div>
     <%= render 'course_navigation', presenter: @best_display %>
   </div>
 </header>
 
-<aside class="ost-toolbar container-fluid">
+<aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 col-sm-7">
+      <div class="col-12 col-sm-7">
         <% if @best_display.all_efforts_count > 0 %>
           <%= render 'best_efforts_lookup' %>
         <% end %>
       </div>
-      <div class="col-xs-12 col-sm-5 btn-toolbar">
-        <% unless @best_display.simple? %>
-          <%= segment_start_dropdown(@best_display) %>
-          <%= segment_finish_dropdown(@best_display) %>
-        <% end %>
-        <div class="btn-group pull-right">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-            <%= @best_display.gender_text.capitalize %>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><%= link_to_select_gender(@best_display, 'combined') %></li>
-            <li><%= link_to_select_gender(@best_display, 'male') %></li>
-            <li><%= link_to_select_gender(@best_display, 'female') %></li>
-          </ul>
+      <div class="col-12 col-sm-5">
+        <div class="text-right">
+          <% unless @best_display.simple? %>
+            <%= segment_start_dropdown(@best_display) %>
+            <%= segment_finish_dropdown(@best_display) %>
+          <% end %>
+          <div class="btn-group">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+              <%= @best_display.gender_text.capitalize %>
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to_select_gender(@best_display, 'combined') %></li>
+              <li><%= link_to_select_gender(@best_display, 'male') %></li>
+              <li><%= link_to_select_gender(@best_display, 'female') %></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -65,7 +69,7 @@
 
       <div class="row">
         <div class="col-xs-8">
-          <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+          <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
         </div>
       </div>
     <% elsif params[:search].present? && params[:search].length < 3 %>

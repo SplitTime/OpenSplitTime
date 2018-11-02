@@ -3,26 +3,38 @@ Variables
 ************/
 
 $font-size-base: (14px / 16px) * 1rem;
-$font-family-sans-serif: "Gibson-Semibold";
+// $font-family-sans-serif: "Gibson-Semibold";
 
-$gray: #777;
-$mediumGray: #aaa;
-
+$lightishGray: #F1F1F1;
 $lightGray: #eee;
+$mediumGray: #aaa;
+$gray: #777;
 $darkGray: #222;
 $darkerGray: #E1E1E1;
+
 $black: #000;
 $white: #FFF;
+
 $red: pink;
 $blue: #3A9DD1;
 $orange: #F0AD4E;
 
-$lightishGray: #F1F1F1;
-
+// Theme Color Overrides
 $primary: #3A9DD1;
-$theme-colors: (
-        primary: $primary
-);
+$dark: #101010;
+
+// Navbar Overrides
+$navbar-brand-padding-y: 0;
+$navbar-dark-color: $white;
+$navbar-toggler-padding-y: 0.125rem;
+$navbar-toggler-padding-x: 0.5rem;
+
+/******************************
+ * Import Bootstrap Variables *
+ ******************************/
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
 
 // Boostrap breakpoints
 $break-small: map-get($grid-breakpoints, 'sm');

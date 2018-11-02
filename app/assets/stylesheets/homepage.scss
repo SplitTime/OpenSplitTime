@@ -12,13 +12,12 @@
 
 .navbar-dark {
   border-radius: 0;
-  @media only screen and (min-width: 768px) {
+  @include media-breakpoint-up(md) {
     .navbar-nav > li > a.sign-up {
-      border: 1px solid #fff;
-      color: #fff;
+      border: 1px solid #FFF;
+      color: #FFF;
       padding: 5px 16px;
       margin: 9px 0;
-      color: #fff;
     }
     .navbar-nav > li > a.donate {
       color: #bbbb00;

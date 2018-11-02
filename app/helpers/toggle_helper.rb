@@ -109,7 +109,7 @@ module ToggleHelper
       link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
           method: 'delete',
           remote: true,
-          class: "#{protocol}-sub btn btn-xs btn-success",
+          class: "#{protocol}-sub btn btn-sm btn-success",
           data: {confirm: unsubscribe_alert}
       })
     else
@@ -119,7 +119,7 @@ module ToggleHelper
       link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
           method: 'post',
           remote: true,
-          class: "#{protocol}-sub btn btn-xs btn-default",
+          class: "#{protocol}-sub btn btn-sm btn-outline-subtle text-dark",
           data: {confirm: subscribe_alert}
       })
     end

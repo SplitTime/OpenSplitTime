@@ -20,13 +20,8 @@
 <body class="<%= controller_name %> <%= action_name %>">
 
 <%= render 'layouts/navigation' %>
-<%= render 'layouts/progress' %>
 <%= render 'layouts/messages' %>
-<% if content_for?(:container_type) == 'skip' %>
-  <%= yield %>
-<% else %>
-  <div class="<%= content_for(:container_type) || 'container' %>"><%= yield %></div>
-<% end %>
+<%= yield %>
 <%= render 'layouts/footer' unless @skip_footer %>
 </body>
 </html>

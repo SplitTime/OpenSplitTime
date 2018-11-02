@@ -6,49 +6,46 @@
     <% end %>
 <% end %>
 
-<div class="row header">
-  <div class="col-xs-5">
-    <h2>
-      <strong>People</strong>
-    </h2>
-  </div>
-  <div class="col-xs-7 page-navigation">
+<header class="ost-header">
+  <div class="container">
     <div class="row">
-      <% if current_user&.admin? %>
-          <%= link_to 'Create a new person', new_person_path,
-                      class: 'btn btn-sm btn-success' %>
-      <% end %>
+      <div class="ost-title col">
+        <h1><strong>People</strong></h1>
+        <ul class="breadcrumb breadcrumb-ost">
+          <li class="breadcrumb-item active">People</li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+</header>
 
-<%= render 'lookup' %>
-
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-8">
-    <% if @people.present? %>
-        <%= render 'people_list' %>
-    <% else %>
-        <br/>
-        <% if params[:search].blank? %>
-            <p><strong>Find someone by entering a name, state, or country</strong></p>
-        <% elsif params[:search].length < 3 %>
-            <p><strong>Search parameter is too short</strong></p>
-        <% else %>
-            <p><strong>No people match this search</strong></p>
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col form-inline justify-content-between">
+        <%= render 'lookup' %>
+        <% if current_user&.admin? %>
+            <%= link_to 'Create a new person', new_person_path,
+                        class: 'btn btn-sm btn-success' %>
         <% end %>
-    <% end %>
+      </div>
+    </div>
   </div>
-</div>
+</aside>
 
-<hr>
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
-  </div>
-</div>
+<article class="ost-article container">
+  <%= will_paginate(inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+  <% if @people.present? %>
+      <%= render 'people_list' %>
+  <% else %>
+      <br/>
+      <% if params[:search].blank? %>
+          <p><strong>Find someone by entering a name, state, or country</strong></p>
+      <% elsif params[:search].length < 3 %>
+          <p><strong>Search parameter is too short</strong></p>
+      <% else %>
+          <p><strong>No people match this search</strong></p>
+      <% end %>
+  <% end %>
+  <%= will_paginate(inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+</article>

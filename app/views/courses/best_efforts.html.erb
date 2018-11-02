@@ -7,46 +7,50 @@
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= [@presenter.name, "All-time Best"].compact.join(': ') %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <% if @presenter.organization %>
-            <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <% end %>
-          <li><%= link_to @presenter.name, course_path(@presenter.course) %></li>
-          <li class="active">All-Time best</li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= [@presenter.name, "All-time Best"].compact.join(': ') %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <% if @presenter.organization %>
+              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
+            <li class="breadcrumb-item active">All-Time best</li>
+          </ul>
+        </div>
       </div>
     </div>
     <%= render 'course_navigation', presenter: @presenter %>
   </div>
 </header>
 
-<aside class="ost-toolbar container-fluid">
+<aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 col-sm-7">
+      <div class="col-12 col-sm-7">
         <% if @presenter.all_efforts_count > 0 %>
           <%= render 'best_efforts_lookup', presenter: @presenter %>
         <% end %>
       </div>
-      <div class="col-xs-12 col-sm-5 btn-toolbar">
-        <% unless @presenter.simple? %>
-          <%= segment_start_dropdown(@presenter) %>
-          <%= segment_finish_dropdown(@presenter) %>
-        <% end %>
-        <div class="btn-group pull-right">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-            <%= @presenter.gender_text.capitalize %>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><%= link_to_select_gender(@presenter, 'combined') %></li>
-            <li><%= link_to_select_gender(@presenter, 'male') %></li>
-            <li><%= link_to_select_gender(@presenter, 'female') %></li>
-          </ul>
+      <div class="col-12 col-sm-5">
+        <div class="text-right">
+          <% unless @presenter.simple? %>
+            <%= segment_start_dropdown(@presenter) %>
+            <%= segment_finish_dropdown(@presenter) %>
+          <% end %>
+          <div class="btn-group">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+              <%= @presenter.gender_text.capitalize %>
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><%= link_to_select_gender(@presenter, 'combined') %></li>
+              <li><%= link_to_select_gender(@presenter, 'male') %></li>
+              <li><%= link_to_select_gender(@presenter, 'female') %></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

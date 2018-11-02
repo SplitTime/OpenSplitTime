@@ -5,7 +5,7 @@
     <strong>No raw times have been submitted for this event group.</strong>
   </article>
 <% else %>
-  <aside class="ost-toolbar container-fluid">
+  <aside class="ost-toolbar">
     <div class="container">
       <div class="row">
         <div class="col-xs-3">
@@ -43,7 +43,7 @@
 
       <div class="row">
         <div class="col-xs-8">
-          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0) %>
         </div>
       </div>
 
@@ -105,7 +105,7 @@
 
       <div class="row">
         <div class="col-xs-8">
-          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0, renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+          <%= will_paginate(view_object.filtered_raw_times, inner_window: 2, outer_window: 0) %>
         </div>
       </div>
 

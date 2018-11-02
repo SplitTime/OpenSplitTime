@@ -131,7 +131,7 @@ module ToggleHelper
 
     url = new_user_session_path(redirect_to: request.fullpath)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url,
-                      class: "btn btn-xs btn-default")
+                      class: "btn btn-outline-subtle text-dark")
   end
 
   def link_to_with_icon(icon_css, title, url, options = {})

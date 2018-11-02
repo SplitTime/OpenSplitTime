@@ -75,30 +75,6 @@
     }
 }
 
-.ost-header {
-    background: $lightishGray;
-    border-bottom: 2px solid $darkerGray;
-
-    &:first-child {
-        margin-top: -20px;
-    }
-
-    padding-top: 25px;
-
-    .ost-title {
-        padding-top: 5px;
-        padding-bottom: 5px;
-
-        * {
-            margin: 0;
-        }
-    }
-
-    .nav-tabs-ost {
-        margin-top: 25px;
-    }
-}
-
 .ost-toolbar {
     padding-top: 13px;
     padding-bottom: 13px;

@@ -4,16 +4,38 @@
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col">
-        <h1><strong><%= @presenter.full_name %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
-            <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+            <h1><strong><%= @presenter.full_name %></strong></h1>
+            <ul class="breadcrumb breadcrumb-ost">
+                <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
+                <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
+            </ul>
+        </div>
+        <div class="ost-subtitle">
+            <h6><%= @presenter.full_bio %></h6>
+            <% if @presenter.claimed? %>
+                <h6>
+                    <% if @presenter.claimant == current_user %>
+                        <strong>Hey, this is me!</strong><br/>
+                    <% else %>
+                        <% if current_user&.admin? %>
+                            <%= "Identified as user #{@presenter.claimant.full_name}" %>
+                        <% else %>
+                            OST Member
+                        <% end %>
+                    <% end %>
+                </h6>
+            <% end %>
+        </div>
       </div>
+        <% if @presenter.photo.present? %>
+            <div class="col-3">
+                <%= image_tag(@presenter.photo.url(:small)) %>
+            </div>
+        <% end %>
     </div>
-    <h5><%= @presenter.full_bio %></h5>
   </div>
 </header>
 
@@ -48,29 +70,6 @@
     </div>
   </div>
 </aside>
-
-  <div class="col-xs-6">
-    <h4>
-
-      <% if @presenter.claimed? %>
-          <% if @presenter.claimant == current_user %>
-              <strong>Hey, this is me!</strong><br/>
-          <% else %>
-              <% if current_user&.admin? %>
-                  <%= "Identified as user #{@presenter.claimant.full_name}" %>
-              <% else %>
-                  OST Member
-              <% end %>
-          <% end %>
-      <% end %>
-    </h4>
-  </div>
-
-  <div class="col-xs-3">
-    <% if @presenter.photo.present? %>
-        <%= image_tag(@presenter.photo.url(:small)) %>
-    <% end %>
-  </div>
 
 <article class="ost-article container">
     <% if @presenter.efforts.present? %>

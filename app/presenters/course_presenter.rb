@@ -20,6 +20,10 @@ class CoursePresenter < BasePresenter
     params[:display_style] == 'splits' ? 'splits' : 'events'
   end
 
+  def organization
+    @organization ||= Organization.joins(event_groups: :events).where(events: {course_id: course.id}).first
+  end
+
   def show_visibility_columns?
     current_user&.admin?
   end

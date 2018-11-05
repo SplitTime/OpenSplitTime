@@ -92,7 +92,10 @@ class EventGroupsController < ApplicationController
 
   def start_efforts
     authorize @event_group
-    efforts = Effort.where(event_id: @event_group.events, id: params[:ids])
+
+    filter = prepared_params[:filter]
+    efforts = @event_group.efforts.includes(:event, split_times: :split).add_ready_to_start
+                  .select { |effort| filter.each { |method, value| effort.send(method) == value } }
     start_time = params[:start_time]
 
     response = Interactors::StartEfforts.perform!(efforts: efforts, start_time: start_time, current_user_id: current_user.id)

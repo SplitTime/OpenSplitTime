@@ -10,7 +10,7 @@ class EffortsController < ApplicationController
 
   def index
     @efforts = Effort.order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-                  .where(prepared_params[:filter])
+                   .where(prepared_params[:filter])
     respond_to do |format|
       format.html do
         @efforts = @efforts.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
@@ -153,23 +153,14 @@ class EffortsController < ApplicationController
   def update_split_times
     authorize @effort
     effort = effort_with_splits
-    effort.assign_attributes(permitted_params)
-    offset_response = Interactors::AdjustEffortOffset.perform(effort)
 
-    if offset_response.successful?
-      if effort.save
-        status_response = Interactors::UpdateEffortsStatus.perform!(effort)
-        combined_response = status_response.merge(offset_response)
-        set_flash_message(combined_response)
+    if effort.update(permitted_params)
+      status_response = Interactors::UpdateEffortsStatus.perform!(effort)
+      set_flash_message(status_response)
 
-        redirect_to effort_path(effort)
-      else
-        flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
-        @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
-        render 'edit_split_times', display_style: params[:display_style]
-      end
+      redirect_to effort_path(effort)
     else
-      set_flash_message(offset_response)
+      flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
       @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
       render 'edit_split_times', display_style: params[:display_style]
     end

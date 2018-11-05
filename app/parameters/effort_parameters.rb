@@ -2,7 +2,7 @@
 
 class EffortParameters < BaseParameters
   def self.csv_attributes
-    %w(first_name last_name gender birthdate bib_number city state country phone email emergency_contact emergency_phone start_time)
+    %w(first_name last_name gender birthdate bib_number city state country phone email emergency_contact emergency_phone start_time scheduled_start_time scheduled_start_time_local)
   end
 
   def self.permitted_query
@@ -18,12 +18,12 @@ class EffortParameters < BaseParameters
      :stopped_time, :final_lap_complete, :course_distance, :started, :laps_started, :laps_finished,
      :final_distance, :finished, :stopped, :dropped, :overall_rank, :gender_rank, :full_name, :bio_historic,
      :prior_to_here_info, :stopped_here_info, :dropped_here_info, :recorded_here_info, :after_here_info,
-     :expected_here_info, :due_next_info, :last_reported_info, :state_and_country]
+     :expected_here_info, :due_next_info, :last_reported_info, :state_and_country, :ready_to_start]
   end
 
   def self.permitted
     [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
-     :city, :state_code, :country_code, :finished,
+     :city, :state_code, :country_code, :finished, :start_time, :scheduled_start_time, :scheduled_start_time_local,
      :beacon_url, :report_url, :photo, :phone, :email, :checked_in, :emergency_contact, :emergency_phone,
      split_times_attributes: [*SplitTimeParameters.permitted]]
   end
@@ -31,7 +31,7 @@ class EffortParameters < BaseParameters
   def self.mapping
     {first: :first_name, firstname: :first_name, last: :last_name, lastname: :last_name, name: :full_name, state: :state_code,
      country: :country_code, sex: :gender, bib: :bib_number, :"bib_#" => :bib_number, dob: :birthdate,
-     emergency_name: :emergency_contact}
+     emergency_name: :emergency_contact, start_time: :scheduled_start_time_local}
   end
 
   def self.unique_key

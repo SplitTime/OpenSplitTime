@@ -44,6 +44,14 @@ class EventGroupPresenter < BasePresenter
     @unstarted_efforts ||= ranked_efforts.reject(&:started?)
   end
 
+  def ready_efforts
+    @ready_efforts ||= ranked_efforts.select(&:ready_to_start)
+  end
+
+  def ready_efforts_count
+    ready_efforts.size
+  end
+
   def events
     @events ||= event_group.events.select_with_params('').order(:start_time).to_a
   end

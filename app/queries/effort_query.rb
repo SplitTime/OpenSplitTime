@@ -88,7 +88,11 @@ class EffortQuery < BaseQuery
               else
                 case when laps_finished >= laps_required then true else false end 
               end
-              as finished
+              as finished,
+              case
+                when not started and checked_in and scheduled_start_time < current_timestamp then true else false
+              end
+              as ready_to_start
            from distance_subquery),
 
         stopped_subquery as 

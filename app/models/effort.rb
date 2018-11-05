@@ -15,6 +15,7 @@ class Effort < ApplicationRecord
   include PersonalInfo
   include Searchable
   include Matchable
+  include TimeZonable
   extend FriendlyId
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], :regex => /[^0-9|+]/
@@ -56,20 +57,14 @@ class Effort < ApplicationRecord
   scope :checked_in, -> { where(checked_in: true) }
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
-  scope :without_start_time, -> do
-    joins(event: :course)
-        .joins("INNER JOIN splits ON splits.course_id = courses.id AND splits.kind = 0")
-        .joins("LEFT JOIN split_times ON split_times.effort_id = efforts.id AND split_times.lap = 1 AND split_times.split_id = splits.id")
-        .where(split_times: {id: nil})
+  scope :add_ready_to_start, -> do
+    select('distinct on (efforts.id) efforts.*, (split_times.id is null and checked_in is true and scheduled_start_time < current_timestamp) as ready_to_start')
+        .left_joins(split_times: :split)
+        .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
   end
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')
-  end
-
-  def self.attributes_for_import
-    [:first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate, :city, :state_code, :country_code,
-     :start_time, :beacon_url, :report_url, :photo, :phone, :email]
   end
 
   def self.search(param)
@@ -124,6 +119,19 @@ class Effort < ApplicationRecord
 
   def event_home_zone
     @event_home_zone ||= attributes['event_home_zone'] || event&.home_time_zone
+  end
+
+  def scheduled_start_time_local
+    @scheduled_start_time_local ||= scheduled_start_time&.in_time_zone(event_home_zone)
+  end
+
+  def scheduled_start_time_local=(time)
+    raise ArgumentError, 'scheduled_start_time_local cannot be set without a valid home time zone' unless time_zone_valid?(event_home_zone)
+    self.scheduled_start_time = ActiveSupport::TimeZone[event_home_zone].parse(time)
+  end
+
+  def scheduled_start_offset
+    @scheduled_start_offset ||= scheduled_start_time - event_start_time if scheduled_start_time && event_start_time
   end
 
   def event_name

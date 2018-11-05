@@ -6,6 +6,7 @@ class Event < ApplicationRecord
   include Delegable
   include SplitMethods
   include LapsRequiredMethods
+  include TimeZonable
   extend FriendlyId
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
@@ -75,13 +76,9 @@ class Event < ApplicationRecord
   end
 
   def home_time_zone_exists
-    unless home_time_zone_valid?
+    unless time_zone_valid?(home_time_zone)
       errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
     end
-  end
-
-  def home_time_zone_valid?
-    home_time_zone && ActiveSupport::TimeZone[home_time_zone].present?
   end
 
   def course_is_consistent
@@ -95,12 +92,12 @@ class Event < ApplicationRecord
   end
 
   def start_time_in_home_zone
-    return nil unless home_time_zone_valid?
+    return nil unless time_zone_valid?(home_time_zone)
     start_time&.in_time_zone(home_time_zone)
   end
 
   def start_time_in_home_zone=(time)
-    raise ArgumentError, 'start_time_in_home_zone cannot be set without a valid home_time_zone' unless home_time_zone_valid?
+    raise ArgumentError, 'start_time_in_home_zone cannot be set without a valid home_time_zone' unless time_zone_valid?(home_time_zone)
     self.start_time = ActiveSupport::TimeZone[home_time_zone].parse(time)
   end
 

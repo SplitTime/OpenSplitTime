@@ -40,7 +40,7 @@ module Interactors
       return if effort.split_times.any?(&:starting_split_time?)
       split_time = SplitTime.new(effort_id: effort.id,
                                  time_point: TimePoint.new(1, effort.start_split_id, SubSplit::IN_BITKEY),
-                                 absolute_time: converted_start_time,
+                                 absolute_time: converted_start_time || effort.scheduled_start_time,
                                  created_by: current_user_id)
       if split_time.save
         saved_split_times << split_time
@@ -72,7 +72,7 @@ module Interactors
 
     def validate_setup
       errors << multiple_event_groups_error(event_group_ids) if event_group_ids.uniq.many?
-      errors << invalid_start_time_error(start_time || 'nil') unless converted_start_time
+      errors << invalid_start_time_error(start_time || 'nil') unless converted_start_time || efforts.all?(&:scheduled_start_time)
     end
 
     def event_group_ids

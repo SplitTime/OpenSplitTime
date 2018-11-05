@@ -13,6 +13,7 @@ RSpec.describe Interactors::UpdateEffortsStop do
   let(:effort_1) { create(:effort, event: event) }
   let(:effort_2) { create(:effort, event: event) }
   let(:event) { create(:event, course: course) }
+  let(:start_time) { event.start_time }
   let(:course) { create(:course) }
   let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }

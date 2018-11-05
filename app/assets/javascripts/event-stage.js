@@ -149,19 +149,11 @@
             emergencyPhone: String,
             concealed: { type: Boolean, default: true },
             startOffset: { type: Number, default: 0 },
-            startMinutes: {
-                get: function() {
-                    return Math.round( this.startOffset / 60 );
-                },
-                set: function( value ) {
-                    this.startOffset = value * 60;
-                }
-            },
-            startDate: {
+            scheduledStartTime: {
                 get: function() {
                     var virtualStartTime = eventStage.data.eventModel.virtualStartTime;
                     if ( virtualStartTime instanceof Date ) {
-                        return moment( virtualStartTime ).add( this.startMinutes, 'minutes' ).toDate();
+                        return moment( virtualStartTime ).add( (this.startOffset || 0), 'seconds' ).toDate();
                     } else {
                         return this.date;
                     }
@@ -169,7 +161,7 @@
                 set: function( value ) {
                     var virtualStartTime = eventStage.data.eventModel.virtualStartTime;
                     if ( virtualStartTime instanceof Date ) {
-                        this.startMinutes = moment( value ).diff( virtualStartTime, 'minutes' );
+                        this.startOffset = moment( value ).diff( virtualStartTime, 'seconds' );
                     } else {
                         this.date = value;
                     }
@@ -177,26 +169,33 @@
             },
             offsetTime: {
                 get: function() {
-                    if ( this.startMinutes === null ) return '';
-                    var hours = Math.floor( Math.abs( this.startMinutes ) / 60 );
-                    if ( this.startMinutes < 0 ) hours = "-" + hours;
-                    var minutes = ( ( "0" + Math.abs( this.startMinutes % 60 ) ).slice( -2 ) );
-                    return ( hours != 0 ) ? hours + ":" + minutes : this.startMinutes % 60;
+                    if(this.startOffset === null) return '';
+
+                    var sign = this.startOffset < 0 ? '-' : '';
+                    var hours = Math.floor( Math.abs( this.startOffset ) / 3600 );
+                    var fill = hours < 10 ? '0' : '';
+                    var hoursString = ( ( fill + hours ) );
+                    var minutesString = ( ( "0" + Math.abs( this.startOffset / 60 % 60 ) ).slice( -2 ) );
+                    return sign + hoursString + ":" + minutesString;
                 },
                 set: function( value ) {
-                    if ( value === '' ) {
-                        this.startMinutes = null;
-                        return;
+                    if(value.length < 1) {
+                        this.startOffset = null;
+                        return
                     }
-                    var time = value.split( ':' );
-                    if ( time.length > 1 ) {
-                        var hours = time[0] * 60;
-                        time = hours + ( hours < 0 ? 0 - time[1] : time[1] - 0 );
+                    var multiplier = 1;
+                    var hoursMinutes = '';
+                    var signSplit = value.split('-');
+                    if(signSplit.length === 2) {
+                        multiplier = -1;
+                        hoursMinutes = signSplit[1]
                     } else {
-                        time = time[0] - 0;
+                        hoursMinutes = signSplit[0]
                     }
-                    if ( $.isNumeric( time ) )
-                        this.startMinutes = time;
+                    var timeComponents = hoursMinutes.split( ':' );
+                    var hoursComponent = timeComponents[0] || 0;
+                    var minutesComponent = timeComponents[1] || 0;
+                    this.startOffset = multiplier * ( hoursComponent * 3600 + minutesComponent * 60 );
                 }
             },
             location: {

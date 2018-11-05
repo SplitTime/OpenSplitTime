@@ -171,7 +171,7 @@
                 get: function() {
                     if(this.startOffset === null) return '';
 
-                    var sign = this.startOffset < 0 ? '-' : '';
+                    var sign = this.startOffset < 0 ? '-' : '+';
                     var hours = Math.floor( Math.abs( this.startOffset ) / 3600 );
                     var fill = hours < 10 ? '0' : '';
                     var hoursString = ( ( fill + hours ) );
@@ -179,23 +179,16 @@
                     return sign + hoursString + ":" + minutesString;
                 },
                 set: function( value ) {
-                    if(value.length < 1) {
+                    var regex = /^([\-+]?)([0-9]*):([0-5]{0,2})$/;
+                    var components = regex.exec(value) || [];
+                    if(components.length < 1) {
                         this.startOffset = null;
-                        return
-                    }
-                    var multiplier = 1;
-                    var hoursMinutes = '';
-                    var signSplit = value.split('-');
-                    if(signSplit.length === 2) {
-                        multiplier = -1;
-                        hoursMinutes = signSplit[1]
                     } else {
-                        hoursMinutes = signSplit[0]
+                        var multiplier = components[1] === '-' ? -1 : 1;
+                        var hoursComponent = components[2] || 0;
+                        var minutesComponent = components[3] || 0;
+                        this.startOffset = multiplier * ( hoursComponent * 3600 + minutesComponent * 60 );
                     }
-                    var timeComponents = hoursMinutes.split( ':' );
-                    var hoursComponent = timeComponents[0] || 0;
-                    var minutesComponent = timeComponents[1] || 0;
-                    this.startOffset = multiplier * ( hoursComponent * 3600 + minutesComponent * 60 );
                 }
             },
             location: {

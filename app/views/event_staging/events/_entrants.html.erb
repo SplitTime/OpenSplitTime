@@ -216,7 +216,7 @@
                       </div>
                       <div class="col-xs-12 sto-input-wrap">
                         <span class="sto-or">or</span>
-                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^-?([0-9]*:[0-5]{2})$' }" placeholder="hh:mm">
+                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^[\-+]?[0-9]*:[0-5]{2}$' }" placeholder="hh:mm">
                       </div>
                     </div>
                   </div>

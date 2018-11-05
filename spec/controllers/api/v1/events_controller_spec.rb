@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::V1::EventsController do
@@ -284,16 +286,19 @@ RSpec.describe Api::V1::EventsController do
         end
       end
 
-      context 'when provided with a file having start_offset or start_time' do
+      context 'when provided with a file having start_time or start_offset' do
         let(:request_params) { {id: event.id, data_format: 'csv_efforts', file: file} }
         let(:file) { fixture_file_upload(file_fixture('test_efforts_start_attributes.csv')) }
 
-        it 'creates efforts and ignores start_offset or start_time' do
+        it 'sets scheduled_start_time based on the start_time or start_offset or event start_time' do
           expect(Effort.all.size).to eq(0)
           make_request
           expect(response.status).to eq(201)
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].size).to eq(3)
+
+          start_times = parsed_response['data'].map { |row| row['attributes']['scheduledStartTime']&.in_time_zone('UTC') }
+          expect(start_times).to eq([event.start_time + 1800, event.start_time + 1.hour, event.start_time])
           expect(Effort.all.size).to eq(3)
         end
       end

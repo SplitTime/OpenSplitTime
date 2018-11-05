@@ -105,31 +105,31 @@ RSpec.describe ProtoRecord, type: :model do
   describe '#transform_as' do
     let(:pr) { ProtoRecord.new(attributes) }
     before { pr.transform_as(model, options) }
-    before { FactoryBot.reload }
 
     context 'for an effort' do
       let(:model) { :effort }
       let(:attributes) { {sex: 'M', country: 'United States', state: 'California', birthdate: '09/01/66'} }
       let(:options) { {event: event} }
-      let(:event) { build_stubbed(:event) }
+      let(:event) { Event.new(id: 1, start_time: start_time) }
+      let(:start_time) { '2018-06-30 08:00:00' }
 
       it 'sets the record type and normalizes data' do
         expect(pr.record_type).to eq(:effort)
-        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: '1966-09-01', event_id: event.id})
+        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: '1966-09-01', event_id: event.id, scheduled_start_time: start_time})
       end
     end
 
     context 'for a split' do
       let(:model) { :split }
       let(:attributes) { {distance: distance} }
-      let(:distance) { (baseline_distance + 5) / 1609.3 }
-      let(:baseline_distance) { event.ordered_splits.second.distance_from_start }
+      let(:baseline_split) { Split.new(distance: distance) }
+      let(:distance) { 10.5 } # miles
       let(:options) { {event: event} }
-      let(:event) { build_stubbed(:event_with_standard_splits) }
+      let(:event) { Event.new }
 
       it 'sets the record type and normalizes data' do
         expect(pr.record_type).to eq(:split)
-        expect(pr.to_h[:distance_from_start]).to eq(baseline_distance)
+        expect(pr.to_h[:distance_from_start]).to eq(baseline_split.distance_from_start)
       end
     end
   end

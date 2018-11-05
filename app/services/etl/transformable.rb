@@ -23,6 +23,14 @@ module ETL::Transformable
     self[:attributes].each { |key, value| self[key.underscore] = value }
   end
 
+  def convert_start_offset!(event_start_time)
+    return unless has_key?(:start_offset)
+    start_offset = self[:start_offset].to_s.gsub(/[^\d:-]/, '')
+    return unless start_offset.present?
+    seconds = start_offset.include?(':') ? TimeConversion.hms_to_seconds(start_offset) : start_offset.to_i
+    self[:scheduled_start_time] ||= event_start_time + seconds
+  end
+
   def convert_split_distance!
     return unless self[:distance].present?
     temp_split = Split.new
@@ -69,6 +77,14 @@ module ETL::Transformable
         self[key] = value if self[key].blank?
       end
     end
+  end
+
+  def localize_datetime!(local_key, utc_key, time_zone_name)
+    return unless has_key?(local_key)
+    local_time = delete_field(local_key) || ''
+    time_zone = ActiveSupport::TimeZone[time_zone_name || '']
+    parsed_time = time_zone&.parse(local_time)&.in_time_zone('UTC')
+    self[utc_key] = parsed_time if parsed_time
   end
 
   def map_keys!(map)

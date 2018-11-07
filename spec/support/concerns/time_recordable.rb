@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
+include BitkeyDefinitions
+
 RSpec.shared_examples_for 'time_recordable' do
   let(:model) { described_class }
   let(:model_name) { model.name.underscore.to_sym }
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   describe '#matched?' do
     context 'when no split_time_id is present' do

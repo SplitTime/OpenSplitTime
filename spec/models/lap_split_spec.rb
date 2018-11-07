@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe LapSplit, type: :model do
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
-
   describe 'initialization' do
     it 'initializes with a lap and a split' do
       lap = 1

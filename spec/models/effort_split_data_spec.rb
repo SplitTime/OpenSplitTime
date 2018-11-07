@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe EffortSplitData, type: :model do
   subject { EffortSplitData.new(days_and_times: days_and_times) }
   let(:other) { EffortSplitData.new(days_and_times: days_and_times_other) }

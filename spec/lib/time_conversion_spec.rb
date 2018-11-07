@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/time_conversion'
 require 'date'
 require 'active_support/all'

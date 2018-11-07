@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include BitkeyDefinitions
 
 # t.integer "effort_id", null: false
 # t.integer "split_id", null: false
@@ -19,8 +20,6 @@ require 'rails_helper'
 RSpec.describe SplitTime, kind: :model do
   it_behaves_like 'data_status_methods'
   it_behaves_like 'auditable'
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   describe 'validations' do
     context 'for validations that do not depend on existing records in the database' do

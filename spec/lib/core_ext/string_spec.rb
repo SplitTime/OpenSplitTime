@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../lib/core_ext/string'
 require 'active_record'
 

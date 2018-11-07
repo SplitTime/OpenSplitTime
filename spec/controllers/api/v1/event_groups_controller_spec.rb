@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe Api::V1::EventGroupsController do
   let(:event_group) { create(:event_group, data_entry_grouping_strategy: 'location_grouped') }
   let(:type) { 'event_groups' }
   let(:stub_combined_split_attributes) { true }
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   before do
     if stub_combined_split_attributes

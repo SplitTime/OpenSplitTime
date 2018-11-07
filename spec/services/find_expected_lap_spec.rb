@@ -1,6 +1,7 @@
 #frozen_string_literal: true
 
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe FindExpectedLap do
   subject { FindExpectedLap.new(effort: effort, subject_attribute: subject_attribute, subject_value: subject_value, split_id: split_id, bitkey: bitkey) }
@@ -17,9 +18,6 @@ RSpec.describe FindExpectedLap do
   let(:split_2) { build_stubbed(:split, base_name: 'Aid 1') }
   let(:split_3) { build_stubbed(:split, base_name: 'Aid 2') }
   let(:split_4) { build_stubbed(:split, :finish, base_name: 'Finish') }
-
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: split_1, bitkey: 1, absolute_time: start_time + 0) }
   let(:split_time_2) { build_stubbed(:split_time, lap: 1, split: split_2, bitkey: 1, absolute_time: start_time + 1.hour) }

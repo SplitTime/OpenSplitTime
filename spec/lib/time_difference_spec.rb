@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/time_difference'
 
 RSpec.describe TimeDifference do

@@ -94,6 +94,6 @@ class EffortProgressRow
   end
 
   def days_and_times(split_times)
-    split_times.map { |split_time| split_time && effort.day_and_time(split_time.time_from_start) }
+    split_times.map { |st| st&.day_and_time }
   end
 end

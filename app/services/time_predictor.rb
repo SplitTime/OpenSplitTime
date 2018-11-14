@@ -7,8 +7,7 @@ class TimePredictor
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: :segment,
-                           required_alternatives: [:effort, [:lap_splits, :completed_split_time]],
+                           required: [:segment, :effort],
                            exclusive: [:segment, :effort, :lap_splits, :completed_split_time,
                                        :calc_model, :similar_effort_ids, :times_container],
                            class: self.class)
@@ -52,7 +51,7 @@ class TimePredictor
   end
 
   def actual_completed_time
-    completed_split_time.time_from_start
+    completed_split_time.absolute_time && effort.start_time && completed_split_time.absolute_time - effort.start_time
   end
 
   def typical_completed_time

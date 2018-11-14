@@ -14,7 +14,7 @@ class EffortProgressSummary < EffortProgressRow
   end
 
   def minutes_past_due
-    @minutes_past_due ||= effort.day_and_time(time_from_start_to_next) && ((Time.current - effort.day_and_time(time_from_start_to_next)) / 1.minute).round
+    @minutes_past_due ||= next_absolute_time && ((Time.current - next_absolute_time) / 1.minute).round
   end
 
   def past_due?

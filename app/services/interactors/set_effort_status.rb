@@ -59,6 +59,7 @@ module Interactors
 
     def time_predictor
       TimePredictor.new(segment: subject_segment,
+                        effort: effort,
                         completed_split_time: prior_valid_split_time,
                         lap_splits: lap_splits,
                         times_container: times_container)

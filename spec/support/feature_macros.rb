@@ -1,8 +1,12 @@
 module FeatureMacros
   def create_hardrock_event
+    owner = create(:user)
+    steward = create(:user)
     course = create(:course)
     splits = create_list(:splits_hardrock_ccw, 16, course: course)
-    event_group = create(:event_group, concealed: false)
+    organization = create(:organization)
+    organization.stewards << steward
+    event_group = create(:event_group, concealed: false, created_by: owner.id, organization: organization)
     event = create(:event, course: course, event_group: event_group, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2016-07-01 06:00')
     event.splits << splits
     efforts = create_list(:effort, 8, :with_birthdate, event: event)
@@ -24,9 +28,10 @@ module FeatureMacros
     Event.delete_all
     EventGroup.delete_all
     Course.delete_all
+    Stewardship.delete_all
+    User.delete_all
     Organization.delete_all
     Subscription.delete_all
-    User.delete_all
     Person.delete_all
   end
 end

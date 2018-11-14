@@ -136,8 +136,7 @@ class PlaceDetailView
   end
 
   def event_split_times
-    @event_split_times ||=
-        event.split_times.with_time_point_rank(split_time_fields: 'effort_id, lap, split_id, sub_split_bitkey')
+    @event_split_times ||= event.split_times.with_time_point_rank
   end
 
   def indexed_effort_split_times

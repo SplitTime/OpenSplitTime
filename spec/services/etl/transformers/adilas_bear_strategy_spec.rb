@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ETL::Transformers::AdilasBearStrategy do
@@ -11,9 +13,10 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }
 
-  let(:event) { build_stubbed(:event, course: course, home_time_zone: 'Mountain Time (US & Canada)') }
+  let(:event) { build_stubbed(:event, course: course, start_time_in_home_zone: '9/23/2016 6:00:00', home_time_zone: 'Mountain Time (US & Canada)') }
+  let(:start_time) { event.start_time }
   let(:course) { build_stubbed(:course) }
-  let(:start) { build_stubbed(:start_split, course: course, base_name: 'Start') }
+  let(:start) { build_stubbed(:split, :start, course: course, base_name: 'Start') }
   let(:logan) { build_stubbed(:split, course: course, base_name: 'Logan', sub_split_bitmap: 65, distance_from_start: 17220) }
   let(:leatham) { build_stubbed(:split, course: course, base_name: 'Leatham', sub_split_bitmap: 65, distance_from_start: 31704) }
   let(:richards) { build_stubbed(:split, course: course, base_name: 'Richards', sub_split_bitmap: 65, distance_from_start: 36210) }
@@ -39,7 +42,7 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
 
       it 'transforms effort headers to match the database' do
         expect(first_proto_record.to_h.keys.sort)
-            .to match_array(%i(age bib_number event_id first_name gender last_name start_offset city state_code country_code))
+            .to match_array(%i(age bib_number event_id first_name gender last_name city state_code country_code))
       end
 
       it 'returns genders transformed to "male" or "female"' do
@@ -62,7 +65,7 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
         expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
         expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 10150.0, 10150.0, 23427.0, 23429.0, 114551.0, 28151.0])
+        expect(records.map { |pr| pr[:absolute_time] }).to eq([0, 10150, 10150, 23427, 23429, 114551, 28151].map { |e| start_time + e })
       end
 
       context 'when dnf is true' do
@@ -70,7 +73,7 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
 
         it 'sets [:stopped_here] attribute on the final child record' do
           records = first_proto_record.children
-          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
+          expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
           expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, nil, nil, true])
         end
       end
@@ -80,7 +83,7 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
 
         it 'does not set [:stopped_here] attribute on the final child record' do
           records = first_proto_record.children
-          expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(nil)
+          expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(nil)
           expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, nil, nil, nil])
         end
       end
@@ -100,12 +103,12 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
         expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
         expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 10150.0, 10150.0, 23427.0, 23429.0, 28151.0, 35351.0])
+        expect(records.map { |pr| pr[:absolute_time] }).to eq([0, 10150, 10150, 23427, 23429, 28151, 35351].map { |e| start_time + e })
       end
 
       it 'sets [:stopped_here] attribute on the final child record' do
         records = first_proto_record.children
-        expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
+        expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
         expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 6 + [true])
       end
     end
@@ -117,14 +120,14 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
                      3 => ['9/23/2016 3:49:11 pm', '... ...']} }
       let(:time_points) { event.required_time_points.first(7) }
 
-      it 'adds the number of days needed to make time_from_start positive' do
+      it 'adds the number of days needed to make absolute_time greater than the starting absolute_time' do
         records = first_proto_record.children
         expect(records.size).to eq(7)
         expect(records.map(&:record_type)).to eq([:split_time] * records.size)
         expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
         expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 10150.0, 10150.0, 23427.0, 23429.0, 28151.0, 35351.0])
+        expect(records.map { |pr| pr[:absolute_time] }).to eq([0, 10150, 10150, 23427, 23429, 28151, 35351].map { |e| start_time + e })
       end
     end
   end

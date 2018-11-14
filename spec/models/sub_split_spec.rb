@@ -1,13 +1,18 @@
+# frozen_string_literal: true
+
 RSpec.describe SubSplit, type: :model do
+  require 'support/bitkey_definitions'
+  include BitkeyDefinitions
+  
   describe 'kind' do
     it 'returns "In" when passed 1 or IN_BITKEY' do
       expect(SubSplit.kind(1)).to eq('In')
-      expect(SubSplit.kind(SubSplit::IN_BITKEY)).to eq('In')
+      expect(SubSplit.kind(in_bitkey)).to eq('In')
     end
 
     it 'returns "Out" when passed 64 or OUT_BITKEY' do
       expect(SubSplit.kind(64)).to eq('Out')
-      expect(SubSplit.kind(SubSplit::OUT_BITKEY)).to eq('Out')
+      expect(SubSplit.kind(out_bitkey)).to eq('Out')
     end
 
     it 'returns nil given any other parameter' do
@@ -24,19 +29,19 @@ RSpec.describe SubSplit, type: :model do
 
   describe 'bitkey' do
     it 'returns IN_BITKEY when passed "In"' do
-      expect(SubSplit.bitkey('In')).to eq(SubSplit::IN_BITKEY)
+      expect(SubSplit.bitkey('In')).to eq(in_bitkey)
     end
 
     it 'returns OUT_BITKEY when passed "Out"' do
-      expect(SubSplit.bitkey('Out')).to eq(SubSplit::OUT_BITKEY)
+      expect(SubSplit.bitkey('Out')).to eq(out_bitkey)
     end
 
     it 'functions regardless of case' do
-      expect(SubSplit.bitkey('in')).to eq(SubSplit::IN_BITKEY)
+      expect(SubSplit.bitkey('in')).to eq(in_bitkey)
     end
 
     it 'functions when passed a symbol' do
-      expect(SubSplit.bitkey(:in)).to eq(SubSplit::IN_BITKEY)
+      expect(SubSplit.bitkey(:in)).to eq(in_bitkey)
     end
 
     it 'returns nil given any other parameter' do
@@ -53,11 +58,11 @@ RSpec.describe SubSplit, type: :model do
 
   describe 'next_bitkey' do
     it 'returns the next leftmost "on" bit with 1' do
-      expect(SubSplit.next_bitkey(1)).to eq(SubSplit::OUT_BITKEY)
+      expect(SubSplit.next_bitkey(1)).to eq(out_bitkey)
     end
 
     it 'returns the next leftmost "on" bit with 4' do
-      expect(SubSplit.next_bitkey(4)).to eq(SubSplit::OUT_BITKEY)
+      expect(SubSplit.next_bitkey(4)).to eq(out_bitkey)
     end
 
     it 'returns nil with 64' do

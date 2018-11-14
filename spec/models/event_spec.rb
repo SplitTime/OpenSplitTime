@@ -14,6 +14,8 @@ require 'rails_helper'
 # t.string   "podium_template"
 
 RSpec.describe Event, type: :model do
+  include BitkeyDefinitions
+
   it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
@@ -92,7 +94,7 @@ RSpec.describe Event, type: :model do
 
     context 'when bib numbers are duplicated within the same event_group' do
       let!(:event_1) { create(:event) }
-      let!(:event_2) { create(:event, event_group: event_group) }
+      let!(:event_2) { create(:event, event_group: event_group, home_time_zone: event_1.home_time_zone) }
       let(:event_group) { create(:event_group) }
       let!(:event_1_effort_1) { create(:effort, event: event_1, bib_number: 101) }
       let!(:event_1_effort_2) { create(:effort, event: event_1, bib_number: 103) }
@@ -103,20 +105,20 @@ RSpec.describe Event, type: :model do
         expect(event_1).to be_valid
         event_1.update(event_group: event_group)
         expect(event_1).not_to be_valid
-        expect(event_1.errors.full_messages).to include("Bib number 101 is duplicated within the event group")
+        expect(event_1.errors.full_messages).to include('Bib number 101 is duplicated within the event group')
       end
     end
 
     context 'for split location validations' do
       let(:event_1) { create(:event, course: course_1) }
-      let(:event_2) { create(:event, course: course_2, event_group: event_group) }
+      let(:event_2) { create(:event, course: course_2, event_group: event_group, home_time_zone: event_1.home_time_zone) }
       let(:event_group) { create(:event_group) }
       let(:course_1) { create(:course) }
-      let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
-      let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
       let(:course_2) { create(:course) }
-      let(:course_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
-      let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_2_split_1) { create(:split, :start, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
       before do
         event_1.splits << course_1_split_1
         event_1.splits << course_1_split_2
@@ -133,7 +135,7 @@ RSpec.describe Event, type: :model do
       end
 
       context 'when split names are duplicated with non-matching locations within the same event_group' do
-        let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 41, longitude: -106) }
+        let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 41, longitude: -106) }
 
         it 'is invalid' do
           expect(event_1).to be_valid
@@ -143,14 +145,41 @@ RSpec.describe Event, type: :model do
         end
       end
     end
+
+    context 'for home_time_zone validation' do
+      let!(:event_1) { create(:event, home_time_zone: time_zone) }
+      let!(:event_2) { create(:event, event_group: event_group, home_time_zone: 'Arizona') }
+      let!(:event_group) { create(:event_group) }
+
+      context 'when time zones are consistent' do
+        let(:time_zone) { 'Arizona' }
+
+        it 'is valid' do
+          expect(event_1).to be_valid
+          event_1.update(event_group: event_group)
+          expect(event_1).to be_valid
+        end
+      end
+
+      context 'when time zones are not consistent' do
+        let(:time_zone) { 'Mountain Time (US & Canada)' }
+
+        it 'is invalid' do
+          expect(event_1).to be_valid
+          event_1.update(event_group: event_group)
+          expect(event_1).not_to be_valid
+          expect(event_1.errors.full_messages).to include(/Home time zone is inconsistent with others within the event group/)
+        end
+      end
+    end
   end
 
   describe 'methods that produce lap_splits and time_points' do
     let(:event) { build_stubbed(:event, laps_required: 2) }
-    let(:start_split) { build_stubbed(:start_split, id: 111) }
+    let(:start_split) { build_stubbed(:split, :start, id: 111) }
     let(:intermediate_split1) { build_stubbed(:split, id: 102) }
     let(:intermediate_split2) { build_stubbed(:split, id: 103) }
-    let(:finish_split) { build_stubbed(:finish_split, id: 112) }
+    let(:finish_split) { build_stubbed(:split, :finish, id: 112) }
     let(:splits) { [start_split, intermediate_split1, intermediate_split2, finish_split] }
 
     describe '#required_lap_splits' do
@@ -391,14 +420,12 @@ RSpec.describe Event, type: :model do
   end
 
   describe 'methods from the SplitMethods module' do
-    let(:in_bitkey) { SubSplit::IN_BITKEY }
-    let(:out_bitkey) { SubSplit::OUT_BITKEY }
     let(:event) { build_stubbed(:event, splits: splits) }
-    let(:start_split) { build_stubbed(:start_split) }
+    let(:start_split) { build_stubbed(:split, :start) }
     let(:intermediate_split_1) { build_stubbed(:split, distance_from_start: 500) }
     let(:intermediate_split_2) { build_stubbed(:split, distance_from_start: 1500) }
     let(:intermediate_split_3) { build_stubbed(:split, distance_from_start: 2800) }
-    let(:finish_split) { build_stubbed(:finish_split, distance_from_start: 4000) }
+    let(:finish_split) { build_stubbed(:split, :finish, distance_from_start: 4000) }
     let(:splits) { [start_split, intermediate_split_1, intermediate_split_2, intermediate_split_3, finish_split].shuffle }
 
     describe '#ordered_splits' do

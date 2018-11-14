@@ -1,4 +1,7 @@
+#frozen_string_literal: true
+
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe FindExpectedLap do
   subject { FindExpectedLap.new(effort: effort, subject_attribute: subject_attribute, subject_value: subject_value, split_id: split_id, bitkey: bitkey) }
@@ -9,27 +12,25 @@ RSpec.describe FindExpectedLap do
   let(:bitkey) { in_bitkey }
 
   let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, start_time_in_home_zone: '2018-06-22 06:00:00') }
+  let(:start_time) { event.start_time }
   let(:splits) { [split_1, split_2, split_3, split_4] }
-  let(:split_1) { build_stubbed(:start_split, base_name: 'Start') }
+  let(:split_1) { build_stubbed(:split, :start, base_name: 'Start') }
   let(:split_2) { build_stubbed(:split, base_name: 'Aid 1') }
   let(:split_3) { build_stubbed(:split, base_name: 'Aid 2') }
-  let(:split_4) { build_stubbed(:finish_split, base_name: 'Finish') }
+  let(:split_4) { build_stubbed(:split, :finish, base_name: 'Finish') }
 
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
-
-  let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: split_1, bitkey: 1, time_from_start: 0) }
-  let(:split_time_2) { build_stubbed(:split_time, lap: 1, split: split_2, bitkey: 1, time_from_start: 1.hour) }
-  let(:split_time_3) { build_stubbed(:split_time, lap: 1, split: split_2, bitkey: 64, time_from_start: 2.hours) }
-  let(:split_time_4) { build_stubbed(:split_time, lap: 1, split: split_3, bitkey: 1, time_from_start: 3.hours) }
-  let(:split_time_5) { build_stubbed(:split_time, lap: 1, split: split_3, bitkey: 64, time_from_start: 4.hours) }
-  let(:split_time_6) { build_stubbed(:split_time, lap: 1, split: split_4, bitkey: 1, time_from_start: 5.hours) }
-  let(:split_time_7) { build_stubbed(:split_time, lap: 2, split: split_1, bitkey: 1, time_from_start: 6.hours) }
-  let(:split_time_8) { build_stubbed(:split_time, lap: 2, split: split_2, bitkey: 1, time_from_start: 7.hours) }
-  let(:split_time_9) { build_stubbed(:split_time, lap: 2, split: split_2, bitkey: 64, time_from_start: 8.hours) }
-  let(:split_time_10) { build_stubbed(:split_time, lap: 2, split: split_3, bitkey: 1, time_from_start: 9.hours) }
-  let(:split_time_11) { build_stubbed(:split_time, lap: 2, split: split_3, bitkey: 64, time_from_start: 10.hours) }
-  let(:split_time_12) { build_stubbed(:split_time, lap: 2, split: split_4, bitkey: 1, time_from_start: 11.hours) }
+  let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: split_1, bitkey: 1, absolute_time: start_time + 0) }
+  let(:split_time_2) { build_stubbed(:split_time, lap: 1, split: split_2, bitkey: 1, absolute_time: start_time + 1.hour) }
+  let(:split_time_3) { build_stubbed(:split_time, lap: 1, split: split_2, bitkey: 64, absolute_time: start_time + 2.hours) }
+  let(:split_time_4) { build_stubbed(:split_time, lap: 1, split: split_3, bitkey: 1, absolute_time: start_time + 3.hours) }
+  let(:split_time_5) { build_stubbed(:split_time, lap: 1, split: split_3, bitkey: 64, absolute_time: start_time + 4.hours) }
+  let(:split_time_6) { build_stubbed(:split_time, lap: 1, split: split_4, bitkey: 1, absolute_time: start_time + 5.hours) }
+  let(:split_time_7) { build_stubbed(:split_time, lap: 2, split: split_1, bitkey: 1, absolute_time: start_time + 6.hours) }
+  let(:split_time_8) { build_stubbed(:split_time, lap: 2, split: split_2, bitkey: 1, absolute_time: start_time + 7.hours) }
+  let(:split_time_9) { build_stubbed(:split_time, lap: 2, split: split_2, bitkey: 64, absolute_time: start_time + 8.hours) }
+  let(:split_time_10) { build_stubbed(:split_time, lap: 2, split: split_3, bitkey: 1, absolute_time: start_time + 9.hours) }
+  let(:split_time_11) { build_stubbed(:split_time, lap: 2, split: split_3, bitkey: 64, absolute_time: start_time + 10.hours) }
+  let(:split_time_12) { build_stubbed(:split_time, lap: 2, split: split_4, bitkey: 1, absolute_time: start_time + 11.hours) }
   let(:all_split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5, split_time_6,
                            split_time_7, split_time_8, split_time_9, split_time_10, split_time_11, split_time_12,] }
 

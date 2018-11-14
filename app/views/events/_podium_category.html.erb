@@ -19,7 +19,7 @@
           <% if @presenter.multiple_laps? %>
               <td><%= effort.laps_finished %></td>
           <% end %>
-          <td><%= time_format_hhmmss(effort.final_time) %></td>
+          <td><%= time_format_hhmmss(effort.final_time_from_start) %></td>
           <td><%= effort.full_name %></td>
           <td><%= effort.bio_historic %></td>
           <td><%= effort.flexible_geolocation %></td>

@@ -22,7 +22,7 @@ class BaseParameters
     {}
   end
 
-  def self.csv_attributes
+  def self.csv_export_attributes
     []
   end
 

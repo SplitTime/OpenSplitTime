@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe TimePoint, type: :model do
   describe 'initialization' do
     it 'initializes with a split_id, a bitkey, and a lap' do

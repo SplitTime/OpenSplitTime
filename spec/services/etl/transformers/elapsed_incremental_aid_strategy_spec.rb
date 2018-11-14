@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
@@ -11,8 +13,9 @@ RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
   let(:first_proto_record) { proto_records.first }
 
   let(:event) { build_stubbed(:event, course: course) }
+  let(:start_time) { event.start_time }
   let(:course) { build_stubbed(:course) }
-  let(:start) { build_stubbed(:start_split, course: course, base_name: 'Start') }
+  let(:start) { build_stubbed(:split, :start, course: course, base_name: 'Start') }
   let(:dry_fork) { build_stubbed(:split, course: course, base_name: 'Dry Fork Outbound', sub_split_bitmap: 65, distance_from_start: 17220) }
   let(:foot_bridge) { build_stubbed(:split, course: course, base_name: 'Foot Bridge Outbound', sub_split_bitmap: 65, distance_from_start: 31704) }
   let(:jaws) { build_stubbed(:split, course: course, base_name: 'Jaws', sub_split_bitmap: 65, distance_from_start: 36210) }
@@ -59,12 +62,12 @@ RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
         expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
         expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 12460.0, 12784.0, 26309.0, 26610.0, 46956.0, 47934.0, 99855.52])
+        expect(records.map { |pr| pr[:absolute_time] }).to eq([0.0, 12460.0, 12784.0, 26309.0, 26610.0, 46956.0, 47934.0, 99855.52].map { |e| start_time + e })
       end
 
       it 'sets [:stopped_here] attribute on the final child record' do
         records = first_proto_record.children
-        expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
+        expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
         expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 7 + [true])
       end
     end
@@ -81,12 +84,12 @@ RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
         expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
         expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
         expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:time_from_start] }).to eq([0.0, 12460.0, 12784.0, 26309.0, 99855.52])
+        expect(records.map { |pr| pr[:absolute_time] }).to eq([0.0, 12460.0, 12784.0, 26309.0, 99855.52].map { |e| start_time + e })
       end
 
       it 'sets [:stopped_here] attribute on the final child record' do
         records = first_proto_record.children
-        expect(records.reverse.find { |pr| pr[:time_from_start].present? }[:stopped_here]).to eq(true)
+        expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
         expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 4 + [true])
       end
     end

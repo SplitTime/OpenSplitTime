@@ -1,14 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EffortProgressRow do
-  let(:test_event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4) }
-  let(:test_splits) { test_event.splits }
-  let(:test_efforts) { test_event.efforts }
+  let(:event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4) }
+  let(:splits) { event.splits }
+  let(:efforts) { event.efforts }
 
   describe '#extract_attributes' do
     it 'returns a hash with keys being the provided attributes and values being values of corresponding methods' do
-      event = test_event
-      allow(event).to receive(:ordered_splits).and_return(event.splits)
       split = event.splits.first
       effort = event.efforts.first
       aid_station = AidStation.new(event: event, split: split)

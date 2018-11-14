@@ -18,6 +18,10 @@ class SegmentTimesPlanner
                                       similar_effort_ids: similar_effort_ids, times_container: times_container)
   end
 
+  def absolute_times(round_to: 0)
+    times_from_start(round_to: round_to).transform_values { |tfs| event.start_time + tfs }
+  end
+
   def times_from_start(round_to: 0)
     @times_from_start ||= serial_segments.map.with_index do |segment, i|
       [segment.end_point, (serial_times[0..i].sum * pace_factor).round_to_nearest(round_to)]

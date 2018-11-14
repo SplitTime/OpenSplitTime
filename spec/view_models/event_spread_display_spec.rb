@@ -8,9 +8,9 @@ RSpec.describe EventSpreadDisplay do
     let(:course) { build_stubbed(:course, name: 'Testrock Counter-clockwise', splits: splits) }
     let(:event) { build_stubbed(:event, name: 'Testrock 100', course: course, splits: splits) }
     let(:splits) { [split_1, split_2, split_3] }
-    let(:split_1) { build_stubbed(:start_split, base_name: 'Starting Point') }
+    let(:split_1) { build_stubbed(:split, :start, base_name: 'Starting Point') }
     let(:split_2) { build_stubbed(:split, base_name: 'Aid Station 1', distance_from_start: 10000) }
-    let(:split_3) { build_stubbed(:finish_split, base_name: 'Finishing Point', distance_from_start: 20000) }
+    let(:split_3) { build_stubbed(:split, :finish, base_name: 'Finishing Point', distance_from_start: 20000) }
 
     it 'returns an array of hashes containing title, extensions, and distances' do
       expected = [

@@ -1,11 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::V1::SplitTimesController do
+  include BitkeyDefinitions
+
   let(:type) { 'split_times' }
-  let(:split_time) { create(:split_time, effort: effort, split: split) }
+  let(:split_time) { create(:split_time, effort: effort, split: split, bitkey: bitkey) }
   let(:effort) { create(:effort, event: event) }
   let(:event) { create(:event, course: course) }
   let(:split) { create(:split, course: course) }
+  let(:bitkey) { in_bitkey }
   let(:course) { create(:course) }
 
   describe '#show' do
@@ -47,7 +52,7 @@ RSpec.describe Api::V1::SplitTimesController do
 
     via_login_and_jwt do
       context 'when provided data is valid' do
-        let(:attributes) { {effort_id: effort.id, lap: 1, split_id: split.id, sub_split_bitkey: 1, time_from_start: 100} }
+        let(:attributes) { {effort_id: effort.id, lap: 1, split_id: split.id, sub_split_bitkey: 1, absolute_time: '2018-10-31 06:00:00'} }
 
         it 'returns a successful json response' do
           make_request
@@ -69,7 +74,7 @@ RSpec.describe Api::V1::SplitTimesController do
   describe '#update' do
     subject(:make_request) { put :update, params: params }
     let(:params) { {id: split_time_id, data: {type: type, attributes: attributes}} }
-    let(:attributes) { {time_from_start: 12345} }
+    let(:attributes) { {absolute_time: '2018-10-31 01:23:45'} }
 
     via_login_and_jwt do
       context 'when the split_time exists' do
@@ -84,7 +89,7 @@ RSpec.describe Api::V1::SplitTimesController do
         it 'updates the specified fields' do
           make_request
           split_time.reload
-          expect(split_time.time_from_start).to eq(attributes[:time_from_start])
+          expect(split_time.absolute_time).to eq(attributes[:absolute_time])
         end
       end
 
@@ -103,7 +108,7 @@ RSpec.describe Api::V1::SplitTimesController do
 
   describe '#destroy' do
     subject(:make_request) { delete :destroy, params: {id: split_time_id} }
-    let!(:split_time) { create(:split_time, effort: effort, split: split) }
+    let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey) }
 
     via_login_and_jwt do
       context 'when the record exists' do

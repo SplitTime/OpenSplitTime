@@ -3,11 +3,9 @@
 require 'rails_helper'
 
 # These tests will fail if the test database is rebuilt using db:schema:load
-# To fix, run the following directly on the new database:
+# To fix, run the following from the command line:
 
-# CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text) RETURNS text LANGUAGE SQL IMMUTABLE STRICT AS $function$
-#   SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
-# $function$;
+# rails db:structure:load RAILS_ENV=test
 
 RSpec.describe 'Search the person index' do
   let(:user) { create(:user) }

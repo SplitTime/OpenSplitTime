@@ -9,7 +9,7 @@ class SplitTimeFromRawTime
     split_time.effort = effort
 
     if raw_time.absolute_time?
-      split_time.day_and_time = raw_time.absolute_time
+      split_time.absolute_time = raw_time.absolute_time
     else
       split_time.military_time = raw_time.military_time
     end

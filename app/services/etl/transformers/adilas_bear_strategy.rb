@@ -28,10 +28,8 @@ module ETL::Transformers
     def transform_time_data
       sort_and_fill_times
       parse_times
-      calculate_times_from_start
       fix_negative_times
-      proto_record[:start_offset] = effort_start_time - event.start_time
-      proto_record.create_split_time_children!(time_points)
+      proto_record.create_split_time_children!(time_points, time_attribute: :absolute_time)
       proto_record.set_split_time_stop! if proto_record[:dnf]
     end
 
@@ -43,13 +41,15 @@ module ETL::Transformers
       proto_record[:times_of_day] = proto_record[:times_of_day].map { |time_string| ActiveSupport::TimeZone[time_zone].parse(time_string) }
     end
 
-    def calculate_times_from_start
-      proto_record[:times_from_start] = proto_record[:times_of_day].map { |time| time && (time - effort_start_time) }
-    end
-
     # Some times are off by a full day behind, resulting in negative (invalid) times from start
     def fix_negative_times
-      proto_record[:times_from_start] = proto_record[:times_from_start].map { |time| time&.between?(-30.days, 0.second) ? time % (1.day / 1.second) : time }
+      proto_record[:absolute_times] = proto_record[:times_of_day].map do |datetime|
+        next unless datetime
+        seconds = datetime - effort_start_time
+        seconds_in_day = (1.day / 1.second)
+        adjustment = seconds&.negative? ? (seconds.to_i / seconds_in_day).abs * seconds_in_day : 0
+        datetime + adjustment
+      end
     end
 
     def effort_start_time

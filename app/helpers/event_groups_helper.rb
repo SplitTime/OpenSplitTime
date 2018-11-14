@@ -4,7 +4,7 @@ module EventGroupsHelper
   def link_to_start_ready_efforts(view_object)
     if view_object.ready_efforts.present?
       link_to "Start #{pluralize(view_object.ready_efforts_count, 'effort')}",
-              start_ready_efforts_event_group_path(view_object.event_group),
+              start_efforts_event_group_path(view_object.event_group, filter: {ready_to_start: true}),
               method: :put,
               data: {confirm: 'NOTE: This will create a starting split time for the ' +
                   "#{pluralize(view_object.ready_efforts_count, 'unstarted effort')} " +

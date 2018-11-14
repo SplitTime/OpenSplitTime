@@ -15,6 +15,7 @@ class Effort < ApplicationRecord
   include PersonalInfo
   include Searchable
   include Matchable
+  include TimeZonable
   extend FriendlyId
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], :regex => /[^0-9|+]/
@@ -24,7 +25,6 @@ class Effort < ApplicationRecord
   has_many :split_times, dependent: :destroy
   has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
 
-  # Reject any new split_time hashes (having no :id) that don't have one of the attributes that will result in a time_from_start
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match
@@ -35,7 +35,7 @@ class Effort < ApplicationRecord
   delegate :organization, :concealed?, to: :event_group
   delegate :stewards, to: :organization
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender, :start_offset
+  validates_presence_of :event_id, :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105}, format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates :emergency_phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
@@ -55,27 +55,16 @@ class Effort < ApplicationRecord
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
-  scope :ready_to_start, -> do
-    select('efforts.*, splits.id as start_split_id')
-        .without_start_time.checked_in
-        .where("events.start_time + efforts.start_offset * interval '1 second' < ?", Time.now)
-  end
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
-  scope :without_start_time, -> do
-    joins(event: :course)
-        .joins("INNER JOIN splits ON splits.course_id = courses.id AND splits.kind = 0")
-        .joins("LEFT JOIN split_times ON split_times.effort_id = efforts.id AND split_times.lap = 1 AND split_times.split_id = splits.id")
-        .where(split_times: {id: nil})
+  scope :add_ready_to_start, -> do
+    select('distinct on (efforts.id) efforts.*, (split_times.id is null and checked_in is true and scheduled_start_time < current_timestamp) as ready_to_start')
+        .left_joins(split_times: :split)
+        .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
   end
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')
-  end
-
-  def self.attributes_for_import
-    [:first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate, :city, :state_code, :country_code,
-     :start_time, :start_offset, :beacon_url, :report_url, :photo, :phone, :email]
   end
 
   def self.search(param)
@@ -102,7 +91,7 @@ class Effort < ApplicationRecord
 
   def reject_split_time?(attributes)
     persisted = attributes[:id].present?
-    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time).values
+    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time, :absolute_time).values
     without_time = time_values.all?(&:blank?)
     blank_time = without_time && time_values.any? { |value| value == '' }
     attributes.merge!(_destroy: true) if persisted and blank_time
@@ -118,16 +107,10 @@ class Effort < ApplicationRecord
   end
 
   def start_time
-    event_start_time + start_offset
-  end
-
-  def start_time=(datetime)
-    return unless datetime.present? && event.present?
-    self.start_offset = TimeConversion.absolute_to_offset(datetime, event) || 0
-  end
-
-  def day_and_time(time_from_start)
-    time_from_start && (start_time + time_from_start)
+    return @start_time if defined?(@start_time)
+    @start_time = attributes.has_key?('start_time') ?
+                      attributes['start_time']&.in_time_zone(event_home_zone) :
+                      start_split_time&.absolute_time&.in_time_zone(event_home_zone)
   end
 
   def event_start_time
@@ -136,6 +119,19 @@ class Effort < ApplicationRecord
 
   def event_home_zone
     @event_home_zone ||= attributes['event_home_zone'] || event&.home_time_zone
+  end
+
+  def scheduled_start_time_local
+    @scheduled_start_time_local ||= scheduled_start_time&.in_time_zone(event_home_zone)
+  end
+
+  def scheduled_start_time_local=(time)
+    raise ArgumentError, 'scheduled_start_time_local cannot be set without a valid home time zone' unless time_zone_valid?(event_home_zone)
+    self.scheduled_start_time = ActiveSupport::TimeZone[event_home_zone].parse(time)
+  end
+
+  def scheduled_start_offset
+    @scheduled_start_offset ||= scheduled_start_time - event_start_time if scheduled_start_time && event_start_time
   end
 
   def event_name
@@ -150,20 +146,12 @@ class Effort < ApplicationRecord
     @last_reported_split_time ||= ordered_split_times.last
   end
 
-  def finish_split_times
-    @finish_split_times ||= split_times.finish.ordered
-  end
-
-  def start_split_times
-    @start_split_times ||= split_times.start.ordered
-  end
-
   def finish_split_time
     @finish_split_time ||= last_reported_split_time if finished?
   end
 
   def start_split_time
-    start_split_times.first
+    @start_split_time ||= split_times.find(&:starting_split_time?)
   end
 
   def start_split_id
@@ -225,21 +213,24 @@ class Effort < ApplicationRecord
     when dropped?
       'DNF'
     when finished?
-      return TimeConversion.seconds_to_hms(attributes['final_time']) if attributes.has_key?('final_time')
+      return TimeConversion.seconds_to_hms(attributes['final_time_from_start']) if attributes.has_key?('final_time_from_start')
       finish_split_time.formatted_time_hhmmss
     else
       'In progress'
     end
   end
 
-  def time_in_aid(lap_split)
-    time_array = ordered_split_times(lap_split).map(&:time_from_start)
-    time_array.size > 1 ? time_array.last - time_array.first : nil
+  def total_time_in_aid
+    @total_time_in_aid ||=
+        ordered_split_times.select(&:absolute_time).group_by(&:split_id).inject(0) do |total, (_, group)|
+          total + (group.last.absolute_time - group.first.absolute_time)
+        end
   end
 
-  def total_time_in_aid
-    @total_time_in_aid ||= ordered_split_times.group_by(&:split_id)
-                               .inject(0) { |total, (_, group)| total + (group.last.time_from_start - group.first.time_from_start) }
+  def split_times_data
+    return @split_times_data if defined?(@split_times_data)
+    query = SplitTimeQuery.time_detail(scope: {efforts: {id: id}}, home_time_zone: event_home_zone)
+    @split_times_data = ActiveRecord::Base.connection.execute(query).map { |row| SplitTimeData.new(row) }
   end
 
   def ordered_split_times(lap_split = nil)

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe Interactors::DestroyEffortSplitTimes do
   subject { Interactors::DestroyEffortSplitTimes.new(effort, split_time_ids) }
@@ -9,16 +12,15 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
   let!(:split_time_5) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: out_bitkey, time_from_start: 21000, stopped_here: true) }
   let(:split_time_ids) { split_times.map { |st| st.id.to_s } }
 
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
-
   let(:effort) { create(:effort, event: event) }
   let(:event) { create(:event, course: course) }
   let(:course) { create(:course) }
-  let(:split_1) { create(:start_split, course: course) }
+  let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }
   let(:split_3) { create(:split, course: course) }
-  let(:split_4) { create(:finish_split, course: course) }
+  let(:split_4) { create(:split, :finish, course: course) }
+
+  before { effort.reload }
 
   describe '#initialize' do
     context 'when effort and split_time_ids arguments are provided' do

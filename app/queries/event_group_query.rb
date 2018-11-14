@@ -73,10 +73,10 @@ class EventGroupQuery < BaseQuery
   
       split_times_subquery as
         (select ef.id as effort_id, 
-                min(ev.start_time at time zone 'UTC' + ef.start_offset * interval '1 second' + st.time_from_start * interval '1 second') as sortable_time,
+                min(st.absolute_time at time zone 'UTC') as sortable_time,
                 json_agg(json_build_object('id', st.id, 
                                            'lap', st.lap, 
-                                           'military_time', to_char((ev.start_time at time zone 'UTC' + ef.start_offset * interval '1 second' + st.time_from_start * interval '1 second'), 'HH24:MI:SS')) 
+                                           'military_time', to_char((st.absolute_time at time zone 'UTC'), 'HH24:MI:SS')) 
                                   order by st.lap) as split_times_attributes
         from split_times st
           inner join efforts ef on ef.id = st.effort_id

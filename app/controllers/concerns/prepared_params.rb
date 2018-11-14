@@ -1,5 +1,6 @@
 class PreparedParams
   SPECIAL_FILTER_FIELDS = %i(editable search)
+  BOOLEAN_FILTER_ATTRIBUTES = %i(ready_to_start)
 
   def initialize(params, permitted, permitted_query = nil)
     @params = params
@@ -29,6 +30,7 @@ class PreparedParams
     return @filter if defined?(@filter)
     filter_params = transformed_filter_values.except(*SPECIAL_FILTER_FIELDS)
     filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
+    BOOLEAN_FILTER_ATTRIBUTES.each { |attr| filter_params[attr] = filter_params[attr].to_boolean if filter_params[attr] }
     @filter = filter_params.to_h.with_indifferent_access
   end
 

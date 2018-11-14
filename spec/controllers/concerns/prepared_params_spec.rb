@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe PreparedParams do
   subject { PreparedParams.new(params, permitted, permitted_query) }
   let(:permitted) { [] }

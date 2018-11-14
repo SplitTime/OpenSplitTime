@@ -27,14 +27,14 @@ class FindExpectedLap
   delegate :event, to: :effort
 
   def missing_lap
-    (1..highest_lap).find { |lap| time_fits_missing(lap) }
+    (1..highest_lap).find { |lap| time_fits_missing?(lap) }
   end
 
-  def time_fits_missing(lap)
+  def time_fits_missing?(lap)
     return if indexed_location_times[lap]
     previous_time = previous_value(lap)
     next_time = next_value(lap)
-    previous_time && next_time && subject_value.between?(previous_time, next_time)
+    previous_time.present? && next_time.present? && subject_value.between?(previous_time, next_time)
   end
 
   def previous_value(lap)

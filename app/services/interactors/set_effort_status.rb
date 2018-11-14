@@ -42,7 +42,7 @@ module Interactors
 
     def set_subject_attributes(split_time)
       self.subject_split_time = split_time
-      self.valid_split_times = ordered_split_times.select { |st| st.valid_status? | (st == subject_split_time) }
+      self.valid_split_times = ordered_split_times.select { |st| st.valid_status? || (st == subject_split_time) }
       self.prior_valid_split_time = valid_split_times.elements_before(subject_split_time).last || mock_start_split_time
       self.subject_begin_lap_split = indexed_lap_splits[prior_valid_split_time.lap_split_key]
       self.subject_end_lap_split = indexed_lap_splits[subject_split_time.lap_split_key]
@@ -50,7 +50,7 @@ module Interactors
                                          end_point: subject_split_time.time_point,
                                          begin_lap_split: subject_begin_lap_split,
                                          end_lap_split: subject_end_lap_split)
-      self.subject_segment_time = subject_split_time.time_from_start - prior_valid_split_time.time_from_start
+      self.subject_segment_time = subject_split_time.absolute_time - prior_valid_split_time.absolute_time
     end
 
     def beyond_drop?
@@ -59,13 +59,14 @@ module Interactors
 
     def time_predictor
       TimePredictor.new(segment: subject_segment,
+                        effort: effort,
                         completed_split_time: prior_valid_split_time,
                         lap_splits: lap_splits,
                         times_container: times_container)
     end
 
     def mock_start_split_time
-      @mock_start_split_time ||= SplitTime.new(time_point: start_time_point, time_from_start: 0)
+      @mock_start_split_time ||= SplitTime.new(time_point: start_time_point, absolute_time: effort.event_start_time)
     end
 
     def start_time_point

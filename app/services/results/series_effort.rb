@@ -15,7 +15,7 @@ module Results
     end
 
     def final_times
-      efforts.map(&:final_time)
+      efforts.map(&:final_time_from_start)
     end
 
     def total_time

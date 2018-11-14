@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180829214601) do
+ActiveRecord::Schema.define(version: 20181103194925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 20180829214601) do
     t.string "country_code", limit: 2
     t.date "birthdate"
     t.integer "data_status"
-    t.integer "start_offset", default: 0, null: false
     t.string "beacon_url"
     t.string "report_url"
     t.string "phone", limit: 15
@@ -81,6 +80,7 @@ ActiveRecord::Schema.define(version: 20180829214601) do
     t.datetime "photo_updated_at"
     t.string "emergency_contact"
     t.string "emergency_phone"
+    t.datetime "scheduled_start_time"
     t.index ["event_id"], name: "index_efforts_on_event_id"
     t.index ["person_id"], name: "index_efforts_on_person_id"
     t.index ["slug"], name: "index_efforts_on_slug", unique: true
@@ -241,7 +241,6 @@ ActiveRecord::Schema.define(version: 20180829214601) do
   create_table "split_times", id: :serial, force: :cascade do |t|
     t.integer "effort_id", null: false
     t.integer "split_id", null: false
-    t.float "time_from_start", null: false
     t.integer "data_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -252,8 +251,10 @@ ActiveRecord::Schema.define(version: 20180829214601) do
     t.string "remarks"
     t.integer "lap"
     t.boolean "stopped_here", default: false
+    t.datetime "absolute_time"
     t.index ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true
     t.index ["effort_id"], name: "index_split_times_on_effort_id"
+    t.index ["lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_time_point"
     t.index ["split_id"], name: "index_split_times_on_split_id"
     t.index ["sub_split_bitkey"], name: "index_split_times_on_sub_split_bitkey"
   end

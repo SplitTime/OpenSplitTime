@@ -1,32 +1,27 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe 'Live entry app flow', type: :system, js: true do
   let!(:user) { create(:user) }
   let!(:course_1) { create(:course, :with_description, created_by: user.id) }
   let!(:course_2) { create(:course, :with_description, created_by: user.id) }
-  let!(:start_split_1) { create(:start_split, base_name: 'Start') }
+  let!(:start_split_1) { create(:split, :start, base_name: 'Start') }
   let!(:aid_1_split_1) { create(:split, base_name: 'Molas Pass', distance_from_start: 8000) }
   let!(:aid_2_split_1) { create(:split, base_name: 'Rolling Pass', distance_from_start: 15000) }
-  let!(:finish_split_1) { create(:finish_split, base_name: 'Finish', distance_from_start: 20000) }
+  let!(:finish_split_1) { create(:split, :finish, base_name: 'Finish', distance_from_start: 20000) }
   let!(:splits_1) { [start_split_1, aid_1_split_1, aid_2_split_1, finish_split_1] }
-  let!(:start_split_2) { create(:start_split, base_name: 'Start') }
+  let!(:start_split_2) { create(:split, :start, base_name: 'Start') }
   let!(:aid_1_split_2) { create(:split, base_name: 'Rolling Pass', distance_from_start: 6000) }
-  let!(:finish_split_2) { create(:finish_split, base_name: 'Finish', distance_from_start: 10000) }
+  let!(:finish_split_2) { create(:split, :finish, base_name: 'Finish', distance_from_start: 10000) }
   let!(:splits_2) { [start_split_2, aid_1_split_2, finish_split_2] }
   let!(:organization) { create(:organization, created_by: user.id) }
   let!(:event_group) { create(:event_group, organization: organization, available_live: true) }
-  before do
-    course_1.splits << splits_1
-    event_1.splits << course_1.splits
-    course_2.splits << splits_2
-    event_2.splits << course_2.splits
-  end
   let!(:efforts_1) { create_list(:effort, 2, :with_bib_number, event: event_1) }
   let!(:efforts_2) { create_list(:effort, 2, :with_bib_number, event: event_2) }
-  let!(:ordered_splits_1) { event_1.ordered_splits }
-  let!(:ordered_splits_2) { event_2.ordered_splits }
+  let(:ordered_splits_1) { event_1.ordered_splits }
+  let(:ordered_splits_2) { event_2.ordered_splits }
 
   let(:add_efforts_form) { find_by_id('js-add-effort-form') }
   let(:local_workspace) { find_by_id('js-local-workspace-table_wrapper') }
@@ -39,9 +34,23 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
   let(:submit_all_button) { find_by_id('js-submit-all-time-rows') }
   let(:discard_all_button) { find_by_id('js-delete-all-time-rows') }
 
+  let(:start_time_1) { event_1.start_time }
+  let(:start_time_2) { event_2.start_time }
+
+  before do
+    course_1.splits << splits_1
+    event_1.splits << splits_1
+    course_2.splits << splits_2
+    event_2.splits << splits_2
+    course_1.reload
+    event_1.reload
+    course_2.reload
+    event_2.reload
+  end
+
   context 'For single-lap events' do
-    let!(:event_1) { create(:event, event_group: event_group, course: course_1, laps_required: 1, start_time_in_home_zone: '2017-10-10 08:00:00') }
-    let!(:event_2) { create(:event, event_group: event_group, course: course_2, laps_required: 1, start_time_in_home_zone: '2017-10-10 09:00:00') }
+    let!(:event_1) { create(:event, event_group: event_group, course: course_1, start_time_in_home_zone: '2017-10-10 08:00:00') }
+    let!(:event_2) { create(:event, event_group: event_group, course: course_2, start_time_in_home_zone: '2017-10-10 09:00:00') }
 
     context 'for previously unstarted efforts' do
       scenario 'Add and submit times' do
@@ -85,12 +94,12 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
     context 'for previously started efforts' do
       before do
         efforts_1.each do |effort|
-          effort.split_times.create!(lap: 1, split: ordered_splits_1.first, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
-          effort.split_times.create!(lap: 1, split: ordered_splits_1.second, bitkey: SubSplit::IN_BITKEY, time_from_start: 1.hour)
+          effort.split_times.create!(lap: 1, split: ordered_splits_1.first, bitkey: in_bitkey, absolute_time: start_time_1 + 0)
+          effort.split_times.create!(lap: 1, split: ordered_splits_1.second, bitkey: in_bitkey, absolute_time: start_time_1 + 1.hour)
         end
 
         efforts_2.each do |effort|
-          effort.split_times.create!(lap: 1, split: ordered_splits_2.first, bitkey: SubSplit::IN_BITKEY, time_from_start: 0)
+          effort.split_times.create!(lap: 1, split: ordered_splits_2.first, bitkey: in_bitkey, absolute_time: start_time_2 + 0)
         end
       end
 
@@ -123,7 +132,9 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
 
         verify_workspace_is_empty
 
+        efforts_1.first.reload
         expect(efforts_1.first.split_times.size).to eq(3)
+        efforts_1.second.reload
         expect(efforts_1.second.split_times.size).to eq(3)
         expect(efforts_2.map(&:split_times).map(&:size)).to all eq(1)
       end
@@ -168,7 +179,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         ordered_split_times = effort.ordered_split_times
 
         expect(ordered_split_times.size).to eq(2)
-        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 3600])
+        expect(ordered_split_times.map(&:absolute_time)).to eq([0, 3600].map { |e| start_time_1 + e })
         expect(ordered_split_times.first.military_time).to eq('08:00:00')
 
         select ordered_splits_1.first.base_name, from: 'js-station-select'
@@ -183,9 +194,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         ordered_split_times = effort.ordered_split_times
         expect(ordered_split_times.size).to eq(2)
 
-        # Because starting split time_from_start was moved forward by 900 seconds
-        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 2700]) # 3600 - 900 = 2700
-        expect(effort.start_offset).to eq(900)
+        expect(ordered_split_times.map(&:absolute_time)).to eq([900, 3600].map { |e| start_time_1 + e })
 
         verify_workspace_is_empty
 
@@ -199,9 +208,7 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         ordered_split_times = effort.ordered_split_times
         expect(ordered_split_times.size).to eq(2)
 
-        # Because starting split time_from_start was moved back by 1800 seconds
-        expect(ordered_split_times.map(&:time_from_start)).to eq([0, 4500]) # 2700 + 1800 = 4500
-        expect(effort.start_offset).to eq(-900)
+        expect(ordered_split_times.map(&:absolute_time)).to eq([-900, 3600].map { |e| start_time_1 + e })
 
         verify_workspace_is_empty
       end

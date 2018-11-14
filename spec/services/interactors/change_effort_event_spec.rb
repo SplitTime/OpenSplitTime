@@ -43,6 +43,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
         old_event.splits << old_course.splits
         new_event.splits << old_course.splits
         create_split_times_for_effort
+        effort.reload
       end
 
       it 'updates the effort event_id to the id of the provided event' do
@@ -57,7 +58,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
         split_times = effort.split_times
         expect(split_times.size).to eq(4)
         subject.perform!
-        expect(split_times.none?(&:changed?)).to be_truthy
+        expect(split_times.map(&:changed?)).to all eq(false)
       end
 
       it 'updates the effort start offset such that the absolute effort start_time does not change' do
@@ -71,7 +72,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
     context 'when the new event has different splits from the old' do
       let(:new_event) { create(:event, course: new_course) }
       let(:new_course) { create(:course, splits: new_splits) }
-      let(:new_split_1) { create(:start_split) }
+      let(:new_split_1) { create(:split, :start) }
       let(:new_split_2) { create(:split, distance_from_start: old_course.ordered_splits.second.distance_from_start) }
       let(:new_split_3) { create(:split, distance_from_start: old_course.ordered_splits.third.distance_from_start) }
       let(:new_split_4) { create(:split, distance_from_start: new_split_3.distance_from_start + 10000) }
@@ -83,6 +84,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
         old_event.splits << old_course.splits
         new_event.splits << new_course.splits
         create_split_times_for_effort
+        effort.reload
       end
 
       it 'updates the effort event_id to the id of the provided event' do
@@ -143,7 +145,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
     def create_split_times_for_effort
       time_points = old_event.required_time_points
       time_points.each_with_index do |time_point, i|
-        create(:split_time, time_point: time_point, effort: effort, time_from_start: i * 1000)
+        create(:split_time, time_point: time_point, effort: effort, absolute_time: old_event.start_time + i * 1000)
       end
     end
   end

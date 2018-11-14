@@ -766,7 +766,6 @@
                     rawTimes: subSplitKinds.map(function (kind) {
                             var $timeField = $('#js-time-' + kind);
                             return {
-                                id: $('#js-raw-time-id-' + kind).val() || '',
                                 eventGroupId: liveEntry.currentEventGroupId,
                                 bibNumber: $('#js-bib-number').val(),
                                 enteredTime: $timeField.val(),
@@ -796,8 +795,6 @@
                 var $outTimeField = $('#js-time-out');
 
                 $('#js-unique-id').val(rawTimeRow.uniqueId);
-                $('#js-raw-time-id-in').val(inRawTime.id);
-                $('#js-raw-time-id-out').val(outRawTime.id);
                 $('#js-bib-number').val(rawTime.bibNumber).focus();
                 $('#js-lap-number').val(rawTime.lap);
                 $inTimeField.val(inRawTime.enteredTime);
@@ -822,8 +819,6 @@
                     $row.removeClass('highlight');
                     $uniqueId.val('');
                 }
-                $('#js-raw-time-id-in').val('');
-                $('#js-raw-time-id-out').val('');
                 $('#js-effort-name').html('').removeAttr('href');
                 $('#js-effort-event-name').html('');
                 $('#js-time-in').removeClass('exists null bad good questionable');

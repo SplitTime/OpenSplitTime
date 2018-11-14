@@ -3,13 +3,13 @@
 # The raw_time_row must have an effort attached to it.
 # Each raw_time should already have a new_split_time attached to it,
 # for example, as a result of the EnrichRawTimeRow service.
-#
+
 # The new_split_times will overwrite any existing split_times from the same effort on the same time_point.
 
 module Interactors
   class UpsertSplitTimesFromRawTimeRow
     include Interactors::Errors
-    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey time_from_start stopped_here pacer remarks]
+    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey absolute_time stopped_here pacer remarks]
 
     def self.perform!(args)
       new(args).perform!
@@ -55,10 +55,6 @@ module Interactors
       new_split_time = raw_time.new_split_time
       upsert_split_time = effort.split_times.find { |st| st.time_point == new_split_time.time_point } || effort.split_times.new
       upsert_split_time.assign_attributes(new_split_time.attributes.slice(*ASSIGNABLE_ATTRIBUTES))
-      if upsert_split_time.start?
-        offset_response = Interactors::AdjustEffortOffset.perform(effort)
-        offset_response.errors.each { |offset_response_error| errors << offset_response_error }
-      end
 
       if upsert_split_time.save
         if raw_time.update(split_time_id: upsert_split_time.id)

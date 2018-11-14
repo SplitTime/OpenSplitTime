@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Interactors::UnstartEfforts do
@@ -7,14 +9,14 @@ RSpec.describe Interactors::UnstartEfforts do
     let(:efforts) { [effort_1, effort_2] }
 
     let(:event) { create(:event, course: course) }
-    let(:start_split) { create(:start_split, course: course) }
+    let(:start_split) { create(:split, :start, course: course) }
     let(:aid_1) { create(:split, course: course) }
     let(:course) { create(:course) }
 
     before do
       event.splits << [start_split, aid_1]
-      create(:split_time, effort: effort_1, split: start_split, time_from_start: 0)
-      create(:split_time, effort: effort_2, split: start_split, time_from_start: 0)
+      create(:split_time, effort: effort_1, split: start_split, absolute_time: event.start_time)
+      create(:split_time, effort: effort_2, split: start_split, absolute_time: event.start_time)
     end
 
     context 'when all provided efforts can be unstarted' do
@@ -29,7 +31,8 @@ RSpec.describe Interactors::UnstartEfforts do
 
     context 'when any provided effort has an intermediate time' do
       before do
-        create(:split_time, effort: effort_1, split: aid_1, time_from_start: 1000)
+        create(:split_time, effort: effort_1, split: aid_1, absolute_time: event.start_time + 1000)
+        efforts.each(&:reload)
       end
 
       it 'does not remove any start split_times but returns an unsuccessful response with errors' do

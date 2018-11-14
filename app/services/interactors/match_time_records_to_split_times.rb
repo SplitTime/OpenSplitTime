@@ -59,7 +59,7 @@ module Interactors
     end
 
     def time_matches(split_time, time_record)
-      (time_record.absolute_time && (split_time.day_and_time - time_record.absolute_time).abs <= tolerance) ||
+      (time_record.absolute_time && (split_time.absolute_time - time_record.absolute_time).abs <= tolerance) ||
           (time_record.entered_time && (Time.parse(split_time.military_time) - Time.parse(time_record.entered_time)).abs <= tolerance)
     end
 

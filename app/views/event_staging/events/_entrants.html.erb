@@ -208,7 +208,7 @@
                             Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If any Entrant will start at a time other than the Event start time, use these fields to indicate start time."><i class="glyphicon glyphicon-question-sign"></i></span>
                         </div>
                       </div>
-                      <input-datetime id="effort-start-time-field" v-model="model.startDate" class="no-gutters"></input-datetime>
+                      <input-datetime id="effort-start-time-field" v-model="model.scheduledStartTime" class="no-gutters"></input-datetime>
                     </div>
                     <div class="col-xs-6">
                       <div class="form-group col-xs-12">
@@ -216,7 +216,7 @@
                       </div>
                       <div class="col-xs-12 sto-input-wrap">
                         <span class="sto-or">or</span>
-                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^-?([0-9]*:[0-5]|[0-5]?)[0-9]$', placeholder: '' }" placeholder="hh:mm"></input>
+                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^[\-+]?[0-9]*:[0-5]{2}$' }" placeholder="hh:mm">
                       </div>
                     </div>
                   </div>

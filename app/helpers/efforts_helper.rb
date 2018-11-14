@@ -22,7 +22,7 @@ module EffortsHelper
 
   def last_reported_time_of_day(effort_row)
     if effort_row.started?
-      "#{day_time_format_hhmmss(effort_row.final_absolute_time)}"
+      "#{day_time_format_hhmmss(effort_row.final_day_and_time)}"
     else
       '--'
     end

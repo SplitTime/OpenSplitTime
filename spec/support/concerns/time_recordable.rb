@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'support/bitkey_definitions'
 include BitkeyDefinitions
 
 RSpec.shared_examples_for 'time_recordable' do

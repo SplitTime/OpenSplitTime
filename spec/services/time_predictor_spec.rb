@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe TimePredictor do
-  subject { TimePredictor.new(segment: segment, lap_splits: lap_splits, completed_split_time: completed_split_time) }
+  subject { TimePredictor.new(segment: segment, effort: effort, lap_splits: lap_splits, completed_split_time: completed_split_time) }
   let(:segment) { build(:segment) }
   let(:lap_splits) { event.lap_splits_through(laps_required) }
   let(:completed_split_time) { split_times&.last }
@@ -62,21 +62,11 @@ RSpec.describe TimePredictor do
       end
     end
 
-    context 'when no effort or lap_splits are given' do
+    context 'when no effort is given' do
       let(:effort) { nil }
-      let(:lap_splits) { nil }
 
       it 'raises an ArgumentError' do
-        expect { subject }.to raise_error(/must include one of effort or lap_splits and completed_split_time/)
-      end
-    end
-
-    context 'when no effort or completed_split_time are given' do
-      let(:effort) { nil }
-      let(:completed_split_time) { nil }
-
-      it 'raises an ArgumentError' do
-        expect { subject }.to raise_error(/must include one of effort or lap_splits and completed_split_time/)
+        expect { subject }.to raise_error(/must include effort/)
       end
     end
   end
